@@ -1,61 +1,50 @@
-367,368c367
+365,366c365
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-397c396
+395c394
 < POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
 ---
 > POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json&prettyPrint=false
-414,415c413,414
+412,413c411,412
 <   "defaultPartitionExpirationMs": 3600000,
 <   "defaultTableExpirationMs": 3600000,
 ---
 >   "defaultPartitionExpirationMs": "3600000",
 >   "defaultTableExpirationMs": "3600000",
-474,475c473
+472,473c471
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-524c522
+522c520
 < PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 ---
 > PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-538a537,540
->       "specialGroup": "projectOwners"
->     },
->     {
->       "role": "OWNER",
-542,544d543
+540,542d537
 <   "datasetReference": {
 <     "datasetId": "bigquerydataset${uniqueId}"
 <   },
-549,550c548,549
+547,548c542,543
 <   "defaultPartitionExpirationMs": 3800000,
 <   "defaultTableExpirationMs": 3800000,
 ---
 >   "defaultPartitionExpirationMs": "3800000",
 >   "defaultTableExpirationMs": "3800000",
-552a552
+550a546
 >   "isCaseInsensitive": false,
-557d556
+555d550
 <   "location": "US",
-583a583,586
->       "specialGroup": "projectOwners"
->     },
->     {
->       "role": "OWNER",
-601a605
+600c595
+<   "isCaseInsensitive": true,
+---
 >   "isCaseInsensitive": false,
-641a646,649
->       "specialGroup": "projectOwners"
->     },
->     {
->       "role": "OWNER",
-659a668
+659c654
+<   "isCaseInsensitive": true,
+---
 >   "isCaseInsensitive": false,
-675,676c684,746
+675,676c670,728
 < DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
 < Content-Type: application/json
 ---
@@ -76,10 +65,6 @@
 >     {
 >       "domain": "google.com",
 >       "role": "READER"
->     },
->     {
->       "role": "OWNER",
->       "specialGroup": "projectOwners"
 >     },
 >     {
 >       "role": "OWNER",

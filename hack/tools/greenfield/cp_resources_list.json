@@ -19,7 +19,10 @@
       "target_group": "admanager.cnrm.cloud.google.com",
       "target_kind": "AdManagerLivestreameventsbyassetkey"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "admanager/AdRule",
@@ -224,7 +227,10 @@
         "target_group": "admanager.cnrm.cloud.google.com",
         "target_kind": "AdManagerOperatingSystem"
       }
-    ]
+    ],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "admanager/AdSpot",
@@ -243,7 +249,10 @@
       "DELETE"
     ],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "admanager/AdUnit",
@@ -283,7 +292,10 @@
         "target_group": "admanager.cnrm.cloud.google.com",
         "target_kind": "AdManagerAdUnit"
       }
-    ]
+    ],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "admanager/Application",
@@ -302,7 +314,10 @@
       "DELETE"
     ],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "admanager/CdnConfig",
@@ -321,7 +336,10 @@
       "DELETE"
     ],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "admanager/Contact",
@@ -346,7 +364,10 @@
         "target_group": "admanager.cnrm.cloud.google.com",
         "target_kind": "AdManagerCompany"
       }
-    ]
+    ],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "admanager/CreativeSet",
@@ -376,7 +397,10 @@
         "target_group": "admanager.cnrm.cloud.google.com",
         "target_kind": "AdManagerCreative"
       }
-    ]
+    ],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "admanager/CustomField",
@@ -395,7 +419,10 @@
       "DELETE"
     ],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "admanager/CustomTargetingKey",
@@ -414,7 +441,10 @@
       "DELETE"
     ],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "admanager/CustomTargetingValue",
@@ -439,7 +469,10 @@
         "target_group": "admanager.cnrm.cloud.google.com",
         "target_kind": "AdManagerCustomTargetingKey"
       }
-    ]
+    ],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "admanager/EntitySignalsMapping",
@@ -458,7 +491,10 @@
       "DELETE"
     ],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "admanager/Label",
@@ -477,7 +513,10 @@
       "DELETE"
     ],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "admanager/LiveStream",
@@ -507,7 +546,10 @@
         "target_group": "admanager.cnrm.cloud.google.com",
         "target_kind": "AdManagerCDNConfig"
       }
-    ]
+    ],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "admanager/Placement",
@@ -532,7 +574,10 @@
         "target_group": "admanager.cnrm.cloud.google.com",
         "target_kind": "AdManagerAdUnit"
       }
-    ]
+    ],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "admanager/PrivateAuction",
@@ -557,7 +602,10 @@
         "target_group": "admanager.cnrm.cloud.google.com",
         "target_kind": "AdManagerUser"
       }
-    ]
+    ],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "admanager/PrivateAuctionDeal",
@@ -762,7 +810,10 @@
         "target_group": "admanager.cnrm.cloud.google.com",
         "target_kind": "AdManagerOperatingSystem"
       }
-    ]
+    ],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "admanager/Report",
@@ -781,7 +832,10 @@
       "DELETE"
     ],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "admanager/Site",
@@ -800,7 +854,10 @@
       "DELETE"
     ],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "admanager/Slate",
@@ -819,7 +876,10 @@
       "DELETE"
     ],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "admanager/TargetingPreset",
@@ -1024,7 +1084,10 @@
         "target_group": "admanager.cnrm.cloud.google.com",
         "target_kind": "AdManagerOperatingSystem"
       }
-    ]
+    ],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "admanager/Team",
@@ -1043,7 +1106,10 @@
       "DELETE"
     ],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "agentregistry/Binding",
@@ -1061,7 +1127,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/agentregistry/apiv1/agentregistrypb#Binding",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/agentregistry/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/agentregistry/apiv1#NewClient"
   },
   {
     "resource": "agentregistry/Service",
@@ -1079,7 +1148,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/agentregistry/apiv1/agentregistrypb#Service",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/agentregistry/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/agentregistry/apiv1#NewClient"
   },
   {
     "resource": "aiplatform/Artifact",
@@ -1101,7 +1173,10 @@
       "target_group": "vertexai.cnrm.cloud.google.com",
       "target_kind": "VertexAIMetadataStore"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1/aiplatformpb#Artifact",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1#NewMetadataClient"
   },
   {
     "resource": "aiplatform/CachedContent",
@@ -1130,7 +1205,10 @@
         "target_group": "aiplatform.cnrm.cloud.google.com",
         "target_kind": "AIPlatformRAGCorpus"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1/aiplatformpb#CachedContent",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1#NewGenAiCacheClient"
   },
   {
     "resource": "aiplatform/Context",
@@ -1152,7 +1230,10 @@
       "target_group": "vertexai.cnrm.cloud.google.com",
       "target_kind": "VertexAIMetadataStore"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1/aiplatformpb#Context",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1#NewMetadataClient"
   },
   {
     "resource": "aiplatform/DatasetVersion",
@@ -1174,7 +1255,10 @@
       "target_group": "vertexai.cnrm.cloud.google.com",
       "target_kind": "VertexAIDataset"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1/aiplatformpb#DatasetVersion",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1#NewDatasetClient"
   },
   {
     "resource": "aiplatform/Execution",
@@ -1196,7 +1280,10 @@
       "target_group": "vertexai.cnrm.cloud.google.com",
       "target_kind": "VertexAIMetadataStore"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1/aiplatformpb#Execution",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1#NewMetadataClient"
   },
   {
     "resource": "aiplatform/FeatureMonitor",
@@ -1218,7 +1305,10 @@
       "target_group": "vertexai.cnrm.cloud.google.com",
       "target_kind": "VertexAIFeatureGroup"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb#FeatureMonitor",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1beta1#NewFeatureRegistryRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1beta1#NewFeatureRegistryClient"
   },
   {
     "resource": "aiplatform/FeatureView",
@@ -1240,7 +1330,10 @@
       "target_group": "aiplatform.cnrm.cloud.google.com",
       "target_kind": "VertexAIFeatureOnlineStore"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1/aiplatformpb#FeatureView",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1#NewFeatureOnlineStoreAdminClient"
   },
   {
     "resource": "aiplatform/Memory",
@@ -1262,7 +1355,10 @@
       "target_group": "aiplatform.cnrm.cloud.google.com",
       "target_kind": "AIPlatformReasoningEngine"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb#Memory",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1beta1#NewMemoryBankRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1beta1#NewMemoryBankClient"
   },
   {
     "resource": "aiplatform/Model",
@@ -1286,7 +1382,10 @@
         "target_group": "kms.cnrm.cloud.google.com",
         "target_kind": "KMSCryptoKey"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1/aiplatformpb#Model",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1#NewModelClient"
   },
   {
     "resource": "aiplatform/ModelDeploymentMonitoringJob",
@@ -1320,7 +1419,10 @@
         "target_group": "monitoring.cnrm.cloud.google.com",
         "target_kind": "MonitoringNotificationChannel"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1/aiplatformpb#ModelDeploymentMonitoringJob",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1#NewJobClient"
   },
   {
     "resource": "aiplatform/ModelMonitor",
@@ -1364,7 +1466,10 @@
         "target_group": "vertexai.cnrm.cloud.google.com",
         "target_kind": "VertexAIEndpoint"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb#ModelMonitor",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1beta1#NewModelMonitoringRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1beta1#NewModelMonitoringClient"
   },
   {
     "resource": "aiplatform/OnlineEvaluator",
@@ -1382,7 +1487,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb#OnlineEvaluator",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "aiplatform/PersistentResource",
@@ -1421,7 +1529,10 @@
         "target_group": "compute.cnrm.cloud.google.com",
         "target_kind": "ComputeReservation"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1/aiplatformpb#PersistentResource",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1#NewPersistentResourceClient"
   },
   {
     "resource": "aiplatform/RagCorpus",
@@ -1500,7 +1611,10 @@
         "target_group": "aiplatform.cnrm.cloud.google.com",
         "target_kind": "AIPlatformIndexEndpoint"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1/aiplatformpb#RagCorpus",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1#NewVertexRagDataClient"
   },
   {
     "resource": "aiplatform/RagMetadata",
@@ -1522,7 +1636,10 @@
       "target_group": "aiplatform.cnrm.cloud.google.com",
       "target_kind": "AIPlatformRAGFile"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb#RagMetadata",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1beta1#NewVertexRagDataRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1beta1#NewVertexRagDataClient"
   },
   {
     "resource": "aiplatform/ReasoningEngine",
@@ -1566,7 +1683,10 @@
         "target_group": "aiplatform.cnrm.cloud.google.com",
         "target_kind": "AIPlatformReasoningEngineRuntimeRevision"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1/aiplatformpb#ReasoningEngine",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1#NewReasoningEngineClient"
   },
   {
     "resource": "aiplatform/Schedule",
@@ -1660,7 +1780,10 @@
         "target_group": "compute.cnrm.cloud.google.com",
         "target_kind": "ComputeNetworkAttachment"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1/aiplatformpb#Schedule",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1#NewScheduleClient"
   },
   {
     "resource": "aiplatform/Session",
@@ -1682,7 +1805,10 @@
       "target_group": "aiplatform.cnrm.cloud.google.com",
       "target_kind": "AIPlatformReasoningEngine"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1/aiplatformpb#Session",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1#NewSessionClient"
   },
   {
     "resource": "aiplatform/SpecialistPool",
@@ -1700,7 +1826,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1/aiplatformpb#SpecialistPool",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1#NewSpecialistPoolClient"
   },
   {
     "resource": "aiplatform/TensorboardRun",
@@ -1722,7 +1851,10 @@
       "target_group": "vertexai.cnrm.cloud.google.com",
       "target_kind": "VertexAITensorboardExperiment"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1/aiplatformpb#TensorboardRun",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1#NewTensorboardClient"
   },
   {
     "resource": "aiplatform/TensorboardTimeSeries",
@@ -1744,7 +1876,10 @@
       "target_group": "aiplatform.cnrm.cloud.google.com",
       "target_kind": "AIPlatformTensorBoardRun"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1/aiplatformpb#TensorboardTimeSeries",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1#NewTensorboardClient"
   },
   {
     "resource": "aiplatform/TensorboardExperiment",
@@ -1766,7 +1901,10 @@
       "target_group": "vertexai.cnrm.cloud.google.com",
       "target_kind": "VertexAITensorboard"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1/aiplatformpb#TensorboardExperiment",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1#NewTensorboardClient"
   },
   {
     "resource": "analyticsadmin/AccessBinding",
@@ -1785,7 +1923,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#AccessBinding",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
   },
   {
     "resource": "analyticsadmin/Audience",
@@ -1804,7 +1945,10 @@
       "DELETE"
     ],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#Audience",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
   },
   {
     "resource": "analyticsadmin/BigQueryLink",
@@ -1822,7 +1966,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#BigQueryLink",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
   },
   {
     "resource": "analyticsadmin/CalculatedMetric",
@@ -1840,7 +1987,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#CalculatedMetric",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
   },
   {
     "resource": "analyticsadmin/ChannelGroup",
@@ -1858,7 +2008,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#ChannelGroup",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
   },
   {
     "resource": "analyticsadmin/ConversionEvent",
@@ -1876,7 +2029,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#ConversionEvent",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
   },
   {
     "resource": "analyticsadmin/CustomDimension",
@@ -1895,7 +2051,10 @@
       "DELETE"
     ],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#CustomDimension",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
   },
   {
     "resource": "analyticsadmin/CustomMetric",
@@ -1914,7 +2073,10 @@
       "DELETE"
     ],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#CustomMetric",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
   },
   {
     "resource": "analyticsadmin/DataStream",
@@ -1932,7 +2094,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#DataStream",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
   },
   {
     "resource": "analyticsadmin/DisplayVideo360AdvertiserLink",
@@ -1950,7 +2115,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#DisplayVideo360AdvertiserLink",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
   },
   {
     "resource": "analyticsadmin/EventCreateRule",
@@ -1972,7 +2140,10 @@
       "target_group": "analyticsadmin.cnrm.cloud.google.com",
       "target_kind": "AnalyticsAdminDataStream"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#EventCreateRule",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
   },
   {
     "resource": "analyticsadmin/EventEditRule",
@@ -1994,7 +2165,10 @@
       "target_group": "analyticsadmin.cnrm.cloud.google.com",
       "target_kind": "AnalyticsAdminDataStream"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#EventEditRule",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
   },
   {
     "resource": "analyticsadmin/ExpandedDataSet",
@@ -2012,7 +2186,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#ExpandedDataSet",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
   },
   {
     "resource": "analyticsadmin/KeyEvent",
@@ -2030,7 +2207,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#KeyEvent",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
   },
   {
     "resource": "analyticsadmin/MeasurementProtocolSecret",
@@ -2052,7 +2232,10 @@
       "target_group": "analyticsadmin.cnrm.cloud.google.com",
       "target_kind": "AnalyticsAdminDataStream"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#MeasurementProtocolSecret",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
   },
   {
     "resource": "analyticsadmin/ReportingDataAnnotation",
@@ -2070,7 +2253,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#ReportingDataAnnotation",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
   },
   {
     "resource": "analyticsadmin/SKAdNetworkConversionValueSchema",
@@ -2092,7 +2278,10 @@
       "target_group": "analyticsadmin.cnrm.cloud.google.com",
       "target_kind": "AnalyticsAdminDataStream"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#SKAdNetworkConversionValueSchema",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
   },
   {
     "resource": "analyticsadmin/SearchAds360Link",
@@ -2110,7 +2299,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#SearchAds360Link",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
   },
   {
     "resource": "analyticsadmin/SubpropertyEventFilter",
@@ -2128,7 +2320,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#SubpropertyEventFilter",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
   },
   {
     "resource": "analyticshub/QueryTemplate",
@@ -2150,7 +2345,10 @@
       "target_group": "bigqueryanalyticshub.cnrm.cloud.google.com",
       "target_kind": "BigQueryAnalyticsHubDataExchange"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/bigquery/analyticshub/apiv1/analyticshubpb#QueryTemplate",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/bigquery/analyticshub/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/bigquery/analyticshub/apiv1#NewClient"
   },
   {
     "resource": "apihub/Attribute",
@@ -2168,7 +2366,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/apihub/apiv1/apihubpb#Attribute",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/apihub/apiv1#NewRESTClient",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "apihub/Curation",
@@ -2186,7 +2387,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/apihub/apiv1/apihubpb#Curation",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/apihub/apiv1#NewApiHubCurateRESTClient",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "apihub/Dependency",
@@ -2215,7 +2419,10 @@
         "target_group": "apihub.cnrm.cloud.google.com",
         "target_kind": "APIHubExternalAPI"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/apihub/apiv1/apihubpb#Dependency",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/apihub/apiv1#NewApiHubDependenciesRESTClient",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "apihub/Deployment",
@@ -2239,7 +2446,10 @@
         "target_group": "apihub.cnrm.cloud.google.com",
         "target_kind": "APIHubAttribute"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/apihub/apiv1/apihubpb#Deployment",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/apihub/apiv1#NewRESTClient",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "apihub/ExternalApi",
@@ -2263,7 +2473,10 @@
         "target_group": "apihub.cnrm.cloud.google.com",
         "target_kind": "APIHubAttribute"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/apihub/apiv1/apihubpb#ExternalApi",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/apihub/apiv1#NewRESTClient",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "apihub/PluginInstance",
@@ -2291,7 +2504,10 @@
         "target_group": "iam.cnrm.cloud.google.com",
         "target_kind": "IAMServiceAccount"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/apihub/apiv1/apihubpb#PluginInstance",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/apihub/apiv1#NewApiHubPluginRESTClient",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "apihub/Spec",
@@ -2313,7 +2529,10 @@
       "target_group": "apihub.cnrm.cloud.google.com",
       "target_kind": "APIHubVersion"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/apihub/apiv1/apihubpb#Spec",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/apihub/apiv1#NewRESTClient",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "apihub/Version",
@@ -2346,7 +2565,10 @@
         "target_group": "apihub.cnrm.cloud.google.com",
         "target_kind": "APIHubDeployment"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/apihub/apiv1/apihubpb#Version",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/apihub/apiv1#NewRESTClient",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "apphub/Service",
@@ -2374,7 +2596,10 @@
         "target_group": "apphub.cnrm.cloud.google.com",
         "target_kind": "ApphubDiscoveredService"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/apphub/apiv1/apphubpb#Service",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/apphub/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/apphub/apiv1#NewClient"
   },
   {
     "resource": "apphub/Workload",
@@ -2402,7 +2627,10 @@
         "target_group": "apphub.cnrm.cloud.google.com",
         "target_kind": "ApphubDiscoveredWorkload"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/apphub/apiv1/apphubpb#Workload",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/apphub/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/apphub/apiv1#NewClient"
   },
   {
     "resource": "area120tables/Row",
@@ -2419,7 +2647,10 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "deprecated"
+    "status": "deprecated",
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/area120/tables/apiv1alpha1/tablespb#Row",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/area120/tables/apiv1alpha1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/area120/tables/apiv1alpha1#NewClient"
   },
   {
     "resource": "artifactregistry/Rule",
@@ -2441,7 +2672,10 @@
       "target_group": "artifactregistry.cnrm.cloud.google.com",
       "target_kind": "ArtifactRegistryRepository"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb#Rule",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/artifactregistry/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/artifactregistry/apiv1#NewClient"
   },
   {
     "resource": "artifactregistry/Tag",
@@ -2463,7 +2697,10 @@
       "target_group": "artifactregistry.cnrm.cloud.google.com",
       "target_kind": "ArtifactRegistryPackage"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb#Tag",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/artifactregistry/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/artifactregistry/apiv1#NewClient"
   },
   {
     "resource": "assuredworkloads/Workload",
@@ -2485,7 +2722,10 @@
       "target_group": "auditmanager.cnrm.cloud.google.com",
       "target_kind": "AuditmanagerEnrollmentStatusScope"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/assuredworkloads/apiv1/assuredworkloadspb#Workload",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/assuredworkloads/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/assuredworkloads/apiv1#NewClient"
   },
   {
     "resource": "backupdr/Backup",
@@ -2507,7 +2747,10 @@
       "target_group": "backupdr.cnrm.cloud.google.com",
       "target_kind": "BackupDRDataSource"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/backupdr/apiv1/backupdrpb#Backup",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/backupdr/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/backupdr/apiv1#NewClient"
   },
   {
     "resource": "beyondcorp/ClientConnectorService",
@@ -2531,7 +2774,10 @@
         "target_group": "compute.cnrm.cloud.google.com",
         "target_kind": "ComputeNetwork"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/beyondcorp/clientconnectorservices/apiv1/clientconnectorservicespb#ClientConnectorService",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/beyondcorp/clientconnectorservices/apiv1#NewClient"
   },
   {
     "resource": "bigtableadmin/Cluster",
@@ -2553,7 +2799,10 @@
       "target_group": "bigtable.cnrm.cloud.google.com",
       "target_kind": "BigtableInstance"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/bigtable/admin/apiv2/adminpb#Cluster",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/bigtable/admin/apiv2#NewBigtableInstanceAdminClient"
   },
   {
     "resource": "bigtableadmin/SchemaBundle",
@@ -2575,7 +2824,10 @@
       "target_group": "bigtable.cnrm.cloud.google.com",
       "target_kind": "BigtableTable"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/bigtable/admin/apiv2/adminpb#SchemaBundle",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/bigtable/admin/apiv2#NewBigtableTableAdminClient"
   },
   {
     "resource": "blockchainnodeengine/BlockchainNode",
@@ -2592,7 +2844,10 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "deprecated"
+    "status": "deprecated",
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "ces/Agent",
@@ -2645,7 +2900,10 @@
         "target_group": "ces.cnrm.cloud.google.com",
         "target_kind": "CESAgent"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1/cespb#Agent",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1#NewAgentRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1#NewAgentClient"
   },
   {
     "resource": "ces/Deployment",
@@ -2678,7 +2936,10 @@
         "target_group": "ces.cnrm.cloud.google.com",
         "target_kind": "CESAppVersion"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1/cespb#Deployment",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1#NewAgentRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1#NewAgentClient"
   },
   {
     "resource": "ces/Evaluation",
@@ -2831,7 +3092,10 @@
         "target_group": "ces.cnrm.cloud.google.com",
         "target_kind": "CESToolset"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1beta/cespb#Evaluation",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1beta#NewEvaluationRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1beta#NewEvaluationClient"
   },
   {
     "resource": "ces/EvaluationDataset",
@@ -2859,7 +3123,10 @@
         "target_group": "ces.cnrm.cloud.google.com",
         "target_kind": "CESEvaluation"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1beta/cespb#EvaluationDataset",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1beta#NewEvaluationRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1beta#NewEvaluationClient"
   },
   {
     "resource": "ces/EvaluationExpectation",
@@ -2881,7 +3148,10 @@
       "target_group": "ces.cnrm.cloud.google.com",
       "target_kind": "CESApp"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1beta/cespb#EvaluationExpectation",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1beta#NewEvaluationRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1beta#NewEvaluationClient"
   },
   {
     "resource": "ces/Example",
@@ -2934,7 +3204,10 @@
         "target_group": "ces.cnrm.cloud.google.com",
         "target_kind": "CESToolset"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1/cespb#Example",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1#NewAgentRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1#NewAgentClient"
   },
   {
     "resource": "ces/Guardrail",
@@ -2962,7 +3235,10 @@
         "target_group": "ces.cnrm.cloud.google.com",
         "target_kind": "CESAgent"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1/cespb#Guardrail",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1#NewAgentRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1#NewAgentClient"
   },
   {
     "resource": "ces/ScheduledEvaluationRun",
@@ -3010,7 +3286,10 @@
         "target_group": "ces.cnrm.cloud.google.com",
         "target_kind": "CESScheduledEvaluationRun"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1beta/cespb#ScheduledEvaluationRun",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1beta#NewEvaluationRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1beta#NewEvaluationClient"
   },
   {
     "resource": "ces/Tool",
@@ -3078,7 +3357,10 @@
         "target_group": "servicedirectory.cnrm.cloud.google.com",
         "target_kind": "ServiceDirectoryService"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1/cespb#Tool",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1#NewAgentRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/ces/apiv1#NewAgentClient"
   },
   {
     "resource": "chat/Membership",
@@ -3096,7 +3378,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/chat/apiv1/chatpb#Membership",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/chat/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/chat/apiv1#NewClient"
   },
   {
     "resource": "chat/Message",
@@ -3120,7 +3405,10 @@
         "target_group": "chat.cnrm.cloud.google.com",
         "target_kind": "ChatMessage"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/chat/apiv1/chatpb#Message",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/chat/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/chat/apiv1#NewClient"
   },
   {
     "resource": "chronicle/DataAccessLabel",
@@ -3142,7 +3430,10 @@
       "target_group": "chronicle.cnrm.cloud.google.com",
       "target_kind": "ChronicleInstance"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1/chroniclepb#DataAccessLabel",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1#NewDataAccessControlRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1#NewDataAccessControlClient"
   },
   {
     "resource": "chronicle/DataAccessScope",
@@ -3164,7 +3455,10 @@
       "target_group": "chronicle.cnrm.cloud.google.com",
       "target_kind": "ChronicleInstance"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1/chroniclepb#DataAccessScope",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1#NewDataAccessControlRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1#NewDataAccessControlClient"
   },
   {
     "resource": "chronicle/DataTable",
@@ -3192,7 +3486,10 @@
         "target_group": "chronicle.cnrm.cloud.google.com",
         "target_kind": "ChronicleDataAccessScope"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1/chroniclepb#DataTable",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1#NewDataTableRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1#NewDataTableClient"
   },
   {
     "resource": "chronicle/DataTableRow",
@@ -3214,7 +3511,10 @@
       "target_group": "chronicle.cnrm.cloud.google.com",
       "target_kind": "ChronicleDataTable"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1/chroniclepb#DataTableRow",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1#NewDataTableRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1#NewDataTableClient"
   },
   {
     "resource": "chronicle/FindingsRefinement",
@@ -3237,7 +3537,10 @@
       "target_group": "chronicle.cnrm.cloud.google.com",
       "target_kind": "ChronicleInstance"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1/chroniclepb#FindingsRefinement",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1#NewFindingsRefinementRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1#NewFindingsRefinementClient"
   },
   {
     "resource": "chronicle/NativeDashboard",
@@ -3259,7 +3562,10 @@
       "target_group": "chronicle.cnrm.cloud.google.com",
       "target_kind": "ChronicleInstance"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1/chroniclepb#NativeDashboard",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1#NewNativeDashboardRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1#NewNativeDashboardClient"
   },
   {
     "resource": "chronicle/ReferenceList",
@@ -3282,7 +3588,10 @@
       "target_group": "chronicle.cnrm.cloud.google.com",
       "target_kind": "ChronicleInstance"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1/chroniclepb#ReferenceList",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1#NewReferenceListRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1#NewReferenceListClient"
   },
   {
     "resource": "chronicle/Rule",
@@ -3310,7 +3619,10 @@
         "target_group": "chronicle.cnrm.cloud.google.com",
         "target_kind": "ChronicleDataAccessScope"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1/chroniclepb#Rule",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1#NewRuleExecutionErrorRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1#NewRuleExecutionErrorClient"
   },
   {
     "resource": "chronicle/Watchlist",
@@ -3332,7 +3644,10 @@
       "target_group": "chronicle.cnrm.cloud.google.com",
       "target_kind": "ChronicleInstance"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1/chroniclepb#Watchlist",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1#NewEntityRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/chronicle/apiv1#NewEntityClient"
   },
   {
     "resource": "cloudbuild/Connection",
@@ -3426,7 +3741,10 @@
         "target_group": "secretmanager.cnrm.cloud.google.com",
         "target_kind": "SecretManagerSecretVersion"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/cloudbuild/apiv2/cloudbuildpb#Connection",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/cloudbuild/apiv2#NewRepositoryManagerRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/cloudbuild/apiv2#NewRepositoryManagerClient"
   },
   {
     "resource": "cloudchannel/ChannelPartnerLink",
@@ -3445,7 +3763,10 @@
       "DELETE"
     ],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/channel/apiv1/channelpb#ChannelPartnerLink",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/channel/apiv1#NewCloudChannelRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/channel/apiv1#NewCloudChannelClient"
   },
   {
     "resource": "cloudchannel/ChannelPartnerRepricingConfig",
@@ -3467,7 +3788,10 @@
       "target_group": "cloudchannel.cnrm.cloud.google.com",
       "target_kind": "CloudChannelChannelPartnerLink"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/channel/apiv1/channelpb#ChannelPartnerRepricingConfig",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/channel/apiv1#NewCloudChannelRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/channel/apiv1#NewCloudChannelClient"
   },
   {
     "resource": "cloudchannel/Customer",
@@ -3485,7 +3809,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/channel/apiv1/channelpb#Customer",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/channel/apiv1#NewCloudChannelRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/channel/apiv1#NewCloudChannelClient"
   },
   {
     "resource": "cloudchannel/CustomerRepricingConfig",
@@ -3507,7 +3834,10 @@
       "target_group": "cloudchannel.cnrm.cloud.google.com",
       "target_kind": "CloudChannelCustomer"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/channel/apiv1/channelpb#CustomerRepricingConfig",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/channel/apiv1#NewCloudChannelRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/channel/apiv1#NewCloudChannelClient"
   },
   {
     "resource": "cloudcontrolspartner/Customer",
@@ -3529,7 +3859,10 @@
       "target_group": "auditmanager.cnrm.cloud.google.com",
       "target_kind": "AuditmanagerEnrollmentStatusScope"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/cloudcontrolspartner/apiv1/cloudcontrolspartnerpb#Customer",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/cloudcontrolspartner/apiv1#NewCloudControlsPartnerCoreRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/cloudcontrolspartner/apiv1#NewCloudControlsPartnerCoreClient"
   },
   {
     "resource": "clouddeploy/CustomTargetType",
@@ -3547,7 +3880,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/deploy/apiv1/deploypb#CustomTargetType",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/deploy/apiv1#NewCloudDeployRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/deploy/apiv1#NewCloudDeployClient"
   },
   {
     "resource": "cloudkms/EkmConnection",
@@ -3566,7 +3902,10 @@
       "DELETE"
     ],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/kms/apiv1/kmspb#EkmConnection",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/kms/apiv1#NewEkmRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/kms/apiv1#NewEkmClient"
   },
   {
     "resource": "cloudnumberregistry/CustomRange",
@@ -3584,7 +3923,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "cloudnumberregistry/IpamAdminScope",
@@ -3602,7 +3944,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "cloudnumberregistry/Realm",
@@ -3620,7 +3965,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "cloudnumberregistry/RegistryBook",
@@ -3638,7 +3986,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "cloudresourcemanager/TagKey",
@@ -3656,7 +4007,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb#TagKey",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/resourcemanager/apiv3#NewTagKeysRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/resourcemanager/apiv3#NewTagKeysClient"
   },
   {
     "resource": "cloudresourcemanager/TagValue",
@@ -3674,7 +4028,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb#TagValue",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/resourcemanager/apiv3#NewTagValuesRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/resourcemanager/apiv3#NewTagValuesClient"
   },
   {
     "resource": "cloudsupport/SupportEventSubscription",
@@ -3692,7 +4049,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/support/apiv2/supportpb#SupportEventSubscription",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/support/apiv2#NewSupportEventSubscriptionRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/support/apiv2#NewSupportEventSubscriptionClient"
   },
   {
     "resource": "cloudtasks/Queue",
@@ -3710,7 +4070,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/cloudtasks/apiv2/cloudtaskspb#Queue",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/cloudtasks/apiv2#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/cloudtasks/apiv2#NewClient"
   },
   {
     "resource": "commerceproducer/PrivateOffer",
@@ -3759,7 +4122,10 @@
         "target_group": "commerceproducer.cnrm.cloud.google.com",
         "target_kind": "CommerceProducerSku"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/commerceproducer/apiv1beta/commerceproducerpb#PrivateOffer",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/commerceproducer/apiv1beta#NewCommerceTransactionRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/commerceproducer/apiv1beta#NewCommerceTransactionClient"
   },
   {
     "resource": "commerceproducer/PrivateOfferDocument",
@@ -3781,7 +4147,10 @@
       "target_group": "commerceproducer.cnrm.cloud.google.com",
       "target_kind": "CommerceProducerPrivateOffer"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/commerceproducer/apiv1beta/commerceproducerpb#PrivateOfferDocument",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/commerceproducer/apiv1beta#NewCommerceTransactionRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/commerceproducer/apiv1beta#NewCommerceTransactionClient"
   },
   {
     "resource": "composer/UserWorkloadsConfigMap",
@@ -3803,7 +4172,10 @@
       "target_group": "composer.cnrm.cloud.google.com",
       "target_kind": "ComposerEnvironment"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb#UserWorkloadsConfigMap",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/orchestration/airflow/service/apiv1#NewEnvironmentsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/orchestration/airflow/service/apiv1#NewEnvironmentsClient"
   },
   {
     "resource": "composer/UserWorkloadsSecret",
@@ -3825,7 +4197,10 @@
       "target_group": "composer.cnrm.cloud.google.com",
       "target_kind": "ComposerEnvironment"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb#UserWorkloadsSecret",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/orchestration/airflow/service/apiv1#NewEnvironmentsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/orchestration/airflow/service/apiv1#NewEnvironmentsClient"
   },
   {
     "resource": "config/Deployment",
@@ -3854,7 +4229,10 @@
         "target_group": "cloudbuild.cnrm.cloud.google.com",
         "target_kind": "CloudBuildWorkerPool"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/config/apiv1/configpb#Deployment",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/config/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/config/apiv1#NewClient"
   },
   {
     "resource": "config/DeploymentGroup",
@@ -3878,7 +4256,10 @@
         "target_group": "config.cnrm.cloud.google.com",
         "target_kind": "ConfigDeployment"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/config/apiv1/configpb#DeploymentGroup",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/config/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/config/apiv1#NewClient"
   },
   {
     "resource": "configdelivery/Release",
@@ -3900,7 +4281,10 @@
       "target_group": "configdelivery.cnrm.cloud.google.com",
       "target_kind": "ConfigDeliveryResourceBundle"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/configdelivery/apiv1/configdeliverypb#Release",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/configdelivery/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/configdelivery/apiv1#NewClient"
   },
   {
     "resource": "configdelivery/ResourceBundle",
@@ -3918,7 +4302,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/configdelivery/apiv1/configdeliverypb#ResourceBundle",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/configdelivery/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/configdelivery/apiv1#NewClient"
   },
   {
     "resource": "configdelivery/Variant",
@@ -3940,7 +4327,10 @@
       "target_group": "configdelivery.cnrm.cloud.google.com",
       "target_kind": "ConfigDeliveryRelease"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/configdelivery/apiv1/configdeliverypb#Variant",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/configdelivery/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/configdelivery/apiv1#NewClient"
   },
   {
     "resource": "connectors/Connection",
@@ -3964,7 +4354,10 @@
         "target_group": "connectors.cnrm.cloud.google.com",
         "target_kind": "ConnectorsConnectorVersion"
       }
-    ]
+    ],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "contactcenterinsights/AnalysisRule",
@@ -4008,7 +4401,10 @@
         "target_group": "dialogflow.cnrm.cloud.google.com",
         "target_kind": "DialogflowConversationProfile"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1/contactcenterinsightspb#AnalysisRule",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1#NewClient"
   },
   {
     "resource": "contactcenterinsights/Conversation",
@@ -4031,7 +4427,10 @@
     "parent": {
       "target_group": "contactcenterinsights.cnrm.cloud.google.com",
       "target_kind": "CCInsightsAuthorizedview"
-    }
+    },
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1/contactcenterinsightspb#Conversation",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1#NewClient"
   },
   {
     "resource": "contactcenterinsights/FeedbackLabel",
@@ -4054,7 +4453,10 @@
       "target_group": "contactcenterinsights.cnrm.cloud.google.com",
       "target_kind": "CCInsightsConversation"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1/contactcenterinsightspb#FeedbackLabel",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1#NewClient"
   },
   {
     "resource": "contactcenterinsights/IssueModel",
@@ -4072,7 +4474,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1/contactcenterinsightspb#IssueModel",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1#NewClient"
   },
   {
     "resource": "contactcenterinsights/PhraseMatcher",
@@ -4090,7 +4495,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1/contactcenterinsightspb#PhraseMatcher",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1#NewClient"
   },
   {
     "resource": "contactcenterinsights/QaQuestion",
@@ -4112,7 +4520,10 @@
       "target_group": "contactcenterinsights.cnrm.cloud.google.com",
       "target_kind": "CCInsightsQAScorecardRevision"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1/contactcenterinsightspb#QaQuestion",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1#NewClient"
   },
   {
     "resource": "contactcenterinsights/QaScorecard",
@@ -4130,7 +4541,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1/contactcenterinsightspb#QaScorecard",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1#NewClient"
   },
   {
     "resource": "contactcenterinsights/View",
@@ -4148,7 +4562,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1/contactcenterinsightspb#View",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/contactcenterinsights/apiv1#NewClient"
   },
   {
     "resource": "contentwarehouse/Document",
@@ -4177,7 +4594,10 @@
         "target_group": "contentwarehouse.cnrm.cloud.google.com",
         "target_kind": "ContentWarehouseDocumentSchema"
       }
-    ]
+    ],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "contentwarehouse/DocumentSchema",
@@ -4195,7 +4615,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "contentwarehouse/RuleSet",
@@ -4224,7 +4647,10 @@
         "target_group": "contentwarehouse.cnrm.cloud.google.com",
         "target_kind": "ContentWarehouseDocument"
       }
-    ]
+    ],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "dataform/Folder",
@@ -4242,7 +4668,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dataform/apiv1/dataformpb#Folder",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dataform/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dataform/apiv1#NewClient"
   },
   {
     "resource": "dataform/ReleaseConfig",
@@ -4275,7 +4704,10 @@
         "target_group": "dataform.cnrm.cloud.google.com",
         "target_kind": "DataformCompilationResult"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dataform/apiv1/dataformpb#ReleaseConfig",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dataform/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dataform/apiv1#NewClient"
   },
   {
     "resource": "dataform/WorkflowConfig",
@@ -4303,7 +4735,10 @@
         "target_group": "dataform.cnrm.cloud.google.com",
         "target_kind": "DataformReleaseConfig"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dataform/apiv1/dataformpb#WorkflowConfig",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dataform/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dataform/apiv1#NewClient"
   },
   {
     "resource": "datalabeling/AnnotationSpecSet",
@@ -4321,7 +4756,10 @@
     "missing_ops": [
       "UPDATE"
     ],
-    "status": "deprecated"
+    "status": "deprecated",
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/datalabeling/apiv1beta1/datalabelingpb#AnnotationSpecSet",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/datalabeling/apiv1beta1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/datalabeling/apiv1beta1#NewClient"
   },
   {
     "resource": "datalabeling/EvaluationJob",
@@ -4338,7 +4776,10 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "deprecated"
+    "status": "deprecated",
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/datalabeling/apiv1beta1/datalabelingpb#EvaluationJob",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/datalabeling/apiv1beta1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/datalabeling/apiv1beta1#NewClient"
   },
   {
     "resource": "datalineage/Process",
@@ -4356,7 +4797,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/datacatalog/lineage/apiv1/lineagepb#Process",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/datacatalog/lineage/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/datacatalog/lineage/apiv1#NewClient"
   },
   {
     "resource": "datalineage/Run",
@@ -4378,7 +4822,10 @@
       "target_group": "datalineage.cnrm.cloud.google.com",
       "target_kind": "DriveLabelsProcess"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/datacatalog/lineage/apiv1/lineagepb#Run",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/datacatalog/lineage/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/datacatalog/lineage/apiv1#NewClient"
   },
   {
     "resource": "datamanager/UserList",
@@ -4400,7 +4847,10 @@
       "target_group": "datamanager.cnrm.cloud.google.com",
       "target_kind": "DataManagerAccount"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/datamanager/apiv1/datamanagerpb#UserList",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/datamanager/apiv1#NewUserListRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/datamanager/apiv1#NewUserListClient"
   },
   {
     "resource": "datamanager/UserListDirectLicense",
@@ -4423,7 +4873,10 @@
       "target_group": "datamanager.cnrm.cloud.google.com",
       "target_kind": "DataManagerAccount"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/datamanager/apiv1/datamanagerpb#UserListDirectLicense",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/datamanager/apiv1#NewUserListDirectLicenseRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/datamanager/apiv1#NewUserListDirectLicenseClient"
   },
   {
     "resource": "datamanager/UserListGlobalLicense",
@@ -4446,7 +4899,10 @@
       "target_group": "datamanager.cnrm.cloud.google.com",
       "target_kind": "DataManagerAccount"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/datamanager/apiv1/datamanagerpb#UserListGlobalLicense",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/datamanager/apiv1#NewUserListGlobalLicenseRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/datamanager/apiv1#NewUserListGlobalLicenseClient"
   },
   {
     "resource": "datamigration/ConnectionProfile",
@@ -4464,7 +4920,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/clouddms/apiv1/clouddmspb#ConnectionProfile",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/clouddms/apiv1#NewDataMigrationClient"
   },
   {
     "resource": "datamigration/ConversionWorkspace",
@@ -4482,7 +4941,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/clouddms/apiv1/clouddmspb#ConversionWorkspace",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/clouddms/apiv1#NewDataMigrationClient"
   },
   {
     "resource": "datamigration/MigrationJob",
@@ -4500,7 +4962,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/clouddms/apiv1/clouddmspb#MigrationJob",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/clouddms/apiv1#NewDataMigrationClient"
   },
   {
     "resource": "dataplex/AspectType",
@@ -4518,7 +4983,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1/dataplexpb#AspectType",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewCatalogRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewCatalogClient"
   },
   {
     "resource": "dataplex/Asset",
@@ -4540,7 +5008,10 @@
       "target_group": "dataplex.cnrm.cloud.google.com",
       "target_kind": "DataplexZone"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1/dataplexpb#Asset",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewClient"
   },
   {
     "resource": "dataplex/DataAsset",
@@ -4562,7 +5033,10 @@
       "target_group": "dataplex.cnrm.cloud.google.com",
       "target_kind": "DataplexDataProduct"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1/dataplexpb#DataAsset",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewDataProductRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewDataProductClient"
   },
   {
     "resource": "dataplex/DataAttribute",
@@ -4590,7 +5064,10 @@
         "target_group": "dataplex.cnrm.cloud.google.com",
         "target_kind": "DataplexDataAttribute"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1/dataplexpb#DataAttribute",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewDataTaxonomyRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewDataTaxonomyClient"
   },
   {
     "resource": "dataplex/DataAttributeBinding",
@@ -4619,7 +5096,10 @@
         "target_group": "dataplex.cnrm.cloud.google.com",
         "target_kind": "DataplexDataAttribute"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1/dataplexpb#DataAttributeBinding",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewDataTaxonomyRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewDataTaxonomyClient"
   },
   {
     "resource": "dataplex/DataProduct",
@@ -4643,7 +5123,10 @@
         "target_group": "iam.cnrm.cloud.google.com",
         "target_kind": "IAMRole"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1/dataplexpb#DataProduct",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewDataProductRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewDataProductClient"
   },
   {
     "resource": "dataplex/DataScan",
@@ -4682,7 +5165,10 @@
         "target_group": "dataplex.cnrm.cloud.google.com",
         "target_kind": "DataplexEntry"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1/dataplexpb#DataScan",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewDataScanRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewDataScanClient"
   },
   {
     "resource": "dataplex/DataTaxonomy",
@@ -4700,7 +5186,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1/dataplexpb#DataTaxonomy",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewDataTaxonomyRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewDataTaxonomyClient"
   },
   {
     "resource": "dataplex/EncryptionConfig",
@@ -4722,7 +5211,10 @@
       "target_group": "auditmanager.cnrm.cloud.google.com",
       "target_kind": "AuditmanagerEnrollmentStatusScope"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1/dataplexpb#EncryptionConfig",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewCmekRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewCmekClient"
   },
   {
     "resource": "dataplex/Entity",
@@ -4750,7 +5242,10 @@
         "target_group": "dataplex.cnrm.cloud.google.com",
         "target_kind": "DataplexEntity"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1/dataplexpb#Entity",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewMetadataRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewMetadataClient"
   },
   {
     "resource": "dataplex/Entry",
@@ -4772,7 +5267,10 @@
       "target_group": "dataplex.cnrm.cloud.google.com",
       "target_kind": "DataplexEntryGroup"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1/dataplexpb#Entry",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewCatalogRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewCatalogClient"
   },
   {
     "resource": "dataplex/EntryLink",
@@ -4794,7 +5292,10 @@
       "target_group": "dataplex.cnrm.cloud.google.com",
       "target_kind": "DataplexEntryGroup"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1/dataplexpb#EntryLink",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewCatalogRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewCatalogClient"
   },
   {
     "resource": "dataplex/Glossary",
@@ -4812,7 +5313,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1/dataplexpb#Glossary",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewBusinessGlossaryRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewBusinessGlossaryClient"
   },
   {
     "resource": "dataplex/GlossaryCategory",
@@ -4834,7 +5338,10 @@
       "target_group": "dataplex.cnrm.cloud.google.com",
       "target_kind": "DataplexGlossary"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1/dataplexpb#GlossaryCategory",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewBusinessGlossaryRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewBusinessGlossaryClient"
   },
   {
     "resource": "dataplex/GlossaryTerm",
@@ -4862,7 +5369,10 @@
         "target_group": "dataplex.cnrm.cloud.google.com",
         "target_kind": "DataplexGlossary"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1/dataplexpb#GlossaryTerm",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewBusinessGlossaryRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewBusinessGlossaryClient"
   },
   {
     "resource": "dataplex/MetadataFeed",
@@ -4921,7 +5431,10 @@
         "target_group": "resourcemanager.cnrm.cloud.google.com",
         "target_kind": "Project"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1/dataplexpb#MetadataFeed",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewCatalogRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dataplex/apiv1#NewCatalogClient"
   },
   {
     "resource": "developerconnect/AccountConnector",
@@ -4939,7 +5452,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/developerconnect/apiv1/developerconnectpb#AccountConnector",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/developerconnect/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/developerconnect/apiv1#NewClient"
   },
   {
     "resource": "developerconnect/Connection",
@@ -5073,7 +5589,10 @@
         "target_group": "securesourcemanager.cnrm.cloud.google.com",
         "target_kind": "SecureSourceManagerInstance"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/developerconnect/apiv1/developerconnectpb#Connection",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/developerconnect/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/developerconnect/apiv1#NewClient"
   },
   {
     "resource": "developerconnect/InsightsConfig",
@@ -5091,7 +5610,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/developerconnect/apiv1/developerconnectpb#InsightsConfig",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/developerconnect/apiv1#NewInsightsConfigRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/developerconnect/apiv1#NewInsightsConfigClient"
   },
   {
     "resource": "devicestreaming/DeviceSession",
@@ -5109,7 +5631,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/devicestreaming/apiv1/devicestreamingpb#DeviceSession",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/devicestreaming/apiv1#NewDirectAccessRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/devicestreaming/apiv1#NewDirectAccessClient"
   },
   {
     "resource": "dialogflow/Context",
@@ -5134,7 +5659,10 @@
       "target_group": "dialogflow.cnrm.cloud.google.com",
       "target_kind": "DialogflowSession"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dialogflow/apiv2/dialogflowpb#Context",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/apiv2#NewContextsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/apiv2#NewContextsClient"
   },
   {
     "resource": "dialogflow/ConversationDataset",
@@ -5153,7 +5681,10 @@
       "UPDATE"
     ],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dialogflow/apiv2/dialogflowpb#ConversationDataset",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/apiv2#NewConversationDatasetsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/apiv2#NewConversationDatasetsClient"
   },
   {
     "resource": "dialogflow/ConversationProfile",
@@ -5238,7 +5769,10 @@
         "target_group": "speech.cnrm.cloud.google.com",
         "target_kind": "SpeechPhraseSet"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dialogflow/apiv2/dialogflowpb#ConversationProfile",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/apiv2#NewConversationProfilesRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/apiv2#NewConversationProfilesClient"
   },
   {
     "resource": "dialogflow/Document",
@@ -5261,7 +5795,10 @@
       "target_group": "dialogflow.cnrm.cloud.google.com",
       "target_kind": "DialogflowKnowledgeBase"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dialogflow/apiv2/dialogflowpb#Document",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/apiv2#NewDocumentsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/apiv2#NewDocumentsClient"
   },
   {
     "resource": "dialogflow/Environment",
@@ -5291,7 +5828,10 @@
         "target_group": "dialogflow.cnrm.cloud.google.com",
         "target_kind": "DialogflowVersion"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3/cxpb#Environment",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewEnvironmentsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewEnvironmentsClient"
   },
   {
     "resource": "dialogflow/Example",
@@ -5313,7 +5853,10 @@
       "target_group": "dialogflow.cnrm.cloud.google.com",
       "target_kind": "DialogflowPlaybook"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3/cxpb#Example",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewExamplesRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewExamplesClient"
   },
   {
     "resource": "dialogflow/Experiment",
@@ -5335,7 +5878,10 @@
       "target_group": "dialogflow.cnrm.cloud.google.com",
       "target_kind": "DialogflowEnvironment"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3/cxpb#Experiment",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewExperimentsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewExperimentsClient"
   },
   {
     "resource": "dialogflow/Flow",
@@ -5357,7 +5903,10 @@
       "target_group": "dialogflow.cnrm.cloud.google.com",
       "target_kind": "DialogflowAgent"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3/cxpb#Flow",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewFlowsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewFlowsClient"
   },
   {
     "resource": "dialogflow/Generator",
@@ -5438,7 +5987,10 @@
         "target_group": "ces.cnrm.cloud.google.com",
         "target_kind": "CESToolset"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3/cxpb#Generator",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewGeneratorsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewGeneratorsClient"
   },
   {
     "resource": "dialogflow/KnowledgeBase",
@@ -5463,7 +6015,10 @@
         "target_group": "kms.cnrm.cloud.google.com",
         "target_kind": "KMSCryptoKey"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dialogflow/apiv2/dialogflowpb#KnowledgeBase",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/apiv2#NewKnowledgeBasesRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/apiv2#NewKnowledgeBasesClient"
   },
   {
     "resource": "dialogflow/Page",
@@ -5485,7 +6040,10 @@
       "target_group": "dialogflow.cnrm.cloud.google.com",
       "target_kind": "DialogflowFlow"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3/cxpb#Page",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewPagesRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewPagesClient"
   },
   {
     "resource": "dialogflow/Participant",
@@ -5509,7 +6067,10 @@
       "target_group": "dialogflow.cnrm.cloud.google.com",
       "target_kind": "DialogflowConversation"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dialogflow/apiv2/dialogflowpb#Participant",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/apiv2#NewParticipantsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/apiv2#NewParticipantsClient"
   },
   {
     "resource": "dialogflow/Playbook",
@@ -5531,7 +6092,10 @@
       "target_group": "dialogflow.cnrm.cloud.google.com",
       "target_kind": "DialogflowAgent"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3/cxpb#Playbook",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewPlaybooksRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewPlaybooksClient"
   },
   {
     "resource": "dialogflow/SecuritySettings",
@@ -5549,7 +6113,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3/cxpb#SecuritySettings",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewSecuritySettingsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewSecuritySettingsClient"
   },
   {
     "resource": "dialogflow/SessionEntityType",
@@ -5576,7 +6143,10 @@
       "target_group": "dialogflow.cnrm.cloud.google.com",
       "target_kind": "DialogflowSession"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3/cxpb#SessionEntityType",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewSessionEntityTypesRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewSessionEntityTypesClient"
   },
   {
     "resource": "dialogflow/TestCase",
@@ -5599,7 +6169,10 @@
       "target_group": "dialogflow.cnrm.cloud.google.com",
       "target_kind": "DialogflowAgent"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3/cxpb#TestCase",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewTestCasesRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewTestCasesClient"
   },
   {
     "resource": "dialogflow/Tool",
@@ -5658,7 +6231,10 @@
         "target_group": "servicedirectory.cnrm.cloud.google.com",
         "target_kind": "ServiceDirectoryService"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3/cxpb#Tool",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewToolsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewToolsClient"
   },
   {
     "resource": "dialogflow/TransitionRouteGroup",
@@ -5681,7 +6257,10 @@
       "target_group": "dialogflow.cnrm.cloud.google.com",
       "target_kind": "DialogflowFlow"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3/cxpb#TransitionRouteGroup",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewTransitionRouteGroupsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewTransitionRouteGroupsClient"
   },
   {
     "resource": "dialogflow/Version",
@@ -5705,7 +6284,10 @@
       "target_group": "dialogflow.cnrm.cloud.google.com",
       "target_kind": "DialogflowAgent"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3/cxpb#Version",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewVersionsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewVersionsClient"
   },
   {
     "resource": "dialogflow/Webhook",
@@ -5727,7 +6309,10 @@
       "target_group": "dialogflow.cnrm.cloud.google.com",
       "target_kind": "DialogflowAgent"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3/cxpb#Webhook",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewWebhooksRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/dialogflow/cx/apiv3#NewWebhooksClient"
   },
   {
     "resource": "discoveryengine/Assistant",
@@ -5760,7 +6345,10 @@
         "target_group": "modelarmor.cnrm.cloud.google.com",
         "target_kind": "ModelArmorTemplate"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb#Assistant",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1#NewAssistantRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1#NewAssistantClient"
   },
   {
     "resource": "discoveryengine/Control",
@@ -5805,7 +6393,10 @@
         "target_group": "discoveryengine.cnrm.cloud.google.com",
         "target_kind": "DiscoveryEngineDocument"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb#Control",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1#NewControlRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1#NewControlClient"
   },
   {
     "resource": "discoveryengine/Document",
@@ -5828,7 +6419,10 @@
       "target_group": "discoveryengine.cnrm.cloud.google.com",
       "target_kind": "DiscoveryEngineBranch"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb#Document",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1#NewDocumentRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1#NewDocumentClient"
   },
   {
     "resource": "discoveryengine/Engine",
@@ -5856,7 +6450,10 @@
         "target_group": "networkservices.cnrm.cloud.google.com",
         "target_kind": "NetworkServicesAgentGateway"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb#Engine",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1#NewEngineRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1#NewEngineClient"
   },
   {
     "resource": "discoveryengine/LicenseConfig",
@@ -5875,7 +6472,10 @@
       "DELETE"
     ],
     "status": "implemented",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1beta/discoveryenginepb#LicenseConfig",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1beta#NewLicenseConfigRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1beta#NewLicenseConfigClient"
   },
   {
     "resource": "discoveryengine/SampleQuery",
@@ -5897,7 +6497,10 @@
       "target_group": "discoveryengine.cnrm.cloud.google.com",
       "target_kind": "DiscoveryEngineSampleQuerySet"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1beta/discoveryenginepb#SampleQuery",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1beta#NewSampleQuerySetRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1beta#NewSampleQuerySetClient"
   },
   {
     "resource": "discoveryengine/SampleQuerySet",
@@ -5915,7 +6518,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1beta/discoveryenginepb#SampleQuerySet",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1beta#NewSampleQuerySetRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1beta#NewSampleQuerySetClient"
   },
   {
     "resource": "discoveryengine/Schema",
@@ -5938,7 +6544,10 @@
       "target_group": "discoveryengine.cnrm.cloud.google.com",
       "target_kind": "DiscoveryEngineDataStore"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb#Schema",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1#NewSchemaRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1#NewSchemaClient"
   },
   {
     "resource": "discoveryengine/ServingConfig",
@@ -5962,7 +6571,10 @@
       "target_group": "discoveryengine.cnrm.cloud.google.com",
       "target_kind": "DiscoveryEngineDataStore"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb#ServingConfig",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1#NewServingConfigRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1#NewServingConfigClient"
   },
   {
     "resource": "discoveryengine/TargetSite",
@@ -5985,7 +6597,10 @@
       "target_group": "discoveryengine.cnrm.cloud.google.com",
       "target_kind": "DiscoveryEngineSiteSearchEngine"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb#TargetSite",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1#NewSiteSearchEngineRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1#NewSiteSearchEngineClient"
   },
   {
     "resource": "edgenetwork/Router",
@@ -6013,7 +6628,10 @@
         "target_group": "edgenetwork.cnrm.cloud.google.com",
         "target_kind": "EdgeNetworkNetwork"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/edgenetwork/apiv1/edgenetworkpb#Router",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/edgenetwork/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/edgenetwork/apiv1#NewClient"
   },
   {
     "resource": "eventarc/MessageBus",
@@ -6037,7 +6655,10 @@
         "target_group": "kms.cnrm.cloud.google.com",
         "target_kind": "KMSCryptoKey"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/eventarc/apiv1/eventarcpb#MessageBus",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/eventarc/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/eventarc/apiv1#NewClient"
   },
   {
     "resource": "eventarc/Pipeline",
@@ -6091,7 +6712,10 @@
         "target_group": "workflows.cnrm.cloud.google.com",
         "target_kind": "WorkflowsWorkflow"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/eventarc/apiv1/eventarcpb#Pipeline",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/eventarc/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/eventarc/apiv1#NewClient"
   },
   {
     "resource": "financialservices/BacktestResult",
@@ -6124,7 +6748,10 @@
         "target_group": "financialservices.cnrm.cloud.google.com",
         "target_kind": "FinancialServicesModel"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/financialservices/apiv1/financialservicespb#BacktestResult",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/financialservices/apiv1#NewAMLRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/financialservices/apiv1#NewAMLClient"
   },
   {
     "resource": "financialservices/Dataset",
@@ -6146,7 +6773,10 @@
       "target_group": "financialservices.cnrm.cloud.google.com",
       "target_kind": "FinancialServicesInstance"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/financialservices/apiv1/financialservicespb#Dataset",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/financialservices/apiv1#NewAMLRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/financialservices/apiv1#NewAMLClient"
   },
   {
     "resource": "financialservices/EngineConfig",
@@ -6179,7 +6809,10 @@
         "target_group": "financialservices.cnrm.cloud.google.com",
         "target_kind": "FinancialServicesDataset"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/financialservices/apiv1/financialservicespb#EngineConfig",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/financialservices/apiv1#NewAMLRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/financialservices/apiv1#NewAMLClient"
   },
   {
     "resource": "financialservices/Instance",
@@ -6197,7 +6830,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/financialservices/apiv1/financialservicespb#Instance",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/financialservices/apiv1#NewAMLRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/financialservices/apiv1#NewAMLClient"
   },
   {
     "resource": "financialservices/Model",
@@ -6230,7 +6866,10 @@
         "target_group": "financialservices.cnrm.cloud.google.com",
         "target_kind": "FinancialServicesDataset"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/financialservices/apiv1/financialservicespb#Model",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/financialservices/apiv1#NewAMLRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/financialservices/apiv1#NewAMLClient"
   },
   {
     "resource": "financialservices/PredictionResult",
@@ -6263,7 +6902,10 @@
         "target_group": "financialservices.cnrm.cloud.google.com",
         "target_kind": "FinancialServicesModel"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/financialservices/apiv1/financialservicespb#PredictionResult",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/financialservices/apiv1#NewAMLRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/financialservices/apiv1#NewAMLClient"
   },
   {
     "resource": "gdchardwaremanagement/Hardware",
@@ -6297,7 +6939,10 @@
         "target_group": "gdchardwaremanagement.cnrm.cloud.google.com",
         "target_kind": "GDCHardwareManagementSite"
       }
-    ]
+    ],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "geminidataanalytics/DataAgent",
@@ -6321,7 +6966,10 @@
         "target_group": "kms.cnrm.cloud.google.com",
         "target_kind": "KMSCryptoKey"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/geminidataanalytics/apiv1/geminidataanalyticspb#DataAgent",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/geminidataanalytics/apiv1#NewDataAgentRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/geminidataanalytics/apiv1#NewDataAgentClient"
   },
   {
     "resource": "generativelanguage/CachedContent",
@@ -6345,7 +6993,10 @@
         "target_group": "generativelanguage.cnrm.cloud.google.com",
         "target_kind": "GenerativeLanguageModel"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/ai/generativelanguage/apiv1beta/generativelanguagepb#CachedContent",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/ai/generativelanguage/apiv1beta#NewCacheRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/ai/generativelanguage/apiv1beta#NewCacheClient"
   },
   {
     "resource": "generativelanguage/Chunk",
@@ -6367,7 +7018,10 @@
       "target_group": "generativelanguage.cnrm.cloud.google.com",
       "target_kind": "GenerativeLanguageDocument"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/ai/generativelanguage/apiv1beta/generativelanguagepb#Chunk",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/ai/generativelanguage/apiv1beta#NewRetrieverRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/ai/generativelanguage/apiv1beta#NewRetrieverClient"
   },
   {
     "resource": "generativelanguage/Corpus",
@@ -6385,7 +7039,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/ai/generativelanguage/apiv1beta/generativelanguagepb#Corpus",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/ai/generativelanguage/apiv1beta#NewRetrieverRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/ai/generativelanguage/apiv1beta#NewRetrieverClient"
   },
   {
     "resource": "generativelanguage/Document",
@@ -6403,7 +7060,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/ai/generativelanguage/apiv1beta/generativelanguagepb#Document",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/ai/generativelanguage/apiv1beta#NewRetrieverRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/ai/generativelanguage/apiv1beta#NewRetrieverClient"
   },
   {
     "resource": "generativelanguage/Permission",
@@ -6422,7 +7082,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/ai/generativelanguage/apiv1beta/generativelanguagepb#Permission",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/ai/generativelanguage/apiv1beta#NewPermissionRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/ai/generativelanguage/apiv1beta#NewPermissionClient"
   },
   {
     "resource": "generativelanguage/TunedModel",
@@ -6451,7 +7114,10 @@
         "target_group": "generativelanguage.cnrm.cloud.google.com",
         "target_kind": "GenerativeLanguageTunedModel"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/ai/generativelanguage/apiv1beta/generativelanguagepb#TunedModel",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/ai/generativelanguage/apiv1beta#NewModelRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/ai/generativelanguage/apiv1beta#NewModelClient"
   },
   {
     "resource": "gkebackup/RestoreChannel",
@@ -6469,7 +7135,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/gkebackup/apiv1/gkebackuppb#RestoreChannel",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/gkebackup/apiv1#NewBackupForGKERESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/gkebackup/apiv1#NewBackupForGKEClient"
   },
   {
     "resource": "gkehub/Fleet",
@@ -6492,7 +7161,10 @@
       "target_group": "auditmanager.cnrm.cloud.google.com",
       "target_kind": "AuditmanagerEnrollmentStatusScope"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "gkemulticloud/AwsNodePool",
@@ -6514,7 +7186,10 @@
       "target_group": "gkemulticloud.cnrm.cloud.google.com",
       "target_kind": "GKEMultiCloudAwscluster"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/gkemulticloud/apiv1/gkemulticloudpb#AwsNodePool",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/gkemulticloud/apiv1#NewAwsClustersClient"
   },
   {
     "resource": "gkemulticloud/AzureNodePool",
@@ -6536,7 +7211,10 @@
       "target_group": "gkemulticloud.cnrm.cloud.google.com",
       "target_kind": "GKEMultiCloudAzurecluster"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/gkemulticloud/apiv1/gkemulticloudpb#AzureNodePool",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/gkemulticloud/apiv1#NewAzureClustersClient"
   },
   {
     "resource": "grafeas/Note",
@@ -6554,7 +7232,10 @@
     ],
     "missing_ops": [],
     "status": "implemented",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/google.golang.org/genproto/googleapis/grafeas/v1#Note",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "grafeas/Occurrence",
@@ -6572,7 +7253,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/google.golang.org/genproto/googleapis/grafeas/v1#Occurrence",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "health/DataPoint",
@@ -6616,7 +7300,10 @@
         "target_group": "health.cnrm.cloud.google.com",
         "target_kind": "HealthDataPoint"
       }
-    ]
+    ],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "hypercomputecluster/Cluster",
@@ -6645,7 +7332,10 @@
         "target_group": "compute.cnrm.cloud.google.com",
         "target_kind": "ComputeDiskType"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/hypercomputecluster/apiv1/hypercomputeclusterpb#Cluster",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/hypercomputecluster/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/hypercomputecluster/apiv1#NewClient"
   },
   {
     "resource": "hypercomputecluster/MachineLearningRun",
@@ -6684,7 +7374,10 @@
         "target_group": "compute.cnrm.cloud.google.com",
         "target_kind": "ComputeDiskType"
       }
-    ]
+    ],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "hypercomputecluster/MonitoredEvent",
@@ -6706,7 +7399,10 @@
       "target_group": "hypercomputecluster.cnrm.cloud.google.com",
       "target_kind": "HypercomputeClusterMachineLearningRun"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "iam/AccessPolicy",
@@ -6730,7 +7426,10 @@
       "target_group": "auditmanager.cnrm.cloud.google.com",
       "target_kind": "AuditmanagerEnrollmentStatusScope"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/iam/apiv3beta/iampb#AccessPolicy",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/iam/apiv3beta#NewAccessPoliciesRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/iam/apiv3beta#NewAccessPoliciesClient"
   },
   {
     "resource": "iam/PolicyBinding",
@@ -6754,7 +7453,10 @@
       "target_group": "auditmanager.cnrm.cloud.google.com",
       "target_kind": "AuditmanagerEnrollmentStatusScope"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/iam/apiv3/iampb#PolicyBinding",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/iam/apiv3#NewPolicyBindingsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/iam/apiv3#NewPolicyBindingsClient"
   },
   {
     "resource": "iam/PrincipalAccessBoundaryPolicy",
@@ -6776,7 +7478,10 @@
       "target_group": "auditmanager.cnrm.cloud.google.com",
       "target_kind": "AuditmanagerEnrollmentStatusScope"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/iam/apiv3/iampb#PrincipalAccessBoundaryPolicy",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/iam/apiv3#NewPrincipalAccessBoundaryPoliciesRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/iam/apiv3#NewPrincipalAccessBoundaryPoliciesClient"
   },
   {
     "resource": "iap/TunnelDestGroup",
@@ -6798,7 +7503,10 @@
       "target_group": "iap.cnrm.cloud.google.com",
       "target_kind": "IAPLocation"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/iap/apiv1/iappb#TunnelDestGroup",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/iap/apiv1#NewIdentityAwareProxyAdminRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/iap/apiv1#NewIdentityAwareProxyAdminClient"
   },
   {
     "resource": "jobs/Company",
@@ -6821,7 +7529,10 @@
       "target_group": "jobs.cnrm.cloud.google.com",
       "target_kind": "JobsTenant"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/talent/apiv4/talentpb#Company",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/talent/apiv4#NewCompanyRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/talent/apiv4#NewCompanyClient"
   },
   {
     "resource": "jobs/Job",
@@ -6844,7 +7555,10 @@
       "target_group": "jobs.cnrm.cloud.google.com",
       "target_kind": "JobsTenant"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/talent/apiv4/talentpb#Job",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/talent/apiv4#NewJobRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/talent/apiv4#NewJobClient"
   },
   {
     "resource": "library-example/Book",
@@ -6862,7 +7576,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/google.golang.org/genproto/googleapis/example/library/v1#Book",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "licensemanager/Configuration",
@@ -6886,7 +7603,10 @@
         "target_group": "licensemanager.cnrm.cloud.google.com",
         "target_kind": "LicenseManagerProduct"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/licensemanager/apiv1/licensemanagerpb#Configuration",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/licensemanager/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/licensemanager/apiv1#NewClient"
   },
   {
     "resource": "livestream/Channel",
@@ -6925,7 +7645,10 @@
         "target_group": "livestream.cnrm.cloud.google.com",
         "target_kind": "LiveStreamAsset"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/video/livestream/apiv1/livestreampb#Channel",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/video/livestream/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/video/livestream/apiv1#NewClient"
   },
   {
     "resource": "livestream/DvrSession",
@@ -6947,7 +7670,10 @@
       "target_group": "livestream.cnrm.cloud.google.com",
       "target_kind": "LiveStreamChannel"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/video/livestream/apiv1/livestreampb#DvrSession",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/video/livestream/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/video/livestream/apiv1#NewClient"
   },
   {
     "resource": "livestream/Input",
@@ -6965,7 +7691,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/video/livestream/apiv1/livestreampb#Input",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/video/livestream/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/video/livestream/apiv1#NewClient"
   },
   {
     "resource": "lustre/Instance",
@@ -6989,7 +7718,10 @@
         "target_group": "compute.cnrm.cloud.google.com",
         "target_kind": "ComputeNetwork"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/lustre/apiv1/lustrepb#Instance",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/lustre/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/lustre/apiv1#NewClient"
   },
   {
     "resource": "managedkafka/Acl",
@@ -7011,7 +7743,10 @@
       "target_group": "managedkafka.cnrm.cloud.google.com",
       "target_kind": "ManagedKafkaCluster"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/managedkafka/apiv1/managedkafkapb#Acl",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/managedkafka/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/managedkafka/apiv1#NewClient"
   },
   {
     "resource": "managedkafka/ConnectCluster",
@@ -7035,7 +7770,10 @@
         "target_group": "secretmanager.cnrm.cloud.google.com",
         "target_kind": "SecretManagerSecretVersion"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/managedkafka/apiv1/managedkafkapb#ConnectCluster",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/managedkafka/apiv1#NewManagedKafkaConnectRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/managedkafka/apiv1#NewManagedKafkaConnectClient"
   },
   {
     "resource": "managedkafka/Connector",
@@ -7057,7 +7795,10 @@
       "target_group": "managedkafka.cnrm.cloud.google.com",
       "target_kind": "ManagedKafkaConnectCluster"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/managedkafka/apiv1/managedkafkapb#Connector",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/managedkafka/apiv1#NewManagedKafkaConnectRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/managedkafka/apiv1#NewManagedKafkaConnectClient"
   },
   {
     "resource": "mapmanagement/MapConfig",
@@ -7075,7 +7816,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/maps/mapmanagement/apiv2beta/mapmanagementpb#MapConfig",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/maps/mapmanagement/apiv2beta#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/maps/mapmanagement/apiv2beta#NewClient"
   },
   {
     "resource": "mapmanagement/MapContextConfig",
@@ -7113,7 +7857,10 @@
         "target_group": "mapmanagement.cnrm.cloud.google.com",
         "target_kind": "MapManagementStyleConfig"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/maps/mapmanagement/apiv2beta/mapmanagementpb#MapContextConfig",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/maps/mapmanagement/apiv2beta#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/maps/mapmanagement/apiv2beta#NewClient"
   },
   {
     "resource": "mapmanagement/StyleConfig",
@@ -7131,7 +7878,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/maps/mapmanagement/apiv2beta/mapmanagementpb#StyleConfig",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/maps/mapmanagement/apiv2beta#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/maps/mapmanagement/apiv2beta#NewClient"
   },
   {
     "resource": "merchantapi/CheckoutSettings",
@@ -7153,7 +7903,10 @@
       "target_group": "merchantapi.cnrm.cloud.google.com",
       "target_kind": "MerchantAPIAccount"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/accounts/apiv1/accountspb#CheckoutSettings",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/accounts/apiv1#NewCheckoutSettingsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/accounts/apiv1#NewCheckoutSettingsClient"
   },
   {
     "resource": "merchantapi/CommissionGroup",
@@ -7175,7 +7928,10 @@
       "target_group": "merchantapi.cnrm.cloud.google.com",
       "target_kind": "MerchantAPIContract"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "merchantapi/Contract",
@@ -7194,7 +7950,10 @@
       "DELETE"
     ],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "merchantapi/ConversionSource",
@@ -7212,7 +7971,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/conversions/apiv1/conversionspb#ConversionSource",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/conversions/apiv1#NewConversionSourcesRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/conversions/apiv1#NewConversionSourcesClient"
   },
   {
     "resource": "merchantapi/DataSource",
@@ -7230,7 +7992,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/datasources/apiv1/datasourcespb#DataSource",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/datasources/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/datasources/apiv1#NewClient"
   },
   {
     "resource": "merchantapi/NotificationSubscription",
@@ -7248,7 +8013,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/notifications/apiv1/notificationspb#NotificationSubscription",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/notifications/apiv1#NewNotificationsApiRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/notifications/apiv1#NewNotificationsApiClient"
   },
   {
     "resource": "merchantapi/OmnichannelSetting",
@@ -7267,7 +8035,10 @@
       "DELETE"
     ],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/accounts/apiv1/accountspb#OmnichannelSetting",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/accounts/apiv1#NewOmnichannelSettingsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/accounts/apiv1#NewOmnichannelSettingsClient"
   },
   {
     "resource": "merchantapi/OnlineReturnPolicy",
@@ -7285,7 +8056,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/accounts/apiv1/accountspb#OnlineReturnPolicy",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/accounts/apiv1#NewOnlineReturnPolicyRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/accounts/apiv1#NewOnlineReturnPolicyClient"
   },
   {
     "resource": "merchantapi/User",
@@ -7303,7 +8077,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/accounts/apiv1/accountspb#User",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/accounts/apiv1#NewUserRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/accounts/apiv1#NewUserClient"
   },
   {
     "resource": "metastore/MetadataImport",
@@ -7326,7 +8103,10 @@
       "target_group": "metastore.cnrm.cloud.google.com",
       "target_kind": "MetastoreService"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/metastore/apiv1/metastorepb#MetadataImport",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/metastore/apiv1#NewDataprocMetastoreRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/metastore/apiv1#NewDataprocMetastoreClient"
   },
   {
     "resource": "migrationcenter/ImportJob",
@@ -7350,7 +8130,10 @@
         "target_group": "migrationcenter.cnrm.cloud.google.com",
         "target_kind": "MigrationCenterSource"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/migrationcenter/apiv1/migrationcenterpb#ImportJob",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/migrationcenter/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/migrationcenter/apiv1#NewClient"
   },
   {
     "resource": "migrationcenter/PreferenceSet",
@@ -7368,7 +8151,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/migrationcenter/apiv1/migrationcenterpb#PreferenceSet",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/migrationcenter/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/migrationcenter/apiv1#NewClient"
   },
   {
     "resource": "migrationcenter/Source",
@@ -7386,7 +8172,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/migrationcenter/apiv1/migrationcenterpb#Source",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/migrationcenter/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/migrationcenter/apiv1#NewClient"
   },
   {
     "resource": "netapp/ActiveDirectory",
@@ -7404,7 +8193,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1/netapppb#ActiveDirectory",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1#NewClient"
   },
   {
     "resource": "netapp/Backup",
@@ -7437,7 +8229,10 @@
         "target_group": "netapp.cnrm.cloud.google.com",
         "target_kind": "NetappVolume"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1/netapppb#Backup",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1#NewClient"
   },
   {
     "resource": "netapp/BackupVault",
@@ -7461,7 +8256,10 @@
         "target_group": "netapp.cnrm.cloud.google.com",
         "target_kind": "NetappKMSConfig"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1/netapppb#BackupVault",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1#NewClient"
   },
   {
     "resource": "netapp/HostGroup",
@@ -7479,7 +8277,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1/netapppb#HostGroup",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1#NewClient"
   },
   {
     "resource": "netapp/KmsConfig",
@@ -7497,7 +8298,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1/netapppb#KmsConfig",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1#NewClient"
   },
   {
     "resource": "netapp/QuotaRule",
@@ -7519,7 +8323,10 @@
       "target_group": "netapp.cnrm.cloud.google.com",
       "target_kind": "NetappVolume"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1/netapppb#QuotaRule",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1#NewClient"
   },
   {
     "resource": "netapp/Replication",
@@ -7547,7 +8354,10 @@
         "target_group": "netapp.cnrm.cloud.google.com",
         "target_kind": "NetappStoragePool"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1/netapppb#Replication",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1#NewClient"
   },
   {
     "resource": "netapp/Snapshot",
@@ -7569,7 +8379,10 @@
       "target_group": "netapp.cnrm.cloud.google.com",
       "target_kind": "NetappVolume"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1/netapppb#Snapshot",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1#NewClient"
   },
   {
     "resource": "netapp/StoragePool",
@@ -7603,7 +8416,10 @@
         "target_group": "compute.cnrm.cloud.google.com",
         "target_kind": "ComputeNetwork"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1/netapppb#StoragePool",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1#NewClient"
   },
   {
     "resource": "netapp/Volume",
@@ -7652,7 +8468,10 @@
         "target_group": "netapp.cnrm.cloud.google.com",
         "target_kind": "NetappStoragePool"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1/netapppb#Volume",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/netapp/apiv1#NewClient"
   },
   {
     "resource": "networkconnectivity/Destination",
@@ -7674,7 +8493,10 @@
       "target_group": "networkconnectivity.cnrm.cloud.google.com",
       "target_kind": "NetworkConnectivityMulticloudDataTransferConfig"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb#Destination",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/networkconnectivity/apiv1#NewDataTransferClient"
   },
   {
     "resource": "networkconnectivity/GatewayAdvertisedRoute",
@@ -7696,7 +8518,10 @@
       "target_group": "networkconnectivity.cnrm.cloud.google.com",
       "target_kind": "NetworkConnectivitySpoke"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/networkconnectivity/apiv1beta/networkconnectivitypb#GatewayAdvertisedRoute",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/networkconnectivity/apiv1beta#NewHubClient"
   },
   {
     "resource": "networkconnectivity/MulticloudDataTransferConfig",
@@ -7714,7 +8539,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb#MulticloudDataTransferConfig",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/networkconnectivity/apiv1#NewDataTransferClient"
   },
   {
     "resource": "networkconnectivity/ServiceConnectionMap",
@@ -7748,7 +8576,10 @@
         "target_group": "compute.cnrm.cloud.google.com",
         "target_kind": "ComputeServiceAttachment"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb#ServiceConnectionMap",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/networkconnectivity/apiv1#NewCrossNetworkAutomationClient"
   },
   {
     "resource": "networkconnectivity/Transport",
@@ -7782,7 +8613,10 @@
         "target_group": "networkconnectivity.cnrm.cloud.google.com",
         "target_kind": "NetworkConnectivityRemoteTransportProfile"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/networkconnectivity/apiv1beta/networkconnectivitypb#Transport",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/networkconnectivity/apiv1beta#NewTransportManagerClient"
   },
   {
     "resource": "networkmanagement/VpcFlowLogsConfig",
@@ -7826,7 +8660,10 @@
     "parent": {
       "target_group": "auditmanager.cnrm.cloud.google.com",
       "target_kind": "AuditmanagerEnrollmentStatusScope"
-    }
+    },
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/networkmanagement/apiv1/networkmanagementpb#VpcFlowLogsConfig",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/networkmanagement/apiv1#NewVpcFlowLogsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/networkmanagement/apiv1#NewVpcFlowLogsClient"
   },
   {
     "resource": "networksecurity/AddressGroup",
@@ -7849,7 +8686,10 @@
       "target_group": "auditmanager.cnrm.cloud.google.com",
       "target_kind": "AuditmanagerEnrollmentStatusScope"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1/networksecuritypb#AddressGroup",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1#NewAddressGroupRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1#NewAddressGroupClient"
   },
   {
     "resource": "networksecurity/GatewaySecurityPolicyRule",
@@ -7871,7 +8711,10 @@
       "target_group": "networksecurity.cnrm.cloud.google.com",
       "target_kind": "NetworkSecurityGatewaySecurityPolicy"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1/networksecuritypb#GatewaySecurityPolicyRule",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1#NewClient"
   },
   {
     "resource": "networksecurity/InterceptDeployment",
@@ -7900,7 +8743,10 @@
         "target_group": "networksecurity.cnrm.cloud.google.com",
         "target_kind": "NetworkSecurityInterceptDeploymentGroup"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1/networksecuritypb#InterceptDeployment",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1#NewInterceptRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1#NewInterceptClient"
   },
   {
     "resource": "networksecurity/InterceptDeploymentGroup",
@@ -7924,7 +8770,10 @@
         "target_group": "compute.cnrm.cloud.google.com",
         "target_kind": "ComputeNetwork"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1/networksecuritypb#InterceptDeploymentGroup",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1#NewInterceptRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1#NewInterceptClient"
   },
   {
     "resource": "networksecurity/InterceptEndpointGroupAssociation",
@@ -7953,7 +8802,10 @@
         "target_group": "compute.cnrm.cloud.google.com",
         "target_kind": "ComputeNetwork"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1/networksecuritypb#InterceptEndpointGroupAssociation",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1#NewInterceptRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1#NewInterceptClient"
   },
   {
     "resource": "networksecurity/MirroringDeploymentGroup",
@@ -7977,7 +8829,10 @@
         "target_group": "compute.cnrm.cloud.google.com",
         "target_kind": "ComputeNetwork"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1/networksecuritypb#MirroringDeploymentGroup",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1#NewMirroringRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1#NewMirroringClient"
   },
   {
     "resource": "networksecurity/MirroringEndpointGroupAssociation",
@@ -8006,7 +8861,10 @@
         "target_group": "compute.cnrm.cloud.google.com",
         "target_kind": "ComputeNetwork"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1/networksecuritypb#MirroringEndpointGroupAssociation",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1#NewMirroringRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1#NewMirroringClient"
   },
   {
     "resource": "networksecurity/PartnerSSEGateway",
@@ -8024,7 +8882,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "networksecurity/UrlList",
@@ -8042,7 +8903,10 @@
     ],
     "missing_ops": [],
     "status": "implemented",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1/networksecuritypb#UrlList",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1#NewClient"
   },
   {
     "resource": "networkservices/AgentGateway",
@@ -8076,7 +8940,10 @@
         "target_group": "networkservices.cnrm.cloud.google.com",
         "target_kind": "NetworkServices*"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/networkservices/apiv1/networkservicespb#AgentGateway",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/networkservices/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/networkservices/apiv1#NewClient"
   },
   {
     "resource": "networkservices/LbEdgeExtension",
@@ -8094,7 +8961,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/networkservices/apiv1/networkservicespb#LbEdgeExtension",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/networkservices/apiv1#NewDepRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/networkservices/apiv1#NewDepClient"
   },
   {
     "resource": "networkservices/LbTrafficExtension",
@@ -8112,7 +8982,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/networkservices/apiv1/networkservicespb#LbTrafficExtension",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/networkservices/apiv1#NewDepRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/networkservices/apiv1#NewDepClient"
   },
   {
     "resource": "networkservices/ServiceLbPolicy",
@@ -8130,7 +9003,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/networkservices/apiv1/networkservicespb#ServiceLbPolicy",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/networkservices/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/networkservices/apiv1#NewClient"
   },
   {
     "resource": "notebooks/Runtime",
@@ -8147,7 +9023,10 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "deprecated"
+    "status": "deprecated",
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/notebooks/apiv1/notebookspb#Runtime",
+    "rest_client": "MISSING",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/notebooks/apiv1#NewManagedNotebookClient"
   },
   {
     "resource": "oracledatabase/AutonomousDatabase",
@@ -8196,7 +9075,10 @@
         "target_group": "oracledatabase.cnrm.cloud.google.com",
         "target_kind": "OracleDatabaseAutonomousDatabase"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/oracledatabase/apiv1/oracledatabasepb#AutonomousDatabase",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/oracledatabase/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/oracledatabase/apiv1#NewClient"
   },
   {
     "resource": "oracledatabase/ExadbVmCluster",
@@ -8235,7 +9117,10 @@
         "target_group": "oracledatabase.cnrm.cloud.google.com",
         "target_kind": "OracleDatabaseExascaleDBStorageVault"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/oracledatabase/apiv1/oracledatabasepb#ExadbVmCluster",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/oracledatabase/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/oracledatabase/apiv1#NewClient"
   },
   {
     "resource": "parallelstore/Instance",
@@ -8252,7 +9137,10 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "deprecated"
+    "status": "deprecated",
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "rapidmigrationassessment/Collector",
@@ -8270,7 +9158,10 @@
     ],
     "missing_ops": [],
     "status": "implemented",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/rapidmigrationassessment/apiv1/rapidmigrationassessmentpb#Collector",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/rapidmigrationassessment/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/rapidmigrationassessment/apiv1#NewClient"
   },
   {
     "resource": "resultstore/Invocation",
@@ -8288,7 +9179,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/google.golang.org/genproto/googleapis/devtools/resultstore/v2#Invocation",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "retail/Control",
@@ -8310,7 +9204,10 @@
       "target_group": "retail.cnrm.cloud.google.com",
       "target_kind": "RetailCatalog"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/retail/apiv2/retailpb#Control",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/retail/apiv2#NewControlRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/retail/apiv2#NewControlClient"
   },
   {
     "resource": "retail/Model",
@@ -8332,7 +9229,10 @@
       "target_group": "retail.cnrm.cloud.google.com",
       "target_kind": "RetailCatalog"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/retail/apiv2/retailpb#Model",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/retail/apiv2#NewModelRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/retail/apiv2#NewModelClient"
   },
   {
     "resource": "retail/Product",
@@ -8354,7 +9254,10 @@
       "target_group": "retail.cnrm.cloud.google.com",
       "target_kind": "RetailBranch"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/retail/apiv2/retailpb#Product",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/retail/apiv2#NewProductRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/retail/apiv2#NewProductClient"
   },
   {
     "resource": "retail/ServingConfig",
@@ -8376,7 +9279,10 @@
       "target_group": "retail.cnrm.cloud.google.com",
       "target_kind": "RetailCatalog"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/retail/apiv2/retailpb#ServingConfig",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/retail/apiv2#NewServingConfigRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/retail/apiv2#NewServingConfigClient"
   },
   {
     "resource": "run/WorkerPool",
@@ -8435,7 +9341,10 @@
         "target_group": "vpcaccess.cnrm.cloud.google.com",
         "target_kind": "VPCAccessConnector"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/run/apiv2/runpb#WorkerPool",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/run/apiv2#NewWorkerPoolsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/run/apiv2#NewWorkerPoolsClient"
   },
   {
     "resource": "saasservicemgmt/Rollout",
@@ -8464,7 +9373,10 @@
         "target_group": "saasservicemgmt.cnrm.cloud.google.com",
         "target_kind": "SaaSServiceMgmtRolloutKind"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1/saasservicemgmtpb#Rollout",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1#NewSaasRolloutsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1#NewSaasRolloutsClient"
   },
   {
     "resource": "saasservicemgmt/RolloutKind",
@@ -8488,7 +9400,10 @@
         "target_group": "saasservicemgmt.cnrm.cloud.google.com",
         "target_kind": "SaaSServiceMgmtUnitKind"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1/saasservicemgmtpb#RolloutKind",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1#NewSaasRolloutsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1#NewSaasRolloutsClient"
   },
   {
     "resource": "saasservicemgmt/Saas",
@@ -8517,7 +9432,10 @@
         "target_group": "designcenter.cnrm.cloud.google.com",
         "target_kind": "DesigncenterApplicationTemplateRevision"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1/saasservicemgmtpb#Saas",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1#NewSaasDeploymentsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1#NewSaasDeploymentsClient"
   },
   {
     "resource": "saasservicemgmt/Tenant",
@@ -8541,7 +9459,10 @@
         "target_group": "saasservicemgmt.cnrm.cloud.google.com",
         "target_kind": "SaaSServiceMgmtSaaS"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1/saasservicemgmtpb#Tenant",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1#NewSaasDeploymentsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1#NewSaasDeploymentsClient"
   },
   {
     "resource": "saasservicemgmt/Unit",
@@ -8575,7 +9496,10 @@
         "target_group": "saasservicemgmt.cnrm.cloud.google.com",
         "target_kind": "SaaSServiceMgmtUnitKind"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1/saasservicemgmtpb#Unit",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1#NewSaasDeploymentsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1#NewSaasDeploymentsClient"
   },
   {
     "resource": "saasservicemgmt/UnitKind",
@@ -8609,7 +9533,10 @@
         "target_group": "saasservicemgmt.cnrm.cloud.google.com",
         "target_kind": "SaaSServiceMgmtSaaS"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1/saasservicemgmtpb#UnitKind",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1#NewSaasDeploymentsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1#NewSaasDeploymentsClient"
   },
   {
     "resource": "saasservicemgmt/Release",
@@ -8638,7 +9565,10 @@
         "target_group": "saasservicemgmt.cnrm.cloud.google.com",
         "target_kind": "SaaSServiceMgmtUnitKind"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1/saasservicemgmtpb#Release",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1#NewSaasDeploymentsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1#NewSaasDeploymentsClient"
   },
   {
     "resource": "securesourcemanager/BranchRule",
@@ -8660,7 +9590,10 @@
       "target_group": "securesourcemanager.cnrm.cloud.google.com",
       "target_kind": "SecureSourceManagerRepository"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb#BranchRule",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/securesourcemanager/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/securesourcemanager/apiv1#NewClient"
   },
   {
     "resource": "securesourcemanager/Hook",
@@ -8682,7 +9615,10 @@
       "target_group": "securesourcemanager.cnrm.cloud.google.com",
       "target_kind": "SecureSourceManagerRepository"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb#Hook",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/securesourcemanager/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/securesourcemanager/apiv1#NewClient"
   },
   {
     "resource": "securesourcemanager/Issue",
@@ -8704,7 +9640,10 @@
       "target_group": "securesourcemanager.cnrm.cloud.google.com",
       "target_kind": "SecureSourceManagerRepository"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb#Issue",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/securesourcemanager/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/securesourcemanager/apiv1#NewClient"
   },
   {
     "resource": "securesourcemanager/IssueComment",
@@ -8726,7 +9665,10 @@
       "target_group": "securesourcemanager.cnrm.cloud.google.com",
       "target_kind": "SecureSourceManagerIssue"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb#IssueComment",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/securesourcemanager/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/securesourcemanager/apiv1#NewClient"
   },
   {
     "resource": "securesourcemanager/PullRequest",
@@ -8749,7 +9691,10 @@
       "target_group": "securesourcemanager.cnrm.cloud.google.com",
       "target_kind": "SecureSourceManagerRepository"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb#PullRequest",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/securesourcemanager/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/securesourcemanager/apiv1#NewClient"
   },
   {
     "resource": "securesourcemanager/PullRequestComment",
@@ -8771,7 +9716,10 @@
       "target_group": "securesourcemanager.cnrm.cloud.google.com",
       "target_kind": "SecureSourceManagerPullRequest"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb#PullRequestComment",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/securesourcemanager/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/securesourcemanager/apiv1#NewClient"
   },
   {
     "resource": "securitycenter/EventThreatDetectionCustomModule",
@@ -8795,7 +9743,10 @@
       "target_group": "securitycenter.cnrm.cloud.google.com",
       "target_kind": "SecurityCenterEventThreatDetectionSettings"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/securitycenter/apiv1/securitycenterpb#EventThreatDetectionCustomModule",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/securitycenter/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/securitycenter/apiv1#NewClient"
   },
   {
     "resource": "securitycenter/SecurityHealthAnalyticsCustomModule",
@@ -8819,7 +9770,10 @@
       "target_group": "securitycenter.cnrm.cloud.google.com",
       "target_kind": "SecurityCenterSecurityHealthAnalyticsSettings"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/securitycenter/apiv1/securitycenterpb#SecurityHealthAnalyticsCustomModule",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/securitycenter/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/securitycenter/apiv1#NewClient"
   },
   {
     "resource": "securitycentermanagement/EventThreatDetectionCustomModule",
@@ -8843,7 +9797,10 @@
       "target_group": "auditmanager.cnrm.cloud.google.com",
       "target_kind": "AuditmanagerEnrollmentStatusScope"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/securitycentermanagement/apiv1/securitycentermanagementpb#EventThreatDetectionCustomModule",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/securitycentermanagement/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/securitycentermanagement/apiv1#NewClient"
   },
   {
     "resource": "securitycentermanagement/SecurityHealthAnalyticsCustomModule",
@@ -8867,7 +9824,10 @@
       "target_group": "auditmanager.cnrm.cloud.google.com",
       "target_kind": "AuditmanagerEnrollmentStatusScope"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/securitycentermanagement/apiv1/securitycentermanagementpb#SecurityHealthAnalyticsCustomModule",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/securitycentermanagement/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/securitycentermanagement/apiv1#NewClient"
   },
   {
     "resource": "securityposture/Posture",
@@ -8889,7 +9849,10 @@
       "target_group": "auditmanager.cnrm.cloud.google.com",
       "target_kind": "AuditmanagerEnrollmentStatusScope"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/securityposture/apiv1/securityposturepb#Posture",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/securityposture/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/securityposture/apiv1#NewClient"
   },
   {
     "resource": "securityposture/PostureDeployment",
@@ -8911,7 +9874,10 @@
       "target_group": "auditmanager.cnrm.cloud.google.com",
       "target_kind": "AuditmanagerEnrollmentStatusScope"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/securityposture/apiv1/securityposturepb#PostureDeployment",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/securityposture/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/securityposture/apiv1#NewClient"
   },
   {
     "resource": "spanner/Backup",
@@ -8933,7 +9899,10 @@
       "target_group": "spanner.cnrm.cloud.google.com",
       "target_kind": "SpannerInstance"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/spanner/admin/database/apiv1/databasepb#Backup",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/spanner/admin/database/apiv1#NewDatabaseAdminRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/spanner/admin/database/apiv1#NewDatabaseAdminClient"
   },
   {
     "resource": "spanner/InstancePartition",
@@ -8955,7 +9924,10 @@
       "target_group": "spanner.cnrm.cloud.google.com",
       "target_kind": "SpannerInstance"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/spanner/admin/instance/apiv1/instancepb#InstancePartition",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/spanner/admin/instance/apiv1#NewInstanceAdminRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/spanner/admin/instance/apiv1#NewInstanceAdminClient"
   },
   {
     "resource": "sqladmin/Backup",
@@ -8973,7 +9945,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/sql/apiv1/sqlpb#Backup",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/sql/apiv1#NewSqlBackupsRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/sql/apiv1#NewSqlBackupsClient"
   },
   {
     "resource": "storage/RapidCache",
@@ -8996,7 +9971,10 @@
       "target_group": "storage.cnrm.cloud.google.com",
       "target_kind": "StorageBucket"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/storage/control/apiv2/controlpb#RapidCache",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/storage/control/apiv2#NewStorageControlRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/storage/control/apiv2#NewStorageControlClient"
   },
   {
     "resource": "storageinsights/DatasetConfig",
@@ -9025,7 +10003,10 @@
         "target_group": "storage.cnrm.cloud.google.com",
         "target_kind": "StorageBucket"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/storageinsights/apiv1/storageinsightspb#DatasetConfig",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/storageinsights/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/storageinsights/apiv1#NewClient"
   },
   {
     "resource": "storageinsights/ReportConfig",
@@ -9043,7 +10024,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/storageinsights/apiv1/storageinsightspb#ReportConfig",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/storageinsights/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/storageinsights/apiv1#NewClient"
   },
   {
     "resource": "telcoautomation/Blueprint",
@@ -9065,7 +10049,10 @@
       "target_group": "telcoautomation.cnrm.cloud.google.com",
       "target_kind": "TelcoAutomationOrchestrationCluster"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/telcoautomation/apiv1/telcoautomationpb#Blueprint",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/telcoautomation/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/telcoautomation/apiv1#NewClient"
   },
   {
     "resource": "telcoautomation/Deployment",
@@ -9087,7 +10074,10 @@
       "target_group": "telcoautomation.cnrm.cloud.google.com",
       "target_kind": "TelcoAutomationOrchestrationCluster"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/telcoautomation/apiv1/telcoautomationpb#Deployment",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/telcoautomation/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/telcoautomation/apiv1#NewClient"
   },
   {
     "resource": "testing/DeviceSession",
@@ -9105,7 +10095,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/google.golang.org/genproto/googleapis/devtools/testing/v1#DeviceSession",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
   },
   {
     "resource": "vectorsearch/DataObject",
@@ -9127,7 +10120,10 @@
       "target_group": "vectorsearch.cnrm.cloud.google.com",
       "target_kind": "VectorSearchCollection"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/vectorsearch/apiv1/vectorsearchpb#DataObject",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/vectorsearch/apiv1#NewDataObjectRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/vectorsearch/apiv1#NewDataObjectClient"
   },
   {
     "resource": "vectorsearch/Index",
@@ -9149,7 +10145,10 @@
       "target_group": "vectorsearch.cnrm.cloud.google.com",
       "target_kind": "VectorSearchCollection"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/vectorsearch/apiv1/vectorsearchpb#Index",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/vectorsearch/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/vectorsearch/apiv1#NewClient"
   },
   {
     "resource": "visionai/Application",
@@ -9173,7 +10172,10 @@
         "target_group": "visionai.cnrm.cloud.google.com",
         "target_kind": "VisionAIStream"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/visionai/apiv1/visionaipb#Application",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/visionai/apiv1#NewAppPlatformRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/visionai/apiv1#NewAppPlatformClient"
   },
   {
     "resource": "vmmigration/Group",
@@ -9191,7 +10193,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/vmmigration/apiv1/vmmigrationpb#Group",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/vmmigration/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/vmmigration/apiv1#NewClient"
   },
   {
     "resource": "vmwareengine/Cluster",
@@ -9213,7 +10218,10 @@
       "target_group": "vmwareengine.cnrm.cloud.google.com",
       "target_kind": "VMwareEnginePrivateCloud"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/vmwareengine/apiv1/vmwareenginepb#Cluster",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/vmwareengine/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/vmwareengine/apiv1#NewClient"
   },
   {
     "resource": "vmwareengine/LoggingServer",
@@ -9235,7 +10243,10 @@
       "target_group": "vmwareengine.cnrm.cloud.google.com",
       "target_kind": "VMwareEnginePrivateCloud"
     },
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/vmwareengine/apiv1/vmwareenginepb#LoggingServer",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/vmwareengine/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/vmwareengine/apiv1#NewClient"
   },
   {
     "resource": "vmwareengine/ManagementDnsZoneBinding",
@@ -9268,7 +10279,10 @@
         "target_group": "compute.cnrm.cloud.google.com",
         "target_kind": "ComputeNetwork"
       }
-    ]
+    ],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/vmwareengine/apiv1/vmwareenginepb#ManagementDnsZoneBinding",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/vmwareengine/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/vmwareengine/apiv1#NewClient"
   },
   {
     "resource": "websecurityscanner/ScanConfig",
@@ -9286,7 +10300,10 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/websecurityscanner/apiv1/websecurityscannerpb#ScanConfig",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/websecurityscanner/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/websecurityscanner/apiv1#NewClient"
   },
   {
     "resource": "workspaceevents/Subscription",
@@ -9304,6 +10321,9 @@
     ],
     "missing_ops": [],
     "status": "missing",
-    "references": []
+    "references": [],
+    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/apps/events/subscriptions/apiv1/subscriptionspb#Subscription",
+    "rest_client": "https://pkg.go.dev/cloud.google.com/go/apps/events/subscriptions/apiv1#NewRESTClient",
+    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/apps/events/subscriptions/apiv1#NewClient"
   }
 ]
