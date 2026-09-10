@@ -56,7 +56,7 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 		// GCP default AvailailbilityType is ZONAL.
 		out.Settings.AvailabilityType = "ZONAL"
 	}
-	if in.Spec.Settings.BackupConfiguration == nil && actual != nil && !actual.Settings.BackupConfiguration.Enabled {
+	if in.Spec.Settings.BackupConfiguration == nil && actual != nil && actual.Settings != nil && actual.Settings.BackupConfiguration != nil && !actual.Settings.BackupConfiguration.Enabled {
 		// If desired backupConfiguration is not specified and actual is disabled, use the actual.
 		out.Settings.BackupConfiguration = actual.Settings.BackupConfiguration
 	}

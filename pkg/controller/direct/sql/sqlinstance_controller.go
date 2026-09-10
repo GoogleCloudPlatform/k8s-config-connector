@@ -962,14 +962,28 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return err
 	}
 
+	if !suppressDRDiffs && isEnterpriseDRRoleSwap(desiredGCP, a.actual) {
+		status, err := SQLInstanceStatusGCPToKRM(a.actual)
+		if err != nil {
+			return fmt.Errorf("updating SQLInstance status failed: %w", err)
+		}
+		readyCondition := k8s.NewCustomReadyCondition(
+			corev1.ConditionFalse,
+			"RoleInversionDetected",
+			"Live instance role has inverted due to Cloud SQL switchover. Manual manifest update required because diff-suppression is disabled.",
+		)
+		return updateOp.UpdateStatus(ctx, status, &readyCondition)
+	}
+
 	// In Cloud SQL, designating a failover DR replica requires the target replica to already exist and be RUNNABLE.
 	// When bootstrapping a DR cluster via GitOps, both primary and replica may be created concurrently.
 	// If the replica is still creating or not yet RUNNABLE, we defer setting failoverDrReplicaName,
 	// apply any other pending configuration updates, set condition ReplicationClusterPending, and requeue.
+	// Note: We only check target replica readiness when the instance is NOT in a post-switchover role swap.
 	drReplicaPending := false
 	var pendingReplicaName string
 	var pendingReplicaState string
-	if desiredGCP.ReplicationCluster != nil && desiredGCP.ReplicationCluster.FailoverDrReplicaName != "" {
+	if !isEnterpriseDRRoleSwap(desiredGCP, a.actual) && desiredGCP.ReplicationCluster != nil && desiredGCP.ReplicationCluster.FailoverDrReplicaName != "" {
 		desiredTarget := desiredGCP.ReplicationCluster.FailoverDrReplicaName
 		actualTarget := ""
 		if a.actual.ReplicationCluster != nil {
@@ -992,19 +1006,6 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 				}
 			}
 		}
-	}
-
-	if !suppressDRDiffs && isEnterpriseDRRoleSwap(desiredGCP, a.actual) {
-		status, err := SQLInstanceStatusGCPToKRM(a.actual)
-		if err != nil {
-			return fmt.Errorf("updating SQLInstance status failed: %w", err)
-		}
-		readyCondition := k8s.NewCustomReadyCondition(
-			corev1.ConditionFalse,
-			"RoleInversionDetected",
-			"Live instance role has inverted due to Cloud SQL switchover. Manual manifest update required because diff-suppression is disabled.",
-		)
-		return updateOp.UpdateStatus(ctx, status, &readyCondition)
 	}
 
 	instanceForStatus := a.actual

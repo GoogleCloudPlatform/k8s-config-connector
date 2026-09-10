@@ -91,6 +91,10 @@ This suite runs directly against the in-memory Go direct controller and exercise
 | `TestSQLInstance_Update_DesignatesFailoverDrReplica_WhenRunnable` | **Autonomous DR Designation**: Tests that once target replica reaches `RUNNABLE`, KCC automatically updates the primary with `failoverDrReplicaName`. |
 | `TestDiffInstances_DR_OptOutAnnotation` | **Declarative Purism Diff Detection**: Verifies that setting `cnrm.cloud.google.com/diff-suppression: "false"` restores diff reporting on inverted fields (`.instanceType`, `.masterInstanceName`). |
 | `TestSQLInstance_Update_OptOutAnnotation_RoleInversionDetected` | **Opt-Out Safety Guard**: Verifies that when diff suppression is disabled and a role swap occurs, KCC halts mutating reconciliation and emits `Ready=False, Reason=RoleInversionDetected`. |
+| `TestSQLInstance_Bootstrap_ExhaustiveMatrix_AllEngines` | **Exhaustive Multi-Engine Bootstrap Matrix**: Validates initial insert deferral (`Create_DefersReplicationCluster`), 404 readiness gating (`Update_ReplicaNotFound_Gated`), and runnable designation (`Update_ReplicaRunnable_Designates`) across 9 engine versions: PostgreSQL (14, 15, 16), MySQL (8.0, 8.4), and SQL Server (2019 Standard/Enterprise, 2022 Standard/Enterprise). |
+| `TestSQLInstance_OptOut_ExhaustiveMatrix_AllEngines` | **Multi-Engine Opt-Out & Role Inversion Guard**: Validates that disabling diff suppression (`diff-suppression: "false"`) halts mutating updates and surfaces `RoleInversionDetected` across all engines for both demoted primaries and promoted replicas. |
+| `TestSQLInstance_Update_TargetReplica_TransientErrors` | **DR Replica Polling Resilience**: Confirms HTTP 500 / 503 transient errors during target replica readiness polling are propagated cleanly without panics or premature mutating updates. |
+| `TestSQLInstance_FullDRLifecycle_AllEngines` | **Full DR Lifecycle Matrix**: Exercises complete multi-stage switchover in-flight standby (`FailoverInProgress` + deletion blocked), switchover acknowledgment (`FailoverAcknowledged`), and DR replica decommissioning across PostgreSQL, MySQL, and SQL Server. |
 
 ---
 
