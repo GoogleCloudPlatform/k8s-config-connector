@@ -63,8 +63,7 @@ spec:
             properties:
               capacityGib:
                 description: Required. The storage capacity of the instance in gibibytes
-                  (GiB). Allowed values are from `18000` to `954000`, in increments
-                  of 9000.
+                  (GiB). Allowed values are multiples of 36000, up to 6120000.
                 format: int64
                 type: integer
               description:

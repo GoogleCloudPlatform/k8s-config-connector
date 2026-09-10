@@ -305,7 +305,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					if strings.Contains(fixture.Name, "regionaltargethttpsproxy") {
 						opt.CreateInOrder = true
 					}
-					if strings.Contains(fixture.Name, "computesubnetwork") {
+					if strings.Contains(fixture.Name, "computesubnetwork") || strings.Contains(fixture.Name, "lustreinstance") {
 						opt.CreateInOrder = true
 						opt.DeleteInOrder = true
 					}
