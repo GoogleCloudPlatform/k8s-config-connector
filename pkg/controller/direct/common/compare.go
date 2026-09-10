@@ -394,7 +394,26 @@ func sortProtoReflectList(list protoreflect.List) {
 	}
 }
 
-// CompareBrownfieldSpec executes the 5-step brownfield spec comparison pipeline.
+// CompareBrownfieldSpec executes the 5-step brownfield spec comparison pipeline:
+//  1. actualProto -> actualKRM (specFromProto)
+//  2. MergeUnsetFields(clonedDesiredKRM, actualKRM) - adopts actual values for top-level/nested fields unspecified in KRM
+//  3. Specs -> Protos (specToProto for desired & actual)
+//  4. Normalization & Slice Sorting (normalize callback & SortRepeatedFields)
+//  5. DiffForTopLevelFields (generates structured Diff and FieldMask)
+//
+// The 'normalize' callback is optional (can be nil). Use it for custom, idempotent proto canonicalization
+// before computing diffs.
+//
+// Common Use Cases for 'normalize':
+//   - Reference & Link Canonicalization: Standardizing short resource names vs. fully-qualified GCP URLs/selfLinks
+//     (e.g., "my-net" vs. "projects/my-proj/global/networks/my-net") or Project Number vs. Project ID in parent paths.
+//   - Filtering System/Server Labels & Annotations: Stripping GCP server-added or internal system labels from 'actual'
+//     (e.g., system labels injected by GKE, Dataproc, etc.) so they don't trigger false diffs.
+//   - Value & Unit Formatting: Standardizing string casing, duration formats (e.g., "10s" vs. "10.0s"), or equivalent defaults.
+//   - Custom Slice Sorting/Deduplication: Custom ordering of list elements when default JSON-based sorting isn't sufficient.
+//
+// DO NOT:
+//   - Do NOT backfill or merge unspecified properties inside list elements. KCC manages list fields atomically once configured.
 func CompareBrownfieldSpec[SpecType any, ProtoT interface {
 	proto.Message
 }](

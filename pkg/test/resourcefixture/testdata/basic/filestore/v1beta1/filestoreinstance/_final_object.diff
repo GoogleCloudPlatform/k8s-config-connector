@@ -1,0 +1,13 @@
+6d5
+<     cnrm.cloud.google.com/state-into-spec: absent
+10c9
+<   generation: 3
+---
+>   generation: 2
+36d34
+<   resourceID: filestoreinstance-${uniqueId}
+46c44,45
+<   observedGeneration: 3
+---
+>   externalRef: projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}
+>   observedGeneration: 2
