@@ -123,10 +123,8 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Cloud KMS
 		"//cloudkms.googleapis.com/projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}/ciphertext/{}": true,
 
-		// Cloud Support
-		"//cloudsupport.googleapis.com/organizations/{}/supportEventSubscriptions/{}": true,
-
 		// Cloud Number Registry
+		"//cloudnumberregistry.googleapis.com/projects/{}/locations/{}/realms/{}":          true,
 		"//cloudnumberregistry.googleapis.com/projects/{}/locations/{}/registryBooks/{}":   true,
 		"//cloudnumberregistry.googleapis.com/projects/{}/locations/{}/ipamAdminScopes/{}": true,
 
@@ -136,6 +134,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/controls/{}":           true,
 		"//cloudsecuritycompliance.googleapis.com/projects/{}/locations/{}/frameworks/{}":              true,
 		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/frameworks/{}":         true,
+
+		// Cloud Support
+		"//cloudsupport.googleapis.com/organizations/{}/supportEventSubscriptions/{}": true,
 
 		// Compute
 		"//compute.googleapis.com/global/publicDelegatedPrefixes/{}":                      true,
