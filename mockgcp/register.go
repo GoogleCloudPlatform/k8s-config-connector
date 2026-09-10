@@ -24,6 +24,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapphub"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockartifactregistry"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockasset"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockassuredworkloads"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbackupdr"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbatch"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigquery"
