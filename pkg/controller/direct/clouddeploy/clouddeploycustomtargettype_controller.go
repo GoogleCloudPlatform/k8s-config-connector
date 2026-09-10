@@ -102,7 +102,8 @@ func (m *modelCustomTargetType) AdapterForObject(ctx context.Context, op *direct
 func (m *modelCustomTargetType) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	id := &krm.CustomTargetTypeIdentity{}
 	if err := id.FromExternal(url); err != nil {
-		return nil, fmt.Errorf("parsing CustomTargetType URL %s: %w", url, err)
+		// Not recognized
+		return nil, nil
 	}
 
 	gcpClient, err := m.client(ctx)
