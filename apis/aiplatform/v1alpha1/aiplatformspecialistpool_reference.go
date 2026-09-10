@@ -26,16 +26,16 @@ import (
 
 var _ refs.Ref = &AIPlatformSpecialistPoolRef{}
 
-// AIPlatformSpecialistPoolRef is a reference to a AIPlatformSpecialistPool.
+// AIPlatformSpecialistPoolRef is a reference to an AIPlatformSpecialistPool.
 type AIPlatformSpecialistPoolRef struct {
 	// A reference to an externally managed AIPlatformSpecialistPool resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/specialistPools/{{specialistPoolID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a AIPlatformSpecialistPool resource.
+	// The name of an AIPlatformSpecialistPool resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a AIPlatformSpecialistPool resource.
+	// The namespace of an AIPlatformSpecialistPool resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
