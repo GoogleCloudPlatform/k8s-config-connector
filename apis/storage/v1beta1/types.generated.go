@@ -193,6 +193,62 @@ type Bucket struct {
 }
 */
 
+/* unreachable type BucketAccessControl
+// +kcc:proto=google.storage.v1.BucketAccessControl
+type BucketAccessControl struct {
+	// The access permission for the entity.
+	// +kcc:proto:field=google.storage.v1.BucketAccessControl.role
+	Role *string `json:"role,omitempty"`
+
+	// HTTP 1.1 ["https://tools.ietf.org/html/rfc7232#section-2.3][Entity tag]
+	//  for the access-control entry.
+	// +kcc:proto:field=google.storage.v1.BucketAccessControl.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// The ID of the access-control entry.
+	// +kcc:proto:field=google.storage.v1.BucketAccessControl.id
+	ID *string `json:"id,omitempty"`
+
+	// The name of the bucket.
+	// +kcc:proto:field=google.storage.v1.BucketAccessControl.bucket
+	Bucket *string `json:"bucket,omitempty"`
+
+	// The entity holding the permission, in one of the following forms:
+	//  * `user-{userid}`
+	//  * `user-{email}`
+	//  * `group-{groupid}`
+	//  * `group-{email}`
+	//  * `domain-{domain}`
+	//  * `project-{team-projectid}`
+	//  * `allUsers`
+	//  * `allAuthenticatedUsers`
+	//  Examples:
+	//  * The user `liz@example.com` would be `user-liz@example.com`.
+	//  * The group `example@googlegroups.com` would be
+	//  `group-example@googlegroups.com`
+	//  * All members of the Google Apps for Business domain `example.com` would be
+	//  `domain-example.com`
+	// +kcc:proto:field=google.storage.v1.BucketAccessControl.entity
+	Entity *string `json:"entity,omitempty"`
+
+	// The ID for the entity, if any.
+	// +kcc:proto:field=google.storage.v1.BucketAccessControl.entity_id
+	EntityID *string `json:"entityID,omitempty"`
+
+	// The email address associated with the entity, if any.
+	// +kcc:proto:field=google.storage.v1.BucketAccessControl.email
+	Email *string `json:"email,omitempty"`
+
+	// The domain associated with the entity, if any.
+	// +kcc:proto:field=google.storage.v1.BucketAccessControl.domain
+	Domain *string `json:"domain,omitempty"`
+
+	// The project team associated with the entity, if any.
+	// +kcc:proto:field=google.storage.v1.BucketAccessControl.project_team
+	ProjectTeam *ProjectTeam `json:"projectTeam,omitempty"`
+}
+*/
+
 /* unreachable type Bucket_Autoclass
 // +kcc:proto=google.storage.v1.Bucket.Autoclass
 type Bucket_Autoclass struct {
@@ -460,62 +516,6 @@ type Bucket_Website struct {
 	//  result.
 	// +kcc:proto:field=google.storage.v1.Bucket.Website.not_found_page
 	NotFoundPage *string `json:"notFoundPage,omitempty"`
-}
-*/
-
-/* unreachable type BucketAccessControl
-// +kcc:proto=google.storage.v1.BucketAccessControl
-type BucketAccessControl struct {
-	// The access permission for the entity.
-	// +kcc:proto:field=google.storage.v1.BucketAccessControl.role
-	Role *string `json:"role,omitempty"`
-
-	// HTTP 1.1 ["https://tools.ietf.org/html/rfc7232#section-2.3][Entity tag]
-	//  for the access-control entry.
-	// +kcc:proto:field=google.storage.v1.BucketAccessControl.etag
-	Etag *string `json:"etag,omitempty"`
-
-	// The ID of the access-control entry.
-	// +kcc:proto:field=google.storage.v1.BucketAccessControl.id
-	ID *string `json:"id,omitempty"`
-
-	// The name of the bucket.
-	// +kcc:proto:field=google.storage.v1.BucketAccessControl.bucket
-	Bucket *string `json:"bucket,omitempty"`
-
-	// The entity holding the permission, in one of the following forms:
-	//  * `user-{userid}`
-	//  * `user-{email}`
-	//  * `group-{groupid}`
-	//  * `group-{email}`
-	//  * `domain-{domain}`
-	//  * `project-{team-projectid}`
-	//  * `allUsers`
-	//  * `allAuthenticatedUsers`
-	//  Examples:
-	//  * The user `liz@example.com` would be `user-liz@example.com`.
-	//  * The group `example@googlegroups.com` would be
-	//  `group-example@googlegroups.com`
-	//  * All members of the Google Apps for Business domain `example.com` would be
-	//  `domain-example.com`
-	// +kcc:proto:field=google.storage.v1.BucketAccessControl.entity
-	Entity *string `json:"entity,omitempty"`
-
-	// The ID for the entity, if any.
-	// +kcc:proto:field=google.storage.v1.BucketAccessControl.entity_id
-	EntityID *string `json:"entityID,omitempty"`
-
-	// The email address associated with the entity, if any.
-	// +kcc:proto:field=google.storage.v1.BucketAccessControl.email
-	Email *string `json:"email,omitempty"`
-
-	// The domain associated with the entity, if any.
-	// +kcc:proto:field=google.storage.v1.BucketAccessControl.domain
-	Domain *string `json:"domain,omitempty"`
-
-	// The project team associated with the entity, if any.
-	// +kcc:proto:field=google.storage.v1.BucketAccessControl.project_team
-	ProjectTeam *ProjectTeam `json:"projectTeam,omitempty"`
 }
 */
 

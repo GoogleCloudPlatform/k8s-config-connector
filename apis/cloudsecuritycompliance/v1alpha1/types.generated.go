@@ -367,6 +367,17 @@ type Validation struct {
 	RegexpPattern *RegexpPattern `json:"regexpPattern,omitempty"`
 }
 
+/* found existing non-generated go type "CloudControlGroupObservedState", skipping
+
+// +kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup
+type CloudControlGroupObservedState struct {
+	// Optional. Output only. The type of the cloud control group. Default is
+	//  TYPE_CUSTOM.
+	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.type
+	Type *string `json:"type,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.cloudsecuritycompliance.v1.CloudControl", skipping
 
 // +kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.CloudControl
@@ -390,17 +401,6 @@ type CloudControlObservedState struct {
 	//  existing CC.
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControl.create_time
 	CreateTime *string `json:"createTime,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "CloudControlGroupObservedState", skipping
-
-// +kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup
-type CloudControlGroupObservedState struct {
-	// Optional. Output only. The type of the cloud control group. Default is
-	//  TYPE_CUSTOM.
-	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.type
-	Type *string `json:"type,omitempty"`
 }
 */
 

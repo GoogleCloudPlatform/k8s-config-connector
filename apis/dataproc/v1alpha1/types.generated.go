@@ -1115,13 +1115,6 @@ type Session struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.Session.SessionStateHistory", skipping
-
-// +kcc:proto=google.cloud.dataproc.v1.Session.SessionStateHistory
-type Session_SessionStateHistory struct {
-}
-*/
-
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.SessionTemplate", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.SessionTemplate
@@ -1159,6 +1152,13 @@ type SessionTemplate struct {
 	// Optional. Environment configuration for session execution.
 	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.environment_config
 	EnvironmentConfig *EnvironmentConfig `json:"environmentConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.Session.SessionStateHistory", skipping
+
+// +kcc:proto=google.cloud.dataproc.v1.Session.SessionStateHistory
+type Session_SessionStateHistory struct {
 }
 */
 
@@ -1840,26 +1840,6 @@ type SessionObservedState struct {
 }
 */
 
-/* found existing non-generated go type "Session_SessionStateHistoryObservedState", skipping
-
-// +kcc:observedstate:proto=google.cloud.dataproc.v1.Session.SessionStateHistory
-type Session_SessionStateHistoryObservedState struct {
-	// Output only. The state of the session at this point in the session
-	//  history.
-	// +kcc:proto:field=google.cloud.dataproc.v1.Session.SessionStateHistory.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. Details about the state at this point in the session
-	//  history.
-	// +kcc:proto:field=google.cloud.dataproc.v1.Session.SessionStateHistory.state_message
-	StateMessage *string `json:"stateMessage,omitempty"`
-
-	// Output only. The time when the session entered the historical state.
-	// +kcc:proto:field=google.cloud.dataproc.v1.Session.SessionStateHistory.state_start_time
-	StateStartTime *string `json:"stateStartTime,omitempty"`
-}
-*/
-
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.SessionTemplate", skipping
 
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.SessionTemplate
@@ -1880,5 +1860,25 @@ type SessionTemplateObservedState struct {
 	//  service generates this value when it creates the session template.
 	// +kcc:proto:field=google.cloud.dataproc.v1.SessionTemplate.uuid
 	Uuid *string `json:"uuid,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "Session_SessionStateHistoryObservedState", skipping
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.Session.SessionStateHistory
+type Session_SessionStateHistoryObservedState struct {
+	// Output only. The state of the session at this point in the session
+	//  history.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Session.SessionStateHistory.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Details about the state at this point in the session
+	//  history.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Session.SessionStateHistory.state_message
+	StateMessage *string `json:"stateMessage,omitempty"`
+
+	// Output only. The time when the session entered the historical state.
+	// +kcc:proto:field=google.cloud.dataproc.v1.Session.SessionStateHistory.state_start_time
+	StateStartTime *string `json:"stateStartTime,omitempty"`
 }
 */

@@ -660,18 +660,18 @@ type DataQualityRule_RowConditionExpectation struct {
 	SQLExpression *string `json:"sqlExpression,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dataplex.v1.DataQualityRule.SetExpectation
-type DataQualityRule_SetExpectation struct {
-	// Optional. Expected values for the column value.
-	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityRule.SetExpectation.values
-	Values []string `json:"values,omitempty"`
-}
-
 // +kcc:proto=google.cloud.dataplex.v1.DataQualityRule.SqlAssertion
 type DataQualityRule_SQLAssertion struct {
 	// Optional. The SQL statement.
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityRule.SqlAssertion.sql_statement
 	SQLStatement *string `json:"sqlStatement,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.DataQualityRule.SetExpectation
+type DataQualityRule_SetExpectation struct {
+	// Optional. Expected values for the column value.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataQualityRule.SetExpectation.values
+	Values []string `json:"values,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataplex.v1.DataQualityRule.StatisticRangeExpectation

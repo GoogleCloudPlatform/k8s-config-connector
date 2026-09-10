@@ -24,6 +24,20 @@
 
 package v1alpha1
 
+/* found existing non-generated go type "AllocationOptions", skipping
+
+// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.AllocationOptions
+type AllocationOptions struct {
+	// Optional. Allocation strategy Not setting this field when the allocation is requested means an implementation defined strategy is used.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.AllocationOptions.allocation_strategy
+	AllocationStrategy *string `json:"allocationStrategy,omitempty"`
+
+	// Optional. This field must be set only when allocation_strategy is set to RANDOM_FIRST_N_AVAILABLE. The value should be the maximum expected parallelism of range creation requests issued to the same space of peered netwroks.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.AllocationOptions.first_available_ranges_lookup_size
+	FirstAvailableRangesLookupSize *int32 `json:"firstAvailableRangesLookupSize,omitempty"`
+}
+*/
+
 /* unreachable type Any
 // +kcc:proto=google.protobuf.Any
 type Any struct {
@@ -60,20 +74,6 @@ type Any struct {
 	// Must be a valid serialized protocol buffer of the above specified type.
 	// +kcc:proto:field=google.protobuf.Any.value
 	Value []byte `json:"value,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "AllocationOptions", skipping
-
-// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.AllocationOptions
-type AllocationOptions struct {
-	// Optional. Allocation strategy Not setting this field when the allocation is requested means an implementation defined strategy is used.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.AllocationOptions.allocation_strategy
-	AllocationStrategy *string `json:"allocationStrategy,omitempty"`
-
-	// Optional. This field must be set only when allocation_strategy is set to RANDOM_FIRST_N_AVAILABLE. The value should be the maximum expected parallelism of range creation requests issued to the same space of peered netwroks.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.AllocationOptions.first_available_ranges_lookup_size
-	FirstAvailableRangesLookupSize *int32 `json:"firstAvailableRangesLookupSize,omitempty"`
 }
 */
 
