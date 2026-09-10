@@ -119,24 +119,29 @@ The direct controller must be implemented to manage reconciliation logic (Adapte
       * For unhandled or unimplemented fields, prefer highly descriptive helper methods (such as `f.Unimplemented_NotYetTriaged(".baz")`, `f.Unimplemented_Identity(".id")`, or other specific variants) rather than standard inserts into `UnimplementedFields` sets. This categorizes why we are not handling specific fields.
 
 5.  **Create Minimal Fixture**:
-    Create directory `pkg/test/resourcefixture/testdata/basic/<service_name>/<api_version>/<resource_lower>/<resource_lower>-minimal/`.
-    - Add `create.yaml`: Use the bare minimum **Required** fields.
+    Create the directory `pkg/test/resourcefixture/testdata/basic/<service_name>/<api_version>/<resource_lower>/<resource_lower>-minimal/`:
+    - Add `create.yaml`: Include only the bare minimum **required** fields.
+    - Add `update.yaml`: Update all **mutable** fields that were defined in `create.yaml`. If all fields are immutable or Update operation is unsupported, omit `update.yaml`. Ensure you only modify existing field values; do not add or remove fields.
+    - Add `dependencies.yaml`: Include any prerequisite KCC resources that must exist before this resource can be created.
     - Use `${uniqueId}` for resource names.
 
-6.  **Create Maximal Fixture**:
-    Create directory `pkg/test/resourcefixture/testdata/basic/<service_name>/<api_version>/<resource_lower>/<resource_lower>-maximal/`.
-    - Add `create.yaml`: Include **every supported field** in the Spec.
-    - Add `update.yaml`: Update all **mutable** fields.
-    - Add `dependencies.yaml` if the resource requires other KCC resources to exist first.
+6.  **Create Maximal Fixtures**:
+    The primary goal is to ensure that all required and optional Spec fields are covered by the fixture tests.
+    Create a single maximal test case if all fields can be set simultaneously, or define additional separate test cases if some fields are mutually exclusive.
 
-6.5. **Remove from Ratcheting Exclusions (MANDATORY)**:
+    Create the directory `pkg/test/resourcefixture/testdata/basic/<service_name>/<api_version>/<resource_lower>/<resource_lower>-maximal/` (and additional sibling directories like `<resource_lower>-alternative-test-name/` if you need to handle mutually exclusive fields):
+    - Add `create.yaml`: Include **every supported field** in the Spec (or as many as possible, and utilize separate test cases for mutually exclusive fields).
+    - Add `update.yaml`: Update all **mutable** fields that are defined in `create.yaml`. If all fields are immutable or Update operation is unsupported, omit `update.yaml`. Only change values of already defined fields, do not add or remove fields.
+    - Add `dependencies.yaml`: Include any prerequisite KCC resources that must exist before this resource can be created.
+
+7. **Remove from Ratcheting Exclusions (MANDATORY)**:
     Before running the test cases against real or mock GCP, you **MUST** ensure the target resource is removed from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. This enables the re-reconciliation test step, which is a fundamental use case KCC resources must support.
-    1. Open `tests/e2e/ratcheting.go`.
-    2. Locate the function `ShouldTestRereconiliation`.
-    3. Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
-    4. If there is a `case` block for your target resource's `GroupKind`, remove that `case` line from the switch statement.
+    - Open `tests/e2e/ratcheting.go`.
+    - Locate the function `ShouldTestRereconiliation`.
+    - Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
+    - If there is a `case` block for your target resource's `GroupKind`, remove that `case` line from the switch statement.
 
-7.  **MANDATORY: Record Golden Files Against Real GCP (`hack/record-gcp`)**:
+8. **MANDATORY: Record Golden Files Against Real GCP (`hack/record-gcp`)**:
     - **CRITICAL OVERRIDE OF GEMINI.md**: For this Greenfield task, **ignore any instructions in `GEMINI.md`** (or `mockgcp/GEMINI.md`) regarding `mockgcp`, `E2E_GCP_TARGET=mock`, or `hack/compare-mock`. Those global instructions only apply to legacy brownfield resources.
     - **STRICT GUARDRAIL — DO NOT USE MOCKGCP OR OFFLINE MOCKS**: You MUST record golden files directly against real GCP using `./hack/record-gcp`. Do **NOT** attempt to use `mockgcp`, do NOT search for or try to implement mockgcp services, and do NOT use `hack/compare-mock` or `E2E_GCP_TARGET=mock`.
     - **MANDATORY EXECUTION**: You are explicitly required to run `./hack/record-gcp` on both your minimal and maximal fixtures before running any validation tests in Step 8 or preparing the PR in Step 9. Skipping this step or attempting to substitute mock tests is considered a critical failure.
@@ -154,7 +159,7 @@ The direct controller must be implemented to manage reconciliation logic (Adapte
 
     - Using the `hack/record-gcp` wrapper ensures a sufficient timeout (e.g., 30-60 minutes) is already configured, automatically handling slow GCP resource creation. There is no need to specify additional timeout flags when using this helper.
 
-8.  **Validation & Last-Mile Tests**:
+9. **Validation & Last-Mile Tests**:
     Run the following tests to ensure CI compliance and verify field coverage:
     - **Fuzzing**: `dev/ci/presubmits/fuzz-roundtrippers`
     - **E2E Scaffolding**: `dev/ci/presubmits/tests-e2e-fixtures-direct`
@@ -164,7 +169,7 @@ The direct controller must be implemented to manage reconciliation logic (Adapte
       - Verify that your "Maximal" test reduces the number of missing fields in the exceptions file. If `TestCRDFieldPresenceInTestsForAlpha` fails, running with `WRITE_GOLDEN_OUTPUT=1` will regenerate the exceptions file.
     - **Iterative Refinement Loop (Steps 7 & 8)**: Use any failures, unexpected diffs, or missing field coverage found during steps 7 and 8 as your critical debugging feedback loop. Actively refine your controller logic (Step 2), mappers (Step 3), fuzzer (Step 4), and fixtures (Steps 5 & 6), re-running steps 7 and 8 until all E2E recordings and validation suites execute and pass without error before proceeding to step 9.
 
-9.  **Final Generation & Reporting**:
+10. **Final Generation & Reporting**:
     Run `make ready-pr` from the repository root. This is a critical step that:
     - Runs `make fmt` and `make vet`.
     YOU MUST COMMIT ALL RESULTING CHANGES.
