@@ -18,7 +18,6 @@ import (
 	"context"
 	"fmt"
 	"reflect"
-	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -180,14 +179,12 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		return err
 	}
 	// Write resourceID into spec.
-	tokens := strings.Split(createdMetadata.FullID, ":")
-	if len(tokens) == 2 {
-		resourceID := tokens[1]
-		if err := unstructured.SetNestedField(createOp.GetUnstructured().Object, resourceID, "spec", "resourceID"); err != nil {
-			return fmt.Errorf("error setting spec.resourceID: %w", err)
-		}
-	} else {
+	_, resourceID, ok := parseDatasetFullID(createdMetadata.FullID)
+	if !ok {
 		return fmt.Errorf("Error getting resourceID: %s. The full ID of the created BigQueryDataset is expected to be in the format of projectID:datasetID", createdMetadata.FullID)
+	}
+	if err := unstructured.SetNestedField(createOp.GetUnstructured().Object, resourceID, "spec", "resourceID"); err != nil {
+		return fmt.Errorf("error setting spec.resourceID: %w", err)
 	}
 
 	return nil

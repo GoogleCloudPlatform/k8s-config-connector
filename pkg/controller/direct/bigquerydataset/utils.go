@@ -17,11 +17,35 @@ package bigquerydataset
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	bigquery "cloud.google.com/go/bigquery"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
+
+// parseDatasetFullID splits a BigQuery dataset FullID, which the API returns in
+// the form "projectID:datasetID", into its project and dataset parts.
+//
+// The project ID can itself contain a colon, so the split has to be on the
+// *last* one rather than on every one. Two project ID forms do this:
+//
+//	example.com:my-project     domain-scoped (legacy)
+//	my-universe:my-project     universe-qualified
+//
+// For those, "projectID:datasetID" has two colons, and splitting on all of them
+// yields three parts — losing the dataset. Splitting on the last colon is
+// correct for every form, including plain "my-project".
+//
+// ok is false when fullID is not in the expected form, including when either
+// part would be empty.
+func parseDatasetFullID(fullID string) (projectID, datasetID string, ok bool) {
+	i := strings.LastIndex(fullID, ":")
+	if i <= 0 || i == len(fullID)-1 {
+		return "", "", false
+	}
+	return fullID[:i], fullID[i+1:], true
+}
 
 func convertProtoToAPI(u protoreflect.ProtoMessage, v any) error {
 	if u == nil {
