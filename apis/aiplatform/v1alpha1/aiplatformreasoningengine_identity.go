@@ -71,9 +71,9 @@ func getIdentityFromAIPlatformReasoningEngineSpec(ctx context.Context, reader cl
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	location := obj.Spec.Location
-	if location == "" {
-		return nil, fmt.Errorf("location is required in the spec")
+	location, err := refs.GetLocation(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve location")
 	}
 
 	projectID, err := refs.ResolveProjectID(ctx, reader, obj)

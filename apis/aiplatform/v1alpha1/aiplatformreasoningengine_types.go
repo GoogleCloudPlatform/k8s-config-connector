@@ -32,7 +32,7 @@ type AIPlatformReasoningEngineSpec struct {
 
 	// The location of this resource.
 	// +required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// The AIPlatformReasoningEngine name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
