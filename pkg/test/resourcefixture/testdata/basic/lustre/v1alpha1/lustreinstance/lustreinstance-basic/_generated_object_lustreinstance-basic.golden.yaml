@@ -11,7 +11,7 @@ metadata:
   name: lustreinstance-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  capacityGib: 27000
+  capacityGib: 36000
   description: Updated Lustre instance
   filesystem: testfs
   location: us-central1-a

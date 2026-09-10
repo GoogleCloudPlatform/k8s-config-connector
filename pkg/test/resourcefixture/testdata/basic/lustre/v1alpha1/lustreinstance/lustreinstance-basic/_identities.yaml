@@ -4,6 +4,18 @@
   name: computenetwork-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/addresses/computeaddress-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeAddress
+  name: computeaddress-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: servicenetworking.cnrm.cloud.google.com
+  kind: ServiceNetworkingConnection
+  name: servicenetworkingconnection-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
 - caisURL: //lustre.googleapis.com/projects/${projectId}/locations/us-central1-a/instances/lustreinstance-${uniqueId}
   group: lustre.cnrm.cloud.google.com
   kind: LustreInstance

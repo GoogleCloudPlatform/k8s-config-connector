@@ -23,7 +23,7 @@ spec:
     external: ${projectId}
   location: us-central1-a
   filesystem: testfs
-  capacityGib: 18000
+  capacityGib: 36000
   perUnitStorageThroughput: 250
   networkRef:
     name: computenetwork-${uniqueId}
