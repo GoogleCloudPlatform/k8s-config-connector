@@ -214,12 +214,12 @@ func (a *CloudBuildConnectionAdapter) Update(ctx context.Context, updateOp *dire
 			return fmt.Errorf("waiting for update of CloudBuildConnection %s: %w", fqn, err)
 		}
 		latest = updated
-	}
 
-	// Fetch fully-populated resource to avoid clearing status fields
-	refetched, err := a.gcpClient.GetConnection(ctx, &cloudbuildpb.GetConnectionRequest{Name: fqn})
-	if err == nil {
-		latest = refetched
+		// Fetch fully-populated resource to avoid clearing status fields
+		refetched, err := a.gcpClient.GetConnection(ctx, &cloudbuildpb.GetConnectionRequest{Name: fqn})
+		if err == nil {
+			latest = refetched
+		}
 	}
 
 	return a.updateStatus(ctx, updateOp, latest)
