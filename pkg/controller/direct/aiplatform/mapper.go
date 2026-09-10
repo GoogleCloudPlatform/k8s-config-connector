@@ -17,9 +17,11 @@ package aiplatform
 import (
 	"encoding/json"
 
+	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	aiplatformpb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"google.golang.org/genproto/googleapis/type/interval"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
@@ -140,5 +142,45 @@ func Schema_ToProto(mapCtx *direct.MapContext, in *krm.Schema) *aiplatformpb.Sch
 	}
 	out.AdditionalProperties = Value_ToProto(mapCtx, in.AdditionalProperties)
 	out.Ref = direct.ValueOf(in.Ref)
+	return out
+}
+
+func ExplanationSpec_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationSpec) *krm.ExplanationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExplanationSpec{}
+	out.Parameters = ExplanationParameters_FromProto(mapCtx, in.GetParameters())
+	out.Metadata = ExplanationMetadata_FromProto(mapCtx, in.GetMetadata())
+	return out
+}
+
+func ExplanationSpec_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationSpec) *pb.ExplanationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExplanationSpec{}
+	out.Parameters = ExplanationParameters_ToProto(mapCtx, in.Parameters)
+	out.Metadata = ExplanationMetadata_ToProto(mapCtx, in.Metadata)
+	return out
+}
+
+func Interval_FromProto(mapCtx *direct.MapContext, in *interval.Interval) *krm.Interval {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Interval{}
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	return out
+}
+
+func Interval_ToProto(mapCtx *direct.MapContext, in *krm.Interval) *interval.Interval {
+	if in == nil {
+		return nil
+	}
+	out := &interval.Interval{}
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	return out
 }

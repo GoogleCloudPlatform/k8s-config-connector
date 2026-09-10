@@ -164,20 +164,18 @@ func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
 		return
 	}
 	goTypes := v.findKRMStructsForProto(msg)
-	if len(goTypes) == 0 {
-		klog.V(2).Infof("no go types found for proto %v", msg.FullName())
-		return
-	}
-	parentFile := msg.ParentFile()
-	protoGoPackage := GoPackageForProto(parentFile)
+	if len(goTypes) > 0 {
+		parentFile := msg.ParentFile()
+		protoGoPackage := GoPackageForProto(parentFile)
 
-	for _, goType := range goTypes {
-		v.typePairs = append(v.typePairs, typePair{
-			ProtoPackage:   msg.ParentFile().Package(),
-			ProtoGoPackage: protoGoPackage,
-			KRMType:        goType,
-			Proto:          msg,
-		})
+		for _, goType := range goTypes {
+			v.typePairs = append(v.typePairs, typePair{
+				ProtoPackage:   msg.ParentFile().Package(),
+				ProtoGoPackage: protoGoPackage,
+				KRMType:        goType,
+				Proto:          msg,
+			})
+		}
 	}
 
 	for _, msg := range sortIntoMessageSlice(msg.Messages()) {

@@ -433,51 +433,6 @@ type DiskEncryptionStatus struct {
 type GeminiInstanceConfig struct {
 }
 
-// +kcc:proto=google.cloud.sql.v1beta4.InsightsConfig
-type InsightsConfig struct {
-	// Whether Query Insights feature is enabled.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.InsightsConfig.query_insights_enabled
-	QueryInsightsEnabled *bool `json:"queryInsightsEnabled,omitempty"`
-
-	// Whether Query Insights will record client address when enabled.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.InsightsConfig.record_client_address
-	RecordClientAddress *bool `json:"recordClientAddress,omitempty"`
-
-	// Whether Query Insights will record application tags from query when
-	//  enabled.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.InsightsConfig.record_application_tags
-	RecordApplicationTags *bool `json:"recordApplicationTags,omitempty"`
-
-	// Maximum query length stored in bytes. Default value: 1024 bytes.
-	//  Range: 256-4500 bytes. Query length more than this field value will be
-	//  truncated to this value. When unset, query length will be the default
-	//  value. Changing query length will restart the database.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.InsightsConfig.query_string_length
-	QueryStringLength *Int32Value `json:"queryStringLength,omitempty"`
-
-	// Number of query execution plans captured by Insights per minute
-	//  for all queries combined. Default is 5.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.InsightsConfig.query_plans_per_minute
-	QueryPlansPerMinute *Int32Value `json:"queryPlansPerMinute,omitempty"`
-}
-
-// +kcc:proto=google.cloud.sql.v1beta4.InstanceReference
-type InstanceReference struct {
-	// The name of the Cloud SQL instance being referenced.
-	//  This does not include the project ID.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.InstanceReference.name
-	Name *string `json:"name,omitempty"`
-
-	// The region of the Cloud SQL instance being referenced.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.InstanceReference.region
-	Region *string `json:"region,omitempty"`
-
-	// The project ID of the Cloud SQL instance being referenced.
-	//  The default is the same project ID as the instance references it.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.InstanceReference.project
-	Project *string `json:"project,omitempty"`
-}
-
 // +kcc:proto=google.cloud.sql.v1beta4.IpConfiguration
 type IPConfiguration struct {
 	// Whether the instance is assigned a public IP address or not.
@@ -572,6 +527,58 @@ type IPMapping struct {
 	//  the IP is scheduled to be retired.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.IpMapping.time_to_retire
 	TimeToRetire *string `json:"timeToRetire,omitempty"`
+}
+
+// +kcc:proto=google.cloud.sql.v1beta4.InsightsConfig
+type InsightsConfig struct {
+	// Whether Query Insights feature is enabled.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.InsightsConfig.query_insights_enabled
+	QueryInsightsEnabled *bool `json:"queryInsightsEnabled,omitempty"`
+
+	// Whether Query Insights will record client address when enabled.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.InsightsConfig.record_client_address
+	RecordClientAddress *bool `json:"recordClientAddress,omitempty"`
+
+	// Whether Query Insights will record application tags from query when
+	//  enabled.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.InsightsConfig.record_application_tags
+	RecordApplicationTags *bool `json:"recordApplicationTags,omitempty"`
+
+	// Maximum query length stored in bytes. Default value: 1024 bytes.
+	//  Range: 256-4500 bytes. Query length more than this field value will be
+	//  truncated to this value. When unset, query length will be the default
+	//  value. Changing query length will restart the database.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.InsightsConfig.query_string_length
+	QueryStringLength *Int32Value `json:"queryStringLength,omitempty"`
+
+	// Number of query execution plans captured by Insights per minute
+	//  for all queries combined. Default is 5.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.InsightsConfig.query_plans_per_minute
+	QueryPlansPerMinute *Int32Value `json:"queryPlansPerMinute,omitempty"`
+}
+
+// +kcc:proto=google.cloud.sql.v1beta4.InstanceReference
+type InstanceReference struct {
+	// The name of the Cloud SQL instance being referenced.
+	//  This does not include the project ID.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.InstanceReference.name
+	Name *string `json:"name,omitempty"`
+
+	// The region of the Cloud SQL instance being referenced.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.InstanceReference.region
+	Region *string `json:"region,omitempty"`
+
+	// The project ID of the Cloud SQL instance being referenced.
+	//  The default is the same project ID as the instance references it.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.InstanceReference.project
+	Project *string `json:"project,omitempty"`
+}
+
+// +kcc:proto=google.protobuf.Int32Value
+type Int32Value struct {
+	// The int32 value.
+	// +kcc:proto:field=google.protobuf.Int32Value.value
+	Value *int32 `json:"value,omitempty"`
 }
 
 // +kcc:proto=google.cloud.sql.v1beta4.LocationPreference
@@ -712,6 +719,22 @@ type OnPremisesConfiguration struct {
 	SourceInstance *InstanceReference `json:"sourceInstance,omitempty"`
 }
 
+// +kcc:proto=google.cloud.sql.v1beta4.PscConfig
+type PSCConfig struct {
+	// Whether PSC connectivity is enabled for this instance.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PscConfig.psc_enabled
+	PSCEnabled *bool `json:"pscEnabled,omitempty"`
+
+	// Optional. The list of consumer projects that are allow-listed for PSC
+	//  connections to this instance. This instance can be connected to with PSC
+	//  from any network in these projects.
+	//
+	//  Each consumer project in this list may be represented by a project number
+	//  (numeric) or by a project id (alphanumeric).
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PscConfig.allowed_consumer_projects
+	AllowedConsumerProjects []string `json:"allowedConsumerProjects,omitempty"`
+}
+
 // +kcc:proto=google.cloud.sql.v1beta4.PasswordValidationPolicy
 type PasswordValidationPolicy struct {
 	// Minimum number of characters allowed.
@@ -743,22 +766,6 @@ type PasswordValidationPolicy struct {
 	//  API.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.PasswordValidationPolicy.disallow_compromised_credentials
 	DisallowCompromisedCredentials *bool `json:"disallowCompromisedCredentials,omitempty"`
-}
-
-// +kcc:proto=google.cloud.sql.v1beta4.PscConfig
-type PSCConfig struct {
-	// Whether PSC connectivity is enabled for this instance.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.PscConfig.psc_enabled
-	PSCEnabled *bool `json:"pscEnabled,omitempty"`
-
-	// Optional. The list of consumer projects that are allow-listed for PSC
-	//  connections to this instance. This instance can be connected to with PSC
-	//  from any network in these projects.
-	//
-	//  Each consumer project in this list may be represented by a project number
-	//  (numeric) or by a project id (alphanumeric).
-	// +kcc:proto:field=google.cloud.sql.v1beta4.PscConfig.allowed_consumer_projects
-	AllowedConsumerProjects []string `json:"allowedConsumerProjects,omitempty"`
 }
 
 // +kcc:proto=google.cloud.sql.v1beta4.ReplicaConfiguration
@@ -806,6 +813,79 @@ type ReplicationCluster struct {
 	FailoverDrReplicaName *string `json:"failoverDrReplicaName,omitempty"`
 }
 */
+
+// +kcc:proto=google.cloud.sql.v1beta4.SqlActiveDirectoryConfig
+type SQLActiveDirectoryConfig struct {
+	// This is always sql#activeDirectoryConfig.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.SqlActiveDirectoryConfig.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// The name of the domain (e.g., mydomain.com).
+	// +kcc:proto:field=google.cloud.sql.v1beta4.SqlActiveDirectoryConfig.domain
+	Domain *string `json:"domain,omitempty"`
+}
+
+// +kcc:proto=google.cloud.sql.v1beta4.SqlServerAuditConfig
+type SQLServerAuditConfig struct {
+	// This is always sql#sqlServerAuditConfig
+	// +kcc:proto:field=google.cloud.sql.v1beta4.SqlServerAuditConfig.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// The name of the destination bucket (e.g., gs://mybucket).
+	// +kcc:proto:field=google.cloud.sql.v1beta4.SqlServerAuditConfig.bucket
+	Bucket *string `json:"bucket,omitempty"`
+
+	// How long to keep generated audit files.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.SqlServerAuditConfig.retention_interval
+	RetentionInterval *string `json:"retentionInterval,omitempty"`
+
+	// How often to upload generated audit files.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.SqlServerAuditConfig.upload_interval
+	UploadInterval *string `json:"uploadInterval,omitempty"`
+}
+
+// +kcc:proto=google.cloud.sql.v1beta4.SslCert
+type SSLCert struct {
+	// This is always `sql#sslCert`.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.SslCert.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Serial number, as extracted from the certificate.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.SslCert.cert_serial_number
+	CertSerialNumber *string `json:"certSerialNumber,omitempty"`
+
+	// PEM representation.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.SslCert.cert
+	Cert *string `json:"cert,omitempty"`
+
+	// The time when the certificate was created in
+	//  [RFC 3339](https://tools.ietf.org/html/rfc3339) format, for example
+	//  `2012-11-15T16:19:00.094Z`.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.SslCert.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// User supplied name.  Constrained to [a-zA-Z.-_ ]+.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.SslCert.common_name
+	CommonName *string `json:"commonName,omitempty"`
+
+	// The time when the certificate expires in
+	//  [RFC 3339](https://tools.ietf.org/html/rfc3339) format, for example
+	//  `2012-11-15T16:19:00.094Z`.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.SslCert.expiration_time
+	ExpirationTime *string `json:"expirationTime,omitempty"`
+
+	// Sha1 Fingerprint.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.SslCert.sha1_fingerprint
+	Sha1Fingerprint *string `json:"sha1Fingerprint,omitempty"`
+
+	// Name of the database instance.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.SslCert.instance
+	Instance *string `json:"instance,omitempty"`
+
+	// The URI of this resource.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.SslCert.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+}
 
 // +kcc:proto=google.cloud.sql.v1beta4.Settings
 type Settings struct {
@@ -993,86 +1073,6 @@ type Settings struct {
 	//  Dataplex on Cloud SQL instances is activated.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.Settings.enable_dataplex_integration
 	EnableDataplexIntegration *bool `json:"enableDataplexIntegration,omitempty"`
-}
-
-// +kcc:proto=google.cloud.sql.v1beta4.SqlActiveDirectoryConfig
-type SQLActiveDirectoryConfig struct {
-	// This is always sql#activeDirectoryConfig.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.SqlActiveDirectoryConfig.kind
-	Kind *string `json:"kind,omitempty"`
-
-	// The name of the domain (e.g., mydomain.com).
-	// +kcc:proto:field=google.cloud.sql.v1beta4.SqlActiveDirectoryConfig.domain
-	Domain *string `json:"domain,omitempty"`
-}
-
-// +kcc:proto=google.cloud.sql.v1beta4.SqlServerAuditConfig
-type SQLServerAuditConfig struct {
-	// This is always sql#sqlServerAuditConfig
-	// +kcc:proto:field=google.cloud.sql.v1beta4.SqlServerAuditConfig.kind
-	Kind *string `json:"kind,omitempty"`
-
-	// The name of the destination bucket (e.g., gs://mybucket).
-	// +kcc:proto:field=google.cloud.sql.v1beta4.SqlServerAuditConfig.bucket
-	Bucket *string `json:"bucket,omitempty"`
-
-	// How long to keep generated audit files.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.SqlServerAuditConfig.retention_interval
-	RetentionInterval *string `json:"retentionInterval,omitempty"`
-
-	// How often to upload generated audit files.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.SqlServerAuditConfig.upload_interval
-	UploadInterval *string `json:"uploadInterval,omitempty"`
-}
-
-// +kcc:proto=google.cloud.sql.v1beta4.SslCert
-type SSLCert struct {
-	// This is always `sql#sslCert`.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.SslCert.kind
-	Kind *string `json:"kind,omitempty"`
-
-	// Serial number, as extracted from the certificate.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.SslCert.cert_serial_number
-	CertSerialNumber *string `json:"certSerialNumber,omitempty"`
-
-	// PEM representation.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.SslCert.cert
-	Cert *string `json:"cert,omitempty"`
-
-	// The time when the certificate was created in
-	//  [RFC 3339](https://tools.ietf.org/html/rfc3339) format, for example
-	//  `2012-11-15T16:19:00.094Z`.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.SslCert.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// User supplied name.  Constrained to [a-zA-Z.-_ ]+.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.SslCert.common_name
-	CommonName *string `json:"commonName,omitempty"`
-
-	// The time when the certificate expires in
-	//  [RFC 3339](https://tools.ietf.org/html/rfc3339) format, for example
-	//  `2012-11-15T16:19:00.094Z`.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.SslCert.expiration_time
-	ExpirationTime *string `json:"expirationTime,omitempty"`
-
-	// Sha1 Fingerprint.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.SslCert.sha1_fingerprint
-	Sha1Fingerprint *string `json:"sha1Fingerprint,omitempty"`
-
-	// Name of the database instance.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.SslCert.instance
-	Instance *string `json:"instance,omitempty"`
-
-	// The URI of this resource.
-	// +kcc:proto:field=google.cloud.sql.v1beta4.SslCert.self_link
-	SelfLink *string `json:"selfLink,omitempty"`
-}
-
-// +kcc:proto=google.protobuf.Int32Value
-type Int32Value struct {
-	// The int32 value.
-	// +kcc:proto:field=google.protobuf.Int32Value.value
-	Value *int32 `json:"value,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.sql.v1beta4.BackupConfiguration

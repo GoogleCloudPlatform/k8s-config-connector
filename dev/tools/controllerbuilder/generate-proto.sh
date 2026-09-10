@@ -19,6 +19,14 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+# Workaround for git 2.32+ issue when GIT_CONFIG_GLOBAL or GIT_CONFIG_SYSTEM is set to /dev/null
+if [[ "${GIT_CONFIG_GLOBAL:-}" == "/dev/null" ]]; then
+  unset GIT_CONFIG_GLOBAL
+fi
+if [[ "${GIT_CONFIG_SYSTEM:-}" == "/dev/null" ]]; then
+  unset GIT_CONFIG_SYSTEM
+fi
+
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
