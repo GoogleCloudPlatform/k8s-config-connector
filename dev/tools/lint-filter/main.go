@@ -90,18 +90,14 @@ func getChanges() (FileChanges, error) {
 	base := os.Getenv("LINT_FILTER_GIT_BASE")
 
 	if base == "" {
-		// Default to origin/master if available
-		base = "origin/master"
-		// Check if origin/master exists
-		cmdCheck := exec.Command("git", "rev-parse", "--verify", "origin/master")
-		if err := cmdCheck.Run(); err != nil {
-			// Fallback to master
+		if err := exec.Command("git", "rev-parse", "--verify", "upstream/master").Run(); err == nil {
+			base = "upstream/master"
+		} else if err := exec.Command("git", "rev-parse", "--verify", "origin/master").Run(); err == nil {
+			base = "origin/master"
+		} else if err := exec.Command("git", "rev-parse", "--verify", "master").Run(); err == nil {
 			base = "master"
-			cmdCheck = exec.Command("git", "rev-parse", "--verify", "master")
-			if err := cmdCheck.Run(); err != nil {
-				// Fallback to HEAD~1 (assuming standard commit workflow)
-				base = "HEAD~1"
-			}
+		} else {
+			base = "HEAD~1"
 		}
 	}
 	cmd := exec.Command("git", "diff", "--unified=0", base)

@@ -68,9 +68,11 @@ func (i *AssuredWorkloadsWorkloadIdentity) ParentString() string {
 }
 
 func getIdentityFromAssuredWorkloadsWorkloadSpec(ctx context.Context, reader client.Reader, obj client.Object) (*AssuredWorkloadsWorkloadIdentity, error) {
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
+	var resourceID string
+	if workload, ok := obj.(*AssuredWorkloadsWorkload); ok {
+		resourceID = common.ValueOf(workload.Spec.ResourceID)
+	} else if u, ok := obj.(*unstructured.Unstructured); ok {
+		resourceID, _, _ = unstructured.NestedString(u.Object, "spec", "resourceID")
 	}
 
 	location, err := refs.GetLocation(obj)
@@ -118,10 +120,18 @@ func (obj *AssuredWorkloadsWorkload) GetIdentity(ctx context.Context, reader cli
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
+		if statusIdentity.Organization != specIdentity.Organization || statusIdentity.Location != specIdentity.Location {
+			return nil, fmt.Errorf("cannot change AssuredWorkloadsWorkload parent (old parent=%q, new parent=%q)", statusIdentity.ParentString(), specIdentity.ParentString())
+		}
+		if specIdentity.Workload != "" && statusIdentity.Workload != specIdentity.Workload {
 			return nil, fmt.Errorf("cannot change AssuredWorkloadsWorkload identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
+		return statusIdentity, nil
 	}
 
 	return specIdentity, nil
+}
+
+func (obj *AssuredWorkloadsWorkload) ExternalIdentifier() *string {
+	return obj.Status.ExternalRef
 }
