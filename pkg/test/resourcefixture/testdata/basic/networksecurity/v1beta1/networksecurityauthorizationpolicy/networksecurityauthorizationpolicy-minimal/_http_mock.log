@@ -1,6 +1,6 @@
 GET https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -24,7 +24,7 @@ X-Xss-Protection: 0
 
 POST https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/authorizationPolicies?alt=json&authorizationPolicyId=networksecurityauthorizationpolicy-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 {
   "action": "ALLOW",
@@ -114,7 +114,7 @@ X-Xss-Protection: 0
 
 GET https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -133,6 +133,8 @@ X-Xss-Protection: 0
     "apiVersion": "v1beta1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "statusMessage": "",
     "target": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}",
     "verb": "create"
   },
@@ -155,6 +157,7 @@ X-Xss-Protection: 0
             "hosts": [
               "demo-service"
             ],
+            "httpHeaderMatch": null,
             "methods": [
               "POST"
             ],
@@ -180,6 +183,7 @@ X-Xss-Protection: 0
             "hosts": [
               "test-service"
             ],
+            "httpHeaderMatch": null,
             "methods": [
               "GET"
             ],
@@ -208,7 +212,7 @@ X-Xss-Protection: 0
 
 GET https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -289,7 +293,7 @@ X-Xss-Protection: 0
 
 PATCH https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 {
   "action": "ALLOW",
@@ -382,7 +386,7 @@ X-Xss-Protection: 0
 
 GET https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -401,6 +405,8 @@ X-Xss-Protection: 0
     "apiVersion": "v1beta1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "statusMessage": "",
     "target": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}",
     "verb": "update"
   },
@@ -423,6 +429,8 @@ X-Xss-Protection: 0
             "hosts": [
               "localhost"
             ],
+            "httpHeaderMatch": null,
+            "methods": [],
             "ports": [
               80
             ]
@@ -431,6 +439,8 @@ X-Xss-Protection: 0
             "hosts": [
               "localhost"
             ],
+            "httpHeaderMatch": null,
+            "methods": [],
             "ports": [
               8080
             ]
@@ -440,7 +450,8 @@ X-Xss-Protection: 0
           {
             "ipBlocks": [
               "1.2.3.4"
-            ]
+            ],
+            "principals": []
           }
         ]
       },
@@ -451,6 +462,7 @@ X-Xss-Protection: 0
               "test-service-2",
               "test-service"
             ],
+            "httpHeaderMatch": null,
             "methods": [
               "GET"
             ],
@@ -480,7 +492,7 @@ X-Xss-Protection: 0
 
 GET https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -565,7 +577,7 @@ X-Xss-Protection: 0
 
 DELETE https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -592,7 +604,7 @@ X-Xss-Protection: 0
 
 GET https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -611,6 +623,8 @@ X-Xss-Protection: 0
     "apiVersion": "v1beta1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "statusMessage": "",
     "target": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}",
     "verb": "delete"
   },
@@ -624,7 +638,7 @@ X-Xss-Protection: 0
 
 GET https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8

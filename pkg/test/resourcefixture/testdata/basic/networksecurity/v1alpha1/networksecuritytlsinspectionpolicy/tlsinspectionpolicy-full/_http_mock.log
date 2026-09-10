@@ -82,6 +82,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": null,
+    "requestedCancellation": false,
+    "statusMessage": "",
     "target": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}",
     "verb": "create"
   },
@@ -90,6 +93,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.TlsInspectionPolicy",
     "caPool": "projects/${projectId}/locations/us-central1/caPools/capool-dep-1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "customTlsFeatures": [],
     "description": "A TLS Inspection Policy to decrypt traffic",
     "excludePublicCaSet": true,
     "minTlsVersion": "TLS_1_2",
@@ -194,6 +198,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": null,
+    "requestedCancellation": false,
+    "statusMessage": "",
     "target": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}",
     "verb": "update"
   },
@@ -300,6 +307,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": null,
+    "requestedCancellation": false,
+    "statusMessage": "",
     "target": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}",
     "verb": "delete"
   },

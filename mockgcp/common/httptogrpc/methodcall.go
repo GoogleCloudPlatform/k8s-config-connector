@@ -17,11 +17,15 @@ package httptogrpc
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
 
+	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoregistry"
+	"google.golang.org/protobuf/types/known/anypb"
 	"k8s.io/klog/v2"
 )
 
@@ -122,10 +126,54 @@ func (c *httpMethodCall) SendResponse(response proto.Message, responseOptions Re
 	}
 	responseOptions.populateMarshalOptions(&marshalOptions)
 
+	emitUnpopulated := false
 	if c.grpcMethod != nil {
 		if c.grpcMethod.parentService.options.EmitUnpopulated {
-			marshalOptions.EmitUnpopulated = true
+			emitUnpopulated = true
 		}
+	} else if c.parent != nil {
+		if op, ok := response.(*longrunningpb.Operation); ok {
+			var target string
+			if op.Metadata != nil {
+				if m, err := anypb.UnmarshalNew(op.Metadata, proto.UnmarshalOptions{Resolver: protoregistry.GlobalTypes}); err == nil {
+					ref := m.ProtoReflect()
+					fd := ref.Descriptor().Fields().ByName("target")
+					if fd != nil {
+						target = ref.Get(fd).String()
+					}
+				}
+			}
+			if target == "" && op.GetResponse() != nil {
+				if m, err := anypb.UnmarshalNew(op.GetResponse(), proto.UnmarshalOptions{Resolver: protoregistry.GlobalTypes}); err == nil {
+					ref := m.ProtoReflect()
+					fd := ref.Descriptor().Fields().ByName("name")
+					if fd != nil {
+						target = ref.Get(fd).String()
+					}
+				}
+			}
+
+			if target != "" {
+				targetTokens := tokenizePathString(target)
+				for _, s := range c.parent.services {
+					for _, m := range s.methods {
+						if _, ok := m.pathMatcher.Match(targetTokens); ok {
+							if s.options.EmitUnpopulated {
+								emitUnpopulated = true
+							}
+							break
+						}
+					}
+					if emitUnpopulated {
+						break
+					}
+				}
+			}
+		}
+	}
+
+	if emitUnpopulated {
+		marshalOptions.EmitUnpopulated = true
 	}
 
 	body, err := marshalOptions.Marshal(response)
@@ -140,4 +188,23 @@ func (c *httpMethodCall) SendResponse(response proto.Message, responseOptions Re
 		klog.Errorf("failed to write error: %v", err)
 	}
 	klog.Infof("sent response %v with body %v", httpCode, string(body))
+}
+
+func tokenizePathString(p string) []string {
+	if idx := strings.Index(p, "://"); idx != -1 {
+		p = p[idx+3:]
+		if slashIdx := strings.Index(p, "/"); slashIdx != -1 {
+			p = p[slashIdx+1:]
+		}
+	}
+	suffix := ""
+	if idx := strings.Index(p, ":"); idx != -1 {
+		suffix = p[idx:]
+		p = p[:idx]
+	}
+	tokens := strings.Split(strings.TrimPrefix(p, "/"), "/")
+	if suffix != "" {
+		tokens = append(tokens, suffix)
+	}
+	return tokens
 }
