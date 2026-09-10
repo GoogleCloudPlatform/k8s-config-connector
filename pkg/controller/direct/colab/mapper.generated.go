@@ -263,7 +263,7 @@ func NotebookEUCConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 		return nil
 	}
 	out := &krm.NotebookEUCConfigObservedState{}
-	// MISSING: EUCDisabled
+	out.EUCDisabled = direct.LazyPtr(in.GetEucDisabled())
 	out.BypassActasCheck = direct.LazyPtr(in.GetBypassActasCheck())
 	return out
 }
@@ -272,7 +272,7 @@ func NotebookEUCConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.N
 		return nil
 	}
 	out := &pb.NotebookEucConfig{}
-	// MISSING: EUCDisabled
+	out.EucDisabled = direct.ValueOf(in.EUCDisabled)
 	out.BypassActasCheck = direct.ValueOf(in.BypassActasCheck)
 	return out
 }

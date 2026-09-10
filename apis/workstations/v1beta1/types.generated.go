@@ -531,50 +531,6 @@ type WorkstationConfig_ReadinessCheck struct {
 }
 */
 
-/* found existing non-generated go type "WorkstationObservedState", skipping
-
-// +kcc:observedstate:proto=google.cloud.workstations.v1.Workstation
-type WorkstationObservedState struct {
-	// Output only. A system-assigned unique identifier for this workstation.
-	// +kcc:proto:field=google.cloud.workstations.v1.Workstation.uid
-	Uid *string `json:"uid,omitempty"`
-
-	// Output only. Indicates whether this workstation is currently being updated
-	//  to match its intended state.
-	// +kcc:proto:field=google.cloud.workstations.v1.Workstation.reconciling
-	Reconciling *bool `json:"reconciling,omitempty"`
-
-	// Output only. Time when this workstation was created.
-	// +kcc:proto:field=google.cloud.workstations.v1.Workstation.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. Time when this workstation was most recently updated.
-	// +kcc:proto:field=google.cloud.workstations.v1.Workstation.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. Time when this workstation was most recently successfully
-	//  started, regardless of the workstation's initial state.
-	// +kcc:proto:field=google.cloud.workstations.v1.Workstation.start_time
-	StartTime *string `json:"startTime,omitempty"`
-
-	// Output only. Time when this workstation was soft-deleted.
-	// +kcc:proto:field=google.cloud.workstations.v1.Workstation.delete_time
-	DeleteTime *string `json:"deleteTime,omitempty"`
-
-	// Output only. Current state of the workstation.
-	// +kcc:proto:field=google.cloud.workstations.v1.Workstation.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. Host to which clients can send HTTPS traffic that will be
-	//  received by the workstation. Authorized traffic will be received to the
-	//  workstation as HTTP on port 80. To send traffic to a different port,
-	//  clients may prefix the host with the destination port in the format
-	//  `{port}-{host}`.
-	// +kcc:proto:field=google.cloud.workstations.v1.Workstation.host
-	Host *string `json:"host,omitempty"`
-}
-*/
-
 /* found existing non-generated go type "WorkstationClusterObservedState", skipping
 
 // +kcc:observedstate:proto=google.cloud.workstations.v1.WorkstationCluster
@@ -710,5 +666,49 @@ type WorkstationConfig_Host_GCEInstanceObservedState struct {
 	//  faster workstation startup.
 	// +kcc:proto:field=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.pooled_instances
 	PooledInstances *int32 `json:"pooledInstances,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "WorkstationObservedState", skipping
+
+// +kcc:observedstate:proto=google.cloud.workstations.v1.Workstation
+type WorkstationObservedState struct {
+	// Output only. A system-assigned unique identifier for this workstation.
+	// +kcc:proto:field=google.cloud.workstations.v1.Workstation.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. Indicates whether this workstation is currently being updated
+	//  to match its intended state.
+	// +kcc:proto:field=google.cloud.workstations.v1.Workstation.reconciling
+	Reconciling *bool `json:"reconciling,omitempty"`
+
+	// Output only. Time when this workstation was created.
+	// +kcc:proto:field=google.cloud.workstations.v1.Workstation.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Time when this workstation was most recently updated.
+	// +kcc:proto:field=google.cloud.workstations.v1.Workstation.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Time when this workstation was most recently successfully
+	//  started, regardless of the workstation's initial state.
+	// +kcc:proto:field=google.cloud.workstations.v1.Workstation.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Output only. Time when this workstation was soft-deleted.
+	// +kcc:proto:field=google.cloud.workstations.v1.Workstation.delete_time
+	DeleteTime *string `json:"deleteTime,omitempty"`
+
+	// Output only. Current state of the workstation.
+	// +kcc:proto:field=google.cloud.workstations.v1.Workstation.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Host to which clients can send HTTPS traffic that will be
+	//  received by the workstation. Authorized traffic will be received to the
+	//  workstation as HTTP on port 80. To send traffic to a different port,
+	//  clients may prefix the host with the destination port in the format
+	//  `{port}-{host}`.
+	// +kcc:proto:field=google.cloud.workstations.v1.Workstation.host
+	Host *string `json:"host,omitempty"`
 }
 */
