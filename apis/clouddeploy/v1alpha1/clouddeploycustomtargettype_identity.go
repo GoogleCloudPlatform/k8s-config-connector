@@ -20,14 +20,21 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+var _ identity.IdentityV2 = &CustomTargetTypeIdentity{}
 
 // CustomTargetTypeIdentity is the identity of a CloudDeployCustomTargetType.
 type CustomTargetTypeIdentity struct {
 	parent *CustomTargetTypeParent
 	id     string
+}
+
+func (i *CustomTargetTypeIdentity) Host() string {
+	return "clouddeploy.googleapis.com"
 }
 
 func (i *CustomTargetTypeIdentity) String() string {
@@ -40,6 +47,23 @@ func (i *CustomTargetTypeIdentity) ID() string {
 
 func (i *CustomTargetTypeIdentity) Parent() *CustomTargetTypeParent {
 	return i.parent
+}
+
+func (i *CustomTargetTypeIdentity) FromExternal(external string) error {
+	external = identity.StripReferencePrefixes(external, "clouddeploy.googleapis.com")
+	parent, id, err := ParseCustomTargetTypeExternal(external)
+	if err != nil {
+		return err
+	}
+	i.parent = parent
+	i.id = id
+	return nil
+}
+
+var _ identity.Resource = &CloudDeployCustomTargetType{}
+
+func (obj *CloudDeployCustomTargetType) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	return NewCustomTargetTypeIdentity(ctx, reader, obj)
 }
 
 type CustomTargetTypeParent struct {

@@ -100,8 +100,20 @@ func (m *modelCustomTargetType) AdapterForObject(ctx context.Context, op *direct
 }
 
 func (m *modelCustomTargetType) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	id := &krm.CustomTargetTypeIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		return nil, fmt.Errorf("parsing CustomTargetType URL %s: %w", url, err)
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &CustomTargetTypeAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type CustomTargetTypeAdapter struct {

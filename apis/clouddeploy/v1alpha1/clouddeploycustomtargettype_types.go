@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/kccscheme"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -144,6 +145,7 @@ type CloudDeployCustomTargetTypeList struct {
 
 func init() {
 	SchemeBuilder.Register(&CloudDeployCustomTargetType{}, &CloudDeployCustomTargetTypeList{})
+	kccscheme.RegisterType(CustomTargetTypeGVK, &CloudDeployCustomTargetType{})
 }
 
 // +kcc:proto=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCBRepoSource
