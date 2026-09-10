@@ -1,46 +1,37 @@
-367,368c367
+1,2c1
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-397c396
+31c30
 < POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
 ---
 > POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json&prettyPrint=false
-414,415c413,414
-<   "defaultPartitionExpirationMs": 3600000,
+48c47
 <   "defaultTableExpirationMs": 3600000,
 ---
->   "defaultPartitionExpirationMs": "3600000",
 >   "defaultTableExpirationMs": "3600000",
-474,475c473
+102,103c101
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-524c522
+150c148
 < PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 ---
 > PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-542,544d539
+168,171c166
 <   "datasetReference": {
 <     "datasetId": "bigquerydataset${uniqueId}"
 <   },
-549,550c544,545
-<   "defaultPartitionExpirationMs": 3800000,
-<   "defaultTableExpirationMs": 3800000,
+<   "defaultTableExpirationMs": 3600000,
 ---
->   "defaultPartitionExpirationMs": "3800000",
->   "defaultTableExpirationMs": "3800000",
-552a548
+>   "defaultTableExpirationMs": "3600000",
+173a169
 >   "isCaseInsensitive": false,
-557d552
+178d173
 <   "location": "US",
-601a597
->   "isCaseInsensitive": false,
-659a656
->   "isCaseInsensitive": false,
-675,676c672,730
+283,284c278,329
 < DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
 < Content-Type: application/json
 ---
@@ -63,12 +54,12 @@
 >       "role": "READER"
 >     },
 >     {
->       "role": "OWNER",
->       "specialGroup": "projectOwners"
+>       "iamMember": "allUsers",
+>       "role": "READER"
 >     },
 >     {
 >       "role": "OWNER",
->       "userByEmail": "user@google.com"
+>       "specialGroup": "projectOwners"
 >     }
 >   ],
 >   "creationTime": "123456789",
@@ -76,17 +67,11 @@
 >     "datasetId": "bigquerydataset${uniqueId}",
 >     "projectId": "${projectId}"
 >   },
->   "defaultCollation": "und:ci",
->   "defaultEncryptionConfiguration": {
->     "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
->   },
->   "defaultPartitionExpirationMs": "3800000",
->   "defaultTableExpirationMs": "3800000",
->   "description": "Fully Configured BigQuery Dataset updated",
+>   "defaultTableExpirationMs": "3600000",
+>   "description": "BigQuery Dataset With Access Block",
 >   "etag": "abcdef0123A=",
->   "friendlyName": "bigquerydataset-fullyconfigured-updated",
+>   "friendlyName": "bigquerydataset-accessonly",
 >   "id": "000000000000000000000",
->   "isCaseInsensitive": false,
 >   "kind": "bigquery#dataset",
 >   "labels": {
 >     "cnrm-test": "true",
@@ -94,9 +79,8 @@
 >   },
 >   "lastModifiedTime": "123456789",
 >   "location": "US",
->   "maxTimeTravelHours": "96",
+>   "maxTimeTravelHours": "168",
 >   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
->   "storageBillingModel": "LOGICAL",
 >   "type": "DEFAULT"
 > }
 > 

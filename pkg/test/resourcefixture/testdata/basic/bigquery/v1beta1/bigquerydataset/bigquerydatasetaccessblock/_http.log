@@ -155,16 +155,8 @@ Content-Type: application/json
       "role": "READER"
     },
     {
-      "domain": "google.com",
-      "role": "READER"
-    },
-    {
       "iamMember": "allUsers",
       "role": "READER"
-    },
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
     },
     {
       "role": "OWNER",
@@ -199,16 +191,8 @@ X-Xss-Protection: 0
       "role": "READER"
     },
     {
-      "domain": "google.com",
-      "role": "READER"
-    },
-    {
       "iamMember": "allUsers",
       "role": "READER"
-    },
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
     },
     {
       "role": "OWNER",
@@ -225,7 +209,6 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-accessblock",
   "id": "000000000000000000000",
-  "isCaseInsensitive": false,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
@@ -260,16 +243,8 @@ X-Xss-Protection: 0
       "role": "READER"
     },
     {
-      "domain": "google.com",
-      "role": "READER"
-    },
-    {
       "iamMember": "allUsers",
       "role": "READER"
-    },
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
     },
     {
       "role": "OWNER",
@@ -286,7 +261,6 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-accessblock",
   "id": "000000000000000000000",
-  "isCaseInsensitive": false,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
@@ -320,16 +294,8 @@ X-Xss-Protection: 0
       "role": "READER"
     },
     {
-      "domain": "google.com",
-      "role": "READER"
-    },
-    {
       "iamMember": "allUsers",
       "role": "READER"
-    },
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
     },
     {
       "role": "OWNER",
@@ -346,7 +312,6 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-accessblock",
   "id": "000000000000000000000",
-  "isCaseInsensitive": false,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",

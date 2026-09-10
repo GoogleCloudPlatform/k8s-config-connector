@@ -17,8 +17,6 @@ spec:
       - VIEWS
   - domain: google.com
     role: READER
-  - groupByEmail: kcc-eng@google.com
-    role: READER
   - role: OWNER
     specialGroup: projectOwners
   - routine:
