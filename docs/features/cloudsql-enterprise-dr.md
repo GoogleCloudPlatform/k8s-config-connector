@@ -48,6 +48,33 @@ Config Connector's Direct SQL Controller solves this declaratively by implementi
 - **Runtime Role Status Projection**: KCC projects the live replication role into `status.currentRole` (`PRIMARY` or `DR_REPLICA`), allowing platform engineers to monitor runtime topology without mutating `.spec`.
 - **Preservation of Legitimate Drift**: Changes to machine tiers, labels, authorized networks, or database flags are **not** suppressed and continue to reconcile seamlessly.
 
+### Zero-Touch Single-Apply Bootstrap (Circular Dependency Resolution)
+
+In Cloud SQL, creating an Enterprise DR cluster traditionally presents a circular dependency bootstrap challenge:
+1. The primary instance's `spec.replicationCluster.failoverDrReplicaRef` requires the DR replica to exist and be in `RUNNABLE` state in Cloud SQL.
+2. The DR replica's `spec.masterInstanceRef` requires the primary instance to exist and be `RUNNABLE`.
+
+Without controller coordination, a single `kubectl apply -f .` or GitOps commit causes the primary instance to fail creation with an HTTP 400 error (target replica not found).
+
+KCC eliminates this circular gap completely:
+- **Creation Deferral**: During the initial `instances.insert` of the primary instance, KCC automatically defers the `failoverDrReplicaName` designation, allowing the primary to create cleanly.
+- **Replica Readiness Gating**: During subsequent reconciliation cycles, KCC inspects the target DR replica in Cloud SQL. If the replica is still creating (`PENDING_CREATE`), KCC reconciles any other non-DR configuration, emits condition `Ready=False, Reason=ReplicationClusterPending`, and requests a non-blocking requeue.
+- **Autonomous Convergence**: As soon as the DR replica reaches `RUNNABLE`, KCC automatically issues the `instances.update` call designating `failoverDrReplicaName`. Both instances reach `Ready=True, Reason=UpToDate` with zero human intervention.
+
+### Opting Out of Diff Suppression (Declarative Purism)
+
+For platform environments enforcing strict declarative semantics—where any out-of-band role swap must be represented by updating GitOps manifests rather than relying on controller diff suppression—users can opt out by adding the following annotation:
+
+```yaml
+metadata:
+  annotations:
+    cnrm.cloud.google.com/diff-suppression: "false"
+```
+
+When diff suppression is disabled:
+- KCC strictly compares desired and actual instance roles.
+- If a Cloud SQL switchover or failover occurs, KCC **halts** mutating reconciliation to prevent corrupting the active database, sets condition `Ready=False, Reason=RoleInversionDetected`, and provides a clear diagnostic message alerting operators that a GitOps manifest update is required.
+
 ---
 
 ## 3. Resource Specifications
@@ -115,6 +142,8 @@ Config Connector communicates the state of Cloud SQL DR operations via standard 
 | Condition | Status | Reason | Meaning |
 | :--- | :--- | :--- | :--- |
 | `Ready` | `False` | `FailoverInProgress` | Cloud SQL is actively executing a `SWITCHOVER`, `FAILOVER`, or `PROMOTE_REPLICA` operation. KCC enters a non-blocking standby loop. |
+| `Ready` | `False` | `ReplicationClusterPending` | Waiting for target DR replica to reach `RUNNABLE` state in Cloud SQL before designating failover target during cluster bootstrap. |
+| `Ready` | `False` | `RoleInversionDetected` | Emitted when `cnrm.cloud.google.com/diff-suppression: "false"` is configured and live instance role has inverted due to Cloud SQL switchover. Halts mutating reconciliation and alerts operators to update GitOps manifests. |
 | `Ready` | `True` | `FailoverAcknowledged` | The failover operation has completed successfully. KCC has acknowledged the new replication topology and resumed standard orchestration. |
 | `Ready` | `True` | `UpToDate` | The resource matches desired declarative intent. |
 

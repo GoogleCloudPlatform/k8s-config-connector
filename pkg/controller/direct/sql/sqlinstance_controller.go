@@ -706,6 +706,17 @@ func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, createOp *direc
 		return err
 	}
 
+	// In Cloud SQL, designating a failover DR replica requires the replica to already exist and be RUNNABLE.
+	// When bootstrapping a DR cluster via GitOps, creating the primary with failoverDrReplicaName fails
+	// because the replica has not been created yet. We defer failoverDrReplicaName to the subsequent update cycle.
+	if desiredGCP.ReplicationCluster != nil && desiredGCP.ReplicationCluster.FailoverDrReplicaName != "" {
+		log.V(2).Info("deferring failoverDrReplicaName designation during initial instance insertion", "replica", desiredGCP.ReplicationCluster.FailoverDrReplicaName)
+		desiredGCP.ReplicationCluster.FailoverDrReplicaName = ""
+		if !desiredGCP.ReplicationCluster.DrReplica {
+			desiredGCP.ReplicationCluster = nil
+		}
+	}
+
 	op, err := a.sqlInstancesClient.Insert(a.projectID, desiredGCP).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("creating SQLInstance %s failed: %w", a.desired.Name, err)
@@ -939,15 +950,66 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		log.V(2).Info("instance maintenanceVersion updated", "op", op, "instance", updated)
 	}
 
+	// Support opting out of Enterprise DR diff suppression for strict declarative environments.
+	suppressDRDiffs := true
+	if a.desired.Annotations != nil && a.desired.Annotations["cnrm.cloud.google.com/diff-suppression"] == "false" {
+		suppressDRDiffs = false
+	}
+
 	// Finally, update rest of the fields
 	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.actual, a.fieldMeta)
 	if err != nil {
 		return err
 	}
 
+	// In Cloud SQL, designating a failover DR replica requires the target replica to already exist and be RUNNABLE.
+	// When bootstrapping a DR cluster via GitOps, both primary and replica may be created concurrently.
+	// If the replica is still creating or not yet RUNNABLE, we defer setting failoverDrReplicaName,
+	// apply any other pending configuration updates, set condition ReplicationClusterPending, and requeue.
+	drReplicaPending := false
+	var pendingReplicaName string
+	var pendingReplicaState string
+	if desiredGCP.ReplicationCluster != nil && desiredGCP.ReplicationCluster.FailoverDrReplicaName != "" {
+		desiredTarget := desiredGCP.ReplicationCluster.FailoverDrReplicaName
+		actualTarget := ""
+		if a.actual.ReplicationCluster != nil {
+			actualTarget = a.actual.ReplicationCluster.FailoverDrReplicaName
+		}
+		if !isInstanceNameEqual(desiredTarget, actualTarget) {
+			runnable, state, err := a.isTargetReplicaRunnable(ctx, desiredTarget)
+			if err != nil {
+				return fmt.Errorf("checking readiness of target DR replica %s failed: %w", desiredTarget, err)
+			}
+			if !runnable {
+				drReplicaPending = true
+				pendingReplicaName = desiredTarget
+				pendingReplicaState = state
+				log.V(2).Info("target DR replica is not yet RUNNABLE in Cloud SQL; deferring failover designation", "replica", desiredTarget, "state", state)
+				// Suppress failoverDrReplicaName diff for this update cycle so other settings can still update cleanly
+				desiredGCP.ReplicationCluster.FailoverDrReplicaName = actualTarget
+				if actualTarget == "" && !desiredGCP.ReplicationCluster.DrReplica {
+					desiredGCP.ReplicationCluster = nil
+				}
+			}
+		}
+	}
+
+	if !suppressDRDiffs && isEnterpriseDRRoleSwap(desiredGCP, a.actual) {
+		status, err := SQLInstanceStatusGCPToKRM(a.actual)
+		if err != nil {
+			return fmt.Errorf("updating SQLInstance status failed: %w", err)
+		}
+		readyCondition := k8s.NewCustomReadyCondition(
+			corev1.ConditionFalse,
+			"RoleInversionDetected",
+			"Live instance role has inverted due to Cloud SQL switchover. Manual manifest update required because diff-suppression is disabled.",
+		)
+		return updateOp.UpdateStatus(ctx, status, &readyCondition)
+	}
+
 	instanceForStatus := a.actual
 
-	if instanceDiff := DiffInstances(desiredGCP, a.actual); instanceDiff.HasDiff() {
+	if instanceDiff := DiffInstancesWithConfig(desiredGCP, a.actual, suppressDRDiffs); instanceDiff.HasDiff() {
 		updateOp.RecordUpdatingEvent()
 		instanceDiff.Object = u
 
@@ -981,7 +1043,32 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return err
 	}
 
+	if drReplicaPending {
+		updateOp.RequestRequeue()
+		readyCondition := k8s.NewCustomReadyCondition(
+			corev1.ConditionFalse,
+			"ReplicationClusterPending",
+			fmt.Sprintf("Waiting for DR replica %q (state: %s) to become RUNNABLE in Cloud SQL before designating failover target.", pendingReplicaName, pendingReplicaState),
+		)
+		return updateOp.UpdateStatus(ctx, status, &readyCondition)
+	}
+
 	return a.updateFinalStatus(ctx, updateOp, u, status)
+}
+
+func (a *sqlInstanceAdapter) isTargetReplicaRunnable(ctx context.Context, targetRef string) (bool, string, error) {
+	targetProj, targetName := parseInstanceReference(targetRef)
+	if targetProj == "" {
+		targetProj = a.projectID
+	}
+	replica, err := a.sqlInstancesClient.Get(targetProj, targetName).Context(ctx).Do()
+	if err != nil {
+		if direct.IsNotFound(err) {
+			return false, "NOT_FOUND", nil
+		}
+		return false, "", err
+	}
+	return replica.State == "RUNNABLE", replica.State, nil
 }
 
 func (a *sqlInstanceAdapter) SetLastModifiedCookie(ctx context.Context, op directbase.Operation, actual *api.DatabaseInstance) error {

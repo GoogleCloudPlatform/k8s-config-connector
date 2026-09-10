@@ -86,6 +86,11 @@ This suite runs directly against the in-memory Go direct controller and exercise
 | `TestDiffInstances_DR_DecommissionFailoverDrReplica` | Ensures that when an operator deliberately removes `spec.replicationCluster.failoverDrReplicaRef` in Git (decommissioning DR), KCC detects the diff and reconciles it when not in an active role swap. |
 | `TestDiffInstances_DR_LegitimateConfigDriftDetected` | Ensures that while role-swap fields are suppressed, legitimate configuration drift (tier upgrades, database flags, label additions) is immediately detected and reconciled. |
 | `TestDiffInstances_DR_PublicIP_NoPSA` | Validates Enterprise DR diff suppression on topologies configured without Private Services Access (PSA) using authorized networks or public IPs. |
+| `TestSQLInstance_Create_DefersFailoverDrReplica` | **Zero-Touch Bootstrap Deferral**: Verifies that when creating a primary with `failoverDrReplicaRef`, KCC automatically strips `failoverDrReplicaName` on initial insert so Cloud SQL does not reject the call with HTTP 400. |
+| `TestSQLInstance_Update_WaitsForReplicaRunnable` | **Target Replica Readiness Guard**: Tests that during `Update()`, if target DR replica is not yet `RUNNABLE` (`PENDING_CREATE`), KCC defers setting `failoverDrReplicaName`, emits `Ready=False, Reason=ReplicationClusterPending`, and requests a non-blocking requeue. |
+| `TestSQLInstance_Update_DesignatesFailoverDrReplica_WhenRunnable` | **Autonomous DR Designation**: Tests that once target replica reaches `RUNNABLE`, KCC automatically updates the primary with `failoverDrReplicaName`. |
+| `TestDiffInstances_DR_OptOutAnnotation` | **Declarative Purism Diff Detection**: Verifies that setting `cnrm.cloud.google.com/diff-suppression: "false"` restores diff reporting on inverted fields (`.instanceType`, `.masterInstanceName`). |
+| `TestSQLInstance_Update_OptOutAnnotation_RoleInversionDetected` | **Opt-Out Safety Guard**: Verifies that when diff suppression is disabled and a role swap occurs, KCC halts mutating reconciliation and emits `Ready=False, Reason=RoleInversionDetected`. |
 
 ---
 

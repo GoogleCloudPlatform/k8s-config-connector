@@ -29,6 +29,7 @@ import (
 	"k8s.io/client-go/tools/record"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
@@ -48,6 +49,12 @@ func newTestUpdateOp(u *unstructured.Unstructured) *directbase.UpdateOperation {
 	c := fake.NewClientBuilder().WithObjects(u).WithStatusSubresource(u).Build()
 	lh := lifecyclehandler.NewLifecycleHandler(c, &record.FakeRecorder{})
 	return directbase.NewUpdateOperation(lh, c, u)
+}
+
+func newTestCreateOp(u *unstructured.Unstructured) *directbase.CreateOperation {
+	c := fake.NewClientBuilder().WithObjects(u).WithStatusSubresource(u).Build()
+	lh := lifecyclehandler.NewLifecycleHandler(c, &record.FakeRecorder{})
+	return directbase.NewCreateOperation(lh, c, u)
 }
 
 // TestDiffInstances_DR_RoleSwap_MultiEngine tests that DiffInstances cleanly suppresses
@@ -1739,5 +1746,563 @@ func TestSQLInstance_DeletionBlocked_TransientOperationError(t *testing.T) {
 	}
 	if deletionInvoked {
 		t.Fatalf("DELETE API call was invoked despite operation check failure during MAINTENANCE!")
+	}
+}
+
+// TestSQLInstance_Create_DefersFailoverDrReplica verifies that when creating a new primary
+// instance with a failoverDrReplicaRef, the controller strips/defers failoverDrReplicaName
+// from the initial instances.insert request, preventing Cloud SQL from rejecting the call with a 400 error.
+func TestSQLInstance_Create_DefersFailoverDrReplica(t *testing.T) {
+	ctx := context.Background()
+
+	var insertedInstance *api.DatabaseInstance
+	transport := &mockTransport{
+		roundTripFunc: func(req *http.Request) (*http.Response, error) {
+			if req.Method == "POST" && strings.Contains(req.URL.Path, "/instances") {
+				body, err := io.ReadAll(req.Body)
+				if err != nil {
+					return nil, err
+				}
+				insertedInstance = &api.DatabaseInstance{}
+				if err := json.Unmarshal(body, insertedInstance); err != nil {
+					return nil, err
+				}
+				op := &api.Operation{Name: "op-create", Status: "DONE"}
+				data, _ := json.Marshal(op)
+				return &http.Response{
+					StatusCode: 200,
+					Header:     make(http.Header),
+					Body:       io.NopCloser(bytes.NewReader(data)),
+				}, nil
+			}
+			if req.Method == "GET" && strings.Contains(req.URL.Path, "/instances/dr-primary") {
+				inst := &api.DatabaseInstance{
+					Name:  "dr-primary",
+					State: "RUNNABLE",
+					Settings: &api.Settings{
+						Tier: "db-perf-optimized-N-2",
+						BackupConfiguration: &api.BackupConfiguration{
+							Enabled: true,
+						},
+					},
+				}
+				data, _ := json.Marshal(inst)
+				return &http.Response{
+					StatusCode: 200,
+					Header:     make(http.Header),
+					Body:       io.NopCloser(bytes.NewReader(data)),
+				}, nil
+			}
+			if req.Method == "GET" && strings.Contains(req.URL.Path, "/users") {
+				usersList := &api.UsersListResponse{}
+				data, _ := json.Marshal(usersList)
+				return &http.Response{
+					StatusCode: 200,
+					Header:     make(http.Header),
+					Body:       io.NopCloser(bytes.NewReader(data)),
+				}, nil
+			}
+			return &http.Response{
+				StatusCode: 200,
+				Header:     make(http.Header),
+				Body:       io.NopCloser(bytes.NewReader([]byte("{}"))),
+			}, nil
+		},
+	}
+
+	sqlService, err := api.NewService(ctx, option.WithHTTPClient(&http.Client{Transport: transport}))
+	if err != nil {
+		t.Fatalf("creating sql service: %v", err)
+	}
+
+	u := &unstructured.Unstructured{
+		Object: map[string]any{
+			"apiVersion": "sql.cnrm.cloud.google.com/v1beta1",
+			"kind":       "SQLInstance",
+			"metadata": map[string]any{
+				"name":      "dr-primary",
+				"namespace": "default",
+			},
+		},
+	}
+
+	drReplicaName := "dr-replica"
+	dbVersion := "POSTGRES_16"
+	tier := "db-perf-optimized-N-2"
+	adapter := &sqlInstanceAdapter{
+		projectID:  "test-project",
+		resourceID: "dr-primary",
+		desired: &krm.SQLInstance{
+			Spec: krm.SQLInstanceSpec{
+				DatabaseVersion: &dbVersion,
+				Settings: krm.InstanceSettings{
+					Tier: tier,
+				},
+				ReplicationCluster: &krm.ReplicationCluster{
+					FailoverDrReplicaRef: &refs.SQLInstanceRef{
+						External: drReplicaName,
+					},
+				},
+			},
+		},
+		sqlInstancesClient:  api.NewInstancesService(sqlService),
+		sqlOperationsClient: api.NewOperationsService(sqlService),
+		sqlUsersClient:      api.NewUsersService(sqlService),
+		fieldMeta:           make(map[string]*FieldMetadata),
+	}
+
+	createOp := newTestCreateOp(u)
+	if err := adapter.Create(ctx, createOp); err != nil {
+		t.Fatalf("Create returned error: %v", err)
+	}
+
+	if insertedInstance == nil {
+		t.Fatalf("instances.insert was not called")
+	}
+
+	if insertedInstance.ReplicationCluster != nil && insertedInstance.ReplicationCluster.FailoverDrReplicaName != "" {
+		t.Fatalf("expected FailoverDrReplicaName to be deferred/stripped during insert, but got: %q", insertedInstance.ReplicationCluster.FailoverDrReplicaName)
+	}
+}
+
+// TestSQLInstance_Update_WaitsForReplicaRunnable tests that during Update(), if a target DR replica
+// is still creating (not yet RUNNABLE), the controller defers designating failoverDrReplicaName,
+// requests a non-blocking requeue, and sets status condition Ready=False, Reason=ReplicationClusterPending.
+func TestSQLInstance_Update_WaitsForReplicaRunnable(t *testing.T) {
+	ctx := context.Background()
+
+	mutatingCallInvoked := false
+	transport := &mockTransport{
+		roundTripFunc: func(req *http.Request) (*http.Response, error) {
+			if (req.Method == "PUT" || req.Method == "PATCH") && strings.Contains(req.URL.Path, "/instances/dr-primary") {
+				mutatingCallInvoked = true
+				op := &api.Operation{Name: "op-update", Status: "DONE"}
+				data, _ := json.Marshal(op)
+				return &http.Response{
+					StatusCode: 200,
+					Header:     make(http.Header),
+					Body:       io.NopCloser(bytes.NewReader(data)),
+				}, nil
+			}
+			// DR replica is currently in PENDING_CREATE state in Cloud SQL
+			if req.Method == "GET" && strings.Contains(req.URL.Path, "/instances/dr-replica") {
+				replicaInst := &api.DatabaseInstance{
+					Name:  "dr-replica",
+					State: "PENDING_CREATE",
+				}
+				data, _ := json.Marshal(replicaInst)
+				return &http.Response{
+					StatusCode: 200,
+					Header:     make(http.Header),
+					Body:       io.NopCloser(bytes.NewReader(data)),
+				}, nil
+			}
+			// Operations list check
+			if req.Method == "GET" && strings.Contains(req.URL.Path, "/operations") {
+				opList := &api.OperationsListResponse{}
+				data, _ := json.Marshal(opList)
+				return &http.Response{
+					StatusCode: 200,
+					Header:     make(http.Header),
+					Body:       io.NopCloser(bytes.NewReader(data)),
+				}, nil
+			}
+			return &http.Response{
+				StatusCode: 200,
+				Header:     make(http.Header),
+				Body:       io.NopCloser(bytes.NewReader([]byte("{}"))),
+			}, nil
+		},
+	}
+
+	sqlService, err := api.NewService(ctx, option.WithHTTPClient(&http.Client{Transport: transport}))
+	if err != nil {
+		t.Fatalf("creating sql service: %v", err)
+	}
+
+	u := &unstructured.Unstructured{
+		Object: map[string]any{
+			"apiVersion": "sql.cnrm.cloud.google.com/v1beta1",
+			"kind":       "SQLInstance",
+			"metadata": map[string]any{
+				"name":      "dr-primary",
+				"namespace": "default",
+			},
+		},
+	}
+
+	drReplicaName := "dr-replica"
+	dbVersion := "POSTGRES_16"
+	tier := "db-perf-optimized-N-2"
+	resourceID := "dr-primary"
+	backupEnabled := true
+	desiredKRM := &krm.SQLInstance{
+		Spec: krm.SQLInstanceSpec{
+			ResourceID:      &resourceID,
+			DatabaseVersion: &dbVersion,
+			Settings: krm.InstanceSettings{
+				Tier: tier,
+				BackupConfiguration: &krm.InstanceBackupConfiguration{
+					Enabled: &backupEnabled,
+				},
+			},
+			ReplicationCluster: &krm.ReplicationCluster{
+				FailoverDrReplicaRef: &refs.SQLInstanceRef{
+					External: drReplicaName,
+				},
+			},
+		},
+	}
+	fieldMeta := make(map[string]*FieldMetadata)
+	actualGCP, err := SQLInstanceKRMToGCP(desiredKRM, nil, fieldMeta)
+	if err != nil {
+		t.Fatalf("converting desired to GCP: %v", err)
+	}
+	actualGCP.State = "RUNNABLE"
+	actualGCP.ReplicationCluster = nil
+
+	adapter := &sqlInstanceAdapter{
+		projectID:           "test-project",
+		resourceID:          "dr-primary",
+		desired:             desiredKRM,
+		actual:              actualGCP,
+		sqlInstancesClient:  api.NewInstancesService(sqlService),
+		sqlOperationsClient: api.NewOperationsService(sqlService),
+		fieldMeta:           fieldMeta,
+	}
+
+	updateOp := newTestUpdateOp(u)
+	if err := adapter.Update(ctx, updateOp); err != nil {
+		t.Fatalf("Update returned error: %v", err)
+	}
+
+	if mutatingCallInvoked {
+		t.Fatalf("mutating update was issued while target DR replica was still PENDING_CREATE")
+	}
+
+	if !updateOp.RequeueRequested {
+		t.Fatalf("expected RequeueRequested=true while waiting for replica to become RUNNABLE")
+	}
+
+	conds, found, _ := unstructured.NestedSlice(u.Object, "status", "conditions")
+	if !found || len(conds) == 0 {
+		t.Fatalf("expected status conditions on unstructured, got none")
+	}
+	latestCond := conds[0].(map[string]any)
+	if latestCond["reason"] != "ReplicationClusterPending" {
+		t.Fatalf("expected Reason=ReplicationClusterPending, got: %v", latestCond["reason"])
+	}
+	if latestCond["status"] != string(corev1.ConditionFalse) {
+		t.Fatalf("expected Status=False, got: %v", latestCond["status"])
+	}
+	msg, _ := latestCond["message"].(string)
+	if !strings.Contains(msg, "PENDING_CREATE") || !strings.Contains(msg, "dr-replica") {
+		t.Fatalf("expected condition message to mention replica and state, got: %q", msg)
+	}
+}
+
+// TestSQLInstance_Update_DesignatesFailoverDrReplica_WhenRunnable tests that once the target
+// DR replica reaches RUNNABLE state, the controller successfully updates the primary instance
+// with failoverDrReplicaName.
+func TestSQLInstance_Update_DesignatesFailoverDrReplica_WhenRunnable(t *testing.T) {
+	ctx := context.Background()
+
+	drReplicaName := "dr-replica"
+	dbVersion := "POSTGRES_16"
+	tier := "db-perf-optimized-N-2"
+	resourceID := "dr-primary"
+	backupEnabled := true
+	desiredKRM := &krm.SQLInstance{
+		Spec: krm.SQLInstanceSpec{
+			ResourceID:      &resourceID,
+			DatabaseVersion: &dbVersion,
+			Settings: krm.InstanceSettings{
+				Tier: tier,
+				BackupConfiguration: &krm.InstanceBackupConfiguration{
+					Enabled: &backupEnabled,
+				},
+			},
+			ReplicationCluster: &krm.ReplicationCluster{
+				FailoverDrReplicaRef: &refs.SQLInstanceRef{
+					External: drReplicaName,
+				},
+			},
+		},
+	}
+	fieldMeta := make(map[string]*FieldMetadata)
+	actualGCP, err := SQLInstanceKRMToGCP(desiredKRM, nil, fieldMeta)
+	if err != nil {
+		t.Fatalf("converting desired to GCP: %v", err)
+	}
+	actualGCP.State = "RUNNABLE"
+	actualGCP.ReplicationCluster = nil
+
+	var updatedInstance *api.DatabaseInstance
+	transport := &mockTransport{
+		roundTripFunc: func(req *http.Request) (*http.Response, error) {
+			if req.Method == "PUT" && strings.Contains(req.URL.Path, "/instances/dr-primary") {
+				body, err := io.ReadAll(req.Body)
+				if err != nil {
+					return nil, err
+				}
+				updatedInstance = &api.DatabaseInstance{}
+				if err := json.Unmarshal(body, updatedInstance); err != nil {
+					return nil, err
+				}
+				op := &api.Operation{Name: "op-update", Status: "DONE"}
+				data, _ := json.Marshal(op)
+				return &http.Response{
+					StatusCode: 200,
+					Header:     make(http.Header),
+					Body:       io.NopCloser(bytes.NewReader(data)),
+				}, nil
+			}
+			// DR replica is RUNNABLE
+			if req.Method == "GET" && strings.Contains(req.URL.Path, "/instances/dr-replica") {
+				replicaInst := &api.DatabaseInstance{
+					Name:  "dr-replica",
+					State: "RUNNABLE",
+				}
+				data, _ := json.Marshal(replicaInst)
+				return &http.Response{
+					StatusCode: 200,
+					Header:     make(http.Header),
+					Body:       io.NopCloser(bytes.NewReader(data)),
+				}, nil
+			}
+			// GET primary after update
+			if req.Method == "GET" && strings.Contains(req.URL.Path, "/instances/dr-primary") {
+				primaryInst, _ := SQLInstanceKRMToGCP(desiredKRM, nil, fieldMeta)
+				primaryInst.State = "RUNNABLE"
+				data, _ := json.Marshal(primaryInst)
+				return &http.Response{
+					StatusCode: 200,
+					Header:     make(http.Header),
+					Body:       io.NopCloser(bytes.NewReader(data)),
+				}, nil
+			}
+			// Operations list
+			if req.Method == "GET" && strings.Contains(req.URL.Path, "/operations") {
+				opList := &api.OperationsListResponse{}
+				data, _ := json.Marshal(opList)
+				return &http.Response{
+					StatusCode: 200,
+					Header:     make(http.Header),
+					Body:       io.NopCloser(bytes.NewReader(data)),
+				}, nil
+			}
+			return &http.Response{
+				StatusCode: 200,
+				Header:     make(http.Header),
+				Body:       io.NopCloser(bytes.NewReader([]byte("{}"))),
+			}, nil
+		},
+	}
+
+	sqlService, err := api.NewService(ctx, option.WithHTTPClient(&http.Client{Transport: transport}))
+	if err != nil {
+		t.Fatalf("creating sql service: %v", err)
+	}
+
+	u := &unstructured.Unstructured{
+		Object: map[string]any{
+			"apiVersion": "sql.cnrm.cloud.google.com/v1beta1",
+			"kind":       "SQLInstance",
+			"metadata": map[string]any{
+				"name":      "dr-primary",
+				"namespace": "default",
+			},
+		},
+	}
+
+	adapter := &sqlInstanceAdapter{
+		projectID:           "test-project",
+		resourceID:          "dr-primary",
+		desired:             desiredKRM,
+		actual:              actualGCP,
+		sqlInstancesClient:  api.NewInstancesService(sqlService),
+		sqlOperationsClient: api.NewOperationsService(sqlService),
+		fieldMeta:           fieldMeta,
+	}
+
+	updateOp := newTestUpdateOp(u)
+	if err := adapter.Update(ctx, updateOp); err != nil {
+		t.Fatalf("Update returned error: %v", err)
+	}
+
+	if updateOp.RequeueRequested {
+		t.Fatalf("expected RequeueRequested=false when replica is RUNNABLE")
+	}
+
+	if updatedInstance == nil {
+		t.Fatalf("expected Update to be called on primary instance")
+	}
+
+	if updatedInstance.ReplicationCluster == nil || updatedInstance.ReplicationCluster.FailoverDrReplicaName != "dr-replica" {
+		t.Fatalf("expected failoverDrReplicaName='dr-replica' in update request, got: %v", updatedInstance.ReplicationCluster)
+	}
+}
+
+// TestDiffInstances_DR_OptOutAnnotation tests that DiffInstancesWithConfig respects the
+// suppressDRDiffs parameter, allowing users to opt out of diff suppression via
+// cnrm.cloud.google.com/diff-suppression: "false".
+func TestDiffInstances_DR_OptOutAnnotation(t *testing.T) {
+	desired := &api.DatabaseInstance{
+		Name:            "db-primary",
+		DatabaseVersion: "POSTGRES_16",
+		Settings:        &api.Settings{Tier: "db-perf-optimized-N-2"},
+		ReplicationCluster: &api.ReplicationCluster{
+			FailoverDrReplicaName: "db-replica",
+		},
+	}
+	// Post-switchover: db-primary is now in GCP as a replica pointing to db-replica
+	actualRoleSwapped := &api.DatabaseInstance{
+		Name:               "db-primary",
+		DatabaseVersion:    "POSTGRES_16",
+		MasterInstanceName: "db-replica",
+		InstanceType:       "READ_REPLICA_INSTANCE",
+		Settings:           &api.Settings{Tier: "db-perf-optimized-N-2"},
+		ReplicationCluster: &api.ReplicationCluster{
+			DrReplica:        true,
+			PsaWriteEndpoint: "dr-cluster-write.sql.goog",
+		},
+	}
+
+	// 1. Default (suppressDRDiffs = true): diff is cleanly suppressed
+	diffDefault := DiffInstancesWithConfig(desired, actualRoleSwapped, true)
+	if diffDefault.HasDiff() {
+		t.Fatalf("expected no diff under default suppression, got: %v", diffDefault)
+	}
+
+	// 2. Opt-out (suppressDRDiffs = false): diff IS reported on instanceType and masterInstanceName
+	diffOptOut := DiffInstancesWithConfig(desired, actualRoleSwapped, false)
+	if !diffOptOut.HasDiff() {
+		t.Fatalf("expected diff to be detected when suppressDRDiffs=false, got none")
+	}
+
+	fields := make(map[string]bool)
+	for _, f := range diffOptOut.Fields {
+		fields[f.ID] = true
+	}
+	if !fields[".instanceType"] {
+		t.Errorf("expected diff on .instanceType when opt-out enabled")
+	}
+	if !fields[".masterInstanceName"] {
+		t.Errorf("expected diff on .masterInstanceName when opt-out enabled")
+	}
+}
+
+// TestSQLInstance_Update_OptOutAnnotation_RoleInversionDetected tests that when a user sets
+// cnrm.cloud.google.com/diff-suppression: "false" and a role swap is detected, the controller
+// sets status condition Ready=False, Reason=RoleInversionDetected.
+func TestSQLInstance_Update_OptOutAnnotation_RoleInversionDetected(t *testing.T) {
+	ctx := context.Background()
+
+	transport := &mockTransport{
+		roundTripFunc: func(req *http.Request) (*http.Response, error) {
+			// Operations list
+			if req.Method == "GET" && strings.Contains(req.URL.Path, "/operations") {
+				opList := &api.OperationsListResponse{}
+				data, _ := json.Marshal(opList)
+				return &http.Response{
+					StatusCode: 200,
+					Header:     make(http.Header),
+					Body:       io.NopCloser(bytes.NewReader(data)),
+				}, nil
+			}
+			return &http.Response{
+				StatusCode: 200,
+				Header:     make(http.Header),
+				Body:       io.NopCloser(bytes.NewReader([]byte("{}"))),
+			}, nil
+		},
+	}
+
+	sqlService, err := api.NewService(ctx, option.WithHTTPClient(&http.Client{Transport: transport}))
+	if err != nil {
+		t.Fatalf("creating sql service: %v", err)
+	}
+
+	u := &unstructured.Unstructured{
+		Object: map[string]any{
+			"apiVersion": "sql.cnrm.cloud.google.com/v1beta1",
+			"kind":       "SQLInstance",
+			"metadata": map[string]any{
+				"name":      "dr-primary",
+				"namespace": "default",
+				"annotations": map[string]any{
+					"cnrm.cloud.google.com/diff-suppression": "false",
+				},
+			},
+		},
+	}
+
+	drReplicaName := "dr-replica"
+	dbVersion := "POSTGRES_16"
+	tier := "db-perf-optimized-N-2"
+	resourceID := "dr-primary"
+	backupEnabled := true
+	desiredKRM := &krm.SQLInstance{
+		Spec: krm.SQLInstanceSpec{
+			ResourceID:      &resourceID,
+			DatabaseVersion: &dbVersion,
+			Settings: krm.InstanceSettings{
+				Tier: tier,
+				BackupConfiguration: &krm.InstanceBackupConfiguration{
+					Enabled: &backupEnabled,
+				},
+			},
+			ReplicationCluster: &krm.ReplicationCluster{
+				FailoverDrReplicaRef: &refs.SQLInstanceRef{
+					External: drReplicaName,
+				},
+			},
+		},
+	}
+	desiredKRM.Annotations = map[string]string{
+		"cnrm.cloud.google.com/diff-suppression": "false",
+	}
+
+	fieldMeta := make(map[string]*FieldMetadata)
+	actualGCP, err := SQLInstanceKRMToGCP(desiredKRM, nil, fieldMeta)
+	if err != nil {
+		t.Fatalf("converting desired to GCP: %v", err)
+	}
+	actualGCP.State = "RUNNABLE"
+	actualGCP.MasterInstanceName = drReplicaName
+	actualGCP.InstanceType = "READ_REPLICA_INSTANCE"
+	actualGCP.ReplicationCluster = &api.ReplicationCluster{
+		DrReplica: true,
+	}
+
+	adapter := &sqlInstanceAdapter{
+		projectID:           "test-project",
+		resourceID:          "dr-primary",
+		desired:             desiredKRM,
+		actual:              actualGCP,
+		sqlInstancesClient:  api.NewInstancesService(sqlService),
+		sqlOperationsClient: api.NewOperationsService(sqlService),
+		fieldMeta:           fieldMeta,
+	}
+
+	updateOp := newTestUpdateOp(u)
+	if err := adapter.Update(ctx, updateOp); err != nil {
+		t.Fatalf("Update returned error: %v", err)
+	}
+
+	conds, found, _ := unstructured.NestedSlice(u.Object, "status", "conditions")
+	if !found || len(conds) == 0 {
+		t.Fatalf("expected status conditions on unstructured, got none")
+	}
+	latestCond := conds[0].(map[string]any)
+	if latestCond["reason"] != "RoleInversionDetected" {
+		t.Fatalf("expected Reason=RoleInversionDetected, got: %v", latestCond["reason"])
+	}
+	if latestCond["status"] != string(corev1.ConditionFalse) {
+		t.Fatalf("expected Status=False, got: %v", latestCond["status"])
+	}
+	msg, _ := latestCond["message"].(string)
+	if !strings.Contains(msg, "RoleInversionDetected") && !strings.Contains(msg, "inverted") {
+		t.Fatalf("expected condition message to explain role inversion, got: %q", msg)
 	}
 }

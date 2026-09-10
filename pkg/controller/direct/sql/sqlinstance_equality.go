@@ -25,6 +25,10 @@ import (
 )
 
 func DiffInstances(desired *api.DatabaseInstance, actual *api.DatabaseInstance) *structuredreporting.Diff {
+	return DiffInstancesWithConfig(desired, actual, true)
+}
+
+func DiffInstancesWithConfig(desired *api.DatabaseInstance, actual *api.DatabaseInstance, suppressDRDiffs bool) *structuredreporting.Diff {
 	diff := &structuredreporting.Diff{}
 	if desired == nil {
 		desired = &api.DatabaseInstance{}
@@ -37,7 +41,7 @@ func DiffInstances(desired *api.DatabaseInstance, actual *api.DatabaseInstance) 
 		diff.AddField(".databaseVersion", actual.DatabaseVersion, desired.DatabaseVersion)
 	}
 	diff.AddDiff(DiffDiskEncryptionConfiguration(desired.DiskEncryptionConfiguration, actual.DiskEncryptionConfiguration))
-	drActive := isEnterpriseDR(desired, actual)
+	drActive := suppressDRDiffs && isEnterpriseDR(desired, actual)
 	// Ignore GeminiConfig. It is not supported in KRM API.
 	if !drActive && desired.InstanceType != actual.InstanceType {
 		diff.AddField(".instanceType", actual.InstanceType, desired.InstanceType)
@@ -57,7 +61,7 @@ func DiffInstances(desired *api.DatabaseInstance, actual *api.DatabaseInstance) 
 	if desired.Region != actual.Region {
 		diff.AddField(".region", actual.Region, desired.Region)
 	}
-	drRoleSwap := isEnterpriseDRRoleSwap(desired, actual)
+	drRoleSwap := suppressDRDiffs && isEnterpriseDRRoleSwap(desired, actual)
 	if !drRoleSwap {
 		diff.AddDiff(DiffReplicaConfiguration(desired.ReplicaConfiguration, actual.ReplicaConfiguration))
 	}
