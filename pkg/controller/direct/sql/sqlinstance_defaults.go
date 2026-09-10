@@ -37,8 +37,12 @@ const (
 func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance, actual *api.DatabaseInstance, fieldMetadata map[string]*FieldMetadata) {
 	// Stage 1: Apply all client-side defaults as if no fields are unmanaged.
 	if in.Spec.InstanceType == nil {
-		// GCP default InstanceType is CLOUD_SQL_INSTANCE.
-		out.InstanceType = "CLOUD_SQL_INSTANCE"
+		if (in.Spec.MasterInstanceRef != nil && (in.Spec.MasterInstanceRef.Name != "" || in.Spec.MasterInstanceRef.External != "")) || (actual != nil && actual.MasterInstanceName != "") {
+			out.InstanceType = "READ_REPLICA_INSTANCE"
+		} else {
+			// GCP default InstanceType is CLOUD_SQL_INSTANCE.
+			out.InstanceType = "CLOUD_SQL_INSTANCE"
+		}
 	}
 	if in.Spec.MaintenanceVersion == nil && actual != nil {
 		// If desired maintenanceVersion is not specified, assume user wants the actual.

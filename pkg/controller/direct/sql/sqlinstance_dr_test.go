@@ -3268,3 +3268,184 @@ func TestSQLInstance_FullDRLifecycle_AllEngines(t *testing.T) {
 		})
 	}
 }
+
+func TestSQLInstance_Mode3_PromoteReplica_AllEngines(t *testing.T) {
+	engines := []struct {
+		name    string
+		version string
+	}{
+		{"PostgreSQL_16", "POSTGRES_16"},
+		{"MySQL_8_0", "MYSQL_8_0"},
+		{"SQLServer_2022", "SQLSERVER_2022_STANDARD"},
+	}
+
+	for _, eng := range engines {
+		t.Run(eng.name, func(t *testing.T) {
+			ctx := context.Background()
+			instanceName := "repl-" + strings.ToLower(eng.name)
+			ver := eng.version
+			promoteCalled := false
+
+			transport := &mockTransport{
+				roundTripFunc: func(req *http.Request) (*http.Response, error) {
+					// Check for promoteReplica API call
+					if strings.Contains(req.URL.Path, "/promoteReplica") && req.Method == http.MethodPost {
+						promoteCalled = true
+						opJSON := `{"name": "op-promote-123", "status": "DONE", "operationType": "PROMOTE_REPLICA"}`
+						return &http.Response{
+							StatusCode: 200,
+							Header:     make(http.Header),
+							Body:       io.NopCloser(bytes.NewReader([]byte(opJSON))),
+						}, nil
+					}
+					// Check for poll operation
+					if strings.Contains(req.URL.Path, "/operations/") {
+						opJSON := `{"name": "op-promote-123", "status": "DONE"}`
+						return &http.Response{
+							StatusCode: 200,
+							Header:     make(http.Header),
+							Body:       io.NopCloser(bytes.NewReader([]byte(opJSON))),
+						}, nil
+					}
+					// Re-fetching instance after promotion -> now CLOUD_SQL_INSTANCE with masterInstanceName: ""
+					if strings.Contains(req.URL.Path, "/instances/"+instanceName) && req.Method == http.MethodGet {
+						instJSON := fmt.Sprintf(`{
+							"name": "%s",
+							"databaseVersion": "%s",
+							"state": "RUNNABLE",
+							"instanceType": "CLOUD_SQL_INSTANCE",
+							"masterInstanceName": "",
+							"settings": {"tier": "db-custom-2-7680", "settingsVersion": "2"}
+						}`, instanceName, ver)
+						return &http.Response{
+							StatusCode: 200,
+							Header:     make(http.Header),
+							Body:       io.NopCloser(bytes.NewReader([]byte(instJSON))),
+						}, nil
+					}
+					return &http.Response{
+						StatusCode: 200,
+						Header:     make(http.Header),
+						Body:       io.NopCloser(bytes.NewReader([]byte("{}"))),
+					}, nil
+				},
+			}
+
+			sqlService, _ := api.NewService(ctx, option.WithHTTPClient(&http.Client{Transport: transport}))
+
+			// Desired KRM: Standalone primary (masterInstanceRef is nil)
+			desiredKRM := &krm.SQLInstance{
+				Spec: krm.SQLInstanceSpec{
+					ResourceID:      &instanceName,
+					DatabaseVersion: &ver,
+					Settings: krm.InstanceSettings{
+						Tier: "db-custom-2-7680",
+					},
+					// MasterInstanceRef is nil (demoted to standalone primary)
+				},
+			}
+
+			// Actual in GCP: Currently a read replica
+			actualGCP := &api.DatabaseInstance{
+				Name:               instanceName,
+				DatabaseVersion:    ver,
+				State:              "RUNNABLE",
+				InstanceType:       "READ_REPLICA_INSTANCE",
+				MasterInstanceName: "some-primary-instance",
+				Settings: &api.Settings{
+					Tier: "db-custom-2-7680",
+				},
+			}
+
+			u := &unstructured.Unstructured{
+				Object: map[string]any{
+					"apiVersion": "sql.cnrm.cloud.google.com/v1beta1",
+					"kind":       "SQLInstance",
+					"metadata": map[string]any{
+						"name":      instanceName,
+						"namespace": "default",
+					},
+				},
+			}
+
+			adapter := &sqlInstanceAdapter{
+				projectID:           "test-project",
+				resourceID:          instanceName,
+				desired:             desiredKRM,
+				actual:              actualGCP,
+				sqlInstancesClient:  api.NewInstancesService(sqlService),
+				sqlOperationsClient: api.NewOperationsService(sqlService),
+				fieldMeta:           make(map[string]*FieldMetadata),
+			}
+
+			updateOp := newTestUpdateOp(u)
+			if err := adapter.Update(ctx, updateOp); err != nil {
+				t.Fatalf("Update returned error during replica promotion: %v", err)
+			}
+
+			if !promoteCalled {
+				t.Fatalf("expected PromoteReplica API to be called during Mode 3 promotion, but it was not")
+			}
+
+			instanceType, _, _ := unstructured.NestedString(u.Object, "status", "instanceType")
+			if instanceType != "CLOUD_SQL_INSTANCE" {
+				t.Fatalf("expected status.instanceType to be CLOUD_SQL_INSTANCE after promotion, got: %s", instanceType)
+			}
+			if _, found, _ := unstructured.NestedMap(u.Object, "status", "masterInstanceRef"); found {
+				t.Fatalf("expected status.masterInstanceRef to be cleared after promotion")
+			}
+		})
+	}
+}
+
+func TestSQLInstance_Delete_ActiveReplicas_DiagnosticError(t *testing.T) {
+	ctx := context.Background()
+	instanceName := "test-primary-with-replicas"
+
+	transport := &mockTransport{
+		roundTripFunc: func(req *http.Request) (*http.Response, error) {
+			if strings.Contains(req.URL.Path, "/instances/"+instanceName) && req.Method == http.MethodDelete {
+				errJSON := `{"error": {"code": 400, "message": "Invalid request: The instance has replica(s): [test-replica-1, test-replica-2]. Please delete replica(s) first."}}`
+				return &http.Response{
+					StatusCode: http.StatusBadRequest,
+					Header:     make(http.Header),
+					Body:       io.NopCloser(bytes.NewReader([]byte(errJSON))),
+				}, nil
+			}
+			return &http.Response{
+				StatusCode: 200,
+				Header:     make(http.Header),
+				Body:       io.NopCloser(bytes.NewReader([]byte("{}"))),
+			}, nil
+		},
+	}
+
+	sqlService, _ := api.NewService(ctx, option.WithHTTPClient(&http.Client{Transport: transport}))
+
+	actualGCP := &api.DatabaseInstance{
+		Name:         instanceName,
+		State:        "RUNNABLE",
+		InstanceType: "CLOUD_SQL_INSTANCE",
+		ReplicaNames: []string{"test-replica-1", "test-replica-2"},
+	}
+
+	adapter := &sqlInstanceAdapter{
+		projectID:           "test-project",
+		resourceID:          instanceName,
+		actual:              actualGCP,
+		sqlInstancesClient:  api.NewInstancesService(sqlService),
+		sqlOperationsClient: api.NewOperationsService(sqlService),
+	}
+
+	deleteOp := &directbase.DeleteOperation{}
+	deleted, err := adapter.Delete(ctx, deleteOp)
+	if deleted {
+		t.Fatalf("expected deleted=false when replicas exist, got true")
+	}
+	if err == nil {
+		t.Fatalf("expected Delete to return error when instance has active replicas, got nil")
+	}
+	if !strings.Contains(err.Error(), "cannot delete primary SQLInstance") || !strings.Contains(err.Error(), "while replicas exist") {
+		t.Fatalf("expected error message to contain actionable replica dependency diagnostic, got: %v", err)
+	}
+}

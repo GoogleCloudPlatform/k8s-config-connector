@@ -1010,6 +1010,28 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 	instanceForStatus := a.actual
 
+	// In Cloud SQL, promoting a read replica to become an independent primary instance
+	// (Mode 3 emergency failover when masterInstanceRef is removed/cleared) requires invoking
+	// the PromoteReplica API rather than instances.Update.
+	if !isEnterpriseDRRoleSwap(desiredGCP, a.actual) &&
+		(a.actual.MasterInstanceName != "" || a.actual.InstanceType == "READ_REPLICA_INSTANCE") &&
+		desiredGCP.MasterInstanceName == "" {
+		log.V(2).Info("promoting read replica to independent primary", "name", a.resourceID)
+		promoteOp, err := a.sqlInstancesClient.PromoteReplica(a.projectID, a.resourceID).Context(ctx).Do()
+		if err != nil {
+			return fmt.Errorf("promoting read replica %s failed: %w", a.resourceID, err)
+		}
+		if err := a.pollForLROCompletion(ctx, promoteOp, "promoteReplica"); err != nil {
+			return err
+		}
+		promoted, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
+		if err != nil {
+			return fmt.Errorf("getting SQLInstance %s after promotion failed: %w", a.resourceID, err)
+		}
+		a.actual = promoted
+		instanceForStatus = promoted
+	}
+
 	if instanceDiff := DiffInstancesWithConfig(desiredGCP, a.actual, suppressDRDiffs); instanceDiff.HasDiff() {
 		updateOp.RecordUpdatingEvent()
 		instanceDiff.Object = u
@@ -1139,6 +1161,9 @@ func (a *sqlInstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 			// Return success if not found (assume it was already deleted).
 			log.V(2).Info("skipping delete for non-existent SQLInstance, assuming it was already deleted", "name", a.resourceID)
 			return true, nil
+		}
+		if strings.Contains(err.Error(), "The instance has replica") {
+			return false, fmt.Errorf("cannot delete primary SQLInstance %s while replicas exist: %w; KCC will retry once replicas are deleted", a.resourceID, err)
 		}
 		return false, fmt.Errorf("deleting SQLInstance %s failed: %w", a.resourceID, err)
 	}
