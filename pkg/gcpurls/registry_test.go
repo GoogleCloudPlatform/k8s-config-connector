@@ -125,6 +125,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Cloud Support
 		"//cloudsupport.googleapis.com/organizations/{}/supportEventSubscriptions/{}": true,
 
+		// Cloud Number Registry
+		"//cloudnumberregistry.googleapis.com/projects/{}/locations/{}/registryBooks/{}": true,
+
 		// Cloud Security Compliance
 		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/cloudControls/{}":      true,
 		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/cloudControlGroups/{}": true,
