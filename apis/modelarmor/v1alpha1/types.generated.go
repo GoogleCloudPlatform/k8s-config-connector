@@ -18,8 +18,26 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.modelarmor.v1
 // resource: ModelArmorTemplate:Template
+// resource: ModelArmorFloorSetting:FloorSetting
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.modelarmor.v1.AiPlatformFloorSetting
+type AiPlatformFloorSetting struct {
+	// Optional. If true, Model Armor filters will be run in inspect only mode.
+	//  No action will be taken on the request.
+	// +kcc:proto:field=google.cloud.modelarmor.v1.AiPlatformFloorSetting.inspect_only
+	InspectOnly *bool `json:"inspectOnly,omitempty"`
+
+	// Optional. If true, Model Armor filters will be run in inspect and block
+	//  mode. Requests that trip Model Armor filters will be blocked.
+	// +kcc:proto:field=google.cloud.modelarmor.v1.AiPlatformFloorSetting.inspect_and_block
+	InspectAndBlock *bool `json:"inspectAndBlock,omitempty"`
+
+	// Optional. If true, log Model Armor filter results to Cloud Logging.
+	// +kcc:proto:field=google.cloud.modelarmor.v1.AiPlatformFloorSetting.enable_cloud_logging
+	EnableCloudLogging *bool `json:"enableCloudLogging,omitempty"`
+}
 
 // +kcc:proto=google.cloud.modelarmor.v1.FilterConfig
 type FilterConfig struct {
@@ -38,6 +56,20 @@ type FilterConfig struct {
 	// Optional. Malicious URI filter settings.
 	// +kcc:proto:field=google.cloud.modelarmor.v1.FilterConfig.malicious_uri_filter_settings
 	MaliciousURIFilterSettings *MaliciousURIFilterSettings `json:"maliciousURIFilterSettings,omitempty"`
+}
+
+// +kcc:proto=google.cloud.modelarmor.v1.FloorSetting.FloorSettingMetadata
+type FloorSetting_FloorSettingMetadata struct {
+	// Optional. Metadata for multi language detection.
+	// +kcc:proto:field=google.cloud.modelarmor.v1.FloorSetting.FloorSettingMetadata.multi_language_detection
+	MultiLanguageDetection *FloorSetting_FloorSettingMetadata_MultiLanguageDetection `json:"multiLanguageDetection,omitempty"`
+}
+
+// +kcc:proto=google.cloud.modelarmor.v1.FloorSetting.FloorSettingMetadata.MultiLanguageDetection
+type FloorSetting_FloorSettingMetadata_MultiLanguageDetection struct {
+	// Required. If true, multi language detection will be enabled.
+	// +kcc:proto:field=google.cloud.modelarmor.v1.FloorSetting.FloorSettingMetadata.MultiLanguageDetection.enable_multi_language_detection
+	EnableMultiLanguageDetection *bool `json:"enableMultiLanguageDetection,omitempty"`
 }
 
 // +kcc:proto=google.cloud.modelarmor.v1.MaliciousUriFilterSettings

@@ -35,7 +35,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ${CONTROLLERBUILDER} generate-types \
     --service google.cloud.modelarmor.v1 \
     --api-version "modelarmor.cnrm.cloud.google.com/v1alpha1" \
-    --resource ModelArmorTemplate:Template
+    --resource ModelArmorTemplate:Template \
+    --resource ModelArmorFloorSetting:FloorSetting
 
 ${CONTROLLERBUILDER} generate-mapper \
     --service google.cloud.modelarmor.v1 \
