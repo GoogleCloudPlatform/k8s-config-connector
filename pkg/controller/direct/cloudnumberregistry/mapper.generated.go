@@ -30,6 +30,60 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/cloudnumberregistry/pb"
 )
 
+func CloudNumberRegistryRealmObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Realm) *krm.CloudNumberRegistryRealmObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudNumberRegistryRealmObservedState{}
+	// MISSING: Name
+	out.DiscoveryMetadata = DiscoveryMetadataObservedState_FromProto(mapCtx, in.GetDiscoveryMetadata())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.AggregatedData = Realm_RealmAggregatedDataObservedState_FromProto(mapCtx, in.GetAggregatedData())
+	return out
+}
+func CloudNumberRegistryRealmObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudNumberRegistryRealmObservedState) *pb.Realm {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Realm{}
+	// MISSING: Name
+	out.DiscoveryMetadata = DiscoveryMetadataObservedState_ToProto(mapCtx, in.DiscoveryMetadata)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.AggregatedData = Realm_RealmAggregatedDataObservedState_ToProto(mapCtx, in.AggregatedData)
+	return out
+}
+func CloudNumberRegistryRealmSpec_FromProto(mapCtx *direct.MapContext, in *pb.Realm) *krm.CloudNumberRegistryRealmSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudNumberRegistryRealmSpec{}
+	// MISSING: Name
+	out.TrafficType = direct.Enum_FromProto(mapCtx, in.GetTrafficType())
+	out.ManagementType = direct.Enum_FromProto(mapCtx, in.GetManagementType())
+	if in.GetRegistryBook() != "" {
+		out.RegistryBookRef = &krm.CloudNumberRegistryRegistryBookRef{External: in.GetRegistryBook()}
+	}
+	out.Labels = in.Labels
+	out.IPVersion = direct.Enum_FromProto(mapCtx, in.GetIpVersion())
+	return out
+}
+func CloudNumberRegistryRealmSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudNumberRegistryRealmSpec) *pb.Realm {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Realm{}
+	// MISSING: Name
+	out.TrafficType = direct.Enum_ToProto[pb.Realm_TrafficType](mapCtx, in.TrafficType)
+	out.ManagementType = direct.Enum_ToProto[pb.Realm_ManagementType](mapCtx, in.ManagementType)
+	if in.RegistryBookRef != nil {
+		out.RegistryBook = in.RegistryBookRef.External
+	}
+	out.Labels = in.Labels
+	out.IpVersion = direct.Enum_ToProto[pb.IpVersion](mapCtx, in.IPVersion)
+	return out
+}
 func CloudNumberRegistryRegistryBookObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RegistryBook) *krm.CloudNumberRegistryRegistryBookObservedState {
 	if in == nil {
 		return nil
@@ -86,6 +140,54 @@ func CloudNumberRegistryRegistryBookSpec_ToProto(mapCtx *direct.MapContext, in *
 		}
 	}
 
+	return out
+}
+func DiscoveryMetadataObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveryMetadata) *krm.DiscoveryMetadataObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiscoveryMetadataObservedState{}
+	out.EventTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEventTime())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Resource = direct.LazyPtr(in.GetResource())
+	out.ResourceURI = direct.LazyPtr(in.GetResourceUri())
+	out.SourceID = direct.LazyPtr(in.GetSourceId())
+	out.SourceSubID = direct.LazyPtr(in.GetSourceSubId())
+	return out
+}
+func DiscoveryMetadataObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryMetadataObservedState) *pb.DiscoveryMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DiscoveryMetadata{}
+	out.EventTime = direct.StringTimestamp_ToProto(mapCtx, in.EventTime)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.DiscoveryMetadata_ResourceState](mapCtx, in.State)
+	out.Resource = direct.ValueOf(in.Resource)
+	out.ResourceUri = direct.ValueOf(in.ResourceURI)
+	out.SourceId = direct.ValueOf(in.SourceID)
+	out.SourceSubId = direct.ValueOf(in.SourceSubID)
+	return out
+}
+func Realm_RealmAggregatedDataObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Realm_RealmAggregatedData) *krm.Realm_RealmAggregatedDataObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Realm_RealmAggregatedDataObservedState{}
+	out.DiscoveredRangesCount = direct.LazyPtr(in.GetDiscoveredRangesCount())
+	out.CustomRangesCount = direct.LazyPtr(in.GetCustomRangesCount())
+	return out
+}
+func Realm_RealmAggregatedDataObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Realm_RealmAggregatedDataObservedState) *pb.Realm_RealmAggregatedData {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Realm_RealmAggregatedData{}
+	out.DiscoveredRangesCount = direct.ValueOf(in.DiscoveredRangesCount)
+	out.CustomRangesCount = direct.ValueOf(in.CustomRangesCount)
 	return out
 }
 func RegistryBook_AggregatedDataObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RegistryBook_AggregatedData) *krm.RegistryBook_AggregatedDataObservedState {
