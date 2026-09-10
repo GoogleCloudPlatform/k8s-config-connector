@@ -23,6 +23,7 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/testing/protocmp"
@@ -400,7 +401,7 @@ func TestComputedFieldPathsValidity(t *testing.T) {
 			WorkloadsConfig:          &composerpb.WorkloadsConfig{},
 		},
 	}
-	parentMap := buildParentMap(env, env)
+	parentMap := common.BuildParentMap(env, env, computedFieldPaths)
 
 	for _, path := range computedFieldPaths {
 		lastDot := strings.LastIndex(path, ".")
@@ -415,11 +416,11 @@ func TestComputedFieldPathsValidity(t *testing.T) {
 
 		pair, ok := parentMap[parentPath]
 		if !ok {
-			t.Fatalf("path %q: parent path %q is not registered in buildParentMap", path, parentPath)
+			t.Fatalf("path %q: parent path %q is not registered in BuildParentMap", path, parentPath)
 		}
-		fd := findProtoField(pair.actual.Descriptor(), leafName)
+		fd := common.FindProtoField(pair.Actual.Descriptor(), leafName)
 		if fd == nil {
-			t.Fatalf("path %q: field %q does not exist on proto message %s", path, leafName, pair.actual.Descriptor().FullName())
+			t.Fatalf("path %q: field %q does not exist on proto message %s", path, leafName, pair.Actual.Descriptor().FullName())
 		}
 	}
 }
@@ -451,18 +452,18 @@ func TestFindProtoField(t *testing.T) {
 	}
 
 	for _, tc := range tests {
-		fd := findProtoField(tc.desc, tc.krmLeaf)
+		fd := common.FindProtoField(tc.desc, tc.krmLeaf)
 		if fd == nil {
-			t.Errorf("findProtoField(%s, %q) = nil, want %q", tc.desc.FullName(), tc.krmLeaf, tc.wantField)
+			t.Errorf("FindProtoField(%s, %q) = nil, want %q", tc.desc.FullName(), tc.krmLeaf, tc.wantField)
 			continue
 		}
 		if fd.Name() != tc.wantField {
-			t.Errorf("findProtoField(%s, %q) = %q, want %q", tc.desc.FullName(), tc.krmLeaf, fd.Name(), tc.wantField)
+			t.Errorf("FindProtoField(%s, %q) = %q, want %q", tc.desc.FullName(), tc.krmLeaf, fd.Name(), tc.wantField)
 		}
 	}
 
 	// Non-existent field should return nil
-	if fd := findProtoField(nodeDesc, "nonExistentField"); fd != nil {
+	if fd := common.FindProtoField(nodeDesc, "nonExistentField"); fd != nil {
 		t.Errorf("expected nil for nonExistentField, got %q", fd.Name())
 	}
 }

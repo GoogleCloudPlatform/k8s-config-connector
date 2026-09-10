@@ -20,7 +20,6 @@ import (
 	composerpb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
-	"google.golang.org/protobuf/reflect/protoreflect"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 )
@@ -127,116 +126,6 @@ var computedFieldPaths = []string{
 	"Config.WebServerConfig.MachineType",
 }
 
-// parentPair tracks matching actual and desired proto messages for a given parent path.
-type parentPair struct {
-	actual  protoreflect.Message
-	desired protoreflect.Message
-}
-
-// buildParentMap collects all non-nil parent sub-messages from actualPb and initializes
-// corresponding message containers on desiredPb.
-func buildParentMap(desiredPb, actualPb *composerpb.Environment) map[string]parentPair {
-	parents := make(map[string]parentPair)
-	if actualPb == nil || desiredPb == nil {
-		return parents
-	}
-
-	parents[""] = parentPair{actual: actualPb.ProtoReflect(), desired: desiredPb.ProtoReflect()}
-
-	if actualPb.StorageConfig != nil {
-		if desiredPb.StorageConfig == nil {
-			desiredPb.StorageConfig = &composerpb.StorageConfig{}
-		}
-		parents["StorageConfig"] = parentPair{
-			actual:  actualPb.StorageConfig.ProtoReflect(),
-			desired: desiredPb.StorageConfig.ProtoReflect(),
-		}
-	}
-
-	if actualPb.Config != nil {
-		if desiredPb.Config == nil {
-			desiredPb.Config = &composerpb.EnvironmentConfig{}
-		}
-		parents["Config"] = parentPair{
-			actual:  actualPb.Config.ProtoReflect(),
-			desired: desiredPb.Config.ProtoReflect(),
-		}
-
-		cfg := actualPb.Config
-		dCfg := desiredPb.Config
-
-		if cfg.NodeConfig != nil {
-			if dCfg.NodeConfig == nil {
-				dCfg.NodeConfig = &composerpb.NodeConfig{}
-			}
-			parents["Config.NodeConfig"] = parentPair{
-				actual:  cfg.NodeConfig.ProtoReflect(),
-				desired: dCfg.NodeConfig.ProtoReflect(),
-			}
-		}
-		if cfg.SoftwareConfig != nil {
-			if dCfg.SoftwareConfig == nil {
-				dCfg.SoftwareConfig = &composerpb.SoftwareConfig{}
-			}
-			parents["Config.SoftwareConfig"] = parentPair{
-				actual:  cfg.SoftwareConfig.ProtoReflect(),
-				desired: dCfg.SoftwareConfig.ProtoReflect(),
-			}
-		}
-		if cfg.DatabaseConfig != nil {
-			if dCfg.DatabaseConfig == nil {
-				dCfg.DatabaseConfig = &composerpb.DatabaseConfig{}
-			}
-			parents["Config.DatabaseConfig"] = parentPair{
-				actual:  cfg.DatabaseConfig.ProtoReflect(),
-				desired: dCfg.DatabaseConfig.ProtoReflect(),
-			}
-		}
-		if cfg.WebServerConfig != nil {
-			if dCfg.WebServerConfig == nil {
-				dCfg.WebServerConfig = &composerpb.WebServerConfig{}
-			}
-			parents["Config.WebServerConfig"] = parentPair{
-				actual:  cfg.WebServerConfig.ProtoReflect(),
-				desired: dCfg.WebServerConfig.ProtoReflect(),
-			}
-		}
-		if cfg.PrivateEnvironmentConfig != nil {
-			if dCfg.PrivateEnvironmentConfig == nil {
-				dCfg.PrivateEnvironmentConfig = &composerpb.PrivateEnvironmentConfig{}
-			}
-			parents["Config.PrivateEnvironmentConfig"] = parentPair{
-				actual:  cfg.PrivateEnvironmentConfig.ProtoReflect(),
-				desired: dCfg.PrivateEnvironmentConfig.ProtoReflect(),
-			}
-		}
-		if cfg.WorkloadsConfig != nil {
-			if dCfg.WorkloadsConfig == nil {
-				dCfg.WorkloadsConfig = &composerpb.WorkloadsConfig{}
-			}
-			parents["Config.WorkloadsConfig"] = parentPair{
-				actual:  cfg.WorkloadsConfig.ProtoReflect(),
-				desired: dCfg.WorkloadsConfig.ProtoReflect(),
-			}
-		}
-	}
-
-	return parents
-}
-
-// findProtoField matches a KRM leaf field name to its corresponding proto field descriptor
-// by comparing the field's JSONName against the KRM field name (ignoring case).
-func findProtoField(desc protoreflect.MessageDescriptor, krmLeaf string) protoreflect.FieldDescriptor {
-	krmName := strings.TrimSuffix(krmLeaf, "Ref")
-	for i := 0; i < desc.Fields().Len(); i++ {
-		fd := desc.Fields().Get(i)
-		if strings.EqualFold(fd.JSONName(), krmName) {
-			return fd
-		}
-	}
-	return nil
-}
-
 // populateDesiredWithActualIfComputed populates dynamic/computed server-generated values in O(N) linear time
 // by checking omitted KRM fields against non-nil parents in actualPb and directly assigning their values to desiredPb.
 func populateDesiredWithActualIfComputed(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) {
@@ -245,7 +134,7 @@ func populateDesiredWithActualIfComputed(desired *krm.ComposerEnvironment, desir
 	}
 
 	// 1. Build map of non-nil parents from actualPb and initialize them on desiredPb
-	parentMap := buildParentMap(desiredPb, actualPb)
+	parentMap := common.BuildParentMap(desiredPb, actualPb, computedFieldPaths)
 
 	// 2. Collect all paths explicitly set in desired.Spec in a single O(N) pass
 	var presentFields sets.Set[string]
@@ -276,13 +165,13 @@ func populateDesiredWithActualIfComputed(desired *krm.ComposerEnvironment, desir
 			continue
 		}
 
-		fd := findProtoField(pair.actual.Descriptor(), leafName)
+		fd := common.FindProtoField(pair.Actual.Descriptor(), leafName)
 		if fd == nil {
-			klog.V(0).Infof("internal error: field %q not found on proto message %s", leafName, pair.actual.Descriptor().FullName())
+			klog.V(0).Infof("internal error: field %q not found on proto message %s", leafName, pair.Actual.Descriptor().FullName())
 			continue
 		}
-		if pair.actual.Has(fd) {
-			pair.desired.Set(fd, pair.actual.Get(fd))
+		if pair.Actual.Has(fd) {
+			pair.Desired.Set(fd, pair.Actual.Get(fd))
 		}
 	}
 }
