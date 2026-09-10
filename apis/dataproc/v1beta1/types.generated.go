@@ -1541,6 +1541,39 @@ type AuxiliaryNodeGroupObservedState struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.ClusterConfig", skipping
+
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.ClusterConfig
+type ClusterConfigObservedState struct {
+	// Optional. The Compute Engine config settings for
+	//  the cluster's master instance.
+	// +kcc:proto:field=google.cloud.dataproc.v1.ClusterConfig.master_config
+	MasterConfig *InstanceGroupConfigObservedState `json:"masterConfig,omitempty"`
+
+	// Optional. The Compute Engine config settings for
+	//  the cluster's worker instances.
+	// +kcc:proto:field=google.cloud.dataproc.v1.ClusterConfig.worker_config
+	WorkerConfig *InstanceGroupConfigObservedState `json:"workerConfig,omitempty"`
+
+	// Optional. The Compute Engine config settings for
+	//  a cluster's secondary worker instances
+	// +kcc:proto:field=google.cloud.dataproc.v1.ClusterConfig.secondary_worker_config
+	SecondaryWorkerConfig *InstanceGroupConfigObservedState `json:"secondaryWorkerConfig,omitempty"`
+
+	// Optional. Lifecycle setting for the cluster.
+	// +kcc:proto:field=google.cloud.dataproc.v1.ClusterConfig.lifecycle_config
+	LifecycleConfig *LifecycleConfigObservedState `json:"lifecycleConfig,omitempty"`
+
+	// Optional. Port/endpoint configuration for this cluster
+	// +kcc:proto:field=google.cloud.dataproc.v1.ClusterConfig.endpoint_config
+	EndpointConfig *EndpointConfigObservedState `json:"endpointConfig,omitempty"`
+
+	// Optional. The node group settings.
+	// +kcc:proto:field=google.cloud.dataproc.v1.ClusterConfig.auxiliary_node_groups
+	AuxiliaryNodeGroups []AuxiliaryNodeGroupObservedState `json:"auxiliaryNodeGroups,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.Cluster", skipping
 
 // +kcc:observedstate:proto=google.cloud.dataproc.v1.Cluster
@@ -1572,39 +1605,6 @@ type ClusterObservedState struct {
 	//  may be changed before final release.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Cluster.metrics
 	Metrics *ClusterMetrics `json:"metrics,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.ClusterConfig", skipping
-
-// +kcc:observedstate:proto=google.cloud.dataproc.v1.ClusterConfig
-type ClusterConfigObservedState struct {
-	// Optional. The Compute Engine config settings for
-	//  the cluster's master instance.
-	// +kcc:proto:field=google.cloud.dataproc.v1.ClusterConfig.master_config
-	MasterConfig *InstanceGroupConfigObservedState `json:"masterConfig,omitempty"`
-
-	// Optional. The Compute Engine config settings for
-	//  the cluster's worker instances.
-	// +kcc:proto:field=google.cloud.dataproc.v1.ClusterConfig.worker_config
-	WorkerConfig *InstanceGroupConfigObservedState `json:"workerConfig,omitempty"`
-
-	// Optional. The Compute Engine config settings for
-	//  a cluster's secondary worker instances
-	// +kcc:proto:field=google.cloud.dataproc.v1.ClusterConfig.secondary_worker_config
-	SecondaryWorkerConfig *InstanceGroupConfigObservedState `json:"secondaryWorkerConfig,omitempty"`
-
-	// Optional. Lifecycle setting for the cluster.
-	// +kcc:proto:field=google.cloud.dataproc.v1.ClusterConfig.lifecycle_config
-	LifecycleConfig *LifecycleConfigObservedState `json:"lifecycleConfig,omitempty"`
-
-	// Optional. Port/endpoint configuration for this cluster
-	// +kcc:proto:field=google.cloud.dataproc.v1.ClusterConfig.endpoint_config
-	EndpointConfig *EndpointConfigObservedState `json:"endpointConfig,omitempty"`
-
-	// Optional. The node group settings.
-	// +kcc:proto:field=google.cloud.dataproc.v1.ClusterConfig.auxiliary_node_groups
-	AuxiliaryNodeGroups []AuxiliaryNodeGroupObservedState `json:"auxiliaryNodeGroups,omitempty"`
 }
 */
 

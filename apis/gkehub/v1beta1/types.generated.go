@@ -30,6 +30,15 @@ type BinauthzConfig struct {
 }
 */
 
+/* unreachable type BundleInstallSpec
+// +kcc:proto=google.cloud.gkehub.policycontroller.v1beta.BundleInstallSpec
+type BundleInstallSpec struct {
+	// The set of namespaces to be exempted from the bundle.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.BundleInstallSpec.exempted_namespaces
+	ExemptedNamespaces []string `json:"exemptedNamespaces,omitempty"`
+}
+*/
+
 /* unreachable type ConfigSync
 // +kcc:proto=google.cloud.gkehub.configmanagement.v1beta.ConfigSync
 type ConfigSync struct {
@@ -129,6 +138,16 @@ type HierarchyControllerConfig struct {
 }
 */
 
+/* unreachable type MonitoringConfig
+// +kcc:proto=google.cloud.gkehub.policycontroller.v1beta.MonitoringConfig
+type MonitoringConfig struct {
+	// Specifies the list of backends Policy Controller will export to.
+	//  An empty list would effectively disable metrics export.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.MonitoringConfig.backends
+	Backends []string `json:"backends,omitempty"`
+}
+*/
+
 /* unreachable type OciConfig
 // +kcc:proto=google.cloud.gkehub.configmanagement.v1beta.OciConfig
 type OciConfig struct {
@@ -156,6 +175,18 @@ type OciConfig struct {
 	//  secret_type is gcpServiceAccount.
 	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.OciConfig.gcp_service_account_email
 	GcpServiceAccountEmail *string `json:"gcpServiceAccountEmail,omitempty"`
+}
+*/
+
+/* unreachable type PolicyContentSpec
+// +kcc:proto=google.cloud.gkehub.policycontroller.v1beta.PolicyContentSpec
+type PolicyContentSpec struct {
+
+	// TODO: unsupported map type with key string and value message
+
+	// Configures the installation of the Template Library.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.PolicyContentSpec.template_library
+	TemplateLibrary *TemplateLibraryConfig `json:"templateLibrary,omitempty"`
 }
 */
 
@@ -203,47 +234,6 @@ type PolicyController struct {
 }
 */
 
-/* unreachable type PolicyControllerMonitoring
-// +kcc:proto=google.cloud.gkehub.configmanagement.v1beta.PolicyControllerMonitoring
-type PolicyControllerMonitoring struct {
-	// Specifies the list of backends Policy Controller will export to.
-	//  An empty list would effectively disable metrics export.
-	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.PolicyControllerMonitoring.backends
-	Backends []string `json:"backends,omitempty"`
-}
-*/
-
-/* unreachable type BundleInstallSpec
-// +kcc:proto=google.cloud.gkehub.policycontroller.v1beta.BundleInstallSpec
-type BundleInstallSpec struct {
-	// The set of namespaces to be exempted from the bundle.
-	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.BundleInstallSpec.exempted_namespaces
-	ExemptedNamespaces []string `json:"exemptedNamespaces,omitempty"`
-}
-*/
-
-/* unreachable type MonitoringConfig
-// +kcc:proto=google.cloud.gkehub.policycontroller.v1beta.MonitoringConfig
-type MonitoringConfig struct {
-	// Specifies the list of backends Policy Controller will export to.
-	//  An empty list would effectively disable metrics export.
-	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.MonitoringConfig.backends
-	Backends []string `json:"backends,omitempty"`
-}
-*/
-
-/* unreachable type PolicyContentSpec
-// +kcc:proto=google.cloud.gkehub.policycontroller.v1beta.PolicyContentSpec
-type PolicyContentSpec struct {
-
-	// TODO: unsupported map type with key string and value message
-
-	// Configures the installation of the Template Library.
-	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.PolicyContentSpec.template_library
-	TemplateLibrary *TemplateLibraryConfig `json:"templateLibrary,omitempty"`
-}
-*/
-
 // +kcc:proto=google.cloud.gkehub.policycontroller.v1beta.PolicyControllerDeploymentConfig.Toleration
 type PolicyControllerDeploymentConfig_Toleration struct {
 	// Matches a taint key (not necessarily unique).
@@ -262,6 +252,16 @@ type PolicyControllerDeploymentConfig_Toleration struct {
 	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.PolicyControllerDeploymentConfig.Toleration.effect
 	Effect *string `json:"effect,omitempty"`
 }
+
+/* unreachable type PolicyControllerMonitoring
+// +kcc:proto=google.cloud.gkehub.configmanagement.v1beta.PolicyControllerMonitoring
+type PolicyControllerMonitoring struct {
+	// Specifies the list of backends Policy Controller will export to.
+	//  An empty list would effectively disable metrics export.
+	// +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.PolicyControllerMonitoring.backends
+	Backends []string `json:"backends,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.gkehub.policycontroller.v1beta.ResourceList
 type ResourceList struct {
@@ -294,20 +294,6 @@ type TemplateLibraryConfig struct {
 	//  cluster.
 	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.TemplateLibraryConfig.installation
 	Installation *string `json:"installation,omitempty"`
-}
-*/
-
-/* unreachable type MembershipSpec
-// +kcc:proto=google.cloud.gkehub.servicemesh.v1beta.MembershipSpec
-type MembershipSpec struct {
-	// Deprecated: use `management` instead
-	//  Enables automatic control plane management.
-	// +kcc:proto:field=google.cloud.gkehub.servicemesh.v1beta.MembershipSpec.control_plane
-	ControlPlane *string `json:"controlPlane,omitempty"`
-
-	// Enables automatic Service Mesh management.
-	// +kcc:proto:field=google.cloud.gkehub.servicemesh.v1beta.MembershipSpec.management
-	Management *string `json:"management,omitempty"`
 }
 */
 

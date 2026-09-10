@@ -340,6 +340,25 @@ type HTTPRoute_FaultInjectionPolicy_Delay struct {
 }
 */
 
+/* unreachable type HTTPRoute_HTTPDirectResponse
+// +kcc:proto=google.cloud.networkservices.v1.HttpRoute.HttpDirectResponse
+type HTTPRoute_HTTPDirectResponse struct {
+	// Optional. Response body as a string. Maximum body length is 1024
+	//  characters.
+	// +kcc:proto:field=google.cloud.networkservices.v1.HttpRoute.HttpDirectResponse.string_body
+	StringBody *string `json:"stringBody,omitempty"`
+
+	// Optional. Response body as bytes. Maximum body size is 4096B.
+	// +kcc:proto:field=google.cloud.networkservices.v1.HttpRoute.HttpDirectResponse.bytes_body
+	BytesBody []byte `json:"bytesBody,omitempty"`
+
+	// Required. Status to return as part of HTTP Response. Must be a positive
+	//  integer.
+	// +kcc:proto:field=google.cloud.networkservices.v1.HttpRoute.HttpDirectResponse.status
+	Status *int32 `json:"status,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.networkservices.v1.HttpRoute.HeaderMatch", skipping
 
 // +kcc:proto=google.cloud.networkservices.v1.HttpRoute.HeaderMatch
@@ -415,25 +434,6 @@ type HTTPRoute_HeaderModifier struct {
 	// Remove headers (matching by header names) specified in the list.
 	// +kcc:proto:field=google.cloud.networkservices.v1.HttpRoute.HeaderModifier.remove
 	Remove []string `json:"remove,omitempty"`
-}
-*/
-
-/* unreachable type HTTPRoute_HTTPDirectResponse
-// +kcc:proto=google.cloud.networkservices.v1.HttpRoute.HttpDirectResponse
-type HTTPRoute_HTTPDirectResponse struct {
-	// Optional. Response body as a string. Maximum body length is 1024
-	//  characters.
-	// +kcc:proto:field=google.cloud.networkservices.v1.HttpRoute.HttpDirectResponse.string_body
-	StringBody *string `json:"stringBody,omitempty"`
-
-	// Optional. Response body as bytes. Maximum body size is 4096B.
-	// +kcc:proto:field=google.cloud.networkservices.v1.HttpRoute.HttpDirectResponse.bytes_body
-	BytesBody []byte `json:"bytesBody,omitempty"`
-
-	// Required. Status to return as part of HTTP Response. Must be a positive
-	//  integer.
-	// +kcc:proto:field=google.cloud.networkservices.v1.HttpRoute.HttpDirectResponse.status
-	Status *int32 `json:"status,omitempty"`
 }
 */
 

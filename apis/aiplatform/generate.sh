@@ -42,7 +42,25 @@ ${CONTROLLERBUILDER} generate-types \
     --resource VertexAITuningJob:TuningJob \
     --resource VertexAIStudy:Study \
     --resource VertexAITrainingPipeline:TrainingPipeline \
-    --resource VertexAISchedule:Schedule
+    --resource VertexAISchedule:Schedule \
+    --resource AIPlatformModelMonitor:ModelMonitor
+
+# Post-processing to resolve v1/v1beta1 collisions for types that must map to v1 for existing controllers
+sed -i 's/google.cloud.aiplatform.v1beta1.ExplanationMetadata/google.cloud.aiplatform.v1.ExplanationMetadata/g' "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
+sed -i 's/google.cloud.aiplatform.v1beta1.ExplanationSpec/google.cloud.aiplatform.v1.ExplanationSpec/g' "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
+sed -i 's/google.cloud.aiplatform.v1beta1.ExplanationParameters/google.cloud.aiplatform.v1.ExplanationParameters/g' "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
+sed -i 's/google.cloud.aiplatform.v1beta1.SampledShapleyAttribution/google.cloud.aiplatform.v1.SampledShapleyAttribution/g' "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
+sed -i 's/google.cloud.aiplatform.v1beta1.IntegratedGradientsAttribution/google.cloud.aiplatform.v1.IntegratedGradientsAttribution/g' "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
+sed -i 's/google.cloud.aiplatform.v1beta1.XraiAttribution/google.cloud.aiplatform.v1.XraiAttribution/g' "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
+sed -i 's/google.cloud.aiplatform.v1beta1.Examples/google.cloud.aiplatform.v1.Examples/g' "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
+sed -i 's/google.cloud.aiplatform.v1beta1.BlurBaselineConfig/google.cloud.aiplatform.v1.BlurBaselineConfig/g' "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
+sed -i 's/google.cloud.aiplatform.v1beta1.SmoothGradConfig/google.cloud.aiplatform.v1.SmoothGradConfig/g' "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
+sed -i 's/google.cloud.aiplatform.v1beta1.FeatureNoiseSigma/google.cloud.aiplatform.v1.FeatureNoiseSigma/g' "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
+sed -i 's/google.cloud.aiplatform.v1beta1.EncryptionSpec/google.cloud.aiplatform.v1.EncryptionSpec/g' "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
+sed -i 's/google.cloud.aiplatform.v1beta1.Presets/google.cloud.aiplatform.v1.Presets/g' "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
+sed -i 's/google.cloud.aiplatform.v1beta1.GcsSource/google.cloud.aiplatform.v1.GcsSource/g' "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
+sed -i 's/google.cloud.aiplatform.v1beta1.GcsDestination/google.cloud.aiplatform.v1.GcsDestination/g' "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
+sed -i 's/google.cloud.aiplatform.v1beta1.MachineSpec/google.cloud.aiplatform.v1.MachineSpec/g' "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
 
 # Handled recursive self-referential fields by defining ListValue, Value, and ExplanationParameters manually in recursive_types.go
 

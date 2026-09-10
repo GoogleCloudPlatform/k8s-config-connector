@@ -836,24 +836,6 @@ type RoutineSpec_Argument struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// +kcc:proto=google.cloud.datacatalog.v1.Schema
-type Schema struct {
-	// The unified GoogleSQL-like schema of columns.
-	//
-	//  The overall maximum number of columns and nested columns is 10,000.
-	//  The maximum nested depth is 15 levels.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.Schema.columns
-	Columns []ColumnSchema `json:"columns,omitempty"`
-}
-
-// +kcc:proto=google.cloud.datacatalog.v1.ServiceSpec
-type ServiceSpec struct {
-	// Specification that applies to Instance entries of `CLOUD_BIGTABLE`
-	//  system.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.ServiceSpec.cloud_bigtable_instance_spec
-	CloudBigtableInstanceSpec *CloudBigtableInstanceSpec `json:"cloudBigtableInstanceSpec,omitempty"`
-}
-
 // +kcc:proto=google.cloud.datacatalog.v1.SqlDatabaseSystemSpec
 type SQLDatabaseSystemSpec struct {
 	// SQL Database Engine.
@@ -882,6 +864,24 @@ type SQLDatabaseSystemSpec struct {
 	//  Host of the enclousing database instance.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.SqlDatabaseSystemSpec.instance_host
 	InstanceHost *string `json:"instanceHost,omitempty"`
+}
+
+// +kcc:proto=google.cloud.datacatalog.v1.Schema
+type Schema struct {
+	// The unified GoogleSQL-like schema of columns.
+	//
+	//  The overall maximum number of columns and nested columns is 10,000.
+	//  The maximum nested depth is 15 levels.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.Schema.columns
+	Columns []ColumnSchema `json:"columns,omitempty"`
+}
+
+// +kcc:proto=google.cloud.datacatalog.v1.ServiceSpec
+type ServiceSpec struct {
+	// Specification that applies to Instance entries of `CLOUD_BIGTABLE`
+	//  system.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ServiceSpec.cloud_bigtable_instance_spec
+	CloudBigtableInstanceSpec *CloudBigtableInstanceSpec `json:"cloudBigtableInstanceSpec,omitempty"`
 }
 
 // +kcc:proto=google.cloud.datacatalog.v1.StorageProperties
@@ -1261,6 +1261,16 @@ type DatabaseTableSpecObservedState struct {
 	DataplexTable *DataplexTableSpec `json:"dataplexTable,omitempty"`
 }
 
+/* found existing non-generated go type with proto tag "google.cloud.datacatalog.v1.EntryGroup", skipping
+
+// +kcc:observedstate:proto=google.cloud.datacatalog.v1.EntryGroup
+type EntryGroupObservedState struct {
+	// Output only. Timestamps of the entry group. Default value is empty.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.EntryGroup.data_catalog_timestamps
+	DataCatalogTimestamps *SystemTimestampsObservedState `json:"dataCatalogTimestamps,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.datacatalog.v1.Entry", skipping
 
 // +kcc:observedstate:proto=google.cloud.datacatalog.v1.Entry
@@ -1325,16 +1335,6 @@ type EntryObservedState struct {
 	//  current user.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Entry.personal_details
 	PersonalDetails *PersonalDetails `json:"personalDetails,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.datacatalog.v1.EntryGroup", skipping
-
-// +kcc:observedstate:proto=google.cloud.datacatalog.v1.EntryGroup
-type EntryGroupObservedState struct {
-	// Output only. Timestamps of the entry group. Default value is empty.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.EntryGroup.data_catalog_timestamps
-	DataCatalogTimestamps *SystemTimestampsObservedState `json:"dataCatalogTimestamps,omitempty"`
 }
 */
 
