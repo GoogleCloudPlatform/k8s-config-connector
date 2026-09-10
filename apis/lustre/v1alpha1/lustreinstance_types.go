@@ -42,7 +42,7 @@ type LustreInstanceSpec struct {
 	Filesystem *string `json:"filesystem,omitempty"`
 
 	// Required. The storage capacity of the instance in gibibytes (GiB). Allowed
-	// values are from `18000` to `954000`, in increments of 9000.
+	// values are multiples of 36000, up to 6120000.
 	// +kcc:proto:field=google.cloud.lustre.v1.Instance.capacity_gib
 	CapacityGib *int64 `json:"capacityGib,omitempty"`
 
