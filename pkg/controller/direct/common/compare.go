@@ -18,12 +18,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"maps"
 	"reflect"
 	"slices"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -32,6 +34,7 @@ import (
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 )
@@ -472,4 +475,59 @@ func CompareBrownfieldSpec[SpecType any, ProtoT interface {
 
 	// Step 5: Top-Level Diff & FieldMask Generation (DiffForTopLevelFields)
 	return DiffForTopLevelFields(ctx, proto.Message(desiredProtoMasked).ProtoReflect(), proto.Message(actualProtoMasked).ProtoReflect())
+}
+
+// CompareBrownfieldSpecAndLabels executes CompareBrownfieldSpec and compares metadata.labels against actualProto labels.
+func CompareBrownfieldSpecAndLabels[SpecType any, ProtoT interface {
+	proto.Message
+}](
+	ctx context.Context,
+	u *unstructured.Unstructured,
+	desiredKRM *SpecType,
+	actualProto ProtoT,
+	specFromProto func(mapCtx *direct.MapContext, in ProtoT) *SpecType,
+	specToProto func(mapCtx *direct.MapContext, in *SpecType) ProtoT,
+	normalize func(ctx context.Context, pb ProtoT) error,
+) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	diff, updateMask, err := CompareBrownfieldSpec(ctx, desiredKRM, actualProto, specFromProto, specToProto, normalize)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	desiredLabels := label.GCPLabels(u)
+	actualLabels := extractProtoLabels(actualProto)
+
+	if !maps.Equal(actualLabels, desiredLabels) {
+		if updateMask == nil {
+			updateMask = &fieldmaskpb.FieldMask{}
+		}
+		updateMask.Paths = append(updateMask.Paths, "labels")
+		if diff == nil {
+			diff = &structuredreporting.Diff{}
+		}
+		diff.AddField("labels", actualLabels, desiredLabels)
+	}
+
+	return diff, updateMask, nil
+}
+
+func extractProtoLabels(msg proto.Message) map[string]string {
+	if msg == nil {
+		return nil
+	}
+	valOf := reflect.ValueOf(msg)
+	if valOf.Kind() == reflect.Ptr && valOf.IsNil() {
+		return nil
+	}
+	fd := msg.ProtoReflect().Descriptor().Fields().ByName("labels")
+	if fd == nil || !fd.IsMap() {
+		return nil
+	}
+	val := msg.ProtoReflect().Get(fd).Map()
+	labels := make(map[string]string, val.Len())
+	val.Range(func(k protoreflect.MapKey, v protoreflect.Value) bool {
+		labels[k.String()] = v.String()
+		return true
+	})
+	return labels
 }
