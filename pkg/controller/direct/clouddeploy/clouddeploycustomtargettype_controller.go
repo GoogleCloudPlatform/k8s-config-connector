@@ -100,6 +100,7 @@ func (m *modelCustomTargetType) AdapterForObject(ctx context.Context, op *direct
 }
 
 func (m *modelCustomTargetType) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	// TODO: Support URLs
 	return nil, nil
 }
 
