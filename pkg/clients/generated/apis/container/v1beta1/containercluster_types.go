@@ -629,7 +629,7 @@ type ClusterKey struct {
 }
 
 type ClusterKubeletConfig struct {
-	/* Enable CPU CFS quota enforcement for containers that specify CPU limits. */
+	/* Enable CPU CFS quota enforcement for containers that specify CPU limits. Note: If nodeConfig.kubeletConfig is specified, you must explicitly set cpuCfsQuota: true to maintain GKE's default behavior; otherwise, omitting this field defaults to false which disabled CPU quota enforcement. */
 	// +optional
 	CpuCfsQuota *bool `json:"cpuCfsQuota,omitempty"`
 
