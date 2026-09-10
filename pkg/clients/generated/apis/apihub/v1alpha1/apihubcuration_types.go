@@ -38,9 +38,32 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
-type VertexAISpecialistPoolSpec struct {
-	/* Required. The user-defined name of the SpecialistPool. The name can be up to 128 characters long and can consist of any UTF-8 characters. This field should be unique on project-level. */
+type CurationApplicationIntegrationEndpointDetails struct {
+	/* Required. The API trigger ID of the Application Integration workflow. */
+	// +optional
+	TriggerID *string `json:"triggerID,omitempty"`
+
+	/* Required. The endpoint URI should be a valid REST URI for triggering an Application Integration. Format: `https://integrations.googleapis.com/v1/{name=projects/* /locations/* /integrations/*}:execute` or `https://{location}-integrations.googleapis.com/v1/{name=projects/* /locations/* /integrations/*}:execute` */
+	// +optional
+	Uri *string `json:"uri,omitempty"`
+}
+
+type CurationEndpoint struct {
+	/* Required. The details of the Application Integration endpoint to be triggered for curation. */
+	// +optional
+	ApplicationIntegrationEndpointDetails *CurationApplicationIntegrationEndpointDetails `json:"applicationIntegrationEndpointDetails,omitempty"`
+}
+
+type APIHubCurationSpec struct {
+	/* Optional. The description of the curation. */
+	// +optional
+	Description *string `json:"description,omitempty"`
+
+	/* Required. The display name of the curation. */
 	DisplayName string `json:"displayName"`
+
+	/* Required. The endpoint to be triggered for curation. */
+	Endpoint CurationEndpoint `json:"endpoint"`
 
 	/* The location of this resource. */
 	Location string `json:"location"`
@@ -48,34 +71,51 @@ type VertexAISpecialistPoolSpec struct {
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The VertexAISpecialistPool name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
-
-	/* The email addresses of the managers in the SpecialistPool. */
-	// +optional
-	SpecialistManagerEmails []string `json:"specialistManagerEmails,omitempty"`
-
-	/* The email addresses of workers in the SpecialistPool. */
-	// +optional
-	SpecialistWorkerEmails []string `json:"specialistWorkerEmails,omitempty"`
+	/* Required. The APIHubCuration name. */
+	ResourceID string `json:"resourceID"`
 }
 
-type VertexaispecialistpoolObservedStateStatus struct {
-	/* Output only. The resource name of the pending data labeling jobs. */
+type CurationObservedStateStatus struct {
+	/* Output only. The time at which the curation was created. */
 	// +optional
-	PendingDataLabelingJobs []string `json:"pendingDataLabelingJobs,omitempty"`
+	CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. The number of managers in this SpecialistPool. */
+	/* Output only. The error code of the last execution of the curation. */
 	// +optional
-	SpecialistManagersCount *int32 `json:"specialistManagersCount,omitempty"`
+	LastExecutionErrorCode *string `json:"lastExecutionErrorCode,omitempty"`
+
+	/* Output only. Error message describing the failure, if any, during the last execution of the curation. */
+	// +optional
+	LastExecutionErrorMessage *string `json:"lastExecutionErrorMessage,omitempty"`
+
+	/* Output only. The last execution state of the curation. */
+	// +optional
+	LastExecutionState *string `json:"lastExecutionState,omitempty"`
+
+	/* Output only. The plugin instances and associated actions that are using the curation. */
+	// +optional
+	PluginInstanceActions []CurationPluginInstanceActionsStatus `json:"pluginInstanceActions,omitempty"`
+
+	/* Output only. The time at which the curation was last updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-type VertexAISpecialistPoolStatus struct {
+type CurationPluginInstanceActionsStatus struct {
+	/* Output only. The action ID that is using the curation. This should map to one of the action IDs specified in action configs in the plugin. */
+	// +optional
+	ActionID *string `json:"actionID,omitempty"`
+
+	/* Output only. Plugin instance that is using the curation. Format is `projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}` */
+	// +optional
+	PluginInstance *string `json:"pluginInstance,omitempty"`
+}
+
+type APIHubCurationStatus struct {
 	/* Conditions represent the latest available observations of the
-	   VertexAISpecialistPool's current state. */
+	   APIHubCuration's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the VertexAISpecialistPool resource in GCP. */
+	/* A unique specifier for the APIHubCuration resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -85,12 +125,12 @@ type VertexAISpecialistPoolStatus struct {
 
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	ObservedState *VertexaispecialistpoolObservedStateStatus `json:"observedState,omitempty"`
+	ObservedState *CurationObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpvertexaispecialistpool;gcpvertexaispecialistpools
+// +kubebuilder:resource:categories=gcp,shortName=gcpapihubcuration;gcpapihubcurations
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
@@ -100,25 +140,25 @@ type VertexAISpecialistPoolStatus struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// VertexAISpecialistPool is the Schema for the aiplatform API
+// APIHubCuration is the Schema for the apihub API
 // +k8s:openapi-gen=true
-type VertexAISpecialistPool struct {
+type APIHubCuration struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   VertexAISpecialistPoolSpec   `json:"spec,omitempty"`
-	Status VertexAISpecialistPoolStatus `json:"status,omitempty"`
+	Spec   APIHubCurationSpec   `json:"spec,omitempty"`
+	Status APIHubCurationStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// VertexAISpecialistPoolList contains a list of VertexAISpecialistPool
-type VertexAISpecialistPoolList struct {
+// APIHubCurationList contains a list of APIHubCuration
+type APIHubCurationList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []VertexAISpecialistPool `json:"items"`
+	Items           []APIHubCuration `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&VertexAISpecialistPool{}, &VertexAISpecialistPoolList{})
+	SchemeBuilder.Register(&APIHubCuration{}, &APIHubCurationList{})
 }
