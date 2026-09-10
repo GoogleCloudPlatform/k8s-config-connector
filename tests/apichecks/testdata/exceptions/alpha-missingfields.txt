@@ -115,6 +115,11 @@
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.predictSchemata.instanceSchemaURI" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.predictSchemata.parametersSchemaURI" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.predictSchemata.predictionSchemaURI" is not set in unstructured objects
+[missing_field] crd=aiplatformspecialistpools.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=aiplatformspecialistpools.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=aiplatformspecialistpools.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=aiplatformspecialistpools.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.specialistManagerEmails[]" is not set in unstructured objects
+[missing_field] crd=aiplatformspecialistpools.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.specialistWorkerEmails[]" is not set in unstructured objects
 [missing_field] crd=analyticsaccounts.analytics.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=analyticsaccounts.analytics.cnrm.cloud.google.com version=v1alpha1: field ".spec.redirectURI" is not set in unstructured objects
 [missing_field] crd=analyticsaccounts.analytics.cnrm.cloud.google.com version=v1alpha1: field ".spec.regionCode" is not set in unstructured objects
@@ -3844,11 +3849,6 @@
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.maxRunCount" is not set in unstructured objects
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.startTime" is not set in unstructured objects
-[missing_field] crd=vertexaispecialistpools.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=vertexaispecialistpools.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=vertexaispecialistpools.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=vertexaispecialistpools.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.specialistManagerEmails[]" is not set in unstructured objects
-[missing_field] crd=vertexaispecialistpools.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.specialistWorkerEmails[]" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
