@@ -64,8 +64,13 @@ This skill guides the implementation of the `Adapter` interface
     * **Link Normalization**: If the server returns formatted links (e.g., using relative paths or project numbers instead of project IDs) that differ from what the user specifies in KRM, write normalizers to convert both user-specified and server-returned URIs into a canonical format before comparison.
     * **Slice/List Sorting**: If the server returns elements in a repeated field in a non-deterministic or different order than specified in KRM (for unordered lists), sort the slice elements deterministically in both desired and actual states before comparison.
 
-2.  **Verify and Record against MockGCP / Fix Discrepancies**:
+2.  **Verify against MockGCP / Fix Discrepancies**:
     Run the fixtures tests against mock GCP to check behavior, update golden files, and verify correctness.
+
+    > [!WARNING]
+    > **BROWNFIELD MOCKGCP ALIGNMENT RULES:**
+    > When building brownfield controllers, you MUST align your controller logic to match the existing MockGCP and GCP behavior baselines.
+    > DO NOT modify MockGCP implementations to fix brownfield controller discrepancies. If a discrepancy is encountered in MockGCP during brownfield migration, it indicates a test coverage or fixture gap that must be escalated/treated separately rather than patched inline.
 
     > [!WARNING]
     > **WHENEVER A TEST CASE IS UPDATED, WE MUST RECORD REAL GCP LOGS AGAIN.**
@@ -89,9 +94,40 @@ This skill guides the implementation of the `Adapter` interface
         1. Ensure that all discovered test subdirectories under `pkg/test/resourcefixture/testdata/basic/<group>/<api_version>/<kind_lowercase>/` have their golden files (`_generated_object_*.golden.yaml`) and mock HTTP logs (`_http_mock.log`) successfully generated. Note that a 0-diff in `git status` is perfectly valid if the resource doesn't contain any service-generated, randomized values in the responses or our normalizers have overwritten those values.
         2. Commit and push all regenerated and matched log/golden files for every discovered fixture.
         
-    *   **Step 2.c: Fix discrepancies in the Adapter**
+    *   **Step 2.c: Diff Analysis & Behavioral Alignment Workflow**
         If there are any errors or discrepancies between the legacy reconciler and the direct reconciler behavior (indicated by the test failing or having incorrect updates in `_http.log` or golden objects), iteratively update your direct controller.
         
+        Analyze the following generated diff files to identify and fix alignment issues:
+
+        **1. HTTP Traffic Diffs (`_http.diff` / `_http_mock.diff`)**
+        *   **Purpose**: Compares HTTP requests/responses between legacy (`_http_old_controller.log`) and direct controllers (`_http.log`).
+        *   **Analysis Checklist & Remediation**:
+            *   **Payload & Field Parity**: Identify missing or extra fields in the request JSON payload compared to legacy. Ensure fields sent by the legacy controller are properly mapped in the direct controller. Fix mappers or adapter logic to align payload contents.
+            *   **Update Strategies & Masks**: Verify whether `Update` uses correct HTTP verbs (`PATCH` vs `PUT`) and sends accurate `updateMask` parameters. Adjust diffing logic or update paths to match legacy behavior.
+            *   **Call Sequences & Redundant Writes**: Ensure create/update flows do not perform unnecessary intermediate API calls or fail to wait on asynchronous LRO operations. 
+
+        **2. Final KRM Object Diffs (`_final_object.diff`)**
+        *   **Purpose**: Compares final KRM object state (`_final_object_old_controller.golden.yaml` vs `_generated_object_<fixture>.golden.yaml`).
+        *   **Analysis Checklist & Remediation**:
+            *   **Status & Observed State**: Verify `status` and subfield mappings accurately mirror or improve upon legacy status fields without dropping critical output attributes. Update status mapping in the Adapter to retain expected fields.
+            *   **Conditions & Readiness**: Verify condition reasons (`UpToDate`, `Ready`) match standard expectations.
+            *   **Annotations & External References**: Ensure external IDs and referenced resource URIs conform to canonical identity formats.
+
+        **3. Export Diffs (`_exported_object.diff`)**
+        *   **Purpose**: Compares export outputs between legacy exporter (`_exported_old_controller.golden.yaml`) and direct controller exporter (`_exported.yaml`).
+        *   **Analysis Checklist & Remediation**:
+            *   Confirm that export generation produces equivalent, deployable KRM specs and retains identical spec field representations. Fix `AdapterForURL` and export mapping logic to maintain fidelity.
+
+        **Categorizing Diffs: Intentional vs. Regression**
+        Distinguish between acceptable improvements and regressions that must be fixed:
+        *   **Acceptable / Expected Diffs**:
+            *   Adopting modern direct conventions (e.g., standard Identity v2 / `external` fields, improved condition messages, structured error details).
+            *   Direct controller leveraging native Google Cloud client SDK semantics over raw Terraform provider conversions.
+        *   **Unacceptable Diffs (Regressions to Fix)**:
+            *   Dropped fields in request/response payloads.
+            *   Spurious update diffs during steady-state re-reconciliation (violating 0-write re-reconciliation).
+            *   Missing status attributes previously consumed by downstream controllers or end users.
+
         Focus on the **Adapter** implementation:
         - `Find`: Check if fields are correctly read, populated, and mapped from the GCP SDK response.
         - `Create` / `Update`: Ensure fields are correctly mapped to the GCP SDK request and correct APIs are called. Pay attention to differences in Patch/Put calls due to incorrect diffing logic in the Update method.
