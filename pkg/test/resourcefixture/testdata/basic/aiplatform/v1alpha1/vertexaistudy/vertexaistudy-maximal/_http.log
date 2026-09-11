@@ -1,0 +1,268 @@
+GRPC /google.cloud.aiplatform.v1.VizierService/GetStudy
+
+{
+  "name": "projects/${projectId}/locations/us-central1/studies/vertexaistudy-maximal-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = List of found errors:	1.Field: name; Message: The study ID must be a number.	
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.VizierService/CreateStudy
+
+{
+  "parent": "projects/${projectId}/locations/us-central1",
+  "study": {
+    "displayName": "maximal_study_${uniqueId}",
+    "name": "projects/${projectId}/locations/us-central1/studies/vertexaistudy-maximal-${uniqueId}",
+    "studySpec": {
+      "algorithm": "RANDOM_SEARCH",
+      "measurementSelectionType": "BEST_MEASUREMENT",
+      "metrics": [
+        {
+          "goal": "MAXIMIZE",
+          "metricId": "accuracy"
+        }
+      ],
+      "observationNoise": "LOW",
+      "parameters": [
+        {
+          "doubleValueSpec": {
+            "maxValue": 0.1,
+            "minValue": 0.0001
+          },
+          "parameterId": "learning_rate",
+          "scaleType": "UNIT_LINEAR_SCALE"
+        },
+        {
+          "integerValueSpec": {
+            "maxValue": "256",
+            "minValue": "16"
+          },
+          "parameterId": "batch_size",
+          "scaleType": "UNIT_LINEAR_SCALE"
+        },
+        {
+          "categoricalValueSpec": {
+            "values": [
+              "adam",
+              "sgd"
+            ]
+          },
+          "parameterId": "optimizer"
+        },
+        {
+          "discreteValueSpec": {
+            "values": [
+              128,
+              256
+            ]
+          },
+          "parameterId": "hidden_units",
+          "scaleType": "UNIT_LINEAR_SCALE"
+        }
+      ]
+    }
+  }
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "maximal_study_${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/studies/${studyID}",
+  "state": "ACTIVE",
+  "studySpec": {
+    "algorithm": "RANDOM_SEARCH",
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "observationNoise": "LOW",
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.1,
+          "minValue": 0.0001
+        },
+        "parameterId": "learning_rate",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      },
+      {
+        "integerValueSpec": {
+          "maxValue": "256",
+          "minValue": "16"
+        },
+        "parameterId": "batch_size",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      },
+      {
+        "categoricalValueSpec": {
+          "values": [
+            "adam",
+            "sgd"
+          ]
+        },
+        "parameterId": "optimizer"
+      },
+      {
+        "discreteValueSpec": {
+          "values": [
+            128,
+            256
+          ]
+        },
+        "parameterId": "hidden_units",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      }
+    ],
+    "studyStoppingConfig": {}
+  }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.VizierService/GetStudy
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/studies/${studyID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "maximal_study_${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/studies/${studyID}",
+  "state": "ACTIVE",
+  "studySpec": {
+    "algorithm": "RANDOM_SEARCH",
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "observationNoise": "LOW",
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.1,
+          "minValue": 0.0001
+        },
+        "parameterId": "learning_rate",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      },
+      {
+        "integerValueSpec": {
+          "maxValue": "256",
+          "minValue": "16"
+        },
+        "parameterId": "batch_size",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      },
+      {
+        "categoricalValueSpec": {
+          "values": [
+            "adam",
+            "sgd"
+          ]
+        },
+        "parameterId": "optimizer"
+      },
+      {
+        "discreteValueSpec": {
+          "values": [
+            128,
+            256
+          ]
+        },
+        "parameterId": "hidden_units",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      }
+    ],
+    "studyStoppingConfig": {}
+  }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.VizierService/GetStudy
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/studies/${studyID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "maximal_study_${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/studies/${studyID}",
+  "state": "ACTIVE",
+  "studySpec": {
+    "algorithm": "RANDOM_SEARCH",
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "observationNoise": "LOW",
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.1,
+          "minValue": 0.0001
+        },
+        "parameterId": "learning_rate",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      },
+      {
+        "integerValueSpec": {
+          "maxValue": "256",
+          "minValue": "16"
+        },
+        "parameterId": "batch_size",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      },
+      {
+        "categoricalValueSpec": {
+          "values": [
+            "adam",
+            "sgd"
+          ]
+        },
+        "parameterId": "optimizer"
+      },
+      {
+        "discreteValueSpec": {
+          "values": [
+            128,
+            256
+          ]
+        },
+        "parameterId": "hidden_units",
+        "scaleType": "UNIT_LINEAR_SCALE"
+      }
+    ],
+    "studyStoppingConfig": {}
+  }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.VizierService/DeleteStudy
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/studies/${studyID}"
+}
+
+OK
+
+{}
