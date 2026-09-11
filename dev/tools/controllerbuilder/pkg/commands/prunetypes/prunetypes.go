@@ -28,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/spf13/cobra"
 	"golang.org/x/tools/go/packages"
+	"golang.org/x/tools/imports"
 	"k8s.io/klog/v2"
 )
 
@@ -289,7 +290,13 @@ func PruneTypes(ctx context.Context, o *PruneTypesOptions) error {
 			klog.Infof("Commented out unreachable type %s in %s", item.typeName.Name(), targetFile)
 		}
 
-		if err := os.WriteFile(targetFile, content, 0644); err != nil {
+		formatted, err := imports.Process(targetFile, content, nil)
+		if err != nil {
+			klog.Warningf("error running goimports on %q: %v", targetFile, err)
+			formatted = content
+		}
+
+		if err := os.WriteFile(targetFile, formatted, 0644); err != nil {
 			return fmt.Errorf("writing %s: %w", targetFile, err)
 		}
 	}

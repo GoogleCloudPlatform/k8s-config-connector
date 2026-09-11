@@ -45,6 +45,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ComputeRegionAutoscaler:Autoscaler \
   --resource ComputeOrganizationSecurityPolicy:SecurityPolicy \
   --resource ComputeNetworkEndpoint:NetworkEndpoint \
+  --resource ComputeGlobalNetworkEndpoint:NetworkEndpoint \
   --resource ComputeMachineImage:MachineImage \
   --resource ComputeRegionSSLPolicy:SslPolicy \
   --include-skipped-output
