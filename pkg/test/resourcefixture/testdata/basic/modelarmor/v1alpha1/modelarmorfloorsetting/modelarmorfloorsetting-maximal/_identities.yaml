@@ -1,0 +1,6 @@
+- caisURL: //modelarmor.googleapis.com/projects/${projectId}/locations/global/floorSetting
+  group: modelarmor.cnrm.cloud.google.com
+  kind: ModelArmorFloorSetting
+  name: modelarmorfloorsetting-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

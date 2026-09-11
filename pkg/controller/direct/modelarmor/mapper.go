@@ -125,3 +125,33 @@ func FloorSetting_FloorSettingMetadata_MultiLanguageDetection_ToProto(mapCtx *di
 	}
 	return out
 }
+
+func AiPlatformFloorSetting_FromProto(mapCtx *direct.MapContext, in *pb.AiPlatformFloorSetting) *krm.AiPlatformFloorSetting {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiPlatformFloorSetting{}
+	switch oneof := in.EnforcementType.(type) {
+	case *pb.AiPlatformFloorSetting_InspectOnly:
+		out.InspectOnly = direct.PtrTo(oneof.InspectOnly)
+	case *pb.AiPlatformFloorSetting_InspectAndBlock:
+		out.InspectAndBlock = direct.PtrTo(oneof.InspectAndBlock)
+	}
+	out.EnableCloudLogging = direct.LazyPtr(in.GetEnableCloudLogging())
+	return out
+}
+
+func AiPlatformFloorSetting_ToProto(mapCtx *direct.MapContext, in *krm.AiPlatformFloorSetting) *pb.AiPlatformFloorSetting {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AiPlatformFloorSetting{}
+	if in.InspectOnly != nil {
+		out.EnforcementType = &pb.AiPlatformFloorSetting_InspectOnly{InspectOnly: *in.InspectOnly}
+	}
+	if in.InspectAndBlock != nil {
+		out.EnforcementType = &pb.AiPlatformFloorSetting_InspectAndBlock{InspectAndBlock: *in.InspectAndBlock}
+	}
+	out.EnableCloudLogging = direct.ValueOf(in.EnableCloudLogging)
+	return out
+}
