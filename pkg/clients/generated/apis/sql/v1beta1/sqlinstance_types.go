@@ -267,6 +267,32 @@ type InstancePasswordValidationPolicy struct {
 	ReuseInterval *int64 `json:"reuseInterval,omitempty"`
 }
 
+type InstancePerformanceCaptureConfig struct {
+	/* True if Performance Capture feature is enabled. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+
+	/* Specifies the minimum number of consecutive probe threshold that triggers performance capture. */
+	// +optional
+	ProbeThreshold *int64 `json:"probeThreshold,omitempty"`
+
+	/* Specifies the interval in seconds between consecutive probes that check if any trigger condition thresholds have been reached. */
+	// +optional
+	ProbingIntervalSeconds *int64 `json:"probingIntervalSeconds,omitempty"`
+
+	/* Specifies the minimum number of MySQL `Threads_running` to trigger the performance capture on the primary instance. */
+	// +optional
+	RunningThreadsThreshold *int64 `json:"runningThreadsThreshold,omitempty"`
+
+	/* Specifies the minimum number of seconds replica must be lagging behind primary instance to trigger the performance capture on replica. */
+	// +optional
+	SecondsBehindSourceThreshold *int64 `json:"secondsBehindSourceThreshold,omitempty"`
+
+	/* Specifies the amount of time in seconds that a transaction needs to have been open before the watcher starts recording it. */
+	// +optional
+	TransactionDurationThreshold *int64 `json:"transactionDurationThreshold,omitempty"`
+}
+
 type InstancePscConfig struct {
 	/* List of consumer projects that are allow-listed for PSC connections to this instance. This instance can be connected to with PSC from any network in these projects. Each consumer project in this list may be represented by a project number (numeric) or by a project id (alphanumeric). */
 	// +optional
@@ -423,6 +449,9 @@ type InstanceSettings struct {
 
 	// +optional
 	PasswordValidationPolicy *InstancePasswordValidationPolicy `json:"passwordValidationPolicy,omitempty"`
+
+	// +optional
+	PerformanceCaptureConfig *InstancePerformanceCaptureConfig `json:"performanceCaptureConfig,omitempty"`
 
 	/* Pricing plan for this instance, can only be PER_USE. */
 	// +optional
