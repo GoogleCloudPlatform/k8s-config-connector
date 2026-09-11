@@ -561,6 +561,18 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "source")
 		delete(v, "marketplaceAgentVisibility")
 		delete(v, "observabilityConfig")
+		delete(v, "correlationInfo")
+		delete(v, "labels")
+		if qm, ok := v["qualityMetadata"].(map[string]interface{}); ok {
+			if agentInfo, ok := qm["agentInfo"].([]interface{}); ok {
+				for _, a := range agentInfo {
+					if agent, ok := a.(map[string]interface{}); ok {
+						delete(agent, "team")
+						delete(agent, "teams")
+					}
+				}
+			}
+		}
 		// Normalize empty LRO response payloads (e.g., from mock Delete operations returning Empty, but real returns nothing)
 		if resp, ok := v["response"].(map[string]interface{}); ok {
 			if len(resp) == 0 || (len(resp) == 1 && resp["@type"] == "type.googleapis.com/google.protobuf.Empty") {

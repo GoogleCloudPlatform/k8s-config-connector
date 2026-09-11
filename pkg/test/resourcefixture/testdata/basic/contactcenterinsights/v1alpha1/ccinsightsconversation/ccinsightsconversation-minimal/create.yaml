@@ -6,6 +6,7 @@ spec:
   projectRef:
     external: ${projectId}
   location: us-central1
+  languageCode: en-US
   medium: CHAT
   dataSource:
     gcsSource:

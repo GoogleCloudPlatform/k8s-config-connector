@@ -10,6 +10,4 @@ spec:
   dataSource:
     gcsSource:
       transcriptURI: gs://${projectId}-ccinsights-test-bucket-2026/transcript.json
-  languageCode: en-US
-  labels:
-    foo: bar
+  languageCode: en-GB

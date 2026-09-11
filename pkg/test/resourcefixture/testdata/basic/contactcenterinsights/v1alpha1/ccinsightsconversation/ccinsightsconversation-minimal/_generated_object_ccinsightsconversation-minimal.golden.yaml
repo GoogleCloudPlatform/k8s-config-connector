@@ -4,7 +4,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
   name: ccinsightsconv-min-${uniqueId}
@@ -13,6 +13,7 @@ spec:
   dataSource:
     gcsSource:
       transcriptURI: gs://${projectId}-ccinsights-test-bucket-2026/transcript.json
+  languageCode: en-GB
   location: us-central1
   medium: CHAT
   projectRef:
@@ -25,7 +26,7 @@ status:
     status: "True"
     type: Ready
   externalRef: projects/${projectId}/locations/us-central1/conversations/ccinsightsconv-min-${uniqueId}
-  observedGeneration: 1
+  observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
     duration: 4s
