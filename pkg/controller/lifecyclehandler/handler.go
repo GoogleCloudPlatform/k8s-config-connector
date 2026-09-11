@@ -16,7 +16,9 @@ package lifecyclehandler
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"strings"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -28,6 +30,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
+	"google.golang.org/api/googleapi"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -310,13 +315,17 @@ func (r *LifecycleHandler) HandleUpdating(ctx context.Context, resource *k8s.Res
 func (r *LifecycleHandler) HandleUpdateFailed(ctx context.Context, resource *k8s.Resource, err error) error {
 	structuredreporting.ReportError(ctx, err, resource)
 	msg := fmt.Errorf("Update call failed: %w", err).Error()
-	setCondition(resource, corev1.ConditionFalse, k8s.UpdateFailed, msg)
+	reason := k8s.UpdateFailed
+	if IsNonRetryableError(err) {
+		reason = k8s.UpdateFailedTerminalError
+	}
+	setCondition(resource, corev1.ConditionFalse, reason, msg)
 	setObservedGeneration(resource, resource.GetGeneration())
 	if err := r.updateStatus(ctx, resource); err != nil {
 		return err
 	}
 
-	r.recordEvent(ctx, resource, corev1.EventTypeWarning, k8s.UpdateFailed, msg)
+	r.recordEvent(ctx, resource, corev1.EventTypeWarning, reason, msg)
 	return fmt.Errorf("Update call failed: %w", err)
 }
 
@@ -429,4 +438,41 @@ func IsOrphaned(resource *k8s.Resource, parentReferenceConfigs []corekccv1alpha1
 		return false, parent, nil
 	}
 	return false, nil, fmt.Errorf("no parent reference found in resource")
+}
+
+type grpcStatus interface {
+	GRPCStatus() *status.Status
+}
+
+// IsNonRetryableError returns true if the error represents a non-retryable client error (INVALID_ARGUMENT).
+func IsNonRetryableError(err error) bool {
+	if err == nil {
+		return false
+	}
+
+	// 1. Check gRPC / GAPIC status code
+	var gs grpcStatus
+	if errors.As(err, &gs) {
+		if gs.GRPCStatus().Code() == codes.InvalidArgument {
+			return true
+		}
+	}
+
+	// 2. Check HTTP status code (googleapi.Error)
+	var ge *googleapi.Error
+	if errors.As(err, &ge) && ge.Code == 400 {
+		bodyLower := strings.ToLower(ge.Body)
+		if strings.Contains(bodyLower, `"status": "invalid_argument"`) ||
+			strings.Contains(bodyLower, `"invalid_argument"`) {
+			return true
+		}
+		for _, item := range ge.Errors {
+			switch item.Reason {
+			case "invalid", "invalidParameter", "required":
+				return true
+			}
+		}
+	}
+
+	return false
 }
