@@ -530,6 +530,9 @@ type SQLInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   SQLInstance's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* The current active role of the instance in an Enterprise DR cluster: 'PRIMARY' or 'DR_REPLICA'. */
+	// +optional
+	CurrentRole *string `json:"currentRole,omitempty"`
 	/* Available Maintenance versions. */
 	// +optional
 	AvailableMaintenanceVersions []string `json:"availableMaintenanceVersions,omitempty"`

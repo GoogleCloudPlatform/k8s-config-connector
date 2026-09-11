@@ -37,8 +37,12 @@ const (
 func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance, actual *api.DatabaseInstance, fieldMetadata map[string]*FieldMetadata) {
 	// Stage 1: Apply all client-side defaults as if no fields are unmanaged.
 	if in.Spec.InstanceType == nil {
-		// GCP default InstanceType is CLOUD_SQL_INSTANCE.
-		out.InstanceType = "CLOUD_SQL_INSTANCE"
+		if (in.Spec.MasterInstanceRef != nil && (in.Spec.MasterInstanceRef.Name != "" || in.Spec.MasterInstanceRef.External != "")) || (actual != nil && actual.MasterInstanceName != "") {
+			out.InstanceType = "READ_REPLICA_INSTANCE"
+		} else {
+			// GCP default InstanceType is CLOUD_SQL_INSTANCE.
+			out.InstanceType = "CLOUD_SQL_INSTANCE"
+		}
 	}
 	if in.Spec.MaintenanceVersion == nil && actual != nil {
 		// If desired maintenanceVersion is not specified, assume user wants the actual.
@@ -56,7 +60,7 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 		// GCP default AvailailbilityType is ZONAL.
 		out.Settings.AvailabilityType = "ZONAL"
 	}
-	if in.Spec.Settings.BackupConfiguration == nil && actual != nil && !actual.Settings.BackupConfiguration.Enabled {
+	if in.Spec.Settings.BackupConfiguration == nil && actual != nil && actual.Settings != nil && actual.Settings.BackupConfiguration != nil && !actual.Settings.BackupConfiguration.Enabled {
 		// If desired backupConfiguration is not specified and actual is disabled, use the actual.
 		out.Settings.BackupConfiguration = actual.Settings.BackupConfiguration
 	}

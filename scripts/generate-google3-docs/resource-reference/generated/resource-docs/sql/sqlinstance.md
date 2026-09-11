@@ -1660,6 +1660,7 @@ conditions:
   status: string
   type: string
 connectionName: string
+currentRole: string
 dnsName: string
 firstIpAddress: string
 instanceType: string
@@ -1760,6 +1761,13 @@ serviceAccountEmailAddress: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>The connection name of the instance to be used in connection strings. For example, when connecting with Cloud SQL Proxy.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>currentRole</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The current active role of the instance in an Enterprise DR cluster: 'PRIMARY' or 'DR_REPLICA'.</p>
         </td>
     </tr>
     <tr>

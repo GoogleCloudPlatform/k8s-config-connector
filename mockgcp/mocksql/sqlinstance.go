@@ -1150,6 +1150,38 @@ func (s *sqlInstancesService) Switchover(ctx context.Context, req *pb.SqlInstanc
 	})
 }
 
+func (s *sqlInstancesService) Failover(ctx context.Context, req *pb.SqlInstancesFailoverRequest) (*pb.Operation, error) {
+	name, err := s.buildInstanceName(req.GetProject(), req.GetInstance())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.DatabaseInstance{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	if obj.GceZone != "" && obj.SecondaryGceZone != "" {
+		obj.GceZone, obj.SecondaryGceZone = obj.SecondaryGceZone, obj.GceZone
+	}
+
+	obj.Etag = fields.ComputeWeakEtag(obj)
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetProject: name.Project.ID,
+		OperationType: pb.Operation_FAILOVER,
+	}
+
+	return s.operations.startLRO(ctx, op, obj, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
 func (s *sqlInstancesService) Delete(ctx context.Context, req *pb.SqlInstancesDeleteRequest) (*pb.Operation, error) {
 	name, err := s.buildInstanceName(req.GetProject(), req.GetInstance())
 	if err != nil {

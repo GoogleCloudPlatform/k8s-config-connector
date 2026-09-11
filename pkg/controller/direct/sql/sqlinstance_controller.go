@@ -24,6 +24,7 @@ import (
 
 	api "google.golang.org/api/sqladmin/v1beta4"
 	"google.golang.org/protobuf/encoding/protojson"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -705,6 +706,17 @@ func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, createOp *direc
 		return err
 	}
 
+	// In Cloud SQL, designating a failover DR replica requires the replica to already exist and be RUNNABLE.
+	// When bootstrapping a DR cluster via GitOps, creating the primary with failoverDrReplicaName fails
+	// because the replica has not been created yet. We defer failoverDrReplicaName to the subsequent update cycle.
+	if desiredGCP.ReplicationCluster != nil && desiredGCP.ReplicationCluster.FailoverDrReplicaName != "" {
+		log.V(2).Info("deferring failoverDrReplicaName designation during initial instance insertion", "replica", desiredGCP.ReplicationCluster.FailoverDrReplicaName)
+		desiredGCP.ReplicationCluster.FailoverDrReplicaName = ""
+		if !desiredGCP.ReplicationCluster.DrReplica {
+			desiredGCP.ReplicationCluster = nil
+		}
+	}
+
 	op, err := a.sqlInstancesClient.Insert(a.projectID, desiredGCP).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("creating SQLInstance %s failed: %w", a.desired.Name, err)
@@ -759,13 +771,62 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating SQLInstance", "desired", a.desired)
 
+	// KCC Resource Development Guidance Alignment (Asynchronous Operation Standby):
+	// During failovers, switchovers, or maintenance, Cloud SQL instances enter MAINTENANCE or UPDATING.
+	// The Cloud SQL Admin API rejects concurrent updates against instances in transient states with
+	// HTTP 409 Conflict. Rather than failing the reconcile loop (which triggers exponential backoff
+	// in controller-runtime and generates noisy reconcile error events), the direct controller
+	// inspects active operations via sqlOperations.list.
+	//
+	// If an operation (SWITCHOVER, FAILOVER, PROMOTE_REPLICA) is running, KCC transitions the resource
+	// condition to Ready=False, Reason=FailoverInProgress and requests a non-blocking requeue
+	// (updateOp.RequestRequeue()) to smoothly poll until Cloud SQL finishes.
+	if a.actual != nil && (a.actual.State == "MAINTENANCE" || a.actual.State == "UPDATING") {
+		log.Info("Cloud SQL instance is in transient state, checking active operations", "name", a.resourceID, "state", a.actual.State)
+		op, isBusy, err := a.checkActiveOperations(ctx)
+		if err != nil {
+			log.Error(err, "error listing operations for instance in transient state", "name", a.resourceID)
+			status, statusErr := SQLInstanceStatusGCPToKRM(a.actual)
+			if statusErr != nil {
+				return fmt.Errorf("converting status: %w", statusErr)
+			}
+			readyCondition := k8s.NewCustomReadyCondition(
+				corev1.ConditionFalse,
+				"FailoverInProgress",
+				fmt.Sprintf("Cloud SQL instance is in %s state, and checking active operations encountered a transient error: %v. Standing by.", a.actual.State, err),
+			)
+			updateOp.RequestRequeue()
+			return updateOp.UpdateStatus(ctx, status, &readyCondition)
+		}
+		if isBusy {
+			opName := "unknown"
+			opType := "MAINTENANCE"
+			if op != nil {
+				opName = op.Name
+				opType = op.OperationType
+			}
+			log.Info("Cloud SQL failover or maintenance operation in progress; entering standby", "name", a.resourceID, "operation", opName, "type", opType)
+			status, err := SQLInstanceStatusGCPToKRM(a.actual)
+			if err != nil {
+				return fmt.Errorf("converting status: %w", err)
+			}
+			readyCondition := k8s.NewCustomReadyCondition(
+				corev1.ConditionFalse,
+				"FailoverInProgress",
+				fmt.Sprintf("Cloud SQL operation %s (%s) is in progress. KCC is standing by until completion.", opName, opType),
+			)
+			updateOp.RequestRequeue()
+			return updateOp.UpdateStatus(ctx, status, &readyCondition)
+		}
+	}
+
 	if upToDate, err := a.CompareLastModifiedCookie(ctx, updateOp, a.actual); err == nil && upToDate {
 		log.V(2).Info("resource is up to date (cookie match)", "name", a.resourceID)
 		status, err := SQLInstanceStatusGCPToKRM(a.actual)
 		if err != nil {
 			return fmt.Errorf("updating SQLInstance status failed: %w", err)
 		}
-		return setStatus(u, status)
+		return a.updateFinalStatus(ctx, updateOp, u, status)
 	}
 
 	// First, handle database version updates
@@ -889,15 +950,89 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		log.V(2).Info("instance maintenanceVersion updated", "op", op, "instance", updated)
 	}
 
+	// Support opting out of Enterprise DR diff suppression for strict declarative environments.
+	suppressDRDiffs := true
+	if a.desired.Annotations != nil && a.desired.Annotations["cnrm.cloud.google.com/diff-suppression"] == "false" {
+		suppressDRDiffs = false
+	}
+
 	// Finally, update rest of the fields
 	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.actual, a.fieldMeta)
 	if err != nil {
 		return err
 	}
 
+	if !suppressDRDiffs && isEnterpriseDRRoleSwap(desiredGCP, a.actual) {
+		status, err := SQLInstanceStatusGCPToKRM(a.actual)
+		if err != nil {
+			return fmt.Errorf("updating SQLInstance status failed: %w", err)
+		}
+		readyCondition := k8s.NewCustomReadyCondition(
+			corev1.ConditionFalse,
+			"RoleInversionDetected",
+			"Live instance role has inverted due to Cloud SQL switchover. Manual manifest update required because diff-suppression is disabled.",
+		)
+		return updateOp.UpdateStatus(ctx, status, &readyCondition)
+	}
+
+	// In Cloud SQL, designating a failover DR replica requires the target replica to already exist and be RUNNABLE.
+	// When bootstrapping a DR cluster via GitOps, both primary and replica may be created concurrently.
+	// If the replica is still creating or not yet RUNNABLE, we defer setting failoverDrReplicaName,
+	// apply any other pending configuration updates, set condition ReplicationClusterPending, and requeue.
+	// Note: We only check target replica readiness when the instance is NOT in a post-switchover role swap.
+	drReplicaPending := false
+	var pendingReplicaName string
+	var pendingReplicaState string
+	if !isEnterpriseDRRoleSwap(desiredGCP, a.actual) && desiredGCP.ReplicationCluster != nil && desiredGCP.ReplicationCluster.FailoverDrReplicaName != "" {
+		desiredTarget := desiredGCP.ReplicationCluster.FailoverDrReplicaName
+		actualTarget := ""
+		if a.actual.ReplicationCluster != nil {
+			actualTarget = a.actual.ReplicationCluster.FailoverDrReplicaName
+		}
+		if !isInstanceNameEqual(desiredTarget, actualTarget) {
+			runnable, state, err := a.isTargetReplicaRunnable(ctx, desiredTarget)
+			if err != nil {
+				return fmt.Errorf("checking readiness of target DR replica %s failed: %w", desiredTarget, err)
+			}
+			if !runnable {
+				drReplicaPending = true
+				pendingReplicaName = desiredTarget
+				pendingReplicaState = state
+				log.V(2).Info("target DR replica is not yet RUNNABLE in Cloud SQL; deferring failover designation", "replica", desiredTarget, "state", state)
+				// Suppress failoverDrReplicaName diff for this update cycle so other settings can still update cleanly
+				desiredGCP.ReplicationCluster.FailoverDrReplicaName = actualTarget
+				if actualTarget == "" && !desiredGCP.ReplicationCluster.DrReplica {
+					desiredGCP.ReplicationCluster = nil
+				}
+			}
+		}
+	}
+
 	instanceForStatus := a.actual
 
-	if instanceDiff := DiffInstances(desiredGCP, a.actual); instanceDiff.HasDiff() {
+	// In Cloud SQL, promoting a read replica to become an independent primary instance
+	// (Mode 3 emergency failover when masterInstanceRef is removed/cleared) requires invoking
+	// the PromoteReplica API rather than instances.Update.
+	if !isEnterpriseDRRoleSwap(desiredGCP, a.actual) &&
+		(a.actual.MasterInstanceName != "" || a.actual.InstanceType == "READ_REPLICA_INSTANCE") &&
+		desiredGCP.MasterInstanceName == "" {
+		log.V(2).Info("promoting read replica to independent primary", "name", a.resourceID)
+		promoteOp, err := a.sqlInstancesClient.PromoteReplica(a.projectID, a.resourceID).Context(ctx).Do()
+		if err != nil {
+			return fmt.Errorf("promoting read replica %s failed: %w", a.resourceID, err)
+		}
+		if err := a.pollForLROCompletion(ctx, promoteOp, "promoteReplica"); err != nil {
+			return err
+		}
+		promoted, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
+		if err != nil {
+			return fmt.Errorf("getting SQLInstance %s after promotion failed: %w", a.resourceID, err)
+		}
+		a.actual = promoted
+		instanceForStatus = promoted
+	}
+
+	if instanceDiff := DiffInstancesWithConfig(desiredGCP, a.actual, suppressDRDiffs); instanceDiff.HasDiff() {
 		updateOp.RecordUpdatingEvent()
 		instanceDiff.Object = u
 
@@ -931,7 +1066,32 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return err
 	}
 
-	return setStatus(u, status)
+	if drReplicaPending {
+		updateOp.RequestRequeue()
+		readyCondition := k8s.NewCustomReadyCondition(
+			corev1.ConditionFalse,
+			"ReplicationClusterPending",
+			fmt.Sprintf("Waiting for DR replica %q (state: %s) to become RUNNABLE in Cloud SQL before designating failover target.", pendingReplicaName, pendingReplicaState),
+		)
+		return updateOp.UpdateStatus(ctx, status, &readyCondition)
+	}
+
+	return a.updateFinalStatus(ctx, updateOp, u, status)
+}
+
+func (a *sqlInstanceAdapter) isTargetReplicaRunnable(ctx context.Context, targetRef string) (bool, string, error) {
+	targetProj, targetName := parseInstanceReference(targetRef)
+	if targetProj == "" {
+		targetProj = a.projectID
+	}
+	replica, err := a.sqlInstancesClient.Get(targetProj, targetName).Context(ctx).Do()
+	if err != nil {
+		if direct.IsNotFound(err) {
+			return false, "NOT_FOUND", nil
+		}
+		return false, "", err
+	}
+	return replica.State == "RUNNABLE", replica.State, nil
 }
 
 func (a *sqlInstanceAdapter) SetLastModifiedCookie(ctx context.Context, op directbase.Operation, actual *api.DatabaseInstance) error {
@@ -974,12 +1134,36 @@ func (a *sqlInstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting SQLInstance", "actual", a.actual)
 
+	// KCC Resource Development Guidance Alignment (Deletion Safety Guard):
+	// In accordance with KCC Finalizer and Resource Lifecycle conventions, deleting a resource while
+	// an underlying GCP database failover or maintenance operation is actively in flight risks
+	// split-brain topologies, orphaned replication targets, or unrecoverable data loss.
+	// We intercept Delete() and return a descriptive terminal error while operations are running.
+	if a.actual != nil && (a.actual.State == "MAINTENANCE" || a.actual.State == "UPDATING") {
+		op, isBusy, err := a.checkActiveOperations(ctx)
+		if err != nil {
+			return false, fmt.Errorf("cannot delete SQLInstance %s in %s state: checking active operations failed: %w", a.resourceID, a.actual.State, err)
+		}
+		if isBusy {
+			opName := "unknown"
+			opType := "MAINTENANCE"
+			if op != nil {
+				opName = op.Name
+				opType = op.OperationType
+			}
+			return false, fmt.Errorf("cannot delete SQLInstance %s while failover or maintenance operation %s (%s) is in progress", a.resourceID, opName, opType)
+		}
+	}
+
 	op, err := a.sqlInstancesClient.Delete(a.projectID, a.resourceID).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
 			log.V(2).Info("skipping delete for non-existent SQLInstance, assuming it was already deleted", "name", a.resourceID)
 			return true, nil
+		}
+		if strings.Contains(err.Error(), "The instance has replica") {
+			return false, fmt.Errorf("cannot delete primary SQLInstance %s while replicas exist: %w; KCC will retry once replicas are deleted", a.resourceID, err)
 		}
 		return false, fmt.Errorf("deleting SQLInstance %s failed: %w", a.resourceID, err)
 	}
@@ -990,6 +1174,49 @@ func (a *sqlInstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 	log.V(2).Info("deleted SQLInstance", "op", op)
 
 	return true, nil
+}
+
+func (a *sqlInstanceAdapter) checkActiveOperations(ctx context.Context) (*api.Operation, bool, error) {
+	if a.sqlOperationsClient == nil || a.projectID == "" || a.resourceID == "" {
+		return nil, false, nil
+	}
+	resp, err := a.sqlOperationsClient.List(a.projectID).Instance(a.resourceID).Context(ctx).Do()
+	if err != nil {
+		return nil, false, err
+	}
+	for _, op := range resp.Items {
+		if op.Status != "DONE" {
+			return op, true, nil
+		}
+	}
+	return nil, false, nil
+}
+
+func (a *sqlInstanceAdapter) updateFinalStatus(ctx context.Context, updateOp *directbase.UpdateOperation, u *unstructured.Unstructured, status *krm.SQLInstanceStatus) error {
+	wasFailover := false
+	if conditions, found, _ := unstructured.NestedSlice(u.Object, "status", "conditions"); found {
+		for _, c := range conditions {
+			if condMap, ok := c.(map[string]any); ok {
+				if condMap["reason"] == "FailoverInProgress" {
+					wasFailover = true
+					break
+				}
+			}
+		}
+	}
+	if wasFailover {
+		role := "UNKNOWN"
+		if status.CurrentRole != nil {
+			role = *status.CurrentRole
+		}
+		readyCondition := k8s.NewCustomReadyCondition(
+			corev1.ConditionTrue,
+			"FailoverAcknowledged",
+			fmt.Sprintf("Cloud SQL failover complete. Current role: %s. Orchestration resumed.", role),
+		)
+		return updateOp.UpdateStatus(ctx, status, &readyCondition)
+	}
+	return setStatus(u, status)
 }
 
 func (a *sqlInstanceAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {

@@ -20,9 +20,11 @@ import (
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/sql/v1beta4"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type sqlOperationsService struct {
@@ -44,6 +46,25 @@ func (s *sqlOperationsService) Get(ctx context.Context, req *pb.SqlOperationsGet
 	}
 
 	return obj, nil
+}
+
+func (s *sqlOperationsService) List(ctx context.Context, req *pb.SqlOperationsListRequest) (*pb.OperationsListResponse, error) {
+	ret := &pb.OperationsListResponse{}
+	ret.Kind = "sql#operationsList"
+
+	opKind := (&pb.Operation{}).ProtoReflect().Descriptor()
+	prefix := "projects/" + req.GetProject() + "/operations/"
+	if err := s.storage.List(ctx, opKind, storage.ListOptions{Prefix: prefix}, func(obj proto.Message) error {
+		op := obj.(*pb.Operation)
+		if req.GetInstance() != "" && op.TargetId != req.GetInstance() {
+			return nil
+		}
+		ret.Items = append(ret.Items, op)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	return ret, nil
 }
 
 type OperationName struct {
