@@ -898,6 +898,15 @@ func ResourceContainerCluster() *schema.Resource {
 				// ConflictsWith: many fields, see https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-overview#comparison. The conflict is only set one-way, on other fields w/ this field.
 			},
 
+			"autopilot_privileged_admission": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
+				Description: `The customer allowlist Cloud Storage paths for the cluster. These paths are used with the --autopilot-privileged-admission flag to authorize privileged workloads in Autopilot clusters.`,
+			},
+
 			"allow_net_admin": {
 				Type:        schema.TypeBool,
 				Optional:    true,
@@ -2233,6 +2242,18 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		}
 	}
 
+	var privilegedAdmissionConfig *container.PrivilegedAdmissionConfig
+	if v, ok := d.GetOk("autopilot_privileged_admission"); ok {
+		l := v.([]interface{})
+		paths := make([]string, len(l))
+		for i, val := range l {
+			paths[i] = val.(string)
+		}
+		privilegedAdmissionConfig = &container.PrivilegedAdmissionConfig{
+			AllowlistPaths: paths,
+		}
+	}
+
 	cluster := &container.Cluster{
 		Name:                        clusterName,
 		InitialNodeCount:            int64(d.Get("initial_node_count").(int)),
@@ -2255,9 +2276,10 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		Autoscaling:             expandClusterAutoscaling(d.Get("cluster_autoscaling"), d),
 		BinaryAuthorization:     expandBinaryAuthorization(d.Get("binary_authorization"), d.Get("enable_binary_authorization").(bool)),
 		Autopilot: &container.Autopilot{
-			Enabled:              d.Get("enable_autopilot").(bool),
-			WorkloadPolicyConfig: workloadPolicyConfig,
-			ForceSendFields:      []string{"Enabled"},
+			Enabled:                   d.Get("enable_autopilot").(bool),
+			WorkloadPolicyConfig:      workloadPolicyConfig,
+			PrivilegedAdmissionConfig: privilegedAdmissionConfig,
+			ForceSendFields:           []string{"Enabled"},
 		},
 		ReleaseChannel:   expandReleaseChannel(d.Get("release_channel")),
 		ClusterTelemetry: expandClusterTelemetry(d.Get("cluster_telemetry")),
@@ -2776,6 +2798,11 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 				return fmt.Errorf("Error setting allow_net_admin: %s", err)
 			}
 		}
+		if autopilot.PrivilegedAdmissionConfig != nil {
+			if err := d.Set("autopilot_privileged_admission", autopilot.PrivilegedAdmissionConfig.AllowlistPaths); err != nil {
+				return fmt.Errorf("Error setting autopilot_privileged_admission: %s", err)
+			}
+		}
 	}
 	if cluster.ShieldedNodes != nil {
 		if err := d.Set("enable_shielded_nodes", cluster.ShieldedNodes.Enabled); err != nil {
@@ -3080,6 +3107,30 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		log.Printf("[INFO] GKE cluster %s's autopilot workload policy config allow_net_admin has been set to %v", d.Id(), allowed)
+	}
+
+	if d.HasChange("autopilot_privileged_admission") {
+		v := d.Get("autopilot_privileged_admission")
+		l := v.([]interface{})
+		paths := make([]string, len(l))
+		for i, val := range l {
+			paths[i] = val.(string)
+		}
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredPrivilegedAdmissionConfig: &container.PrivilegedAdmissionConfig{
+					AllowlistPaths: paths,
+				},
+			},
+		}
+
+		updateF := updateFunc(req, "updating GKE autopilot privileged admission config")
+		// Call update serially.
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s's autopilot privileged admission config has been updated to %v", d.Id(), paths)
 	}
 
 	if d.HasChange("enable_binary_authorization") {

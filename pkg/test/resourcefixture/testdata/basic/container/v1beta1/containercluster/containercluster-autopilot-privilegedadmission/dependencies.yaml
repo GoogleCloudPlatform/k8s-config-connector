@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,23 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -o errexit
-set -o nounset
-set -o pipefail
-
-function on_error() {
-  echo "<hint_for_agent>Run 'make generate' to update generated code.</hint_for_agent>"
-}
-trap on_error ERR
-
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd "${REPO_ROOT}"
-
-make generate
-
-changed_files=$(git diff --no-ext-diff --name-only)
-if [[ -n "${changed_files}" ]]; then
-  echo "ERROR: Generated code out-of-date. Please run 'make generate' and update your PR."
-  git diff --no-ext-diff
-  exit 1
-fi
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computenetwork-${uniqueId}
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computesubnetwork-${uniqueId}
+spec:
+  ipCidrRange: 10.2.0.0/16
+  region: us-central1
+  networkRef:
+    name: computenetwork-${uniqueId}
