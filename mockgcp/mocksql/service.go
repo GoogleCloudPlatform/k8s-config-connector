@@ -63,6 +63,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterSqlInstancesServiceServer(grpcServer, &sqlInstancesService{MockService: s})
 	pb.RegisterSqlUsersServiceServer(grpcServer, s.users)
 	pb.RegisterSqlOperationsServiceServer(grpcServer, &sqlOperationsService{MockService: s})
+	pb.RegisterSqlBackupRunsServiceServer(grpcServer, &sqlBackupRunsServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -70,7 +71,8 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb.RegisterSqlDatabasesServiceHandler,
 		pb.RegisterSqlInstancesServiceHandler,
 		pb.RegisterSqlUsersServiceHandler,
-		pb.RegisterSqlOperationsServiceHandler)
+		pb.RegisterSqlOperationsServiceHandler,
+		pb.RegisterSqlBackupRunsServiceHandler)
 	if err != nil {
 		return nil, err
 	}
@@ -90,5 +92,13 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		}
 	}
 
-	return mux, nil
+	// Wrap the mux to rewrite "/v1/" to "/sql/v1beta4/" for GAPIC clients
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasPrefix(r.URL.Path, "/v1/") {
+			r.URL.Path = "/sql/v1beta4/" + strings.TrimPrefix(r.URL.Path, "/v1/")
+		}
+		mux.ServeHTTP(w, r)
+	})
+
+	return handler, nil
 }

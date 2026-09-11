@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: sql.cnrm.cloud.google.com
+  kind: SQLInstance
+  name: sqlinstance-dep-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: sqladmin.cnrm.cloud.google.com
+  kind: SQLAdminBackup
+  name: sqladminbackup-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

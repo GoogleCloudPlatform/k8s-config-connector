@@ -46,6 +46,8 @@ func KMSImportJobFuzzer() fuzztesting.KRMFuzzer {
 
 	f.Unimplemented_Identity(".name") // special field
 	f.Unimplemented_NotYetTriaged(".crypto_key_backend")
+	f.Unimplemented_NotYetTriaged(".public_key_format")
+	f.Unimplemented_NotYetTriaged(".public_key.data")
 
 	return f
 }

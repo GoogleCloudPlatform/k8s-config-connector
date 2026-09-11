@@ -36,6 +36,10 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version sqladmin.cnrm.cloud.google.com/v1alpha1 \
   --resource SQLAdminBackup:BackupRun
 
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.sql.v1 \
+  --api-version sqladmin.cnrm.cloud.google.com/v1alpha1
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

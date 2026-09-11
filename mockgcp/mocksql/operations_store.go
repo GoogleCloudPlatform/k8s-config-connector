@@ -17,6 +17,7 @@ package mocksql
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"time"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/sql/v1beta4"
@@ -53,6 +54,9 @@ func (s *operations) startLRO(ctx context.Context, op *pb.Operation, obj proto.M
 	case *pb.Database:
 		op.TargetId = obj.Instance
 		op.TargetLink = fmt.Sprintf("https://sqladmin.googleapis.com/sql/v1beta4/projects/%s/instances/%s/databases/%s", obj.Project, obj.Instance, obj.Name)
+	case *pb.BackupRun:
+		op.TargetId = strconv.FormatInt(obj.Id, 10)
+		op.TargetLink = fmt.Sprintf("https://sqladmin.googleapis.com/sql/v1beta4/projects/%s/instances/%s/backupRuns/%d", op.TargetProject, obj.Instance, obj.Id)
 	default:
 		klog.Fatalf("unhandled type %T", obj)
 	}

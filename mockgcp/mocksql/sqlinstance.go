@@ -427,6 +427,9 @@ func currentMaintenanceVersion(databaseVersion pb.SqlDatabaseVersion) (string, e
 	case pb.SqlDatabaseVersion_POSTGRES_9_6:
 		return "POSTGRES_9_6_24.R20250302.00_31", nil
 
+	case pb.SqlDatabaseVersion_POSTGRES_14:
+		return "POSTGRES_14_11.R20240514.00_12", nil
+
 	case pb.SqlDatabaseVersion_POSTGRES_15:
 		return "POSTGRES_15_7.R20240514.00_12", nil
 
@@ -618,6 +621,21 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 
 	case pb.SqlDatabaseVersion_POSTGRES_9_6:
 		obj.DatabaseInstalledVersion = "POSTGRES_9_6"
+
+	case pb.SqlDatabaseVersion_POSTGRES_14:
+		obj.DatabaseInstalledVersion = "POSTGRES_14_11"
+		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
+			{
+				MajorVersion: asRef("POSTGRES_15"),
+				Name:         asRef("POSTGRES_15"),
+				DisplayName:  asRef("PostgreSQL 15"),
+			},
+			{
+				MajorVersion: asRef("POSTGRES_16"),
+				Name:         asRef("POSTGRES_16"),
+				DisplayName:  asRef("PostgreSQL 16"),
+			},
+		}
 
 	case pb.SqlDatabaseVersion_POSTGRES_15:
 		obj.DatabaseInstalledVersion = "POSTGRES_15_7"
