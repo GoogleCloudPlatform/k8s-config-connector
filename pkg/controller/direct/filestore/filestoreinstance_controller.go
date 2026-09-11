@@ -17,10 +17,8 @@ package filestore
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	"google.golang.org/api/option"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -251,27 +249,18 @@ func (a *filestoreInstanceAdapter) Update(ctx context.Context, updateOp *directb
 		return nil
 	}
 
-	diff, updateMask, err := common.CompareBrownfieldSpec(
+	diff, updateMask, err := common.CompareBrownfieldSpecAndLabels(
 		ctx,
+		u,
 		&a.desiredKRM.Spec,
 		a.actual,
+		"labels",
 		FilestoreInstanceSpec_FromProto,
 		FilestoreInstanceSpec_ToProto,
 		normalize,
 	)
 	if err != nil {
 		return fmt.Errorf("comparing actual and desired FilestoreInstance %s: %w", a.id.String(), err)
-	}
-
-	if a.actual != nil && !reflect.DeepEqual(a.actual.Labels, desired.Labels) {
-		if updateMask == nil {
-			updateMask = &fieldmaskpb.FieldMask{}
-		}
-		updateMask.Paths = append(updateMask.Paths, "labels")
-		if diff == nil {
-			diff = &structuredreporting.Diff{}
-		}
-		diff.AddField("labels", a.actual.Labels, desired.Labels)
 	}
 
 	var latest *pb.Instance
