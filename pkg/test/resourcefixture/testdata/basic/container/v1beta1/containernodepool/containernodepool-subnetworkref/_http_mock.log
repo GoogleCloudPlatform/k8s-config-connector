@@ -2274,7 +2274,7 @@ X-Xss-Protection: 0
   "baseInstanceName": "gke-containercluster-abcdef-containernodepool-sample-${uniqueId}",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "currentActions": {
-    "none": 1
+    "none": 2
   },
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
@@ -2290,7 +2290,7 @@ X-Xss-Protection: 0
   "status": {
     "isStable": true
   },
-  "targetSize": 1,
+  "targetSize": 2,
   "updatePolicy": {
     "maxSurge": {
       "fixed": 1
@@ -2403,7 +2403,7 @@ X-Xss-Protection: 0
   "baseInstanceName": "gke-containercluster-abcdef-containernodepool-sample-${uniqueId}",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "currentActions": {
-    "none": 1
+    "none": 2
   },
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
@@ -2419,7 +2419,7 @@ X-Xss-Protection: 0
   "status": {
     "isStable": true
   },
-  "targetSize": 1,
+  "targetSize": 2,
   "updatePolicy": {
     "maxSurge": {
       "fixed": 1
