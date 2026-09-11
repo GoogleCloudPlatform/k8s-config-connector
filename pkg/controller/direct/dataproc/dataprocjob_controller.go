@@ -215,7 +215,11 @@ func (a *dataprocJobAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	}
 
 	desired.Reference.JobId = a.id.ID()
-	desired.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
+	gcpLabels := label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
+	for k, v := range desired.Labels {
+		gcpLabels[k] = v
+	}
+	desired.Labels = gcpLabels
 
 	// Ensure placement is non-nil if it wasn't set, as it's often needed implicitly
 	// even if empty (e.g., for cluster selectors). The mapping function should handle this.

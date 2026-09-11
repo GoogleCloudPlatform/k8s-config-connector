@@ -147,7 +147,11 @@ func (a *batchAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
+	gcpLabels := label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
+	for k, v := range resource.Labels {
+		gcpLabels[k] = v
+	}
+	resource.Labels = gcpLabels
 
 	req := &dataprocpb.CreateBatchRequest{
 		Parent:  a.id.Parent().String(),

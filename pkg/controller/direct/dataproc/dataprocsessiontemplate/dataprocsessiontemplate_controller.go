@@ -116,7 +116,11 @@ func (m *sessionTemplateModel) AdapterForObject(ctx context.Context, op *directb
 	}
 
 	desired.Name = templateID.String()
-	desired.Labels = label.NewGCPLabelsFromK8sLabels(obj.GetLabels())
+	gcpLabels := label.NewGCPLabelsFromK8sLabels(obj.GetLabels())
+	for k, v := range desired.Labels {
+		gcpLabels[k] = v
+	}
+	desired.Labels = gcpLabels
 
 	return &sessionTemplateAdapter{
 		gcpClient: gcpClient,

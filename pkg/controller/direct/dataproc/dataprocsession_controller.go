@@ -114,7 +114,11 @@ func (m *sessionModel) AdapterForObject(ctx context.Context, op *directbase.Adap
 	}
 
 	desired.Name = sessionID.String()
-	desired.Labels = label.NewGCPLabelsFromK8sLabels(obj.GetLabels())
+	gcpLabels := label.NewGCPLabelsFromK8sLabels(obj.GetLabels())
+	for k, v := range desired.Labels {
+		gcpLabels[k] = v
+	}
+	desired.Labels = gcpLabels
 
 	return &sessionAdapter{
 		gcpClient: gcpClient,
