@@ -59,10 +59,12 @@ OK
       },
       "instance": {
         "displayName": "BigtableSample",
+        "edition": "ENTERPRISE",
         "labels": {
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "bigtable-dep-${uniqueId}",
@@ -103,10 +105,12 @@ OK
       },
       "instance": {
         "displayName": "BigtableSample",
+        "edition": "ENTERPRISE",
         "labels": {
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "bigtable-dep-${uniqueId}",
@@ -118,6 +122,7 @@ OK
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
     "displayName": "BigtableSample",
+    "edition": "ENTERPRISE",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -143,6 +148,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSample",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -198,6 +204,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSample",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -279,8 +286,12 @@ OK
 
 {
   "columnFamilies": {
-    "family1": {},
-    "family2": {}
+    "family1": {
+      "gcRule": {}
+    },
+    "family2": {
+      "gcRule": {}
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
@@ -299,8 +310,12 @@ OK
 
 {
   "columnFamilies": {
-    "family1": {},
-    "family2": {}
+    "family1": {
+      "gcRule": {}
+    },
+    "family2": {
+      "gcRule": {}
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
@@ -319,8 +334,12 @@ OK
 
 {
   "columnFamilies": {
-    "family1": {},
-    "family2": {}
+    "family1": {
+      "gcRule": {}
+    },
+    "family2": {
+      "gcRule": {}
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
@@ -339,8 +358,12 @@ OK
 
 {
   "columnFamilies": {
-    "family1": {},
-    "family2": {}
+    "family1": {
+      "gcRule": {}
+    },
+    "family2": {
+      "gcRule": {}
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
@@ -359,8 +382,12 @@ OK
 
 {
   "columnFamilies": {
-    "family1": {},
-    "family2": {}
+    "family1": {
+      "gcRule": {}
+    },
+    "family2": {
+      "gcRule": {}
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
@@ -384,8 +411,12 @@ OK
 
 {
   "columnFamilies": {
-    "family1": {},
-    "family2": {},
+    "family1": {
+      "gcRule": {}
+    },
+    "family2": {
+      "gcRule": {}
+    },
     "family3": {}
   },
   "granularity": "MILLIS",
@@ -410,7 +441,9 @@ OK
 
 {
   "columnFamilies": {
-    "family2": {},
+    "family2": {
+      "gcRule": {}
+    },
     "family3": {}
   },
   "granularity": "MILLIS",
@@ -442,7 +475,7 @@ OK
     "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}",
     "startTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}/locations/us-east1-c/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}/locations/us-east1-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Table",
     "automatedBackupPolicy": {
@@ -477,7 +510,9 @@ OK
     "retentionPeriod": "259200s"
   },
   "columnFamilies": {
-    "family2": {},
+    "family2": {
+      "gcRule": {}
+    },
     "family3": {}
   },
   "granularity": "MILLIS",
@@ -499,6 +534,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSample",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -541,6 +577,18 @@ OK
 
 ---
 
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/DeleteInstance
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}"
+}
+
+OK
+
+{}
+
+---
+
 GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
 
 {
@@ -556,24 +604,14 @@ OK
     "retentionPeriod": "259200s"
   },
   "columnFamilies": {
-    "family2": {},
+    "family2": {
+      "gcRule": {}
+    },
     "family3": {}
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
 }
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/DeleteInstance
-
-{
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}"
-}
-
-OK
-
-{}
 
 ---
 

@@ -48,10 +48,12 @@ OK
       },
       "instance": {
         "displayName": "BigtableSample",
+        "edition": "ENTERPRISE",
         "labels": {
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "gcpolicy-dep-${uniqueId}",
@@ -59,7 +61,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 ---
@@ -67,7 +69,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 OK
@@ -87,10 +89,12 @@ OK
       },
       "instance": {
         "displayName": "BigtableSample",
+        "edition": "ENTERPRISE",
         "labels": {
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "gcpolicy-dep-${uniqueId}",
@@ -98,10 +102,11 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/locations/us-east1-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
     "displayName": "BigtableSample",
+    "edition": "ENTERPRISE",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -127,6 +132,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSample",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -175,6 +181,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSample",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -249,8 +256,12 @@ OK
 
 {
   "columnFamilies": {
-    "family1": {},
-    "family2": {}
+    "family1": {
+      "gcRule": {}
+    },
+    "family2": {
+      "gcRule": {}
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
@@ -269,8 +280,12 @@ OK
 
 {
   "columnFamilies": {
-    "family1": {},
-    "family2": {}
+    "family1": {
+      "gcRule": {}
+    },
+    "family2": {
+      "gcRule": {}
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
@@ -289,8 +304,12 @@ OK
 
 {
   "columnFamilies": {
-    "family1": {},
-    "family2": {}
+    "family1": {
+      "gcRule": {}
+    },
+    "family2": {
+      "gcRule": {}
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
@@ -309,8 +328,12 @@ OK
 
 {
   "columnFamilies": {
-    "family1": {},
-    "family2": {}
+    "family1": {
+      "gcRule": {}
+    },
+    "family2": {
+      "gcRule": {}
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
@@ -329,8 +352,12 @@ OK
 
 {
   "columnFamilies": {
-    "family1": {},
-    "family2": {}
+    "family1": {
+      "gcRule": {}
+    },
+    "family2": {
+      "gcRule": {}
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
@@ -382,7 +409,9 @@ OK
         }
       }
     },
-    "family2": {}
+    "family2": {
+      "gcRule": {}
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
@@ -415,7 +444,9 @@ OK
         }
       }
     },
-    "family2": {}
+    "family2": {
+      "gcRule": {}
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
@@ -485,7 +516,9 @@ OK
         }
       }
     },
-    "family2": {}
+    "family2": {
+      "gcRule": {}
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
@@ -527,7 +560,9 @@ OK
         }
       }
     },
-    "family2": {}
+    "family2": {
+      "gcRule": {}
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
@@ -569,7 +604,9 @@ OK
         }
       }
     },
-    "family2": {}
+    "family2": {
+      "gcRule": {}
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
@@ -596,8 +633,12 @@ OK
 
 {
   "columnFamilies": {
-    "family1": {},
-    "family2": {}
+    "family1": {
+      "gcRule": {}
+    },
+    "family2": {
+      "gcRule": {}
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
@@ -616,8 +657,12 @@ OK
 
 {
   "columnFamilies": {
-    "family1": {},
-    "family2": {}
+    "family1": {
+      "gcRule": {}
+    },
+    "family2": {
+      "gcRule": {}
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
@@ -650,6 +695,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSample",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"

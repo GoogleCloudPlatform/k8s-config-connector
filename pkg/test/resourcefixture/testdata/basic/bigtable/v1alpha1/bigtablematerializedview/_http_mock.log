@@ -48,10 +48,12 @@ OK
       },
       "instance": {
         "displayName": "BigtableSampleMV",
+        "edition": "ENTERPRISE",
         "labels": {
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/mvdep${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "mvdep${uniqueId}",
@@ -59,7 +61,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 ---
@@ -67,7 +69,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 OK
@@ -87,10 +89,12 @@ OK
       },
       "instance": {
         "displayName": "BigtableSampleMV",
+        "edition": "ENTERPRISE",
         "labels": {
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/mvdep${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "mvdep${uniqueId}",
@@ -98,10 +102,11 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/locations/us-east1-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
     "displayName": "BigtableSampleMV",
+    "edition": "ENTERPRISE",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -127,6 +132,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSampleMV",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -175,6 +181,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSampleMV",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -241,7 +248,9 @@ OK
 
 {
   "columnFamilies": {
-    "cf1": {}
+    "cf1": {
+      "gcRule": {}
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/table-${uniqueId}"
@@ -260,7 +269,9 @@ OK
 
 {
   "columnFamilies": {
-    "cf1": {}
+    "cf1": {
+      "gcRule": {}
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/table-${uniqueId}"
@@ -279,7 +290,9 @@ OK
 
 {
   "columnFamilies": {
-    "cf1": {}
+    "cf1": {
+      "gcRule": {}
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/table-${uniqueId}"
@@ -298,7 +311,9 @@ OK
 
 {
   "columnFamilies": {
-    "cf1": {}
+    "cf1": {
+      "gcRule": {}
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/table-${uniqueId}"
@@ -337,7 +352,7 @@ OK
     "originalRequest": {},
     "startTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 ---
@@ -345,7 +360,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 OK
@@ -358,7 +373,7 @@ OK
     "originalRequest": {},
     "startTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}/locations/us-east1-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.MaterializedView",
     "deletionProtection": true,
@@ -408,7 +423,7 @@ OK
     },
     "startTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 ---
@@ -416,7 +431,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 OK
@@ -432,7 +447,7 @@ OK
     },
     "startTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}/locations/us-east1-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.MaterializedView",
     "etag": "abcdef0123A=",
@@ -498,7 +513,9 @@ OK
 
 {
   "columnFamilies": {
-    "cf1": {}
+    "cf1": {
+      "gcRule": {}
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/table-${uniqueId}"
@@ -531,6 +548,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSampleMV",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"

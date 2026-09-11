@@ -1,3 +1,42 @@
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetAuthorizedView
+
+{
+  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}/authorizedViews/av-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = authorizedView "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}/authorizedViews/av-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/CreateAuthorizedView
+
+{
+  "authorizedView": {
+    "subsetView": {
+      "rowPrefixes": [
+        "dXNlcg=="
+      ]
+    }
+  },
+  "authorizedViewId": "av-${uniqueId}",
+  "parent": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateAuthorizedViewMetadata",
+    "originalRequest": {},
+    "requestTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}/authorizedViews/av-${uniqueId}/locations/us-east1-b/operations/${operationID}"
+}
+
+---
+
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
 
 {
@@ -48,10 +87,12 @@ OK
       },
       "instance": {
         "displayName": "BigtableSampleAV",
+        "edition": "ENTERPRISE",
         "labels": {
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/avdep${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "avdep${uniqueId}",
@@ -59,7 +100,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/avdep${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/avdep${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 ---
@@ -67,7 +108,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/avdep${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/avdep${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 OK
@@ -87,10 +128,12 @@ OK
       },
       "instance": {
         "displayName": "BigtableSampleAV",
+        "edition": "ENTERPRISE",
         "labels": {
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/avdep${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "avdep${uniqueId}",
@@ -98,10 +141,11 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/avdep${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/avdep${uniqueId}/locations/us-east1-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
     "displayName": "BigtableSampleAV",
+    "edition": "ENTERPRISE",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -127,6 +171,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSampleAV",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -175,6 +220,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSampleAV",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -241,106 +287,75 @@ OK
 
 {
   "columnFamilies": {
-    "family1": {}
-  },
-  "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}"
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
-
-{
-  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}",
-  "view": "SCHEMA_VIEW"
-}
-
-OK
-
-{
-  "columnFamilies": {
-    "family1": {}
-  },
-  "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}"
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
-
-{
-  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}",
-  "view": "SCHEMA_VIEW"
-}
-
-OK
-
-{
-  "columnFamilies": {
-    "family1": {}
-  },
-  "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}"
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
-
-{
-  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}",
-  "view": "SCHEMA_VIEW"
-}
-
-OK
-
-{
-  "columnFamilies": {
-    "family1": {}
-  },
-  "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}"
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetAuthorizedView
-
-{
-  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}/authorizedViews/av-${uniqueId}"
-}
-
-error: rpc error: code = NotFound desc = authorizedView "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}/authorizedViews/av-${uniqueId}" not found
-
-{}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/CreateAuthorizedView
-
-{
-  "authorizedView": {
-    "subsetView": {
-      "rowPrefixes": [
-        "dXNlcg=="
-      ]
+    "family1": {
+      "gcRule": {}
     }
   },
-  "authorizedViewId": "av-${uniqueId}",
-  "parent": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}"
+  "granularity": "MILLIS",
+  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}"
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+
+{
+  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}",
+  "view": "SCHEMA_VIEW"
 }
 
 OK
 
 {
-  "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateAuthorizedViewMetadata",
-    "originalRequest": {},
-    "requestTime": "2024-04-01T12:34:56.123456Z"
+  "columnFamilies": {
+    "family1": {
+      "gcRule": {}
+    }
   },
-  "name": "operations/projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}/authorizedViews/av-${uniqueId}/locations/us-east1-c/operations/${operationID}"
+  "granularity": "MILLIS",
+  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}"
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+
+{
+  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}",
+  "view": "SCHEMA_VIEW"
+}
+
+OK
+
+{
+  "columnFamilies": {
+    "family1": {
+      "gcRule": {}
+    }
+  },
+  "granularity": "MILLIS",
+  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}"
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+
+{
+  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}",
+  "view": "SCHEMA_VIEW"
+}
+
+OK
+
+{
+  "columnFamilies": {
+    "family1": {
+      "gcRule": {}
+    }
+  },
+  "granularity": "MILLIS",
+  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}"
 }
 
 ---
@@ -403,7 +418,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}/authorizedViews/av-${uniqueId}/locations/us-east1-c/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}/authorizedViews/av-${uniqueId}/locations/us-east1-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.AuthorizedView",
     "etag": "abcdef0123A=",
@@ -473,37 +488,6 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
-
-{
-  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}",
-  "view": "SCHEMA_VIEW"
-}
-
-OK
-
-{
-  "columnFamilies": {
-    "family1": {}
-  },
-  "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}"
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/DeleteTable
-
-{
-  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}"
-}
-
-OK
-
-{}
-
----
-
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
 
 {
@@ -517,6 +501,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSampleAV",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -556,6 +541,39 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/DeleteInstance
 
 {
   "name": "projects/${projectId}/instances/avdep${uniqueId}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+
+{
+  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}",
+  "view": "SCHEMA_VIEW"
+}
+
+OK
+
+{
+  "columnFamilies": {
+    "family1": {
+      "gcRule": {}
+    }
+  },
+  "granularity": "MILLIS",
+  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}"
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/DeleteTable
+
+{
+  "name": "projects/${projectId}/instances/avdep${uniqueId}/tables/avdep-${uniqueId}"
 }
 
 OK

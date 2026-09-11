@@ -1,4 +1,96 @@
-406,471d405
+0a1,45
+> GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+> 
+> {
+>   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}",
+>   "view": "SCHEMA_VIEW"
+> }
+> 
+> error: rpc error: code = NotFound desc = Not found: projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}
+> 
+> {}
+> 
+> ---
+> 
+> GRPC /google.bigtable.admin.v2.BigtableTableAdmin/ModifyColumnFamilies
+> 
+> {
+>   "modifications": [
+>     {
+>       "id": "family1",
+>       "update": {
+>         "gcRule": {
+>           "union": {
+>             "rules": [
+>               {
+>                 "maxAge": "54000s"
+>               },
+>               {
+>                 "maxNumVersions": 2
+>               }
+>             ]
+>           }
+>         }
+>       },
+>       "updateMask": "gcRule"
+>     }
+>   ],
+>   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
+> }
+> 
+> error: rpc error: code = NotFound desc = table "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}" not found
+> 
+> {}
+> 
+> ---
+> 
+232a278,322
+> GRPC /google.bigtable.admin.v2.BigtableTableAdmin/ModifyColumnFamilies
+> 
+> {
+>   "modifications": [
+>     {
+>       "id": "family1",
+>       "update": {
+>         "gcRule": {
+>           "union": {
+>             "rules": [
+>               {
+>                 "maxAge": "54000s"
+>               },
+>               {
+>                 "maxNumVersions": 2
+>               }
+>             ]
+>           }
+>         }
+>       },
+>       "updateMask": "gcRule"
+>     }
+>   ],
+>   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
+> }
+> 
+> error: rpc error: code = NotFound desc = table "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}" not found
+> 
+> {}
+> 
+> ---
+> 
+> GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+> 
+> {
+>   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}",
+>   "view": "SCHEMA_VIEW"
+> }
+> 
+> error: rpc error: code = NotFound desc = Not found: projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}
+> 
+> {}
+> 
+> ---
+> 
+457,526d546
 < GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
 < 
 < {
@@ -24,7 +116,9 @@
 <         }
 <       }
 <     },
-<     "family2": {}
+<     "family2": {
+<       "gcRule": {}
+<     }
 <   },
 <   "granularity": "MILLIS",
 <   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
@@ -57,7 +151,9 @@
 <         }
 <       }
 <     },
-<     "family2": {}
+<     "family2": {
+<       "gcRule": {}
+<     }
 <   },
 <   "granularity": "MILLIS",
 <   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
@@ -65,14 +161,25 @@
 < 
 < ---
 < 
-505,546d438
-< }
-< 
-< OK
-< 
-< {
-<   "columnFamilies": {
-<     "family1": {
+687c707
+< GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+---
+> GRPC /google.bigtable.admin.v2.BigtableTableAdmin/ModifyColumnFamilies
+690,691c710,719
+<   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}",
+<   "view": "SCHEMA_VIEW"
+---
+>   "modifications": [
+>     {
+>       "id": "family1",
+>       "update": {
+>         "gcRule": {}
+>       },
+>       "updateMask": "gcRule"
+>     }
+>   ],
+>   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
+699,719c727
 <       "gcRule": {
 <         "union": {
 <           "rules": [
@@ -94,12 +201,45 @@
 <           ]
 <         }
 <       }
-<     },
-<     "family2": {}
-<   },
-<   "granularity": "MILLIS",
+---
+>       "gcRule": {}
+731c739
+< GRPC /google.bigtable.admin.v2.BigtableTableAdmin/ModifyColumnFamilies
+---
+> GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+734,743c742,743
+<   "modifications": [
+<     {
+<       "id": "family1",
+<       "update": {
+<         "gcRule": {}
+<       },
+<       "updateMask": "gcRule"
+<     }
+<   ],
 <   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
+---
+>   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}",
+>   "view": "SCHEMA_VIEW"
+762a763,774
+> GRPC /google.bigtable.admin.v2.BigtableTableAdmin/DeleteTable
+> 
+> {
+>   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
+> }
+> 
+> OK
+> 
+> {}
+> 
+> ---
+> 
+816,851d827
 < }
+< 
+< OK
+< 
+< {}
 < 
 < ---
 < 
@@ -108,3 +248,26 @@
 < {
 <   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}",
 <   "view": "SCHEMA_VIEW"
+< }
+< 
+< OK
+< 
+< {
+<   "columnFamilies": {
+<     "family1": {
+<       "gcRule": {}
+<     },
+<     "family2": {
+<       "gcRule": {}
+<     }
+<   },
+<   "granularity": "MILLIS",
+<   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
+< }
+< 
+< ---
+< 
+< GRPC /google.bigtable.admin.v2.BigtableTableAdmin/DeleteTable
+< 
+< {
+<   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"

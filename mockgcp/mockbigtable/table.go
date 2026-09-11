@@ -66,10 +66,6 @@ func returnView(obj *pb.Table, view pb.Table_View) *pb.Table {
 	ret := proto.CloneOf(obj)
 
 	for _, columnFamily := range ret.GetColumnFamilies() {
-		if proto.Equal(columnFamily.GcRule, &pb.GcRule{}) {
-			columnFamily.GcRule = nil
-		}
-
 		if columnFamily.ValueType != nil && columnFamily.ValueType.GetKind() == nil {
 			columnFamily.ValueType = nil
 		}

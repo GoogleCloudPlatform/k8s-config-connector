@@ -5,10 +5,6 @@ Connection: keep-alive
 Content-Type: application/json
 
 {
-  "dataPersistentDiskSpec": {
-    "diskSizeGb": "100",
-    "diskType": "pd-standard"
-  },
   "displayName": "test-${uniqueId}",
   "eucConfig": {
     "eucDisabled": false
