@@ -26,4 +26,3 @@ status:
     type: Ready
   externalRef: projects/${projectId}/locations/us-central1/cdnKeys/videostitchercdnkey-${uniqueId}
   observedGeneration: 2
-  observedState: {}

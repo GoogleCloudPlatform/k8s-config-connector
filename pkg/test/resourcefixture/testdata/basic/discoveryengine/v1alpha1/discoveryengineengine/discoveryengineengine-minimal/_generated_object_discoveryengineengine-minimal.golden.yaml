@@ -28,4 +28,3 @@ status:
     type: Ready
   externalRef: projects/${projectId}/locations/global/engines/engine-${uniqueId}
   observedGeneration: 2
-  observedState: {}
