@@ -21,6 +21,7 @@ package mocksecuritycenter
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"google.golang.org/grpc"
 
@@ -73,5 +74,15 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
-	return mux, nil
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Rewrite /v1/organizations/12345/locations/global/bigQueryExports to /v1/organizations/12345/bigQueryExports
+		// The proto doesn't have the locations/global bindings yet for bigQueryExports.
+		u := r.URL
+		if strings.Contains(u.Path, "/locations/global/bigQueryExports") {
+			u2 := *u
+			u2.Path = strings.Replace(u.Path, "/locations/global/bigQueryExports", "/bigQueryExports", 1)
+			r = httpmux.RewriteRequest(r, &u2)
+		}
+		mux.ServeHTTP(w, r)
+	}), nil
 }

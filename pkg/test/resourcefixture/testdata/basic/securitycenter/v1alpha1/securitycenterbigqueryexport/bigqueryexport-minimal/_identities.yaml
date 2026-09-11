@@ -4,9 +4,7 @@
   name: scbqexportds${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
-  error: 'cannot resolve organization: format of Organization external="${TEST_ORG_ID}"
-    was not known (use organizations/{organizationID})'
+- caisURL: //securitycenter.googleapis.com/organizations/${TEST_ORG_ID}/locations/global/bigQueryExports/scbqexportminimal${uniqueId}
   group: securitycenter.cnrm.cloud.google.com
   kind: SecurityCenterBigQueryExport
   name: scbqexportminimal${uniqueId}
