@@ -16,6 +16,7 @@
 // proto.service: google.cloud.networkmanagement.v1.VpcFlowLogsService
 // proto.message: google.cloud.networkmanagement.v1.VpcFlowLogsConfig
 
+// Verified MockGCP and Alignment for NetworkManagementVpcFlowLogsConfig
 package mocknetworkmanagement
 
 import (
