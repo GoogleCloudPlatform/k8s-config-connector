@@ -177,6 +177,11 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	if len(updateMask.GetPaths()) == 0 {
+		log.V(2).Info("no updatable diff detected for DatabaseMigrationMigrationJob", "name", a.id)
+		return a.updateStatus(ctx, updateOp, a.actual)
+	}
+
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &pb.UpdateMigrationJobRequest{
@@ -263,6 +268,18 @@ func compareMigrationJob(ctx context.Context, actual, desired *pb.MigrationJob) 
 	if err != nil {
 		return nil, nil, err
 	}
+
+	var updatablePaths []string
+	for _, path := range updateMask.GetPaths() {
+		switch path {
+		case "source", "destination", "type", "source_database", "destination_database":
+			continue
+		default:
+			updatablePaths = append(updatablePaths, path)
+		}
+	}
+	updateMask.Paths = updatablePaths
+
 	return diffs, updateMask, nil
 }
 
