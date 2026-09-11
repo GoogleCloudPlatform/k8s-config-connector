@@ -142,6 +142,32 @@ type InstanceInsightsConfig struct {
 	RecordClientAddress *bool `json:"recordClientAddress,omitempty"`
 }
 
+type InstancePerformanceCaptureConfig struct {
+	/* True if Performance Capture feature is enabled. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+
+	/* Specifies the minimum number of consecutive probe threshold that triggers performance capture. */
+	// +optional
+	ProbeThreshold *int64 `json:"probeThreshold,omitempty"`
+
+	/* Specifies the interval in seconds between consecutive probes that check if any trigger condition thresholds have been reached. */
+	// +optional
+	ProbingIntervalSeconds *int64 `json:"probingIntervalSeconds,omitempty"`
+
+	/* Specifies the minimum number of MySQL `Threads_running` to trigger the performance capture on the primary instance. */
+	// +optional
+	RunningThreadsThreshold *int64 `json:"runningThreadsThreshold,omitempty"`
+
+	/* Specifies the minimum number of seconds replica must be lagging behind primary instance to trigger the performance capture on replica. */
+	// +optional
+	SecondsBehindSourceThreshold *int64 `json:"secondsBehindSourceThreshold,omitempty"`
+
+	/* Specifies the amount of time in seconds that a transaction needs to have been open before the watcher starts recording it. */
+	// +optional
+	TransactionDurationThreshold *int64 `json:"transactionDurationThreshold,omitempty"`
+}
+
 type InstanceIpConfiguration struct {
 	/* The name of the allocated ip range for the private ip CloudSQL instance. For example: "google-managed-services-default". If set, the instance ip will be created in the allocated range. The range name must comply with RFC 1035. Specifically, the name must be 1-63 characters long and match the regular expression [a-z]([-a-z0-9]*[a-z0-9])?. */
 	// +optional
@@ -373,6 +399,9 @@ type InstanceSettings struct {
 
 	// +optional
 	PasswordValidationPolicy *InstancePasswordValidationPolicy `json:"passwordValidationPolicy,omitempty"`
+
+	// +optional
+	PerformanceCaptureConfig *InstancePerformanceCaptureConfig `json:"performanceCaptureConfig,omitempty"`
 
 	/* Pricing plan for this instance, can only be PER_USE. */
 	// +optional
