@@ -30,42 +30,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AiPlatformFloorSetting_FromProto(mapCtx *direct.MapContext, in *pb.AiPlatformFloorSetting) *krm.AiPlatformFloorSetting {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AiPlatformFloorSetting{}
-	out.InspectOnly = direct.LazyPtr(in.GetInspectOnly())
-	out.InspectAndBlock = direct.LazyPtr(in.GetInspectAndBlock())
-	out.EnableCloudLogging = direct.LazyPtr(in.GetEnableCloudLogging())
-	return out
-}
-func AiPlatformFloorSetting_ToProto(mapCtx *direct.MapContext, in *krm.AiPlatformFloorSetting) *pb.AiPlatformFloorSetting {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AiPlatformFloorSetting{}
-	if oneof := AiPlatformFloorSetting_InspectOnly_ToProto(mapCtx, in.InspectOnly); oneof != nil {
-		out.EnforcementType = oneof
-	}
-	if oneof := AiPlatformFloorSetting_InspectAndBlock_ToProto(mapCtx, in.InspectAndBlock); oneof != nil {
-		out.EnforcementType = oneof
-	}
-	out.EnableCloudLogging = direct.ValueOf(in.EnableCloudLogging)
-	return out
-}
-func AiPlatformFloorSetting_InspectOnly_ToProto(mapCtx *direct.MapContext, in *bool) *pb.AiPlatformFloorSetting_InspectOnly {
-	if in == nil {
-		return nil
-	}
-	return &pb.AiPlatformFloorSetting_InspectOnly{InspectOnly: *in}
-}
-func AiPlatformFloorSetting_InspectAndBlock_ToProto(mapCtx *direct.MapContext, in *bool) *pb.AiPlatformFloorSetting_InspectAndBlock {
-	if in == nil {
-		return nil
-	}
-	return &pb.AiPlatformFloorSetting_InspectAndBlock{InspectAndBlock: *in}
-}
 func FilterConfig_FromProto(mapCtx *direct.MapContext, in *pb.FilterConfig) *krm.FilterConfig {
 	if in == nil {
 		return nil
