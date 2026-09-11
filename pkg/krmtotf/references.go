@@ -133,31 +133,50 @@ func ResolveReferenceObject(resourceRefValRaw map[string]interface{},
 	refConfig corekccv1alpha1.ReferenceConfig, r *Resource, kubeClient client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (interface{}, error) {
 	typeConfig := refConfig.TypeConfig
 	if len(refConfig.Types) > 0 {
-		var (
-			nestedRefValRaw interface{}
-			err             error
-			ok              bool
-			found           bool
-		)
-		for _, typeConfig = range refConfig.Types {
-			nestedRefValRaw, found, err = unstructured.NestedFieldNoCopy(resourceRefValRaw, typeConfig.Key)
+		if refConfig.Types[0].Key == "" {
+			kind, _, err := unstructured.NestedString(resourceRefValRaw, "kind")
 			if err != nil {
 				return nil, err
 			}
-			if found {
-				if typeConfig.JSONSchemaType != "" {
-					// This is not actually a reference, but an explicit value that should be used.
-					return resolveValueTemplateFromInterface(typeConfig.ValueTemplate, nestedRefValRaw, r, kubeClient, smLoader)
+
+			found := false
+			for _, candidate := range refConfig.Types {
+				if kind == "" || candidate.GVK.Kind == kind {
+					typeConfig = candidate
+					found = true
+					break
 				}
-				resourceRefValRaw, ok = nestedRefValRaw.(map[string]interface{})
-				if !ok {
-					return nil, fmt.Errorf("expected reference to be object")
-				}
-				break
 			}
-		}
-		if !found {
-			return nil, nil
+			if !found {
+				return nil, fmt.Errorf("unsupported reference kind %q", kind)
+			}
+		} else {
+			var (
+				nestedRefValRaw interface{}
+				err             error
+				ok              bool
+				found           bool
+			)
+			for _, typeConfig = range refConfig.Types {
+				nestedRefValRaw, found, err = unstructured.NestedFieldNoCopy(resourceRefValRaw, typeConfig.Key)
+				if err != nil {
+					return nil, err
+				}
+				if found {
+					if typeConfig.JSONSchemaType != "" {
+						// This is not actually a reference, but an explicit value that should be used.
+						return resolveValueTemplateFromInterface(typeConfig.ValueTemplate, nestedRefValRaw, r, kubeClient, smLoader)
+					}
+					resourceRefValRaw, ok = nestedRefValRaw.(map[string]interface{})
+					if !ok {
+						return nil, fmt.Errorf("expected reference to be object")
+					}
+					break
+				}
+			}
+			if !found {
+				return nil, nil
+			}
 		}
 	}
 	resourceRef := &v1alpha1.ResourceReference{}

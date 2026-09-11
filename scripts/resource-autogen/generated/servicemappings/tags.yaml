@@ -34,13 +34,21 @@ spec:
       resourceReferences:
         - key: parentRef
           tfField: parent
-          gvk:
-            kind: Project
-            version: v1beta1
-            group: resourcemanager.cnrm.cloud.google.com
-          targetField: number
-          valueTemplate: "//cloudresourcemanager.googleapis.com/projects/{{value}}"
-          parent: true
+          types:
+            - gvk:
+                kind: Project
+                version: v1beta1
+                group: resourcemanager.cnrm.cloud.google.com
+              targetField: number
+              valueTemplate: "//cloudresourcemanager.googleapis.com/projects/{{value}}"
+              parent: true
+            - gvk:
+                kind: SecretManagerSecret
+                version: v1beta1
+                group: secretmanager.cnrm.cloud.google.com
+              targetField: name
+              valueTemplate: "//secretmanager.googleapis.com/{{value}}"
+              parent: true
         - key: tagValueRef
           tfField: tag_value
           gvk:

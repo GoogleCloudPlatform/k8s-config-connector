@@ -166,6 +166,95 @@ func TestResolveResourceReferenceToTFResource(t *testing.T) {
 			},
 		},
 		{
+			name: "kind-discriminated type, referenced object, found",
+			config: map[string]interface{}{
+				"key1": "val1",
+				"barField": map[string]interface{}{
+					"kind": "Test1Bar",
+					"name": "my-bar",
+				},
+			},
+			referencedResources: []*unstructured.Unstructured{
+				test.NewBarUnstructured("my-bar", ns, corev1.ConditionTrue),
+			},
+			refConfig: v1alpha1.ReferenceConfig{
+				TFField: tfField,
+				Types: []v1alpha1.TypeConfig{
+					{
+						GVK: schema.GroupVersionKind{
+							Group:   "test2.cnrm.cloud.google.com",
+							Version: "v1alpha1",
+							Kind:    "Test2Bar",
+						},
+					},
+					{
+						GVK: schema.GroupVersionKind{
+							Group:   "test1.cnrm.cloud.google.com",
+							Version: "v1alpha1",
+							Kind:    "Test1Bar",
+						},
+					},
+				},
+			},
+			expectedFinalConfig: map[string]interface{}{
+				"key1":     "val1",
+				"barField": "my-bar",
+			},
+		},
+		{
+			name: "kind-discriminated type defaults to first type when kind is omitted",
+			config: map[string]interface{}{
+				"key1": "val1",
+				"barField": map[string]interface{}{
+					"name": "my-bar",
+				},
+			},
+			referencedResources: []*unstructured.Unstructured{
+				test.NewBarUnstructured("my-bar", ns, corev1.ConditionTrue),
+			},
+			refConfig: v1alpha1.ReferenceConfig{
+				TFField: tfField,
+				Types: []v1alpha1.TypeConfig{
+					{
+						GVK: schema.GroupVersionKind{
+							Group:   "test1.cnrm.cloud.google.com",
+							Version: "v1alpha1",
+							Kind:    "Test1Bar",
+						},
+					},
+					{
+						GVK: schema.GroupVersionKind{
+							Group:   "test2.cnrm.cloud.google.com",
+							Version: "v1alpha1",
+							Kind:    "Test2Bar",
+						},
+					},
+				},
+			},
+			expectedFinalConfig: map[string]interface{}{
+				"key1":     "val1",
+				"barField": "my-bar",
+			},
+		},
+		{
+			name: "kind-discriminated type rejects unsupported kind",
+			config: map[string]interface{}{
+				"barField": map[string]interface{}{
+					"kind": "UnsupportedBar",
+					"name": "my-bar",
+				},
+			},
+			refConfig: v1alpha1.ReferenceConfig{
+				TFField: tfField,
+				Types: []v1alpha1.TypeConfig{
+					{
+						GVK: schema.GroupVersionKind{Kind: "Test1Bar"},
+					},
+				},
+			},
+			shouldError: true,
+		},
+		{
 			name: "nested type, JSONSchemaType value, found",
 			config: map[string]interface{}{
 				"key1": "val1",
@@ -663,10 +752,14 @@ func TestResolveResourceReferenceToTFResource(t *testing.T) {
 			test.EnsureObjectsExist(t, tc.referencedResources, c)
 			config := tc.config
 			path := strings.Split(tc.refConfig.TFField, ".")
-			if err := ResolveResourceReference(path, config, tc.refConfig, resource, c, smLoader); err != nil {
-				if tc.shouldError {
-					return
+			err := ResolveResourceReference(path, config, tc.refConfig, resource, c, smLoader)
+			if tc.shouldError {
+				if err == nil {
+					t.Error("expected reference resolution to fail")
 				}
+				return
+			}
+			if err != nil {
 				t.Errorf("error resolving: %v", err)
 				return
 			}

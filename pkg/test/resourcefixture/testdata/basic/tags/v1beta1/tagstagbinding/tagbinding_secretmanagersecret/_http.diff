@@ -1,0 +1,12 @@
+266c266
+< POST https://cloudresourcemanager.googleapis.com/v3/tagBindings?alt=json
+---
+> POST https://cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint
+297c297
+< GET https://cloudresourcemanager.googleapis.com/v3/tagBindings/?alt=json&pageSize=300&parent=%2F%2Fsecretmanager.googleapis.com%2Fprojects%2F${projectNumber}%2Fsecrets%2Fsecretmanagersecret-${uniqueId}
+---
+> GET https://cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint&parent=%2F%2Fsecretmanager.googleapis.com%2Fprojects%2F${projectNumber}%2Fsecrets%2Fsecretmanagersecret-${uniqueId}
+323c323
+< DELETE https://cloudresourcemanager.googleapis.com/v3/tagBindings/%2F%2Fsecretmanager.googleapis.com%2Fprojects%2F${projectNumber}%2Fsecrets%2Fsecretmanagersecret-${uniqueId}/tagValues/${tagValueID}?alt=json
+---
+> DELETE https://cloudresourcemanager.googleapis.com/v3/tagBindings/%252F%252Fsecretmanager.googleapis.com%252Fprojects%252F${projectNumber}%252Fsecrets%252Fsecretmanagersecret-${uniqueId}/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
