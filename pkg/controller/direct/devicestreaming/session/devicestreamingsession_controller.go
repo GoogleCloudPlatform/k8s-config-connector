@@ -17,6 +17,7 @@ package session
 import (
 	"context"
 	"fmt"
+	"time"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/devicestreaming/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -32,6 +33,7 @@ import (
 	pb "cloud.google.com/go/devicestreaming/apiv1/devicestreamingpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -118,6 +120,10 @@ func (a *DeviceStreamingSessionAdapter) Find(ctx context.Context) (bool, error) 
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting DeviceStreamingSession", "name", a.id)
 
+	if a.id.DeviceSession == "" {
+		return false, nil
+	}
+
 	req := &pb.GetDeviceSessionRequest{Name: a.id.String()}
 	session, err := a.gcpClient.GetDeviceSession(ctx, req)
 	if err != nil {
@@ -153,6 +159,14 @@ func (a *DeviceStreamingSessionAdapter) Create(ctx context.Context, createOp *di
 func (a *DeviceStreamingSessionAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating DeviceStreamingSession", "name", a.id)
+
+	// Google Cloud Device Streaming only supports extending/updating expiration time for ACTIVE, allocated sessions.
+	// For other states (REQUESTED, PENDING, FINISHED, EXPIRED, etc.), skip the update to avoid GCP API errors.
+	if a.actual.GetState() != pb.DeviceSession_ACTIVE {
+		log.V(2).Info("session is not ACTIVE, skipping update", "state", a.actual.GetState())
+		return a.updateStatus(ctx, updateOp, a.actual)
+	}
+
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired
@@ -170,6 +184,35 @@ func (a *DeviceStreamingSessionAdapter) Update(ctx context.Context, updateOp *di
 	clonedDesired := proto.Clone(desired).(*pb.DeviceSession)
 	clonedDesired.Name = a.id.String()
 
+	// If the user specified TTL, convert it to a desired ExpireTime based on the actual CreateTime.
+	// This maps the TTL concept to the actual ExpireTime format returned by GCP, avoiding false diffs
+	// and ensuring we strictly only request an extension when the desired duration exceeds the current expiration.
+	if clonedDesired.GetTtl() != nil && a.actual.GetCreateTime() != nil && a.actual.GetExpireTime() != nil {
+		createTime := a.actual.GetCreateTime().AsTime()
+		desiredDuration := clonedDesired.GetTtl().AsDuration()
+		desiredExpireTime := createTime.Add(desiredDuration)
+
+		actualExpireTime := a.actual.GetExpireTime().AsTime()
+
+		// Truncate to second precision to avoid false updates due to sub-second or nanosecond noise
+		desiredSec := desiredExpireTime.Truncate(time.Second)
+		actualSec := actualExpireTime.Truncate(time.Second)
+
+		if desiredSec.After(actualSec) {
+			clonedDesired.Expiration = &pb.DeviceSession_ExpireTime{
+				ExpireTime: timestamppb.New(desiredExpireTime),
+			}
+		} else {
+			// No update needed, clear both to avoid any comparison diffs or false updates
+			clonedDesired.Expiration = nil
+			maskedActual.Expiration = nil
+		}
+	} else if clonedDesired.Expiration == nil {
+		// Expiration is a oneof (ttl or expire_time). If not specified in desired, clear both to avoid false updates.
+		clonedDesired.Expiration = nil
+		maskedActual.Expiration = nil
+	}
+
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return err
@@ -177,7 +220,7 @@ func (a *DeviceStreamingSessionAdapter) Update(ctx context.Context, updateOp *di
 
 	if !diffs.HasDiff() {
 		log.V(2).Info("no field needs update", "name", a.id.String())
-		return nil
+		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
 	structuredreporting.ReportDiff(ctx, diffs)
@@ -198,6 +241,10 @@ func (a *DeviceStreamingSessionAdapter) Update(ctx context.Context, updateOp *di
 func (a *DeviceStreamingSessionAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting DeviceStreamingSession", "name", a.id)
+
+	if a.id.DeviceSession == "" {
+		return true, nil
+	}
 
 	req := &pb.CancelDeviceSessionRequest{
 		Name: a.id.String(),
@@ -247,6 +294,6 @@ func (a *DeviceStreamingSessionAdapter) updateStatus(ctx context.Context, op dir
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = direct.PtrTo(a.id.String())
+	status.ExternalRef = direct.PtrTo(latest.GetName())
 	return op.UpdateStatus(ctx, status, nil)
 }
