@@ -117,10 +117,29 @@ var computedFieldPaths = []string{
 
 	// 7. WorkloadsConfig
 	"Config.WorkloadsConfig.Scheduler",
+	"Config.WorkloadsConfig.Scheduler.CPU",
+	"Config.WorkloadsConfig.Scheduler.MemoryGB",
+	"Config.WorkloadsConfig.Scheduler.StorageGB",
+	"Config.WorkloadsConfig.Scheduler.Count",
 	"Config.WorkloadsConfig.DagProcessor",
+	"Config.WorkloadsConfig.DagProcessor.CPU",
+	"Config.WorkloadsConfig.DagProcessor.MemoryGB",
+	"Config.WorkloadsConfig.DagProcessor.StorageGB",
+	"Config.WorkloadsConfig.DagProcessor.Count",
 	"Config.WorkloadsConfig.Triggerer",
+	"Config.WorkloadsConfig.Triggerer.CPU",
+	"Config.WorkloadsConfig.Triggerer.MemoryGB",
+	"Config.WorkloadsConfig.Triggerer.Count",
 	"Config.WorkloadsConfig.WebServer",
+	"Config.WorkloadsConfig.WebServer.CPU",
+	"Config.WorkloadsConfig.WebServer.MemoryGB",
+	"Config.WorkloadsConfig.WebServer.StorageGB",
 	"Config.WorkloadsConfig.Worker",
+	"Config.WorkloadsConfig.Worker.CPU",
+	"Config.WorkloadsConfig.Worker.MemoryGB",
+	"Config.WorkloadsConfig.Worker.StorageGB",
+	"Config.WorkloadsConfig.Worker.MinCount",
+	"Config.WorkloadsConfig.Worker.MaxCount",
 
 	// 8. WebServerConfig
 	"Config.WebServerConfig.MachineType",
@@ -172,6 +191,36 @@ func populateDesiredWithActualIfComputed(desired *krm.ComposerEnvironment, desir
 		}
 		if pair.Actual.Has(fd) {
 			pair.Desired.Set(fd, pair.Actual.Get(fd))
+		}
+	}
+
+	// 4. RecoveryConfig.ScheduledSnapshotsConfig handling:
+	// When snapshots are disabled in desired spec and live GCP state, align desiredPb with actualPb
+	// to avoid false drift and update loops.
+	populateScheduledSnapshotsDefaults(desired, desiredPb, actualPb)
+}
+
+// populateScheduledSnapshotsDefaults aligns desiredPb with actualPb when scheduled snapshots are disabled
+// in both desired spec and live state (adopting nil or retained console fields) to prevent false drift.
+func populateScheduledSnapshotsDefaults(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) {
+	if actualPb == nil || desiredPb == nil {
+		return
+	}
+	actualRecovery := actualPb.GetConfig().GetRecoveryConfig()
+	actualSnapshots := actualRecovery.GetScheduledSnapshotsConfig()
+	desiredSnapshots := desiredPb.GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig()
+
+	if !actualSnapshots.GetEnabled() && !desiredSnapshots.GetEnabled() {
+		if actualSnapshots != nil {
+			if desiredPb.Config == nil {
+				desiredPb.Config = &composerpb.EnvironmentConfig{}
+			}
+			if desiredPb.Config.RecoveryConfig == nil {
+				desiredPb.Config.RecoveryConfig = &composerpb.RecoveryConfig{}
+			}
+			desiredPb.Config.RecoveryConfig.ScheduledSnapshotsConfig = actualSnapshots
+		} else if desiredPb.GetConfig().GetRecoveryConfig() != nil {
+			desiredPb.Config.RecoveryConfig.ScheduledSnapshotsConfig = nil
 		}
 	}
 }

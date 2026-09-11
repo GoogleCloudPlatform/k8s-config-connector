@@ -209,15 +209,12 @@ func (s *ComposerV1) UpdateEnvironment(ctx context.Context, req *pb.UpdateEnviro
 					if updated.Config == nil {
 						updated.Config = &pb.EnvironmentConfig{}
 					}
-					if updated.Config.RecoveryConfig == nil {
-						updated.Config.RecoveryConfig = &pb.RecoveryConfig{}
-					}
-					if len(tokens) > 2 {
-						switch normalizeField(tokens[2]) {
-						case "scheduledsnapshotsconfig":
-							updated.Config.RecoveryConfig.ScheduledSnapshotsConfig = req.GetEnvironment().GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig()
-						default:
-							updated.Config.RecoveryConfig = req.GetEnvironment().GetConfig().GetRecoveryConfig()
+					if len(tokens) > 2 && normalizeField(tokens[2]) == "scheduledsnapshotsconfig" {
+						incoming := req.GetEnvironment().GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig()
+						if incoming.GetEnabled() {
+							updated.Config.RecoveryConfig = &pb.RecoveryConfig{ScheduledSnapshotsConfig: incoming}
+						} else {
+							updated.Config.RecoveryConfig = nil
 						}
 					} else {
 						updated.Config.RecoveryConfig = req.GetEnvironment().GetConfig().GetRecoveryConfig()
