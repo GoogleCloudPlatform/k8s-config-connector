@@ -37,8 +37,13 @@ fi
 export RUN_TESTS
 echo "RUN_TESTS=${RUN_TESTS}"
 
+export E2E_GCP_TARGET=mock
+ARTIFACTS="${ARTIFACTS:-$(pwd)/artifactz/${E2E_GCP_TARGET}}"
+export ARTIFACTS
+
 # Clear existing artifacts
-rm -rf $(pwd)/artifactz/mock
+rm -rf "${ARTIFACTS}"
+mkdir -p "${ARTIFACTS}"
 
 # Run e2e tests against our mockgcp, capturing output
-E2E_GCP_TARGET=mock dev/tasks/run-e2e
+dev/tasks/run-e2e

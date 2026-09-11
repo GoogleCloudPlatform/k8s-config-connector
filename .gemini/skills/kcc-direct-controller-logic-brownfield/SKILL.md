@@ -85,7 +85,7 @@ This skill guides the implementation of the `Adapter` interface
 
     *   **Step 2.b: Multi-Fixture Verification Requirement (MANDATORY)**
         You **MUST** verify and ensure that all test directories associated with your target resource are completely verified.
-        1. Ensure that all discovered test subdirectories under `pkg/test/resourcefixture/testdata/basic/<group>/<api_version>/<kind_lowercase>/` have their golden files (`_generated_object_*.golden.yaml`) and mock HTTP logs (`_http_mock.log`) successfully generated. Note that a 0-diff in `git status` is perfectly valid if the fixture was unaffected and produced identical output.
+        1. Ensure that all discovered test subdirectories under `pkg/test/resourcefixture/testdata/basic/<group>/<api_version>/<kind_lowercase>/` have their golden files (`_generated_object_*.golden.yaml`) and mock HTTP logs (`_http_mock.log`) successfully generated. Note that a 0-diff in `git status` is perfectly valid if the resource doesn't contain any service-generated, randomized values in the responses or our normalizers have overwritten those values.
         2. Commit and push all regenerated and matched log/golden files for every discovered fixture.
         
     *   **Step 2.c: Fix discrepancies in the Adapter**

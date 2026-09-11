@@ -22,7 +22,10 @@ cd ${REPO_ROOT}/
 
 . ${REPO_ROOT}/dev/tasks/setup-envtest
 
-rm -rf $(pwd)/artifactz/realgcp
+ARTIFACTS="${ARTIFACTS:-$(pwd)/artifactz/realgcp}"
+export ARTIFACTS
+rm -rf "${ARTIFACTS}"
+mkdir -p "${ARTIFACTS}"
 
 # Run the tests specified on the command line
 if [[ $1 =~ TestE2EScript.* ]]; then
@@ -69,7 +72,6 @@ echo "Using test timeout: ${E2E_TEST_TIMEOUT}"
 
 
 # Run e2e tests against real gcp, capturing output
-ARTIFACTS=$(pwd)/artifactz/realgcp \
 E2E_KUBE_TARGET=envtest \
 E2E_GCP_TARGET=real \
 GOLDEN_REQUEST_CHECKS=1 \

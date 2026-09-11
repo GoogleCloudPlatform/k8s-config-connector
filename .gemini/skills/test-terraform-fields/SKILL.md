@@ -161,7 +161,7 @@ To verify the mock implementation matches real GCP behavior:
    - Run `git diff pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/`.
 3. **Multi-Fixture Verification Requirement (MANDATORY)**:
    - You **MUST** verify and ensure that all test directories associated with your target resource are completely verified.
-   1. Ensure that all discovered test subdirectories under `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/` have their golden files (`_generated_object_*.golden.yaml`) and mock HTTP logs (`_http_mock.log`) successfully generated. Note that a 0-diff in `git status` is perfectly valid if the fixture was unaffected and produced identical output.
+   1. Ensure that all discovered test subdirectories under `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/` have their golden files (`_generated_object_*.golden.yaml`) and mock HTTP logs (`_http_mock.log`) successfully generated. Note that a 0-diff in `git status` is perfectly valid if the resource doesn't contain any service-generated, randomized values in the responses or our normalizers have overwritten those values.
    2. Commit and push all regenerated and matched log/golden files for every discovered fixture in your Pull Request.
 4. **Commit the Baseline Updates**:
    - If there are any differences (such as `selfLink` removal or minor formatting alignment), stage and commit these updates:

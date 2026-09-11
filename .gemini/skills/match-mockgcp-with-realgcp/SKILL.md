@@ -78,19 +78,34 @@ Important:
 
 2.  Iteratively fix discrepancies in the mock implementation or `normalize.go`.
 
-Tips for fixing the discrepancies:
-
-1. Look closely at the `compare-mock` HTTP log differences (typically mock on left `=>` real on right).
-2. For missing default values (e.g., `<missing> => REGIONAL`), add a `populateDefaultsFor<Resource>` function to the mock service's file (e.g. `mockgcp/mockcompute/networksv1.go`). Make sure it is called on `Insert` and `Get`.
-3. For generated IDs or volatile values (e.g. IPs, resource URLs) where real GCP generates dynamically but mockgcp outputs something static, you need to update the normalizer `mockgcp/mock<service>/normalize.go`.
-4. Re-run `hack/compare-mock "fixtures/<kind_lowercase>"` (or `hack/compare-mock "fixtures/^<testname>$"`) to update `_http_mock.log` and the golden object files (`_generated_object_*.golden.yaml`), and verify log alignment against `_http.log`. Repeat until all discrepancies are resolved and the tests pass.
-5. Run `git diff` on the test fixtures to ensure that the golden `_http_mock.log` / `_http.log` accurately replaces volatile data with placeholder variables (e.g., `${ipAddress}`).
-6. Certain operation metadata values (e.g. `done: <missing> => false`) can be safely ignored as mock operations are generally simpler.
+Tips for fixing discrepancies:
+1. Diff `_http.log` (real) against `_http_mock.log` (mock) for the target fixture (e.g. using `diff` or `go test ./pkg/test/resourcefixture -run TestGoldenLogAlignment`).
+2. **Missing Default Values (Field in Real but NOT in Mock)**:
+   - For missing default values (e.g. `<missing> => REGIONAL`), add or update `populateDefaultsFor<Resource>` in `mockgcp/mock<service>/<kind>.go`. Ensure it is called on both mutation (`Create`/`Insert`) and retrieval (`Get`/`List`) methods.
+   - If the field is **missing from the proto**, leave a `TODO` comment noting the missing proto field instead.
+3. **Unexpected Values (Field in Mock but NOT in Real)**:
+   - Check if the field was added to align with another test case. If real GCP includes it in other scenarios but omits it here, it is possibly **conditionally defaulted** (or was accidentally hardcoded).
+   - If verified to be conditional, implement dynamic/conditional defaulting in MockGCP and add a comment explaining the condition. Otherwise, remove or fix the hardcoded default.
+   - If the field is never returned by real GCP in any scenario, remove/omit it from MockGCP.
+4. **Empty / Zero-Value Fields in Real**: If real GCP outputs an empty value (e.g. `""`, `0`, `false`, `[]`) that MockGCP drops due to proto3 serialization (unset vs zero-value equivalence):
+   - Try explicitly setting the field in MockGCP.
+   - If proto3 JSON marshaling still omits it, leave a `TODO` comment clarifying that it is an expected proto3 zero-value limitation.
+5. **Input vs Output Canonicalization**:
+   - When real GCP accepts short names or unformatted references but returns canonicalized formats (e.g. converting `/zones/` to `/locations/`, expanding relative names to full URIs, or normalizing CIDRs), implement the transformation in MockGCP during `Create`/`Insert` so the stored state matches GCP's canonical output.
+6. **Volatile / Dynamic Values in Self-Links & Long Names**:
+   - For dynamic segments embedded in resource names, self-links, or generated resources (e.g., auto-generated hashes in `/instanceGroupManagers/gke-.*-grp`, `/forwardingRules/${forwardingRuleID}`, `${uniqueId}`, `${projectNumber}`), normalize them to standard placeholders in `mockgcp/mock<service>/normalize.go`.
+   - **Critical Rule**: Always scope `Previsit` normalization in `normalize.go` to the service URL (e.g. `strings.Contains(event.URL(), "<service>.googleapis.com")`).
+7. **Exempt Specific URL Prefixes**:
+   - If real GCP returns full URL prefixes (e.g. `//certificatemanager.googleapis.com/` or `https://www.googleapis.com/...`) while MockGCP uses relative paths, strip the prefix in the service's normalizer, keeping the rule strictly scoped to that specific resource/field.
+8. **Exempt API Version Differences (Specific / Hardcoded Only)**:
+   - If real GCP and MockGCP use different API versions for a specific service (e.g., `aiplatform.v1beta1` vs `aiplatform.v1`), normalize it using explicit, hardcoded string replacements for that specific service only. Never use broad wildcards that could mask unintended API version mismatches.
+9. **Iterate and Verify**: Re-run `hack/compare-mock "fixtures/<kind_lowercase>"` (or `hack/compare-mock "fixtures/^<testname>$"`) to update `_http_mock.log` and the golden object files (`_generated_object_*.golden.yaml`), and verify log alignment against `_http.log`. Repeat until all discrepancies are resolved and the tests pass.
+10. **Operation Metadata**: Minor operation polling metadata (e.g. intermediate LRO statuses like `done: false`) can be simplified in MockGCP as long as the final resource state matches.
 
 ### Step 3: Multi-Fixture Verification Requirement (MANDATORY)
 
 You **MUST** verify and ensure that all test directories associated with your target resource are completely verified.
-1. Ensure that all discovered test subdirectories under `pkg/test/resourcefixture/testdata/basic/<group>/<api_version>/<kind_lowercase>/` have their golden files (`_generated_object_*.golden.yaml`) and mock HTTP logs (`_http_mock.log`) successfully generated. Note that a 0-diff in `git status` is perfectly valid if the fixture was unaffected and produced identical output.
+1. Ensure that all discovered test subdirectories under `pkg/test/resourcefixture/testdata/basic/<group>/<api_version>/<kind_lowercase>/` have their golden files (`_generated_object_*.golden.yaml`) and mock HTTP logs (`_http_mock.log`) successfully generated. Note that a 0-diff in `git status` is perfectly valid if the resource doesn't contain any service-generated, randomized values in the responses or our normalizers have overwritten those values.
 2. Commit and push all regenerated and matched log/golden files for every discovered fixture in your Pull Request.
 
 
