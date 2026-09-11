@@ -34,15 +34,20 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // buildPatches is a test helper that evaluates fieldUpdaters against desired and actual,
 // collecting the generated patch protos keyed by update mask.
-func buildPatches(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) map[string]*composerpb.Environment {
+func buildPatches(desired *krm.ComposerEnvironment, rawDesiredPb, actualPb *composerpb.Environment) map[string]*composerpb.Environment {
+	mergedDesiredPb := proto.Clone(rawDesiredPb).(*composerpb.Environment)
+	populateDesiredWithDefaults(desired, mergedDesiredPb)
+	populateDesiredWithActualIfComputed(desired, mergedDesiredPb, actualPb)
+
 	updates := make(map[string]*composerpb.Environment)
 	for _, u := range fieldUpdaters {
-		if patch := u.build(desired, desiredPb, actualPb); patch != nil {
+		if patch := u.build(desired, rawDesiredPb, mergedDesiredPb, actualPb); patch != nil {
 			updates[u.mask] = patch
 		}
 	}
