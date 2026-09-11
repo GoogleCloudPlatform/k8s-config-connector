@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: deploymentmanager.cnrm.cloud.google.com
+  kind: DeploymentManagerDeployment
+  name: deploymentmanagerdeployment-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

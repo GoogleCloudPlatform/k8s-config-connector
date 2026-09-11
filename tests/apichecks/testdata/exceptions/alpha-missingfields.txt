@@ -115,6 +115,13 @@
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.predictSchemata.instanceSchemaURI" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.predictSchemata.parametersSchemaURI" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.predictSchemata.predictionSchemaURI" is not set in unstructured objects
+[missing_field] crd=aiplatformnotebookruntimes.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=aiplatformnotebookruntimes.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=aiplatformnotebookruntimes.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=aiplatformnotebookruntimes.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=aiplatformnotebookruntimes.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkTags[]" is not set in unstructured objects
+[missing_field] crd=aiplatformnotebookruntimes.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=aiplatformnotebookruntimes.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeUser" is not set in unstructured objects
 [missing_field] crd=analyticsaccounts.analytics.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=analyticsaccounts.analytics.cnrm.cloud.google.com version=v1alpha1: field ".spec.redirectURI" is not set in unstructured objects
 [missing_field] crd=analyticsaccounts.analytics.cnrm.cloud.google.com version=v1alpha1: field ".spec.regionCode" is not set in unstructured objects
