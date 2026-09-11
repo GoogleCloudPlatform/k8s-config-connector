@@ -38,6 +38,9 @@ var mockGCPSkipFixtures = map[string]bool{
 	"composer/v1beta1/composerenvironment/composerenvironmentwithkms":    true,
 	"composer/v1beta1/composerenvironment/composerenvironmentwithrefs":   true,
 	"composer/v1beta1/composerenvironment/composerenvironmentnodeconfig": true,
+	// FilestoreInstance's default controller is DCL but mock tests are forced to run with Direct,
+	// leading to a log mismatch until the basic fixture is re-recorded against real GCP with Direct.
+	"filestore/v1beta1/filestoreinstance": true,
 }
 
 var realGCPSkipFixtures = map[string]bool{
