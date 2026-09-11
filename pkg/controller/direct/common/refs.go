@@ -60,9 +60,6 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 	}
 
 	if ref, ok := v.(refs.Ref); ok {
-		if ref.GetExternal() != "" && refs.IsShortName(ref.GetExternal()) {
-			return nil
-		}
 		if err := ref.Normalize(r.ctx, r.kube, r.src.GetNamespace()); err != nil {
 			return err
 		}
