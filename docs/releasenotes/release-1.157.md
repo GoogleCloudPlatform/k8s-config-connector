@@ -1,9 +1,4 @@
-# Release 1.157.0
-
-** This version is not yet released; this document is gathering release notes
-for the future release **
-
-*   Special shout-outs to GinnyJI, acpana, anfernee, anhdle-sso, barney-s, cdmello-g, cheftako, gemmahou, himanigulati01, ldanielmadariaga, maqiuyujoyce, sdowell, suwandim, and ziyue-101 for their contributions to this release.
+*   Special shout-outs to @GinnyJI, @acpana, @ada-coder-bot, @anfernee, @anhdle-sso, @barney-s, @cdmello-g, @cheftako, @codebot-robot, @daedalus-agent-bot, @feynman-agent-bot, @gemmahou, @himanigulati01, @hopper-coder-bot, @ldanielmadariaga, @lovelace-coder-bot, @maqiuyujoyce, @neumann-coder-bot, @reviewbot-robot, @sdowell, @suwandim, @walle-agent-bot, and @ziyue-101 for their contributions to this release.
 
 ## New Alpha Resources (Direct Reconciler):
 
