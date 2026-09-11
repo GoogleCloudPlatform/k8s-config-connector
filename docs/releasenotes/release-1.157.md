@@ -1,14 +1,12 @@
-# Release 1.157.0
-
-** This version is not yet released; this document is gathering release notes
-for the future release **
-
-*   Special shout-outs to GinnyJI, acpana, anfernee, anhdle-sso, barney-s, cdmello-g, cheftako, gemmahou, himanigulati01, ldanielmadariaga, maqiuyujoyce, sdowell, suwandim, and ziyue-101 for their contributions to this release.
+*   Special shout-outs to @GinnyJI, @acpana, @ada-coder-bot, @anfernee, @anhdle-sso, @barney-s, @cdmello-g, @cheftako, @codebot-robot, @daedalus-agent-bot, @feynman-agent-bot, @gemmahou, @himanigulati01, @hopper-coder-bot, @ldanielmadariaga, @lovelace-coder-bot, @maqiuyujoyce, @neumann-coder-bot, @reviewbot-robot, @sdowell, @suwandim, @walle-agent-bot, and @ziyue-101 for their contributions to this release.
 
 ## New Alpha Resources (Direct Reconciler):
 
 *   [`AIPlatformModel`](https://cloud.google.com/config-connector/docs/reference/resource-docs/aiplatform/aiplatformmodel)
     *   Manage [Vertex AI models](https://cloud.google.com/vertex-ai/docs/model-registry/introduction)
+
+*   [`APIHubAPI`](https://cloud.google.com/config-connector/docs/reference/resource-docs/apihub/apihubapi)
+    *   Manage [API Hub APIs](https://cloud.google.com/apihub/docs/reference/rest/v1/projects.locations.apis)
 
 *   [`APIHubAttribute`](https://cloud.google.com/config-connector/docs/reference/resource-docs/apihub/apihubattribute)
     *   Manage [API Hub attributes](https://cloud.google.com/apihub/docs/reference/rest/v1/projects.locations.attributes)
@@ -19,11 +17,23 @@ for the future release **
 *   [`APIHubDependency`](https://cloud.google.com/config-connector/docs/reference/resource-docs/apihub/apihubdependency)
     *   Manage [API Hub dependencies](https://cloud.google.com/apihub/docs/reference/rest/v1/projects.locations.dependencies)
 
+*   [`APIHubDeployment`](https://cloud.google.com/config-connector/docs/reference/resource-docs/apihub/apihubdeployment)
+    *   Manage [API Hub deployments](https://cloud.google.com/apihub/docs/reference/rest/v1/projects.locations.deployments)
+
 *   [`APIHubExternalAPI`](https://cloud.google.com/config-connector/docs/reference/resource-docs/apihub/apihubexternalapi)
     *   Manage [API Hub external APIs](https://cloud.google.com/apihub/docs/reference/rest/v1/projects.locations.externalApis)
 
 *   [`CCInsightsConversation`](https://cloud.google.com/config-connector/docs/reference/resource-docs/contactcenterinsights/ccinsightsconversation)
     *   Manage [Contact Center AI Insights conversations](https://cloud.google.com/contact-center/insights/docs/reference/rest/v1/projects.locations.conversations)
+
+*   [`CCInsightsPhraseMatcher`](https://cloud.google.com/config-connector/docs/reference/resource-docs/contactcenterinsights/ccinsightsphrasematcher)
+    *   Manage [Contact Center AI Insights phrase matchers](https://cloud.google.com/contact-center/insights/docs/reference/rest/v1/projects.locations.phraseMatchers)
+
+*   [`CCInsightsView`](https://cloud.google.com/config-connector/docs/reference/resource-docs/contactcenterinsights/ccinsightsview)
+    *   Manage [Contact Center AI Insights views](https://cloud.google.com/contact-center/insights/docs/reference/rest/v1/projects.locations.views)
+
+*   [`ConfigDeliveryFleetPackage`](https://cloud.google.com/config-connector/docs/reference/resource-docs/configdelivery/configdeliveryfleetpackage)
+    *   Manage [Config Delivery fleet packages](https://cloud.google.com/config-delivery/docs/reference/rest/v1/projects.locations.fleetPackages)
 
 *   [`DialogflowGenerator`](https://cloud.google.com/config-connector/docs/reference/resource-docs/dialogflow/dialogflowgenerator)
     *   Manage [Dialogflow generators](https://cloud.google.com/dialogflow/cx/docs/reference/rest/v3/projects.locations.agents.generators)
@@ -36,6 +46,9 @@ for the future release **
 
 *   [`RedisClusterEndpoint`](https://cloud.google.com/config-connector/docs/reference/resource-docs/redis/redisclusterendpoint)
     *   Manage [Memorystore for Redis Cluster endpoints](https://cloud.google.com/memorystore/docs/cluster/reference/rest/v1/projects.locations.clusters.endpoints)
+
+*   [`SaasServiceMgmtRelease`](https://cloud.google.com/config-connector/docs/reference/resource-docs/saasservicemgmt/saasservicemgmtrelease)
+    *   Manage [SaaS Service Management releases](https://cloud.google.com/service-infrastructure/docs/service-management/reference/rest/v1/services.rollouts)
 
 *   [`VMMigrationGroup`](https://cloud.google.com/config-connector/docs/reference/resource-docs/vmmigration/vmmigrationgroup)
     *   Manage [VM Migration groups](https://cloud.google.com/migrate/vmmigration/docs/reference/rest/v1/projects.locations.groups)
