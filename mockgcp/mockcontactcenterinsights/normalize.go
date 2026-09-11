@@ -45,6 +45,10 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.RemovePath(".source")
 	replacements.RemovePath(".response.source")
 
+	replacements.RemovePath("correlationInfo")
+	replacements.RemovePath(".correlationInfo")
+	replacements.RemovePath(".response.correlationInfo")
+
 	replacements.TransformObject("", func(m map[string]any) {
 		// Under qualityMetadata.agentInfo[], transform "team" to "teams" list.
 		if qm, ok := m["qualityMetadata"].(map[string]any); ok {
