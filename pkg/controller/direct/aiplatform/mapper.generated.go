@@ -34,6 +34,67 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AIPlatformCachedContentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CachedContent) *krm.AIPlatformCachedContentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformCachedContentObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.UsageMetadata = CachedContent_UsageMetadata_FromProto(mapCtx, in.GetUsageMetadata())
+	return out
+}
+func AIPlatformCachedContentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformCachedContentObservedState) *pb.CachedContent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CachedContent{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.UsageMetadata = CachedContent_UsageMetadata_ToProto(mapCtx, in.UsageMetadata)
+	return out
+}
+func AIPlatformCachedContentSpec_FromProto(mapCtx *direct.MapContext, in *pb.CachedContent) *krm.AIPlatformCachedContentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformCachedContentSpec{}
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	out.TTL = direct.StringDuration_FromProto(mapCtx, in.GetTtl())
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Model = direct.LazyPtr(in.GetModel())
+	out.SystemInstruction = Content_FromProto(mapCtx, in.GetSystemInstruction())
+	out.Contents = direct.Slice_FromProto(mapCtx, in.Contents, Content_FromProto)
+	out.Tools = direct.Slice_FromProto(mapCtx, in.Tools, Tool_FromProto)
+	out.ToolConfig = ToolConfig_FromProto(mapCtx, in.GetToolConfig())
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	return out
+}
+func AIPlatformCachedContentSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformCachedContentSpec) *pb.CachedContent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CachedContent{}
+	if oneof := direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime); oneof != nil {
+		out.Expiration = &pb.CachedContent_ExpireTime{ExpireTime: oneof}
+	}
+	if oneof := direct.StringDuration_ToProto(mapCtx, in.TTL); oneof != nil {
+		out.Expiration = &pb.CachedContent_Ttl{Ttl: oneof}
+	}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Model = direct.ValueOf(in.Model)
+	out.SystemInstruction = Content_ToProto(mapCtx, in.SystemInstruction)
+	out.Contents = direct.Slice_ToProto(mapCtx, in.Contents, Content_ToProto)
+	out.Tools = direct.Slice_ToProto(mapCtx, in.Tools, Tool_ToProto)
+	out.ToolConfig = ToolConfig_ToProto(mapCtx, in.ToolConfig)
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	return out
+}
+
 /* found existing non-generated mapping function "AIPlatformModelObservedState_FromProto", skipping
 func AIPlatformModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.AIPlatformModelObservedState {
 	if in == nil {
@@ -325,6 +386,24 @@ func DeployedModelRef_ToProto(mapCtx *direct.MapContext, in *krm.DeployedModelRe
 	out.DeployedModelId = direct.ValueOf(in.DeployedModelID)
 	return out
 }
+func DynamicRetrievalConfig_FromProto(mapCtx *direct.MapContext, in *pb.DynamicRetrievalConfig) *krm.DynamicRetrievalConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DynamicRetrievalConfig{}
+	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	out.DynamicThreshold = in.DynamicThreshold
+	return out
+}
+func DynamicRetrievalConfig_ToProto(mapCtx *direct.MapContext, in *krm.DynamicRetrievalConfig) *pb.DynamicRetrievalConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DynamicRetrievalConfig{}
+	out.Mode = direct.Enum_ToProto[pb.DynamicRetrievalConfig_Mode](mapCtx, in.Mode)
+	out.DynamicThreshold = in.DynamicThreshold
+	return out
+}
 
 /* found existing non-generated mapping function "EncryptionSpec_FromProto", skipping
 func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
@@ -349,6 +428,22 @@ found existing non-generated mapping function "EncryptionSpec_ToProto", skipping
 		return out
 	}
 */
+func EnterpriseWebSearch_FromProto(mapCtx *direct.MapContext, in *pb.EnterpriseWebSearch) *krm.EnterpriseWebSearch {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EnterpriseWebSearch{}
+	out.ExcludeDomains = in.ExcludeDomains
+	return out
+}
+func EnterpriseWebSearch_ToProto(mapCtx *direct.MapContext, in *krm.EnterpriseWebSearch) *pb.EnterpriseWebSearch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EnterpriseWebSearch{}
+	out.ExcludeDomains = in.ExcludeDomains
+	return out
+}
 func EnvVar_FromProto(mapCtx *direct.MapContext, in *pb.EnvVar) *krm.EnvVar {
 	if in == nil {
 		return nil
@@ -704,17 +799,63 @@ func FunctionCall_FromProto(mapCtx *direct.MapContext, in *pb.FunctionCall) *krm
 }
 */
 
-/* found existing non-generated mapping function "FunctionCall_ToProto", skipping
-func FunctionCall_ToProto(mapCtx *direct.MapContext, in *krm.FunctionCall) *pb.FunctionCall {
+/*
+found existing non-generated mapping function "FunctionCall_ToProto", skipping
+
+	func FunctionCall_ToProto(mapCtx *direct.MapContext, in *krm.FunctionCall) *pb.FunctionCall {
+		if in == nil {
+			return nil
+		}
+		out := &pb.FunctionCall{}
+		out.Name = direct.ValueOf(in.Name)
+		out.Args = direct.Struct_ToProto(mapCtx, &in.Args)
+		return out
+	}
+*/
+func FunctionCallingConfig_FromProto(mapCtx *direct.MapContext, in *pb.FunctionCallingConfig) *krm.FunctionCallingConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.FunctionCall{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Args = direct.Struct_ToProto(mapCtx, &in.Args)
+	out := &krm.FunctionCallingConfig{}
+	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	out.AllowedFunctionNames = in.AllowedFunctionNames
 	return out
 }
-*/
+func FunctionCallingConfig_ToProto(mapCtx *direct.MapContext, in *krm.FunctionCallingConfig) *pb.FunctionCallingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FunctionCallingConfig{}
+	out.Mode = direct.Enum_ToProto[pb.FunctionCallingConfig_Mode](mapCtx, in.Mode)
+	out.AllowedFunctionNames = in.AllowedFunctionNames
+	return out
+}
+func FunctionDeclaration_FromProto(mapCtx *direct.MapContext, in *pb.FunctionDeclaration) *krm.FunctionDeclaration {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FunctionDeclaration{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Parameters = Schema_FromProto(mapCtx, in.GetParameters())
+	out.ParametersJsonSchema = Value_FromProto(mapCtx, in.GetParametersJsonSchema())
+	out.Response = Schema_FromProto(mapCtx, in.GetResponse())
+	out.ResponseJsonSchema = Value_FromProto(mapCtx, in.GetResponseJsonSchema())
+	return out
+}
+func FunctionDeclaration_ToProto(mapCtx *direct.MapContext, in *krm.FunctionDeclaration) *pb.FunctionDeclaration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FunctionDeclaration{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	out.Parameters = Schema_ToProto(mapCtx, in.Parameters)
+	out.ParametersJsonSchema = Value_ToProto(mapCtx, in.ParametersJsonSchema)
+	out.Response = Schema_ToProto(mapCtx, in.Response)
+	out.ResponseJsonSchema = Value_ToProto(mapCtx, in.ResponseJsonSchema)
+	return out
+}
 
 /* found existing non-generated mapping function "FunctionResponse_FromProto", skipping
 func FunctionResponse_FromProto(mapCtx *direct.MapContext, in *pb.FunctionResponse) *krm.FunctionResponse {
@@ -789,6 +930,36 @@ func GenieSource_ToProto(mapCtx *direct.MapContext, in *krm.GenieSource) *pb.Gen
 	}
 	out := &pb.GenieSource{}
 	out.BaseModelUri = direct.ValueOf(in.BaseModelURI)
+	return out
+}
+func GoogleMaps_FromProto(mapCtx *direct.MapContext, in *pb.GoogleMaps) *krm.GoogleMaps {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GoogleMaps{}
+	return out
+}
+func GoogleMaps_ToProto(mapCtx *direct.MapContext, in *krm.GoogleMaps) *pb.GoogleMaps {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GoogleMaps{}
+	return out
+}
+func GoogleSearchRetrieval_FromProto(mapCtx *direct.MapContext, in *pb.GoogleSearchRetrieval) *krm.GoogleSearchRetrieval {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GoogleSearchRetrieval{}
+	out.DynamicRetrievalConfig = DynamicRetrievalConfig_FromProto(mapCtx, in.GetDynamicRetrievalConfig())
+	return out
+}
+func GoogleSearchRetrieval_ToProto(mapCtx *direct.MapContext, in *krm.GoogleSearchRetrieval) *pb.GoogleSearchRetrieval {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GoogleSearchRetrieval{}
+	out.DynamicRetrievalConfig = DynamicRetrievalConfig_ToProto(mapCtx, in.DynamicRetrievalConfig)
 	return out
 }
 func InputDataConfig_FromProto(mapCtx *direct.MapContext, in *pb.InputDataConfig) *krm.InputDataConfig {
@@ -1849,6 +2020,116 @@ func Probe_TCPSocketAction_ToProto(mapCtx *direct.MapContext, in *krm.Probe_TCPS
 	out.Host = direct.ValueOf(in.Host)
 	return out
 }
+func RagRetrievalConfig_FromProto(mapCtx *direct.MapContext, in *pb.RagRetrievalConfig) *krm.RagRetrievalConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RagRetrievalConfig{}
+	out.TopK = direct.LazyPtr(in.GetTopK())
+	out.Filter = RagRetrievalConfig_Filter_FromProto(mapCtx, in.GetFilter())
+	out.Ranking = RagRetrievalConfig_Ranking_FromProto(mapCtx, in.GetRanking())
+	return out
+}
+func RagRetrievalConfig_ToProto(mapCtx *direct.MapContext, in *krm.RagRetrievalConfig) *pb.RagRetrievalConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagRetrievalConfig{}
+	out.TopK = direct.ValueOf(in.TopK)
+	out.Filter = RagRetrievalConfig_Filter_ToProto(mapCtx, in.Filter)
+	out.Ranking = RagRetrievalConfig_Ranking_ToProto(mapCtx, in.Ranking)
+	return out
+}
+func RagRetrievalConfig_Filter_FromProto(mapCtx *direct.MapContext, in *pb.RagRetrievalConfig_Filter) *krm.RagRetrievalConfig_Filter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RagRetrievalConfig_Filter{}
+	out.VectorDistanceThreshold = direct.LazyPtr(in.GetVectorDistanceThreshold())
+	out.VectorSimilarityThreshold = direct.LazyPtr(in.GetVectorSimilarityThreshold())
+	out.MetadataFilter = direct.LazyPtr(in.GetMetadataFilter())
+	return out
+}
+func RagRetrievalConfig_Filter_ToProto(mapCtx *direct.MapContext, in *krm.RagRetrievalConfig_Filter) *pb.RagRetrievalConfig_Filter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagRetrievalConfig_Filter{}
+	if oneof := RagRetrievalConfig_Filter_VectorDistanceThreshold_ToProto(mapCtx, in.VectorDistanceThreshold); oneof != nil {
+		out.VectorDbThreshold = oneof
+	}
+	if oneof := RagRetrievalConfig_Filter_VectorSimilarityThreshold_ToProto(mapCtx, in.VectorSimilarityThreshold); oneof != nil {
+		out.VectorDbThreshold = oneof
+	}
+	out.MetadataFilter = direct.ValueOf(in.MetadataFilter)
+	return out
+}
+func RagRetrievalConfig_Filter_VectorDistanceThreshold_ToProto(mapCtx *direct.MapContext, in *float64) *pb.RagRetrievalConfig_Filter_VectorDistanceThreshold {
+	if in == nil {
+		return nil
+	}
+	return &pb.RagRetrievalConfig_Filter_VectorDistanceThreshold{VectorDistanceThreshold: *in}
+}
+func RagRetrievalConfig_Filter_VectorSimilarityThreshold_ToProto(mapCtx *direct.MapContext, in *float64) *pb.RagRetrievalConfig_Filter_VectorSimilarityThreshold {
+	if in == nil {
+		return nil
+	}
+	return &pb.RagRetrievalConfig_Filter_VectorSimilarityThreshold{VectorSimilarityThreshold: *in}
+}
+func RagRetrievalConfig_Ranking_FromProto(mapCtx *direct.MapContext, in *pb.RagRetrievalConfig_Ranking) *krm.RagRetrievalConfig_Ranking {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RagRetrievalConfig_Ranking{}
+	out.RankService = RagRetrievalConfig_Ranking_RankService_FromProto(mapCtx, in.GetRankService())
+	out.LlmRanker = RagRetrievalConfig_Ranking_LlmRanker_FromProto(mapCtx, in.GetLlmRanker())
+	return out
+}
+func RagRetrievalConfig_Ranking_ToProto(mapCtx *direct.MapContext, in *krm.RagRetrievalConfig_Ranking) *pb.RagRetrievalConfig_Ranking {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagRetrievalConfig_Ranking{}
+	if oneof := RagRetrievalConfig_Ranking_RankService_ToProto(mapCtx, in.RankService); oneof != nil {
+		out.RankingConfig = &pb.RagRetrievalConfig_Ranking_RankService_{RankService: oneof}
+	}
+	if oneof := RagRetrievalConfig_Ranking_LlmRanker_ToProto(mapCtx, in.LlmRanker); oneof != nil {
+		out.RankingConfig = &pb.RagRetrievalConfig_Ranking_LlmRanker_{LlmRanker: oneof}
+	}
+	return out
+}
+func RagRetrievalConfig_Ranking_LlmRanker_FromProto(mapCtx *direct.MapContext, in *pb.RagRetrievalConfig_Ranking_LlmRanker) *krm.RagRetrievalConfig_Ranking_LlmRanker {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RagRetrievalConfig_Ranking_LlmRanker{}
+	out.ModelName = in.ModelName
+	return out
+}
+func RagRetrievalConfig_Ranking_LlmRanker_ToProto(mapCtx *direct.MapContext, in *krm.RagRetrievalConfig_Ranking_LlmRanker) *pb.RagRetrievalConfig_Ranking_LlmRanker {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagRetrievalConfig_Ranking_LlmRanker{}
+	out.ModelName = in.ModelName
+	return out
+}
+func RagRetrievalConfig_Ranking_RankService_FromProto(mapCtx *direct.MapContext, in *pb.RagRetrievalConfig_Ranking_RankService) *krm.RagRetrievalConfig_Ranking_RankService {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RagRetrievalConfig_Ranking_RankService{}
+	out.ModelName = in.ModelName
+	return out
+}
+func RagRetrievalConfig_Ranking_RankService_ToProto(mapCtx *direct.MapContext, in *krm.RagRetrievalConfig_Ranking_RankService) *pb.RagRetrievalConfig_Ranking_RankService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagRetrievalConfig_Ranking_RankService{}
+	out.ModelName = in.ModelName
+	return out
+}
 func ReservationAffinity_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krm.ReservationAffinity {
 	if in == nil {
 		return nil
@@ -1867,6 +2148,48 @@ func ReservationAffinity_ToProto(mapCtx *direct.MapContext, in *krm.ReservationA
 	out.ReservationAffinityType = direct.Enum_ToProto[pb.ReservationAffinity_Type](mapCtx, in.ReservationAffinityType)
 	out.Key = direct.ValueOf(in.Key)
 	out.Values = in.Values
+	return out
+}
+func Retrieval_FromProto(mapCtx *direct.MapContext, in *pb.Retrieval) *krm.Retrieval {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Retrieval{}
+	out.VertexAiSearch = VertexAiSearch_FromProto(mapCtx, in.GetVertexAiSearch())
+	out.VertexRagStore = VertexRagStore_FromProto(mapCtx, in.GetVertexRagStore())
+	out.DisableAttribution = direct.LazyPtr(in.GetDisableAttribution())
+	return out
+}
+func Retrieval_ToProto(mapCtx *direct.MapContext, in *krm.Retrieval) *pb.Retrieval {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Retrieval{}
+	if oneof := VertexAiSearch_ToProto(mapCtx, in.VertexAiSearch); oneof != nil {
+		out.Source = &pb.Retrieval_VertexAiSearch{VertexAiSearch: oneof}
+	}
+	if oneof := VertexRagStore_ToProto(mapCtx, in.VertexRagStore); oneof != nil {
+		out.Source = &pb.Retrieval_VertexRagStore{VertexRagStore: oneof}
+	}
+	out.DisableAttribution = direct.ValueOf(in.DisableAttribution)
+	return out
+}
+func RetrievalConfig_FromProto(mapCtx *direct.MapContext, in *pb.RetrievalConfig) *krm.RetrievalConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RetrievalConfig{}
+	out.LatLng = LatLng_FromProto(mapCtx, in.GetLatLng())
+	out.LanguageCode = in.LanguageCode
+	return out
+}
+func RetrievalConfig_ToProto(mapCtx *direct.MapContext, in *krm.RetrievalConfig) *pb.RetrievalConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RetrievalConfig{}
+	out.LatLng = LatLng_ToProto(mapCtx, in.LatLng)
+	out.LanguageCode = in.LanguageCode
 	return out
 }
 func SampledShapleyAttribution_FromProto(mapCtx *direct.MapContext, in *pb.SampledShapleyAttribution) *krm.SampledShapleyAttribution {
@@ -2540,6 +2863,102 @@ func TimestampSplit_ToProto(mapCtx *direct.MapContext, in *krm.TimestampSplit) *
 	out.Key = direct.ValueOf(in.Key)
 	return out
 }
+func Tool_FromProto(mapCtx *direct.MapContext, in *pb.Tool) *krm.Tool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool{}
+	out.FunctionDeclarations = direct.Slice_FromProto(mapCtx, in.FunctionDeclarations, FunctionDeclaration_FromProto)
+	out.Retrieval = Retrieval_FromProto(mapCtx, in.GetRetrieval())
+	out.GoogleSearch = Tool_GoogleSearch_FromProto(mapCtx, in.GetGoogleSearch())
+	out.GoogleSearchRetrieval = GoogleSearchRetrieval_FromProto(mapCtx, in.GetGoogleSearchRetrieval())
+	out.GoogleMaps = GoogleMaps_FromProto(mapCtx, in.GetGoogleMaps())
+	out.EnterpriseWebSearch = EnterpriseWebSearch_FromProto(mapCtx, in.GetEnterpriseWebSearch())
+	out.CodeExecution = Tool_CodeExecution_FromProto(mapCtx, in.GetCodeExecution())
+	out.URLContext = URLContext_FromProto(mapCtx, in.GetUrlContext())
+	out.ComputerUse = Tool_ComputerUse_FromProto(mapCtx, in.GetComputerUse())
+	return out
+}
+func Tool_ToProto(mapCtx *direct.MapContext, in *krm.Tool) *pb.Tool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool{}
+	out.FunctionDeclarations = direct.Slice_ToProto(mapCtx, in.FunctionDeclarations, FunctionDeclaration_ToProto)
+	out.Retrieval = Retrieval_ToProto(mapCtx, in.Retrieval)
+	out.GoogleSearch = Tool_GoogleSearch_ToProto(mapCtx, in.GoogleSearch)
+	out.GoogleSearchRetrieval = GoogleSearchRetrieval_ToProto(mapCtx, in.GoogleSearchRetrieval)
+	out.GoogleMaps = GoogleMaps_ToProto(mapCtx, in.GoogleMaps)
+	out.EnterpriseWebSearch = EnterpriseWebSearch_ToProto(mapCtx, in.EnterpriseWebSearch)
+	out.CodeExecution = Tool_CodeExecution_ToProto(mapCtx, in.CodeExecution)
+	out.UrlContext = URLContext_ToProto(mapCtx, in.URLContext)
+	out.ComputerUse = Tool_ComputerUse_ToProto(mapCtx, in.ComputerUse)
+	return out
+}
+func ToolConfig_FromProto(mapCtx *direct.MapContext, in *pb.ToolConfig) *krm.ToolConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ToolConfig{}
+	out.FunctionCallingConfig = FunctionCallingConfig_FromProto(mapCtx, in.GetFunctionCallingConfig())
+	out.RetrievalConfig = RetrievalConfig_FromProto(mapCtx, in.GetRetrievalConfig())
+	return out
+}
+func ToolConfig_ToProto(mapCtx *direct.MapContext, in *krm.ToolConfig) *pb.ToolConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ToolConfig{}
+	out.FunctionCallingConfig = FunctionCallingConfig_ToProto(mapCtx, in.FunctionCallingConfig)
+	out.RetrievalConfig = RetrievalConfig_ToProto(mapCtx, in.RetrievalConfig)
+	return out
+}
+func Tool_CodeExecution_FromProto(mapCtx *direct.MapContext, in *pb.Tool_CodeExecution) *krm.Tool_CodeExecution {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_CodeExecution{}
+	return out
+}
+func Tool_CodeExecution_ToProto(mapCtx *direct.MapContext, in *krm.Tool_CodeExecution) *pb.Tool_CodeExecution {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_CodeExecution{}
+	return out
+}
+func Tool_ComputerUse_FromProto(mapCtx *direct.MapContext, in *pb.Tool_ComputerUse) *krm.Tool_ComputerUse {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_ComputerUse{}
+	out.Environment = direct.Enum_FromProto(mapCtx, in.GetEnvironment())
+	return out
+}
+func Tool_ComputerUse_ToProto(mapCtx *direct.MapContext, in *krm.Tool_ComputerUse) *pb.Tool_ComputerUse {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_ComputerUse{}
+	out.Environment = direct.Enum_ToProto[pb.Tool_ComputerUse_Environment](mapCtx, in.Environment)
+	return out
+}
+func Tool_GoogleSearch_FromProto(mapCtx *direct.MapContext, in *pb.Tool_GoogleSearch) *krm.Tool_GoogleSearch {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_GoogleSearch{}
+	out.ExcludeDomains = in.ExcludeDomains
+	return out
+}
+func Tool_GoogleSearch_ToProto(mapCtx *direct.MapContext, in *krm.Tool_GoogleSearch) *pb.Tool_GoogleSearch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_GoogleSearch{}
+	out.ExcludeDomains = in.ExcludeDomains
+	return out
+}
 func TunedModelCheckpoint_FromProto(mapCtx *direct.MapContext, in *pb.TunedModelCheckpoint) *krm.TunedModelCheckpoint {
 	if in == nil {
 		return nil
@@ -2598,6 +3017,20 @@ func TuningDataStatsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Tun
 	if oneof := SupervisedTuningDataStatsObservedState_ToProto(mapCtx, in.SupervisedTuningDataStats); oneof != nil {
 		out.TuningDataStats = &pb.TuningDataStats_SupervisedTuningDataStats{SupervisedTuningDataStats: oneof}
 	}
+	return out
+}
+func URLContext_FromProto(mapCtx *direct.MapContext, in *pb.UrlContext) *krm.URLContext {
+	if in == nil {
+		return nil
+	}
+	out := &krm.URLContext{}
+	return out
+}
+func URLContext_ToProto(mapCtx *direct.MapContext, in *krm.URLContext) *pb.UrlContext {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UrlContext{}
 	return out
 }
 func VertexAIFeatureOnlineStoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FeatureOnlineStore) *krm.VertexAIFeatureOnlineStoreObservedState {
@@ -3055,6 +3488,88 @@ func VertexAITuningJobSpec_BaseModel_ToProto(mapCtx *direct.MapContext, in *stri
 		return nil
 	}
 	return &pb.TuningJob_BaseModel{BaseModel: *in}
+}
+func VertexAiSearch_FromProto(mapCtx *direct.MapContext, in *pb.VertexAISearch) *krm.VertexAiSearch {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAiSearch{}
+	out.Datastore = direct.LazyPtr(in.GetDatastore())
+	out.Engine = direct.LazyPtr(in.GetEngine())
+	out.MaxResults = direct.LazyPtr(in.GetMaxResults())
+	out.Filter = direct.LazyPtr(in.GetFilter())
+	out.DataStoreSpecs = direct.Slice_FromProto(mapCtx, in.DataStoreSpecs, VertexAiSearch_DataStoreSpec_FromProto)
+	return out
+}
+func VertexAiSearch_ToProto(mapCtx *direct.MapContext, in *krm.VertexAiSearch) *pb.VertexAISearch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VertexAISearch{}
+	out.Datastore = direct.ValueOf(in.Datastore)
+	out.Engine = direct.ValueOf(in.Engine)
+	out.MaxResults = direct.ValueOf(in.MaxResults)
+	out.Filter = direct.ValueOf(in.Filter)
+	out.DataStoreSpecs = direct.Slice_ToProto(mapCtx, in.DataStoreSpecs, VertexAiSearch_DataStoreSpec_ToProto)
+	return out
+}
+func VertexAiSearch_DataStoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.VertexAISearch_DataStoreSpec) *krm.VertexAiSearch_DataStoreSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAiSearch_DataStoreSpec{}
+	out.DataStore = direct.LazyPtr(in.GetDataStore())
+	out.Filter = direct.LazyPtr(in.GetFilter())
+	return out
+}
+func VertexAiSearch_DataStoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAiSearch_DataStoreSpec) *pb.VertexAISearch_DataStoreSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VertexAISearch_DataStoreSpec{}
+	out.DataStore = direct.ValueOf(in.DataStore)
+	out.Filter = direct.ValueOf(in.Filter)
+	return out
+}
+func VertexRagStore_FromProto(mapCtx *direct.MapContext, in *pb.VertexRagStore) *krm.VertexRagStore {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexRagStore{}
+	out.RagResources = direct.Slice_FromProto(mapCtx, in.RagResources, VertexRagStore_RagResource_FromProto)
+	out.SimilarityTopK = in.SimilarityTopK
+	out.VectorDistanceThreshold = in.VectorDistanceThreshold
+	out.RagRetrievalConfig = RagRetrievalConfig_FromProto(mapCtx, in.GetRagRetrievalConfig())
+	return out
+}
+func VertexRagStore_ToProto(mapCtx *direct.MapContext, in *krm.VertexRagStore) *pb.VertexRagStore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VertexRagStore{}
+	out.RagResources = direct.Slice_ToProto(mapCtx, in.RagResources, VertexRagStore_RagResource_ToProto)
+	out.SimilarityTopK = in.SimilarityTopK
+	out.VectorDistanceThreshold = in.VectorDistanceThreshold
+	out.RagRetrievalConfig = RagRetrievalConfig_ToProto(mapCtx, in.RagRetrievalConfig)
+	return out
+}
+func VertexRagStore_RagResource_FromProto(mapCtx *direct.MapContext, in *pb.VertexRagStore_RagResource) *krm.VertexRagStore_RagResource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexRagStore_RagResource{}
+	out.RagCorpus = direct.LazyPtr(in.GetRagCorpus())
+	out.RagFileIds = in.RagFileIds
+	return out
+}
+func VertexRagStore_RagResource_ToProto(mapCtx *direct.MapContext, in *krm.VertexRagStore_RagResource) *pb.VertexRagStore_RagResource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VertexRagStore_RagResource{}
+	out.RagCorpus = direct.ValueOf(in.RagCorpus)
+	out.RagFileIds = in.RagFileIds
+	return out
 }
 func VideoMetadata_FromProto(mapCtx *direct.MapContext, in *pb.VideoMetadata) *krm.VideoMetadata {
 	if in == nil {
