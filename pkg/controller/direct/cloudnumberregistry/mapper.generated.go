@@ -36,6 +36,7 @@ func CloudNumberRegistryIpamAdminScopeObservedState_FromProto(mapCtx *direct.Map
 	}
 	out := &krm.CloudNumberRegistryIpamAdminScopeObservedState{}
 	// MISSING: Name
+	// MISSING: Scopes
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -47,6 +48,7 @@ func CloudNumberRegistryIpamAdminScopeObservedState_ToProto(mapCtx *direct.MapCo
 	}
 	out := &pb.IpamAdminScope{}
 	// MISSING: Name
+	// MISSING: Scopes
 	out.State = direct.Enum_ToProto[pb.IpamAdminScope_DiscoveryPipelineState](mapCtx, in.State)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
@@ -59,7 +61,13 @@ func CloudNumberRegistryIpamAdminScopeSpec_FromProto(mapCtx *direct.MapContext, 
 	out := &krm.CloudNumberRegistryIpamAdminScopeSpec{}
 	// MISSING: Name
 	out.EnabledAddonPlatforms = direct.EnumSlice_FromProto(mapCtx, in.EnabledAddonPlatforms)
-	out.Scopes = in.Scopes
+
+	if v := in.GetScopes(); len(v) != 0 {
+		for i := range v {
+			out.ScopeRefs = append(out.ScopeRefs, refsv1beta1.OrganizationRef{External: v[i]})
+		}
+	}
+
 	out.Labels = in.Labels
 	return out
 }
@@ -70,7 +78,13 @@ func CloudNumberRegistryIpamAdminScopeSpec_ToProto(mapCtx *direct.MapContext, in
 	out := &pb.IpamAdminScope{}
 	// MISSING: Name
 	out.EnabledAddonPlatforms = direct.EnumSlice_ToProto[pb.IpamAdminScope_AddOnPlatform](mapCtx, in.EnabledAddonPlatforms)
-	out.Scopes = in.Scopes
+
+	if v := in.ScopeRefs; len(v) != 0 {
+		for i := range v {
+			out.Scopes = append(out.Scopes, v[i].External)
+		}
+	}
+
 	out.Labels = in.Labels
 	return out
 }
