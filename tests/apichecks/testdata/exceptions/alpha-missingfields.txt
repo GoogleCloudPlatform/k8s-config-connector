@@ -904,6 +904,13 @@
 [missing_field] crd=cloudiotdevices.cloudiot.cnrm.cloud.google.com version=v1alpha1: field ".spec.logLevel" is not set in unstructured objects
 [missing_field] crd=cloudiotdevices.cloudiot.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadata" is not set in unstructured objects
 [missing_field] crd=cloudiotdevices.cloudiot.cnrm.cloud.google.com version=v1alpha1: field ".spec.registry" is not set in unstructured objects
+[missing_field] crd=cloudnumberregistryrealms.cloudnumberregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.ipVersion" is not set in unstructured objects
+[missing_field] crd=cloudnumberregistryrealms.cloudnumberregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=cloudnumberregistryrealms.cloudnumberregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=cloudnumberregistryrealms.cloudnumberregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.managementType" is not set in unstructured objects
+[missing_field] crd=cloudnumberregistryrealms.cloudnumberregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudnumberregistryrealms.cloudnumberregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.registryBookRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudnumberregistryrealms.cloudnumberregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.trafficType" is not set in unstructured objects
 [missing_field] crd=cloudnumberregistryregistrybooks.cloudnumberregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.claimedScopeRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudnumberregistryregistrybooks.cloudnumberregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=cloudnumberregistryregistrybooks.cloudnumberregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects

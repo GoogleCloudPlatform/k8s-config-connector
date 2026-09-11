@@ -18,8 +18,51 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.numberregistry.v1alpha
 // resource: CloudNumberRegistryRegistryBook:RegistryBook
+// resource: CloudNumberRegistryRealm:Realm
 
 package v1alpha1
+
+/* unreachable type DiscoveryMetadata
+// +kcc:proto=google.cloud.numberregistry.v1alpha.DiscoveryMetadata
+type DiscoveryMetadata struct {
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.numberregistry.v1alpha.Realm", skipping
+
+// +kcc:proto=google.cloud.numberregistry.v1alpha.Realm
+type Realm struct {
+	// Required. Identifier. The resource name of the Realm.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.Realm.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Traffic type of the Realm.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.Realm.traffic_type
+	TrafficType *string `json:"trafficType,omitempty"`
+
+	// Required. Management type of the Realm.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.Realm.management_type
+	ManagementType *string `json:"managementType,omitempty"`
+
+	// Required. Name of the RegistryBook that claims the Realm.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.Realm.registry_book
+	RegistryBook *string `json:"registryBook,omitempty"`
+
+	// Optional. User-defined labels.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.Realm.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. IP version of the Realm.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.Realm.ip_version
+	IPVersion *string `json:"ipVersion,omitempty"`
+}
+*/
+
+/* unreachable type Realm_RealmAggregatedData
+// +kcc:proto=google.cloud.numberregistry.v1alpha.Realm.RealmAggregatedData
+type Realm_RealmAggregatedData struct {
+}
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.numberregistry.v1alpha.RegistryBook", skipping
 
@@ -47,6 +90,80 @@ type RegistryBook struct {
 type RegistryBook_AggregatedData struct {
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.numberregistry.v1alpha.DiscoveryMetadata
+type DiscoveryMetadataObservedState struct {
+	// Output only. The time when the event happened.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.DiscoveryMetadata.event_time
+	EventTime *string `json:"eventTime,omitempty"`
+
+	// Output only. The time when the resource was created.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.DiscoveryMetadata.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the resource was last modified.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.DiscoveryMetadata.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The state of the resource.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.DiscoveryMetadata.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The resource name of the discovered resource, should be
+	//  API-agnostic. Example: "projects/{project_number}/networks/{network_id}".
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.DiscoveryMetadata.resource
+	Resource *string `json:"resource,omitempty"`
+
+	// Output only. The resource uri of the discovered resource.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.DiscoveryMetadata.resource_uri
+	ResourceURI *string `json:"resourceURI,omitempty"`
+
+	// Output only. The canonical google.aip.dev/122 name of the source resource.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.DiscoveryMetadata.source_id
+	SourceID *string `json:"sourceID,omitempty"`
+
+	// Output only. A single source resource can be the source of multiple CNR
+	//  resources. This sub_id is used to distinguish between the different CNR
+	//  resources derived from the same upstream resource. For example, a single
+	//  subnetwork can be the source of multiple Ranges, one for each protocol. In
+	//  this case, the sub_id could be "private-ipv4" or "private-ipv6".
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.DiscoveryMetadata.source_sub_id
+	SourceSubID *string `json:"sourceSubID,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.numberregistry.v1alpha.Realm", skipping
+
+// +kcc:observedstate:proto=google.cloud.numberregistry.v1alpha.Realm
+type RealmObservedState struct {
+	// Output only. Discovery metadata of the Realm.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.Realm.discovery_metadata
+	DiscoveryMetadata *DiscoveryMetadataObservedState `json:"discoveryMetadata,omitempty"`
+
+	// Output only. The time at which the Realm was created.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.Realm.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time at which the Realm was last updated.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.Realm.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Aggregated data for the Realm. Populated only when the view is
+	//  AGGREGATE.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.Realm.aggregated_data
+	AggregatedData *Realm_RealmAggregatedDataObservedState `json:"aggregatedData,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.numberregistry.v1alpha.Realm.RealmAggregatedData
+type Realm_RealmAggregatedDataObservedState struct {
+	// Output only. Number of DiscoveredRanges in the Realm.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.Realm.RealmAggregatedData.discovered_ranges_count
+	DiscoveredRangesCount *int32 `json:"discoveredRangesCount,omitempty"`
+
+	// Output only. Number of CustomRanges in the Realm.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.Realm.RealmAggregatedData.custom_ranges_count
+	CustomRangesCount *int32 `json:"customRangesCount,omitempty"`
+}
 
 /* found existing non-generated go type with proto tag "google.cloud.numberregistry.v1alpha.RegistryBook", skipping
 
