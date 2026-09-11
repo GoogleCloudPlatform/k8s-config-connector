@@ -1,0 +1,6 @@
+- caisURL: //clouddeploy.googleapis.com/projects/${projectId}/locations/us-central1/customTargetTypes/clouddeploycustomtargettype-max-${uniqueId}
+  group: clouddeploy.cnrm.cloud.google.com
+  kind: CloudDeployCustomTargetType
+  name: clouddeploycustomtargettype-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
