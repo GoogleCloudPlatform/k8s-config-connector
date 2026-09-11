@@ -64,19 +64,17 @@ func (i *DeviceStreamingSessionIdentity) Host() string {
 }
 
 func getIdentityFromDeviceStreamingSessionSpec(ctx context.Context, reader client.Reader, obj client.Object) (*DeviceStreamingSessionIdentity, error) {
-	_, ok := obj.(*DeviceStreamingSession)
+	session, ok := obj.(*DeviceStreamingSession)
 	if !ok {
 		return nil, fmt.Errorf("object is not a DeviceStreamingSession")
-	}
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
 	}
 
 	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve project: %w", err)
 	}
+
+	resourceID := common.ValueOf(session.Spec.ResourceID)
 
 	identity := &DeviceStreamingSessionIdentity{
 		Project:       projectID,
@@ -100,7 +98,15 @@ func (obj *DeviceStreamingSession) GetIdentity(ctx context.Context, reader clien
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
+		specID := common.ValueOf(obj.Spec.ResourceID)
+		if specID == "" {
+			if specIdentity.Project != statusIdentity.Project {
+				return nil, fmt.Errorf("cannot change DeviceStreamingSession parent project (old=%q, new=%q)", statusIdentity.Project, specIdentity.Project)
+			}
+			return statusIdentity, nil
+		}
+
+		if statusIdentity.DeviceSession != specID {
 			return nil, fmt.Errorf("cannot change DeviceStreamingSession identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
@@ -113,10 +119,10 @@ func (c *DeviceStreamingSession) ExternalIdentifier() *string {
 	if c.Status.ExternalRef != nil {
 		return c.Status.ExternalRef
 	}
-	id := c.GetName()
-	if c.Spec.ResourceID != nil {
-		id = *c.Spec.ResourceID
+	if c.Spec.ResourceID == nil {
+		return nil
 	}
+	id := *c.Spec.ResourceID
 	if c.Spec.ProjectRef != nil && c.Spec.ProjectRef.External != "" {
 		s := "projects/" + c.Spec.ProjectRef.External + "/deviceSessions/" + id
 		return &s
