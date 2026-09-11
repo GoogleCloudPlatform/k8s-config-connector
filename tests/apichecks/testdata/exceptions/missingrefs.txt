@@ -2,6 +2,7 @@
 [refs] crd=accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.ingressPolicies[].ingressTo.resources" should be a reference
 [refs] crd=accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.status.egressPolicies[].egressTo.resources" should be a reference
 [refs] crd=accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.status.ingressPolicies[].ingressTo.resources" should be a reference
+[refs] crd=aiplatformonlineevaluators.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metricSources[].metric.llmBasedMetricSpec.judgeAutoraterConfig.autoraterModel" should be a reference
 [refs] crd=alloydbbackups.alloydb.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionConfig.kmsKeyName" should be a reference
 [refs] crd=alloydbbackups.alloydb.cnrm.cloud.google.com version=v1beta1: field ".spec.encryptionConfig.kmsKeyName" should be a reference
 [refs] crd=apigatewayapiconfigs.apigateway.cnrm.cloud.google.com version=v1alpha1: field ".spec.gatewayConfig.backendConfig.googleServiceAccount" should be a reference
@@ -105,3 +106,5 @@
 [refs] crd=vertexaifeaturestoreentitytypefeatures.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.entitytype" should be a reference
 [refs] crd=vertexaifeaturestoreentitytypes.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.featurestore" should be a reference
 [refs] crd=vertexaiindexendpoints.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.network" should be a reference
+[refs] crd=vertexaituningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.supervisedTuningSpec.evaluationConfig.autoraterConfig.autoraterModel" should be a reference
+[refs] crd=vertexaituningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.supervisedTuningSpec.evaluationConfig.metrics[].llmBasedMetricSpec.judgeAutoraterConfig.autoraterModel" should be a reference
