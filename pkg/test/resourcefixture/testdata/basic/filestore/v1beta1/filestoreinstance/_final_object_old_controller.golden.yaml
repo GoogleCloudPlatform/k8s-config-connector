@@ -10,7 +10,9 @@ metadata:
   generation: 3
   labels:
     cnrm-test: "true"
-    label-one: value-one
+    label-one: value-one-updated
+    label-three: value-three
+    label-two: value-two
   name: filestoreinstance-${uniqueId}
   namespace: ${uniqueId}
 spec:
