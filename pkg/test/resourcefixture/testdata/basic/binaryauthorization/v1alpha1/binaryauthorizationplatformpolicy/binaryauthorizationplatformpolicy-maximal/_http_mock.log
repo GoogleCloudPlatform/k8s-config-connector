@@ -1,0 +1,273 @@
+GET https://binaryauthorization.googleapis.com/v1/projects/${projectId}/platforms/gke/policies/binauthz-maximal-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "PlatformPolicy \"projects/${projectId}/platforms/gke/policies/binauthz-maximal-${uniqueId}\" not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://binaryauthorization.googleapis.com/v1/projects/${projectId}/platforms/gke/policies?alt=json&policyId=binauthz-maximal-${uniqueId}&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "description": "A maximal platform policy",
+  "gkePolicy": {
+    "checkSets": [
+      {
+        "checks": [
+          {
+            "alwaysDeny": true,
+            "displayName": "always-deny-check"
+          }
+        ],
+        "displayName": "allow-all-checkset",
+        "imageAllowlist": {
+          "allowPattern": [
+            "gcr.io/my-project/*"
+          ]
+        }
+      }
+    ],
+    "imageAllowlist": {
+      "allowPattern": [
+        "gcr.io/my-project/*"
+      ]
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "A maximal platform policy",
+  "etag": "abcdef0123A=",
+  "gkePolicy": {
+    "checkSets": [
+      {
+        "checks": [
+          {
+            "alwaysDeny": true,
+            "displayName": "always-deny-check"
+          }
+        ],
+        "displayName": "allow-all-checkset",
+        "imageAllowlist": {
+          "allowPattern": [
+            "gcr.io/my-project/*"
+          ]
+        }
+      }
+    ],
+    "imageAllowlist": {
+      "allowPattern": [
+        "gcr.io/my-project/*"
+      ]
+    }
+  },
+  "name": "projects/${projectId}/platforms/gke/policies/binauthz-maximal-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://binaryauthorization.googleapis.com/v1/projects/${projectId}/platforms/gke/policies/binauthz-maximal-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "A maximal platform policy",
+  "etag": "abcdef0123A=",
+  "gkePolicy": {
+    "checkSets": [
+      {
+        "checks": [
+          {
+            "alwaysDeny": true,
+            "displayName": "always-deny-check"
+          }
+        ],
+        "displayName": "allow-all-checkset",
+        "imageAllowlist": {
+          "allowPattern": [
+            "gcr.io/my-project/*"
+          ]
+        }
+      }
+    ],
+    "imageAllowlist": {
+      "allowPattern": [
+        "gcr.io/my-project/*"
+      ]
+    }
+  },
+  "name": "projects/${projectId}/platforms/gke/policies/binauthz-maximal-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PUT https://binaryauthorization.googleapis.com/v1/projects/${projectId}/platforms/gke/policies/binauthz-maximal-${uniqueId}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "description": "An updated maximal platform policy",
+  "gkePolicy": {
+    "checkSets": [
+      {
+        "checks": [
+          {
+            "alwaysDeny": true,
+            "displayName": "always-deny-check-updated"
+          }
+        ],
+        "displayName": "updated-checkset",
+        "imageAllowlist": {
+          "allowPattern": [
+            "gcr.io/another-project/*"
+          ]
+        }
+      }
+    ],
+    "imageAllowlist": {
+      "allowPattern": [
+        "gcr.io/another-project/*"
+      ]
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "An updated maximal platform policy",
+  "etag": "abcdef0123A=",
+  "gkePolicy": {
+    "checkSets": [
+      {
+        "checks": [
+          {
+            "alwaysDeny": true,
+            "displayName": "always-deny-check-updated"
+          }
+        ],
+        "displayName": "updated-checkset",
+        "imageAllowlist": {
+          "allowPattern": [
+            "gcr.io/another-project/*"
+          ]
+        }
+      }
+    ],
+    "imageAllowlist": {
+      "allowPattern": [
+        "gcr.io/another-project/*"
+      ]
+    }
+  },
+  "name": "projects/${projectId}/platforms/gke/policies/binauthz-maximal-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://binaryauthorization.googleapis.com/v1/projects/${projectId}/platforms/gke/policies/binauthz-maximal-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "An updated maximal platform policy",
+  "etag": "abcdef0123A=",
+  "gkePolicy": {
+    "checkSets": [
+      {
+        "checks": [
+          {
+            "alwaysDeny": true,
+            "displayName": "always-deny-check-updated"
+          }
+        ],
+        "displayName": "updated-checkset",
+        "imageAllowlist": {
+          "allowPattern": [
+            "gcr.io/another-project/*"
+          ]
+        }
+      }
+    ],
+    "imageAllowlist": {
+      "allowPattern": [
+        "gcr.io/another-project/*"
+      ]
+    }
+  },
+  "name": "projects/${projectId}/platforms/gke/policies/binauthz-maximal-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://binaryauthorization.googleapis.com/v1/projects/${projectId}/platforms/gke/policies/binauthz-maximal-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
