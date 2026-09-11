@@ -69,7 +69,7 @@ Your task is to perform a version bump for version `{{version}}`.
     - Push the generated branch to your fork: `git push origin release-{{version}}`.
     - Create a Pull Request using GitHub CLI:
       ```bash
-      gh pr create --title "Release {{version}}" --body "Config Connector Release {{version}}" --head release-{{version}}
+      gh pr create --title "Release {{version}}" --body "Config Connector Release {{version}}" --head release-{{version}} --label "release"
       ```
 
 ---
@@ -107,5 +107,5 @@ When compiling and writing the release notes, you MUST strictly adhere to the fo
     - **Commit & Push**:
         - `git add docs/releasenotes/release-{{MAJOR_MINOR}}.md && git commit -m "Add release notes for {{VERSION}}"`
         - `git push origin draft-notes-{{VERSION}}`
-        - `gh pr create --title "Release Notes {{VERSION}}" --body "Automated draft of release notes for version {{VERSION}} comparing {{PREVIOUS_TAG}} to {{CURRENT_TAG}}.<br><br>Triggered by chore: \`.agents/kcc-release.md\`" --head draft-notes-{{VERSION}} --label "overseer,area/release,priority/medium"`
+        - `gh pr create --title "Release Notes {{VERSION}}" --body "Automated draft of release notes for version {{VERSION}} comparing {{PREVIOUS_TAG}} to {{CURRENT_TAG}}.<br><br>Triggered by chore: \`.agents/kcc-release.md\`" --head draft-notes-{{VERSION}} --label "overseer,area/release,priority/medium,release"`
 VERSION}}`
