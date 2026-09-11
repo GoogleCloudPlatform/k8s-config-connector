@@ -2744,6 +2744,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - cloudsupport.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - cloudtalentsolution.cnrm.cloud.google.com
   resources:
   - '*'
@@ -4751,6 +4763,14 @@ rules:
   - watch
 - apiGroups:
   - cloudsecuritycompliance.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cloudsupport.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

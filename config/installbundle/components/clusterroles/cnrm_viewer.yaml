@@ -375,6 +375,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - cloudsupport.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - cloudtalentsolution.cnrm.cloud.google.com
   resources:
   - '*'
