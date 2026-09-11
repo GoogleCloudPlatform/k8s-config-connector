@@ -1,0 +1,45 @@
+apiVersion: modelarmor.cnrm.cloud.google.com/v1alpha1
+kind: ModelArmorFloorSetting
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: modelarmorfloorsetting-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  aiPlatformFloorSetting:
+    enableCloudLogging: false
+    inspectAndBlock: true
+  enableFloorSettingEnforcement: false
+  filterConfig:
+    maliciousURIFilterSettings:
+      filterEnforcement: DISABLED
+    piAndJailbreakFilterSettings:
+      filterEnforcement: DISABLED
+    raiSettings:
+      raiFilters:
+      - confidenceLevel: MEDIUM_AND_ABOVE
+        filterType: SEXUALLY_EXPLICIT
+    sdpSettings:
+      basicConfig:
+        filterEnforcement: DISABLED
+  floorSettingMetadata:
+    multiLanguageDetection:
+      enableMultiLanguageDetection: false
+  location: global
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: |-
+      Update call failed: error updating: updating ModelArmorFloorSetting projects/${projectId}/locations/global/floorSetting: googleapi: Error 400: Invalid request: Integrated service(s) 'AI_PLATFORM' is required when configuring service-specific floor settings.
+      error details: name = ErrorInfo reason = INTEGRATED_SERVICE_MISSING domain = modelarmor.googleapis.com metadata = map[integrated_services:AI_PLATFORM]
+      error details: name = LocalizedMessage locale = en-US msg = Invalid request: Integrated service(s) 'AI_PLATFORM' is required when configuring service-specific floor settings.
+    reason: UpdateFailed
+    status: "False"
+    type: Ready
+  observedGeneration: 2
