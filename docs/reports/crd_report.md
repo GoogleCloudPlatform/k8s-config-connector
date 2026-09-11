@@ -568,6 +568,7 @@
 | cloudtasks.cnrm.cloud.google.com               | TasksQueue                                               | True         | False       | False  | Direct     | True        |
 | testing.cnrm.cloud.google.com                  | TestingDeviceSession                                     | True         | False       | False  | Direct     | True        |
 | tpu.cnrm.cloud.google.com                      | TPUNode                                                  | True         | False       | False  | Terraform  | False       |
+| tpu.cnrm.cloud.google.com                      | TPUQueuedResource                                        | True         | False       | False  | Direct     | True        |
 | tpu.cnrm.cloud.google.com                      | TPUVirtualMachine                                        | True         | False       | False  | Direct     | True        |
 | transcoder.cnrm.cloud.google.com               | TranscoderJob                                            | True         | False       | False  | Direct     | True        |
 | translate.cnrm.cloud.google.com                | TranslateAdaptiveMtDataset                               | True         | False       | False  | Direct     | True        |
