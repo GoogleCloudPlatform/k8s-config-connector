@@ -40,6 +40,7 @@ import (
 	dataprocgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataproc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
@@ -115,13 +116,7 @@ func (m *sessionTemplateModel) AdapterForObject(ctx context.Context, op *directb
 	}
 
 	desired.Name = templateID.String()
-	if desired.Labels == nil {
-		desired.Labels = make(map[string]string)
-	}
-	for k, v := range obj.GetLabels() {
-		desired.Labels[k] = v
-	}
-	desired.Labels["managed-by-cnrm"] = "true"
+	desired.Labels = label.NewGCPLabelsFromK8sLabels(obj.GetLabels())
 
 	return &sessionTemplateAdapter{
 		gcpClient: gcpClient,
