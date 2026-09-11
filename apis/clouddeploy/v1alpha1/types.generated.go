@@ -61,6 +61,25 @@ type CustomTargetSkaffoldActions struct {
 	IncludeSkaffoldModules []SkaffoldModules `json:"includeSkaffoldModules,omitempty"`
 }
 
+// +kcc:proto=google.type.Date
+type Date struct {
+	// Year of the date. Must be from 1 to 9999, or 0 to specify a date without
+	//  a year.
+	// +kcc:proto:field=google.type.Date.year
+	Year *int32 `json:"year,omitempty"`
+
+	// Month of a year. Must be from 1 to 12, or 0 to specify a year without a
+	//  month and day.
+	// +kcc:proto:field=google.type.Date.month
+	Month *int32 `json:"month,omitempty"`
+
+	// Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
+	//  to specify a year by itself or a year and month where the day isn't
+	//  significant.
+	// +kcc:proto:field=google.type.Date.day
+	Day *int32 `json:"day,omitempty"`
+}
+
 // +kcc:proto=google.cloud.deploy.v1.DeliveryPipelineAttribute
 type DeliveryPipelineAttribute struct {
 	// Optional. ID of the `DeliveryPipeline`. The value of this field could be
@@ -183,6 +202,27 @@ type SkaffoldModules_SkaffoldGitSource struct {
 	Ref *string `json:"ref,omitempty"`
 }
 
+// +kcc:proto=google.type.TimeOfDay
+type TimeOfDay struct {
+	// Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
+	//  to allow the value "24:00:00" for scenarios like business closing time.
+	// +kcc:proto:field=google.type.TimeOfDay.hours
+	Hours *int32 `json:"hours,omitempty"`
+
+	// Minutes of hour of day. Must be from 0 to 59.
+	// +kcc:proto:field=google.type.TimeOfDay.minutes
+	Minutes *int32 `json:"minutes,omitempty"`
+
+	// Seconds of minutes of the time. Must normally be from 0 to 59. An API may
+	//  allow the value 60 if it allows leap-seconds.
+	// +kcc:proto:field=google.type.TimeOfDay.seconds
+	Seconds *int32 `json:"seconds,omitempty"`
+
+	// Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
+	// +kcc:proto:field=google.type.TimeOfDay.nanos
+	Nanos *int32 `json:"nanos,omitempty"`
+}
+
 // +kcc:proto=google.cloud.deploy.v1.TimeWindows
 type TimeWindows struct {
 	// Required. The time zone in IANA format [IANA Time Zone
@@ -217,44 +257,4 @@ type WeeklyWindow struct {
 	//  block for the entire day for the days specified in days_of_week.
 	// +kcc:proto:field=google.cloud.deploy.v1.WeeklyWindow.end_time
 	EndTime *TimeOfDay `json:"endTime,omitempty"`
-}
-
-// +kcc:proto=google.type.Date
-type Date struct {
-	// Year of the date. Must be from 1 to 9999, or 0 to specify a date without
-	//  a year.
-	// +kcc:proto:field=google.type.Date.year
-	Year *int32 `json:"year,omitempty"`
-
-	// Month of a year. Must be from 1 to 12, or 0 to specify a year without a
-	//  month and day.
-	// +kcc:proto:field=google.type.Date.month
-	Month *int32 `json:"month,omitempty"`
-
-	// Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
-	//  to specify a year by itself or a year and month where the day isn't
-	//  significant.
-	// +kcc:proto:field=google.type.Date.day
-	Day *int32 `json:"day,omitempty"`
-}
-
-// +kcc:proto=google.type.TimeOfDay
-type TimeOfDay struct {
-	// Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
-	//  to allow the value "24:00:00" for scenarios like business closing time.
-	// +kcc:proto:field=google.type.TimeOfDay.hours
-	Hours *int32 `json:"hours,omitempty"`
-
-	// Minutes of hour of day. Must be from 0 to 59.
-	// +kcc:proto:field=google.type.TimeOfDay.minutes
-	Minutes *int32 `json:"minutes,omitempty"`
-
-	// Seconds of minutes of the time. Must normally be from 0 to 59. An API may
-	//  allow the value 60 if it allows leap-seconds.
-	// +kcc:proto:field=google.type.TimeOfDay.seconds
-	Seconds *int32 `json:"seconds,omitempty"`
-
-	// Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
-	// +kcc:proto:field=google.type.TimeOfDay.nanos
-	Nanos *int32 `json:"nanos,omitempty"`
 }

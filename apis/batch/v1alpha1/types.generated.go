@@ -1162,16 +1162,6 @@ type JobObservedState struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.batch.v1.Task", skipping
-
-// +kcc:observedstate:proto=google.cloud.batch.v1.Task
-type TaskObservedState struct {
-	// Task Status.
-	// +kcc:proto:field=google.cloud.batch.v1.Task.status
-	Status *TaskStatus `json:"status,omitempty"`
-}
-*/
-
 // +kcc:observedstate:proto=google.cloud.batch.v1.TaskGroup
 type TaskGroupObservedState struct {
 	// Output only. TaskGroup name.
@@ -1181,3 +1171,13 @@ type TaskGroupObservedState struct {
 	// +kcc:proto:field=google.cloud.batch.v1.TaskGroup.name
 	Name *string `json:"name,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.batch.v1.Task", skipping
+
+// +kcc:observedstate:proto=google.cloud.batch.v1.Task
+type TaskObservedState struct {
+	// Task Status.
+	// +kcc:proto:field=google.cloud.batch.v1.Task.status
+	Status *TaskStatus `json:"status,omitempty"`
+}
+*/

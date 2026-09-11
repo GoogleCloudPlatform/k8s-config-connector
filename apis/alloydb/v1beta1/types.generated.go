@@ -108,12 +108,6 @@ type CloudSQLBackupRunSource struct {
 }
 */
 
-/* unreachable type Cluster_PrimaryConfig
-// +kcc:proto=google.cloud.alloydb.v1beta.Cluster.PrimaryConfig
-type Cluster_PrimaryConfig struct {
-}
-*/
-
 /* unreachable type Cluster_PSCConfig
 // +kcc:proto=google.cloud.alloydb.v1beta.Cluster.PscConfig
 type Cluster_PSCConfig struct {
@@ -121,6 +115,12 @@ type Cluster_PSCConfig struct {
 	//  Connect endpoints to the instance.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.PscConfig.psc_enabled
 	PSCEnabled *bool `json:"pscEnabled,omitempty"`
+}
+*/
+
+/* unreachable type Cluster_PrimaryConfig
+// +kcc:proto=google.cloud.alloydb.v1beta.Cluster.PrimaryConfig
+type Cluster_PrimaryConfig struct {
 }
 */
 
@@ -163,6 +163,27 @@ type ContinuousBackupConfig struct {
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.ContinuousBackupConfig.encryption_config
 	EncryptionConfig *EncryptionConfig `json:"encryptionConfig,omitempty"`
 }
+
+/* unreachable type Date
+// +kcc:proto=google.type.Date
+type Date struct {
+	// Year of the date. Must be from 1 to 9999, or 0 to specify a date without
+	//  a year.
+	// +kcc:proto:field=google.type.Date.year
+	Year *int32 `json:"year,omitempty"`
+
+	// Month of a year. Must be from 1 to 12, or 0 to specify a year without a
+	//  month and day.
+	// +kcc:proto:field=google.type.Date.month
+	Month *int32 `json:"month,omitempty"`
+
+	// Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
+	//  to specify a year by itself or a year and month where the day isn't
+	//  significant.
+	// +kcc:proto:field=google.type.Date.day
+	Day *int32 `json:"day,omitempty"`
+}
+*/
 
 /* unreachable type EncryptionInfo
 // +kcc:proto=google.cloud.alloydb.v1beta.EncryptionInfo
@@ -413,27 +434,6 @@ type SSLConfig struct {
 }
 */
 
-/* unreachable type Date
-// +kcc:proto=google.type.Date
-type Date struct {
-	// Year of the date. Must be from 1 to 9999, or 0 to specify a date without
-	//  a year.
-	// +kcc:proto:field=google.type.Date.year
-	Year *int32 `json:"year,omitempty"`
-
-	// Month of a year. Must be from 1 to 12, or 0 to specify a year without a
-	//  month and day.
-	// +kcc:proto:field=google.type.Date.month
-	Month *int32 `json:"month,omitempty"`
-
-	// Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
-	//  to specify a year by itself or a year and month where the day isn't
-	//  significant.
-	// +kcc:proto:field=google.type.Date.day
-	Day *int32 `json:"day,omitempty"`
-}
-*/
-
 /* unreachable type Backup_QuantityBasedExpiryObservedState
 // +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Backup.QuantityBasedExpiry
 type Backup_QuantityBasedExpiryObservedState struct {
@@ -450,16 +450,6 @@ type Backup_QuantityBasedExpiryObservedState struct {
 }
 */
 
-/* unreachable type Cluster_PrimaryConfigObservedState
-// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Cluster.PrimaryConfig
-type Cluster_PrimaryConfigObservedState struct {
-	// Output only. Names of the clusters that are replicating from this
-	//  cluster.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.PrimaryConfig.secondary_cluster_names
-	SecondaryClusterNames []string `json:"secondaryClusterNames,omitempty"`
-}
-*/
-
 /* unreachable type Cluster_PSCConfigObservedState
 // +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Cluster.PscConfig
 type Cluster_PSCConfigObservedState struct {
@@ -467,6 +457,16 @@ type Cluster_PSCConfigObservedState struct {
 	//  network attachment to enable outbound connectivity.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.PscConfig.service_owned_project_number
 	ServiceOwnedProjectNumber *int64 `json:"serviceOwnedProjectNumber,omitempty"`
+}
+*/
+
+/* unreachable type Cluster_PrimaryConfigObservedState
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Cluster.PrimaryConfig
+type Cluster_PrimaryConfigObservedState struct {
+	// Output only. Names of the clusters that are replicating from this
+	//  cluster.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.PrimaryConfig.secondary_cluster_names
+	SecondaryClusterNames []string `json:"secondaryClusterNames,omitempty"`
 }
 */
 

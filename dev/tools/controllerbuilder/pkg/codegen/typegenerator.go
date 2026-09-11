@@ -226,20 +226,6 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 		}
 		out := g.getOutputFile(k)
 
-		for i := 0; i < msg.Fields().Len(); i++ {
-			field := msg.Fields().Get(i)
-			if field.Message() != nil {
-				name := field.Message().FullName()
-				if name == "google.cloud.connectors.v1.Secret" {
-					out.addImport("secretmanagerv1beta1", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1")
-				}
-				if name == "google.rpc.Status" {
-					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
-					break
-				}
-			}
-		}
-
 		out.goPackage = lastGoComponent(g.goPackage)
 
 		out.fileAnnotation = g.generatedFileAnnotation
@@ -270,6 +256,20 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 			continue
 		}
 
+		for i := 0; i < msg.Fields().Len(); i++ {
+			field := msg.Fields().Get(i)
+			if field.Message() != nil {
+				name := field.Message().FullName()
+				if name == "google.cloud.connectors.v1.Secret" {
+					out.addImport("secretmanagerv1beta1", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1")
+				}
+				if name == "google.rpc.Status" {
+					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
+					break
+				}
+			}
+		}
+
 		WriteMessage(&out.body, msg)
 	}
 	return errors.Join(g.errors...)
@@ -287,19 +287,6 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 			FileName:  "types.generated.go",
 		}
 		out := g.getOutputFile(k)
-
-		for _, field := range msgDetails.OutputFields {
-			if field.Message() != nil {
-				name := field.Message().FullName()
-				if name == "google.cloud.connectors.v1.Secret" {
-					out.addImport("secretmanagerv1beta1", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1")
-				}
-				if name == "google.rpc.Status" {
-					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
-					break
-				}
-			}
-		}
 
 		out.goPackage = lastGoComponent(g.goPackage)
 
@@ -329,6 +316,19 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 				WriteObservedStateMessageAsComment(&out.body, msgDetails, fmt.Sprintf("found existing non-generated go type with proto tag %q, skipping", msg.FullName()), g.observedStateMessages)
 			}
 			continue
+		}
+
+		for _, field := range msgDetails.OutputFields {
+			if field.Message() != nil {
+				name := field.Message().FullName()
+				if name == "google.cloud.connectors.v1.Secret" {
+					out.addImport("secretmanagerv1beta1", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1")
+				}
+				if name == "google.rpc.Status" {
+					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
+					break
+				}
+			}
 		}
 
 		WriteObservedStateMessage(&out.body, msgDetails, g.observedStateMessages)
@@ -473,7 +473,16 @@ func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protorefl
 func deduplicateAndSort(messages []protoreflect.MessageDescriptor) []protoreflect.MessageDescriptor {
 	m := make(map[string]protoreflect.MessageDescriptor)
 	for _, msg := range messages {
-		key := string(msg.FullName())
+		key := GoNameForProtoMessage(msg)
+		existing, ok := m[key]
+		if !ok {
+			m[key] = msg
+			continue
+		}
+		// Prioritize v1 over v1beta1 (do not let v1beta1 overwrite v1)
+		if strings.Contains(string(msg.FullName()), ".v1beta1.") && strings.Contains(string(existing.FullName()), ".v1.") {
+			continue
+		}
 		m[key] = msg
 	}
 	var keys []string
@@ -492,7 +501,16 @@ func deduplicateAndSort(messages []protoreflect.MessageDescriptor) []protoreflec
 func deduplicateAndSortOutputMessages(messages []*OutputMessageDetails) []*OutputMessageDetails {
 	m := make(map[string]*OutputMessageDetails)
 	for _, msg := range messages {
-		key := string(msg.Message.FullName())
+		key := goNameForOutputProtoMessage(msg.Message)
+		existing, ok := m[key]
+		if !ok {
+			m[key] = msg
+			continue
+		}
+		// Prioritize v1 over v1beta1 (do not let v1beta1 overwrite v1)
+		if strings.Contains(string(msg.Message.FullName()), ".v1beta1.") && strings.Contains(string(existing.Message.FullName()), ".v1.") {
+			continue
+		}
 		m[key] = msg
 	}
 	var keys []string

@@ -92,6 +92,42 @@ type CloudResourceProperties struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.bigquery.connection.v1.CloudSqlCredential", skipping
+
+// +kcc:proto=google.cloud.bigquery.connection.v1.CloudSqlCredential
+type CloudSQLCredential struct {
+	// The username for the credential.
+	// +kcc:proto:field=google.cloud.bigquery.connection.v1.CloudSqlCredential.username
+	Username *string `json:"username,omitempty"`
+
+	// The password for the credential.
+	// +kcc:proto:field=google.cloud.bigquery.connection.v1.CloudSqlCredential.password
+	Password *string `json:"password,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.bigquery.connection.v1.CloudSqlProperties", skipping
+
+// +kcc:proto=google.cloud.bigquery.connection.v1.CloudSqlProperties
+type CloudSQLProperties struct {
+	// Cloud SQL instance ID in the form `project:location:instance`.
+	// +kcc:proto:field=google.cloud.bigquery.connection.v1.CloudSqlProperties.instance_id
+	InstanceID *string `json:"instanceID,omitempty"`
+
+	// Database name.
+	// +kcc:proto:field=google.cloud.bigquery.connection.v1.CloudSqlProperties.database
+	Database *string `json:"database,omitempty"`
+
+	// Type of the Cloud SQL database.
+	// +kcc:proto:field=google.cloud.bigquery.connection.v1.CloudSqlProperties.type
+	Type *string `json:"type,omitempty"`
+
+	// Input only. Cloud SQL credential.
+	// +kcc:proto:field=google.cloud.bigquery.connection.v1.CloudSqlProperties.credential
+	Credential *CloudSQLCredential `json:"credential,omitempty"`
+}
+*/
+
 /* unreachable type CloudSpannerProperties
 // +kcc:proto=google.cloud.bigquery.connection.v1.CloudSpannerProperties
 type CloudSpannerProperties struct {
@@ -141,42 +177,6 @@ type CloudSpannerProperties struct {
 	//  contain letters, numbers, and underscores.
 	// +kcc:proto:field=google.cloud.bigquery.connection.v1.CloudSpannerProperties.database_role
 	DatabaseRole *string `json:"databaseRole,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.bigquery.connection.v1.CloudSqlCredential", skipping
-
-// +kcc:proto=google.cloud.bigquery.connection.v1.CloudSqlCredential
-type CloudSQLCredential struct {
-	// The username for the credential.
-	// +kcc:proto:field=google.cloud.bigquery.connection.v1.CloudSqlCredential.username
-	Username *string `json:"username,omitempty"`
-
-	// The password for the credential.
-	// +kcc:proto:field=google.cloud.bigquery.connection.v1.CloudSqlCredential.password
-	Password *string `json:"password,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.bigquery.connection.v1.CloudSqlProperties", skipping
-
-// +kcc:proto=google.cloud.bigquery.connection.v1.CloudSqlProperties
-type CloudSQLProperties struct {
-	// Cloud SQL instance ID in the form `project:location:instance`.
-	// +kcc:proto:field=google.cloud.bigquery.connection.v1.CloudSqlProperties.instance_id
-	InstanceID *string `json:"instanceID,omitempty"`
-
-	// Database name.
-	// +kcc:proto:field=google.cloud.bigquery.connection.v1.CloudSqlProperties.database
-	Database *string `json:"database,omitempty"`
-
-	// Type of the Cloud SQL database.
-	// +kcc:proto:field=google.cloud.bigquery.connection.v1.CloudSqlProperties.type
-	Type *string `json:"type,omitempty"`
-
-	// Input only. Cloud SQL credential.
-	// +kcc:proto:field=google.cloud.bigquery.connection.v1.CloudSqlProperties.credential
-	Credential *CloudSQLCredential `json:"credential,omitempty"`
 }
 */
 

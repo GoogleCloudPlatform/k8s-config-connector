@@ -294,50 +294,6 @@ type NodeConfig struct {
 }
 */
 
-/* found existing non-generated go type "PersistenceConfig", skipping
-
-// +kcc:proto=google.cloud.memorystore.v1.PersistenceConfig
-type PersistenceConfig struct {
-	// Optional. Current persistence mode.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PersistenceConfig.mode
-	Mode *string `json:"mode,omitempty"`
-
-	// Optional. RDB configuration. This field will be ignored if mode is not RDB.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PersistenceConfig.rdb_config
-	RdbConfig *PersistenceConfig_RdbConfig `json:"rdbConfig,omitempty"`
-
-	// Optional. AOF configuration. This field will be ignored if mode is not AOF.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PersistenceConfig.aof_config
-	AofConfig *PersistenceConfig_AofConfig `json:"aofConfig,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "PersistenceConfig_AofConfig", skipping
-
-// +kcc:proto=google.cloud.memorystore.v1.PersistenceConfig.AOFConfig
-type PersistenceConfig_AofConfig struct {
-	// Optional. The fsync mode.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PersistenceConfig.AOFConfig.append_fsync
-	AppendFsync *string `json:"appendFsync,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "PersistenceConfig_RdbConfig", skipping
-
-// +kcc:proto=google.cloud.memorystore.v1.PersistenceConfig.RDBConfig
-type PersistenceConfig_RdbConfig struct {
-	// Optional. Period between RDB snapshots.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PersistenceConfig.RDBConfig.rdb_snapshot_period
-	RdbSnapshotPeriod *string `json:"rdbSnapshotPeriod,omitempty"`
-
-	// Optional. Time that the first snapshot was/will be attempted, and to
-	//  which future snapshots will be aligned. If not provided, the current time
-	//  will be used.
-	// +kcc:proto:field=google.cloud.memorystore.v1.PersistenceConfig.RDBConfig.rdb_snapshot_start_time
-	RdbSnapshotStartTime *string `json:"rdbSnapshotStartTime,omitempty"`
-}
-*/
-
 /* found existing non-generated go type with proto tag "google.cloud.memorystore.v1.PscAttachmentDetail", skipping
 
 // +kcc:proto=google.cloud.memorystore.v1.PscAttachmentDetail
@@ -401,6 +357,71 @@ type PSCConnection struct {
 }
 */
 
+/* found existing non-generated go type "PersistenceConfig", skipping
+
+// +kcc:proto=google.cloud.memorystore.v1.PersistenceConfig
+type PersistenceConfig struct {
+	// Optional. Current persistence mode.
+	// +kcc:proto:field=google.cloud.memorystore.v1.PersistenceConfig.mode
+	Mode *string `json:"mode,omitempty"`
+
+	// Optional. RDB configuration. This field will be ignored if mode is not RDB.
+	// +kcc:proto:field=google.cloud.memorystore.v1.PersistenceConfig.rdb_config
+	RdbConfig *PersistenceConfig_RdbConfig `json:"rdbConfig,omitempty"`
+
+	// Optional. AOF configuration. This field will be ignored if mode is not AOF.
+	// +kcc:proto:field=google.cloud.memorystore.v1.PersistenceConfig.aof_config
+	AofConfig *PersistenceConfig_AofConfig `json:"aofConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "PersistenceConfig_AofConfig", skipping
+
+// +kcc:proto=google.cloud.memorystore.v1.PersistenceConfig.AOFConfig
+type PersistenceConfig_AofConfig struct {
+	// Optional. The fsync mode.
+	// +kcc:proto:field=google.cloud.memorystore.v1.PersistenceConfig.AOFConfig.append_fsync
+	AppendFsync *string `json:"appendFsync,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "PersistenceConfig_RdbConfig", skipping
+
+// +kcc:proto=google.cloud.memorystore.v1.PersistenceConfig.RDBConfig
+type PersistenceConfig_RdbConfig struct {
+	// Optional. Period between RDB snapshots.
+	// +kcc:proto:field=google.cloud.memorystore.v1.PersistenceConfig.RDBConfig.rdb_snapshot_period
+	RdbSnapshotPeriod *string `json:"rdbSnapshotPeriod,omitempty"`
+
+	// Optional. Time that the first snapshot was/will be attempted, and to
+	//  which future snapshots will be aligned. If not provided, the current time
+	//  will be used.
+	// +kcc:proto:field=google.cloud.memorystore.v1.PersistenceConfig.RDBConfig.rdb_snapshot_start_time
+	RdbSnapshotStartTime *string `json:"rdbSnapshotStartTime,omitempty"`
+}
+*/
+
+// +kcc:proto=google.type.TimeOfDay
+type TimeOfDay struct {
+	// Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
+	//  to allow the value "24:00:00" for scenarios like business closing time.
+	// +kcc:proto:field=google.type.TimeOfDay.hours
+	Hours *int32 `json:"hours,omitempty"`
+
+	// Minutes of hour of day. Must be from 0 to 59.
+	// +kcc:proto:field=google.type.TimeOfDay.minutes
+	Minutes *int32 `json:"minutes,omitempty"`
+
+	// Seconds of minutes of the time. Must normally be from 0 to 59. An API may
+	//  allow the value 60 if it allows leap-seconds.
+	// +kcc:proto:field=google.type.TimeOfDay.seconds
+	Seconds *int32 `json:"seconds,omitempty"`
+
+	// Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
+	// +kcc:proto:field=google.type.TimeOfDay.nanos
+	Nanos *int32 `json:"nanos,omitempty"`
+}
+
 // +kcc:proto=google.cloud.memorystore.v1.WeeklyMaintenanceWindow
 type WeeklyMaintenanceWindow struct {
 	// Optional. Allows to define schedule that runs specified day of the week.
@@ -426,27 +447,6 @@ type ZoneDistributionConfig struct {
 	Mode *string `json:"mode,omitempty"`
 }
 */
-
-// +kcc:proto=google.type.TimeOfDay
-type TimeOfDay struct {
-	// Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
-	//  to allow the value "24:00:00" for scenarios like business closing time.
-	// +kcc:proto:field=google.type.TimeOfDay.hours
-	Hours *int32 `json:"hours,omitempty"`
-
-	// Minutes of hour of day. Must be from 0 to 59.
-	// +kcc:proto:field=google.type.TimeOfDay.minutes
-	Minutes *int32 `json:"minutes,omitempty"`
-
-	// Seconds of minutes of the time. Must normally be from 0 to 59. An API may
-	//  allow the value 60 if it allows leap-seconds.
-	// +kcc:proto:field=google.type.TimeOfDay.seconds
-	Seconds *int32 `json:"seconds,omitempty"`
-
-	// Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
-	// +kcc:proto:field=google.type.TimeOfDay.nanos
-	Nanos *int32 `json:"nanos,omitempty"`
-}
 
 /* found existing non-generated go type "CrossInstanceReplicationConfigObservedState", skipping
 
