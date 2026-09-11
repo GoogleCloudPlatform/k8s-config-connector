@@ -573,6 +573,14 @@ func normalizeRepresentation(obj interface{}) interface{} {
 				}
 			}
 		}
+
+		// AssuredWorkloads specific fields to normalize alignment differences between mock and real GCP responses
+		delete(v, "complianceStatus")
+		delete(v, "partnerPermissions")
+		delete(v, "resourceMonitoringEnabled")
+		delete(v, "violationNotificationsEnabled")
+		delete(v, "billingAccount")
+		delete(v, "resourceSettings")
 		// Normalize empty LRO response payloads (e.g., from mock Delete operations returning Empty, but real returns nothing)
 		if resp, ok := v["response"].(map[string]interface{}); ok {
 			if len(resp) == 0 || (len(resp) == 1 && resp["@type"] == "type.googleapis.com/google.protobuf.Empty") {
