@@ -16,11 +16,12 @@ package monitoring
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"strings"
 
-	api "cloud.google.com/go/monitoring/dashboard/apiv1"
-	pb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
+	api "google.golang.org/api/monitoring/v1"
+	"google.golang.org/protobuf/encoding/protojson"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -28,6 +29,7 @@ import (
 	monitoringprojects "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/monitoring/dashboard/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -56,8 +58,8 @@ type dashboardAdapter struct {
 	desired *pb.Dashboard
 	actual  *pb.Dashboard
 
-	dashboardsClient *api.DashboardsClient
-	projectMapper    *monitoringprojects.ProjectMapper
+	dashboardsService *api.ProjectsDashboardsService
+	projectMapper     *monitoringprojects.ProjectMapper
 }
 
 // adapter implements the Adapter interface.
@@ -72,7 +74,7 @@ func (m *dashboardModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 		return nil, fmt.Errorf("building gcp client: %w", err)
 	}
 
-	dashboardsClient, err := gcpClient.newDashboardsClient(ctx)
+	dashboardsService, err := gcpClient.newDashboardsService(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -108,10 +110,10 @@ func (m *dashboardModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 	}
 
 	return &dashboardAdapter{
-		id:               id.(*krm.MonitoringDashboardIdentity),
-		desired:          desiredProto,
-		dashboardsClient: dashboardsClient,
-		projectMapper:    m.config.ProjectMapper,
+		id:                id.(*krm.MonitoringDashboardIdentity),
+		desired:           desiredProto,
+		dashboardsService: dashboardsService,
+		projectMapper:     m.config.ProjectMapper,
 	}, nil
 }
 
@@ -131,15 +133,15 @@ func (m *dashboardModel) AdapterForURL(ctx context.Context, url string) (directb
 		return nil, fmt.Errorf("building gcp client: %w", err)
 	}
 
-	dashboardsClient, err := gcpClient.newDashboardsClient(ctx)
+	dashboardsService, err := gcpClient.newDashboardsService(ctx)
 	if err != nil {
 		return nil, err
 	}
 
 	return &dashboardAdapter{
-		id:               id,
-		dashboardsClient: dashboardsClient,
-		projectMapper:    m.config.ProjectMapper,
+		id:                id,
+		dashboardsService: dashboardsService,
+		projectMapper:     m.config.ProjectMapper,
 	}, nil
 }
 
@@ -149,10 +151,7 @@ func (a *dashboardAdapter) Find(ctx context.Context) (bool, error) {
 		return false, nil
 	}
 
-	req := &pb.GetDashboardRequest{
-		Name: a.fullyQualifiedName(),
-	}
-	dashboard, err := a.dashboardsClient.GetDashboard(ctx, req)
+	dashboard, err := a.dashboardsService.Get(a.fullyQualifiedName()).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -160,11 +159,21 @@ func (a *dashboardAdapter) Find(ctx context.Context) (bool, error) {
 		return false, err
 	}
 
-	if err := normalizeDashboardProto(ctx, a.projectMapper, dashboard, a.id.Project); err != nil {
+	dashboardJSON, err := dashboard.MarshalJSON()
+	if err != nil {
+		return false, fmt.Errorf("marshalling dashboard to json: %w", err)
+	}
+
+	pbDashboard := &pb.Dashboard{}
+	if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(dashboardJSON, pbDashboard); err != nil {
+		return false, fmt.Errorf("unmarshalling dashboard to proto: %w", err)
+	}
+
+	if err := normalizeDashboardProto(ctx, a.projectMapper, pbDashboard, a.id.Project); err != nil {
 		return false, err
 	}
 
-	a.actual = dashboard
+	a.actual = pbDashboard
 
 	return true, nil
 }
@@ -181,12 +190,7 @@ func (a *dashboardAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 		return false, nil
 	}
 
-	// TODO: Delete via status selfLink?
-	req := &pb.DeleteDashboardRequest{
-		Name: a.fullyQualifiedName(),
-	}
-
-	if err := a.dashboardsClient.DeleteDashboard(ctx, req); err != nil {
+	if _, err := a.dashboardsService.Delete(a.fullyQualifiedName()).Context(ctx).Do(); err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
@@ -205,14 +209,20 @@ func (a *dashboardAdapter) Create(ctx context.Context, createOp *directbase.Crea
 
 	parent := "projects/" + a.id.Project
 
-	req := &pb.CreateDashboardRequest{
-		Parent:    parent,
-		Dashboard: a.desired,
-	}
-	req.Dashboard.Name = a.fullyQualifiedName()
+	a.desired.Name = a.fullyQualifiedName()
 
-	log.V(2).Info("creating dashboard", "req", req)
-	created, err := a.dashboardsClient.CreateDashboard(ctx, req)
+	desiredJSON, err := protojson.Marshal(a.desired)
+	if err != nil {
+		return fmt.Errorf("marshalling desired dashboard: %w", err)
+	}
+
+	apiDashboard := &api.Dashboard{}
+	if err := json.Unmarshal(desiredJSON, apiDashboard); err != nil {
+		return fmt.Errorf("converting desired dashboard to api: %w", err)
+	}
+
+	log.V(2).Info("creating dashboard", "apiDashboard", apiDashboard)
+	created, err := a.dashboardsService.Create(parent, apiDashboard).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("creating dashboard: %w", err)
 	}
@@ -223,8 +233,18 @@ func (a *dashboardAdapter) Create(ctx context.Context, createOp *directbase.Crea
 		return fmt.Errorf("setting spec.resourceID: %w", err)
 	}
 
+	createdJSON, err := created.MarshalJSON()
+	if err != nil {
+		return fmt.Errorf("marshalling created dashboard: %w", err)
+	}
+
+	createdPB := &pb.Dashboard{}
+	if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(createdJSON, createdPB); err != nil {
+		return fmt.Errorf("unmarshalling created dashboard: %w", err)
+	}
+
 	mapCtx := &direct.MapContext{}
-	status := MonitoringDashboardStatus_FromProto(mapCtx, created)
+	status := MonitoringDashboardStatus_FromProto(mapCtx, createdPB)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -241,19 +261,37 @@ func (a *dashboardAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	// TODO: Where/how do we want to enforce immutability?
 
 	if ShouldReconcileBasedOnEtag(ctx, u, a.actual.Etag) {
-		req := &pb.UpdateDashboardRequest{
-			Dashboard: a.desired,
-		}
-		req.Dashboard.Name = a.fullyQualifiedName()
-		req.Dashboard.Etag = a.actual.Etag
+		a.desired.Name = a.fullyQualifiedName()
+		a.desired.Etag = a.actual.Etag
 
-		log.V(2).Info("updating dashboard", "request", req)
-		updated, err := a.dashboardsClient.UpdateDashboard(ctx, req)
+		desiredJSON, err := protojson.Marshal(a.desired)
+		if err != nil {
+			return fmt.Errorf("marshalling desired dashboard: %w", err)
+		}
+
+		apiDashboard := &api.Dashboard{}
+		if err := json.Unmarshal(desiredJSON, apiDashboard); err != nil {
+			return fmt.Errorf("converting desired dashboard to api: %w", err)
+		}
+
+		log.V(2).Info("updating dashboard", "apiDashboard", apiDashboard)
+		updated, err := a.dashboardsService.Patch(a.fullyQualifiedName(), apiDashboard).Context(ctx).Do()
 		if err != nil {
 			return err
 		}
 		log.V(2).Info("updated dashboard", "dashboard", updated)
-		a.actual = updated
+
+		updatedJSON, err := updated.MarshalJSON()
+		if err != nil {
+			return fmt.Errorf("marshalling updated dashboard: %w", err)
+		}
+
+		updatedPB := &pb.Dashboard{}
+		if err := (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(updatedJSON, updatedPB); err != nil {
+			return fmt.Errorf("unmarshalling updated dashboard: %w", err)
+		}
+
+		a.actual = updatedPB
 	}
 
 	mapCtx := &direct.MapContext{}

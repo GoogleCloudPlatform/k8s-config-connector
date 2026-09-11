@@ -22,8 +22,8 @@ package monitoring
 import (
 	"strings"
 
-	pb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/monitoring/dashboard/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/durationpb"

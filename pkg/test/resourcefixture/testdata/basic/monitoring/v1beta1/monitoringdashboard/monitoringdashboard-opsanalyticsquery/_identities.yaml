@@ -1,0 +1,6 @@
+- caisURL: //monitoring.googleapis.com/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}
+  group: monitoring.cnrm.cloud.google.com
+  kind: MonitoringDashboard
+  name: monitoringdashboard-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

@@ -22,8 +22,8 @@ import (
 	"fmt"
 
 	monitoring "cloud.google.com/go/monitoring/apiv3/v2"
-	api "cloud.google.com/go/monitoring/dashboard/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	api "google.golang.org/api/monitoring/v1"
 )
 
 type gcpClient struct {
@@ -37,16 +37,16 @@ func newGCPClient(config *config.ControllerConfig) (*gcpClient, error) {
 	return gcpClient, nil
 }
 
-func (m *gcpClient) newDashboardsClient(ctx context.Context) (*api.DashboardsClient, error) {
+func (m *gcpClient) newDashboardsService(ctx context.Context) (*api.ProjectsDashboardsService, error) {
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewDashboardsRESTClient(ctx, opts...)
+	service, err := api.NewService(ctx, opts...)
 	if err != nil {
-		return nil, fmt.Errorf("building dashboard client: %w", err)
+		return nil, fmt.Errorf("building dashboard service: %w", err)
 	}
-	return client, err
+	return service.Projects.Dashboards, nil
 }
 
 func (m *gcpClient) newAlertPolicyClient(ctx context.Context) (*monitoring.AlertPolicyClient, error) {

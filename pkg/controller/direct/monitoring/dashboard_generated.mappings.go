@@ -15,7 +15,7 @@
 package monitoring
 
 import (
-	pb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/monitoring/dashboard/v1"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -668,6 +668,7 @@ func TimeSeriesQuery_FromProto(mapCtx *direct.MapContext, in *pb.TimeSeriesQuery
 	out.TimeSeriesFilterRatio = TimeSeriesFilterRatio_FromProto(mapCtx, in.GetTimeSeriesFilterRatio())
 	out.TimeSeriesQueryLanguage = direct.LazyPtr(in.GetTimeSeriesQueryLanguage())
 	out.PrometheusQuery = direct.LazyPtr(in.GetPrometheusQuery())
+	out.OpsAnalyticsQuery = OpsAnalyticsQuery_FromProto(mapCtx, in.GetOpsAnalyticsQuery())
 	out.UnitOverride = direct.LazyPtr(in.GetUnitOverride())
 	out.OutputFullDuration = direct.LazyPtr(in.GetOutputFullDuration())
 	return out
@@ -688,6 +689,9 @@ func TimeSeriesQuery_ToProto(mapCtx *direct.MapContext, in *krm.TimeSeriesQuery)
 	}
 	if oneof := TimeSeriesQuery_PrometheusQuery_ToProto(mapCtx, in.PrometheusQuery); oneof != nil {
 		out.Source = oneof
+	}
+	if oneof := OpsAnalyticsQuery_ToProto(mapCtx, in.OpsAnalyticsQuery); oneof != nil {
+		out.Source = &pb.TimeSeriesQuery_OpsAnalyticsQuery{OpsAnalyticsQuery: oneof}
 	}
 	out.UnitOverride = direct.ValueOf(in.UnitOverride)
 	out.OutputFullDuration = direct.ValueOf(in.OutputFullDuration)
