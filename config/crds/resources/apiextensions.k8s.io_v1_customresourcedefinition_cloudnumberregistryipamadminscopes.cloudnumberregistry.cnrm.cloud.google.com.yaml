@@ -115,19 +115,28 @@ spec:
                 description: The CloudNumberRegistryIpamAdminScope name. If not given,
                   the metadata.name will be used.
                 type: string
-              scopes:
+              scopeRefs:
                 description: Required. Administrative scopes enabled for IP address
                   discovery and management. For example, "organizations/1234567890".
                   Minimum of 1 scope is required. In preview, only one organization
                   scope is allowed.
                 items:
-                  type: string
+                  description: OrganizationRef represents the Organization that this
+                    resource belongs to.
+                  properties:
+                    external:
+                      description: The 'name' field of an organization, when not managed
+                        by Config Connector.
+                      type: string
+                  required:
+                  - external
+                  type: object
                 type: array
             required:
             - enabledAddonPlatforms
             - location
             - projectRef
-            - scopes
+            - scopeRefs
             type: object
           status:
             description: CloudNumberRegistryIpamAdminScopeStatus defines the config

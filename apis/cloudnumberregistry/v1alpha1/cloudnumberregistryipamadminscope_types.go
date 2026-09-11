@@ -26,9 +26,13 @@ var CloudNumberRegistryIpamAdminScopeGVK = GroupVersion.WithKind("CloudNumberReg
 // +kcc:spec:proto=google.cloud.numberregistry.v1alpha.IpamAdminScope
 type CloudNumberRegistryIpamAdminScopeSpec struct {
 	// The project that this resource belongs to.
+	// +required
+	// +kubebuilder:validation:Required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The location of this resource.
+	// +required
+	// +kubebuilder:validation:Required
 	Location *string `json:"location"`
 
 	// The CloudNumberRegistryIpamAdminScope name. If not given, the metadata.name will be used.
@@ -45,7 +49,7 @@ type CloudNumberRegistryIpamAdminScopeSpec struct {
 	//  required. In preview, only one organization scope is allowed.
 	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.IpamAdminScope.scopes
 	// +kubebuilder:validation:Required
-	Scopes []string `json:"scopes,omitempty"`
+	ScopeRefs []refsv1beta1.OrganizationRef `json:"scopeRefs,omitempty"`
 
 	// Optional. User-defined labels.
 	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.IpamAdminScope.labels

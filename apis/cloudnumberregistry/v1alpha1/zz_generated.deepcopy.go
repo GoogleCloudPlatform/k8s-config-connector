@@ -151,9 +151,9 @@ func (in *CloudNumberRegistryIpamAdminScopeSpec) DeepCopyInto(out *CloudNumberRe
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.Scopes != nil {
-		in, out := &in.Scopes, &out.Scopes
-		*out = make([]string, len(*in))
+	if in.ScopeRefs != nil {
+		in, out := &in.ScopeRefs, &out.ScopeRefs
+		*out = make([]v1beta1.OrganizationRef, len(*in))
 		copy(*out, *in)
 	}
 	if in.Labels != nil {
