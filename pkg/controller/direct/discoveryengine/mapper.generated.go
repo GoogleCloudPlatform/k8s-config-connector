@@ -933,6 +933,38 @@ func DataStore_BillingEstimation_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	out.WebsiteDataUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.WebsiteDataUpdateTime)
 	return out
 }
+func DiscoveryEngineAssistantObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Assistant) *krmdiscoveryenginev1alpha1.DiscoveryEngineAssistantObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineAssistantObservedState{}
+	// MISSING: Name
+	return out
+}
+func DiscoveryEngineAssistantObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineAssistantObservedState) *pb.Assistant {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Assistant{}
+	// MISSING: Name
+	return out
+}
+func DiscoveryEngineAssistantSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Assistant) *krmdiscoveryenginev1alpha1.DiscoveryEngineAssistantSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineAssistantSpec{}
+	// MISSING: Name
+	return out
+}
+func DiscoveryEngineAssistantSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineAssistantSpec) *pb.Assistant {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Assistant{}
+	// MISSING: Name
+	return out
+}
 func DiscoveryEngineControlObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Control) *krmdiscoveryenginev1alpha1.DiscoveryEngineControlObservedState {
 	if in == nil {
 		return nil
