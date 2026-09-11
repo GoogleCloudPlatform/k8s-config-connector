@@ -18,5 +18,7 @@ metadata:
   name: bigquerydatasetsample${uniqueId}
   annotations:
     alpha.cnrm.cloud.google.com/reconciler: "direct"
+  labels:
+    updated-by: robot
 spec:
   friendlyName: bigquerydataset-sample

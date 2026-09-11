@@ -7,120 +7,70 @@
 < POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
 ---
 > POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json&prettyPrint=false
-41a41,84
->   }
-> }
-> 
-> 200 OK
-> Content-Type: application/json; charset=UTF-8
-> Server: ESF
-> Vary: Origin
-> Vary: X-Origin
-> Vary: Referer
-> X-Content-Type-Options: nosniff
-> X-Frame-Options: SAMEORIGIN
-> X-Xss-Protection: 0
-> 
-> {
->   "access": [
->     {
->       "role": "OWNER",
->       "specialGroup": "projectOwners"
->     },
->     {
->       "role": "OWNER",
->       "userByEmail": "user@google.com"
->     },
->     {
->       "role": "READER",
->       "specialGroup": "projectReaders"
->     },
->     {
->       "role": "WRITER",
->       "specialGroup": "projectWriters"
->     }
->   ],
->   "creationTime": "123456789",
->   "datasetReference": {
->     "datasetId": "bigquerydatasetsample${uniqueId}",
->     "projectId": "${projectId}"
->   },
->   "etag": "abcdef0123A=",
->   "friendlyName": "bigquerydataset-sample",
->   "id": "000000000000000000000",
->   "kind": "bigquery#dataset",
->   "labels": {
->     "cnrm-test": "true",
->     "managed-by-cnrm": "true"
-43c86,89
+42,43c41
+<   },
 <   "location": "US"
 ---
->   "lastModifiedTime": "123456789",
->   "location": "US",
->   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
->   "type": "DEFAULT"
-45a92,95
-> ---
-> 
-> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-> 
-89a140
->   "maxTimeTravelHours": "168",
-150,151c201,254
-< DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
+>   }
+96,97c94
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-> 
-> 200 OK
-> Content-Type: application/json; charset=UTF-8
-> Server: ESF
-> Vary: Origin
-> Vary: X-Origin
-> Vary: Referer
-> X-Content-Type-Options: nosniff
-> X-Frame-Options: SAMEORIGIN
-> X-Xss-Protection: 0
-> 
-> {
->   "access": [
->     {
->       "role": "OWNER",
->       "specialGroup": "projectOwners"
->     },
->     {
->       "role": "OWNER",
->       "userByEmail": "user@google.com"
->     },
->     {
->       "role": "READER",
->       "specialGroup": "projectReaders"
->     },
->     {
->       "role": "WRITER",
->       "specialGroup": "projectWriters"
->     }
->   ],
->   "creationTime": "123456789",
->   "datasetReference": {
->     "datasetId": "bigquerydatasetsample${uniqueId}",
->     "projectId": "${projectId}"
->   },
->   "etag": "abcdef0123A=",
->   "friendlyName": "bigquerydataset-sample",
->   "id": "000000000000000000000",
->   "kind": "bigquery#dataset",
->   "labels": {
->     "cnrm-test": "true",
+150c147
+< PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+153,184d149
+< {
+<   "access": [
+<     {
+<       "role": "OWNER",
+<       "specialGroup": "projectOwners"
+<     },
+<     {
+<       "role": "OWNER",
+<       "userByEmail": "user@google.com"
+<     },
+<     {
+<       "role": "READER",
+<       "specialGroup": "projectReaders"
+<     },
+<     {
+<       "role": "WRITER",
+<       "specialGroup": "projectWriters"
+<     }
+<   ],
+<   "datasetReference": {
+<     "datasetId": "bigquerydatasetsample${uniqueId}"
+<   },
+<   "friendlyName": "bigquerydataset-sample",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true",
+<     "updated-by": "robot"
+<   },
+<   "location": "US",
+<   "maxTimeTravelHours": "168"
+< }
+< 
+225,226c190
+<     "managed-by-cnrm": "true",
+<     "updated-by": "robot"
+---
 >     "managed-by-cnrm": "true"
->   },
->   "lastModifiedTime": "123456789",
->   "location": "US",
->   "maxTimeTravelHours": "168",
->   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
->   "type": "DEFAULT"
-> }
-> 
-> ---
-> 
+237,238c201
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+280,281c243
+<     "managed-by-cnrm": "true",
+<     "updated-by": "robot"
+---
+>     "managed-by-cnrm": "true"
+292,293c254
+< DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
+< Content-Type: application/json
+---
 > DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false&prettyPrint=false
