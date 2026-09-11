@@ -17,6 +17,14 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+# Avoid git config errors when GIT_CONFIG_GLOBAL/SYSTEM are set to /dev/null
+if [[ "${GIT_CONFIG_GLOBAL:-}" == "/dev/null" ]]; then
+  export GIT_CONFIG_GLOBAL=""
+fi
+if [[ "${GIT_CONFIG_SYSTEM:-}" == "/dev/null" ]]; then
+  export GIT_CONFIG_SYSTEM=""
+fi
+
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 

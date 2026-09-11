@@ -31,6 +31,7 @@ import (
 
 type ContactcenterinsightsV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	CCInsightsAnalysisRulesGetter
 	CCInsightsConversationsGetter
 	CCInsightsIssueModelsGetter
 	CCInsightsPhraseMatchersGetter
@@ -41,6 +42,10 @@ type ContactcenterinsightsV1alpha1Interface interface {
 // ContactcenterinsightsV1alpha1Client is used to interact with features provided by the contactcenterinsights.cnrm.cloud.google.com group.
 type ContactcenterinsightsV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *ContactcenterinsightsV1alpha1Client) CCInsightsAnalysisRules(namespace string) CCInsightsAnalysisRuleInterface {
+	return newCCInsightsAnalysisRules(c, namespace)
 }
 
 func (c *ContactcenterinsightsV1alpha1Client) CCInsightsConversations(namespace string) CCInsightsConversationInterface {

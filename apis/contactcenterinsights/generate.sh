@@ -41,6 +41,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource CCInsightsIssueModel:IssueModel \
   --resource CCInsightsConversation:Conversation \
   --resource CCInsightsQAScorecard:QaScorecard \
+  --resource CCInsightsAnalysisRule:AnalysisRule \
   --prune-unused-types=false
 
 ${CONTROLLERBUILDER} generate-mapper \

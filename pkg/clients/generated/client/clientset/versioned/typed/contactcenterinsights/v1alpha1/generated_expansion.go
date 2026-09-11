@@ -21,6 +21,8 @@
 
 package v1alpha1
 
+type CCInsightsAnalysisRuleExpansion interface{}
+
 type CCInsightsConversationExpansion interface{}
 
 type CCInsightsIssueModelExpansion interface{}

@@ -100,6 +100,7 @@
 | binaryauthorization.cnrm.cloud.google.com      | BinaryAuthorizationAttestor                              | False        | True        | False  | DCL        | False       |
 | binaryauthorization.cnrm.cloud.google.com      | BinaryAuthorizationPlatformPolicy                        | True         | False       | False  | Direct     | True        |
 | binaryauthorization.cnrm.cloud.google.com      | BinaryAuthorizationPolicy                                | False        | True        | False  | DCL        | False       |
+| contactcenterinsights.cnrm.cloud.google.com    | CCInsightsAnalysisRule                                   | True         | False       | False  | Direct     | True        |
 | contactcenterinsights.cnrm.cloud.google.com    | CCInsightsConversation                                   | True         | False       | False  | Direct     | True        |
 | contactcenterinsights.cnrm.cloud.google.com    | CCInsightsIssueModel                                     | True         | False       | False  | Direct     | True        |
 | contactcenterinsights.cnrm.cloud.google.com    | CCInsightsPhraseMatcher                                  | True         | False       | False  | Direct     | True        |
@@ -249,7 +250,6 @@
 | dataform.cnrm.cloud.google.com                 | DataformTeamFolder                                       | True         | False       | False  | Direct     | True        |
 | datafusion.cnrm.cloud.google.com               | DataFusionInstance                                       | False        | True        | False  | DCL        | False       |
 | datalabeling.cnrm.cloud.google.com             | DataLabelingAnnotationSpecSet                            | True         | False       | False  | Direct     | True        |
-| datalabeling.cnrm.cloud.google.com             | DataLabelingDataset                                      | True         | False       | False  | Direct     | True        |
 | datalabeling.cnrm.cloud.google.com             | DataLabelingEvaluationJob                                | True         | False       | False  | Direct     | True        |
 | datalabeling.cnrm.cloud.google.com             | DataLabelingInstruction                                  | True         | False       | False  | Direct     | True        |
 | datalineage.cnrm.cloud.google.com              | DataLineageProcess                                       | True         | False       | False  | Direct     | True        |

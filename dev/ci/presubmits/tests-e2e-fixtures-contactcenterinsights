@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright 2024 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,18 +17,14 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-# Avoid git config errors when GIT_CONFIG_GLOBAL/SYSTEM are set to /dev/null
-if [[ "${GIT_CONFIG_GLOBAL:-}" == "/dev/null" ]]; then
-  export GIT_CONFIG_GLOBAL=""
-fi
-if [[ "${GIT_CONFIG_SYSTEM:-}" == "/dev/null" ]]; then
-  export GIT_CONFIG_SYSTEM=""
-fi
+function on_error() {
+  echo "<hint_for_agent>Run 'dev/ci/presubmits/$(basename "$0")' to fix.</hint_for_agent>"
+}
+trap on_error ERR
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd ${REPO_ROOT}
+cd "${REPO_ROOT}"
 
-if [[ -z "${KUBEBUILDER_ASSETS:-}" ]] || [[ ! -d "${KUBEBUILDER_ASSETS}" ]]; then
-  echo "Downloading envtest assets..."
-  export KUBEBUILDER_ASSETS=$(GIT_CONFIG_GLOBAL="" GIT_CONFIG_SYSTEM="" go run sigs.k8s.io/controller-runtime/tools/setup-envtest@release-0.22 use -p path)
-fi
+export ONLY_TEST_APIGROUPS="contactcenterinsights.cnrm.cloud.google.com"
+
+${REPO_ROOT}/dev/tasks/run-e2e
