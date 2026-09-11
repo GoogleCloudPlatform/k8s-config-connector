@@ -1,0 +1,43 @@
+43,45d42
+<   "lifecycle": {
+<     "rule": []
+<   },
+47,48c44
+<   "name": "storagebucket-acdefault-${uniqueId}",
+<   "storageClass": "STANDARD"
+---
+>   "name": "storagebucket-acdefault-${uniqueId}"
+159a156,163
+>   "autoclass": {
+>     "enabled": true
+>   },
+>   "iamConfiguration": {
+>     "uniformBucketLevelAccess": {
+>       "enabled": true
+>     }
+>   },
+165c169,171
+<   }
+---
+>   },
+>   "location": "US",
+>   "name": "storagebucket-acdefault-${uniqueId}"
+271,288d276
+< }
+< 
+< ---
+< 
+< GET https://storage.googleapis.com/storage/v1/b/storagebucket-acdefault-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: UploadServer
+< Vary: Origin
+< Vary: X-Origin
+< 
+< {
+<   "kind": "storage#objects",
+<   "prefixes": [
+<     "testfolder",
+<     "testmanagedfolder"
+<   ]

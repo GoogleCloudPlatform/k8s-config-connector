@@ -1,5 +1,4 @@
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-acdisabled-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -26,9 +25,9 @@ Vary: X-Origin
 
 POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
+  "autoclass": {},
   "iamConfiguration": {
     "uniformBucketLevelAccess": {
       "enabled": true
@@ -39,12 +38,8 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "lifecycle": {
-    "rule": []
-  },
   "location": "US",
-  "name": "storagebucket-acdisabled-${uniqueId}",
-  "storageClass": "STANDARD"
+  "name": "storagebucket-acdisabled-${uniqueId}"
 }
 
 200 OK
@@ -55,6 +50,7 @@ Vary: Origin
 Vary: X-Origin
 
 {
+  "autoclass": {},
   "etag": "abcdef0123A=",
   "generation": "12345678901234",
   "iamConfiguration": {
@@ -94,7 +90,6 @@ Vary: X-Origin
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-acdisabled-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -103,6 +98,7 @@ Vary: Origin
 Vary: X-Origin
 
 {
+  "autoclass": {},
   "etag": "abcdef0123A=",
   "generation": "12345678901234",
   "iamConfiguration": {
@@ -143,115 +139,22 @@ Vary: X-Origin
 
 PATCH https://storage.googleapis.com/storage/v1/b/storagebucket-acdisabled-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Pragma: no-cache
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
 
 {
-  "etag": "abcdef0123A=",
-  "generation": "12345678901234",
+  "autoclass": {},
   "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    },
-    "publicAccessPrevention": "inherited",
     "uniformBucketLevelAccess": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
+      "enabled": true
     }
   },
-  "id": "000000000000000000000",
-  "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US",
-  "locationType": "multi-region",
-  "metageneration": "1",
-  "name": "storagebucket-acdisabled-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "rpo": "DEFAULT",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-acdisabled-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
-  },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-acdisabled-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "etag": "abcdef0123A=",
-  "generation": "12345678901234",
-  "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    },
-    "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    }
-  },
-  "id": "000000000000000000000",
-  "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US",
-  "locationType": "multi-region",
-  "metageneration": "1",
-  "name": "storagebucket-acdisabled-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "rpo": "DEFAULT",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-acdisabled-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
-  },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-PATCH https://storage.googleapis.com/storage/v1/b/storagebucket-acdisabled-${uniqueId}?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
     "label-two": "value-two",
     "managed-by-cnrm": "true"
-  }
+  },
+  "location": "US",
+  "name": "storagebucket-acdisabled-${uniqueId}"
 }
 
 200 OK
@@ -262,6 +165,7 @@ Vary: Origin
 Vary: X-Origin
 
 {
+  "autoclass": {},
   "etag": "abcdef0123A=",
   "generation": "12345678901234",
   "iamConfiguration": {
@@ -302,7 +206,6 @@ Vary: X-Origin
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-acdisabled-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -311,6 +214,7 @@ Vary: Origin
 Vary: X-Origin
 
 {
+  "autoclass": {},
   "etag": "abcdef0123A=",
   "generation": "12345678901234",
   "iamConfiguration": {
@@ -346,27 +250,11 @@ Vary: X-Origin
   "storageClass": "STANDARD",
   "timeCreated": "2024-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-acdisabled-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "kind": "storage#objects"
 }
 
 ---
 
 DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-acdisabled-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
 Content-Type: application/json

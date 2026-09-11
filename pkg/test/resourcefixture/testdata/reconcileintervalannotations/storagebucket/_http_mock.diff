@@ -1,0 +1,80 @@
+30,34d29
+<   "iamConfiguration": {
+<     "uniformBucketLevelAccess": {
+<       "enabled": false
+<     }
+<   },
+53,56c48
+<   "storageClass": "STANDARD",
+<   "versioning": {
+<     "enabled": false
+<   }
+---
+>   "versioning": {}
+110,112c102
+<   "versioning": {
+<     "enabled": false
+<   }
+---
+>   "versioning": {}
+169,171c159
+<   "versioning": {
+<     "enabled": false
+<   }
+---
+>   "versioning": {}
+180,181c168,170
+<   "lifecycle": {
+<     "rule": []
+---
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+182a172,173
+>   "location": "US",
+>   "name": "storagebucket-sample-${uniqueId}",
+285a277,288
+>   "lifecycle": {
+>     "rule": [
+>       {
+>         "action": {
+>           "type": "Delete"
+>         },
+>         "condition": {
+>           "age": 7
+>         }
+>       }
+>     ]
+>   },
+335a339,350
+>   "lifecycle": {
+>     "rule": [
+>       {
+>         "action": {
+>           "type": "Delete"
+>         },
+>         "condition": {
+>           "age": 7
+>         }
+>       }
+>     ]
+>   },
+353,370d367
+< }
+< 
+< ---
+< 
+< GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: UploadServer
+< Vary: Origin
+< Vary: X-Origin
+< 
+< {
+<   "kind": "storage#objects",
+<   "prefixes": [
+<     "testfolder",
+<     "testmanagedfolder"
+<   ]
