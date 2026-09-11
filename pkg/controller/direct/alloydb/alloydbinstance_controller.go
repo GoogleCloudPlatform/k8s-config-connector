@@ -199,10 +199,6 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 		return mapCtx.Err()
 	}
 	resource.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
-	if resource.Labels == nil {
-		resource.Labels = make(map[string]string)
-	}
-	resource.Labels["managed-by-cnrm"] = "true"
 
 	var created *alloydbpb.Instance
 	instanceType := a.desired.Spec.InstanceTypeRef.External
@@ -275,10 +271,6 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		return err
 	}
 	desiredLabels := label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
-	if desiredLabels == nil {
-		desiredLabels = make(map[string]string)
-	}
-	desiredLabels["managed-by-cnrm"] = "true"
 	if !reflect.DeepEqual(a.actual.GetLabels(), desiredLabels) {
 		log.V(2).Info("'metadata.labels' field is updated (-old +new)", cmp.Diff(a.actual.GetLabels(), desiredLabels))
 		updatePaths = append(updatePaths, "labels")

@@ -20,6 +20,7 @@ import (
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	pb "google.golang.org/api/bigquery/v2"
 )
 
@@ -694,11 +695,7 @@ func BigQueryTableSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.BigQuer
 	// MISSING: TableReference
 	out.FriendlyName = direct.ValueOf(in.FriendlyName)
 	out.Description = direct.ValueOf(in.Description)
-	out.Labels = in.Labels
-	if out.Labels == nil {
-		out.Labels = map[string]string{}
-	}
-	out.Labels["managed-by-cnrm"] = "true"
+	out.Labels = label.NewGCPLabelsFromK8sLabels(in.Labels)
 	out.Schema = Table_Schema_ToProto(mapCtx, in.Schema, in.View == nil && in.MaterializedView == nil)
 	out.TimePartitioning = TimePartitioning_ToProto(mapCtx, in.TimePartitioning)
 	out.RangePartitioning = RangePartitioning_ToProto(mapCtx, in.RangePartitioning)
