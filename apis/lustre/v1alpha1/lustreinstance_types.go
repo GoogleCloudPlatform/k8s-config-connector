@@ -58,6 +58,51 @@ type LustreInstanceSpec struct {
 	// Valid values are 125, 250, 500, 1000.
 	// +kcc:proto:field=google.cloud.lustre.v1.Instance.per_unit_storage_throughput
 	PerUnitStorageThroughput *int64 `json:"perUnitStorageThroughput,omitempty"`
+
+	// Optional. IP-based access rules and squash configuration for the instance.
+	AccessRulesOptions *AccessRulesOptions `json:"accessRulesOptions,omitempty"`
+}
+
+// AccessRule defines a single policy group with IP-based access rules for the Managed Lustre instance.
+type AccessRule struct {
+	// Required. The name of the access rule policy group.
+	// Must be 16 characters or less and include only alphanumeric characters or '_'.
+	// +kubebuilder:validation:MaxLength=16
+	// +kubebuilder:validation:Pattern=`^[a-zA-Z0-9_]+$`
+	Name *string `json:"name,omitempty"`
+
+	// Required. The IP address ranges to which to apply this access rule. Accepts
+	// non-overlapping CIDR ranges (e.g., `192.168.1.0/24`) and IP addresses (e.g., `192.168.1.0`).
+	IpAddressRanges []string `json:"ipAddressRanges,omitempty"`
+
+	// Required. Squash mode for the access rule.
+	// Possible values are:
+	// - `NO_SQUASH`: Squash is disabled. Root users matching the ip_ranges are not squashed.
+	// +kubebuilder:validation:Enum=NO_SQUASH
+	SquashMode *string `json:"squashMode,omitempty"`
+}
+
+// AccessRulesOptions defines the IP-based access rules and squash configuration for the Managed Lustre instance.
+type AccessRulesOptions struct {
+	// Optional. The access rules for the instance.
+	AccessRules []AccessRule `json:"accessRules,omitempty"`
+
+	// Required. The squash mode for the default access rule.
+	// Possible values are:
+	// - `NO_SQUASH`: Root squash is disabled for this instance.
+	// - `ROOT_SQUASH`: Root user squash is enabled. Root users not matching any of the access_rules are squashed to defaultSquashUid and defaultSquashGid.
+	// +kubebuilder:validation:Enum=NO_SQUASH;ROOT_SQUASH
+	DefaultSquashMode *string `json:"defaultSquashMode,omitempty"`
+
+	// Optional. The user squash UID for the default access rule.
+	// This user squash UID applies to all root users connecting from clients
+	// that are not matched by any of the access rules. If not set, the default is 0 (no UID squash).
+	DefaultSquashUid *int32 `json:"defaultSquashUid,omitempty"`
+
+	// Optional. The user squash GID for the default access rule.
+	// This user squash GID applies to all root users connecting from clients
+	// that are not matched by any of the access rules. If not set, the default is 0 (no GID squash).
+	DefaultSquashGid *int32 `json:"defaultSquashGid,omitempty"`
 }
 
 // LustreInstanceStatus defines the config connector machine state of LustreInstance
@@ -95,6 +140,9 @@ type LustreInstanceObservedState struct {
 	// Output only. Timestamp when the instance was last updated.
 	// +kcc:proto:field=google.cloud.lustre.v1.Instance.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. IP-based access rules and squash configuration for the instance as observed in GCP.
+	AccessRulesOptions *AccessRulesOptions `json:"accessRulesOptions,omitempty"`
 }
 
 // +genclient
