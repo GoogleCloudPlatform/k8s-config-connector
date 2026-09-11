@@ -16,7 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "No conversation found for project: `${projectNumber}` and conversation Id: `ccinsightsconv-min-${uniqueId}`.",
+    "message": "No conversation found for project ${projectNumber} and conversation ID ccinsightsconv-min-${uniqueId}.",
     "status": "NOT_FOUND"
   }
 }
