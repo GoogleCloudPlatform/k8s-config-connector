@@ -28,7 +28,6 @@ import (
 	pb "cloud.google.com/go/osconfig/apiv1/osconfigpb"
 	osconfigpb "cloud.google.com/go/osconfig/apiv1beta/osconfigpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/osconfig/v1beta1"
-	krmstoragev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -1084,6 +1083,8 @@ func SoftwareRecipe_Artifact_ToProto(mapCtx *direct.MapContext, in *krm.Software
 	out.AllowInsecure = direct.ValueOf(in.AllowInsecure)
 	return out
 }
+
+/* found existing non-generated mapping function "SoftwareRecipe_Artifact_GCS_FromProto", skipping
 func SoftwareRecipe_Artifact_GCS_FromProto(mapCtx *direct.MapContext, in *osconfigpb.SoftwareRecipe_Artifact_Gcs) *krm.SoftwareRecipe_Artifact_GCS {
 	if in == nil {
 		return nil
@@ -1096,18 +1097,24 @@ func SoftwareRecipe_Artifact_GCS_FromProto(mapCtx *direct.MapContext, in *osconf
 	out.Generation = direct.LazyPtr(in.GetGeneration())
 	return out
 }
-func SoftwareRecipe_Artifact_GCS_ToProto(mapCtx *direct.MapContext, in *krm.SoftwareRecipe_Artifact_GCS) *osconfigpb.SoftwareRecipe_Artifact_Gcs {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "SoftwareRecipe_Artifact_GCS_ToProto", skipping
+
+	func SoftwareRecipe_Artifact_GCS_ToProto(mapCtx *direct.MapContext, in *krm.SoftwareRecipe_Artifact_GCS) *osconfigpb.SoftwareRecipe_Artifact_Gcs {
+		if in == nil {
+			return nil
+		}
+		out := &osconfigpb.SoftwareRecipe_Artifact_Gcs{}
+		if in.BucketRef != nil {
+			out.Bucket = in.BucketRef.External
+		}
+		out.Object = direct.ValueOf(in.Object)
+		out.Generation = direct.ValueOf(in.Generation)
+		return out
 	}
-	out := &osconfigpb.SoftwareRecipe_Artifact_Gcs{}
-	if in.BucketRef != nil {
-		out.Bucket = in.BucketRef.External
-	}
-	out.Object = direct.ValueOf(in.Object)
-	out.Generation = direct.ValueOf(in.Generation)
-	return out
-}
+*/
 func SoftwareRecipe_Artifact_Remote_FromProto(mapCtx *direct.MapContext, in *osconfigpb.SoftwareRecipe_Artifact_Remote) *krm.SoftwareRecipe_Artifact_Remote {
 	if in == nil {
 		return nil

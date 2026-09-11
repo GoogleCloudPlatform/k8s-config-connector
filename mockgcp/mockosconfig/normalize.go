@@ -23,12 +23,12 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
-	if !strings.Contains(url, "osconfig.googleapis.com") {
+	if !strings.Contains(url, "osconfig.googleapis.com") && !strings.Contains(url, "google.cloud.osconfig") {
 		return
 	}
-	replacements.ReplacePath("createTime", mockgcpregistry.PlaceholderTimestamp)
-	replacements.ReplacePath("updateTime", mockgcpregistry.PlaceholderTimestamp)
-	replacements.ReplacePath("etag", "mock-etag")
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".etag", "abcdef0123A=")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
