@@ -20,6 +20,7 @@ This skill guides the implementation of the `Adapter` interface
     - Use the generated mappers and manual mappers as needed.
     - Ensure correct error handling (e.g., handling 404s in `Find`).
     - **Service-Generated Resource IDs**: If the brownfield resource has a service-generated resource ID, see the `kcc-direct-service-generated-id` skill for mandatory identity and reconciler rules (including `Find()` pre-check guards, `Create()` request handling, and `GetIdentity()` comparison rules).
+    - **Labels in Brownfield Direct Controllers**: If the brownfield resource supports GCP labels, see the `kcc-direct-brownfield-labels` skill to properly map and reconcile labels using `metadata.labels` instead of `spec.labels`, preventing empty payloads, update mask issues, and untested fixtures.
 
 1.5. **Remove from Ratcheting Exclusions (MANDATORY)**:
     This controller logic phase is the **primary stage** where the target resource must be removed from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. Removing the exclusion activates Server-Side Apply (SSA) creation and re-reconciliation verification within the test runner. This is a fundamental KCC capability that ensures direct controllers support 0-write re-reconciliation.
