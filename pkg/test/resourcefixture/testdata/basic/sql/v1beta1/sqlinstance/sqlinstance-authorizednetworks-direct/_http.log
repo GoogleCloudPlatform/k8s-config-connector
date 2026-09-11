@@ -41,7 +41,9 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskType": "PD_SSD",
+    "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
     "ipConfiguration": {
       "authorizedNetworks": [
@@ -54,6 +56,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       ],
       "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": true,
+      "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -64,6 +67,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "storageAutoResize": true,
+    "storageAutoResizeLimit": "0",
     "tier": "db-custom-1-3840",
     "userLabels": {
       "cnrm-test": "true",
@@ -200,6 +204,7 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
@@ -339,6 +344,7 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
@@ -397,8 +403,10 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
+    "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
     "ipConfiguration": {
       "authorizedNetworks": [
@@ -417,6 +425,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       ],
       "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": true,
+      "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -428,6 +437,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
+    "storageAutoResizeLimit": "0",
     "tier": "db-custom-1-3840",
     "userLabels": {
       "cnrm-test": "true",
@@ -565,6 +575,7 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,

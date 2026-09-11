@@ -43,7 +43,9 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "availabilityType": "ZONAL",
     "collation": "SQL_Latin1_General_CP1_CI_AS",
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskType": "PD_SSD",
+    "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
     "ipConfiguration": {
       "ipv4Enabled": true,
@@ -57,6 +59,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "storageAutoResize": true,
+    "storageAutoResizeLimit": "0",
     "tier": "db-custom-1-3840",
     "timeZone": "Mountain Standard Time",
     "userLabels": {
@@ -186,6 +189,7 @@ X-Xss-Protection: 0
     },
     "collation": "SQL_Latin1_General_CP1_CI_AS",
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
@@ -391,6 +395,7 @@ X-Xss-Protection: 0
     },
     "collation": "SQL_Latin1_General_CP1_CI_AS",
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,

@@ -544,6 +544,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "binaryLogEnabled": false,
       "enabled": true,
       "kind": "sql#backupConfiguration",
       "pointInTimeRecoveryEnabled": true,
@@ -551,6 +552,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "transactionLogRetentionDays": 7
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskSizeGb": "180",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
@@ -576,7 +578,9 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "insightsConfig": {
       "queryInsightsEnabled": true,
       "queryPlansPerMinute": 5,
-      "queryStringLength": 2048
+      "queryStringLength": 2048,
+      "recordApplicationTags": false,
+      "recordClientAddress": false
     },
     "ipConfiguration": {
       "enablePrivatePathForGoogleCloudServices": true,
@@ -735,6 +739,7 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskSizeGb": "180",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
@@ -903,6 +908,7 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskSizeGb": "180",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
@@ -986,6 +992,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "binaryLogEnabled": false,
       "enabled": true,
       "kind": "sql#backupConfiguration",
       "pointInTimeRecoveryEnabled": true,
@@ -993,6 +1000,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "transactionLogRetentionDays": 7
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskSizeGb": "180",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
@@ -1018,7 +1026,9 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "insightsConfig": {
       "queryInsightsEnabled": true,
       "queryPlansPerMinute": 5,
-      "queryStringLength": 2048
+      "queryStringLength": 2048,
+      "recordApplicationTags": false,
+      "recordClientAddress": false
     },
     "ipConfiguration": {
       "enablePrivatePathForGoogleCloudServices": false,
@@ -1178,6 +1188,7 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskSizeGb": "180",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
