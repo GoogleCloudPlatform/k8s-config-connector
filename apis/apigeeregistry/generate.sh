@@ -29,15 +29,24 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
+
+# Pin a googleapis SHA that contains the google.cloud.apigeeregistry.v1 service definition (since it was removed in upstream HEAD/newer commits)
+PROTO_SHA="1765b559c42386788ff0c6412491277b4791107a"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.apigeeregistry.v1 \
   --api-version apigeeregistry.cnrm.cloud.google.com/v1alpha1 \
   --resource ApigeeRegistryInstance:Instance \
-  --resource ApigeeRegistryAPI:Api
+  --resource ApigeeRegistryAPI:Api \
+  --proto-source-path ${PROTO_OUT}
 
-${CONTROLLERBUILDER} generate-mapper --service google.cloud.apigeeregistry.v1 --api-version apigeeregistry.cnrm.cloud.google.com/v1alpha1
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.apigeeregistry.v1 \
+  --api-version apigeeregistry.cnrm.cloud.google.com/v1alpha1 \
+  --proto-source-path ${PROTO_OUT}
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
