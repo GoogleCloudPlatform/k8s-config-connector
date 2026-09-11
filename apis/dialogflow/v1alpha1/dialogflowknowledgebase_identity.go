@@ -94,6 +94,13 @@ func (i *DialogflowKnowledgeBaseIdentity) Host() string {
 	return DialogflowKnowledgeBaseRegionalIdentityFormat.Host()
 }
 
+func (i *DialogflowKnowledgeBaseIdentity) ParentString() string {
+	if i.Location != "" {
+		return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+	}
+	return fmt.Sprintf("projects/%s", i.Project)
+}
+
 func getIdentityFromDialogflowKnowledgeBaseSpec(ctx context.Context, reader client.Reader, obj *DialogflowKnowledgeBase) (*DialogflowKnowledgeBaseIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
@@ -126,15 +133,12 @@ func (obj *DialogflowKnowledgeBase) GetIdentity(ctx context.Context, reader clie
 
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		// Validate desired with actual
 		statusIdentity := &DialogflowKnowledgeBaseIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change DialogflowKnowledgeBase identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
-		}
+		return statusIdentity, nil
 	}
 
 	return specIdentity, nil

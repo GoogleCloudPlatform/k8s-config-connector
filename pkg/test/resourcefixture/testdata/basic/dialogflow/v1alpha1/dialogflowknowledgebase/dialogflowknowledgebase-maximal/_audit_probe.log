@@ -1,0 +1,11 @@
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/knowledgeBases/MjQ5ODY3NjU5NTQ0MzYzMDA4MQ?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "displayName": "KB Maximal ${uniqueId} Updated",
+  "languageCode": "en",
+  "name": "projects/${projectId}/locations/global/knowledgeBases/MjQ5ODY3NjU5NTQ0MzYzMDA4MQ"
+}
