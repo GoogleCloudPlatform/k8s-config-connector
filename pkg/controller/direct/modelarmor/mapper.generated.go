@@ -30,6 +30,18 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AiPlatformFloorSetting_InspectOnly_ToProto(mapCtx *direct.MapContext, in *bool) *pb.AiPlatformFloorSetting_InspectOnly {
+	if in == nil {
+		return nil
+	}
+	return &pb.AiPlatformFloorSetting_InspectOnly{InspectOnly: *in}
+}
+func AiPlatformFloorSetting_InspectAndBlock_ToProto(mapCtx *direct.MapContext, in *bool) *pb.AiPlatformFloorSetting_InspectAndBlock {
+	if in == nil {
+		return nil
+	}
+	return &pb.AiPlatformFloorSetting_InspectAndBlock{InspectAndBlock: *in}
+}
 func FilterConfig_FromProto(mapCtx *direct.MapContext, in *pb.FilterConfig) *krm.FilterConfig {
 	if in == nil {
 		return nil
