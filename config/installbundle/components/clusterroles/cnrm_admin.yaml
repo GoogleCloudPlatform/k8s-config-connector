@@ -1256,6 +1256,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - lustre.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - managedkafka.cnrm.cloud.google.com
   resources:
   - '*'
