@@ -120,6 +120,10 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
+    "routingMode": "GLOBAL"
+  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
@@ -248,17 +252,18 @@ X-Xss-Protection: 0
   "address": "8.8.8.8",
   "addressType": "INTERNAL",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
   "id": "000000000000000000000",
   "kind": "compute#address",
   "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "${addressID}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "networkTier": "PREMIUM",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "prefixLength": 16,
   "purpose": "VPC_PEERING",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
-  "status": "RESERVED"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
 }
 
 ---
@@ -286,19 +291,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "setLabels",
-  "progress": 100,
+  "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
-  "user": "user@example.com"
+  "status": "DONE"
 }
 
 ---
@@ -321,7 +321,6 @@ X-Xss-Protection: 0
   "address": "8.8.8.8",
   "addressType": "INTERNAL",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
   "id": "000000000000000000000",
   "kind": "compute#address",
   "labelFingerprint": "abcdef0123A=",
@@ -330,12 +329,10 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "${addressID}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "networkTier": "PREMIUM",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "prefixLength": 16,
   "purpose": "VPC_PEERING",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
-  "status": "RESERVED"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
 }
 
 ---
@@ -356,11 +353,6 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "lifecycleState": "ACTIVE",
-  "name": "${projectId}",
-  "parent": {
-    "id": "${folderID}",
-    "type": "folder"
-  },
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
@@ -400,11 +392,6 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "lifecycleState": "ACTIVE",
-  "name": "${projectId}",
-  "parent": {
-    "id": "${folderID}",
-    "type": "folder"
-  },
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
@@ -460,7 +447,8 @@ X-Xss-Protection: 0
     "peering": "servicenetworking-googleapis-com",
     "reservedPeeringRanges": [
       "${addressID}"
-    ]
+    ],
+    "service": "services/servicenetworking.googleapis.com"
   }
 }
 
@@ -482,11 +470,6 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "lifecycleState": "ACTIVE",
-  "name": "${projectId}",
-  "parent": {
-    "id": "${folderID}",
-    "type": "folder"
-  },
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
@@ -539,7 +522,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1-a/instances/lustreinstance-${uniqueId}' was not found",
+    "message": "Resource \"projects/${projectId}/locations/us-central1-a/instances/lustreinstance-${uniqueId}\" was not found",
     "status": "NOT_FOUND"
   }
 }
@@ -576,220 +559,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.lustre.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/us-central1-a/instances/lustreinstance-${uniqueId}",
-    "verb": "create"
-  },
-  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
-}
-
----
-
-GET https://lustre.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/operations/${operationID}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2Foperations%2F${operationID}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "error": {
-    "code": 8,
-    "message": "resource exhausted: not enough resources available to fulfill the request in us-central1-a"
-  },
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.lustre.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/us-central1-a/instances/lustreinstance-${uniqueId}",
-    "verb": "create"
-  },
-  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
-}
-
----
-
-GET https://lustre.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/instances/lustreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2Finstances%2Flustreinstance-${uniqueId}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1-a/instances/lustreinstance-${uniqueId}' was not found",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://lustre.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=lustreinstance-${uniqueId}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1-a
-
-{
-  "capacityGib": "36000",
-  "description": "Basic Lustre instance",
-  "filesystem": "testfs",
-  "labels": {
-    "cnrm-test": "true",
-    "env": "test",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1-a/instances/lustreinstance-${uniqueId}",
-  "network": "projects/${projectId}/global/networks/${networkID}",
-  "perUnitStorageThroughput": "250"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": false,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.lustre.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/us-central1-a/instances/lustreinstance-${uniqueId}",
-    "verb": "create"
-  },
-  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
-}
-
----
-
-GET https://lustre.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/operations/${operationID}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2Foperations%2F${operationID}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "error": {
-    "code": 8,
-    "message": "resource exhausted: not enough resources available to fulfill the request in us-central1-a"
-  },
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.lustre.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/us-central1-a/instances/lustreinstance-${uniqueId}",
-    "verb": "create"
-  },
-  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
-}
-
----
-
-GET https://lustre.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/instances/lustreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2Finstances%2Flustreinstance-${uniqueId}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1-a/instances/lustreinstance-${uniqueId}' was not found",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://lustre.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=lustreinstance-${uniqueId}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1-a
-
-{
-  "capacityGib": "36000",
-  "description": "Basic Lustre instance",
-  "filesystem": "testfs",
-  "labels": {
-    "cnrm-test": "true",
-    "env": "test",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1-a/instances/lustreinstance-${uniqueId}",
-  "network": "projects/${projectId}/global/networks/${networkID}",
-  "perUnitStorageThroughput": "250"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": false,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.lustre.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1-a/instances/lustreinstance-${uniqueId}",
     "verb": "create"
   },
@@ -820,7 +593,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1-a/instances/lustreinstance-${uniqueId}",
     "verb": "create"
   },
@@ -836,12 +608,11 @@ X-Xss-Protection: 0
       "env": "test",
       "managed-by-cnrm": "true"
     },
-    "mountPoint": "10.8.54.5@tcp:/testfs",
+    "mountPoint": "10.0.0.2@tcp:/testfs",
     "name": "projects/${projectId}/locations/us-central1-a/instances/lustreinstance-${uniqueId}",
     "network": "projects/${projectId}/global/networks/${networkID}",
     "perUnitStorageThroughput": "250",
     "state": "ACTIVE",
-    "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -873,12 +644,11 @@ X-Xss-Protection: 0
     "env": "test",
     "managed-by-cnrm": "true"
   },
-  "mountPoint": "10.8.54.5@tcp:/testfs",
+  "mountPoint": "10.0.0.2@tcp:/testfs",
   "name": "projects/${projectId}/locations/us-central1-a/instances/lustreinstance-${uniqueId}",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "perUnitStorageThroughput": "250",
   "state": 1,
-  "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -914,12 +684,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.lustre.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1-a/instances/lustreinstance-${uniqueId}",
     "verb": "update"
   },
@@ -950,7 +718,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1-a/instances/lustreinstance-${uniqueId}",
     "verb": "update"
   },
@@ -966,12 +733,11 @@ X-Xss-Protection: 0
       "env": "staging",
       "managed-by-cnrm": "true"
     },
-    "mountPoint": "10.8.54.5@tcp:/testfs",
+    "mountPoint": "10.0.0.2@tcp:/testfs",
     "name": "projects/${projectId}/locations/us-central1-a/instances/lustreinstance-${uniqueId}",
     "network": "projects/${projectId}/global/networks/${networkID}",
     "perUnitStorageThroughput": "250",
     "state": "ACTIVE",
-    "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -1003,12 +769,11 @@ X-Xss-Protection: 0
     "env": "staging",
     "managed-by-cnrm": "true"
   },
-  "mountPoint": "10.8.54.5@tcp:/testfs",
+  "mountPoint": "10.0.0.2@tcp:/testfs",
   "name": "projects/${projectId}/locations/us-central1-a/instances/lustreinstance-${uniqueId}",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "perUnitStorageThroughput": "250",
   "state": 1,
-  "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -1030,12 +795,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.lustre.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1-a/instances/lustreinstance-${uniqueId}",
     "verb": "delete"
   },
@@ -1066,7 +829,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1-a/instances/lustreinstance-${uniqueId}",
     "verb": "delete"
   },
@@ -1094,11 +856,6 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "lifecycleState": "ACTIVE",
-  "name": "${projectId}",
-  "parent": {
-    "id": "${folderID}",
-    "type": "folder"
-  },
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
@@ -1149,11 +906,6 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "lifecycleState": "ACTIVE",
-  "name": "${projectId}",
-  "parent": {
-    "id": "${folderID}",
-    "type": "folder"
-  },
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
@@ -1183,14 +935,10 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "removePeering",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "user": "user@example.com"
+  "status": "RUNNING"
 }
 
 ---
@@ -1214,14 +962,10 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "operationType": "removePeering",
   "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "user": "user@example.com"
+  "status": "DONE"
 }
 
 ---
@@ -1244,7 +988,6 @@ X-Xss-Protection: 0
   "address": "8.8.8.8",
   "addressType": "INTERNAL",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
   "id": "000000000000000000000",
   "kind": "compute#address",
   "labelFingerprint": "abcdef0123A=",
@@ -1253,12 +996,10 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "${addressID}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "networkTier": "PREMIUM",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "prefixLength": 16,
   "purpose": "VPC_PEERING",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
-  "status": "RESERVED"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
 }
 
 ---
@@ -1346,6 +1087,10 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
+    "routingMode": "GLOBAL"
+  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }

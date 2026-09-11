@@ -2832,6 +2832,12 @@
 [missing_field] crd=kmssecretciphertexts.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.plaintext.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=livestreamassets.livestream.cnrm.cloud.google.com version=v1alpha1: field ".spec.crc32c" is not set in unstructured objects
 [missing_field] crd=livestreamassets.livestream.cnrm.cloud.google.com version=v1alpha1: field ".spec.image.uri" is not set in unstructured objects
+[missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.accessRulesOptions.accessRules[].ipAddressRanges[]" is not set in unstructured objects
+[missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.accessRulesOptions.accessRules[].name" is not set in unstructured objects
+[missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.accessRulesOptions.accessRules[].squashMode" is not set in unstructured objects
+[missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.accessRulesOptions.defaultSquashGid" is not set in unstructured objects
+[missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.accessRulesOptions.defaultSquashMode" is not set in unstructured objects
+[missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.accessRulesOptions.defaultSquashUid" is not set in unstructured objects
 [missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.capacityConfig.memoryBytes" is not set in unstructured objects
 [missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.capacityConfig.vcpuCount" is not set in unstructured objects
 [missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.clusterRef" is not set; neither 'external' nor 'name' are set
