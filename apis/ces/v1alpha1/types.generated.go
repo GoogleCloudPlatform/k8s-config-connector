@@ -21,6 +21,8 @@
 
 package v1alpha1
 
+import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+
 // +kcc:proto=google.cloud.ces.v1beta.AmbientSoundConfig
 type AmbientSoundConfig struct {
 	// Optional. Deprecated: `prebuilt_ambient_noise` is deprecated in favor of
