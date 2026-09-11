@@ -1,0 +1,27 @@
+apiVersion: modelarmor.cnrm.cloud.google.com/v1alpha1
+kind: ModelArmorFloorSetting
+metadata:
+  name: modelarmorfloorsetting-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: global
+  enableFloorSettingEnforcement: false
+  filterConfig:
+    raiSettings:
+      raiFilters:
+      - filterType: SEXUALLY_EXPLICIT
+        confidenceLevel: MEDIUM_AND_ABOVE
+    piAndJailbreakFilterSettings:
+      filterEnforcement: DISABLED
+    maliciousURIFilterSettings:
+      filterEnforcement: DISABLED
+    sdpSettings:
+      basicConfig:
+        filterEnforcement: DISABLED
+  aiPlatformFloorSetting:
+    inspectAndBlock: true
+    enableCloudLogging: false
+  floorSettingMetadata:
+    multiLanguageDetection:
+      enableMultiLanguageDetection: false
