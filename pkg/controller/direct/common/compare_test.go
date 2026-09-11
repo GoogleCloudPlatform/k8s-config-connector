@@ -21,6 +21,7 @@ import (
 	"testing"
 
 	pb "cloud.google.com/go/filestore/apiv1/filestorepb"
+	monitoringpb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
@@ -998,6 +999,107 @@ func TestCompareBrownfieldSpecAndLabels(t *testing.T) {
 				u,
 				tc.desiredKRM,
 				tc.actualProto,
+				"labels",
+				specFromProto,
+				specToProto,
+				nil,
+			)
+
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
+			if len(tc.wantFieldMaskPaths) > 0 {
+				if diff == nil || !diff.HasDiff() {
+					t.Errorf("expected diff, got no diff")
+				}
+			} else {
+				if diff != nil && diff.HasDiff() {
+					t.Errorf("expected no diff, got diff:\n%+v", diff)
+				}
+			}
+
+			if fieldMask == nil {
+				t.Fatalf("expected non-nil fieldMask")
+			}
+
+			paths := sets.New(fieldMask.GetPaths()...)
+			if !paths.Equal(tc.wantFieldMaskPaths) {
+				t.Errorf("fieldmask paths mismatch: want %v, got %v", tc.wantFieldMaskPaths, paths)
+			}
+		})
+	}
+}
+
+func TestCompareBrownfieldSpecAndUserLabels(t *testing.T) {
+	specFromProto := func(mapCtx *direct.MapContext, in *monitoringpb.AlertPolicy) *dummySpec {
+		if in == nil {
+			return nil
+		}
+		return &dummySpec{Description: in.DisplayName}
+	}
+
+	specToProto := func(mapCtx *direct.MapContext, in *dummySpec) *monitoringpb.AlertPolicy {
+		if in == nil {
+			return nil
+		}
+		return &monitoringpb.AlertPolicy{DisplayName: in.Description}
+	}
+
+	tests := []struct {
+		name               string
+		desiredKRM         *dummySpec
+		unstructuredLabels map[string]string
+		actualProto        *monitoringpb.AlertPolicy
+		wantFieldMaskPaths sets.Set[string]
+	}{
+		{
+			name: "no spec change and no label change",
+			desiredKRM: &dummySpec{
+				Description: "hello",
+			},
+			unstructuredLabels: map[string]string{
+				"env": "prod",
+			},
+			actualProto: &monitoringpb.AlertPolicy{
+				DisplayName: "hello",
+				UserLabels: map[string]string{
+					"env":             "prod",
+					"managed-by-cnrm": "true",
+				},
+			},
+			wantFieldMaskPaths: sets.New[string](),
+		},
+		{
+			name: "user_labels change only",
+			desiredKRM: &dummySpec{
+				Description: "hello",
+			},
+			unstructuredLabels: map[string]string{
+				"env": "staging",
+			},
+			actualProto: &monitoringpb.AlertPolicy{
+				DisplayName: "hello",
+				UserLabels: map[string]string{
+					"env":             "prod",
+					"managed-by-cnrm": "true",
+				},
+			},
+			wantFieldMaskPaths: sets.New("user_labels"),
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			u := &unstructured.Unstructured{}
+			u.SetLabels(tc.unstructuredLabels)
+
+			diff, fieldMask, err := CompareBrownfieldSpecAndLabels(
+				t.Context(),
+				u,
+				tc.desiredKRM,
+				tc.actualProto,
+				"user_labels",
 				specFromProto,
 				specToProto,
 				nil,

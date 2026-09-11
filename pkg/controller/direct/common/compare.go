@@ -477,7 +477,7 @@ func CompareBrownfieldSpec[SpecType any, ProtoT interface {
 	return DiffForTopLevelFields(ctx, proto.Message(desiredProtoMasked).ProtoReflect(), proto.Message(actualProtoMasked).ProtoReflect())
 }
 
-// CompareBrownfieldSpecAndLabels executes CompareBrownfieldSpec and compares metadata.labels against actualProto labels.
+// CompareBrownfieldSpecAndLabels executes CompareBrownfieldSpec and compares metadata.labels against actualProto labels using the specified labels field name in the proto message.
 func CompareBrownfieldSpecAndLabels[SpecType any, ProtoT interface {
 	proto.Message
 }](
@@ -485,6 +485,7 @@ func CompareBrownfieldSpecAndLabels[SpecType any, ProtoT interface {
 	u *unstructured.Unstructured,
 	desiredKRM *SpecType,
 	actualProto ProtoT,
+	labelsFieldName string,
 	specFromProto func(mapCtx *direct.MapContext, in ProtoT) *SpecType,
 	specToProto func(mapCtx *direct.MapContext, in *SpecType) ProtoT,
 	normalize func(ctx context.Context, pb ProtoT) error,
@@ -495,23 +496,23 @@ func CompareBrownfieldSpecAndLabels[SpecType any, ProtoT interface {
 	}
 
 	desiredLabels := label.GCPLabels(u)
-	actualLabels := extractProtoLabels(actualProto)
+	actualLabels := extractProtoLabels(actualProto, labelsFieldName)
 
 	if !maps.Equal(actualLabels, desiredLabels) {
 		if updateMask == nil {
 			updateMask = &fieldmaskpb.FieldMask{}
 		}
-		updateMask.Paths = append(updateMask.Paths, "labels")
+		updateMask.Paths = append(updateMask.Paths, labelsFieldName)
 		if diff == nil {
 			diff = &structuredreporting.Diff{}
 		}
-		diff.AddField("labels", actualLabels, desiredLabels)
+		diff.AddField(labelsFieldName, actualLabels, desiredLabels)
 	}
 
 	return diff, updateMask, nil
 }
 
-func extractProtoLabels(msg proto.Message) map[string]string {
+func extractProtoLabels(msg proto.Message, labelsFieldName string) map[string]string {
 	if msg == nil {
 		return nil
 	}
@@ -519,7 +520,7 @@ func extractProtoLabels(msg proto.Message) map[string]string {
 	if valOf.Kind() == reflect.Ptr && valOf.IsNil() {
 		return nil
 	}
-	fd := msg.ProtoReflect().Descriptor().Fields().ByName("labels")
+	fd := msg.ProtoReflect().Descriptor().Fields().ByName(protoreflect.Name(labelsFieldName))
 	if fd == nil || !fd.IsMap() {
 		return nil
 	}

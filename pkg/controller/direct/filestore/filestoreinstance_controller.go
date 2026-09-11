@@ -254,6 +254,7 @@ func (a *filestoreInstanceAdapter) Update(ctx context.Context, updateOp *directb
 		u,
 		&a.desiredKRM.Spec,
 		a.actual,
+		"labels",
 		FilestoreInstanceSpec_FromProto,
 		FilestoreInstanceSpec_ToProto,
 		normalize,
