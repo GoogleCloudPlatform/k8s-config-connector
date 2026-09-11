@@ -48,22 +48,6 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.RemovePath("correlationInfo")
 	replacements.RemovePath(".correlationInfo")
 	replacements.RemovePath(".response.correlationInfo")
-
-	replacements.TransformObject("", func(m map[string]any) {
-		// Under qualityMetadata.agentInfo[], transform "team" to "teams" list.
-		if qm, ok := m["qualityMetadata"].(map[string]any); ok {
-			if agentInfo, ok := qm["agentInfo"].([]any); ok {
-				for _, a := range agentInfo {
-					if agent, ok := a.(map[string]any); ok {
-						if team, ok := agent["team"].(string); ok {
-							agent["teams"] = []any{team}
-							delete(agent, "team")
-						}
-					}
-				}
-			}
-		}
-	})
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
