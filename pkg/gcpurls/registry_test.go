@@ -122,6 +122,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Cloud KMS
 		"//cloudkms.googleapis.com/projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}/ciphertext/{}": true,
 
+		// Cloud Number Registry
+		"//cloudnumberregistry.googleapis.com/projects/{}/locations/{}/registryBooks/{}": true,
+
 		// Cloud Security Compliance
 		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/cloudControls/{}":      true,
 		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/cloudControlGroups/{}": true,
