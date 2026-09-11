@@ -14,7 +14,7 @@
 
 // +tool:mockgcp-service
 // http.host: billingbudgets.googleapis.com
-// proto.service: google.cloud.billing.budgets.v1beta1.BudgetService
+// proto.service: google.cloud.billing.budgets.v1.BudgetService
 
 package mockbillingbudgets
 
@@ -29,7 +29,7 @@ import (
 
 	"google.golang.org/grpc"
 
-	pb "cloud.google.com/go/billing/budgets/apiv1beta1/budgetspb"
+	pb "cloud.google.com/go/billing/budgets/apiv1/budgetspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 
@@ -81,32 +81,28 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	grpcMux.AddService(pb.NewBudgetServiceClient(conn))
 
 	mux := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		isV1 := strings.Contains(r.URL.Path, "/v1/") && !strings.Contains(r.URL.Path, "/v1beta1/")
-		if isV1 {
+		isV1Beta1 := strings.Contains(r.URL.Path, "/v1beta1/")
+		if isV1Beta1 {
 			if r.Body != nil && (r.Method == "POST" || r.Method == "PATCH" || r.Method == "PUT") {
 				bodyBytes, err := io.ReadAll(r.Body)
 				if err == nil {
-					bodyBytes = bytes.ReplaceAll(bodyBytes, []byte("\"notificationsRule\""), []byte("\"allUpdatesRule\""))
-					bodyBytes = bytes.ReplaceAll(bodyBytes, []byte("\"notifications_rule\""), []byte("\"all_updates_rule\""))
+					// v1beta1 uses allUpdatesRule, v1 uses notificationsRule
+					bodyBytes = bytes.ReplaceAll(bodyBytes, []byte("\"allUpdatesRule\""), []byte("\"notificationsRule\""))
+					bodyBytes = bytes.ReplaceAll(bodyBytes, []byte("\"all_updates_rule\""), []byte("\"notifications_rule\""))
 
 					var raw map[string]json.RawMessage
 					if json.Unmarshal(bodyBytes, &raw) == nil {
-						if _, ok := raw["budget"]; !ok {
-							wrapped := map[string]json.RawMessage{
-								"budget": json.RawMessage(bodyBytes),
-							}
-							wrappedBytes, err := json.Marshal(wrapped)
-							if err == nil {
-								bodyBytes = wrappedBytes
-							}
+						if wrapped, ok := raw["budget"]; ok {
+							bodyBytes = []byte(wrapped)
 						}
 					}
+
 					r.Body = io.NopCloser(bytes.NewReader(bodyBytes))
 					r.ContentLength = int64(len(bodyBytes))
 				}
 			}
-			r.URL.Path = strings.Replace(r.URL.Path, "/v1/", "/v1beta1/", 1)
-			w = &v1ResponseWriter{ResponseWriter: w}
+			r.URL.Path = strings.Replace(r.URL.Path, "/v1beta1/", "/v1/", 1)
+			w = &v1beta1ResponseWriter{ResponseWriter: w}
 		}
 		grpcMux.ServeHTTP(w, r)
 	})
@@ -114,12 +110,13 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	return mux, nil
 }
 
-type v1ResponseWriter struct {
+type v1beta1ResponseWriter struct {
 	http.ResponseWriter
 }
 
-func (w *v1ResponseWriter) Write(b []byte) (int, error) {
-	b = bytes.ReplaceAll(b, []byte("\"allUpdatesRule\""), []byte("\"notificationsRule\""))
-	b = bytes.ReplaceAll(b, []byte("\"all_updates_rule\""), []byte("\"notifications_rule\""))
+func (w *v1beta1ResponseWriter) Write(b []byte) (int, error) {
+	// v1 uses notificationsRule, v1beta1 uses allUpdatesRule
+	b = bytes.ReplaceAll(b, []byte("\"notificationsRule\""), []byte("\"allUpdatesRule\""))
+	b = bytes.ReplaceAll(b, []byte("\"notifications_rule\""), []byte("\"all_updates_rule\""))
 	return w.ResponseWriter.Write(b)
 }
