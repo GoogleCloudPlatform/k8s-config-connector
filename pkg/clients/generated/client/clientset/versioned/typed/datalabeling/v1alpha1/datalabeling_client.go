@@ -33,7 +33,6 @@ type DatalabelingV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	DataLabelingAnnotationSpecSetsGetter
 	DataLabelingEvaluationJobsGetter
-	DataLabelingInstructionsGetter
 }
 
 // DatalabelingV1alpha1Client is used to interact with features provided by the datalabeling.cnrm.cloud.google.com group.
@@ -47,10 +46,6 @@ func (c *DatalabelingV1alpha1Client) DataLabelingAnnotationSpecSets(namespace st
 
 func (c *DatalabelingV1alpha1Client) DataLabelingEvaluationJobs(namespace string) DataLabelingEvaluationJobInterface {
 	return newDataLabelingEvaluationJobs(c, namespace)
-}
-
-func (c *DatalabelingV1alpha1Client) DataLabelingInstructions(namespace string) DataLabelingInstructionInterface {
-	return newDataLabelingInstructions(c, namespace)
 }
 
 // NewForConfig creates a new DatalabelingV1alpha1Client for the given config.

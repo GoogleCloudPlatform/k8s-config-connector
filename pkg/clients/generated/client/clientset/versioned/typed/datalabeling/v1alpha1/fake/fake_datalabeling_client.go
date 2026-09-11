@@ -39,10 +39,6 @@ func (c *FakeDatalabelingV1alpha1) DataLabelingEvaluationJobs(namespace string) 
 	return newFakeDataLabelingEvaluationJobs(c, namespace)
 }
 
-func (c *FakeDatalabelingV1alpha1) DataLabelingInstructions(namespace string) v1alpha1.DataLabelingInstructionInterface {
-	return newFakeDataLabelingInstructions(c, namespace)
-}
-
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeDatalabelingV1alpha1) RESTClient() rest.Interface {
