@@ -329,6 +329,7 @@ X-Xss-Protection: 0
     "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
+    "databaseReplicationEnabled": true,
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE_PLUS",
     "ipConfiguration": {
@@ -529,6 +530,7 @@ X-Xss-Protection: 0
     "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
+    "databaseReplicationEnabled": true,
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE_PLUS",
     "ipConfiguration": {
@@ -905,6 +907,7 @@ X-Xss-Protection: 0
     "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
+    "databaseReplicationEnabled": true,
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE_PLUS",
     "ipConfiguration": {
@@ -1167,6 +1170,7 @@ X-Xss-Protection: 0
     "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
+    "databaseReplicationEnabled": true,
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE_PLUS",
     "ipConfiguration": {
@@ -1429,6 +1433,7 @@ X-Xss-Protection: 0
     "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
+    "databaseReplicationEnabled": true,
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE_PLUS",
     "ipConfiguration": {

@@ -1561,6 +1561,11 @@ func (in *InstanceSettings) DeepCopyInto(out *InstanceSettings) {
 		*out = make([]InstanceDatabaseFlags, len(*in))
 		copy(*out, *in)
 	}
+	if in.DatabaseReplicationEnabled != nil {
+		in, out := &in.DatabaseReplicationEnabled, &out.DatabaseReplicationEnabled
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DeletionProtectionEnabled != nil {
 		in, out := &in.DeletionProtectionEnabled, &out.DeletionProtectionEnabled
 		*out = new(bool)
