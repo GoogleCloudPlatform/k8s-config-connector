@@ -15,8 +15,12 @@
 package lustre
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
 
 	gcp "cloud.google.com/go/lustre/apiv1"
 	lustrepb "cloud.google.com/go/lustre/apiv1/lustrepb"
@@ -90,6 +94,11 @@ func (m *modelInstance) AdapterForObject(ctx context.Context, op *directbase.Ada
 		return nil, err
 	}
 
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("building authenticated HTTP client: %w", err)
+	}
+
 	mapCtx := &direct.MapContext{}
 	desired := LustreInstanceSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
@@ -98,9 +107,11 @@ func (m *modelInstance) AdapterForObject(ctx context.Context, op *directbase.Ada
 	desired.Labels = label.NewGCPLabelsFromK8sLabels(obj.GetLabels())
 
 	return &InstanceAdapter{
-		id:        id,
-		gcpClient: gcpClient,
-		desired:   desired,
+		id:                 id,
+		gcpClient:          gcpClient,
+		httpClient:         httpClient,
+		desired:            desired,
+		desiredAccessRules: obj.Spec.AccessRulesOptions,
 	}, nil
 }
 
@@ -109,10 +120,13 @@ func (m *modelInstance) AdapterForURL(ctx context.Context, url string) (directba
 }
 
 type InstanceAdapter struct {
-	id        *krm.LustreInstanceIdentity
-	gcpClient *gcp.Client
-	desired   *lustrepb.Instance
-	actual    *lustrepb.Instance
+	id                 *krm.LustreInstanceIdentity
+	gcpClient          *gcp.Client
+	httpClient         *http.Client
+	desired            *lustrepb.Instance
+	actual             *lustrepb.Instance
+	desiredAccessRules *krm.AccessRulesOptions
+	actualAccessRules  *krm.AccessRulesOptions
 }
 
 var _ directbase.Adapter = &InstanceAdapter{}
@@ -132,6 +146,14 @@ func (a *InstanceAdapter) Find(ctx context.Context) (bool, error) {
 	}
 
 	a.actual = instancepb
+
+	accessRules, err := a.getAccessRulesOptions(ctx)
+	if err != nil {
+		log.V(2).Info("could not fetch accessRulesOptions (will proceed without them)", "err", err)
+	} else {
+		a.actualAccessRules = accessRules
+	}
+
 	return true, nil
 }
 
@@ -157,13 +179,24 @@ func (a *InstanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	}
 	log.V(2).Info("successfully created Instance", "name", a.id)
 
+	if a.desiredAccessRules != nil {
+		log.V(2).Info("applying initial accessRulesOptions after creation", "name", a.id)
+		if err := a.patchAccessRulesOptions(ctx, a.desiredAccessRules); err != nil {
+			return fmt.Errorf("setting accessRulesOptions for %s after creation: %w", a.id, err)
+		}
+	}
+
 	// Fetch fully-populated resource after creation
 	latest, err := a.gcpClient.GetInstance(ctx, &lustrepb.GetInstanceRequest{Name: a.id.String()})
 	if err != nil {
 		return fmt.Errorf("fetching Instance %s after creation: %w", a.id, err)
 	}
+	latestAccessRules, err := a.getAccessRulesOptions(ctx)
+	if err != nil {
+		log.V(2).Info("could not fetch accessRulesOptions after create", "err", err)
+	}
 
-	return a.updateStatus(ctx, createOp, latest)
+	return a.updateStatus(ctx, createOp, latest, latestAccessRules)
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
@@ -178,54 +211,205 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		return err
 	}
 
-	if len(paths) == 0 {
+	accessRulesChanged := !accessRulesEqual(a.desiredAccessRules, a.actualAccessRules)
+
+	if len(paths) == 0 && !accessRulesChanged {
 		log.V(2).Info("no field needs update", "name", a.id)
-		return a.updateStatus(ctx, updateOp, a.actual)
+		return a.updateStatus(ctx, updateOp, a.actual, a.actualAccessRules)
 	}
 
-	log.V(2).Info("fields need update", "name", a.id, "paths", paths)
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 	for path := range paths {
 		report.AddField(path, nil, nil)
 	}
+	if accessRulesChanged {
+		report.AddField("spec.accessRulesOptions", a.actualAccessRules, a.desiredAccessRules)
+	}
 	structuredreporting.ReportDiff(ctx, report)
 
-	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(paths),
+	if len(paths) > 0 {
+		log.V(2).Info("fields need update", "name", a.id, "paths", paths)
+		updateMask := &fieldmaskpb.FieldMask{
+			Paths: sets.List(paths),
+		}
+
+		req := &lustrepb.UpdateInstanceRequest{
+			UpdateMask: updateMask,
+			Instance:   a.desired,
+		}
+		op, err := a.gcpClient.UpdateInstance(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating Instance %s: %w", a.id, err)
+		}
+		_, err = op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("Instance %s waiting update: %w", a.id, err)
+		}
+		log.V(2).Info("successfully updated Instance proto fields", "name", a.id)
 	}
 
-	req := &lustrepb.UpdateInstanceRequest{
-		UpdateMask: updateMask,
-		Instance:   a.desired,
+	if accessRulesChanged {
+		log.V(2).Info("accessRulesOptions need update", "name", a.id)
+		if err := a.patchAccessRulesOptions(ctx, a.desiredAccessRules); err != nil {
+			return fmt.Errorf("updating accessRulesOptions for Instance %s: %w", a.id, err)
+		}
+		log.V(2).Info("successfully updated accessRulesOptions", "name", a.id)
 	}
-	op, err := a.gcpClient.UpdateInstance(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating Instance %s: %w", a.id, err)
-	}
-	_, err = op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("Instance %s waiting update: %w", a.id, err)
-	}
-	log.V(2).Info("successfully updated Instance", "name", a.id)
 
 	// Fetch fully-populated resource after update
 	latest, err := a.gcpClient.GetInstance(ctx, &lustrepb.GetInstanceRequest{Name: a.id.String()})
 	if err != nil {
 		return fmt.Errorf("fetching Instance %s after update: %w", a.id, err)
 	}
+	latestAccessRules, err := a.getAccessRulesOptions(ctx)
+	if err != nil {
+		log.V(2).Info("could not fetch accessRulesOptions after update", "err", err)
+	}
 
-	return a.updateStatus(ctx, updateOp, latest)
+	return a.updateStatus(ctx, updateOp, latest, latestAccessRules)
 }
 
-func (a *InstanceAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *lustrepb.Instance) error {
+func (a *InstanceAdapter) patchAccessRulesOptions(ctx context.Context, accessRules *krm.AccessRulesOptions) error {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("patching accessRulesOptions", "name", a.id)
+
+	bodyObj := map[string]interface{}{}
+	if accessRules != nil {
+		bodyObj["accessRulesOptions"] = accessRules
+	} else {
+		bodyObj["accessRulesOptions"] = nil
+	}
+
+	bodyBytes, err := json.Marshal(bodyObj)
+	if err != nil {
+		return fmt.Errorf("marshaling accessRulesOptions: %w", err)
+	}
+
+	url := fmt.Sprintf("https://lustre.googleapis.com/v1/%s?updateMask=accessRulesOptions", a.id.String())
+	req, err := http.NewRequestWithContext(ctx, "PATCH", url, bytes.NewReader(bodyBytes))
+	if err != nil {
+		return fmt.Errorf("building PATCH request: %w", err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := a.httpClient.Do(req)
+	if err != nil {
+		return fmt.Errorf("executing PATCH request for accessRulesOptions: %w", err)
+	}
+	defer resp.Body.Close()
+
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("reading PATCH response: %w", err)
+	}
+
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		return fmt.Errorf("PATCH %s returned %d: %s", url, resp.StatusCode, string(respBody))
+	}
+
+	var opResp struct {
+		Name string `json:"name"`
+		Done bool   `json:"done"`
+	}
+	if err := json.Unmarshal(respBody, &opResp); err != nil {
+		return fmt.Errorf("parsing operation response: %w", err)
+	}
+
+	if opResp.Name != "" && !opResp.Done {
+		op := a.gcpClient.UpdateInstanceOperation(opResp.Name)
+		if _, err := op.Wait(ctx); err != nil {
+			return fmt.Errorf("waiting for accessRulesOptions update operation %s: %w", opResp.Name, err)
+		}
+	}
+	return nil
+}
+
+func (a *InstanceAdapter) getAccessRulesOptions(ctx context.Context) (*krm.AccessRulesOptions, error) {
+	url := fmt.Sprintf("https://lustre.googleapis.com/v1/%s", a.id.String())
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := a.httpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, nil
+	}
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		body, _ := io.ReadAll(resp.Body)
+		return nil, fmt.Errorf("GET %s returned %d: %s", url, resp.StatusCode, string(body))
+	}
+
+	var raw struct {
+		AccessRulesOptions *krm.AccessRulesOptions `json:"accessRulesOptions,omitempty"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&raw); err != nil {
+		return nil, fmt.Errorf("decoding instance JSON: %w", err)
+	}
+	return raw.AccessRulesOptions, nil
+}
+
+func (a *InstanceAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *lustrepb.Instance, accessRules *krm.AccessRulesOptions) error {
 	mapCtx := &direct.MapContext{}
 	status := &krm.LustreInstanceStatus{}
 	status.ObservedState = LustreInstanceObservedState_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	status.ObservedState.AccessRulesOptions = accessRules
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return op.UpdateStatus(ctx, status, nil)
+}
+
+func accessRulesEqual(desired, actual *krm.AccessRulesOptions) bool {
+	if desired == nil {
+		return true
+	}
+	if actual == nil {
+		return false
+	}
+	if direct.ValueOf(desired.DefaultSquashMode) != direct.ValueOf(actual.DefaultSquashMode) {
+		return false
+	}
+	if direct.ValueOf(desired.DefaultSquashUid) != direct.ValueOf(actual.DefaultSquashUid) {
+		return false
+	}
+	if direct.ValueOf(desired.DefaultSquashGid) != direct.ValueOf(actual.DefaultSquashGid) {
+		return false
+	}
+	if len(desired.AccessRules) != len(actual.AccessRules) {
+		return false
+	}
+	for i := range desired.AccessRules {
+		r1 := &desired.AccessRules[i]
+		r2 := &actual.AccessRules[i]
+		if direct.ValueOf(r1.Name) != direct.ValueOf(r2.Name) {
+			return false
+		}
+		if direct.ValueOf(r1.SquashMode) != direct.ValueOf(r2.SquashMode) {
+			return false
+		}
+		if !slicesEqual(r1.IpAddressRanges, r2.IpAddressRanges) {
+			return false
+		}
+	}
+	return true
+}
+
+func slicesEqual(a, b []string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := range a {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+	return true
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
@@ -244,6 +428,9 @@ func (a *InstanceAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
 	obj.Spec.Location = a.id.Parent().Location
 	obj.Spec.ResourceID = direct.LazyPtr(a.id.ID())
+	if a.actualAccessRules != nil {
+		obj.Spec.AccessRulesOptions = a.actualAccessRules
+	}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

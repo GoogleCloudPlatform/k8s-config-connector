@@ -61,6 +61,64 @@ spec:
           spec:
             description: LustreInstanceSpec defines the desired state of LustreInstance
             properties:
+              accessRulesOptions:
+                description: Optional. IP-based access rules and squash configuration
+                  for the instance.
+                properties:
+                  accessRules:
+                    description: Optional. The access rules for the instance.
+                    items:
+                      description: AccessRule defines a single policy group with IP-based
+                        access rules for the Managed Lustre instance.
+                      properties:
+                        ipAddressRanges:
+                          description: Required. The IP address ranges to which to
+                            apply this access rule. Accepts non-overlapping CIDR ranges
+                            (e.g., `192.168.1.0/24`) and IP addresses (e.g., `192.168.1.0`).
+                          items:
+                            type: string
+                          type: array
+                        name:
+                          description: Required. The name of the access rule policy
+                            group. Must be 16 characters or less and include only
+                            alphanumeric characters or '_'.
+                          maxLength: 16
+                          pattern: ^[a-zA-Z0-9_]+$
+                          type: string
+                        squashMode:
+                          description: 'Required. Squash mode for the access rule.
+                            Possible values are: - `NO_SQUASH`: Squash is disabled.
+                            Root users matching the ip_ranges are not squashed.'
+                          enum:
+                          - NO_SQUASH
+                          type: string
+                      type: object
+                    type: array
+                  defaultSquashGid:
+                    description: Optional. The user squash GID for the default access
+                      rule. This user squash GID applies to all root users connecting
+                      from clients that are not matched by any of the access rules.
+                      If not set, the default is 0 (no GID squash).
+                    format: int32
+                    type: integer
+                  defaultSquashMode:
+                    description: 'Required. The squash mode for the default access
+                      rule. Possible values are: - `NO_SQUASH`: Root squash is disabled
+                      for this instance. - `ROOT_SQUASH`: Root user squash is enabled.
+                      Root users not matching any of the access_rules are squashed
+                      to defaultSquashUid and defaultSquashGid.'
+                    enum:
+                    - NO_SQUASH
+                    - ROOT_SQUASH
+                    type: string
+                  defaultSquashUid:
+                    description: Optional. The user squash UID for the default access
+                      rule. This user squash UID applies to all root users connecting
+                      from clients that are not matched by any of the access rules.
+                      If not set, the default is 0 (no UID squash).
+                    format: int32
+                    type: integer
+                type: object
               capacityGib:
                 description: Required. The storage capacity of the instance in gibibytes
                   (GiB). Allowed values are multiples of 36000, up to 6120000.
@@ -198,6 +256,65 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  accessRulesOptions:
+                    description: Output only. IP-based access rules and squash configuration
+                      for the instance as observed in GCP.
+                    properties:
+                      accessRules:
+                        description: Optional. The access rules for the instance.
+                        items:
+                          description: AccessRule defines a single policy group with
+                            IP-based access rules for the Managed Lustre instance.
+                          properties:
+                            ipAddressRanges:
+                              description: Required. The IP address ranges to which
+                                to apply this access rule. Accepts non-overlapping
+                                CIDR ranges (e.g., `192.168.1.0/24`) and IP addresses
+                                (e.g., `192.168.1.0`).
+                              items:
+                                type: string
+                              type: array
+                            name:
+                              description: Required. The name of the access rule policy
+                                group. Must be 16 characters or less and include only
+                                alphanumeric characters or '_'.
+                              maxLength: 16
+                              pattern: ^[a-zA-Z0-9_]+$
+                              type: string
+                            squashMode:
+                              description: 'Required. Squash mode for the access rule.
+                                Possible values are: - `NO_SQUASH`: Squash is disabled.
+                                Root users matching the ip_ranges are not squashed.'
+                              enum:
+                              - NO_SQUASH
+                              type: string
+                          type: object
+                        type: array
+                      defaultSquashGid:
+                        description: Optional. The user squash GID for the default
+                          access rule. This user squash GID applies to all root users
+                          connecting from clients that are not matched by any of the
+                          access rules. If not set, the default is 0 (no GID squash).
+                        format: int32
+                        type: integer
+                      defaultSquashMode:
+                        description: 'Required. The squash mode for the default access
+                          rule. Possible values are: - `NO_SQUASH`: Root squash is
+                          disabled for this instance. - `ROOT_SQUASH`: Root user squash
+                          is enabled. Root users not matching any of the access_rules
+                          are squashed to defaultSquashUid and defaultSquashGid.'
+                        enum:
+                        - NO_SQUASH
+                        - ROOT_SQUASH
+                        type: string
+                      defaultSquashUid:
+                        description: Optional. The user squash UID for the default
+                          access rule. This user squash UID applies to all root users
+                          connecting from clients that are not matched by any of the
+                          access rules. If not set, the default is 0 (no UID squash).
+                        format: int32
+                        type: integer
+                    type: object
                   createTime:
                     description: Output only. Timestamp when the instance was created.
                     type: string
