@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: mlengine.cnrm.cloud.google.com
+  kind: MLEngineModel
+  name: mlenginemodel-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
