@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"slices"
 	"sort"
 	"strings"
@@ -380,6 +381,11 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 	if os.Getenv("GOLDEN_OBJECT_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 		rawDiffsStr := formatDiffsRaw(t, diffListener)
 		_, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(h.Events.GetHTTPEvents()))
+		// Normalize terraform list/set hashes (e.g. health_checks.4167120872 -> health_checks.${hash})
+		rHash := regexp.MustCompile(`"id": "([a-zA-Z0-9_\-]+)\.([0-9]{5,})"`)
+		normalizers = append(normalizers, func(s string) string {
+			return rHash.ReplaceAllString(s, `"id": "$1.${hash}"`)
+		})
 		h.CompareGoldenFile(filepath.Join(fixture.AbsoluteSourceDir, "_migration_diffs.json"), rawDiffsStr, normalizers...)
 	}
 
