@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
@@ -124,10 +125,11 @@ func (m *modelCluster) AdapterForObject(ctx context.Context, op *directbase.Adap
 		return nil, err
 	}
 	return &ClusterAdapter{
-		id:        id,
-		gcpClient: gcpClient,
-		desired:   obj,
-		reader:    reader,
+		id:            id,
+		gcpClient:     gcpClient,
+		desired:       obj,
+		reader:        reader,
+		projectMapper: m.config.ProjectMapper,
 	}, nil
 }
 
@@ -137,11 +139,12 @@ func (m *modelCluster) AdapterForURL(ctx context.Context, url string) (directbas
 }
 
 type ClusterAdapter struct {
-	id        *krm.AlloyDBClusterIdentity
-	gcpClient *gcp.AlloyDBAdminClient
-	desired   *krm.AlloyDBCluster
-	actual    *alloydbpb.Cluster
-	reader    client.Reader
+	id            *krm.AlloyDBClusterIdentity
+	gcpClient     *gcp.AlloyDBAdminClient
+	desired       *krm.AlloyDBCluster
+	actual        *alloydbpb.Cluster
+	reader        client.Reader
+	projectMapper *projects.ProjectMapper
 }
 
 var _ directbase.Adapter = &ClusterAdapter{}
@@ -193,10 +196,7 @@ func (a *ClusterAdapter) resolveNetworkRef(ctx context.Context) error {
 			"'spec.networkConfig' is configured")
 	}
 
-	if err := obj.Spec.NetworkConfig.NetworkRef.Normalize(ctx, a.reader, obj.GetNamespace()); err != nil {
-		return err
-	}
-	return nil
+	return obj.Spec.NetworkConfig.NetworkRef.CanonicalizeAndNormalize(ctx, a.reader, obj.GetNamespace(), a.id.Project, a.projectMapper)
 }
 
 func (a *ClusterAdapter) normalizeReferences(ctx context.Context) error {
