@@ -19,6 +19,10 @@ metadata:
   name: configconnectorcontext.core.cnrm.cloud.google.com
 spec:
   googleServiceAccount: "kcc@${projectId}.iam.gserviceaccount.com"
+  experiments:
+    controllerOverrides:
+      LoggingLogBucket.logging.cnrm.cloud.google.com: direct
+      LoggingLogView.logging.cnrm.cloud.google.com: direct
 ---
 # step 1
 apiVersion: core.cnrm.cloud.google.com/v1beta1

@@ -5,4 +5,8 @@ metadata:
   name: configconnectorcontext.core.cnrm.cloud.google.com
   namespace: ${projectId}
 spec:
+  experiments:
+    controllerOverrides:
+      LoggingLogBucket.logging.cnrm.cloud.google.com: direct
+      LoggingLogView.logging.cnrm.cloud.google.com: direct
   googleServiceAccount: kcc@${projectId}.iam.gserviceaccount.com

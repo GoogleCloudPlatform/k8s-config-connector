@@ -297,6 +297,9 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		cc, ccc,
 	)
 	if err != nil {
+		if !u.GetDeletionTimestamp().IsZero() {
+			return false, r.handleDeleteFailed(ctx, u, err)
+		}
 		return false, r.handleUpdateFailed(ctx, u, err)
 	}
 	if skipActuation {
