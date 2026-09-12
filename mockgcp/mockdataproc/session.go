@@ -120,22 +120,43 @@ func (s *sessionControllerServer) CreateSession(ctx context.Context, req *pb.Cre
 		obj.RuntimeConfig = &pb.RuntimeConfig{}
 	}
 	if obj.RuntimeConfig.Version == "" {
-		obj.RuntimeConfig.Version = "2.2.82"
+		obj.RuntimeConfig.Version = "2.2.86"
+	} else if obj.RuntimeConfig.Version == "2.1" {
+		obj.RuntimeConfig.Version = "2.1.50"
 	}
-	if obj.RuntimeConfig.Properties == nil {
-		obj.RuntimeConfig.Properties = map[string]string{
-			"dataproc:dataproc.tier":                                "premium",
-			"spark:spark.dataproc.engine":                           "default",
-			"spark:spark.dataproc.lightningEngine.runtime":          "default",
-			"spark:spark.dataproc.scaling.version":                  "2",
-			"spark:spark.driver.cores":                              "4",
-			"spark:spark.driver.memory":                             "9600m",
-			"spark:spark.dynamicAllocation.executorAllocationRatio": "0.3",
-			"spark:spark.executor.cores":                            "4",
-			"spark:spark.executor.instances":                        "2",
-			"spark:spark.executor.memory":                           "9600m",
+
+	props := make(map[string]string)
+	if obj.RuntimeConfig.Version == "2.1.50" {
+		props["spark:spark.dataproc.engine"] = "default"
+		props["spark:spark.dataproc.lightningEngine.runtime"] = "default"
+		props["spark:spark.dataproc.scaling.version"] = "1"
+		props["spark:spark.driver.cores"] = "4"
+		props["spark:spark.driver.memory"] = "9600m"
+		props["spark:spark.dynamicAllocation.executorAllocationRatio"] = "0.3"
+		props["spark:spark.executor.cores"] = "4"
+		props["spark:spark.executor.instances"] = "2"
+		props["spark:spark.executor.memory"] = "9600m"
+	} else {
+		props["dataproc:dataproc.tier"] = "premium"
+		props["spark:spark.dataproc.engine"] = "default"
+		props["spark:spark.dataproc.lightningEngine.runtime"] = "default"
+		props["spark:spark.dataproc.scaling.version"] = "2"
+		props["spark:spark.driver.cores"] = "4"
+		props["spark:spark.driver.memory"] = "9600m"
+		props["spark:spark.dynamicAllocation.executorAllocationRatio"] = "0.3"
+		props["spark:spark.executor.cores"] = "4"
+		props["spark:spark.executor.instances"] = "2"
+		props["spark:spark.executor.memory"] = "9600m"
+	}
+
+	for k, v := range obj.RuntimeConfig.Properties {
+		newKey := k
+		if strings.HasPrefix(k, "spark.") {
+			newKey = "spark:" + k
 		}
+		props[newKey] = v
 	}
+	obj.RuntimeConfig.Properties = props
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err

@@ -1,7 +1,7 @@
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fsessions%2Fdataprocsession-minimal-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fsessions%2Fdataprocsession-maximal-${uniqueId}
 X-Goog-User-Project: ${projectId}
 
 404 Not Found
@@ -17,14 +17,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Not found: Session projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
+    "message": "Not found: Session projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessions?%24alt=json%3Benum-encoding%3Dint&sessionId=dataprocsession-minimal-${uniqueId}
+POST https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessions?%24alt=json%3Benum-encoding%3Dint&sessionId=dataprocsession-maximal-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
@@ -32,14 +32,21 @@ X-Goog-User-Project: ${projectId}
 
 {
   "jupyterSession": {
-    "displayName": "test-kernel",
+    "displayName": "test-kernel-maximal",
     "kernel": 1
   },
   "labels": {
     "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "managed-by-cnrm": "true",
+    "test-label": "maximal-test"
   },
-  "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}",
+  "runtimeConfig": {
+    "properties": {
+      "spark.executor.memory": "4g"
+    },
+    "version": "2.1"
+  }
 }
 
 200 OK
@@ -61,12 +68,13 @@ X-Xss-Protection: 0
       "cnrm-test": "true",
       "goog-dataproc-drz-resource-uuid": "session-00000000-0000-0000-0000-000000000001",
       "goog-dataproc-location": "us-central1",
-      "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
+      "goog-dataproc-session-id": "dataprocsession-maximal-${uniqueId}",
       "goog-dataproc-session-uuid": "00000000-0000-0000-0000-000000000001",
-      "managed-by-cnrm": "true"
+      "managed-by-cnrm": "true",
+      "test-label": "maximal-test"
     },
     "operationType": 1,
-    "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
+    "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}",
     "sessionUuid": "00000000-0000-0000-0000-000000000001"
   },
   "name": "projects/${projectId}/regions/us-central1/operations/00000000-0000-0000-0000-000000000001"
@@ -101,12 +109,13 @@ X-Xss-Protection: 0
       "cnrm-test": "true",
       "goog-dataproc-drz-resource-uuid": "session-00000000-0000-0000-0000-000000000001",
       "goog-dataproc-location": "us-central1",
-      "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
+      "goog-dataproc-session-id": "dataprocsession-maximal-${uniqueId}",
       "goog-dataproc-session-uuid": "00000000-0000-0000-0000-000000000001",
-      "managed-by-cnrm": "true"
+      "managed-by-cnrm": "true",
+      "test-label": "maximal-test"
     },
     "operationType": "CREATE",
-    "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
+    "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}",
     "sessionUuid": "00000000-0000-0000-0000-000000000001"
   },
   "name": "projects/${projectId}/regions/us-central1/operations/00000000-0000-0000-0000-000000000001",
@@ -125,32 +134,32 @@ X-Xss-Protection: 0
       }
     },
     "jupyterSession": {
-      "displayName": "test-kernel",
+      "displayName": "test-kernel-maximal",
       "kernel": "PYTHON"
     },
     "labels": {
       "cnrm-test": "true",
       "goog-dataproc-drz-resource-uuid": "session-00000000-0000-0000-0000-000000000001",
       "goog-dataproc-location": "us-central1",
-      "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
+      "goog-dataproc-session-id": "dataprocsession-maximal-${uniqueId}",
       "goog-dataproc-session-uuid": "00000000-0000-0000-0000-000000000001",
-      "managed-by-cnrm": "true"
+      "managed-by-cnrm": "true",
+      "test-label": "maximal-test"
     },
-    "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}",
     "runtimeConfig": {
       "properties": {
-        "dataproc:dataproc.tier": "premium",
         "spark:spark.dataproc.engine": "default",
         "spark:spark.dataproc.lightningEngine.runtime": "default",
-        "spark:spark.dataproc.scaling.version": "2",
+        "spark:spark.dataproc.scaling.version": "1",
         "spark:spark.driver.cores": "4",
         "spark:spark.driver.memory": "9600m",
         "spark:spark.dynamicAllocation.executorAllocationRatio": "0.3",
         "spark:spark.executor.cores": "4",
         "spark:spark.executor.instances": "2",
-        "spark:spark.executor.memory": "9600m"
+        "spark:spark.executor.memory": "4g"
       },
-      "version": "2.2.86"
+      "version": "2.1.50"
     },
     "runtimeInfo": {},
     "state": "ACTIVE",
@@ -167,10 +176,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fsessions%2Fdataprocsession-minimal-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fsessions%2Fdataprocsession-maximal-${uniqueId}
 X-Goog-User-Project: ${projectId}
 
 200 OK
@@ -197,32 +206,32 @@ X-Xss-Protection: 0
     }
   },
   "jupyterSession": {
-    "displayName": "test-kernel",
+    "displayName": "test-kernel-maximal",
     "kernel": 1
   },
   "labels": {
     "cnrm-test": "true",
     "goog-dataproc-drz-resource-uuid": "session-00000000-0000-0000-0000-000000000001",
     "goog-dataproc-location": "us-central1",
-    "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
+    "goog-dataproc-session-id": "dataprocsession-maximal-${uniqueId}",
     "goog-dataproc-session-uuid": "00000000-0000-0000-0000-000000000001",
-    "managed-by-cnrm": "true"
+    "managed-by-cnrm": "true",
+    "test-label": "maximal-test"
   },
-  "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}",
   "runtimeConfig": {
     "properties": {
-      "dataproc:dataproc.tier": "premium",
       "spark:spark.dataproc.engine": "default",
       "spark:spark.dataproc.lightningEngine.runtime": "default",
-      "spark:spark.dataproc.scaling.version": "2",
+      "spark:spark.dataproc.scaling.version": "1",
       "spark:spark.driver.cores": "4",
       "spark:spark.driver.memory": "9600m",
       "spark:spark.dynamicAllocation.executorAllocationRatio": "0.3",
       "spark:spark.executor.cores": "4",
       "spark:spark.executor.instances": "2",
-      "spark:spark.executor.memory": "9600m"
+      "spark:spark.executor.memory": "4g"
     },
-    "version": "2.2.86"
+    "version": "2.1.50"
   },
   "runtimeInfo": {},
   "state": 2,
@@ -238,10 +247,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fsessions%2Fdataprocsession-minimal-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fsessions%2Fdataprocsession-maximal-${uniqueId}
 X-Goog-User-Project: ${projectId}
 
 200 OK
@@ -263,12 +272,13 @@ X-Xss-Protection: 0
       "cnrm-test": "true",
       "goog-dataproc-drz-resource-uuid": "session-00000000-0000-0000-0000-000000000001",
       "goog-dataproc-location": "us-central1",
-      "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
+      "goog-dataproc-session-id": "dataprocsession-maximal-${uniqueId}",
       "goog-dataproc-session-uuid": "00000000-0000-0000-0000-000000000001",
-      "managed-by-cnrm": "true"
+      "managed-by-cnrm": "true",
+      "test-label": "maximal-test"
     },
     "operationType": 3,
-    "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
+    "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}",
     "sessionUuid": "00000000-0000-0000-0000-000000000001"
   },
   "name": "projects/${projectId}/regions/us-central1/operations/${operationID}"
@@ -303,12 +313,13 @@ X-Xss-Protection: 0
       "cnrm-test": "true",
       "goog-dataproc-drz-resource-uuid": "session-00000000-0000-0000-0000-000000000001",
       "goog-dataproc-location": "us-central1",
-      "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
+      "goog-dataproc-session-id": "dataprocsession-maximal-${uniqueId}",
       "goog-dataproc-session-uuid": "00000000-0000-0000-0000-000000000001",
-      "managed-by-cnrm": "true"
+      "managed-by-cnrm": "true",
+      "test-label": "maximal-test"
     },
     "operationType": "DELETE",
-    "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
+    "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}",
     "sessionUuid": "00000000-0000-0000-0000-000000000001"
   },
   "name": "projects/${projectId}/regions/us-central1/operations/${operationID}",
@@ -327,32 +338,32 @@ X-Xss-Protection: 0
       }
     },
     "jupyterSession": {
-      "displayName": "test-kernel",
+      "displayName": "test-kernel-maximal",
       "kernel": "PYTHON"
     },
     "labels": {
       "cnrm-test": "true",
       "goog-dataproc-drz-resource-uuid": "session-00000000-0000-0000-0000-000000000001",
       "goog-dataproc-location": "us-central1",
-      "goog-dataproc-session-id": "dataprocsession-minimal-${uniqueId}",
+      "goog-dataproc-session-id": "dataprocsession-maximal-${uniqueId}",
       "goog-dataproc-session-uuid": "00000000-0000-0000-0000-000000000001",
-      "managed-by-cnrm": "true"
+      "managed-by-cnrm": "true",
+      "test-label": "maximal-test"
     },
-    "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-maximal-${uniqueId}",
     "runtimeConfig": {
       "properties": {
-        "dataproc:dataproc.tier": "premium",
         "spark:spark.dataproc.engine": "default",
         "spark:spark.dataproc.lightningEngine.runtime": "default",
-        "spark:spark.dataproc.scaling.version": "2",
+        "spark:spark.dataproc.scaling.version": "1",
         "spark:spark.driver.cores": "4",
         "spark:spark.driver.memory": "9600m",
         "spark:spark.dynamicAllocation.executorAllocationRatio": "0.3",
         "spark:spark.executor.cores": "4",
         "spark:spark.executor.instances": "2",
-        "spark:spark.executor.memory": "9600m"
+        "spark:spark.executor.memory": "4g"
       },
-      "version": "2.2.86"
+      "version": "2.1.50"
     },
     "runtimeInfo": {
       "approximateUsage": {
