@@ -1,0 +1,116 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1alpha1
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+var (
+	_ identity.IdentityV2 = &RunWorkerPoolIdentity{}
+	_ identity.Resource   = &RunWorkerPool{}
+)
+
+var RunWorkerPoolIdentityFormat = gcpurls.Template[RunWorkerPoolIdentity](
+	"run.googleapis.com",
+	"projects/{project}/locations/{location}/workerPools/{workerPool}",
+)
+
+// RunWorkerPoolIdentity is the identity of a GCP RunWorkerPool resource.
+// +k8s:deepcopy-gen=false
+type RunWorkerPoolIdentity struct {
+	Project    string
+	Location   string
+	WorkerPool string
+}
+
+func (i *RunWorkerPoolIdentity) String() string {
+	return RunWorkerPoolIdentityFormat.ToString(*i)
+}
+
+func (i *RunWorkerPoolIdentity) FromExternal(ref string) error {
+	parsed, match, err := RunWorkerPoolIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of RunWorkerPool external=%q was not known (use %s): %w", ref, RunWorkerPoolIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of RunWorkerPool external=%q was not known (use %s)", ref, RunWorkerPoolIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
+}
+
+func (i *RunWorkerPoolIdentity) Host() string {
+	return RunWorkerPoolIdentityFormat.Host()
+}
+
+func getIdentityFromRunWorkerPoolSpec(ctx context.Context, reader client.Reader, obj *RunWorkerPool) (*RunWorkerPoolIdentity, error) {
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
+	location := common.ValueOf(obj.Spec.Location)
+	if location == "" {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	}
+
+	return &RunWorkerPoolIdentity{
+		Project:    projectID,
+		Location:   location,
+		WorkerPool: resourceID,
+	}, nil
+}
+
+func (obj *RunWorkerPool) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromRunWorkerPoolSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		statusIdentity := &RunWorkerPoolIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change RunWorkerPool identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
+	}
+
+	return specIdentity, nil
+}
+
+func (i *RunWorkerPoolIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}

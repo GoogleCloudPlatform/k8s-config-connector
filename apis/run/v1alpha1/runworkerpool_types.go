@@ -35,10 +35,18 @@ type RunWorkerPoolSpec struct {
 	ProjectRef *refs.ProjectRef `json:"projectRef"`
 
 	// The location of this resource.
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// The RunWorkerPool name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Optional. Unstructured key value map that can be used to organize and
+	//  categorize objects. User-provided labels are shared with Google's billing
+	//  system, so they can be used to filter, or break down billing charges by
+	//  team, component, environment, state, etc. For more information, visit
+	//  https://cloud.google.com/resource-manager/docs/creating-managing-labels or
+	//  https://cloud.google.com/run/docs/configuring/labels.
+	Labels map[string]string `json:"labels,omitempty"`
 
 	// User-provided description of the WorkerPool. This field currently has a
 	//  512-character limit.
@@ -215,6 +223,7 @@ type WorkerPoolRevisionTemplate struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
