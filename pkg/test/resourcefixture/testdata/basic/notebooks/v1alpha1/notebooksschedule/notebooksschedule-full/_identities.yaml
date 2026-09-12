@@ -16,7 +16,7 @@
   name: n-sch-sa-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //notebooks.googleapis.com/projects/${projectId}/locations/us-central1/schedules/n-sch-full-${uniqueId}
   group: notebooks.cnrm.cloud.google.com
   kind: NotebooksSchedule
   name: n-sch-full-${uniqueId}
