@@ -28,6 +28,7 @@ import (
 	testenvironment "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/environment"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/webhook"
 	cnrmwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
+	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/klog/v2"
@@ -83,7 +84,9 @@ func TestMain(m *testing.M, testType test.Type, crds []*apiextensions.CustomReso
 // SetupMultipleEnvironments starts n API servers to run tests against. The value for 'n' is determined by
 // the length of the 'mgrPtrs' argument. This is useful when testing multi-cluster scenarios.
 func SetupMultipleEnvironments(m *testing.M, testType test.Type, crds []*apiextensions.CustomResourceDefinition, mgrPtrs []*manager.Manager) {
-	logging.SetupLogger()
+	zapOpts := &zap.Options{}
+	zapOpts.BindFlags(flag.CommandLine)
+	logging.SetupLogger(zapOpts)
 	var err error
 
 	envs := make([]*envtest.Environment, 0, len(mgrPtrs))
