@@ -1,0 +1,701 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeNetwork/computenetwork-${uniqueId}",
+    "fields": [
+      {
+        "id": "auto_create_subnetworks",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "delete_default_routes_on_create",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "gateway_ipv4",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "internal_ipv6_range",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "mtu",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computenetwork-${uniqueId}"
+      },
+      {
+        "id": "network_firewall_policy_enforcement_order",
+        "old": "",
+        "new": "AFTER_CLASSIC_FIREWALL"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "routing_mode",
+        "old": "",
+        "new": "REGIONAL"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "dcl",
+    "isNewObject": true,
+    "resource": "NetworkConnectivityHub/networkconnectivityhub-${uniqueId}"
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeSubnetwork/computesubnetwork-${uniqueId}",
+    "fields": [
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "external_ipv6_prefix",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "fingerprint",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "gateway_address",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "internal_ipv6_prefix",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "ip_cidr_range",
+        "old": "",
+        "new": "10.2.0.0/16"
+      },
+      {
+        "id": "ipv6_cidr_range",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computesubnetwork-${uniqueId}"
+      },
+      {
+        "id": "network",
+        "old": "",
+        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}"
+      },
+      {
+        "id": "private_ip_google_access",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "private_ipv6_google_access",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "purpose",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "region",
+        "old": "",
+        "new": "us-central1"
+      },
+      {
+        "id": "secondary_ip_range.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "stack_type",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeSubnetwork/computesubnetworkprivate-${uniqueId}",
+    "fields": [
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "external_ipv6_prefix",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "fingerprint",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "gateway_address",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "internal_ipv6_prefix",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "ip_cidr_range",
+        "old": "",
+        "new": "10.3.0.0/16"
+      },
+      {
+        "id": "ipv6_cidr_range",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computesubnetworkprivate-${uniqueId}"
+      },
+      {
+        "id": "network",
+        "old": "",
+        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}"
+      },
+      {
+        "id": "private_ip_google_access",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "private_ipv6_google_access",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "purpose",
+        "old": "",
+        "new": "PRIVATE_NAT"
+      },
+      {
+        "id": "region",
+        "old": "",
+        "new": "us-central1"
+      },
+      {
+        "id": "secondary_ip_range.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "stack_type",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeRouter/computerouter-${uniqueId}",
+    "fields": [
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "example router description"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computerouter-${uniqueId}"
+      },
+      {
+        "id": "network",
+        "old": "",
+        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "region",
+        "old": "",
+        "new": "us-central1"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeSubnetwork/computesubnetworkprivate2-${uniqueId}",
+    "fields": [
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "external_ipv6_prefix",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "fingerprint",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "gateway_address",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "internal_ipv6_prefix",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "ip_cidr_range",
+        "old": "",
+        "new": "10.4.0.0/16"
+      },
+      {
+        "id": "ipv6_cidr_range",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computesubnetworkprivate2-${uniqueId}"
+      },
+      {
+        "id": "network",
+        "old": "",
+        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}"
+      },
+      {
+        "id": "private_ip_google_access",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "private_ipv6_google_access",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "purpose",
+        "old": "",
+        "new": "PRIVATE_NAT"
+      },
+      {
+        "id": "region",
+        "old": "",
+        "new": "us-central1"
+      },
+      {
+        "id": "secondary_ip_range.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "stack_type",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "dcl",
+    "isNewObject": true,
+    "resource": "NetworkConnectivitySpoke/networkconnectivityspoke-${uniqueId}"
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeRouterNAT/computerouternat-${uniqueId}",
+    "fields": [
+      {
+        "id": "enable_dynamic_port_allocation",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "enable_endpoint_independent_mapping",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "endpoint_types.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "endpoint_types.0",
+        "old": "",
+        "new": "ENDPOINT_TYPE_VM"
+      },
+      {
+        "id": "icmp_idle_timeout_sec",
+        "old": "",
+        "new": "30"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computerouternat-${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "region",
+        "old": "",
+        "new": "us-central1"
+      },
+      {
+        "id": "router",
+        "old": "",
+        "new": "computerouter-${uniqueId}"
+      },
+      {
+        "id": "rules.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "rules.7899529226.action.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "rules.7899529226.action.0.source_nat_active_ips.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "rules.7899529226.action.0.source_nat_active_ranges.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "rules.7899529226.action.0.source_nat_active_ranges.1809523831",
+        "old": "",
+        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetworkprivate-${uniqueId}"
+      },
+      {
+        "id": "rules.7899529226.action.0.source_nat_drain_ips.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "rules.7899529226.action.0.source_nat_drain_ranges.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "rules.7899529226.description",
+        "old": "",
+        "new": "private nat rule example"
+      },
+      {
+        "id": "rules.7899529226.match",
+        "old": "",
+        "new": "nexthop.hub == 'https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/hubs/networkconnectivityhub-${uniqueId}'"
+      },
+      {
+        "id": "rules.7899529226.rule_number",
+        "old": "",
+        "new": "100"
+      },
+      {
+        "id": "source_subnetwork_ip_ranges_to_nat",
+        "old": "",
+        "new": "LIST_OF_SUBNETWORKS"
+      },
+      {
+        "id": "subnetwork.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "subnetwork.4326582489.name",
+        "old": "",
+        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}"
+      },
+      {
+        "id": "subnetwork.4326582489.secondary_ip_range_names.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "subnetwork.4326582489.source_ip_ranges_to_nat.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "subnetwork.4326582489.source_ip_ranges_to_nat.1768336052",
+        "old": "",
+        "new": "ALL_IP_RANGES"
+      },
+      {
+        "id": "tcp_established_idle_timeout_sec",
+        "old": "",
+        "new": "1200"
+      },
+      {
+        "id": "tcp_time_wait_timeout_sec",
+        "old": "",
+        "new": "120"
+      },
+      {
+        "id": "tcp_transitory_idle_timeout_sec",
+        "old": "",
+        "new": "30"
+      },
+      {
+        "id": "type",
+        "old": "",
+        "new": "PRIVATE"
+      },
+      {
+        "id": "udp_idle_timeout_sec",
+        "old": "",
+        "new": "30"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeRouterNAT/computerouternat-${uniqueId}",
+    "fields": [
+      {
+        "id": "enable_dynamic_port_allocation",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "enable_endpoint_independent_mapping",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "endpoint_types.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "endpoint_types.0",
+        "old": "",
+        "new": "ENDPOINT_TYPE_VM"
+      },
+      {
+        "id": "icmp_idle_timeout_sec",
+        "old": "",
+        "new": "30"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computerouternat-${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "region",
+        "old": "",
+        "new": "us-central1"
+      },
+      {
+        "id": "router",
+        "old": "",
+        "new": "computerouter-${uniqueId}"
+      },
+      {
+        "id": "rules.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "rules.7899529226.action.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "rules.7899529226.action.0.source_nat_active_ips.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "rules.7899529226.action.0.source_nat_active_ranges.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "rules.7899529226.action.0.source_nat_active_ranges.1809523831",
+        "old": "",
+        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetworkprivate-${uniqueId}"
+      },
+      {
+        "id": "rules.7899529226.action.0.source_nat_drain_ips.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "rules.7899529226.action.0.source_nat_drain_ranges.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "rules.7899529226.description",
+        "old": "",
+        "new": "private nat rule example"
+      },
+      {
+        "id": "rules.7899529226.match",
+        "old": "",
+        "new": "nexthop.hub == 'https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/hubs/networkconnectivityhub-${uniqueId}'"
+      },
+      {
+        "id": "rules.7899529226.rule_number",
+        "old": "",
+        "new": "100"
+      },
+      {
+        "id": "source_subnetwork_ip_ranges_to_nat",
+        "old": "",
+        "new": "LIST_OF_SUBNETWORKS"
+      },
+      {
+        "id": "subnetwork.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "subnetwork.4326582489.name",
+        "old": "",
+        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}"
+      },
+      {
+        "id": "subnetwork.4326582489.secondary_ip_range_names.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "subnetwork.4326582489.source_ip_ranges_to_nat.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "subnetwork.4326582489.source_ip_ranges_to_nat.1768336052",
+        "old": "",
+        "new": "ALL_IP_RANGES"
+      },
+      {
+        "id": "tcp_established_idle_timeout_sec",
+        "old": "",
+        "new": "1200"
+      },
+      {
+        "id": "tcp_time_wait_timeout_sec",
+        "old": "",
+        "new": "120"
+      },
+      {
+        "id": "tcp_transitory_idle_timeout_sec",
+        "old": "",
+        "new": "30"
+      },
+      {
+        "id": "type",
+        "old": "",
+        "new": "PRIVATE"
+      },
+      {
+        "id": "udp_idle_timeout_sec",
+        "old": "",
+        "new": "30"
+      }
+    ]
+  }
+]
