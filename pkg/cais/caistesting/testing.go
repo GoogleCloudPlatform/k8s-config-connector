@@ -109,6 +109,14 @@ func NormalizeDynamicIDs(s string) string {
 				lines[i] = "  caisURL: unknown"
 			}
 		}
+		// Normalize TranscoderJob IDs: locations/.../jobs/<jobId>
+		if idx := strings.Index(line, "/jobs/"); idx != -1 && strings.Contains(line, "transcoder.googleapis.com") {
+			if strings.Contains(s, "transcoderjob-maximal") {
+				lines[i] = line[:idx+len("/jobs/")] + "transcoderjob-maximal-${uniqueId}"
+			} else if strings.Contains(s, "transcoderjob-minimal") {
+				lines[i] = line[:idx+len("/jobs/")] + "transcoderjob-minimal-${uniqueId}"
+			}
+		}
 		// Normalize BigQuery Connection IDs: locations/.../connections/<connectionId>
 		if idx := strings.Index(line, "/connections/"); idx != -1 {
 			lines[i] = line[:idx+len("/connections/")]

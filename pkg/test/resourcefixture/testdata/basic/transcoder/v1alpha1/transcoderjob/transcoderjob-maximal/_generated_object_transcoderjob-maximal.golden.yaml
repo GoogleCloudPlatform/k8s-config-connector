@@ -1,0 +1,36 @@
+apiVersion: transcoder.cnrm.cloud.google.com/v1alpha1
+kind: TranscoderJob
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: transcoderjob-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  inputURI: gs://transcoder-bucket-${uniqueId}/input.mp4
+  location: us-central1
+  mode: PROCESSING_MODE_INTERACTIVE
+  optimization: AUTODETECT
+  outputURI: gs://transcoder-bucket-${uniqueId}/output/
+  projectRef:
+    external: ${projectId}
+  templateID: preset/web-hd
+  ttlAfterCompletionDays: 1
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/jobs/c94b4b0d-0945-456a-bb91-42b3b64ff638
+  observedGeneration: 1
+  observedState:
+    config:
+      inputs:
+      - {}
+    createTime: "1970-01-01T00:00:00Z"
+    state: PENDING
