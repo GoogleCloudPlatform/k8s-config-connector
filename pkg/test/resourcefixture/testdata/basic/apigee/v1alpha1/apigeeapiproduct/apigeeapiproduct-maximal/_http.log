@@ -1,0 +1,396 @@
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts/apigeeapiproduct-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "no connections available from the Apigee connect agent(s): refer documentation to triage further",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "approvalType": "auto",
+  "attributes": [
+    {
+      "name": "env",
+      "value": "prod"
+    },
+    {
+      "name": "team",
+      "value": "apigee"
+    }
+  ],
+  "description": "A complete and maximal API product test",
+  "displayName": "Maximal API Product",
+  "name": "apigeeapiproduct-${uniqueId}",
+  "operationGroup": {
+    "operationConfigType": "proxy",
+    "operationConfigs": [
+      {
+        "apiSource": "my-api-source",
+        "operations": [
+          {
+            "methods": [
+              "GET",
+              "POST"
+            ],
+            "resource": "/v1/users"
+          }
+        ],
+        "quota": {
+          "interval": "1",
+          "limit": "50",
+          "timeUnit": "minute"
+        }
+      }
+    ]
+  },
+  "quota": "100",
+  "quotaCounterScope": "PROXY",
+  "quotaInterval": "1",
+  "quotaTimeUnit": "hour",
+  "scopes": [
+    "read",
+    "write"
+  ]
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "no connections available from the Apigee connect agent(s): refer documentation to triage further",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts/apigeeapiproduct-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "no connections available from the Apigee connect agent(s): refer documentation to triage further",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "approvalType": "auto",
+  "attributes": [
+    {
+      "name": "env",
+      "value": "prod"
+    },
+    {
+      "name": "team",
+      "value": "apigee"
+    }
+  ],
+  "description": "A complete and maximal API product test",
+  "displayName": "Maximal API Product",
+  "name": "apigeeapiproduct-${uniqueId}",
+  "operationGroup": {
+    "operationConfigType": "proxy",
+    "operationConfigs": [
+      {
+        "apiSource": "my-api-source",
+        "operations": [
+          {
+            "methods": [
+              "GET",
+              "POST"
+            ],
+            "resource": "/v1/users"
+          }
+        ],
+        "quota": {
+          "interval": "1",
+          "limit": "50",
+          "timeUnit": "minute"
+        }
+      }
+    ]
+  },
+  "quota": "100",
+  "quotaCounterScope": "PROXY",
+  "quotaInterval": "1",
+  "quotaTimeUnit": "hour",
+  "scopes": [
+    "read",
+    "write"
+  ]
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "no connections available from the Apigee connect agent(s): refer documentation to triage further",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts/apigeeapiproduct-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "no connections available from the Apigee connect agent(s): refer documentation to triage further",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "approvalType": "auto",
+  "attributes": [
+    {
+      "name": "env",
+      "value": "prod"
+    },
+    {
+      "name": "team",
+      "value": "platform"
+    }
+  ],
+  "description": "A complete and maximal API product test with updates",
+  "displayName": "Maximal API Product Updated",
+  "name": "apigeeapiproduct-${uniqueId}",
+  "operationGroup": {
+    "operationConfigType": "proxy",
+    "operationConfigs": [
+      {
+        "apiSource": "my-api-source",
+        "operations": [
+          {
+            "methods": [
+              "GET",
+              "POST"
+            ],
+            "resource": "/v1/users"
+          }
+        ],
+        "quota": {
+          "interval": "1",
+          "limit": "50",
+          "timeUnit": "minute"
+        }
+      }
+    ]
+  },
+  "quota": "200",
+  "quotaCounterScope": "PROXY",
+  "quotaInterval": "1",
+  "quotaTimeUnit": "hour",
+  "scopes": [
+    "read",
+    "write"
+  ]
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "no connections available from the Apigee connect agent(s): refer documentation to triage further",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts/apigeeapiproduct-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "no connections available from the Apigee connect agent(s): refer documentation to triage further",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "approvalType": "auto",
+  "attributes": [
+    {
+      "name": "env",
+      "value": "prod"
+    },
+    {
+      "name": "team",
+      "value": "platform"
+    }
+  ],
+  "description": "A complete and maximal API product test with updates",
+  "displayName": "Maximal API Product Updated",
+  "name": "apigeeapiproduct-${uniqueId}",
+  "operationGroup": {
+    "operationConfigType": "proxy",
+    "operationConfigs": [
+      {
+        "apiSource": "my-api-source",
+        "operations": [
+          {
+            "methods": [
+              "GET",
+              "POST"
+            ],
+            "resource": "/v1/users"
+          }
+        ],
+        "quota": {
+          "interval": "1",
+          "limit": "50",
+          "timeUnit": "minute"
+        }
+      }
+    ]
+  },
+  "quota": "200",
+  "quotaCounterScope": "PROXY",
+  "quotaInterval": "1",
+  "quotaTimeUnit": "hour",
+  "scopes": [
+    "read",
+    "write"
+  ]
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "no connections available from the Apigee connect agent(s): refer documentation to triage further",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts/apigeeapiproduct-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "no connections available from the Apigee connect agent(s): refer documentation to triage further",
+    "status": "FAILED_PRECONDITION"
+  }
+}
