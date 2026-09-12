@@ -134,22 +134,11 @@ func (a *floorSettingAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *floorSettingAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+	// ModelArmorFloorSetting is a singleton resource that cannot be created.
+	// It can only be fetched and updated.
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating ModelArmorFloorSetting", "name", a.id)
-
-	a.desired.Name = a.id.String()
-
-	req := &pb.UpdateFloorSettingRequest{
-		FloorSetting: a.desired,
-	}
-
-	created, err := a.gcpClient.UpdateFloorSetting(ctx, req)
-	if err != nil {
-		return fmt.Errorf("creating ModelArmorFloorSetting %s: %w", a.id, err)
-	}
-	log.V(2).Info("successfully created ModelArmorFloorSetting", "name", a.id)
-
-	return a.updateStatus(ctx, createOp, created)
+	log.V(2).Info("creating ModelArmorFloorSetting is a no-op", "name", a.id)
+	return nil
 }
 
 func (a *floorSettingAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {

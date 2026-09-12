@@ -2871,7 +2871,6 @@
 [missing_field] crd=mlenginemodels.mlengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.onlinePredictionLogging" is not set in unstructured objects
 [missing_field] crd=modelarmorfloorsettings.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.filterConfig.sdpSettings.advancedConfig.deidentifyTemplateRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=modelarmorfloorsettings.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.filterConfig.sdpSettings.advancedConfig.inspectTemplateRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=modelarmorfloorsettings.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.integratedServices[]" is not set in unstructured objects
 [missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.filterConfig.sdpSettings.advancedConfig.deidentifyTemplateRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.filterConfig.sdpSettings.advancedConfig.inspectTemplateRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=netappbackuppolicies.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
