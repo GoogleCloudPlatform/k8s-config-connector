@@ -1,0 +1,339 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "PubSubTopic/pubsubtopic-1-${uniqueId}",
+    "fields": [
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "message_storage_policy.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "pubsubtopic-1-${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "schema_settings.#",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "MonitoringNotificationChannel/monitoringnotificationchannel-1-${uniqueId}",
+    "fields": [
+      {
+        "id": "display_name",
+        "old": "",
+        "new": "monitoringnotificationchannel-1-${uniqueId}"
+      },
+      {
+        "id": "enabled",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "force_delete",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "labels.%",
+        "old": "",
+        "new": "1"
+      },
+      {
+        "id": "labels.email_address",
+        "old": "",
+        "new": "test@example.com"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "type",
+        "old": "",
+        "new": "email"
+      },
+      {
+        "id": "user_labels.%",
+        "old": "",
+        "new": "2"
+      },
+      {
+        "id": "user_labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "user_labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "verification_status",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "PubSubTopic/pubsubtopic-2-${uniqueId}",
+    "fields": [
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "message_storage_policy.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "pubsubtopic-2-${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "schema_settings.#",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "MonitoringNotificationChannel/monitoringnotificationchannel-2-${uniqueId}",
+    "fields": [
+      {
+        "id": "display_name",
+        "old": "",
+        "new": "monitoringnotificationchannel-2-${uniqueId}"
+      },
+      {
+        "id": "enabled",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "force_delete",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "labels.%",
+        "old": "",
+        "new": "1"
+      },
+      {
+        "id": "labels.email_address",
+        "old": "",
+        "new": "test@example.com"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "type",
+        "old": "",
+        "new": "email"
+      },
+      {
+        "id": "user_labels.%",
+        "old": "",
+        "new": "2"
+      },
+      {
+        "id": "user_labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "user_labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "verification_status",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "Project/project-1-${uniqueId}",
+    "fields": [
+      {
+        "id": "auto_create_network",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "billing_account",
+        "old": "",
+        "new": "123456-777777-000003"
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "project-1-${uniqueId}"
+      },
+      {
+        "id": "number",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "org_id",
+        "old": "",
+        "new": "123450001"
+      },
+      {
+        "id": "project_id",
+        "old": "",
+        "new": "project-1-${uniqueId}"
+      },
+      {
+        "id": "skip_delete",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "Project/project-2-${uniqueId}",
+    "fields": [
+      {
+        "id": "auto_create_network",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "billing_account",
+        "old": "",
+        "new": "123456-777777-000003"
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "project-2-${uniqueId}"
+      },
+      {
+        "id": "number",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "org_id",
+        "old": "",
+        "new": "123450001"
+      },
+      {
+        "id": "project_id",
+        "old": "",
+        "new": "project-2-${uniqueId}"
+      },
+      {
+        "id": "skip_delete",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "dcl",
+    "isNewObject": true,
+    "resource": "BillingBudgetsBudget/billingbudgetsbudget-${uniqueId}"
+  }
+]
