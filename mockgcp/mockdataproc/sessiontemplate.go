@@ -47,6 +47,9 @@ func (s *sessionTemplateControllerServer) GetSessionTemplate(ctx context.Context
 
 	obj := &pb.SessionTemplate{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Not found: Session Template %s", fqn)
+		}
 		return nil, err
 	}
 
@@ -96,6 +99,9 @@ func (s *sessionTemplateControllerServer) UpdateSessionTemplate(ctx context.Cont
 
 	obj := &pb.SessionTemplate{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Not found: Session Template %s", fqn)
+		}
 		return nil, err
 	}
 
@@ -125,6 +131,9 @@ func (s *sessionTemplateControllerServer) DeleteSessionTemplate(ctx context.Cont
 
 	deleted := &pb.SessionTemplate{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Not found: Session Template %s", fqn)
+		}
 		return nil, err
 	}
 
