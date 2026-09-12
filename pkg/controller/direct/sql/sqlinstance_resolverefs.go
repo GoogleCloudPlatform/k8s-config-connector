@@ -49,6 +49,9 @@ func ResolveSQLInstanceRefs(ctx context.Context, kube client.Reader, obj *krm.SQ
 	if err := resolvePrivateNetworkRef(ctx, kube, obj); err != nil {
 		return err
 	}
+	if err := resolvePscAutoConnectionsRefs(ctx, kube, obj); err != nil {
+		return err
+	}
 	if err := resolveAuditLogBucketRef(ctx, kube, obj); err != nil {
 		return err
 	}
@@ -233,6 +236,31 @@ func resolvePrivateNetworkRef(ctx context.Context, kube client.Reader, obj *krm.
 	netRef := obj.Spec.Settings.IpConfiguration.PrivateNetworkRef
 	if err := netRef.Normalize(ctx, kube, obj.GetNamespace()); err != nil {
 		return err
+	}
+	return nil
+}
+
+func resolvePscAutoConnectionsRefs(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
+	if obj.Spec.Settings.IpConfiguration == nil || len(obj.Spec.Settings.IpConfiguration.PscConfig) == 0 {
+		return nil
+	}
+	for i := range obj.Spec.Settings.IpConfiguration.PscConfig {
+		for j := range obj.Spec.Settings.IpConfiguration.PscConfig[i].PscAutoConnections {
+			conn := &obj.Spec.Settings.IpConfiguration.PscConfig[i].PscAutoConnections[j]
+			if conn.ConsumerNetworkRef != nil {
+				if err := conn.ConsumerNetworkRef.Normalize(ctx, kube, obj.GetNamespace()); err != nil {
+					return err
+				}
+				if conn.ConsumerNetwork == nil || *conn.ConsumerNetwork == "" {
+					conn.ConsumerNetwork = direct.PtrTo(conn.ConsumerNetworkRef.External)
+				}
+			}
+			if (conn.ConsumerProject == nil || *conn.ConsumerProject == "") && conn.ConsumerServiceProjectId != nil {
+				conn.ConsumerProject = conn.ConsumerServiceProjectId
+			} else if (conn.ConsumerServiceProjectId == nil || *conn.ConsumerServiceProjectId == "") && conn.ConsumerProject != nil {
+				conn.ConsumerServiceProjectId = conn.ConsumerProject
+			}
+		}
 	}
 	return nil
 }
