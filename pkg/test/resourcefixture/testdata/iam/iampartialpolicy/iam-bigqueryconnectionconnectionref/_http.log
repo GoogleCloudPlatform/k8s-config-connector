@@ -145,18 +145,20 @@ X-Xss-Protection: 0
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
   },
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
+  "maintenanceVersion": "MYSQL_5_7_44.R20260726.00_05",
   "name": "sqlinstance-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -178,6 +180,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -189,10 +192,12 @@ X-Xss-Protection: 0
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
+    "enableDataplexIntegration": true,
     "ipConfiguration": {
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -201,6 +206,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -283,6 +289,46 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
+    },
+    {
+      "displayName": "MySQL 8.0.39",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_39"
+    },
+    {
+      "displayName": "MySQL 8.0.40",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_40"
+    },
+    {
+      "displayName": "MySQL 8.0.41",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_41"
+    },
+    {
+      "displayName": "MySQL 8.0.42",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_42"
+    },
+    {
+      "displayName": "MySQL 8.0.43",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_43"
+    },
+    {
+      "displayName": "MySQL 8.0.44",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_44"
+    },
+    {
+      "displayName": "MySQL 8.0.45",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_45"
+    },
+    {
+      "displayName": "MySQL 8.0.46",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_46"
     }
   ]
 }
@@ -307,6 +353,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqlinstance-${uniqueId}",
       "kind": "sql#user",
       "name": "root",
@@ -397,18 +444,20 @@ X-Xss-Protection: 0
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
   },
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
+  "maintenanceVersion": "MYSQL_5_7_44.R20260726.00_05",
   "name": "sqlinstance-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -430,6 +479,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -441,10 +491,12 @@ X-Xss-Protection: 0
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
+    "enableDataplexIntegration": true,
     "ipConfiguration": {
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -453,6 +505,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -535,6 +588,46 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
+    },
+    {
+      "displayName": "MySQL 8.0.39",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_39"
+    },
+    {
+      "displayName": "MySQL 8.0.40",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_40"
+    },
+    {
+      "displayName": "MySQL 8.0.41",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_41"
+    },
+    {
+      "displayName": "MySQL 8.0.42",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_42"
+    },
+    {
+      "displayName": "MySQL 8.0.43",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_43"
+    },
+    {
+      "displayName": "MySQL 8.0.44",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_44"
+    },
+    {
+      "displayName": "MySQL 8.0.45",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_45"
+    },
+    {
+      "displayName": "MySQL 8.0.46",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_46"
     }
   ]
 }
@@ -597,6 +690,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqlinstance-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
@@ -638,18 +732,20 @@ X-Xss-Protection: 0
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
   },
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
+  "maintenanceVersion": "MYSQL_5_7_44.R20260726.00_05",
   "name": "sqlinstance-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -671,6 +767,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -682,10 +779,12 @@ X-Xss-Protection: 0
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
+    "enableDataplexIntegration": true,
     "ipConfiguration": {
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -694,6 +793,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -776,6 +876,46 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
+    },
+    {
+      "displayName": "MySQL 8.0.39",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_39"
+    },
+    {
+      "displayName": "MySQL 8.0.40",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_40"
+    },
+    {
+      "displayName": "MySQL 8.0.41",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_41"
+    },
+    {
+      "displayName": "MySQL 8.0.42",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_42"
+    },
+    {
+      "displayName": "MySQL 8.0.43",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_43"
+    },
+    {
+      "displayName": "MySQL 8.0.44",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_44"
+    },
+    {
+      "displayName": "MySQL 8.0.45",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_45"
+    },
+    {
+      "displayName": "MySQL 8.0.46",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_46"
     }
   ]
 }
@@ -800,6 +940,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqlinstance-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
@@ -841,18 +982,20 @@ X-Xss-Protection: 0
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
   },
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
+  "maintenanceVersion": "MYSQL_5_7_44.R20260726.00_05",
   "name": "sqlinstance-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -874,6 +1017,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -885,10 +1029,12 @@ X-Xss-Protection: 0
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
+    "enableDataplexIntegration": true,
     "ipConfiguration": {
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -897,6 +1043,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -979,6 +1126,46 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
+    },
+    {
+      "displayName": "MySQL 8.0.39",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_39"
+    },
+    {
+      "displayName": "MySQL 8.0.40",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_40"
+    },
+    {
+      "displayName": "MySQL 8.0.41",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_41"
+    },
+    {
+      "displayName": "MySQL 8.0.42",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_42"
+    },
+    {
+      "displayName": "MySQL 8.0.43",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_43"
+    },
+    {
+      "displayName": "MySQL 8.0.44",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_44"
+    },
+    {
+      "displayName": "MySQL 8.0.45",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_45"
+    },
+    {
+      "displayName": "MySQL 8.0.46",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_46"
     }
   ]
 }
@@ -1009,8 +1196,7 @@ X-Xss-Protection: 0
         "reason": "notFound"
       }
     ],
-    "message": "Not Found",
-    "status": "NOT_FOUND"
+    "message": "Not Found"
   }
 }
 
@@ -1117,7 +1303,7 @@ X-Xss-Protection: 0
   "creationTime": "123456789",
   "hasCredential": true,
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/2732a9c6-06a7-428a-889d-c2111a321f8c"
 }
 
 ---
@@ -1143,7 +1329,443 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "etag": "abcdef0123A="
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "projects/${projectId}/roles/storage.buckets.exemptFromIpFilter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-agentgateway.iam.gserviceaccount.com"
+      ],
+      "role": "roles/agentgateway.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.customCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-ex-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.extensionCustomCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-ex.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.extensionServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/alloydb.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.coreServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apihub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.runtimeProjectServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/artifactregistry.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.dataEditor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.metadataViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.builds.builder"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-config.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudconfig.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com"
+      ],
+      "role": "roles/compute.instanceGroupManagerServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.networkAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-configdelivery.iam.gserviceaccount.com"
+      ],
+      "role": "roles/configdelivery.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-contactcenterinsights.iam.gserviceaccount.com"
+      ],
+      "role": "roles/contactcenterinsights.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.defaultNodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloud-cw.iam.gserviceaccount.com"
+      ],
+      "role": "roles/contentwarehouse.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dataform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/datastore.owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-devconnect.iam.gserviceaccount.com"
+      ],
+      "role": "roles/developerconnect.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dialogflow.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dialogflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/discoveryengine.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-discoveryengine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/discoveryengine.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:gsa-mifgja2biubloey@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-omjiqcuhjnhsd4y@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-xtk26pq3xopdsfq@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-filer.iam.gserviceaccount.com"
+      ],
+      "role": "roles/file.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@firebase-rules.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebaserules.system"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-firestore.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firestore.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkebackup.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkebackup.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkehub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcontainer.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.containerServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcpmachine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.controlPlaneMachineServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudnpmachine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.nodePoolMachineServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloud.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-hypercomputecluster.iam.gserviceaccount.com"
+      ],
+      "role": "roles/hypercomputecluster.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-livestream.iam.gserviceaccount.com"
+      ],
+      "role": "roles/livestream.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-memcache-sa.iam.gserviceaccount.com"
+      ],
+      "role": "roles/memcache.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-migcenter.iam.gserviceaccount.com"
+      ],
+      "role": "roles/migrationcenter.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-modelarmor.iam.gserviceaccount.com"
+      ],
+      "role": "roles/modelarmor.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkactions.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkactions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networksecurity.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-ns-authz.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networksecurity.authzServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-notebooks.iam.gserviceaccount.com"
+      ],
+      "role": "roles/notebooks.serviceAgent"
+    },
+    {
+      "members": [
+        "user:barni@google.com",
+        "user:fbongiovanni@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networksecurity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privateca.certificateRequester"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-rma.iam.gserviceaccount.com"
+      ],
+      "role": "roles/rapidmigrationassessment.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/redis.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/run.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dep.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceextensions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.networksAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/storage.objectAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-storageinsights.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storageinsights.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-transcoder.iam.gserviceaccount.com"
+      ],
+      "role": "roles/transcoder.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vectorsearch.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vectorsearch.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
+      ],
+      "role": "roles/websecurityscanner.serviceAgent"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
 }
 
 ---
@@ -1169,7 +1791,443 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "etag": "abcdef0123A="
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "projects/${projectId}/roles/storage.buckets.exemptFromIpFilter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-agentgateway.iam.gserviceaccount.com"
+      ],
+      "role": "roles/agentgateway.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.customCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-ex-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.extensionCustomCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-ex.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.extensionServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/alloydb.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.coreServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apihub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.runtimeProjectServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/artifactregistry.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.dataEditor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.metadataViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.builds.builder"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-config.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudconfig.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com"
+      ],
+      "role": "roles/compute.instanceGroupManagerServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.networkAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-configdelivery.iam.gserviceaccount.com"
+      ],
+      "role": "roles/configdelivery.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-contactcenterinsights.iam.gserviceaccount.com"
+      ],
+      "role": "roles/contactcenterinsights.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.defaultNodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloud-cw.iam.gserviceaccount.com"
+      ],
+      "role": "roles/contentwarehouse.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dataform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/datastore.owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-devconnect.iam.gserviceaccount.com"
+      ],
+      "role": "roles/developerconnect.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dialogflow.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dialogflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/discoveryengine.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-discoveryengine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/discoveryengine.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:gsa-mifgja2biubloey@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-omjiqcuhjnhsd4y@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-xtk26pq3xopdsfq@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-filer.iam.gserviceaccount.com"
+      ],
+      "role": "roles/file.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@firebase-rules.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebaserules.system"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-firestore.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firestore.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkebackup.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkebackup.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkehub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcontainer.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.containerServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcpmachine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.controlPlaneMachineServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudnpmachine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.nodePoolMachineServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloud.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-hypercomputecluster.iam.gserviceaccount.com"
+      ],
+      "role": "roles/hypercomputecluster.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-livestream.iam.gserviceaccount.com"
+      ],
+      "role": "roles/livestream.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-memcache-sa.iam.gserviceaccount.com"
+      ],
+      "role": "roles/memcache.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-migcenter.iam.gserviceaccount.com"
+      ],
+      "role": "roles/migrationcenter.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-modelarmor.iam.gserviceaccount.com"
+      ],
+      "role": "roles/modelarmor.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkactions.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkactions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networksecurity.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-ns-authz.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networksecurity.authzServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-notebooks.iam.gserviceaccount.com"
+      ],
+      "role": "roles/notebooks.serviceAgent"
+    },
+    {
+      "members": [
+        "user:barni@google.com",
+        "user:fbongiovanni@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networksecurity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privateca.certificateRequester"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-rma.iam.gserviceaccount.com"
+      ],
+      "role": "roles/rapidmigrationassessment.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/redis.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/run.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dep.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceextensions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.networksAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/storage.objectAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-storageinsights.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storageinsights.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-transcoder.iam.gserviceaccount.com"
+      ],
+      "role": "roles/transcoder.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vectorsearch.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vectorsearch.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
+      ],
+      "role": "roles/websecurityscanner.serviceAgent"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
 }
 
 ---
@@ -1183,9 +2241,442 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "bindings": [
       {
         "members": [
+          "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "projects/${projectId}/roles/storage.buckets.exemptFromIpFilter"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-agentgateway.iam.gserviceaccount.com"
+        ],
+        "role": "roles/agentgateway.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-cc.iam.gserviceaccount.com"
+        ],
+        "role": "roles/aiplatform.customCodeServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-vertex-ex-cc.iam.gserviceaccount.com"
+        ],
+        "role": "roles/aiplatform.extensionCustomCodeServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-vertex-ex.iam.gserviceaccount.com"
+        ],
+        "role": "roles/aiplatform.extensionServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+        ],
+        "role": "roles/aiplatform.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+        ],
+        "role": "roles/alloydb.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
+        ],
+        "role": "roles/apigee.coreServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/apihub.admin"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-apihub.iam.gserviceaccount.com"
+        ],
+        "role": "roles/apihub.runtimeProjectServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+        ],
+        "role": "roles/artifactregistry.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+        ],
+        "role": "roles/bigquery.dataEditor"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+        ],
+        "role": "roles/bigquery.metadataViewer"
+      },
+      {
+        "members": [
+          "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
+        ],
+        "role": "roles/cloudbuild.builds.builder"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+        ],
+        "role": "roles/cloudbuild.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-config.iam.gserviceaccount.com"
+        ],
+        "role": "roles/cloudconfig.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/cloudkms.admin"
+      },
+      {
+        "members": [
           "serviceAccount:service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com"
         ],
         "role": "roles/cloudsql.client"
+      },
+      {
+        "members": [
+          "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com"
+        ],
+        "role": "roles/compute.instanceGroupManagerServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/compute.networkAdmin"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+        ],
+        "role": "roles/compute.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-configdelivery.iam.gserviceaccount.com"
+        ],
+        "role": "roles/configdelivery.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-contactcenterinsights.iam.gserviceaccount.com"
+        ],
+        "role": "roles/contactcenterinsights.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+        ],
+        "role": "roles/container.defaultNodeServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+        ],
+        "role": "roles/container.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+        ],
+        "role": "roles/containeranalysis.ServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+        ],
+        "role": "roles/containerregistry.ServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-cloud-cw.iam.gserviceaccount.com"
+        ],
+        "role": "roles/contentwarehouse.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
+        ],
+        "role": "roles/dataflow.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-dataform.iam.gserviceaccount.com"
+        ],
+        "role": "roles/dataform.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
+        ],
+        "role": "roles/dataproc.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/datastore.owner"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-devconnect.iam.gserviceaccount.com"
+        ],
+        "role": "roles/developerconnect.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-dialogflow.iam.gserviceaccount.com"
+        ],
+        "role": "roles/dialogflow.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/discoveryengine.admin"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-discoveryengine.iam.gserviceaccount.com"
+        ],
+        "role": "roles/discoveryengine.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+          "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+          "serviceAccount:gsa-mifgja2biubloey@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:gsa-omjiqcuhjnhsd4y@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:gsa-xtk26pq3xopdsfq@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/editor"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@cloud-filer.iam.gserviceaccount.com"
+        ],
+        "role": "roles/file.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@firebase-rules.iam.gserviceaccount.com"
+        ],
+        "role": "roles/firebaserules.system"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-firestore.iam.gserviceaccount.com"
+        ],
+        "role": "roles/firestore.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-gkebackup.iam.gserviceaccount.com"
+        ],
+        "role": "roles/gkebackup.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
+        ],
+        "role": "roles/gkehub.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcontainer.iam.gserviceaccount.com"
+        ],
+        "role": "roles/gkemulticloud.containerServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcpmachine.iam.gserviceaccount.com"
+        ],
+        "role": "roles/gkemulticloud.controlPlaneMachineServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudnpmachine.iam.gserviceaccount.com"
+        ],
+        "role": "roles/gkemulticloud.nodePoolMachineServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloud.iam.gserviceaccount.com"
+        ],
+        "role": "roles/gkemulticloud.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-hypercomputecluster.iam.gserviceaccount.com"
+        ],
+        "role": "roles/hypercomputecluster.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-livestream.iam.gserviceaccount.com"
+        ],
+        "role": "roles/livestream.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@cloud-memcache-sa.iam.gserviceaccount.com"
+        ],
+        "role": "roles/memcache.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-migcenter.iam.gserviceaccount.com"
+        ],
+        "role": "roles/migrationcenter.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-modelarmor.iam.gserviceaccount.com"
+        ],
+        "role": "roles/modelarmor.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-networkactions.iam.gserviceaccount.com"
+        ],
+        "role": "roles/networkactions.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+        ],
+        "role": "roles/networkconnectivity.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/networksecurity.admin"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-ns-authz.iam.gserviceaccount.com"
+        ],
+        "role": "roles/networksecurity.authzServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-notebooks.iam.gserviceaccount.com"
+        ],
+        "role": "roles/notebooks.serviceAgent"
+      },
+      {
+        "members": [
+          "user:barni@google.com",
+          "user:fbongiovanni@google.com"
+        ],
+        "role": "roles/owner"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-networksecurity.iam.gserviceaccount.com"
+        ],
+        "role": "roles/privateca.certificateRequester"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+        ],
+        "role": "roles/pubsub.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-rma.iam.gserviceaccount.com"
+        ],
+        "role": "roles/rapidmigrationassessment.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
+        ],
+        "role": "roles/redis.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/resourcemanager.projectIamAdmin"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+        ],
+        "role": "roles/run.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-dep.iam.gserviceaccount.com"
+        ],
+        "role": "roles/serviceextensions.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/servicenetworking.networksAdmin"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
+        ],
+        "role": "roles/servicenetworking.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+        ],
+        "role": "roles/storage.admin"
+      },
+      {
+        "members": [
+          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+        ],
+        "role": "roles/storage.objectAdmin"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-storageinsights.iam.gserviceaccount.com"
+        ],
+        "role": "roles/storageinsights.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-transcoder.iam.gserviceaccount.com"
+        ],
+        "role": "roles/transcoder.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-vectorsearch.iam.gserviceaccount.com"
+        ],
+        "role": "roles/vectorsearch.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
+        ],
+        "role": "roles/websecurityscanner.serviceAgent"
       }
     ],
     "etag": "abcdef0123A=",
@@ -1208,9 +2699,442 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "projects/${projectId}/roles/storage.buckets.exemptFromIpFilter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-agentgateway.iam.gserviceaccount.com"
+      ],
+      "role": "roles/agentgateway.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.customCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-ex-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.extensionCustomCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-ex.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.extensionServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/alloydb.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.coreServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apihub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.runtimeProjectServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/artifactregistry.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.dataEditor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.metadataViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.builds.builder"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-config.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudconfig.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.admin"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudsql.client"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com"
+      ],
+      "role": "roles/compute.instanceGroupManagerServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.networkAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-configdelivery.iam.gserviceaccount.com"
+      ],
+      "role": "roles/configdelivery.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-contactcenterinsights.iam.gserviceaccount.com"
+      ],
+      "role": "roles/contactcenterinsights.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.defaultNodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloud-cw.iam.gserviceaccount.com"
+      ],
+      "role": "roles/contentwarehouse.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dataform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/datastore.owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-devconnect.iam.gserviceaccount.com"
+      ],
+      "role": "roles/developerconnect.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dialogflow.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dialogflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/discoveryengine.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-discoveryengine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/discoveryengine.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:gsa-mifgja2biubloey@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-omjiqcuhjnhsd4y@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-xtk26pq3xopdsfq@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-filer.iam.gserviceaccount.com"
+      ],
+      "role": "roles/file.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@firebase-rules.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebaserules.system"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-firestore.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firestore.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkebackup.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkebackup.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkehub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcontainer.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.containerServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcpmachine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.controlPlaneMachineServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudnpmachine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.nodePoolMachineServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloud.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-hypercomputecluster.iam.gserviceaccount.com"
+      ],
+      "role": "roles/hypercomputecluster.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-livestream.iam.gserviceaccount.com"
+      ],
+      "role": "roles/livestream.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-memcache-sa.iam.gserviceaccount.com"
+      ],
+      "role": "roles/memcache.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-migcenter.iam.gserviceaccount.com"
+      ],
+      "role": "roles/migrationcenter.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-modelarmor.iam.gserviceaccount.com"
+      ],
+      "role": "roles/modelarmor.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkactions.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkactions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networksecurity.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-ns-authz.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networksecurity.authzServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-notebooks.iam.gserviceaccount.com"
+      ],
+      "role": "roles/notebooks.serviceAgent"
+    },
+    {
+      "members": [
+        "user:barni@google.com",
+        "user:fbongiovanni@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networksecurity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privateca.certificateRequester"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-rma.iam.gserviceaccount.com"
+      ],
+      "role": "roles/rapidmigrationassessment.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/redis.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/run.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dep.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceextensions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.networksAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/storage.objectAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-storageinsights.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storageinsights.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-transcoder.iam.gserviceaccount.com"
+      ],
+      "role": "roles/transcoder.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vectorsearch.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vectorsearch.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
+      ],
+      "role": "roles/websecurityscanner.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -1243,9 +3167,442 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "projects/${projectId}/roles/storage.buckets.exemptFromIpFilter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-agentgateway.iam.gserviceaccount.com"
+      ],
+      "role": "roles/agentgateway.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.customCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-ex-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.extensionCustomCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-ex.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.extensionServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/alloydb.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.coreServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apihub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.runtimeProjectServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/artifactregistry.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.dataEditor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.metadataViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.builds.builder"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-config.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudconfig.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.admin"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudsql.client"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com"
+      ],
+      "role": "roles/compute.instanceGroupManagerServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.networkAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-configdelivery.iam.gserviceaccount.com"
+      ],
+      "role": "roles/configdelivery.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-contactcenterinsights.iam.gserviceaccount.com"
+      ],
+      "role": "roles/contactcenterinsights.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.defaultNodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloud-cw.iam.gserviceaccount.com"
+      ],
+      "role": "roles/contentwarehouse.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dataform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/datastore.owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-devconnect.iam.gserviceaccount.com"
+      ],
+      "role": "roles/developerconnect.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dialogflow.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dialogflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/discoveryengine.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-discoveryengine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/discoveryengine.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:gsa-mifgja2biubloey@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-omjiqcuhjnhsd4y@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-xtk26pq3xopdsfq@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-filer.iam.gserviceaccount.com"
+      ],
+      "role": "roles/file.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@firebase-rules.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebaserules.system"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-firestore.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firestore.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkebackup.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkebackup.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkehub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcontainer.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.containerServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcpmachine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.controlPlaneMachineServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudnpmachine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.nodePoolMachineServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloud.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-hypercomputecluster.iam.gserviceaccount.com"
+      ],
+      "role": "roles/hypercomputecluster.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-livestream.iam.gserviceaccount.com"
+      ],
+      "role": "roles/livestream.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-memcache-sa.iam.gserviceaccount.com"
+      ],
+      "role": "roles/memcache.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-migcenter.iam.gserviceaccount.com"
+      ],
+      "role": "roles/migrationcenter.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-modelarmor.iam.gserviceaccount.com"
+      ],
+      "role": "roles/modelarmor.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkactions.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkactions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networksecurity.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-ns-authz.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networksecurity.authzServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-notebooks.iam.gserviceaccount.com"
+      ],
+      "role": "roles/notebooks.serviceAgent"
+    },
+    {
+      "members": [
+        "user:barni@google.com",
+        "user:fbongiovanni@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networksecurity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privateca.certificateRequester"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-rma.iam.gserviceaccount.com"
+      ],
+      "role": "roles/rapidmigrationassessment.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/redis.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/run.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dep.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceextensions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.networksAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/storage.objectAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-storageinsights.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storageinsights.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-transcoder.iam.gserviceaccount.com"
+      ],
+      "role": "roles/transcoder.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vectorsearch.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vectorsearch.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
+      ],
+      "role": "roles/websecurityscanner.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -1278,9 +3635,442 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "projects/${projectId}/roles/storage.buckets.exemptFromIpFilter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-agentgateway.iam.gserviceaccount.com"
+      ],
+      "role": "roles/agentgateway.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.customCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-ex-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.extensionCustomCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-ex.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.extensionServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/alloydb.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.coreServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apihub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.runtimeProjectServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/artifactregistry.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.dataEditor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.metadataViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.builds.builder"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-config.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudconfig.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.admin"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudsql.client"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com"
+      ],
+      "role": "roles/compute.instanceGroupManagerServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.networkAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-configdelivery.iam.gserviceaccount.com"
+      ],
+      "role": "roles/configdelivery.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-contactcenterinsights.iam.gserviceaccount.com"
+      ],
+      "role": "roles/contactcenterinsights.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.defaultNodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloud-cw.iam.gserviceaccount.com"
+      ],
+      "role": "roles/contentwarehouse.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dataform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/datastore.owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-devconnect.iam.gserviceaccount.com"
+      ],
+      "role": "roles/developerconnect.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dialogflow.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dialogflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/discoveryengine.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-discoveryengine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/discoveryengine.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:gsa-mifgja2biubloey@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-omjiqcuhjnhsd4y@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-xtk26pq3xopdsfq@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-filer.iam.gserviceaccount.com"
+      ],
+      "role": "roles/file.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@firebase-rules.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebaserules.system"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-firestore.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firestore.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkebackup.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkebackup.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkehub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcontainer.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.containerServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcpmachine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.controlPlaneMachineServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudnpmachine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.nodePoolMachineServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloud.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-hypercomputecluster.iam.gserviceaccount.com"
+      ],
+      "role": "roles/hypercomputecluster.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-livestream.iam.gserviceaccount.com"
+      ],
+      "role": "roles/livestream.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-memcache-sa.iam.gserviceaccount.com"
+      ],
+      "role": "roles/memcache.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-migcenter.iam.gserviceaccount.com"
+      ],
+      "role": "roles/migrationcenter.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-modelarmor.iam.gserviceaccount.com"
+      ],
+      "role": "roles/modelarmor.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkactions.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkactions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networksecurity.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-ns-authz.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networksecurity.authzServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-notebooks.iam.gserviceaccount.com"
+      ],
+      "role": "roles/notebooks.serviceAgent"
+    },
+    {
+      "members": [
+        "user:barni@google.com",
+        "user:fbongiovanni@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networksecurity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privateca.certificateRequester"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-rma.iam.gserviceaccount.com"
+      ],
+      "role": "roles/rapidmigrationassessment.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/redis.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/run.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dep.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceextensions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.networksAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/storage.objectAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-storageinsights.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storageinsights.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-transcoder.iam.gserviceaccount.com"
+      ],
+      "role": "roles/transcoder.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vectorsearch.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vectorsearch.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
+      ],
+      "role": "roles/websecurityscanner.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -1313,9 +4103,442 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "projects/${projectId}/roles/storage.buckets.exemptFromIpFilter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-agentgateway.iam.gserviceaccount.com"
+      ],
+      "role": "roles/agentgateway.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.customCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-ex-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.extensionCustomCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-ex.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.extensionServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/alloydb.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.coreServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apihub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.runtimeProjectServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/artifactregistry.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.dataEditor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.metadataViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.builds.builder"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-config.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudconfig.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.admin"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudsql.client"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com"
+      ],
+      "role": "roles/compute.instanceGroupManagerServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.networkAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-configdelivery.iam.gserviceaccount.com"
+      ],
+      "role": "roles/configdelivery.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-contactcenterinsights.iam.gserviceaccount.com"
+      ],
+      "role": "roles/contactcenterinsights.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.defaultNodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloud-cw.iam.gserviceaccount.com"
+      ],
+      "role": "roles/contentwarehouse.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dataform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/datastore.owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-devconnect.iam.gserviceaccount.com"
+      ],
+      "role": "roles/developerconnect.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dialogflow.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dialogflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/discoveryengine.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-discoveryengine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/discoveryengine.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:gsa-mifgja2biubloey@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-omjiqcuhjnhsd4y@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-xtk26pq3xopdsfq@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-filer.iam.gserviceaccount.com"
+      ],
+      "role": "roles/file.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@firebase-rules.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebaserules.system"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-firestore.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firestore.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkebackup.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkebackup.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkehub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcontainer.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.containerServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcpmachine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.controlPlaneMachineServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudnpmachine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.nodePoolMachineServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloud.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-hypercomputecluster.iam.gserviceaccount.com"
+      ],
+      "role": "roles/hypercomputecluster.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-livestream.iam.gserviceaccount.com"
+      ],
+      "role": "roles/livestream.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-memcache-sa.iam.gserviceaccount.com"
+      ],
+      "role": "roles/memcache.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-migcenter.iam.gserviceaccount.com"
+      ],
+      "role": "roles/migrationcenter.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-modelarmor.iam.gserviceaccount.com"
+      ],
+      "role": "roles/modelarmor.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkactions.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkactions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networksecurity.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-ns-authz.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networksecurity.authzServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-notebooks.iam.gserviceaccount.com"
+      ],
+      "role": "roles/notebooks.serviceAgent"
+    },
+    {
+      "members": [
+        "user:barni@google.com",
+        "user:fbongiovanni@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networksecurity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privateca.certificateRequester"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-rma.iam.gserviceaccount.com"
+      ],
+      "role": "roles/rapidmigrationassessment.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/redis.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/run.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dep.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceextensions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.networksAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/storage.objectAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-storageinsights.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storageinsights.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-transcoder.iam.gserviceaccount.com"
+      ],
+      "role": "roles/transcoder.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vectorsearch.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vectorsearch.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
+      ],
+      "role": "roles/websecurityscanner.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -1330,6 +4553,441 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 {
   "policy": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "projects/${projectId}/roles/storage.buckets.exemptFromIpFilter"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-agentgateway.iam.gserviceaccount.com"
+        ],
+        "role": "roles/agentgateway.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-cc.iam.gserviceaccount.com"
+        ],
+        "role": "roles/aiplatform.customCodeServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-vertex-ex-cc.iam.gserviceaccount.com"
+        ],
+        "role": "roles/aiplatform.extensionCustomCodeServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-vertex-ex.iam.gserviceaccount.com"
+        ],
+        "role": "roles/aiplatform.extensionServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+        ],
+        "role": "roles/aiplatform.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+        ],
+        "role": "roles/alloydb.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
+        ],
+        "role": "roles/apigee.coreServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/apihub.admin"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-apihub.iam.gserviceaccount.com"
+        ],
+        "role": "roles/apihub.runtimeProjectServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+        ],
+        "role": "roles/artifactregistry.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+        ],
+        "role": "roles/bigquery.dataEditor"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+        ],
+        "role": "roles/bigquery.metadataViewer"
+      },
+      {
+        "members": [
+          "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
+        ],
+        "role": "roles/cloudbuild.builds.builder"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+        ],
+        "role": "roles/cloudbuild.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-config.iam.gserviceaccount.com"
+        ],
+        "role": "roles/cloudconfig.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/cloudkms.admin"
+      },
+      {
+        "members": [
+          "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com"
+        ],
+        "role": "roles/compute.instanceGroupManagerServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/compute.networkAdmin"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+        ],
+        "role": "roles/compute.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-configdelivery.iam.gserviceaccount.com"
+        ],
+        "role": "roles/configdelivery.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-contactcenterinsights.iam.gserviceaccount.com"
+        ],
+        "role": "roles/contactcenterinsights.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+        ],
+        "role": "roles/container.defaultNodeServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+        ],
+        "role": "roles/container.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+        ],
+        "role": "roles/containeranalysis.ServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+        ],
+        "role": "roles/containerregistry.ServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-cloud-cw.iam.gserviceaccount.com"
+        ],
+        "role": "roles/contentwarehouse.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
+        ],
+        "role": "roles/dataflow.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-dataform.iam.gserviceaccount.com"
+        ],
+        "role": "roles/dataform.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
+        ],
+        "role": "roles/dataproc.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/datastore.owner"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-devconnect.iam.gserviceaccount.com"
+        ],
+        "role": "roles/developerconnect.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-dialogflow.iam.gserviceaccount.com"
+        ],
+        "role": "roles/dialogflow.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/discoveryengine.admin"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-discoveryengine.iam.gserviceaccount.com"
+        ],
+        "role": "roles/discoveryengine.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+          "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+          "serviceAccount:gsa-mifgja2biubloey@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:gsa-omjiqcuhjnhsd4y@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:gsa-xtk26pq3xopdsfq@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/editor"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@cloud-filer.iam.gserviceaccount.com"
+        ],
+        "role": "roles/file.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@firebase-rules.iam.gserviceaccount.com"
+        ],
+        "role": "roles/firebaserules.system"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-firestore.iam.gserviceaccount.com"
+        ],
+        "role": "roles/firestore.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-gkebackup.iam.gserviceaccount.com"
+        ],
+        "role": "roles/gkebackup.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
+        ],
+        "role": "roles/gkehub.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcontainer.iam.gserviceaccount.com"
+        ],
+        "role": "roles/gkemulticloud.containerServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcpmachine.iam.gserviceaccount.com"
+        ],
+        "role": "roles/gkemulticloud.controlPlaneMachineServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudnpmachine.iam.gserviceaccount.com"
+        ],
+        "role": "roles/gkemulticloud.nodePoolMachineServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloud.iam.gserviceaccount.com"
+        ],
+        "role": "roles/gkemulticloud.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-hypercomputecluster.iam.gserviceaccount.com"
+        ],
+        "role": "roles/hypercomputecluster.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-livestream.iam.gserviceaccount.com"
+        ],
+        "role": "roles/livestream.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@cloud-memcache-sa.iam.gserviceaccount.com"
+        ],
+        "role": "roles/memcache.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-migcenter.iam.gserviceaccount.com"
+        ],
+        "role": "roles/migrationcenter.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-modelarmor.iam.gserviceaccount.com"
+        ],
+        "role": "roles/modelarmor.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-networkactions.iam.gserviceaccount.com"
+        ],
+        "role": "roles/networkactions.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+        ],
+        "role": "roles/networkconnectivity.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/networksecurity.admin"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-ns-authz.iam.gserviceaccount.com"
+        ],
+        "role": "roles/networksecurity.authzServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-notebooks.iam.gserviceaccount.com"
+        ],
+        "role": "roles/notebooks.serviceAgent"
+      },
+      {
+        "members": [
+          "user:barni@google.com",
+          "user:fbongiovanni@google.com"
+        ],
+        "role": "roles/owner"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-networksecurity.iam.gserviceaccount.com"
+        ],
+        "role": "roles/privateca.certificateRequester"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+        ],
+        "role": "roles/pubsub.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-rma.iam.gserviceaccount.com"
+        ],
+        "role": "roles/rapidmigrationassessment.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
+        ],
+        "role": "roles/redis.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/resourcemanager.projectIamAdmin"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+        ],
+        "role": "roles/run.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-dep.iam.gserviceaccount.com"
+        ],
+        "role": "roles/serviceextensions.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/servicenetworking.networksAdmin"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
+        ],
+        "role": "roles/servicenetworking.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+        ],
+        "role": "roles/storage.admin"
+      },
+      {
+        "members": [
+          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+        ],
+        "role": "roles/storage.objectAdmin"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-storageinsights.iam.gserviceaccount.com"
+        ],
+        "role": "roles/storageinsights.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-transcoder.iam.gserviceaccount.com"
+        ],
+        "role": "roles/transcoder.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-vectorsearch.iam.gserviceaccount.com"
+        ],
+        "role": "roles/vectorsearch.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
+        ],
+        "role": "roles/websecurityscanner.serviceAgent"
+      }
+    ],
     "etag": "abcdef0123A=",
     "version": 3
   },
@@ -1347,6 +5005,441 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "projects/${projectId}/roles/storage.buckets.exemptFromIpFilter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-agentgateway.iam.gserviceaccount.com"
+      ],
+      "role": "roles/agentgateway.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.customCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-ex-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.extensionCustomCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-ex.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.extensionServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/alloydb.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.coreServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apihub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.runtimeProjectServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/artifactregistry.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.dataEditor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.metadataViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.builds.builder"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-config.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudconfig.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com"
+      ],
+      "role": "roles/compute.instanceGroupManagerServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.networkAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-configdelivery.iam.gserviceaccount.com"
+      ],
+      "role": "roles/configdelivery.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-contactcenterinsights.iam.gserviceaccount.com"
+      ],
+      "role": "roles/contactcenterinsights.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.defaultNodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloud-cw.iam.gserviceaccount.com"
+      ],
+      "role": "roles/contentwarehouse.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dataform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/datastore.owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-devconnect.iam.gserviceaccount.com"
+      ],
+      "role": "roles/developerconnect.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dialogflow.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dialogflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/discoveryengine.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-discoveryengine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/discoveryengine.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:gsa-mifgja2biubloey@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-omjiqcuhjnhsd4y@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-xtk26pq3xopdsfq@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-filer.iam.gserviceaccount.com"
+      ],
+      "role": "roles/file.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@firebase-rules.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebaserules.system"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-firestore.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firestore.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkebackup.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkebackup.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkehub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcontainer.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.containerServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcpmachine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.controlPlaneMachineServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudnpmachine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.nodePoolMachineServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloud.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-hypercomputecluster.iam.gserviceaccount.com"
+      ],
+      "role": "roles/hypercomputecluster.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-livestream.iam.gserviceaccount.com"
+      ],
+      "role": "roles/livestream.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-memcache-sa.iam.gserviceaccount.com"
+      ],
+      "role": "roles/memcache.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-migcenter.iam.gserviceaccount.com"
+      ],
+      "role": "roles/migrationcenter.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-modelarmor.iam.gserviceaccount.com"
+      ],
+      "role": "roles/modelarmor.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkactions.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkactions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networksecurity.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-ns-authz.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networksecurity.authzServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-notebooks.iam.gserviceaccount.com"
+      ],
+      "role": "roles/notebooks.serviceAgent"
+    },
+    {
+      "members": [
+        "user:barni@google.com",
+        "user:fbongiovanni@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networksecurity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privateca.certificateRequester"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-rma.iam.gserviceaccount.com"
+      ],
+      "role": "roles/rapidmigrationassessment.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/redis.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/run.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dep.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceextensions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.networksAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/storage.objectAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-storageinsights.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storageinsights.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-transcoder.iam.gserviceaccount.com"
+      ],
+      "role": "roles/transcoder.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vectorsearch.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vectorsearch.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
+      ],
+      "role": "roles/websecurityscanner.serviceAgent"
+    }
+  ],
   "etag": "abcdef0123A=",
   "version": 1
 }
@@ -1374,16 +5467,451 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "projects/${projectId}/roles/storage.buckets.exemptFromIpFilter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-agentgateway.iam.gserviceaccount.com"
+      ],
+      "role": "roles/agentgateway.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.customCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-ex-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.extensionCustomCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-ex.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.extensionServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/alloydb.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.coreServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apihub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.runtimeProjectServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/artifactregistry.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.dataEditor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.metadataViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.builds.builder"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-config.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudconfig.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com"
+      ],
+      "role": "roles/compute.instanceGroupManagerServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.networkAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-configdelivery.iam.gserviceaccount.com"
+      ],
+      "role": "roles/configdelivery.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-contactcenterinsights.iam.gserviceaccount.com"
+      ],
+      "role": "roles/contactcenterinsights.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.defaultNodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloud-cw.iam.gserviceaccount.com"
+      ],
+      "role": "roles/contentwarehouse.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dataform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/datastore.owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-devconnect.iam.gserviceaccount.com"
+      ],
+      "role": "roles/developerconnect.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dialogflow.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dialogflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/discoveryengine.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-discoveryengine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/discoveryengine.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com",
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:gsa-mifgja2biubloey@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-omjiqcuhjnhsd4y@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-xtk26pq3xopdsfq@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-filer.iam.gserviceaccount.com"
+      ],
+      "role": "roles/file.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@firebase-rules.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebaserules.system"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-firestore.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firestore.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkebackup.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkebackup.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkehub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcontainer.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.containerServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudcpmachine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.controlPlaneMachineServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloudnpmachine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.nodePoolMachineServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkemulticloud.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkemulticloud.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-hypercomputecluster.iam.gserviceaccount.com"
+      ],
+      "role": "roles/hypercomputecluster.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-livestream.iam.gserviceaccount.com"
+      ],
+      "role": "roles/livestream.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-memcache-sa.iam.gserviceaccount.com"
+      ],
+      "role": "roles/memcache.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-migcenter.iam.gserviceaccount.com"
+      ],
+      "role": "roles/migrationcenter.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-modelarmor.iam.gserviceaccount.com"
+      ],
+      "role": "roles/modelarmor.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkactions.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkactions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networksecurity.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-ns-authz.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networksecurity.authzServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-notebooks.iam.gserviceaccount.com"
+      ],
+      "role": "roles/notebooks.serviceAgent"
+    },
+    {
+      "members": [
+        "user:barni@google.com",
+        "user:fbongiovanni@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networksecurity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privateca.certificateRequester"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-rma.iam.gserviceaccount.com"
+      ],
+      "role": "roles/rapidmigrationassessment.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/redis.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/resourcemanager.projectIamAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/run.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dep.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceextensions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.networksAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/storage.objectAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-storageinsights.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storageinsights.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-transcoder.iam.gserviceaccount.com"
+      ],
+      "role": "roles/transcoder.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vectorsearch.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vectorsearch.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
+      ],
+      "role": "roles/websecurityscanner.serviceAgent"
+    }
+  ],
   "etag": "abcdef0123A=",
   "version": 1
 }
 
 ---
 
-GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
+GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/2732a9c6-06a7-428a-889d-c2111a321f8c?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F2732a9c6-06a7-428a-889d-c2111a321f8c
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1405,15 +5933,15 @@ X-Xss-Protection: 0
   "creationTime": "123456789",
   "hasCredential": true,
   "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
+  "name": "projects/${projectNumber}/locations/us-central1/connections/2732a9c6-06a7-428a-889d-c2111a321f8c"
 }
 
 ---
 
-DELETE https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
+DELETE https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/2732a9c6-06a7-428a-889d-c2111a321f8c?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F2732a9c6-06a7-428a-889d-c2111a321f8c
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1471,34 +5999,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "sql#operation",
-  "name": "${operationID}",
-  "operationType": "DELETE_DATABASE",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "status": "PENDING",
-  "targetId": "sqlinstance-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}/databases/sqldatabase-${uniqueId}",
-  "targetProject": "${projectId}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
   "endTime": "2024-04-01T12:34:56.123456Z",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
@@ -1508,7 +6008,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "sqlinstance-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}/databases/sqldatabase-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
@@ -1533,6 +6033,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqlinstance-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
@@ -1574,18 +6075,20 @@ X-Xss-Protection: 0
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
   },
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
+  "maintenanceVersion": "MYSQL_5_7_44.R20260726.00_05",
   "name": "sqlinstance-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -1607,6 +6110,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -1618,10 +6122,12 @@ X-Xss-Protection: 0
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
+    "enableDataplexIntegration": true,
     "ipConfiguration": {
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -1630,6 +6136,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -1712,6 +6219,46 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
+    },
+    {
+      "displayName": "MySQL 8.0.39",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_39"
+    },
+    {
+      "displayName": "MySQL 8.0.40",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_40"
+    },
+    {
+      "displayName": "MySQL 8.0.41",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_41"
+    },
+    {
+      "displayName": "MySQL 8.0.42",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_42"
+    },
+    {
+      "displayName": "MySQL 8.0.43",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_43"
+    },
+    {
+      "displayName": "MySQL 8.0.44",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_44"
+    },
+    {
+      "displayName": "MySQL 8.0.45",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_45"
+    },
+    {
+      "displayName": "MySQL 8.0.46",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_46"
     }
   ]
 }
@@ -1775,18 +6322,20 @@ X-Xss-Protection: 0
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
   },
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.1.2.3",
+      "ipAddress": "10.10.10.10",
       "type": "PRIMARY"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
+  "maintenanceVersion": "MYSQL_5_7_44.R20260726.00_05",
   "name": "sqlinstance-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -1808,6 +6357,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -1819,10 +6369,12 @@ X-Xss-Protection: 0
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
+    "enableDataplexIntegration": true,
     "ipConfiguration": {
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -1831,6 +6383,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -1913,6 +6466,46 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
+    },
+    {
+      "displayName": "MySQL 8.0.39",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_39"
+    },
+    {
+      "displayName": "MySQL 8.0.40",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_40"
+    },
+    {
+      "displayName": "MySQL 8.0.41",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_41"
+    },
+    {
+      "displayName": "MySQL 8.0.42",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_42"
+    },
+    {
+      "displayName": "MySQL 8.0.43",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_43"
+    },
+    {
+      "displayName": "MySQL 8.0.44",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_44"
+    },
+    {
+      "displayName": "MySQL 8.0.45",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_45"
+    },
+    {
+      "displayName": "MySQL 8.0.46",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_46"
     }
   ]
 }

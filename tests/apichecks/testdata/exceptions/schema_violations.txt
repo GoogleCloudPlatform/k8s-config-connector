@@ -101,10 +101,6 @@
 [schema_violation] file=basic/workflowexecutions/v1alpha1/workflowsexecution/workflowsexecution-minimal gvk=workflows.cnrm.cloud.google.com/v1alpha1, Kind=WorkflowsWorkflow: [].spec.projectRef: Required value
 [schema_violation] file=basic/workflows/v1alpha1/workflowsworkflow/workflowsworkflow-full gvk=workflows.cnrm.cloud.google.com/v1alpha1, Kind=WorkflowsWorkflow: [].spec.projectRef: Required value
 [schema_violation] file=basic/workflows/v1alpha1/workflowsworkflow/workflowsworkflow-minimal gvk=workflows.cnrm.cloud.google.com/v1alpha1, Kind=WorkflowsWorkflow: [].spec.projectRef: Required value
-[schema_violation] file=iam/iampartialpolicy/resources/bigquerytable gvk=bigquery.cnrm.cloud.google.com/v1beta1, Kind=BigQueryDataset: [].spec: Invalid value: "datasetId": spec.datasetId in body is a forbidden property
-[schema_violation] file=iam/iampartialpolicy/resources/bigquerytable gvk=bigquery.cnrm.cloud.google.com/v1beta1, Kind=BigQueryTable: [].spec: Invalid value: "tableId": spec.tableId in body is a forbidden property
-[schema_violation] file=iam/iampartialpolicy/resources/bigquerytable-conditions gvk=bigquery.cnrm.cloud.google.com/v1beta1, Kind=BigQueryDataset: [].spec: Invalid value: "datasetId": spec.datasetId in body is a forbidden property
-[schema_violation] file=iam/iampartialpolicy/resources/bigquerytable-conditions gvk=bigquery.cnrm.cloud.google.com/v1beta1, Kind=BigQueryTable: [].spec: Invalid value: "tableId": spec.tableId in body is a forbidden property
 [schema_violation] file=iam/iampartialpolicy/resources/bigtabletable gvk=bigtable.cnrm.cloud.google.com/v1beta1, Kind=BigtableTable: [].spec: Invalid value: "tableId": spec.tableId in body is a forbidden property
 [schema_violation] file=iam/iampartialpolicy/resources/bigtabletable-conditions gvk=bigtable.cnrm.cloud.google.com/v1beta1, Kind=BigtableTable: [].spec: Invalid value: "tableId": spec.tableId in body is a forbidden property
 [schema_violation] file=iam/iampartialpolicy/resources/binaryauthorizationpolicy gvk=binaryauthorization.cnrm.cloud.google.com/v1beta1, Kind=BinaryAuthorizationPolicy: [].spec.projectRef: Required value
