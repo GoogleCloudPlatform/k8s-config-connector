@@ -29,34 +29,74 @@ func matchFilter(filter string, obj proto.Message) (bool, error) {
 		return true, nil
 	}
 
-	// We basically hand-code the filter logic for now, while we figure out what we need.
-	// There's a variety of syntaxes in use.
-	if before, after, found := strings.Cut(filter, "network eq \""); found {
-		if before != "" {
-			return false, fmt.Errorf("filter '%v' not implemented by mockgcp", filter)
-		}
-		fieldName := "network"
-		// Make sure there's just one term in the filter.
-		query := strings.TrimSuffix(after, "\"")
-		if strings.Contains(query, "\"") {
-			return false, fmt.Errorf("filter '%v' not implemented by mockgcp", filter)
-		}
-		query = strings.TrimPrefix(query, ".*\\b")
-		query = strings.TrimSuffix(query, "\\b.*")
-
-		// Some basic unescaping.
-		query = strings.ReplaceAll(query, "\\-", "-")
-
-		fd := obj.ProtoReflect().Descriptor().Fields().ByName(protoreflect.Name(fieldName))
-		if fd == nil {
-			return false, fmt.Errorf("field '%q' not known", fieldName)
-		}
-		network := obj.ProtoReflect().Get(fd).String()
-		// Technically \b is a word boundary, but we'll just use it as a substring match.
-		if !strings.Contains(network, query) {
-			return false, nil
+	// Basic support for (condition) AND (condition)
+	if strings.Contains(filter, " AND ") {
+		parts := strings.Split(filter, " AND ")
+		for _, part := range parts {
+			part = strings.TrimSpace(part)
+			for strings.HasPrefix(part, "(") && strings.HasSuffix(part, ")") {
+				part = part[1 : len(part)-1]
+			}
+			match, err := matchFilter(part, obj)
+			if err != nil {
+				return false, err
+			}
+			if !match {
+				return false, nil
+			}
 		}
 		return true, nil
 	}
-	return false, fmt.Errorf("filter '%v' not implemented by mockgcp", filter)
+
+	// Support for property="value" or property eq "value"
+	var fieldName, query string
+	if before, after, found := strings.Cut(filter, " eq \""); found {
+		fieldName = strings.TrimSpace(before)
+		query = strings.TrimSuffix(after, "\"")
+	} else if before, after, found := strings.Cut(filter, "=\""); found {
+		fieldName = strings.TrimSpace(before)
+		query = strings.TrimSuffix(after, "\"")
+	}
+
+	if fieldName != "" {
+		for strings.HasPrefix(fieldName, "(") {
+			fieldName = fieldName[1:]
+		}
+		// Some basic unescaping.
+		query = strings.ReplaceAll(query, "\\-", "-")
+		isRegex := false
+		if strings.HasPrefix(query, ".*\\b") && strings.HasSuffix(query, "\\b.*") {
+			query = strings.TrimPrefix(query, ".*\\b")
+			query = strings.TrimSuffix(query, "\\b.*")
+			isRegex = true
+		}
+
+		var fd protoreflect.FieldDescriptor
+		fields := obj.ProtoReflect().Descriptor().Fields()
+		for i := 0; i < fields.Len(); i++ {
+			f := fields.Get(i)
+			if string(f.Name()) == fieldName || f.JSONName() == fieldName {
+				fd = f
+				break
+			}
+		}
+
+		if fd == nil {
+			return false, fmt.Errorf("field %q not known in %v", fieldName, obj.ProtoReflect().Descriptor().FullName())
+		}
+
+		val := obj.ProtoReflect().Get(fd).String()
+		if isRegex {
+			if !strings.Contains(val, query) {
+				return false, nil
+			}
+		} else {
+			if val != query {
+				return false, nil
+			}
+		}
+		return true, nil
+	}
+
+	return false, fmt.Errorf("filter %q not implemented by mockgcp", filter)
 }
