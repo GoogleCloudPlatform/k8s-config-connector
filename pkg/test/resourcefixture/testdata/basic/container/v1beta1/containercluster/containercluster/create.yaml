@@ -19,7 +19,7 @@ metadata:
     label-one: "value-one"
   name: cluster-sample-${uniqueId}
 spec:
-  location: us-central1-a
+  location: us-west2-a
   initialNodeCount: 1
   networkRef:
     name: computenetwork-${uniqueId}
@@ -57,7 +57,7 @@ spec:
       bootDiskKMSKeyRef:
         name: kmscryptokey-${uniqueId}
   nodeConfig:
-    machineType: n4-standard-2
+    machineType: n2-standard-2
     advancedMachineFeatures:
       enableNestedVirtualization: true
     linuxNodeConfig:
