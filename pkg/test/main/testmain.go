@@ -51,6 +51,11 @@ func ForIntegrationTests(m *testing.M, mgr *manager.Manager) {
 
 	klogFlags := flag.NewFlagSet("klog", flag.ExitOnError)
 	klog.InitFlags(klogFlags)
+	// Opt into the new klog behavior so that -stderrthreshold is honored even
+	// when -logtostderr=true (the default).
+	// Ref: kubernetes/klog#212, kubernetes/klog#432
+	_ = klogFlags.Set("legacy_stderr_threshold_behavior", "false")
+	_ = klogFlags.Set("stderrthreshold", "INFO")
 
 	// Sync the log and klog flags.
 	flag.CommandLine.VisitAll(func(f1 *flag.Flag) {

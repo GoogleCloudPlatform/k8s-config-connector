@@ -21,6 +21,7 @@ import (
 	"debug/buildinfo"
 	"embed"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io"
 	"io/fs"
@@ -59,6 +60,11 @@ func buildRootCommand() *cobra.Command {
 	cmd.AddCommand(buildLicenseGenerateCommand())
 
 	klog.InitFlags(nil)
+	// Opt into the new klog behavior so that -stderrthreshold is honored even
+	// when -logtostderr=true (the default).
+	// Ref: kubernetes/klog#212, kubernetes/klog#432
+	_ = flag.Set("legacy_stderr_threshold_behavior", "false")
+	_ = flag.Set("stderrthreshold", "INFO")
 
 	return cmd
 }
