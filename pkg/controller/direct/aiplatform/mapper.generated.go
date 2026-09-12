@@ -1473,30 +1473,42 @@ func PipelineJobDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krm.P
 	out.TaskDetails = direct.Slice_ToProto(mapCtx, in.TaskDetails, PipelineTaskDetailObservedState_ToProto)
 	return out
 }
+
+/* found existing non-generated mapping function "PipelineJobRuntimeConfig_FromProto", skipping
 func PipelineJobRuntimeConfig_FromProto(mapCtx *direct.MapContext, in *pb.PipelineJob_RuntimeConfig) *krm.PipelineJobRuntimeConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krm.PipelineJobRuntimeConfig{}
 	// MISSING: Parameters
-	out.GCSOutputDirectory = direct.LazyPtr(in.GetGcsOutputDirectory())
+	if in.GetGcsOutputDirectory() != "" {
+		out.GCSOutputDirectoryRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetGcsOutputDirectory()}
+	}
 	// MISSING: ParameterValues
 	out.FailurePolicy = direct.Enum_FromProto(mapCtx, in.GetFailurePolicy())
 	// MISSING: InputArtifacts
 	return out
 }
-func PipelineJobRuntimeConfig_ToProto(mapCtx *direct.MapContext, in *krm.PipelineJobRuntimeConfig) *pb.PipelineJob_RuntimeConfig {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "PipelineJobRuntimeConfig_ToProto", skipping
+
+	func PipelineJobRuntimeConfig_ToProto(mapCtx *direct.MapContext, in *krm.PipelineJobRuntimeConfig) *pb.PipelineJob_RuntimeConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.PipelineJob_RuntimeConfig{}
+		// MISSING: Parameters
+		if in.GCSOutputDirectoryRef != nil {
+			out.GcsOutputDirectory = in.GCSOutputDirectoryRef.External
+		}
+		// MISSING: ParameterValues
+		out.FailurePolicy = direct.Enum_ToProto[pb.PipelineFailurePolicy](mapCtx, in.FailurePolicy)
+		// MISSING: InputArtifacts
+		return out
 	}
-	out := &pb.PipelineJob_RuntimeConfig{}
-	// MISSING: Parameters
-	out.GcsOutputDirectory = direct.ValueOf(in.GCSOutputDirectory)
-	// MISSING: ParameterValues
-	out.FailurePolicy = direct.Enum_ToProto[pb.PipelineFailurePolicy](mapCtx, in.FailurePolicy)
-	// MISSING: InputArtifacts
-	return out
-}
+*/
 func PipelineTaskDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PipelineTaskDetail) *krm.PipelineTaskDetailObservedState {
 	if in == nil {
 		return nil
