@@ -55,13 +55,13 @@ type ArtifactRegistryVPCSCConfigStatus struct {
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *ArtifactRegistryVPCSCConfigObservedState `json:"observedState,omitempty"`
+	// ObservedState *ArtifactRegistryVPCSCConfigObservedState `json:"observedState,omitempty"`
 }
 
 // ArtifactRegistryVPCSCConfigObservedState is the state of the ArtifactRegistryVPCSCConfig resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.devtools.artifactregistry.v1.VPCSCConfig
-type ArtifactRegistryVPCSCConfigObservedState struct {
-}
+// // +kcc:observedstate:proto=google.devtools.artifactregistry.v1.VPCSCConfig
+// type ArtifactRegistryVPCSCConfigObservedState struct {
+// }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

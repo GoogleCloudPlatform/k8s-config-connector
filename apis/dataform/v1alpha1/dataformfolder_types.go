@@ -48,13 +48,13 @@ type DataformFolderStatus struct {
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *DataformFolderObservedState `json:"observedState,omitempty"`
+	// ObservedState *DataformFolderObservedState `json:"observedState,omitempty"`
 }
 
 // DataformFolderObservedState is the state of the DataformFolder resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.dataform.v1beta1.Folder
-type DataformFolderObservedState struct {
-}
+// // +kcc:observedstate:proto=google.cloud.dataform.v1beta1.Folder
+// type DataformFolderObservedState struct {
+// }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

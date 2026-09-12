@@ -24,21 +24,18 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(bigQueryDataPolicyFuzzer())
+	fuzztesting.RegisterKRMSpecFuzzer(bigQueryDataPolicyFuzzer())
 }
 
 func bigQueryDataPolicyFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedFuzzer(&pb.DataPolicy{},
+	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.DataPolicy{},
 		BigQueryDataPolicySpec_FromProto, BigQueryDataPolicySpec_ToProto,
-		BigQueryDataPolicyObservedState_FromProto, BigQueryDataPolicyObservedState_ToProto,
 	)
 
 	f.SpecFields.Insert(".data_policy_type")
 	f.SpecFields.Insert(".data_policy_id") // KRM resourceID
 	f.SpecFields.Insert(".policy_tag")
 	f.SpecFields.Insert(".data_masking_policy.predefined_expression")
-
-	f.StatusFields.Insert(".name")
 
 	f.UnimplementedFields.Insert(".name") // Special field for KRM resource name
 

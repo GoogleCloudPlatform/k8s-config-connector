@@ -933,24 +933,6 @@ func DataStore_BillingEstimation_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	out.WebsiteDataUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.WebsiteDataUpdateTime)
 	return out
 }
-func DiscoveryEngineControlObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Control) *krmdiscoveryenginev1alpha1.DiscoveryEngineControlObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineControlObservedState{}
-	// MISSING: Name
-	// MISSING: AssociatedServingConfigIds
-	return out
-}
-func DiscoveryEngineControlObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineControlObservedState) *pb.Control {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Control{}
-	// MISSING: Name
-	// MISSING: AssociatedServingConfigIds
-	return out
-}
 func DiscoveryEngineControlSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Control) *krmdiscoveryenginev1alpha1.DiscoveryEngineControlSpec {
 	if in == nil {
 		return nil
@@ -1171,32 +1153,6 @@ func DiscoveryEngineDataStoreTargetSiteSpec_v1alpha1_ToProto(mapCtx *direct.MapC
 	out.ProvidedUriPattern = direct.ValueOf(in.ProvidedURIPattern)
 	out.Type = direct.Enum_ToProto[pb.TargetSite_Type](mapCtx, in.Type)
 	out.ExactMatch = direct.ValueOf(in.ExactMatch)
-	return out
-}
-func DiscoveryEngineEngineObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Engine) *krmdiscoveryenginev1alpha1.DiscoveryEngineEngineObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineEngineObservedState{}
-	// MISSING: MediaRecommendationEngineConfig
-	// MISSING: ChatEngineMetadata
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DataStoreIds
-	return out
-}
-func DiscoveryEngineEngineObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineEngineObservedState) *pb.Engine {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Engine{}
-	// MISSING: MediaRecommendationEngineConfig
-	// MISSING: ChatEngineMetadata
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DataStoreIds
 	return out
 }
 func DiscoveryEngineEngineSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Engine) *krmdiscoveryenginev1alpha1.DiscoveryEngineEngineSpec {

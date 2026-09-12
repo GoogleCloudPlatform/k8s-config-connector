@@ -103,7 +103,7 @@ func (a *VPCSCConfigAdapter) Find(ctx context.Context) (bool, error) {
 	log.V(2).Info("getting VPCSCConfig", "name", a.id.String())
 
 	req := &pb.GetVPCSCConfigRequest{Name: a.id.String()}
-	vpCscConfig, err := a.gcpClient.GetVPCSCConfig(ctx, req)
+	_, err := a.gcpClient.GetVPCSCConfig(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -111,13 +111,6 @@ func (a *VPCSCConfigAdapter) Find(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("getting VPCSCConfig %q: %w", a.id.String(), err)
 	}
 
-	mapCtx := &direct.MapContext{}
-	observedState := ArtifactRegistryVPCSCConfigObservedState_v1alpha1_FromProto(mapCtx, vpCscConfig)
-	if mapCtx.Err() != nil {
-		return false, mapCtx.Err()
-	}
-
-	a.desired.Status.ObservedState = observedState
 	return true, nil
 }
 
@@ -138,17 +131,13 @@ func (a *VPCSCConfigAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	}
 
 	// For Create, we update the existing singleton resource (since VPCSCConfig is 1:1 with project/location).
-	vpCscConfig, err := a.gcpClient.UpdateVPCSCConfig(ctx, req)
+	_, err := a.gcpClient.UpdateVPCSCConfig(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating VPCSCConfig %q: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully created VPCSCConfig", "name", a.id.String())
 
 	status := &krm.ArtifactRegistryVPCSCConfigStatus{}
-	status.ObservedState = ArtifactRegistryVPCSCConfigObservedState_v1alpha1_FromProto(mapCtx, vpCscConfig)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
@@ -170,17 +159,13 @@ func (a *VPCSCConfigAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		UpdateMask:  &fieldmaskpb.FieldMask{Paths: []string{"vpcsc_policy"}},
 	}
 
-	vpCscConfig, err := a.gcpClient.UpdateVPCSCConfig(ctx, req)
+	_, err := a.gcpClient.UpdateVPCSCConfig(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating VPCSCConfig %q: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully updated VPCSCConfig", "name", a.id.String())
 
 	status := &krm.ArtifactRegistryVPCSCConfigStatus{}
-	status.ObservedState = ArtifactRegistryVPCSCConfigObservedState_v1alpha1_FromProto(mapCtx, vpCscConfig)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
 }

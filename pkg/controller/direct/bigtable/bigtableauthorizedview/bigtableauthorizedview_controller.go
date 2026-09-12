@@ -180,7 +180,6 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 	status := &krm.BigtableAuthorizedViewStatus{}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
-	status.ObservedState = &krm.BigtableAuthorizedViewObservedState{}
 
 	return createOp.UpdateStatus(ctx, status, nil)
 }
@@ -204,7 +203,6 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	status := &krm.BigtableAuthorizedViewStatus{}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
-	status.ObservedState = &krm.BigtableAuthorizedViewObservedState{}
 
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)

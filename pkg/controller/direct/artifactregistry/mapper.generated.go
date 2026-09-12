@@ -337,22 +337,6 @@ func ArtifactRegistryRepositoryVirtualRepositoryConfig_v1beta1_ToProto(mapCtx *d
 	out.UpstreamPolicies = direct.Slice_ToProto(mapCtx, in.UpstreamPolicies, ArtifactRegistryRepositoryUpstreamPolicy_v1beta1_ToProto)
 	return out
 }
-func ArtifactRegistryVPCSCConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VPCSCConfig) *krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigObservedState{}
-	// MISSING: Name
-	return out
-}
-func ArtifactRegistryVPCSCConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigObservedState) *pb.VPCSCConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.VPCSCConfig{}
-	// MISSING: Name
-	return out
-}
 func ArtifactRegistryVPCSCConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VPCSCConfig) *krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigSpec {
 	if in == nil {
 		return nil

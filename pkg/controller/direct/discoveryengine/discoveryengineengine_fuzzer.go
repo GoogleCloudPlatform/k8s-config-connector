@@ -23,13 +23,12 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(engineFuzzer())
+	fuzztesting.RegisterKRMSpecFuzzer(engineFuzzer())
 }
 
 func engineFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedFuzzer(&pb.Engine{},
+	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.Engine{},
 		DiscoveryEngineEngineSpec_FromProto, DiscoveryEngineEngineSpec_ToProto,
-		DiscoveryEngineEngineObservedState_v1alpha1_FromProto, DiscoveryEngineEngineObservedState_v1alpha1_ToProto,
 	)
 
 	f.Unimplemented_Identity(".name")

@@ -32,36 +32,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func DataformFolderObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *dataformpb.Folder) *krmdataformv1alpha1.DataformFolderObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmdataformv1alpha1.DataformFolderObservedState{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: ContainingFolder
-	// MISSING: TeamFolderName
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: InternalMetadata
-	// MISSING: CreatorIAMPrincipal
-	return out
-}
-func DataformFolderObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.DataformFolderObservedState) *dataformpb.Folder {
-	if in == nil {
-		return nil
-	}
-	out := &dataformpb.Folder{}
-	// MISSING: Name
-	// MISSING: DisplayName
-	// MISSING: ContainingFolder
-	// MISSING: TeamFolderName
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: InternalMetadata
-	// MISSING: CreatorIAMPrincipal
-	return out
-}
 func DataformFolderSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *dataformpb.Folder) *krmdataformv1alpha1.DataformFolderSpec {
 	if in == nil {
 		return nil

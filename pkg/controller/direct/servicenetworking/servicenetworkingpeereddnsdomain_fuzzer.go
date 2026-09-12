@@ -19,6 +19,8 @@
 package servicenetworking
 
 import (
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicenetworking/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 	api "google.golang.org/api/servicenetworking/v1"
 )
@@ -28,9 +30,14 @@ func init() {
 }
 
 func peeredDnsDomainFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedFuzzer_NoProto(&api.PeeredDnsDomain{},
+	f := fuzztesting.NewKRMTypedFuzzer_NoProto[*api.PeeredDnsDomain, krmv1alpha1.ServiceNetworkingPeeredDNSDomainSpec, krmv1alpha1.ServiceNetworkingPeeredDNSDomainStatus](&api.PeeredDnsDomain{},
 		ServiceNetworkingPeeredDNSDomainSpec_FromProto, ServiceNetworkingPeeredDNSDomainSpec_ToProto,
-		ServiceNetworkingPeeredDNSDomainObservedState_FromProto, ServiceNetworkingPeeredDNSDomainObservedState_ToProto,
+		func(ctx *direct.MapContext, in *api.PeeredDnsDomain) *krmv1alpha1.ServiceNetworkingPeeredDNSDomainStatus {
+			return &krmv1alpha1.ServiceNetworkingPeeredDNSDomainStatus{}
+		},
+		func(ctx *direct.MapContext, in *krmv1alpha1.ServiceNetworkingPeeredDNSDomainStatus) *api.PeeredDnsDomain {
+			return &api.PeeredDnsDomain{}
+		},
 	)
 
 	// Spec fields
