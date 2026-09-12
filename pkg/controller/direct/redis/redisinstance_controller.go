@@ -423,7 +423,9 @@ func populateInstanceDefaults(instance *redispb.Instance, actual *redispb.Instan
 		if instance.ReservedIpRange == "" && actual.ReservedIpRange != "" {
 			instance.ReservedIpRange = actual.ReservedIpRange
 		}
-		if (instance.SecondaryIpRange == "" || instance.SecondaryIpRange == "auto") && actual.SecondaryIpRange != "" {
+		if instance.SecondaryIpRange == "auto" {
+			instance.SecondaryIpRange = actual.SecondaryIpRange
+		} else if instance.SecondaryIpRange == "" && actual.SecondaryIpRange != "" {
 			instance.SecondaryIpRange = actual.SecondaryIpRange
 		}
 
