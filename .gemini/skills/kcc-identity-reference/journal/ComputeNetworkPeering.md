@@ -1,0 +1,7 @@
+# ComputeNetworkPeering Identity and Reference Journal
+
+## Observations & Learnings
+
+- **Parent-Dependent Identity Parsing:** ComputeNetworkPeering's GCP identifier is scoped under its parent `ComputeNetwork` (i.e., `projects/{{project}}/global/networks/{{network}}/networkPeerings/{{peering}}`). We resolved the parent `ComputeNetwork` using its reference (`NetworkRef`), parsed it using `ParseComputeNetworkExternal`, and resolved the peering's project to construct a fully qualified identity template.
+- **IdentityV2 Implementation with zero Status Cross-check:** Unlike other Compute resources like ComputeFirewall or ComputeAddress which use `status.selfLink` to cross-check spec identity, ComputeNetworkPeering status only contains conditions, observed generation, and state metrics (without a GCP URL or URI). Adhering to the skill mandate, we did not introduce any new fields to the status schema and skipped the status cross-check entirely in `GetIdentity`.
+- **GCP URL Registry Template Matching Exceptions:** The GCP URL template for Compute Network Peering (`compute.googleapis.com/projects/{project}/global/networks/{network}/networkPeerings/{computenetworkpeering}`) is not registered under Cloud Asset Inventory (CAI) definitions. We proactively registered its normalized representation in `pkg/gcpurls/registry_test.go`'s `ignoredTemplates` map to maintain complete test correctness and prevent CAI template mismatches.
