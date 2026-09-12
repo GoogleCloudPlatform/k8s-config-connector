@@ -7,65 +7,45 @@
 < POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
 ---
 > POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json&prettyPrint=false
-48c47
+52c51
 <   "defaultTableExpirationMs": 3600000,
 ---
 >   "defaultTableExpirationMs": "3600000",
-102,103c101
+110,111c109
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-150c148
+162c160
 < PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 ---
 > PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-159a158,161
+171a170,173
 >       "domain": "google.com",
 >       "role": "READER"
 >     },
 >     {
-165a168,171
+180a183,190
+>       "specialGroup": "projectOwners"
 >     },
 >     {
 >       "role": "OWNER",
->       "specialGroup": "projectOwners"
-168,171c174
+>       "userByEmail": "user@google.com"
+>     },
+>     {
+>       "role": "OWNER",
+184,187c194
 <   "datasetReference": {
 <     "datasetId": "bigquerydataset${uniqueId}"
 <   },
 <   "defaultTableExpirationMs": 7200000,
 ---
 >   "defaultTableExpirationMs": "7200000",
-173a177
+189a197
 >   "isCaseInsensitive": false,
-178d181
+194d201
 <   "location": "US",
-198a202,205
->       "domain": "google.com",
->       "role": "READER"
->     },
->     {
-204a212,215
->     },
->     {
->       "role": "OWNER",
->       "specialGroup": "projectOwners"
-216a228
->   "isCaseInsensitive": false,
-250a263,266
->       "domain": "google.com",
->       "role": "READER"
->     },
->     {
-256a273,276
->     },
->     {
->       "role": "OWNER",
->       "specialGroup": "projectOwners"
-268a289
->   "isCaseInsensitive": false,
-283,284c304,364
+307,308c314,369
 < DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
 < Content-Type: application/json
 ---
@@ -88,10 +68,6 @@
 >       "role": "READER"
 >     },
 >     {
->       "domain": "google.com",
->       "role": "READER"
->     },
->     {
 >       "iamMember": "allUsers",
 >       "role": "READER"
 >     },
@@ -101,7 +77,7 @@
 >     },
 >     {
 >       "role": "OWNER",
->       "specialGroup": "projectOwners"
+>       "userByEmail": "user@google.com"
 >     }
 >   ],
 >   "creationTime": "123456789",
@@ -114,7 +90,6 @@
 >   "etag": "abcdef0123A=",
 >   "friendlyName": "bigquerydataset-accessblock",
 >   "id": "000000000000000000000",
->   "isCaseInsensitive": false,
 >   "kind": "bigquery#dataset",
 >   "labels": {
 >     "cnrm-test": "true",
