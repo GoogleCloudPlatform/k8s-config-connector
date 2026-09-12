@@ -136,6 +136,11 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	typeGenerator := codegen.NewTypeGenerator(goPackage, o.OutputAPIDirectory, api)
 	typeGenerator.WithIncludeSkippedOutput(o.GenerateOptions.IncludeSkippedOutput)
 
+	if gv.Group == "gsuiteaddons.cnrm.cloud.google.com" {
+		typeGenerator.AddProtoMessageNotMappedToGoStruct("google.protobuf.Value", "apiextensionsv1.JSON")
+		typeGenerator.AddProtoMessageNotMappedToGoStruct("google.protobuf.ListValue", "apiextensionsv1.JSON")
+	}
+
 	resourceAnnotations := make([]string, 0, len(o.Resources))
 	for _, resource := range o.Resources {
 		var resourceProtoFullName string

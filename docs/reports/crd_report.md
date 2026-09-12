@@ -367,6 +367,7 @@
 | gkehub.cnrm.cloud.google.com                   | GKEHubScope                                              | True         | False       | False  | Direct     | True        |
 | gkemulticloud.cnrm.cloud.google.com            | GKEMulticloudAttachedCluster                             | True         | False       | False  | Direct     | True        |
 | grafeas.cnrm.cloud.google.com                  | GrafeasNote                                              | True         | False       | False  | Direct     | True        |
+| gsuiteaddons.cnrm.cloud.google.com             | GSuiteAddonsDeployment                                   | True         | False       | False  | Direct     | True        |
 | healthcare.cnrm.cloud.google.com               | HealthcareConsentStore                                   | True         | False       | False  | Terraform  | False       |
 | healthcare.cnrm.cloud.google.com               | HealthcareDataset                                        | True         | False       | False  | Terraform  | False       |
 | healthcare.cnrm.cloud.google.com               | HealthcareDICOMStore                                     | True         | False       | False  | Terraform  | False       |
