@@ -200,6 +200,15 @@ func TestScripts(t *testing.T) {
 			}
 
 			{
+				var filteredEvents []*test.LogEntry
+				for _, httpEvent := range httpEvents {
+					if strings.Contains(httpEvent.Request.URL, "/effectiveTags") {
+						continue
+					}
+					filteredEvents = append(filteredEvents, httpEvent)
+				}
+				httpEvents = filteredEvents
+
 				for _, httpEvent := range httpEvents {
 					// gcloud includes a UUID in the user-agent, along with a lot of other client info (e.g. kernel version, python version)
 					// Just remove it from the golden output.
