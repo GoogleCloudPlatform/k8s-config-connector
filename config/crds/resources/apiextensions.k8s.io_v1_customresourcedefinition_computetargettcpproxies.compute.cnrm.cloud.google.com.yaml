@@ -82,8 +82,9 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The value of an externally managed ComputeBackendService
-                      resource.
+                    description: A reference to an externally managed ComputeBackendService
+                      resource. Should be in the format "projects/{{projectID}}/global/backendServices/{{backendservice}}"
+                      or "projects/{{projectID}}/regions/{{location}}/backendServices/{{backendservice}}".
                     type: string
                   name:
                     description: The name of a ComputeBackendService resource.
