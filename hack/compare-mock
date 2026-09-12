@@ -37,13 +37,12 @@ fi
 export RUN_TESTS
 echo "RUN_TESTS=${RUN_TESTS}"
 
-export E2E_GCP_TARGET=mock
-ARTIFACTS="${ARTIFACTS:-$(pwd)/artifactz/${E2E_GCP_TARGET}}"
+# Allow overriding the ARTIFACTS directory (e.g., for parallel test executions).
+# Exported so that the downstream script (dev/tasks/run-e2e) uses this path for test logs and outputs.
+ARTIFACTS="${ARTIFACTS:-$(pwd)/artifactz/mock}"
 export ARTIFACTS
-
 # Clear existing artifacts
 rm -rf "${ARTIFACTS}"
-mkdir -p "${ARTIFACTS}"
 
 # Run e2e tests against our mockgcp, capturing output
-dev/tasks/run-e2e
+E2E_GCP_TARGET=mock dev/tasks/run-e2e
