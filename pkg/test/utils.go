@@ -21,10 +21,12 @@ import (
 	"path/filepath"
 	"reflect"
 	"regexp"
+	"sort"
 	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/yaml"
 )
@@ -86,6 +88,75 @@ func extractEventsWithURLPrefix(allEvents, urlPrefix string) string {
 		}
 	}
 	return strings.Join(eventStrings, "---")
+}
+
+// CompareRatchetFile compares got against a baseline "known violations" file using
+// ratchet semantics, for checks where the baseline records violations we tolerate but
+// never want more of.
+//
+// It differs from CompareGoldenFile in one critical way: NEW entries always fail the
+// test, including when WRITE_GOLDEN_OUTPUT is set. A golden file silently absorbs new
+// violations during the normal regenerate-goldens workflow, which turns the check into
+// a no-op for exactly the changes it exists to catch.
+//
+// Entries that disappear (violations that were fixed) are pruned from the file when
+// WRITE_GOLDEN_OUTPUT is set, so the baseline can only ever shrink.
+func CompareRatchetFile(t *testing.T, p, fullGot string) {
+	t.Helper()
+
+	writeOutput := os.Getenv("WRITE_GOLDEN_OUTPUT") != ""
+
+	splitLines := func(s string) []string {
+		var out []string
+		for _, line := range strings.Split(s, "\n") {
+			if line = strings.TrimSpace(line); line != "" {
+				out = append(out, line)
+			}
+		}
+		return out
+	}
+
+	wantBytes, err := os.ReadFile(p)
+	if err != nil {
+		if !os.IsNotExist(err) {
+			t.Fatalf("FAIL: failed to read ratchet file %q: %v", p, err)
+		}
+		// No baseline file: only acceptable if there is nothing to record.
+		if strings.TrimSpace(fullGot) == "" {
+			return
+		}
+		t.Fatalf("FAIL: ratchet file %q does not exist but violations were found. "+
+			"Create the baseline deliberately; it is not generated automatically.", p)
+	}
+
+	baseline := sets.NewString(splitLines(string(wantBytes))...)
+	got := sets.NewString(splitLines(fullGot)...)
+
+	added := got.Difference(baseline).List()
+	removed := baseline.Difference(got).List()
+
+	if len(added) > 0 {
+		sort.Strings(added)
+		t.Errorf("FAIL: %d new violation(s) not present in %s.\n\n%s\n\n"+
+			"Fix these rather than adding them to the exceptions file. "+
+			"This check does not accept new entries, even with WRITE_GOLDEN_OUTPUT set.",
+			len(added), p, strings.Join(added, "\n"))
+		// Deliberately do not write: writing here is what lets violations slip in.
+		return
+	}
+
+	if len(removed) > 0 {
+		if writeOutput {
+			// No trailing newline: matches how these baselines are written today
+			// (strings.Join of the violation list), so pruning produces a minimal diff.
+			if err := os.WriteFile(p, []byte(strings.Join(got.List(), "\n")), 0644); err != nil {
+				t.Fatalf("FAIL: failed to write ratchet file %s: %v", p, err)
+			}
+			t.Logf("pruned %d fixed violation(s) from %s", len(removed), p)
+		} else {
+			t.Logf("%d violation(s) in %s appear to be fixed; rerun with WRITE_GOLDEN_OUTPUT=1 to prune them", len(removed), p)
+		}
+	}
 }
 
 // CompareGoldenFile performs a file comparison for a golden test.

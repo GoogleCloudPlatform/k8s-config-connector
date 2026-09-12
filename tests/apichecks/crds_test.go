@@ -145,7 +145,7 @@ func TestMissingRefs(t *testing.T) {
 
 	want := strings.Join(errs, "\n")
 
-	test.CompareGoldenFile(t, "testdata/exceptions/missingrefs.txt", want)
+	test.CompareRatchetFile(t, "testdata/exceptions/missingrefs.txt", want)
 }
 
 // Looks for fields that looks like refs, but are in the status.
