@@ -377,6 +377,12 @@ func (a *Adapter) customTableLogic(table *bigquery.Table) {
 		DatasetId: parent.Dataset,
 		TableId:   a.id.ID(),
 	}
+	// BigQuery does not support changing from KMS to Default encryption (or removing CMEK)
+	// via standard table Update PUT. If table already has an encryption key (inherited or explicit)
+	// and desired spec doesn't specify one, carry it over to prevent BQ API from returning 400.
+	if table.EncryptionConfiguration == nil && a.actual != nil && a.actual.EncryptionConfiguration != nil {
+		table.EncryptionConfiguration = a.actual.EncryptionConfiguration
+	}
 }
 
 func (a *Adapter) normalizeReferences(ctx context.Context) error {
