@@ -240,7 +240,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
   "fingerprint": "abcdef0123A=",
   "gatewayAddress": "10.0.0.1",
   "id": "000000000000000000000",
@@ -262,8 +264,7 @@ X-Xss-Protection: 0
     }
   ],
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY",
-  "state": "READY"
+  "stackType": "IPV4_ONLY"
 }
 
 ---
@@ -285,7 +286,7 @@ X-Xss-Protection: 0
   "done": true,
   "name": "operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/mockgcp.api.serviceusage.v1beta1.ServiceIdentity",
+    "@type": "type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity",
     "email": "service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com",
     "uniqueId": "12345678"
   }
@@ -939,7 +940,10 @@ X-Xss-Protection: 0
       ]
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseVersion": "POSTGRES_16",
+    "databaseVersion": "POSTGRES_17",
+    "dataplexConfig": {
+      "enabled": true
+    },
     "encryptionConfig": {
       "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}"
     },
@@ -972,6 +976,7 @@ X-Xss-Protection: 0
       "network": "projects/${projectNumber}/global/networks/${networkID}"
     },
     "reconciling": false,
+    "serviceAccountEmail": "c-${projectNumber}-abcdef12@gcp-sa-alloydb.iam.gserviceaccount.com",
     "state": "READY",
     "subscriptionType": "STANDARD",
     "uid": "111111111111111111111",
@@ -1042,7 +1047,10 @@ X-Xss-Protection: 0
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": 4,
+  "databaseVersion": 5,
+  "dataplexConfig": {
+    "enabled": true
+  },
   "encryptionConfig": {
     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}"
   },
@@ -1075,6 +1083,7 @@ X-Xss-Protection: 0
     "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
+  "serviceAccountEmail": "c-${projectNumber}-abcdef12@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": 1,
   "subscriptionType": 1,
   "uid": "111111111111111111111",
@@ -1083,7 +1092,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupPolicy%2CcontinuousBackupConfig%2CdisplayName%2CinitialUser%2Clabels%2CmaintenanceUpdatePolicy
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupPolicy%2CcontinuousBackupConfig%2CdataplexConfig%2CdisplayName%2CinitialUser%2Clabels%2CmaintenanceUpdatePolicy
 Content-Type: application/json
 
 {
@@ -1123,7 +1132,7 @@ Content-Type: application/json
     },
     "recoveryWindowDays": 7
   },
-  "databaseVersion": 4,
+  "databaseVersion": 5,
   "displayName": "A test alloyDB cluster with updated display name",
   "encryptionConfig": {
     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}"
@@ -1265,7 +1274,10 @@ X-Xss-Protection: 0
       ]
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseVersion": "POSTGRES_16",
+    "databaseVersion": "POSTGRES_17",
+    "dataplexConfig": {
+      "enabled": true
+    },
     "encryptionConfig": {
       "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}"
     },
@@ -1298,6 +1310,7 @@ X-Xss-Protection: 0
       "network": "projects/${projectNumber}/global/networks/${networkID}"
     },
     "reconciling": false,
+    "serviceAccountEmail": "c-${projectNumber}-abcdef12@gcp-sa-alloydb.iam.gserviceaccount.com",
     "state": "READY",
     "subscriptionType": "STANDARD",
     "uid": "111111111111111111111",
@@ -1373,7 +1386,10 @@ X-Xss-Protection: 0
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": 4,
+  "databaseVersion": 5,
+  "dataplexConfig": {
+    "enabled": true
+  },
   "encryptionConfig": {
     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}"
   },
@@ -1406,6 +1422,7 @@ X-Xss-Protection: 0
     "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
+  "serviceAccountEmail": "c-${projectNumber}-abcdef12@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": 1,
   "subscriptionType": 1,
   "uid": "111111111111111111111",
@@ -1841,7 +1858,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
   "fingerprint": "abcdef0123A=",
   "gatewayAddress": "10.0.0.1",
   "id": "000000000000000000000",
@@ -1863,8 +1882,7 @@ X-Xss-Protection: 0
     }
   ],
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY",
-  "state": "READY"
+  "stackType": "IPV4_ONLY"
 }
 
 ---
