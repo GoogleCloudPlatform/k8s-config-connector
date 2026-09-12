@@ -1,0 +1,714 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: computeinstancegroupmanagers.compute.cnrm.cloud.google.com
+spec:
+  group: compute.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ComputeInstanceGroupManager
+    listKind: ComputeInstanceGroupManagerList
+    plural: computeinstancegroupmanagers
+    shortNames:
+    - gcpcomputeinstancegroupmanager
+    - gcpcomputeinstancegroupmanagers
+    singular: computeinstancegroupmanager
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: ComputeInstanceGroupManager is the Schema for the ComputeInstanceGroupManager
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ComputeInstanceGroupManagerSpec defines the desired state
+              of ComputeInstanceGroupManager
+            properties:
+              allInstancesConfig:
+                description: Specifies configuration that overrides the instance template
+                  configuration for the group.
+                properties:
+                  properties:
+                    description: Properties to set on all instances in the group.
+                      You can add or modify properties using the instanceGroupManagers.patch
+                      or regionInstanceGroupManagers.patch. After setting allInstancesConfig
+                      on the group, you must update the group's instances to apply
+                      the configuration. To apply the configuration, set the group's
+                      updatePolicy.type field to use proactive updates or use the
+                      applyUpdatesToInstances method.
+                    properties:
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: The label key-value pairs that you want to patch
+                          onto the instance.
+                        type: object
+                      metadata:
+                        additionalProperties:
+                          type: string
+                        description: The metadata key-value pairs that you want to
+                          patch onto the instance. For more information, see Project
+                          and instance metadata.
+                        type: object
+                    type: object
+                type: object
+              autoHealingPolicies:
+                description: The autohealing policy for this managed instance group.
+                  You can specify only one value.
+                items:
+                  properties:
+                    healthCheck:
+                      description: The URL for the health check that signals autohealing.
+                      type: string
+                    initialDelaySec:
+                      description: The initial delay is the number of seconds that
+                        a new VM takes to initialize and run its startup script. During
+                        a VM's initial delay period, the MIG ignores unsuccessful
+                        health checks because the VM might be in the startup process.
+                        This prevents the MIG from prematurely recreating a VM. If
+                        the health check receives a healthy response during the initial
+                        delay, it indicates that the startup process is complete and
+                        the VM is ready. The value of initial delay must be between
+                        0 and 3600 seconds. The default value is 0.
+                      format: int32
+                      type: integer
+                  type: object
+                type: array
+              baseInstanceName:
+                description: The base instance name is a prefix that you want to attach
+                  to the names of all VMs in a MIG. The maximum character length is
+                  58 and the name must comply with RFC1035 format. When a VM is created
+                  in the group, the MIG appends a hyphen and a random four-character
+                  string to the base instance name. If you want the MIG to assign
+                  sequential numbers instead of a random string, then end the base
+                  instance name with a hyphen followed by one or more hash symbols.
+                  The hash symbols indicate the number of digits. For example, a base
+                  instance name of "vm-###" results in "vm-001" as a VM name. @pattern
+                  [a-z](([-a-z0-9]{0,57})|([-a-z0-9]{0,51}-#{1,10}(\\[[0-9]{1,10}\\])?))
+                type: string
+              creationTimestamp:
+                description: '[Output Only] The creation timestamp for this managed
+                  instance group in RFC3339 text format.'
+                type: string
+              currentActions:
+                description: '[Output Only] The list of instance actions and the number
+                  of instances in this managed instance group that are scheduled for
+                  each of those actions.'
+                properties:
+                  abandoning:
+                    description: '[Output Only] The total number of instances in the
+                      managed instance group that are scheduled to be abandoned. Abandoning
+                      an instance removes it from the managed instance group without
+                      deleting it.'
+                    format: int32
+                    type: integer
+                  creating:
+                    description: '[Output Only] The number of instances in the managed
+                      instance group that are scheduled to be created or are currently
+                      being created. If the group fails to create any of these instances,
+                      it tries again until it creates the instance successfully. If
+                      you have disabled creation retries, this field will not be populated;
+                      instead, the creatingWithoutRetries field will be populated.'
+                    format: int32
+                    type: integer
+                  creatingWithoutRetries:
+                    description: '[Output Only] The number of instances that the managed
+                      instance group will attempt to create. The group attempts to
+                      create each instance only once. If the group fails to create
+                      any of these instances, it decreases the group''s targetSize
+                      value accordingly.'
+                    format: int32
+                    type: integer
+                  deleting:
+                    description: '[Output Only] The number of instances in the managed
+                      instance group that are scheduled to be deleted or are currently
+                      being deleted.'
+                    format: int32
+                    type: integer
+                  none:
+                    description: '[Output Only] The number of instances in the managed
+                      instance group that are running and have no scheduled actions.'
+                    format: int32
+                    type: integer
+                  recreating:
+                    description: '[Output Only] The number of instances in the managed
+                      instance group that are scheduled to be recreated or are currently
+                      being being recreated. Recreating an instance deletes the existing
+                      root persistent disk and creates a new disk from the image that
+                      is defined in the instance template.'
+                    format: int32
+                    type: integer
+                  refreshing:
+                    description: '[Output Only] The number of instances in the managed
+                      instance group that are being reconfigured with properties that
+                      do not require a restart or a recreate action. For example,
+                      setting or removing target pools for the instance.'
+                    format: int32
+                    type: integer
+                  restarting:
+                    description: '[Output Only] The number of instances in the managed
+                      instance group that are scheduled to be restarted or are currently
+                      being restarted.'
+                    format: int32
+                    type: integer
+                  resuming:
+                    description: '[Output Only] The number of instances in the managed
+                      instance group that are scheduled to be resumed or are currently
+                      being resumed.'
+                    format: int32
+                    type: integer
+                  starting:
+                    description: '[Output Only] The number of instances in the managed
+                      instance group that are scheduled to be started or are currently
+                      being started.'
+                    format: int32
+                    type: integer
+                  stopping:
+                    description: '[Output Only] The number of instances in the managed
+                      instance group that are scheduled to be stopped or are currently
+                      being stopped.'
+                    format: int32
+                    type: integer
+                  suspending:
+                    description: '[Output Only] The number of instances in the managed
+                      instance group that are scheduled to be suspended or are currently
+                      being suspended.'
+                    format: int32
+                    type: integer
+                  verifying:
+                    description: '[Output Only] The number of instances in the managed
+                      instance group that are being verified. See the managedInstances[].currentAction
+                      property in the listManagedInstances method documentation.'
+                    format: int32
+                    type: integer
+                type: object
+              description:
+                description: An optional description of this resource.
+                type: string
+              distributionPolicy:
+                description: Policy specifying the intended distribution of managed
+                  instances across zones in a regional managed instance group.
+                properties:
+                  targetShape:
+                    description: |-
+                      The distribution shape to which the group converges either proactively or on resize events (depending on the value set in updatePolicy.instanceRedistributionType).
+                       Check the TargetShape enum for the list of possible values.
+                    type: string
+                  zones:
+                    description: Zones where the regional managed instance group will
+                      create and manage its instances.
+                    items:
+                      properties:
+                        zone:
+                          description: The URL of the zone. The zone must exist in
+                            the region where the managed instance group is located.
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              fingerprint:
+                description: Fingerprint of this resource. This field may be used
+                  in optimistic locking. It will be ignored when inserting an InstanceGroupManager.
+                  An up-to-date fingerprint must be provided in order to update the
+                  InstanceGroupManager, otherwise the request will fail with error
+                  412 conditionNotMet. To see the latest fingerprint, make a get()
+                  request to retrieve an InstanceGroupManager.
+                type: string
+              id:
+                description: '[Output Only] A unique identifier for this resource
+                  type. The server generates this identifier.'
+                format: int64
+                type: integer
+              instanceFlexibilityPolicy:
+                description: Instance flexibility allowing MIG to create VMs from
+                  multiple types of machines. Instance flexibility configuration on
+                  MIG overrides instance template configuration.
+                type: object
+              instanceGroup:
+                description: '[Output Only] The URL of the Instance Group resource.'
+                type: string
+              instanceLifecyclePolicy:
+                description: The repair policy for this managed instance group.
+                properties:
+                  defaultActionOnFailure:
+                    description: |-
+                      The action that a MIG performs on a failed or an unhealthy VM. A VM is marked as unhealthy when the application running on that VM fails a health check. Valid values are - REPAIR (default): MIG automatically repairs a failed or an unhealthy VM by recreating it. For more information, see About repairing VMs in a MIG. - DO_NOTHING: MIG does not repair a failed or an unhealthy VM.
+                       Check the DefaultActionOnFailure enum for the list of possible values.
+                    type: string
+                  forceUpdateOnRepair:
+                    description: |-
+                      A bit indicating whether to forcefully apply the group's latest configuration when repairing a VM. Valid options are: - NO (default): If configuration updates are available, they are not forcefully applied during repair. Instead, configuration updates are applied according to the group's update policy. - YES: If configuration updates are available, they are applied during repair.
+                       Check the ForceUpdateOnRepair enum for the list of possible values.
+                    type: string
+                type: object
+              instanceTemplate:
+                description: The URL of the instance template that is specified for
+                  this managed instance group. The group uses this template to create
+                  all new instances in the managed instance group. The templates for
+                  existing instances in the group do not change unless you run recreateInstances,
+                  run applyUpdatesToInstances, or set the group's updatePolicy.type
+                  to PROACTIVE.
+                type: string
+              kind:
+                description: '[Output Only] The resource type, which is always compute#instanceGroupManager
+                  for managed instance groups.'
+                type: string
+              listManagedInstancesResults:
+                description: |-
+                  Pagination behavior of the listManagedInstances API method for this managed instance group.
+                   Check the ListManagedInstancesResults enum for the list of possible values.
+                type: string
+              location:
+                description: The location of this resource.
+                type: string
+              namedPorts:
+                description: '[Output Only] Named ports configured on the Instance
+                  Groups complementary to this Instance Group Manager.'
+                items:
+                  properties:
+                    name:
+                      description: The name for this named port. The name must be
+                        1-63 characters long, and comply with RFC1035.
+                      type: string
+                    port:
+                      description: The port number, which can be a value between 1
+                        and 65535.
+                      format: int32
+                      type: integer
+                  type: object
+                type: array
+              projectRef:
+                description: The project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              region:
+                description: '[Output Only] The URL of the region where the managed
+                  instance group resides (for regional resources).'
+                type: string
+              resourceID:
+                description: The ComputeInstanceGroupManager name. If not given, the
+                  metadata.name will be used.
+                type: string
+              resourcePolicies:
+                description: Resource policies for this managed instance group.
+                properties:
+                  workloadPolicy:
+                    description: 'The URL of the workload policy that is specified
+                      for this managed instance group. It can be a full or partial
+                      URL. For example, the following are all valid URLs to a workload
+                      policy: - https://www.googleapis.com/compute/v1/projects/project/regions/region
+                      /resourcePolicies/resourcePolicy - projects/project/regions/region/resourcePolicies/resourcePolicy
+                      - regions/region/resourcePolicies/resourcePolicy'
+                    type: string
+                type: object
+              satisfiesPzi:
+                description: '[Output Only] Reserved for future use.'
+                type: boolean
+              satisfiesPzs:
+                description: '[Output Only] Reserved for future use.'
+                type: boolean
+              selfLink:
+                description: '[Output Only] The URL for this managed instance group.
+                  The server defines this URL.'
+                type: string
+              standbyPolicy:
+                description: Standby policy for stopped and suspended instances.
+                properties:
+                  initialDelaySec:
+                    description: Specifies the number of seconds that the MIG should
+                      wait to suspend or stop a VM after that VM was created. The
+                      initial delay gives the initialization script the time to prepare
+                      your VM for a quick scale out. The value of initial delay must
+                      be between 0 and 3600 seconds. The default value is 0.
+                    format: int32
+                    type: integer
+                  mode:
+                    description: |-
+                      Defines how a MIG resumes or starts VMs from a standby pool when the group scales out. The default mode is `MANUAL`.
+                       Check the Mode enum for the list of possible values.
+                    type: string
+                type: object
+              statefulPolicy:
+                description: Stateful configuration for this Instanced Group Manager
+                properties:
+                  preservedState:
+                    type: object
+                type: object
+              status:
+                description: '[Output Only] The status of this managed instance group.'
+                properties:
+                  allInstancesConfig:
+                    description: '[Output only] Status of all-instances configuration
+                      on the group.'
+                    properties:
+                      currentRevision:
+                        description: '[Output Only] Current all-instances configuration
+                          revision. This value is in RFC3339 text format.'
+                        type: string
+                      effective:
+                        description: '[Output Only] A bit indicating whether this
+                          configuration has been applied to all managed instances
+                          in the group.'
+                        type: boolean
+                    type: object
+                  autoscaler:
+                    description: '[Output Only] The URL of the Autoscaler that targets
+                      this instance group manager.'
+                    type: string
+                  isStable:
+                    description: '[Output Only] A bit indicating whether the managed
+                      instance group is in a stable state. A stable state means that:
+                      none of the instances in the managed instance group is currently
+                      undergoing any type of change (for example, creation, restart,
+                      or deletion); no future changes are scheduled for instances
+                      in the managed instance group; and the managed instance group
+                      itself is not being modified.'
+                    type: boolean
+                  stateful:
+                    description: '[Output Only] Stateful status of the given Instance
+                      Group Manager.'
+                    properties:
+                      hasStatefulConfig:
+                        description: '[Output Only] A bit indicating whether the managed
+                          instance group has stateful configuration, that is, if you
+                          have configured any items in a stateful policy or in per-instance
+                          configs. The group might report that it has no stateful
+                          configuration even when there is still some preserved state
+                          on a managed instance, for example, if you have deleted
+                          all PICs but not yet applied those deletions.'
+                        type: boolean
+                      perInstanceConfigs:
+                        description: '[Output Only] Status of per-instance configurations
+                          on the instances.'
+                        properties:
+                          allEffective:
+                            description: A bit indicating if all of the group's per-instance
+                              configurations (listed in the output of a listPerInstanceConfigs
+                              API call) have status EFFECTIVE or there are no per-instance-configs.
+                            type: boolean
+                        type: object
+                    type: object
+                  versionTarget:
+                    description: '[Output Only] A status of consistency of Instances''
+                      versions with their target version specified by version field
+                      on Instance Group Manager.'
+                    properties:
+                      isReached:
+                        description: '[Output Only] A bit indicating whether version
+                          target has been reached in this managed instance group,
+                          i.e. all instances are in their target version. Instances''
+                          target version are specified by version field on Instance
+                          Group Manager.'
+                        type: boolean
+                    type: object
+                type: object
+              targetPools:
+                description: The URLs for all TargetPool resources to which instances
+                  in the instanceGroup field are added. The target pools automatically
+                  apply to all of the instances in the managed instance group.
+                items:
+                  type: string
+                type: array
+              targetSize:
+                description: The target number of running instances for this managed
+                  instance group. You can reduce this number by using the instanceGroupManager
+                  deleteInstances or abandonInstances methods. Resizing the group
+                  also changes this number.
+                format: int32
+                type: integer
+              targetStoppedSize:
+                description: 'The target number of stopped instances for this managed
+                  instance group. This number changes when you: - Stop instance using
+                  the stopInstances method or start instances using the startInstances
+                  method. - Manually change the targetStoppedSize using the update
+                  method.'
+                format: int32
+                type: integer
+              targetSuspendedSize:
+                description: 'The target number of suspended instances for this managed
+                  instance group. This number changes when you: - Suspend instance
+                  using the suspendInstances method or resume instances using the
+                  resumeInstances method. - Manually change the targetSuspendedSize
+                  using the update method.'
+                format: int32
+                type: integer
+              updatePolicy:
+                description: The update policy for this managed instance group.
+                properties:
+                  instanceRedistributionType:
+                    description: |-
+                      The instance redistribution policy for regional managed instance groups. Valid values are: - PROACTIVE (default): The group attempts to maintain an even distribution of VM instances across zones in the region. - NONE: For non-autoscaled groups, proactive redistribution is disabled.
+                       Check the InstanceRedistributionType enum for the list of possible values.
+                    type: string
+                  maxSurge:
+                    description: The maximum number of instances that can be created
+                      above the specified targetSize during the update process. This
+                      value can be either a fixed number or, if the group has 10 or
+                      more instances, a percentage. If you set a percentage, the number
+                      of instances is rounded if necessary. The default value for
+                      maxSurge is a fixed value equal to the number of zones in which
+                      the managed instance group operates. At least one of either
+                      maxSurge or maxUnavailable must be greater than 0. Learn more
+                      about maxSurge.
+                    properties:
+                      calculated:
+                        description: '[Output Only] Absolute value of VM instances
+                          calculated based on the specific mode. - If the value is
+                          fixed, then the calculated value is equal to the fixed value.
+                          - If the value is a percent, then the calculated value is
+                          percent/100 * targetSize. For example, the calculated value
+                          of a 80% of a managed instance group with 150 instances
+                          would be (80/100 * 150) = 120 VM instances. If there is
+                          a remainder, the number is rounded.'
+                        format: int32
+                        type: integer
+                      fixed:
+                        description: Specifies a fixed number of VM instances. This
+                          must be a positive integer.
+                        format: int32
+                        type: integer
+                      percent:
+                        description: Specifies a percentage of instances between 0
+                          to 100%, inclusive. For example, specify 80 for 80%.
+                        format: int32
+                        type: integer
+                    type: object
+                  maxUnavailable:
+                    description: 'The maximum number of instances that can be unavailable
+                      during the update process. An instance is considered available
+                      if all of the following conditions are satisfied: - The instance''s
+                      status is RUNNING. - If there is a health check on the instance
+                      group, the instance''s health check status must be HEALTHY at
+                      least once. If there is no health check on the group, then the
+                      instance only needs to have a status of RUNNING to be considered
+                      available. This value can be either a fixed number or, if the
+                      group has 10 or more instances, a percentage. If you set a percentage,
+                      the number of instances is rounded if necessary. The default
+                      value for maxUnavailable is a fixed value equal to the number
+                      of zones in which the managed instance group operates. At least
+                      one of either maxSurge or maxUnavailable must be greater than
+                      0. Learn more about maxUnavailable.'
+                    properties:
+                      calculated:
+                        description: '[Output Only] Absolute value of VM instances
+                          calculated based on the specific mode. - If the value is
+                          fixed, then the calculated value is equal to the fixed value.
+                          - If the value is a percent, then the calculated value is
+                          percent/100 * targetSize. For example, the calculated value
+                          of a 80% of a managed instance group with 150 instances
+                          would be (80/100 * 150) = 120 VM instances. If there is
+                          a remainder, the number is rounded.'
+                        format: int32
+                        type: integer
+                      fixed:
+                        description: Specifies a fixed number of VM instances. This
+                          must be a positive integer.
+                        format: int32
+                        type: integer
+                      percent:
+                        description: Specifies a percentage of instances between 0
+                          to 100%, inclusive. For example, specify 80 for 80%.
+                        format: int32
+                        type: integer
+                    type: object
+                  minimalAction:
+                    description: |-
+                      Minimal action to be taken on an instance. Use this option to minimize disruption as much as possible or to apply a more disruptive action than is necessary. - To limit disruption as much as possible, set the minimal action to REFRESH. If your update requires a more disruptive action, Compute Engine performs the necessary action to execute the update. - To apply a more disruptive action than is strictly necessary, set the minimal action to RESTART or REPLACE. For example, Compute Engine does not need to restart a VM to change its metadata. But if your application reads instance metadata only when a VM is restarted, you can set the minimal action to RESTART in order to pick up metadata changes.
+                       Check the MinimalAction enum for the list of possible values.
+                    type: string
+                  mostDisruptiveAllowedAction:
+                    description: |-
+                      Most disruptive action that is allowed to be taken on an instance. You can specify either NONE to forbid any actions, REFRESH to avoid restarting the VM and to limit disruption as much as possible. RESTART to allow actions that can be applied without instance replacing or REPLACE to allow all possible actions. If the Updater determines that the minimal update action needed is more disruptive than most disruptive allowed action you specify it will not perform the update at all.
+                       Check the MostDisruptiveAllowedAction enum for the list of possible values.
+                    type: string
+                  replacementMethod:
+                    description: |-
+                      What action should be used to replace instances. See minimal_action.REPLACE
+                       Check the ReplacementMethod enum for the list of possible values.
+                    type: string
+                  type:
+                    description: |-
+                      The type of update process. You can specify either PROACTIVE so that the MIG automatically updates VMs to the latest configurations or OPPORTUNISTIC so that you can select the VMs that you want to update.
+                       Check the Type enum for the list of possible values.
+                    type: string
+                type: object
+              versions:
+                description: Specifies the instance templates used by this managed
+                  instance group to create instances. Each version is defined by an
+                  instanceTemplate and a name. Every version can appear at most once
+                  per instance group. This field overrides the top-level instanceTemplate
+                  field. Read more about the relationships between these fields. Exactly
+                  one version must leave the targetSize field unset. That version
+                  will be applied to all remaining instances. For more information,
+                  read about canary updates.
+                items:
+                  properties:
+                    instanceTemplate:
+                      description: The URL of the instance template that is specified
+                        for this managed instance group. The group uses this template
+                        to create new instances in the managed instance group until
+                        the `targetSize` for this version is reached. The templates
+                        for existing instances in the group do not change unless you
+                        run recreateInstances, run applyUpdatesToInstances, or set
+                        the group's updatePolicy.type to PROACTIVE; in those cases,
+                        existing instances are updated until the `targetSize` for
+                        this version is reached.
+                      type: string
+                    name:
+                      description: Name of the version. Unique among all versions
+                        in the scope of this managed instance group.
+                      type: string
+                    targetSize:
+                      description: 'Specifies the intended number of instances to
+                        be created from the instanceTemplate. The final number of
+                        instances created from the template will be equal to: - If
+                        expressed as a fixed number, the minimum of either targetSize.fixed
+                        or instanceGroupManager.targetSize is used. - if expressed
+                        as a percent, the targetSize would be (targetSize.percent/100
+                        * InstanceGroupManager.targetSize) If there is a remainder,
+                        the number is rounded. If unset, this version will update
+                        any remaining instances not updated by another version. Read
+                        Starting a canary update for more information.'
+                      properties:
+                        calculated:
+                          description: '[Output Only] Absolute value of VM instances
+                            calculated based on the specific mode. - If the value
+                            is fixed, then the calculated value is equal to the fixed
+                            value. - If the value is a percent, then the calculated
+                            value is percent/100 * targetSize. For example, the calculated
+                            value of a 80% of a managed instance group with 150 instances
+                            would be (80/100 * 150) = 120 VM instances. If there is
+                            a remainder, the number is rounded.'
+                          format: int32
+                          type: integer
+                        fixed:
+                          description: Specifies a fixed number of VM instances. This
+                            must be a positive integer.
+                          format: int32
+                          type: integer
+                        percent:
+                          description: Specifies a percentage of instances between
+                            0 to 100%, inclusive. For example, specify 80 for 80%.
+                          format: int32
+                          type: integer
+                      type: object
+                  type: object
+                type: array
+              zone:
+                description: '[Output Only] The URL of a zone where the managed instance
+                  group is located (for zonal resources).'
+                type: string
+            required:
+            - location
+            type: object
+          status:
+            description: ComputeInstanceGroupManagerStatus defines the config connector
+              machine state of ComputeInstanceGroupManager
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ComputeInstanceGroupManager
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

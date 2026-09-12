@@ -1,0 +1,268 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: dataformrepositories.dataform.cnrm.cloud.google.com
+spec:
+  group: dataform.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: DataformRepository
+    listKind: DataformRepositoryList
+    plural: dataformrepositories
+    shortNames:
+    - gcpdataformrepository
+    - gcpdataformrepositorys
+    singular: dataformrepository
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: DataformRepository is the Schema for the DataformRepository API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DataformRepositorySpec defines the desired state of DataformRepository
+            properties:
+              containingFolder:
+                description: 'Optional. The name of the containing folder of the repository.
+                  The field is immutable and it can be modified via a MoveRepository
+                  operation. Format: `projects/*/locations/*/folders/*`. or `projects/*/locations/*/teamFolders/*`.'
+                type: string
+              displayName:
+                description: Optional. The repository's user-friendly name.
+                type: string
+              gitRemoteSettings:
+                description: Optional. If set, configures this repository to be linked
+                  to a Git remote.
+                properties:
+                  authenticationTokenSecretVersion:
+                    description: Optional. The name of the Secret Manager secret version
+                      to use as an authentication token for Git operations. Must be
+                      in the format `projects/*/secrets/*/versions/*`.
+                    type: string
+                  defaultBranch:
+                    description: Required. The Git remote's default branch name.
+                    type: string
+                  sshAuthenticationConfig:
+                    description: Optional. Authentication fields for remote uris using
+                      SSH protocol.
+                    properties:
+                      hostPublicKey:
+                        description: Required. Content of a public SSH key to verify
+                          an identity of a remote Git host.
+                        type: string
+                      userPrivateKeySecretVersion:
+                        description: Required. The name of the Secret Manager secret
+                          version to use as a ssh private key for Git operations.
+                          Must be in the format `projects/*/secrets/*/versions/*`.
+                        type: string
+                    type: object
+                  url:
+                    description: Required. The Git remote's URL.
+                    type: string
+                type: object
+              kmsKeyName:
+                description: 'Optional. The reference to a KMS encryption key. If
+                  provided, it will be used to encrypt user data in the repository
+                  and all child resources. It is not possible to add or update the
+                  encryption key after the repository is created. Example: `projects/{kms_project}/locations/{location}/keyRings/{key_location}/cryptoKeys/{key}`'
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. Repository user labels.
+                type: object
+              location:
+                description: The location of this resource.
+                type: string
+              npmrcEnvironmentVariablesSecretVersion:
+                description: Optional. The name of the Secret Manager secret version
+                  to be used to interpolate variables into the .npmrc file for package
+                  installation operations. Must be in the format `projects/*/secrets/*/versions/*`.
+                  The file itself must be in a JSON format.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The DataformRepository name. If not given, the metadata.name
+                  will be used.
+                type: string
+              serviceAccount:
+                description: Optional. The service account to run workflow invocations
+                  under.
+                type: string
+              setAuthenticatedUserAdmin:
+                description: Optional. Input only. If set to true, the authenticated
+                  user will be granted the roles/dataform.admin role on the created
+                  repository. To modify access to the created repository later apply
+                  setIamPolicy from https://cloud.google.com/dataform/reference/rest#rest-resource:-v1beta1.projects.locations.repositories
+                type: boolean
+              workspaceCompilationOverrides:
+                description: Optional. If set, fields of `workspace_compilation_overrides`
+                  override the default compilation settings that are specified in
+                  dataform.json when creating workspace-scoped compilation results.
+                  See documentation for `WorkspaceCompilationOverrides` for more information.
+                properties:
+                  defaultDatabase:
+                    description: Optional. The default database (Google Cloud project
+                      ID).
+                    type: string
+                  schemaSuffix:
+                    description: Optional. The suffix that should be appended to all
+                      schema (BigQuery dataset ID) names.
+                    type: string
+                  tablePrefix:
+                    description: Optional. The prefix that should be prepended to
+                      all table names.
+                    type: string
+                type: object
+            required:
+            - location
+            type: object
+          status:
+            description: DataformRepositoryStatus defines the config connector machine
+              state of DataformRepository
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the DataformRepository resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. The timestamp of when the repository
+                      was created.
+                    type: string
+                  dataEncryptionState:
+                    description: Output only. A data encryption state of a Git repository
+                      if this Repository is protected by a KMS key.
+                    properties:
+                      kmsKeyVersionName:
+                        description: Required. The KMS key version name with which
+                          data of a resource is encrypted.
+                        type: string
+                    type: object
+                  internalMetadata:
+                    description: 'Output only. All the metadata information that is
+                      used internally to serve the resource. For example: timestamps,
+                      flags, status fields, etc. The format of this field is a JSON
+                      string.'
+                    type: string
+                  teamFolderName:
+                    description: 'Output only. The resource name of the TeamFolder
+                      that this Repository is associated with. This should take the
+                      format: projects/{project}/locations/{location}/teamFolders/{teamFolder}.
+                      If this is not set, the Repository is not associated with a
+                      TeamFolder.'
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

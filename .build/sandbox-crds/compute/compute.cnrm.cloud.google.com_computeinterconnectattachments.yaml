@@ -1,0 +1,422 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: computeinterconnectattachments.compute.cnrm.cloud.google.com
+spec:
+  group: compute.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ComputeInterconnectAttachment
+    listKind: ComputeInterconnectAttachmentList
+    plural: computeinterconnectattachments
+    shortNames:
+    - gcpcomputeinterconnectattachment
+    - gcpcomputeinterconnectattachments
+    singular: computeinterconnectattachment
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: ComputeInterconnectAttachment is the Schema for the ComputeInterconnectAttachment
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ComputeInterconnectAttachmentSpec defines the desired state
+              of ComputeInterconnectAttachment
+            properties:
+              adminEnabled:
+                description: Determines whether this Attachment will carry packets.
+                  Not present for PARTNER_PROVIDER.
+                type: boolean
+              attachmentGroup:
+                description: '[Output Only] URL of the AttachmentGroup that includes
+                  this Attachment.'
+                type: string
+              bandwidth:
+                description: |-
+                  Provisioned bandwidth capacity for the interconnect attachment. For attachments of type DEDICATED, the user can set the bandwidth. For attachments of type PARTNER, the Google Partner that is operating the interconnect must set the bandwidth. Output only for PARTNER type, mutable for PARTNER_PROVIDER and DEDICATED, and can take one of the following values: - BPS_50M: 50 Mbit/s - BPS_100M: 100 Mbit/s - BPS_200M: 200 Mbit/s - BPS_300M: 300 Mbit/s - BPS_400M: 400 Mbit/s - BPS_500M: 500 Mbit/s - BPS_1G: 1 Gbit/s - BPS_2G: 2 Gbit/s - BPS_5G: 5 Gbit/s - BPS_10G: 10 Gbit/s - BPS_20G: 20 Gbit/s - BPS_50G: 50 Gbit/s - BPS_100G: 100 Gbit/s
+                   Check the Bandwidth enum for the list of possible values.
+                type: string
+              candidateIPV6Subnets:
+                description: This field is not available.
+                items:
+                  type: string
+                type: array
+              candidateSubnets:
+                description: Input only. Up to 16 candidate prefixes that can be used
+                  to restrict the allocation of cloudRouterIpAddress and customerRouterIpAddress
+                  for this attachment. All prefixes must be within link-local address
+                  space (169.254.0.0/16) and must be /29 or shorter (/28, /27, etc).
+                  Google will attempt to select an unused /29 from the supplied candidate
+                  prefix(es). The request will fail if all possible /29s are in use
+                  on Google's edge. If not supplied, Google will randomly select an
+                  unused /29 from all of link-local space.
+                items:
+                  type: string
+                type: array
+              cloudRouterIPAddress:
+                description: '[Output Only] IPv4 address + prefix length to be configured
+                  on Cloud Router Interface for this interconnect attachment.'
+                type: string
+              cloudRouterIPV6Address:
+                description: '[Output Only] IPv6 address + prefix length to be configured
+                  on Cloud Router Interface for this interconnect attachment.'
+                type: string
+              cloudRouterIPV6InterfaceID:
+                description: This field is not available.
+                type: string
+              configurationConstraints:
+                description: '[Output Only] Constraints for this attachment, if any.
+                  The attachment does not work if these constraints are not met.'
+                properties:
+                  bgpMd5:
+                    description: |-
+                      [Output Only] Whether the attachment's BGP session requires/allows/disallows BGP MD5 authentication. This can take one of the following values: MD5_OPTIONAL, MD5_REQUIRED, MD5_UNSUPPORTED. For example, a Cross-Cloud Interconnect connection to a remote cloud provider that requires BGP MD5 authentication has the interconnectRemoteLocation attachment_configuration_constraints.bgp_md5 field set to MD5_REQUIRED, and that property is propagated to the attachment. Similarly, if BGP MD5 is MD5_UNSUPPORTED, an error is returned if MD5 is requested.
+                       Check the BgpMd5 enum for the list of possible values.
+                    type: string
+                  bgpPeerAsnRanges:
+                    description: '[Output Only] List of ASN ranges that the remote
+                      location is known to support. Formatted as an array of inclusive
+                      ranges {min: min-value, max: max-value}. For example, [{min:
+                      123, max: 123}, {min: 64512, max: 65534}] allows the peer ASN
+                      to be 123 or anything in the range 64512-65534. This field is
+                      only advisory. Although the API accepts other ranges, these
+                      are the ranges that we recommend.'
+                    items:
+                      properties:
+                        max:
+                          format: int32
+                          type: integer
+                        min:
+                          format: int32
+                          type: integer
+                      type: object
+                    type: array
+                type: object
+              creationTimestamp:
+                description: '[Output Only] Creation timestamp in RFC3339 text format.'
+                type: string
+              customerRouterIPAddress:
+                description: '[Output Only] IPv4 address + prefix length to be configured
+                  on the customer router subinterface for this interconnect attachment.'
+                type: string
+              customerRouterIPV6Address:
+                description: '[Output Only] IPv6 address + prefix length to be configured
+                  on the customer router subinterface for this interconnect attachment.'
+                type: string
+              customerRouterIPV6InterfaceID:
+                description: This field is not available.
+                type: string
+              dataplaneVersion:
+                description: '[Output Only] Dataplane version for this InterconnectAttachment.
+                  This field is only present for Dataplane version 2 and higher. Absence
+                  of this field in the API output indicates that the Dataplane is
+                  version 1.'
+                format: int32
+                type: integer
+              description:
+                description: An optional description of this resource.
+                type: string
+              edgeAvailabilityDomain:
+                description: |-
+                  Input only. Desired availability domain for the attachment. Only available for type PARTNER, at creation time, and can take one of the following values: - AVAILABILITY_DOMAIN_ANY - AVAILABILITY_DOMAIN_1 - AVAILABILITY_DOMAIN_2 For improved reliability, customers should configure a pair of attachments, one per availability domain. The selected availability domain will be provided to the Partner via the pairing key, so that the provisioned circuit will lie in the specified domain. If not specified, the value will default to AVAILABILITY_DOMAIN_ANY.
+                   Check the EdgeAvailabilityDomain enum for the list of possible values.
+                type: string
+              encryption:
+                description: |-
+                  Indicates the user-supplied encryption option of this VLAN attachment (interconnectAttachment). Can only be specified at attachment creation for PARTNER or DEDICATED attachments. Possible values are: - NONE - This is the default value, which means that the VLAN attachment carries unencrypted traffic. VMs are able to send traffic to, or receive traffic from, such a VLAN attachment. - IPSEC - The VLAN attachment carries only encrypted traffic that is encrypted by an IPsec device, such as an HA VPN gateway or third-party IPsec VPN. VMs cannot directly send traffic to, or receive traffic from, such a VLAN attachment. To use *HA VPN over Cloud Interconnect*, the VLAN attachment must be created with this option.
+                   Check the Encryption enum for the list of possible values.
+                type: string
+              googleReferenceID:
+                description: '[Output Only] Google reference ID, to be used when raising
+                  support tickets with Google or otherwise to debug backend connectivity
+                  issues. [Deprecated] This field is not used.'
+                type: string
+              id:
+                description: '[Output Only] The unique identifier for the resource.
+                  This identifier is defined by the server.'
+                format: int64
+                type: integer
+              interconnect:
+                description: URL of the underlying Interconnect object that this attachment's
+                  traffic will traverse through.
+                type: string
+              ipsecInternalAddresses:
+                description: A list of URLs of addresses that have been reserved for
+                  the VLAN attachment. Used only for the VLAN attachment that has
+                  the encryption option as IPSEC. The addresses must be regional internal
+                  IP address ranges. When creating an HA VPN gateway over the VLAN
+                  attachment, if the attachment is configured to use a regional internal
+                  IP address, then the VPN gateway's IP address is allocated from
+                  the IP address range specified here. For example, if the HA VPN
+                  gateway's interface 0 is paired to this VLAN attachment, then a
+                  regional internal IP address for the VPN gateway interface 0 will
+                  be allocated from the IP address specified for this VLAN attachment.
+                  If this field is not specified when creating the VLAN attachment,
+                  then later on when creating an HA VPN gateway on this VLAN attachment,
+                  the HA VPN gateway's IP address is allocated from the regional external
+                  IP address pool.
+                items:
+                  type: string
+                type: array
+              kind:
+                description: '[Output Only] Type of the resource. Always compute#interconnectAttachment
+                  for interconnect attachments.'
+                type: string
+              labelFingerprint:
+                description: A fingerprint for the labels being applied to this InterconnectAttachment,
+                  which is essentially a hash of the labels set used for optimistic
+                  locking. The fingerprint is initially generated by Compute Engine
+                  and changes after every request to modify or update labels. You
+                  must always provide an up-to-date fingerprint hash in order to update
+                  or change labels, otherwise the request will fail with error 412
+                  conditionNotMet. To see the latest fingerprint, make a get() request
+                  to retrieve an InterconnectAttachment.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Labels for this resource. These can only be added or
+                  modified by the setLabels method. Each label key/value pair must
+                  comply with RFC1035. Label values may be empty.
+                type: object
+              location:
+                description: The location of this resource.
+                type: string
+              mtu:
+                description: Maximum Transmission Unit (MTU), in bytes, of packets
+                  passing through this interconnect attachment. Valid values are 1440,
+                  1460, 1500, and 8896. If not specified, the value will default to
+                  1440.
+                format: int32
+                type: integer
+              operationalStatus:
+                description: |-
+                  [Output Only] The current status of whether or not this interconnect attachment is functional, which can take one of the following values: - OS_ACTIVE: The attachment has been turned up and is ready to use. - OS_UNPROVISIONED: The attachment is not ready to use yet, because turnup is not complete.
+                   Check the OperationalStatus enum for the list of possible values.
+                type: string
+              pairingKey:
+                description: '[Output only for type PARTNER. Input only for PARTNER_PROVIDER.
+                  Not present for DEDICATED]. The opaque identifier of a PARTNER attachment
+                  used to initiate provisioning with a selected partner. Of the form
+                  "XXXXX/region/domain"'
+                type: string
+              partnerAsn:
+                description: Optional BGP ASN for the router supplied by a Layer 3
+                  Partner if they configured BGP on behalf of the customer. Output
+                  only for PARTNER type, input only for PARTNER_PROVIDER, not available
+                  for DEDICATED.
+                format: int64
+                type: integer
+              partnerMetadata:
+                description: Informational metadata about Partner attachments from
+                  Partners to display to customers. Output only for PARTNER type,
+                  mutable for PARTNER_PROVIDER, not available for DEDICATED.
+                properties:
+                  interconnectName:
+                    description: Plain text name of the Interconnect this attachment
+                      is connected to, as displayed in the Partner's portal. For instance
+                      "Chicago 1". This value may be validated to match approved Partner
+                      values.
+                    type: string
+                  partnerName:
+                    description: Plain text name of the Partner providing this attachment.
+                      This value may be validated to match approved Partner values.
+                    type: string
+                  portalURL:
+                    description: URL of the Partner's portal for this Attachment.
+                      Partners may customise this to be a deep link to the specific
+                      resource on the Partner portal. This value may be validated
+                      to match approved Partner values.
+                    type: string
+                type: object
+              privateInterconnectInfo:
+                description: '[Output Only] Information specific to an InterconnectAttachment.
+                  This property is populated if the interconnect that this is attached
+                  to is of type DEDICATED.'
+                properties:
+                  tag8021q:
+                    description: '[Output Only] 802.1q encapsulation tag to be used
+                      for traffic between Google and the customer, going to and from
+                      this network and region.'
+                    format: int32
+                    type: integer
+                type: object
+              projectRef:
+                description: The project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              region:
+                description: '[Output Only] URL of the region where the regional interconnect
+                  attachment resides. You must specify this field as part of the HTTP
+                  request URL. It is not settable as a field in the request body.'
+                type: string
+              remoteService:
+                description: '[Output Only] If the attachment is on a Cross-Cloud
+                  Interconnect connection, this field contains the interconnect''s
+                  remote location service provider. Example values: "Amazon Web Services"
+                  "Microsoft Azure". The field is set only for attachments on Cross-Cloud
+                  Interconnect connections. Its value is copied from the InterconnectRemoteLocation
+                  remoteService field.'
+                type: string
+              resourceID:
+                description: The ComputeInterconnectAttachment name. If not given,
+                  the metadata.name will be used.
+                type: string
+              router:
+                description: URL of the Cloud Router to be used for dynamic routing.
+                  This router must be in the same region as this InterconnectAttachment.
+                  The InterconnectAttachment will automatically connect the Interconnect
+                  to the network & region within which the Cloud Router is configured.
+                type: string
+              satisfiesPzs:
+                description: '[Output Only] Reserved for future use.'
+                type: boolean
+              selfLink:
+                description: '[Output Only] Server-defined URL for the resource.'
+                type: string
+              stackType:
+                description: |-
+                  The stack type for this interconnect attachment to identify whether the IPv6 feature is enabled or not. If not specified, IPV4_ONLY will be used. This field can be both set at interconnect attachments creation and update interconnect attachment operations.
+                   Check the StackType enum for the list of possible values.
+                type: string
+              state:
+                description: |-
+                  [Output Only] The current state of this attachment's functionality. Enum values ACTIVE and UNPROVISIONED are shared by DEDICATED/PRIVATE, PARTNER, and PARTNER_PROVIDER interconnect attachments, while enum values PENDING_PARTNER, PARTNER_REQUEST_RECEIVED, and PENDING_CUSTOMER are used for only PARTNER and PARTNER_PROVIDER interconnect attachments. This state can take one of the following values: - ACTIVE: The attachment has been turned up and is ready to use. - UNPROVISIONED: The attachment is not ready to use yet, because turnup is not complete. - PENDING_PARTNER: A newly-created PARTNER attachment that has not yet been configured on the Partner side. - PARTNER_REQUEST_RECEIVED: A PARTNER attachment is in the process of provisioning after a PARTNER_PROVIDER attachment was created that references it. - PENDING_CUSTOMER: A PARTNER or PARTNER_PROVIDER attachment that is waiting for a customer to activate it. - DEFUNCT: The attachment was deleted externally and is no longer functional. This could be because the associated Interconnect was removed, or because the other side of a Partner attachment was deleted.
+                   Check the State enum for the list of possible values.
+                type: string
+              subnetLength:
+                description: 'Input only. Length of the IPv4 subnet mask. Allowed
+                  values: - 29 (default) - 30 The default value is 29, except for
+                  Cross-Cloud Interconnect connections that use an InterconnectRemoteLocation
+                  with a constraints.subnetLengthRange.min equal to 30. For example,
+                  connections that use an Azure remote location fall into this category.
+                  In these cases, the default value is 30, and requesting 29 returns
+                  an error. Where both 29 and 30 are allowed, 29 is preferred, because
+                  it gives Google Cloud Support more debugging visibility.'
+                format: int32
+                type: integer
+              type:
+                description: |-
+                  The type of interconnect attachment this is, which can take one of the following values: - DEDICATED: an attachment to a Dedicated Interconnect. - PARTNER: an attachment to a Partner Interconnect, created by the customer. - PARTNER_PROVIDER: an attachment to a Partner Interconnect, created by the partner.
+                   Check the Type enum for the list of possible values.
+                type: string
+              vlanTag8021q:
+                description: The IEEE 802.1Q VLAN tag for this attachment, in the
+                  range 2-4093. Only specified at creation time.
+                format: int32
+                type: integer
+            required:
+            - location
+            type: object
+          status:
+            description: ComputeInterconnectAttachmentStatus defines the config connector
+              machine state of ComputeInterconnectAttachment
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ComputeInterconnectAttachment
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
