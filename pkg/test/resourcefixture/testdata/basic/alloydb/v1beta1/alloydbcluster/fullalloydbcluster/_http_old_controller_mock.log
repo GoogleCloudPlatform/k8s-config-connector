@@ -750,7 +750,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -773,13 +773,12 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters?%24alt=json%3Benum-encoding%3Dint&clusterId=alloydbcluster-${uniqueId}
+POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters?alt=json&clusterId=alloydbcluster-${uniqueId}
 Content-Type: application/json
 
 {
   "automatedBackupPolicy": {
     "backupWindow": "7200s",
-    "enabled": false,
     "encryptionConfig": {
       "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}"
     },
@@ -792,7 +791,7 @@ Content-Type: application/json
     },
     "weeklySchedule": {
       "daysOfWeek": [
-        1
+        "MONDAY"
       ],
       "startTimes": [
         {
@@ -801,7 +800,7 @@ Content-Type: application/json
       ]
     }
   },
-  "clusterType": 1,
+  "clusterType": "PRIMARY",
   "continuousBackupConfig": {
     "enabled": false,
     "encryptionConfig": {
@@ -825,7 +824,7 @@ Content-Type: application/json
   "maintenanceUpdatePolicy": {
     "maintenanceWindows": [
       {
-        "day": 2,
+        "day": "TUESDAY",
         "startTime": {
           "hours": 10,
           "minutes": 9,
@@ -866,7 +865,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -982,7 +981,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1011,7 +1010,7 @@ X-Xss-Protection: 0
     },
     "weeklySchedule": {
       "daysOfWeek": [
-        1
+        "MONDAY"
       ],
       "startTimes": [
         {
@@ -1020,7 +1019,7 @@ X-Xss-Protection: 0
       ]
     }
   },
-  "clusterType": 1,
+  "clusterType": "PRIMARY",
   "continuousBackupConfig": {
     "enabled": false,
     "encryptionConfig": {
@@ -1030,25 +1029,25 @@ X-Xss-Protection: 0
   },
   "continuousBackupInfo": {
     "encryptionInfo": {
-      "encryptionType": 1
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
     "schedule": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7
+      "MONDAY",
+      "TUESDAY",
+      "WEDNESDAY",
+      "THURSDAY",
+      "FRIDAY",
+      "SATURDAY",
+      "SUNDAY"
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": 4,
+  "databaseVersion": "POSTGRES_16",
   "encryptionConfig": {
     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}"
   },
   "encryptionInfo": {
-    "encryptionType": 2
+    "encryptionType": "CUSTOMER_MANAGED_ENCRYPTION"
   },
   "geminiConfig": {},
   "labels": {
@@ -1059,7 +1058,7 @@ X-Xss-Protection: 0
   "maintenanceUpdatePolicy": {
     "maintenanceWindows": [
       {
-        "day": 2,
+        "day": "TUESDAY",
         "startTime": {
           "hours": 10,
           "minutes": 9,
@@ -1076,15 +1075,15 @@ X-Xss-Protection: 0
     "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
-  "state": 1,
-  "subscriptionType": 1,
+  "state": "READY",
+  "subscriptionType": "STANDARD",
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupPolicy%2CcontinuousBackupConfig%2CdisplayName%2CinitialUser%2Clabels%2CmaintenanceUpdatePolicy
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?alt=json&updateMask=labels%2CdisplayName%2CinitialUser%2CcontinuousBackupConfig%2CautomatedBackupPolicy%2CmaintenanceUpdatePolicy
 Content-Type: application/json
 
 {
@@ -1103,11 +1102,11 @@ Content-Type: application/json
     },
     "weeklySchedule": {
       "daysOfWeek": [
-        1,
-        2,
-        3,
-        4,
-        5
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY"
       ],
       "startTimes": [
         {
@@ -1116,7 +1115,7 @@ Content-Type: application/json
       ]
     }
   },
-  "clusterType": 1,
+  "clusterType": "PRIMARY",
   "continuousBackupConfig": {
     "enabled": true,
     "encryptionConfig": {
@@ -1124,12 +1123,10 @@ Content-Type: application/json
     },
     "recoveryWindowDays": 7
   },
-  "databaseVersion": 4,
   "displayName": "A test alloyDB cluster with updated display name",
   "encryptionConfig": {
     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}"
   },
-  "geminiConfig": {},
   "initialUser": {
     "password": "kcc-test-updated",
     "user": "postgres2"
@@ -1142,7 +1139,7 @@ Content-Type: application/json
   "maintenanceUpdatePolicy": {
     "maintenanceWindows": [
       {
-        "day": 1,
+        "day": "MONDAY",
         "startTime": {
           "hours": 1,
           "minutes": 2,
@@ -1152,14 +1149,11 @@ Content-Type: application/json
       }
     ]
   },
-  "name": "projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}",
-  "network": "projects/${projectId}/global/networks/${networkID}",
+  "network": "projects/${projectNumber}/global/networks/${networkID}",
   "networkConfig": {
     "allocatedIpRange": "test-range-1",
-    "network": "projects/${projectId}/global/networks/${networkID}"
-  },
-  "reconciling": false,
-  "subscriptionType": 1
+    "network": "projects/${projectNumber}/global/networks/${networkID}"
+  }
 }
 
 200 OK
@@ -1187,7 +1181,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1308,7 +1302,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1337,11 +1331,11 @@ X-Xss-Protection: 0
     },
     "weeklySchedule": {
       "daysOfWeek": [
-        1,
-        2,
-        3,
-        4,
-        5
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY"
       ],
       "startTimes": [
         {
@@ -1350,7 +1344,7 @@ X-Xss-Protection: 0
       ]
     }
   },
-  "clusterType": 1,
+  "clusterType": "PRIMARY",
   "continuousBackupConfig": {
     "enabled": true,
     "encryptionConfig": {
@@ -1361,25 +1355,25 @@ X-Xss-Protection: 0
   "continuousBackupInfo": {
     "enabledTime": "2024-04-01T12:34:56.123456Z",
     "encryptionInfo": {
-      "encryptionType": 1
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
     "schedule": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7
+      "MONDAY",
+      "TUESDAY",
+      "WEDNESDAY",
+      "THURSDAY",
+      "FRIDAY",
+      "SATURDAY",
+      "SUNDAY"
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": 4,
+  "databaseVersion": "POSTGRES_16",
   "encryptionConfig": {
     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}"
   },
   "encryptionInfo": {
-    "encryptionType": 2
+    "encryptionType": "CUSTOMER_MANAGED_ENCRYPTION"
   },
   "geminiConfig": {},
   "labels": {
@@ -1390,7 +1384,7 @@ X-Xss-Protection: 0
   "maintenanceUpdatePolicy": {
     "maintenanceWindows": [
       {
-        "day": 1,
+        "day": "MONDAY",
         "startTime": {
           "hours": 1,
           "minutes": 2,
@@ -1407,15 +1401,15 @@ X-Xss-Protection: 0
     "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
-  "state": 1,
-  "subscriptionType": 1,
+  "state": "READY",
+  "subscriptionType": "STANDARD",
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?alt=json&force=true
 Content-Type: application/json
 
 200 OK
@@ -1443,7 +1437,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
