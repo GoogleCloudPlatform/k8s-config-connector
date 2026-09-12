@@ -1,0 +1,116 @@
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/customJobs/customjob-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FcustomJobs%2Fcustomjob-${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "List of found errors:\t1.Field: name; Message: Invalid CustomJob resource name.\t",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+---
+
+POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/customJobs?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal-job-${uniqueId}",
+  "jobSpec": {
+    "workerPoolSpecs": [
+      {
+        "containerSpec": {
+          "command": [
+            "sh",
+            "-c",
+            "echo hello world"
+          ],
+          "imageUri": "alpine:latest"
+        },
+        "diskSpec": {
+          "bootDiskSizeGb": 100,
+          "bootDiskType": "pd-ssd"
+        },
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/customJobs/4753100539657453568",
+  "state": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/customJobs/customjob-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FcustomJobs%2Fcustomjob-${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "List of found errors:\t1.Field: name; Message: Invalid CustomJob resource name.\t",
+    "status": "INVALID_ARGUMENT"
+  }
+}

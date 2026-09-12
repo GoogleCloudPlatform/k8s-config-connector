@@ -66,3 +66,54 @@ func FuzzVertexAIMetadataStore(f *testing.F) {
 		}
 	})
 }
+
+func FuzzVertexAICustomJob(f *testing.F) {
+	f.Fuzz(func(t *testing.T, seed int64) {
+		randStream := rand.New(rand.NewSource(seed))
+
+		p1 := &pb.CustomJob{}
+		fuzz.FillWithRandom(t, randStream, p1)
+
+		// Status fields
+		statusFields := sets.New(
+			".name",
+			".state",
+			".create_time",
+			".start_time",
+			".end_time",
+			".update_time",
+			".error",
+			".web_access_uris",
+			".satisfies_pzs",
+			".satisfies_pzi",
+		)
+
+		unimplementedFields := sets.New(
+			".job_spec.worker_pool_specs[].lustre_mounts",
+			".job_spec.worker_pool_specs[].python_package_spec.env",
+			".job_spec.worker_pool_specs[].machine_spec.min_gpu_driver_version",
+		)
+
+		clearFields := &fuzz.ClearFields{
+			Paths: statusFields.Union(unimplementedFields),
+		}
+		fuzz.Visit("", p1.ProtoReflect(), nil, clearFields)
+
+		ctx := &direct.MapContext{}
+		k := VertexAICustomJobSpec_FromProto(ctx, p1)
+		if ctx.Err() != nil {
+			t.Fatalf("error mapping from proto to krm: %v", ctx.Err())
+		}
+
+		p2 := VertexAICustomJobSpec_ToProto(ctx, k)
+		if ctx.Err() != nil {
+			t.Fatalf("error mapping from krm to proto: %v", ctx.Err())
+		}
+
+		if diff := cmp.Diff(p1, p2, protocmp.Transform()); diff != "" {
+			t.Logf("p1 = %v", prototext.Format(p1))
+			t.Logf("p2 = %v", prototext.Format(p2))
+			t.Errorf("roundtrip failed; diff:\n%s", diff)
+		}
+	})
+}
