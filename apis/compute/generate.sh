@@ -35,6 +35,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComputeInstanceGroupNamedPort:NamedPort \
   --resource ComputeNetworkEdgeSecurityService:NetworkEdgeSecurityService \
   --resource ComputeNetworkAttachment:NetworkAttachment \
   --resource ComputeInterconnect:Interconnect \
