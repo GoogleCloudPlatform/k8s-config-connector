@@ -505,6 +505,9 @@ func (a *ClusterAdapter) resolveGCPDefaults(desired *alloydbpb.Cluster, actual *
 		desired.SubscriptionType = alloydbpb.SubscriptionType_STANDARD
 	}
 	desired.DatabaseVersion = actual.DatabaseVersion
+	if desired.DataplexConfig == nil {
+		desired.DataplexConfig = actual.DataplexConfig
+	}
 
 	desired.Source = actual.Source
 }
@@ -574,6 +577,16 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	// applied value under status.observedState).
 	paths.Delete("network_config.network")
 	paths.Delete("network")
+	// display_name is unreadable on GET for alloydb cluster. Ignore diffs during update.
+	paths.Delete("display_name")
+
+	// initial_user and deletion_policy are write-only / unreadable fields not returned on GET. Ignore diffs during update.
+	for path := range paths {
+		if path == "initial_user" || strings.HasPrefix(path, "initial_user.") ||
+			path == "deletion_policy" || strings.HasPrefix(path, "deletion_policy.") {
+			paths.Delete(path)
+		}
+	}
 
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
