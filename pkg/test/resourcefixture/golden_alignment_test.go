@@ -390,6 +390,17 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 
 var statusRegex = regexp.MustCompile(`^\d{3} `)
 
+func isStatusLine(line string) bool {
+	if statusRegex.MatchString(line) {
+		return true
+	}
+	switch line {
+	case "OK", "CANCELLED", "UNKNOWN", "INVALID_ARGUMENT", "DEADLINE_EXCEEDED", "NOT_FOUND", "ALREADY_EXISTS", "PERMISSION_DENIED", "RESOURCE_EXHAUSTED", "FAILED_PRECONDITION", "ABORTED", "OUT_OF_RANGE", "UNIMPLEMENTED", "INTERNAL", "UNAVAILABLE", "DATA_LOSS", "UNAUTHENTICATED":
+		return true
+	}
+	return false
+}
+
 func parseLog(t *testing.T, content string) []httpEvent {
 	var events []httpEvent
 	rawEvents := strings.Split(content, "\n---\n")
@@ -420,7 +431,7 @@ func parseLog(t *testing.T, content string) []httpEvent {
 		}
 
 		var reqBodyLines []string
-		for idx < len(lines) && !statusRegex.MatchString(lines[idx]) {
+		for idx < len(lines) && !isStatusLine(lines[idx]) {
 			reqBodyLines = append(reqBodyLines, lines[idx])
 			idx++
 		}

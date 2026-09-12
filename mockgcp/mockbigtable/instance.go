@@ -102,6 +102,17 @@ func (s *instanceAdminServer) CreateInstance(ctx context.Context, req *pb.Create
 		reqCluster.Name = ""
 	}
 
+	if req.Instance == nil {
+		req.Instance = &pb.Instance{}
+	}
+	req.Instance.Name = name.String()
+	if req.Instance.Type == pb.Instance_TYPE_UNSPECIFIED {
+		req.Instance.Type = pb.Instance_PRODUCTION
+	}
+	if req.Instance.Edition == pb.Instance_EDITION_UNSPECIFIED {
+		req.Instance.Edition = pb.Instance_ENTERPRISE
+	}
+
 	originalRequest := proto.CloneOf(req)
 
 	now := time.Now()
@@ -239,10 +250,12 @@ func (s *instanceAdminServer) PartialUpdateInstance(ctx context.Context, req *pb
 		RequestTime:     timestamppb.New(now),
 		OriginalRequest: req,
 	}
-	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
-		metadata.FinishTime = timestamppb.Now()
+	return s.operations.StartLROWithDoneAndResponse(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.FinishTime = timestamppb.New(now)
 
-		return obj, nil
+		returnObj := proto.Clone(obj).(*pb.Instance)
+		returnObj.State = pb.Instance_STATE_NOT_KNOWN
+		return returnObj, nil
 	})
 }
 
@@ -319,6 +332,9 @@ func (s *MockService) parseInstanceName(name string) (*instanceName, error) {
 func (s *MockService) populateDefaultsForInstance(obj *pb.Instance) error {
 	if obj.Type == pb.Instance_TYPE_UNSPECIFIED {
 		obj.Type = pb.Instance_PRODUCTION
+	}
+	if obj.Edition == pb.Instance_EDITION_UNSPECIFIED {
+		obj.Edition = pb.Instance_ENTERPRISE
 	}
 
 	return nil

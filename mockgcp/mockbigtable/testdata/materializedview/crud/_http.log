@@ -45,6 +45,8 @@ X-Xss-Protection: 0
       },
       "instance": {
         "displayName": "test-instance",
+        "edition": "ENTERPRISE",
+        "name": "projects/${projectId}/instances/mvdep${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "mvdep${uniqueId}",
@@ -86,6 +88,8 @@ X-Xss-Protection: 0
       },
       "instance": {
         "displayName": "test-instance",
+        "edition": "ENTERPRISE",
+        "name": "projects/${projectId}/instances/mvdep${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "mvdep${uniqueId}",
@@ -96,6 +100,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
     "displayName": "test-instance",
+    "edition": "ENTERPRISE",
     "name": "projects/${projectId}/instances/mvdep${uniqueId}",
     "state": "READY",
     "type": "PRODUCTION"
@@ -122,6 +127,7 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "test-instance",
+  "edition": "ENTERPRISE",
   "name": "projects/${projectId}/instances/mvdep${uniqueId}",
   "state": "READY",
   "type": "PRODUCTION"
