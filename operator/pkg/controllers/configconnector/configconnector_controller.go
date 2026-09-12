@@ -972,6 +972,12 @@ func isKCCCRD(object *manifest.Object) bool {
 	if strings.HasSuffix(u.GetName(), k8s.CNRMDomain) {
 		return true
 	}
+	if u.GetName() == "krmsyncers.syncer.gkelabs.io" {
+		return true
+	}
+	if u.GetName() == "multiclusterleases.multicluster.core.cnrm.cloud.google.com" {
+		return true
+	}
 	return false
 }
 
