@@ -11,6 +11,10 @@ Note: The {{ .Kind}} annotation can include
 If set to <code>true</code>, the <code>remove-default-node-pool</code> directive
 removes the default node pool created during cluster creation.
 
+The <code>remove-default-node-pool-allow-node-config</code> is an opt-in directive that can be used alongside <code>remove-default-node-pool</code>.
+If set to <code>true</code>, it allows <code>nodeConfig</code> to be specified during initial creation (satisfying
+Organization Policies) while avoiding conflicts after the default node pool is removed.
+
 Note: In <code>maintenancePolicy</code>, specify <code>startTime</code> and
 <code>endTime</code> in RFC3339 Zulu date format. Specify <code>recurrence</code>
 in RFC5545 RRULE format. GKE may accept other formats, but will return values in UTC,
