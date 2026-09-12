@@ -44,6 +44,7 @@ mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/disco
 
 ${CONTROLLERBUILDER} generate-types --service google.cloud.discoveryengine.v1beta --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
   --resource DiscoveryEngineSampleQuerySet:SampleQuerySet \
+  --resource DiscoveryEngineSampleQuery:SampleQuery \
   --resource DiscoveryEngineLicenseConfig:LicenseConfig \
   --resource DiscoveryEngineServingConfig:ServingConfig \
   --resource DiscoveryEngineUserStore:UserStore

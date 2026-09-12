@@ -59,6 +59,10 @@ func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineLicenseConfigs(namespace st
 	return newFakeDiscoveryEngineLicenseConfigs(c, namespace)
 }
 
+func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineSampleQueries(namespace string) v1alpha1.DiscoveryEngineSampleQueryInterface {
+	return newFakeDiscoveryEngineSampleQueries(c, namespace)
+}
+
 func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineSampleQuerySets(namespace string) v1alpha1.DiscoveryEngineSampleQuerySetInterface {
 	return newFakeDiscoveryEngineSampleQuerySets(c, namespace)
 }
