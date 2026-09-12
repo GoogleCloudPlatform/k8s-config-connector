@@ -1,69 +1,120 @@
+---
+name: add-missing-field
+description: Guides adding missing fields already supported in GCP API but not yet supported in KCC CRD to Config Connector direct resources.
+---
+
 # Skill: Add Missing Field
 
-This skill guides an automated agent through adding a missing field to a GCP resource managed by KCC using the "direct" controller approach.
+## Prerequisites & Pre-checks
+1. **Controller Type Check**: Ensure the target resource is managed by a **Direct** controller (for legacy resources managed via Terraform/DCL, use the `update-terraform-fields` skill instead).
+2. **SDK Freshness**: Verify that the field exists in `.build/third_party/googleapis/` and the target Go SDK in `go.mod`. If the protobuf definitions or client library are outdated, first update the client library using the `update-client-library-version` skill.
+3. **Spec vs. ObservedState Split**: Determine whether the field is **Spec** (user-configurable input) or **ObservedState / Status** (output-only / read-only):
+   - **Spec fields**: Require KRM type definition in `Spec`, symmetrical mapping (`ToProto` and `FromProto`), controller update/diff handling, fuzzer `f.SpecField(...)`, and E2E test fixture coverage.
+   - **ObservedState fields**: Require KRM type definition in `ObservedState`, `FromProto` mapping only, and fuzzer `f.StatusField(...)`. They do not require `ToProto`, update logic, or equality diffs.
 
-## Pre-requisites
-- Know the KCC API Group and Resource name.
-- Identify the missing field from the issue description or fuzzer output (e.g. `f.Unimplemented_NotYetTriaged(".cross_instance_replication_config")`).
+---
 
-## Steps
+## Workflow
 
-1. **Add the field to the `_types.go` file**
-   - Locate the `_types.go` file for the resource (e.g., `apis/group/version/resource_types.go`).
-   - Add the field to the `Spec` (for inputs) or `ObservedState` (for outputs) struct as appropriate.
-   - If the type relies on autogeneration, you can use `types.generated.go` as a reference. Note that `types.generated.go` includes generated code for all types if `--include-skipped-output` is passed to the generate commands.
-   - **Important:** If the field represents a GCP URI or URI fragment (e.g., the path to another resource), you should use a KCC reference field (e.g., `InstanceRef *refs.MemorystoreInstanceRef`) instead of a simple string.
-   - Follow KRM naming conventions (camelCase in Go, etc.).
+### Step 1: KRM API Type Scaffolding
+- Check if the field represents a resource reference (URI, resource name, or service-generated ID):
+  - **If Reference Type (`*refs.<Kind>Ref`)**:
+    - If the parent struct is in the manual types file (`apis/<service>/<version>/<message>_types.go`), add the reference field there.
+    - If the parent struct is in `types.generated.go`, move the **entire parent struct definition** from `types.generated.go` to `<message>_types.go` and update the field to use the reference type (e.g., `*refs.<Kind>Ref`).
+  - **If Not a Reference Type**:
+    - If the parent struct is already in the manual `<message>_types.go` file, add the field manually there.
+    - If the parent struct is generated (not in `<message>_types.go`), do not add it manually—proceed to Step 2 to generate it automatically.
+- Annotate the field with:
+  1. `// +optional`
+  2. `// +kcc:proto:field=<GCP_PROTO_PATH>` (e.g., `// +kcc:proto:field=google.cloud.apigateway.v1.Api.state`).
 
-2. **Update the Fuzzer**
-   - Find the fuzzer file (e.g., `pkg/controller/direct/group/resource_fuzzer.go`).
-   - Remove the missing field from `f.UnimplementedFields` or `f.Unimplemented_NotYetTriaged`.
-   - Register the field as a spec or status field in the fuzzer (e.g., `f.SpecField(".cross_instance_replication_config")` or `f.StatusField(".psc_attachment_details")`).
-   - If there are subfields you aren't implementing yet, use `f.Unimplemented_NotYetTriaged` to ignore them for now.
+### Step 2: Code & CRD Regeneration
+- Run code generation to rebuild CRDs and generate types/mappers:
+  ```bash
+  dev/tasks/generate-types-and-mappers
+  ```
+  *(or `./apis/<service>/<version>/generate.sh`)*
+- Confirm the new field appears in `types.generated.go` (if generated) and under `config/crds/resources/`.
 
-3. **Update the Mappers**
-   - If the resource uses hand-written mappers (e.g., `mapper.go`), add the appropriate logic to convert between the Kubernetes resource (`KRM`) and the GCP API (`API`). 
-   - Note that if the root `Spec` or `ObservedState` has a handwritten mapping function (e.g., `_FromProto` and `_ToProto`), you'll need to manually add the mapping for the new field there, even if it's just a top-level field.
-   - Check `mapper.generated.go` for blocks starting with `/* found existing non-generated mapping function ... */`. If the generator skipped a parent mapper, it may also skip nested types and leave comments like `// MISSING: <Type>`. You will need to manually write `_FromProto` and `_ToProto` functions for these missing nested types.
-   - **Important:** We almost always want to update the `ToProto` and `FromProto` methods "symmetrically", so that they round trip. If you map a field in `Spec_ToProto`, make sure to also map it in `Spec_FromProto`.
-   - Again, `mapper.generated.go` can provide a good reference if `generate.sh --include-skipped-output` is used.
+### Step 3: Controller & Mapper Updates
+- **Mappers (`mapper.go` / `_mappings.go`)**:
+  - **Manual fields/structs**: If defined in `<message>_types.go` (e.g., using `*refs.<Kind>Ref`), write manual conversion functions (`ToProto` and `FromProto` for Spec; `FromProto` only for ObservedState).
+  - **Generated fields**: Automatically mapped in `mapper.generated.go`.
+- **Controller Reconciliation (`_controller.go`)**:
+  - In `Adapter.Update()`, ensure mutable Spec fields are included in the `UpdateMask` / patch payload when modified.
+  - **Preserve live state (`actual`)** during updates when the KRM spec is unspecified.
+- **Equality Checks (`_equality.go`)**:
+  - Update `Diff` logic. If the newly added field is omitted from the KRM spec, **do not diff it** (treat it as unmanaged).
 
-4. **Run `generate.sh`**
-   - Run the code generator script (e.g., `./apis/group/vX/generate.sh` or the global `dev/tasks/generate-types-and-mappers`) to regenerate CRDs and other boilerplate.
+### Step 4: Fuzzer Support & Focused Tests
+- In `<resource>_fuzzer.go` (or `<resource>_legacy_fuzzer.go`), promote the field from `f.Unimplemented_NotYetTriaged` to:
+  - `f.SpecField(...)` for spec fields (e.g., `f.SpecField(".my_field")`).
+  - `f.StatusField(...)` for status / observedState fields.
+  - If introducing a complex struct but deferring nested subfields, mark deferred subfields with `f.Unimplemented_NotYetTriaged(".parent.subfield")`.
+- Verify round-trip mapping with focused fuzzer tests:
+  ```bash
+  FOCUS=MyResourceKind go test -v ./pkg/fuzztesting/fuzztests/... -run TestFocusedMappers
+  ```
 
-4b. **Verify Fuzzer with Focused Tests**
-   - To quickly verify that your mappers and fuzzer mapping logic are correct and round-trip successfully, run focused fuzzer tests using the `FOCUS` environment variable:
-     `FOCUS=MyResourceKind go test -v ./pkg/fuzztesting/fuzztests/... -run TestFocusedMappers`
-     *(For example: `FOCUS=ComputeNetwork go test -v ./pkg/fuzztesting/fuzztests/... -run TestFocusedMappers`)*
+### Step 5: Test Fixtures & Ratcheting Exclusions
+- Add the field to `create.yaml` (and `update.yaml` if mutable) under `pkg/test/resourcefixture/testdata/basic/<service>/...`.
+- **Remove from Ratcheting (Mandatory)**: In `tests/e2e/ratcheting.go`, remove the resource's `GroupKind` case from `ShouldTestRereconiliation` to enable re-reconciliation validation.
 
-5. **Create a Test**
-   - Find existing tests under `pkg/test/resourcefixture/testdata/basic/group/version/kind/`.
-   - If the new field can be added to an existing test without conflict, do so.
-   - If the new field requires a specific setup (e.g., cross-instance replication requires two instances), create a new test folder with `create.yaml` (and `dependencies.yaml` if needed).
+### Step 6: Real GCP Recording & Mock Alignment
+- Delegate to the **`match-mockgcp-with-realgcp`** skill:
+  1. Record live traffic: `hack/record-gcp <fixture-path>`
+  2. Match mock behavior: `hack/compare-mock <fixture-path>` (implement minimal stubs under `mockgcp/` if needed).
 
-5b. **Remove from Ratcheting Exclusions (MANDATORY)**
-   - Before running the test cases against real or mock GCP, you **MUST** ensure the target resource is removed from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. This enables the re-reconciliation test step, which is a fundamental use case KCC resources must support.
-   1. Open `tests/e2e/ratcheting.go`.
-   2. Locate the function `ShouldTestRereconiliation`.
-   3. Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
-   4. If there is a `case` block for your target resource's `GroupKind`, remove that `case` line from the switch statement.
+### Step 7: Validation & Presubmit
+- Run API checks:
+  ```bash
+  go test -v ./tests/apichecks/...
+  ```
+- Run pre-PR check:
+  ```bash
+  make ready-pr
+  ```
 
-6. **Regenerate Golden Output**
-   - Run the mock compare script to generate new golden output (you must set `WRITE_GOLDEN_OUTPUT=1`):
-     `WRITE_GOLDEN_OUTPUT=1 hack/compare-mock pkg/test/resourcefixture/testdata/basic/group/version/kind/[testname]/`
-   - Note that test paths may use the full kind name (e.g., `memorystoreinstance` instead of `instance`).
-   - Also note that the test will still report a failure if the golden files were modified (this is expected behavior to highlight the diff).
-   - Review the generated `_http.log` and `_generated_object...golden.yaml` for correctness.
+### Step 8: Journaling
+- Append any GCP SDK nuances, API quirks, or service-specific findings to `.gemini/journals/<service>.md` (per the `kcc-agentic-journaler` skill).
 
-7. **Update mockgcp (If Needed)**
-   - If the tests fail because mockgcp doesn't support the field, you might need to implement a stub in mockgcp.
-   - This stub just needs to behave reasonably so tests pass; full realgcp parity will be checked in separate E2E testing.
+---
 
-8. **Run Pre-PR Checks**
-   - Please run `make ready-pr`.
+## Reference & Deep-Dive Guidelines
 
-9. **Reference Mapping Tips**
-   - **Use capital KMS**: If you add a reference like `KMSKeyRef`, naming it all-caps `KMSKeyRef *refs.KMSCryptoKeyRef` instead of `KmsKeyRef` allows the controller builder to automatically identify it as a reference field and generate its mapping logic.
-   - **Annotate reference fields**: Always add the `// +kcc:proto:field=<GCP_PROTO_PATH>` annotation to reference fields in `_types.go` (e.g. `// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.kms_key`) so the generator knows exactly how to map it to the underlying protobuf schema.
-   - **Pointers in Proto Binding**: In proto3, optional string fields generated by protoc map to `*string` Go pointers. Since KCC's generator has a hardcoded list of services that use pointers (`usesPointersInProtoBinding`), if the service you are updating is not on that list, the generator will attempt to map the reference field as a direct string value (resulting in `out.KmsKey = in.KMSKeyRef.External`, which fails to compile because it expects a `*string`). To resolve this, you must write a custom handwritten spec mapper (`Spec_ToProto` and `Spec_FromProto`) inside `cluster_mapper.go` or similar to handle the pointer assignment (`out.KmsKey = &in.KMSKeyRef.External`) correctly.
-   - **Resolve references in Controller**: Remember to call `refs.ResolveKMSCryptoKeyRef` inside the controller's `AdapterForObject` method (before mapping to proto) to fully resolve the reference to its external GCP URI.
+### Reference 1: Reference Types & Resolution
+- **Prefer Reference Types**: Use `*refs.<Kind>Ref` rather than raw `*string` when a field represents a GCP resource URI or identifier.
+- **Acronym Naming**: Capitalize acronyms in field names (e.g., `KMSKeyRef *refs.KMSCryptoKeyRef` rather than `KmsKeyRef`) so the code generator can automatically detect and map the reference.
+- **Automatic vs. Manual Resolution**:
+  - If `AdapterForObject` calls `common.NormalizeReferences(ctx, reader, obj, nil)`, references are resolved automatically before mapping.
+  - Manual `refs.Resolve...` calls in the controller are only needed if `common.NormalizeReferences` is not used.
+- **Proto Pointer Binding (`usesPointersInProtoBinding`)**: In proto3, fields declared as `optional string` map to `*string` in Go. If the target service is not in `usesPointersInProtoBinding`, the generator may emit `out.KmsKey = in.KMSKeyRef.External`. Write a handwritten `Spec_ToProto` mapper in `<resource>_mapper.go` to assign the pointer:
+  ```go
+  out.KmsKey = &in.KMSKeyRef.External
+  ```
+
+### Reference 2: Mapper Nuances & Skipped Output
+- **Root Type Mapper Bypass**: If the root `Spec` or `ObservedState` has a handwritten mapper (`_FromProto` / `_ToProto`), new top-level fields will not be auto-generated; they must be manually mapped in that function.
+- **Cascading Skipped Mappers (`// MISSING: <Type>`)**: When the generator detects `/* found existing non-generated mapping function ... */`, it skips generating child mappers. Handwritten `_FromProto` / `_ToProto` functions must be provided for any nested types marked as `// MISSING: <Type>` in `mapper.generated.go`.
+- **Inspection Helper**: Passing `--include-skipped-output` to `generate.sh` prints the skipped generated code directly into `types.generated.go` and `mapper.generated.go`, serving as a helpful template for handwritten mappers.
+
+### Reference 3: Optional Zero-Value Fields (`ForceSendFields` vs. Proto3 Pointers)
+- **Proto2 / REST Discovery Clients**: In SDKs where fields are value types with `omitempty` (e.g., Cloud SQL `google.golang.org/api/sql/v1beta4` or Compute), explicitly configured zero-values (`false`, `0`) require adding the field name to `ForceSendFields`:
+  ```go
+  if in.SomeBoolean != nil {
+      out.SomeBoolean = *in.SomeBoolean
+      out.ForceSendFields = append(out.ForceSendFields, "SomeBoolean")
+  }
+  ```
+- **Proto3 / gRPC SDKs**: Field presence is natively represented via Go pointers (e.g., `*bool`). Non-nil zero-values (`false`, `0`) are automatically serialized and sent without `ForceSendFields`.
+
+### Reference 4: Backwards Compatibility & Preserving Live State
+- **Non-Destructive Reconciliation**: Adding a new field to a CRD must never break existing live GCP resources. Unspecified fields parse as `nil`.
+- **Avoid Destructive Static Defaulting**: Do not default omitted fields to a static value if that field already has an active value on GCP.
+- **Preserve Live State (`actual`)**: When updating a resource, copy live values from `actual` to `out` if omitted in the KRM spec:
+  ```go
+  // Preserve live GCP state when KRM spec is unspecified
+  if in.MyNewField == nil && actual.MyNewField != nil {
+      out.MyNewField = actual.MyNewField
+  }
+  ```
