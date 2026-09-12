@@ -269,7 +269,29 @@ func applyConfigConnectorExperiments(ctx context.Context, c client.Client, u *un
 		// If CC is not found (e.g. during deletion tests), just skip applying experiments.
 		return nil
 	}
-	return applyExperimentsToManagerContainer(u, cc)
+	if err := applyExperimentsToManagerContainer(u, cc); err != nil {
+		return err
+	}
+	// The universe is a cluster-wide property, so it lives on the ConfigConnector
+	// object rather than the ConfigConnectorContext, and is propagated to every
+	// per-namespace manager. Reuses the ConfigConnector fetched above.
+	return applyUniverseToManagerContainer(u, cc)
+}
+
+// applyUniverseToManagerContainer sets the universe flags on the manager
+// container so that its GCP clients target the configured universe.
+func applyUniverseToManagerContainer(u *unstructured.Unstructured, cc *corev1beta1.ConfigConnector) error {
+	universe := cc.Spec.Universe
+	if universe == nil {
+		return nil
+	}
+	if err := setFlagForManagerContainer(u, k8s.UniverseDomainFlag, universe.Domain); err != nil {
+		return fmt.Errorf("failed to set %v: %w", k8s.UniverseDomainFlag, err)
+	}
+	if err := setFlagForManagerContainer(u, k8s.UniversePrefixFlag, universe.Prefix); err != nil {
+		return fmt.Errorf("failed to set %v: %w", k8s.UniversePrefixFlag, err)
+	}
+	return nil
 }
 
 func applyExperimentsToManagerContainer(u *unstructured.Unstructured, cc *corev1beta1.ConfigConnector) error {

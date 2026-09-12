@@ -65,6 +65,7 @@ func main() {
 		skipNameValidation  bool
 		syncingMode         string
 		metricsBindAddress  string
+		universe            universeFlags
 	)
 	// metricsOptions controls standard controller-runtime metrics versus OpenCensus/Default metrics.
 	// This is configured via the METRICS_VERSION=v2 environment variable.
@@ -84,6 +85,8 @@ func main() {
 	flag.StringVar(&leaderElectionMode, "leader-election-type", "disabled", "Leader election mode. One of: default, multicluster.")
 	flag.BoolVar(&skipNameValidation, "skip-name-validation", false, "option to bypass the global controller name registry in controller-runtime; false by default")
 	flag.StringVar(&syncingMode, "syncing-mode", "disabled", "Enable integration with the KRMSyncer for suspending sync operations. One of: disabled, pull. Must be used with multi-cluster leader election.")
+	flag.StringVar(&universe.domain, "universe-domain", "", "the API host suffix of the Google Cloud universe to target, e.g. s3nsapis.fr; empty targets the public googleapis.com universe. Must be set together with --universe-prefix.")
+	flag.StringVar(&universe.prefix, "universe-prefix", "", "the universe prefix applied to project IDs and service-agent emails, e.g. s3ns; it is not derived from --universe-domain. Must be set together with --universe-domain.")
 	profiler.AddFlag(flag.CommandLine)
 	flag.CommandLine.AddGoFlagSet(goflag.CommandLine)
 	flag.Parse()
@@ -110,6 +113,10 @@ func main() {
 
 	if enableSyncing && !multiClusterElection {
 		logging.Fatal(fmt.Errorf("syncing-mode can only be enabled if leader-election-type is multicluster"), "error validating flags")
+	}
+
+	if err := universe.validate(); err != nil {
+		logging.Fatal(err, "error validating flags")
 	}
 
 	// Discard everything logged onto the Go standard logger. We do this since
@@ -142,7 +149,7 @@ func main() {
 	// Set client site rate limiter to optimize the configconnector re-reconciliation performance.
 	ratelimiter.SetMasterRateLimiter(restCfg, rateLimitQps, rateLimitBurst)
 	logger.Info("Creating the manager")
-	mgr, err := newManager(ctx, restCfg, scopedNamespace, userProjectOverride, billingProject, multiClusterElection, skipNameValidation, enableSyncing, metricsBindAddress)
+	mgr, err := newManager(ctx, restCfg, scopedNamespace, userProjectOverride, billingProject, multiClusterElection, skipNameValidation, enableSyncing, metricsBindAddress, universe)
 	if err != nil {
 		logging.Fatal(err, "error creating the manager")
 	}
@@ -198,7 +205,31 @@ func main() {
 	logging.ExitInfo("main.go finished execution; exiting ...")
 }
 
-func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace string, userProjectOverride bool, billingProject string, multiclusterlease bool, skipNameValidation bool, enableSyncing bool, metricsBindAddress string) (manager.Manager, error) {
+// universeFlags groups the Google Cloud universe settings. They are kept
+// together rather than passed as two more positional strings so that the domain
+// and the prefix cannot be silently transposed, and because they are only ever
+// meaningful as a pair.
+type universeFlags struct {
+	// domain is the API host suffix, e.g. "s3nsapis.fr".
+	domain string
+	// prefix qualifies project IDs and service-agent emails, e.g. "s3ns".
+	// It is not derived from domain.
+	prefix string
+}
+
+// validate rejects a half-configured universe. Targeting a universe requires
+// both values: the domain alone would send requests to the right endpoints with
+// unprefixed project IDs, and the prefix alone would prefix project IDs while
+// still calling googleapis.com. Both fail in ways that are hard to diagnose, so
+// refuse to start instead.
+func (u universeFlags) validate() error {
+	if (u.domain == "") != (u.prefix == "") {
+		return fmt.Errorf("--universe-domain and --universe-prefix must be set together (got domain=%q, prefix=%q)", u.domain, u.prefix)
+	}
+	return nil
+}
+
+func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace string, userProjectOverride bool, billingProject string, multiclusterlease bool, skipNameValidation bool, enableSyncing bool, metricsBindAddress string, universe universeFlags) (manager.Manager, error) {
 	krmtotf.SetUserAgentForTerraformProvider()
 
 	opts := manager.Options{
@@ -222,6 +253,8 @@ func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace strin
 
 	controllersCfg.UserProjectOverride = userProjectOverride
 	controllersCfg.BillingProject = billingProject
+	controllersCfg.UniverseDomain = universe.domain
+	controllersCfg.UniversePrefix = universe.prefix
 	// TODO(b/320784855): StateIntoSpecDefaultValue and StateIntoSpecUserOverride values should come from the flags.
 	controllersCfg.StateIntoSpecDefaultValue = stateintospec.StateIntoSpecDefaultValueV1Beta1
 	mgr, err := kccmanager.New(ctx, restCfg, controllersCfg)
