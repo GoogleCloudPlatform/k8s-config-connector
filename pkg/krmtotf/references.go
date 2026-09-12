@@ -170,11 +170,11 @@ func ResolveReferenceObject(resourceRefValRaw map[string]interface{},
 	// external resource reference, the 'external' field is used to specify a
 	// string identifier for the referenced resource.
 	if resourceRef.External != "" {
-		// If the expected target field is name (or unset), we should only return the last segment of the external reference
+		// If the expected target field is name (or unset), and there is no value template, we should only return the last segment of the external reference
 		// if the referenced resource does NOT have a server-generated resource ID.
 		// If it has a server-generated resource ID, the resource ID is a full path/URI, so we must return the full external path.
 		// This is because the TF provider expects a short name only for user-specified name/ID fields.
-		if typeConfig.TargetField == "" || typeConfig.TargetField == "name" {
+		if (typeConfig.TargetField == "" || typeConfig.TargetField == "name") && typeConfig.ValueTemplate == "" {
 			isServerGenerated := false
 			if smLoader != nil {
 				rcs, err := smLoader.GetResourceConfigs(typeConfig.GVK)
