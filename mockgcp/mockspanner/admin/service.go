@@ -15,8 +15,11 @@
 package mockspanner
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"net/http"
+	"strings"
 
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/proto"
@@ -80,5 +83,103 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		response.Header().Del("X-Content-Type-Options")
 	}
 
-	return mux, nil
+	wrapped := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		brw := &bufferedResponseWriter{
+			header: make(http.Header),
+		}
+		mux.ServeHTTP(brw, r)
+
+		if brw.statusCode == 0 {
+			brw.statusCode = 200
+		}
+
+		if brw.statusCode >= 200 && brw.statusCode < 300 && strings.Contains(brw.header.Get("Content-Type"), "application/json") {
+			var decoded any
+			if err := json.Unmarshal(brw.body.Bytes(), &decoded); err == nil {
+				walkJSON(decoded, false)
+				if reencoded, err := json.Marshal(decoded); err == nil {
+					brw.body.Reset()
+					brw.body.Write(reencoded)
+				}
+			}
+		}
+
+		brw.WriteTo(w)
+	})
+
+	return wrapped, nil
+}
+
+type bufferedResponseWriter struct {
+	statusCode int
+	body       bytes.Buffer
+	header     http.Header
+}
+
+var _ http.ResponseWriter = &bufferedResponseWriter{}
+
+func (w *bufferedResponseWriter) Header() http.Header {
+	return w.header
+}
+
+func (w *bufferedResponseWriter) Write(b []byte) (int, error) {
+	if w.statusCode == 0 {
+		w.statusCode = 200
+	}
+	return w.body.Write(b)
+}
+
+func (w *bufferedResponseWriter) WriteHeader(statusCode int) {
+	w.statusCode = statusCode
+}
+
+func (w *bufferedResponseWriter) WriteTo(out http.ResponseWriter) {
+	for k, values := range w.header {
+		out.Header()[k] = values
+	}
+	statusCode := w.statusCode
+	if statusCode == 0 {
+		statusCode = 200
+	}
+	out.WriteHeader(statusCode)
+	out.Write(w.body.Bytes())
+}
+
+func walkJSON(v any, inMetadata bool) {
+	switch val := v.(type) {
+	case map[string]any:
+		nextInMetadata := inMetadata
+		for k, subVal := range val {
+			childInMetadata := nextInMetadata
+			if k == "metadata" {
+				childInMetadata = true
+			} else if k == "response" {
+				childInMetadata = false
+			}
+
+			if k == "name" {
+				if name, ok := subVal.(string); ok && strings.Contains(name, "/instances/") && !strings.Contains(name, "/operations/") && !strings.Contains(name, "/databases/") {
+					if config, ok := val["config"].(string); ok {
+						tokens := strings.Split(config, "/")
+						if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "instanceConfigs" {
+							location := strings.TrimPrefix(tokens[3], "regional-")
+							val["resourceLocation"] = location
+						}
+					}
+				}
+			}
+
+			if k == "replicaSelection" {
+				if replicaSelection, ok := subVal.(map[string]any); ok && childInMetadata {
+					replicaSelection["replicaType"] = 1
+				}
+			}
+
+			walkJSON(subVal, childInMetadata)
+		}
+	case []any:
+		for _, subVal := range val {
+			walkJSON(subVal, inMetadata)
+		}
+	}
 }

@@ -69,10 +69,12 @@ X-Xss-Protection: 0
         {
           "nodeCount": 2,
           "replicaSelection": {
-            "location": "us-west1"
+            "location": "us-west1",
+            "replicaType": 1
           }
         }
       ],
+      "resourceLocation": "us-west1",
       "state": 2
     },
     "startTime": "2024-04-01T12:34:56.123456Z"
@@ -119,10 +121,12 @@ X-Xss-Protection: 0
         {
           "nodeCount": 2,
           "replicaSelection": {
-            "location": "us-west1"
+            "location": "us-west1",
+            "replicaType": 1
           }
         }
       ],
+      "resourceLocation": "us-west1",
       "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -153,6 +157,7 @@ X-Xss-Protection: 0
         }
       }
     ],
+    "resourceLocation": "us-west1",
     "state": "READY",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -195,6 +200,7 @@ X-Xss-Protection: 0
       }
     }
   ],
+  "resourceLocation": "us-west1",
   "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -250,10 +256,12 @@ X-Xss-Protection: 0
         {
           "nodeCount": 2,
           "replicaSelection": {
-            "location": "us-west1"
+            "location": "us-west1",
+            "replicaType": 1
           }
         }
       ],
+      "resourceLocation": "us-west1",
       "state": 2,
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -301,10 +309,12 @@ X-Xss-Protection: 0
         {
           "nodeCount": 2,
           "replicaSelection": {
-            "location": "us-west1"
+            "location": "us-west1",
+            "replicaType": 1
           }
         }
       ],
+      "resourceLocation": "us-west1",
       "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -335,6 +345,7 @@ X-Xss-Protection: 0
         }
       }
     ],
+    "resourceLocation": "us-west1",
     "state": "READY",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -377,6 +388,7 @@ X-Xss-Protection: 0
       }
     }
   ],
+  "resourceLocation": "us-west1",
   "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
