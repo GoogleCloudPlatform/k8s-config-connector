@@ -95,6 +95,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvectorsearch"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvideostitcher"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvision"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvmmigration"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkflowexecution"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkloadmanager"
 )
