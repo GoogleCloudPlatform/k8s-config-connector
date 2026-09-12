@@ -4,20 +4,20 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
   name: modelarmorfloorsetting-minimal-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  enableFloorSettingEnforcement: true
+  enableFloorSettingEnforcement: false
   filterConfig:
     piAndJailbreakFilterSettings:
-      confidenceLevel: LOW_AND_ABOVE
+      confidenceLevel: MEDIUM_AND_ABOVE
       filterEnforcement: ENABLED
   floorSettingMetadata:
     multiLanguageDetection:
-      enableMultiLanguageDetection: true
+      enableMultiLanguageDetection: false
   location: global
   projectRef:
     external: ${projectId}
@@ -29,7 +29,7 @@ status:
     status: "True"
     type: Ready
   externalRef: projects/${projectId}/locations/global/floorSetting
-  observedGeneration: 1
+  observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
     updateTime: "1970-01-01T00:00:00Z"

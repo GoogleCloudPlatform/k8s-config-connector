@@ -7,6 +7,9 @@ spec:
     external: ${projectId}
   location: global
   enableFloorSettingEnforcement: false
+  # integratedServices must be set to AI_PLATFORM when aiPlatformFloorSetting is configured.
+  integratedServices:
+  - AI_PLATFORM
   filterConfig:
     raiSettings:
       raiFilters:
