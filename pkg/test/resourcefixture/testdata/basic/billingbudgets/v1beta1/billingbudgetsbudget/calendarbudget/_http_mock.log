@@ -989,10 +989,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://billingbudgets.googleapis.com/v1/billingAccounts/${billingAccountID}/budgets/billingbudgetsbudget-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://billingbudgets.googleapis.com/v1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 
-404 Not Found
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1003,16 +1003,51 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 404,
-    "message": "budget \"billingAccounts/${billingAccountId}/budgets/billingbudgetsbudget-${uniqueId}\" not found",
-    "status": "NOT_FOUND"
-  }
+  "amount": {
+    "specifiedAmount": {
+      "currencyCode": "USD",
+      "units": "9000000"
+    }
+  },
+  "budgetFilter": {
+    "calendarPeriod": 1,
+    "creditTypes": [
+      "DISCOUNT"
+    ],
+    "creditTypesTreatment": 3,
+    "labels": {
+      "label-one": [
+        "value-one"
+      ]
+    },
+    "projects": [
+      "projects/project-1-${uniqueId}"
+    ],
+    "services": [
+      "services/0245-C3C9-3864"
+    ]
+  },
+  "displayName": "sample-budget",
+  "etag": "abcdef0123A=",
+  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
+  "notificationsRule": {
+    "monitoringNotificationChannels": [
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
+    ],
+    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
+    "schemaVersion": "1.0"
+  },
+  "thresholdRules": [
+    {
+      "spendBasis": 1,
+      "thresholdPercent": 0.5
+    }
+  ]
 }
 
 ---
 
-POST https://billingbudgets.googleapis.com/v1/billingAccounts/${billingAccountID}/budgets?%24alt=json%3Benum-encoding%3Dint
+PATCH https://billingbudgets.googleapis.com/v1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?%24alt=json%3Benum-encoding%3Dint&updateMask=amount%2CbudgetFilter%2CdisplayName%2CnotificationsRule%2CthresholdRules
 Content-Type: application/json
 
 {
@@ -1041,7 +1076,7 @@ Content-Type: application/json
     ]
   },
   "displayName": "updated-sample-budget",
-  "name": "billingAccounts/${billingAccountId}/budgets/billingbudgetsbudget-${uniqueId}",
+  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
   "notificationsRule": {
     "disableDefaultIamRecipients": true,
     "monitoringNotificationChannels": [
@@ -1114,10 +1149,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://billingbudgets.googleapis.com/v1/billingAccounts/${billingAccountID}/budgets/billingbudgetsbudget-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://billingbudgets.googleapis.com/v1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 
-404 Not Found
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1128,12 +1163,65 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 404,
-    "message": "budget \"billingAccounts/${billingAccountId}/budgets/billingbudgetsbudget-${uniqueId}\" not found",
-    "status": "NOT_FOUND"
-  }
+  "amount": {
+    "specifiedAmount": {
+      "currencyCode": "USD",
+      "nanos": 1
+    }
+  },
+  "budgetFilter": {
+    "calendarPeriod": 3,
+    "creditTypesTreatment": 2,
+    "labels": {
+      "label-one": [
+        "value-one"
+      ],
+      "label-two": [
+        "value-two"
+      ]
+    },
+    "projects": [
+      "projects/project-2-${uniqueId}"
+    ],
+    "services": [
+      "services/0245-C3C9-3864"
+    ]
+  },
+  "displayName": "updated-sample-budget",
+  "etag": "abcdef0123A=",
+  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
+  "notificationsRule": {
+    "disableDefaultIamRecipients": true,
+    "monitoringNotificationChannels": [
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
+    ],
+    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-2-${uniqueId}",
+    "schemaVersion": "1.0"
+  },
+  "thresholdRules": [
+    {
+      "spendBasis": 2,
+      "thresholdPercent": 0.6
+    }
+  ]
 }
+
+---
+
+DELETE https://billingbudgets.googleapis.com/v1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
 
 ---
 

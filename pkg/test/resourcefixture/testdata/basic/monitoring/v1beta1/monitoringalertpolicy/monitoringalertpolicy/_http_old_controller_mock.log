@@ -343,7 +343,7 @@ X-Xss-Protection: 0
         }
       },
       "displayName": "Very high CPU usage",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionID}"
     }
   ],
   "creationRecord": {
@@ -360,7 +360,7 @@ X-Xss-Protection: 0
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "notificationChannels": [
     "projects/${projectId}/notificationChannels/${notificationChannelID}",
     "projects/${projectId}/notificationChannels/${notificationChannelID}"
@@ -413,7 +413,7 @@ X-Xss-Protection: 0
         }
       },
       "displayName": "Very high CPU usage",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionID}"
     }
   ],
   "creationRecord": {
@@ -430,7 +430,7 @@ X-Xss-Protection: 0
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "notificationChannels": [
     "projects/${projectId}/notificationChannels/${notificationChannelID}",
     "projects/${projectId}/notificationChannels/${notificationChannelID}"
@@ -473,7 +473,7 @@ Content-Type: application/json
         }
       },
       "displayName": "Very low CPU usage",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionID}"
     }
   ],
   "displayName": "Updated Test Alert Policy",
@@ -529,7 +529,7 @@ X-Xss-Protection: 0
         }
       },
       "displayName": "Very low CPU usage",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionID}"
     }
   ],
   "creationRecord": {
@@ -546,7 +546,7 @@ X-Xss-Protection: 0
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "notificationChannels": [
     "projects/${projectId}/notificationChannels/${notificationChannelID}",
     "projects/${projectId}/notificationChannels/${notificationChannelID}"
@@ -599,7 +599,7 @@ X-Xss-Protection: 0
         }
       },
       "displayName": "Very low CPU usage",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionID}"
     }
   ],
   "creationRecord": {
@@ -616,7 +616,7 @@ X-Xss-Protection: 0
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "notificationChannels": [
     "projects/${projectId}/notificationChannels/${notificationChannelID}",
     "projects/${projectId}/notificationChannels/${notificationChannelID}"
