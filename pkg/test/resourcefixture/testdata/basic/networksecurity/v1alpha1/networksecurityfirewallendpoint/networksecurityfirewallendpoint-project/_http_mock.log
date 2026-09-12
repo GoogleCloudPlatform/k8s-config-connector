@@ -84,14 +84,19 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "statusMessage": "",
     "target": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.FirewallEndpoint",
+    "associatedNetworks": [],
+    "associations": [],
     "billingProjectId": "${projectId}",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "",
     "endpointSettings": {
       "jumboFramesEnabled": true
     },
@@ -99,6 +104,7 @@ X-Xss-Protection: 0
       "foo": "bar"
     },
     "name": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
+    "reconciling": false,
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -198,14 +204,19 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "statusMessage": "",
     "target": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
     "verb": "update"
   },
   "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.FirewallEndpoint",
+    "associatedNetworks": [],
+    "associations": [],
     "billingProjectId": "${projectId}",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "",
     "endpointSettings": {
       "jumboFramesEnabled": true
     },
@@ -213,6 +224,7 @@ X-Xss-Protection: 0
       "foo": "baz"
     },
     "name": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
+    "reconciling": false,
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -301,6 +313,8 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "statusMessage": "",
     "target": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
     "verb": "delete"
   },

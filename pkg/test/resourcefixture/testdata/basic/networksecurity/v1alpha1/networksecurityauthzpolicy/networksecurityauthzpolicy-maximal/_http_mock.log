@@ -135,6 +135,8 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "statusMessage": "",
     "target": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
     "verb": "create"
   },
@@ -143,10 +145,12 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.AuthzPolicy",
     "action": "ALLOW",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "customProvider": null,
     "description": "Maximal test authorization policy",
     "httpRules": [
       {
         "from": {
+          "notSources": [],
           "sources": [
             {
               "ipBlocks": [
@@ -158,32 +162,39 @@ X-Xss-Protection: 0
               "principals": [
                 {
                   "principal": {
-                    "exact": "spiffe://myproject.svc.id.goog/ns/default/sa/mysa"
+                    "exact": "spiffe://myproject.svc.id.goog/ns/default/sa/mysa",
+                    "ignoreCase": false
                   },
                   "principalSelector": "CLIENT_CERT_URI_SAN"
                 }
-              ]
+              ],
+              "resources": []
             }
           ]
         },
         "to": {
+          "notOperations": [],
           "operations": [
             {
+              "headerSet": null,
               "hosts": [
                 {
                   "exact": "example.com",
                   "ignoreCase": true
                 }
               ],
+              "mcp": null,
               "methods": [
                 "GET",
                 "POST"
               ],
               "paths": [
                 {
+                  "ignoreCase": false,
                   "prefix": "/api"
                 }
-              ]
+              ],
+              "snis": []
             }
           ]
         },
@@ -195,6 +206,7 @@ X-Xss-Protection: 0
       "gcp-label": "original-value"
     },
     "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
+    "networkRules": [],
     "policyProfile": "REQUEST_AUTHZ",
     "target": {
       "loadBalancingScheme": "INTERNAL_MANAGED",
@@ -403,6 +415,8 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "statusMessage": "",
     "target": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
     "verb": "update"
   },
@@ -411,10 +425,12 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.AuthzPolicy",
     "action": "ALLOW",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "customProvider": null,
     "description": "Updated test authorization policy",
     "httpRules": [
       {
         "from": {
+          "notSources": [],
           "sources": [
             {
               "ipBlocks": [
@@ -426,32 +442,39 @@ X-Xss-Protection: 0
               "principals": [
                 {
                   "principal": {
-                    "exact": "spiffe://myproject.svc.id.goog/ns/default/sa/mysa"
+                    "exact": "spiffe://myproject.svc.id.goog/ns/default/sa/mysa",
+                    "ignoreCase": false
                   },
                   "principalSelector": "CLIENT_CERT_URI_SAN"
                 }
-              ]
+              ],
+              "resources": []
             }
           ]
         },
         "to": {
+          "notOperations": [],
           "operations": [
             {
+              "headerSet": null,
               "hosts": [
                 {
                   "exact": "example.com",
                   "ignoreCase": true
                 }
               ],
+              "mcp": null,
               "methods": [
                 "GET",
                 "POST"
               ],
               "paths": [
                 {
+                  "ignoreCase": false,
                   "prefix": "/v2"
                 }
-              ]
+              ],
+              "snis": []
             }
           ]
         },
@@ -463,6 +486,7 @@ X-Xss-Protection: 0
       "gcp-label": "updated-value"
     },
     "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
+    "networkRules": [],
     "policyProfile": "REQUEST_AUTHZ",
     "target": {
       "loadBalancingScheme": "INTERNAL_MANAGED",
@@ -608,6 +632,8 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "statusMessage": "",
     "target": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
     "verb": "delete"
   },
