@@ -1,0 +1,139 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeDisk/computedisk-${uniqueId}",
+    "fields": [
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "an example disk without reference"
+      },
+      {
+        "id": "enable_confidential_compute",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "guest_os_features.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "label_fingerprint",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "3"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.label-one",
+        "old": "",
+        "new": "value-one"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "last_attach_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "last_detach_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "licenses.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computedisk-${uniqueId}"
+      },
+      {
+        "id": "physical_block_size_bytes",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "provisioned_iops",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "provisioned_throughput",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "resource_policies.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "size",
+        "old": "",
+        "new": "10"
+      },
+      {
+        "id": "source_disk_id",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "source_image_id",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "source_snapshot_id",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "type",
+        "old": "",
+        "new": "pd-standard"
+      },
+      {
+        "id": "users.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "zone",
+        "old": "",
+        "new": "us-central1-a"
+      }
+    ]
+  }
+]
