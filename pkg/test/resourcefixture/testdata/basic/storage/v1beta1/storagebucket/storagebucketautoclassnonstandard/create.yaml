@@ -21,7 +21,6 @@ metadata:
 spec:
   location: US
   uniformBucketLevelAccess: true
-  storageClass: NEARLINE
   autoclass:
     enabled: true
     terminalStorageClass: NEARLINE
