@@ -93,6 +93,12 @@ var resourceLevelIAMPolicyTestFunc = func(ctx context.Context, t *testing.T, _ s
 	testReconcileResourceLevelCreateNoChangesUpdateDelete(ctx, t, kubeClient, k8sPolicy, newK8sPolicy, iamClient, reconciler)
 }
 
+// TestReconcileIAMPolicyResourceLevelCreateNoChangesUpdateDelete runs the core
+// IAMPolicy integration tests. When run against real GCP, certain tests
+// that require elevated administrative privileges (e.g., Folder, ServiceAccount,
+// Spanner, Bigtable) may fail with 403 Forbidden under restricted testing service
+// accounts. Such permissions are environment-specific constraints and not bugs.
+// These tests pass fully under MockGCP.
 func TestReconcileIAMPolicyResourceLevelCreateNoChangesUpdateDelete(t *testing.T) {
 	ctx := context.TODO()
 
