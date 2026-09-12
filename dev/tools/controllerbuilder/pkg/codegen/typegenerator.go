@@ -357,6 +357,16 @@ func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
 
 	fmt.Fprintf(out, "\n")
 	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotationMisc, msg.FullName())
+	nonOutputFieldsCount := 0
+	for i := 0; i < msg.Fields().Len(); i++ {
+		field := msg.Fields().Get(i)
+		if !IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
+			nonOutputFieldsCount++
+		}
+	}
+	if nonOutputFieldsCount == 0 {
+		fmt.Fprintf(out, "// +kubebuilder:validation:XPreserveUnknownFields\n")
+	}
 	fmt.Fprintf(out, "type %s struct {\n", goType)
 	for i := 0; i < msg.Fields().Len(); i++ {
 		field := msg.Fields().Get(i)
@@ -374,6 +384,9 @@ func WriteObservedStateMessage(out io.Writer, msgDetails *OutputMessageDetails, 
 
 	fmt.Fprintf(out, "\n")
 	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotationObservedState, msg.FullName())
+	if len(msgDetails.OutputFields) == 0 {
+		fmt.Fprintf(out, "// +kubebuilder:validation:XPreserveUnknownFields\n")
+	}
 	fmt.Fprintf(out, "type %s struct {\n", goType)
 	for i, field := range msgDetails.OutputFields {
 		isMessage := field.Kind() == protoreflect.MessageKind && !field.IsMap()

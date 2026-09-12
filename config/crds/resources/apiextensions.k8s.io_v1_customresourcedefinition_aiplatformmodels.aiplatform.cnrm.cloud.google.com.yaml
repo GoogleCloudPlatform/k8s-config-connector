@@ -1746,6 +1746,7 @@ spec:
                     description: Output only. If this Model is a copy of another Model,
                       this contains info about the original.
                     type: object
+                    x-kubernetes-preserve-unknown-fields: true
                   satisfiesPzi:
                     description: Output only. Reserved for future use.
                     type: boolean
@@ -1773,6 +1774,7 @@ spec:
                       be exported. If empty, this Model is not available for export.
                     items:
                       type: object
+                      x-kubernetes-preserve-unknown-fields: true
                     type: array
                   supportedInputStorageFormats:
                     description: |-

@@ -114,6 +114,7 @@ type Batch struct {
 /* found existing non-generated go type "Batch_StateHistory", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.Batch.StateHistory
+// +kubebuilder:validation:XPreserveUnknownFields
 type Batch_StateHistory struct {
 }
 */
@@ -436,6 +437,7 @@ type InstanceFlexibilityPolicy_InstanceSelection struct {
 
 /* unreachable type InstanceFlexibilityPolicy_InstanceSelectionResult
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult
+// +kubebuilder:validation:XPreserveUnknownFields
 type InstanceFlexibilityPolicy_InstanceSelectionResult struct {
 }
 */
@@ -731,6 +733,7 @@ type JobScheduling struct {
 /* found existing non-generated go type "JobStatus", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.JobStatus
+// +kubebuilder:validation:XPreserveUnknownFields
 type JobStatus struct {
 }
 */
@@ -761,6 +764,7 @@ type LoggingConfig struct {
 
 /* unreachable type ManagedGroupConfig
 // +kcc:proto=google.cloud.dataproc.v1.ManagedGroupConfig
+// +kubebuilder:validation:XPreserveUnknownFields
 type ManagedGroupConfig struct {
 }
 */
@@ -1058,6 +1062,7 @@ type RuntimeConfig struct {
 /* found existing non-generated go type "RuntimeInfo", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.RuntimeInfo
+// +kubebuilder:validation:XPreserveUnknownFields
 type RuntimeInfo struct {
 }
 */
@@ -1118,6 +1123,7 @@ type Session struct {
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.Session.SessionStateHistory", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.Session.SessionStateHistory
+// +kubebuilder:validation:XPreserveUnknownFields
 type Session_SessionStateHistory struct {
 }
 */
@@ -1202,6 +1208,7 @@ type SparkBatch struct {
 /* found existing non-generated go type "SparkConnectConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.SparkConnectConfig
+// +kubebuilder:validation:XPreserveUnknownFields
 type SparkConnectConfig struct {
 }
 */

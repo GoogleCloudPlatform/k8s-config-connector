@@ -23,10 +23,12 @@
 package v1alpha1
 
 // +kcc:proto=google.privacy.dlp.v2.AllOtherDatabaseResources
+// +kubebuilder:validation:XPreserveUnknownFields
 type AllOtherDatabaseResources struct {
 }
 
 // +kcc:proto=google.privacy.dlp.v2.AllOtherResources
+// +kubebuilder:validation:XPreserveUnknownFields
 type AllOtherResources struct {
 }
 
@@ -184,6 +186,7 @@ type CloudSQLDiscoveryTarget struct {
 /* found existing non-generated go type "CloudSQLIAMCredential", skipping
 
 // +kcc:proto=google.privacy.dlp.v2.CloudSqlIamCredential
+// +kubebuilder:validation:XPreserveUnknownFields
 type CloudSQLIAMCredential struct {
 }
 */
@@ -389,6 +392,7 @@ type DataProfileAction_PubSubNotification struct {
 */
 
 // +kcc:proto=google.privacy.dlp.v2.DataProfileAction.PublishToChronicle
+// +kubebuilder:validation:XPreserveUnknownFields
 type DataProfileAction_PublishToChronicle struct {
 }
 
@@ -404,6 +408,7 @@ type DataProfileAction_PublishToDataplexCatalog struct {
 }
 
 // +kcc:proto=google.privacy.dlp.v2.DataProfileAction.PublishToSecurityCommandCenter
+// +kubebuilder:validation:XPreserveUnknownFields
 type DataProfileAction_PublishToSecurityCommandCenter struct {
 }
 
@@ -485,6 +490,7 @@ type DataProfilePubSubCondition_PubSubExpressions struct {
 }
 
 // +kcc:proto=google.privacy.dlp.v2.DataSourceType
+// +kubebuilder:validation:XPreserveUnknownFields
 type DataSourceType struct {
 }
 
@@ -551,6 +557,7 @@ type DatabaseResourceRegexes struct {
 }
 
 // +kcc:proto=google.privacy.dlp.v2.Disabled
+// +kubebuilder:validation:XPreserveUnknownFields
 type Disabled struct {
 }
 
@@ -611,6 +618,7 @@ type DiscoveryBigQueryFilter struct {
 }
 
 // +kcc:proto=google.privacy.dlp.v2.DiscoveryBigQueryFilter.AllOtherBigQueryTables
+// +kubebuilder:validation:XPreserveUnknownFields
 type DiscoveryBigQueryFilter_AllOtherBigQueryTables struct {
 }
 
@@ -1158,6 +1166,7 @@ type ProcessingLocation struct {
 }
 
 // +kcc:proto=google.privacy.dlp.v2.ProcessingLocation.GlobalProcessing
+// +kubebuilder:validation:XPreserveUnknownFields
 type ProcessingLocation_GlobalProcessing struct {
 }
 
@@ -1174,6 +1183,7 @@ type ProcessingLocation_ImageFallbackLocation struct {
 }
 
 // +kcc:proto=google.privacy.dlp.v2.ProcessingLocation.MultiRegionProcessing
+// +kubebuilder:validation:XPreserveUnknownFields
 type ProcessingLocation_MultiRegionProcessing struct {
 }
 
@@ -1193,6 +1203,7 @@ type SecretManagerCredential struct {
 */
 
 // +kcc:proto=google.privacy.dlp.v2.SecretsDiscoveryTarget
+// +kubebuilder:validation:XPreserveUnknownFields
 type SecretsDiscoveryTarget struct {
 }
 

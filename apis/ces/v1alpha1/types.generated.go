@@ -426,6 +426,7 @@ type ConversationLoggingSettings struct {
 /* found existing non-generated go type "DataStoreSettings", skipping
 
 // +kcc:proto=google.cloud.ces.v1beta.DataStoreSettings
+// +kubebuilder:validation:XPreserveUnknownFields
 type DataStoreSettings struct {
 }
 */
@@ -433,6 +434,7 @@ type DataStoreSettings struct {
 /* found existing non-generated go type with proto tag "google.cloud.ces.v1beta.DataStoreSettings.Engine", skipping
 
 // +kcc:proto=google.cloud.ces.v1beta.DataStoreSettings.Engine
+// +kubebuilder:validation:XPreserveUnknownFields
 type DataStoreSettings_Engine struct {
 }
 */

@@ -44,6 +44,7 @@ type RegistryBook struct {
 /* found existing non-generated go type with proto tag "google.cloud.numberregistry.v1alpha.RegistryBook.AggregatedData", skipping
 
 // +kcc:proto=google.cloud.numberregistry.v1alpha.RegistryBook.AggregatedData
+// +kubebuilder:validation:XPreserveUnknownFields
 type RegistryBook_AggregatedData struct {
 }
 */
