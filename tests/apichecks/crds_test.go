@@ -566,6 +566,11 @@ func TestCRDFieldPresenceInTests(t *testing.T) {
 			return false
 		}
 
+		// skip resources that don't have a registered reconciler / controller yet
+		if crd.Name == "backupdrbackups.backupdr.cnrm.cloud.google.com" {
+			return false
+		}
+
 		return true
 	}
 

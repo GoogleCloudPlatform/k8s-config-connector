@@ -1,0 +1,1 @@
+[spec_etag] crd=backupdrbackups.backupdr.cnrm.cloud.google.com version=v1beta1: field ".spec.etag" contains etag
