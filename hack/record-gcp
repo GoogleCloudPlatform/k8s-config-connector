@@ -22,7 +22,12 @@ cd ${REPO_ROOT}/
 
 . ${REPO_ROOT}/dev/tasks/setup-envtest
 
-rm -rf $(pwd)/artifactz/realgcp
+# Allow overriding the ARTIFACTS directory (e.g., for parallel test executions).
+# Exported so that the downstream script (dev/tasks/run-e2e) uses this path for test logs and outputs.
+ARTIFACTS="${ARTIFACTS:-$(pwd)/artifactz/realgcp}"
+export ARTIFACTS
+# Clear existing artifacts
+rm -rf "${ARTIFACTS}"
 
 # Run the tests specified on the command line
 if [[ $1 =~ TestE2EScript.* ]]; then
@@ -74,7 +79,7 @@ echo "Using test timeout: ${E2E_TEST_TIMEOUT}"
 
 
 # Run e2e tests against real gcp, capturing output
-ARTIFACTS=$(pwd)/artifactz/realgcp \
+ARTIFACTS="${ARTIFACTS}" \
 E2E_KUBE_TARGET=envtest \
 E2E_GCP_TARGET=real \
 GOLDEN_REQUEST_CHECKS=1 \

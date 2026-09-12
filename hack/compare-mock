@@ -37,8 +37,12 @@ fi
 export RUN_TESTS
 echo "RUN_TESTS=${RUN_TESTS}"
 
+# Allow overriding the ARTIFACTS directory (e.g., for parallel test executions).
+# Exported so that the downstream script (dev/tasks/run-e2e) uses this path for test logs and outputs.
+ARTIFACTS="${ARTIFACTS:-$(pwd)/artifactz/mock}"
+export ARTIFACTS
 # Clear existing artifacts
-rm -rf $(pwd)/artifactz/mock
+rm -rf "${ARTIFACTS}"
 
 # Run e2e tests against our mockgcp, capturing output
 E2E_GCP_TARGET=mock dev/tasks/run-e2e

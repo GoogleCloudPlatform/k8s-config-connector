@@ -83,26 +83,39 @@ Configure the following environment variables to control project routing, billin
 > KCC tests dynamically substitute namespace project references with the actual target GCP project specified by these variables during execution.
 
 ### C. Running E2E Fixture Test Recordings
-For standard E2E fixture tests under `pkg/test/resourcefixture/testdata/basic/`, use the `hack/record-gcp` script:
-1. Run the script passing either the test name suffix or the package path:
-   - **Using test name suffix**:
-     ```bash
-     hack/record-gcp <test_name>
-     ```
-   - **Using full test package path**:
-     ```bash
-     hack/record-gcp pkg/test/resourcefixture/testdata/basic/dns/v1beta1/<test_name>
-     ```
-     - **Example: Using test name suffix**:
-     ```bash
-     hack/record-gcp fixtures/dnsrecordsetbasic
-     ```
-   - **Example: Using full test package path**:
-     ```bash
-     hack/record-gcp pkg/test/resourcefixture/testdata/basic/dns/v1beta1/dnsrecordset
-     ```
-2. The script executes the tests with `E2E_GCP_TARGET=real`, `WRITE_GOLDEN_OUTPUT=1`, and records the traffic to `_http.log`.
-3. **If the script fails** (e.g. due to permissions or an invalid/missing default project ID), you **MUST NOT** skip this step. Ask the user for a valid GCP project ID to test against, and then run:
+For standard E2E fixture tests under `pkg/test/resourcefixture/testdata/basic/`, use the `hack/record-gcp` script.
+
+1.  **Discover All Test Fixtures for Resource**:
+    Before running any recordings, locate all test subdirectories under `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/` (e.g., `containernodepool`, `containernodepool-update`, `containernodepoolremovetaint`, etc.).
+
+2.  **Fast vs. Slow Resource Execution Strategy**:
+    Determine whether your target resource is fast or slow to reconcile against real GCP. Resources like `ContainerNodePool`, `ContainerCluster`, `SQLInstance`, and `ComposerEnvironment` are slow resources (>10 minutes per test), whereas most others are fast (<10 min per test).
+    - **Fast resources (<10 min per test)**:
+      - Run and record all fixtures for the resource in a single command:
+        ```bash
+        hack/record-gcp "fixtures/<kind_lowercase>"
+        ```
+    - **Slow resources (>10 min per test)**:
+      - Do NOT run all test fixtures sequentially in a single command.
+      - Execute each individual test fixture in parallel (e.g., triggering parallel background processes or subagents with `hack/record-gcp "fixtures/^<testname>$"`).
+      - **Parallel Directory Collisions**: `hack/record-gcp` cleans and writes to `artifactz/realgcp` by default. When running multiple invocations in parallel, you **MUST** provide a unique `ARTIFACTS` path for each invocation (e.g., `ARTIFACTS=artifactz/realgcp-<testname> hack/record-gcp "fixtures/^<testname>$"`) to prevent folder collision/cleanup issues.
+
+    - **Alternative Using Package Path (Fast resources)**:
+      ```bash
+      hack/record-gcp pkg/test/resourcefixture/testdata/basic/dns/v1beta1/<kind_lowercase>
+      ```
+
+3.  **Verification Criteria for Real GCP Recording (MANDATORY)**:
+    Checking `git status` or top-level `PASS`/`FAIL` exit codes can be misleading (e.g. 0-diff is valid for unaffected fixtures, unmatched regex gives a false `PASS`, and a successful recording can mark the subtest as `FAIL` because it wrote a new golden log).
+    Instead, verify that each discovered fixture completed its full lifecycle by checking stdout for:
+    1. `=== RUN   TestAllInSeries/fixtures/<testname>` (confirms the subtest matched and started).
+    2. Resource reached `Ready` (`status.condition.status: True`) for create (and update, if present).
+    3. Deletion completed (`Done waiting for resource to delete`).
+    4. `wrote updated golden output to .../_http.log` was logged (or `_http.log` was updated/written on disk).
+    5. No fatal errors (`t.Fatalf` / timeout / permission errors) aborted the test before cleanup.
+
+4. The script executes the tests with `E2E_GCP_TARGET=real`, `WRITE_GOLDEN_OUTPUT=1`, and records the traffic to `_http.log`.
+5. **If the script fails** (e.g. due to permissions or an invalid/missing default project ID), you **MUST** not skip this step. Ask the user for a valid GCP project ID to test against, and then run:
    ```bash
    GCP_PROJECT_ID=<project-id> hack/record-gcp <test_name>
    ```
@@ -137,18 +150,24 @@ To verify the mock implementation matches real GCP behavior:
 > [!IMPORTANT]
 > **Prerequisite**: You must have committed the real GCP baseline (from Section 3.E) before starting this section. Running against MockGCP without committing the real GCP baseline first can mix up different modifications in the `_http.log` files and make diff analysis impossible.
 
-1. **Run Mock Test**:
-   - Run `hack/compare-mock <testname>`. 
-     - **Example:** `hack/compare-mock tests-e2e-sql`
-   - The test will execute using the MockGCP control plane.
+1. **Run Mock Test with `compare-mock`**:
+   - Run the mock comparison tests for all fixtures of the resource in a single command (MockGCP runs in-memory and completes in seconds, so no parallel execution split or Fast/Slow execution strategy is needed for mock tests):
+     ```bash
+     hack/compare-mock "fixtures/<kind_lowercase>"
+     ```
+     Specifically, re-run `hack/compare-mock "fixtures/<kind_lowercase>"` (or `hack/compare-mock "fixtures/^<testname>$"`) to update `_http_mock.log` and the golden object files (`_generated_object_*.golden.yaml`), and verify log alignment against `_http.log`. Repeat until all discrepancies are resolved and the tests pass.
 2. **Check for Differences**:
-   - Check if the command fails or if `git status` shows modifications to the golden files.
-   - Run `git diff pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/`.
-3. **Commit the Baseline Updates**:
+   - Check if the command fails or if `git diff` shows modifications to the golden files.
+   - Run `git diff pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/`.
+3. **Multi-Fixture Verification Requirement (MANDATORY)**:
+   - You **MUST** verify and ensure that all test directories associated with your target resource are completely verified.
+   1. Ensure that all discovered test subdirectories under `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/` have their golden files (`_generated_object_*.golden.yaml`) and mock HTTP logs (`_http_mock.log`) successfully generated. Note that a 0-diff in `git status` is perfectly valid if the resource doesn't contain any service-generated, randomized values in the responses or our normalizers have overwritten those values.
+   2. Commit and push all regenerated and matched log/golden files for every discovered fixture in your Pull Request.
+4. **Commit the Baseline Updates**:
    - If there are any differences (such as `selfLink` removal or minor formatting alignment), stage and commit these updates:
      ```bash
-     git add pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/
-     git commit -m "Update golden logs for <testname> after mock comparison"
+     git add pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/
+     git commit -m "Update golden logs for <kind_lowercase> after mock comparison"
      ```
 
 ---
@@ -249,7 +268,7 @@ Before finishing the task or proposing a PR, the agent must run formatting, gene
 7. **Run CI/CD Group Presubmit Tests Locally (MANDATORY)**:
    - > [!WARNING]
      > Modifying a resource type (e.g., adding fields to a CRD, or registering new fields under `observedFields` in mapping configs) will implicitly affect **ALL** existing test cases for that resource type. The controller will begin populating the new fields in the status or `observedState` of all existing instances, causing their golden object manifests (`_generated_object_*.golden.yaml`) to change.
-   - To prevent PR/CI pipeline failures, you **MUST** run the full group presubmit test script under `dev/ci/presubmits/` (e.g. `dev/ci/presubmits/tests-e2e-fixtures-container` for `container.cnrm.cloud.google.com` resources) to ensure you capture and update the golden files of all related tests.
+   - To prevent PR/CI pipeline failures, you **MUST** run the full group presubmit test script under `dev/ci/presubmits/` (e.g. `dev/ci/presubmits/tests-e2e-fixtures-container` for `container.cnrm.cloud.google.com` resources) to ensure you capture and update the golden files of all related tests. Ensure that ALL test folders discovered for the kind under `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/` have been run, updated, and validated successfully.
    - After the run, check `git status` for any modified golden files, verify they are correct, and commit them:
      ```bash
      dev/ci/presubmits/tests-e2e-fixtures-<service_name>
