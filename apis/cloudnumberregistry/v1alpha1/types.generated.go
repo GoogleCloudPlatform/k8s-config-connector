@@ -18,8 +18,70 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.numberregistry.v1alpha
 // resource: CloudNumberRegistryRegistryBook:RegistryBook
+// resource: CloudNumberRegistryCustomRange:CustomRange
 
 package v1alpha1
+
+/* found existing non-generated go type "Attribute", skipping
+
+// +kcc:proto=google.cloud.numberregistry.v1alpha.Attribute
+type Attribute struct {
+	// Required. The key of the attribute.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.Attribute.key
+	Key *string `json:"key,omitempty"`
+
+	// Required. The value of the attribute.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.Attribute.value
+	Value *string `json:"value,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.numberregistry.v1alpha.CustomRange", skipping
+
+// +kcc:proto=google.cloud.numberregistry.v1alpha.CustomRange
+type CustomRange struct {
+	// Optional. The IPv4 CIDR range of the CustomRange.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.CustomRange.ipv4_cidr_range
+	IPV4CIDRRange *string `json:"ipv4CIDRRange,omitempty"`
+
+	// Optional. The IPv6 CIDR range of the CustomRange.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.CustomRange.ipv6_cidr_range
+	IPV6CIDRRange *string `json:"ipv6CIDRRange,omitempty"`
+
+	// Required. Identifier. The resource name of the CustomRange, in the format
+	//  `projects/{project}/locations/{location}/customRanges/{custom_range}`.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.CustomRange.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The resource name of the Realm associated with the CustomRange,
+	//  in the format `projects/{project}/locations/{location}/realms/{realm}`. The
+	//  Realm must be in the same project as the CustomRange. This field must not
+	//  be set if the `parent_range` field is set, as the Realm will be inherited
+	//  from the parent CustomRange.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.CustomRange.realm
+	Realm *string `json:"realm,omitempty"`
+
+	// Optional. The resource name of the parent CustomRange, in the format
+	//  `projects/{project}/locations/{location}/customRanges/{custom_range}`.
+	//  If specified, the parent CustomRange must be in the same RegistryBook.
+	//  This field is mutually exclusive with the `realm` field, as the Realm is
+	//  inherited from the parent CustomRange.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.CustomRange.parent_range
+	ParentRange *string `json:"parentRange,omitempty"`
+
+	// Optional. The attributes of the CustomRange.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.CustomRange.attributes
+	Attributes []Attribute `json:"attributes,omitempty"`
+
+	// Optional. The description of the CustomRange.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.CustomRange.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. User-defined labels.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.CustomRange.labels
+	Labels map[string]string `json:"labels,omitempty"`
+}
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.numberregistry.v1alpha.RegistryBook", skipping
 
@@ -45,6 +107,17 @@ type RegistryBook struct {
 
 // +kcc:proto=google.cloud.numberregistry.v1alpha.RegistryBook.AggregatedData
 type RegistryBook_AggregatedData struct {
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.numberregistry.v1alpha.CustomRange", skipping
+
+// +kcc:observedstate:proto=google.cloud.numberregistry.v1alpha.CustomRange
+type CustomRangeObservedState struct {
+	// Output only. The RegistryBook of the CustomRange. This field is inherited
+	//  from the Realm or parent CustomRange depending on which one is specified.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.CustomRange.registry_book
+	RegistryBook *string `json:"registryBook,omitempty"`
 }
 */
 

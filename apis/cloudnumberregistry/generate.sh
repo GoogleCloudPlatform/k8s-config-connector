@@ -51,7 +51,8 @@ ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.numberregistry.v1alpha \
   --api-version cloudnumberregistry.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
-  --resource CloudNumberRegistryRegistryBook:RegistryBook
+  --resource CloudNumberRegistryRegistryBook:RegistryBook \
+  --resource CloudNumberRegistryCustomRange:CustomRange
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
