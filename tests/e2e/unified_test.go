@@ -305,7 +305,12 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					if strings.Contains(fixture.Name, "regionaltargethttpsproxy") {
 						opt.CreateInOrder = true
 					}
-					if strings.Contains(fixture.Name, "computesubnetwork") {
+					// ComputeSubnetwork and ComputeRouterNAT have strict dependencies on other resources (like ComputeNetwork or ComputeRouter).
+					// For ComputeRouterNAT, NAT gateway configuration is treated as an embedded configuration on a GCP Router.
+					// Therefore, GCP does not allow configuring NAT on a router that does not exist yet.
+					// Similarly, deleting a network or router will fail if active NAT/subnetwork configurations are still attached.
+					// Setting CreateInOrder and DeleteInOrder ensures dependencies are fully ready first during creation and cleaned up last during deletion.
+					if strings.Contains(fixture.Name, "computesubnetwork") || strings.Contains(fixture.Name, "computerouternat") {
 						opt.CreateInOrder = true
 						opt.DeleteInOrder = true
 					}
