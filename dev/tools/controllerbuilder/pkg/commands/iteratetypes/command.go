@@ -114,14 +114,14 @@ func writeToFile(ctx context.Context, o *Options, allproto *[]ResourceMetadata) 
 		return nil
 	}
 	f, err := os.OpenFile(o.OutputFile, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
-	defer f.Close()
 	if err != nil {
 		return fmt.Errorf("opening file %q: %w", o.OutputFile, err)
 	}
+	defer f.Close()
 	for _, proto := range *allproto {
 		b, err := yaml.Marshal(proto)
 		if err != nil {
-			return fmt.Errorf("marshalling proto %s: %w", proto, err)
+			return fmt.Errorf("marshalling proto %v: %w", proto, err)
 		}
 		f.WriteString(string(b) + "\n---\n")
 	}

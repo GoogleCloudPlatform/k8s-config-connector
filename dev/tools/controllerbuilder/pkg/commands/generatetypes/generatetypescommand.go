@@ -191,7 +191,36 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 			if scaffolder.TypeFileExists(resource) {
 				klog.V(1).Infof("file %s already exists, skipping\n", scaffolder.PathToTypeFile(resource))
 			} else {
-				err := scaffolder.AddTypeFile(resource)
+				var resourceProtoFullName string
+				if strings.Contains(resource.ProtoName, ".") {
+					resourceProtoFullName = resource.ProtoName
+				} else {
+					found := false
+					for _, svc := range strings.Split(o.ServiceName, ",") {
+						candidate := svc + "." + resource.ProtoName
+						_, err := api.Files().FindDescriptorByName(protoreflect.FullName(candidate))
+						if err == nil {
+							resourceProtoFullName = candidate
+							found = true
+							break
+						}
+					}
+					if !found {
+						resourceProtoFullName = strings.Split(o.ServiceName, ",")[0] + "." + resource.ProtoName
+					}
+				}
+
+				desc, err := api.Files().FindDescriptorByName(protoreflect.FullName(resourceProtoFullName))
+				var rootMsg protoreflect.MessageDescriptor
+				if err == nil {
+					rootMsg, _ = desc.(protoreflect.MessageDescriptor)
+				}
+
+				parentFields := codegen.RenderParentFields(rootMsg, resource.Kind)
+				specFields, _ := typeGenerator.RenderSpecFields(rootMsg)
+				observedStateFields, _ := typeGenerator.RenderObservedStateFields(rootMsg)
+
+				err = scaffolder.AddTypeFileWithFields(resource, parentFields, specFields, observedStateFields)
 				if err != nil {
 					return fmt.Errorf("add type file %s: %w", scaffolder.PathToTypeFile(resource), err)
 				}

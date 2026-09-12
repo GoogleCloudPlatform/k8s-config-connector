@@ -159,6 +159,15 @@ func (a *APIScaffolder) AddTypeFile(resource options.Resource) error {
 	return scaffoldTypeFile(typeFilePath, cArgs)
 }
 
+func (a *APIScaffolder) AddTypeFileWithFields(resource options.Resource, parentFields, specFields, observedStateFields string) error {
+	typeFilePath := a.PathToTypeFile(resource)
+	cArgs := a.buildAPIArgs(&resource)
+	cArgs.ParentFields = parentFields
+	cArgs.SpecFields = specFields
+	cArgs.ObservedStateFields = observedStateFields
+	return scaffoldTypeFile(typeFilePath, cArgs)
+}
+
 func scaffoldTypeFile(path string, cArgs *apis.APIArgs) error {
 	tmpl, err := template.New(cArgs.Kind).Funcs(funcMap).Parse(apis.TypesTemplate)
 	if err != nil {
