@@ -6,6 +6,15 @@
 [missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.devicePolicy.requireCorpOwned" is not set in unstructured objects
 [missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.devicePolicy.requireScreenLock" is not set in unstructured objects
 [missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.requiredAccessLevels[]" is not set in unstructured objects
+[missing_field] crd=agentregistryservices.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.agentSpec.content" is not set in unstructured objects
+[missing_field] crd=agentregistryservices.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=agentregistryservices.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=agentregistryservices.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpointSpec.content" is not set in unstructured objects
+[missing_field] crd=agentregistryservices.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpointSpec.type" is not set in unstructured objects
+[missing_field] crd=agentregistryservices.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.interfaces[].protocolBinding" is not set in unstructured objects
+[missing_field] crd=agentregistryservices.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.interfaces[].url" is not set in unstructured objects
+[missing_field] crd=agentregistryservices.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpServerSpec.content" is not set in unstructured objects
+[missing_field] crd=agentregistryservices.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.mcpServerSpec.type" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifactURI" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.baseModelSource.genieSource.baseModelURI" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.baseModelSource.modelGardenSource.publicModelName" is not set in unstructured objects
