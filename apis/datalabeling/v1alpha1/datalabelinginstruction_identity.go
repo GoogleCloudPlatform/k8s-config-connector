@@ -96,9 +96,10 @@ func (obj *DataLabelingInstruction) GetIdentity(ctx context.Context, reader clie
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change DataLabelingInstruction identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		if statusIdentity.Project != specIdentity.Project {
+			return nil, fmt.Errorf("cannot change DataLabelingInstruction project (old=%q, new=%q)", statusIdentity.Project, specIdentity.Project)
 		}
+		return statusIdentity, nil
 	}
 
 	return specIdentity, nil
