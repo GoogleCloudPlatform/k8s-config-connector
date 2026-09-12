@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"reflect"
 	"regexp"
+	"strings"
 
 	gcp "cloud.google.com/go/secretmanager/apiv1"
 	secretmanagerpb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
@@ -26,6 +27,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/go-logr/logr"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -108,8 +110,20 @@ func (m *secretModel) AdapterForObject(ctx context.Context, op *directbase.Adapt
 }
 
 func (m *secretModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	u := strings.TrimPrefix(url, "//secretmanager.googleapis.com/")
+	u = strings.TrimPrefix(u, "/")
+	id, err := krm.ParseSecretExternal(u)
+	if err != nil {
+		return nil, nil
+	}
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &Adapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type Adapter struct {
@@ -325,7 +339,6 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
-	u := &unstructured.Unstructured{}
 
 	obj := &krm.SecretManagerSecret{}
 	mapCtx := &direct.MapContext{}
@@ -333,11 +346,24 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.ID())
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
-	u.Object = uObj
+
+	u := &unstructured.Unstructured{
+		Object: uObj,
+	}
+	u.SetName(a.id.ID())
+	u.SetGroupVersionKind(krm.SecretManagerSecretGVK)
+	k8s.SetAnnotation(k8s.ProjectIDAnnotation, a.id.Parent().ProjectID, u)
+	if len(a.actual.Labels) > 0 {
+		u.SetLabels(a.actual.Labels)
+	}
+
 	return u, nil
 }
 

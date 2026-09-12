@@ -95,8 +95,10 @@ func ParseSecretVersionExternal(external string) (*SecretVersionIdentity, error)
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "secrets" || tokens[4] != "versions" {
 		return nil, fmt.Errorf("format of SecretManagerSecretVersion external=%q was not known (use projects/{{projectId}}/secrets/{{secretID}}/versions/{{versionID}})", external)
 	}
+	known := true
 	return &SecretVersionIdentity{
-		parent: &SecretVersionParent{ProjectID: tokens[1], SecretID: tokens[3]},
-		id:     tokens[5],
+		parent:                  &SecretVersionParent{ProjectID: tokens[1], SecretID: tokens[3]},
+		id:                      tokens[5],
+		serviceGeneratedIDKnown: &known,
 	}, nil
 }
