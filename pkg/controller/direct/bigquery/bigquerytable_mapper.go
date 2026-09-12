@@ -305,7 +305,7 @@ func ExternalDataConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.Exter
 	out.HivePartitioningOptions = HivePartitioningOptions_FromProto(mapCtx, in.HivePartitioningOptions)
 	// MISSING: ConnectionID
 	// (near miss): "ConnectionID" vs "ConnectionId"
-	// MISSING: DecimalTargetTypes
+	out.DecimalTargetTypes = in.DecimalTargetTypes
 	out.AvroOptions = AvroOptions_FromProto(mapCtx, in.AvroOptions)
 	// MISSING: JsonExtension
 	out.ParquetOptions = ParquetOptions_FromProto(mapCtx, in.ParquetOptions)
@@ -342,7 +342,7 @@ func ExternalDataConfiguration_ToProto(mapCtx *direct.MapContext, in *krmv1beta1
 	out.HivePartitioningOptions = HivePartitioningOptions_ToProto(mapCtx, in.HivePartitioningOptions)
 	// MISSING: ConnectionID
 	// (near miss): "ConnectionID" vs "ConnectionId"
-	// MISSING: DecimalTargetTypes
+	out.DecimalTargetTypes = in.DecimalTargetTypes
 	out.AvroOptions = AvroOptions_ToProto(mapCtx, in.AvroOptions)
 	// MISSING: JsonExtension
 	out.ParquetOptions = ParquetOptions_ToProto(mapCtx, in.ParquetOptions)
