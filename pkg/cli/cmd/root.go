@@ -16,12 +16,14 @@ package cmd
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"io/ioutil"
 	golog "log"
 	"os"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/backup"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/bulkexport/parameters"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/log"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools"
@@ -63,6 +65,8 @@ func init() {
 	AddLicensesCommand(rootCmd)
 	rootCmd.AddCommand(applyCmd)
 	rootCmd.AddCommand(NewPreviewCmd())
+	rootCmd.AddCommand(NewBackupCmd())
+	rootCmd.AddCommand(backup.NewRestoreCmd())
 
 	powertools.AddCommands(rootCmd)
 
@@ -104,15 +108,23 @@ type TestInvocationOptions struct {
 	Args   []string
 }
 
+func clearContexts(cmd *cobra.Command) {
+	cmd.SetContext(nil)
+	for _, c := range cmd.Commands() {
+		clearContexts(c)
+	}
+}
+
 // ExecuteFromTest allows for invocation of the CLI from a test
-func ExecuteFromTest(options *TestInvocationOptions) error {
+func ExecuteFromTest(ctx context.Context, options *TestInvocationOptions) error {
+	clearContexts(rootCmd)
 	rootCmd.SetIn(&options.Stdin)
 	rootCmd.SetOut(&options.Stdout)
 	rootCmd.SetErr(&options.Stderr)
 	rootCmd.SetArgs(options.Args[1:])
 
 	defaultToBulkExport(options.Args)
-	err := rootCmd.Execute()
+	err := rootCmd.ExecuteContext(ctx)
 	if err != nil {
 		fmt.Fprintf(&options.Stderr, "%v\n", err)
 	}
