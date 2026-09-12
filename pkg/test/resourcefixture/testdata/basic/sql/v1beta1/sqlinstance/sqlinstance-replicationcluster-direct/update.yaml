@@ -25,7 +25,7 @@ spec:
     failoverDrReplicaRef:
       name: "sqlinstance-replica-direct-${uniqueId}"
   settings:
-    tier: db-custom-1-3840
+    tier: db-perf-optimized-N-4
     edition: ENTERPRISE_PLUS
     backupConfiguration:
       enabled: true
