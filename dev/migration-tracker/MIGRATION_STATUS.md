@@ -9,7 +9,7 @@
 | :--- | :---: | :---: | :--- |
 | **Completed** | **10** | `4.7%` | `--------------------` |
 | **In Progress** | **165** | `77.5%` | `###############-----` |
-| &nbsp;&nbsp;&nbsp;&nbsp;-> *Direct Controller Enabled* | *71* | `33.3%` | `######--------------` |
+| &nbsp;&nbsp;&nbsp;&nbsp;-> *Direct Controller Enabled* | *72* | `33.8%` | `######--------------` |
 | **Not Started** | **38** | `17.8%` | `###-----------------` |
 | **Total Resources** | **213** | `100.0%` | |
 
@@ -21,10 +21,10 @@
 | :--- | :--- | :---: | :---: |
 | `gen-types` | Direct Go API Types in `apis/` | **145** / 213 | `68.1%` |
 | `identity-reference` | Identity and Ref logic (`*_identity.go` AND `*_reference.go`) | **123** / 213 | `57.7%` |
-| `mapper-fuzzer` | Proto/KRM Mappers AND Fuzzers in `pkg/controller/direct/` | **106** / 213 | `49.8%` |
+| `mapper-fuzzer` | Proto/KRM Mappers AND Fuzzers in `pkg/controller/direct/` | **107** / 213 | `50.2%` |
 | `mocks` | MockGCP alignment and golden logs (`_http_mock.log`) | **148** / 213 | `69.5%` |
-| `controller` | Direct Controller implementation (`*_controller.go`, not all registered in static config) | **82** / 213 | `38.5%` |
-| `tests` | E2E migration test suite (`TestMigrationToDirect`) | **78** / 213 | `36.6%` |
+| `controller` | Direct Controller implementation (`*_controller.go`, not all registered in static config) | **83** / 213 | `39.0%` |
+| `tests` | E2E migration test suite (`TestMigrationToDirect`) | **79** / 213 | `37.1%` |
 
 ---
 
@@ -34,13 +34,13 @@ This section lists unmigrated brownfield resources ordered by their downstream d
 
 | Topo Order | Group | Kind | Downstream Dependents | State | Next Step |
 | :---: | :--- | :--- | :---: | :---: | :--- |
-| #1 | `resourcemanager` | `Folder` | `452` | **In Progress** | `Mapper/Fuzz` |
-| #2 | `resourcemanager` | `Project` | `447` | **In Progress** | `Mapper/Fuzz` |
-| #3 | `kms` | `KMSKeyRing` | `142` | **In Progress** | `Default to Direct Controller` |
-| #4 | `kms` | `KMSCryptoKey` | `140` | **In Progress** | `Default to Direct Controller` |
-| #5 | `compute` | `ComputeNetwork` | `136` | **In Progress** | `Default to Direct Controller` |
-| #6 | `iam` | `IAMServiceAccount` | `61` | **In Progress** | `Mapper/Fuzz` |
-| #7 | `storage` | `StorageBucket` | `42` | **In Progress** | `Controller` |
+| #1 | `resourcemanager` | `Folder` | `451` | **In Progress** | `Mapper/Fuzz` |
+| #2 | `resourcemanager` | `Project` | `446` | **In Progress** | `Mapper/Fuzz` |
+| #3 | `kms` | `KMSKeyRing` | `141` | **In Progress** | `Default to Direct Controller` |
+| #4 | `kms` | `KMSCryptoKey` | `139` | **In Progress** | `Default to Direct Controller` |
+| #5 | `compute` | `ComputeNetwork` | `135` | **In Progress** | `Default to Direct Controller` |
+| #6 | `iam` | `IAMServiceAccount` | `60` | **In Progress** | `Mapper/Fuzz` |
+| #7 | `storage` | `StorageBucket` | `41` | **In Progress** | `Controller` |
 | #8 | `compute` | `ComputeSubnetwork` | `23` | **In Progress** | `Mapper/Fuzz` |
 | #9 | `serviceusage` | `Service` | `15` | **In Progress** | `Default to Direct Controller` |
 | #10 | `compute` | `ComputeSecurityPolicy` | `13` | **In Progress** | `Default to Direct Controller` |
@@ -256,7 +256,7 @@ This section lists unmigrated brownfield resources ordered by their downstream d
 | `edgenetwork` | `EdgeNetworkSubnet` | `Terraform` | **In Progress** |  |  |  | Yes |  |  |  |  |
 | `eventarc` | `EventarcTrigger` | `DCL` | **Not Started** |  |  |  |  |  |  |  |  |
 | `filestore` | `FilestoreBackup` | `DCL` | **Not Started** |  |  |  |  |  |  |  |  |
-| `filestore` | `FilestoreInstance` | `DCL` | **In Progress** | Yes | Yes |  | Yes |  |  |  |  |
+| `filestore` | `FilestoreInstance` | `DCL` | **In Progress** | Yes | Yes | Yes | Yes | Yes | Yes | Yes |  |
 | `firestore` | `FirestoreIndex` | `Terraform` | **In Progress** | Yes | Yes | Yes | Yes | Yes | Yes | Yes |  |
 | `gkehub` | `GKEHubFeature` | `DCL` | **In Progress** |  |  |  | Yes |  |  |  |  |
 | `gkehub` | `GKEHubFeatureMembership` | `Direct` | **Completed** | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
@@ -384,10 +384,10 @@ The following **7** resources lack separate standard `<kind_lower>_identity.go` 
 
 ### 2. Controllers Missing Standalone Mapper or Fuzzer Files
 
-The following **51** resources have direct controllers implemented, but lack separate standalone mapper (`*_mapper.go`) AND fuzzer (`*_fuzzer.go`) files in `pkg/controller/direct/<group>/`:
+The following **52** resources have direct controllers implemented, but lack separate standalone mapper (`*_mapper.go`) AND fuzzer (`*_fuzzer.go`) files in `pkg/controller/direct/<group>/`:
 
 <details>
-<summary>Click to expand all 51 resources lacking strict standalone mapper/fuzzer files</summary>
+<summary>Click to expand all 52 resources lacking strict standalone mapper/fuzzer files</summary>
 
 | Group | Kind |
 | :--- | :--- |
@@ -410,6 +410,7 @@ The following **51** resources have direct controllers implemented, but lack sep
 | `dataproc` | `DataprocCluster` |
 | `dns` | `DNSManagedZone` |
 | `dns` | `DNSPolicy` |
+| `filestore` | `FilestoreInstance` |
 | `firestore` | `FirestoreIndex` |
 | `gkehub` | `GKEHubFeatureMembership` |
 | `iam` | `IAMPartialPolicy` |
@@ -447,10 +448,10 @@ The following **51** resources have direct controllers implemented, but lack sep
 
 ### 3. Misplaced / Non-Standard Artifact Placements
 
-The following **34** resources have mapper/fuzzer symbols implemented, but placed in non-standard or shared filenames rather than standard `<kind_lower>_mapper.go` / `<kind_lower>_fuzzer.go` files:
+The following **35** resources have mapper/fuzzer symbols implemented, but placed in non-standard or shared filenames rather than standard `<kind_lower>_mapper.go` / `<kind_lower>_fuzzer.go` files:
 
 <details>
-<summary>Click to expand all 34 resources with misplaced artifact files</summary>
+<summary>Click to expand all 35 resources with misplaced artifact files</summary>
 
 | Group | Kind | Actual File Locations |
 | :--- | :--- | :--- |
@@ -460,6 +461,7 @@ The following **34** resources have mapper/fuzzer symbols implemented, but place
 | `billingbudgets` | `BillingBudgetsBudget` | `billingbudgetsbudget_controller.go`, `mapper.go` |
 | `dataflow` | `DataflowFlexTemplateJob` | `dataflowflextemplatejob_controller.go`, `mapper.generated.go` |
 | `dataflow` | `DataflowJob` | `mapper.generated.go`, `mapper.go` |
+| `filestore` | `FilestoreInstance` | `filestoreinstance_controller.go`, `mapper.generated.go`, `mapper.go` |
 | `gkehub` | `GKEHubFeatureMembership` | `gkehubfeaturemembership_controller.go`, `mappings.go` |
 | `iam` | `IAMPolicy` | `iampartialpolicy_controller.go`, `mappings.go` |
 | `kms` | `KMSKeyRing` | `kmskeyring_controller.go`, `kmskeyring_mappers.go` |

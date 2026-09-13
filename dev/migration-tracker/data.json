@@ -1875,7 +1875,7 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 5,
-    "downstreamCount": 136,
+    "downstreamCount": 135,
     "artifacts": {
       "has_std_identity": true,
       "has_std_reference": true,
@@ -4070,7 +4070,8 @@
     "controllerType": "DCL",
     "defaultController": "DCL",
     "supportedControllers": [
-      "DCL"
+      "DCL",
+      "Direct"
     ],
     "dependencies": [
       "ComputeNetwork",
@@ -4080,10 +4081,10 @@
     "steps": {
       "gen-types": true,
       "identity-reference": true,
-      "mapper-fuzzer": false,
+      "mapper-fuzzer": true,
       "mocks": true,
-      "controller": false,
-      "tests": false
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
@@ -4096,6 +4097,7 @@
       "has_std_fuzzer": true,
       "non_std_id_ref_files": [],
       "non_std_mapper_fuzzer_files": [
+        "filestoreinstance_controller.go",
         "mapper.generated.go",
         "mapper.go"
       ]
@@ -4156,7 +4158,7 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 1,
-    "downstreamCount": 452,
+    "downstreamCount": 451,
     "artifacts": {
       "has_std_identity": true,
       "has_std_reference": true,
@@ -4503,7 +4505,7 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 6,
-    "downstreamCount": 61,
+    "downstreamCount": 60,
     "artifacts": {
       "has_std_identity": true,
       "has_std_reference": true,
@@ -4914,7 +4916,7 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 4,
-    "downstreamCount": 140,
+    "downstreamCount": 139,
     "artifacts": {
       "has_std_identity": true,
       "has_std_reference": true,
@@ -4947,7 +4949,7 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 3,
-    "downstreamCount": 142,
+    "downstreamCount": 141,
     "artifacts": {
       "has_std_identity": true,
       "has_std_reference": true,
@@ -6199,7 +6201,7 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 2,
-    "downstreamCount": 447,
+    "downstreamCount": 446,
     "artifacts": {
       "has_std_identity": true,
       "has_std_reference": true,
@@ -7156,7 +7158,7 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 7,
-    "downstreamCount": 42,
+    "downstreamCount": 41,
     "artifacts": {
       "has_std_identity": true,
       "has_std_reference": true,
