@@ -972,6 +972,8 @@
 [missing_field] crd=cloudsecuritycomplianceframeworks.cloudsecuritycompliance.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudControlGroupDetails[].cloudControlGroup.controlRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudsecuritycomplianceframeworks.cloudsecuritycompliance.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudControlGroupDetails[].cloudControlGroup.description" is not set in unstructured objects
 [missing_field] crd=cloudsecuritycomplianceframeworks.cloudsecuritycompliance.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudControlGroupDetails[].cloudControlGroup.majorRevisionID" is not set in unstructured objects
+[missing_field] crd=cloudsupportsupporteventsubscriptions.cloudsupport.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=cloudsupportsupporteventsubscriptions.cloudsupport.cnrm.cloud.google.com version=v1alpha1: field ".spec.pubSubTopicRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=colabruntimes.colab.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=colabruntimes.colab.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=colabruntimes.colab.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkTags[]" is not set in unstructured objects

@@ -98,6 +98,7 @@ require (
 	cloud.google.com/go/speech v1.35.0
 	cloud.google.com/go/storage v1.62.0
 	cloud.google.com/go/storageinsights v1.8.0
+	cloud.google.com/go/support v1.14.0
 	cloud.google.com/go/talent v1.13.0
 	cloud.google.com/go/translate v1.17.0
 	cloud.google.com/go/vectorsearch v1.3.0
