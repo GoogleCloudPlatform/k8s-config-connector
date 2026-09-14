@@ -61,8 +61,8 @@ func (s *ApiHubServer) CreateDependency(ctx context.Context, req *pb.CreateDepen
 
 	// Set default enums: discoveryMode: 1 (DISCOVERY_MODE_MANUAL), state: 2 (STATE_ACTIVE)
 	// Let's set them directly. Go protobuf enums can be set with typed constants.
-	obj.DiscoveryMode = pb.Dependency_DiscoveryMode(1)
-	obj.State = pb.Dependency_State(2)
+	obj.DiscoveryMode = pb.Dependency_MANUAL
+	obj.State = pb.Dependency_VALIDATED
 
 	now := timestamppb.Now()
 	obj.CreateTime = now
