@@ -1676,20 +1676,6 @@ type SecretEnvVar struct {
 	SecretRef *SecretRef `json:"secretRef,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.SecretRef
-type SecretRef struct {
-	// Required. The name of the secret in Cloud Secret Manager.
-	//  Format: {secret_name}.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.SecretRef.secret
-	Secret *string `json:"secret,omitempty"`
-
-	// The Cloud Secret Manager secret version.
-	//  Can be 'latest' for the latest version, an integer for a specific
-	//  version, or a version alias.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.SecretRef.version
-	Version *string `json:"version,omitempty"`
-}
-
 // +kcc:proto=google.cloud.aiplatform.v1.SmoothGradConfig
 type SmoothGradConfig struct {
 	// This is a single float value and will be used to add noise to all the

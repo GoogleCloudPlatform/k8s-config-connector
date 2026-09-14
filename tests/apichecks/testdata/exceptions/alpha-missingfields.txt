@@ -149,11 +149,10 @@
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
+[missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.agentFramework" is not set in unstructured objects
-[missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.classMethods[]" is not set in unstructured objects
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.deploymentSpec.containerConcurrency" is not set in unstructured objects
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.deploymentSpec.env[].name" is not set in unstructured objects
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.deploymentSpec.env[].value" is not set in unstructured objects
@@ -161,16 +160,18 @@
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.deploymentSpec.minInstances" is not set in unstructured objects
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.deploymentSpec.pscInterfaceConfig.dnsPeeringConfigs[].domain" is not set in unstructured objects
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.deploymentSpec.pscInterfaceConfig.dnsPeeringConfigs[].targetNetworkRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.deploymentSpec.pscInterfaceConfig.dnsPeeringConfigs[].targetProject" is not set in unstructured objects
+[missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.deploymentSpec.pscInterfaceConfig.dnsPeeringConfigs[].targetProjectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.deploymentSpec.pscInterfaceConfig.networkAttachmentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.deploymentSpec.resourceLimits" is not set in unstructured objects
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.deploymentSpec.secretEnv[].name" is not set in unstructured objects
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.deploymentSpec.secretEnv[].secretRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.deploymentSpec.secretEnv[].secretRef.secretRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.deploymentSpec.secretEnv[].secretRef.versionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.packageSpec.dependencyFilesGCSURI" is not set in unstructured objects
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.packageSpec.pickleObjectGCSURI" is not set in unstructured objects
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.packageSpec.pythonVersion" is not set in unstructured objects
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.packageSpec.requirementsGCSURI" is not set in unstructured objects
-[missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.serviceAccount" is not set in unstructured objects
+[missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=analyticsaccounts.analytics.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=analyticsaccounts.analytics.cnrm.cloud.google.com version=v1alpha1: field ".spec.redirectURI" is not set in unstructured objects
 [missing_field] crd=analyticsaccounts.analytics.cnrm.cloud.google.com version=v1alpha1: field ".spec.regionCode" is not set in unstructured objects
@@ -3837,7 +3838,7 @@
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.pscInterfaceConfig.dnsPeeringConfigs[].domain" is not set in unstructured objects
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.pscInterfaceConfig.dnsPeeringConfigs[].targetNetworkRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.pscInterfaceConfig.dnsPeeringConfigs[].targetProject" is not set in unstructured objects
+[missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.pscInterfaceConfig.dnsPeeringConfigs[].targetProjectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.pscInterfaceConfig.networkAttachmentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.reservedIPRanges[]" is not set in unstructured objects
 [missing_field] crd=vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
@@ -3884,7 +3885,7 @@
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.pscInterfaceConfig.dnsPeeringConfigs[].domain" is not set in unstructured objects
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.pscInterfaceConfig.dnsPeeringConfigs[].targetNetworkRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.pscInterfaceConfig.dnsPeeringConfigs[].targetProject" is not set in unstructured objects
+[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.pscInterfaceConfig.dnsPeeringConfigs[].targetProjectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.pscInterfaceConfig.networkAttachmentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.reservedIPRanges[]" is not set in unstructured objects
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.runtimeConfig.failurePolicy" is not set in unstructured objects

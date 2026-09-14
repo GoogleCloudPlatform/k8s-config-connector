@@ -108,10 +108,12 @@ spec:
                         type: string
                     type: object
                 type: object
-              etag:
-                description: Optional. Used to perform consistent read-modify-write
-                  updates. If not set, a blind "overwrite" update happens.
-                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. The labels with user-defined metadata to organize
+                  your ReasoningEngine.
+                type: object
               location:
                 description: The location of this resource.
                 type: string
@@ -159,12 +161,6 @@ spec:
                       the agent. Currently supported values: "google-adk", "langchain",
                       "langgraph", "ag2", "llama-index", "custom".'
                     type: string
-                  classMethods:
-                    description: Optional. Declarations for object class methods in
-                      OpenAPI specification format.
-                    items:
-                      x-kubernetes-preserve-unknown-fields: true
-                    type: array
                   deploymentSpec:
                     description: Optional. The specification of a Reasoning Engine
                       deployment.
@@ -255,10 +251,41 @@ spec:
                                         resource.
                                       type: string
                                   type: object
-                                targetProject:
+                                targetProjectRef:
                                   description: Required. The project ID hosting the
                                     Cloud DNS managed zone that contains the 'domain'.
-                                  type: string
+                                  oneOf:
+                                  - not:
+                                      required:
+                                      - external
+                                    required:
+                                    - name
+                                  - not:
+                                      anyOf:
+                                      - required:
+                                        - name
+                                      - required:
+                                        - namespace
+                                    required:
+                                    - external
+                                  properties:
+                                    external:
+                                      description: The `projectID` field of a project,
+                                        when not managed by Config Connector.
+                                      type: string
+                                    kind:
+                                      description: The kind of the Project resource;
+                                        optional but must be `Project` if provided.
+                                      type: string
+                                    name:
+                                      description: The `name` field of a `Project`
+                                        resource.
+                                      type: string
+                                    namespace:
+                                      description: The `namespace` field of a `Project`
+                                        resource.
+                                      type: string
+                                  type: object
                               type: object
                             type: array
                           networkAttachmentRef:
@@ -325,15 +352,70 @@ spec:
                                 in the Cloud Secret Manager that will provide the
                                 value for this environment variable.
                               properties:
-                                secret:
-                                  description: 'Required. The name of the secret in
-                                    Cloud Secret Manager. Format: {secret_name}.'
-                                  type: string
-                                version:
+                                secretRef:
+                                  description: Required. Reference to a secret stored
+                                    in the Cloud Secret Manager that will provide
+                                    the value for this environment variable.
+                                  oneOf:
+                                  - not:
+                                      required:
+                                      - external
+                                    required:
+                                    - name
+                                  - not:
+                                      anyOf:
+                                      - required:
+                                        - name
+                                      - required:
+                                        - namespace
+                                    required:
+                                    - external
+                                  properties:
+                                    external:
+                                      description: ' If provided must be in the format
+                                        `projects/*/secrets/*`.'
+                                      type: string
+                                    name:
+                                      description: The `name` field of a `SecretManagerSecret`
+                                        resource.
+                                      type: string
+                                    namespace:
+                                      description: The `metadata.namespace` field
+                                        of a `SecretManagerSecret` resource.
+                                      type: string
+                                  type: object
+                                versionRef:
                                   description: The Cloud Secret Manager secret version.
                                     Can be 'latest' for the latest version, an integer
                                     for a specific version, or a version alias.
-                                  type: string
+                                  oneOf:
+                                  - not:
+                                      required:
+                                      - external
+                                    required:
+                                    - name
+                                  - not:
+                                      anyOf:
+                                      - required:
+                                        - name
+                                      - required:
+                                        - namespace
+                                    required:
+                                    - external
+                                  properties:
+                                    external:
+                                      description: ' If provided must be in the format
+                                        `projects/*/secrets/*/versions/*`.'
+                                      type: string
+                                    name:
+                                      description: The `name` field of a `SecretManagerSecretVersion`
+                                        resource.
+                                      type: string
+                                    namespace:
+                                      description: The `metadata.namespace` field
+                                        of a `SecretManagerSecretVersion` resource.
+                                      type: string
+                                  type: object
                               type: object
                           type: object
                         type: array
@@ -362,13 +444,37 @@ spec:
                           file
                         type: string
                     type: object
-                  serviceAccount:
+                  serviceAccountRef:
                     description: Optional. The service account that the Reasoning
                       Engine artifact runs as. It should have "roles/storage.objectViewer"
                       for reading the user project's Cloud Storage and "roles/aiplatform.user"
                       for using Vertex extensions. If not specified, the Vertex AI
                       Reasoning Engine Service Agent in the project will be used.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `email` field of an `IAMServiceAccount` resource.
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
                 type: object
             required:
             - displayName
