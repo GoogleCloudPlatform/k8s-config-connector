@@ -1,0 +1,64 @@
+apiVersion: run.cnrm.cloud.google.com/v1alpha1
+kind: RunWorkerPool
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: runworkerpool-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  annotations:
+    client: kcc
+  client: kcc
+  clientVersion: 1.0.0
+  customAudiences:
+  - https://example.com
+  description: Updated Maximal WorkerPool description
+  labels:
+    foo: bar-updated
+  launchStage: GA
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  scaling:
+    manualInstanceCount: 2
+  template:
+    containers:
+    - env:
+      - name: ENV_VAR
+        value: env_val_updated
+      image: us-docker.pkg.dev/cloudrun/container/hello
+      name: worker
+      resources:
+        limits:
+          cpu: 1000m
+          memory: 512Mi
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    creator: test@google.com
+    customAudiences:
+    - https://example.com
+    etag: abcdef123456
+    generation: 2
+    lastModifier: test@google.com
+    template:
+      containers:
+      - {}
+    terminalCondition:
+      lastTransitionTime: "1970-01-01T00:00:00Z"
+      state: CONDITION_SUCCEEDED
+      type: Ready
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"
