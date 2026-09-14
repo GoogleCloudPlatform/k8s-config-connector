@@ -699,6 +699,11 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		if cluster, ok := v["cluster"].(map[string]interface{}); ok {
 			delete(cluster, "initialClusterVersion")
 		}
+		if softwareConfig, ok := v["softwareConfig"].(map[string]interface{}); ok {
+			if iv, ok := softwareConfig["imageVersion"].(string); ok && strings.HasPrefix(iv, "composer-") {
+				softwareConfig["imageVersion"] = regexp.MustCompile(`-build\.\d+$`).ReplaceAllString(iv, "-build.XX")
+			}
+		}
 		if config, ok := v["config"].(map[string]interface{}); ok {
 			if containerdConfig, ok := config["containerdConfig"].(map[string]interface{}); ok {
 				delete(containerdConfig, "registryHosts")
