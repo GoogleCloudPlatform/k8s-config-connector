@@ -1,0 +1,47 @@
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcertificates%2Fcertificatemanagercertificate${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "sample managed cert for kcc",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "two",
+    "label-three": "three",
+    "managed-by-cnrm": "true"
+  },
+  "managed": {
+    "authorizationAttemptInfo": [
+      {
+        "domain": "${uniqueId}1.hashicorptest.com",
+        "state": 6
+      },
+      {
+        "domain": "${uniqueId}2.hashicorptest.com",
+        "state": 6
+      }
+    ],
+    "dnsAuthorizations": [
+      "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}",
+      "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}"
+    ],
+    "domains": [
+      "${uniqueId}1.hashicorptest.com",
+      "${uniqueId}2.hashicorptest.com"
+    ],
+    "state": 3
+  },
+  "name": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
+  "scope": 1
+}

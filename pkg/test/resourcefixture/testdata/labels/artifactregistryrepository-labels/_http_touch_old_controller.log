@@ -1,0 +1,44 @@
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test repository description",
+  "format": "DOCKER",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "two",
+    "label-three": "three",
+    "managed-by-cnrm": "true"
+  },
+  "mode": "VIRTUAL_REPOSITORY",
+  "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
+  "registryUri": "us-west1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}",
+  "satisfiesPzi": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "virtualRepositoryConfig": {
+    "upstreamPolicies": [
+      {
+        "id": "upstream-repo",
+        "priority": 1,
+        "repository": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2"
+      }
+    ]
+  },
+  "vulnerabilityScanningConfig": {
+    "enablementState": "SCANNING_UNSUPPORTED",
+    "enablementStateReason": "Repository mode VIRTUAL_REPOSITORY is not supported.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+  }
+}

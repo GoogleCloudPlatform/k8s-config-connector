@@ -269,16 +269,16 @@ func PrettyPrintJSON[T any](t *testing.T, k T) string {
 }
 
 func compareHTTPLogs(wantContent, gotContent string) error {
-	wantEvents := parseLog(wantContent)
-	gotEvents := parseLog(gotContent)
+	wantEvents := ParseHTTPLog(wantContent)
+	gotEvents := ParseHTTPLog(gotContent)
 
-	wantGrouped := make(map[string][]httpEvent)
+	wantGrouped := make(map[string][]HTTPEvent)
 	for _, ev := range wantEvents {
 		key := extractResourceKey(ev.URL)
 		wantGrouped[key] = append(wantGrouped[key], ev)
 	}
 
-	gotGrouped := make(map[string][]httpEvent)
+	gotGrouped := make(map[string][]HTTPEvent)
 	for _, ev := range gotEvents {
 		key := extractResourceKey(ev.URL)
 		gotGrouped[key] = append(gotGrouped[key], ev)
@@ -328,8 +328,9 @@ func compareHTTPLogs(wantContent, gotContent string) error {
 	return nil
 }
 
-func parseLog(content string) []httpEvent {
-	var events []httpEvent
+// ParseHTTPLog parses a serialized HTTP log into a slice of HTTPEvent.
+func ParseHTTPLog(content string) []HTTPEvent {
+	var events []HTTPEvent
 	statusRegex := regexp.MustCompile(`^\d{3} `)
 	rawEvents := strings.Split(content, "\n---\n")
 
@@ -340,7 +341,7 @@ func parseLog(content string) []httpEvent {
 		}
 
 		lines := strings.Split(raw, "\n")
-		var ev httpEvent
+		var ev HTTPEvent
 
 		reqParts := strings.SplitN(lines[0], " ", 2)
 		if len(reqParts) < 2 {
@@ -455,7 +456,8 @@ func compareJSONStrings(wantJSON, gotJSON string) error {
 	return nil
 }
 
-type httpEvent struct {
+// HTTPEvent represents an HTTP event captured during tests.
+type HTTPEvent struct {
 	Method       string
 	URL          string
 	RequestBody  string
