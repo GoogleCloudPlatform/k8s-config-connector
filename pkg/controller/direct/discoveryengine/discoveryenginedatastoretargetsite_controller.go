@@ -24,6 +24,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strings"
 
 	gcp "cloud.google.com/go/discoveryengine/apiv1"
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
@@ -113,7 +114,22 @@ func (m *targetSiteModel) AdapterForObject(ctx context.Context, op *directbase.A
 }
 
 func (m *targetSiteModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// Not implemented
+	log := klog.FromContext(ctx)
+	if strings.HasPrefix(url, "//discoveryengine.googleapis.com/") {
+		id, err := krm.ParseTargetSiteExternal(url)
+		if err != nil {
+			log.V(2).Error(err, "url did not match DiscoveryEngineDataStoreTargetSite format", "url", url)
+		} else {
+			gcpClient, err := m.client(ctx, id.ProjectID)
+			if err != nil {
+				return nil, err
+			}
+			return &targetSiteAdapter{
+				gcpClient: gcpClient,
+				id:        id,
+			}, nil
+		}
+	}
 	return nil, nil
 }
 

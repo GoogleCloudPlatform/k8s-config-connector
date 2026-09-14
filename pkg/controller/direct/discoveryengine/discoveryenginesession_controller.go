@@ -327,7 +327,7 @@ func (a *sessionAdapter) Delete(ctx context.Context, deleteOp *directbase.Delete
 	err := a.gcpClient.DeleteSession(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
-			return true, nil
+			return false, nil
 		}
 		return false, fmt.Errorf("deleting discoveryengine session %s: %w", a.id.String(), err)
 	}

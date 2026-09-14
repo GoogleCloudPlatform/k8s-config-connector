@@ -62,7 +62,7 @@ func NewDiscoveryEngineEngineIDFromObject(ctx context.Context, reader client.Rea
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		statusID, err := parseDiscoveryEngineEngineExternal(externalRef)
+		statusID, err := ParseDiscoveryEngineEngineExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}

@@ -24,6 +24,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strings"
 
 	gcp "cloud.google.com/go/discoveryengine/apiv1"
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
@@ -114,7 +115,22 @@ func (m *engineModel) AdapterForObject(ctx context.Context, op *directbase.Adapt
 }
 
 func (m *engineModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// Not implemented
+	log := klog.FromContext(ctx)
+	if strings.HasPrefix(url, "//discoveryengine.googleapis.com/") {
+		id, err := krm.ParseDiscoveryEngineEngineExternal(url)
+		if err != nil {
+			log.V(2).Error(err, "url did not match DiscoveryEngineEngine format", "url", url)
+		} else {
+			gcpClient, err := m.client(ctx, id.ProjectID)
+			if err != nil {
+				return nil, err
+			}
+			return &engineAdapter{
+				gcpClient: gcpClient,
+				id:        id,
+			}, nil
+		}
+	}
 	return nil, nil
 }
 

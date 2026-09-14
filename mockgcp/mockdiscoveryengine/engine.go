@@ -146,6 +146,19 @@ func (s *MockService) parseEngineName(name string) (*engineName, error) {
 			Engine:     tokens[7],
 		}, nil
 	}
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "engines" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &engineName{
+			Project:    project,
+			Location:   tokens[3],
+			Collection: "default_collection",
+			Engine:     tokens[5],
+		}, nil
+	}
 	return nil, status.Errorf(codes.InvalidArgument, "invalid engine name %q", name)
 }
 
@@ -171,6 +184,18 @@ func (s *MockService) parseCollectionName(name string) (*collectionName, error) 
 			Project:    project,
 			Location:   tokens[3],
 			Collection: tokens[5],
+		}, nil
+	}
+	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "locations" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &collectionName{
+			Project:    project,
+			Location:   tokens[3],
+			Collection: "default_collection",
 		}, nil
 	}
 	return nil, status.Errorf(codes.InvalidArgument, "invalid collection name %q", name)

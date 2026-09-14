@@ -51,7 +51,7 @@ func (r *DiscoveryEngineEngineRef) NormalizedExternal(ctx context.Context, reade
 	}
 	// From given External
 	if r.External != "" {
-		id, err := parseDiscoveryEngineEngineExternal(r.External)
+		id, err := ParseDiscoveryEngineEngineExternal(r.External)
 		if err != nil {
 			return "", err
 		}
@@ -130,7 +130,7 @@ func NewDiscoveryEngineEngineRef(ctx context.Context, reader client.Reader, obj 
 	externalRef := valueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		statusID, err := parseDiscoveryEngineEngineExternal(externalRef)
+		statusID, err := ParseDiscoveryEngineEngineExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
@@ -147,7 +147,7 @@ func NewDiscoveryEngineEngineRef(ctx context.Context, reader client.Reader, obj 
 // 		return r.parent, nil
 // 	}
 // 	if r.External != "" {
-// 		parent, _, err := parseDiscoveryEngineEngineExternal(r.External)
+// 		parent, _, err := ParseDiscoveryEngineEngineExternal(r.External)
 // 		if err != nil {
 // 			return nil, err
 // 		}
@@ -166,7 +166,7 @@ func (p *DiscoveryEngineEngineID) String() string {
 	return p.CollectionLink.String() + "/engines/" + p.Engine
 }
 
-func parseDiscoveryEngineEngineExternal(external string) (*DiscoveryEngineEngineID, error) {
+func ParseDiscoveryEngineEngineExternal(external string) (*DiscoveryEngineEngineID, error) {
 	s := strings.TrimPrefix(external, "//discoveryengine.googleapis.com/")
 	s = strings.TrimPrefix(s, "/")
 	tokens := strings.Split(s, "/")
@@ -182,6 +182,20 @@ func parseDiscoveryEngineEngineExternal(external string) (*DiscoveryEngineEngine
 		return &DiscoveryEngineEngineID{
 			CollectionLink: collection,
 			Engine:         tokens[7],
+		}, nil
+	}
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "engines" {
+		projectAndLocation := &ProjectAndLocation{
+			ProjectID: tokens[1],
+			Location:  tokens[3],
+		}
+		collection := &CollectionLink{
+			ProjectAndLocation: projectAndLocation,
+			Collection:         "default_collection",
+		}
+		return &DiscoveryEngineEngineID{
+			CollectionLink: collection,
+			Engine:         tokens[5],
 		}, nil
 	}
 	return nil, fmt.Errorf("format of DiscoveryEngineEngine external=%q was not known (use projects/{{projectId}}/locations/{{location}}/collections/{{collectionID}}/engines/{{engineID}})", external)

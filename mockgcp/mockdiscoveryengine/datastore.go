@@ -70,6 +70,9 @@ func (s *dataStoreService) DeleteDataStore(ctx context.Context, req *pb.DeleteDa
 
 	deleted := &pb.DataStore{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "DataStore %q not found.", fqn)
+		}
 		return nil, err
 	}
 
@@ -78,16 +81,16 @@ func (s *dataStoreService) DeleteDataStore(ctx context.Context, req *pb.DeleteDa
 }
 
 func (s *dataStoreService) UpdateDataStore(ctx context.Context, req *pb.UpdateDataStoreRequest) (*pb.DataStore, error) {
-	name, err := s.parseDataStoreName(req.DataStore.Name)
+	name, err := s.parseDataStoreName(req.GetDataStore().GetName())
 	if err != nil {
 		return nil, err
 	}
+
 	fqn := name.String()
 	obj := &pb.DataStore{}
-
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "dataStore %q not found", name)
+			return nil, status.Errorf(codes.NotFound, "DataStore %q not found.", fqn)
 		}
 		return nil, err
 	}
@@ -122,7 +125,7 @@ func (s *dataStoreService) GetDataStore(ctx context.Context, req *pb.GetDataStor
 	obj := &pb.DataStore{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "DataStore %v not found.", name)
+			return nil, status.Errorf(codes.NotFound, "DataStore %q not found.", fqn)
 		}
 		return nil, err
 	}
@@ -154,6 +157,19 @@ func (s *MockService) parseDataStoreName(name string) (*dataStoreName, error) {
 			Location:   tokens[3],
 			Collection: tokens[5],
 			DataStore:  tokens[7],
+		}, nil
+	}
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "dataStores" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &dataStoreName{
+			Project:    project,
+			Location:   tokens[3],
+			Collection: "default_collection",
+			DataStore:  tokens[5],
 		}, nil
 	}
 

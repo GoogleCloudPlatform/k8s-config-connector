@@ -75,6 +75,9 @@ func (s *conversationalSearchService) DeleteSession(ctx context.Context, req *pb
 
 	deleted := &pb.Session{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Session %q not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -91,7 +94,7 @@ func (s *conversationalSearchService) UpdateSession(ctx context.Context, req *pb
 
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Session %q not found", name)
+			return nil, status.Errorf(codes.NotFound, "Session %q not found", fqn)
 		}
 		return nil, err
 	}
@@ -128,7 +131,7 @@ func (s *conversationalSearchService) GetSession(ctx context.Context, req *pb.Ge
 	obj := &pb.Session{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Session %v not found.", name)
+			return nil, status.Errorf(codes.NotFound, "Session %q not found", fqn)
 		}
 		return nil, err
 	}
@@ -144,7 +147,7 @@ type sessionName struct {
 }
 
 func (n *sessionName) String() string {
-	return fmt.Sprintf("projects/%d/locations/%s/collections/%s/dataStores/%s/sessions/%s", n.Project.Number, n.Location, n.Collection, n.DataStore, n.Session)
+	return fmt.Sprintf("projects/%s/locations/%s/collections/%s/dataStores/%s/sessions/%s", n.Project.ID, n.Location, n.Collection, n.DataStore, n.Session)
 }
 
 func (s *MockService) parseSessionName(name string) (*sessionName, error) {
@@ -160,6 +163,19 @@ func (s *MockService) parseSessionName(name string) (*sessionName, error) {
 			Collection: tokens[5],
 			DataStore:  tokens[7],
 			Session:    tokens[9],
+		}, nil
+	}
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "dataStores" && tokens[6] == "sessions" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+		return &sessionName{
+			Project:    project,
+			Location:   tokens[3],
+			Collection: "default_collection",
+			DataStore:  tokens[5],
+			Session:    tokens[7],
 		}, nil
 	}
 	return nil, status.Errorf(codes.InvalidArgument, "invalid session name: %q", name)

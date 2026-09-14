@@ -90,5 +90,24 @@ func ParseTargetSiteExternal(external string) (*TargetSiteIdentity, error) {
 		}
 		return targetStoreLink, nil
 	}
+	if len(tokens) == 9 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "dataStores" && tokens[6] == "siteSearchEngine" && tokens[7] == "targetSites" {
+		projectAndLocation := &ProjectAndLocation{
+			ProjectID: tokens[1],
+			Location:  tokens[3],
+		}
+		collection := &CollectionLink{
+			ProjectAndLocation: projectAndLocation,
+			Collection:         "default_collection",
+		}
+		dataStoreLink := &DiscoveryEngineDataStoreID{
+			CollectionLink: collection,
+			DataStore:      tokens[5],
+		}
+		targetStoreLink := &TargetSiteIdentity{
+			DiscoveryEngineDataStoreID: dataStoreLink,
+			TargetSite:                 tokens[8],
+		}
+		return targetStoreLink, nil
+	}
 	return nil, fmt.Errorf("format of DiscoveryEngineDataStoreTargetSite external=%q was not known (use projects/{{projectId}}/locations/{{location}}/collections/{{collectionID}}/dataStores/{{dataStoreID}}/siteSearchEngine/targetSites/{{targetSiteID}})", external)
 }
