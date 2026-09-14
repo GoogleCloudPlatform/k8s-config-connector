@@ -247,8 +247,8 @@ func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, al
 			altStatus = formatReconciledStatus(pair.alt)
 			altDiffs = FormatFieldIDs(pair.alt.Diffs)
 
-			// Only log alternative results if there is a difference from the default result
-			if pair.def == nil || altStatus != defStatus || altDiffs != defDiffs {
+			// Only log alternative results if there is a difference from the default result or if it uses a different controller
+			if pair.def == nil || altCtrl != defCtrl || altStatus != defStatus || altDiffs != defDiffs {
 				klog.V(0).Info("\"PreviewResult\" ", pair.alt.FormatGKNNReconciledResult())
 				if pair.alt.ReconcileStatus == ReconcileStatusUnhealthy {
 					combinedBadResult = append(combinedBadResult, pair.alt)

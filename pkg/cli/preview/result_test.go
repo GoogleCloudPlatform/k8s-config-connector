@@ -15,6 +15,8 @@
 package preview
 
 import (
+	"bytes"
+	"encoding/json"
 	"os"
 	"reflect"
 	"strings"
@@ -23,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/klog/v2"
 )
 
 func TestGetAlternativeControllerExpectedMap(t *testing.T) {
@@ -104,6 +107,14 @@ func TestGetAlternativeControllerExpectedMap(t *testing.T) {
 }
 
 func TestCombinedSummaryReport(t *testing.T) {
+	var logBuf bytes.Buffer
+	klog.LogToStderr(false)
+	klog.SetOutput(&logBuf)
+	defer func() {
+		klog.LogToStderr(true)
+		klog.SetOutput(os.Stderr)
+	}()
+
 	r := &RecorderReconciledResults{
 		results: map[GKNN]*GKNNReconciledResult{
 			{Group: "g1", Kind: "K1", Namespace: "n1", Name: "name1"}: {
@@ -117,6 +128,24 @@ func TestCombinedSummaryReport(t *testing.T) {
 				CurrentStatus:   "UpdateFailed",
 				ControllerType:  k8s.ReconcilerType("tf"),
 				ReconcileStatus: ReconcileStatusUnhealthy,
+			},
+			{Group: "g4", Kind: "K4", Namespace: "n4", Name: "name4"}: {
+				GKNN:            GKNN{Group: "g4", Kind: "K4", Namespace: "n4", Name: "name4"},
+				CurrentStatus:   "UpdateFailed",
+				ControllerType:  k8s.ReconcilerType("direct"),
+				ReconcileStatus: ReconcileStatusUnhealthy,
+			},
+			{Group: "g5", Kind: "K5", Namespace: "n5", Name: "name5"}: {
+				GKNN:            GKNN{Group: "g5", Kind: "K5", Namespace: "n5", Name: "name5"},
+				CurrentStatus:   "UpToDate",
+				ControllerType:  k8s.ReconcilerType("tf"),
+				ReconcileStatus: ReconcileStatusHealthy,
+			},
+			{Group: "g6", Kind: "K6", Namespace: "n6", Name: "name6"}: {
+				GKNN:            GKNN{Group: "g6", Kind: "K6", Namespace: "n6", Name: "name6"},
+				CurrentStatus:   "UpToDate",
+				ControllerType:  k8s.ReconcilerType("direct"),
+				ReconcileStatus: ReconcileStatusHealthy,
 			},
 		},
 	}
@@ -140,6 +169,24 @@ func TestCombinedSummaryReport(t *testing.T) {
 				ControllerType:  k8s.ReconcilerType("direct"),
 				ReconcileStatus: ReconcileStatusUnhealthy,
 			},
+			{Group: "g4", Kind: "K4", Namespace: "n4", Name: "name4"}: {
+				GKNN:            GKNN{Group: "g4", Kind: "K4", Namespace: "n4", Name: "name4"},
+				CurrentStatus:   "UpdateFailed",
+				ControllerType:  k8s.ReconcilerType("direct"),
+				ReconcileStatus: ReconcileStatusUnhealthy,
+			},
+			{Group: "g5", Kind: "K5", Namespace: "n5", Name: "name5"}: {
+				GKNN:            GKNN{Group: "g5", Kind: "K5", Namespace: "n5", Name: "name5"},
+				CurrentStatus:   "UpToDate",
+				ControllerType:  k8s.ReconcilerType("direct"),
+				ReconcileStatus: ReconcileStatusHealthy,
+			},
+			{Group: "g6", Kind: "K6", Namespace: "n6", Name: "name6"}: {
+				GKNN:            GKNN{Group: "g6", Kind: "K6", Namespace: "n6", Name: "name6"},
+				CurrentStatus:   "UpToDate",
+				ControllerType:  k8s.ReconcilerType("direct"),
+				ReconcileStatus: ReconcileStatusHealthy,
+			},
 		},
 	}
 
@@ -155,11 +202,15 @@ func TestCombinedSummaryReport(t *testing.T) {
 		{Group: "g1", Kind: "K1"}: k8s.ReconcilerType("direct"),
 		{Group: "g2", Kind: "K2"}: k8s.ReconcilerType("direct"),
 		{Group: "g3", Kind: "K3"}: k8s.ReconcilerType("direct"),
+		{Group: "g4", Kind: "K4"}: k8s.ReconcilerType("direct"),
+		{Group: "g5", Kind: "K5"}: k8s.ReconcilerType("direct"),
+		{Group: "g6", Kind: "K6"}: k8s.ReconcilerType("direct"),
 	}
 
 	if err := r.CombinedSummaryReport(tmpFile.Name(), alt, altExpectedMap); err != nil {
 		t.Fatalf("CombinedSummaryReport failed: %v", err)
 	}
+	klog.Flush()
 
 	content, err := os.ReadFile(tmpFile.Name())
 	if err != nil {
@@ -172,6 +223,9 @@ func TestCombinedSummaryReport(t *testing.T) {
 		"g1      K1     n1          name1   UpToDate         tf                   HEALTHY          direct                   UNHEALTHY            N/A             N/A",
 		"g2      K2     n2          name2   UpToDate         N/A                  N/A              direct                   HEALTHY              N/A             N/A",
 		"g3      K3     n3          name3   UpdateFailed     tf                   UNHEALTHY        direct                   UNHEALTHY            N/A             N/A",
+		"g4      K4     n4          name4   UpdateFailed     direct               UNHEALTHY        direct                   UNHEALTHY            N/A             N/A",
+		"g5      K5     n5          name5   UpToDate         tf                   HEALTHY          direct                   HEALTHY              N/A             N/A",
+		"g6      K6     n6          name6   UpToDate         direct               HEALTHY          direct                   HEALTHY              N/A             N/A",
 	}
 
 	for _, row := range expectedRows {
@@ -191,15 +245,61 @@ func TestCombinedSummaryReport(t *testing.T) {
 		}
 	}
 
+	// Verify klog output prints alternative run results when controller type differs even if healthy/unhealthy status is the same
+	logs := logBuf.String()
+	expectedLogSubstrings := []string{
+		`name="name3" group="g3" kind="K3" current_status="UpdateFailed" controller_type="tf"`,
+		`name="name3" group="g3" kind="K3" current_status="UpdateFailed" controller_type="direct"`,
+		`name="name5" group="g5" kind="K5" current_status="UpToDate" controller_type="tf"`,
+		`name="name5" group="g5" kind="K5" current_status="UpToDate" controller_type="direct"`,
+	}
+	for _, sub := range expectedLogSubstrings {
+		if !strings.Contains(logs, sub) {
+			t.Errorf("expected klog output to contain %q, got:\n%s", sub, logs)
+		}
+	}
+
+	// Verify klog output does not duplicate when both controller type and status/diffs are the same (name4 and name6)
+	if count := strings.Count(logs, `name="name4"`); count != 1 {
+		t.Errorf("expected name4 to be logged once, got %d times in:\n%s", count, logs)
+	}
+	if count := strings.Count(logs, `name="name6"`); count != 1 {
+		t.Errorf("expected name6 to be logged once, got %d times in:\n%s", count, logs)
+	}
+
 	// Verify the detail report contains the expected bad results and is deduplicated/sorted correctly
 	detailContent, err := os.ReadFile(tmpFile.Name() + "-detail")
 	if err != nil {
 		t.Fatalf("failed to read detail file: %v", err)
 	}
-	if !strings.Contains(string(detailContent), "name1") {
-		t.Errorf("expected detail report to contain name1")
+
+	var badResults []*GKNNReconciledResult
+	if err := json.Unmarshal(detailContent, &badResults); err != nil {
+		t.Fatalf("failed to unmarshal detail file: %v", err)
 	}
-	if !strings.Contains(string(detailContent), "name3") {
-		t.Errorf("expected detail report to contain name3")
+
+	// Expected bad results:
+	// 1. name1 (alt: direct)
+	// 2. name3 (def: tf)
+	// 3. name3 (alt: direct) - same status/diffs as def, but different controller type -> included
+	// 4. name4 (def: direct) - alt has same controller type AND same status/diffs -> deduplicated (only 1 entry)
+	expectedBadCount := 4
+	if len(badResults) != expectedBadCount {
+		t.Fatalf("expected %d bad results in detail report, got %d: %s", expectedBadCount, len(badResults), string(detailContent))
+	}
+
+	expectedEntries := []struct {
+		name           string
+		controllerType k8s.ReconcilerType
+	}{
+		{name: "name1", controllerType: k8s.ReconcilerType("direct")},
+		{name: "name3", controllerType: k8s.ReconcilerType("tf")},
+		{name: "name3", controllerType: k8s.ReconcilerType("direct")},
+		{name: "name4", controllerType: k8s.ReconcilerType("direct")},
+	}
+	for i, exp := range expectedEntries {
+		if badResults[i].GKNN.Name != exp.name || badResults[i].ControllerType != exp.controllerType {
+			t.Errorf("entry %d: expected name=%q controller=%q, got name=%q controller=%q", i, exp.name, exp.controllerType, badResults[i].GKNN.Name, badResults[i].ControllerType)
+		}
 	}
 }
