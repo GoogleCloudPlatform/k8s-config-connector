@@ -283,25 +283,20 @@ func TestIAMServiceAccountRef(t *testing.T) {
 			wantErr  bool
 		}{
 			{
-				name:     "Valid email address",
+				name:     "Invalid format: email address is rejected",
 				external: "my-sa@my-project.iam.gserviceaccount.com",
+				wantErr:  true,
+			},
+			{
+				name:     "Valid relative resource name",
+				external: "projects/my-project/serviceAccounts/my-sa",
 				wantProj: "my-project",
 				wantAcc:  "my-sa",
 				wantErr:  false,
 			},
 			{
-				name:     "Invalid format: missing suffix",
-				external: "my-sa@my-project",
-				wantErr:  true,
-			},
-			{
-				name:     "Invalid format: missing account",
-				external: "@my-project.iam.gserviceaccount.com",
-				wantErr:  true,
-			},
-			{
-				name:     "Invalid format: projects/ prefix",
-				external: "projects/my-project/serviceAccounts/my-sa",
+				name:     "Invalid format: missing serviceAccounts prefix",
+				external: "projects/my-project/my-sa",
 				wantErr:  true,
 			},
 			{
@@ -358,30 +353,107 @@ func TestIAMServiceAccountRef(t *testing.T) {
 			t.Fatalf("Normalize() unexpected error: %v", err)
 		}
 
-		wantEmail := "local-sa@my-ns.iam.gserviceaccount.com"
-		if ref.External != wantEmail {
-			t.Errorf("expected External=%q, got %q", wantEmail, ref.External)
+		wantExternal := "projects/my-ns/serviceAccounts/local-sa"
+		if ref.External != wantExternal {
+			t.Errorf("expected External=%q, got %q", wantExternal, ref.External)
+		}
+	})
+}
+
+func TestLegacyIAMServiceAccountRef(t *testing.T) {
+	ctx := context.Background()
+	scheme := runtime.NewScheme()
+	if err := SchemeBuilder.AddToScheme(scheme); err != nil {
+		t.Fatalf("failed to add to scheme: %v", err)
+	}
+
+	t.Run("ValidateExternal and ParseExternalToIdentity", func(t *testing.T) {
+		tests := []struct {
+			name     string
+			external string
+			wantProj string
+			wantAcc  string
+			wantErr  bool
+		}{
+			{
+				name:     "Valid email address",
+				external: "my-sa@my-project.iam.gserviceaccount.com",
+				wantProj: "my-project",
+				wantAcc:  "my-sa",
+				wantErr:  false,
+			},
+			{
+				name:     "Invalid format: missing suffix",
+				external: "my-sa@my-project",
+				wantErr:  true,
+			},
+			{
+				name:     "Invalid format: missing account",
+				external: "@my-project.iam.gserviceaccount.com",
+				wantErr:  true,
+			},
+			{
+				name:     "Invalid format: relative resource name is rejected",
+				external: "projects/my-project/serviceAccounts/my-sa",
+				wantErr:  true,
+			},
+			{
+				name:     "Empty",
+				external: "",
+				wantErr:  true,
+			},
+		}
+
+		for _, tc := range tests {
+			t.Run(tc.name, func(t *testing.T) {
+				ref := &LegacyIAMServiceAccountRef{External: tc.external}
+				err := ref.ValidateExternal(tc.external)
+				if (err != nil) != tc.wantErr {
+					t.Fatalf("ValidateExternal() error = %v, wantErr %v", err, tc.wantErr)
+				}
+
+				id, err := ref.ParseExternalToIdentity()
+				if (err != nil) != tc.wantErr {
+					t.Fatalf("ParseExternalToIdentity() error = %v, wantErr %v", err, tc.wantErr)
+				}
+
+				if !tc.wantErr {
+					saId, ok := id.(*IAMServiceAccountIdentity)
+					if !ok {
+						t.Fatalf("expected *IAMServiceAccountIdentity, got %T", id)
+					}
+					if saId.Project != tc.wantProj || saId.Account != tc.wantAcc {
+						t.Errorf("expected Proj=%q, Acc=%q; got Proj=%q, Acc=%q", tc.wantProj, tc.wantAcc, saId.Project, saId.Account)
+					}
+				}
+			})
 		}
 	})
 
-	t.Run("Normalize local reference - not ready", func(t *testing.T) {
+	t.Run("Normalize from local reference", func(t *testing.T) {
 		sa := &IAMServiceAccount{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "local-sa",
 				Namespace: "my-ns",
 			},
-			// Email is empty, so not ready
+			Status: IAMServiceAccountStatus{
+				Email: common.LazyPtr("local-sa@my-ns.iam.gserviceaccount.com"),
+			},
 		}
 		fakeClient := fake.NewClientBuilder().WithScheme(scheme).WithRuntimeObjects(sa).Build()
 
-		ref := &IAMServiceAccountRef{
+		ref := &LegacyIAMServiceAccountRef{
 			Name:      "local-sa",
 			Namespace: "my-ns",
 		}
 
-		err := ref.Normalize(ctx, fakeClient, "my-ns")
-		if err == nil {
-			t.Fatalf("Normalize() expected error for unready resource, got none")
+		if err := ref.Normalize(ctx, fakeClient, "my-ns"); err != nil {
+			t.Fatalf("Normalize() unexpected error: %v", err)
+		}
+
+		wantExternal := "local-sa@my-ns.iam.gserviceaccount.com"
+		if ref.External != wantExternal {
+			t.Errorf("expected External=%q, got %q", wantExternal, ref.External)
 		}
 	})
 }
