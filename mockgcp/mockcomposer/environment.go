@@ -157,7 +157,11 @@ func (s *ComposerV1) UpdateEnvironment(ctx context.Context, req *pb.UpdateEnviro
 					if updated.Config == nil {
 						updated.Config = &pb.EnvironmentConfig{}
 					}
-					updated.Config.MaintenanceWindow = req.GetEnvironment().GetConfig().GetMaintenanceWindow()
+					mw := req.GetEnvironment().GetConfig().GetMaintenanceWindow()
+					if mw != nil && (mw.GetStartTime() == nil || mw.GetEndTime() == nil) {
+						return nil, status.Errorf(codes.InvalidArgument, "start_time and end_time are required for maintenance_window")
+					}
+					updated.Config.MaintenanceWindow = mw
 				case "softwareconfig":
 					if updated.Config == nil {
 						updated.Config = &pb.EnvironmentConfig{}
@@ -184,6 +188,11 @@ func (s *ComposerV1) UpdateEnvironment(ctx context.Context, req *pb.UpdateEnviro
 								updated.Config.SoftwareConfig = &pb.SoftwareConfig{}
 							}
 							updated.Config.SoftwareConfig.EnvVariables = req.GetEnvironment().GetConfig().GetSoftwareConfig().GetEnvVariables()
+						case "clouddatalineageintegration":
+							if updated.Config.SoftwareConfig == nil {
+								updated.Config.SoftwareConfig = &pb.SoftwareConfig{}
+							}
+							updated.Config.SoftwareConfig.CloudDataLineageIntegration = req.GetEnvironment().GetConfig().GetSoftwareConfig().GetCloudDataLineageIntegration()
 						default:
 							updated.Config.SoftwareConfig = req.GetEnvironment().GetConfig().GetSoftwareConfig()
 						}
@@ -236,7 +245,28 @@ func (s *ComposerV1) UpdateEnvironment(ctx context.Context, req *pb.UpdateEnviro
 					if updated.Config == nil {
 						updated.Config = &pb.EnvironmentConfig{}
 					}
-					updated.Config.DataRetentionConfig = req.GetEnvironment().GetConfig().GetDataRetentionConfig()
+					if updated.Config.DataRetentionConfig == nil {
+						updated.Config.DataRetentionConfig = &pb.DataRetentionConfig{}
+					}
+					drc := req.GetEnvironment().GetConfig().GetDataRetentionConfig()
+					if len(tokens) > 2 {
+						switch normalizeField(tokens[2]) {
+						case "airflowmetadataretentionconfig":
+							if drc != nil && drc.GetAirflowMetadataRetentionConfig() != nil && drc.GetAirflowMetadataRetentionConfig().GetRetentionMode() == pb.AirflowMetadataRetentionPolicyConfig_RETENTION_MODE_UNSPECIFIED {
+								return nil, status.Errorf(codes.InvalidArgument, "retention_mode must be specified when updating airflow_metadata_retention_config")
+							}
+							updated.Config.DataRetentionConfig.AirflowMetadataRetentionConfig = drc.GetAirflowMetadataRetentionConfig()
+						case "tasklogsretentionconfig":
+							updated.Config.DataRetentionConfig.TaskLogsRetentionConfig = drc.GetTaskLogsRetentionConfig()
+						default:
+							updated.Config.DataRetentionConfig = drc
+						}
+					} else {
+						if drc != nil && drc.GetAirflowMetadataRetentionConfig() != nil && drc.GetAirflowMetadataRetentionConfig().GetRetentionMode() == pb.AirflowMetadataRetentionPolicyConfig_RETENTION_MODE_UNSPECIFIED {
+							return nil, status.Errorf(codes.InvalidArgument, "retention_mode must be specified when updating airflow_metadata_retention_config")
+						}
+						updated.Config.DataRetentionConfig = drc
+					}
 				default:
 					return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 				}
@@ -342,9 +372,9 @@ func (s *ComposerV1) populateDefaultsForEnvironmentConfig(config *pb.Environment
 	if config.NodeConfig.IpAllocationPolicy == nil {
 		config.NodeConfig.IpAllocationPolicy = &pb.IPAllocationPolicy{}
 	}
-	// if config.NodeConfig.ServiceAccount == "" && name != nil {
-	// 	config.NodeConfig.ServiceAccount = fmt.Sprintf("sa-${uniqueId}@%s.iam.gserviceaccount.com", name.Project.ID)
-	// }
+	if config.NodeConfig.ServiceAccount == "" && name != nil {
+		config.NodeConfig.ServiceAccount = fmt.Sprintf("%d-compute@developer.gserviceaccount.com", name.Project.Number)
+	}
 
 	if config.PrivateEnvironmentConfig == nil {
 		config.PrivateEnvironmentConfig = &pb.PrivateEnvironmentConfig{}

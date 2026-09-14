@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/google/go-cmp/cmp"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/testing/protocmp"
 )
@@ -72,6 +73,7 @@ func TestPopulateDesiredWithActualIfComputed_CopiesDynamicDefaults(t *testing.T)
 				Network:                       "projects/p1/global/networks/default",
 				MachineType:                   "n1-standard-1",
 				DiskSizeGb:                    100,
+				OauthScopes:                   []string{"https://www.googleapis.com/auth/cloud-platform"},
 			},
 			SoftwareConfig: &composerpb.SoftwareConfig{
 				ImageVersion:         "composer-2.11.3-airflow-2.10.2",
@@ -116,6 +118,11 @@ func TestPopulateDesiredWithActualIfComputed_PreservesExplicitUserValues(t *test
 						CPU: direct.LazyPtr("1.5"),
 					},
 				},
+				RecoveryConfig: &krm.RecoveryConfig{
+					ScheduledSnapshotsConfig: &krm.ScheduledSnapshotsConfig{
+						Enabled: direct.PtrTo(false),
+					},
+				},
 			},
 		},
 	}
@@ -131,7 +138,8 @@ func TestPopulateDesiredWithActualIfComputed_PreservesExplicitUserValues(t *test
 		},
 		Config: &composerpb.EnvironmentConfig{
 			DatabaseConfig: &composerpb.DatabaseConfig{
-				Zone: "us-central1-a",
+				Zone:        "us-central1-a",
+				MachineType: "db-n1-standard-2",
 			},
 			WorkloadsConfig: &composerpb.WorkloadsConfig{
 				DagProcessor: &composerpb.WorkloadsConfig_DagProcessorResource{
@@ -139,6 +147,12 @@ func TestPopulateDesiredWithActualIfComputed_PreservesExplicitUserValues(t *test
 				},
 				Worker: &composerpb.WorkloadsConfig_WorkerResource{
 					Cpu: 1.0,
+				},
+			},
+			RecoveryConfig: &composerpb.RecoveryConfig{
+				ScheduledSnapshotsConfig: &composerpb.ScheduledSnapshotsConfig{
+					Enabled:          true,
+					SnapshotLocation: "gs://some-bucket/snapshots",
 				},
 			},
 		},
@@ -152,7 +166,8 @@ func TestPopulateDesiredWithActualIfComputed_PreservesExplicitUserValues(t *test
 		},
 		Config: &composerpb.EnvironmentConfig{
 			DatabaseConfig: &composerpb.DatabaseConfig{
-				Zone: "us-central1-c",
+				Zone:        "us-central1-c",
+				MachineType: "db-n1-standard-2",
 			},
 			WorkloadsConfig: &composerpb.WorkloadsConfig{
 				DagProcessor: &composerpb.WorkloadsConfig_DagProcessorResource{
@@ -160,6 +175,12 @@ func TestPopulateDesiredWithActualIfComputed_PreservesExplicitUserValues(t *test
 				},
 				Worker: &composerpb.WorkloadsConfig_WorkerResource{
 					Cpu: 1.0,
+				},
+			},
+			RecoveryConfig: &composerpb.RecoveryConfig{
+				ScheduledSnapshotsConfig: &composerpb.ScheduledSnapshotsConfig{
+					Enabled:          false,
+					SnapshotLocation: "gs://some-bucket/snapshots",
 				},
 			},
 		},
@@ -196,7 +217,10 @@ func TestPopulateDesiredWithActualIfComputed_Generations(t *testing.T) {
 			PrivateEnvironmentConfig: &composerpb.PrivateEnvironmentConfig{
 				CloudComposerNetworkIpv4CidrBlock: "172.31.245.0/24",
 				CloudSqlIpv4CidrBlock:             "10.0.0.0/12",
-				PrivateClusterConfig:              &composerpb.PrivateClusterConfig{},
+				PrivateClusterConfig: &composerpb.PrivateClusterConfig{
+					EnablePrivateEndpoint: true,
+					MasterIpv4CidrBlock:   "172.16.0.0/28",
+				},
 			},
 		},
 	}
@@ -215,7 +239,10 @@ func TestPopulateDesiredWithActualIfComputed_Generations(t *testing.T) {
 			PrivateEnvironmentConfig: &composerpb.PrivateEnvironmentConfig{
 				CloudComposerNetworkIpv4CidrBlock: "172.31.245.0/24",
 				CloudSqlIpv4CidrBlock:             "10.0.0.0/12",
-				PrivateClusterConfig:              &composerpb.PrivateClusterConfig{},
+				PrivateClusterConfig: &composerpb.PrivateClusterConfig{
+					EnablePrivateEndpoint: true,
+					MasterIpv4CidrBlock:   "172.16.0.0/28",
+				},
 			},
 		},
 	}
@@ -318,6 +345,13 @@ func TestPopulateDefaults_EndToEnd_NoDiff(t *testing.T) {
 				Recurrence: "FREQ=WEEKLY;BYDAY=FR,SA,SU",
 			},
 			PrivateEnvironmentConfig: &composerpb.PrivateEnvironmentConfig{
+				WebServerIpv4ReservedRange:            "10.0.1.0/24",
+				CloudComposerNetworkIpv4ReservedRange: "10.0.2.0/24",
+				PrivateClusterConfig: &composerpb.PrivateClusterConfig{
+					EnablePrivateEndpoint:   true,
+					MasterIpv4CidrBlock:     "172.16.0.0/28",
+					MasterIpv4ReservedRange: "172.16.0.0/28",
+				},
 				NetworkingConfig: &composerpb.NetworkingConfig{
 					ConnectionType: composerpb.NetworkingConfig_CONNECTION_TYPE_UNSPECIFIED,
 				},
@@ -389,6 +423,126 @@ func TestPopulateDefaults_EndToEnd_PreservesExplicitModification(t *testing.T) {
 	}
 }
 
+func TestPopulateDesiredWithActualIfComputed_CollapsedEquivalence(t *testing.T) {
+	// Verify that the collapsed computedFieldPaths produces the exact same protobuf
+	// state as the verbose leaf-by-leaf list across partial and omitted specs.
+	verbosePaths := []string{
+		"StorageConfig.BucketRef",
+		"Config.EnvironmentSize",
+		"Config.NodeCount",
+		"Config.MaintenanceWindow",
+		"Config.DataRetentionConfig",
+		"Config.NodeConfig.ComposerInternalIPv4CIDRBlock",
+		"Config.NodeConfig.ComposerNetworkAttachmentRef",
+		"Config.NodeConfig.SubnetworkRef",
+		"Config.NodeConfig.IPAllocationPolicy",
+		"Config.NodeConfig.NetworkRef",
+		"Config.NodeConfig.MachineType",
+		"Config.NodeConfig.DiskSizeGB",
+		"Config.NodeConfig.Location",
+		"Config.NodeConfig.ServiceAccountRef",
+		"Config.NodeConfig.EnableIPMasqAgent",
+		"Config.SoftwareConfig.ImageVersion",
+		"Config.SoftwareConfig.PythonVersion",
+		"Config.SoftwareConfig.SchedulerCount",
+		"Config.SoftwareConfig.WebServerPluginsMode",
+		"Config.DatabaseConfig.MachineType",
+		"Config.DatabaseConfig.Zone",
+		"Config.PrivateEnvironmentConfig.CloudComposerNetworkIPv4CIDRBlock",
+		"Config.PrivateEnvironmentConfig.CloudSQLIPv4CIDRBlock",
+		"Config.PrivateEnvironmentConfig.PrivateClusterConfig",
+		"Config.PrivateEnvironmentConfig.WebServerIPv4CIDRBlock",
+		"Config.PrivateEnvironmentConfig.CloudComposerConnectionSubnetworkRef",
+		"Config.PrivateEnvironmentConfig.NetworkingConfig",
+		"Config.PrivateEnvironmentConfig.EnablePrivateEnvironment",
+		"Config.PrivateEnvironmentConfig.EnablePrivateBuildsOnly",
+		"Config.PrivateEnvironmentConfig.EnablePrivatelyUsedPublicIPs",
+		"Config.WorkloadsConfig.Scheduler",
+		"Config.WorkloadsConfig.DagProcessor",
+		"Config.WorkloadsConfig.Triggerer",
+		"Config.WorkloadsConfig.WebServer",
+		"Config.WorkloadsConfig.Worker",
+		"Config.WebServerConfig.MachineType",
+		"Config.RecoveryConfig.ScheduledSnapshotsConfig",
+	}
+
+	actual := &composerpb.Environment{
+		StorageConfig: &composerpb.StorageConfig{Bucket: "auto-bucket"},
+		Config: &composerpb.EnvironmentConfig{
+			EnvironmentSize: composerpb.EnvironmentConfig_ENVIRONMENT_SIZE_MEDIUM,
+			NodeCount:       3,
+			NodeConfig: &composerpb.NodeConfig{
+				MachineType: "n1-standard-2",
+				DiskSizeGb:  100,
+				Network:     "projects/p1/global/networks/default",
+			},
+			SoftwareConfig: &composerpb.SoftwareConfig{
+				ImageVersion:   "composer-3-airflow-2.9.3",
+				PythonVersion:  "3",
+				SchedulerCount: 2,
+				EnvVariables:   map[string]string{"A": "B"},
+			},
+			DatabaseConfig: &composerpb.DatabaseConfig{
+				MachineType: "db-n1-standard-2",
+				Zone:        "us-central1-a",
+			},
+			PrivateEnvironmentConfig: &composerpb.PrivateEnvironmentConfig{
+				EnablePrivateEnvironment: true,
+				CloudSqlIpv4CidrBlock:    "10.0.0.0/24",
+				NetworkingConfig: &composerpb.NetworkingConfig{
+					ConnectionType: composerpb.NetworkingConfig_PRIVATE_SERVICE_CONNECT,
+				},
+			},
+			WorkloadsConfig: &composerpb.WorkloadsConfig{
+				Scheduler: &composerpb.WorkloadsConfig_SchedulerResource{Cpu: 1.0, MemoryGb: 2.0},
+				Worker:    &composerpb.WorkloadsConfig_WorkerResource{Cpu: 2.0, MemoryGb: 4.0},
+			},
+			RecoveryConfig: &composerpb.RecoveryConfig{
+				ScheduledSnapshotsConfig: &composerpb.ScheduledSnapshotsConfig{
+					Enabled:          true,
+					SnapshotLocation: "gs://snap-bucket",
+				},
+			},
+		},
+	}
+
+	specs := []krm.ComposerEnvironmentSpec{
+		// 1. Empty spec
+		{},
+		// 2. Partial spec
+		{
+			Config: &krm.EnvironmentConfig{
+				NodeConfig: &krm.NodeConfig{
+					MachineType: direct.LazyPtr("n1-standard-4"),
+				},
+				WorkloadsConfig: &krm.WorkloadsConfig{
+					Scheduler: &krm.WorkloadsConfig_SchedulerResource{
+						CPU: direct.LazyPtr("2.0"),
+					},
+				},
+				RecoveryConfig: &krm.RecoveryConfig{
+					ScheduledSnapshotsConfig: &krm.ScheduledSnapshotsConfig{
+						Enabled: direct.PtrTo(false),
+					},
+				},
+			},
+		},
+	}
+
+	for i, spec := range specs {
+		mapCtx := &direct.MapContext{}
+		pbCollapsed := ComposerEnvironmentSpec_ToProto(mapCtx, &spec)
+		pbVerbose := proto.Clone(pbCollapsed).(*composerpb.Environment)
+
+		common.PopulateComputedFields(spec, pbCollapsed, actual, computedFieldPaths)
+		common.PopulateComputedFields(spec, pbVerbose, actual, verbosePaths)
+
+		if diff := cmp.Diff(pbVerbose, pbCollapsed, protocmp.Transform()); diff != "" {
+			t.Errorf("spec[%d] collapsed vs verbose diff (-verbose +collapsed):\n%s", i, diff)
+		}
+	}
+}
+
 func TestComputedFieldPathsValidity(t *testing.T) {
 	env := &composerpb.Environment{
 		StorageConfig: &composerpb.StorageConfig{},
@@ -399,6 +553,7 @@ func TestComputedFieldPathsValidity(t *testing.T) {
 			WebServerConfig:          &composerpb.WebServerConfig{},
 			PrivateEnvironmentConfig: &composerpb.PrivateEnvironmentConfig{},
 			WorkloadsConfig:          &composerpb.WorkloadsConfig{},
+			RecoveryConfig:           &composerpb.RecoveryConfig{},
 		},
 	}
 	parentMap := common.BuildParentMap(env, env, computedFieldPaths)

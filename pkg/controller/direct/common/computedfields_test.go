@@ -77,3 +77,45 @@ func TestFindProtoField(t *testing.T) {
 		t.Errorf("expected field name 'options' for optionsRef, got %q", fdRef.Name())
 	}
 }
+
+func TestPopulateComputedFields_RecursivePartialMessage(t *testing.T) {
+	// Actual has Options with GoPackage, JavaPackage, and Deprecated populated.
+	actualPb := &descriptorpb.FileDescriptorProto{
+		Options: &descriptorpb.FileOptions{
+			GoPackage:   proto.String("actual-go-pkg"),
+			JavaPackage: proto.String("actual-java-pkg"),
+			Deprecated:  proto.Bool(true),
+		},
+	}
+
+	// Desired specifies only Options.GoPackage ("desired-go-pkg") and omits JavaPackage & Deprecated.
+	desiredPb := &descriptorpb.FileDescriptorProto{
+		Options: &descriptorpb.FileOptions{
+			GoPackage: proto.String("desired-go-pkg"),
+		},
+	}
+
+	type mockOptionsSpec struct {
+		GoPackage *string `json:"goPackage,omitempty"`
+	}
+	type mockSpec struct {
+		Options *mockOptionsSpec `json:"options,omitempty"`
+	}
+	desiredSpec := mockSpec{
+		Options: &mockOptionsSpec{
+			GoPackage: proto.String("desired-go-pkg"),
+		},
+	}
+
+	PopulateComputedFields(desiredSpec, desiredPb, actualPb, []string{"Options"})
+
+	if got := desiredPb.GetOptions().GetGoPackage(); got != "desired-go-pkg" {
+		t.Errorf("GoPackage = %q, want desired value %q", got, "desired-go-pkg")
+	}
+	if got := desiredPb.GetOptions().GetJavaPackage(); got != "actual-java-pkg" {
+		t.Errorf("JavaPackage = %q, want copied actual value %q", got, "actual-java-pkg")
+	}
+	if got := desiredPb.GetOptions().GetDeprecated(); got != true {
+		t.Errorf("Deprecated = %v, want copied actual value true", got)
+	}
+}
