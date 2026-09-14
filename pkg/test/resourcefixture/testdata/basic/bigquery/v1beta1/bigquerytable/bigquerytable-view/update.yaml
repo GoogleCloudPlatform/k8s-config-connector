@@ -23,7 +23,7 @@ metadata:
 spec:
   datasetRef:
     name: bigquerydatasetsample${uniqueId}
-  friendlyName: mv_test3
+  friendlyName: mv_test3_updated
   timePartitioning:
     field: dt
     type: DAY
