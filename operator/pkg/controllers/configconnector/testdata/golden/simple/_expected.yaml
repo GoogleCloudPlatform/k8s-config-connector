@@ -3284,6 +3284,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - gdchardwaremanagement.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - geminidataanalytics.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5123,6 +5135,14 @@ rules:
   - watch
 - apiGroups:
   - firestore.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - gdchardwaremanagement.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
