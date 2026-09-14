@@ -82,6 +82,10 @@ type ReasoningEngineSpec struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ReasoningEngineSpec.deployment_spec
 	DeploymentSpec *ReasoningEngineSpec_DeploymentSpec `json:"deploymentSpec,omitempty"`
 
+	// Optional. Declarations of the class methods of the Reasoning Engine.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ReasoningEngineSpec.class_methods
+	// ClassMethods []apiextensionsv1.JSON `json:"classMethods,omitempty"`
+
 	// Optional. The OSS agent framework used to develop the agent.
 	//  Currently supported values: "google-adk", "langchain", "langgraph", "ag2",
 	//  "llama-index", "custom".

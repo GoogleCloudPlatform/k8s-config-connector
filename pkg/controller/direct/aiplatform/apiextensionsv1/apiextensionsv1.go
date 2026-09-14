@@ -15,9 +15,8 @@
 package apiextensionsv1
 
 import (
-	"encoding/json"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/types/known/structpb"
 	v1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
@@ -28,7 +27,7 @@ func JSON_FromProto(mapCtx *direct.MapContext, in *structpb.Struct) *JSON {
 	if in == nil {
 		return nil
 	}
-	b, err := json.Marshal(in)
+	b, err := protojson.Marshal(in)
 	if err != nil {
 		mapCtx.Errorf("error marshalling structpb.Struct to JSON: %v", err)
 		return nil
@@ -41,7 +40,7 @@ func JSON_ToProto(mapCtx *direct.MapContext, in *JSON) *structpb.Struct {
 		return nil
 	}
 	out := &structpb.Struct{}
-	if err := json.Unmarshal(in.Raw, out); err != nil {
+	if err := protojson.Unmarshal(in.Raw, out); err != nil {
 		mapCtx.Errorf("error unmarshalling JSON to structpb.Struct: %v", err)
 		return nil
 	}
