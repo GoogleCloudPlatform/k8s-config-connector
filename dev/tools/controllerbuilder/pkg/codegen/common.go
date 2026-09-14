@@ -14,7 +14,9 @@
 
 package codegen
 
-import "strings"
+import (
+	"strings"
+)
 
 const (
 	// KCCProtoMessageAnnotationMisc is used for go structs that map to proto messages, but are not top-level Spec structs
