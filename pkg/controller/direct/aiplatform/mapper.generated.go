@@ -1913,7 +1913,7 @@ func ReasoningEngineSpec_FromProto(mapCtx *direct.MapContext, in *pb.ReasoningEn
 	}
 	out.PackageSpec = ReasoningEngineSpec_PackageSpec_FromProto(mapCtx, in.GetPackageSpec())
 	out.DeploymentSpec = ReasoningEngineSpec_DeploymentSpec_FromProto(mapCtx, in.GetDeploymentSpec())
-	// MISSING: ClassMethods
+	out.ClassMethods = direct.Slice_FromProto(mapCtx, in.ClassMethods, apiextensionsv1.JSON_FromProto)
 	out.AgentFramework = direct.LazyPtr(in.GetAgentFramework())
 	return out
 }
@@ -1932,7 +1932,7 @@ found existing non-generated mapping function "ReasoningEngineSpec_ToProto", ski
 		}
 		out.PackageSpec = ReasoningEngineSpec_PackageSpec_ToProto(mapCtx, in.PackageSpec)
 		out.DeploymentSpec = ReasoningEngineSpec_DeploymentSpec_ToProto(mapCtx, in.DeploymentSpec)
-		// MISSING: ClassMethods
+		out.ClassMethods = direct.Slice_ToProto(mapCtx, in.ClassMethods, apiextensionsv1.JSON_ToProto)
 		out.AgentFramework = direct.ValueOf(in.AgentFramework)
 		return out
 	}

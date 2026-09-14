@@ -3210,6 +3210,13 @@ func (in *ReasoningEngineSpec) DeepCopyInto(out *ReasoningEngineSpec) {
 		*out = new(ReasoningEngineSpec_DeploymentSpec)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.ClassMethods != nil {
+		in, out := &in.ClassMethods, &out.ClassMethods
+		*out = make([]v1.JSON, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
 	if in.AgentFramework != nil {
 		in, out := &in.AgentFramework, &out.AgentFramework
 		*out = new(string)

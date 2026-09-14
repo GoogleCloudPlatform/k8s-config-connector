@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -81,6 +82,10 @@ type ReasoningEngineSpec struct {
 	// Optional. The specification of a Reasoning Engine deployment.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ReasoningEngineSpec.deployment_spec
 	DeploymentSpec *ReasoningEngineSpec_DeploymentSpec `json:"deploymentSpec,omitempty"`
+
+	// Optional. Declarations of the class methods of the Reasoning Engine.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ReasoningEngineSpec.class_methods
+	ClassMethods []apiextensionsv1.JSON `json:"classMethods,omitempty"`
 
 	// Optional. The OSS agent framework used to develop the agent.
 	//  Currently supported values: "google-adk", "langchain", "langgraph", "ag2",
