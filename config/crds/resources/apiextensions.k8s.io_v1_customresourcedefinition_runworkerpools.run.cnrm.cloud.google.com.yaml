@@ -8,6 +8,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
   name: runworkerpools.run.cnrm.cloud.google.com
 spec:
@@ -120,6 +121,16 @@ spec:
                       type: string
                   type: object
                 type: array
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. Unstructured key value map that can be used
+                  to organize and categorize objects. User-provided labels are shared
+                  with Google's billing system, so they can be used to filter, or
+                  break down billing charges by team, component, environment, state,
+                  etc. For more information, visit https://cloud.google.com/resource-manager/docs/creating-managing-labels
+                  or https://cloud.google.com/run/docs/configuring/labels.
+                type: object
               launchStage:
                 description: Optional. The launch stage as defined by [Google Cloud
                   Platform Launch Stages](https://cloud.google.com/terms/launch-stages).

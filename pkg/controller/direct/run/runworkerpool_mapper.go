@@ -43,7 +43,7 @@ func RunWorkerPoolSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv1a
 	out := &pb.WorkerPool{}
 	// MISSING: Name (handled by controller)
 	out.Description = direct.ValueOf(in.Description)
-	// MISSING: Labels (handled by controller via metadata.labels)
+	out.Labels = in.Labels
 	out.Annotations = direct.MapStringString_ToProto(mapCtx, in.Annotations)
 	out.Client = direct.ValueOf(in.Client)
 	out.ClientVersion = direct.ValueOf(in.ClientVersion)

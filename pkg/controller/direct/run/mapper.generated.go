@@ -1011,7 +1011,6 @@ func RunWorkerPoolObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: Name
 	out.Uid = direct.ValueOf(in.Uid)
 	out.Generation = direct.ValueOf(in.Generation)
-	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
@@ -1038,7 +1037,7 @@ func RunWorkerPoolSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Work
 	out := &krmrunv1alpha1.RunWorkerPoolSpec{}
 	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: Labels
+	out.Labels = in.Labels
 	out.Annotations = in.Annotations
 	out.Client = direct.LazyPtr(in.GetClient())
 	out.ClientVersion = direct.LazyPtr(in.GetClientVersion())
