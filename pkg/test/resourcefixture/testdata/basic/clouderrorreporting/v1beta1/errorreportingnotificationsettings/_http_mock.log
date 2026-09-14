@@ -1,0 +1,73 @@
+GET https://clouderrorreporting.googleapis.com/v1beta1/projects/$%7Bproject_id%7D/locations/global/notificationSettings
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json
+
+{
+  "name": "projects/${project_id}/locations/global/notificationSettings"
+}
+
+---
+
+PATCH https://clouderrorreporting.googleapis.com/v1beta1/projects/$%7Bproject_id%7D/locations/global/notificationSettings?updateMask=notification_channels,version_skew_report_delays
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "name": "projects/${project_id}/locations/global/notificationSettings",
+  "notificationChannels": [
+    "projects/${project_id}/notificationChannels/${notificationChannelID}"
+  ],
+  "versionSkewReportDelays": [
+    "3600s"
+  ]
+}
+
+200 OK
+Content-Type: application/json
+
+{
+  "name": "projects/${project_id}/locations/global/notificationSettings",
+  "notificationChannels": [
+    "projects/${project_id}/notificationChannels/${notificationChannelID}"
+  ],
+  "versionSkewReportDelays": [
+    "3600s"
+  ]
+}
+
+---
+
+GET https://clouderrorreporting.googleapis.com/v1beta1/projects/$%7Bproject_id%7D/locations/global/notificationSettings
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json
+
+{
+  "name": "projects/${project_id}/locations/global/notificationSettings",
+  "notificationChannels": [
+    "projects/${project_id}/notificationChannels/${notificationChannelID}"
+  ],
+  "versionSkewReportDelays": [
+    "3600s"
+  ]
+}
+
+---
+
+PATCH https://clouderrorreporting.googleapis.com/v1beta1/projects/$%7Bproject_id%7D/locations/global/notificationSettings
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "name": "projects/${project_id}/locations/global/notificationSettings"
+}
+
+200 OK
+Content-Type: application/json
+
+{
+  "name": "projects/${project_id}/locations/global/notificationSettings"
+}
