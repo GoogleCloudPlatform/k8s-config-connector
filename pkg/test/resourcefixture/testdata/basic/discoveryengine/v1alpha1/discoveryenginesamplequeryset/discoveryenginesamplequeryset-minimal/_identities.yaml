@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: discoveryengine.cnrm.cloud.google.com
+  kind: DiscoveryEngineSampleQuerySet
+  name: sqset-min-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

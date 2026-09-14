@@ -1,0 +1,28 @@
+apiVersion: discoveryengine.cnrm.cloud.google.com/v1alpha1
+kind: DiscoveryEngineSampleQuerySet
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: sqset-max-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Updated description of maximal sample query set
+  displayName: Maximal Sample Query Set Updated
+  location: global
+  projectRef:
+    external: projects/${projectId}
+  resourceID: sqset-max-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/sampleQuerySets/sqset-max-${uniqueId}
+  observedGeneration: 2
+  observedState: {}
