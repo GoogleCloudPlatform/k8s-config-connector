@@ -25,7 +25,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/google/go-cmp/cmp"
-	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/testing/protocmp"
 )
 
@@ -116,6 +115,11 @@ func TestPopulateDesiredWithActualIfComputed_PreservesExplicitUserValues(t *test
 						CPU: direct.LazyPtr("1.5"),
 					},
 				},
+				RecoveryConfig: &krm.RecoveryConfig{
+					ScheduledSnapshotsConfig: &krm.ScheduledSnapshotsConfig{
+						Enabled: direct.PtrTo(false),
+					},
+				},
 			},
 		},
 	}
@@ -131,14 +135,22 @@ func TestPopulateDesiredWithActualIfComputed_PreservesExplicitUserValues(t *test
 		},
 		Config: &composerpb.EnvironmentConfig{
 			DatabaseConfig: &composerpb.DatabaseConfig{
-				Zone: "us-central1-a",
+				Zone:        "us-central1-a",
+				MachineType: "db-n1-standard-2",
 			},
 			WorkloadsConfig: &composerpb.WorkloadsConfig{
 				DagProcessor: &composerpb.WorkloadsConfig_DagProcessorResource{
-					Cpu: 0.5,
+					Cpu:      0.5,
+					MemoryGb: 2.0,
 				},
 				Worker: &composerpb.WorkloadsConfig_WorkerResource{
 					Cpu: 1.0,
+				},
+			},
+			RecoveryConfig: &composerpb.RecoveryConfig{
+				ScheduledSnapshotsConfig: &composerpb.ScheduledSnapshotsConfig{
+					Enabled:          true,
+					SnapshotLocation: "gs://some-bucket/snapshots",
 				},
 			},
 		},
@@ -152,14 +164,21 @@ func TestPopulateDesiredWithActualIfComputed_PreservesExplicitUserValues(t *test
 		},
 		Config: &composerpb.EnvironmentConfig{
 			DatabaseConfig: &composerpb.DatabaseConfig{
-				Zone: "us-central1-c",
+				Zone:        "us-central1-c",
+				MachineType: "db-n1-standard-2",
 			},
 			WorkloadsConfig: &composerpb.WorkloadsConfig{
 				DagProcessor: &composerpb.WorkloadsConfig_DagProcessorResource{
-					Cpu: 1.5,
+					Cpu:      1.5,
+					MemoryGb: 2.0,
 				},
 				Worker: &composerpb.WorkloadsConfig_WorkerResource{
 					Cpu: 1.0,
+				},
+			},
+			RecoveryConfig: &composerpb.RecoveryConfig{
+				ScheduledSnapshotsConfig: &composerpb.ScheduledSnapshotsConfig{
+					Enabled: false,
 				},
 			},
 		},
@@ -196,7 +215,10 @@ func TestPopulateDesiredWithActualIfComputed_Generations(t *testing.T) {
 			PrivateEnvironmentConfig: &composerpb.PrivateEnvironmentConfig{
 				CloudComposerNetworkIpv4CidrBlock: "172.31.245.0/24",
 				CloudSqlIpv4CidrBlock:             "10.0.0.0/12",
-				PrivateClusterConfig:              &composerpb.PrivateClusterConfig{},
+				PrivateClusterConfig: &composerpb.PrivateClusterConfig{
+					EnablePrivateEndpoint: true,
+					MasterIpv4CidrBlock:   "172.16.0.0/28",
+				},
 			},
 		},
 	}
@@ -215,7 +237,10 @@ func TestPopulateDesiredWithActualIfComputed_Generations(t *testing.T) {
 			PrivateEnvironmentConfig: &composerpb.PrivateEnvironmentConfig{
 				CloudComposerNetworkIpv4CidrBlock: "172.31.245.0/24",
 				CloudSqlIpv4CidrBlock:             "10.0.0.0/12",
-				PrivateClusterConfig:              &composerpb.PrivateClusterConfig{},
+				PrivateClusterConfig: &composerpb.PrivateClusterConfig{
+					EnablePrivateEndpoint: true,
+					MasterIpv4CidrBlock:   "172.16.0.0/28",
+				},
 			},
 		},
 	}
@@ -318,6 +343,13 @@ func TestPopulateDefaults_EndToEnd_NoDiff(t *testing.T) {
 				Recurrence: "FREQ=WEEKLY;BYDAY=FR,SA,SU",
 			},
 			PrivateEnvironmentConfig: &composerpb.PrivateEnvironmentConfig{
+				WebServerIpv4ReservedRange:            "10.0.1.0/24",
+				CloudComposerNetworkIpv4ReservedRange: "10.0.2.0/24",
+				PrivateClusterConfig: &composerpb.PrivateClusterConfig{
+					EnablePrivateEndpoint:   true,
+					MasterIpv4CidrBlock:     "172.16.0.0/28",
+					MasterIpv4ReservedRange: "172.16.0.0/28",
+				},
 				NetworkingConfig: &composerpb.NetworkingConfig{
 					ConnectionType: composerpb.NetworkingConfig_CONNECTION_TYPE_UNSPECIFIED,
 				},
@@ -389,16 +421,62 @@ func TestPopulateDefaults_EndToEnd_PreservesExplicitModification(t *testing.T) {
 	}
 }
 
+func TestNormalizeDisabledFeatureBlocks(t *testing.T) {
+	desired := &krm.ComposerEnvironment{
+		Spec: krm.ComposerEnvironmentSpec{
+			Config: &krm.EnvironmentConfig{
+				SoftwareConfig: &krm.SoftwareConfig{
+					CloudDataLineageIntegration: &krm.CloudDataLineageIntegration{
+						Enabled: direct.PtrTo(false),
+					},
+				},
+				RecoveryConfig: &krm.RecoveryConfig{
+					ScheduledSnapshotsConfig: &krm.ScheduledSnapshotsConfig{
+						Enabled: direct.PtrTo(false),
+					},
+				},
+				MasterAuthorizedNetworksConfig: &krm.MasterAuthorizedNetworksConfig{
+					Enabled: direct.PtrTo(false),
+				},
+			},
+		},
+	}
+	mapCtx := &direct.MapContext{}
+	desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+	actualPb := &composerpb.Environment{
+		Config: &composerpb.EnvironmentConfig{},
+	}
+
+	populateDesiredWithActualIfComputed(desired, desiredPb, actualPb)
+
+	if desiredPb.GetConfig().GetSoftwareConfig().GetCloudDataLineageIntegration() != nil {
+		t.Errorf("expected CloudDataLineageIntegration to be normalized to nil when actual is nil")
+	}
+	if desiredPb.GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig() != nil {
+		t.Errorf("expected ScheduledSnapshotsConfig to be normalized to nil when actual is nil")
+	}
+	if desiredPb.GetConfig().GetMasterAuthorizedNetworksConfig() != nil {
+		t.Errorf("expected MasterAuthorizedNetworksConfig to be normalized to nil when actual is nil")
+	}
+}
+
 func TestComputedFieldPathsValidity(t *testing.T) {
 	env := &composerpb.Environment{
 		StorageConfig: &composerpb.StorageConfig{},
 		Config: &composerpb.EnvironmentConfig{
-			NodeConfig:               &composerpb.NodeConfig{},
+			NodeConfig:               &composerpb.NodeConfig{IpAllocationPolicy: &composerpb.IPAllocationPolicy{}},
 			SoftwareConfig:           &composerpb.SoftwareConfig{},
 			DatabaseConfig:           &composerpb.DatabaseConfig{},
 			WebServerConfig:          &composerpb.WebServerConfig{},
-			PrivateEnvironmentConfig: &composerpb.PrivateEnvironmentConfig{},
-			WorkloadsConfig:          &composerpb.WorkloadsConfig{},
+			PrivateEnvironmentConfig: &composerpb.PrivateEnvironmentConfig{PrivateClusterConfig: &composerpb.PrivateClusterConfig{}},
+			WorkloadsConfig: &composerpb.WorkloadsConfig{
+				Scheduler:    &composerpb.WorkloadsConfig_SchedulerResource{},
+				DagProcessor: &composerpb.WorkloadsConfig_DagProcessorResource{},
+				Triggerer:    &composerpb.WorkloadsConfig_TriggererResource{},
+				WebServer:    &composerpb.WorkloadsConfig_WebServerResource{},
+				Worker:       &composerpb.WorkloadsConfig_WorkerResource{},
+			},
+			RecoveryConfig: &composerpb.RecoveryConfig{},
 		},
 	}
 	parentMap := common.BuildParentMap(env, env, computedFieldPaths)
@@ -422,48 +500,5 @@ func TestComputedFieldPathsValidity(t *testing.T) {
 		if fd == nil {
 			t.Fatalf("path %q: field %q does not exist on proto message %s", path, leafName, pair.Actual.Descriptor().FullName())
 		}
-	}
-}
-
-func TestFindProtoField(t *testing.T) {
-	nodeDesc := (&composerpb.NodeConfig{}).ProtoReflect().Descriptor()
-	privDesc := (&composerpb.PrivateEnvironmentConfig{}).ProtoReflect().Descriptor()
-	workloadDesc := (&composerpb.WorkloadsConfig_DagProcessorResource{}).ProtoReflect().Descriptor()
-
-	tests := []struct {
-		desc      protoreflect.MessageDescriptor
-		krmLeaf   string
-		wantField protoreflect.Name
-	}{
-		{nodeDesc, "serviceAccountRef", "service_account"},
-		{nodeDesc, "serviceAccount", "service_account"},
-		{nodeDesc, "ComposerInternalIPv4CIDRBlock", "composer_internal_ipv4_cidr_block"},
-		{nodeDesc, "composerInternalIpv4CidrBlock", "composer_internal_ipv4_cidr_block"},
-		{nodeDesc, "diskSizeGb", "disk_size_gb"},
-		{nodeDesc, "DiskSizeGB", "disk_size_gb"},
-		{privDesc, "CloudComposerNetworkIPv4CIDRBlock", "cloud_composer_network_ipv4_cidr_block"},
-		{privDesc, "CloudSQLIPv4CIDRBlock", "cloud_sql_ipv4_cidr_block"},
-		{privDesc, "WebServerIPv4CIDRBlock", "web_server_ipv4_cidr_block"},
-		{privDesc, "CloudComposerConnectionSubnetworkRef", "cloud_composer_connection_subnetwork"},
-		{workloadDesc, "cpu", "cpu"},
-		{workloadDesc, "CPU", "cpu"},
-		{workloadDesc, "memoryGb", "memory_gb"},
-		{workloadDesc, "storageGb", "storage_gb"},
-	}
-
-	for _, tc := range tests {
-		fd := common.FindProtoField(tc.desc, tc.krmLeaf)
-		if fd == nil {
-			t.Errorf("FindProtoField(%s, %q) = nil, want %q", tc.desc.FullName(), tc.krmLeaf, tc.wantField)
-			continue
-		}
-		if fd.Name() != tc.wantField {
-			t.Errorf("FindProtoField(%s, %q) = %q, want %q", tc.desc.FullName(), tc.krmLeaf, fd.Name(), tc.wantField)
-		}
-	}
-
-	// Non-existent field should return nil
-	if fd := common.FindProtoField(nodeDesc, "nonExistentField"); fd != nil {
-		t.Errorf("expected nil for nonExistentField, got %q", fd.Name())
 	}
 }

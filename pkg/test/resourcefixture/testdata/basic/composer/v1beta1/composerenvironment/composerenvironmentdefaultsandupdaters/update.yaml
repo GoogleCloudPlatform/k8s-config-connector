@@ -1,0 +1,40 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: composer.cnrm.cloud.google.com/v1beta1
+kind: ComposerEnvironment
+metadata:
+  name: composerenvironment-${uniqueId}
+spec:
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  config:
+    # 1. nodeConfig.serviceAccountRef is OMITTED -> verifies computedFieldPaths copies SA from actualPb
+    privateEnvironmentConfig:
+      enablePrivateBuildsOnly: true
+    # 2. dataRetentionConfig: updates retentionDays to 30 with explicit required retentionMode
+    dataRetentionConfig:
+      airflowMetadataRetentionConfig:
+        retentionMode: RETENTION_MODE_ENABLED
+        retentionDays: 30
+    # 3. maintenanceWindow: updates recurrence with explicit required startTime and endTime
+    maintenanceWindow:
+      startTime: "2024-01-01T00:00:00Z"
+      endTime: "2024-01-01T06:00:00Z"
+      recurrence: "FREQ=WEEKLY;BYDAY=FR,SA,SU"
+    # 4. Disables cloudDataLineageIntegration -> verifies disable normalization and no PATCH loop
+    softwareConfig:
+      cloudDataLineageIntegration:
+        enabled: false
