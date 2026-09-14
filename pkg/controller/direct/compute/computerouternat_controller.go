@@ -35,7 +35,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -82,27 +81,8 @@ func (m *routerNATModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 		return nil, err
 	}
 
-	// Save routerRef and temporarily replace it with a valid canonical placeholder if it contains a short name.
-	// This prevents generic reference normalization (common.NormalizeReferences) from failing
-	// format validation on simple short names, while leaving identity resolution to GetIdentity.
-	// We use a valid canonical format so that NormalizeReferences' internal validation succeeds without
-	// triggering an empty name Kubernetes resource lookup or format validation error.
-	originalRouterRef := obj.Spec.RouterRef
-	isShortName := false
-	if originalRouterRef.External != "" && refs.IsShortName(originalRouterRef.External) {
-		isShortName = true
-		obj.Spec.RouterRef = krm.ComputeRouterRef{
-			External: "projects/unused-project/regions/unused-region/routers/unused-router",
-		}
-	}
-
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+	if err := common.NormalizeReferences(ctx, reader, obj, nil, common.SkipPath(".Spec.RouterRef")); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
-
-	if isShortName {
-		// Restore the original routerRef
-		obj.Spec.RouterRef = originalRouterRef
 	}
 
 	mapCtx := &direct.MapContext{}
