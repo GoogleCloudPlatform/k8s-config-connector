@@ -142,6 +142,10 @@ func (m *mockRoundTripper) NewGRPCConnection(ctx context.Context) *grpc.ClientCo
 }
 
 func toHostRegex(host string) *regexp.Regexp {
+	if sh, _, err := net.SplitHostPort(host); err == nil {
+		host = sh
+	}
+
 	r := regexp.MustCompile(`{[^}]+}`)
 
 	tokens := strings.Split(host, ".")
@@ -151,7 +155,7 @@ func toHostRegex(host string) *regexp.Regexp {
 		})
 		tokens[i] = token
 	}
-	return regexp.MustCompile("^" + strings.Join(tokens, `\.`) + "$")
+	return regexp.MustCompile("^" + strings.Join(tokens, `\.`) + "(:[0-9]+)?$")
 }
 
 func (m *mockRoundTripper) prefilterRequest(req *http.Request) error {
