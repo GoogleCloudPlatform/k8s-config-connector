@@ -1,0 +1,59 @@
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "description": "Updated Minimal WorkerPool description",
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "instanceSplitStatuses": [
+    {
+      "percent": 100,
+      "type": 1
+    }
+  ],
+  "instanceSplits": [
+    {
+      "percent": 100,
+      "type": 1
+    }
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+  "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
+  "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00001-abc",
+  "launchStage": 4,
+  "name": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}",
+  "observedGeneration": "2",
+  "scaling": {
+    "manualInstanceCount": 1
+  },
+  "template": {
+    "containers": [
+      {
+        "image": "us-docker.pkg.dev/cloudrun/container/hello",
+        "resources": {
+          "limits": {
+            "cpu": "1000m",
+            "memory": "512Mi"
+          }
+        }
+      }
+    ],
+    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+  },
+  "terminalCondition": {
+    "lastTransitionTime": "2025-01-01T00:00:00Z",
+    "state": 4,
+    "type": "Ready"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
