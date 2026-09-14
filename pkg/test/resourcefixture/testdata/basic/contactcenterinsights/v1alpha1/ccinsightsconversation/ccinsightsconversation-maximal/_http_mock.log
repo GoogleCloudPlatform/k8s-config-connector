@@ -16,7 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "No conversation found for project: `${projectNumber}` and conversation Id: `ccinsightsconv-max-${uniqueId}`.",
+    "message": "No conversation found for project ${projectNumber} and conversation ID ccinsightsconv-max-${uniqueId}.",
     "status": "NOT_FOUND"
   }
 }
@@ -53,9 +53,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
         "agentType": 1,
         "displayName": "Agent One",
         "dispositionCode": "RESOLVED",
-        "teams": [
-          "support"
-        ]
+        "team": "support"
       }
     ],
     "customerSatisfactionRating": 5,
@@ -101,9 +99,7 @@ X-Xss-Protection: 0
         "agentType": 1,
         "displayName": "Agent One",
         "dispositionCode": "RESOLVED",
-        "teams": [
-          "support"
-        ]
+        "team": "support"
       }
     ],
     "customerSatisfactionRating": 5,
@@ -247,9 +243,7 @@ X-Xss-Protection: 0
         "agentType": 1,
         "displayName": "Agent One",
         "dispositionCode": "RESOLVED",
-        "teams": [
-          "support"
-        ]
+        "team": "support"
       }
     ],
     "customerSatisfactionRating": 5,
@@ -381,9 +375,7 @@ X-Goog-Request-Params: conversation.name=projects%2F${projectId}%2Flocations%2Fu
         "agentType": 1,
         "displayName": "Agent One Updated",
         "dispositionCode": "ESCALATED",
-        "teams": [
-          "billing"
-        ]
+        "team": "billing"
       }
     ],
     "customerSatisfactionRating": 4,
@@ -430,9 +422,7 @@ X-Xss-Protection: 0
         "agentType": 1,
         "displayName": "Agent One Updated",
         "dispositionCode": "ESCALATED",
-        "teams": [
-          "billing"
-        ]
+        "team": "billing"
       }
     ],
     "customerSatisfactionRating": 4,
@@ -576,9 +566,7 @@ X-Xss-Protection: 0
         "agentType": 1,
         "displayName": "Agent One Updated",
         "dispositionCode": "ESCALATED",
-        "teams": [
-          "billing"
-        ]
+        "team": "billing"
       }
     ],
     "customerSatisfactionRating": 4,

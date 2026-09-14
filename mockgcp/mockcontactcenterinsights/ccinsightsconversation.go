@@ -40,7 +40,7 @@ func (s *ContactCenterInsightsServer) GetConversation(ctx context.Context, req *
 	obj := &pb.Conversation{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "No conversation found for project: `%d` and conversation Id: `%s`.", name.Project.Number, name.Conversation)
+			return nil, status.Errorf(codes.NotFound, "No conversation found for project %d and conversation ID %s.", name.Project.Number, name.Conversation)
 		}
 		return nil, err
 	}
@@ -87,7 +87,7 @@ func (s *ContactCenterInsightsServer) UpdateConversation(ctx context.Context, re
 	obj := &pb.Conversation{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "No conversation found for project: `%d` and conversation Id: `%s`.", name.Project.Number, name.Conversation)
+			return nil, status.Errorf(codes.NotFound, "No conversation found for project %d and conversation ID %s.", name.Project.Number, name.Conversation)
 		}
 		return nil, err
 	}
@@ -128,7 +128,7 @@ func (s *ContactCenterInsightsServer) DeleteConversation(ctx context.Context, re
 	obj := &pb.Conversation{}
 	if err := s.storage.Delete(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "No conversation found for project: `%d` and conversation Id: `%s`.", name.Project.Number, name.Conversation)
+			return nil, status.Errorf(codes.NotFound, "No conversation found for project %d and conversation ID %s.", name.Project.Number, name.Conversation)
 		}
 		return nil, err
 	}
