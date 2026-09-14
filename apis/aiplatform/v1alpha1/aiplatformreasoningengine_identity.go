@@ -66,6 +66,7 @@ func (i *AIPlatformReasoningEngineIdentity) Host() string {
 }
 
 func getIdentityFromAIPlatformReasoningEngineSpec(ctx context.Context, reader client.Reader, obj *AIPlatformReasoningEngine) (*AIPlatformReasoningEngineIdentity, error) {
+	// AIPlatformReasoningEngine supports service-generated ID in addition to user-specified ID.
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")

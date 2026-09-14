@@ -17,7 +17,6 @@ package v1alpha1
 import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -50,16 +49,16 @@ type AIPlatformReasoningEngineSpec struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ReasoningEngine.spec
 	Spec *ReasoningEngineSpec `json:"spec,omitempty"`
 
-	// Optional. Used to perform consistent read-modify-write updates. If not set,
-	//  a blind "overwrite" update happens.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ReasoningEngine.etag
-	Etag *string `json:"etag,omitempty"`
-
 	// Customer-managed encryption key spec for a ReasoningEngine. If set, this
 	//  ReasoningEngine and all sub-resources of this ReasoningEngine will be
 	//  secured by this key.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ReasoningEngine.encryption_spec
 	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
+
+	// Optional. The labels with user-defined metadata to organize your
+	//  ReasoningEngine.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ReasoningEngine.labels
+	Labels map[string]string `json:"labels,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.ReasoningEngineSpec
@@ -70,7 +69,7 @@ type ReasoningEngineSpec struct {
 	//  not specified, the Vertex AI Reasoning Engine Service Agent in the project
 	//  will be used.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ReasoningEngineSpec.service_account
-	ServiceAccount *string `json:"serviceAccount,omitempty"`
+	ServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
 
 	// Optional. User provided package spec of the ReasoningEngine.
 	//  Ignored when users directly specify a deployment image through
@@ -82,11 +81,6 @@ type ReasoningEngineSpec struct {
 	// Optional. The specification of a Reasoning Engine deployment.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ReasoningEngineSpec.deployment_spec
 	DeploymentSpec *ReasoningEngineSpec_DeploymentSpec `json:"deploymentSpec,omitempty"`
-
-	// Optional. Declarations for object class methods in OpenAPI specification
-	//  format.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ReasoningEngineSpec.class_methods
-	ClassMethods []apiextensionsv1.JSON `json:"classMethods,omitempty"`
 
 	// Optional. The OSS agent framework used to develop the agent.
 	//  Currently supported values: "google-adk", "langchain", "langgraph", "ag2",
@@ -226,4 +220,18 @@ type AIPlatformReasoningEngineList struct {
 
 func init() {
 	SchemeBuilder.Register(&AIPlatformReasoningEngine{}, &AIPlatformReasoningEngineList{})
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.SecretRef
+type SecretRef struct {
+	// Required. Reference to a secret stored in the Cloud Secret Manager that
+	//  will provide the value for this environment variable.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.SecretRef.secret
+	SecretRef *refsv1beta1.SecretManagerSecretRef `json:"secretRef,omitempty"`
+
+	// The Cloud Secret Manager secret version.
+	//  Can be 'latest' for the latest version, an integer for a specific
+	//  version, or a version alias.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.SecretRef.version
+	VersionRef *refsv1beta1.SecretManagerSecretVersionRef `json:"versionRef,omitempty"`
 }
