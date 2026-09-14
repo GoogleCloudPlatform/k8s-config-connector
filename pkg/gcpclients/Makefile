@@ -1,5 +1,5 @@
 GOOGLEAPI_VERSION?=$(shell grep https://github.com/googleapis/googleapis ../../apis/git.versions | awk '{print $$2}' )
-GOLANG_X_TOOLS_VERSION?=$(shell grep -E '^\s*golang.org/x/tools\s+' ../../go.mod | awk '{print $$2}')
+GOLANG_X_TOOLS_VERSION?=$(shell awk '/^[[:space:]]*golang\.org\/x\/tools[[:space:]]+/{print $$2}' ../../go.mod)
 
 .PHONY: generate-grpc-for-google-protos
 generate-grpc-for-google-protos: tools
