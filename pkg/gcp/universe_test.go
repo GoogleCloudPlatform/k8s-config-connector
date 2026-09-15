@@ -15,6 +15,7 @@
 package gcp_test
 
 import (
+	"net/http"
 	"os"
 	"testing"
 
@@ -123,5 +124,36 @@ func TestFormatEndpoint(t *testing.T) {
 	os.Setenv(gcp.UniverseDomainEnvVar, "custom.universe.goog")
 	if ep := gcp.FormatEndpoint("pubsub", ""); ep != "pubsub.custom.universe.goog:443" {
 		t.Errorf("expected pubsub.custom.universe.goog:443, got %q", ep)
+	}
+}
+
+type mockRoundTripper struct {
+	lastReq *http.Request
+}
+
+func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+	m.lastReq = req
+	return &http.Response{StatusCode: 200}, nil
+}
+
+func TestUniverseDomainRoundTripper(t *testing.T) {
+	mock := &mockRoundTripper{}
+	rt := gcp.NewUniverseDomainRoundTripper(mock, "custom.universe.goog")
+
+	req, err := http.NewRequest("GET", "https://compute.googleapis.com/compute/v1/projects/partition:sample-project/global/networks", nil)
+	if err != nil {
+		t.Fatalf("unexpected error creating request: %v", err)
+	}
+
+	_, err = rt.RoundTrip(req)
+	if err != nil {
+		t.Fatalf("unexpected error in RoundTrip: %v", err)
+	}
+
+	if mock.lastReq.URL.Host != "compute.custom.universe.goog" {
+		t.Errorf("expected host compute.custom.universe.goog, got %q", mock.lastReq.URL.Host)
+	}
+	if mock.lastReq.Host != "compute.custom.universe.goog" {
+		t.Errorf("expected req.Host compute.custom.universe.goog, got %q", mock.lastReq.Host)
 	}
 }

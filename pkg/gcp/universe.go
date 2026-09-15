@@ -16,6 +16,7 @@ package gcp
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 	"strings"
 )
@@ -56,4 +57,41 @@ func FormatEndpoint(service string, location string) string {
 // FormatRESTURL constructs the base URL for REST-based service clients.
 func FormatRESTURL(service string) string {
 	return fmt.Sprintf("https://%s.%s", service, GetUniverseDomain())
+}
+
+// universeDomainRoundTripper intercepts outbound HTTP requests targeting commercial
+// *.googleapis.com endpoints and rewrites them to the configured sovereign universe domain.
+type universeDomainRoundTripper struct {
+	base           http.RoundTripper
+	universeDomain string
+}
+
+// NewUniverseDomainRoundTripper wraps an http.RoundTripper to rewrite *.googleapis.com
+// hosts to *.<universeDomain> when operating in a non-default sovereign universe.
+func NewUniverseDomainRoundTripper(base http.RoundTripper, universeDomain string) http.RoundTripper {
+	if base == nil {
+		base = http.DefaultTransport
+	}
+	if universeDomain == "" {
+		universeDomain = GetUniverseDomain()
+	}
+	if universeDomain == "" || universeDomain == DefaultUniverseDomain {
+		return base
+	}
+	return &universeDomainRoundTripper{
+		base:           base,
+		universeDomain: universeDomain,
+	}
+}
+
+func (t *universeDomainRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+	if t.universeDomain != "" && t.universeDomain != DefaultUniverseDomain && req.URL != nil {
+		if strings.Contains(req.URL.Host, ".googleapis.com") {
+			clonedReq := req.Clone(req.Context())
+			clonedReq.URL.Host = strings.Replace(clonedReq.URL.Host, ".googleapis.com", "."+t.universeDomain, 1)
+			clonedReq.Host = clonedReq.URL.Host
+			return t.base.RoundTrip(clonedReq)
+		}
+	}
+	return t.base.RoundTrip(req)
 }
