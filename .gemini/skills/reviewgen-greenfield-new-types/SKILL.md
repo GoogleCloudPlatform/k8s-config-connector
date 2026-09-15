@@ -19,7 +19,7 @@ Please respect the following review criteria and invariants when reviewing.
 
 ## 3. Pointers (Go Types)
 *   For `${resource_name}_types.go`, review the field comments (e.g., Kubebuilder tags indicating `required` or `optional`).
-*   **Strict Rule:** If a field is a Go scalar primitive type (e.g., `string`, `bool`, `int`, `int32`, `int64`, `float64`), it **must be a pointer** (e.g., `*string`, `*bool`), regardless of whether it is optional or required.
+*   **Strict Rule:** If a field is a Go scalar primitive type (e.g., `string`, `bool`, `int`, `int32`, `int64`, `float64`), it **must be a pointer** (e.g., `*string`, `*bool`), regardless of whether it is optional or required. **Pay special attention to the `Location` field**, which must also be a pointer.
 *   **Collection Exception:** Do **not** make slice fields (e.g., `[]string`) or map fields (e.g., `map[string]string`) pointers (i.e., do not write `*[]string` or `*map[string]string`).
 
 ## 4. References & Identity
@@ -39,6 +39,9 @@ Please respect the following review criteria and invariants when reviewing.
     *   [Kubernetes Resource Management Design Proposal](https://github.com/kubernetes/design-proposals-archive/blob/main/architecture/resource-management.md)
     *   [Kubernetes API Conventions](https://github.com/kubernetes/community/blob/main/contributors/devel/sig-architecture/api-conventions.md)
 
+## 6. Exception Files
+*   Greenfield PRs must **not** add exceptions to any exception files (e.g., tracking omitted fields, unmapped types) with the sole exception of `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
+
 # Review Comment Template
 When proposing changes or stating LGTM, format the review description as follows:
 
@@ -46,9 +49,11 @@ When proposing changes or stating LGTM, format the review description as follows
 ### KCC Auto-Review Results
 * **Trigger criteria matched**: [Yes/No]
 * **API Version Check**: [Pass/Fail] - (Specify paths/versions checked)
-* **Go Type Pointers**: [Pass/Fail] - (List any non-pointer primitives found)
+* **Go Type Pointers**: [Pass/Fail] - (List any non-pointer primitives found, especially `Location`)
 * **Completeness & Heuristics**: [Pass/Fail] - (List any missing or incorrectly mapped fields)
+* **1:1 Kind to Proto Mapping**: [Pass/Fail] - (List any shared Protos or Kinds pointing to multiple Protos)
 * **References/Identity**: [Pass/Fail] - (List any missing resource references)
+* **Exception Files**: [Pass/Fail] - (List any modified exception files other than tests/apichecks/testdata/exceptions/alpha-missingfields.txt)
 
 #### Detailed Findings / Actions Required:
 1. [Specify file, line number, and exact issue]
