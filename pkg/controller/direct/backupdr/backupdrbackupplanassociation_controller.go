@@ -74,6 +74,15 @@ func (m *modelBackupPlanAssociation) AdapterForObject(ctx context.Context, op *d
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
+	// Resolve SQLInstanceRef if present
+	if obj.Spec.Resource != nil && obj.Spec.Resource.SQLInstanceRef != nil {
+		sqlInst, err := refs.ResolveSQLInstanceRef(ctx, reader, obj, obj.Spec.Resource.SQLInstanceRef)
+		if err != nil {
+			return nil, fmt.Errorf("resolving SQLInstanceRef: %w", err)
+		}
+		obj.Spec.Resource.SQLInstanceRef.External = sqlInst.String()
+	}
+
 	// Get backupdr GCP client
 	gcpClient, err := newGCPClient(ctx, &m.config)
 	if err != nil {
