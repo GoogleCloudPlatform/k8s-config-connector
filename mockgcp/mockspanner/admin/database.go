@@ -87,6 +87,25 @@ func (s *SpannerDatabaseV1) CreateDatabase(ctx context.Context, req *pb.CreateDa
 	obj.EncryptionConfig = req.EncryptionConfig
 	obj.State = pb.Database_READY
 	obj.CreateTime = timestamppb.Now()
+	obj.EarliestVersionTime = obj.CreateTime
+	if obj.EncryptionConfig != nil {
+		kmsKeyName := obj.EncryptionConfig.KmsKeyName
+		if kmsKeyName == "" && len(obj.EncryptionConfig.KmsKeyNames) > 0 {
+			kmsKeyName = obj.EncryptionConfig.KmsKeyNames[0]
+		}
+		obj.EncryptionInfo = []*pb.EncryptionInfo{
+			{
+				EncryptionType: pb.EncryptionInfo_CUSTOMER_MANAGED_ENCRYPTION,
+				KmsKeyVersion:  kmsKeyName + "/keyVersions/1",
+			},
+		}
+	} else {
+		obj.EncryptionInfo = []*pb.EncryptionInfo{
+			{
+				EncryptionType: pb.EncryptionInfo_GOOGLE_DEFAULT_ENCRYPTION,
+			},
+		}
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
