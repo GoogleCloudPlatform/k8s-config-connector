@@ -264,6 +264,7 @@ func (a *TagsTagKeyAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	}
 	req.UpdateMask = updateMask
 
+	diff.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diff)
 
 	latest := a.actual
