@@ -25,9 +25,11 @@ import (
 
 var _ refsv1beta1.Ref = &CloudDMSConnectionProfileRef{}
 
-var CloudDMSConnectionProfileGVK = GroupVersion.WithKind("CloudDMSConnectionProfile")
+func init() {
+	refsv1beta1.Register(&CloudDMSConnectionProfileRef{}, &CloudDMSConnectionProfile{})
+}
 
-// CloudDMSConnectionProfileRef is a reference to a CloudDMSConnectionProfile resource.
+// CloudDMSConnectionProfileRef is a reference to a CloudDMSConnectionProfile.
 type CloudDMSConnectionProfileRef struct {
 	// A reference to an externally managed CloudDMSConnectionProfile resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/connectionProfiles/{{connectionProfileID}}".
@@ -62,11 +64,19 @@ func (r *CloudDMSConnectionProfileRef) SetExternal(ref string) {
 }
 
 func (r *CloudDMSConnectionProfileRef) ValidateExternal(ref string) error {
-	id := &ConnectionProfileIdentity{}
-	if err := id.FromExternal(r.GetExternal()); err != nil {
+	id := &CloudDMSConnectionProfileIdentity{}
+	if err := id.FromExternal(ref); err != nil {
 		return err
 	}
 	return nil
+}
+
+func (r *CloudDMSConnectionProfileRef) ParseExternalToIdentity() (interface{}, error) {
+	id := &CloudDMSConnectionProfileIdentity{}
+	if err := id.FromExternal(r.GetExternal()); err != nil {
+		return nil, err
+	}
+	return id, nil
 }
 
 func (r *CloudDMSConnectionProfileRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
