@@ -112,10 +112,32 @@ spec:
                 description: 'Required. Immutable. The deployment group that this
                   deployment is a part of, for example: `projects/123456789/locations/global/mirroringDeploymentGroups/my-dg`.
                   See https://google.aip.dev/124.'
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
                 properties:
                   external:
                     description: A reference to an externally managed NetworkSecurityMirroringDeploymentGroup
-                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/mirroringDeploymentGroups/{{mirroringDeploymentGroupID}}".
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/mirroringDeploymentGroups/{{mirroring_deployment_group}}".
+                    type: string
+                  name:
+                    description: The name of a NetworkSecurityMirroringDeploymentGroup
+                      resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a NetworkSecurityMirroringDeploymentGroup
+                      resource.
                     type: string
                 type: object
               projectRef:
