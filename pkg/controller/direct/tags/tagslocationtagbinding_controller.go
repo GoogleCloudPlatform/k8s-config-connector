@@ -245,6 +245,7 @@ func (a *TagsLocationTagBindingAdapter) Update(ctx context.Context, updateOp *di
 		return fmt.Errorf("getting changed fields for TagsLocationTagBinding %q: %w", fqn, err)
 	}
 
+	diff.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diff)
 
 	if len(updateMask.Paths) != 0 {
