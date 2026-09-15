@@ -93,6 +93,126 @@ func TestDecideActuationMode(t *testing.T) {
 	}
 }
 
+func TestShouldSkipActuation(t *testing.T) {
+	tests := []struct {
+		name        string
+		annotations map[string]string
+		isDeleting  bool
+		cc          opv1beta1.ConfigConnector
+		ccc         opv1beta1.ConfigConnectorContext
+		wantSkip    bool
+		wantErr     bool
+	}{
+		{
+			name:        "no annotations: CC/CCC default to Reconciling (do not skip)",
+			annotations: nil,
+			isDeleting:  false,
+			cc:          opv1beta1.ConfigConnector{},
+			ccc:         opv1beta1.ConfigConnectorContext{},
+			wantSkip:    false,
+			wantErr:     false,
+		},
+		{
+			name:        "no annotations: CCC is Paused (skip)",
+			annotations: nil,
+			isDeleting:  false,
+			cc: opv1beta1.ConfigConnector{
+				Spec: opv1beta1.ConfigConnectorSpec{
+					Mode: opk8s.NamespacedMode,
+				},
+			},
+			ccc: opv1beta1.ConfigConnectorContext{
+				Spec: opv1beta1.ConfigConnectorContextSpec{
+					Actuation: opv1beta1.Paused,
+				},
+			},
+			wantSkip: true,
+			wantErr:  false,
+		},
+		{
+			name:        "no annotations: CCC is Paused, even if deleting (skip - global pause blocks deletion)",
+			annotations: nil,
+			isDeleting:  true,
+			cc: opv1beta1.ConfigConnector{
+				Spec: opv1beta1.ConfigConnectorSpec{
+					Mode: opk8s.NamespacedMode,
+				},
+			},
+			ccc: opv1beta1.ConfigConnectorContext{
+				Spec: opv1beta1.ConfigConnectorContextSpec{
+					Actuation: opv1beta1.Paused,
+				},
+			},
+			wantSkip: true,
+			wantErr:  false,
+		},
+		{
+			name: "resource annotation is Paused, not deleting (skip)",
+			annotations: map[string]string{
+				"cnrm.cloud.google.com/actuation-mode": "Paused",
+			},
+			isDeleting: false,
+			cc:         opv1beta1.ConfigConnector{},
+			ccc:        opv1beta1.ConfigConnectorContext{},
+			wantSkip:   true,
+			wantErr:    false,
+		},
+		{
+			name: "resource annotation is Paused, is deleting (do not skip - deletion unblocked at resource level)",
+			annotations: map[string]string{
+				"cnrm.cloud.google.com/actuation-mode": "Paused",
+			},
+			isDeleting: true,
+			cc:         opv1beta1.ConfigConnector{},
+			ccc:        opv1beta1.ConfigConnectorContext{},
+			wantSkip:   false,
+			wantErr:    false,
+		},
+		{
+			name: "resource annotation is Reconciling, CCC is Paused (do not skip - resource-level override)",
+			annotations: map[string]string{
+				"cnrm.cloud.google.com/actuation-mode": "Reconciling",
+			},
+			isDeleting: false,
+			cc: opv1beta1.ConfigConnector{
+				Spec: opv1beta1.ConfigConnectorSpec{
+					Mode: opk8s.NamespacedMode,
+				},
+			},
+			ccc: opv1beta1.ConfigConnectorContext{
+				Spec: opv1beta1.ConfigConnectorContextSpec{
+					Actuation: opv1beta1.Paused,
+				},
+			},
+			wantSkip: false,
+			wantErr:  false,
+		},
+		{
+			name: "resource annotation is invalid value (returns error)",
+			annotations: map[string]string{
+				"cnrm.cloud.google.com/actuation-mode": "invalid-value",
+			},
+			isDeleting: false,
+			cc:         opv1beta1.ConfigConnector{},
+			ccc:        opv1beta1.ConfigConnectorContext{},
+			wantSkip:   false,
+			wantErr:    true,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			skip, err := resourceactuation.ShouldSkipActuation(test.annotations, test.isDeleting, test.cc, test.ccc)
+			if (err != nil) != test.wantErr {
+				t.Fatalf("ShouldSkipActuation() error = %v, wantErr %v", err, test.wantErr)
+			}
+			if skip != test.wantSkip {
+				t.Errorf("ShouldSkipActuation() skip = %t, wantSkip %t", skip, test.wantSkip)
+			}
+		})
+	}
+}
+
 func TestShouldSkip(t *testing.T) {
 	testcases := []struct {
 		name               string
