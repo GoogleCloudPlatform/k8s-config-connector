@@ -1,16 +1,16 @@
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/backendServices/computeurlmap-kompanion-default-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeBackendService
   name: computeurlmap-kompanion-default-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/backendServices/computeurlmap-kompanion-chaosmonkey-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeBackendService
   name: computeurlmap-kompanion-chaosmonkey-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/backendServices/computeurlmap-kompanion-chaosmonkeymulti-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeBackendService
   name: computeurlmap-kompanion-chaosmonkeymulti-${uniqueId}
