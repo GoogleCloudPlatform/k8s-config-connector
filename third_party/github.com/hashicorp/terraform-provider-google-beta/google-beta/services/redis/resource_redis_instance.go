@@ -1024,9 +1024,8 @@ func resourceRedisInstanceUpdate(d *schema.ResourceData, meta interface{}) error
 		updateMask = append(updateMask, "readReplicasMode")
 	}
 
-	if d.HasChange("secondary_ip_range") {
-		updateMask = append(updateMask, "secondaryIpRange")
-	}
+	// secondary_ip_range is immutable in the GCP API and cannot be patched.
+	// We must not append "secondaryIpRange" to updateMask.
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
 	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
