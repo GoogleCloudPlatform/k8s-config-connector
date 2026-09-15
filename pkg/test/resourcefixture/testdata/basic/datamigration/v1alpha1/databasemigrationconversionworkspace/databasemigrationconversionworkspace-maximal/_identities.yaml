@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //datamigration.googleapis.com/projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-max-${uniqueId}
   group: datamigration.cnrm.cloud.google.com
   kind: DatabaseMigrationConversionWorkspace
   name: db-mw-max-${uniqueId}
