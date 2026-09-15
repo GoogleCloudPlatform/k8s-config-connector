@@ -195,6 +195,7 @@ func (a *kmsCryptoKeyAdapter) Update(ctx context.Context, updateOp *directbase.U
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &kmspb.UpdateCryptoKeyRequest{
