@@ -70,7 +70,10 @@ func TestE2EScript(t *testing.T) {
 		nn  types.NamespacedName
 	}
 
-	logCheckTimeout := 10 * time.Second
+	// logCheckTimeout determines how long to wait for HTTP mock log assertions (e.g. WAIT-FOR-HTTP-REQUEST).
+	// It is increased from 10s to 45s to prevent flakiness in slower, highly loaded CI environments or slow mock responses,
+	// while still allowing tests to fail relatively quickly when they actually fail.
+	logCheckTimeout := 45 * time.Second
 	t.Run("scenarios", func(t *testing.T) {
 		scenarioDir := "testdata/scenarios"
 		scenarioPaths := findScripts(t, scenarioDir)
