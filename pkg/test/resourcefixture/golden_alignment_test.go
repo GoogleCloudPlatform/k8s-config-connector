@@ -465,6 +465,7 @@ func cleanURL(u string) string {
 		u = u[slashIdx:]
 	}
 	u = regexp.MustCompile(`/instanceGroupManagers/gke-.*-grp`).ReplaceAllString(u, "/instanceGroupManagers/gke-containercluster-normalized-grp")
+	u = regexp.MustCompile(`/schedules/([0-9]+|\$\{scheduleID\})`).ReplaceAllString(u, "/schedules/normalized-schedule-id")
 	return u
 }
 
@@ -477,6 +478,11 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 	uuidRegex := regexp.MustCompile(`[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}`)
 	realJSON = uuidRegex.ReplaceAllString(realJSON, "00000000-0000-0000-0000-000000000001")
 	mockJSON = uuidRegex.ReplaceAllString(mockJSON, "00000000-0000-0000-0000-000000000001")
+
+	// Normalize any schedule numeric IDs to align real and mock logs
+	scheduleIDRegex := regexp.MustCompile(`schedules/([0-9]+|\$\{scheduleID\})`)
+	realJSON = scheduleIDRegex.ReplaceAllString(realJSON, "schedules/normalized-schedule-id")
+	mockJSON = scheduleIDRegex.ReplaceAllString(mockJSON, "schedules/normalized-schedule-id")
 
 	// Normalize aiplatform v1beta1 to v1 to align real and mock logs
 	realJSON = strings.ReplaceAll(realJSON, "aiplatform.v1beta1", "aiplatform.v1")
