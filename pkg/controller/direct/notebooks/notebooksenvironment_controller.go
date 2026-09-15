@@ -189,6 +189,7 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	return fmt.Errorf("NotebooksEnvironment resource is immutable and cannot be updated")
