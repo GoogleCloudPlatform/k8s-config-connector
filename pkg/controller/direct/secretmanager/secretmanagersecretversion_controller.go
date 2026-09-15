@@ -17,6 +17,7 @@ package secretmanager
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"encoding/base64"
 
@@ -27,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -89,8 +91,20 @@ func (m *modelSecretVersion) AdapterForObject(ctx context.Context, op *directbas
 }
 
 func (m *modelSecretVersion) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+	u := strings.TrimPrefix(url, "//secretmanager.googleapis.com/")
+	u = strings.TrimPrefix(u, "/")
+	id, err := krm.ParseSecretVersionExternal(u)
+	if err != nil {
+		return nil, nil
+	}
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &SecretVersionAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type SecretVersionAdapter struct {
@@ -258,7 +272,11 @@ func (a *SecretVersionAdapter) Export(ctx context.Context) (*unstructured.Unstru
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
-	u := &unstructured.Unstructured{}
+
+	id, err := krm.ParseSecretVersionExternal(a.actual.Name)
+	if err != nil {
+		return nil, err
+	}
 
 	obj := &krm.SecretManagerSecretVersion{}
 	mapCtx := &direct.MapContext{}
@@ -266,18 +284,35 @@ func (a *SecretVersionAdapter) Export(ctx context.Context) (*unstructured.Unstru
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+
+	obj.Spec.ResourceID = direct.LazyPtr(id.ID())
+	obj.Spec.SecretRef = &krm.SecretRef{
+		External: id.Parent().String(),
+	}
+	if a.actual.State == pb.SecretVersion_ENABLED {
+		obj.Spec.Enabled = direct.LazyPtr(true)
+	} else if a.actual.State == pb.SecretVersion_DISABLED || a.actual.State == pb.SecretVersion_DESTROYED {
+		obj.Spec.Enabled = direct.LazyPtr(false)
+	}
+	// Note: obj.Spec.SecretData is intentionally omitted during export to prevent secret payload leakage.
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
-	id, err := krm.ParseSecretVersionExternal(a.actual.Name)
-	if err != nil {
-		return nil, err
+
+	u := &unstructured.Unstructured{
+		Object: uObj,
 	}
 	u.SetName(id.ID())
 	u.SetGroupVersionKind(krm.SecretManagerSecretVersionGVK)
+	k8s.SetAnnotation(k8s.ProjectIDAnnotation, id.Parent().ProjectID, u)
+	if a.actual.State == pb.SecretVersion_DISABLED || a.actual.State == pb.SecretVersion_DESTROYED {
+		if err := unstructured.SetNestedField(u.Object, false, "spec", "enabled"); err != nil {
+			return nil, err
+		}
+	}
 
-	u.Object = uObj
 	return u, nil
 }
 

@@ -34,7 +34,10 @@ type SecretVersionIdentity struct {
 // If not, Config Connector saves one GCP GET call, and starts the CREATE call directly.
 // This is mostly for GCP services that do not allow user to specify ID, but assign an ID when creating the object.
 func (i *SecretVersionIdentity) HasKnownID() bool {
-	return *i.serviceGeneratedIDKnown
+	if i.serviceGeneratedIDKnown != nil {
+		return *i.serviceGeneratedIDKnown
+	}
+	return i.id != ""
 }
 
 func (i *SecretVersionIdentity) String() string {
