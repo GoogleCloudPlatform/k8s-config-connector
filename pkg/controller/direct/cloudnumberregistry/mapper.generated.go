@@ -24,10 +24,10 @@
 package cloudnumberregistry
 
 import (
-	pb "cloud.google.com/go/numberregistry/apiv1alpha/numberregistrypb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudnumberregistry/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/cloudnumberregistry/pb"
 )
 
 func CloudNumberRegistryIpamAdminScopeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.IpamAdminScope) *krm.CloudNumberRegistryIpamAdminScopeObservedState {
