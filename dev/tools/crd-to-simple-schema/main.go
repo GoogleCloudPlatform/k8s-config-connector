@@ -237,6 +237,9 @@ func printMapDiff(out io.Writer, prefix string, m1, m2 map[string]string) {
 	}
 
 	for _, k := range slices.Sorted(maps.Keys(keys)) {
+		if prefix == "metadata.labels" && k == "cnrm.cloud.google.com/default-controller" {
+			continue
+		}
 		v1, ok1 := m1[k]
 		v2, ok2 := m2[k]
 
