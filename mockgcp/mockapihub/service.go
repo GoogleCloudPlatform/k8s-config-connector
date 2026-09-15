@@ -21,6 +21,7 @@ package mockapihub
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/proto"
@@ -28,6 +29,7 @@ import (
 	pb "cloud.google.com/go/apihub/apiv1/apihubpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	pbhttp "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/apihub/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
@@ -66,6 +68,7 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterApiHubServer(grpcServer, s.apiHubServer)
 	pb.RegisterApiHubDependenciesServer(grpcServer, s.apiHubServer)
+	pb.RegisterApiHubCurateServer(grpcServer, s.apiHubServer)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -81,5 +84,17 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		response.Header().Del("Cache-Control")
 	}
 
-	return mux, nil
+	curateMux, err := httptogrpc.NewGRPCMux(conn)
+	if err != nil {
+		return nil, err
+	}
+	curateMux.AddService(pb.NewApiHubCurateClient(conn))
+
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if strings.Contains(r.URL.Path, "/curations") {
+			curateMux.ServeHTTP(w, r)
+			return
+		}
+		mux.ServeHTTP(w, r)
+	}), nil
 }
