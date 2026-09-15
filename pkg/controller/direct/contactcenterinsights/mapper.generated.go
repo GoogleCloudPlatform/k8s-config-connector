@@ -297,6 +297,52 @@ func ArticleSuggestionData_ToProto(mapCtx *direct.MapContext, in *krm.ArticleSug
 	out.Source = direct.ValueOf(in.Source)
 	return out
 }
+func CCInsightsAnalysisRuleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AnalysisRule) *krm.CCInsightsAnalysisRuleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CCInsightsAnalysisRuleObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func CCInsightsAnalysisRuleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsAnalysisRuleObservedState) *pb.AnalysisRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AnalysisRule{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func CCInsightsAnalysisRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.AnalysisRule) *krm.CCInsightsAnalysisRuleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CCInsightsAnalysisRuleSpec{}
+	// MISSING: Name
+	out.DisplayName = in.DisplayName
+	out.ConversationFilter = direct.LazyPtr(in.GetConversationFilter())
+	out.AnnotatorSelector = CCInsightsAnalysisRuleAnnotatorSelector_FromProto(mapCtx, in.GetAnnotatorSelector())
+	out.AnalysisPercentage = direct.LazyPtr(in.GetAnalysisPercentage())
+	out.Active = direct.LazyPtr(in.GetActive())
+	return out
+}
+func CCInsightsAnalysisRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsAnalysisRuleSpec) *pb.AnalysisRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AnalysisRule{}
+	// MISSING: Name
+	out.DisplayName = in.DisplayName
+	out.ConversationFilter = direct.ValueOf(in.ConversationFilter)
+	out.AnnotatorSelector = CCInsightsAnalysisRuleAnnotatorSelector_ToProto(mapCtx, in.AnnotatorSelector)
+	out.AnalysisPercentage = direct.ValueOf(in.AnalysisPercentage)
+	out.Active = direct.ValueOf(in.Active)
+	return out
+}
 func CCInsightsConversationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Conversation) *krm.CCInsightsConversationObservedState {
 	if in == nil {
 		return nil
