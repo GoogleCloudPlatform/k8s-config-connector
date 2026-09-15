@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetworkEndpointGroup
 metadata:
-  name: computenetworkendpointgroup-${uniqueId}
+  name: neg-${uniqueId}
 spec:
   networkRef:
-    name: default
+    name: net-${uniqueId}
   subnetworkRef:
-    name: default
+    name: subnet-${uniqueId}
   location: us-central1-a
   defaultPort: 90
