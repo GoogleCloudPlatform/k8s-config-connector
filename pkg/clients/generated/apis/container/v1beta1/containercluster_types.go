@@ -108,6 +108,10 @@ type ClusterAddonsConfig struct {
 	/* The status of the Parallelstore CSI driver addon, which allows the usage of Parallelstore instance as volumes. Defaults to disabled; set enabled = true to enable. */
 	// +optional
 	ParallelstoreCsiDriverConfig *ClusterParallelstoreCsiDriverConfig `json:"parallelstoreCsiDriverConfig,omitempty"`
+
+	/* The status of the Lustre CSI driver addon, which allows the usage of Lustre instances as volumes. Defaults to disabled; set enabled = true to enable. */
+	// +optional
+	LustreCsiDriverConfig *ClusterLustreCsiDriverConfig `json:"lustreCsiDriverConfig,omitempty"`
 }
 
 type ClusterAdvancedDatapathObservabilityConfig struct {
@@ -1001,6 +1005,12 @@ type ClusterNotificationConfig struct {
 
 type ClusterParallelstoreCsiDriverConfig struct {
 	Enabled bool `json:"enabled"`
+}
+
+type ClusterLustreCsiDriverConfig struct {
+	Enabled bool `json:"enabled"`
+	// +optional
+	EnableLegacyLustrePort *bool `json:"enableLegacyLustrePort,omitempty"`
 }
 
 type ClusterPassword struct {

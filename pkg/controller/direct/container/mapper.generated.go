@@ -204,6 +204,7 @@ func AddonsConfig_FromProto(mapCtx *direct.MapContext, in *pb.AddonsConfig) *krm
 	// MISSING: RayOperatorConfig
 	// MISSING: HighScaleCheckpointingConfig
 	// MISSING: LustreCsiDriverConfig
+	// (near miss): "LustreCsiDriverConfig" vs "LustreCSIDriverConfig"
 	return out
 }
 func AddonsConfig_ToProto(mapCtx *direct.MapContext, in *krm.AddonsConfig) *pb.AddonsConfig {
@@ -231,6 +232,7 @@ func AddonsConfig_ToProto(mapCtx *direct.MapContext, in *krm.AddonsConfig) *pb.A
 	// MISSING: RayOperatorConfig
 	// MISSING: HighScaleCheckpointingConfig
 	// MISSING: LustreCsiDriverConfig
+	// (near miss): "LustreCsiDriverConfig" vs "LustreCSIDriverConfig"
 	return out
 }
 func AdvancedDatapathObservabilityConfig_FromProto(mapCtx *direct.MapContext, in *pb.AdvancedDatapathObservabilityConfig) *krm.AdvancedDatapathObservabilityConfig {
@@ -1521,6 +1523,24 @@ func LoggingConfig_ToProto(mapCtx *direct.MapContext, in *krm.LoggingConfig) *pb
 	}
 	out := &pb.LoggingConfig{}
 	// MISSING: ComponentConfig
+	return out
+}
+func LustreCSIDriverConfig_FromProto(mapCtx *direct.MapContext, in *pb.LustreCsiDriverConfig) *krm.LustreCSIDriverConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LustreCSIDriverConfig{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	out.EnableLegacyLustrePort = direct.LazyPtr(in.GetEnableLegacyLustrePort())
+	return out
+}
+func LustreCSIDriverConfig_ToProto(mapCtx *direct.MapContext, in *krm.LustreCSIDriverConfig) *pb.LustreCsiDriverConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LustreCsiDriverConfig{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	out.EnableLegacyLustrePort = direct.ValueOf(in.EnableLegacyLustrePort)
 	return out
 }
 func MaintenanceExclusionOptions_FromProto(mapCtx *direct.MapContext, in *pb.MaintenanceExclusionOptions) *krm.MaintenanceExclusionOptions {
