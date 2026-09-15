@@ -113,6 +113,16 @@ func (in *AssuredWorkloadsWorkloadSpec) DeepCopyInto(out *AssuredWorkloadsWorklo
 		*out = new(bool)
 		**out = **in
 	}
+	if in.Location != nil {
+		in, out := &in.Location, &out.Location
+		*out = new(string)
+		**out = **in
+	}
+	if in.OrganizationRef != nil {
+		in, out := &in.OrganizationRef, &out.OrganizationRef
+		*out = new(k8sv1alpha1.ResourceRef)
+		**out = **in
+	}
 	if in.Partner != nil {
 		in, out := &in.Partner, &out.Partner
 		*out = new(string)

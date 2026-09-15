@@ -24,34 +24,34 @@ package v1alpha1
 import (
 	http "net/http"
 
-	modelarmorv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/modelarmor/v1alpha1"
+	cloudnumberregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudnumberregistry/v1alpha1"
 	scheme "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/scheme"
 	rest "k8s.io/client-go/rest"
 )
 
-type ModelarmorV1alpha1Interface interface {
+type CloudnumberregistryV1alpha1Interface interface {
 	RESTClient() rest.Interface
-	ModelArmorFloorSettingsGetter
-	ModelArmorTemplatesGetter
+	CloudNumberRegistryCustomRangesGetter
+	CloudNumberRegistryRegistryBooksGetter
 }
 
-// ModelarmorV1alpha1Client is used to interact with features provided by the modelarmor.cnrm.cloud.google.com group.
-type ModelarmorV1alpha1Client struct {
+// CloudnumberregistryV1alpha1Client is used to interact with features provided by the cloudnumberregistry.cnrm.cloud.google.com group.
+type CloudnumberregistryV1alpha1Client struct {
 	restClient rest.Interface
 }
 
-func (c *ModelarmorV1alpha1Client) ModelArmorFloorSettings(namespace string) ModelArmorFloorSettingInterface {
-	return newModelArmorFloorSettings(c, namespace)
+func (c *CloudnumberregistryV1alpha1Client) CloudNumberRegistryCustomRanges(namespace string) CloudNumberRegistryCustomRangeInterface {
+	return newCloudNumberRegistryCustomRanges(c, namespace)
 }
 
-func (c *ModelarmorV1alpha1Client) ModelArmorTemplates(namespace string) ModelArmorTemplateInterface {
-	return newModelArmorTemplates(c, namespace)
+func (c *CloudnumberregistryV1alpha1Client) CloudNumberRegistryRegistryBooks(namespace string) CloudNumberRegistryRegistryBookInterface {
+	return newCloudNumberRegistryRegistryBooks(c, namespace)
 }
 
-// NewForConfig creates a new ModelarmorV1alpha1Client for the given config.
+// NewForConfig creates a new CloudnumberregistryV1alpha1Client for the given config.
 // NewForConfig is equivalent to NewForConfigAndClient(c, httpClient),
 // where httpClient was generated with rest.HTTPClientFor(c).
-func NewForConfig(c *rest.Config) (*ModelarmorV1alpha1Client, error) {
+func NewForConfig(c *rest.Config) (*CloudnumberregistryV1alpha1Client, error) {
 	config := *c
 	setConfigDefaults(&config)
 	httpClient, err := rest.HTTPClientFor(&config)
@@ -61,21 +61,21 @@ func NewForConfig(c *rest.Config) (*ModelarmorV1alpha1Client, error) {
 	return NewForConfigAndClient(&config, httpClient)
 }
 
-// NewForConfigAndClient creates a new ModelarmorV1alpha1Client for the given config and http client.
+// NewForConfigAndClient creates a new CloudnumberregistryV1alpha1Client for the given config and http client.
 // Note the http client provided takes precedence over the configured transport values.
-func NewForConfigAndClient(c *rest.Config, h *http.Client) (*ModelarmorV1alpha1Client, error) {
+func NewForConfigAndClient(c *rest.Config, h *http.Client) (*CloudnumberregistryV1alpha1Client, error) {
 	config := *c
 	setConfigDefaults(&config)
 	client, err := rest.RESTClientForConfigAndClient(&config, h)
 	if err != nil {
 		return nil, err
 	}
-	return &ModelarmorV1alpha1Client{client}, nil
+	return &CloudnumberregistryV1alpha1Client{client}, nil
 }
 
-// NewForConfigOrDie creates a new ModelarmorV1alpha1Client for the given config and
+// NewForConfigOrDie creates a new CloudnumberregistryV1alpha1Client for the given config and
 // panics if there is an error in the config.
-func NewForConfigOrDie(c *rest.Config) *ModelarmorV1alpha1Client {
+func NewForConfigOrDie(c *rest.Config) *CloudnumberregistryV1alpha1Client {
 	client, err := NewForConfig(c)
 	if err != nil {
 		panic(err)
@@ -83,13 +83,13 @@ func NewForConfigOrDie(c *rest.Config) *ModelarmorV1alpha1Client {
 	return client
 }
 
-// New creates a new ModelarmorV1alpha1Client for the given RESTClient.
-func New(c rest.Interface) *ModelarmorV1alpha1Client {
-	return &ModelarmorV1alpha1Client{c}
+// New creates a new CloudnumberregistryV1alpha1Client for the given RESTClient.
+func New(c rest.Interface) *CloudnumberregistryV1alpha1Client {
+	return &CloudnumberregistryV1alpha1Client{c}
 }
 
 func setConfigDefaults(config *rest.Config) {
-	gv := modelarmorv1alpha1.SchemeGroupVersion
+	gv := cloudnumberregistryv1alpha1.SchemeGroupVersion
 	config.GroupVersion = &gv
 	config.APIPath = "/apis"
 	config.NegotiatedSerializer = rest.CodecFactoryForGeneratedClient(scheme.Scheme, scheme.Codecs).WithoutConversion()
@@ -101,7 +101,7 @@ func setConfigDefaults(config *rest.Config) {
 
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
-func (c *ModelarmorV1alpha1Client) RESTClient() rest.Interface {
+func (c *CloudnumberregistryV1alpha1Client) RESTClient() rest.Interface {
 	if c == nil {
 		return nil
 	}

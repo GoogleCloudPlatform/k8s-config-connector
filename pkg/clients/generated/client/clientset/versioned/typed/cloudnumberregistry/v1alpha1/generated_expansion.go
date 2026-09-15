@@ -21,6 +21,6 @@
 
 package v1alpha1
 
-type ModelArmorFloorSettingExpansion interface{}
+type CloudNumberRegistryCustomRangeExpansion interface{}
 
-type ModelArmorTemplateExpansion interface{}
+type CloudNumberRegistryRegistryBookExpansion interface{}
