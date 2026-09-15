@@ -473,14 +473,16 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.terminalCondition.lastTransitionTime"] = mockgcpregistry.PlaceholderTime
 
 	// Specific to RunWorkerPool
-	visitor.replacePaths[".deleteTime"] = mockgcpregistry.PlaceholderTimestamp
-	visitor.replacePaths[".expireTime"] = mockgcpregistry.PlaceholderTimestamp
-	visitor.replacePaths[".response.deleteTime"] = mockgcpregistry.PlaceholderTimestamp
-	visitor.replacePaths[".response.expireTime"] = mockgcpregistry.PlaceholderTimestamp
-	visitor.replacePaths[".metadata.deleteTime"] = mockgcpregistry.PlaceholderTimestamp
-	visitor.replacePaths[".metadata.expireTime"] = mockgcpregistry.PlaceholderTimestamp
-	visitor.replacePaths[".status.observedState.deleteTime"] = mockgcpregistry.PlaceholderTimestamp
-	visitor.replacePaths[".status.observedState.expireTime"] = mockgcpregistry.PlaceholderTimestamp
+	if u.GetKind() == "RunWorkerPool" {
+		visitor.replacePaths[".deleteTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".expireTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".response.deleteTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".response.expireTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".metadata.deleteTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".metadata.expireTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.deleteTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.expireTime"] = mockgcpregistry.PlaceholderTimestamp
+	}
 
 	// Specific to Workflows
 	visitor.replacePaths[".status.observedState.validateTime"] = mockgcpregistry.PlaceholderTime

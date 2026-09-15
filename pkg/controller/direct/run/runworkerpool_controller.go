@@ -259,10 +259,21 @@ func compareWorkerPool(ctx context.Context, actual, desired *pb.WorkerPool) (*st
 			if clonedDesired.Template.Revision == "" && maskedActual.Template.Revision != "" {
 				clonedDesired.Template.Revision = maskedActual.Template.Revision
 			}
-			for i := range clonedDesired.Template.Containers {
-				if i < len(maskedActual.Template.Containers) {
-					desCont := clonedDesired.Template.Containers[i]
-					actCont := maskedActual.Template.Containers[i]
+			actualContainersByName := make(map[string]*pb.Container)
+			for _, actCont := range maskedActual.Template.Containers {
+				if actCont.GetName() != "" {
+					actualContainersByName[actCont.GetName()] = actCont
+				}
+			}
+			for i, desCont := range clonedDesired.Template.Containers {
+				var actCont *pb.Container
+				if desCont.GetName() != "" {
+					actCont = actualContainersByName[desCont.GetName()]
+				}
+				if actCont == nil && i < len(maskedActual.Template.Containers) {
+					actCont = maskedActual.Template.Containers[i]
+				}
+				if actCont != nil {
 					if desCont.Resources == nil && actCont.Resources != nil {
 						desCont.Resources = actCont.Resources
 					} else if desCont.Resources != nil && actCont.Resources != nil {
