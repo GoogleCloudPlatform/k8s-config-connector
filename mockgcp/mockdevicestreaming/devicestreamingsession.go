@@ -16,7 +16,10 @@ package mockdevicestreaming
 
 import (
 	"context"
+	"crypto/rand"
+	"encoding/hex"
 	"strings"
+	"time"
 
 	pb "cloud.google.com/go/devicestreaming/apiv1/devicestreamingpb"
 	"google.golang.org/grpc/codes"
@@ -36,10 +39,13 @@ type DirectAccessV1 struct {
 
 // Creates a new DeviceSession.
 func (s *DirectAccessV1) CreateDeviceSession(ctx context.Context, req *pb.CreateDeviceSessionRequest) (*pb.DeviceSession, error) {
-	sessionID := req.DeviceSessionId
-	if sessionID == "" {
-		return nil, status.Errorf(codes.InvalidArgument, "device_session_id is required")
+	// Real GCP completely ignores device_session_id and generates its own random ID starting with "session-"
+	// We generate a random session ID to match this service-assigned behavior.
+	randomBytes := make([]byte, 8)
+	if _, err := rand.Read(randomBytes); err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to generate random session id")
 	}
+	sessionID := "session-" + hex.EncodeToString(randomBytes)
 
 	reqSessionName := req.Parent + "/deviceSessions/" + sessionID
 
@@ -53,7 +59,17 @@ func (s *DirectAccessV1) CreateDeviceSession(ctx context.Context, req *pb.Create
 	obj := proto.CloneOf(req.DeviceSession)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.Now()
-	obj.State = pb.DeviceSession_ACTIVE // Always ACTIVE in mock
+	obj.State = pb.DeviceSession_REQUESTED // Match real GCP status state
+
+	// Resolve TTL to ExpireTime and clear TTL to match real GCP behavior (GCP only stores/returns expireTime)
+	duration := 15 * time.Minute // Default duration is 15 minutes
+	if obj.GetTtl() != nil {
+		duration = obj.GetTtl().AsDuration()
+	}
+	expireTime := obj.CreateTime.AsTime().Add(duration)
+	obj.Expiration = &pb.DeviceSession_ExpireTime{
+		ExpireTime: timestamppb.New(expireTime),
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -103,7 +119,7 @@ func (s *DirectAccessV1) UpdateDeviceSession(ctx context.Context, req *pb.Update
 	}
 	for _, path := range paths {
 		switch path {
-		case "ttl":
+		case "ttl", "expire_time", "expireTime":
 			updated.Expiration = req.DeviceSession.Expiration
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
