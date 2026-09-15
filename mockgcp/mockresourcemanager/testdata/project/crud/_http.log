@@ -126,6 +126,30 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://cloudresourcemanager.googleapis.com/v3/effectiveTags?alt=json&pageSize=100&parent=%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2Ftest-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+501 Not Implemented
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method ListEffectiveTags not implemented"
+  }
+}
+
+---
+
 GET https://cloudresourcemanager.googleapis.com/v1/projects/test-${uniqueId}?alt=json
 Accept: application/json
 Authorization: (removed)
