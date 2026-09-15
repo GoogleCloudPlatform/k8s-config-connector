@@ -38,6 +38,7 @@ status:
     status: "True"
     type: Ready
   connectionName: ${projectId}:us-central1:sqlinstance-primary-direct-${uniqueId}
+  currentRole: PRIMARY
   firstIpAddress: 10.1.2.3
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
