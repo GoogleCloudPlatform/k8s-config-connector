@@ -1,0 +1,139 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "panels": [
+    {
+      "datasource": "Prometheus",
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "title": "Total Managed Resources",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "sum(configconnector_applied_resources_total)",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": "Prometheus",
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 2,
+      "title": "Reconciliation Errors by Kind",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "sum by (group_version_kind) (rate(configconnector_reconcile_requests_total{status=\"ERROR\"}[5m]))",
+          "legendFormat": "{{group_version_kind}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            }
+          }
+        }
+      }
+    },
+    {
+      "datasource": "Prometheus",
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 0,
+        "y": 6
+      },
+      "id": 3,
+      "title": "Reconciliation Latency (99th Percentile Duration)",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.99, sum by (le, group_version_kind) (rate(configconnector_reconcile_request_duration_seconds_bucket[5m])))",
+          "legendFormat": "{{group_version_kind}}",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": "Prometheus",
+      "gridPos": {
+        "h": 6,
+        "w": 4,
+        "x": 0,
+        "y": 12
+      },
+      "id": 4,
+      "title": "Working Set Memory (cnrm-system)",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "sum by (pod) (process_resident_memory_bytes{namespace=\"cnrm-system\"})",
+          "legendFormat": "{{pod}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes"
+        }
+      }
+    },
+    {
+      "datasource": "Prometheus",
+      "gridPos": {
+        "h": 6,
+        "w": 4,
+        "x": 4,
+        "y": 12
+      },
+      "id": 5,
+      "title": "CPU Core Usage (cnrm-system)",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "sum by (pod) (rate(process_cpu_seconds_total{namespace=\"cnrm-system\"}[5m]))",
+          "legendFormat": "{{pod}}",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": "Prometheus",
+      "gridPos": {
+        "h": 6,
+        "w": 4,
+        "x": 8,
+        "y": 12
+      },
+      "id": 6,
+      "title": "Container Restarts (cnrm-system)",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "sum by (pod) (kube_pod_container_status_restarts_total{namespace=\"cnrm-system\"})",
+          "legendFormat": "{{pod}}",
+          "refId": "A"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 30,
+  "title": "Config Connector (KCC) Metrics",
+  "uid": "kcc-metrics-dashboard"
+}
