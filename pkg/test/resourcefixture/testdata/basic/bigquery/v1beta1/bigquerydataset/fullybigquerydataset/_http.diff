@@ -1,61 +1,228 @@
-367,368c367
+344,511d343
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "errors": [
+<       {
+<         "domain": "global",
+<         "message": "Service account projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+<         "reason": "notFound"
+<       }
+<     ],
+<     "message": "Service account projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+<     "status": "NOT_FOUND"
+<   }
+< }
+< 
+< ---
+< 
+< GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "email": "iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<   "etag": "abcdef0123A=",
+<   "name": "projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<   "oauth2ClientId": "888888888888888888888",
+<   "projectId": "${projectId}",
+<   "uniqueId": "111111111111111111111"
+< }
+< 
+< ---
+< 
+< GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "errors": [
+<       {
+<         "domain": "global",
+<         "message": "Service account projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+<         "reason": "notFound"
+<       }
+<     ],
+<     "message": "Service account projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+<     "status": "NOT_FOUND"
+<   }
+< }
+< 
+< ---
+< 
+< GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "email": "iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<   "etag": "abcdef0123A=",
+<   "name": "projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<   "oauth2ClientId": "888888888888888888888",
+<   "projectId": "${projectId}",
+<   "uniqueId": "111111111111111111111"
+< }
+< 
+< ---
+< 
+< GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "errors": [
+<       {
+<         "domain": "global",
+<         "message": "Service account projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+<         "reason": "notFound"
+<       }
+<     ],
+<     "message": "Service account projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+<     "status": "NOT_FOUND"
+<   }
+< }
+< 
+< ---
+< 
+< POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+< Content-Type: application/json
+< 
+< {
+<   "accountId": "iamsa-${uniqueId}",
+<   "serviceAccount": {}
+< }
+< 
+< 409 Conflict
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 409,
+<     "errors": [
+<       {
+<         "domain": "global",
+<         "message": "Service account iamsa-${uniqueId} already exists within project projects/${projectId}.",
+<         "reason": "alreadyExists"
+<       }
+<     ],
+<     "message": "Service account iamsa-${uniqueId} already exists within project projects/${projectId}.",
+<     "status": "ALREADY_EXISTS"
+<   }
+< }
+< 
+< ---
+< 
+< GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+< 
+533,534c365
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-397c396
+563c394
 < POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
 ---
 > POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json&prettyPrint=false
-414,415c413,414
+584,585c415,416
 <   "defaultPartitionExpirationMs": 3600000,
 <   "defaultTableExpirationMs": 3600000,
 ---
 >   "defaultPartitionExpirationMs": "3600000",
 >   "defaultTableExpirationMs": "3600000",
-474,475c473
+648,649c479
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-524c522
+702c532
 < PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 ---
 > PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-538a537,540
+716a547,554
 >       "specialGroup": "projectOwners"
 >     },
 >     {
 >       "role": "OWNER",
-542,544d543
+>       "userByEmail": "user@google.com"
+>     },
+>     {
+>       "role": "OWNER",
+724,726d561
 <   "datasetReference": {
 <     "datasetId": "bigquerydataset${uniqueId}"
 <   },
-549,550c548,549
+731,732c566,567
 <   "defaultPartitionExpirationMs": 3800000,
 <   "defaultTableExpirationMs": 3800000,
 ---
 >   "defaultPartitionExpirationMs": "3800000",
 >   "defaultTableExpirationMs": "3800000",
-552a552
+734a570
 >   "isCaseInsensitive": false,
-557d556
+739d574
 <   "location": "US",
-583a583,586
->       "specialGroup": "projectOwners"
->     },
->     {
->       "role": "OWNER",
-601a605
+788c623
+<   "isCaseInsensitive": true,
+---
 >   "isCaseInsensitive": false,
-641a646,649
->       "specialGroup": "projectOwners"
->     },
->     {
->       "role": "OWNER",
-659a668
+851c686
+<   "isCaseInsensitive": true,
+---
 >   "isCaseInsensitive": false,
-675,676c684,746
+867,868c702,764
 < DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
 < Content-Type: application/json
 ---
@@ -83,7 +250,7 @@
 >     },
 >     {
 >       "role": "OWNER",
->       "specialGroup": "projectOwners"
+>       "userByEmail": "user@google.com"
 >     },
 >     {
 >       "role": "OWNER",
@@ -122,3 +289,44 @@
 > ---
 > 
 > DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false&prettyPrint=false
+885c781
+< 404 Not Found
+---
+> 200 OK
+896,907c792,797
+<   "error": {
+<     "code": 404,
+<     "errors": [
+<       {
+<         "domain": "global",
+<         "message": "Service account projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+<         "reason": "notFound"
+<       }
+<     ],
+<     "message": "Service account projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+<     "status": "NOT_FOUND"
+<   }
+---
+>   "email": "iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+>   "etag": "abcdef0123A=",
+>   "name": "projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+>   "oauth2ClientId": "888888888888888888888",
+>   "projectId": "${projectId}",
+>   "uniqueId": "111111111111111111111"
+908a799,814
+> 
+> ---
+> 
+> DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {}
