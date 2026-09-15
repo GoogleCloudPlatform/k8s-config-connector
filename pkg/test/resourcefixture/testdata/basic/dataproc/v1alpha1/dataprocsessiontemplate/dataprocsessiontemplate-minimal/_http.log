@@ -1,6 +1,6 @@
 GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessionTemplates/dataprocsessiontemplate-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FsessionTemplates%2Fdataprocsessiontemplate-minimal-${uniqueId}
 X-Goog-User-Project: ${projectId}
 
@@ -26,7 +26,7 @@ X-Xss-Protection: 0
 
 POST https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessionTemplates?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 X-Goog-User-Project: ${projectId}
 
@@ -72,7 +72,7 @@ X-Xss-Protection: 0
 
 GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessionTemplates/dataprocsessiontemplate-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FsessionTemplates%2Fdataprocsessiontemplate-minimal-${uniqueId}
 X-Goog-User-Project: ${projectId}
 
@@ -106,7 +106,7 @@ X-Xss-Protection: 0
 
 PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessionTemplates/dataprocsessiontemplate-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: session_template.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FsessionTemplates%2Fdataprocsessiontemplate-minimal-${uniqueId}
 X-Goog-User-Project: ${projectId}
 
@@ -156,7 +156,7 @@ X-Xss-Protection: 0
 
 GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessionTemplates/dataprocsessiontemplate-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FsessionTemplates%2Fdataprocsessiontemplate-minimal-${uniqueId}
 X-Goog-User-Project: ${projectId}
 
@@ -192,7 +192,7 @@ X-Xss-Protection: 0
 
 DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/sessionTemplates/dataprocsessiontemplate-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FsessionTemplates%2Fdataprocsessiontemplate-minimal-${uniqueId}
 X-Goog-User-Project: ${projectId}
 
