@@ -75,7 +75,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.AddService(pb.NewNetworkSecurityClient(conn))
 	mux.AddService(pbv1.NewNetworkSecurityClient(conn))
 	mux.AddService(pbv1.NewMirroringClient(conn))
-	mux.AddService(pbv1.NewInterceptClient(conn))
+	mux.AddService(pbv1.NewInterceptClient(conn), httptogrpc.EmitUnpopulated())
 	mux.AddService(pbv1.NewSSERealmServiceClient(conn))
 	mux.AddService(pbv1.NewFirewallActivationClient(conn))
 	mux.AddService(pbv1.NewDnsThreatDetectorServiceClient(conn))
