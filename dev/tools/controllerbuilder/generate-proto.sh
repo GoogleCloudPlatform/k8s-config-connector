@@ -129,12 +129,37 @@ fi
 # Enable nullglob shell option so that unmatched glob patterns (e.g. if certain subdirectories don't contain any .proto files)
 # expand to an empty string instead of the literal wildcard string, avoiding protoc errors.
 shopt -s nullglob
-PROTO_FILES=(
-    ${REPO_ROOT}/mockgcp/apis/google/apps/cloudidentity/*/*.proto
+PROTO_FILES=()
+
+# Conditionally add mockgcp/apis/google files ONLY if they are not already present in VERSION_DIR to prevent shadowed input error.
+for f in ${REPO_ROOT}/mockgcp/apis/google/apps/cloudidentity/*/*.proto; do
+    rel_path="${f#${REPO_ROOT}/mockgcp/apis/}"
+    if [ ! -f "${VERSION_DIR}/${rel_path}" ]; then
+        PROTO_FILES+=("$f")
+    fi
+done
+
+PROTO_FILES+=(
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/apigee/*/*.proto
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/networkconnectivity/*/*.proto
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/servicenetworking/*/*.proto
-    ${REPO_ROOT}/mockgcp/apis/google/cloud/binaryauthorization/*/*.proto
+)
+
+for f in ${REPO_ROOT}/mockgcp/apis/google/cloud/binaryauthorization/*/*.proto; do
+    rel_path="${f#${REPO_ROOT}/mockgcp/apis/}"
+    if [ ! -f "${VERSION_DIR}/${rel_path}" ]; then
+        PROTO_FILES+=("$f")
+    fi
+done
+
+for f in ${REPO_ROOT}/mockgcp/apis/google/cloud/numberregistry/*/*.proto; do
+    rel_path="${f#${REPO_ROOT}/mockgcp/apis/}"
+    if [ ! -f "${VERSION_DIR}/${rel_path}" ]; then
+        PROTO_FILES+=("$f")
+    fi
+done
+
+PROTO_FILES+=(
     ${VERSION_DIR}/google/*/*.proto
     ${VERSION_DIR}/google/analytics/*/*/*.proto
     ${VERSION_DIR}/google/privacy/dlp/v2/*.proto
