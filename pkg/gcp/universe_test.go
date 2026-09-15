@@ -36,7 +36,7 @@ func TestFormatServiceAccountEmail(t *testing.T) {
 			ExpectedResult: "kcc-system@my-standard-project.iam.gserviceaccount.com",
 		},
 		{
-			Name:           "Sovereign Germany dogfood project (eu0 partition)",
+			Name:           "Sovereign partition project (eu0 partition)",
 			ProjectID:      "partition:sample-project",
 			SAName:         "kcc-system",
 			ExpectedResult: "kcc-system@sample-project.partition.iam.gserviceaccount.com",
@@ -77,7 +77,7 @@ func TestFormatWorkloadPool(t *testing.T) {
 			ExpectedResult: "my-standard-project.svc.id.goog",
 		},
 		{
-			Name:           "Sovereign Germany dogfood project",
+			Name:           "Sovereign partition project",
 			ProjectID:      "partition:sample-project",
 			ExpectedResult: "sample-project.partition.svc.id.goog",
 		},
@@ -140,7 +140,7 @@ func TestUniverseDomainRoundTripper(t *testing.T) {
 	mock := &mockRoundTripper{}
 	rt := gcp.NewUniverseDomainRoundTripper(mock, "custom.universe.goog")
 
-	req, err := http.NewRequest("GET", "https://compute.googleapis.com/compute/v1/projects/partition:sample-project/global/networks", nil)
+	req, err := http.NewRequest("GET", "https://iam.googleapis.com/v1/projects/partition:sample-project/serviceAccounts/kcc-test-sa@partition:sample-project.iam.gserviceaccount.com", nil)
 	if err != nil {
 		t.Fatalf("unexpected error creating request: %v", err)
 	}
@@ -150,10 +150,11 @@ func TestUniverseDomainRoundTripper(t *testing.T) {
 		t.Fatalf("unexpected error in RoundTrip: %v", err)
 	}
 
-	if mock.lastReq.URL.Host != "compute.custom.universe.goog" {
-		t.Errorf("expected host compute.custom.universe.goog, got %q", mock.lastReq.URL.Host)
+	if mock.lastReq.URL.Host != "iam.custom.universe.goog" {
+		t.Errorf("expected host iam.custom.universe.goog, got %q", mock.lastReq.URL.Host)
 	}
-	if mock.lastReq.Host != "compute.custom.universe.goog" {
-		t.Errorf("expected req.Host compute.custom.universe.goog, got %q", mock.lastReq.Host)
+	expectedPath := "/v1/projects/partition:sample-project/serviceAccounts/kcc-test-sa@sample-project.partition.iam.gserviceaccount.com"
+	if mock.lastReq.URL.Path != expectedPath {
+		t.Errorf("expected path %q, got %q", expectedPath, mock.lastReq.URL.Path)
 	}
 }

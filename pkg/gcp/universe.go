@@ -15,11 +15,25 @@
 package gcp
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
+	"regexp"
 	"strings"
 )
+
+var (
+	partitionedSAEmailRegex        = regexp.MustCompile(`@([a-z0-9]+):([a-z0-9-]+)\.iam\.gserviceaccount\.com`)
+	partitionedSAEmailEncodedRegex = regexp.MustCompile(`(?i)(@|%40)([a-z0-9]+)(:|%3A)([a-z0-9-]+)\.iam\.gserviceaccount\.com`)
+)
+
+func rewritePartitionedSAEmails(s string) string {
+	s = partitionedSAEmailRegex.ReplaceAllString(s, "@$2.$1.iam.gserviceaccount.com")
+	s = partitionedSAEmailEncodedRegex.ReplaceAllString(s, "${1}${4}.${2}.iam.gserviceaccount.com")
+	return s
+}
 
 const (
 	// DefaultUniverseDomain is the standard commercial Google Cloud universe domain.
@@ -86,12 +100,31 @@ func NewUniverseDomainRoundTripper(base http.RoundTripper, universeDomain string
 
 func (t *universeDomainRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 	if t.universeDomain != "" && t.universeDomain != DefaultUniverseDomain && req.URL != nil {
-		if strings.Contains(req.URL.Host, ".googleapis.com") {
-			clonedReq := req.Clone(req.Context())
+		clonedReq := req.Clone(req.Context())
+		if strings.Contains(clonedReq.URL.Host, ".googleapis.com") {
 			clonedReq.URL.Host = strings.Replace(clonedReq.URL.Host, ".googleapis.com", "."+t.universeDomain, 1)
 			clonedReq.Host = clonedReq.URL.Host
-			return t.base.RoundTrip(clonedReq)
 		}
+		if strings.Contains(clonedReq.URL.Path, ".iam.gserviceaccount.com") {
+			clonedReq.URL.Path = rewritePartitionedSAEmails(clonedReq.URL.Path)
+		}
+		if strings.Contains(clonedReq.URL.RawPath, ".iam.gserviceaccount.com") {
+			clonedReq.URL.RawPath = rewritePartitionedSAEmails(clonedReq.URL.RawPath)
+		}
+		if clonedReq.Body != nil && (strings.Contains(clonedReq.URL.Host, "iam.") || strings.Contains(clonedReq.URL.Host, "cloudresourcemanager.")) {
+			bodyBytes, err := io.ReadAll(clonedReq.Body)
+			if err == nil {
+				_ = clonedReq.Body.Close()
+				bodyStr := string(bodyBytes)
+				if strings.Contains(bodyStr, ".iam.gserviceaccount.com") {
+					bodyStr = rewritePartitionedSAEmails(bodyStr)
+					bodyBytes = []byte(bodyStr)
+				}
+				clonedReq.Body = io.NopCloser(bytes.NewReader(bodyBytes))
+				clonedReq.ContentLength = int64(len(bodyBytes))
+			}
+		}
+		return t.base.RoundTrip(clonedReq)
 	}
 	return t.base.RoundTrip(req)
 }
