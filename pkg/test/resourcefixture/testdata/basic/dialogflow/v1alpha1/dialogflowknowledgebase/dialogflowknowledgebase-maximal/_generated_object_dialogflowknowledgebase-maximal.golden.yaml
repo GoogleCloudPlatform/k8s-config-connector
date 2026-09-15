@@ -1,0 +1,29 @@
+apiVersion: dialogflow.cnrm.cloud.google.com/v1alpha1
+kind: DialogflowKnowledgeBase
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: dialogflowkb-max-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  displayName: KB Maximal ${uniqueId} Updated
+  languageCode: en
+  location: global
+  projectRef:
+    external: ${projectId}
+  resourceID: dialogflowkb-max-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/knowledgeBases/MjQ5ODY3NjU5NTQ0MzYzMDA4MQ
+  observedGeneration: 2
+  observedState:
+    name: projects/${projectId}/locations/global/knowledgeBases/MjQ5ODY3NjU5NTQ0MzYzMDA4MQ
