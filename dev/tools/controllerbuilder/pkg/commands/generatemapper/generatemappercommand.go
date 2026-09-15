@@ -120,7 +120,7 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 		if strings.HasSuffix(fullName, "OperationMetadata") {
 			return "", false
 		}
-		if strings.HasSuffix(fullName, "Metadata") && !strings.HasSuffix(fullName, "VideoMetadata") && !strings.HasSuffix(fullName, "DocumentMetadata") {
+		if strings.HasSuffix(fullName, "Metadata") && !strings.HasSuffix(fullName, "VideoMetadata") && !strings.HasSuffix(fullName, "DocumentMetadata") && !strings.HasSuffix(fullName, "ConnectorMetadata") {
 			return "", false
 		}
 		matchedService := false
@@ -154,6 +154,14 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 		return err
 	}
 	mapperGenerator.AddGoImportAlias(codegen.GoPackageForProto(firstService[0]), "pb")
+
+	// Disambiguate discoveryengine package aliases under multi-version generation
+	for _, service := range o.ServiceNames {
+		if strings.Contains(service, "discoveryengine") {
+			mapperGenerator.AddGoImportAlias("github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/discoveryengine/pb", "discoveryenginealphapb")
+			mapperGenerator.AddGoImportAlias("cloud.google.com/go/discoveryengine/apiv1beta/discoveryenginepb", "discoveryenginebetapb")
+		}
+	}
 
 	if err := mapperGenerator.VisitGoCode(o.APIGoPackagePath, o.APIDirectory); err != nil {
 		return err
