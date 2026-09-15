@@ -72,12 +72,15 @@ chmod +x apis/<service_short>/generate.sh
 Apply the baseline validations from `kcc-direct-base-types-implementer`, plus these greenfield-specific rules:
 
 - **Stability Level**: Add `// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"`.
+- **1:1 Kind to Proto Mapping**: Enforce a strict 1:1 relationship between resource Kinds and Proto definitions. Ensure no single Proto is shared by multiple Kinds, and no single Kind points to multiple Protos.
 - **Field Validation**: Manually add or verify kubebuilder tags:
   - Use `// +kubebuilder:validation:Required` for fields that are mandatory in the GCP API.
   - Use `// +kubebuilder:validation:Optional` for all other fields.
+- **Pointers**: Ensure all Go scalar primitive types (e.g., `string`, `bool`, `int`, etc.) are pointers (e.g., `*string`, `*bool`). Pay special attention to the `Location` field, which must also be a pointer (`*string`).
 - **Enums**: 
   - Use `*string` for the Go type of proto enum fields (do NOT use custom wrapped string types).
   - Use `// +kubebuilder:validation:Enum=VALUE1;VALUE2` to provide validation in the CRD while keeping the Go type simple.
+- **Exception Files**: Do not add exceptions to any exception files (e.g., in `dev/tools/controllerbuilder/`) other than `missingrefs.txt`.
 
 ### 4. Journaling
 Append any quirks about the proto-to-struct mapping (e.g., field name collisions) to `.gemini/journals/<service>.md` using the format described in the `kcc-agentic-journaler` skill.
