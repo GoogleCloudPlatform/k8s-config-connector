@@ -28,7 +28,7 @@ var _ refs.Ref = &DataplexMetadataFeedRef{}
 
 // DataplexMetadataFeedRef is a reference to a GCP DataplexMetadataFeed.
 type DataplexMetadataFeedRef struct {
-	// A reference to an externally managed DataplexMetadataFeed resource. Should be in the format "projects/{{project}}/locations/{{location}}/metadataFeeds/{metadataFeed}"
+	// A reference to an externally managed DataplexMetadataFeed resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/metadataFeeds/{{metadataFeedID}}"
 	External string `json:"external,omitempty"`
 
 	// The name of a DataplexMetadataFeed resource.
