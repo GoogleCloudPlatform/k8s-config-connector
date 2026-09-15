@@ -37,3 +37,9 @@
   3. Pre-normalized all URL fields (e.g., `InstanceTemplate`, `HealthCheck`, `TargetPools`, and zone names) to relative paths using `refs.TrimComputeURIPrefix` and `lastComponent` before diff comparison.
   4. Duplicated `regionalcomputeinstancegroupmanager` and `zonalcomputeinstancegroupmanager` to `-direct` variants with direct-reconciler annotations, successfully recorded golden files and HTTP traffic against MockGCP, and passed the full presubmit suites.
 - **Impact**: Clean package-isolated direct controller supporting both zonal and regional instance group managers while completely avoiding any drift loops or false diffs.
+
+### [2026-08-23] Direct Migration of ComputeSubnetwork
+- **Context**: Implementing the direct controller and test fixtures for `ComputeSubnetwork` (issue #12520).
+- **Problem**: `ComputeSubnetwork` needs to cleanly manage VPC flow logs enablement (`LogConfig.Enable`) on GCP, but the KRM Spec does not expose an explicit `enable` field, leading to potential discrepancies when creating or disabling flow logs.
+- **Solution**: Implemented the direct controller under `pkg/controller/direct/compute/` and supported client options using `newSubnetworksClient` in `client.go`. In the adapter, we set `a.desired.LogConfig.Enable = proto.Bool(true)` when `LogConfig` is specified by the user. If the user specifies no flow logs (`a.desired.LogConfig == nil`) but the resource has them enabled in GCP, we explicitly configure a `LogConfig` with `Enable: false` in the Patch request to disable them on GCP. We ran the mockgcp compare tests using `hack/compare-mock`, which successfully updated the golden files and difference logs for both the `computesubnetwork` and `computesubnetwork-reservedinternalrange` fixtures.
+- **Impact**: Clean direct controller migration with precise VPC flow logs management. All tests (E2E fixtures, fuzz roundtrippers, schema, and API field coverage) passed cleanly.
