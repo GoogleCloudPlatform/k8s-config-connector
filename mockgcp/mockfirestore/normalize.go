@@ -37,6 +37,10 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.RemovePath(".realtimeUpdatesMode")
 	replacements.RemovePath(".response.realtimeUpdatesMode")
 
+	// enhancedTextSearchQueryMode is not yet in our protos.
+	replacements.RemovePath(".enhancedTextSearchQueryMode")
+	replacements.RemovePath(".response.enhancedTextSearchQueryMode")
+
 	// Fields
 	replacements.ReplacePath(".response.startTime", mockgcpregistry.PlaceholderTimestamp)
 
