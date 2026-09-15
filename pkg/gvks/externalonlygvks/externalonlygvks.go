@@ -29,10 +29,22 @@ var (
 		Version: "v1beta1",
 		Kind:    "BillingAccount",
 	}
+	IAPWebBackendServiceGVK = schema.GroupVersionKind{
+		Group:   "iap.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "IAPWebBackendService",
+	}
+	IAPTunnelInstanceGVK = schema.GroupVersionKind{
+		Group:   "iap.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "IAPTunnelInstance",
+	}
 
 	all = map[schema.GroupVersionKind]bool{
-		OrganizationGVK:   true,
-		BillingAccountGVK: true,
+		OrganizationGVK:         true,
+		BillingAccountGVK:       true,
+		IAPWebBackendServiceGVK: true,
+		IAPTunnelInstanceGVK:    true,
 	}
 )
 
