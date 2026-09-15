@@ -46,6 +46,11 @@ func run(ctx context.Context) error {
 	var o Options
 
 	klog.InitFlags(nil)
+	// Opt into the new klog behavior so that -stderrthreshold is honored even
+	// when -logtostderr=true (the default).
+	// Ref: kubernetes/klog#212, kubernetes/klog#432
+	_ = flag.Set("legacy_stderr_threshold_behavior", "false")
+	_ = flag.Set("stderrthreshold", "INFO")
 
 	flag.StringVar(&o.predictPath, "predict-path", o.predictPath, "the path to the bash script where the prediction job is run.")
 	flag.StringVar(&o.BaseDir, "base-dir", o.BaseDir, "base directory for the project code")
