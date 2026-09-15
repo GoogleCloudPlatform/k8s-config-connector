@@ -1052,6 +1052,8 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "cloudidentity.cnrm.cloud.google.com", Kind: "CloudIdentityGroup"}:
 			case schema.GroupKind{Group: "cloudidentity.cnrm.cloud.google.com", Kind: "CloudIdentityMembership"}:
 
+			case schema.GroupKind{Group: "cloudnumberregistry.cnrm.cloud.google.com", Kind: "CloudNumberRegistryRegistryBook"}:
+
 			case schema.GroupKind{Group: "cloudsecuritycompliance.cnrm.cloud.google.com", Kind: "CloudSecurityComplianceCloudControl"}:
 			case schema.GroupKind{Group: "cloudsecuritycompliance.cnrm.cloud.google.com", Kind: "CloudSecurityComplianceFramework"}:
 

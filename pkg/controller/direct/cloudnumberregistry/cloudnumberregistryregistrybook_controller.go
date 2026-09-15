@@ -17,6 +17,7 @@ package cloudnumberregistry
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	longrunningpb "cloud.google.com/go/longrunning/autogen/longrunningpb"
@@ -27,6 +28,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudnumberregistry/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -106,6 +108,8 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		operationsClient: operationsClient,
 		id:               id.(*krm.CloudNumberRegistryRegistryBookIdentity),
 		desired:          desired,
+		reader:           reader,
+		namespace:        obj.Namespace,
 	}, nil
 }
 
@@ -119,6 +123,9 @@ type adapter struct {
 	id               *krm.CloudNumberRegistryRegistryBookIdentity
 	desired          *pb.RegistryBook
 	actual           *pb.RegistryBook
+
+	reader    client.Reader
+	namespace string
 }
 
 var _ directbase.Adapter = &adapter{}
@@ -281,13 +288,43 @@ func (a *adapter) updateStatus(ctx context.Context, op directbase.Operation, lat
 }
 
 func (a *adapter) compare(ctx context.Context, actual, desired *pb.RegistryBook) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	maskedActual, err := mappers.OnlySpecFields(actual, CloudNumberRegistryRegistryBookSpec_FromProto, CloudNumberRegistryRegistryBookSpec_ToProto)
+	// Since actual.ClaimedScopes might contain projects/<number> and desired.ClaimedScopes might contain projects/<id> (or vice versa),
+	// we standardize any scope references to the parent project ID or number to "projects/<parentProjectID>" to avoid false diffs.
+	normalizeScopes := func(scopes []string) []string {
+		var normalized []string
+		for _, scope := range scopes {
+			if strings.HasPrefix(scope, "projects/") {
+				projectRef := strings.TrimPrefix(scope, "projects/")
+				isNumber := true
+				for _, r := range projectRef {
+					if r < '0' || r > '9' {
+						isNumber = false
+						break
+					}
+				}
+				if isNumber || projectRef == a.id.Project {
+					normalized = append(normalized, "projects/"+a.id.Project)
+					continue
+				}
+			}
+			normalized = append(normalized, scope)
+		}
+		return normalized
+	}
+
+	clonedActual := proto.Clone(actual).(*pb.RegistryBook)
+	clonedActual.ClaimedScopes = normalizeScopes(clonedActual.ClaimedScopes)
+
+	clonedDesired := proto.Clone(desired).(*pb.RegistryBook)
+	clonedDesired.ClaimedScopes = normalizeScopes(clonedDesired.ClaimedScopes)
+
+	maskedActual, err := mappers.OnlySpecFields(clonedActual, CloudNumberRegistryRegistryBookSpec_FromProto, CloudNumberRegistryRegistryBookSpec_ToProto)
 	if err != nil {
 		return nil, nil, err
 	}
-	maskedActual.Name = desired.Name
+	maskedActual.Name = clonedDesired.Name
 
-	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
 	}
