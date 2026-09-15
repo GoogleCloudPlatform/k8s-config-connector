@@ -81,6 +81,11 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 		return replacements.ApplyReplacements(s)
 	})
 
+	revisionIDRegex := regexp.MustCompile(`\brunworkerpool-([a-zA-Z0-9_\-${}]+)-(\d+)-([a-z0-9]+)\b`)
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		return revisionIDRegex.ReplaceAllString(s, "runworkerpool-${uniqueId}-$2-abc")
+	})
+
 	visitor.removePaths.Insert(".metadata.creationTimestamp")
 	visitor.removePaths.Insert(".metadata.managedFields")
 	visitor.removePaths.Insert(".metadata.resourceVersion")
@@ -107,6 +112,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.lastModifiedTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.etag"] = "abcdef123456"
 	visitor.replacePaths[".status.observedState.etag"] = "abcdef123456"
+	visitor.replacePaths[".status.observedState.terminalCondition.lastTransitionTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.creationTimestamp"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.oauth2ClientID"] = "888888888888888888888"
 	visitor.replacePaths[".status.observedState.deleteLockExpireTime"] = mockgcpregistry.PlaceholderTime
@@ -465,6 +471,16 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 
 	// Specific to RunService
 	visitor.replacePaths[".status.terminalCondition.lastTransitionTime"] = mockgcpregistry.PlaceholderTime
+
+	// Specific to RunWorkerPool
+	visitor.replacePaths[".deleteTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".expireTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".response.deleteTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".response.expireTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".metadata.deleteTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".metadata.expireTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.deleteTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.expireTime"] = mockgcpregistry.PlaceholderTimestamp
 
 	// Specific to Workflows
 	visitor.replacePaths[".status.observedState.validateTime"] = mockgcpregistry.PlaceholderTime
@@ -1244,6 +1260,22 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 						normalizer.Replacements.PathIDs[match[1]] = "${folderID}"
 					}
 				}
+			}
+		}
+	}
+
+	// Find Cloud Run revision IDs in URL or Body and add to PathIDs
+	revisionIDRegexHttp := regexp.MustCompile(`\brunworkerpool-([a-zA-Z0-9_\-${}]+)-(\d+)-([a-z0-9]+)\b`)
+	for _, event := range events {
+		if !strings.Contains(event.Request.URL, "run.googleapis.com") {
+			continue
+		}
+		for _, matches := range revisionIDRegexHttp.FindAllStringSubmatch(event.Request.URL, -1) {
+			normalizer.Replacements.PathIDs[matches[0]] = "runworkerpool-${uniqueId}-" + matches[2] + "-abc"
+		}
+		if event.Response.Body != "" {
+			for _, matches := range revisionIDRegexHttp.FindAllStringSubmatch(event.Response.Body, -1) {
+				normalizer.Replacements.PathIDs[matches[0]] = "runworkerpool-${uniqueId}-" + matches[2] + "-abc"
 			}
 		}
 	}
