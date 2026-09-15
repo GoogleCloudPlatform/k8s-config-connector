@@ -629,7 +629,7 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 		}
 	})
 
-	if strings.Contains(t.Name(), "computeaddress") || strings.Contains(t.Name(), "containercluster") {
+	if strings.Contains(t.Name(), "computeaddress") || strings.Contains(t.Name(), "containercluster") || strings.Contains(t.Name(), "filestoreinstance") {
 		jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 			normalizeNetwork := func(o map[string]any) {
 				if val, found, err := unstructured.NestedString(o, "kind"); err == nil && found && val == "compute#network" {
