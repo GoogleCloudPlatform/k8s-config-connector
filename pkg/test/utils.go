@@ -147,6 +147,8 @@ func CompareGoldenFile(t *testing.T, p, fullGot string, normalizers ...func(s st
 	if strings.Contains(filepath.Base(p), "_http") {
 		if err := compareHTTPLogs(want, got); err == nil {
 			return
+		} else {
+			t.Logf("compareHTTPLogs failed: %v", err)
 		}
 	}
 
