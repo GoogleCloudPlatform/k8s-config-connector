@@ -1,0 +1,25 @@
+apiVersion: bigquerymigration.cnrm.cloud.google.com/v1alpha1
+kind: BigQueryMigrationMigrationWorkflow
+metadata:
+  name: bigquerymigrationmigrationworkflow-maximal-${uniqueId}
+spec:
+  location: us
+  projectRef:
+    external: ${projectId}
+  displayName: "Maximal Migration Workflow ${uniqueId}"
+  tasks:
+    task-1:
+      type: "Translation_Teradata2BQ"
+      translationTaskDetails:
+        inputPath: "gs://bigquerymigration-dep-${uniqueId}/input/"
+        outputPath: "gs://bigquerymigration-dep-${uniqueId}/output/"
+        schemaPath: "gs://bigquerymigration-dep-${uniqueId}/schema/"
+        fileEncoding: "UTF_8"
+        identifierSettings:
+          outputIdentifierCase: "UPPER"
+          identifierRewriteMode: "REWRITE_ALL"
+        filter:
+          inputFileExclusionPrefixes:
+            - "gcs_prefix"
+        translationExceptionTable: "dataset.table"
+        teradataOptions: {}

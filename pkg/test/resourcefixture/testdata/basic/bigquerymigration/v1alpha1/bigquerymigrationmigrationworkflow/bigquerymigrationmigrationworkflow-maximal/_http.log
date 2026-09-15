@@ -1,0 +1,421 @@
+GET https://storage.googleapis.com/storage/v1/b/bigquerymigration-dep-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": []
+  },
+  "location": "us",
+  "name": "bigquerymigration-dep-${uniqueId}",
+  "storageClass": "STANDARD"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "1",
+  "name": "bigquerymigration-dep-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bigquerymigration-dep-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/bigquerymigration-dep-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "1",
+  "name": "bigquerymigration-dep-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bigquerymigration-dep-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://bigquerymigration.googleapis.com/v2alpha/projects/${projectId}/locations/us/workflows/${workflowID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fworkflows%2Fbigquerymigrationmigrationworkflow-maximal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://bigquerymigration.googleapis.com/v2alpha/projects/${projectId}/locations/us/workflows
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus
+
+{
+  "displayName": "Maximal Migration Workflow ${uniqueId}",
+  "tasks": {
+    "task-1": {
+      "translationTaskDetails": {
+        "fileEncoding": 1,
+        "filter": {
+          "inputFileExclusionPrefixes": [
+            "gcs_prefix"
+          ]
+        },
+        "identifierSettings": {
+          "identifierRewriteMode": 2,
+          "outputIdentifierCase": 2
+        },
+        "inputPath": "gs://bigquerymigration-dep-${uniqueId}/input/",
+        "outputPath": "gs://bigquerymigration-dep-${uniqueId}/output/",
+        "schemaPath": "gs://bigquerymigration-dep-${uniqueId}/schema/",
+        "teradataOptions": {},
+        "translationExceptionTable": "dataset.table"
+      },
+      "type": "Translation_Teradata2BQ"
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Maximal Migration Workflow ${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us/workflows/${workflowID}",
+  "state": "RUNNING",
+  "tasks": {
+    "task-1": {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "translationTaskDetails": {
+        "fileEncoding": "UTF_8",
+        "filter": {
+          "inputFileExclusionPrefixes": [
+            "gcs_prefix"
+          ]
+        },
+        "identifierSettings": {
+          "identifierRewriteMode": "REWRITE_ALL",
+          "outputIdentifierCase": "UPPER"
+        },
+        "inputPath": "gs://bigquerymigration-dep-${uniqueId}/input/",
+        "outputPath": "gs://bigquerymigration-dep-${uniqueId}/output/",
+        "schemaPath": "gs://bigquerymigration-dep-${uniqueId}/schema/",
+        "teradataOptions": {},
+        "translationExceptionTable": "dataset.table"
+      },
+      "type": "Translation_Teradata2BQ"
+    }
+  }
+}
+
+---
+
+GET https://bigquerymigration.googleapis.com/v2alpha/projects/${projectId}/locations/us/workflows/${workflowID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fworkflows%2F${workflowID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "1970-01-01T00:00:00.000000Z",
+  "displayName": "Maximal Migration Workflow ${uniqueId}",
+  "lastUpdateTime": "1970-01-01T00:00:00.000000Z",
+  "name": "projects/${projectNumber}/locations/us/workflows/${workflowID}",
+  "state": "RUNNING",
+  "tasks": {
+    "task-1": {
+      "createTime": "1970-01-01T00:00:00.000000Z",
+      "details": {
+        "@type": "type.googleapis.com/google.cloud.bigquery.migration.v2main.TranslationTaskDetails",
+        "fileEncoding": "UTF_8",
+        "filter": {
+          "inputFileExclusionPrefixes": [
+            "gcs_prefix"
+          ]
+        },
+        "identifierSettings": {
+          "identifierRewriteMode": "REWRITE_ALL",
+          "outputIdentifierCase": "UPPER"
+        },
+        "inputPath": "gs://bigquerymigration-dep-${uniqueId}/input/",
+        "outputPath": "gs://bigquerymigration-dep-${uniqueId}/output/",
+        "schemaPath": "gs://bigquerymigration-dep-${uniqueId}/schema/",
+        "teradataOptions": {},
+        "translationExceptionTable": "dataset.table"
+      },
+      "id": "00000000-0000-0000-0000-000000000000",
+      "lastUpdateTime": "1970-01-01T00:00:00.000000Z",
+      "state": "RUNNING",
+      "translationTaskDetails": {
+        "fileEncoding": "UTF_8",
+        "filter": {
+          "inputFileExclusionPrefixes": [
+            "gcs_prefix"
+          ]
+        },
+        "identifierSettings": {
+          "identifierRewriteMode": "REWRITE_ALL",
+          "outputIdentifierCase": "UPPER"
+        },
+        "inputPath": "gs://bigquerymigration-dep-${uniqueId}/input/",
+        "outputPath": "gs://bigquerymigration-dep-${uniqueId}/output/",
+        "schemaPath": "gs://bigquerymigration-dep-${uniqueId}/schema/",
+        "teradataOptions": {},
+        "translationExceptionTable": "dataset.table"
+      },
+      "type": "Translation_Teradata2BQ"
+    }
+  }
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/bigquerymigration-dep-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "1",
+  "name": "bigquerymigration-dep-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bigquerymigration-dep-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/bigquerymigration-dep-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "items": [
+    {
+      "bucket": "bigquerymigration-dep-${uniqueId}",
+      "contentType": "application/octet-stream",
+      "crc32c": "U7HIKg==",
+      "etag": "abcdef0123A=",
+      "generation": "12345678901234",
+      "id": "bigquerymigration-dep-${uniqueId}/output/batch_translation_report.csv/1234567890123456",
+      "kind": "storage#object",
+      "md5Hash": "ZkA4o51FU94h8Kz6I1IPyg==",
+      "mediaLink": "https://storage.googleapis.com/download/storage/v1/b/bigquerymigration-dep-${uniqueId}/o/output%2Fbatch_translation_report.csv?generation=12345678901234\u0026alt=media",
+      "metageneration": "1",
+      "name": "output/batch_translation_report.csv",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/bigquerymigration-dep-${uniqueId}/o/output%2Fbatch_translation_report.csv",
+      "size": "1266",
+      "storageClass": "STANDARD",
+      "timeCreated": "2024-04-01T12:34:56.123456Z",
+      "timeFinalized": "1970-01-01T00:00:00.000000Z",
+      "timeStorageClassUpdated": "1970-01-01T00:00:00.000000Z",
+      "updated": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "kind": "storage#objects"
+}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/bigquerymigration-dep-${uniqueId}/o/output%2Fbatch_translation_report.csv?alt=json&generation=12345678901234&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+204 No Content
+Content-Type: application/json
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/bigquerymigration-dep-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "kind": "storage#objects"
+}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/bigquerymigration-dep-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+204 No Content
+Content-Type: application/json
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
