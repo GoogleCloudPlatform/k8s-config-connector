@@ -25,6 +25,7 @@ import (
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 )
 
 func (r *Reconciler) transformForExperiments() declarative.ObjectTransform {
@@ -39,6 +40,55 @@ func (r *Reconciler) transformForExperiments() declarative.ObjectTransform {
 		}
 		return nil
 	}
+}
+
+// transformForUniverse propagates the configured Google Cloud universe onto the
+// controller manager, so that every GCP client it builds targets that universe
+// instead of the public googleapis.com one.
+func (r *Reconciler) transformForUniverse() declarative.ObjectTransform {
+	return func(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
+		cc, ok := o.(*corev1beta1.ConfigConnector)
+		if !ok {
+			return fmt.Errorf("expected the resource to be a ConfigConnector, but it was of type %T", o)
+		}
+		if cc.Spec.Universe == nil {
+			return nil
+		}
+		return applyUniverseToManager(ctx, cc.Spec.Universe, m)
+	}
+}
+
+// applyUniverseToManager sets the universe flags on the manager container of
+// every controller manager workload in the manifest.
+func applyUniverseToManager(ctx context.Context, universe *corev1beta1.UniverseSpec, obj *manifest.Objects) error {
+	log := log.FromContext(ctx)
+	for _, item := range obj.Items {
+		if !IsControllerManagerStatefulSet(item) {
+			continue
+		}
+
+		log.Info("targeting Google Cloud universe for StatefulSet", "name", item.GetName(), "domain", universe.Domain)
+		if err := item.MutateContainers(func(container map[string]interface{}) error {
+			name, _, _ := unstructured.NestedString(container, "name")
+			if name != k8s.CNRMManagerContainerName {
+				return nil
+			}
+
+			args, _, _ := unstructured.NestedStringSlice(container, "args")
+			args = append(args,
+				fmt.Sprintf("%s=%s", k8s.UniverseDomainFlag, universe.Domain),
+				fmt.Sprintf("%s=%s", k8s.UniversePrefixFlag, universe.Prefix),
+			)
+			if err := unstructured.SetNestedStringSlice(container, args, "args"); err != nil {
+				return fmt.Errorf("failed to set args: %w", err)
+			}
+			return nil
+		}); err != nil {
+			return fmt.Errorf("failed to apply universe settings to %s: %w", item.GetName(), err)
+		}
+	}
+
+	return nil
 }
 
 func (r *Reconciler) applyExperiments(ctx context.Context, cc *corev1beta1.ConfigConnector, m *manifest.Objects) error {
