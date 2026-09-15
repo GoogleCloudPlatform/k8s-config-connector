@@ -153,6 +153,48 @@ found existing non-generated mapping function "AIPlatformModelSpec_ToProto", ski
 		return out
 	}
 */
+func AIPlatformSpecialistPoolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SpecialistPool) *krm.AIPlatformSpecialistPoolObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformSpecialistPoolObservedState{}
+	// MISSING: Name
+	out.SpecialistManagersCount = direct.LazyPtr(in.GetSpecialistManagersCount())
+	out.PendingDataLabelingJobs = in.PendingDataLabelingJobs
+	return out
+}
+func AIPlatformSpecialistPoolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformSpecialistPoolObservedState) *pb.SpecialistPool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SpecialistPool{}
+	// MISSING: Name
+	out.SpecialistManagersCount = direct.ValueOf(in.SpecialistManagersCount)
+	out.PendingDataLabelingJobs = in.PendingDataLabelingJobs
+	return out
+}
+func AIPlatformSpecialistPoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.SpecialistPool) *krm.AIPlatformSpecialistPoolSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformSpecialistPoolSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.SpecialistManagerEmails = in.SpecialistManagerEmails
+	out.SpecialistWorkerEmails = in.SpecialistWorkerEmails
+	return out
+}
+func AIPlatformSpecialistPoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformSpecialistPoolSpec) *pb.SpecialistPool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SpecialistPool{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.SpecialistManagerEmails = in.SpecialistManagerEmails
+	out.SpecialistWorkerEmails = in.SpecialistWorkerEmails
+	return out
+}
 func BigQueryDestination_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDestination) *krm.BigQueryDestination {
 	if in == nil {
 		return nil
@@ -2821,48 +2863,6 @@ func VertexAIScheduleSpec_Cron_ToProto(mapCtx *direct.MapContext, in *string) *p
 		return nil
 	}
 	return &pb.Schedule_Cron{Cron: *in}
-}
-func VertexAISpecialistPoolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SpecialistPool) *krm.VertexAISpecialistPoolObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VertexAISpecialistPoolObservedState{}
-	// MISSING: Name
-	out.SpecialistManagersCount = direct.LazyPtr(in.GetSpecialistManagersCount())
-	out.PendingDataLabelingJobs = in.PendingDataLabelingJobs
-	return out
-}
-func VertexAISpecialistPoolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAISpecialistPoolObservedState) *pb.SpecialistPool {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SpecialistPool{}
-	// MISSING: Name
-	out.SpecialistManagersCount = direct.ValueOf(in.SpecialistManagersCount)
-	out.PendingDataLabelingJobs = in.PendingDataLabelingJobs
-	return out
-}
-func VertexAISpecialistPoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.SpecialistPool) *krm.VertexAISpecialistPoolSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VertexAISpecialistPoolSpec{}
-	// MISSING: Name
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.SpecialistManagerEmails = in.SpecialistManagerEmails
-	out.SpecialistWorkerEmails = in.SpecialistWorkerEmails
-	return out
-}
-func VertexAISpecialistPoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAISpecialistPoolSpec) *pb.SpecialistPool {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SpecialistPool{}
-	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.SpecialistManagerEmails = in.SpecialistManagerEmails
-	out.SpecialistWorkerEmails = in.SpecialistWorkerEmails
-	return out
 }
 func VertexAIStudyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Study) *krm.VertexAIStudyObservedState {
 	if in == nil {

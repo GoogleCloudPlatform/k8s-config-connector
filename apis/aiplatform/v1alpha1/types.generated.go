@@ -17,7 +17,7 @@
 // krm.group: aiplatform.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1
-// resource: VertexAISpecialistPool:SpecialistPool
+// resource: AIPlatformSpecialistPool:SpecialistPool
 // resource: AIPlatformModel:Model
 // resource: VertexAIFeatureOnlineStore:FeatureOnlineStore
 // resource: VertexAIPipelineJob:PipelineJob
