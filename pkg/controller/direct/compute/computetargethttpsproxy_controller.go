@@ -209,6 +209,7 @@ func (a *ComputeTargetHTTPSProxyAdapter) Update(ctx context.Context, updateOp *d
 		log.V(2).Info("no field needs update", "name", a.id.String())
 		updated = a.actual
 	} else {
+		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
 
 		a.desired.Name = direct.LazyPtr(a.id.TargetHttpsProxy)
