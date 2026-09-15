@@ -16,6 +16,7 @@ package e2e
 
 import (
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 	"testing"
@@ -957,6 +958,15 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 	events = RemoveExtraEvents(events)
 
 	got := events.FormatHTTP()
+
+	// Specific to AlloyDB: normalize the dynamic service account email hash
+	reAlloyDBSA := regexp.MustCompile(`c-([0-9a-zA-Z\-\{\}\$]+)-([0-9a-fA-F]+)@gcp-sa-alloydb\.iam\.gserviceaccount\.com`)
+	got = reAlloyDBSA.ReplaceAllString(got, `c-$1-abcdef12@gcp-sa-alloydb.iam.gserviceaccount.com`)
+
+	// Specific to Compute/AlloyDB peerings: normalize the stateDetails timestamp
+	reStateDetails := regexp.MustCompile(`\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+[+-]\d{2}:\d{2}\]`)
+	got = reStateDetails.ReplaceAllString(got, "[2024-04-01T12:34:56.123-07:00]")
+
 	normalizers := []func(string) string{}
 	normalizers = append(normalizers, IgnoreComments)
 	normalizers = append(normalizers, ReplaceString(uniqueID, "${uniqueId}"))
