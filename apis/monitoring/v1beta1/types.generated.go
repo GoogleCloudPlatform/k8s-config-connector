@@ -822,6 +822,7 @@ type SectionHeader struct {
 /* found existing non-generated go type "SingleViewGroup", skipping
 
 // +kcc:proto=google.monitoring.dashboard.v1.SingleViewGroup
+// +kubebuilder:validation:XPreserveUnknownFields
 type SingleViewGroup struct {
 }
 */
@@ -2469,6 +2470,7 @@ type Service_ClusterIstio struct {
 
 /* unreachable type Service_Custom
 // +kcc:proto=google.monitoring.v3.Service.Custom
+// +kubebuilder:validation:XPreserveUnknownFields
 type Service_Custom struct {
 }
 */
@@ -2953,6 +2955,7 @@ type UptimeCheckConfig_TCPCheck struct {
 /* found existing non-generated go type "Empty", skipping
 
 // +kcc:proto=google.protobuf.Empty
+// +kubebuilder:validation:XPreserveUnknownFields
 type Empty struct {
 }
 */

@@ -42,6 +42,7 @@ type BigQueryConnectionSpec struct {
 
 /* unreachable type BigQueryDateShardedSpec
 // +kcc:proto=google.cloud.datacatalog.v1.BigQueryDateShardedSpec
+// +kubebuilder:validation:XPreserveUnknownFields
 type BigQueryDateShardedSpec struct {
 }
 */
@@ -588,6 +589,7 @@ type EntryOverview struct {
 }
 
 // +kcc:proto=google.cloud.datacatalog.v1.FeatureOnlineStoreSpec
+// +kubebuilder:validation:XPreserveUnknownFields
 type FeatureOnlineStoreSpec struct {
 }
 
@@ -762,14 +764,17 @@ type PhysicalSchema_AvroSchema struct {
 }
 
 // +kcc:proto=google.cloud.datacatalog.v1.PhysicalSchema.CsvSchema
+// +kubebuilder:validation:XPreserveUnknownFields
 type PhysicalSchema_CsvSchema struct {
 }
 
 // +kcc:proto=google.cloud.datacatalog.v1.PhysicalSchema.OrcSchema
+// +kubebuilder:validation:XPreserveUnknownFields
 type PhysicalSchema_OrcSchema struct {
 }
 
 // +kcc:proto=google.cloud.datacatalog.v1.PhysicalSchema.ParquetSchema
+// +kubebuilder:validation:XPreserveUnknownFields
 type PhysicalSchema_ParquetSchema struct {
 }
 
@@ -933,6 +938,7 @@ type SystemTimestamps struct {
 
 /* unreachable type TableSpec
 // +kcc:proto=google.cloud.datacatalog.v1.TableSpec
+// +kubebuilder:validation:XPreserveUnknownFields
 type TableSpec struct {
 }
 */
@@ -1182,6 +1188,7 @@ type VertexModelSpec struct {
 
 /* unreachable type ViewSpec
 // +kcc:proto=google.cloud.datacatalog.v1.ViewSpec
+// +kubebuilder:validation:XPreserveUnknownFields
 type ViewSpec struct {
 }
 */

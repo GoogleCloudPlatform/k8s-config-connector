@@ -55,18 +55,22 @@ type FirewallAction struct {
 }
 
 // +kcc:proto=google.cloud.recaptchaenterprise.v1.FirewallAction.AllowAction
+// +kubebuilder:validation:XPreserveUnknownFields
 type FirewallAction_AllowAction struct {
 }
 
 // +kcc:proto=google.cloud.recaptchaenterprise.v1.FirewallAction.BlockAction
+// +kubebuilder:validation:XPreserveUnknownFields
 type FirewallAction_BlockAction struct {
 }
 
 // +kcc:proto=google.cloud.recaptchaenterprise.v1.FirewallAction.IncludeRecaptchaScriptAction
+// +kubebuilder:validation:XPreserveUnknownFields
 type FirewallAction_IncludeRecaptchaScriptAction struct {
 }
 
 // +kcc:proto=google.cloud.recaptchaenterprise.v1.FirewallAction.RedirectAction
+// +kubebuilder:validation:XPreserveUnknownFields
 type FirewallAction_RedirectAction struct {
 }
 

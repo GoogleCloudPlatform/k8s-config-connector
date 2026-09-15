@@ -1092,34 +1092,22 @@ func TestCRDObjectTypes(t *testing.T) {
 	// If a direct controller resource does not have any output-only fields, do not declare
 	// status.observedState in its status struct. Comment it out in the Go types instead.
 	knownInvalidCRDs := map[string]bool{
-		"billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com":                    true, // spec.amount.lastPeriodAmount is an empty object
-		"accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com":   true, // status.observedState is an empty object
-		"aiplatformmodels.aiplatform.cnrm.cloud.google.com":                             true, // status.observedState.supportedExportFormats[] is an empty object
-		"apigeeenvironments.apigee.cnrm.cloud.google.com":                               true, // status.observedState is an empty object
-		"apigeeorganizations.apigee.cnrm.cloud.google.com":                              true, // status.observedState is an empty object
-		"bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com":        true, // spec.cloudResource is an empty object
-		"bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com":        true, // spec.scheduleOptionsV2.manualSchedule is an empty object
-		"bigquerymigrationmigrationworkflows.bigquerymigration.cnrm.cloud.google.com":   true, // spec.tasks[*].translationTaskDetails.teradataOptions is an empty object
-		"bigquerytables.bigquery.cnrm.cloud.google.com":                                 true, // status.observedState is an empty object
-		"clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com":                          true, // spec.staticIPConnectivity and status.observedState are empty objects
-		"configdeliveryfleetpackages.configdelivery.cnrm.cloud.google.com":              true, // spec.rolloutStrategy.allAtOnce is an empty object
-		"datacatalogentries.datacatalog.cnrm.cloud.google.com":                          true, // spec.featureOnlineStoreSpec and status.observedState.databaseTableSpec.dataplexTable.dataplexSpec.dataFormat.csv are empty objects
-		"datacatalogpolicytags.datacatalog.cnrm.cloud.google.com":                       true, // status.observedState is an empty object
-		"dataformrepositories.dataform.cnrm.cloud.google.com":                           true, // status.observedState is an empty object
-		"dataprocjobs.dataproc.cnrm.cloud.google.com":                                   true, // spec.pysparkJob.loggingConfig is an empty object
-		"datastreamconnectionprofiles.datastream.cnrm.cloud.google.com":                 true, // spec.staticServiceIPConnectivity is an empty object
-		"dlpconnections.dlp.cnrm.cloud.google.com":                                      true, // spec.cloudSQL.cloudSQLIAM is an empty object
-		"firestorebackupschedules.firestore.cnrm.cloud.google.com":                      true, // spec.dailyRecurrence is an empty object
-		"firestorefields.firestore.cnrm.cloud.google.com":                               true, // spec.indexConfig.indexes[].fields[].vectorConfig.flat is an empty object
-		"monitoringdashboards.monitoring.cnrm.cloud.google.com":                         true, // spec.rowLayout.rows[].widgets[].singleViewGroup is an empty object
-		"recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com": true, // spec.actions[].allow/block/redirect are empty objects
-		"spannerbackupschedules.spanner.cnrm.cloud.google.com":                          true, // spec.fullBackupSpec is an empty object
-		"vertexaiindexes.vertexai.cnrm.cloud.google.com":                                true, // spec.metadata.config.algorithmConfig.bruteForceConfig is an empty object
-		"dlpdiscoveryconfigs.dlp.cnrm.cloud.google.com":                                 true, // spec.actions[].publishToChronicle, publishToScc, and others are empty objects
-		"vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com":                    true, // status.observedState.modelToUpload.originalModelInfo is an empty object
-		"vertexaischedules.aiplatform.cnrm.cloud.google.com":                            true, // spec.createNotebookExecutionJobRequest.notebookExecutionJob.workbenchRuntime is an empty object
-		"transcoderjobs.transcoder.cnrm.cloud.google.com":                               true, // spec.config.elementaryStreams[].videoStream.vp9.sdr is an empty object
-
+		"billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com":                  true, // spec.amount.lastPeriodAmount is an empty object
+		"accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com": true, // status.observedState is an empty object
+		"apigeeenvironments.apigee.cnrm.cloud.google.com":                             true, // status.observedState is an empty object
+		"apigeeorganizations.apigee.cnrm.cloud.google.com":                            true, // status.observedState is an empty object
+		"bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com":      true, // spec.cloudResource is an empty object
+		"bigquerytables.bigquery.cnrm.cloud.google.com":                               true, // status.observedState is an empty object
+		"clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com":                        true, // spec.staticIPConnectivity and status.observedState are empty objects
+		"datacatalogentries.datacatalog.cnrm.cloud.google.com":                        true, // spec.featureOnlineStoreSpec and status.observedState.databaseTableSpec.dataplexTable.dataplexSpec.dataFormat.csv are empty objects
+		"datacatalogpolicytags.datacatalog.cnrm.cloud.google.com":                     true, // status.observedState is an empty object
+		"dataformrepositories.dataform.cnrm.cloud.google.com":                         true, // status.observedState is an empty object
+		"dataprocjobs.dataproc.cnrm.cloud.google.com":                                 true, // spec.pysparkJob.loggingConfig is an empty object
+		"datastreamconnectionprofiles.datastream.cnrm.cloud.google.com":               true, // spec.staticServiceIPConnectivity is an empty object
+		"dlpconnections.dlp.cnrm.cloud.google.com":                                    true, // spec.cloudSQL.cloudSQLIAM is an empty object
+		"monitoringdashboards.monitoring.cnrm.cloud.google.com":                       true, // spec.rowLayout.rows[].widgets[].singleViewGroup is an empty object
+		"spannerbackupschedules.spanner.cnrm.cloud.google.com":                        true, // spec.fullBackupSpec is an empty object
+		"vertexaiindexes.vertexai.cnrm.cloud.google.com":                              true, // spec.metadata.config.algorithmConfig.bruteForceConfig is an empty object
 	}
 
 	crds, err := crdloader.LoadAllCRDs()

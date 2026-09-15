@@ -23,6 +23,7 @@ package v1alpha1
 
 /* unreachable type Connection
 // +kcc:proto=google.cloud.dialogflow.v2beta1.Connection
+// +kubebuilder:validation:XPreserveUnknownFields
 type Connection struct {
 }
 */
