@@ -232,6 +232,7 @@ func (a *CertificateMapEntryAdapter) Export(ctx context.Context) (*unstructured.
 	obj.Spec.ProjectRef.External = a.id.Project
 	mapID := &krm.CertificateManagerCertificateMapIdentity{
 		Project:        a.id.Project,
+		Location:       a.id.Location,
 		CertificateMap: a.id.CertificateMap,
 	}
 	obj.Spec.MapRef.External = mapID.String()
