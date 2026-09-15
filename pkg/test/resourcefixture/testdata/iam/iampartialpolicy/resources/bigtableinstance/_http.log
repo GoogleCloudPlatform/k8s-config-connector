@@ -17,8 +17,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateInstance
     "cluster-${uniqueId}": {
       "defaultStorageType": "SSD",
       "encryptionConfig": {},
-      "location": "projects/${projectId}/locations/us-central1-b",
-      "serveNodes": 1
+      "location": "projects/${projectId}/locations/us-central1-b"
     }
   },
   "instance": {
@@ -48,10 +47,12 @@ OK
       },
       "instance": {
         "displayName": "Test Bigtable Instance",
+        "edition": "ENTERPRISE",
         "labels": {
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/bigtableinstance-${uniqueId}",
         "type": "DEVELOPMENT"
       },
       "instanceId": "bigtableinstance-${uniqueId}",
@@ -87,10 +88,12 @@ OK
       },
       "instance": {
         "displayName": "Test Bigtable Instance",
+        "edition": "ENTERPRISE",
         "labels": {
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/bigtableinstance-${uniqueId}",
         "type": "DEVELOPMENT"
       },
       "instanceId": "bigtableinstance-${uniqueId}",
@@ -102,6 +105,7 @@ OK
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
     "displayName": "Test Bigtable Instance",
+    "edition": "ENTERPRISE",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -127,6 +131,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "Test Bigtable Instance",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -175,6 +180,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "Test Bigtable Instance",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -274,7 +280,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
   }
 }
 
-200 OK
+403 Forbidden
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -285,17 +291,18 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "members": [
-        "user:test@example.com",
-        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigtable.admin"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
+  "error": {
+    "code": 403,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Access denied. Missing IAM permission: bigtable.instances.setIamPolicy.",
+        "reason": "forbidden"
+      }
+    ],
+    "message": "Access denied. Missing IAM permission: bigtable.instances.setIamPolicy.",
+    "status": "PERMISSION_DENIED"
+  }
 }
 
 ---
@@ -317,17 +324,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "members": [
-        "user:test@example.com",
-        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigtable.admin"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
+  "etag": "abcdef0123A="
 }
 
 ---
@@ -349,49 +346,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "members": [
-        "user:test@example.com",
-        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigtable.admin"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/bigtableinstance-${uniqueId}:getIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "user:test@example.com",
-        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigtable.admin"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
+  "etag": "abcdef0123A="
 }
 
 ---
@@ -405,9 +360,100 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "bindings": [
       {
         "members": [
-          "group:test-group@example.com",
+          "user:test@example.com",
+          "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
+        ],
+        "role": "roles/bigtable.admin"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
+  }
+}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Access denied. Missing IAM permission: bigtable.instances.setIamPolicy.",
+        "reason": "forbidden"
+      }
+    ],
+    "message": "Access denied. Missing IAM permission: bigtable.instances.setIamPolicy.",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/bigtableinstance-${uniqueId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/bigtableinstance-${uniqueId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/bigtableinstance-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "user:test@example.com",
           "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
-          "user:test@example.com"
+          "group:test-group@example.com"
         ],
         "role": "roles/bigtable.admin"
       },
@@ -423,7 +469,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
   }
 }
 
-200 OK
+403 Forbidden
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -434,24 +480,18 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "members": [
-        "group:test-group@example.com",
-        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
-        "user:test@example.com"
-      ],
-      "role": "roles/bigtable.admin"
-    },
-    {
-      "members": [
-        "user:editor@example.com"
-      ],
-      "role": "roles/bigtable.editor"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
+  "error": {
+    "code": 403,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Access denied. Missing IAM permission: bigtable.instances.setIamPolicy.",
+        "reason": "forbidden"
+      }
+    ],
+    "message": "Access denied. Missing IAM permission: bigtable.instances.setIamPolicy.",
+    "status": "PERMISSION_DENIED"
+  }
 }
 
 ---
@@ -473,24 +513,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "members": [
-        "group:test-group@example.com",
-        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
-        "user:test@example.com"
-      ],
-      "role": "roles/bigtable.admin"
-    },
-    {
-      "members": [
-        "user:editor@example.com"
-      ],
-      "role": "roles/bigtable.editor"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
+  "etag": "abcdef0123A="
 }
 
 ---
@@ -512,63 +535,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "members": [
-        "group:test-group@example.com",
-        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
-        "user:test@example.com"
-      ],
-      "role": "roles/bigtable.admin"
-    },
-    {
-      "members": [
-        "user:editor@example.com"
-      ],
-      "role": "roles/bigtable.editor"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/bigtableinstance-${uniqueId}:getIamPolicy?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "group:test-group@example.com",
-        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
-        "user:test@example.com"
-      ],
-      "role": "roles/bigtable.admin"
-    },
-    {
-      "members": [
-        "user:editor@example.com"
-      ],
-      "role": "roles/bigtable.editor"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
+  "etag": "abcdef0123A="
 }
 
 ---
@@ -579,12 +546,28 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 {
   "policy": {
+    "bindings": [
+      {
+        "members": [
+          "user:test@example.com",
+          "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
+          "group:test-group@example.com"
+        ],
+        "role": "roles/bigtable.admin"
+      },
+      {
+        "members": [
+          "user:editor@example.com"
+        ],
+        "role": "roles/bigtable.editor"
+      }
+    ],
     "etag": "abcdef0123A=",
     "version": 3
   }
 }
 
-200 OK
+403 Forbidden
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -595,8 +578,18 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "etag": "abcdef0123A=",
-  "version": 1
+  "error": {
+    "code": 403,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Access denied. Missing IAM permission: bigtable.instances.setIamPolicy.",
+        "reason": "forbidden"
+      }
+    ],
+    "message": "Access denied. Missing IAM permission: bigtable.instances.setIamPolicy.",
+    "status": "PERMISSION_DENIED"
+  }
 }
 
 ---
@@ -618,8 +611,61 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "etag": "abcdef0123A=",
-  "version": 1
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/bigtableinstance-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "user:test@example.com",
+          "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
+          "group:test-group@example.com"
+        ],
+        "role": "roles/bigtable.admin"
+      },
+      {
+        "members": [
+          "user:editor@example.com"
+        ],
+        "role": "roles/bigtable.editor"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
+  }
+}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Access denied. Missing IAM permission: bigtable.instances.setIamPolicy.",
+        "reason": "forbidden"
+      }
+    ],
+    "message": "Access denied. Missing IAM permission: bigtable.instances.setIamPolicy.",
+    "status": "PERMISSION_DENIED"
+  }
 }
 
 ---
@@ -637,6 +683,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "Test Bigtable Instance",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
