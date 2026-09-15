@@ -69,10 +69,6 @@ spec:
                   name can be up to 32 characters long and can consist only of ASCII
                   Latin letters A-Z and a-z, underscores (_), and ASCII digits 0-9.
                 type: string
-              exampleCount:
-                description: The number of examples in the dataset.
-                format: int32
-                type: integer
               location:
                 description: The location of this resource.
                 type: string
@@ -173,6 +169,10 @@ spec:
                   createTime:
                     description: Output only. Timestamp when this dataset was created.
                     type: string
+                  exampleCount:
+                    description: Output only. The number of examples in the dataset.
+                    format: int32
+                    type: integer
                   updateTime:
                     description: Output only. Timestamp when this dataset was last
                       updated.
