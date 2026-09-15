@@ -52,7 +52,11 @@ func (s *operations) startLRO(ctx context.Context, op *pb.Operation, obj proto.M
 		op.TargetLink = fmt.Sprintf("https://sqladmin.googleapis.com/sql/v1beta4/projects/%s/instances/%s", obj.Project, obj.Instance)
 	case *pb.Database:
 		op.TargetId = obj.Instance
-		op.TargetLink = fmt.Sprintf("https://sqladmin.googleapis.com/sql/v1beta4/projects/%s/instances/%s/databases/%s", obj.Project, obj.Instance, obj.Name)
+		if op.OperationType == pb.Operation_DELETE_DATABASE {
+			op.TargetLink = fmt.Sprintf("https://sqladmin.googleapis.com/sql/v1beta4/projects/%s/instances/%s", obj.Project, obj.Instance)
+		} else {
+			op.TargetLink = fmt.Sprintf("https://sqladmin.googleapis.com/sql/v1beta4/projects/%s/instances/%s/databases/%s", obj.Project, obj.Instance, obj.Name)
+		}
 	default:
 		klog.Fatalf("unhandled type %T", obj)
 	}
