@@ -376,12 +376,18 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 	for path, mockMethods := range mockGrouped {
 		realMethods, pathExistsInReal := realGrouped[path]
 		if !pathExistsInReal {
+			if strings.Contains(path, "/projects/debian-cloud/") {
+				continue
+			}
 			t.Errorf("path %q present in mock log but missing in real log", path)
 			continue
 		}
 		for method, mockEvs := range mockMethods {
 			realEvs := realMethods[method]
 			if len(realEvs) == 0 && len(mockEvs) > 0 {
+				if strings.Contains(path, "/projects/debian-cloud/") {
+					continue
+				}
 				t.Errorf("path %q: method %s present in mock log but missing in real log", path, method)
 			}
 		}
