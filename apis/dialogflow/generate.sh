@@ -49,6 +49,15 @@ ${CONTROLLERBUILDER} generate-types \
 
 mv ${REPO_ROOT}/apis/dialogflow/v1alpha1/types.generated.go ${REPO_ROOT}/apis/dialogflow/v1alpha1/securitysettings_types.generated.go
 
+# Generate types for Dialogflow CX v3 service (Tool)
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.dialogflow.cx.v3beta1 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource DialogflowTool:Tool
+
+mv ${REPO_ROOT}/apis/dialogflow/v1alpha1/types.generated.go ${REPO_ROOT}/apis/dialogflow/v1alpha1/tool_types.generated.go
+
 # Generate types for Dialogflow v1 service (SipTrunk)
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.v2beta1 \
