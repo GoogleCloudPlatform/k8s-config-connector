@@ -1,0 +1,4 @@
+- exec: gcloud lustre instances create test-${uniqueId} --location=us-central1-a --filesystem=myfs --capacity-gib=18000 --network=projects/${projectId}/global/networks/default --per-unit-storage-throughput=250
+- exec: gcloud lustre instances describe test-${uniqueId} --location=us-central1-a
+- exec: gcloud lustre instances list --location=us-central1-a
+- exec: gcloud lustre instances delete test-${uniqueId} --location=us-central1-a --quiet
