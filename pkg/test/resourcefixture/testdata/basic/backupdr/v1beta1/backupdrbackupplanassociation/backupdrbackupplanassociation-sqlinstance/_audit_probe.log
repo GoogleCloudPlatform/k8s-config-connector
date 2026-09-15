@@ -1,0 +1,109 @@
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-minimal-${uniqueId}?alt=json&prettyPrint=false
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "backendType": "SECOND_GEN",
+  "connectionName": "${projectId}:us-central1:sqlinstance-minimal-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseInstalledVersion": "POSTGRES_15_19",
+  "databaseVersion": "POSTGRES_15",
+  "etag": "abcdef0123A=",
+  "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "googleVacuumMgmtEnabled": false,
+    "indexAdvisorEnabled": false,
+    "oomSessionCancelEnabled": true
+  },
+  "includeReplicasForMajorVersionUpgrade": false,
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "ipAddresses": [
+    {
+      "ipAddress": "10.10.10.10",
+      "type": "PRIMARY"
+    },
+    {
+      "ipAddress": "10.10.10.11",
+      "type": "OUTGOING"
+    }
+  ],
+  "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_15_19.R20260712.01_10",
+  "name": "sqlinstance-minimal-${uniqueId}",
+  "project": "${projectId}",
+  "region": "us-central1",
+  "satisfiesPzi": true,
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-minimal-${uniqueId}",
+  "serverCaCert": {
+    "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
+    "certSerialNumber": "0",
+    "commonName": "common-name",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "expirationTime": "2024-04-01T12:34:56.123456Z",
+    "instance": "sqlinstance-minimal-${uniqueId}",
+    "kind": "sql#sslCert",
+    "sha1Fingerprint": "12345678"
+  },
+  "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
+  "settings": {
+    "activationPolicy": "ALWAYS",
+    "authorizedGaeApplications": [],
+    "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupTier": "ENHANCED",
+      "kind": "sql#backupConfiguration"
+    },
+    "connectorEnforcement": "NOT_REQUIRED",
+    "dataDiskSizeGb": "10",
+    "dataDiskType": "PD_SSD",
+    "deletionProtectionEnabled": false,
+    "edition": "ENTERPRISE",
+    "enableDataplexIntegration": true,
+    "ipConfiguration": {
+      "authorizedNetworks": [],
+      "ipv4Enabled": true,
+      "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
+    "kind": "sql#settings",
+    "locationPreference": {
+      "kind": "sql#locationPreference",
+      "zone": "us-central1-a"
+    },
+    "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
+    "replicationType": "SYNCHRONOUS",
+    "settingsVersion": "123",
+    "storageAutoResize": true,
+    "storageAutoResizeLimit": "0",
+    "tier": "db-custom-1-3840",
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
+  "state": "RUNNABLE",
+  "upgradableDatabaseVersions": [
+    {
+      "displayName": "PostgreSQL 16",
+      "majorVersion": "POSTGRES_16",
+      "name": "POSTGRES_16"
+    },
+    {
+      "displayName": "PostgreSQL 17",
+      "majorVersion": "POSTGRES_17",
+      "name": "POSTGRES_17"
+    },
+    {
+      "displayName": "PostgreSQL 18",
+      "majorVersion": "POSTGRES_18",
+      "name": "POSTGRES_18"
+    }
+  ]
+}

@@ -1,0 +1,1152 @@
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-minimal-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The Cloud SQL instance does not exist.",
+        "reason": "instanceDoesNotExist"
+      }
+    ],
+    "message": "The Cloud SQL instance does not exist."
+  }
+}
+
+---
+
+POST https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "databaseVersion": "POSTGRES_15",
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "kind": "sql#instance",
+  "name": "sqlinstance-minimal-${uniqueId}",
+  "region": "us-central1",
+  "settings": {
+    "activationPolicy": "ALWAYS",
+    "availabilityType": "ZONAL",
+    "connectorEnforcement": "NOT_REQUIRED",
+    "dataDiskType": "PD_SSD",
+    "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "ipv4Enabled": true,
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
+    "kind": "sql#settings",
+    "locationPreference": {
+      "kind": "sql#locationPreference",
+      "zone": "us-central1-a"
+    },
+    "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
+    "storageAutoResize": true,
+    "tier": "db-custom-1-3840",
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "CREATE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "status": "PENDING",
+  "targetId": "sqlinstance-minimal-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-minimal-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "CREATE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "sqlinstance-minimal-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-minimal-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-minimal-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backendType": "SECOND_GEN",
+  "connectionName": "${projectId}:us-central1:sqlinstance-minimal-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseInstalledVersion": "POSTGRES_15_19",
+  "databaseVersion": "POSTGRES_15",
+  "etag": "abcdef0123A=",
+  "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "googleVacuumMgmtEnabled": false,
+    "indexAdvisorEnabled": false,
+    "oomSessionCancelEnabled": true
+  },
+  "includeReplicasForMajorVersionUpgrade": false,
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "ipAddresses": [
+    {
+      "ipAddress": "10.10.10.10",
+      "type": "PRIMARY"
+    },
+    {
+      "ipAddress": "10.10.10.11",
+      "type": "OUTGOING"
+    }
+  ],
+  "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_15_19.R20260712.01_10",
+  "name": "sqlinstance-minimal-${uniqueId}",
+  "project": "${projectId}",
+  "region": "us-central1",
+  "satisfiesPzi": true,
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-minimal-${uniqueId}",
+  "serverCaCert": {
+    "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
+    "certSerialNumber": "0",
+    "commonName": "common-name",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "expirationTime": "2024-04-01T12:34:56.123456Z",
+    "instance": "sqlinstance-minimal-${uniqueId}",
+    "kind": "sql#sslCert",
+    "sha1Fingerprint": "12345678"
+  },
+  "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
+  "settings": {
+    "activationPolicy": "ALWAYS",
+    "authorizedGaeApplications": [],
+    "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 7,
+        "retentionUnit": "COUNT"
+      },
+      "backupTier": "STANDARD",
+      "enabled": false,
+      "kind": "sql#backupConfiguration",
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 7,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
+    },
+    "connectorEnforcement": "NOT_REQUIRED",
+    "dataDiskSizeGb": "10",
+    "dataDiskType": "PD_SSD",
+    "deletionProtectionEnabled": false,
+    "edition": "ENTERPRISE",
+    "enableDataplexIntegration": true,
+    "ipConfiguration": {
+      "authorizedNetworks": [],
+      "ipv4Enabled": true,
+      "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
+    "kind": "sql#settings",
+    "locationPreference": {
+      "kind": "sql#locationPreference",
+      "zone": "us-central1-a"
+    },
+    "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
+    "replicationType": "SYNCHRONOUS",
+    "settingsVersion": "123",
+    "storageAutoResize": true,
+    "storageAutoResizeLimit": "0",
+    "tier": "db-custom-1-3840",
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
+  "state": "RUNNABLE",
+  "upgradableDatabaseVersions": [
+    {
+      "displayName": "PostgreSQL 16",
+      "majorVersion": "POSTGRES_16",
+      "name": "POSTGRES_16"
+    },
+    {
+      "displayName": "PostgreSQL 17",
+      "majorVersion": "POSTGRES_17",
+      "name": "POSTGRES_17"
+    },
+    {
+      "displayName": "PostgreSQL 18",
+      "majorVersion": "POSTGRES_18",
+      "name": "POSTGRES_18"
+    }
+  ]
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-minimal-${uniqueId}/users?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "items": [
+    {
+      "etag": "abcdef0123A=",
+      "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
+      "instance": "sqlinstance-minimal-${uniqueId}",
+      "kind": "sql#user",
+      "name": "postgres",
+      "project": "${projectId}"
+    }
+  ],
+  "kind": "sql#usersList"
+}
+
+---
+
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupVaults%2Fbackupdrbackupvault-minimal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-minimal-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults?%24alt=json%3Benum-encoding%3Dint&backupVaultId=backupdrbackupvault-minimal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "backupMinimumEnforcedRetentionDuration": "100000s",
+  "description": "test dependency backup vault",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.BackupVault",
+    "accessRestriction": "WITHIN_ORGANIZATION",
+    "backupMinimumEnforcedRetentionDuration": "100000s",
+    "backupRetentionInheritance": "INHERIT_VAULT_RETENTION",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deletable": true,
+    "description": "test dependency backup vault",
+    "encryptionConfig": {
+      "kmsKeyName": ""
+    },
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-minimal-${uniqueId}",
+    "serviceAccount": "vault-${projectNumber}-74028037@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
+    "state": "ACTIVE",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupPlans%2Fbackupdrbackupplan-minimal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-minimal-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupPlans?%24alt=json%3Benum-encoding%3Dint&backupPlanId=backupdrbackupplan-minimal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "backupRules": [
+    {
+      "backupRetentionDays": 5,
+      "ruleId": "rule-1",
+      "standardSchedule": {
+        "backupWindow": {
+          "endHourOfDay": 23,
+          "startHourOfDay": 1
+        },
+        "hourlyFrequency": 6,
+        "recurrenceType": 1,
+        "timeZone": "UTC"
+      }
+    }
+  ],
+  "backupVault": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-minimal-${uniqueId}",
+  "description": "test dependency backup plan",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "resourceType": "sqladmin.googleapis.com/Instance"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.BackupPlan",
+    "backupRules": [
+      {
+        "backupRetentionDays": 5,
+        "ruleId": "rule-1",
+        "standardSchedule": {
+          "backupWindow": {
+            "endHourOfDay": 23,
+            "startHourOfDay": 1
+          },
+          "hourlyFrequency": 6,
+          "recurrenceType": "HOURLY",
+          "timeZone": "UTC"
+        }
+      }
+    ],
+    "backupVault": "projects/${projectNumber}/locations/us-central1/backupVaults/backupdrbackupvault-minimal-${uniqueId}",
+    "backupVaultServiceAccount": "vault-${projectNumber}-74028037@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "test dependency backup plan",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-minimal-${uniqueId}",
+    "resourceType": "sqladmin.googleapis.com/Instance",
+    "revisionId": "revision-id-placeholder",
+    "revisionName": "projects/${projectNumber}/locations/us-central1/backupPlans/backupdrbackupplan-minimal-${uniqueId}/revisions/163c3760",
+    "state": "ACTIVE",
+    "supportedResourceTypes": [
+      "sqladmin.googleapis.com/Instance"
+    ],
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupPlanAssociations/backupdrbackupplanassociation-sqlinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupPlanAssociations%2Fbackupdrbackupplanassociation-sqlinstance-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/backupPlanAssociations/backupdrbackupplanassociation-sqlinstance-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupPlanAssociations?%24alt=json%3Benum-encoding%3Dint&backupPlanAssociationId=backupdrbackupplanassociation-sqlinstance-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "backupPlan": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-minimal-${uniqueId}",
+  "resource": "projects/${projectId}/instances/sqlinstance-minimal-${uniqueId}",
+  "resourceType": "sqladmin.googleapis.com/Instance"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/backupPlanAssociations/backupdrbackupplanassociation-sqlinstance-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/backupPlanAssociations/backupdrbackupplanassociation-sqlinstance-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.BackupPlanAssociation",
+    "backupPlan": "projects/${projectNumber}/locations/us-central1/backupPlans/backupdrbackupplan-minimal-${uniqueId}",
+    "backupPlanRevisionId": "v0",
+    "backupPlanRevisionName": "projects/${projectNumber}/locations/us-central1/backupPlans/backupdrbackupplan-minimal-${uniqueId}/revisions/163c3760",
+    "cloudSqlInstanceBackupPlanAssociationProperties": {
+      "instanceCreateTime": "2026-09-16T03:00:11.692Z"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "dataSource": "projects/${projectNumber}/locations/us-central1/backupVaults/backupdrbackupvault-minimal-${uniqueId}/dataSources/${dataSourceID}",
+    "name": "projects/${projectId}/locations/us-central1/backupPlanAssociations/backupdrbackupplanassociation-sqlinstance-${uniqueId}",
+    "resource": "projects/${projectNumber}/instances/sqlinstance-minimal-${uniqueId}",
+    "resourceType": "sqladmin.googleapis.com/Instance",
+    "rulesConfigInfo": [
+      {
+        "lastBackupState": "FIRST_BACKUP_PENDING",
+        "ruleId": "rule-1"
+      }
+    ],
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupPlanAssociations/backupdrbackupplanassociation-sqlinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupPlanAssociations%2Fbackupdrbackupplanassociation-sqlinstance-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backupPlan": "projects/${projectNumber}/locations/us-central1/backupPlans/backupdrbackupplan-minimal-${uniqueId}",
+  "backupPlanRevisionId": "v0",
+  "backupPlanRevisionName": "projects/${projectNumber}/locations/us-central1/backupPlans/backupdrbackupplan-minimal-${uniqueId}/revisions/163c3760",
+  "cloudSqlInstanceBackupPlanAssociationProperties": {
+    "instanceCreateTime": "2026-09-16T03:00:11.692Z"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "dataSource": "projects/${projectNumber}/locations/us-central1/backupVaults/backupdrbackupvault-minimal-${uniqueId}/dataSources/${dataSourceID}",
+  "name": "projects/${projectId}/locations/us-central1/backupPlanAssociations/backupdrbackupplanassociation-sqlinstance-${uniqueId}",
+  "resource": "projects/${projectNumber}/instances/sqlinstance-minimal-${uniqueId}",
+  "resourceType": "sqladmin.googleapis.com/Instance",
+  "rulesConfigInfo": [
+    {
+      "lastBackupState": 1,
+      "ruleId": "rule-1"
+    }
+  ],
+  "state": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupPlanAssociations/backupdrbackupplanassociation-sqlinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupPlanAssociations%2Fbackupdrbackupplanassociation-sqlinstance-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/backupPlanAssociations/backupdrbackupplanassociation-sqlinstance-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/backupPlanAssociations/backupdrbackupplanassociation-sqlinstance-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupPlans%2Fbackupdrbackupplan-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backupRules": [
+    {
+      "backupRetentionDays": 5,
+      "ruleId": "rule-1",
+      "standardSchedule": {
+        "backupWindow": {
+          "endHourOfDay": 23,
+          "startHourOfDay": 1
+        },
+        "hourlyFrequency": 6,
+        "recurrenceType": 1,
+        "timeZone": "UTC"
+      }
+    }
+  ],
+  "backupVault": "projects/${projectNumber}/locations/us-central1/backupVaults/backupdrbackupvault-minimal-${uniqueId}",
+  "backupVaultServiceAccount": "vault-${projectNumber}-74028037@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test dependency backup plan",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-minimal-${uniqueId}",
+  "resourceType": "sqladmin.googleapis.com/Instance",
+  "revisionId": "revision-id-placeholder",
+  "revisionName": "projects/${projectNumber}/locations/us-central1/backupPlans/backupdrbackupplan-minimal-${uniqueId}/revisions/163c3760",
+  "state": 2,
+  "supportedResourceTypes": [
+    "sqladmin.googleapis.com/Instance"
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupPlans%2Fbackupdrbackupplan-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupVaults%2Fbackupdrbackupvault-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "accessRestriction": 2,
+  "backupMinimumEnforcedRetentionDuration": "100000s",
+  "backupRetentionInheritance": 1,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deletable": true,
+  "description": "test dependency backup vault",
+  "encryptionConfig": {
+    "kmsKeyName": ""
+  },
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-minimal-${uniqueId}",
+  "serviceAccount": "vault-${projectNumber}-74028037@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
+  "state": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupVaults%2Fbackupdrbackupvault-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-minimal-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backendType": "SECOND_GEN",
+  "connectionName": "${projectId}:us-central1:sqlinstance-minimal-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseInstalledVersion": "POSTGRES_15_19",
+  "databaseVersion": "POSTGRES_15",
+  "etag": "abcdef0123A=",
+  "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "googleVacuumMgmtEnabled": false,
+    "indexAdvisorEnabled": false,
+    "oomSessionCancelEnabled": true
+  },
+  "includeReplicasForMajorVersionUpgrade": false,
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "ipAddresses": [
+    {
+      "ipAddress": "10.10.10.10",
+      "type": "PRIMARY"
+    },
+    {
+      "ipAddress": "10.10.10.11",
+      "type": "OUTGOING"
+    }
+  ],
+  "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_15_19.R20260712.01_10",
+  "name": "sqlinstance-minimal-${uniqueId}",
+  "project": "${projectId}",
+  "region": "us-central1",
+  "satisfiesPzi": true,
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-minimal-${uniqueId}",
+  "serverCaCert": {
+    "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
+    "certSerialNumber": "0",
+    "commonName": "common-name",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "expirationTime": "2024-04-01T12:34:56.123456Z",
+    "instance": "sqlinstance-minimal-${uniqueId}",
+    "kind": "sql#sslCert",
+    "sha1Fingerprint": "12345678"
+  },
+  "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
+  "settings": {
+    "activationPolicy": "ALWAYS",
+    "authorizedGaeApplications": [],
+    "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 7,
+        "retentionUnit": "COUNT"
+      },
+      "backupTier": "STANDARD",
+      "enabled": true,
+      "kind": "sql#backupConfiguration",
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 7,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
+    },
+    "connectorEnforcement": "NOT_REQUIRED",
+    "dataDiskSizeGb": "10",
+    "dataDiskType": "PD_SSD",
+    "deletionProtectionEnabled": false,
+    "edition": "ENTERPRISE",
+    "enableDataplexIntegration": true,
+    "ipConfiguration": {
+      "authorizedNetworks": [],
+      "ipv4Enabled": true,
+      "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
+    "kind": "sql#settings",
+    "locationPreference": {
+      "kind": "sql#locationPreference",
+      "zone": "us-central1-a"
+    },
+    "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
+    "replicationType": "SYNCHRONOUS",
+    "settingsVersion": "123",
+    "storageAutoResize": true,
+    "storageAutoResizeLimit": "0",
+    "tier": "db-custom-1-3840",
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
+  "state": "RUNNABLE",
+  "upgradableDatabaseVersions": [
+    {
+      "displayName": "PostgreSQL 16",
+      "majorVersion": "POSTGRES_16",
+      "name": "POSTGRES_16"
+    },
+    {
+      "displayName": "PostgreSQL 17",
+      "majorVersion": "POSTGRES_17",
+      "name": "POSTGRES_17"
+    },
+    {
+      "displayName": "PostgreSQL 18",
+      "majorVersion": "POSTGRES_18",
+      "name": "POSTGRES_18"
+    }
+  ]
+}
+
+---
+
+DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-minimal-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "DELETE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "status": "PENDING",
+  "targetId": "sqlinstance-minimal-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-minimal-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "DELETE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "sqlinstance-minimal-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-minimal-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}

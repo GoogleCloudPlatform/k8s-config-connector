@@ -42,7 +42,7 @@ type SQLInstance struct {
 }
 
 func (s *SQLInstance) String() string {
-	return "projects/" + s.ProjectID + "locations/" + s.Location + "/instances/" + s.SQLInstanceName
+	return "projects/" + s.ProjectID + "/locations/" + s.Location + "/instances/" + s.SQLInstanceName
 }
 
 func (s *SQLInstance) ConnectionName() string {
@@ -62,7 +62,7 @@ func ResolveSQLInstanceRef(ctx context.Context, reader client.Reader, obj client
 	}
 
 	if ref.External != "" {
-		// External should be in the `projects/[projectID]/locations/[Location]/instances/[instanceName]` format.
+		// External should be in the `projects/[projectID]/locations/[Location]/instances/[instanceName]` or `projects/[projectID]/instances/[instanceName]` format.
 		tokens := strings.Split(ref.External, "/")
 		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "instances" {
 			return &SQLInstance{
@@ -71,7 +71,13 @@ func ResolveSQLInstanceRef(ctx context.Context, reader client.Reader, obj client
 				SQLInstanceName: tokens[5],
 			}, nil
 		}
-		return nil, fmt.Errorf("format of sqlinstance external=%q was not known (use projects/<projectId>/locations/[Location]/instances/<instanceName>)", ref.External)
+		if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "instances" {
+			return &SQLInstance{
+				ProjectID:       tokens[1],
+				SQLInstanceName: tokens[3],
+			}, nil
+		}
+		return nil, fmt.Errorf("format of sqlinstance external=%q was not known (use projects/<projectId>/locations/[Location]/instances/<instanceName> or projects/<projectId>/instances/<instanceName>)", ref.External)
 	}
 
 	key := types.NamespacedName{

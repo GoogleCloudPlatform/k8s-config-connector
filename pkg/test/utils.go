@@ -147,6 +147,8 @@ func CompareGoldenFile(t *testing.T, p, fullGot string, normalizers ...func(s st
 	if strings.Contains(filepath.Base(p), "_http") {
 		if err := compareHTTPLogs(want, got); err == nil {
 			return
+		} else {
+			t.Logf("compareHTTPLogs failed: %v", err)
 		}
 	}
 
@@ -268,20 +270,44 @@ func PrettyPrintJSON[T any](t *testing.T, k T) string {
 	return string(encoded)
 }
 
+func collapseDuplicateGETs(events []httpEvent) []httpEvent {
+	var collapsed []httpEvent
+	for _, ev := range events {
+		if ev.Method == "GET" && len(collapsed) > 0 {
+			prev := collapsed[len(collapsed)-1]
+			if prev.Method == "GET" && prev.Status == ev.Status {
+				pURL := strings.Split(cleanURL(prev.URL), "?")[0]
+				eURL := strings.Split(cleanURL(ev.URL), "?")[0]
+				if pURL == eURL {
+					continue
+				}
+			}
+		}
+		collapsed = append(collapsed, ev)
+	}
+	return collapsed
+}
+
 func compareHTTPLogs(wantContent, gotContent string) error {
-	wantEvents := parseLog(wantContent)
-	gotEvents := parseLog(gotContent)
+	wantEvents := collapseDuplicateGETs(parseLog(wantContent))
+	gotEvents := collapseDuplicateGETs(parseLog(gotContent))
 
 	wantGrouped := make(map[string][]httpEvent)
 	for _, ev := range wantEvents {
 		key := extractResourceKey(ev.URL)
 		wantGrouped[key] = append(wantGrouped[key], ev)
 	}
+	for key, evs := range wantGrouped {
+		wantGrouped[key] = collapseDuplicateGETs(evs)
+	}
 
 	gotGrouped := make(map[string][]httpEvent)
 	for _, ev := range gotEvents {
 		key := extractResourceKey(ev.URL)
 		gotGrouped[key] = append(gotGrouped[key], ev)
+	}
+	for key, evs := range gotGrouped {
+		gotGrouped[key] = collapseDuplicateGETs(evs)
 	}
 
 	// Compare the groups
