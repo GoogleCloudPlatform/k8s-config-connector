@@ -31,6 +31,7 @@ Please respect the following review criteria and invariants when reviewing.
 
 ## 5. Completeness & Heuristics (Proto-to-CRD mapping)
 *   **Completeness Goal:** Greenfield resources must aim for 100% coverage of the fields defined in the Google API proto. Compare the generated CRD YAML against the generated proto files. The CRD must map **all** fields declared in the Proto.
+*   **1:1 Kind to Proto Mapping:** Moving forward, enforce a strict 1:1 relationship between resource Kinds and Proto definitions. Verify that no single Proto is shared by multiple Kinds, and no single Kind points to multiple Protos. (Note: some older legacy resources may have multiple Kinds pointing to the same Proto).
 *   Find the proto definition in `.build/third_party/googleapis/google/...` matching the service named in the resource's `generate.sh` (e.g., `google.cloud.apihub.v1`).
 *   Verify that fields are mapped using these rules:
     1. **`status` Mapping:** Fields containing `(google.api.field_behavior) = OUTPUT_ONLY` in the proto must map only to Go's `Status` struct (represented as `status` in the CRD).
@@ -48,6 +49,7 @@ When proposing changes or stating LGTM, format the review description as follows
 * **API Version Check**: [Pass/Fail] - (Specify paths/versions checked)
 * **Go Type Pointers**: [Pass/Fail] - (List any non-pointer primitives found)
 * **Completeness & Heuristics**: [Pass/Fail] - (List any missing or incorrectly mapped fields)
+* **1:1 Kind to Proto Mapping**: [Pass/Fail] - (List any shared Protos or Kinds pointing to multiple Protos)
 * **References/Identity**: [Pass/Fail] - (List any missing resource references)
 
 #### Detailed Findings / Actions Required:

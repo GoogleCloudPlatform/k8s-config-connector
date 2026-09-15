@@ -72,6 +72,7 @@ chmod +x apis/<service_short>/generate.sh
 Apply the baseline validations from `kcc-direct-base-types-implementer`, plus these greenfield-specific rules:
 
 - **Stability Level**: Add `// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"`.
+- **1:1 Kind to Proto Mapping**: Moving forward, enforce a strict 1:1 relationship between resource Kinds and Proto definitions. Ensure no single Proto is shared by multiple Kinds, and no single Kind points to multiple Protos. (Note: some older legacy resources may have multiple Kinds pointing to the same Proto).
 - **Field Validation**: Manually add or verify kubebuilder tags:
   - Use `// +kubebuilder:validation:Required` for fields that are mandatory in the GCP API.
   - Use `// +kubebuilder:validation:Optional` for all other fields.
