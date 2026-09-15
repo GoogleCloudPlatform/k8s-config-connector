@@ -1,0 +1,212 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Post-Upgrade Test Resources (KCC 1.154.1)
+# These resources verify new fields introduced in release 1.154.1.
+
+---
+# 1. StorageBucket (New field: spec.ipFilter)
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  name: kcc-bucket-verify-1154
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  location: US
+  uniformBucketLevelAccess: true
+  ipFilter:
+    mode: Enabled
+    publicNetworkSource:
+      allowedIpCidrRanges:
+        - "192.0.2.0/24"
+
+---
+# 2. PubSubTopic (New field: spec.messageStoragePolicy.enforceInTransit)
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: kcc-topic-verify-1154
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  messageStoragePolicy:
+    allowedPersistenceRegions:
+      - us-central1
+      - us-east1
+    enforceInTransit: true
+
+---
+# 3. ComputeSecurityPolicy (New field: spec.region)
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSecurityPolicy
+metadata:
+  name: kcc-secpolicy-verify-1154
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  description: "Regional security policy verifying spec.region field in 1.154"
+  region: us-central1
+
+---
+# 4. MonitoringAlertPolicy (New field: spec.conditions[].conditionSql)
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringAlertPolicy
+metadata:
+  name: monitoringalertpolicy-sql-verify
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  displayName: "Verify SQL Condition Alert Policy 1.154"
+  combiner: OR
+  conditions:
+    - displayName: "SQL Log Query Alert Condition"
+      conditionSql:
+        query: "SELECT count(*) FROM `logging.googleapis.com/logs` WHERE severity = 'ERROR'"
+        minutes:
+          periodicity: 5
+        rowCountTest:
+          comparison: COMPARISON_GT
+          threshold: 0
+
+---
+---
+# 5. ComputeNetwork & ComputeSubnetwork (New fields: networkProfile & reservedInternalRangeRef)
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: kcc-network-verify-1154
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  autoCreateSubnetworks: false
+
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: kcc-subnet-verify-1154
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  ipCidrRange: "10.10.0.0/24"
+  region: us-central1
+  networkRef:
+    name: kcc-network-verify-1154
+  secondaryIpRange:
+    - rangeName: verify-secondary-range
+      ipCidrRange: "192.168.1.0/24"
+      reservedInternalRangeRef:
+        external: "projects/cnrm-barni-2/locations/us-central1/internalRanges/verify-range"
+
+---
+# 6. ComputeRouterNAT (New Feature: Private NAT support)
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRouter
+metadata:
+  name: kcc-router-verify-1154
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  region: us-central1
+  networkRef:
+    name: kcc-network-verify-1154
+
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRouterNAT
+metadata:
+  name: kcc-routernat-privatenat-verify
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  region: us-central1
+  routerRef:
+    name: kcc-router-verify-1154
+  natIpAllocateOption: MANUAL_ONLY
+  sourceSubnetworkIpRangesToNat: ALL_SUBNETWORKS_ALL_IP_RANGES
+  type: PRIVATE
+
+---
+# 7. ComputeURLMap (New field: spec.defaultCustomErrorResponsePolicy)
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeURLMap
+metadata:
+  name: urlmap-errorpolicy-verify
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  location: global
+  defaultCustomErrorResponsePolicy:
+    errorResponseRule:
+      - matchResponseCodes:
+          - "503"
+        overrideResponseCode: 502
+        path: "/custom-error-502.html"
+
+---
+# 8. ComputeAddress (New field: spec.ipCollectionRef)
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: computeaddress-ipcollection-verify
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  location: global
+  addressType: EXTERNAL
+  ipCollectionRef:
+    external: "projects/cnrm-barni-2/global/publicDelegatedPrefixes/verify-pdp"
+
+---
+# 9. DNSRecordSet (New fields: spec.routingPolicy.geo[].healthCheckRef, rrdatasRefs)
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSRecordSet
+metadata:
+  name: dnsrecordset-routingpolicy-verify
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  name: "verify-record.example.com."
+  type: A
+  ttl: 300
+  managedZoneRef:
+    name: "verify-zone"
+  routingPolicy:
+    healthCheckRef:
+      external: "projects/cnrm-barni-2/global/healthChecks/verify-check"
+    geo:
+      - location: us-central1
+        rrdatasRefs:
+          - external: "192.0.2.1"
+
+---
+# 10. RedisCluster (New field: spec.crossClusterReplicationConfig)
+apiVersion: redis.cnrm.cloud.google.com/v1beta1
+kind: RedisCluster
+metadata:
+  name: rediscluster-replication-verify
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  projectRef:
+    external: "cnrm-barni-2"
+  location: us-central1
+  shardCount: 3
+  crossClusterReplicationConfig:
+    clusterRole: PRIMARY
+
+
+
+
