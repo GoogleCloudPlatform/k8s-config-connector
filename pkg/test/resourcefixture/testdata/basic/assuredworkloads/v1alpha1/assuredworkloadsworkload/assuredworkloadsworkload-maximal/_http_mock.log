@@ -5,7 +5,6 @@ X-Goog-Request-Params: parent=organizations%2F${organizationID}%2Flocations%2Fus
 X-Goog-User-Project: cnrm-barni-4
 
 {
-  "billingAccount": "billingAccounts/${billingAccountID}",
   "complianceRegime": 3,
   "displayName": "Max ${uniqueId}",
   "labels": {
@@ -72,7 +71,6 @@ X-Xss-Protection: 0
   "name": "organizations/${organizationID}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.assuredworkloads.v1.Workload",
-    "billingAccount": "billingAccounts/${billingAccountID}",
     "complianceRegime": "FEDRAMP_HIGH",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "Max ${uniqueId}",
@@ -117,7 +115,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "billingAccount": "billingAccounts/${billingAccountID}",
   "complianceRegime": 3,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Max ${uniqueId}",
@@ -151,7 +148,6 @@ X-Goog-Request-Params: workload.name=organizations%2F${organizationID}%2Flocatio
 X-Goog-User-Project: cnrm-barni-4
 
 {
-  "billingAccount": "billingAccounts/${billingAccountID}",
   "complianceRegime": 3,
   "displayName": "Upd Max ${uniqueId}",
   "etag": "abcdef0123A=",
@@ -180,7 +176,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "billingAccount": "billingAccounts/${billingAccountID}",
   "complianceRegime": 3,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Upd Max ${uniqueId}",
@@ -224,7 +219,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "billingAccount": "billingAccounts/${billingAccountID}",
   "complianceRegime": 3,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Upd Max ${uniqueId}",

@@ -5,7 +5,6 @@ X-Goog-Request-Params: parent=organizations%2F${organizationID}%2Flocations%2Fus
 X-Goog-User-Project: cnrm-barni-4
 
 {
-  "billingAccount": "billingAccounts/${billingAccountID}",
   "complianceRegime": 3,
   "displayName": "Workload ${uniqueId}",
   "labels": {
@@ -65,7 +64,6 @@ X-Xss-Protection: 0
   "name": "organizations/${organizationID}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.assuredworkloads.v1.Workload",
-    "billingAccount": "billingAccounts/${billingAccountID}",
     "complianceRegime": "FEDRAMP_HIGH",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "Workload ${uniqueId}",
@@ -103,7 +101,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "billingAccount": "billingAccounts/${billingAccountID}",
   "complianceRegime": 3,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Workload ${uniqueId}",
@@ -123,14 +120,13 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://us-central1-assuredworkloads.googleapis.com:443/v1/organizations/${organizationID}/locations/us-central1/workloads/${workloadID}?%24alt=json%3Benum-encoding%3Dint&updateMask=workload.displayName
+PATCH https://us-central1-assuredworkloads.googleapis.com:443/v1/organizations/${organizationID}/locations/us-central1/workloads/${workloadID}?%24alt=json%3Benum-encoding%3Dint&updateMask=workload.displayName%2Cworkload.labels
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: workload.name=organizations%2F${organizationID}%2Flocations%2Fus-central1%2Fworkloads%2F${workloadID}
 X-Goog-User-Project: cnrm-barni-4
 
 {
-  "billingAccount": "billingAccounts/${billingAccountID}",
   "complianceRegime": 3,
   "displayName": "Upd ${uniqueId}",
   "etag": "abcdef0123A=",
@@ -152,7 +148,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "billingAccount": "billingAccounts/${billingAccountID}",
   "complianceRegime": 3,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Upd ${uniqueId}",
@@ -189,7 +184,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "billingAccount": "billingAccounts/${billingAccountID}",
   "complianceRegime": 3,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Upd ${uniqueId}",

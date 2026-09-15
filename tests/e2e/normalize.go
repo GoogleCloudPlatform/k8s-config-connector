@@ -1393,6 +1393,11 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 		// Normalize etags in URLS
 		event.Request.URL = normalizeEtagsInURL(event.Request.URL)
+
+		// Normalize updateMask in assuredworkloads URLs
+		if strings.Contains(event.Request.URL, "assuredworkloads.googleapis.com") {
+			event.Request.URL = normalizeUpdateMaskInURL(event.Request.URL)
+		}
 	}
 
 	normalizeComputeSelfLink := func(u string) string {
@@ -1669,6 +1674,16 @@ func rewriteComputeURL(u string) string {
 func normalizeEtagsInURL(u string) string {
 	re := regexp.MustCompile(`etag=[a-zA-Z0-9%]+`)
 	return re.ReplaceAllString(u, "etag=abcdef0123A")
+}
+
+func normalizeUpdateMaskInURL(u string) string {
+	// Real GCP has updateMask=workload.displayName%2Cworkload.labels
+	// Mock GCP has updateMask=workload.displayName
+	// We normalize it to the real GCP's updateMask value so they match.
+	if strings.Contains(u, "updateMask=workload.displayName") && !strings.Contains(u, "workload.labels") {
+		return strings.ReplaceAll(u, "updateMask=workload.displayName", "updateMask=workload.displayName%2Cworkload.labels")
+	}
+	return u
 }
 
 // isGetOperation returns true if this is an operation poll request

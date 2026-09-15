@@ -15,12 +15,39 @@
 package mockassuredworkloads
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "assuredworkloads.googleapis.com") {
+		return
+	}
+
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
+
+	// Since complianceStatus, partnerPermissions, resourceMonitoringEnabled, violationNotificationsEnabled
+	// are not present in the v1 protobuf, they are not returned by MockGCP. We strip them from the real
+	// GCP logs to align with MockGCP.
+	replacements.RemovePath(".complianceStatus")
+	replacements.RemovePath(".response.complianceStatus")
+
+	replacements.RemovePath(".partnerPermissions")
+	replacements.RemovePath(".response.partnerPermissions")
+
+	replacements.RemovePath(".resourceMonitoringEnabled")
+	replacements.RemovePath(".response.resourceMonitoringEnabled")
+
+	replacements.RemovePath(".violationNotificationsEnabled")
+	replacements.RemovePath(".response.violationNotificationsEnabled")
+
+	// billingAccount is not returned by Real GCP GET/PATCH responses, so we strip it to align.
+	replacements.RemovePath(".billingAccount")
+	replacements.RemovePath(".response.billingAccount")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
