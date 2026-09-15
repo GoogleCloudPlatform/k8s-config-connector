@@ -261,7 +261,7 @@ func ResourceComputeSecurityPolicy() *schema.Resource {
 									"enforce_on_key": {
 										Type:         schema.TypeString,
 										Optional:     true,
-										Default:      "ALL",
+										Computed:     true,
 										Description:  `Determines the key to enforce the rateLimitThreshold on`,
 										ValidateFunc: validation.StringInSlice([]string{"ALL", "IP", "HTTP_HEADER", "XFF_IP", "HTTP_COOKIE", "HTTP_PATH", "SNI", "REGION_CODE", ""}, false),
 									},
@@ -1248,18 +1248,35 @@ func expandSecurityPolicyRuleRateLimitOptions(configured []interface{}) *compute
 	}
 
 	data := configured[0].(map[string]interface{})
-	return &compute.SecurityPolicyRuleRateLimitOptions{
+	rateLimitOptions := &compute.SecurityPolicyRuleRateLimitOptions{
 		BanThreshold:          expandThreshold(data["ban_threshold"].([]interface{})),
 		RateLimitThreshold:    expandThreshold(data["rate_limit_threshold"].([]interface{})),
 		ExceedAction:          data["exceed_action"].(string),
 		ConformAction:         data["conform_action"].(string),
-		EnforceOnKey:          data["enforce_on_key"].(string),
-		EnforceOnKeyName:      data["enforce_on_key_name"].(string),
-		EnforceOnKeyConfigs:   expandSecurityPolicyEnforceOnKeyConfigs(data["enforce_on_key_configs"].([]interface{})),
 		BanDurationSec:        int64(data["ban_duration_sec"].(int)),
 		ExceedRedirectOptions: expandSecurityPolicyRuleRedirectOptions(data["exceed_redirect_options"].([]interface{})),
-		ForceSendFields:       []string{"EnforceOnKey", "EnforceOnKeyName", "EnforceOnKeyConfigs"},
 	}
+
+	configs := expandSecurityPolicyEnforceOnKeyConfigs(data["enforce_on_key_configs"].([]interface{}))
+	enforceOnKey := data["enforce_on_key"].(string)
+	if len(configs) > 0 {
+		rateLimitOptions.EnforceOnKeyConfigs = configs
+		if enforceOnKey != "" {
+			rateLimitOptions.EnforceOnKey = enforceOnKey
+			rateLimitOptions.ForceSendFields = []string{"EnforceOnKeyConfigs", "EnforceOnKey"}
+		} else {
+			rateLimitOptions.ForceSendFields = []string{"EnforceOnKeyConfigs"}
+		}
+	} else {
+		if enforceOnKey == "" {
+			enforceOnKey = "ALL"
+		}
+		rateLimitOptions.EnforceOnKey = enforceOnKey
+		rateLimitOptions.EnforceOnKeyName = data["enforce_on_key_name"].(string)
+		rateLimitOptions.ForceSendFields = []string{"EnforceOnKey", "EnforceOnKeyName"}
+	}
+
+	return rateLimitOptions
 }
 
 func expandThreshold(configured []interface{}) *compute.SecurityPolicyRuleRateLimitOptionsThreshold {
