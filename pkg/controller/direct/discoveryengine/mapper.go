@@ -18,7 +18,9 @@ import (
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
 	discoveryenginepb "cloud.google.com/go/discoveryengine/apiv1beta/discoveryenginepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	discoveryenginealphapb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/discoveryengine/pb"
 	datepb "google.golang.org/genproto/googleapis/type/date"
 	"google.golang.org/protobuf/types/known/structpb"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -471,5 +473,55 @@ func DiscoveryEngineServingConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext
 	out.ReplacementControlIds = in.ReplacementControlIDs
 	out.IgnoreControlIds = in.IgnoreControlIDs
 	out.PersonalizationSpec = SearchRequest_PersonalizationSpec_v1alpha1_ToProto(mapCtx, in.PersonalizationSpec)
+	return out
+}
+
+func DiscoveryEngineDataConnectorSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginealphapb.DataConnector) *krm.DiscoveryEngineDataConnectorSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiscoveryEngineDataConnectorSpec{}
+	out.DataSource = direct.LazyPtr(in.GetDataSource())
+	if v := direct.Struct_FromProto(mapCtx, in.GetParams()); v != nil {
+		out.Params = *v
+	}
+	out.RefreshInterval = direct.LazyPtr(in.GetRefreshInterval())
+	out.AutoRunDisabled = direct.LazyPtr(in.GetAutoRunDisabled())
+	out.ActionConfig = ActionConfig_v1alpha1_FromProto(mapCtx, in.GetActionConfig())
+	out.DestinationConfigs = direct.Slice_FromProto(mapCtx, in.DestinationConfigs, DestinationConfig_v1alpha1_FromProto)
+	out.SyncMode = direct.Enum_FromProto(mapCtx, in.GetSyncMode())
+	out.IncrementalSyncDisabled = direct.LazyPtr(in.GetIncrementalSyncDisabled())
+	out.IncrementalRefreshInterval = direct.LazyPtr(in.GetIncrementalRefreshInterval())
+	out.DataProtectionPolicy = DataProtectionPolicy_v1alpha1_FromProto(mapCtx, in.GetDataProtectionPolicy())
+	out.ConnectorMetadata = ConnectorMetadata_v1alpha1_FromProto(mapCtx, in.GetConnectorMetadata())
+	out.RealtimeSyncConfig = RealtimeSyncConfig_v1alpha1_FromProto(mapCtx, in.GetRealtimeSyncConfig())
+	if in.KmsKeyName != "" {
+		out.KMSKeyRef = &refs.KMSCryptoKeyRef{
+			External: in.KmsKeyName,
+		}
+	}
+	return out
+}
+
+func DiscoveryEngineDataConnectorSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryEngineDataConnectorSpec) *discoveryenginealphapb.DataConnector {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginealphapb.DataConnector{}
+	out.DataSource = direct.ValueOf(in.DataSource)
+	out.Params = direct.Struct_ToProto(mapCtx, &in.Params)
+	out.RefreshInterval = direct.ValueOf(in.RefreshInterval)
+	out.AutoRunDisabled = direct.ValueOf(in.AutoRunDisabled)
+	out.ActionConfig = ActionConfig_v1alpha1_ToProto(mapCtx, in.ActionConfig)
+	out.DestinationConfigs = direct.Slice_ToProto(mapCtx, in.DestinationConfigs, DestinationConfig_v1alpha1_ToProto)
+	out.SyncMode = direct.Enum_ToProto[discoveryenginealphapb.DataConnector_SyncMode](mapCtx, in.SyncMode)
+	out.IncrementalSyncDisabled = direct.ValueOf(in.IncrementalSyncDisabled)
+	out.IncrementalRefreshInterval = direct.ValueOf(in.IncrementalRefreshInterval)
+	out.DataProtectionPolicy = DataProtectionPolicy_v1alpha1_ToProto(mapCtx, in.DataProtectionPolicy)
+	out.ConnectorMetadata = ConnectorMetadata_v1alpha1_ToProto(mapCtx, in.ConnectorMetadata)
+	out.RealtimeSyncConfig = RealtimeSyncConfig_v1alpha1_ToProto(mapCtx, in.RealtimeSyncConfig)
+	if in.KMSKeyRef != nil {
+		out.KmsKeyName = in.KMSKeyRef.External
+	}
 	return out
 }
