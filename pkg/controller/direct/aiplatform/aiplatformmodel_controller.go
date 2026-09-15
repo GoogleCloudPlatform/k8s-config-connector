@@ -221,6 +221,7 @@ func (a *AIPlatformModelAdapter) Update(ctx context.Context, updateOp *directbas
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &pb.UpdateModelRequest{
