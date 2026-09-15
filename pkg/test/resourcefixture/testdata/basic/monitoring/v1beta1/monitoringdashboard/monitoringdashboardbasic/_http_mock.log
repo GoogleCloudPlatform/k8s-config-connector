@@ -1,7 +1,5 @@
-GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -23,10 +21,9 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards?%24alt=json%3Benum-encoding%3Dint
+POST https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=projects%2F${projectId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "columnLayout": {
@@ -39,11 +36,11 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
+                  "plotType": "LINE",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -54,14 +51,14 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
               "timeshiftDuration": "100s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": 1
+              "format": "MARKDOWN"
             }
           },
           {
@@ -69,11 +66,11 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
+                  "plotType": "LINE",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -84,7 +81,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
               "timeshiftDuration": "60s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
@@ -126,12 +123,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
-                  "targetAxis": 1,
+                  "plotType": "LINE",
+                  "targetAxis": "Y1",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -142,14 +139,14 @@ X-Xss-Protection: 0
               "timeshiftDuration": "100s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": 1,
+              "format": "MARKDOWN",
               "style": {}
             }
           },
@@ -158,12 +155,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
-                  "targetAxis": 1,
+                  "plotType": "LINE",
+                  "targetAxis": "Y1",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -174,7 +171,7 @@ X-Xss-Protection: 0
               "timeshiftDuration": "60s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
@@ -198,10 +195,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -224,12 +219,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
-                  "targetAxis": 1,
+                  "plotType": "LINE",
+                  "targetAxis": "Y1",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -240,14 +235,14 @@ X-Xss-Protection: 0
               "timeshiftDuration": "100s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": 1,
+              "format": "MARKDOWN",
               "style": {}
             }
           },
@@ -256,12 +251,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
-                  "targetAxis": 1,
+                  "plotType": "LINE",
+                  "targetAxis": "Y1",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -272,7 +267,7 @@ X-Xss-Protection: 0
               "timeshiftDuration": "60s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
@@ -296,10 +291,9 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
+PATCH https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "columnLayout": {
@@ -312,11 +306,11 @@ X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${d
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
+                  "plotType": "LINE",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -327,14 +321,14 @@ X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${d
               "timeshiftDuration": "100s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": 1
+              "format": "MARKDOWN"
             }
           },
           {
@@ -342,11 +336,11 @@ X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${d
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
+                  "plotType": "LINE",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -357,7 +351,7 @@ X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${d
               "timeshiftDuration": "60s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
@@ -400,12 +394,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
-                  "targetAxis": 1,
+                  "plotType": "LINE",
+                  "targetAxis": "Y1",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -416,14 +410,14 @@ X-Xss-Protection: 0
               "timeshiftDuration": "100s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": 1,
+              "format": "MARKDOWN",
               "style": {}
             }
           },
@@ -432,12 +426,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
-                  "targetAxis": 1,
+                  "plotType": "LINE",
+                  "targetAxis": "Y1",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -448,7 +442,7 @@ X-Xss-Protection: 0
               "timeshiftDuration": "60s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
@@ -472,10 +466,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -498,12 +490,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
-                  "targetAxis": 1,
+                  "plotType": "LINE",
+                  "targetAxis": "Y1",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -514,14 +506,14 @@ X-Xss-Protection: 0
               "timeshiftDuration": "100s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": 1,
+              "format": "MARKDOWN",
               "style": {}
             }
           },
@@ -530,12 +522,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
-                  "targetAxis": 1,
+                  "plotType": "LINE",
+                  "targetAxis": "Y1",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -546,7 +538,7 @@ X-Xss-Protection: 0
               "timeshiftDuration": "60s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
@@ -570,10 +562,9 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
+PATCH https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "columnLayout": {
@@ -586,11 +577,11 @@ X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${d
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
+                  "plotType": "LINE",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -601,14 +592,14 @@ X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${d
               "timeshiftDuration": "0s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": 1
+              "format": "MARKDOWN"
             }
           },
           {
@@ -616,11 +607,11 @@ X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${d
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
+                  "plotType": "LINE",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -630,7 +621,7 @@ X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${d
               ],
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
@@ -670,12 +661,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
-                  "targetAxis": 1,
+                  "plotType": "LINE",
+                  "targetAxis": "Y1",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -686,14 +677,14 @@ X-Xss-Protection: 0
               "timeshiftDuration": "0s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": 1,
+              "format": "MARKDOWN",
               "style": {}
             }
           },
@@ -702,12 +693,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
-                  "targetAxis": 1,
+                  "plotType": "LINE",
+                  "targetAxis": "Y1",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -717,7 +708,7 @@ X-Xss-Protection: 0
               ],
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
@@ -738,10 +729,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -764,12 +753,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
-                  "targetAxis": 1,
+                  "plotType": "LINE",
+                  "targetAxis": "Y1",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -780,14 +769,14 @@ X-Xss-Protection: 0
               "timeshiftDuration": "0s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": 1,
+              "format": "MARKDOWN",
               "style": {}
             }
           },
@@ -796,12 +785,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
-                  "targetAxis": 1,
+                  "plotType": "LINE",
+                  "targetAxis": "Y1",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -811,7 +800,7 @@ X-Xss-Protection: 0
               ],
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
@@ -832,10 +821,8 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
+DELETE https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
