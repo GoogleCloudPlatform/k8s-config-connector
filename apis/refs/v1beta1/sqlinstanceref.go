@@ -42,7 +42,7 @@ type SQLInstance struct {
 }
 
 func (s *SQLInstance) String() string {
-	return "projects/" + s.ProjectID + "locations/" + s.Location + "/instances/" + s.SQLInstanceName
+	return "projects/" + s.ProjectID + "/locations/" + s.Location + "/instances/" + s.SQLInstanceName
 }
 
 func (s *SQLInstance) ConnectionName() string {
