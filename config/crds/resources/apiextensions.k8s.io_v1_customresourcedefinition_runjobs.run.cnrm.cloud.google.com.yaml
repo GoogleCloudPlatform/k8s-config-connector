@@ -244,7 +244,7 @@ spec:
                                               external:
                                                 description: A reference to an externally
                                                   managed SecretManagerSecret resource.
-                                                  Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".
+                                                  Should be in the format "projects/{{projectID}}/secrets/{{secretID}}".
                                                 type: string
                                               name:
                                                 description: The name of a SecretManagerSecret
@@ -861,7 +861,7 @@ spec:
                                     external:
                                       description: A reference to an externally managed
                                         SecretManagerSecret resource. Should be in
-                                        the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".
+                                        the format "projects/{{projectID}}/secrets/{{secretID}}".
                                       type: string
                                     name:
                                       description: The name of a SecretManagerSecret
