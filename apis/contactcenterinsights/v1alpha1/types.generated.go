@@ -348,6 +348,99 @@ type Conversation struct {
 }
 */
 
+// +kcc:proto=google.cloud.contactcenterinsights.v1.ConversationDataSource
+type ConversationDataSource struct {
+	// A Cloud Storage location specification for the audio and transcript.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationDataSource.gcs_source
+	GCSSource *GCSSource `json:"gcsSource,omitempty"`
+
+	// The source when the conversation comes from Dialogflow.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationDataSource.dialogflow_source
+	DialogflowSource *DialogflowSource `json:"dialogflowSource,omitempty"`
+}
+
+// +kcc:proto=google.cloud.contactcenterinsights.v1.ConversationLevelSentiment
+type ConversationLevelSentiment struct {
+	// The channel of the audio that the data applies to.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationLevelSentiment.channel_tag
+	ChannelTag *int32 `json:"channelTag,omitempty"`
+
+	// Data specifying sentiment.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationLevelSentiment.sentiment_data
+	SentimentData *SentimentData `json:"sentimentData,omitempty"`
+}
+
+// +kcc:proto=google.cloud.contactcenterinsights.v1.ConversationLevelSilence
+type ConversationLevelSilence struct {
+	// Amount of time calculated to be in silence.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationLevelSilence.silence_duration
+	SilenceDuration *string `json:"silenceDuration,omitempty"`
+
+	// Percentage of the total conversation spent in silence.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationLevelSilence.silence_percentage
+	SilencePercentage *float32 `json:"silencePercentage,omitempty"`
+}
+
+// +kcc:proto=google.cloud.contactcenterinsights.v1.ConversationParticipant
+type ConversationParticipant struct {
+	// The name of the participant provided by Dialogflow. Format:
+	//  projects/{project}/locations/{location}/conversations/{conversation}/participants/{participant}
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationParticipant.dialogflow_participant_name
+	DialogflowParticipantName *string `json:"dialogflowParticipantName,omitempty"`
+
+	// A user-specified ID representing the participant.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationParticipant.user_id
+	UserID *string `json:"userID,omitempty"`
+
+	// Deprecated. Use `dialogflow_participant_name` instead.
+	//  The name of the Dialogflow participant. Format:
+	//  projects/{project}/locations/{location}/conversations/{conversation}/participants/{participant}
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationParticipant.dialogflow_participant
+	DialogflowParticipant *string `json:"dialogflowParticipant,omitempty"`
+
+	// Obfuscated user ID from Dialogflow.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationParticipant.obfuscated_external_user_id
+	ObfuscatedExternalUserID *string `json:"obfuscatedExternalUserID,omitempty"`
+
+	// The role of the participant.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationParticipant.role
+	Role *string `json:"role,omitempty"`
+}
+
+// +kcc:proto=google.cloud.contactcenterinsights.v1.ConversationSummarizationSuggestionData
+type ConversationSummarizationSuggestionData struct {
+	// The summarization content that is concatenated into one string.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationSummarizationSuggestionData.text
+	Text *string `json:"text,omitempty"`
+
+	// The summarization content that is divided into sections. The key is the
+	//  section's name and the value is the section's content. There is no
+	//  specific format for the key or value.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationSummarizationSuggestionData.text_sections
+	TextSections map[string]string `json:"textSections,omitempty"`
+
+	// The confidence score of the summarization.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationSummarizationSuggestionData.confidence
+	Confidence *float32 `json:"confidence,omitempty"`
+
+	// A map that contains metadata about the summarization and the document
+	//  from which it originates.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationSummarizationSuggestionData.metadata
+	Metadata map[string]string `json:"metadata,omitempty"`
+
+	// The name of the answer record.
+	//  Format:
+	//  projects/{project}/locations/{location}/answerRecords/{answer_record}
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationSummarizationSuggestionData.answer_record
+	AnswerRecord *string `json:"answerRecord,omitempty"`
+
+	// The name of the model that generates this summary.
+	//  Format:
+	//  projects/{project}/locations/{location}/conversationModels/{conversation_model}
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationSummarizationSuggestionData.conversation_model
+	ConversationModel *string `json:"conversationModel,omitempty"`
+}
+
 // +kcc:proto=google.cloud.contactcenterinsights.v1.Conversation.CallMetadata
 type Conversation_CallMetadata struct {
 	// The audio channel that contains the customer.
@@ -482,99 +575,6 @@ type Conversation_Transcript_TranscriptSegment_WordInfo struct {
 	//  word. A default value of 0.0 indicates that the value is unset.
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.Conversation.Transcript.TranscriptSegment.WordInfo.confidence
 	Confidence *float32 `json:"confidence,omitempty"`
-}
-
-// +kcc:proto=google.cloud.contactcenterinsights.v1.ConversationDataSource
-type ConversationDataSource struct {
-	// A Cloud Storage location specification for the audio and transcript.
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationDataSource.gcs_source
-	GCSSource *GCSSource `json:"gcsSource,omitempty"`
-
-	// The source when the conversation comes from Dialogflow.
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationDataSource.dialogflow_source
-	DialogflowSource *DialogflowSource `json:"dialogflowSource,omitempty"`
-}
-
-// +kcc:proto=google.cloud.contactcenterinsights.v1.ConversationLevelSentiment
-type ConversationLevelSentiment struct {
-	// The channel of the audio that the data applies to.
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationLevelSentiment.channel_tag
-	ChannelTag *int32 `json:"channelTag,omitempty"`
-
-	// Data specifying sentiment.
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationLevelSentiment.sentiment_data
-	SentimentData *SentimentData `json:"sentimentData,omitempty"`
-}
-
-// +kcc:proto=google.cloud.contactcenterinsights.v1.ConversationLevelSilence
-type ConversationLevelSilence struct {
-	// Amount of time calculated to be in silence.
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationLevelSilence.silence_duration
-	SilenceDuration *string `json:"silenceDuration,omitempty"`
-
-	// Percentage of the total conversation spent in silence.
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationLevelSilence.silence_percentage
-	SilencePercentage *float32 `json:"silencePercentage,omitempty"`
-}
-
-// +kcc:proto=google.cloud.contactcenterinsights.v1.ConversationParticipant
-type ConversationParticipant struct {
-	// The name of the participant provided by Dialogflow. Format:
-	//  projects/{project}/locations/{location}/conversations/{conversation}/participants/{participant}
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationParticipant.dialogflow_participant_name
-	DialogflowParticipantName *string `json:"dialogflowParticipantName,omitempty"`
-
-	// A user-specified ID representing the participant.
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationParticipant.user_id
-	UserID *string `json:"userID,omitempty"`
-
-	// Deprecated. Use `dialogflow_participant_name` instead.
-	//  The name of the Dialogflow participant. Format:
-	//  projects/{project}/locations/{location}/conversations/{conversation}/participants/{participant}
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationParticipant.dialogflow_participant
-	DialogflowParticipant *string `json:"dialogflowParticipant,omitempty"`
-
-	// Obfuscated user ID from Dialogflow.
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationParticipant.obfuscated_external_user_id
-	ObfuscatedExternalUserID *string `json:"obfuscatedExternalUserID,omitempty"`
-
-	// The role of the participant.
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationParticipant.role
-	Role *string `json:"role,omitempty"`
-}
-
-// +kcc:proto=google.cloud.contactcenterinsights.v1.ConversationSummarizationSuggestionData
-type ConversationSummarizationSuggestionData struct {
-	// The summarization content that is concatenated into one string.
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationSummarizationSuggestionData.text
-	Text *string `json:"text,omitempty"`
-
-	// The summarization content that is divided into sections. The key is the
-	//  section's name and the value is the section's content. There is no
-	//  specific format for the key or value.
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationSummarizationSuggestionData.text_sections
-	TextSections map[string]string `json:"textSections,omitempty"`
-
-	// The confidence score of the summarization.
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationSummarizationSuggestionData.confidence
-	Confidence *float32 `json:"confidence,omitempty"`
-
-	// A map that contains metadata about the summarization and the document
-	//  from which it originates.
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationSummarizationSuggestionData.metadata
-	Metadata map[string]string `json:"metadata,omitempty"`
-
-	// The name of the answer record.
-	//  Format:
-	//  projects/{project}/locations/{location}/answerRecords/{answer_record}
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationSummarizationSuggestionData.answer_record
-	AnswerRecord *string `json:"answerRecord,omitempty"`
-
-	// The name of the model that generates this summary.
-	//  Format:
-	//  projects/{project}/locations/{location}/conversationModels/{conversation_model}
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationSummarizationSuggestionData.conversation_model
-	ConversationModel *string `json:"conversationModel,omitempty"`
 }
 
 // +kcc:proto=google.cloud.contactcenterinsights.v1.DialogflowIntent
@@ -790,20 +790,6 @@ type IssueModel struct {
 }
 */
 
-// +kcc:proto=google.cloud.contactcenterinsights.v1.IssueModel.InputDataConfig
-type IssueModel_InputDataConfig struct {
-	// Medium of conversations used in training data. This field is being
-	//  deprecated. To specify the medium to be used in training a new issue
-	//  model, set the `medium` field on `filter`.
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.IssueModel.InputDataConfig.medium
-	Medium *string `json:"medium,omitempty"`
-
-	// A filter to reduce the conversations used for training the model to a
-	//  specific subset.
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.IssueModel.InputDataConfig.filter
-	Filter *string `json:"filter,omitempty"`
-}
-
 // +kcc:proto=google.cloud.contactcenterinsights.v1.IssueModelLabelStats
 type IssueModelLabelStats struct {
 	// Number of conversations the issue model has analyzed at this point in time.
@@ -846,6 +832,20 @@ type IssueModelResult struct {
 	// All the matched issues.
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.IssueModelResult.issues
 	Issues []IssueAssignment `json:"issues,omitempty"`
+}
+
+// +kcc:proto=google.cloud.contactcenterinsights.v1.IssueModel.InputDataConfig
+type IssueModel_InputDataConfig struct {
+	// Medium of conversations used in training data. This field is being
+	//  deprecated. To specify the medium to be used in training a new issue
+	//  model, set the `medium` field on `filter`.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.IssueModel.InputDataConfig.medium
+	Medium *string `json:"medium,omitempty"`
+
+	// A filter to reduce the conversations used for training the model to a
+	//  specific subset.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.IssueModel.InputDataConfig.filter
+	Filter *string `json:"filter,omitempty"`
 }
 
 // +kcc:proto=google.cloud.contactcenterinsights.v1.PhraseMatchData
@@ -1339,6 +1339,13 @@ type AnalysisResult_CallAnalysisMetadataObservedState struct {
 	QaScorecardResults []QaScorecardResultObservedState `json:"qaScorecardResults,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.contactcenterinsights.v1.ConversationDataSource
+type ConversationDataSourceObservedState struct {
+	// The source when the conversation comes from Dialogflow.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationDataSource.dialogflow_source
+	DialogflowSource *DialogflowSourceObservedState `json:"dialogflowSource,omitempty"`
+}
+
 /* found existing non-generated go type with proto tag "google.cloud.contactcenterinsights.v1.Conversation", skipping
 
 // +kcc:observedstate:proto=google.cloud.contactcenterinsights.v1.Conversation
@@ -1384,13 +1391,6 @@ type ConversationObservedState struct {
 
 }
 */
-
-// +kcc:observedstate:proto=google.cloud.contactcenterinsights.v1.ConversationDataSource
-type ConversationDataSourceObservedState struct {
-	// The source when the conversation comes from Dialogflow.
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.ConversationDataSource.dialogflow_source
-	DialogflowSource *DialogflowSourceObservedState `json:"dialogflowSource,omitempty"`
-}
 
 // +kcc:observedstate:proto=google.cloud.contactcenterinsights.v1.DialogflowSource
 type DialogflowSourceObservedState struct {

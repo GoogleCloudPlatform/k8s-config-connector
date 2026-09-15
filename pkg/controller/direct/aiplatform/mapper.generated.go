@@ -26,6 +26,7 @@ package aiplatform
 
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
+	aiplatformpb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
@@ -33,6 +34,78 @@ import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
+/* found existing non-generated mapping function "AIPlatformModelMonitorObservedState_FromProto", skipping
+func AIPlatformModelMonitorObservedState_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitor) *krm.AIPlatformModelMonitorObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformModelMonitorObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AIPlatformModelMonitorObservedState_ToProto", skipping
+func AIPlatformModelMonitorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformModelMonitorObservedState) *aiplatformpb.ModelMonitor {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitor{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AIPlatformModelMonitorSpec_FromProto", skipping
+func AIPlatformModelMonitorSpec_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitor) *krm.AIPlatformModelMonitorSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformModelMonitorSpec{}
+	out.TabularObjective = ModelMonitoringObjectiveSpec_TabularObjective_FromProto(mapCtx, in.GetTabularObjective())
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.ModelMonitoringTarget = ModelMonitor_ModelMonitoringTarget_FromProto(mapCtx, in.GetModelMonitoringTarget())
+	out.TrainingDataset = ModelMonitoringInput_FromProto(mapCtx, in.GetTrainingDataset())
+	out.NotificationSpec = ModelMonitoringNotificationSpec_FromProto(mapCtx, in.GetNotificationSpec())
+	out.OutputSpec = ModelMonitoringOutputSpec_FromProto(mapCtx, in.GetOutputSpec())
+	out.ExplanationSpec = ExplanationSpec_FromProto(mapCtx, in.GetExplanationSpec())
+	out.ModelMonitoringSchema = ModelMonitoringSchema_FromProto(mapCtx, in.GetModelMonitoringSchema())
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "AIPlatformModelMonitorSpec_ToProto", skipping
+func AIPlatformModelMonitorSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformModelMonitorSpec) *aiplatformpb.ModelMonitor {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitor{}
+	if oneof := ModelMonitoringObjectiveSpec_TabularObjective_ToProto(mapCtx, in.TabularObjective); oneof != nil {
+		out.DefaultObjective = &aiplatformpb.ModelMonitor_TabularObjective{TabularObjective: oneof}
+	}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.ModelMonitoringTarget = ModelMonitor_ModelMonitoringTarget_ToProto(mapCtx, in.ModelMonitoringTarget)
+	out.TrainingDataset = ModelMonitoringInput_ToProto(mapCtx, in.TrainingDataset)
+	out.NotificationSpec = ModelMonitoringNotificationSpec_ToProto(mapCtx, in.NotificationSpec)
+	out.OutputSpec = ModelMonitoringOutputSpec_ToProto(mapCtx, in.OutputSpec)
+	out.ExplanationSpec = ExplanationSpec_ToProto(mapCtx, in.ExplanationSpec)
+	out.ModelMonitoringSchema = ModelMonitoringSchema_ToProto(mapCtx, in.ModelMonitoringSchema)
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	return out
+}
+*/
 
 /* found existing non-generated mapping function "AIPlatformModelObservedState_FromProto", skipping
 func AIPlatformModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.AIPlatformModelObservedState {
@@ -509,6 +582,8 @@ func ExplanationParameters_ToProto(mapCtx *direct.MapContext, in *krm.Explanatio
 	// MISSING: OutputIndices
 	return out
 }
+
+/* found existing non-generated mapping function "ExplanationSpec_FromProto", skipping
 func ExplanationSpec_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationSpec) *krm.ExplanationSpec {
 	if in == nil {
 		return nil
@@ -518,15 +593,21 @@ func ExplanationSpec_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationSpec
 	out.Metadata = ExplanationMetadata_FromProto(mapCtx, in.GetMetadata())
 	return out
 }
-func ExplanationSpec_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationSpec) *pb.ExplanationSpec {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "ExplanationSpec_ToProto", skipping
+
+	func ExplanationSpec_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationSpec) *pb.ExplanationSpec {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ExplanationSpec{}
+		out.Parameters = ExplanationParameters_ToProto(mapCtx, in.Parameters)
+		out.Metadata = ExplanationMetadata_ToProto(mapCtx, in.Metadata)
+		return out
 	}
-	out := &pb.ExplanationSpec{}
-	out.Parameters = ExplanationParameters_ToProto(mapCtx, in.Parameters)
-	out.Metadata = ExplanationMetadata_ToProto(mapCtx, in.Metadata)
-	return out
-}
+*/
 func FeatureNoiseSigma_FromProto(mapCtx *direct.MapContext, in *pb.FeatureNoiseSigma) *krm.FeatureNoiseSigma {
 	if in == nil {
 		return nil
@@ -947,6 +1028,420 @@ func ModelGardenSource_ToProto(mapCtx *direct.MapContext, in *krm.ModelGardenSou
 	out.PublicModelName = direct.ValueOf(in.PublicModelName)
 	out.VersionId = direct.ValueOf(in.VersionID)
 	out.SkipHfModelCache = direct.ValueOf(in.SkipHfModelCache)
+	return out
+}
+func ModelMonitorGcsDestination_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.GcsDestination) *krm.ModelMonitorGcsDestination {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitorGcsDestination{}
+	// MISSING: OutputURIPrefix
+	// (near miss): "OutputURIPrefix" vs "OutputUriPrefix"
+	return out
+}
+func ModelMonitorGcsDestination_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitorGcsDestination) *aiplatformpb.GcsDestination {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.GcsDestination{}
+	// MISSING: OutputURIPrefix
+	// (near miss): "OutputURIPrefix" vs "OutputUriPrefix"
+	return out
+}
+func ModelMonitor_ModelMonitoringTarget_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitor_ModelMonitoringTarget) *krm.ModelMonitor_ModelMonitoringTarget {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitor_ModelMonitoringTarget{}
+	out.VertexModel = ModelMonitor_ModelMonitoringTarget_VertexModelSource_FromProto(mapCtx, in.GetVertexModel())
+	return out
+}
+func ModelMonitor_ModelMonitoringTarget_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitor_ModelMonitoringTarget) *aiplatformpb.ModelMonitor_ModelMonitoringTarget {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitor_ModelMonitoringTarget{}
+	if oneof := ModelMonitor_ModelMonitoringTarget_VertexModelSource_ToProto(mapCtx, in.VertexModel); oneof != nil {
+		out.Source = &aiplatformpb.ModelMonitor_ModelMonitoringTarget_VertexModel{VertexModel: oneof}
+	}
+	return out
+}
+
+/* found existing non-generated mapping function "ModelMonitor_ModelMonitoringTarget_VertexModelSource_FromProto", skipping
+func ModelMonitor_ModelMonitoringTarget_VertexModelSource_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitor_ModelMonitoringTarget_VertexModelSource) *krm.ModelMonitor_ModelMonitoringTarget_VertexModelSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitor_ModelMonitoringTarget_VertexModelSource{}
+	if in.GetModel() != "" {
+		out.ModelRef = &krm.AIPlatformModelRef{External: in.GetModel()}
+	}
+	out.ModelVersionID = direct.LazyPtr(in.GetModelVersionId())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ModelMonitor_ModelMonitoringTarget_VertexModelSource_ToProto", skipping
+
+	func ModelMonitor_ModelMonitoringTarget_VertexModelSource_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitor_ModelMonitoringTarget_VertexModelSource) *aiplatformpb.ModelMonitor_ModelMonitoringTarget_VertexModelSource {
+		if in == nil {
+			return nil
+		}
+		out := &aiplatformpb.ModelMonitor_ModelMonitoringTarget_VertexModelSource{}
+		if in.ModelRef != nil {
+			out.Model = in.ModelRef.External
+		}
+		out.ModelVersionId = direct.ValueOf(in.ModelVersionID)
+		return out
+	}
+*/
+func ModelMonitoringAlertCondition_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringAlertCondition) *krm.ModelMonitoringAlertCondition {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitoringAlertCondition{}
+	out.Threshold = direct.LazyPtr(in.GetThreshold())
+	return out
+}
+func ModelMonitoringAlertCondition_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringAlertCondition) *aiplatformpb.ModelMonitoringAlertCondition {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringAlertCondition{}
+	if oneof := ModelMonitoringAlertCondition_Threshold_ToProto(mapCtx, in.Threshold); oneof != nil {
+		out.Condition = oneof
+	}
+	return out
+}
+func ModelMonitoringAlertCondition_Threshold_ToProto(mapCtx *direct.MapContext, in *float64) *aiplatformpb.ModelMonitoringAlertCondition_Threshold {
+	if in == nil {
+		return nil
+	}
+	return &aiplatformpb.ModelMonitoringAlertCondition_Threshold{Threshold: *in}
+}
+func ModelMonitoringInput_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringInput) *krm.ModelMonitoringInput {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitoringInput{}
+	out.ColumnizedDataset = ModelMonitoringInput_ModelMonitoringDataset_FromProto(mapCtx, in.GetColumnizedDataset())
+	out.BatchPredictionOutput = ModelMonitoringInput_BatchPredictionOutput_FromProto(mapCtx, in.GetBatchPredictionOutput())
+	out.VertexEndpointLogs = ModelMonitoringInput_VertexEndpointLogs_FromProto(mapCtx, in.GetVertexEndpointLogs())
+	out.TimeInterval = Interval_FromProto(mapCtx, in.GetTimeInterval())
+	out.TimeOffset = ModelMonitoringInput_TimeOffset_FromProto(mapCtx, in.GetTimeOffset())
+	return out
+}
+func ModelMonitoringInput_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringInput) *aiplatformpb.ModelMonitoringInput {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringInput{}
+	if oneof := ModelMonitoringInput_ModelMonitoringDataset_ToProto(mapCtx, in.ColumnizedDataset); oneof != nil {
+		out.Dataset = &aiplatformpb.ModelMonitoringInput_ColumnizedDataset{ColumnizedDataset: oneof}
+	}
+	if oneof := ModelMonitoringInput_BatchPredictionOutput_ToProto(mapCtx, in.BatchPredictionOutput); oneof != nil {
+		out.Dataset = &aiplatformpb.ModelMonitoringInput_BatchPredictionOutput_{BatchPredictionOutput: oneof}
+	}
+	if oneof := ModelMonitoringInput_VertexEndpointLogs_ToProto(mapCtx, in.VertexEndpointLogs); oneof != nil {
+		out.Dataset = &aiplatformpb.ModelMonitoringInput_VertexEndpointLogs_{VertexEndpointLogs: oneof}
+	}
+	if oneof := Interval_ToProto(mapCtx, in.TimeInterval); oneof != nil {
+		out.TimeSpec = &aiplatformpb.ModelMonitoringInput_TimeInterval{TimeInterval: oneof}
+	}
+	if oneof := ModelMonitoringInput_TimeOffset_ToProto(mapCtx, in.TimeOffset); oneof != nil {
+		out.TimeSpec = &aiplatformpb.ModelMonitoringInput_TimeOffset_{TimeOffset: oneof}
+	}
+	return out
+}
+func ModelMonitoringInput_BatchPredictionOutput_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringInput_BatchPredictionOutput) *krm.ModelMonitoringInput_BatchPredictionOutput {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitoringInput_BatchPredictionOutput{}
+	out.BatchPredictionJob = direct.LazyPtr(in.GetBatchPredictionJob())
+	return out
+}
+func ModelMonitoringInput_BatchPredictionOutput_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringInput_BatchPredictionOutput) *aiplatformpb.ModelMonitoringInput_BatchPredictionOutput {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringInput_BatchPredictionOutput{}
+	out.BatchPredictionJob = direct.ValueOf(in.BatchPredictionJob)
+	return out
+}
+func ModelMonitoringInput_ModelMonitoringDataset_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset) *krm.ModelMonitoringInput_ModelMonitoringDataset {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitoringInput_ModelMonitoringDataset{}
+	out.VertexDataset = direct.LazyPtr(in.GetVertexDataset())
+	out.GCSSource = ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringGCSSource_FromProto(mapCtx, in.GetGcsSource())
+	out.BigquerySource = ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource_FromProto(mapCtx, in.GetBigquerySource())
+	out.TimestampField = direct.LazyPtr(in.GetTimestampField())
+	return out
+}
+func ModelMonitoringInput_ModelMonitoringDataset_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringInput_ModelMonitoringDataset) *aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset{}
+	if oneof := ModelMonitoringInput_ModelMonitoringDataset_VertexDataset_ToProto(mapCtx, in.VertexDataset); oneof != nil {
+		out.DataLocation = oneof
+	}
+	if oneof := ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringGCSSource_ToProto(mapCtx, in.GCSSource); oneof != nil {
+		out.DataLocation = &aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset_GcsSource{GcsSource: oneof}
+	}
+	if oneof := ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource_ToProto(mapCtx, in.BigquerySource); oneof != nil {
+		out.DataLocation = &aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset_BigquerySource{BigquerySource: oneof}
+	}
+	out.TimestampField = direct.ValueOf(in.TimestampField)
+	return out
+}
+func ModelMonitoringInput_ModelMonitoringDataset_VertexDataset_ToProto(mapCtx *direct.MapContext, in *string) *aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset_VertexDataset {
+	if in == nil {
+		return nil
+	}
+	return &aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset_VertexDataset{VertexDataset: *in}
+}
+func ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource) *krm.ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource{}
+	out.TableURI = direct.LazyPtr(in.GetTableUri())
+	out.Query = direct.LazyPtr(in.GetQuery())
+	return out
+}
+func ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource) *aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource{}
+	if oneof := ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource_TableUri_ToProto(mapCtx, in.TableURI); oneof != nil {
+		out.Connection = oneof
+	}
+	if oneof := ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource_Query_ToProto(mapCtx, in.Query); oneof != nil {
+		out.Connection = oneof
+	}
+	return out
+}
+func ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource_TableUri_ToProto(mapCtx *direct.MapContext, in *string) *aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource_TableUri {
+	if in == nil {
+		return nil
+	}
+	return &aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource_TableUri{TableUri: *in}
+}
+func ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource_Query_ToProto(mapCtx *direct.MapContext, in *string) *aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource_Query {
+	if in == nil {
+		return nil
+	}
+	return &aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource_Query{Query: *in}
+}
+func ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringGCSSource_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringGcsSource) *krm.ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringGCSSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringGCSSource{}
+	out.GCSURI = direct.LazyPtr(in.GetGcsUri())
+	out.Format = direct.Enum_FromProto(mapCtx, in.GetFormat())
+	return out
+}
+func ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringGCSSource_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringGCSSource) *aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringGcsSource {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringGcsSource{}
+	out.GcsUri = direct.ValueOf(in.GCSURI)
+	out.Format = direct.Enum_ToProto[aiplatformpb.ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringGcsSource_DataFormat](mapCtx, in.Format)
+	return out
+}
+func ModelMonitoringInput_TimeOffset_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringInput_TimeOffset) *krm.ModelMonitoringInput_TimeOffset {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitoringInput_TimeOffset{}
+	out.Offset = direct.LazyPtr(in.GetOffset())
+	out.Window = direct.LazyPtr(in.GetWindow())
+	return out
+}
+func ModelMonitoringInput_TimeOffset_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringInput_TimeOffset) *aiplatformpb.ModelMonitoringInput_TimeOffset {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringInput_TimeOffset{}
+	out.Offset = direct.ValueOf(in.Offset)
+	out.Window = direct.ValueOf(in.Window)
+	return out
+}
+func ModelMonitoringInput_VertexEndpointLogs_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringInput_VertexEndpointLogs) *krm.ModelMonitoringInput_VertexEndpointLogs {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitoringInput_VertexEndpointLogs{}
+	out.Endpoints = in.Endpoints
+	return out
+}
+func ModelMonitoringInput_VertexEndpointLogs_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringInput_VertexEndpointLogs) *aiplatformpb.ModelMonitoringInput_VertexEndpointLogs {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringInput_VertexEndpointLogs{}
+	out.Endpoints = in.Endpoints
+	return out
+}
+func ModelMonitoringNotificationSpec_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringNotificationSpec) *krm.ModelMonitoringNotificationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitoringNotificationSpec{}
+	out.EmailConfig = ModelMonitoringNotificationSpec_EmailConfig_FromProto(mapCtx, in.GetEmailConfig())
+	out.EnableCloudLogging = direct.LazyPtr(in.GetEnableCloudLogging())
+	out.NotificationChannelConfigs = direct.Slice_FromProto(mapCtx, in.NotificationChannelConfigs, ModelMonitoringNotificationSpec_NotificationChannelConfig_FromProto)
+	return out
+}
+func ModelMonitoringNotificationSpec_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringNotificationSpec) *aiplatformpb.ModelMonitoringNotificationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringNotificationSpec{}
+	out.EmailConfig = ModelMonitoringNotificationSpec_EmailConfig_ToProto(mapCtx, in.EmailConfig)
+	out.EnableCloudLogging = direct.ValueOf(in.EnableCloudLogging)
+	out.NotificationChannelConfigs = direct.Slice_ToProto(mapCtx, in.NotificationChannelConfigs, ModelMonitoringNotificationSpec_NotificationChannelConfig_ToProto)
+	return out
+}
+func ModelMonitoringNotificationSpec_EmailConfig_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringNotificationSpec_EmailConfig) *krm.ModelMonitoringNotificationSpec_EmailConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitoringNotificationSpec_EmailConfig{}
+	out.UserEmails = in.UserEmails
+	return out
+}
+func ModelMonitoringNotificationSpec_EmailConfig_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringNotificationSpec_EmailConfig) *aiplatformpb.ModelMonitoringNotificationSpec_EmailConfig {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringNotificationSpec_EmailConfig{}
+	out.UserEmails = in.UserEmails
+	return out
+}
+func ModelMonitoringNotificationSpec_NotificationChannelConfig_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringNotificationSpec_NotificationChannelConfig) *krm.ModelMonitoringNotificationSpec_NotificationChannelConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitoringNotificationSpec_NotificationChannelConfig{}
+	out.NotificationChannel = direct.LazyPtr(in.GetNotificationChannel())
+	return out
+}
+func ModelMonitoringNotificationSpec_NotificationChannelConfig_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringNotificationSpec_NotificationChannelConfig) *aiplatformpb.ModelMonitoringNotificationSpec_NotificationChannelConfig {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringNotificationSpec_NotificationChannelConfig{}
+	out.NotificationChannel = direct.ValueOf(in.NotificationChannel)
+	return out
+}
+func ModelMonitoringObjectiveSpec_DataDriftSpec_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringObjectiveSpec_DataDriftSpec) *krm.ModelMonitoringObjectiveSpec_DataDriftSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitoringObjectiveSpec_DataDriftSpec{}
+	out.Features = in.Features
+	out.CategoricalMetricType = direct.LazyPtr(in.GetCategoricalMetricType())
+	out.NumericMetricType = direct.LazyPtr(in.GetNumericMetricType())
+	out.DefaultCategoricalAlertCondition = ModelMonitoringAlertCondition_FromProto(mapCtx, in.GetDefaultCategoricalAlertCondition())
+	out.DefaultNumericAlertCondition = ModelMonitoringAlertCondition_FromProto(mapCtx, in.GetDefaultNumericAlertCondition())
+	// MISSING: FeatureAlertConditions
+	return out
+}
+func ModelMonitoringObjectiveSpec_DataDriftSpec_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringObjectiveSpec_DataDriftSpec) *aiplatformpb.ModelMonitoringObjectiveSpec_DataDriftSpec {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringObjectiveSpec_DataDriftSpec{}
+	out.Features = in.Features
+	out.CategoricalMetricType = direct.ValueOf(in.CategoricalMetricType)
+	out.NumericMetricType = direct.ValueOf(in.NumericMetricType)
+	out.DefaultCategoricalAlertCondition = ModelMonitoringAlertCondition_ToProto(mapCtx, in.DefaultCategoricalAlertCondition)
+	out.DefaultNumericAlertCondition = ModelMonitoringAlertCondition_ToProto(mapCtx, in.DefaultNumericAlertCondition)
+	// MISSING: FeatureAlertConditions
+	return out
+}
+func ModelMonitoringObjectiveSpec_TabularObjective_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringObjectiveSpec_TabularObjective) *krm.ModelMonitoringObjectiveSpec_TabularObjective {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitoringObjectiveSpec_TabularObjective{}
+	out.FeatureDriftSpec = ModelMonitoringObjectiveSpec_DataDriftSpec_FromProto(mapCtx, in.GetFeatureDriftSpec())
+	out.PredictionOutputDriftSpec = ModelMonitoringObjectiveSpec_DataDriftSpec_FromProto(mapCtx, in.GetPredictionOutputDriftSpec())
+	// MISSING: FeatureAttributionSpec
+	return out
+}
+func ModelMonitoringObjectiveSpec_TabularObjective_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringObjectiveSpec_TabularObjective) *aiplatformpb.ModelMonitoringObjectiveSpec_TabularObjective {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringObjectiveSpec_TabularObjective{}
+	out.FeatureDriftSpec = ModelMonitoringObjectiveSpec_DataDriftSpec_ToProto(mapCtx, in.FeatureDriftSpec)
+	out.PredictionOutputDriftSpec = ModelMonitoringObjectiveSpec_DataDriftSpec_ToProto(mapCtx, in.PredictionOutputDriftSpec)
+	// MISSING: FeatureAttributionSpec
+	return out
+}
+func ModelMonitoringOutputSpec_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringOutputSpec) *krm.ModelMonitoringOutputSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitoringOutputSpec{}
+	out.GCSBaseDirectory = ModelMonitorGcsDestination_FromProto(mapCtx, in.GetGcsBaseDirectory())
+	return out
+}
+func ModelMonitoringOutputSpec_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringOutputSpec) *aiplatformpb.ModelMonitoringOutputSpec {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringOutputSpec{}
+	out.GcsBaseDirectory = ModelMonitorGcsDestination_ToProto(mapCtx, in.GCSBaseDirectory)
+	return out
+}
+func ModelMonitoringSchema_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringSchema) *krm.ModelMonitoringSchema {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitoringSchema{}
+	out.FeatureFields = direct.Slice_FromProto(mapCtx, in.FeatureFields, ModelMonitoringSchema_FieldSchema_FromProto)
+	out.PredictionFields = direct.Slice_FromProto(mapCtx, in.PredictionFields, ModelMonitoringSchema_FieldSchema_FromProto)
+	out.GroundTruthFields = direct.Slice_FromProto(mapCtx, in.GroundTruthFields, ModelMonitoringSchema_FieldSchema_FromProto)
+	return out
+}
+func ModelMonitoringSchema_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringSchema) *aiplatformpb.ModelMonitoringSchema {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringSchema{}
+	out.FeatureFields = direct.Slice_ToProto(mapCtx, in.FeatureFields, ModelMonitoringSchema_FieldSchema_ToProto)
+	out.PredictionFields = direct.Slice_ToProto(mapCtx, in.PredictionFields, ModelMonitoringSchema_FieldSchema_ToProto)
+	out.GroundTruthFields = direct.Slice_ToProto(mapCtx, in.GroundTruthFields, ModelMonitoringSchema_FieldSchema_ToProto)
+	return out
+}
+func ModelMonitoringSchema_FieldSchema_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ModelMonitoringSchema_FieldSchema) *krm.ModelMonitoringSchema_FieldSchema {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelMonitoringSchema_FieldSchema{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.DataType = direct.LazyPtr(in.GetDataType())
+	out.Repeated = direct.LazyPtr(in.GetRepeated())
+	return out
+}
+func ModelMonitoringSchema_FieldSchema_ToProto(mapCtx *direct.MapContext, in *krm.ModelMonitoringSchema_FieldSchema) *aiplatformpb.ModelMonitoringSchema_FieldSchema {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ModelMonitoringSchema_FieldSchema{}
+	out.Name = direct.ValueOf(in.Name)
+	out.DataType = direct.ValueOf(in.DataType)
+	out.Repeated = direct.ValueOf(in.Repeated)
 	return out
 }
 func ModelSourceInfo_FromProto(mapCtx *direct.MapContext, in *pb.ModelSourceInfo) *krm.ModelSourceInfo {

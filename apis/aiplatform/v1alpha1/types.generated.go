@@ -25,6 +25,7 @@
 // resource: VertexAIStudy:Study
 // resource: VertexAITrainingPipeline:TrainingPipeline
 // resource: VertexAISchedule:Schedule
+// resource: AIPlatformModelMonitor:ModelMonitor
 
 package v1alpha1
 
@@ -91,6 +92,37 @@ type Artifact struct {
 	// Description of the Artifact
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Artifact.description
 	Description *string `json:"description,omitempty"`
+}
+*/
+
+/* unreachable type BatchDedicatedResources
+// +kcc:proto=google.cloud.aiplatform.v1beta1.BatchDedicatedResources
+type BatchDedicatedResources struct {
+	// Required. Immutable. The specification of a single machine.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BatchDedicatedResources.machine_spec
+	MachineSpec *MachineSpec `json:"machineSpec,omitempty"`
+
+	// Immutable. The number of machine replicas used at the start of the batch
+	//  operation. If not set, Vertex AI decides starting number, not greater than
+	//  [max_replica_count][google.cloud.aiplatform.v1beta1.BatchDedicatedResources.max_replica_count]
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BatchDedicatedResources.starting_replica_count
+	StartingReplicaCount *int32 `json:"startingReplicaCount,omitempty"`
+
+	// Immutable. The maximum number of machine replicas the batch operation may
+	//  be scaled to. The default value is 10.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BatchDedicatedResources.max_replica_count
+	MaxReplicaCount *int32 `json:"maxReplicaCount,omitempty"`
+
+	// Optional. Immutable. If set, use DWS resource to schedule the deployment
+	//  workload. reference:
+	//  (https://cloud.google.com/blog/products/compute/introducing-dynamic-workload-scheduler)
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BatchDedicatedResources.flex_start
+	FlexStart *FlexStart `json:"flexStart,omitempty"`
+
+	// Optional. If true, schedule the deployment workload on [spot
+	//  VMs](https://cloud.google.com/kubernetes-engine/docs/concepts/spot-vms).
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BatchDedicatedResources.spot
+	Spot *bool `json:"spot,omitempty"`
 }
 */
 
@@ -536,6 +568,17 @@ type FilterSplit struct {
 	TestFilter *string `json:"testFilter,omitempty"`
 }
 
+/* unreachable type FlexStart
+// +kcc:proto=google.cloud.aiplatform.v1beta1.FlexStart
+type FlexStart struct {
+	// The max duration of the deployment is max_runtime_duration. The
+	//  deployment will be terminated after the duration. The
+	//  max_runtime_duration can be set up to 7 days.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FlexStart.max_runtime_duration
+	MaxRuntimeDuration *string `json:"maxRuntimeDuration,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.aiplatform.v1.FractionSplit
 type FractionSplit struct {
 	// The fraction of the input data that is to be used to train the Model.
@@ -754,6 +797,13 @@ type InputDataConfig struct {
 	PersistMlUseAssignment *bool `json:"persistMlUseAssignment,omitempty"`
 }
 
+// +kcc:proto=google.protobuf.Int32Value
+type Int32Value struct {
+	// The int32 value.
+	// +kcc:proto:field=google.protobuf.Int32Value.value
+	Value *int32 `json:"value,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.IntegratedGradientsAttribution
 type IntegratedGradientsAttribution struct {
 	// Required. The number of steps for approximating the path integral.
@@ -781,6 +831,23 @@ type IntegratedGradientsAttribution struct {
 	//  https://arxiv.org/abs/2004.03383
 	// +kcc:proto:field=google.cloud.aiplatform.v1.IntegratedGradientsAttribution.blur_baseline_config
 	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
+}
+
+// +kcc:proto=google.type.Interval
+type Interval struct {
+	// Optional. Inclusive start of the interval.
+	//
+	//  If specified, a Timestamp matching this interval will have to be the same
+	//  or after the start.
+	// +kcc:proto:field=google.type.Interval.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Optional. Exclusive end of the interval.
+	//
+	//  If specified, a Timestamp matching this interval will have to be before the
+	//  end.
+	// +kcc:proto:field=google.type.Interval.end_time
+	EndTime *string `json:"endTime,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.MachineSpec
@@ -820,60 +887,6 @@ type MachineSpec struct {
 	//  consumes reservation.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.reservation_affinity
 	ReservationAffinity *ReservationAffinity `json:"reservationAffinity,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1.Model.BaseModelSource
-type Model_BaseModelSource struct {
-	// Source information of Model Garden models.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.BaseModelSource.model_garden_source
-	ModelGardenSource *ModelGardenSource `json:"modelGardenSource,omitempty"`
-
-	// Information about the base model of Genie models.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.BaseModelSource.genie_source
-	GenieSource *GenieSource `json:"genieSource,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1.Model.DataStats
-type Model_DataStats struct {
-	// Number of DataItems that were used for training this Model.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.DataStats.training_data_items_count
-	TrainingDataItemsCount *int64 `json:"trainingDataItemsCount,omitempty"`
-
-	// Number of DataItems that were used for validating this Model during
-	//  training.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.DataStats.validation_data_items_count
-	ValidationDataItemsCount *int64 `json:"validationDataItemsCount,omitempty"`
-
-	// Number of DataItems that were used for evaluating this Model. If the
-	//  Model is evaluated multiple times, this will be the number of test
-	//  DataItems used by the first evaluation. If the Model is not evaluated,
-	//  the number is 0.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.DataStats.test_data_items_count
-	TestDataItemsCount *int64 `json:"testDataItemsCount,omitempty"`
-
-	// Number of Annotations that are used for training this Model.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.DataStats.training_annotations_count
-	TrainingAnnotationsCount *int64 `json:"trainingAnnotationsCount,omitempty"`
-
-	// Number of Annotations that are used for validating this Model during
-	//  training.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.DataStats.validation_annotations_count
-	ValidationAnnotationsCount *int64 `json:"validationAnnotationsCount,omitempty"`
-
-	// Number of Annotations that are used for evaluating this Model. If the
-	//  Model is evaluated multiple times, this will be the number of test
-	//  Annotations used by the first evaluation. If the Model is not evaluated,
-	//  the number is 0.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.DataStats.test_annotations_count
-	TestAnnotationsCount *int64 `json:"testAnnotationsCount,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1.Model.ExportFormat
-type Model_ExportFormat struct {
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1.Model.OriginalModelInfo
-type Model_OriginalModelInfo struct {
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.ModelContainerSpec
@@ -1157,6 +1170,287 @@ type ModelGardenSource struct {
 	SkipHfModelCache *bool `json:"skipHfModelCache,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitor.ModelMonitoringTarget
+type ModelMonitor_ModelMonitoringTarget struct {
+	// Model in Vertex AI Model Registry.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitor.ModelMonitoringTarget.vertex_model
+	VertexModel *ModelMonitor_ModelMonitoringTarget_VertexModelSource `json:"vertexModel,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringAlertCondition
+type ModelMonitoringAlertCondition struct {
+	// A condition that compares a stats value against a threshold. Alert will
+	//  be triggered if value above the threshold.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringAlertCondition.threshold
+	Threshold *float64 `json:"threshold,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringInput
+type ModelMonitoringInput struct {
+	// Columnized dataset.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.columnized_dataset
+	ColumnizedDataset *ModelMonitoringInput_ModelMonitoringDataset `json:"columnizedDataset,omitempty"`
+
+	// Vertex AI Batch prediction Job.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.batch_prediction_output
+	BatchPredictionOutput *ModelMonitoringInput_BatchPredictionOutput `json:"batchPredictionOutput,omitempty"`
+
+	// Vertex AI Endpoint request & response logging.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.vertex_endpoint_logs
+	VertexEndpointLogs *ModelMonitoringInput_VertexEndpointLogs `json:"vertexEndpointLogs,omitempty"`
+
+	// The time interval (pair of start_time and end_time) for which results
+	//  should be returned.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.time_interval
+	TimeInterval *Interval `json:"timeInterval,omitempty"`
+
+	// The time offset setting for which results should be returned.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.time_offset
+	TimeOffset *ModelMonitoringInput_TimeOffset `json:"timeOffset,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.BatchPredictionOutput
+type ModelMonitoringInput_BatchPredictionOutput struct {
+	// Vertex AI Batch prediction job resource name. The job must match the
+	//  model version specified in [ModelMonitor].[model_monitoring_target].
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.BatchPredictionOutput.batch_prediction_job
+	BatchPredictionJob *string `json:"batchPredictionJob,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset
+type ModelMonitoringInput_ModelMonitoringDataset struct {
+	// Resource name of the Vertex AI managed dataset.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.vertex_dataset
+	VertexDataset *string `json:"vertexDataset,omitempty"`
+
+	// Google Cloud Storage data source.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.gcs_source
+	GCSSource *ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringGCSSource `json:"gcsSource,omitempty"`
+
+	// BigQuery data source.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.bigquery_source
+	BigquerySource *ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource `json:"bigquerySource,omitempty"`
+
+	// The timestamp field. Usually for serving data.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.timestamp_field
+	TimestampField *string `json:"timestampField,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.ModelMonitoringBigQuerySource
+type ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringBigQuerySource struct {
+	// BigQuery URI to a table, up to 2000 characters long. All the columns
+	//  in the table will be selected. Accepted forms:
+	//
+	//  *  BigQuery path. For example:
+	//  `bq://projectId.bqDatasetId.bqTableId`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.ModelMonitoringBigQuerySource.table_uri
+	TableURI *string `json:"tableURI,omitempty"`
+
+	// Standard SQL to be used instead of the `table_uri`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.ModelMonitoringBigQuerySource.query
+	Query *string `json:"query,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.ModelMonitoringGcsSource
+type ModelMonitoringInput_ModelMonitoringDataset_ModelMonitoringGCSSource struct {
+	// Google Cloud Storage URI to the input file(s). May contain
+	//  wildcards. For more information on wildcards, see
+	//  https://cloud.google.com/storage/docs/wildcards.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.ModelMonitoringGcsSource.gcs_uri
+	GCSURI *string `json:"gcsURI,omitempty"`
+
+	// Data format of the dataset.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.ModelMonitoringDataset.ModelMonitoringGcsSource.format
+	Format *string `json:"format,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.TimeOffset
+type ModelMonitoringInput_TimeOffset struct {
+	// [offset] is the time difference from the cut-off time.
+	//  For scheduled jobs, the cut-off time is the scheduled time.
+	//  For non-scheduled jobs, it's the time when the job was created.
+	//  Currently we support the following format:
+	//  'w|W': Week, 'd|D': Day, 'h|H': Hour
+	//  E.g. '1h' stands for 1 hour, '2d' stands for 2 days.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.TimeOffset.offset
+	Offset *string `json:"offset,omitempty"`
+
+	// [window] refers to the scope of data selected for analysis.
+	//  It allows you to specify the quantity of data you wish to examine.
+	//  Currently we support the following format:
+	//  'w|W': Week, 'd|D': Day, 'h|H': Hour
+	//  E.g. '1h' stands for 1 hour, '2d' stands for 2 days.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.TimeOffset.window
+	Window *string `json:"window,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.VertexEndpointLogs
+type ModelMonitoringInput_VertexEndpointLogs struct {
+	// List of endpoint resource names. The endpoints must enable the logging
+	//  with the [Endpoint].[request_response_logging_config], and must contain
+	//  the deployed model corresponding to the model version specified in
+	//  [ModelMonitor].[model_monitoring_target].
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringInput.VertexEndpointLogs.endpoints
+	Endpoints []string `json:"endpoints,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec
+type ModelMonitoringNotificationSpec struct {
+	// Email alert config.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.email_config
+	EmailConfig *ModelMonitoringNotificationSpec_EmailConfig `json:"emailConfig,omitempty"`
+
+	// Dump the anomalies to Cloud Logging. The anomalies will be put to json
+	//  payload encoded from proto
+	//  [google.cloud.aiplatform.logging.ModelMonitoringAnomaliesLogEntry][].
+	//  This can be further sinked to Pub/Sub or any other services supported
+	//  by Cloud Logging.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.enable_cloud_logging
+	EnableCloudLogging *bool `json:"enableCloudLogging,omitempty"`
+
+	// Notification channel config.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.notification_channel_configs
+	NotificationChannelConfigs []ModelMonitoringNotificationSpec_NotificationChannelConfig `json:"notificationChannelConfigs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.EmailConfig
+type ModelMonitoringNotificationSpec_EmailConfig struct {
+	// The email addresses to send the alerts.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.EmailConfig.user_emails
+	UserEmails []string `json:"userEmails,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.NotificationChannelConfig
+type ModelMonitoringNotificationSpec_NotificationChannelConfig struct {
+	// Resource names of the NotificationChannels.
+	//  Must be of the format
+	//  `projects/<project_id_or_number>/notificationChannels/<channel_id>`
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringNotificationSpec.NotificationChannelConfig.notification_channel
+	NotificationChannel *string `json:"notificationChannel,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.DataDriftSpec
+type ModelMonitoringObjectiveSpec_DataDriftSpec struct {
+	// Feature names / Prediction output names interested in monitoring.
+	//  These should be a subset of the input feature names or prediction output
+	//  names specified in the monitoring schema.
+	//  If the field is not specified all features / prediction outputs outlied
+	//  in the monitoring schema will be used.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.DataDriftSpec.features
+	Features []string `json:"features,omitempty"`
+
+	// Supported metrics type:
+	//   * l_infinity
+	//   * jensen_shannon_divergence
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.DataDriftSpec.categorical_metric_type
+	CategoricalMetricType *string `json:"categoricalMetricType,omitempty"`
+
+	// Supported metrics type:
+	//   * jensen_shannon_divergence
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.DataDriftSpec.numeric_metric_type
+	NumericMetricType *string `json:"numericMetricType,omitempty"`
+
+	// Default alert condition for all the categorical features.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.DataDriftSpec.default_categorical_alert_condition
+	DefaultCategoricalAlertCondition *ModelMonitoringAlertCondition `json:"defaultCategoricalAlertCondition,omitempty"`
+
+	// Default alert condition for all the numeric features.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.DataDriftSpec.default_numeric_alert_condition
+	DefaultNumericAlertCondition *ModelMonitoringAlertCondition `json:"defaultNumericAlertCondition,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+}
+
+/* unreachable type ModelMonitoringObjectiveSpec_FeatureAttributionSpec
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.FeatureAttributionSpec
+type ModelMonitoringObjectiveSpec_FeatureAttributionSpec struct {
+	// Feature names interested in monitoring.
+	//  These should be a subset of the input feature names specified in the
+	//  monitoring schema. If the field is not specified all features outlied in
+	//  the monitoring schema will be used.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.FeatureAttributionSpec.features
+	Features []string `json:"features,omitempty"`
+
+	// Default alert condition for all the features.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.FeatureAttributionSpec.default_alert_condition
+	DefaultAlertCondition *ModelMonitoringAlertCondition `json:"defaultAlertCondition,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+	// The config of resources used by the Model Monitoring during the batch
+	//  explanation for non-AutoML models. If not set, `n1-standard-2` machine
+	//  type will be used by default.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveSpec.FeatureAttributionSpec.batch_explanation_dedicated_resources
+	BatchExplanationDedicatedResources *BatchDedicatedResources `json:"batchExplanationDedicatedResources,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringSchema
+type ModelMonitoringSchema struct {
+	// Feature names of the model. Vertex AI will try to match the features from
+	//  your dataset as follows:
+	//   * For 'csv' files, the header names are required, and we will extract the
+	//     corresponding feature values when the header names align with the
+	//     feature names.
+	//   * For 'jsonl' files, we will extract the corresponding feature values if
+	//     the key names match the feature names.
+	//     Note: Nested features are not supported, so please ensure your features
+	//     are flattened. Ensure the feature values are scalar or an array of
+	//     scalars.
+	//   * For 'bigquery' dataset, we will extract the corresponding feature values
+	//     if the column names match the feature names.
+	//     Note: The column type can be a scalar or an array of scalars. STRUCT or
+	//     JSON types are not supported. You may use SQL queries to select or
+	//     aggregate the relevant features from your original table. However,
+	//     ensure that the 'schema' of the query results meets our requirements.
+	//   * For the Vertex AI Endpoint Request Response Logging table or Vertex AI
+	//     Batch Prediction Job results. If the
+	//     [instance_type][google.cloud.aiplatform.v1beta1.ModelMonitoringSchema.instance_type]
+	//     is an array, ensure that the sequence in
+	//     [feature_fields][google.cloud.aiplatform.v1beta1.ModelMonitoringSchema.feature_fields]
+	//     matches the order of features in the prediction instance. We will match
+	//     the feature with the array in the order specified in [feature_fields].
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringSchema.feature_fields
+	FeatureFields []ModelMonitoringSchema_FieldSchema `json:"featureFields,omitempty"`
+
+	// Prediction output names of the model. The requirements are the same as the
+	//  [feature_fields][google.cloud.aiplatform.v1beta1.ModelMonitoringSchema.feature_fields].
+	//  For AutoML Tables, the prediction output name presented in schema will be:
+	//  `predicted_{target_column}`, the `target_column` is the one you specified
+	//  when you train the model.
+	//  For Prediction output drift analysis:
+	//   * AutoML Classification, the distribution of the argmax label will be
+	//     analyzed.
+	//   * AutoML Regression, the distribution of the value will be analyzed.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringSchema.prediction_fields
+	PredictionFields []ModelMonitoringSchema_FieldSchema `json:"predictionFields,omitempty"`
+
+	// Target /ground truth names of the model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringSchema.ground_truth_fields
+	GroundTruthFields []ModelMonitoringSchema_FieldSchema `json:"groundTruthFields,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringSchema.FieldSchema
+type ModelMonitoringSchema_FieldSchema struct {
+	// Field name.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringSchema.FieldSchema.name
+	Name *string `json:"name,omitempty"`
+
+	// Supported data types are:
+	//  `float`
+	//  `integer`
+	//  `boolean`
+	//  `string`
+	//  `categorical`
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringSchema.FieldSchema.data_type
+	DataType *string `json:"dataType,omitempty"`
+
+	// Describes if the schema field is an array of given data type.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringSchema.FieldSchema.repeated
+	Repeated *bool `json:"repeated,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.ModelSourceInfo
 type ModelSourceInfo struct {
 	// Type of the model source.
@@ -1168,6 +1462,60 @@ type ModelSourceInfo struct {
 	//  pertains to the original.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ModelSourceInfo.copy
 	Copy *bool `json:"copy,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.Model.BaseModelSource
+type Model_BaseModelSource struct {
+	// Source information of Model Garden models.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.BaseModelSource.model_garden_source
+	ModelGardenSource *ModelGardenSource `json:"modelGardenSource,omitempty"`
+
+	// Information about the base model of Genie models.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.BaseModelSource.genie_source
+	GenieSource *GenieSource `json:"genieSource,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.Model.DataStats
+type Model_DataStats struct {
+	// Number of DataItems that were used for training this Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.DataStats.training_data_items_count
+	TrainingDataItemsCount *int64 `json:"trainingDataItemsCount,omitempty"`
+
+	// Number of DataItems that were used for validating this Model during
+	//  training.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.DataStats.validation_data_items_count
+	ValidationDataItemsCount *int64 `json:"validationDataItemsCount,omitempty"`
+
+	// Number of DataItems that were used for evaluating this Model. If the
+	//  Model is evaluated multiple times, this will be the number of test
+	//  DataItems used by the first evaluation. If the Model is not evaluated,
+	//  the number is 0.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.DataStats.test_data_items_count
+	TestDataItemsCount *int64 `json:"testDataItemsCount,omitempty"`
+
+	// Number of Annotations that are used for training this Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.DataStats.training_annotations_count
+	TrainingAnnotationsCount *int64 `json:"trainingAnnotationsCount,omitempty"`
+
+	// Number of Annotations that are used for validating this Model during
+	//  training.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.DataStats.validation_annotations_count
+	ValidationAnnotationsCount *int64 `json:"validationAnnotationsCount,omitempty"`
+
+	// Number of Annotations that are used for evaluating this Model. If the
+	//  Model is evaluated multiple times, this will be the number of test
+	//  Annotations used by the first evaluation. If the Model is not evaluated,
+	//  the number is 0.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.DataStats.test_annotations_count
+	TestAnnotationsCount *int64 `json:"testAnnotationsCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.Model.ExportFormat
+type Model_ExportFormat struct {
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.Model.OriginalModelInfo
+type Model_OriginalModelInfo struct {
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec
@@ -2115,13 +2463,6 @@ type XraiAttribution struct {
 	//  https://arxiv.org/abs/2004.03383
 	// +kcc:proto:field=google.cloud.aiplatform.v1.XraiAttribution.blur_baseline_config
 	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
-}
-
-// +kcc:proto=google.protobuf.Int32Value
-type Int32Value struct {
-	// The int32 value.
-	// +kcc:proto:field=google.protobuf.Int32Value.value
-	Value *int32 `json:"value,omitempty"`
 }
 
 /* unreachable type Model_ExportFormatObservedState

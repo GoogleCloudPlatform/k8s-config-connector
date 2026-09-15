@@ -23,6 +23,34 @@ package v1alpha1
 
 import apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 
+// +kcc:proto=google.cloud.visionai.v1.ApplicationConfigs
+type ApplicationConfigs struct {
+	// A list of nodes  in the application graph.
+	// +kcc:proto:field=google.cloud.visionai.v1.ApplicationConfigs.nodes
+	Nodes []Node `json:"nodes,omitempty"`
+
+	// Event-related configuration for this application.
+	// +kcc:proto:field=google.cloud.visionai.v1.ApplicationConfigs.event_delivery_config
+	EventDeliveryConfig *ApplicationConfigs_EventDeliveryConfig `json:"eventDeliveryConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.visionai.v1.ApplicationConfigs.EventDeliveryConfig
+type ApplicationConfigs_EventDeliveryConfig struct {
+	// The delivery channel for the event notification, only pub/sub topic is
+	//  supported now.
+	//  Example channel:
+	//  [//pubsub.googleapis.com/projects/visionai-testing-stable/topics/test-topic]
+	// +kcc:proto:field=google.cloud.visionai.v1.ApplicationConfigs.EventDeliveryConfig.channel
+	Channel *string `json:"channel,omitempty"`
+
+	// The expected delivery interval for the same event. The same event won't
+	//  be notified multiple times during this internal event that it is
+	//  happening multiple times during the period of time.The same event is
+	//  identified by <event_id, app_platform_metadata>.
+	// +kcc:proto:field=google.cloud.visionai.v1.ApplicationConfigs.EventDeliveryConfig.minimal_delivery_interval
+	MinimalDeliveryInterval *string `json:"minimalDeliveryInterval,omitempty"`
+}
+
 // +kcc:proto=google.cloud.visionai.v1.Application.ApplicationRuntimeInfo
 type Application_ApplicationRuntimeInfo struct {
 	// Timestamp when the engine be deployed
@@ -64,34 +92,6 @@ type Application_ApplicationRuntimeInfo_MonitoringConfig struct {
 	// Whether this application has monitoring enabled.
 	// +kcc:proto:field=google.cloud.visionai.v1.Application.ApplicationRuntimeInfo.MonitoringConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
-}
-
-// +kcc:proto=google.cloud.visionai.v1.ApplicationConfigs
-type ApplicationConfigs struct {
-	// A list of nodes  in the application graph.
-	// +kcc:proto:field=google.cloud.visionai.v1.ApplicationConfigs.nodes
-	Nodes []Node `json:"nodes,omitempty"`
-
-	// Event-related configuration for this application.
-	// +kcc:proto:field=google.cloud.visionai.v1.ApplicationConfigs.event_delivery_config
-	EventDeliveryConfig *ApplicationConfigs_EventDeliveryConfig `json:"eventDeliveryConfig,omitempty"`
-}
-
-// +kcc:proto=google.cloud.visionai.v1.ApplicationConfigs.EventDeliveryConfig
-type ApplicationConfigs_EventDeliveryConfig struct {
-	// The delivery channel for the event notification, only pub/sub topic is
-	//  supported now.
-	//  Example channel:
-	//  [//pubsub.googleapis.com/projects/visionai-testing-stable/topics/test-topic]
-	// +kcc:proto:field=google.cloud.visionai.v1.ApplicationConfigs.EventDeliveryConfig.channel
-	Channel *string `json:"channel,omitempty"`
-
-	// The expected delivery interval for the same event. The same event won't
-	//  be notified multiple times during this internal event that it is
-	//  happening multiple times during the period of time.The same event is
-	//  identified by <event_id, app_platform_metadata>.
-	// +kcc:proto:field=google.cloud.visionai.v1.ApplicationConfigs.EventDeliveryConfig.minimal_delivery_interval
-	MinimalDeliveryInterval *string `json:"minimalDeliveryInterval,omitempty"`
 }
 
 // +kcc:proto=google.cloud.visionai.v1.AutoscalingMetricSpec
