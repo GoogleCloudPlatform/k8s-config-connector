@@ -324,6 +324,7 @@ func (a *WorkloadAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	desired.Etag = a.actual.GetEtag()
