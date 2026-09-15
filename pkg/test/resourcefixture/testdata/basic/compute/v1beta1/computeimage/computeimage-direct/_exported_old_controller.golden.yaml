@@ -6,6 +6,7 @@ metadata:
   labels:
     cnrm-test: "true"
     label-one: value-one
+    managed-by-cnrm: "true"
   name: ${imageID}
 spec:
   diskRef:
