@@ -212,6 +212,7 @@ func (a *ComputeImageAdapter) Update(ctx context.Context, updateOp *directbase.U
 		updated = a.actual
 	} else {
 		if diffs.HasDiff() {
+			diffs.Object = updateOp.GetUnstructured()
 			structuredreporting.ReportDiff(ctx, diffs)
 
 			a.desired.Name = direct.LazyPtr(a.id.Image)
