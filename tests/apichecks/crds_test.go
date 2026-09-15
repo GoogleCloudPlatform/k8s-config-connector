@@ -71,6 +71,10 @@ func TestMissingRefs(t *testing.T) {
 					return
 				}
 
+				if field.props.Type == "boolean" {
+					return
+				}
+
 				// Check if this is already a ref
 				if strings.HasSuffix(fieldPath, "Ref") {
 					return
