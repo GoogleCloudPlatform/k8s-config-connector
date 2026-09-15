@@ -1,0 +1,147 @@
+GRPC /google.cloud.aiplatform.v1.VizierService/GetStudy
+
+{
+  "name": "projects/${projectId}/locations/us-central1/studies/vertexaistudy-minimal-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = List of found errors:	1.Field: name; Message: The study ID must be a number.	
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.VizierService/CreateStudy
+
+{
+  "parent": "projects/${projectId}/locations/us-central1",
+  "study": {
+    "displayName": "minimal_study_${uniqueId}",
+    "name": "projects/${projectId}/locations/us-central1/studies/vertexaistudy-minimal-${uniqueId}",
+    "studySpec": {
+      "metrics": [
+        {
+          "goal": "MAXIMIZE",
+          "metricId": "accuracy"
+        }
+      ],
+      "parameters": [
+        {
+          "doubleValueSpec": {
+            "maxValue": 0.1,
+            "minValue": 0.0001
+          },
+          "parameterId": "learning_rate"
+        }
+      ]
+    }
+  }
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal_study_${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/studies/${studyID}",
+  "state": "ACTIVE",
+  "studySpec": {
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.1,
+          "minValue": 0.0001
+        },
+        "parameterId": "learning_rate"
+      }
+    ],
+    "studyStoppingConfig": {}
+  }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.VizierService/GetStudy
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/studies/${studyID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal_study_${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/studies/${studyID}",
+  "state": "ACTIVE",
+  "studySpec": {
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.1,
+          "minValue": 0.0001
+        },
+        "parameterId": "learning_rate"
+      }
+    ],
+    "studyStoppingConfig": {}
+  }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.VizierService/GetStudy
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/studies/${studyID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "minimal_study_${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/studies/${studyID}",
+  "state": "ACTIVE",
+  "studySpec": {
+    "metrics": [
+      {
+        "goal": "MAXIMIZE",
+        "metricId": "accuracy"
+      }
+    ],
+    "parameters": [
+      {
+        "doubleValueSpec": {
+          "maxValue": 0.1,
+          "minValue": 0.0001
+        },
+        "parameterId": "learning_rate"
+      }
+    ],
+    "studyStoppingConfig": {}
+  }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.VizierService/DeleteStudy
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/studies/${studyID}"
+}
+
+OK
+
+{}
