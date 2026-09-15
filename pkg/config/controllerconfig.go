@@ -22,6 +22,7 @@ import (
 
 	cloudresourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
 	"golang.org/x/oauth2"
 	"google.golang.org/api/option"
@@ -143,10 +144,9 @@ func (c *ControllerConfig) RESTClientOptions(options ...RESTClientOption) ([]opt
 		opts = append(opts, option.WithQuotaProject(quotaProject))
 	}
 
-	// TODO: support endpoints?
-	// if m.config.Endpoint != "" {
-	// 	opts = append(opts, option.WithEndpoint(m.config.Endpoint))
-	// }
+	if !gcp.IsDefaultUniverse() {
+		opts = append(opts, option.WithUniverseDomain(gcp.GetUniverseDomain()))
+	}
 
 	return opts, nil
 }
@@ -165,11 +165,9 @@ func (c *ControllerConfig) GRPCClientOptions() ([]option.ClientOption, error) {
 	if c.GRPCUnaryClientInterceptor != nil {
 		opts = append(opts, option.WithGRPCDialOption(grpc.WithUnaryInterceptor(c.GRPCUnaryClientInterceptor)))
 	}
-
-	// TODO: support endpoints?
-	// if m.config.Endpoint != "" {
-	// 	opts = append(opts, option.WithEndpoint(m.config.Endpoint))
-	// }
+	if !gcp.IsDefaultUniverse() {
+		opts = append(opts, option.WithUniverseDomain(gcp.GetUniverseDomain()))
+	}
 
 	return opts, nil
 }
@@ -198,11 +196,14 @@ func (c *ControllerConfig) NewAuthenticatedHTTPClient(ctx context.Context) (*htt
 		return nil, fmt.Errorf("error creating REST client options: %w", err)
 	}
 	if c.HTTPClient != nil {
-		c, _, err := ghttptransport.NewClient(ctx, opts...)
-		return c, err
+		client, _, err := ghttptransport.NewClient(ctx, opts...)
+		if err == nil && client != nil {
+			client.Transport = gcp.NewUniverseDomainRoundTripper(client.Transport, gcp.GetUniverseDomain())
+		}
+		return client, err
 	}
 
-	baseTransport := http.DefaultTransport
+	baseTransport := gcp.NewUniverseDomainRoundTripper(http.DefaultTransport, gcp.GetUniverseDomain())
 	if c.EnableMetricsTransport {
 		baseTransport = metricstransport.NewMetricsTransport(baseTransport)
 	}
@@ -213,5 +214,5 @@ func (c *ControllerConfig) NewAuthenticatedHTTPClient(ctx context.Context) (*htt
 		return nil, fmt.Errorf("error creating authenticated transport: %w", err)
 	}
 
-	return &http.Client{Transport: authTransport}, nil
+	return &http.Client{Transport: gcp.NewUniverseDomainRoundTripper(authTransport, gcp.GetUniverseDomain())}, nil
 }
