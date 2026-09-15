@@ -214,6 +214,7 @@ func (a *computeFirewallPolicyAdapter) Update(ctx context.Context, updateOp *dir
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &computepb.PatchFirewallPolicyRequest{
