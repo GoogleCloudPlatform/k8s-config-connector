@@ -153,6 +153,54 @@ found existing non-generated mapping function "AIPlatformModelSpec_ToProto", ski
 		return out
 	}
 */
+func AIPlatformReasoningEngineObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ReasoningEngine) *krm.AIPlatformReasoningEngineObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformReasoningEngineObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Etag
+	return out
+}
+func AIPlatformReasoningEngineObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformReasoningEngineObservedState) *pb.ReasoningEngine {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReasoningEngine{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Etag
+	return out
+}
+func AIPlatformReasoningEngineSpec_FromProto(mapCtx *direct.MapContext, in *pb.ReasoningEngine) *krm.AIPlatformReasoningEngineSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformReasoningEngineSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Spec = ReasoningEngineSpec_FromProto(mapCtx, in.GetSpec())
+	// MISSING: Etag
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	return out
+}
+func AIPlatformReasoningEngineSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformReasoningEngineSpec) *pb.ReasoningEngine {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReasoningEngine{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Spec = ReasoningEngineSpec_ToProto(mapCtx, in.Spec)
+	// MISSING: Etag
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	return out
+}
 func BigQueryDestination_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDestination) *krm.BigQueryDestination {
 	if in == nil {
 		return nil
@@ -289,7 +337,9 @@ func DNSPeeringConfig_FromProto(mapCtx *direct.MapContext, in *pb.DnsPeeringConf
 	}
 	out := &krm.DNSPeeringConfig{}
 	out.Domain = direct.LazyPtr(in.GetDomain())
-	out.TargetProject = direct.LazyPtr(in.GetTargetProject())
+	if in.GetTargetProject() != "" {
+		out.TargetProjectRef = &refsv1beta1.ProjectRef{External: in.GetTargetProject()}
+	}
 	if in.GetTargetNetwork() != "" {
 		out.TargetNetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetTargetNetwork()}
 	}
@@ -301,7 +351,9 @@ func DNSPeeringConfig_ToProto(mapCtx *direct.MapContext, in *krm.DNSPeeringConfi
 	}
 	out := &pb.DnsPeeringConfig{}
 	out.Domain = direct.ValueOf(in.Domain)
-	out.TargetProject = direct.ValueOf(in.TargetProject)
+	if in.TargetProjectRef != nil {
+		out.TargetProject = in.TargetProjectRef.External
+	}
 	if in.TargetNetworkRef != nil {
 		out.TargetNetwork = in.TargetNetworkRef.External
 	}
@@ -1849,6 +1901,92 @@ func Probe_TCPSocketAction_ToProto(mapCtx *direct.MapContext, in *krm.Probe_TCPS
 	out.Host = direct.ValueOf(in.Host)
 	return out
 }
+
+/* found existing non-generated mapping function "ReasoningEngineSpec_FromProto", skipping
+func ReasoningEngineSpec_FromProto(mapCtx *direct.MapContext, in *pb.ReasoningEngineSpec) *krm.ReasoningEngineSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReasoningEngineSpec{}
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	out.PackageSpec = ReasoningEngineSpec_PackageSpec_FromProto(mapCtx, in.GetPackageSpec())
+	out.DeploymentSpec = ReasoningEngineSpec_DeploymentSpec_FromProto(mapCtx, in.GetDeploymentSpec())
+	out.ClassMethods = direct.Slice_FromProto(mapCtx, in.ClassMethods, apiextensionsv1.JSON_FromProto)
+	out.AgentFramework = direct.LazyPtr(in.GetAgentFramework())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ReasoningEngineSpec_ToProto", skipping
+
+	func ReasoningEngineSpec_ToProto(mapCtx *direct.MapContext, in *krm.ReasoningEngineSpec) *pb.ReasoningEngineSpec {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ReasoningEngineSpec{}
+		if in.ServiceAccountRef != nil {
+			out.ServiceAccount = in.ServiceAccountRef.External
+		}
+		out.PackageSpec = ReasoningEngineSpec_PackageSpec_ToProto(mapCtx, in.PackageSpec)
+		out.DeploymentSpec = ReasoningEngineSpec_DeploymentSpec_ToProto(mapCtx, in.DeploymentSpec)
+		out.ClassMethods = direct.Slice_ToProto(mapCtx, in.ClassMethods, apiextensionsv1.JSON_ToProto)
+		out.AgentFramework = direct.ValueOf(in.AgentFramework)
+		return out
+	}
+*/
+func ReasoningEngineSpec_DeploymentSpec_FromProto(mapCtx *direct.MapContext, in *pb.ReasoningEngineSpec_DeploymentSpec) *krm.ReasoningEngineSpec_DeploymentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReasoningEngineSpec_DeploymentSpec{}
+	out.Env = direct.Slice_FromProto(mapCtx, in.Env, EnvVar_FromProto)
+	out.SecretEnv = direct.Slice_FromProto(mapCtx, in.SecretEnv, SecretEnvVar_FromProto)
+	out.PSCInterfaceConfig = PSCInterfaceConfig_FromProto(mapCtx, in.GetPscInterfaceConfig())
+	out.MinInstances = in.MinInstances
+	out.MaxInstances = in.MaxInstances
+	out.ResourceLimits = in.ResourceLimits
+	out.ContainerConcurrency = in.ContainerConcurrency
+	return out
+}
+func ReasoningEngineSpec_DeploymentSpec_ToProto(mapCtx *direct.MapContext, in *krm.ReasoningEngineSpec_DeploymentSpec) *pb.ReasoningEngineSpec_DeploymentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReasoningEngineSpec_DeploymentSpec{}
+	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVar_ToProto)
+	out.SecretEnv = direct.Slice_ToProto(mapCtx, in.SecretEnv, SecretEnvVar_ToProto)
+	out.PscInterfaceConfig = PSCInterfaceConfig_ToProto(mapCtx, in.PSCInterfaceConfig)
+	out.MinInstances = in.MinInstances
+	out.MaxInstances = in.MaxInstances
+	out.ResourceLimits = in.ResourceLimits
+	out.ContainerConcurrency = in.ContainerConcurrency
+	return out
+}
+func ReasoningEngineSpec_PackageSpec_FromProto(mapCtx *direct.MapContext, in *pb.ReasoningEngineSpec_PackageSpec) *krm.ReasoningEngineSpec_PackageSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReasoningEngineSpec_PackageSpec{}
+	out.PickleObjectGCSURI = direct.LazyPtr(in.GetPickleObjectGcsUri())
+	out.DependencyFilesGCSURI = direct.LazyPtr(in.GetDependencyFilesGcsUri())
+	out.RequirementsGCSURI = direct.LazyPtr(in.GetRequirementsGcsUri())
+	out.PythonVersion = direct.LazyPtr(in.GetPythonVersion())
+	return out
+}
+func ReasoningEngineSpec_PackageSpec_ToProto(mapCtx *direct.MapContext, in *krm.ReasoningEngineSpec_PackageSpec) *pb.ReasoningEngineSpec_PackageSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReasoningEngineSpec_PackageSpec{}
+	out.PickleObjectGcsUri = direct.ValueOf(in.PickleObjectGCSURI)
+	out.DependencyFilesGcsUri = direct.ValueOf(in.DependencyFilesGCSURI)
+	out.RequirementsGcsUri = direct.ValueOf(in.RequirementsGCSURI)
+	out.PythonVersion = direct.ValueOf(in.PythonVersion)
+	return out
+}
 func ReservationAffinity_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krm.ReservationAffinity {
 	if in == nil {
 		return nil
@@ -1954,6 +2092,58 @@ found existing non-generated mapping function "Schema_ToProto", skipping
 		out.AdditionalProperties = Value_ToProto(mapCtx, in.AdditionalProperties)
 		out.Ref = direct.ValueOf(in.Ref)
 		// MISSING: Defs
+		return out
+	}
+*/
+func SecretEnvVar_FromProto(mapCtx *direct.MapContext, in *pb.SecretEnvVar) *krm.SecretEnvVar {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecretEnvVar{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.SecretRef = SecretRef_FromProto(mapCtx, in.GetSecretRef())
+	return out
+}
+func SecretEnvVar_ToProto(mapCtx *direct.MapContext, in *krm.SecretEnvVar) *pb.SecretEnvVar {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecretEnvVar{}
+	out.Name = direct.ValueOf(in.Name)
+	out.SecretRef = SecretRef_ToProto(mapCtx, in.SecretRef)
+	return out
+}
+
+/* found existing non-generated mapping function "SecretRef_FromProto", skipping
+func SecretRef_FromProto(mapCtx *direct.MapContext, in *pb.SecretRef) *krm.SecretRef {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecretRef{}
+	if in.GetSecret() != "" {
+		out.SecretRef = &refsv1beta1.SecretManagerSecretRef{External: in.GetSecret()}
+	}
+	if in.GetVersion() != "" {
+		out.VersionRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetVersion()}
+	}
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "SecretRef_ToProto", skipping
+
+	func SecretRef_ToProto(mapCtx *direct.MapContext, in *krm.SecretRef) *pb.SecretRef {
+		if in == nil {
+			return nil
+		}
+		out := &pb.SecretRef{}
+		if in.SecretRef != nil {
+			out.Secret = in.SecretRef.External
+		}
+		if in.VersionRef != nil {
+			out.Version = in.VersionRef.External
+		}
 		return out
 	}
 */
