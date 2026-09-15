@@ -728,7 +728,8 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "nodeConfig")
 			delete(v, "networkConfig")
 		}
-		if _, isNodePool := v["initialNodeCount"]; isNodePool {
+		if _, isNodePool := v["initialNodeCount"]; isNodePool || v["podIpv4CidrSize"] != nil || v["upgradeSettings"] != nil {
+			delete(v, "initialNodeCount")
 			delete(v, "instanceGroupUrls")
 			delete(v, "version")
 			delete(v, "networkConfig")
@@ -740,6 +741,9 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			}
 			if cfg, ok := v["config"].(map[string]interface{}); ok {
 				delete(cfg, "nodeImageConfig")
+			}
+			if auto, ok := v["autoscaling"].(map[string]interface{}); ok {
+				delete(auto, "locationPolicy")
 			}
 		}
 		if auto, ok := v["autoCreateSubnetworks"].(bool); ok && auto {
