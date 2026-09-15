@@ -52,6 +52,15 @@ go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/sql/v1b
 
   optional string server_certificate_rotation_mode = 10;
 
+  // The server CA mode.
+  optional string server_ca_mode = 11;
+
+  // The server CA pool.
+  optional string server_ca_pool = 12;
+
+  // Custom Subject Alternative Names.
+  repeated string custom_subject_alternative_names = 13;
+
 EOF
 
 go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/sql/v1beta4/cloud_sql_resources.proto --message Settings --mode append <<EOF
