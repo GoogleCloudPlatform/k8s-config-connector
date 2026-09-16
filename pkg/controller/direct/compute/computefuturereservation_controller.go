@@ -322,6 +322,8 @@ func (a *FutureReservationAdapter) Update(ctx context.Context, updateOp *directb
 
 	sort.Strings(updateMask.Paths)
 
+	structuredreporting.ReportDiff(ctx, report)
+
 	req := &computepb.UpdateFutureReservationRequest{
 		Project:                   a.id.Project,
 		Zone:                      a.id.Zone,
