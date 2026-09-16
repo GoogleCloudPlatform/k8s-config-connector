@@ -203,6 +203,14 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+
+	if len(updateMask.Paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id.String())
+		return nil
+	}
+
+	structuredreporting.ReportDiff(ctx, report)
+
 	resource.Name = a.actual.Name
 
 	req := &bigqueryanalyticshubpb.UpdateDataExchangeRequest{
