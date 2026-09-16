@@ -207,7 +207,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	actual := a.actual
 
-	diff := &structuredreporting.Diff{}
+	diff := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(actual.ConcurrencyMode, expected.ConcurrencyMode) {
