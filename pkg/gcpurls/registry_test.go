@@ -149,7 +149,8 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//compute.googleapis.com/projects/{}/zones/{}/networkEndpointGroups/{}//{}/{}":   true,
 
 		// Config Delivery
-		"//configdelivery.googleapis.com/projects/{}/locations/{}/fleetPackages/{}": true,
+		"//configdelivery.googleapis.com/projects/{}/locations/{}/fleetPackages/{}":   true,
+		"//configdelivery.googleapis.com/projects/{}/locations/{}/resourceBundles/{}": true,
 
 		// Config Deployment
 		"//config.googleapis.com/projects/{}/locations/{}/deploymentGroups/{}": true,

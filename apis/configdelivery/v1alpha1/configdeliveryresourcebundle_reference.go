@@ -65,11 +65,19 @@ func (r *ConfigDeliveryResourceBundleRef) SetExternal(ref string) {
 }
 
 func (r *ConfigDeliveryResourceBundleRef) ValidateExternal(ref string) error {
+	id := &ConfigDeliveryResourceBundleIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
+	}
 	return nil
 }
 
 func (r *ConfigDeliveryResourceBundleRef) ParseExternalToIdentity() (identity.Identity, error) {
-	return nil, nil
+	id := &ConfigDeliveryResourceBundleIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
 }
 
 func (r *ConfigDeliveryResourceBundleRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
