@@ -235,6 +235,7 @@ func (a *NetworkAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	hasFieldDiff := func(fieldID string) bool {
