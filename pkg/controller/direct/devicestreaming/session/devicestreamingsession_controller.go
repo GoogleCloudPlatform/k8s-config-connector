@@ -180,6 +180,7 @@ func (a *DeviceStreamingSessionAdapter) Update(ctx context.Context, updateOp *di
 		return nil
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &pb.UpdateDeviceSessionRequest{
