@@ -48,7 +48,8 @@ ${CONTROLLERBUILDER} generate-types \
   --proto-source-path ${PROTO_OUT} \
   --service google.cloud.agentregistry.v1 \
   --api-version agentregistry.cnrm.cloud.google.com/v1alpha1 \
-  --resource AgentRegistryBinding:Binding
+  --resource AgentRegistryBinding:Binding \
+  --resource AgentRegistryService:Service
 
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \
