@@ -204,6 +204,7 @@ func (a *ComputeAutoscalerAdapter) Update(ctx context.Context, updateOp *directb
 		log.V(2).Info("no field needs update", "name", a.id.String())
 		updated = a.actual
 	} else {
+		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
 
 		req := &pb.PatchAutoscalerRequest{
