@@ -181,6 +181,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	latest := a.actual
 	if diffs.HasDiff() {
+		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
 
 		req := &pb.UpdateGeneratorRequest{
