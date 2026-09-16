@@ -32,6 +32,7 @@ var (
 
 var DataLineageProcessIdentityFormat = gcpurls.Template[DataLineageProcessIdentity]("datalineage.googleapis.com", "projects/{project}/locations/{location}/processes/{process}")
 
+// DataLineageProcessIdentity is the identity of a GCP DataLineageProcess resource.
 // +k8s:deepcopy-gen=false
 type DataLineageProcessIdentity struct {
 	Project  string
@@ -60,7 +61,11 @@ func (i *DataLineageProcessIdentity) Host() string {
 	return DataLineageProcessIdentityFormat.Host()
 }
 
-func getIdentityFromDataLineageProcessSpec(ctx context.Context, reader client.Reader, obj client.Object) (*DataLineageProcessIdentity, error) {
+func (i *DataLineageProcessIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
+}
+
+func getIdentityFromDataLineageProcessSpec(ctx context.Context, reader client.Reader, obj *DataLineageProcess) (*DataLineageProcessIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
