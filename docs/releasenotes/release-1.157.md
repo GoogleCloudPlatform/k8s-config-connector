@@ -1,4 +1,4 @@
-*   Special shout-outs to @GinnyJI, @acpana, @ada-coder-bot, @anfernee, @anhdle-sso, @barney-s, @cdmello-g, @cheftako, @codebot-robot, @daedalus-agent-bot, @feynman-agent-bot, @gemmahou, @himanigulati01, @hopper-coder-bot, @ldanielmadariaga, @lovelace-coder-bot, @maqiuyujoyce, @neumann-coder-bot, @reviewbot-robot, @sdowell, @suwandim, @walle-agent-bot, and @ziyue-101 for their contributions to this release.
+*   Special shout-outs to @acpana, @anfernee, @anhdle-sso, @barney-s, @cdmello-g, @cheftako, @gemmahou, @GinnyJI, @himanigulati01, @ldanielmadariaga, @maqiuyujoyce, @sdowell, @suwandim, and @ziyue-101 for their contributions to this release.
 
 ## New Alpha Resources (Direct Reconciler):
 
