@@ -203,6 +203,7 @@ func (a *servingConfigAdapter) Update(ctx context.Context, updateOp *directbase.
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &discoveryenginepb.UpdateServingConfigRequest{
