@@ -289,6 +289,7 @@ func (a *EndpointAdapter) updateClusterEndpoints(ctx context.Context, userCreate
 
 	report := &structuredreporting.Diff{Object: obj}
 	report.AddField("clusterEndpoints", a.actual.ClusterEndpoints, endpoints)
+	structuredreporting.ReportDiff(ctx, report)
 
 	updateReq := &pb.UpdateClusterRequest{
 		UpdateMask: &fieldmaskpb.FieldMask{
