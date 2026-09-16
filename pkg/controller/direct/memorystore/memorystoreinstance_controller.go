@@ -239,6 +239,7 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	latest := a.actual
 
 	if diffs.HasDiff() {
+		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
 
 		// The memorystore UpdateInstance API allows exactly one field to be updated per request.
