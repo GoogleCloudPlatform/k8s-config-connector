@@ -33,6 +33,10 @@ type DataformFolderSpec struct {
 
 	// The DataformFolder name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Required. The Folder's user-friendly name.
+	// +required
+	DisplayName *string `json:"displayName,omitempty"`
 }
 
 // DataformFolderStatus defines the config connector machine state of DataformFolder
@@ -48,13 +52,28 @@ type DataformFolderStatus struct {
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	// ObservedState *DataformFolderObservedState `json:"observedState,omitempty"`
+	ObservedState *DataformFolderObservedState `json:"observedState,omitempty"`
 }
 
 // DataformFolderObservedState is the state of the DataformFolder resource as most recently observed in GCP.
-// // +kcc:observedstate:proto=google.cloud.dataform.v1beta1.Folder
-// type DataformFolderObservedState struct {
-// }
+// +kcc:observedstate:proto=google.cloud.dataform.v1beta1.Folder
+type DataformFolderObservedState struct {
+	// Output only. The resource name of the TeamFolder that this Folder is
+	// associated with. If this is not set, the Folder is not associated with a TeamFolder and is a UserFolder.
+	TeamFolderName *string `json:"teamFolderName,omitempty"`
+
+	// Output only. The timestamp of when the Folder was created.
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp of when the Folder was last updated.
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. All the metadata information that is used internally to serve the resource.
+	InternalMetadata *string `json:"internalMetadata,omitempty"`
+
+	// Output only. The IAM principal identifier of the creator of the Folder.
+	CreatorIAMPrincipal *string `json:"creatorIAMPrincipal,omitempty"`
+}
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
