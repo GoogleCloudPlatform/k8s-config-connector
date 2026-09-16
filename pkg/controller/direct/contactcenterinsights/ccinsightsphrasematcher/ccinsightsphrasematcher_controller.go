@@ -185,6 +185,7 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	a.desired.Name = a.id.String()
