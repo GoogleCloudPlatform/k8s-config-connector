@@ -180,6 +180,7 @@ func (a *customClassAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		log.V(2).Info("no field needs update", "name", a.id)
 		updated = a.actual
 	} else {
+		report.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, report)
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		req := &pb.UpdateCustomClassRequest{
