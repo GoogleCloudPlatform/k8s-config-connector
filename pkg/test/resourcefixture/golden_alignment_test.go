@@ -559,6 +559,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "naturalLanguageQueryUnderstandingConfig")
 		delete(v, "solutionTypes")
 		delete(v, "source")
+		delete(v, "replicaNames")
 		delete(v, "marketplaceAgentVisibility")
 		delete(v, "observabilityConfig")
 		delete(v, "correlationInfo")

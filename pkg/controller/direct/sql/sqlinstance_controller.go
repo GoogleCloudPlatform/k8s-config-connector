@@ -27,6 +27,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
@@ -509,6 +510,7 @@ type sqlInstanceModel struct {
 var _ directbase.Model = &sqlInstanceModel{}
 
 type sqlInstanceAdapter struct {
+	kube       client.Reader
 	projectID  string
 	resourceID string
 
@@ -547,10 +549,6 @@ func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, op *directbase.
 		return nil, fmt.Errorf("building gcp client: %w", err)
 	}
 
-	if err := ResolveSQLInstanceRefs(ctx, kube, obj); err != nil {
-		return nil, err
-	}
-
 	if obj.Spec.Settings.Edition != nil {
 		edition := *obj.Spec.Settings.Edition
 		if edition != "ENTERPRISE" && edition != "ENTERPRISE_PLUS" {
@@ -559,6 +557,7 @@ func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, op *directbase.
 	}
 
 	adapter := &sqlInstanceAdapter{
+		kube:                kube,
 		projectID:           projectID,
 		resourceID:          resourceID,
 		desired:             obj.DeepCopy(),
@@ -614,6 +613,12 @@ func (a *sqlInstanceAdapter) Find(ctx context.Context) (bool, error) {
 func (a *sqlInstanceAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating SQLInstance", "desired", a.desired)
+
+	PreprocessDRForCreateIfEnabled(a.desired)
+
+	if err := ResolveSQLInstanceRefs(ctx, a.kube, a.desired); err != nil {
+		return err
+	}
 
 	if a.projectID == "" {
 		return fmt.Errorf("project is empty")
@@ -758,6 +763,23 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating SQLInstance", "desired", a.desired)
+
+	if err := ResolveSQLInstanceRefs(ctx, a.kube, a.desired); err != nil {
+		return err
+	}
+
+	desiredDRProto, err := SQLInstanceKRMToGCP(a.desired, a.actual, a.fieldMeta)
+	if err != nil {
+		return err
+	}
+
+	if ShouldSkipUpdateForAdvancedDR(a.desired, desiredDRProto, a.actual) {
+		status, err := SQLInstanceStatusGCPToKRM(a.actual)
+		if err != nil {
+			return fmt.Errorf("updating SQLInstance status failed: %w", err)
+		}
+		return setStatus(u, status)
+	}
 
 	if upToDate, err := a.CompareLastModifiedCookie(ctx, updateOp, a.actual); err == nil && upToDate {
 		log.V(2).Info("resource is up to date (cookie match)", "name", a.resourceID)
