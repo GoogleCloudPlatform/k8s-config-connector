@@ -1,0 +1,6 @@
+- caisURL: //servicedirectory.googleapis.com/projects/${projectId}/locations/us-central1/namespaces/servicedirectory-namespace-${uniqueId}
+  group: servicedirectory.cnrm.cloud.google.com
+  kind: ServiceDirectoryNamespace
+  name: servicedirectory-namespace-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
