@@ -59,6 +59,9 @@ var realGCPSkipFixtures = map[string]bool{
 	// NetworkSecurity BackendAuthenticationConfig requires invitation-only early access allowlist.
 	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-maximal": true,
 	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-minimal": true,
+	// CCInsightsIssueModel V1 models are deprecated on real GCP.
+	"contactcenterinsights/v1alpha1/ccinsightsissuemodel/ccinsightsissuemodel-maximal": true,
+	"contactcenterinsights/v1alpha1/ccinsightsissuemodel/ccinsightsissuemodel-minimal": true,
 }
 
 func TestGoldenLogAlignment(t *testing.T) {
