@@ -190,6 +190,7 @@ func (a *ScheduleAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	return fmt.Errorf("NotebooksSchedule resource is immutable and cannot be updated")
