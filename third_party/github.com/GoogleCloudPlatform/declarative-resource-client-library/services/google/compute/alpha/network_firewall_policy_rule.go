@@ -141,6 +141,8 @@ type NetworkFirewallPolicyRuleMatch struct {
 	DestFqdns               []string                                      `json:"destFqdns"`
 	SrcAddressGroups        []string                                      `json:"srcAddressGroups"`
 	DestAddressGroups       []string                                      `json:"destAddressGroups"`
+	SrcNetworkContext       *string                                       `json:"srcNetworkContext"`
+	DestNetworkContext      *string                                       `json:"destNetworkContext"`
 }
 
 type jsonNetworkFirewallPolicyRuleMatch NetworkFirewallPolicyRuleMatch
@@ -181,6 +183,10 @@ func (r *NetworkFirewallPolicyRuleMatch) UnmarshalJSON(data []byte) error {
 		r.SrcAddressGroups = res.SrcAddressGroups
 
 		r.DestAddressGroups = res.DestAddressGroups
+
+		r.SrcNetworkContext = res.SrcNetworkContext
+
+		r.DestNetworkContext = res.DestNetworkContext
 
 	}
 	return nil
