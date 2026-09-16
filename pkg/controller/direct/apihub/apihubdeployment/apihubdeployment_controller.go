@@ -181,6 +181,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return nil
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &pb.UpdateDeploymentRequest{
