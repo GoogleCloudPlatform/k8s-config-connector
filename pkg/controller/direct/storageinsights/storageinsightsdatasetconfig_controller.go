@@ -204,6 +204,7 @@ func (a *storageInsightsDatasetConfigAdapter) Update(ctx context.Context, update
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &pb.UpdateDatasetConfigRequest{
