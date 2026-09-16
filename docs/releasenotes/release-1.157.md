@@ -66,9 +66,6 @@
 *   [`NotebookInstanceV2`](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/12314)
     *   Fixes and improvements for `NotebookInstanceV2` resource.
 
-*   [`ComputeRouterNAT`](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/12716)
-    *   Fixed issue where `ComputeRouterNATRef.Normalize` fallback function constructed external identity before checking resource readiness.
-
 ## Other:
 
 *   **BeyondCorpClientGateway**: Removed support for the deprecated BeyondCorp Enterprise client connector.
