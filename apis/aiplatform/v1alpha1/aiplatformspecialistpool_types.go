@@ -38,14 +38,17 @@ type AIPlatformSpecialistPoolSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Required. The user-defined name of the SpecialistPool. The name can be up to 128 characters long and can consist of any UTF-8 characters. This field should be unique on project-level.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.SpecialistPool.display_name
 	// +required
 	DisplayName *string `json:"displayName"`
 
 	// The email addresses of the managers in the SpecialistPool.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.SpecialistPool.specialist_manager_emails
 	// +optional
 	SpecialistManagerEmails []string `json:"specialistManagerEmails,omitempty"`
 
 	// The email addresses of workers in the SpecialistPool.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.SpecialistPool.specialist_worker_emails
 	// +optional
 	SpecialistWorkerEmails []string `json:"specialistWorkerEmails,omitempty"`
 }
@@ -73,10 +76,12 @@ type AIPlatformSpecialistPoolStatus struct {
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.SpecialistPool
 type AIPlatformSpecialistPoolObservedState struct {
 	// Output only. The resource name of the pending data labeling jobs.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.SpecialistPool.pending_data_labeling_jobs
 	// +optional
 	PendingDataLabelingJobs []string `json:"pendingDataLabelingJobs,omitempty"`
 
 	// Output only. The number of managers in this SpecialistPool.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.SpecialistPool.specialist_managers_count
 	// +optional
 	SpecialistManagersCount *int32 `json:"specialistManagersCount,omitempty"`
 }
