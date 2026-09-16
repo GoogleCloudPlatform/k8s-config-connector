@@ -1,0 +1,294 @@
+GET https://cloudresourcemanager.googleapis.com/v3/folders:search?alt=json&pageToken=&prettyPrint=false&query=state%3DACTIVE+AND+parent%3Dfolders%2F${folderID}+AND+displayName%3D%22Folder+${uniqueId}%22
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v3/folders?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "displayName": "Folder ${uniqueId}",
+  "parent": "folders/${folderID}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Folder",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Folder ${uniqueId}",
+    "etag": "abcdef0123A=",
+    "name": "folders/${folderID}",
+    "parent": "folders/${folderID}",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Folder",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Folder ${uniqueId}",
+    "etag": "abcdef0123A=",
+    "name": "folders/${folderID}",
+    "parent": "folders/${folderID}",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Folder ${uniqueId}",
+  "etag": "abcdef0123A=",
+  "name": "folders/${folderID}",
+  "parent": "folders/${folderID}",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://modelarmor.googleapis.com/v1/folders/${folderID}/locations/global/floorSetting?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=folders%2F${folderID}%2Flocations%2Fglobal%2FfloorSetting
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "enableFloorSettingEnforcement": true,
+  "filterConfig": {
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": 1,
+      "filterEnforcement": 1
+    }
+  },
+  "floorSettingMetadata": {
+    "multiLanguageDetection": {
+      "enableMultiLanguageDetection": true
+    }
+  },
+  "name": "folders/${folderID}/locations/global/floorSetting",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://modelarmor.googleapis.com/v1/folders/${folderID}/locations/global/floorSetting?%24alt=json%3Benum-encoding%3Dint&updateMask=enableFloorSettingEnforcement%2CfilterConfig%2CfloorSettingMetadata
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: floor_setting.name=folders%2F${folderID}%2Flocations%2Fglobal%2FfloorSetting
+
+{
+  "enableFloorSettingEnforcement": false,
+  "filterConfig": {
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": 2,
+      "filterEnforcement": 1
+    }
+  },
+  "floorSettingMetadata": {
+    "multiLanguageDetection": {}
+  },
+  "name": "folders/${folderID}/locations/global/floorSetting"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "enableFloorSettingEnforcement": false,
+  "filterConfig": {
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": 2,
+      "filterEnforcement": 1
+    }
+  },
+  "floorSettingMetadata": {
+    "multiLanguageDetection": {}
+  },
+  "name": "folders/${folderID}/locations/global/floorSetting",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://modelarmor.googleapis.com/v1/folders/${folderID}/locations/global/floorSetting?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=folders%2F${folderID}%2Flocations%2Fglobal%2FfloorSetting
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "enableFloorSettingEnforcement": false,
+  "filterConfig": {
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": 2,
+      "filterEnforcement": 1
+    }
+  },
+  "floorSettingMetadata": {
+    "multiLanguageDetection": {}
+  },
+  "name": "folders/${folderID}/locations/global/floorSetting",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Folder ${uniqueId}",
+  "etag": "abcdef0123A=",
+  "name": "folders/${folderID}",
+  "parent": "folders/${folderID}",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Folder",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Folder ${uniqueId}",
+    "etag": "abcdef0123A=",
+    "name": "folders/${folderID}",
+    "parent": "folders/${folderID}",
+    "state": "DELETE_REQUESTED",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}

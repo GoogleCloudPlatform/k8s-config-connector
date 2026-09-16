@@ -28,11 +28,27 @@ func TestModelArmorFloorSettingIdentity_FromExternal(t *testing.T) {
 		want    *ModelArmorFloorSettingIdentity
 	}{
 		{
-			name: "valid reference",
+			name: "valid project reference",
 			ref:  "projects/my-project/locations/us-central1/floorSetting",
 			want: &ModelArmorFloorSettingIdentity{
 				Project:  "my-project",
 				Location: "us-central1",
+			},
+		},
+		{
+			name: "valid folder reference",
+			ref:  "folders/123456/locations/us-central1/floorSetting",
+			want: &ModelArmorFloorSettingIdentity{
+				Folder:   "123456",
+				Location: "us-central1",
+			},
+		},
+		{
+			name: "valid organization reference",
+			ref:  "organizations/789012/locations/us-central1/floorSetting",
+			want: &ModelArmorFloorSettingIdentity{
+				Organization: "789012",
+				Location:     "us-central1",
 			},
 		},
 		{
@@ -41,11 +57,27 @@ func TestModelArmorFloorSettingIdentity_FromExternal(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "full url",
+			name: "full url project",
 			ref:  "https://modelarmor.googleapis.com/projects/my-project/locations/us-central1/floorSetting",
 			want: &ModelArmorFloorSettingIdentity{
 				Project:  "my-project",
 				Location: "us-central1",
+			},
+		},
+		{
+			name: "full url folder",
+			ref:  "https://modelarmor.googleapis.com/folders/123456/locations/us-central1/floorSetting",
+			want: &ModelArmorFloorSettingIdentity{
+				Folder:   "123456",
+				Location: "us-central1",
+			},
+		},
+		{
+			name: "full url organization",
+			ref:  "https://modelarmor.googleapis.com/organizations/789012/locations/us-central1/floorSetting",
+			want: &ModelArmorFloorSettingIdentity{
+				Organization: "789012",
+				Location:     "us-central1",
 			},
 		},
 	}
