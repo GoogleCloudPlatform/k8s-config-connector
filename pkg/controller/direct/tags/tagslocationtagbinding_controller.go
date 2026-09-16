@@ -245,7 +245,10 @@ func (a *TagsLocationTagBindingAdapter) Update(ctx context.Context, updateOp *di
 		return fmt.Errorf("getting changed fields for TagsLocationTagBinding %q: %w", fqn, err)
 	}
 
-	structuredreporting.ReportDiff(ctx, diff)
+	if diff != nil {
+		diff.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, diff)
+	}
 
 	if len(updateMask.Paths) != 0 {
 		return fmt.Errorf("cannot update TagsLocationTagBinding %q: fields changed: %v; TagBindings are immutable after creation", fqn, updateMask.Paths)
