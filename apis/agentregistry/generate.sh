@@ -48,7 +48,8 @@ ${CONTROLLERBUILDER} generate-types \
   --proto-source-path ${PROTO_OUT} \
   --service google.cloud.agentregistry.v1 \
   --api-version agentregistry.cnrm.cloud.google.com/v1alpha1 \
-  --resource AgentRegistryBinding:Binding
+  --resource AgentRegistryBinding:Binding \
+  --resource AgentRegistryService:Service
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
