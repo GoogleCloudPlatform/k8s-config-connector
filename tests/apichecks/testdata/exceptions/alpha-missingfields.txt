@@ -123,7 +123,7 @@
 [missing_field] crd=aiplatformpersistentresources.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformpersistentresources.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.pscInterfaceConfig.dnsPeeringConfigs[].domain" is not set in unstructured objects
 [missing_field] crd=aiplatformpersistentresources.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.pscInterfaceConfig.dnsPeeringConfigs[].targetNetworkRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=aiplatformpersistentresources.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.pscInterfaceConfig.dnsPeeringConfigs[].targetProject" is not set in unstructured objects
+[missing_field] crd=aiplatformpersistentresources.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.pscInterfaceConfig.dnsPeeringConfigs[].targetProjectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformpersistentresources.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.pscInterfaceConfig.networkAttachmentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformpersistentresources.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.reservedIPRanges[]" is not set in unstructured objects
 [missing_field] crd=aiplatformpersistentresources.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourcePools[].autoscalingSpec.maxReplicaCount" is not set in unstructured objects
