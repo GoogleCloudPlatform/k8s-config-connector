@@ -43,6 +43,10 @@ func (i *ConnectorsConnectionIdentity) String() string {
 	return ConnectorsConnectionIdentityFormat.ToString(*i)
 }
 
+func (i *ConnectorsConnectionIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *ConnectorsConnectionIdentity) FromExternal(ref string) error {
 	parsed, match, err := ConnectorsConnectionIdentityFormat.Parse(ref)
 	if err != nil {
