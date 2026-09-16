@@ -241,6 +241,8 @@ func AIPlatformReasoningEngineObservedState_ToProto(mapCtx *direct.MapContext, i
 	// MISSING: Etag
 	return out
 }
+
+/* found existing non-generated mapping function "AIPlatformReasoningEngineSpec_FromProto", skipping
 func AIPlatformReasoningEngineSpec_FromProto(mapCtx *direct.MapContext, in *pb.ReasoningEngine) *krm.AIPlatformReasoningEngineSpec {
 	if in == nil {
 		return nil
@@ -254,19 +256,25 @@ func AIPlatformReasoningEngineSpec_FromProto(mapCtx *direct.MapContext, in *pb.R
 	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
 	return out
 }
-func AIPlatformReasoningEngineSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformReasoningEngineSpec) *pb.ReasoningEngine {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "AIPlatformReasoningEngineSpec_ToProto", skipping
+
+	func AIPlatformReasoningEngineSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformReasoningEngineSpec) *pb.ReasoningEngine {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ReasoningEngine{}
+		// MISSING: Name
+		out.DisplayName = direct.ValueOf(in.DisplayName)
+		out.Description = direct.ValueOf(in.Description)
+		out.Spec = ReasoningEngineSpec_ToProto(mapCtx, in.Spec)
+		// MISSING: Etag
+		out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+		return out
 	}
-	out := &pb.ReasoningEngine{}
-	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.Spec = ReasoningEngineSpec_ToProto(mapCtx, in.Spec)
-	// MISSING: Etag
-	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
-	return out
-}
+*/
 func BigQueryDestination_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDestination) *krm.BigQueryDestination {
 	if in == nil {
 		return nil
@@ -2053,7 +2061,7 @@ func ReasoningEngineSpec_FromProto(mapCtx *direct.MapContext, in *pb.ReasoningEn
 	}
 	out.PackageSpec = ReasoningEngineSpec_PackageSpec_FromProto(mapCtx, in.GetPackageSpec())
 	out.DeploymentSpec = ReasoningEngineSpec_DeploymentSpec_FromProto(mapCtx, in.GetDeploymentSpec())
-	// MISSING: ClassMethods
+	out.ClassMethods = direct.Slice_FromProto(mapCtx, in.ClassMethods, apiextensionsv1.JSON_FromProto)
 	out.AgentFramework = direct.LazyPtr(in.GetAgentFramework())
 	return out
 }
@@ -2072,7 +2080,7 @@ found existing non-generated mapping function "ReasoningEngineSpec_ToProto", ski
 		}
 		out.PackageSpec = ReasoningEngineSpec_PackageSpec_ToProto(mapCtx, in.PackageSpec)
 		out.DeploymentSpec = ReasoningEngineSpec_DeploymentSpec_ToProto(mapCtx, in.DeploymentSpec)
-		// MISSING: ClassMethods
+		out.ClassMethods = direct.Slice_ToProto(mapCtx, in.ClassMethods, apiextensionsv1.JSON_ToProto)
 		out.AgentFramework = direct.ValueOf(in.AgentFramework)
 		return out
 	}

@@ -19,7 +19,38 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	apiextensionsv1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aiplatform/apiextensionsv1"
 )
+
+func AIPlatformReasoningEngineSpec_FromProto(mapCtx *direct.MapContext, in *pb.ReasoningEngine) *krm.AIPlatformReasoningEngineSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformReasoningEngineSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Spec = ReasoningEngineSpec_FromProto(mapCtx, in.GetSpec())
+	// MISSING: Etag
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	out.Labels = in.GetLabels()
+	return out
+}
+
+func AIPlatformReasoningEngineSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformReasoningEngineSpec) *pb.ReasoningEngine {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReasoningEngine{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Spec = ReasoningEngineSpec_ToProto(mapCtx, in.Spec)
+	// MISSING: Etag
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	out.Labels = in.Labels
+	return out
+}
 
 func ReasoningEngineSpec_FromProto(mapCtx *direct.MapContext, in *pb.ReasoningEngineSpec) *krm.ReasoningEngineSpec {
 	if in == nil {
@@ -31,7 +62,7 @@ func ReasoningEngineSpec_FromProto(mapCtx *direct.MapContext, in *pb.ReasoningEn
 	}
 	out.PackageSpec = ReasoningEngineSpec_PackageSpec_FromProto(mapCtx, in.GetPackageSpec())
 	out.DeploymentSpec = ReasoningEngineSpec_DeploymentSpec_FromProto(mapCtx, in.GetDeploymentSpec())
-	// out.ClassMethods = direct.Slice_FromProto(mapCtx, in.ClassMethods, apiextensionsv1.JSON_FromProto)
+	out.ClassMethods = direct.Slice_FromProto(mapCtx, in.ClassMethods, apiextensionsv1.JSON_FromProto)
 	out.AgentFramework = direct.LazyPtr(in.GetAgentFramework())
 	return out
 }
@@ -46,7 +77,7 @@ func ReasoningEngineSpec_ToProto(mapCtx *direct.MapContext, in *krm.ReasoningEng
 	}
 	out.PackageSpec = ReasoningEngineSpec_PackageSpec_ToProto(mapCtx, in.PackageSpec)
 	out.DeploymentSpec = ReasoningEngineSpec_DeploymentSpec_ToProto(mapCtx, in.DeploymentSpec)
-	// out.ClassMethods = direct.Slice_ToProto(mapCtx, in.ClassMethods, apiextensionsv1.JSON_ToProto)
+	out.ClassMethods = direct.Slice_ToProto(mapCtx, in.ClassMethods, apiextensionsv1.JSON_ToProto)
 	out.AgentFramework = direct.ValueOf(in.AgentFramework)
 	return out
 }
