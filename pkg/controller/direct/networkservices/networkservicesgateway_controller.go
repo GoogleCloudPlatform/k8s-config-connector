@@ -172,6 +172,7 @@ func (a *NetworkServicesGatewayAdapter) Update(ctx context.Context, updateOp *di
 		log.V(2).Info("no changes detected for NetworkServicesGateway", "name", a.id)
 	} else {
 		// Report exact diffs
+		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
 
 		req := &pb.UpdateGatewayRequest{
