@@ -220,6 +220,7 @@ func (a *snapshotAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &pb.UpdateSnapshotRequest{
