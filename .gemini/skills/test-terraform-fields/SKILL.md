@@ -32,9 +32,30 @@ A complete test fixture directory contains:
 
 ---
 
+## Remove from Ratcheting Exclusions (MANDATORY)
+
+Before running the test cases against real or mock GCP, you **MUST** remove the target resource from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. This ensures that re-reconciliation testing (which touches the primary object after E2E creation to verify zero-write operations) is enabled and validated, which is a fundamental use case KCC resources must support.
+
+1. Open `tests/e2e/ratcheting.go`.
+2. Locate the function `ShouldTestRereconiliation`.
+3. Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
+4. If there is a `case` block for your target resource's `GroupKind` (e.g., `schema.GroupKind{Group: "dns.cnrm.cloud.google.com", Kind: "DNSRecordSet"}`), remove that `case` line from the switch statement.
+
+---
+
 ## 3. Recording Ground Truth against Real GCP (CRITICAL MANDATORY STEP)
 
 > [!IMPORTANT]
+> **YOU MUST NEVER SKIP OR BYPASS THIS STEP.** 
+> Generating mock-only golden logs via `compare-mock` or `go test` without first recording live traffic against real GCP is strictly prohibited.
+> If the environment does not have a pre-configured GCP project ID, or if running `hack/record-gcp` fails due to authentication/project ID errors, you **MUST STOP IMMEDIATELY** and ask the user to provide a valid GCP Project ID. Do not try to bypass this requirement.
+>
+> **WHENEVER A TEST CASE IS UPDATED, WE MUST RECORD REAL GCP LOGS AGAIN.**
+> If you make any modifications to a test case configuration, manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or the controller's runtime mapping configuration, you **MUST** run the test case against real GCP (`hack/record-gcp`) to regenerate the authentic `_http.log` baseline before comparing or committing any mock log changes. Do not attempt to manually edit the logs or bypass recording live traffic.
+
+> [!WARNING]
+> **Do not run `go test` directly**: When running or recording E2E tests, always prefer using `./dev/tasks/run-e2e` (or scripts like `hack/record-gcp` and `hack/compare-mock` that wrap it) instead of running `go test` directly in the shell or IDE. Running `go test` directly may bypass `KUBEBUILDER_ASSETS` configuration and fall back to an older global version of `kube-apiserver` (such as a legacy `/usr/local/kubebuilder/bin/` copy), leading to incorrect fields like `metadata.selfLink` being generated in the golden files.
+
 To establish a baseline or update golden logs, you must run the tests against a real GCP project. This records actual HTTP/gRPC API interactions into the `_http.log` file.
 
 ### A. Authentication and Credentials
@@ -62,7 +83,42 @@ Configure the following environment variables to control project routing, billin
 > KCC tests dynamically substitute namespace project references with the actual target GCP project specified by these variables during execution.
 
 ### C. Running E2E Fixture Test Recordings
-You **MUST strictly follow** the [`record-real-gcp`](.gemini/skills/record-real-gcp/SKILL.md) skill to discover affected test fixtures and record authentic GCP golden logs (`_http.log`).
+For standard E2E fixture tests under `pkg/test/resourcefixture/testdata/basic/`, use the `hack/record-gcp` script.
+
+1.  **Discover All Test Fixtures for Resource**:
+    Before running any recordings, locate all test subdirectories under `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/` (e.g., `containernodepool`, `containernodepool-update`, `containernodepoolremovetaint`, etc.).
+
+2.  **Fast vs. Slow Resource Execution Strategy**:
+    Determine whether your target resource is fast or slow to reconcile against real GCP. Resources like `ContainerNodePool`, `ContainerCluster`, `SQLInstance`, and `ComposerEnvironment` are slow resources (>10 minutes per test), whereas most others are fast (<10 min per test).
+    - **Fast resources (<10 min per test)**:
+      - Run and record all fixtures for the resource in a single command:
+        ```bash
+        hack/record-gcp "fixtures/<kind_lowercase>"
+        ```
+    - **Slow resources (>10 min per test)**:
+      - Do NOT run all test fixtures sequentially in a single command.
+      - Execute each individual test fixture in parallel (e.g., triggering parallel background processes or subagents with `hack/record-gcp "fixtures/^<testname>$"`).
+      - **Parallel Directory Collisions**: `hack/record-gcp` cleans and writes to `artifactz/realgcp` by default. When running multiple invocations in parallel, you **MUST** provide a unique `ARTIFACTS` path for each invocation (e.g., `ARTIFACTS=artifactz/realgcp-<testname> hack/record-gcp "fixtures/^<testname>$"`) to prevent folder collision/cleanup issues.
+
+    - **Alternative Using Package Path (Fast resources)**:
+      ```bash
+      hack/record-gcp pkg/test/resourcefixture/testdata/basic/dns/v1beta1/<kind_lowercase>
+      ```
+
+3.  **Verification Criteria for Real GCP Recording (MANDATORY)**:
+    Checking `git status` or top-level `PASS`/`FAIL` exit codes can be misleading (e.g. 0-diff is valid for unaffected fixtures, unmatched regex gives a false `PASS`, and a successful recording can mark the subtest as `FAIL` because it wrote a new golden log).
+    Instead, verify that each discovered fixture completed its full lifecycle by checking stdout for:
+    1. `=== RUN   TestAllInSeries/fixtures/<testname>` (confirms the subtest matched and started).
+    2. Resource reached `Ready` (`status.condition.status: True`) for create (and update, if present).
+    3. Deletion completed (`Done waiting for resource to delete`).
+    4. `wrote updated golden output to .../_http.log` was logged (or `_http.log` was updated/written on disk).
+    5. No fatal errors (`t.Fatalf` / timeout / permission errors) aborted the test before cleanup.
+
+4. The script executes the tests with `E2E_GCP_TARGET=real`, `WRITE_GOLDEN_OUTPUT=1`, and records the traffic to `_http.log`.
+5. **If the script fails** (e.g. due to permissions or an invalid/missing default project ID), you **MUST** not skip this step. Ask the user for a valid GCP project ID to test against, and then run:
+   ```bash
+   GCP_PROJECT_ID=<project-id> hack/record-gcp <test_name>
+   ```
 
 
 ### D. Running MockGCP Script Test Recordings

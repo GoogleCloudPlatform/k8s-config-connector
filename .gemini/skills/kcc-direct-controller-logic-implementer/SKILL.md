@@ -31,8 +31,33 @@ This skill guides the implementation of the `Adapter` interface and the creation
     - Add `update.yaml`: Update all **mutable** fields.
     - Add `dependencies.yaml` if the resource requires other KCC resources to exist first.
 
+3.5. **Remove from Ratcheting Exclusions (MANDATORY)**:
+    Before running the test cases against real or mock GCP, you **MUST** ensure the target resource is removed from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. This enables the re-reconciliation test step, which is a fundamental use case KCC resources must support.
+    1. Open `tests/e2e/ratcheting.go`.
+    2. Locate the function `ShouldTestRereconiliation`.
+    3. Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
+    4. If there is a `case` block for your target resource's `GroupKind`, remove that `case` line from the switch statement.
+
 4.  **Record Golden Files (Real GCP)**:
-    You **MUST strictly follow** the [`record-real-gcp`](file:///usr/local/google/home/maqiuyujoyce/4-k8s-config-connector/.gemini/skills/record-real-gcp/SKILL.md) skill to discover affected test fixtures and record authentic GCP golden logs.
+    Run the tests against real GCP to record the traffic and object state. Ensure you use a sufficient timeout (e.g., 30-60 minutes) as GCP resource creation can be slow:
+
+    > [!WARNING]
+    > **WHENEVER A TEST CASE IS UPDATED, WE MUST RECORD REAL GCP LOGS AGAIN.**
+    > If you make any modifications to a test case configuration, manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or the controller's runtime mapping configuration, you **MUST** run the test case against real GCP (`hack/record-gcp` or with `E2E_GCP_TARGET=real`) to regenerate the authentic `_http.log` baseline before comparing or committing any mock log changes. Do not attempt to manually edit the logs or bypass recording live traffic.
+
+    ```bash
+    # Run from the repository root
+    RUN_E2E=1 \
+    E2E_GCP_TARGET=real \
+    E2E_KUBE_TARGET=envtest \
+    GOLDEN_REQUEST_CHECKS=1 \
+    GOLDEN_OBJECT_CHECKS=1 \
+    WRITE_GOLDEN_OUTPUT=1 \
+    go test -v ./tests/e2e \
+      -timeout 60m \
+      -run TestAllInSeries/fixtures/<resource_lower>-minimal
+    ```
+    Repeat for the `-maximal` fixture. Commit the resulting `_http.log` and `_generated_object_*.golden.yaml` files.
 
 5.  **Verify Field Coverage**:
     Run the API check tests:
