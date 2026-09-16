@@ -229,6 +229,8 @@ func (a *floorSettingAdapter) Export(ctx context.Context) (*unstructured.Unstruc
 
 func (a *floorSettingAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
+	// ModelArmorFloorSetting is a singleton resource that exists by default on GCP.
+	// KCC cannot delete this resource, so delete is implemented as a no-op.
 	log.V(2).Info("deleting ModelArmorFloorSetting is a no-op", "name", a.id)
 	return true, nil
 }
