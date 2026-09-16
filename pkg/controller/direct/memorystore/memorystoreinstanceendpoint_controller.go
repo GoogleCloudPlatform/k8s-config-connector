@@ -287,6 +287,7 @@ func (a *EndpointAdapter) updateConnections(ctx context.Context, userCreated []k
 
 	report := &structuredreporting.Diff{Object: obj}
 	report.AddField("endpoints", a.actual.Endpoints, endpoints)
+	structuredreporting.ReportDiff(ctx, report)
 
 	updateReq := &pb.UpdateInstanceRequest{
 		UpdateMask: &fieldmaskpb.FieldMask{
