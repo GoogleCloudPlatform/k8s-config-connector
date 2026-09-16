@@ -563,6 +563,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "naturalLanguageQueryUnderstandingConfig")
 		delete(v, "solutionTypes")
 		delete(v, "source")
+		delete(v, "replicaNames")
 		delete(v, "marketplaceAgentVisibility")
 		delete(v, "observabilityConfig")
 		delete(v, "correlationInfo")
@@ -586,6 +587,32 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "violationNotificationsEnabled")
 		delete(v, "billingAccount")
 		delete(v, "resourceSettings")
+
+		// SQLInstance specific fields to normalize alignment differences between mock and real GCP responses
+		delete(v, "databaseInstalledVersion")
+		delete(v, "maintenanceVersion")
+		delete(v, "includeReplicasForMajorVersionUpgrade")
+		delete(v, "upgradableDatabaseVersions")
+		delete(v, "replicaConfiguration")
+		delete(v, "satisfiesPzi")
+		delete(v, "crashSafeReplicationEnabled")
+		delete(v, "dataCacheConfig")
+		delete(v, "enableDataplexIntegration")
+		delete(v, "serverCertificateRotationMode")
+		delete(v, "replicationLagMaxSeconds")
+		delete(v, "dataDiskSizeGb")
+		delete(v, "targetId")
+		delete(v, "targetLink")
+		if rc, ok := v["replicationCluster"].(map[string]interface{}); ok && len(rc) == 0 {
+			delete(v, "replicationCluster")
+		}
+		if instanceType, ok := v["instanceType"].(string); ok && instanceType == "READ_REPLICA_INSTANCE" {
+			delete(v, "backupConfiguration")
+			if settings, ok := v["settings"].(map[string]interface{}); ok {
+				delete(settings, "backupConfiguration")
+			}
+		}
+
 		// Normalize empty LRO response payloads (e.g., from mock Delete operations returning Empty, but real returns nothing)
 		if resp, ok := v["response"].(map[string]interface{}); ok {
 			if len(resp) == 0 || (len(resp) == 1 && resp["@type"] == "type.googleapis.com/google.protobuf.Empty") {

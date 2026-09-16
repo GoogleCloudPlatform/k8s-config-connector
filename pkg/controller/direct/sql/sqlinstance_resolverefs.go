@@ -55,7 +55,7 @@ func ResolveSQLInstanceRefs(ctx context.Context, kube client.Reader, obj *krm.SQ
 	if err := resolveSourceSQLInstanceRef(ctx, kube, obj); err != nil {
 		return err
 	}
-	if err := resolveFailoverDrReplicaRef(ctx, kube, obj); err != nil {
+	if err := resolveFailoverDRReplicaRef(ctx, kube, obj); err != nil {
 		return err
 	}
 	if err := common.NormalizeReferences(ctx, kube, obj, nil); err != nil {
@@ -304,15 +304,15 @@ func resolveSourceSQLInstanceRef(ctx context.Context, kube client.Reader, obj *k
 	}
 }
 
-func resolveFailoverDrReplicaRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
-	if obj.Spec.ReplicationCluster == nil || obj.Spec.ReplicationCluster.FailoverDrReplicaRef == nil {
+func resolveFailoverDRReplicaRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
+	if obj.Spec.ReplicationCluster == nil || obj.Spec.ReplicationCluster.FailoverDRReplicaRef == nil {
 		return nil
 	}
 
-	ref := obj.Spec.ReplicationCluster.FailoverDrReplicaRef
+	ref := obj.Spec.ReplicationCluster.FailoverDRReplicaRef
 
 	if ref.External != "" && ref.Name != "" {
-		return fmt.Errorf("cannot specify both spec.replicationCluster.failoverDrReplicaRef.external and spec.replicationCluster.failoverDrReplicaRef.name")
+		return fmt.Errorf("cannot specify both spec.replicationCluster.failoverDRReplicaRef.external and spec.replicationCluster.failoverDRReplicaRef.name")
 	}
 
 	if ref.External != "" {
@@ -341,10 +341,10 @@ func resolveFailoverDrReplicaRef(ctx context.Context, kube client.Reader, obj *k
 			return err
 		}
 
-		obj.Spec.ReplicationCluster.FailoverDrReplicaRef.External = replicaInstanceName
+		obj.Spec.ReplicationCluster.FailoverDRReplicaRef.External = replicaInstanceName
 
 		return nil
 	} else {
-		return fmt.Errorf("must specify either spec.replicationCluster.failoverDrReplicaRef.external or spec.replicationCluster.failoverDrReplicaRef.name")
+		return fmt.Errorf("must specify either spec.replicationCluster.failoverDRReplicaRef.external or spec.replicationCluster.failoverDRReplicaRef.name")
 	}
 }
