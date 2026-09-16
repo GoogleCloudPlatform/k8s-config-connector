@@ -245,6 +245,9 @@ func (a *TagsTagValueAdapter) Update(ctx context.Context, updateOp *directbase.U
 	}
 	req.UpdateMask = updateMask
 
+	if diff != nil {
+		diff.Object = updateOp.GetUnstructured()
+	}
 	structuredreporting.ReportDiff(ctx, diff)
 
 	latest := a.actual
