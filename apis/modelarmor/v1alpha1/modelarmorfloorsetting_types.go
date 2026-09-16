@@ -24,9 +24,19 @@ var ModelArmorFloorSettingGVK = GroupVersion.WithKind("ModelArmorFloorSetting")
 
 // ModelArmorFloorSettingSpec defines the desired state of ModelArmorFloorSetting
 // +kcc:spec:proto=google.cloud.modelarmor.v1.FloorSetting
+// +kubebuilder:validation:XValidation:rule="(has(self.projectRef) ? 1 : 0) + (has(self.folderRef) ? 1 : 0) + (has(self.organizationRef) ? 1 : 0) <= 1",message="At most one of projectRef, folderRef or organizationRef must be specified."
 type ModelArmorFloorSettingSpec struct {
 	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+	// +optional
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
+
+	// The folder that this resource belongs to.
+	// +optional
+	FolderRef *refsv1beta1.FolderRef `json:"folderRef,omitempty"`
+
+	// The organization that this resource belongs to.
+	// +optional
+	OrganizationRef *refsv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
 
 	// The location of this resource.
 	Location *string `json:"location"`

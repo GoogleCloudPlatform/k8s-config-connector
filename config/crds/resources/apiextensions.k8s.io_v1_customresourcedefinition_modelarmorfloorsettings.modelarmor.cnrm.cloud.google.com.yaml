@@ -253,6 +253,38 @@ spec:
                         type: boolean
                     type: object
                 type: object
+              folderRef:
+                description: The folder that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The 'name' field of a folder, when not managed by
+                      Config Connector. This field must be set when 'name' field is
+                      not set.
+                    type: string
+                  name:
+                    description: The 'name' field of a 'Folder' resource. This field
+                      must be set when 'external' field is not set.
+                    type: string
+                  namespace:
+                    description: The 'namespace' field of a 'Folder' resource. If
+                      unset, the namespace is defaulted to the namespace of the referencer
+                      resource.
+                    type: string
+                type: object
               integratedServices:
                 description: Optional. List of integrated services for which the floor
                   setting is applicable.
@@ -262,6 +294,16 @@ spec:
               location:
                 description: The location of this resource.
                 type: string
+              organizationRef:
+                description: The organization that this resource belongs to.
+                properties:
+                  external:
+                    description: The 'name' field of an organization, when not managed
+                      by Config Connector.
+                    type: string
+                required:
+                - external
+                type: object
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:
@@ -301,8 +343,12 @@ spec:
             required:
             - filterConfig
             - location
-            - projectRef
             type: object
+            x-kubernetes-validations:
+            - message: At most one of projectRef, folderRef or organizationRef must
+                be specified.
+              rule: '(has(self.projectRef) ? 1 : 0) + (has(self.folderRef) ? 1 : 0)
+                + (has(self.organizationRef) ? 1 : 0) <= 1'
           status:
             description: ModelArmorFloorSettingStatus defines the config connector
               machine state of ModelArmorFloorSetting
