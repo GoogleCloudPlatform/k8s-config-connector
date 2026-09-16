@@ -190,6 +190,7 @@ func (a *googleAPISourceAdapter) Update(ctx context.Context, updateOp *directbas
 		return nil
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &pb.UpdateGoogleApiSourceRequest{
