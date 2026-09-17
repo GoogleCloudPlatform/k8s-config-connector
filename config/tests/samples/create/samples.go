@@ -345,6 +345,9 @@ func preflightCheckAPIs(ctx context.Context, h *Harness, resources []*unstructur
 var httpCodeRegex = regexp.MustCompile(`\b(400|401|403)\b`)
 
 func isTerminalError(reason, message string) (bool, string) {
+	if strings.Contains(message, "OrgNumberRegistry must be created") {
+		return true, "OrgNumberRegistry missing"
+	}
 	match := httpCodeRegex.FindString(message)
 	switch match {
 	case "400":
