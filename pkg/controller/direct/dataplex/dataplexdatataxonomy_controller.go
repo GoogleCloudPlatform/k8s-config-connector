@@ -98,7 +98,7 @@ func (m *dataTaxonomyModel) AdapterForObject(ctx context.Context, op *directbase
 	if err != nil {
 		return nil, fmt.Errorf("building gcp client: %w", err)
 	}
-	dtClient, err := gcpClient.dataTaxonomyClient(ctx)
+	dtClient, err := gcpClient.dataTaxonomyClient(ctx, id.Location)
 	if err != nil {
 		return nil, err
 	}
@@ -144,7 +144,7 @@ func (a *dataTaxonomyAdapter) Create(ctx context.Context, createOp *directbase.C
 	log.V(2).Info("creating dataplex data taxonomy", "name", a.id)
 
 	req := &pb.CreateDataTaxonomyRequest{
-		Parent:         fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location),
+		Parent:         a.id.ParentString(),
 		DataTaxonomy:   a.desired,
 		DataTaxonomyId: a.id.DataTaxonomy,
 	}
