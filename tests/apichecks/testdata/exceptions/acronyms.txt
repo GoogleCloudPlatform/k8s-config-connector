@@ -102,6 +102,7 @@
 [acronyms] crd=cloudfunctionsfunctions.cloudfunctions.cnrm.cloud.google.com version=v1beta1: field ".status.versionId" should be ".status.versionID"
 [acronyms] crd=cloudiotdevices.cloudiot.cnrm.cloud.google.com version=v1alpha1: field ".spec.gatewayConfig.lastAccessedGatewayId" should be ".spec.gatewayConfig.lastAccessedGatewayID"
 [acronyms] crd=cloudiotdevices.cloudiot.cnrm.cloud.google.com version=v1alpha1: field ".status.numId" should be ".status.numID"
+[acronyms] crd=cloudruninstances.run.cnrm.cloud.google.com version=v1alpha1: field ".status.observedState.logUri" should be ".status.observedState.logURI"
 [acronyms] crd=cloudschedulerjobs.cloudscheduler.cnrm.cloud.google.com version=v1beta1: field ".spec.appEngineHttpTarget" should be ".spec.appEngineHTTPTarget"
 [acronyms] crd=cloudschedulerjobs.cloudscheduler.cnrm.cloud.google.com version=v1beta1: field ".spec.appEngineHttpTarget.appEngineRouting" should be ".spec.appEngineHTTPTarget.appEngineRouting"
 [acronyms] crd=cloudschedulerjobs.cloudscheduler.cnrm.cloud.google.com version=v1beta1: field ".spec.appEngineHttpTarget.appEngineRouting.instance" should be ".spec.appEngineHTTPTarget.appEngineRouting.instance"
