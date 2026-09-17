@@ -72,3 +72,17 @@ func (m *gcpClient) catalogClient(ctx context.Context) (*api.CatalogClient, erro
 
 	return grpcClient, err
 }
+
+func (m *gcpClient) dataTaxonomyClient(ctx context.Context) (*api.DataTaxonomyClient, error) {
+	opts, err := m.options()
+	if err != nil {
+		return nil, err
+	}
+
+	grpcClient, err := api.NewDataTaxonomyClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building dataplex data taxonomy client: %w", err)
+	}
+
+	return grpcClient, err
+}
