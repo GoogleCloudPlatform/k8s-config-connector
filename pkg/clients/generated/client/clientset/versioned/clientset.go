@@ -81,9 +81,11 @@ import (
 	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudidentity/v1beta1"
 	cloudidsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudids/v1beta1"
 	cloudiotv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudiot/v1alpha1"
+	cloudnumberregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudnumberregistry/v1alpha1"
 	cloudquotav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudquota/v1beta1"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudscheduler/v1beta1"
 	cloudsecuritycompliancev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudsecuritycompliance/v1alpha1"
+	cloudsupportv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudsupport/v1alpha1"
 	cloudtalentsolutionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtalentsolution/v1alpha1"
 	cloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtasks/v1alpha1"
 	colabv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/colab/v1alpha1"
@@ -302,9 +304,11 @@ type Interface interface {
 	CloudidentityV1beta1() cloudidentityv1beta1.CloudidentityV1beta1Interface
 	CloudidsV1beta1() cloudidsv1beta1.CloudidsV1beta1Interface
 	CloudiotV1alpha1() cloudiotv1alpha1.CloudiotV1alpha1Interface
+	CloudnumberregistryV1alpha1() cloudnumberregistryv1alpha1.CloudnumberregistryV1alpha1Interface
 	CloudquotaV1beta1() cloudquotav1beta1.CloudquotaV1beta1Interface
 	CloudschedulerV1beta1() cloudschedulerv1beta1.CloudschedulerV1beta1Interface
 	CloudsecuritycomplianceV1alpha1() cloudsecuritycompliancev1alpha1.CloudsecuritycomplianceV1alpha1Interface
+	CloudsupportV1alpha1() cloudsupportv1alpha1.CloudsupportV1alpha1Interface
 	CloudtalentsolutionV1alpha1() cloudtalentsolutionv1alpha1.CloudtalentsolutionV1alpha1Interface
 	CloudtasksV1alpha1() cloudtasksv1alpha1.CloudtasksV1alpha1Interface
 	ColabV1alpha1() colabv1alpha1.ColabV1alpha1Interface
@@ -521,9 +525,11 @@ type Clientset struct {
 	cloudidentityV1beta1             *cloudidentityv1beta1.CloudidentityV1beta1Client
 	cloudidsV1beta1                  *cloudidsv1beta1.CloudidsV1beta1Client
 	cloudiotV1alpha1                 *cloudiotv1alpha1.CloudiotV1alpha1Client
+	cloudnumberregistryV1alpha1      *cloudnumberregistryv1alpha1.CloudnumberregistryV1alpha1Client
 	cloudquotaV1beta1                *cloudquotav1beta1.CloudquotaV1beta1Client
 	cloudschedulerV1beta1            *cloudschedulerv1beta1.CloudschedulerV1beta1Client
 	cloudsecuritycomplianceV1alpha1  *cloudsecuritycompliancev1alpha1.CloudsecuritycomplianceV1alpha1Client
+	cloudsupportV1alpha1             *cloudsupportv1alpha1.CloudsupportV1alpha1Client
 	cloudtalentsolutionV1alpha1      *cloudtalentsolutionv1alpha1.CloudtalentsolutionV1alpha1Client
 	cloudtasksV1alpha1               *cloudtasksv1alpha1.CloudtasksV1alpha1Client
 	colabV1alpha1                    *colabv1alpha1.ColabV1alpha1Client
@@ -961,6 +967,11 @@ func (c *Clientset) CloudiotV1alpha1() cloudiotv1alpha1.CloudiotV1alpha1Interfac
 	return c.cloudiotV1alpha1
 }
 
+// CloudnumberregistryV1alpha1 retrieves the CloudnumberregistryV1alpha1Client
+func (c *Clientset) CloudnumberregistryV1alpha1() cloudnumberregistryv1alpha1.CloudnumberregistryV1alpha1Interface {
+	return c.cloudnumberregistryV1alpha1
+}
+
 // CloudquotaV1beta1 retrieves the CloudquotaV1beta1Client
 func (c *Clientset) CloudquotaV1beta1() cloudquotav1beta1.CloudquotaV1beta1Interface {
 	return c.cloudquotaV1beta1
@@ -974,6 +985,11 @@ func (c *Clientset) CloudschedulerV1beta1() cloudschedulerv1beta1.Cloudscheduler
 // CloudsecuritycomplianceV1alpha1 retrieves the CloudsecuritycomplianceV1alpha1Client
 func (c *Clientset) CloudsecuritycomplianceV1alpha1() cloudsecuritycompliancev1alpha1.CloudsecuritycomplianceV1alpha1Interface {
 	return c.cloudsecuritycomplianceV1alpha1
+}
+
+// CloudsupportV1alpha1 retrieves the CloudsupportV1alpha1Client
+func (c *Clientset) CloudsupportV1alpha1() cloudsupportv1alpha1.CloudsupportV1alpha1Interface {
+	return c.cloudsupportV1alpha1
 }
 
 // CloudtalentsolutionV1alpha1 retrieves the CloudtalentsolutionV1alpha1Client
@@ -2019,6 +2035,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.cloudnumberregistryV1alpha1, err = cloudnumberregistryv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.cloudquotaV1beta1, err = cloudquotav1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2028,6 +2048,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.cloudsecuritycomplianceV1alpha1, err = cloudsecuritycompliancev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.cloudsupportV1alpha1, err = cloudsupportv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -2728,9 +2752,11 @@ func New(c rest.Interface) *Clientset {
 	cs.cloudidentityV1beta1 = cloudidentityv1beta1.New(c)
 	cs.cloudidsV1beta1 = cloudidsv1beta1.New(c)
 	cs.cloudiotV1alpha1 = cloudiotv1alpha1.New(c)
+	cs.cloudnumberregistryV1alpha1 = cloudnumberregistryv1alpha1.New(c)
 	cs.cloudquotaV1beta1 = cloudquotav1beta1.New(c)
 	cs.cloudschedulerV1beta1 = cloudschedulerv1beta1.New(c)
 	cs.cloudsecuritycomplianceV1alpha1 = cloudsecuritycompliancev1alpha1.New(c)
+	cs.cloudsupportV1alpha1 = cloudsupportv1alpha1.New(c)
 	cs.cloudtalentsolutionV1alpha1 = cloudtalentsolutionv1alpha1.New(c)
 	cs.cloudtasksV1alpha1 = cloudtasksv1alpha1.New(c)
 	cs.colabV1alpha1 = colabv1alpha1.New(c)

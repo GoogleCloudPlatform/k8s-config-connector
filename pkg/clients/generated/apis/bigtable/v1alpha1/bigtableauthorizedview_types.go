@@ -61,9 +61,6 @@ type BigtableAuthorizedViewSpec struct {
 	TableRef v1alpha1.ResourceRef `json:"tableRef"`
 }
 
-type AuthorizedviewObservedStateStatus struct {
-}
-
 type BigtableAuthorizedViewStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigtableAuthorizedView's current state. */
@@ -75,10 +72,6 @@ type BigtableAuthorizedViewStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
-
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *AuthorizedviewObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

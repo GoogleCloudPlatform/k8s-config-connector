@@ -78,9 +78,11 @@ import (
 	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudidentity/v1beta1"
 	cloudidsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudids/v1beta1"
 	cloudiotv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudiot/v1alpha1"
+	cloudnumberregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudnumberregistry/v1alpha1"
 	cloudquotav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudquota/v1beta1"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudscheduler/v1beta1"
 	cloudsecuritycompliancev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudsecuritycompliance/v1alpha1"
+	cloudsupportv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudsupport/v1alpha1"
 	cloudtalentsolutionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudtalentsolution/v1alpha1"
 	cloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudtasks/v1alpha1"
 	colabv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/colab/v1alpha1"
@@ -303,9 +305,11 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	cloudidentityv1beta1.AddToScheme,
 	cloudidsv1beta1.AddToScheme,
 	cloudiotv1alpha1.AddToScheme,
+	cloudnumberregistryv1alpha1.AddToScheme,
 	cloudquotav1beta1.AddToScheme,
 	cloudschedulerv1beta1.AddToScheme,
 	cloudsecuritycompliancev1alpha1.AddToScheme,
+	cloudsupportv1alpha1.AddToScheme,
 	cloudtalentsolutionv1alpha1.AddToScheme,
 	cloudtasksv1alpha1.AddToScheme,
 	colabv1alpha1.AddToScheme,
