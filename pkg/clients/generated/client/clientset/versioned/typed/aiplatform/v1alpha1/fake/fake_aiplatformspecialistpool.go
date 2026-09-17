@@ -27,26 +27,26 @@ import (
 	gentype "k8s.io/client-go/gentype"
 )
 
-// fakeVertexAISpecialistPools implements VertexAISpecialistPoolInterface
-type fakeVertexAISpecialistPools struct {
-	*gentype.FakeClientWithList[*v1alpha1.VertexAISpecialistPool, *v1alpha1.VertexAISpecialistPoolList]
+// fakeAIPlatformSpecialistPools implements AIPlatformSpecialistPoolInterface
+type fakeAIPlatformSpecialistPools struct {
+	*gentype.FakeClientWithList[*v1alpha1.AIPlatformSpecialistPool, *v1alpha1.AIPlatformSpecialistPoolList]
 	Fake *FakeAiplatformV1alpha1
 }
 
-func newFakeVertexAISpecialistPools(fake *FakeAiplatformV1alpha1, namespace string) aiplatformv1alpha1.VertexAISpecialistPoolInterface {
-	return &fakeVertexAISpecialistPools{
-		gentype.NewFakeClientWithList[*v1alpha1.VertexAISpecialistPool, *v1alpha1.VertexAISpecialistPoolList](
+func newFakeAIPlatformSpecialistPools(fake *FakeAiplatformV1alpha1, namespace string) aiplatformv1alpha1.AIPlatformSpecialistPoolInterface {
+	return &fakeAIPlatformSpecialistPools{
+		gentype.NewFakeClientWithList[*v1alpha1.AIPlatformSpecialistPool, *v1alpha1.AIPlatformSpecialistPoolList](
 			fake.Fake,
 			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("vertexaispecialistpools"),
-			v1alpha1.SchemeGroupVersion.WithKind("VertexAISpecialistPool"),
-			func() *v1alpha1.VertexAISpecialistPool { return &v1alpha1.VertexAISpecialistPool{} },
-			func() *v1alpha1.VertexAISpecialistPoolList { return &v1alpha1.VertexAISpecialistPoolList{} },
-			func(dst, src *v1alpha1.VertexAISpecialistPoolList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.VertexAISpecialistPoolList) []*v1alpha1.VertexAISpecialistPool {
+			v1alpha1.SchemeGroupVersion.WithResource("aiplatformspecialistpools"),
+			v1alpha1.SchemeGroupVersion.WithKind("AIPlatformSpecialistPool"),
+			func() *v1alpha1.AIPlatformSpecialistPool { return &v1alpha1.AIPlatformSpecialistPool{} },
+			func() *v1alpha1.AIPlatformSpecialistPoolList { return &v1alpha1.AIPlatformSpecialistPoolList{} },
+			func(dst, src *v1alpha1.AIPlatformSpecialistPoolList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.AIPlatformSpecialistPoolList) []*v1alpha1.AIPlatformSpecialistPool {
 				return gentype.ToPointerSlice(list.Items)
 			},
-			func(list *v1alpha1.VertexAISpecialistPoolList, items []*v1alpha1.VertexAISpecialistPool) {
+			func(list *v1alpha1.AIPlatformSpecialistPoolList, items []*v1alpha1.AIPlatformSpecialistPool) {
 				list.Items = gentype.FromPointerSlice(items)
 			},
 		),

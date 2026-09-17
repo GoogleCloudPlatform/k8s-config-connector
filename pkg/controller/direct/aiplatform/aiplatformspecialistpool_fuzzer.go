@@ -24,13 +24,13 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(vertexAISpecialistPoolFuzzer())
+	fuzztesting.RegisterKRMFuzzer(aiPlatformSpecialistPoolFuzzer())
 }
 
-func vertexAISpecialistPoolFuzzer() fuzztesting.KRMFuzzer {
+func aiPlatformSpecialistPoolFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.SpecialistPool{},
-		VertexAISpecialistPoolSpec_FromProto, VertexAISpecialistPoolSpec_ToProto,
-		VertexAISpecialistPoolObservedState_FromProto, VertexAISpecialistPoolObservedState_ToProto,
+		AIPlatformSpecialistPoolSpec_FromProto, AIPlatformSpecialistPoolSpec_ToProto,
+		AIPlatformSpecialistPoolObservedState_FromProto, AIPlatformSpecialistPoolObservedState_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".name") // Special resource name field

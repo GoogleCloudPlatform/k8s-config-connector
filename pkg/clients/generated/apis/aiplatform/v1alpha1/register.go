@@ -77,10 +77,10 @@ var (
 		Kind:    reflect.TypeOf(VertexAISchedule{}).Name(),
 	}
 
-	VertexAISpecialistPoolGVK = schema.GroupVersionKind{
+	AIPlatformSpecialistPoolGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(VertexAISpecialistPool{}).Name(),
+		Kind:    reflect.TypeOf(AIPlatformSpecialistPool{}).Name(),
 	}
 
 	VertexAIStudyGVK = schema.GroupVersionKind{

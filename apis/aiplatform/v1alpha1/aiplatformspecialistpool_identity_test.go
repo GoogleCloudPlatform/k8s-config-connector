@@ -16,19 +16,21 @@ package v1alpha1
 
 import (
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
-func TestVertexAISpecialistPoolIdentity_FromExternal(t *testing.T) {
+func TestAIPlatformSpecialistPoolIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
 		name    string
 		ref     string
 		wantErr bool
-		want    *VertexAISpecialistPoolIdentity
+		want    *AIPlatformSpecialistPoolIdentity
 	}{
 		{
 			name: "valid reference",
 			ref:  "projects/my-project/locations/us-central1/specialistPools/my-specialist-pool",
-			want: &VertexAISpecialistPoolIdentity{
+			want: &AIPlatformSpecialistPoolIdentity{
 				Project:        "my-project",
 				Location:       "us-central1",
 				SpecialistPool: "my-specialist-pool",
@@ -42,7 +44,7 @@ func TestVertexAISpecialistPoolIdentity_FromExternal(t *testing.T) {
 		{
 			name: "full url",
 			ref:  "https://aiplatform.googleapis.com/projects/my-project/locations/us-central1/specialistPools/my-specialist-pool",
-			want: &VertexAISpecialistPoolIdentity{
+			want: &AIPlatformSpecialistPoolIdentity{
 				Project:        "my-project",
 				Location:       "us-central1",
 				SpecialistPool: "my-specialist-pool",
@@ -52,21 +54,15 @@ func TestVertexAISpecialistPoolIdentity_FromExternal(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			i := &VertexAISpecialistPoolIdentity{}
+			i := &AIPlatformSpecialistPoolIdentity{}
 			err := i.FromExternal(tt.ref)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !tt.wantErr {
-				if i.Project != tt.want.Project {
-					t.Errorf("Project = %v, want %v", i.Project, tt.want.Project)
-				}
-				if i.Location != tt.want.Location {
-					t.Errorf("Location = %v, want %v", i.Location, tt.want.Location)
-				}
-				if i.SpecialistPool != tt.want.SpecialistPool {
-					t.Errorf("SpecialistPool = %v, want %v", i.SpecialistPool, tt.want.SpecialistPool)
+				if diff := cmp.Diff(tt.want, i); diff != "" {
+					t.Errorf("FromExternal() mismatch (-want +got):\n%s", diff)
 				}
 			}
 		})

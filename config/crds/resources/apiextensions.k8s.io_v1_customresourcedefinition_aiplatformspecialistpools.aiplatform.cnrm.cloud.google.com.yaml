@@ -10,19 +10,19 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-  name: vertexaispecialistpools.aiplatform.cnrm.cloud.google.com
+  name: aiplatformspecialistpools.aiplatform.cnrm.cloud.google.com
 spec:
   group: aiplatform.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: VertexAISpecialistPool
-    listKind: VertexAISpecialistPoolList
-    plural: vertexaispecialistpools
+    kind: AIPlatformSpecialistPool
+    listKind: AIPlatformSpecialistPoolList
+    plural: aiplatformspecialistpools
     shortNames:
-    - gcpvertexaispecialistpool
-    - gcpvertexaispecialistpools
-    singular: vertexaispecialistpool
+    - gcpaiplatformspecialistpool
+    - gcpaiplatformspecialistpools
+    singular: aiplatformspecialistpool
   preserveUnknownFields: false
   scope: Namespaced
   versions:
@@ -45,7 +45,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: VertexAISpecialistPool is the Schema for the VertexAISpecialistPool
+        description: AIPlatformSpecialistPool is the Schema for the AIPlatformSpecialistPool
           API
         properties:
           apiVersion:
@@ -61,7 +61,8 @@ spec:
           metadata:
             type: object
           spec:
-            description: VertexAISpecialistPoolSpec defines the desired state of VertexAISpecialistPool
+            description: AIPlatformSpecialistPoolSpec defines the desired state of
+              AIPlatformSpecialistPool
             properties:
               displayName:
                 description: Required. The user-defined name of the SpecialistPool.
@@ -104,8 +105,8 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The VertexAISpecialistPool name. If not given, the metadata.name
-                  will be used.
+                description: The AIPlatformSpecialistPool name. If not given, the
+                  metadata.name will be used.
                 type: string
               specialistManagerEmails:
                 description: The email addresses of the managers in the SpecialistPool.
@@ -123,8 +124,8 @@ spec:
             - projectRef
             type: object
           status:
-            description: VertexAISpecialistPoolStatus defines the config connector
-              machine state of VertexAISpecialistPool
+            description: AIPlatformSpecialistPoolStatus defines the config connector
+              machine state of AIPlatformSpecialistPool
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -153,7 +154,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the VertexAISpecialistPool resource
+                description: A unique specifier for the AIPlatformSpecialistPool resource
                   in GCP.
                 type: string
               observedGeneration:
