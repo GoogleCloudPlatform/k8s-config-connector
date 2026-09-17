@@ -41,7 +41,7 @@ type CloudNumberRegistryCustomRangeSpec struct {
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
-	// The location of this resource.
+	/* Immutable. The location of this resource. */
 	Location string `json:"location"`
 
 	// The CloudNumberRegistryCustomRange name. If not given, the metadata.name will be used.
@@ -69,7 +69,7 @@ type CloudNumberRegistryCustomRangeSpec struct {
 	//  This field is mutually exclusive with the `realm` field, as the Realm is
 	//  inherited from the parent CustomRange.
 	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.CustomRange.parent_range
-	ParentRange *string `json:"parentRange,omitempty"`
+	ParentRangeRef *CloudNumberRegistryCustomRangeRef `json:"parentRangeRef,omitempty"`
 
 	// Optional. The attributes of the CustomRange.
 	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.CustomRange.attributes

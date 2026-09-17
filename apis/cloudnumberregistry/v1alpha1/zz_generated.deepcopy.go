@@ -171,9 +171,9 @@ func (in *CloudNumberRegistryCustomRangeSpec) DeepCopyInto(out *CloudNumberRegis
 		*out = new(string)
 		**out = **in
 	}
-	if in.ParentRange != nil {
-		in, out := &in.ParentRange, &out.ParentRange
-		*out = new(string)
+	if in.ParentRangeRef != nil {
+		in, out := &in.ParentRangeRef, &out.ParentRangeRef
+		*out = new(CloudNumberRegistryCustomRangeRef)
 		**out = **in
 	}
 	if in.Attributes != nil {

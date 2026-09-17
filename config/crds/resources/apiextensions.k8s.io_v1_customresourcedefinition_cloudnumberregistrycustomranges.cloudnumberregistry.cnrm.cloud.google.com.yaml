@@ -94,15 +94,41 @@ spec:
                 description: Optional. User-defined labels.
                 type: object
               location:
-                description: The location of this resource.
+                description: Immutable. The location of this resource.
                 type: string
-              parentRange:
+              parentRangeRef:
                 description: Optional. The resource name of the parent CustomRange,
                   in the format `projects/{project}/locations/{location}/customRanges/{custom_range}`.
                   If specified, the parent CustomRange must be in the same RegistryBook.
                   This field is mutually exclusive with the `realm` field, as the
                   Realm is inherited from the parent CustomRange.
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed CloudNumberRegistryCustomRange
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/customRanges/{{customRangeID}}"
+                    type: string
+                  name:
+                    description: The name of a CloudNumberRegistryCustomRange resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a CloudNumberRegistryCustomRange
+                      resource.
+                    type: string
+                type: object
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:

@@ -75,7 +75,9 @@ func CloudNumberRegistryCustomRangeSpec_FromProto(mapCtx *direct.MapContext, in 
 	out.IPV6CIDRRange = direct.LazyPtr(in.GetIpv6CidrRange())
 	// MISSING: Name
 	out.Realm = direct.LazyPtr(in.GetRealm())
-	out.ParentRange = direct.LazyPtr(in.GetParentRange())
+	if in.GetParentRange() != "" {
+		out.ParentRangeRef = &krm.CloudNumberRegistryCustomRangeRef{External: in.GetParentRange()}
+	}
 	out.Attributes = direct.Slice_FromProto(mapCtx, in.Attributes, Attribute_FromProto)
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Labels = in.Labels
@@ -94,7 +96,9 @@ func CloudNumberRegistryCustomRangeSpec_ToProto(mapCtx *direct.MapContext, in *k
 	}
 	// MISSING: Name
 	out.Realm = direct.ValueOf(in.Realm)
-	out.ParentRange = direct.ValueOf(in.ParentRange)
+	if in.ParentRangeRef != nil {
+		out.ParentRange = in.ParentRangeRef.External
+	}
 	out.Attributes = direct.Slice_ToProto(mapCtx, in.Attributes, Attribute_ToProto)
 	out.Description = direct.ValueOf(in.Description)
 	out.Labels = in.Labels
