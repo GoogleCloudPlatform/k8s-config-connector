@@ -25,6 +25,8 @@ import (
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 )
 
 func (r *Reconciler) transformForExperiments() declarative.ObjectTransform {
@@ -42,6 +44,10 @@ func (r *Reconciler) transformForExperiments() declarative.ObjectTransform {
 }
 
 func (r *Reconciler) applyExperiments(ctx context.Context, cc *corev1beta1.ConfigConnector, m *manifest.Objects) error {
+	if err := r.applyConfigConnectorConfigHash(cc, m); err != nil {
+		return err
+	}
+
 	if cc.Spec.Experiments == nil {
 		return nil
 	}
@@ -52,6 +58,19 @@ func (r *Reconciler) applyExperiments(ctx context.Context, cc *corev1beta1.Confi
 		}
 	}
 
+	return nil
+}
+
+func (r *Reconciler) applyConfigConnectorConfigHash(cc *corev1beta1.ConfigConnector, obj *manifest.Objects) error {
+	ccHash := controllers.ComputeCCConfigHash(cc)
+	for _, item := range obj.Items {
+		if !IsControllerManagerStatefulSet(item) {
+			continue
+		}
+		if err := controllers.SetPodTemplateAnnotation(item.UnstructuredObject(), k8s.CCConfigHashAnnotation, ccHash); err != nil {
+			return fmt.Errorf("failed to set %s annotation on %s: %w", k8s.CCConfigHashAnnotation, item.GetName(), err)
+		}
+	}
 	return nil
 }
 

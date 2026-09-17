@@ -240,6 +240,9 @@ func handleControllerManagerStatefulSet(ctx context.Context, c client.Client, cc
 	if err := applyConfigConnectorExperiments(ctx, c, u); err != nil {
 		return nil, err
 	}
+	if err := applyConfigConnectorContextExperiments(ccc, u); err != nil {
+		return nil, err
+	}
 
 	return manifest.NewObject(u)
 }
@@ -256,8 +259,18 @@ func handleControllerManagerStatefulSetPerNamespace(ctx context.Context, c clien
 	if err := applyConfigConnectorExperiments(ctx, c, u); err != nil {
 		return nil, err
 	}
+	if err := applyConfigConnectorContextExperiments(ccc, u); err != nil {
+		return nil, err
+	}
 
 	return manifest.NewObject(u)
+}
+
+func applyConfigConnectorContextExperiments(ccc *corev1beta1.ConfigConnectorContext, u *unstructured.Unstructured) error {
+	if err := controllers.SetPodTemplateAnnotation(u, k8s.CCCConfigHashAnnotation, controllers.ComputeCCCConfigHash(ccc)); err != nil {
+		return fmt.Errorf("failed to set %s pod template annotation: %w", k8s.CCCConfigHashAnnotation, err)
+	}
+	return nil
 }
 
 func applyConfigConnectorExperiments(ctx context.Context, c client.Client, u *unstructured.Unstructured) error {
@@ -266,13 +279,17 @@ func applyConfigConnectorExperiments(ctx context.Context, c client.Client, u *un
 		if !apierrors.IsNotFound(err) {
 			return fmt.Errorf("error getting the ConfigConnector object %v: %w", controllers.ValidConfigConnectorNamespacedName, err)
 		}
-		// If CC is not found (e.g. during deletion tests), just skip applying experiments.
-		return nil
+		// If CC is not found (e.g. during deletion tests), remove any stale cc-config-hash annotation.
+		return controllers.SetPodTemplateAnnotation(u, k8s.CCConfigHashAnnotation, "")
 	}
 	return applyExperimentsToManagerContainer(u, cc)
 }
 
 func applyExperimentsToManagerContainer(u *unstructured.Unstructured, cc *corev1beta1.ConfigConnector) error {
+	if err := controllers.SetPodTemplateAnnotation(u, k8s.CCConfigHashAnnotation, controllers.ComputeCCConfigHash(cc)); err != nil {
+		return fmt.Errorf("failed to set %s pod template annotation: %w", k8s.CCConfigHashAnnotation, err)
+	}
+
 	if cc.Spec.Experiments == nil {
 		return nil
 	}

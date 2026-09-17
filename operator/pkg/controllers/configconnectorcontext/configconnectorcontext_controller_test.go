@@ -1462,3 +1462,131 @@ func TestControllerOverridesField(t *testing.T) {
 		t.Fatalf("field .spec.experiments.controllerOverrides not found in unstructured object")
 	}
 }
+
+func TestNamespacedResourceSettingsConfigHashes(t *testing.T) {
+	t.Parallel()
+	ctx := context.Background()
+	mgr, stop := testmain.StartTestManagerFromNewTestEnv()
+	defer stop()
+	c := mgr.GetClient()
+	testcontroller.EnsureNamespaceExists(c, k8s.OperatorSystemNamespace)
+	testcontroller.EnsureNamespaceExists(c, k8s.CNRMSystemNamespace)
+	testcontroller.EnsureNamespaceExists(c, "foo-ns")
+
+	groupStorage := "storage.cnrm.cloud.google.com"
+	kindBucket := "StorageBucket"
+	groupPubSub := "pubsub.cnrm.cloud.google.com"
+	kindTopic := "PubSubTopic"
+
+	cc := &corev1beta1.ConfigConnector{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: corev1beta1.ConfigConnectorAllowedName,
+		},
+		Spec: corev1beta1.ConfigConnectorSpec{
+			Mode: k8s.NamespacedMode,
+			Experiments: &corev1beta1.CCExperiments{
+				ResourceSettings: &corev1beta1.ResourceSettings{
+					Mode: corev1beta1.ResourceSettingsModeExclude,
+					Resources: []corev1beta1.ResourceFilter{
+						{Group: &groupPubSub, Kind: &kindTopic},
+					},
+				},
+			},
+		},
+	}
+	if err := c.Create(ctx, cc); err != nil {
+		t.Fatalf("error creating ConfigConnector: %v", err)
+	}
+
+	ccc := &corev1beta1.ConfigConnectorContext{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      corev1beta1.ConfigConnectorContextAllowedName,
+			Namespace: "foo-ns",
+		},
+		Spec: corev1beta1.ConfigConnectorContextSpec{
+			GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
+			Experiments: &corev1beta1.Experiments{
+				ResourceSettings: &corev1beta1.ResourceSettings{
+					Mode: corev1beta1.ResourceSettingsModeExclude,
+					Resources: []corev1beta1.ResourceFilter{
+						{Group: &groupStorage, Kind: &kindBucket},
+					},
+				},
+			},
+		},
+	}
+
+	m := testcontroller.ParseObjects(ctx, t, testcontroller.GetPerNamespaceManifest())
+	objs, err := transformNamespacedComponentTemplates(ctx, c, ccc, m.Items)
+	if err != nil {
+		t.Fatalf("transformNamespacedComponentTemplates failed: %v", err)
+	}
+
+	expectedCCHash := controllers.ComputeCCConfigHash(cc)
+	expectedCCCHash := controllers.ComputeCCCConfigHash(ccc)
+
+	foundSts := false
+	for _, item := range objs {
+		if controllers.IsControllerManagerStatefulSet(item) {
+			foundSts = true
+			annotations, _, _ := unstructured.NestedStringMap(item.UnstructuredObject().Object, "spec", "template", "metadata", "annotations")
+			if got := annotations[k8s.CCConfigHashAnnotation]; got != expectedCCHash {
+				t.Errorf("expected %s=%q, got %q", k8s.CCConfigHashAnnotation, expectedCCHash, got)
+			}
+			if got := annotations[k8s.CCCConfigHashAnnotation]; got != expectedCCCHash {
+				t.Errorf("expected %s=%q, got %q", k8s.CCCConfigHashAnnotation, expectedCCCHash, got)
+			}
+		}
+	}
+	if !foundSts {
+		t.Fatalf("expected controller-manager StatefulSet in transformed objects")
+	}
+
+	// Clearing CCC ResourceSettings should remove ccc-config-hash while preserving cc-config-hash
+	ccc.Spec.Experiments.ResourceSettings = nil
+	objsAfterClear, err := transformNamespacedComponentTemplates(ctx, c, ccc, objs)
+	if err != nil {
+		t.Fatalf("transformNamespacedComponentTemplates failed: %v", err)
+	}
+	for _, item := range objsAfterClear {
+		if controllers.IsControllerManagerStatefulSet(item) {
+			annotations, _, _ := unstructured.NestedStringMap(item.UnstructuredObject().Object, "spec", "template", "metadata", "annotations")
+			if got := annotations[k8s.CCConfigHashAnnotation]; got != expectedCCHash {
+				t.Errorf("expected %s=%q to remain intact, got %q", k8s.CCConfigHashAnnotation, expectedCCHash, got)
+			}
+			if _, exists := annotations[k8s.CCCConfigHashAnnotation]; exists {
+				t.Errorf("expected %s to be removed when CCC ResourceSettings is nil", k8s.CCCConfigHashAnnotation)
+			}
+		}
+	}
+}
+
+func TestEnqueueAllConfigConnectorContexts(t *testing.T) {
+	t.Parallel()
+	ctx := context.Background()
+	mgr, stop := testmain.StartTestManagerFromNewTestEnv()
+	defer stop()
+	c := mgr.GetClient()
+
+	for _, ns := range []string{"team-a", "team-b"} {
+		testcontroller.EnsureNamespaceExists(c, ns)
+		ccc := &corev1beta1.ConfigConnectorContext{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      corev1beta1.ConfigConnectorContextAllowedName,
+				Namespace: ns,
+			},
+			Spec: corev1beta1.ConfigConnectorContextSpec{
+				GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
+			},
+		}
+		if err := c.Create(ctx, ccc); err != nil {
+			t.Fatalf("failed to create CCC in %s: %v", ns, err)
+		}
+	}
+
+	r := newConfigConnectorReconciler(c)
+	reqs := r.enqueueAllConfigConnectorContexts(ctx, &corev1beta1.ConfigConnector{})
+	if len(reqs) != 2 {
+		t.Fatalf("expected 2 reconcile requests, got %d", len(reqs))
+	}
+}

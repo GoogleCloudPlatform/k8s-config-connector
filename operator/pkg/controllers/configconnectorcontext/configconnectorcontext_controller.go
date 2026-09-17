@@ -44,6 +44,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
+	"sigs.k8s.io/controller-runtime/pkg/predicate"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/source"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/apis/v1alpha1"
@@ -91,6 +92,11 @@ func Add(mgr ctrl.Manager, opt *ReconcilerOptions) error {
 		Named(controllerName).
 		WithOptions(controller.Options{MaxConcurrentReconciles: 20}).
 		WatchesRawSource(source.TypedChannel(r.customizationWatcher.Events(), &handler.EnqueueRequestForObject{})).
+		Watches(
+			&corev1beta1.ConfigConnector{},
+			handler.EnqueueRequestsFromMapFunc(r.enqueueAllConfigConnectorContexts),
+			builder.WithPredicates(predicate.ResourceVersionChangedPredicate{}),
+		).
 		For(obj, builder.OnlyMetadata).
 		Build(r)
 	if err != nil {
@@ -98,6 +104,24 @@ func Add(mgr ctrl.Manager, opt *ReconcilerOptions) error {
 	}
 
 	return nil
+}
+
+func (r *Reconciler) enqueueAllConfigConnectorContexts(ctx context.Context, obj client.Object) []reconcile.Request {
+	var cccList corev1beta1.ConfigConnectorContextList
+	if err := r.client.List(ctx, &cccList); err != nil {
+		r.log.Error(err, "failed to list ConfigConnectorContexts to trigger rolling update")
+		return nil
+	}
+	requests := make([]reconcile.Request, 0, len(cccList.Items))
+	for _, ccc := range cccList.Items {
+		requests = append(requests, reconcile.Request{
+			NamespacedName: types.NamespacedName{
+				Namespace: ccc.Namespace,
+				Name:      ccc.Name,
+			},
+		})
+	}
+	return requests
 }
 
 func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error) {
