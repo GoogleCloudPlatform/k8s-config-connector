@@ -80,7 +80,7 @@ Before aligning mock behavior, ensure authentic `_http.log` files are recorded a
 7. **Exempt API Version Differences (Specific / Hardcoded Only)**:
    - If real GCP and MockGCP use different API versions for a specific service (e.g., `aiplatform.v1beta1` vs `aiplatform.v1`), normalize it using explicit, hardcoded string replacements for that specific service only. Never use broad wildcards that could mask unintended API version mismatches.
 8. **Operation Metadata**: Minor operation polling metadata (e.g. intermediate LRO statuses like `done: false`) can be simplified in MockGCP as long as the final resource state matches.
-9. **Rule of Incremental Fixes**: Fix only **ONE small point** at a time and verify immediately with `hack/compare-mock` and `TestGoldenLogAlignment`. Revert (`git reset --hard`) if you get stuck in a loop.
+9. **Rule of Incremental Fixes**: Fix discrepancies **for one field** at a time and verify immediately with `hack/compare-mock` and `TestGoldenLogAlignment`. Revert (`git reset --hard`) if you get stuck in a loop.
 
 ### Step 3: Multi-Fixture Verification & Golden Alignment Test (Mandatory)
 
