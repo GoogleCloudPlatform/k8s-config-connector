@@ -56,6 +56,10 @@ func (i *GlossaryIdentity) FromExternal(ref string) error {
 	return nil
 }
 
+func (i *GlossaryIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
+}
+
 func (i *GlossaryIdentity) Host() string {
 	return GlossaryIdentityFormat.Host()
 }

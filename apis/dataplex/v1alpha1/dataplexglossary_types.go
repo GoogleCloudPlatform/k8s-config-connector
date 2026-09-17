@@ -45,7 +45,7 @@ type DataplexGlossarySpec struct {
 
 	// Optional. User-defined labels for the Glossary.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Glossary.labels
-	Labels map[string]string `json:"labels,omitempty"`
+	// Labels map[string]string `json:"labels,omitempty"`
 }
 
 // DataplexGlossaryStatus defines the config connector machine state of DataplexGlossary
