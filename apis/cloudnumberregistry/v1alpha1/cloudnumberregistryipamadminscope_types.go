@@ -41,6 +41,7 @@ type CloudNumberRegistryIpamAdminScopeSpec struct {
 	// Required. Add-on platforms that are enabled for this IpamAdminScope. Cloud
 	//  Number Registry only discovers the IP addresses from the enabled platforms.
 	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.IpamAdminScope.enabled_addon_platforms
+	// +required
 	// +kubebuilder:validation:Required
 	EnabledAddonPlatforms []string `json:"enabledAddonPlatforms,omitempty"`
 
@@ -48,6 +49,7 @@ type CloudNumberRegistryIpamAdminScopeSpec struct {
 	//  management. For example, "organizations/1234567890". Minimum of 1 scope is
 	//  required. In preview, only one organization scope is allowed.
 	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.IpamAdminScope.scopes
+	// +required
 	// +kubebuilder:validation:Required
 	ScopeRefs []refsv1beta1.OrganizationRef `json:"scopeRefs,omitempty"`
 
