@@ -74,6 +74,9 @@ spec:
                     value:
                       description: Required. The value of the attribute.
                       type: string
+                  required:
+                  - key
+                  - value
                   type: object
                 type: array
               description:

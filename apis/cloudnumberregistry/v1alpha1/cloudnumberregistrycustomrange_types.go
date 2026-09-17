@@ -24,13 +24,15 @@ var CloudNumberRegistryCustomRangeGVK = GroupVersion.WithKind("CloudNumberRegist
 
 // +kcc:proto=google.cloud.numberregistry.v1alpha.Attribute
 type Attribute struct {
+	// +required
 	// Required. The key of the attribute.
 	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.Attribute.key
-	Key *string `json:"key,omitempty"`
+	Key *string `json:"key"`
 
+	// +required
 	// Required. The value of the attribute.
 	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.Attribute.value
-	Value *string `json:"value,omitempty"`
+	Value *string `json:"value"`
 }
 
 // CloudNumberRegistryCustomRangeSpec defines the desired state of CloudNumberRegistryCustomRange
