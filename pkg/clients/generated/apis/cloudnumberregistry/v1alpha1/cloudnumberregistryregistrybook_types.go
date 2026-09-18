@@ -38,9 +38,32 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
-type VertexAISpecialistPoolSpec struct {
-	/* Required. The user-defined name of the SpecialistPool. The name can be up to 128 characters long and can consist of any UTF-8 characters. This field should be unique on project-level. */
-	DisplayName string `json:"displayName"`
+type RegistrybookClaimedScopeRefs struct {
+	/* The `projectID` field of a project, when not managed by Config Connector. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* The kind of the Project resource; optional but must be `Project` if provided. */
+	// +optional
+	Kind *string `json:"kind,omitempty"`
+
+	/* The `name` field of a `Project` resource. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* The `namespace` field of a `Project` resource. */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
+type CloudNumberRegistryRegistryBookSpec struct {
+	/* Optional. List of scopes claimed by the RegistryBook. In Preview, Only project scope is supported. Each scope is in the format of projects/{project}. Each scope can only be claimed once. */
+	// +optional
+	ClaimedScopeRefs []RegistrybookClaimedScopeRefs `json:"claimedScopeRefs,omitempty"`
+
+	/* Optional. User-defined labels. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
 
 	/* The location of this resource. */
 	Location string `json:"location"`
@@ -48,34 +71,56 @@ type VertexAISpecialistPoolSpec struct {
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The VertexAISpecialistPool name. If not given, the metadata.name will be used. */
+	/* The CloudNumberRegistryRegistryBook name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
-
-	/* The email addresses of the managers in the SpecialistPool. */
-	// +optional
-	SpecialistManagerEmails []string `json:"specialistManagerEmails,omitempty"`
-
-	/* The email addresses of workers in the SpecialistPool. */
-	// +optional
-	SpecialistWorkerEmails []string `json:"specialistWorkerEmails,omitempty"`
 }
 
-type VertexaispecialistpoolObservedStateStatus struct {
-	/* Output only. The resource name of the pending data labeling jobs. */
+type RegistrybookAggregatedDataStatus struct {
+	/* Output only. Number of CustomRanges in the RegistryBook. */
 	// +optional
-	PendingDataLabelingJobs []string `json:"pendingDataLabelingJobs,omitempty"`
+	CustomRangesCount *int32 `json:"customRangesCount,omitempty"`
 
-	/* Output only. The number of managers in this SpecialistPool. */
+	/* Output only. Number of custom Realms in the RegistryBook. */
 	// +optional
-	SpecialistManagersCount *int32 `json:"specialistManagersCount,omitempty"`
+	CustomRealmsCount *int32 `json:"customRealmsCount,omitempty"`
+
+	/* Output only. Number of DiscoveredRanges in the RegistryBook. */
+	// +optional
+	DiscoveredRangesCount *int32 `json:"discoveredRangesCount,omitempty"`
+
+	/* Output only. Number of discovered Realms in the RegistryBook. */
+	// +optional
+	DiscoveredRealmsCount *int32 `json:"discoveredRealmsCount,omitempty"`
+
+	/* Output only. Number of scopes unique to the RegistryBook. */
+	// +optional
+	UniqueScopesCount *int32 `json:"uniqueScopesCount,omitempty"`
 }
 
-type VertexAISpecialistPoolStatus struct {
+type RegistrybookObservedStateStatus struct {
+	/* Output only. Aggregated data for the RegistryBook. Populated only when the view is AGGREGATE. */
+	// +optional
+	AggregatedData *RegistrybookAggregatedDataStatus `json:"aggregatedData,omitempty"`
+
+	/* Output only. The time at which the RegistryBook was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Output only. Whether the RegistryBook is the default one. */
+	// +optional
+	IsDefault *bool `json:"isDefault,omitempty"`
+
+	/* Output only. The time at which the RegistryBook was last updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type CloudNumberRegistryRegistryBookStatus struct {
 	/* Conditions represent the latest available observations of the
-	   VertexAISpecialistPool's current state. */
+	   CloudNumberRegistryRegistryBook's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the VertexAISpecialistPool resource in GCP. */
+	/* A unique specifier for the CloudNumberRegistryRegistryBook resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -85,12 +130,12 @@ type VertexAISpecialistPoolStatus struct {
 
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	ObservedState *VertexaispecialistpoolObservedStateStatus `json:"observedState,omitempty"`
+	ObservedState *RegistrybookObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpvertexaispecialistpool;gcpvertexaispecialistpools
+// +kubebuilder:resource:categories=gcp,shortName=gcpcloudnumberregistryregistrybook;gcpcloudnumberregistryregistrybooks
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
@@ -100,25 +145,25 @@ type VertexAISpecialistPoolStatus struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// VertexAISpecialistPool is the Schema for the aiplatform API
+// CloudNumberRegistryRegistryBook is the Schema for the cloudnumberregistry API
 // +k8s:openapi-gen=true
-type VertexAISpecialistPool struct {
+type CloudNumberRegistryRegistryBook struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   VertexAISpecialistPoolSpec   `json:"spec,omitempty"`
-	Status VertexAISpecialistPoolStatus `json:"status,omitempty"`
+	Spec   CloudNumberRegistryRegistryBookSpec   `json:"spec,omitempty"`
+	Status CloudNumberRegistryRegistryBookStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// VertexAISpecialistPoolList contains a list of VertexAISpecialistPool
-type VertexAISpecialistPoolList struct {
+// CloudNumberRegistryRegistryBookList contains a list of CloudNumberRegistryRegistryBook
+type CloudNumberRegistryRegistryBookList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []VertexAISpecialistPool `json:"items"`
+	Items           []CloudNumberRegistryRegistryBook `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&VertexAISpecialistPool{}, &VertexAISpecialistPoolList{})
+	SchemeBuilder.Register(&CloudNumberRegistryRegistryBook{}, &CloudNumberRegistryRegistryBookList{})
 }

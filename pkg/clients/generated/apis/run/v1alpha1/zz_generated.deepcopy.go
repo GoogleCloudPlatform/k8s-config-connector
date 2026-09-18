@@ -132,6 +132,13 @@ func (in *RunWorkerPoolSpec) DeepCopyInto(out *RunWorkerPoolSpec) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.Labels != nil {
+		in, out := &in.Labels, &out.Labels
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
+	}
 	if in.LaunchStage != nil {
 		in, out := &in.LaunchStage, &out.LaunchStage
 		*out = new(string)

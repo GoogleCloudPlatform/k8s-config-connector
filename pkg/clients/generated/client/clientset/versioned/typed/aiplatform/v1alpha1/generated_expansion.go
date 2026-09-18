@@ -23,13 +23,15 @@ package v1alpha1
 
 type AIPlatformModelExpansion interface{}
 
+type AIPlatformPersistentResourceExpansion interface{}
+
+type AIPlatformSpecialistPoolExpansion interface{}
+
 type VertexAIFeatureOnlineStoreExpansion interface{}
 
 type VertexAIPipelineJobExpansion interface{}
 
 type VertexAIScheduleExpansion interface{}
-
-type VertexAISpecialistPoolExpansion interface{}
 
 type VertexAIStudyExpansion interface{}
 

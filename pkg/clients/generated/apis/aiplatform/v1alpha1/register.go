@@ -59,6 +59,18 @@ var (
 		Kind:    reflect.TypeOf(AIPlatformModel{}).Name(),
 	}
 
+	AIPlatformPersistentResourceGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(AIPlatformPersistentResource{}).Name(),
+	}
+
+	AIPlatformSpecialistPoolGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(AIPlatformSpecialistPool{}).Name(),
+	}
+
 	VertexAIFeatureOnlineStoreGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
@@ -75,12 +87,6 @@ var (
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
 		Kind:    reflect.TypeOf(VertexAISchedule{}).Name(),
-	}
-
-	VertexAISpecialistPoolGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(VertexAISpecialistPool{}).Name(),
 	}
 
 	VertexAIStudyGVK = schema.GroupVersionKind{

@@ -135,12 +135,16 @@ import (
 	fakecloudidsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudids/v1beta1/fake"
 	cloudiotv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudiot/v1alpha1"
 	fakecloudiotv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudiot/v1alpha1/fake"
+	cloudnumberregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudnumberregistry/v1alpha1"
+	fakecloudnumberregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudnumberregistry/v1alpha1/fake"
 	cloudquotav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudquota/v1beta1"
 	fakecloudquotav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudquota/v1beta1/fake"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudscheduler/v1beta1"
 	fakecloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudscheduler/v1beta1/fake"
 	cloudsecuritycompliancev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudsecuritycompliance/v1alpha1"
 	fakecloudsecuritycompliancev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudsecuritycompliance/v1alpha1/fake"
+	cloudsupportv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudsupport/v1alpha1"
+	fakecloudsupportv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudsupport/v1alpha1/fake"
 	cloudtalentsolutionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtalentsolution/v1alpha1"
 	fakecloudtalentsolutionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtalentsolution/v1alpha1/fake"
 	cloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtasks/v1alpha1"
@@ -804,6 +808,11 @@ func (c *Clientset) CloudiotV1alpha1() cloudiotv1alpha1.CloudiotV1alpha1Interfac
 	return &fakecloudiotv1alpha1.FakeCloudiotV1alpha1{Fake: &c.Fake}
 }
 
+// CloudnumberregistryV1alpha1 retrieves the CloudnumberregistryV1alpha1Client
+func (c *Clientset) CloudnumberregistryV1alpha1() cloudnumberregistryv1alpha1.CloudnumberregistryV1alpha1Interface {
+	return &fakecloudnumberregistryv1alpha1.FakeCloudnumberregistryV1alpha1{Fake: &c.Fake}
+}
+
 // CloudquotaV1beta1 retrieves the CloudquotaV1beta1Client
 func (c *Clientset) CloudquotaV1beta1() cloudquotav1beta1.CloudquotaV1beta1Interface {
 	return &fakecloudquotav1beta1.FakeCloudquotaV1beta1{Fake: &c.Fake}
@@ -817,6 +826,11 @@ func (c *Clientset) CloudschedulerV1beta1() cloudschedulerv1beta1.Cloudscheduler
 // CloudsecuritycomplianceV1alpha1 retrieves the CloudsecuritycomplianceV1alpha1Client
 func (c *Clientset) CloudsecuritycomplianceV1alpha1() cloudsecuritycompliancev1alpha1.CloudsecuritycomplianceV1alpha1Interface {
 	return &fakecloudsecuritycompliancev1alpha1.FakeCloudsecuritycomplianceV1alpha1{Fake: &c.Fake}
+}
+
+// CloudsupportV1alpha1 retrieves the CloudsupportV1alpha1Client
+func (c *Clientset) CloudsupportV1alpha1() cloudsupportv1alpha1.CloudsupportV1alpha1Interface {
+	return &fakecloudsupportv1alpha1.FakeCloudsupportV1alpha1{Fake: &c.Fake}
 }
 
 // CloudtalentsolutionV1alpha1 retrieves the CloudtalentsolutionV1alpha1Client

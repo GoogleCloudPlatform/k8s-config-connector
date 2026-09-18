@@ -506,6 +506,10 @@ type RunWorkerPoolSpec struct {
 	// +optional
 	InstanceSplits []WorkerpoolInstanceSplits `json:"instanceSplits,omitempty"`
 
+	/* Optional. Unstructured key value map that can be used to organize and categorize objects. User-provided labels are shared with Google's billing system, so they can be used to filter, or break down billing charges by team, component, environment, state, etc. For more information, visit https://cloud.google.com/resource-manager/docs/creating-managing-labels or https://cloud.google.com/run/docs/configuring/labels. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
+
 	/* Optional. The launch stage as defined by [Google Cloud Platform Launch Stages](https://cloud.google.com/terms/launch-stages). */
 	// +optional
 	LaunchStage *string `json:"launchStage,omitempty"`
@@ -737,6 +741,7 @@ type RunWorkerPoolStatus struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcprunworkerpool;gcprunworkerpools
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
