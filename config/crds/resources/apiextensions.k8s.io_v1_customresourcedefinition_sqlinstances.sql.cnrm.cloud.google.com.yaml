@@ -824,24 +824,25 @@ spec:
               observedState:
                 description: The observed state of the resource.
                 properties:
+                  masterInstanceName:
+                    description: The name of the master instance if this instance
+                      is currently acting as a replica.
+                    type: string
                   replicationCluster:
-                    description: The configuration for the replication cluster.
+                    description: The configuration and live state of the replication
+                      cluster.
                     properties:
                       drReplica:
                         description: Output only. Read-only field that indicates whether
-                          the replica is a DR replica. This field is not set if the
-                          instance is a primary instance.
+                          the replica is a DR replica.
                         type: boolean
+                      failoverDRReplicaName:
+                        description: Output only. The name of the failover DR replica
+                          if this instance is acting as the primary.
+                        type: string
                       psaWriteEndpoint:
-                        description: Output only. If set, it indicates this instance
-                          has a private service access (PSA) dns endpoint that is
-                          pointing to the primary instance of the cluster. If this
-                          instance is the primary, the dns should be pointing to this
-                          instance. After Switchover or Replica failover, this DNS
-                          endpoint points to the promoted instance. This is a read-only
-                          field, returned to the user as information. This field can
-                          exist even if a standalone instance does not yet have a
-                          replica, or had a DR replica that was deleted.
+                        description: Output only. The PSA DNS write endpoint pointing
+                          to the active primary instance.
                         type: string
                     type: object
                 type: object

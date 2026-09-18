@@ -1680,8 +1680,10 @@ ipAddress:
   type: string
 observedGeneration: integer
 observedState:
+  masterInstanceName: string
   replicationCluster:
     drReplica: boolean
+    failoverDRReplicaName: string
     psaWriteEndpoint: string
 privateIpAddress: string
 pscServiceAttachmentLink: string
@@ -1844,24 +1846,38 @@ serviceAccountEmailAddress: string
         </td>
     </tr>
     <tr>
+        <td><code>observedState.masterInstanceName</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of the master instance if this instance is currently acting as a replica.</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedState.replicationCluster</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The configuration for the replication cluster.</p>
+            <p>The configuration and live state of the replication cluster.</p>
         </td>
     </tr>
     <tr>
         <td><code>observedState.replicationCluster.drReplica</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Output only. Read-only field that indicates whether the replica is a DR replica. This field is not set if the instance is a primary instance.</p>
+            <p>Output only. Read-only field that indicates whether the replica is a DR replica.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicationCluster.failoverDRReplicaName</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The name of the failover DR replica if this instance is acting as the primary.</p>
         </td>
     </tr>
     <tr>
         <td><code>observedState.replicationCluster.psaWriteEndpoint</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Output only. If set, it indicates this instance has a private service access (PSA) dns endpoint that is pointing to the primary instance of the cluster. If this instance is the primary, the dns should be pointing to this instance. After Switchover or Replica failover, this DNS endpoint points to the promoted instance. This is a read-only field, returned to the user as information. This field can exist even if a standalone instance does not yet have a replica, or had a DR replica that was deleted.</p>
+            <p>Output only. The PSA DNS write endpoint pointing to the active primary instance.</p>
         </td>
     </tr>
     <tr>
