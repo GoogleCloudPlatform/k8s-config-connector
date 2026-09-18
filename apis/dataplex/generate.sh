@@ -29,8 +29,12 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
 
+# Pin a googleapis SHA that contains the google.cloud.dataplex.v1 service definition with MetadataFeed
+PROTO_SHA="707695738fc80e7d3ed8fb08253158ad052527ae"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
 
 ${CONTROLLERBUILDER} generate-types \
     --service google.cloud.dataplex.v1 \
@@ -43,13 +47,16 @@ ${CONTROLLERBUILDER} generate-types \
     --resource DataplexDataTaxonomy:DataTaxonomy \
     --resource DataplexAspectType:AspectType \
     --resource DataplexDataScan:DataScan \
-    --resource DataplexMetadataJob:MetadataJob
+    --resource DataplexMetadataJob:MetadataJob \
+    --resource DataplexMetadataFeed:MetadataFeed \
+    --proto-source-path ${PROTO_OUT}
 
 # Handled recursive self-referential fields by defining AspectType_MetadataTemplate manually in dataplexaspecttype_types.go
 
 ${CONTROLLERBUILDER} generate-mapper \
     --service google.cloud.dataplex.v1 \
-    --api-version "dataplex.cnrm.cloud.google.com/v1alpha1"
+    --api-version "dataplex.cnrm.cloud.google.com/v1alpha1" \
+    --proto-source-path ${PROTO_OUT}
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
