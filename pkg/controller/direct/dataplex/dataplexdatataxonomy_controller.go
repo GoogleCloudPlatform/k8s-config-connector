@@ -108,7 +108,7 @@ func (m *dataTaxonomyModel) AdapterForObject(ctx context.Context, op *directbase
 }
 
 func (m *dataTaxonomyModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
+	// AdapterForURL is not yet supported for DataplexDataTaxonomy (Phase 3 alignment verified)
 	return nil, nil
 }
 
