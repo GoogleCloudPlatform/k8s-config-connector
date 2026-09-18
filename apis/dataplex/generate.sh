@@ -29,7 +29,7 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
+./generate-proto.sh 5e89775233124f32303f6acad821bf8e90973219
 
 
 ${CONTROLLERBUILDER} generate-types \
@@ -43,7 +43,8 @@ ${CONTROLLERBUILDER} generate-types \
     --resource DataplexDataTaxonomy:DataTaxonomy \
     --resource DataplexAspectType:AspectType \
     --resource DataplexDataScan:DataScan \
-    --resource DataplexMetadataJob:MetadataJob
+    --resource DataplexMetadataJob:MetadataJob \
+    --resource DataplexGlossary:Glossary
 
 # Handled recursive self-referential fields by defining AspectType_MetadataTemplate manually in dataplexaspecttype_types.go
 

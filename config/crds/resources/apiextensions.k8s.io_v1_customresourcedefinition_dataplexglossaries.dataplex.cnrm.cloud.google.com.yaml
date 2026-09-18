@@ -70,11 +70,6 @@ spec:
                   This is user-mutable. This will be same as the GlossaryId, if not
                   specified.
                 type: string
-              labels:
-                additionalProperties:
-                  type: string
-                description: Optional. User-defined labels for the Glossary.
-                type: object
               location:
                 description: The location of this resource.
                 type: string
