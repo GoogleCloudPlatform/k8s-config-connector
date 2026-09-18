@@ -257,6 +257,16 @@ func (in *ModelArmorFloorSettingSpec) DeepCopyInto(out *ModelArmorFloorSettingSp
 		*out = new(v1beta1.ProjectRef)
 		**out = **in
 	}
+	if in.FolderRef != nil {
+		in, out := &in.FolderRef, &out.FolderRef
+		*out = new(v1beta1.FolderRefDeprecated)
+		**out = **in
+	}
+	if in.OrganizationRef != nil {
+		in, out := &in.OrganizationRef, &out.OrganizationRef
+		*out = new(v1beta1.OrganizationRef)
+		**out = **in
+	}
 	if in.Location != nil {
 		in, out := &in.Location, &out.Location
 		*out = new(string)
