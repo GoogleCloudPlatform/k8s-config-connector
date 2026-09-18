@@ -1,0 +1,150 @@
+GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
+  "replication": {
+    "automatic": {}
+  }
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1?alt=json
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "ENABLED"
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/2?alt=json
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/2",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "ENABLED"
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/3?alt=json
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/3",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "ENABLED"
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/4?alt=json
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/4",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "ENABLED"
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/5?alt=json
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/5",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "ENABLED"
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/6?alt=json
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/6",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "ENABLED"
+}
+
+---
+
+GET https://cloudbuild.googleapis.com/v2/projects/${projectId}/locations/us-central1/connections/cloudbuildconnection-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "githubConfig": {
+    "authorizerCredential": {}
+  },
+  "installationState": {
+    "actionUri": "https://accounts.google.com/AccountChooser?continue=https%3A%2F%2Fconsole.cloud.google.com%2Fm%2Fgcb%2Fgithub%2Flocations%2Fus-central1%2Foauth_v2%3Fconnection_name%3Dprojects%252F${projectNumber}%252Flocations%252Fus-central1%252Fconnections%252Fcloudbuildconnection-min-${uniqueId}",
+    "message": "Please log in to https://github.com using a robot account and then follow this link to authorize Cloud Build to access that account. After authorization, your GitHub authorization token will be stored in Cloud Secret Manager.",
+    "stage": 2
+  },
+  "name": "projects/${projectId}/locations/us-central1/connections/cloudbuildconnection-min-${uniqueId}",
+  "reconciling": false,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
