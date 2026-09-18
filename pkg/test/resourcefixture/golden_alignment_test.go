@@ -41,6 +41,7 @@ var mockGCPSkipFixtures = map[string]bool{
 }
 
 var realGCPSkipFixtures = map[string]bool{
+	"cloudnumberregistry/v1alpha1/cloudnumberregistryregistrybook/cloudnumberregistryregistrybook-maximal": true,
 	// Resource Manager Tags are org level thus requiring an owned test org.
 	"container/v1beta1/containercluster/containercluster-resourcemanagertags-autopilot": true,
 	"container/v1beta1/containercluster/containercluster-resourcemanagertags-standard":  true,
