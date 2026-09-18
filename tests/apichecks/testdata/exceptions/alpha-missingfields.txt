@@ -1233,6 +1233,21 @@
 [missing_field] crd=configdeliveryresourcebundles.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=configdeliveryresourcebundles.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=configdeploymentgroups.configdeployment.cnrm.cloud.google.com version=v1alpha1: field ".spec.deploymentUnits[].deploymentRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=configdeployments.configdeployment.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
+[missing_field] crd=configdeployments.configdeployment.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifactsGCSBucket" is not set in unstructured objects
+[missing_field] crd=configdeployments.configdeployment.cnrm.cloud.google.com version=v1alpha1: field ".spec.importExistingResources" is not set in unstructured objects
+[missing_field] crd=configdeployments.configdeployment.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=configdeployments.configdeployment.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=configdeployments.configdeployment.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=configdeployments.configdeployment.cnrm.cloud.google.com version=v1alpha1: field ".spec.providerConfig.sourceType" is not set in unstructured objects
+[missing_field] crd=configdeployments.configdeployment.cnrm.cloud.google.com version=v1alpha1: field ".spec.quotaValidation" is not set in unstructured objects
+[missing_field] crd=configdeployments.configdeployment.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=configdeployments.configdeployment.cnrm.cloud.google.com version=v1alpha1: field ".spec.terraformBlueprint.gcsSource" is not set in unstructured objects
+[missing_field] crd=configdeployments.configdeployment.cnrm.cloud.google.com version=v1alpha1: field ".spec.terraformBlueprint.gitSource.directory" is not set in unstructured objects
+[missing_field] crd=configdeployments.configdeployment.cnrm.cloud.google.com version=v1alpha1: field ".spec.terraformBlueprint.gitSource.ref" is not set in unstructured objects
+[missing_field] crd=configdeployments.configdeployment.cnrm.cloud.google.com version=v1alpha1: field ".spec.terraformBlueprint.gitSource.repo" is not set in unstructured objects
+[missing_field] crd=configdeployments.configdeployment.cnrm.cloud.google.com version=v1alpha1: field ".spec.tfVersionConstraint" is not set in unstructured objects
+[missing_field] crd=configdeployments.configdeployment.cnrm.cloud.google.com version=v1alpha1: field ".spec.workerPoolRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.additionalVariables[].boolValue" is not set in unstructured objects
 [missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.additionalVariables[].intValue" is not set in unstructured objects
 [missing_field] crd=connectorsconnections.connectors.cnrm.cloud.google.com version=v1alpha1: field ".spec.authConfig.additionalVariables[].key" is not set in unstructured objects
