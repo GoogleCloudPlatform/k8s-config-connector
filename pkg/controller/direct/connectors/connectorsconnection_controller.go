@@ -235,6 +235,14 @@ func (a *ConnectorsConnectionAdapter) Update(ctx context.Context, updateOp *dire
 		report.AddField("description", a.actual.Description, resource.Description)
 		updateMask = append(updateMask, "description")
 	}
+	if resource.ConnectorVersion != a.actual.ConnectorVersion {
+		report.AddField("connectorVersion", a.actual.ConnectorVersion, resource.ConnectorVersion)
+		updateMask = append(updateMask, "connector_version")
+	}
+	if resource.ServiceAccount != a.actual.ServiceAccount {
+		report.AddField("serviceAccount", a.actual.ServiceAccount, resource.ServiceAccount)
+		updateMask = append(updateMask, "service_account")
+	}
 	if !reflect.DeepEqual(resource.ConfigVariables, a.actual.ConfigVariables) {
 		report.AddField("configVariables", a.actual.ConfigVariables, resource.ConfigVariables)
 		updateMask = append(updateMask, "config_variables")
