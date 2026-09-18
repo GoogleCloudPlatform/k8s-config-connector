@@ -44,7 +44,6 @@ spec:
     name: network-sample-${uniqueId}
   subnetworkRef:
     name: subnetwork-sample-${uniqueId}
-  ipAllocationPolicy:
-    useIpAliases: true
+  ipAllocationPolicy: {}
   loggingService: logging.googleapis.com/kubernetes
   monitoringService: monitoring.googleapis.com/kubernetes
