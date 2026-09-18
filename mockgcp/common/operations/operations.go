@@ -285,7 +285,7 @@ func rewriteTypes(any *anypb.Any) {
 	// We translate the type URL to v1 for direct controller resources so that v1 clients can cleanly unmarshal LRO results.
 	if strings.HasPrefix(any.TypeUrl, "type.googleapis.com/google.cloud.aiplatform.v1beta1.") {
 		typeUrl := any.TypeUrl
-		if strings.Contains(typeUrl, "PipelineJob") || strings.Contains(typeUrl, "TrainingPipeline") || strings.Contains(typeUrl, "FeatureOnlineStore") {
+		if strings.Contains(typeUrl, "PipelineJob") || strings.Contains(typeUrl, "TrainingPipeline") || strings.Contains(typeUrl, "FeatureOnlineStore") || strings.Contains(typeUrl, "PersistentResource") {
 			any.TypeUrl = "type.googleapis.com/google.cloud.aiplatform.v1." + strings.TrimPrefix(typeUrl, "type.googleapis.com/google.cloud.aiplatform.v1beta1.")
 		}
 	}

@@ -1,0 +1,190 @@
+GRPC /google.cloud.aiplatform.v1.PersistentResourceService/GetPersistentResource
+
+{
+  "name": "projects/${projectId}/locations/us-central1/persistentResources/aip-pres-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = persistentResource "projects/${projectNumber}/locations/us-central1/persistentResources/aip-pres-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.PersistentResourceService/CreatePersistentResource
+
+{
+  "parent": "projects/${projectId}/locations/us-central1",
+  "persistentResource": {
+    "resourcePools": [
+      {
+        "machineSpec": {
+          "machineType": "n1-standard-4"
+        },
+        "replicaCount": "1"
+      }
+    ]
+  },
+  "persistentResourceId": "aip-pres-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.CreatePersistentResourceOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "progressMessage": "Create PersistentResource request received. Checking project configuration and quota..."
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/persistentResources/aip-pres-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/persistentResources/aip-pres-${uniqueId}/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.CreatePersistentResourceOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "progressMessage": "Your persistent resource is ready."
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/persistentResources/aip-pres-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.PersistentResource",
+    "name": "projects/${projectNumber}/locations/us-central1/persistentResources/aip-pres-${uniqueId}"
+  }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.PersistentResourceService/GetPersistentResource
+
+{
+  "name": "projects/${projectId}/locations/us-central1/persistentResources/aip-pres-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "aip-pres-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/persistentResources/aip-pres-${uniqueId}",
+  "resourcePools": [
+    {
+      "diskSpec": {
+        "bootDiskSizeGb": 100,
+        "bootDiskType": "pd-ssd"
+      },
+      "id": "n1-standard-4",
+      "machineSpec": {
+        "machineType": "n1-standard-4"
+      },
+      "replicaCount": "1"
+    }
+  ],
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "RUNNING",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.PersistentResourceService/GetPersistentResource
+
+{
+  "name": "projects/${projectId}/locations/us-central1/persistentResources/aip-pres-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "aip-pres-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/persistentResources/aip-pres-${uniqueId}",
+  "resourcePools": [
+    {
+      "diskSpec": {
+        "bootDiskSizeGb": 100,
+        "bootDiskType": "pd-ssd"
+      },
+      "id": "n1-standard-4",
+      "machineSpec": {
+        "machineType": "n1-standard-4"
+      },
+      "replicaCount": "1"
+    }
+  ],
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "RUNNING",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.PersistentResourceService/GetPersistentResource
+
+{
+  "name": "projects/${projectId}/locations/us-central1/persistentResources/aip-pres-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "aip-pres-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/persistentResources/aip-pres-${uniqueId}",
+  "resourcePools": [
+    {
+      "diskSpec": {
+        "bootDiskSizeGb": 100,
+        "bootDiskType": "pd-ssd"
+      },
+      "id": "n1-standard-4",
+      "machineSpec": {
+        "machineType": "n1-standard-4"
+      },
+      "replicaCount": "1"
+    }
+  ],
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "RUNNING",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.PersistentResourceService/DeletePersistentResource
+
+{
+  "name": "projects/${projectId}/locations/us-central1/persistentResources/aip-pres-${uniqueId}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
