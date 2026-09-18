@@ -6,15 +6,6 @@
 [missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.devicePolicy.requireCorpOwned" is not set in unstructured objects
 [missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.devicePolicy.requireScreenLock" is not set in unstructured objects
 [missing_field] crd=accesscontextmanageraccesslevelconditions.accesscontextmanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.requiredAccessLevels[]" is not set in unstructured objects
-[missing_field] crd=agentregistrybindings.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.authProviderBinding.authProviderRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=agentregistrybindings.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.authProviderBinding.continueURI" is not set in unstructured objects
-[missing_field] crd=agentregistrybindings.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.authProviderBinding.scopes[]" is not set in unstructured objects
-[missing_field] crd=agentregistrybindings.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=agentregistrybindings.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=agentregistrybindings.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=agentregistrybindings.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=agentregistrybindings.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.identifier" is not set in unstructured objects
-[missing_field] crd=agentregistrybindings.agentregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.target.identifier" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifactURI" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.baseModelSource.genieSource.baseModelURI" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.baseModelSource.modelGardenSource.publicModelName" is not set in unstructured objects

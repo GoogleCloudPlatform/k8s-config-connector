@@ -114,3 +114,19 @@ func ParseAgentRegistryBindingExternal(external string) (parent *AgentRegistryBi
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+func (i *AgentRegistryBindingIdentity) FromExternal(ref string) error {
+	ref = strings.TrimPrefix(ref, "https://agentregistry.googleapis.com/v1/")
+	ref = strings.TrimPrefix(ref, "https://agentregistry.googleapis.com/")
+	ref = strings.TrimPrefix(ref, "http://agentregistry.googleapis.com/")
+	ref = strings.TrimPrefix(ref, "//agentregistry.googleapis.com/")
+	ref = strings.TrimPrefix(ref, "agentregistry.googleapis.com/")
+
+	parent, resourceID, err := ParseAgentRegistryBindingExternal(ref)
+	if err != nil {
+		return err
+	}
+	i.parent = parent
+	i.id = resourceID
+	return nil
+}
