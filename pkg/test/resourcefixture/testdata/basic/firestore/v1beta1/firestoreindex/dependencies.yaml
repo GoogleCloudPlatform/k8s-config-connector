@@ -23,3 +23,4 @@ spec:
     external: ${projectId}
   resourceID: firestoredatabase-${uniqueId}
   locationID: us-west2
+  type: DATASTORE_MODE
