@@ -1,0 +1,12 @@
+apiVersion: connectors.cnrm.cloud.google.com/v1alpha1
+kind: ConnectorsConnection
+metadata:
+  name: conn-mini-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  connectorVersionRef:
+    external: projects/${projectId}/locations/global/providers/gcp/connectors/pubsub/versions/1
+  serviceAccountRef:
+    name: conn-sa-${uniqueId}

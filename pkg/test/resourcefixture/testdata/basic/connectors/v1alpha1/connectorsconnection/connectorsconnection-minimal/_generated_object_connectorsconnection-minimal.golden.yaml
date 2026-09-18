@@ -1,0 +1,44 @@
+apiVersion: connectors.cnrm.cloud.google.com/v1alpha1
+kind: ConnectorsConnection
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: conn-mini-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  connectorVersionRef:
+    external: projects/${projectId}/locations/global/providers/gcp/connectors/pubsub/versions/1
+  description: Updated description of connectors connection minimal
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  serviceAccountRef:
+    name: conn-sa-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: |-
+      Update call failed: error creating: creating ConnectorsConnection projects/${projectId}/locations/us-central1/connections/conn-mini-${uniqueId}: googleapi: Error 400: The request was invalid: service account is required
+      Details:
+      [
+        {
+          "@type": "type.googleapis.com/google.rpc.BadRequest",
+          "fieldViolations": [
+            {
+              "field": "req.GetConnection().GetServiceAccount()"
+            }
+          ]
+        },
+        {
+          "@type": "type.googleapis.com/google.rpc.RequestInfo",
+          "requestId": "5af8db1aeab91462"
+        }
+      ]
+    reason: UpdateFailed
+    status: "False"
+    type: Ready
+  observedGeneration: 2

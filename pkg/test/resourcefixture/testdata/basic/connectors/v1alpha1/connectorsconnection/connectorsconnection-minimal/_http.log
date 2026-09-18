@@ -1,0 +1,402 @@
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/conn-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "accountId": "conn-sa-${uniqueId}",
+  "serviceAccount": {
+    "displayName": "Connection Service Account"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Connection Service Account",
+  "email": "conn-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/conn-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/conn-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Service account projects/${projectId}/serviceAccounts/conn-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Service account projects/${projectId}/serviceAccounts/conn-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/conn-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Connection Service Account",
+  "email": "conn-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/conn-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://connectors.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/conn-mini-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/connections/conn-mini-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://connectors.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections?alt=json&connectionId=conn-mini-${uniqueId}&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "connectorVersion": "projects/${projectId}/locations/global/providers/gcp/connectors/pubsub/versions/1",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The request was invalid: service account is required",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+---
+
+GET https://connectors.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/conn-mini-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/connections/conn-mini-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://connectors.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections?alt=json&connectionId=conn-mini-${uniqueId}&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "connectorVersion": "projects/${projectId}/locations/global/providers/gcp/connectors/pubsub/versions/1",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The request was invalid: service account is required",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+---
+
+GET https://connectors.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/conn-mini-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/connections/conn-mini-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://connectors.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections?alt=json&connectionId=conn-mini-${uniqueId}&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "connectorVersion": "projects/${projectId}/locations/global/providers/gcp/connectors/pubsub/versions/1",
+  "description": "Updated description of connectors connection minimal",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The request was invalid: service account is required",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+---
+
+GET https://connectors.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/conn-mini-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/connections/conn-mini-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://connectors.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections?alt=json&connectionId=conn-mini-${uniqueId}&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "connectorVersion": "projects/${projectId}/locations/global/providers/gcp/connectors/pubsub/versions/1",
+  "description": "Updated description of connectors connection minimal",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The request was invalid: service account is required",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+---
+
+GET https://connectors.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/conn-mini-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/connections/conn-mini-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/conn-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Connection Service Account",
+  "email": "conn-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/conn-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/conn-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

@@ -1,0 +1,12 @@
+- caisURL: //iam.googleapis.com/projects/${projectId}/serviceAccounts/conn-sa-max-${uniqueId}
+  group: iam.cnrm.cloud.google.com
+  kind: IAMServiceAccount
+  name: conn-sa-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: connectors.cnrm.cloud.google.com
+  kind: ConnectorsConnection
+  name: conn-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
