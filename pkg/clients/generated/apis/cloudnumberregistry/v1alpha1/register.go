@@ -28,12 +28,12 @@
 // that future versions of the go-client may include breaking changes.
 // Please try it out and give us feedback!
 
-// Package v1alpha1 contains API Schema definitions for the modelarmor v1alpha1 API group.
+// Package v1alpha1 contains API Schema definitions for the cloudnumberregistry v1alpha1 API group.
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=package,register
-// +k8s:conversion-gen=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/pkg/apis/modelarmor
+// +k8s:conversion-gen=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/pkg/apis/cloudnumberregistry
 // +k8s:defaulter-gen=TypeMeta
-// +groupName=modelarmor.cnrm.cloud.google.com
+// +groupName=cloudnumberregistry.cnrm.cloud.google.com
 package v1alpha1
 
 import (
@@ -45,7 +45,7 @@ import (
 
 var (
 	// SchemeGroupVersion is the group version used to register these objects.
-	SchemeGroupVersion = schema.GroupVersion{Group: "modelarmor.cnrm.cloud.google.com", Version: "v1alpha1"}
+	SchemeGroupVersion = schema.GroupVersion{Group: "cloudnumberregistry.cnrm.cloud.google.com", Version: "v1alpha1"}
 
 	// SchemeBuilder is used to add go types to the GroupVersionKind scheme.
 	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
@@ -53,17 +53,17 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	ModelArmorFloorSettingGVK = schema.GroupVersionKind{
+	CloudNumberRegistryCustomRangeGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ModelArmorFloorSetting{}).Name(),
+		Kind:    reflect.TypeOf(CloudNumberRegistryCustomRange{}).Name(),
 	}
 
-	ModelArmorTemplateGVK = schema.GroupVersionKind{
+	CloudNumberRegistryRegistryBookGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ModelArmorTemplate{}).Name(),
+		Kind:    reflect.TypeOf(CloudNumberRegistryRegistryBook{}).Name(),
 	}
 
-	modelarmorAPIVersion = SchemeGroupVersion.String()
+	cloudnumberregistryAPIVersion = SchemeGroupVersion.String()
 )
