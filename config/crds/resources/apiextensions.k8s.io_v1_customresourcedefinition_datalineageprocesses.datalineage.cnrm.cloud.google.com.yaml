@@ -104,6 +104,17 @@ spec:
                        or updating is highly discouraged. It might be restricted in the future
                        without notice. There will be increase in cost if you use any of the
                        source types other than CUSTOM.
+                    enum:
+                    - SOURCE_TYPE_UNSPECIFIED
+                    - CUSTOM
+                    - BIGQUERY
+                    - DATA_FUSION
+                    - COMPOSER
+                    - LOOKER_STUDIO
+                    - DATAPROC
+                    - VERTEX_AI
+                    - DATAFLOW
+                    - LOOKER_CORE
                     type: string
                 type: object
               projectRef:
