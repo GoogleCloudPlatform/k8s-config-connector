@@ -333,6 +333,12 @@ spec:
                                 type: object
                               type: array
                           type: object
+                        title:
+                          description: Optional. Human-readable title for the egress
+                            rule. The title must be unique within the perimeter and
+                            cannot exceed 100 characters.
+                          maxLength: 100
+                          type: string
                       type: object
                     type: array
                   ingressPolicies:
@@ -571,6 +577,12 @@ spec:
                                 type: object
                               type: array
                           type: object
+                        title:
+                          description: Optional. Human-readable title for the ingress
+                            rule. The title must be unique within the perimeter and
+                            cannot exceed 100 characters.
+                          maxLength: 100
+                          type: string
                       type: object
                     type: array
                   resources:
@@ -845,6 +857,12 @@ spec:
                                 type: object
                               type: array
                           type: object
+                        title:
+                          description: Optional. Human-readable title for the egress
+                            rule. The title must be unique within the perimeter and
+                            cannot exceed 100 characters.
+                          maxLength: 100
+                          type: string
                       type: object
                     type: array
                   ingressPolicies:
@@ -1083,6 +1101,12 @@ spec:
                                 type: object
                               type: array
                           type: object
+                        title:
+                          description: Optional. Human-readable title for the ingress
+                            rule. The title must be unique within the perimeter and
+                            cannot exceed 100 characters.
+                          maxLength: 100
+                          type: string
                       type: object
                     type: array
                   resources:
