@@ -15,13 +15,9 @@
 package composer
 
 import (
-	"strings"
-
 	composerpb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
-	"k8s.io/apimachinery/pkg/util/sets"
-	"k8s.io/klog/v2"
 )
 
 // defaultEnvironmentPb returns a proto Environment populated with static server-defaulted fields.
@@ -78,100 +74,86 @@ func populateDesiredWithDefaults(desired *krm.ComposerEnvironment, desiredPb *co
 }
 
 // computedFieldPaths lists the KRM field paths for server-assigned values.
+// Composite sub-messages whose fields are 100% server-computed (or immutable) are listed by their
+// parent sub-message path; PopulateComputedFields automatically recurses into partially specified sub-messages.
+// Sub-messages containing user-clearable fields (like SoftwareConfig) list only their server-computed leaf fields.
 var computedFieldPaths = []string{
 	// 1. StorageConfig
-	"StorageConfig.BucketRef",
+	"StorageConfig",
 
-	// 2. Config top-level dynamic fields
-	"Config.EnvironmentSize",
-	"Config.NodeCount",
-	"Config.MaintenanceWindow",
+	// 2. Config top-level dynamic fields & composite sub-messages (sorted alphabetically)
+	"Config.DatabaseConfig",
 	"Config.DataRetentionConfig",
+	"Config.EnvironmentSize",
+	"Config.MaintenanceWindow",
+	"Config.MasterAuthorizedNetworksConfig",
+	"Config.NodeConfig",
+	"Config.NodeCount",
+	"Config.PrivateEnvironmentConfig",
+	"Config.RecoveryConfig",
+	"Config.WebServerConfig",
+	"Config.WorkloadsConfig",
 
-	// 3. NodeConfig
-	"Config.NodeConfig.ComposerInternalIPv4CIDRBlock",
-	"Config.NodeConfig.ComposerNetworkAttachmentRef",
-	"Config.NodeConfig.SubnetworkRef",
-	"Config.NodeConfig.IPAllocationPolicy",
-	"Config.NodeConfig.NetworkRef",
-	"Config.NodeConfig.MachineType",
-	"Config.NodeConfig.DiskSizeGB",
-
-	// 4. SoftwareConfig
+	// 3. SoftwareConfig (explicitly list server-computed leaves and optional feature sub-messages so user-clearable maps can be unset)
+	"Config.SoftwareConfig.CloudDataLineageIntegration",
 	"Config.SoftwareConfig.ImageVersion",
 	"Config.SoftwareConfig.PythonVersion",
 	"Config.SoftwareConfig.SchedulerCount",
 	"Config.SoftwareConfig.WebServerPluginsMode",
-
-	// 5. DatabaseConfig
-	"Config.DatabaseConfig.MachineType",
-	"Config.DatabaseConfig.Zone",
-
-	// 6. PrivateEnvironmentConfig
-	"Config.PrivateEnvironmentConfig.CloudComposerNetworkIPv4CIDRBlock",
-	"Config.PrivateEnvironmentConfig.CloudSQLIPv4CIDRBlock",
-	"Config.PrivateEnvironmentConfig.PrivateClusterConfig",
-	"Config.PrivateEnvironmentConfig.WebServerIPv4CIDRBlock",
-	"Config.PrivateEnvironmentConfig.CloudComposerConnectionSubnetworkRef",
-	"Config.PrivateEnvironmentConfig.NetworkingConfig",
-
-	// 7. WorkloadsConfig
-	"Config.WorkloadsConfig.Scheduler",
-	"Config.WorkloadsConfig.DagProcessor",
-	"Config.WorkloadsConfig.Triggerer",
-	"Config.WorkloadsConfig.WebServer",
-	"Config.WorkloadsConfig.Worker",
-
-	// 8. WebServerConfig
-	"Config.WebServerConfig.MachineType",
 }
 
-// populateDesiredWithActualIfComputed populates dynamic/computed server-generated values in O(N) linear time
+// populateDesiredWithActualIfComputed populates dynamic/server-generated values in O(N) linear time
 // by checking omitted KRM fields against non-nil parents in actualPb and directly assigning their values to desiredPb.
 func populateDesiredWithActualIfComputed(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) {
-	if desiredPb == nil || actualPb == nil {
+	if desired == nil {
+		common.PopulateComputedFields(nil, desiredPb, actualPb, computedFieldPaths)
+		normalizeDisabledFeatureBlocks(desiredPb, actualPb)
+		return
+	}
+	common.PopulateComputedFields(desired.Spec, desiredPb, actualPb, computedFieldPaths)
+	normalizeDisabledFeatureBlocks(desiredPb, actualPb)
+}
+
+// normalizeDisabledFeatureBlocks aligns desiredPb with actualPb when optional boolean-toggle
+// blocks (CloudDataLineageIntegration, ScheduledSnapshotsConfig, MasterAuthorizedNetworksConfig) are
+// explicitly set to enabled: false in spec while GCP returns nil (absent message) in actualPb.
+// On GCP, an absent sub-message (nil) is semantically identical to {enabled: false}. Normalizing
+// desiredPb to nil declaratively before diffing avoids false diffs in both validateUpdatableFields
+// and fieldUpdaters without requiring procedural nil-guards inside individual fieldUpdaters.
+func normalizeDisabledFeatureBlocks(desiredPb, actualPb *composerpb.Environment) {
+	if desiredPb == nil || desiredPb.Config == nil {
 		return
 	}
 
-	// 1. Build map of non-nil parents from actualPb and initialize them on desiredPb
-	parentMap := common.BuildParentMap(desiredPb, actualPb, computedFieldPaths)
-
-	// 2. Collect all paths explicitly set in desired.Spec in a single O(N) pass
-	var presentFields sets.Set[string]
-	if desired != nil {
-		presentFields = common.CollectPresentFields(desired.Spec)
-	} else {
-		presentFields = sets.New[string]()
+	// 1. CloudDataLineageIntegration
+	if desiredPb.Config.SoftwareConfig != nil {
+		mergedLineage := desiredPb.Config.SoftwareConfig.GetCloudDataLineageIntegration()
+		actualLineage := actualPb.GetConfig().GetSoftwareConfig().GetCloudDataLineageIntegration()
+		if mergedLineage != nil && !mergedLineage.GetEnabled() && actualLineage == nil {
+			desiredPb.Config.SoftwareConfig.CloudDataLineageIntegration = nil
+		}
 	}
 
-	// 3. For any computed field omitted in desired.Spec, copy from actualPb if its parent exists
-	for _, path := range computedFieldPaths {
-		if presentFields.Has(path) {
-			continue
+	// 2. ScheduledSnapshotsConfig
+	if desiredPb.Config.RecoveryConfig != nil {
+		mergedSnapshots := desiredPb.Config.RecoveryConfig.GetScheduledSnapshotsConfig()
+		actualSnapshots := actualPb.GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig()
+		if mergedSnapshots != nil && !mergedSnapshots.GetEnabled() &&
+			mergedSnapshots.GetSnapshotLocation() == "" &&
+			mergedSnapshots.GetSnapshotCreationSchedule() == "" &&
+			mergedSnapshots.GetTimeZone() == "" &&
+			actualSnapshots == nil {
+			desiredPb.Config.RecoveryConfig.ScheduledSnapshotsConfig = nil
+			if actualPb.GetConfig().GetRecoveryConfig() == nil {
+				desiredPb.Config.RecoveryConfig = nil
+			}
 		}
+	}
 
-		lastDot := strings.LastIndex(path, ".")
-		var parentPath, leafName string
-		if lastDot == -1 {
-			parentPath = ""
-			leafName = path
-		} else {
-			parentPath = path[:lastDot]
-			leafName = path[lastDot+1:]
-		}
-
-		pair, ok := parentMap[parentPath]
-		if !ok {
-			continue
-		}
-
-		fd := common.FindProtoField(pair.Actual.Descriptor(), leafName)
-		if fd == nil {
-			klog.V(0).Infof("internal error: field %q not found on proto message %s", leafName, pair.Actual.Descriptor().FullName())
-			continue
-		}
-		if pair.Actual.Has(fd) {
-			pair.Desired.Set(fd, pair.Actual.Get(fd))
-		}
+	// 3. MasterAuthorizedNetworksConfig
+	mergedAuth := desiredPb.Config.GetMasterAuthorizedNetworksConfig()
+	actualAuth := actualPb.GetConfig().GetMasterAuthorizedNetworksConfig()
+	if mergedAuth != nil && !mergedAuth.GetEnabled() && len(mergedAuth.GetCidrBlocks()) == 0 && actualAuth == nil {
+		desiredPb.Config.MasterAuthorizedNetworksConfig = nil
 	}
 }
