@@ -17,6 +17,7 @@ kind: SecretManagerSecret
 metadata:
   annotations:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+    alpha.cnrm.cloud.google.com/reconciler: direct
   name: secretmanagersecret-${uniqueId}
 spec:
   replication:
@@ -27,6 +28,7 @@ kind: SecretManagerSecretVersion
 metadata:
   annotations:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+    alpha.cnrm.cloud.google.com/reconciler: direct
   name: secretmanagersecretversion-${uniqueId}
 spec:
   enabled: true
