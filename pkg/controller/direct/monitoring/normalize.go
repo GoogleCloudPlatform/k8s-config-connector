@@ -19,8 +19,8 @@ import (
 	"fmt"
 	"strings"
 
-	pb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/monitoring/dashboard/v1"
 )
 
 func normalizeDashboardProto(ctx context.Context, projectMapper *projects.ProjectMapper, dashboard *pb.Dashboard, dashboardProject string) error {
