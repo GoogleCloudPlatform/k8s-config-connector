@@ -35,9 +35,9 @@ var CloudNumberRegistryCustomRangeIdentityFormat = gcpurls.Template[CloudNumberR
 // CloudNumberRegistryCustomRangeIdentity is the identity of a GCP CloudNumberRegistryCustomRange resource.
 // +k8s:deepcopy-gen=false
 type CloudNumberRegistryCustomRangeIdentity struct {
-	Project     string
-	Location    string
-	CustomRange string
+	Project      string
+	Location     string
+	Custom_range string
 }
 
 func (i *CloudNumberRegistryCustomRangeIdentity) String() string {
@@ -82,9 +82,9 @@ func getIdentityFromCloudNumberRegistryCustomRangeSpec(ctx context.Context, read
 	}
 
 	identity := &CloudNumberRegistryCustomRangeIdentity{
-		Project:     projectID,
-		Location:    location,
-		CustomRange: resourceID,
+		Project:      projectID,
+		Location:     location,
+		Custom_range: resourceID,
 	}
 	return identity, nil
 }
