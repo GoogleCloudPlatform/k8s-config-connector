@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,17 +33,17 @@ func customTargetTypeFuzzer() fuzztesting.KRMFuzzer {
 		CustomTargetTypeObservedState_v1alpha1_FromProto, CustomTargetTypeObservedState_v1alpha1_ToProto,
 	)
 
-	f.SpecFields.Insert(".description")
-	f.SpecFields.Insert(".custom_actions")
+	f.SpecField(".description")
+	f.SpecField(".custom_actions")
 
-	f.StatusFields.Insert(".custom_target_type_id")
-	f.StatusFields.Insert(".uid")
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".update_time")
+	f.StatusField(".custom_target_type_id")
+	f.StatusField(".uid")
+	f.StatusField(".create_time")
+	f.StatusField(".update_time")
 
-	f.UnimplementedFields.Insert(".name")        // special field
-	f.UnimplementedFields.Insert(".annotations") // NOT YET
-	f.UnimplementedFields.Insert(".labels")      // NOT YET
-	f.UnimplementedFields.Insert(".etag")        // NOT YET
+	f.Unimplemented_Identity(".name")
+	f.Unimplemented_NotYetTriaged(".annotations")
+	f.Unimplemented_NotYetTriaged(".labels")
+	f.Unimplemented_NotYetTriaged(".etag")
 	return f
 }
