@@ -56,6 +56,10 @@ func (i *DataTaxonomyIdentity) FromExternal(ref string) error {
 	return nil
 }
 
+func (i *DataTaxonomyIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
+}
+
 func (i *DataTaxonomyIdentity) Host() string {
 	return DataTaxonomyIdentityFormat.Host()
 }
