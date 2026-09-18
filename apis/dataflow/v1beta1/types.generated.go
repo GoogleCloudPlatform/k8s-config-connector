@@ -942,6 +942,7 @@ type RuntimeUpdatableParams struct {
 
 /* unreachable type SdkBug
 // +kcc:proto=google.dataflow.v1beta3.SdkBug
+// +kubebuilder:validation:XPreserveUnknownFields
 type SdkBug struct {
 }
 */
@@ -992,6 +993,7 @@ type SdkVersion struct {
 
 /* unreachable type ServiceResources
 // +kcc:proto=google.dataflow.v1beta3.ServiceResources
+// +kubebuilder:validation:XPreserveUnknownFields
 type ServiceResources struct {
 }
 */

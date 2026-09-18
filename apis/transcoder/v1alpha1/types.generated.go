@@ -198,10 +198,12 @@ type Encryption struct {
 }
 
 // +kcc:proto=google.cloud.video.transcoder.v1.Encryption.Aes128Encryption
+// +kubebuilder:validation:XPreserveUnknownFields
 type Encryption_Aes128Encryption struct {
 }
 
 // +kcc:proto=google.cloud.video.transcoder.v1.Encryption.Clearkey
+// +kubebuilder:validation:XPreserveUnknownFields
 type Encryption_Clearkey struct {
 }
 
@@ -225,6 +227,7 @@ type Encryption_DrmSystems struct {
 }
 
 // +kcc:proto=google.cloud.video.transcoder.v1.Encryption.Fairplay
+// +kubebuilder:validation:XPreserveUnknownFields
 type Encryption_Fairplay struct {
 }
 
@@ -241,10 +244,12 @@ type Encryption_MpegCommonEncryption struct {
 }
 
 // +kcc:proto=google.cloud.video.transcoder.v1.Encryption.Playready
+// +kubebuilder:validation:XPreserveUnknownFields
 type Encryption_Playready struct {
 }
 
 // +kcc:proto=google.cloud.video.transcoder.v1.Encryption.SampleAesEncryption
+// +kubebuilder:validation:XPreserveUnknownFields
 type Encryption_SampleAesEncryption struct {
 }
 
@@ -261,6 +266,7 @@ type Encryption_SecretManagerSource struct {
 }
 
 // +kcc:proto=google.cloud.video.transcoder.v1.Encryption.Widevine
+// +kubebuilder:validation:XPreserveUnknownFields
 type Encryption_Widevine struct {
 }
 
@@ -1151,10 +1157,12 @@ type VideoStream_H264CodecSettings struct {
 }
 
 // +kcc:proto=google.cloud.video.transcoder.v1.VideoStream.H264ColorFormatHLG
+// +kubebuilder:validation:XPreserveUnknownFields
 type VideoStream_H264ColorFormatHlg struct {
 }
 
 // +kcc:proto=google.cloud.video.transcoder.v1.VideoStream.H264ColorFormatSDR
+// +kubebuilder:validation:XPreserveUnknownFields
 type VideoStream_H264ColorFormatSdr struct {
 }
 
@@ -1341,14 +1349,17 @@ type VideoStream_H265CodecSettings struct {
 }
 
 // +kcc:proto=google.cloud.video.transcoder.v1.VideoStream.H265ColorFormatHDR10
+// +kubebuilder:validation:XPreserveUnknownFields
 type VideoStream_H265ColorFormatHdr10 struct {
 }
 
 // +kcc:proto=google.cloud.video.transcoder.v1.VideoStream.H265ColorFormatHLG
+// +kubebuilder:validation:XPreserveUnknownFields
 type VideoStream_H265ColorFormatHlg struct {
 }
 
 // +kcc:proto=google.cloud.video.transcoder.v1.VideoStream.H265ColorFormatSDR
+// +kubebuilder:validation:XPreserveUnknownFields
 type VideoStream_H265ColorFormatSdr struct {
 }
 
@@ -1461,10 +1472,12 @@ type VideoStream_Vp9CodecSettings struct {
 }
 
 // +kcc:proto=google.cloud.video.transcoder.v1.VideoStream.Vp9ColorFormatHLG
+// +kubebuilder:validation:XPreserveUnknownFields
 type VideoStream_Vp9ColorFormatHlg struct {
 }
 
 // +kcc:proto=google.cloud.video.transcoder.v1.VideoStream.Vp9ColorFormatSDR
+// +kubebuilder:validation:XPreserveUnknownFields
 type VideoStream_Vp9ColorFormatSdr struct {
 }
 
