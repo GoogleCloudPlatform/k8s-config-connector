@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,10 +15,16 @@
 package e2e
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
+	"errors"
 	"fmt"
-	"io/fs"
+	"io"
+	"net/http"
+	"net/url"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -26,35 +32,51 @@ import (
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
-	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
-	kccyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/yaml"
 
-	"github.com/google/go-cmp/cmp"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/wait"
-	"k8s.io/client-go/rest"
-	"k8s.io/client-go/tools/clientcmd"
-	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/yaml"
 )
 
-type SkippableLogEntries struct {
-	SkipCheck bool // not sent to CompareGoldenFile
-	Entries   []*test.LogEntry
+// legacyScenarios lists all existing scenario suites that remain under the V1 runner.
+// Note: "storagebucket" is omitted so it is tested by TestE2EScenariosV2 as the pilot suite.
+var legacyScenarios = map[string]bool{
+	"acquisition":                            true,
+	"alloydbcluster":                         true,
+	"alloydbinstance":                        true,
+	"always-add-finalizers":                  true,
+	"bigquerydatatransferconfig_duplication": true,
+	"bigqueryreservationreservation":         true,
+	"bigtableinstance":                       true,
+	"cc_pause_change_reconcile":              true,
+	"ccc_pause_change_reconcile":             true,
+	"ccc_state_into_spec_absent":             true,
+	"ccc_state_into_spec_merge":              true,
+	"computefirewallpolicyrule":              true,
+	"computetargettcpproxy":                  true,
+	"containercluster":                       true,
+	"fields":                                 true,
+	"gkehubfeaturemembership":                true,
+	"iam":                                    true,
+	"iam_add_remove":                         true,
+	"labels-apigateway":                      true,
+	"powertool":                              true,
+	"privilegedaccessmanagerentitlement":     true,
+	"reconciliation_interval":                true,
+	"secretmanagerversionalias":              true,
+	"sql":                                    true,
+	"sqlinstance-pointers-match":             true,
+	"storageanywherecache":                   true,
+	"tracker":                                true,
 }
 
-// TestE2EScript runs a Scenario test that runs step-by-step.
-// See testdata/scenarios/README.md for more information.
-func TestE2EScript(t *testing.T) {
+// TestE2EScenariosV2 runs a Scenario test that runs step-by-step.
+func TestE2EScenariosV2(t *testing.T) {
 	if os.Getenv("RUN_E2E") == "" {
 		t.Skip("RUN_E2E not set; skipping")
 	}
@@ -64,11 +86,6 @@ func TestE2EScript(t *testing.T) {
 	t.Cleanup(func() {
 		cancel()
 	})
-
-	type gvkNN struct {
-		gvk schema.GroupVersionKind
-		nn  types.NamespacedName
-	}
 
 	logCheckTimeout := 10 * time.Second
 	t.Run("scenarios", func(t *testing.T) {
@@ -84,8 +101,8 @@ func TestE2EScript(t *testing.T) {
 				}
 
 				suite := strings.Split(scenarioPath, "/")[0]
-				if !legacyScenarios[suite] {
-					t.Skip("non-legacy scenario, running under TestE2EScenariosV2")
+				if legacyScenarios[suite] {
+					t.Skip("legacy scenario, running under TestE2EScript")
 				}
 
 				uniqueID := testvariable.NewUniqueID()
@@ -138,6 +155,11 @@ func TestE2EScript(t *testing.T) {
 
 				// tracks all applied objects (in order, to avoid deletion dependency-ordering issues)
 				appliedObjects := []*unstructured.Unstructured{}
+
+				targetGCP := os.Getenv("E2E_GCP_TARGET")
+				if targetGCP == "" {
+					targetGCP = "mock"
+				}
 
 				for i, obj := range script.Objects {
 					stepStart := time.Now()
@@ -233,6 +255,141 @@ func TestE2EScript(t *testing.T) {
 						continue
 					}
 
+					if obj.GroupVersionKind().Kind == "HTTPRequest" {
+						// 1. Get properties
+						verbVal, _, _ := unstructured.NestedString(obj.Object, "verb")
+						if verbVal == "" {
+							verbVal, _, _ = unstructured.NestedString(obj.Object, "method")
+						}
+						if verbVal == "" {
+							verbVal = "GET"
+						}
+						verbVal = strings.ToUpper(verbVal)
+
+						urlVal, _, _ := unstructured.NestedString(obj.Object, "url")
+						if urlVal == "" {
+							urlVal, _, _ = unstructured.NestedString(obj.Object, "path")
+						}
+						if urlVal == "" {
+							h.Fatalf("HTTPRequest must specify a url or path")
+						}
+
+						// 2. Prepare body
+						var reqBody io.Reader
+						if bodyVal, ok := obj.Object["body"]; ok {
+							switch val := bodyVal.(type) {
+							case string:
+								reqBody = strings.NewReader(val)
+							default:
+								bodyBytes, err := json.Marshal(val)
+								if err != nil {
+									h.Fatalf("failed to marshal HTTPRequest body to JSON: %v", err)
+								}
+								reqBody = bytes.NewReader(bodyBytes)
+							}
+						}
+
+						// 3. Build request
+						req, err := http.NewRequestWithContext(ctx, verbVal, urlVal, reqBody)
+						if err != nil {
+							h.Fatalf("failed to create http request: %v", err)
+						}
+
+						// 4. Headers
+						if headersVal, ok := obj.Object["headers"]; ok {
+							if headerMap, ok := headersVal.(map[string]any); ok {
+								for k, v := range headerMap {
+									req.Header.Set(k, fmt.Sprintf("%v", v))
+								}
+							}
+						}
+						if req.Header.Get("Content-Type") == "" && reqBody != nil {
+							req.Header.Set("Content-Type", "application/json")
+						}
+
+						// 5. Send request and capture response
+						resp, err := h.GCPHTTPClient().Do(req)
+						if err != nil {
+							h.Fatalf("HTTPRequest failed: %v", err)
+						}
+						defer resp.Body.Close()
+
+						respBodyBytes, err := io.ReadAll(resp.Body)
+						if err != nil {
+							h.Fatalf("failed to read HTTPRequest response body: %v", err)
+						}
+
+						t.Logf("HTTPRequest response status: %s", resp.Status)
+
+						// 6. Check for LRO polling
+						if resp.StatusCode >= 200 && resp.StatusCode < 300 {
+							var respJSON map[string]any
+							if err := json.Unmarshal(respBodyBytes, &respJSON); err == nil {
+								if isLRO(respJSON) {
+									opName, _ := respJSON["name"].(string)
+									if opName != "" {
+										pollURL, err := buildPollURL(urlVal, opName)
+										if err != nil {
+											h.Fatalf("failed to build poll URL from %q and operation %q: %v", urlVal, opName, err)
+										}
+
+										t.Logf("Starting LRO polling for operation %q using URL %q", opName, pollURL)
+
+										// Pause event sink logging during polling
+										h.Events.Pause()
+
+										pollErr := wait.PollImmediate(2*time.Second, 15*time.Minute, func() (bool, error) {
+											pollReq, err := http.NewRequestWithContext(ctx, "GET", pollURL, nil)
+											if err != nil {
+												return false, err
+											}
+											pollResp, err := h.GCPHTTPClient().Do(pollReq)
+											if err != nil {
+												return false, nil // retry
+											}
+											defer pollResp.Body.Close()
+
+											if pollResp.StatusCode < 200 || pollResp.StatusCode >= 300 {
+												return false, nil // retry
+											}
+
+											pollBodyBytes, err := io.ReadAll(pollResp.Body)
+											if err != nil {
+												return false, nil // retry
+											}
+
+											var pollJSON map[string]any
+											if err := json.Unmarshal(pollBodyBytes, &pollJSON); err != nil {
+												return false, nil // retry
+											}
+
+											done, _ := pollJSON["done"].(bool)
+											if done {
+												if opErr, hasErr := pollJSON["error"]; hasErr {
+													return true, fmt.Errorf("operation failed: %v", opErr)
+												}
+												t.Logf("LRO operation %q completed successfully", opName)
+												return true, nil
+											}
+											return false, nil
+										})
+
+										// Resume event sink logging
+										h.Events.Resume()
+
+										if pollErr != nil {
+											h.Fatalf("LRO polling failed: %v", pollErr)
+										}
+									}
+								}
+							}
+						}
+
+						captureHTTPLogEvents(false, deferHTTPLog)
+						t.Logf("***/Step %d finished in %v", i, time.Since(stepStart))
+						continue
+					}
+
 					// Try to delete this object as part of cleanup
 					objectsToDelete = append(objectsToDelete, obj)
 
@@ -288,10 +445,7 @@ func TestE2EScript(t *testing.T) {
 						create.WaitForReady(h, create.DefaultWaitForReadyTimeout, obj)
 
 					case "TOUCH":
-						// Force re-reconciliation with an annotation
 						touchObject(h, obj)
-						// Pause to allow re-reconciliation
-						// (annotations don't change the generation, so we can't wait for observedGeneration)
 						time.Sleep(2 * time.Second)
 
 					case "DELETE":
@@ -300,22 +454,14 @@ func TestE2EScript(t *testing.T) {
 						shouldGetKubeObject = false
 
 					case "SLEEP":
-						// Allow some time for reconcile
-						// Maybe we should instead wait for observedState
 						time.Sleep(2 * time.Second)
 						exportResource = nil
 						shouldGetKubeObject = false
 
 					case "DELETE-NO-WAIT":
 						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{obj}, SkipWaitForDelete: true})
-
-						// Allow some time for reconcile
-						// Maybe we should instead wait for observedState
 						time.Sleep(2 * time.Second)
 
-						// The object probably still exists (that's probably
-						// why we're using DELETE-NO-WAIT), so export the
-						// resource and the kube object.
 					case "WAIT-FOR-HTTP-REQUEST":
 						applyObject(h, obj)
 
@@ -337,7 +483,6 @@ func TestE2EScript(t *testing.T) {
 							case <-waitCtx.Done():
 								t.Fatalf("timed out looking for value %s in http log: %v", sval, waitCtx.Err())
 							case <-ticker.C:
-								// todo(acpana): find better asympotatic approach
 								for _, l := range h.Events.GetHTTPEvents() {
 									if strings.Contains(l.Response.Body, sval) {
 										found = true
@@ -355,14 +500,13 @@ func TestE2EScript(t *testing.T) {
 						waitForReconciliationAfterPatch(h, obj, prePatchRV)
 
 						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{obj}})
-						// continue to export the resource
 						shouldGetKubeObject = false
 
 					case "ABANDON-AND-REACQUIRE":
 						existing := readObject(h, obj.GroupVersionKind(), obj.GetNamespace(), obj.GetName())
 						resourceID, _, _ := unstructured.NestedString(existing.Object, "spec", "resourceID")
 						if resourceID == "" {
-							h.Fatalf("object did not have spec.resource: %v", existing)
+							h.Fatalf("object did not have spec.resourceID: %v", existing)
 						}
 						setAnnotation(h, obj, "cnrm.cloud.google.com/deletion-policy", "abandon")
 						deleteObj := obj.DeepCopy()
@@ -376,7 +520,6 @@ func TestE2EScript(t *testing.T) {
 
 					case "ABANDON-AND-REACQUIRE-WITH-GENERATED-ID":
 						existing := readObject(h, obj.GroupVersionKind(), obj.GetNamespace(), obj.GetName())
-						// Get the server generated id from spec.resourceID(legacy) or status.externalRef(direct)
 						resourceID, _, _ := unstructured.NestedString(existing.Object, "spec", "resourceID")
 						if resourceID == "" {
 							externalRef, _, _ := unstructured.NestedString(existing.Object, "status", "externalRef")
@@ -387,7 +530,6 @@ func TestE2EScript(t *testing.T) {
 							resourceID = tokens[len(tokens)-1]
 						}
 
-						// Abandon the original resource
 						deleteObj := &unstructured.Unstructured{}
 						deleteObj.SetGroupVersionKind(existing.GroupVersionKind())
 						deleteObj.SetNamespace(existing.GetNamespace())
@@ -396,7 +538,6 @@ func TestE2EScript(t *testing.T) {
 						setAnnotation(h, deleteObj, "cnrm.cloud.google.com/deletion-policy", "abandon")
 						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{deleteObj}})
 
-						// Replace placeholder in configuration yaml with the server generated id
 						configuredID, _, _ := unstructured.NestedString(obj.Object, "spec", "resourceID")
 						if configuredID == "" {
 							h.Fatalf("object does not have resourceID configured: %v", obj)
@@ -419,7 +560,6 @@ func TestE2EScript(t *testing.T) {
 						u := exportResourceAsUnstructured(h, exportResource)
 						if u == nil {
 							t.Logf("ignoring failure to export resource of gvk %v", exportResource.GroupVersionKind())
-							// t.Errorf("failed to export resource of gvk %v", exportResource.GroupVersionKind())
 						} else {
 							normalizeKRMObject(t, u, project, folderID, uniqueID)
 							got, err := yaml.Marshal(u)
@@ -427,7 +567,17 @@ func TestE2EScript(t *testing.T) {
 								t.Errorf("failed to convert kube object to yaml: %v", err)
 							}
 
-							expectedPath := filepath.Join(script.SourceDir, fmt.Sprintf("_export%d.yaml", i))
+							expectedPath := filepath.Join(script.SourceDir, fmt.Sprintf("_export%02d_mock.yaml", i))
+							if targetGCP != "mock" {
+								expectedPath = filepath.Join(script.SourceDir, fmt.Sprintf("_export%02d.yaml", i))
+							} else {
+								if os.Getenv("WRITE_GOLDEN_OUTPUT") == "" {
+									if _, err := os.Stat(expectedPath); os.IsNotExist(err) {
+										expectedPath = filepath.Join(script.SourceDir, fmt.Sprintf("_export%02d.yaml", i))
+									}
+								}
+							}
+
 							normalizers := []func(string) string{
 								IgnoreComments,
 							}
@@ -447,7 +597,18 @@ func TestE2EScript(t *testing.T) {
 							if err != nil {
 								t.Errorf("failed to convert kube object to yaml: %v", err)
 							}
-							expectedPath := filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d.yaml", i))
+
+							expectedPath := filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d_mock.yaml", i))
+							if targetGCP != "mock" {
+								expectedPath = filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d.yaml", i))
+							} else {
+								if os.Getenv("WRITE_GOLDEN_OUTPUT") == "" {
+									if _, err := os.Stat(expectedPath); os.IsNotExist(err) {
+										expectedPath = filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d.yaml", i))
+									}
+								}
+							}
+
 							normalizers := []func(string) string{
 								IgnoreComments,
 								IgnoreAnnotations(map[string]struct{}{
@@ -455,15 +616,16 @@ func TestE2EScript(t *testing.T) {
 								}),
 							}
 							h.CompareGoldenFile(expectedPath, string(got), normalizers...)
-							// Compares the kube object spec read at the current
-							// step (which should be equivalent to the golden
-							// file, i.e. "_object%02d.yaml") and the kube
-							// object read at a different step.
-							// targetStepForReadAndCompare contains the step to
-							// compare with. The step number follows 1-based
-							// numbering.
+
 							if targetStepForReadAndCompare > 0 {
-								wantPath := filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d.yaml", targetStepForReadAndCompare-1))
+								wantPath := filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d_mock.yaml", targetStepForReadAndCompare-1))
+								if targetGCP != "mock" {
+									wantPath = filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d.yaml", targetStepForReadAndCompare-1))
+								} else {
+									if _, err := os.Stat(wantPath); os.IsNotExist(err) {
+										wantPath = filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d.yaml", targetStepForReadAndCompare-1))
+									}
+								}
 								gotPath := expectedPath
 								wantObj, err := getKubeObjectInStringFromFile(wantPath)
 								if err != nil {
@@ -478,6 +640,20 @@ func TestE2EScript(t *testing.T) {
 									t.Errorf("unexpected diff when comparing with the kube object spec in step %v: %s", targetStepForReadAndCompare, diff)
 								}
 							}
+						}
+					}
+
+					// Register real golden file as referenced if we are running in mock mode and using a mock-specific file
+					if targetGCP == "mock" {
+						realPath := filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d.yaml", i))
+						if fileExists(realPath) {
+							b, _ := os.ReadFile(realPath)
+							h.CompareGoldenFile(realPath, string(b))
+						}
+						realExportPath := filepath.Join(script.SourceDir, fmt.Sprintf("_export%02d.yaml", i))
+						if fileExists(realExportPath) {
+							b, _ := os.ReadFile(realExportPath)
+							h.CompareGoldenFile(realExportPath, string(b))
 						}
 					}
 
@@ -496,11 +672,16 @@ func TestE2EScript(t *testing.T) {
 						}
 
 						for i, stepEvents := range eventsByStep {
-							expectedPath := filepath.Join(script.SourceDir, fmt.Sprintf("_http%02d.log", i))
+							var expectedPath string
+							if targetGCP == "real" {
+								expectedPath = filepath.Join(script.SourceDir, fmt.Sprintf("_http%02d.log", i))
+							} else {
+								expectedPath = filepath.Join(script.SourceDir, fmt.Sprintf("_http%02d_mock.log", i))
+							}
+
 							NormalizeHTTPLog(t, stepEvents.Entries, h.RegisteredServices(), project, uniqueID, "", "")
 							got := x.Render(stepEvents.Entries)
 							if stepEvents.SkipCheck {
-								// if we have to skip the check we might still want to write the file!
 								if os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 									if err := os.WriteFile(expectedPath, []byte(got), 0644); err != nil {
 										t.Fatalf("FAIL: failed to write golden output %s: %v", expectedPath, err)
@@ -510,7 +691,33 @@ func TestE2EScript(t *testing.T) {
 								continue
 							}
 							h.CompareGoldenFile(expectedPath, got, IgnoreComments)
+						}
+					}
+				}
 
+				// Diff Verification
+				if targetGCP == "mock" {
+					for i := range script.Objects {
+						realHTTPPath := filepath.Join(script.SourceDir, fmt.Sprintf("_http%02d.log", i))
+						mockHTTPPath := filepath.Join(script.SourceDir, fmt.Sprintf("_http%02d_mock.log", i))
+						diffHTTPPath := filepath.Join(script.SourceDir, fmt.Sprintf("_http%02d_mock.diff", i))
+
+						if fileExists(realHTTPPath) && fileExists(mockHTTPPath) {
+							diff := computeDiff(ctx, realHTTPPath, mockHTTPPath)
+							h.CompareGoldenFile(diffHTTPPath, diff)
+						} else {
+							h.AssertGoldenFileNotFound(diffHTTPPath)
+						}
+
+						realObjPath := filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d.yaml", i))
+						mockObjPath := filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d_mock.yaml", i))
+						diffObjPath := filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d_mock.diff", i))
+
+						if fileExists(realObjPath) && fileExists(mockObjPath) {
+							diff := computeDiff(ctx, realObjPath, mockObjPath)
+							h.CompareGoldenFile(diffObjPath, diff)
+						} else {
+							h.AssertGoldenFileNotFound(diffObjPath)
 						}
 					}
 				}
@@ -536,368 +743,76 @@ func TestE2EScript(t *testing.T) {
 	})
 }
 
-func applyObject(h *create.Harness, obj *unstructured.Unstructured) {
-	if err := h.GetClient().Patch(h.Ctx, removeTestFields(obj), client.Apply, client.FieldOwner("kcc-tests"), client.ForceOwnership); err != nil {
-		h.Fatalf("error applying resource: %v", err)
+func fileExists(p string) bool {
+	if _, err := os.Stat(p); err != nil {
+		return false
 	}
+	return true
 }
 
-// removes fields like "TEST" from a copy of the provided unstructured.
-func removeTestFields(obj *unstructured.Unstructured) *unstructured.Unstructured {
-	o := obj.DeepCopy()
+func computeDiff(ctx context.Context, oldP, newP string) string {
+	var out bytes.Buffer
 
-	delete(o.Object, "TEST")
-	delete(o.Object, "VALUE_PRESENT")
-	delete(o.Object, "WRITE-KUBE-OBJECT")
-	delete(o.Object, "DEFER-HTTP-LOG")
-	delete(o.Object, "TARGET_STEP_FOR_READ_AND_COMPARE")
+	cmd := exec.CommandContext(ctx, "diff", oldP, newP)
+	cmd.Stdout = &out
+	cmd.Stderr = os.Stderr
 
-	return o
-}
-
-func patchObjectWithExternallyManagedFields(h *create.Harness, obj *unstructured.Unstructured) {
-	if err := h.GetClient().Patch(h.Ctx, removeTestFields(obj), client.Apply, client.FieldOwner(k8s.ControllerManagedFieldManager)); err != nil {
-		h.Fatalf("error updating resource with externally managed fields: %v", err)
-	}
-}
-
-// getGeneration gets the metadata.generation for a given object
-func getGeneration(h *create.Harness, obj *unstructured.Unstructured) int64 {
-	existing := &unstructured.Unstructured{}
-	{
-		existing.SetGroupVersionKind(obj.GroupVersionKind())
-		existing.SetName(obj.GetName())
-		existing.SetNamespace(obj.GetNamespace())
-
-		key := types.NamespacedName{
-			Namespace: obj.GetNamespace(),
-			Name:      obj.GetName(),
-		}
-		if err := h.GetClient().Get(h.Ctx, key, existing); err != nil {
-			h.Fatalf("error getting object %v: %v", key, err)
+	if err := cmd.Run(); err != nil {
+		var exitError *exec.ExitError
+		if errors.As(err, &exitError) && exitError.ExitCode() == 1 {
+			// This is expected when files differ
+		} else {
+			// Some errors might happen if diff is not installed or permissions,
+			// but we try to do our best.
 		}
 	}
 
-	return existing.GetGeneration()
+	return out.String()
 }
 
-// touchObject sets a new annotation that forces a re-reconciliation
-func touchObject(h *create.Harness, obj *unstructured.Unstructured) {
-	existing := &unstructured.Unstructured{}
-	{
-		existing.SetGroupVersionKind(obj.GroupVersionKind())
-		existing.SetName(obj.GetName())
-		existing.SetNamespace(obj.GetNamespace())
+func isLRO(jsonMap map[string]any) bool {
+	name, ok := jsonMap["name"].(string)
+	if !ok {
+		return false
+	}
+	if strings.Contains(name, "/operations/") || strings.HasPrefix(name, "operations/") {
+		return true
+	}
+	if _, ok := jsonMap["done"]; ok {
+		return true
+	}
+	return false
+}
 
-		key := types.NamespacedName{
-			Namespace: obj.GetNamespace(),
-			Name:      obj.GetName(),
-		}
-		if err := h.GetClient().Get(h.Ctx, key, existing); err != nil {
-			h.Fatalf("error getting object %v: %v", key, err)
+func buildPollURL(originalURL, opName string) (string, error) {
+	if strings.HasPrefix(opName, "http://") || strings.HasPrefix(opName, "https://") {
+		return opName, nil
+	}
+
+	u, err := url.Parse(originalURL)
+	if err != nil {
+		return "", err
+	}
+
+	parts := strings.Split(u.Path, "/")
+	var versionIndex = -1
+	for i, part := range parts {
+		if strings.HasPrefix(part, "v") && len(part) > 1 {
+			if _, err := strconv.Atoi(part[1:2]); err == nil {
+				versionIndex = i
+				break
+			}
 		}
 	}
 
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(obj.GroupVersionKind())
-	u.SetName(obj.GetName())
-	u.SetNamespace(obj.GetNamespace())
-
-	oldAnnotation := existing.GetAnnotations()["test.cnrm.cloud.google.com/reconcile-cookie"]
-	if oldAnnotation == "" {
-		u.SetAnnotations(map[string]string{
-			"test.cnrm.cloud.google.com/reconcile-cookie": "v1",
-		})
+	var basePath string
+	if versionIndex != -1 {
+		basePath = strings.Join(parts[:versionIndex+1], "/")
 	} else {
-		n, err := strconv.ParseInt(strings.TrimPrefix(oldAnnotation, "v"), 10, 64)
-		if err != nil {
-			h.Fatalf("could not parse annotation test.cnrm.cloud.google.com/reconcile-cookie=%q", oldAnnotation)
-		}
-		newAnnotation := fmt.Sprintf("v%d", n+1)
-		u.SetAnnotations(map[string]string{
-			"test.cnrm.cloud.google.com/reconcile-cookie": newAnnotation,
-		})
-
+		basePath = ""
 	}
 
-	if err := h.GetClient().Patch(h.Ctx, u, client.Apply, client.FieldOwner("kcc-test-touch")); err != nil {
-		h.Fatalf("error doing object touch (setting annotation): %v", err)
-	}
-}
-
-func setAnnotation(h *create.Harness, obj *unstructured.Unstructured, k, v string) {
-	patch := &unstructured.Unstructured{}
-	patch.Object = obj.Object
-	patch.SetGroupVersionKind(obj.GroupVersionKind())
-	patch.SetNamespace(obj.GetNamespace())
-	patch.SetName(obj.GetName())
-
-	annotations := patch.GetAnnotations()
-	if annotations == nil {
-		annotations = make(map[string]string)
-	}
-	annotations[k] = v
-	patch.SetAnnotations(annotations)
-
-	if err := h.GetClient().Patch(h.Ctx, removeTestFields(patch), client.Apply, client.FieldOwner("kcc-tests-setannotation"), client.ForceOwnership); err != nil {
-		h.Fatalf("error setting annotations on resource: %v", err)
-	}
-}
-
-func readObject(h *create.Harness, gvk schema.GroupVersionKind, namespace, name string) *unstructured.Unstructured {
-	obj := &unstructured.Unstructured{}
-	obj.SetGroupVersionKind(gvk)
-	key := types.NamespacedName{Namespace: namespace, Name: name}
-
-	if err := h.GetClient().Get(h.Ctx, key, obj); err != nil {
-		h.Fatalf("error reading object %v %v on resource: %v", gvk, key, err)
-	}
-	return obj
-}
-
-// waitForReconciliationAfterPatch waits for a reconciliation to complete after an object has been patched.
-// It does this by waiting for the resourceVersion to change twice: once from the user's patch,
-// and a second time from the controller's status update during reconciliation.
-func waitForReconciliationAfterPatch(h *create.Harness, obj *unstructured.Unstructured, prePatchRV string) {
-	t := h.T
-	key := types.NamespacedName{Namespace: obj.GetNamespace(), Name: obj.GetName()}
-
-	// First, wait for the resourceVersion to change, indicating our patch has landed.
-	var rvAfterPatch string
-	if err := wait.PollImmediate(200*time.Millisecond, 5*time.Second, func() (bool, error) {
-		current := &unstructured.Unstructured{}
-		current.SetGroupVersionKind(obj.GroupVersionKind())
-		if err := h.GetClient().Get(h.Ctx, key, current); err != nil {
-			return false, nil // retry
-		}
-		if current.GetResourceVersion() != prePatchRV {
-			rvAfterPatch = current.GetResourceVersion()
-			return true, nil
-		}
-		return false, nil
-	}); err != nil {
-		h.Fatalf("error waiting for patch to be applied (resourceVersion to change from %s): %v", prePatchRV, err)
-	}
-
-	// Now, wait for the controller to reconcile, indicated by another change in resourceVersion.
-	if err := wait.Poll(200*time.Millisecond, 5*time.Second, func() (bool, error) {
-		current := &unstructured.Unstructured{}
-		current.SetGroupVersionKind(obj.GroupVersionKind())
-		if err := h.GetClient().Get(h.Ctx, key, current); err != nil {
-			if apierrors.IsNotFound(err) {
-				return false, fmt.Errorf("object was deleted unexpectedly while waiting for reconciliation")
-			}
-			return false, nil // retry other errors
-		}
-		return current.GetResourceVersion() != rvAfterPatch, nil
-	}); err != nil {
-		t.Logf("warning: timed out waiting for controller to reconcile patch; test may be flaky: %v", err)
-	}
-}
-
-func findScripts(t *testing.T, rootDir string) []string {
-	var relPaths []string
-	if err := filepath.WalkDir(rootDir, func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
-		if d.Name() == "script.yaml" {
-			relPath, err := filepath.Rel(rootDir, filepath.Dir(path))
-			if err != nil {
-				return fmt.Errorf("getting relative path during directory walk: %w", err)
-			}
-			relPaths = append(relPaths, relPath)
-		}
-		return nil
-	}); err != nil {
-		t.Fatalf("error walking directory %q: %v", rootDir, err)
-	}
-	return relPaths
-}
-
-type Script struct {
-	Name      string
-	SourceDir string
-	Objects   []*unstructured.Unstructured
-}
-
-func loadScript(t *testing.T, dir string, testID string, project testgcp.GCPProject) *Script {
-	s := &Script{
-		Name:      dir,
-		SourceDir: dir,
-	}
-	b := test.MustReadFile(t, filepath.Join(dir, "script.yaml"))
-
-	b = testcontroller.ReplaceTestVars(t, b, testID, project)
-
-	// split into yaml objects
-	yamls, err := kccyaml.SplitYAML(b)
-	if err != nil {
-		t.Fatalf("error splitting bytes into YAMLs: %v", err)
-	}
-
-	// Parse to objects
-	var objects []*unstructured.Unstructured
-	for _, y := range yamls {
-		obj := &unstructured.Unstructured{}
-		if err := yaml.Unmarshal(y, obj); err != nil {
-			t.Fatalf("error parsing object: %v", err)
-		}
-
-		// Set namespace to match project
-		if obj.GetNamespace() == "" &&
-			!isConfigConnectorObject(obj.GroupVersionKind()) {
-			obj.SetNamespace(project.ProjectID)
-		}
-
-		// Hack: set project-id because mockkubeapiserver does not support webhooks
-		if obj.GetAnnotations()["cnrm.cloud.google.com/project-id"] == "" &&
-			!isConfigConnectorObject(obj.GroupVersionKind()) &&
-			!isConfigConnectorContextObject(obj.GroupVersionKind()) {
-			annotations := obj.GetAnnotations()
-			if annotations == nil {
-				annotations = make(map[string]string)
-			}
-			annotations["cnrm.cloud.google.com/project-id"] = project.ProjectID
-			obj.SetAnnotations(annotations)
-		}
-
-		objects = append(objects, obj)
-	}
-	s.Objects = objects
-
-	return s
-}
-
-func isConfigConnectorObject(gvk schema.GroupVersionKind) bool {
-	if gvk.Kind == "ConfigConnector" &&
-		gvk.Group == "core.cnrm.cloud.google.com" {
-		return true
-	}
-	return false
-}
-
-func isConfigConnectorContextObject(gvk schema.GroupVersionKind) bool {
-	if gvk.Kind == "ConfigConnectorContext" &&
-		gvk.Group == "core.cnrm.cloud.google.com" {
-		return true
-	}
-	return false
-}
-
-func createKubeconfigFromRestConfig(restConfig *rest.Config) ([]byte, error) {
-	clusters := make(map[string]*clientcmdapi.Cluster)
-	clusters["default-cluster"] = &clientcmdapi.Cluster{
-		Server:                   restConfig.Host,
-		CertificateAuthorityData: restConfig.CAData,
-	}
-	contexts := make(map[string]*clientcmdapi.Context)
-	contexts["default-context"] = &clientcmdapi.Context{
-		Cluster:  "default-cluster",
-		AuthInfo: "default-user",
-	}
-	authInfos := make(map[string]*clientcmdapi.AuthInfo)
-	authInfos["default-user"] = &clientcmdapi.AuthInfo{
-		ClientCertificateData: restConfig.CertData,
-		ClientKeyData:         restConfig.KeyData,
-	}
-	clientConfig := clientcmdapi.Config{
-		Kind:           "Config",
-		APIVersion:     "v1",
-		Clusters:       clusters,
-		Contexts:       contexts,
-		CurrentContext: "default-context",
-		AuthInfos:      authInfos,
-	}
-	return clientcmd.Write(clientConfig)
-}
-
-// runCLI runs the config-connector CLI tool with the specified arguments
-func runCLI(h *create.Harness, args []string, uniqueID string, baseOutputPath string) {
-	project := h.Project
-	t := h.T
-
-	var options cmd.TestInvocationOptions
-
-	for i, arg := range args {
-		// Replace any substitutions in the args
-		arg = strings.ReplaceAll(arg, "${projectId}", project.ProjectID)
-		arg = strings.ReplaceAll(arg, "${uniqueId}", uniqueID)
-		args[i] = arg
-	}
-
-	// Split the args into flags and positional arguments, so we can add more flags
-
-	// Add some flags for kubeconfig and impersonation
-	{
-		tempDir := t.TempDir()
-		p := filepath.Join(tempDir, "kubeconfig")
-
-		kubeconfig, err := createKubeconfigFromRestConfig(h.GetRESTConfig())
-		if err != nil {
-			t.Fatalf("error creating kubeconfig: %v", err)
-		}
-		if err := os.WriteFile(p, kubeconfig, 0644); err != nil {
-			t.Fatalf("error writing kubeconfig to %q: %v", p, err)
-		}
-
-		args = append(args, "--kubeconfig="+p)
-		args = append(args, "--as=admin")
-		args = append(args, "--as-group=system:masters")
-	}
-
-	options.Args = []string{"config-connector"}
-	options.Args = append(options.Args, args...)
-
-	t.Logf("running cli with args %+v", options.Args)
-	if err := cmd.ExecuteFromTest(&options); err != nil {
-		t.Errorf("cli execution (args=%+v) failed: %v", options.Args, err)
-	}
-
-	stdout := options.Stdout.String()
-	t.Logf("stdout: %v", stdout)
-	stdout = strings.ReplaceAll(stdout, project.ProjectID, "${projectID}")
-	stdout = strings.ReplaceAll(stdout, uniqueID, "${uniqueId}")
-	test.CompareGoldenFile(t, baseOutputPath+"stdout.log", stdout)
-
-	stderr := options.Stderr.String()
-	t.Logf("stderr: %v", stderr)
-	stderr = strings.ReplaceAll(stderr, project.ProjectID, "${projectID}")
-	stderr = strings.ReplaceAll(stderr, uniqueID, "${uniqueId}")
-	test.CompareGoldenFile(t, baseOutputPath+"stderr.log", stderr)
-}
-
-func getKubeObjectInStringFromFile(path string) (string, error) {
-	absPath, err := filepath.Abs(path)
-	if err != nil {
-		return "", fmt.Errorf("error converting path %q to absolute path: %w", path, err)
-	}
-	objInBytes, err := os.ReadFile(absPath)
-	if err != nil {
-		return "", fmt.Errorf("failed to read file %q: %w", absPath, err)
-	}
-	objInString := string(objInBytes)
-	return objInString, nil
-}
-
-func getDiffInSpecs(wantObj, gotObj string) string {
-	wantSpec := extractOutSpecFromKubeObjectStrings(wantObj)
-	gotSpec := extractOutSpecFromKubeObjectStrings(gotObj)
-	return cmp.Diff(wantSpec, gotSpec)
-}
-
-func extractOutSpecFromKubeObjectStrings(obj string) string {
-	lines := strings.Split(obj, "\n")
-	var specLine int
-	var statusLine int
-	for i, line := range lines {
-		if strings.HasPrefix(line, "spec:") {
-			specLine = i
-		} else if strings.HasPrefix(line, "status:") {
-			statusLine = i
-		}
-	}
-	specLines := lines[specLine:statusLine]
-	spec := strings.Join(specLines, "\n")
-	return spec
+	u.Path = basePath + "/" + strings.TrimPrefix(opName, "/")
+	u.RawQuery = ""
+	return u.String(), nil
 }
