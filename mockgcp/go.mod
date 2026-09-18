@@ -19,6 +19,7 @@ require (
 	cloud.google.com/go/apphub v0.4.0
 	cloud.google.com/go/artifactregistry v1.25.0
 	cloud.google.com/go/asset v1.27.0
+	cloud.google.com/go/assuredworkloads v1.18.0
 	cloud.google.com/go/backupdr v1.6.0
 	cloud.google.com/go/batch v1.19.0
 	cloud.google.com/go/bigquery v1.77.0
@@ -29,14 +30,18 @@ require (
 	cloud.google.com/go/cloudquotas v1.11.0
 	cloud.google.com/go/cloudsecuritycompliance v1.0.0
 	cloud.google.com/go/compute v1.63.0
+	cloud.google.com/go/configdelivery v0.1.1
+	cloud.google.com/go/contactcenterinsights v1.22.0
 	cloud.google.com/go/dataform v1.0.0
 	cloud.google.com/go/dataplex v1.34.0
 	cloud.google.com/go/dataproc/v2 v2.22.0
 	cloud.google.com/go/datastream v1.20.0
 	cloud.google.com/go/deploy v1.32.0
 	cloud.google.com/go/developerconnect v1.1.0
+	cloud.google.com/go/devicestreaming v1.0.0
 	cloud.google.com/go/dialogflow v1.82.0
 	cloud.google.com/go/discoveryengine v1.32.0
+	cloud.google.com/go/documentai v1.48.0
 	cloud.google.com/go/edgecontainer v1.9.0
 	cloud.google.com/go/edgenetwork v1.8.0
 	cloud.google.com/go/essentialcontacts v1.12.0
@@ -68,13 +73,16 @@ require (
 	cloud.google.com/go/pubsublite v1.8.2
 	cloud.google.com/go/recaptchaenterprise/v2 v2.26.0
 	cloud.google.com/go/redis v1.25.0
+	cloud.google.com/go/saasplatform v0.9.0
 	cloud.google.com/go/secretmanager v1.20.0
 	cloud.google.com/go/securesourcemanager v1.4.1
 	cloud.google.com/go/securitycenter v1.44.0
 	cloud.google.com/go/speech v1.35.0
 	cloud.google.com/go/storage v1.62.0
+	cloud.google.com/go/vectorsearch v1.3.0
 	cloud.google.com/go/video v1.32.0
 	cloud.google.com/go/vision/v2 v2.15.0
+	cloud.google.com/go/vmmigration v1.15.0
 	cloud.google.com/go/vmwareengine v1.8.0
 	cloud.google.com/go/vpcaccess v1.13.0
 	cloud.google.com/go/workflows v1.19.0
@@ -134,7 +142,7 @@ require (
 	github.com/gke-labs/kube-etl/syncer v0.0.0-20260318164412-11816ec1e858 // indirect
 	github.com/gke-labs/multicluster-leader-election v0.0.0-20260219060047-1ae5cb16f27e // indirect
 	github.com/go-jose/go-jose/v4 v4.1.4 // indirect
-	github.com/go-logr/logr v1.4.3 // indirect
+	github.com/go-logr/logr v1.4.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-logr/zapr v1.3.0 // indirect
 	github.com/go-openapi/jsonpointer v0.21.0 // indirect
@@ -217,11 +225,11 @@ require (
 	go.opentelemetry.io/contrib/detectors/gcp v1.43.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.68.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.67.0 // indirect
-	go.opentelemetry.io/otel v1.44.0 // indirect
-	go.opentelemetry.io/otel/metric v1.44.0 // indirect
-	go.opentelemetry.io/otel/sdk v1.44.0 // indirect
-	go.opentelemetry.io/otel/sdk/metric v1.44.0 // indirect
-	go.opentelemetry.io/otel/trace v1.44.0 // indirect
+	go.opentelemetry.io/otel v1.45.0 // indirect
+	go.opentelemetry.io/otel/metric v1.45.0 // indirect
+	go.opentelemetry.io/otel/sdk v1.45.0 // indirect
+	go.opentelemetry.io/otel/sdk/metric v1.45.0 // indirect
+	go.opentelemetry.io/otel/trace v1.45.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.2 // indirect
@@ -229,7 +237,7 @@ require (
 	golang.org/x/mod v0.37.0 // indirect
 	golang.org/x/net v0.56.0 // indirect
 	golang.org/x/sync v0.21.0 // indirect
-	golang.org/x/sys v0.46.0 // indirect
+	golang.org/x/sys v0.47.0 // indirect
 	golang.org/x/term v0.44.0 // indirect
 	golang.org/x/text v0.39.0 // indirect
 	golang.org/x/time v0.15.0 // indirect
