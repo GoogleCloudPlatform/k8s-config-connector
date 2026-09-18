@@ -188,6 +188,25 @@ type LoggingConfig struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.eventarc.v1.ChannelConnection", skipping
+
+// +kcc:observedstate:proto=google.cloud.eventarc.v1.ChannelConnection
+type ChannelConnectionObservedState struct {
+	// Output only. Server assigned ID of the resource.
+	//  The server guarantees uniqueness and immutability until deleted.
+	// +kcc:proto:field=google.cloud.eventarc.v1.ChannelConnection.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. The creation time.
+	// +kcc:proto:field=google.cloud.eventarc.v1.ChannelConnection.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The last-modified time.
+	// +kcc:proto:field=google.cloud.eventarc.v1.ChannelConnection.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.eventarc.v1.Channel", skipping
 
 // +kcc:observedstate:proto=google.cloud.eventarc.v1.Channel
@@ -225,25 +244,6 @@ type ChannelObservedState struct {
 	//  physical zone separation
 	// +kcc:proto:field=google.cloud.eventarc.v1.Channel.satisfies_pzs
 	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.eventarc.v1.ChannelConnection", skipping
-
-// +kcc:observedstate:proto=google.cloud.eventarc.v1.ChannelConnection
-type ChannelConnectionObservedState struct {
-	// Output only. Server assigned ID of the resource.
-	//  The server guarantees uniqueness and immutability until deleted.
-	// +kcc:proto:field=google.cloud.eventarc.v1.ChannelConnection.uid
-	Uid *string `json:"uid,omitempty"`
-
-	// Output only. The creation time.
-	// +kcc:proto:field=google.cloud.eventarc.v1.ChannelConnection.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The last-modified time.
-	// +kcc:proto:field=google.cloud.eventarc.v1.ChannelConnection.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
 
