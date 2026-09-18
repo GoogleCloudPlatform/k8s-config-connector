@@ -50,5 +50,10 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version agentregistry.cnrm.cloud.google.com/v1alpha1 \
   --resource AgentRegistryBinding:Binding
 
+${CONTROLLERBUILDER} generate-mapper \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.agentregistry.v1 \
+  --api-version agentregistry.cnrm.cloud.google.com/v1alpha1
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

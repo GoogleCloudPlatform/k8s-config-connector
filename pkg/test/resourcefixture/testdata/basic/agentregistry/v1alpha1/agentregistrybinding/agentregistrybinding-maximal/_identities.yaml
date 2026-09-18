@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: agentregistry.cnrm.cloud.google.com
+  kind: AgentRegistryBinding
+  name: agentregistrybinding-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
