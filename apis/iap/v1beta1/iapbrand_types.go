@@ -20,6 +20,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 )
 
+// IAPBrandGVK is the GroupVersionKind for the IAPBrand resource.
 var IAPBrandGVK = GroupVersion.WithKind("IAPBrand")
 
 // IAPBrandSpec defines the desired state of IAPBrand

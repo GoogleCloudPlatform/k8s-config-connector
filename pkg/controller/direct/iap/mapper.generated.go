@@ -85,8 +85,8 @@ func AccessSettings_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AccessS
 	out.OauthSettings = OAuthSettings_v1alpha1_FromProto(mapCtx, in.GetOauthSettings())
 	out.ReauthSettings = ReauthSettings_v1alpha1_FromProto(mapCtx, in.GetReauthSettings())
 	out.AllowedDomainsSettings = AllowedDomainsSettings_v1alpha1_FromProto(mapCtx, in.GetAllowedDomainsSettings())
-	// MISSING: WorkforceIdentitySettings
-	// MISSING: IdentitySources
+	out.WorkforceIdentitySettings = WorkforceIdentitySettings_v1alpha1_FromProto(mapCtx, in.GetWorkforceIdentitySettings())
+	out.IdentitySources = direct.EnumSlice_FromProto(mapCtx, in.IdentitySources)
 	return out
 }
 func AccessSettings_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmiapv1alpha1.AccessSettings) *pb.AccessSettings {
@@ -99,8 +99,8 @@ func AccessSettings_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmiapv1alph
 	out.OauthSettings = OAuthSettings_v1alpha1_ToProto(mapCtx, in.OauthSettings)
 	out.ReauthSettings = ReauthSettings_v1alpha1_ToProto(mapCtx, in.ReauthSettings)
 	out.AllowedDomainsSettings = AllowedDomainsSettings_v1alpha1_ToProto(mapCtx, in.AllowedDomainsSettings)
-	// MISSING: WorkforceIdentitySettings
-	// MISSING: IdentitySources
+	out.WorkforceIdentitySettings = WorkforceIdentitySettings_v1alpha1_ToProto(mapCtx, in.WorkforceIdentitySettings)
+	out.IdentitySources = direct.EnumSlice_ToProto[pb.AccessSettings_IdentitySource](mapCtx, in.IdentitySources)
 	return out
 }
 func AccessSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AccessSettings) *krmiapv1beta1.AccessSettings {
@@ -425,6 +425,26 @@ func IAPSettingsSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmiapv1beta
 	out.ApplicationSettings = ApplicationSettings_v1beta1_ToProto(mapCtx, in.ApplicationSettings)
 	return out
 }
+func OAuth2_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.OAuth2) *krmiapv1alpha1.OAuth2 {
+	if in == nil {
+		return nil
+	}
+	out := &krmiapv1alpha1.OAuth2{}
+	out.ClientID = direct.LazyPtr(in.GetClientId())
+	out.ClientSecret = direct.LazyPtr(in.GetClientSecret())
+	// MISSING: ClientSecretSha256
+	return out
+}
+func OAuth2_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmiapv1alpha1.OAuth2) *pb.OAuth2 {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OAuth2{}
+	out.ClientId = direct.ValueOf(in.ClientID)
+	out.ClientSecret = direct.ValueOf(in.ClientSecret)
+	// MISSING: ClientSecretSha256
+	return out
+}
 func OAuthSettings_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.OAuthSettings) *krmiapv1alpha1.OAuthSettings {
 	if in == nil {
 		return nil
@@ -499,5 +519,23 @@ func ReauthSettings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmiapv1beta1
 	out.Method = direct.Enum_ToProto[pb.ReauthSettings_Method](mapCtx, in.Method)
 	out.MaxAge = direct.StringDuration_ToProto(mapCtx, in.MaxAge)
 	out.PolicyType = direct.Enum_ToProto[pb.ReauthSettings_PolicyType](mapCtx, in.PolicyType)
+	return out
+}
+func WorkforceIdentitySettings_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkforceIdentitySettings) *krmiapv1alpha1.WorkforceIdentitySettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmiapv1alpha1.WorkforceIdentitySettings{}
+	out.WorkforcePools = in.WorkforcePools
+	out.OAUTH2 = OAuth2_v1alpha1_FromProto(mapCtx, in.GetOauth2())
+	return out
+}
+func WorkforceIdentitySettings_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmiapv1alpha1.WorkforceIdentitySettings) *pb.WorkforceIdentitySettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WorkforceIdentitySettings{}
+	out.WorkforcePools = in.WorkforcePools
+	out.Oauth2 = OAuth2_v1alpha1_ToProto(mapCtx, in.OAUTH2)
 	return out
 }
