@@ -1,0 +1,44 @@
+GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "capacityGb": "2560",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test instance",
+  "fileShares": [
+    {
+      "capacityGb": "2560",
+      "name": "my_share"
+    }
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
+  "networks": [
+    {
+      "ipAddresses": [
+        "10.20.30.1"
+      ],
+      "modes": [
+        "MODE_IPV4"
+      ],
+      "network": "${networkID}",
+      "reservedIpRange": "10.20.30.0/24"
+    }
+  ],
+  "state": "READY",
+  "tier": "PREMIUM"
+}
