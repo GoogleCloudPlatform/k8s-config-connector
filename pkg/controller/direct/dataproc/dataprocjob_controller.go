@@ -38,6 +38,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
@@ -214,10 +215,11 @@ func (a *dataprocJobAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	}
 
 	desired.Reference.JobId = a.id.ID()
-	if desired.Labels == nil {
-		desired.Labels = make(map[string]string)
+	gcpLabels := label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
+	for k, v := range desired.Labels {
+		gcpLabels[k] = v
 	}
-	desired.Labels["managed-by-cnrm"] = "true"
+	desired.Labels = gcpLabels
 
 	// Ensure placement is non-nil if it wasn't set, as it's often needed implicitly
 	// even if empty (e.g., for cluster selectors). The mapping function should handle this.
