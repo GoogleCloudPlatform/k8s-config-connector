@@ -41,7 +41,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
@@ -93,10 +92,11 @@ func (m *routerNATModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 	}
 
 	return &RouterNATAdapter{
-		gcpClient: routersClient,
-		id:        id.(*krm.ComputeRouterNATIdentity),
-		desired:   resource,
-		reader:    reader,
+		gcpClient:  routersClient,
+		id:         id.(*krm.ComputeRouterNATIdentity),
+		desired:    resource,
+		desiredKRM: &desired.Spec,
+		reader:     reader,
 	}, nil
 }
 
@@ -123,12 +123,13 @@ func (m *routerNATModel) AdapterForURL(ctx context.Context, url string) (directb
 }
 
 type RouterNATAdapter struct {
-	gcpClient *compute.RoutersClient
-	id        *krm.ComputeRouterNATIdentity
-	desired   *computepb.RouterNat
-	actual    *computepb.RouterNat
-	router    *computepb.Router
-	reader    client.Reader
+	gcpClient  *compute.RoutersClient
+	id         *krm.ComputeRouterNATIdentity
+	desired    *computepb.RouterNat
+	desiredKRM *krm.ComputeRouterNATSpec
+	actual     *computepb.RouterNat
+	router     *computepb.Router
+	reader     client.Reader
 }
 
 var _ directbase.Adapter = &RouterNATAdapter{}
@@ -240,7 +241,7 @@ func (a *RouterNATAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating ComputeRouterNAT", "name", a.id)
 
-	diffs, _, err := compareComputeRouterNAT(ctx, a.actual, a.desired)
+	diffs, _, err := compareComputeRouterNAT(ctx, a.desiredKRM, a.actual)
 	if err != nil {
 		return err
 	}
@@ -375,7 +376,7 @@ func (a *RouterNATAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 
 	a.router = router
 
-	var newNats []*computepb.RouterNat
+	newNats := []*computepb.RouterNat{}
 	found := false
 	for _, nat := range a.router.Nats {
 		if nat.GetName() == a.id.ComputeRouterNAT {
@@ -433,44 +434,48 @@ func (a *RouterNATAdapter) updateStatus(ctx context.Context, op directbase.Opera
 	return op.UpdateStatus(ctx, status, nil)
 }
 
-func compareComputeRouterNAT(ctx context.Context, actual, desired *computepb.RouterNat) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	maskedActual, err := mappers.OnlySpecFields(actual, ComputeRouterNATSpec_FromProto, ComputeRouterNATSpec_ToProto)
-	if err != nil {
-		return nil, nil, err
+func compareComputeRouterNAT(ctx context.Context, desiredKRM *krm.ComputeRouterNATSpec, actual *computepb.RouterNat) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	normalize := func(ctx context.Context, obj *computepb.RouterNat) error {
+		if obj == nil {
+			return nil
+		}
+		for i, ip := range obj.NatIps {
+			obj.NatIps[i] = normalizeComputeLink(ip)
+		}
+		for i, ip := range obj.DrainNatIps {
+			obj.DrainNatIps[i] = normalizeComputeLink(ip)
+		}
+		for _, rule := range obj.Rules {
+			if rule.Action != nil {
+				for i, ip := range rule.Action.SourceNatActiveIps {
+					rule.Action.SourceNatActiveIps[i] = normalizeComputeLink(ip)
+				}
+				for i, ip := range rule.Action.SourceNatDrainIps {
+					rule.Action.SourceNatDrainIps[i] = normalizeComputeLink(ip)
+				}
+				for i, r := range rule.Action.SourceNatActiveRanges {
+					rule.Action.SourceNatActiveRanges[i] = normalizeComputeLink(r)
+				}
+				for i, r := range rule.Action.SourceNatDrainRanges {
+					rule.Action.SourceNatDrainRanges[i] = normalizeComputeLink(r)
+				}
+			}
+		}
+		for _, sub := range obj.Subnetworks {
+			if sub.Name != nil {
+				val := normalizeComputeLink(*sub.Name)
+				sub.Name = &val
+			}
+		}
+		return nil
 	}
-	maskedActual.Name = desired.Name
 
-	clonedDesired := proto.CloneOf(desired)
-
-	populateDefaults := func(obj *computepb.RouterNat) {
-		if obj.IcmpIdleTimeoutSec == nil {
-			obj.IcmpIdleTimeoutSec = proto.Int32(30)
-		}
-		if obj.TcpEstablishedIdleTimeoutSec == nil {
-			obj.TcpEstablishedIdleTimeoutSec = proto.Int32(1200)
-		}
-		if obj.TcpTimeWaitTimeoutSec == nil {
-			obj.TcpTimeWaitTimeoutSec = proto.Int32(120)
-		}
-		if obj.TcpTransitoryIdleTimeoutSec == nil {
-			obj.TcpTransitoryIdleTimeoutSec = proto.Int32(30)
-		}
-		if obj.UdpIdleTimeoutSec == nil {
-			obj.UdpIdleTimeoutSec = proto.Int32(30)
-		}
-		if obj.EnableEndpointIndependentMapping == nil {
-			obj.EnableEndpointIndependentMapping = proto.Bool(true)
-		}
-		if obj.EnableDynamicPortAllocation == nil {
-			obj.EnableDynamicPortAllocation = proto.Bool(false)
-		}
-	}
-	populateDefaults(maskedActual)
-	populateDefaults(clonedDesired)
-
-	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
-	if err != nil {
-		return nil, nil, err
-	}
-	return diffs, updateMask, nil
+	return common.CompareBrownfieldSpec(
+		ctx,
+		desiredKRM,
+		actual,
+		ComputeRouterNATSpec_FromProto,
+		ComputeRouterNATSpec_ToProto,
+		normalize,
+	)
 }

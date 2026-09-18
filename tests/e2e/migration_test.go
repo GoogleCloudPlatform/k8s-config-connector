@@ -152,6 +152,11 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 		primaryResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)
 		opt := create.CreateDeleteTestOptions{CleanupResources: false}
 
+		if strings.Contains(fixture.Name, "computesubnetwork") || strings.Contains(fixture.Name, "computerouternat") {
+			opt.CreateInOrder = true
+			opt.DeleteInOrder = true
+		}
+
 		if fixture.Dependencies != nil {
 			dependencyYamls := testyaml.SplitYAML(t, fixture.Dependencies)
 			for _, dependBytes := range dependencyYamls {
