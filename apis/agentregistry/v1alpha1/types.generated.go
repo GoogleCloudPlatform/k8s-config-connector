@@ -18,5 +18,6 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.agentregistry.v1
 // resource: AgentRegistryBinding:Binding
+// resource: AgentRegistryService:Service
 
 package v1alpha1
