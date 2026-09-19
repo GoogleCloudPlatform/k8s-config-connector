@@ -51,7 +51,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
   "storageClass": "NEARLINE"
 }
 
-200 OK
+400 Bad Request
 Content-Type: application/json; charset=UTF-8
 Pragma: no-cache
 Server: UploadServer
@@ -59,46 +59,17 @@ Vary: Origin
 Vary: X-Origin
 
 {
-  "autoclass": {
-    "enabled": true,
-    "terminalStorageClass": "NEARLINE",
-    "terminalStorageClassUpdateTime": "2024-04-01T12:34:56.123456Z",
-    "toggleTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "etag": "abcdef0123A=",
-  "generation": "12345678901234",
-  "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    },
-    "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    }
-  },
-  "id": "000000000000000000000",
-  "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US",
-  "locationType": "multi-region",
-  "metageneration": "1",
-  "name": "storagebucket-autoclass-ns-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "rpo": "DEFAULT",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
-  },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
+  "error": {
+    "code": 400,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Cannot set default storage class on bucket with Autoclass enabled to storage class other than STANDARD.",
+        "reason": "invalid"
+      }
+    ],
+    "message": "Cannot set default storage class on bucket with Autoclass enabled to storage class other than STANDARD."
+  }
 }
 
 ---
@@ -106,58 +77,182 @@ Vary: X-Origin
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
-200 OK
+404 Not Found
 Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
 
 {
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
   "autoclass": {
     "enabled": true,
-    "terminalStorageClass": "NEARLINE",
-    "terminalStorageClassUpdateTime": "2024-04-01T12:34:56.123456Z",
-    "toggleTime": "2024-04-01T12:34:56.123456Z"
+    "terminalStorageClass": "NEARLINE"
   },
-  "etag": "abcdef0123A=",
-  "generation": "12345678901234",
   "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    },
-    "publicAccessPrevention": "inherited",
     "uniformBucketLevelAccess": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
+      "enabled": true
     }
   },
-  "id": "000000000000000000000",
-  "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "location": "US",
-  "locationType": "multi-region",
-  "metageneration": "1",
-  "name": "storagebucket-autoclass-ns-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "rpo": "DEFAULT",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
+  "lifecycle": {
+    "rule": []
   },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
+  "location": "US",
+  "name": "storagebucket-autoclass-ns-${uniqueId}",
+  "storageClass": "NEARLINE"
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 400,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Cannot set default storage class on bucket with Autoclass enabled to storage class other than STANDARD.",
+        "reason": "invalid"
+      }
+    ],
+    "message": "Cannot set default storage class on bucket with Autoclass enabled to storage class other than STANDARD."
+  }
 }
 
 ---
 
-PATCH https://storage.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}?alt=json&prettyPrint=false
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "autoclass": {
+    "enabled": true,
+    "terminalStorageClass": "NEARLINE"
+  },
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": true
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": []
+  },
+  "location": "US",
+  "name": "storagebucket-autoclass-ns-${uniqueId}",
+  "storageClass": "NEARLINE"
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 400,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Cannot set default storage class on bucket with Autoclass enabled to storage class other than STANDARD.",
+        "reason": "invalid"
+      }
+    ],
+    "message": "Cannot set default storage class on bucket with Autoclass enabled to storage class other than STANDARD."
+  }
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -166,15 +261,26 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "enabled": true,
     "terminalStorageClass": "ARCHIVE"
   },
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": true
+    }
+  },
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
     "label-two": "value-two",
     "managed-by-cnrm": "true"
-  }
+  },
+  "lifecycle": {
+    "rule": []
+  },
+  "location": "US",
+  "name": "storagebucket-autoclass-ns-${uniqueId}",
+  "storageClass": "NEARLINE"
 }
 
-200 OK
+400 Bad Request
 Content-Type: application/json; charset=UTF-8
 Pragma: no-cache
 Server: UploadServer
@@ -182,47 +288,17 @@ Vary: Origin
 Vary: X-Origin
 
 {
-  "autoclass": {
-    "enabled": true,
-    "terminalStorageClass": "ARCHIVE",
-    "terminalStorageClassUpdateTime": "2024-04-01T12:34:56.123456Z",
-    "toggleTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "etag": "abcdef0123A=",
-  "generation": "12345678901234",
-  "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    },
-    "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    }
-  },
-  "id": "000000000000000000000",
-  "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "label-two": "value-two",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US",
-  "locationType": "multi-region",
-  "metageneration": "2",
-  "name": "storagebucket-autoclass-ns-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "rpo": "DEFAULT",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
-  },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
+  "error": {
+    "code": 400,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Cannot set default storage class on bucket with Autoclass enabled to storage class other than STANDARD.",
+        "reason": "invalid"
+      }
+    ],
+    "message": "Cannot set default storage class on bucket with Autoclass enabled to storage class other than STANDARD."
+  }
 }
 
 ---
@@ -230,79 +306,100 @@ Vary: X-Origin
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
-200 OK
+404 Not Found
 Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
 
 {
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
   "autoclass": {
     "enabled": true,
-    "terminalStorageClass": "ARCHIVE",
-    "terminalStorageClassUpdateTime": "2024-04-01T12:34:56.123456Z",
-    "toggleTime": "2024-04-01T12:34:56.123456Z"
+    "terminalStorageClass": "ARCHIVE"
   },
-  "etag": "abcdef0123A=",
-  "generation": "12345678901234",
   "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    },
-    "publicAccessPrevention": "inherited",
     "uniformBucketLevelAccess": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
+      "enabled": true
     }
   },
-  "id": "000000000000000000000",
-  "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
     "label-two": "value-two",
     "managed-by-cnrm": "true"
   },
-  "location": "US",
-  "locationType": "multi-region",
-  "metageneration": "2",
-  "name": "storagebucket-autoclass-ns-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "rpo": "DEFAULT",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
+  "lifecycle": {
+    "rule": []
   },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
+  "location": "US",
+  "name": "storagebucket-autoclass-ns-${uniqueId}",
+  "storageClass": "NEARLINE"
 }
 
----
-
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
+400 Bad Request
 Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
 
 {
-  "kind": "storage#objects"
+  "error": {
+    "code": 400,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Cannot set default storage class on bucket with Autoclass enabled to storage class other than STANDARD.",
+        "reason": "invalid"
+      }
+    ],
+    "message": "Cannot set default storage class on bucket with Autoclass enabled to storage class other than STANDARD."
+  }
 }
 
 ---
 
-DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}?alt=json&prettyPrint=false
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
-204 No Content
-Content-Type: application/json
+404 Not Found
+Content-Type: application/json; charset=UTF-8
 Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
+}
