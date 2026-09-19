@@ -287,6 +287,7 @@ func (r *reconcileContext) doReconcile(policyMember *iamv1beta1.IAMPolicyMember)
 		}
 		return false, r.handleDeleted(policyMember)
 	}
+	memberExists := true
 	if _, err := r.Reconciler.iamClient.GetPolicyMember(r.Ctx, policyMember); err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(policyMember))
@@ -295,18 +296,21 @@ func (r *reconcileContext) doReconcile(policyMember *iamv1beta1.IAMPolicyMember)
 		if !errors.Is(err, kcciamclient.ErrNotFound) {
 			return false, r.handleUpdateFailed(policyMember, err)
 		}
+		memberExists = false
 	}
 	if !k8s.EnsureFinalizers(policyMember, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName) {
 		if err := r.update(policyMember); err != nil {
 			return false, r.handleUpdateFailed(policyMember, err)
 		}
 	}
-	if _, err := r.Reconciler.iamClient.SetPolicyMember(r.Ctx, policyMember); err != nil {
-		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
-			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(policyMember))
-			return r.handleUnresolvableDeps(policyMember, unwrappedErr)
+	if !memberExists {
+		if _, err := r.Reconciler.iamClient.SetPolicyMember(r.Ctx, policyMember); err != nil {
+			if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
+				logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(policyMember))
+				return r.handleUnresolvableDeps(policyMember, unwrappedErr)
+			}
+			return false, r.handleUpdateFailed(policyMember, fmt.Errorf("error setting policy member: %w", err))
 		}
-		return false, r.handleUpdateFailed(policyMember, fmt.Errorf("error setting policy member: %w", err))
 	}
 	if isAPIServerUpdateRequired(policyMember) {
 		return false, r.handleUpToDate(policyMember)
