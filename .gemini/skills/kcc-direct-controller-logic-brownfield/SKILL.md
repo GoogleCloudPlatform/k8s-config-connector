@@ -35,7 +35,59 @@ This skill guides the implementation of the `Adapter` interface
 3.  **Verify and Align with MockGCP**:
     You **MUST strictly follow** the [`match-mockgcp-with-realgcp`](.gemini/skills/match-mockgcp-with-realgcp/SKILL.md) skill to align MockGCP behavior, generate `_http_mock.log` and golden snapshots (`_generated_object_*.golden.yaml`), and confirm all fixtures pass `TestGoldenLogAlignment`.
 
+    > [!WARNING]
+    > **BROWNFIELD MOCKGCP ALIGNMENT RULES:**
+    > When building brownfield controllers, you MUST align your controller logic to match the existing MockGCP and GCP behavior baselines.
+    > DO NOT modify MockGCP implementations to fix brownfield controller discrepancies. If a discrepancy is encountered in MockGCP during brownfield migration, it indicates a test coverage or fixture gap that must be escalated/treated separately rather than patched inline.
+
+    > [!WARNING]
+    > **WHENEVER A TEST CASE IS UPDATED, WE MUST RECORD REAL GCP LOGS AGAIN.**
+    > If you make any modifications to a test case configuration, manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or the controller's runtime mapping configuration, you **MUST** run the test case against real GCP (`hack/record-gcp` or with `E2E_GCP_TARGET=real`) to regenerate the authentic `_http.log` baseline before comparing or committing any mock log changes. Do not attempt to manually edit the logs or bypass recording live traffic.
+
     - **Iterative Adapter Fixes**: If there are discrepancies between legacy and direct controller behavior, iteratively refine `Adapter` methods (`Find`, `Create`, `Update`, `Delete`) and re-verify using the [`match-mockgcp-with-realgcp`](.gemini/skills/match-mockgcp-with-realgcp/SKILL.md) skill.
+
+    - **Diff Analysis & Behavioral Alignment Workflow**:
+      If there are any errors or discrepancies between the legacy reconciler and the direct reconciler behavior (indicated by the test failing or having incorrect updates in `_http.log` or golden objects), iteratively update your direct controller.
+      
+      Analyze the following generated diff files to identify and fix alignment issues:
+
+      **1. HTTP Traffic Diffs (`_http.diff` / `_http_mock.diff`)**
+      *   **Purpose**: Compares HTTP requests/responses between legacy (`_http_old_controller.log`) and direct controllers (`_http.log`).
+      *   **Analysis Checklist & Remediation**:
+          *   **Payload & Field Parity**: Identify missing or extra fields in the request JSON payload compared to legacy. Ensure fields sent by the legacy controller are properly mapped in the direct controller. Fix mappers or adapter logic to align payload contents.
+          *   **Update Strategies & Masks**: Verify whether `Update` uses correct HTTP verbs (`PATCH` vs `PUT`) and sends accurate `updateMask` parameters. Adjust diffing logic or update paths to match legacy behavior.
+          *   **Call Sequences & Redundant Writes**: Ensure create/update flows do not perform unnecessary intermediate API calls or fail to wait on asynchronous LRO operations. 
+
+      **2. Final KRM Object Diffs (`_final_object.diff`)**
+      *   **Purpose**: Compares final KRM object state (`_final_object_old_controller.golden.yaml` vs `_generated_object_<fixture>.golden.yaml`).
+      *   **Analysis Checklist & Remediation**:
+          *   **Status & Observed State**: Verify `status` and subfield mappings accurately mirror or improve upon legacy status fields without dropping critical output attributes. Update status mapping in the Adapter to retain expected fields.
+          *   **Conditions & Readiness**: Verify condition reasons (`UpToDate`, `Ready`) match standard expectations.
+          *   **Annotations & External References**: Ensure external IDs and referenced resource URIs conform to canonical identity formats.
+
+      **3. Export Diffs (`_exported_object.diff`)**
+      *   **Purpose**: Compares export outputs between legacy exporter (`_exported_old_controller.golden.yaml`) and direct controller exporter (`_exported.yaml`).
+      *   **Analysis Checklist & Remediation**:
+          *   Confirm that export generation produces equivalent, deployable KRM specs and retains identical spec field representations. Fix `AdapterForURL` and export mapping logic to maintain fidelity.
+
+      **Categorizing Diffs: Intentional vs. Regression**
+      Distinguish between acceptable improvements and regressions that must be fixed:
+      *   **Acceptable / Expected Diffs**:
+          *   Adopting modern direct conventions (e.g., standard Identity v2 / `external` fields, improved condition messages, structured error details).
+          *   Direct controller leveraging native Google Cloud client SDK semantics over raw Terraform provider conversions.
+      *   **Unacceptable Diffs (Regressions to Fix)**:
+          *   Dropped fields in request/response payloads.
+          *   Spurious update diffs during steady-state re-reconciliation (violating 0-write re-reconciliation).
+          *   Missing status attributes previously consumed by downstream controllers or end users.
+
+      Focus on the **Adapter** implementation:
+      - `Find`: Check if fields are correctly read, populated, and mapped from the GCP SDK response.
+      - `Create` / `Update`: Ensure fields are correctly mapped to the GCP SDK request and correct APIs are called. Pay attention to differences in Patch/Put calls due to incorrect diffing logic in the Update method.
+      - `Delete`: Check that deletion logic works and returns correct status/error code.
+      
+      If a fix is needed in any place other than the Adapter in the controller code, please carefully asses it and make a well scoped change.
+
+      Run comparison/recording commands again after making updates to verify if the changes resolve the issues. Repeat until the tests pass and the updated golden files and HTTP logs accurately match expectations.
 
 ## Journaling
 Append any reconciliation alignment issues to `.gemini/journals/<service>.md` using the format described in the `kcc-agentic-journaler` skill.
