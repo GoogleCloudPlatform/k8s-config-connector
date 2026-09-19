@@ -1,0 +1,14 @@
+apiVersion: bigquerymigration.cnrm.cloud.google.com/v1alpha1
+kind: BigQueryMigrationMigrationWorkflow
+metadata:
+  name: migrationworkflow-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "BigQuery Migration Workflow Maximal"
+  tasks:
+    task1:
+      type: "Translation_Bteq"
+      translationTaskDetails:
+        fileEncoding: "UTF_8"
