@@ -1,0 +1,225 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: computetargetpools.compute.cnrm.cloud.google.com
+spec:
+  group: compute.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ComputeTargetPool
+    listKind: ComputeTargetPoolList
+    plural: computetargetpools
+    shortNames:
+    - gcpcomputetargetpool
+    - gcpcomputetargetpools
+    singular: computetargetpool
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: ComputeTargetPool is the Schema for the ComputeTargetPool API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ComputeTargetPoolSpec defines the desired state of ComputeTargetPool
+            properties:
+              backupPool:
+                description: 'The server-defined URL for the resource. This field
+                  is applicable only when the containing target pool is serving a
+                  forwarding rule as the primary pool, and its failoverRatio field
+                  is properly set to a value between [0, 1]. backupPool and failoverRatio
+                  together define the fallback behavior of the primary target pool:
+                  if the ratio of the healthy instances in the primary pool is at
+                  or below failoverRatio, traffic arriving at the load-balanced IP
+                  will be directed to the backup pool. In case where failoverRatio
+                  and backupPool are not set, or all the instances in the backup pool
+                  are unhealthy, the traffic will be directed back to the primary
+                  pool in the "force" mode, where traffic will be spread to the healthy
+                  instances with the best effort, or to all instances when no instance
+                  is healthy.'
+                type: string
+              creationTimestamp:
+                description: '[Output Only] Creation timestamp in RFC3339 text format.'
+                type: string
+              description:
+                description: An optional description of this resource. Provide this
+                  property when you create the resource.
+                type: string
+              failoverRatio:
+                description: 'This field is applicable only when the containing target
+                  pool is serving a forwarding rule as the primary pool (i.e., not
+                  as a backup pool to some other target pool). The value of the field
+                  must be in [0, 1]. If set, backupPool must also be set. They together
+                  define the fallback behavior of the primary target pool: if the
+                  ratio of the healthy instances in the primary pool is at or below
+                  this number, traffic arriving at the load-balanced IP will be directed
+                  to the backup pool. In case where failoverRatio is not set or all
+                  the instances in the backup pool are unhealthy, the traffic will
+                  be directed back to the primary pool in the "force" mode, where
+                  traffic will be spread to the healthy instances with the best effort,
+                  or to all instances when no instance is healthy.'
+                type: number
+              healthChecks:
+                description: The URL of the HttpHealthCheck resource. A member instance
+                  in this pool is considered healthy if and only if the health checks
+                  pass. Only legacy HttpHealthChecks are supported. Only one health
+                  check may be specified.
+                items:
+                  type: string
+                type: array
+              id:
+                description: '[Output Only] The unique identifier for the resource.
+                  This identifier is defined by the server.'
+                format: int64
+                type: integer
+              instances:
+                description: A list of resource URLs to the virtual machine instances
+                  serving this pool. They must live in zones contained in the same
+                  region as this pool.
+                items:
+                  type: string
+                type: array
+              kind:
+                description: '[Output Only] Type of the resource. Always compute#targetPool
+                  for target pools.'
+                type: string
+              location:
+                description: The location of this resource.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              region:
+                description: '[Output Only] URL of the region where the target pool
+                  resides.'
+                type: string
+              resourceID:
+                description: The ComputeTargetPool name. If not given, the metadata.name
+                  will be used.
+                type: string
+              securityPolicy:
+                description: '[Output Only] The resource URL for the security policy
+                  associated with this target pool.'
+                type: string
+              selfLink:
+                description: '[Output Only] Server-defined URL for the resource.'
+                type: string
+              sessionAffinity:
+                description: |-
+                  Session affinity option, must be one of the following values: NONE: Connections from the same client IP may go to any instance in the pool. CLIENT_IP: Connections from the same client IP will go to the same instance in the pool while that instance remains healthy. CLIENT_IP_PROTO: Connections from the same client IP with the same IP protocol will go to the same instance in the pool while that instance remains healthy.
+                   Check the SessionAffinity enum for the list of possible values.
+                type: string
+            required:
+            - location
+            type: object
+          status:
+            description: ComputeTargetPoolStatus defines the config connector machine
+              state of ComputeTargetPool
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ComputeTargetPool resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

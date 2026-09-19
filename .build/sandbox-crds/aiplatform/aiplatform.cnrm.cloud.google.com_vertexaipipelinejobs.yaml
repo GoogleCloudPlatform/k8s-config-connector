@@ -1,0 +1,741 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: vertexaipipelinejobs.aiplatform.cnrm.cloud.google.com
+spec:
+  group: aiplatform.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: VertexAIPipelineJob
+    listKind: VertexAIPipelineJobList
+    plural: vertexaipipelinejobs
+    shortNames:
+    - gcpvertexaipipelinejob
+    - gcpvertexaipipelinejobs
+    singular: vertexaipipelinejob
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: VertexAIPipelineJob is the Schema for the VertexAIPipelineJob
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: VertexAIPipelineJobSpec defines the desired state of VertexAIPipelineJob
+            properties:
+              displayName:
+                description: |-
+                  The display name of the Pipeline.
+                   The name can be up to 128 characters long and can consist of any UTF-8
+                   characters.
+                type: string
+              encryptionSpec:
+                description: |-
+                  Customer-managed encryption key spec for a pipelineJob. If set, this
+                   PipelineJob and all of its sub-resources will be secured by this key.
+                properties:
+                  kmsKeyName:
+                    description: |-
+                      Required. The Cloud KMS resource identifier of the customer managed
+                       encryption key used to protect a resource. Has the form:
+                       `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`.
+                       The key needs to be in the same region as where the compute resource is
+                       created.
+                    type: string
+                type: object
+              labels:
+                additionalProperties:
+                  type: string
+                description: |-
+                  The labels with user-defined metadata to organize PipelineJob.
+
+                   Label keys and values can be no longer than 64 characters
+                   (Unicode codepoints), can only contain lowercase letters, numeric
+                   characters, underscores and dashes. International characters are allowed.
+
+                   See https://goo.gl/xmQnxf for more information and examples of labels.
+
+                   Note there is some reserved label key for Vertex AI Pipelines.
+                   - `vertex-ai-pipelines-run-billing-id`, user set value will get overrided.
+                type: object
+              location:
+                description: The location of this resource.
+                type: string
+              network:
+                description: |-
+                  The full name of the Compute Engine
+                   [network](/compute/docs/networks-and-firewalls#networks) to which the
+                   Pipeline Job's workload should be peered. For example,
+                   `projects/12345/global/networks/myVPC`.
+                   [Format](/compute/docs/reference/rest/v1/networks/insert)
+                   is of the form `projects/{project}/global/networks/{network}`.
+                   Where {project} is a project number, as in `12345`, and {network} is a
+                   network name.
+
+                   Private services access must already be configured for the network.
+                   Pipeline job will apply the network configuration to the Google Cloud
+                   resources being launched, if applied, such as Vertex AI
+                   Training or Dataflow job. If left unspecified, the workload is not peered
+                   with any network.
+                type: string
+              pipelineSpec:
+                description: The spec of the pipeline.
+                x-kubernetes-preserve-unknown-fields: true
+              preflightValidations:
+                description: Optional. Whether to do component level validations before
+                  job creation.
+                type: boolean
+              projectRef:
+                description: The project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              pscInterfaceConfig:
+                description: Optional. Configuration for PSC-I for PipelineJob.
+                properties:
+                  dnsPeeringConfigs:
+                    description: |-
+                      Optional. DNS peering configurations. When specified, Vertex AI will
+                       attempt to configure DNS peering zones in the tenant project VPC
+                       to resolve the specified domains using the target network's Cloud DNS.
+                       The user must grant the dns.peer role to the Vertex AI Service Agent
+                       on the target project.
+                    items:
+                      properties:
+                        domain:
+                          description: |-
+                            Required. The DNS name suffix of the zone being peered to, e.g.,
+                             "my-internal-domain.corp.". Must end with a dot.
+                          type: string
+                        targetNetwork:
+                          description: |-
+                            Required. The VPC network name
+                             in the target_project where the DNS zone specified by 'domain' is
+                             visible.
+                          type: string
+                        targetProject:
+                          description: |-
+                            Required. The project ID hosting the Cloud DNS managed zone that
+                             contains the 'domain'. The Vertex AI Service Agent requires the
+                             dns.peer role on this project.
+                          type: string
+                      type: object
+                    type: array
+                  networkAttachment:
+                    description: |-
+                      Optional. The name of the Compute Engine
+                       [network
+                       attachment](https://cloud.google.com/vpc/docs/about-network-attachments) to
+                       attach to the resource within the region and user project.
+                       To specify this field, you must have already [created a network attachment]
+                       (https://cloud.google.com/vpc/docs/create-manage-network-attachments#create-network-attachments).
+                       This field is only used for resources using PSC-I.
+                    type: string
+                type: object
+              reservedIPRanges:
+                description: |-
+                  A list of names for the reserved ip ranges under the VPC network
+                   that can be used for this Pipeline Job's workload.
+
+                   If set, we will deploy the Pipeline Job's workload within the provided ip
+                   ranges. Otherwise, the job will be deployed to any ip ranges under the
+                   provided VPC network.
+
+                   Example: ['vertex-ai-ip-range'].
+                items:
+                  type: string
+                type: array
+              resourceID:
+                description: The VertexAIPipelineJob name. If not given, the metadata.name
+                  will be used.
+                type: string
+              runtimeConfig:
+                description: Runtime config of the pipeline.
+                properties:
+                  failurePolicy:
+                    description: |-
+                      Represents the failure policy of a pipeline. Currently, the default of a
+                       pipeline is that the pipeline will continue to run until no more tasks
+                       can be executed, also known as PIPELINE_FAILURE_POLICY_FAIL_SLOW.
+                       However, if a pipeline is set to PIPELINE_FAILURE_POLICY_FAIL_FAST, it
+                       will stop scheduling any new tasks when a task has failed. Any scheduled
+                       tasks will continue to completion.
+                    type: string
+                  gcsOutputDirectory:
+                    description: |-
+                      Required. A path in a Cloud Storage bucket, which will be treated as the
+                       root output directory of the pipeline. It is used by the system to
+                       generate the paths of output artifacts. The artifact paths are generated
+                       with a sub-path pattern `{job_id}/{task_id}/{output_key}` under the
+                       specified output directory. The service account specified in this
+                       pipeline must have the `storage.objects.get` and `storage.objects.create`
+                       permissions for this bucket.
+                    type: string
+                type: object
+              serviceAccount:
+                description: |-
+                  The service account that the pipeline workload runs as.
+                   If not specified, the Compute Engine default service account in the project
+                   will be used.
+                   See
+                   https://cloud.google.com/compute/docs/access/service-accounts#default_service_account
+
+                   Users starting the pipeline must have the `iam.serviceAccounts.actAs`
+                   permission on this service account.
+                type: string
+              templateURI:
+                description: |-
+                  A template uri from where the
+                   [PipelineJob.pipeline_spec][google.cloud.aiplatform.v1.PipelineJob.pipeline_spec],
+                   if empty, will be downloaded. Currently, only uri from Vertex Template
+                   Registry & Gallery is supported. Reference to
+                   https://cloud.google.com/vertex-ai/docs/pipelines/create-pipeline-template.
+                type: string
+            required:
+            - location
+            type: object
+          status:
+            description: VertexAIPipelineJobStatus defines the config connector machine
+              state of VertexAIPipelineJob
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the VertexAIPipelineJob resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Pipeline creation time.
+                    type: string
+                  endTime:
+                    description: Output only. Pipeline end time.
+                    type: string
+                  error:
+                    description: |-
+                      Output only. The error that occurred during pipeline execution.
+                       Only populated when the pipeline's state is FAILED or CANCELLED.
+                    properties:
+                      code:
+                        description: |-
+                          The status code, which should be an enum value of
+                           [google.rpc.Code][google.rpc.Code].
+                        format: int32
+                        type: integer
+                      message:
+                        description: |-
+                          A developer-facing error message, which should be in English. Any
+                           user-facing error message should be localized and sent in the
+                           [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+                           by the client.
+                        type: string
+                    type: object
+                  jobDetail:
+                    description: Output only. The details of pipeline run. Not available
+                      in the list view.
+                    properties:
+                      pipelineContext:
+                        description: Output only. The context of the pipeline.
+                        properties:
+                          createTime:
+                            description: Output only. Timestamp when this Context
+                              was created.
+                            type: string
+                          description:
+                            description: Description of the Context
+                            type: string
+                          displayName:
+                            description: |-
+                              User provided display name of the Context.
+                               May be up to 128 Unicode characters.
+                            type: string
+                          etag:
+                            description: |-
+                              An eTag used to perform consistent read-modify-write updates. If not set, a
+                               blind "overwrite" update happens.
+                            type: string
+                          labels:
+                            additionalProperties:
+                              type: string
+                            description: |-
+                              The labels with user-defined metadata to organize your Contexts.
+
+                               Label keys and values can be no longer than 64 characters
+                               (Unicode codepoints), can only contain lowercase letters, numeric
+                               characters, underscores and dashes. International characters are allowed.
+                               No more than 64 user labels can be associated with one Context (System
+                               labels are excluded).
+                            type: object
+                          metadata:
+                            description: |-
+                              Properties of the Context.
+                               Top level metadata keys' heading and trailing spaces will be trimmed.
+                               The size of this field should not exceed 200KB.
+                            x-kubernetes-preserve-unknown-fields: true
+                          name:
+                            description: Immutable. The resource name of the Context.
+                            type: string
+                          parentContexts:
+                            description: |-
+                              Output only. A list of resource names of Contexts that are parents of this
+                               Context. A Context may have at most 10 parent_contexts.
+                            items:
+                              type: string
+                            type: array
+                          schemaTitle:
+                            description: |-
+                              The title of the schema describing the metadata.
+
+                               Schema title and version is expected to be registered in earlier Create
+                               Schema calls. And both are used together as unique identifiers to identify
+                               schemas within the local metadata store.
+                            type: string
+                          schemaVersion:
+                            description: |-
+                              The version of the schema in schema_name to use.
+
+                               Schema title and version is expected to be registered in earlier Create
+                               Schema calls. And both are used together as unique identifiers to identify
+                               schemas within the local metadata store.
+                            type: string
+                          updateTime:
+                            description: Output only. Timestamp when this Context
+                              was last updated.
+                            type: string
+                        type: object
+                      pipelineRunContext:
+                        description: Output only. The context of the current pipeline
+                          run.
+                        properties:
+                          createTime:
+                            description: Output only. Timestamp when this Context
+                              was created.
+                            type: string
+                          description:
+                            description: Description of the Context
+                            type: string
+                          displayName:
+                            description: |-
+                              User provided display name of the Context.
+                               May be up to 128 Unicode characters.
+                            type: string
+                          etag:
+                            description: |-
+                              An eTag used to perform consistent read-modify-write updates. If not set, a
+                               blind "overwrite" update happens.
+                            type: string
+                          labels:
+                            additionalProperties:
+                              type: string
+                            description: |-
+                              The labels with user-defined metadata to organize your Contexts.
+
+                               Label keys and values can be no longer than 64 characters
+                               (Unicode codepoints), can only contain lowercase letters, numeric
+                               characters, underscores and dashes. International characters are allowed.
+                               No more than 64 user labels can be associated with one Context (System
+                               labels are excluded).
+                            type: object
+                          metadata:
+                            description: |-
+                              Properties of the Context.
+                               Top level metadata keys' heading and trailing spaces will be trimmed.
+                               The size of this field should not exceed 200KB.
+                            x-kubernetes-preserve-unknown-fields: true
+                          name:
+                            description: Immutable. The resource name of the Context.
+                            type: string
+                          parentContexts:
+                            description: |-
+                              Output only. A list of resource names of Contexts that are parents of this
+                               Context. A Context may have at most 10 parent_contexts.
+                            items:
+                              type: string
+                            type: array
+                          schemaTitle:
+                            description: |-
+                              The title of the schema describing the metadata.
+
+                               Schema title and version is expected to be registered in earlier Create
+                               Schema calls. And both are used together as unique identifiers to identify
+                               schemas within the local metadata store.
+                            type: string
+                          schemaVersion:
+                            description: |-
+                              The version of the schema in schema_name to use.
+
+                               Schema title and version is expected to be registered in earlier Create
+                               Schema calls. And both are used together as unique identifiers to identify
+                               schemas within the local metadata store.
+                            type: string
+                          updateTime:
+                            description: Output only. Timestamp when this Context
+                              was last updated.
+                            type: string
+                        type: object
+                      taskDetails:
+                        description: Output only. The runtime details of the tasks
+                          under the pipeline.
+                        items:
+                          properties:
+                            createTime:
+                              description: Output only. Task create time.
+                              type: string
+                            endTime:
+                              description: Output only. Task end time.
+                              type: string
+                            error:
+                              description: |-
+                                Output only. The error that occurred during task execution.
+                                 Only populated when the task's state is FAILED or CANCELLED.
+                              properties:
+                                code:
+                                  description: |-
+                                    The status code, which should be an enum value of
+                                     [google.rpc.Code][google.rpc.Code].
+                                  format: int32
+                                  type: integer
+                                message:
+                                  description: |-
+                                    A developer-facing error message, which should be in English. Any
+                                     user-facing error message should be localized and sent in the
+                                     [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+                                     by the client.
+                                  type: string
+                              type: object
+                            execution:
+                              description: Output only. The execution metadata of
+                                the task.
+                              properties:
+                                createTime:
+                                  description: Output only. Timestamp when this Execution
+                                    was created.
+                                  type: string
+                                description:
+                                  description: Description of the Execution
+                                  type: string
+                                displayName:
+                                  description: |-
+                                    User provided display name of the Execution.
+                                     May be up to 128 Unicode characters.
+                                  type: string
+                                etag:
+                                  description: |-
+                                    An eTag used to perform consistent read-modify-write updates. If not set, a
+                                     blind "overwrite" update happens.
+                                  type: string
+                                labels:
+                                  additionalProperties:
+                                    type: string
+                                  description: |-
+                                    The labels with user-defined metadata to organize your Executions.
+
+                                     Label keys and values can be no longer than 64 characters
+                                     (Unicode codepoints), can only contain lowercase letters, numeric
+                                     characters, underscores and dashes. International characters are allowed.
+                                     No more than 64 user labels can be associated with one Execution (System
+                                     labels are excluded).
+                                  type: object
+                                metadata:
+                                  description: |-
+                                    Properties of the Execution.
+                                     Top level metadata keys' heading and trailing spaces will be trimmed.
+                                     The size of this field should not exceed 200KB.
+                                  x-kubernetes-preserve-unknown-fields: true
+                                name:
+                                  description: Output only. The resource name of the
+                                    Execution.
+                                  type: string
+                                schemaTitle:
+                                  description: |-
+                                    The title of the schema describing the metadata.
+
+                                     Schema title and version is expected to be registered in earlier Create
+                                     Schema calls. And both are used together as unique identifiers to identify
+                                     schemas within the local metadata store.
+                                  type: string
+                                schemaVersion:
+                                  description: |-
+                                    The version of the schema in `schema_title` to use.
+
+                                     Schema title and version is expected to be registered in earlier Create
+                                     Schema calls. And both are used together as unique identifiers to identify
+                                     schemas within the local metadata store.
+                                  type: string
+                                state:
+                                  description: |-
+                                    The state of this Execution. This is a property of the Execution, and does
+                                     not imply or capture any ongoing process. This property is managed by
+                                     clients (such as Vertex AI Pipelines) and the system does not prescribe
+                                     or check the validity of state transitions.
+                                  type: string
+                                updateTime:
+                                  description: Output only. Timestamp when this Execution
+                                    was last updated.
+                                  type: string
+                              type: object
+                            executorDetail:
+                              description: Output only. The detailed execution info.
+                              properties:
+                                containerDetail:
+                                  description: Output only. The detailed info for
+                                    a container executor.
+                                  properties:
+                                    failedMainJobs:
+                                      description: |-
+                                        Output only. The names of the previously failed
+                                         [CustomJob][google.cloud.aiplatform.v1.CustomJob] for the main container
+                                         executions. The list includes the all attempts in chronological order.
+                                      items:
+                                        type: string
+                                      type: array
+                                    failedPreCachingCheckJobs:
+                                      description: |-
+                                        Output only. The names of the previously failed
+                                         [CustomJob][google.cloud.aiplatform.v1.CustomJob] for the
+                                         pre-caching-check container executions. This job will be available if the
+                                         [PipelineJob.pipeline_spec][google.cloud.aiplatform.v1.PipelineJob.pipeline_spec]
+                                         specifies the `pre_caching_check` hook in the lifecycle events. The list
+                                         includes the all attempts in chronological order.
+                                      items:
+                                        type: string
+                                      type: array
+                                    mainJob:
+                                      description: |-
+                                        Output only. The name of the
+                                         [CustomJob][google.cloud.aiplatform.v1.CustomJob] for the main container
+                                         execution.
+                                      type: string
+                                    preCachingCheckJob:
+                                      description: |-
+                                        Output only. The name of the
+                                         [CustomJob][google.cloud.aiplatform.v1.CustomJob] for the
+                                         pre-caching-check container execution. This job will be available if the
+                                         [PipelineJob.pipeline_spec][google.cloud.aiplatform.v1.PipelineJob.pipeline_spec]
+                                         specifies the `pre_caching_check` hook in the lifecycle events.
+                                      type: string
+                                  type: object
+                                customJobDetail:
+                                  description: Output only. The detailed info for
+                                    a custom job executor.
+                                  properties:
+                                    failedJobs:
+                                      description: |-
+                                        Output only. The names of the previously failed
+                                         [CustomJob][google.cloud.aiplatform.v1.CustomJob]. The list includes the
+                                         all attempts in chronological order.
+                                      items:
+                                        type: string
+                                      type: array
+                                    job:
+                                      description: |-
+                                        Output only. The name of the
+                                         [CustomJob][google.cloud.aiplatform.v1.CustomJob].
+                                      type: string
+                                  type: object
+                              type: object
+                            parentTaskID:
+                              description: |-
+                                Output only. The id of the parent task if the task is within a component
+                                 scope. Empty if the task is at the root level.
+                              format: int64
+                              type: integer
+                            pipelineTaskStatus:
+                              description: |-
+                                Output only. A list of task status. This field keeps a record of task
+                                 status evolving over time.
+                              items:
+                                properties:
+                                  error:
+                                    description: |-
+                                      Output only. The error that occurred during the state. May be set when
+                                       the state is any of the non-final state (PENDING/RUNNING/CANCELLING) or
+                                       FAILED state. If the state is FAILED, the error here is final and not
+                                       going to be retried. If the state is a non-final state, the error
+                                       indicates a system-error being retried.
+                                    properties:
+                                      code:
+                                        description: |-
+                                          The status code, which should be an enum value of
+                                           [google.rpc.Code][google.rpc.Code].
+                                        format: int32
+                                        type: integer
+                                      message:
+                                        description: |-
+                                          A developer-facing error message, which should be in English. Any
+                                           user-facing error message should be localized and sent in the
+                                           [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+                                           by the client.
+                                        type: string
+                                    type: object
+                                  state:
+                                    description: Output only. The state of the task.
+                                    type: string
+                                  updateTime:
+                                    description: Output only. Update time of this
+                                      status.
+                                    type: string
+                                type: object
+                              type: array
+                            startTime:
+                              description: Output only. Task start time.
+                              type: string
+                            state:
+                              description: Output only. State of the task.
+                              type: string
+                            taskID:
+                              description: Output only. The system generated ID of
+                                the task.
+                              format: int64
+                              type: integer
+                            taskName:
+                              description: |-
+                                Output only. The user specified name of the task that is defined in
+                                 [pipeline_spec][google.cloud.aiplatform.v1.PipelineJob.pipeline_spec].
+                              type: string
+                            taskUniqueName:
+                              description: |-
+                                Output only. The unique name of a task.
+                                 This field is used by rerun pipeline job.
+                                 Console UI and Vertex AI SDK will support triggering pipeline job reruns.
+                                 The name is constructed by concatenating all the parent tasks name with
+                                 the task name. For example, if a task named "child_task" has a parent task
+                                 named "parent_task_1" and parent task 1 has a parent task named
+                                 "parent_task_2", the task unique name will be
+                                 "parent_task_2.parent_task_1.child_task".
+                              type: string
+                          type: object
+                        type: array
+                    type: object
+                  scheduleName:
+                    description: |-
+                      Output only. The schedule resource name.
+                       Only returned if the Pipeline is created by Schedule API.
+                    type: string
+                  startTime:
+                    description: Output only. Pipeline start time.
+                    type: string
+                  state:
+                    description: Output only. The detailed state of the job.
+                    type: string
+                  templateMetadata:
+                    description: |-
+                      Output only. Pipeline template metadata. Will fill up fields if
+                       [PipelineJob.template_uri][google.cloud.aiplatform.v1.PipelineJob.template_uri]
+                       is from supported template registry.
+                    properties:
+                      version:
+                        description: |-
+                          The version_name in artifact registry.
+
+                           Will always be presented in output if the
+                           [PipelineJob.template_uri][google.cloud.aiplatform.v1.PipelineJob.template_uri]
+                           is from supported template registry.
+
+                           Format is "sha256:abcdef123456...".
+                        type: string
+                    type: object
+                  updateTime:
+                    description: Output only. Timestamp when this PipelineJob was
+                      most recently updated.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

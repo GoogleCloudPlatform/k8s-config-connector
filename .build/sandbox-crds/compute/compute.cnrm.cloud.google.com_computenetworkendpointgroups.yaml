@@ -1,0 +1,312 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: computenetworkendpointgroups.compute.cnrm.cloud.google.com
+spec:
+  group: compute.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ComputeNetworkEndpointGroup
+    listKind: ComputeNetworkEndpointGroupList
+    plural: computenetworkendpointgroups
+    shortNames:
+    - gcpcomputenetworkendpointgroup
+    - gcpcomputenetworkendpointgroups
+    singular: computenetworkendpointgroup
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: ComputeNetworkEndpointGroup is the Schema for the ComputeNetworkEndpointGroup
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ComputeNetworkEndpointGroupSpec defines the desired state
+              of ComputeNetworkEndpointGroup
+            properties:
+              annotations:
+                additionalProperties:
+                  type: string
+                description: Optional. Metadata defined as annotations on the network
+                  endpoint group.
+                type: object
+              appEngine:
+                description: Optional. Only valid when networkEndpointType is SERVERLESS.
+                  Only one of cloudRun, appEngine or cloudFunction may be set.
+                properties:
+                  service:
+                    description: 'Optional serving service. The service name is case-sensitive
+                      and must be 1-63 characters long. Example value: default, my-service.'
+                    type: string
+                  urlMask:
+                    description: An URL mask is one of the main components of the
+                      Cloud Function. A template to parse service and version fields
+                      from a request URL. URL mask allows for routing to multiple
+                      App Engine services without having to create multiple Network
+                      Endpoint Groups and backend services. For example, the request
+                      URLs foo1-dot-appname.appspot.com/v1 and foo1-dot-appname.appspot.com/v2
+                      can be backed by the same Serverless NEG with URL mask <service>-dot-appname.appspot.com/<version>.
+                      The URL mask will parse them to { service = "foo1", version
+                      = "v1" } and { service = "foo1", version = "v2" } respectively.
+                    type: string
+                  version:
+                    description: 'Optional serving version. The version name is case-sensitive
+                      and must be 1-100 characters long. Example value: v1, v2.'
+                    type: string
+                type: object
+              cloudFunction:
+                description: Optional. Only valid when networkEndpointType is SERVERLESS.
+                  Only one of cloudRun, appEngine or cloudFunction may be set.
+                properties:
+                  function:
+                    description: 'A user-defined name of the Cloud Function. The function
+                      name is case-sensitive and must be 1-63 characters long. Example
+                      value: func1.'
+                    type: string
+                  urlMask:
+                    description: An URL mask is one of the main components of the
+                      Cloud Function. A template to parse function field from a request
+                      URL. URL mask allows for routing to multiple Cloud Functions
+                      without having to create multiple Network Endpoint Groups and
+                      backend services. For example, request URLs mydomain.com/function1
+                      and mydomain.com/function2 can be backed by the same Serverless
+                      NEG with URL mask /<function>. The URL mask will parse them
+                      to { function = "function1" } and { function = "function2" }
+                      respectively.
+                    type: string
+                type: object
+              cloudRun:
+                description: Optional. Only valid when networkEndpointType is SERVERLESS.
+                  Only one of cloudRun, appEngine or cloudFunction may be set.
+                properties:
+                  service:
+                    description: 'Cloud Run service is the main resource of Cloud
+                      Run. The service must be 1-63 characters long, and comply with
+                      RFC1035. Example value: "run-service".'
+                    type: string
+                  tag:
+                    description: 'Optional Cloud Run tag represents the "named-revision"
+                      to provide additional fine-grained traffic routing information.
+                      The tag must be 1-63 characters long, and comply with RFC1035.
+                      Example value: "revision-0010".'
+                    type: string
+                  urlMask:
+                    description: An URL mask is one of the main components of the
+                      Cloud Function. A template to parse <service> and <tag> fields
+                      from a request URL. URL mask allows for routing to multiple
+                      Run services without having to create multiple network endpoint
+                      groups and backend services. For example, request URLs foo1.domain.com/bar1
+                      and foo1.domain.com/bar2 can be backed by the same Serverless
+                      Network Endpoint Group (NEG) with URL mask <tag>.domain.com/<service>.
+                      The URL mask will parse them to { service="bar1", tag="foo1"
+                      } and { service="bar2", tag="foo2" } respectively.
+                    type: string
+                type: object
+              creationTimestamp:
+                description: '[Output Only] Creation timestamp in RFC3339 text format.'
+                type: string
+              defaultPort:
+                description: The default port used if the port number is not specified
+                  in the network endpoint. Optional. If the network endpoint type
+                  is either GCE_VM_IP, SERVERLESS or PRIVATE_SERVICE_CONNECT, this
+                  field must not be specified.
+                format: int32
+                type: integer
+              description:
+                description: An optional description of this resource. Provide this
+                  property when you create the resource.
+                type: string
+              id:
+                description: '[Output Only] The unique identifier for the resource.
+                  This identifier is defined by the server.'
+                format: int64
+                type: integer
+              kind:
+                description: '[Output Only] Type of the resource. Always compute#networkEndpointGroup
+                  for network endpoint group.'
+                type: string
+              location:
+                description: The location of this resource.
+                type: string
+              network:
+                description: The URL of the network to which all network endpoints
+                  in the NEG belong. Uses default project network if unspecified.
+                type: string
+              networkEndpointType:
+                description: |-
+                  Type of network endpoints in this network endpoint group. Can be one of GCE_VM_IP, GCE_VM_IP_PORT, NON_GCP_PRIVATE_IP_PORT, INTERNET_FQDN_PORT, INTERNET_IP_PORT, SERVERLESS, PRIVATE_SERVICE_CONNECT, GCE_VM_IP_PORTMAP.
+                   Check the NetworkEndpointType enum for the list of possible values.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              pscData:
+                description: Optional. Only valid when networkEndpointType is PRIVATE_SERVICE_CONNECT.
+                properties:
+                  consumerPSCAddress:
+                    description: '[Output Only] Address allocated from given subnetwork
+                      for PSC. This IP address acts as a VIP for a PSC NEG, allowing
+                      it to act as an endpoint in L7 PSC-XLB.'
+                    type: string
+                  producerPort:
+                    description: The psc producer port is used to connect PSC NEG
+                      with specific port on the PSC Producer side; should only be
+                      used for the PRIVATE_SERVICE_CONNECT NEG type
+                    format: int32
+                    type: integer
+                  pscConnectionID:
+                    description: '[Output Only] The PSC connection id of the PSC Network
+                      Endpoint Group Consumer.'
+                    format: int64
+                    type: integer
+                  pscConnectionStatus:
+                    description: |-
+                      [Output Only] The connection status of the PSC Forwarding Rule.
+                       Check the PscConnectionStatus enum for the list of possible values.
+                    type: string
+                type: object
+              pscTargetService:
+                description: 'The target service url used to set up private service
+                  connection to a Google API or a PSC Producer Service Attachment.
+                  An example value is: asia-northeast3-cloudkms.googleapis.com. Optional.
+                  Only valid when networkEndpointType is PRIVATE_SERVICE_CONNECT.'
+                type: string
+              region:
+                description: '[Output Only] The URL of the region where the network
+                  endpoint group is located.'
+                type: string
+              resourceID:
+                description: The ComputeNetworkEndpointGroup name. If not given, the
+                  metadata.name will be used.
+                type: string
+              selfLink:
+                description: '[Output Only] Server-defined URL for the resource.'
+                type: string
+              size:
+                description: '[Output only] Number of network endpoints in the network
+                  endpoint group.'
+                format: int32
+                type: integer
+              subnetwork:
+                description: Optional URL of the subnetwork to which all network endpoints
+                  in the NEG belong.
+                type: string
+              zone:
+                description: '[Output Only] The URL of the zone where the network
+                  endpoint group is located.'
+                type: string
+            required:
+            - location
+            type: object
+          status:
+            description: ComputeNetworkEndpointGroupStatus defines the config connector
+              machine state of ComputeNetworkEndpointGroup
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ComputeNetworkEndpointGroup
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
