@@ -128,6 +128,7 @@ func RedisClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.
 		out.KMSKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKey()}
 	}
 	out.AutomatedBackupConfig = AutomatedBackupConfig_FromProto(mapCtx, in.GetAutomatedBackupConfig())
+	out.ClusterEndpoints = direct.Slice_FromProto(mapCtx, in.ClusterEndpoints, ClusterEndpoint_FromProto)
 
 	return out
 }
@@ -153,6 +154,35 @@ func RedisClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterSpe
 		out.KmsKey = &in.KMSKeyRef.External
 	}
 	out.AutomatedBackupConfig = AutomatedBackupConfig_ToProto(mapCtx, in.AutomatedBackupConfig)
+	out.ClusterEndpoints = direct.Slice_ToProto(mapCtx, in.ClusterEndpoints, ClusterEndpoint_ToProto)
+	return out
+}
+
+func PSCConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *krm.PSCConnection {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PSCConnection{}
+	out.PSCConnectionID = direct.LazyPtr(in.GetPscConnectionId())
+	out.Address = direct.LazyPtr(in.GetAddress())
+	out.ForwardingRule = direct.LazyPtr(in.GetForwardingRule())
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	out.ServiceAttachment = direct.LazyPtr(in.GetServiceAttachment())
+	return out
+}
+
+func PSCConnection_ToProto(mapCtx *direct.MapContext, in *krm.PSCConnection) *pb.PscConnection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PscConnection{}
+	out.PscConnectionId = direct.ValueOf(in.PSCConnectionID)
+	out.Address = direct.ValueOf(in.Address)
+	out.ForwardingRule = direct.ValueOf(in.ForwardingRule)
+	out.ProjectId = direct.ValueOf(in.ProjectID)
+	out.Network = direct.ValueOf(in.Network)
+	out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
 	return out
 }
 

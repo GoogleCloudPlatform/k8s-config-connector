@@ -180,7 +180,6 @@ type Cluster_StateInfo_UpdateInfo struct {
 	TargetReplicaCount *int32 `json:"targetReplicaCount,omitempty"`
 }
 
-/* unreachable type ClusterEndpoint
 // +kcc:proto=google.cloud.redis.cluster.v1.ClusterEndpoint
 type ClusterEndpoint struct {
 	// A group of PSC connections. They are created in the same VPC network, one
@@ -188,7 +187,6 @@ type ClusterEndpoint struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.ClusterEndpoint.connections
 	Connections []ConnectionDetail `json:"connections,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.redis.cluster.v1.ClusterMaintenancePolicy
 type ClusterMaintenancePolicy struct {
@@ -252,7 +250,6 @@ type ClusterWeeklyMaintenanceWindow struct {
 	StartTime *TimeOfDay `json:"startTime,omitempty"`
 }
 
-/* unreachable type ConnectionDetail
 // +kcc:proto=google.cloud.redis.cluster.v1.ConnectionDetail
 type ConnectionDetail struct {
 	// Detailed information of a PSC connection that is created through
@@ -265,7 +262,6 @@ type ConnectionDetail struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.ConnectionDetail.psc_connection
 	PSCConnection *PSCConnection `json:"pscConnection,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig
 type CrossClusterReplicationConfig struct {
@@ -316,7 +312,6 @@ type EncryptionInfo struct {
 }
 */
 
-/* unreachable type PSCAutoConnection
 // +kcc:proto=google.cloud.redis.cluster.v1.PscAutoConnection
 type PSCAutoConnection struct {
 
@@ -330,7 +325,6 @@ type PSCAutoConnection struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscAutoConnection.network
 	Network *string `json:"network,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.redis.cluster.v1.PscConfig
 type PSCConfig struct {
@@ -341,7 +335,7 @@ type PSCConfig struct {
 	Network *string `json:"network,omitempty"`
 }
 
-/* found existing non-generated go type with proto tag "google.cloud.redis.cluster.v1.PscConnection", skipping
+/* found existing non-generated go type "PSCConnection", skipping
 
 // +kcc:proto=google.cloud.redis.cluster.v1.PscConnection
 type PSCConnection struct {
@@ -755,7 +749,6 @@ type ClusterObservedState struct {
 }
 */
 
-/* unreachable type ClusterEndpointObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.ClusterEndpoint
 type ClusterEndpointObservedState struct {
 	// A group of PSC connections. They are created in the same VPC network, one
@@ -763,7 +756,6 @@ type ClusterEndpointObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.ClusterEndpoint.connections
 	Connections []ConnectionDetailObservedState `json:"connections,omitempty"`
 }
-*/
 
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.ClusterMaintenancePolicy
 type ClusterMaintenancePolicyObservedState struct {
@@ -791,7 +783,6 @@ type ClusterMaintenanceScheduleObservedState struct {
 	EndTime *string `json:"endTime,omitempty"`
 }
 
-/* unreachable type ConnectionDetailObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.ConnectionDetail
 type ConnectionDetailObservedState struct {
 	// Detailed information of a PSC connection that is created through
@@ -804,7 +795,6 @@ type ConnectionDetailObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.ConnectionDetail.psc_connection
 	PSCConnection *PSCConnectionObservedState `json:"pscConnection,omitempty"`
 }
-*/
 
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig
 type CrossClusterReplicationConfigObservedState struct {
@@ -905,7 +895,6 @@ type EncryptionInfoObservedState struct {
 	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
 }
 
-/* unreachable type PSCAutoConnectionObservedState
 // +kcc:observedstate:proto=google.cloud.redis.cluster.v1.PscAutoConnection
 type PSCAutoConnectionObservedState struct {
 	// Output only. The PSC connection id of the forwarding rule connected to the
@@ -940,7 +929,6 @@ type PSCAutoConnectionObservedState struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.PscAutoConnection.connection_type
 	ConnectionType *string `json:"connectionType,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "PSCConnectionObservedState", skipping
 
