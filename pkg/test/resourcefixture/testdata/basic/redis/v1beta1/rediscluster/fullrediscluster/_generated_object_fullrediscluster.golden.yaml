@@ -20,6 +20,13 @@ spec:
         nanos: 0
         seconds: 0
     retention: 1209600s
+  clusterEndpoints:
+  - connections:
+    - pscAutoConnection:
+        networkRef:
+          name: ${networkID}
+        projectRef:
+          external: ${projectId}
   deletionProtectionEnabled: false
   kmsKeyRef:
     name: kmscryptokey-${uniqueId}
@@ -44,7 +51,7 @@ spec:
     external: ${projectId}
   pscConfigs:
   - networkRef:
-      external: projects/${projectId}/global/networks/${networkID}
+      name: ${networkID}
   redisConfigs:
     maxclients: "10"
     maxmemory-policy: volatile-ttl
@@ -64,6 +71,21 @@ status:
   externalRef: projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}
   observedGeneration: 2
   observedState:
+    clusterEndpoints:
+    - connections:
+      - pscAutoConnection:
+          address: 10.128.0.21
+          connectionType: CONNECTION_TYPE_DISCOVERY
+          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
+          pscConnectionID: "1234567890123456789"
+          pscConnectionStatus: PSC_CONNECTION_STATUS_ACTIVE
+          serviceAttachment: projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa
+      - pscAutoConnection:
+          address: 10.128.0.22
+          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
+          pscConnectionID: "1234567890123456790"
+          pscConnectionStatus: PSC_CONNECTION_STATUS_ACTIVE
+          serviceAttachment: projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2
     createTime: "1970-01-01T00:00:00Z"
     discoveryEndpoints:
     - address: 10.11.12.13

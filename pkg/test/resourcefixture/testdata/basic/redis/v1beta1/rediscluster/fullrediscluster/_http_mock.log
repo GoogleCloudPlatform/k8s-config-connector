@@ -805,6 +805,18 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
     },
     "retention": "2592000s"
   },
+  "clusterEndpoints": [
+    {
+      "connections": [
+        {
+          "pscAutoConnection": {
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "projects/${projectId}"
+          }
+        }
+      ]
+    }
+  ],
   "deletionProtectionEnabled": true,
   "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "maintenancePolicy": {
@@ -902,6 +914,35 @@ X-Xss-Protection: 0
       },
       "retention": "2592000s"
     },
+    "clusterEndpoints": [
+      {
+        "connections": [
+          {
+            "pscAutoConnection": {
+              "address": "10.11.12.13",
+              "connectionType": "CONNECTION_TYPE_DISCOVERY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+            }
+          },
+          {
+            "pscAutoConnection": {
+              "address": "10.11.12.13",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+            }
+          }
+        ]
+      }
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": true,
     "discoveryEndpoints": [
@@ -1012,6 +1053,35 @@ X-Xss-Protection: 0
     },
     "retention": "2592000s"
   },
+  "clusterEndpoints": [
+    {
+      "connections": [
+        {
+          "pscAutoConnection": {
+            "address": "10.11.12.13",
+            "connectionType": 1,
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "${projectId}",
+            "pscConnectionId": "${pscConnectionID}",
+            "pscConnectionStatus": 1,
+            "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+          }
+        },
+        {
+          "pscAutoConnection": {
+            "address": "10.11.12.13",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "${projectId}",
+            "pscConnectionId": "${pscConnectionID}",
+            "pscConnectionStatus": 1,
+            "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+          }
+        }
+      ]
+    }
+  ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": true,
   "discoveryEndpoints": [
@@ -1111,6 +1181,18 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
     },
     "retention": "1209600s"
   },
+  "clusterEndpoints": [
+    {
+      "connections": [
+        {
+          "pscAutoConnection": {
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "projects/${projectId}"
+          }
+        }
+      ]
+    }
+  ],
   "deletionProtectionEnabled": false,
   "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "maintenancePolicy": {
@@ -1211,6 +1293,276 @@ X-Xss-Protection: 0
       },
       "retention": "1209600s"
     },
+    "clusterEndpoints": [
+      {
+        "connections": [
+          {
+            "pscAutoConnection": {
+              "address": "10.11.12.13",
+              "connectionType": "CONNECTION_TYPE_DISCOVERY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+            }
+          },
+          {
+            "pscAutoConnection": {
+              "address": "10.11.12.13",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+            }
+          }
+        ]
+      }
+    ],
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deletionProtectionEnabled": true,
+    "discoveryEndpoints": [
+      {
+        "address": "10.11.12.13",
+        "port": 6379,
+        "pscConfig": {
+          "network": "projects/${projectId}/global/networks/${networkID}"
+        }
+      }
+    ],
+    "encryptionInfo": {
+      "encryptionType": "CUSTOMER_MANAGED_ENCRYPTION",
+      "kmsKeyPrimaryState": "ENABLED",
+      "kmsKeyVersions": [
+        "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
+      ],
+      "lastUpdateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+    "maintenancePolicy": {
+      "weeklyMaintenanceWindow": [
+        {
+          "day": "SUNDAY",
+          "startTime": {
+            "hours": 2
+          }
+        }
+      ]
+    },
+    "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "nodeType": "REDIS_STANDARD_SMALL",
+    "persistenceConfig": {
+      "aofConfig": {
+        "appendFsync": "EVERYSEC"
+      },
+      "mode": "AOF"
+    },
+    "preciseSizeGb": 39,
+    "pscConnections": [
+      {
+        "address": "10.11.12.13",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "network": "projects/${projectId}/global/networks/${networkID}",
+        "projectId": "${projectId}",
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+      },
+      {
+        "address": "10.11.12.13",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "network": "projects/${projectId}/global/networks/${networkID}",
+        "projectId": "${projectId}",
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+      }
+    ],
+    "pscServiceAttachments": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+      },
+      {
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+      }
+    ],
+    "redisConfigs": {
+      "maxmemory-policy": "volatile-ttl"
+    },
+    "replicaCount": 2,
+    "shardCount": 6,
+    "sizeGb": 39,
+    "state": "ACTIVE",
+    "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION",
+    "uid": "0123456789abcdef",
+    "zoneDistributionConfig": {
+      "mode": "SINGLE_ZONE",
+      "zone": "us-central1-b"
+    }
+  }
+}
+
+---
+
+PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=clusterEndpoints
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
+
+{
+  "authorizationMode": 1,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 2,
+    "fixedFrequencySchedule": {
+      "startTime": {
+        "hours": 15
+      }
+    },
+    "retention": "1209600s"
+  },
+  "clusterEndpoints": [
+    {
+      "connections": [
+        {
+          "pscAutoConnection": {
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "projects/${projectId}"
+          }
+        }
+      ]
+    }
+  ],
+  "deletionProtectionEnabled": false,
+  "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "maintenancePolicy": {
+    "weeklyMaintenanceWindow": [
+      {
+        "day": 1,
+        "startTime": {
+          "hours": 3
+        }
+      }
+    ]
+  },
+  "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+  "nodeType": 4,
+  "persistenceConfig": {
+    "mode": 2,
+    "rdbConfig": {
+      "rdbSnapshotPeriod": 1,
+      "rdbSnapshotStartTime": "2024-10-02T15:01:23Z"
+    }
+  },
+  "pscConfigs": [
+    {
+      "network": "projects/${projectId}/global/networks/${networkID}"
+    }
+  ],
+  "redisConfigs": {
+    "maxclients": "10",
+    "maxmemory-policy": "volatile-ttl"
+  },
+  "replicaCount": 1,
+  "shardCount": 6,
+  "transitEncryptionMode": 2,
+  "zoneDistributionConfig": {
+    "mode": 2,
+    "zone": "us-central1-b"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
+    "authorizationMode": "AUTH_MODE_IAM_AUTH",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "ENABLED",
+      "fixedFrequencySchedule": {
+        "startTime": {
+          "hours": 15
+        }
+      },
+      "retention": "1209600s"
+    },
+    "clusterEndpoints": [
+      {
+        "connections": [
+          {
+            "pscAutoConnection": {
+              "address": "10.11.12.13",
+              "connectionType": "CONNECTION_TYPE_DISCOVERY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+            }
+          },
+          {
+            "pscAutoConnection": {
+              "address": "10.11.12.13",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+            }
+          }
+        ]
+      }
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": true,
     "discoveryEndpoints": [
@@ -1311,6 +1663,18 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
     },
     "retention": "1209600s"
   },
+  "clusterEndpoints": [
+    {
+      "connections": [
+        {
+          "pscAutoConnection": {
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "projects/${projectId}"
+          }
+        }
+      ]
+    }
+  ],
   "deletionProtectionEnabled": false,
   "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "maintenancePolicy": {
@@ -1411,6 +1775,35 @@ X-Xss-Protection: 0
       },
       "retention": "1209600s"
     },
+    "clusterEndpoints": [
+      {
+        "connections": [
+          {
+            "pscAutoConnection": {
+              "address": "10.11.12.13",
+              "connectionType": "CONNECTION_TYPE_DISCOVERY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+            }
+          },
+          {
+            "pscAutoConnection": {
+              "address": "10.11.12.13",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+            }
+          }
+        ]
+      }
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
     "discoveryEndpoints": [
@@ -1511,6 +1904,18 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
     },
     "retention": "1209600s"
   },
+  "clusterEndpoints": [
+    {
+      "connections": [
+        {
+          "pscAutoConnection": {
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "projects/${projectId}"
+          }
+        }
+      ]
+    }
+  ],
   "deletionProtectionEnabled": false,
   "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "maintenancePolicy": {
@@ -1611,6 +2016,35 @@ X-Xss-Protection: 0
       },
       "retention": "1209600s"
     },
+    "clusterEndpoints": [
+      {
+        "connections": [
+          {
+            "pscAutoConnection": {
+              "address": "10.11.12.13",
+              "connectionType": "CONNECTION_TYPE_DISCOVERY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+            }
+          },
+          {
+            "pscAutoConnection": {
+              "address": "10.11.12.13",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+            }
+          }
+        ]
+      }
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
     "discoveryEndpoints": [
@@ -1711,6 +2145,18 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
     },
     "retention": "1209600s"
   },
+  "clusterEndpoints": [
+    {
+      "connections": [
+        {
+          "pscAutoConnection": {
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "projects/${projectId}"
+          }
+        }
+      ]
+    }
+  ],
   "deletionProtectionEnabled": false,
   "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "maintenancePolicy": {
@@ -1811,6 +2257,35 @@ X-Xss-Protection: 0
       },
       "retention": "1209600s"
     },
+    "clusterEndpoints": [
+      {
+        "connections": [
+          {
+            "pscAutoConnection": {
+              "address": "10.11.12.13",
+              "connectionType": "CONNECTION_TYPE_DISCOVERY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+            }
+          },
+          {
+            "pscAutoConnection": {
+              "address": "10.11.12.13",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+            }
+          }
+        ]
+      }
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
     "discoveryEndpoints": [
@@ -1912,6 +2387,18 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
     },
     "retention": "1209600s"
   },
+  "clusterEndpoints": [
+    {
+      "connections": [
+        {
+          "pscAutoConnection": {
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "projects/${projectId}"
+          }
+        }
+      ]
+    }
+  ],
   "deletionProtectionEnabled": false,
   "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "maintenancePolicy": {
@@ -2012,6 +2499,35 @@ X-Xss-Protection: 0
       },
       "retention": "1209600s"
     },
+    "clusterEndpoints": [
+      {
+        "connections": [
+          {
+            "pscAutoConnection": {
+              "address": "10.11.12.13",
+              "connectionType": "CONNECTION_TYPE_DISCOVERY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+            }
+          },
+          {
+            "pscAutoConnection": {
+              "address": "10.11.12.13",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+            }
+          }
+        ]
+      }
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
     "discoveryEndpoints": [
@@ -2114,6 +2630,18 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
     },
     "retention": "1209600s"
   },
+  "clusterEndpoints": [
+    {
+      "connections": [
+        {
+          "pscAutoConnection": {
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "projects/${projectId}"
+          }
+        }
+      ]
+    }
+  ],
   "deletionProtectionEnabled": false,
   "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "maintenancePolicy": {
@@ -2214,6 +2742,35 @@ X-Xss-Protection: 0
       },
       "retention": "1209600s"
     },
+    "clusterEndpoints": [
+      {
+        "connections": [
+          {
+            "pscAutoConnection": {
+              "address": "10.11.12.13",
+              "connectionType": "CONNECTION_TYPE_DISCOVERY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+            }
+          },
+          {
+            "pscAutoConnection": {
+              "address": "10.11.12.13",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+              "network": "projects/${projectId}/global/networks/${networkID}",
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "pscConnectionStatus": "PSC_CONNECTION_STATUS_ACTIVE",
+              "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+            }
+          }
+        ]
+      }
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtectionEnabled": false,
     "discoveryEndpoints": [
@@ -2326,6 +2883,35 @@ X-Xss-Protection: 0
     },
     "retention": "1209600s"
   },
+  "clusterEndpoints": [
+    {
+      "connections": [
+        {
+          "pscAutoConnection": {
+            "address": "10.11.12.13",
+            "connectionType": 1,
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "${projectId}",
+            "pscConnectionId": "${pscConnectionID}",
+            "pscConnectionStatus": 1,
+            "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+          }
+        },
+        {
+          "pscAutoConnection": {
+            "address": "10.11.12.13",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+            "network": "projects/${projectId}/global/networks/${networkID}",
+            "projectId": "${projectId}",
+            "pscConnectionId": "${pscConnectionID}",
+            "pscConnectionStatus": 1,
+            "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+          }
+        }
+      ]
+    }
+  ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtectionEnabled": false,
   "discoveryEndpoints": [

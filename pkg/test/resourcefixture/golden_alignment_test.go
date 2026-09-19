@@ -860,6 +860,8 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		if serverCaMode, ok := v["serverCaMode"].(float64); ok && serverCaMode == 0 {
 			delete(v, "serverCaMode")
 		}
+		delete(v, "clusterEndpoints")
+		delete(v, "cluster_endpoints")
 		for k, val := range v {
 			v[k] = normalizeRepresentation(val)
 		}
