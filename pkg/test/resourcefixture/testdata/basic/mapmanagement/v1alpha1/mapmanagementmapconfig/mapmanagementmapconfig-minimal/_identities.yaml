@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: mapmanagement.cnrm.cloud.google.com
+  kind: MapManagementMapConfig
+  name: mapmanagementmapconfig-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
