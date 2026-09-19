@@ -1,0 +1,106 @@
+File: recorder
+Build ID: a3001996f5c5a69c187a15329bc878e731934bee
+Type: inuse_space
+Time: 2026-09-19 15:08:07 UTC
+Showing nodes accounting for 34716.59kB, 89.87% of 38631.22kB total
+Dropped 1991 nodes (cum <= 193.16kB)
+      flat  flat%   sum%        cum   cum%
+   19808kB 51.27% 51.27%    19808kB 51.27%  compress/flate.(*dictDecoder).init (inline)
+ 4661.84kB 12.07% 63.34% 24469.84kB 63.34%  compress/flate.NewReader
+ 2566.78kB  6.64% 69.99%  2566.78kB  6.64%  bufio.NewReaderSize (inline)
+ 1491.50kB  3.86% 73.85% 28942.86kB 74.92%  encoding/json.(*Decoder).refill
+ 1338.83kB  3.47% 77.31%  1338.83kB  3.47%  runtime.mallocgc
+  666.36kB  1.72% 79.04%   666.36kB  1.72%  k8s.io/apimachinery/pkg/runtime/serializer/streaming.NewDecoder (inline)
+  635.06kB  1.64% 80.68%      688kB  1.78%  golang.org/x/net/http2.(*ClientConn).internalRoundTrip
+     618kB  1.60% 82.28%      618kB  1.60%  golang.org/x/net/http2.init.func1
+  478.09kB  1.24% 83.52%   531.48kB  1.38%  golang.org/x/net/http2.(*clientConnReadLoop).handleResponse
+  425.56kB  1.10% 84.62%   425.56kB  1.10%  golang.org/x/net/http2.init.func14
+     320kB  0.83% 85.45% 29318.20kB 75.89%  k8s.io/apimachinery/pkg/runtime/serializer/streaming.(*decoder).Decode
+  308.39kB   0.8% 86.25%   462.69kB  1.20%  k8s.io/apimachinery/pkg/runtime.(*Scheme).AddKnownTypeWithName
+  302.66kB  0.78% 87.03%   302.66kB  0.78%  regexp/syntax.(*compiler).inst (inline)
+  222.45kB  0.58% 87.61%   222.45kB  0.58%  net/textproto.MIMEHeader.Add (inline)
+  193.44kB   0.5% 88.11%   193.44kB   0.5%  encoding/json.NewDecoder (inline)
+  193.44kB   0.5% 88.61%   280.48kB  0.73%  net/http.NewRequestWithContext
+  167.89kB  0.43% 89.04%   253.02kB  0.65%  golang.org/x/net/http2.(*clientStream).writeRequest
+  112.15kB  0.29% 89.33%   311.89kB  0.81%  main.(*MetricsRecorder).Run.func1
+   43.45kB  0.11% 89.45%   197.95kB  0.51%  github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder/kube.WatchKube[go.shape.struct { main.lastCondition string }]
+   38.69kB   0.1% 89.55% 29436.14kB 76.20%  k8s.io/client-go/rest/watch.(*Decoder).Decode
+   31.34kB 0.081% 89.63%   652.21kB  1.69%  golang.org/x/net/http2.(*dataBuffer).lastChunkOrAlloc
+   29.02kB 0.075% 89.70%   222.45kB  0.58%  k8s.io/apimachinery/pkg/util/framer.NewJSONFramedReader (inline)
+   29.02kB 0.075% 89.78%   251.47kB  0.65%  k8s.io/client-go/rest.(*Request).SetHeader
+   16.61kB 0.043% 89.82%   448.68kB  1.16%  regexp.compile
+   14.51kB 0.038% 89.86% 28996.99kB 75.06%  k8s.io/apimachinery/pkg/util/framer.(*jsonFrameReader).Read
+    2.19kB 0.0057% 89.86%   208.95kB  0.54%  google.golang.org/protobuf/internal/filetype.Builder.Build
+    0.88kB 0.0023% 89.87% 29437.02kB 76.20%  k8s.io/apimachinery/pkg/watch.(*StreamWatcher).receive
+    0.11kB 0.00028% 89.87%  3025.75kB  7.83%  github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder/kube.(*dynamicWatch).watchUntilClosed
+    0.11kB 0.00028% 89.87%  1343.03kB  3.48%  golang.org/x/net/http2.(*clientConnReadLoop).run
+    0.11kB 0.00028% 89.87%   759.76kB  1.97%  net/http.(*Transport).roundTrip
+    0.05kB 0.00012% 89.87% 27012.03kB 69.92%  compress/gzip.(*Reader).Reset
+    0.05kB 0.00012% 89.87%   325.65kB  0.84%  main.(*MetricsRecorder).Run
+    0.03kB 8.1e-05% 89.87%   359.03kB  0.93%  main.run
+         0     0% 89.87%  2566.78kB  6.64%  bufio.NewReader (inline)
+         0     0% 89.87% 24490.75kB 63.40%  compress/gzip.(*Reader).readHeader
+         0     0% 89.87% 28982.48kB 75.02%  encoding/json.(*Decoder).Decode
+         0     0% 89.87% 28962.67kB 74.97%  encoding/json.(*Decoder).readValue
+         0     0% 89.87%   311.89kB  0.81%  github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder/kube.(*KubeView[go.shape.struct { GVR k8s.io/apimachinery/pkg/runtime/schema.GroupVersionResource; GVK k8s.io/apimachinery/pkg/runtime/schema.GroupVersionKind }]).Walk
+         0     0% 89.87%  3025.75kB  7.83%  github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder/kube.(*dynamicWatch).watchForever
+         0     0% 89.87%  3025.75kB  7.83%  github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder/kube.(*dynamicWatchers).AddWatch.func1
+         0     0% 89.87%   311.89kB  0.81%  github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder/kube.NamespaceNameMap[go.shape.struct { GVR k8s.io/apimachinery/pkg/runtime/schema.GroupVersionResource; GVK k8s.io/apimachinery/pkg/runtime/schema.GroupVersionKind }].Walk (inline)
+         0     0% 89.87%   193.54kB   0.5%  github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1
+         0     0% 89.87%      688kB  1.78%  golang.org/x/net/http2.(*ClientConn).RoundTrip
+         0     0% 89.87%  1343.03kB  3.48%  golang.org/x/net/http2.(*ClientConn).readLoop
+         0     0% 89.87%      688kB  1.78%  golang.org/x/net/http2.(*ClientConn).roundTrip (inline)
+         0     0% 89.87%   688.44kB  1.78%  golang.org/x/net/http2.(*Transport).RoundTrip
+         0     0% 89.87%   688.44kB  1.78%  golang.org/x/net/http2.(*Transport).RoundTripOpt (inline)
+         0     0% 89.87%   688.44kB  1.78%  golang.org/x/net/http2.(*Transport).roundTripOpt
+         0     0% 89.87%   688.44kB  1.78%  golang.org/x/net/http2.(*Transport).roundTripViaPool
+         0     0% 89.87%   652.32kB  1.69%  golang.org/x/net/http2.(*clientConnReadLoop).processData
+         0     0% 89.87%   531.48kB  1.38%  golang.org/x/net/http2.(*clientConnReadLoop).processHeaders
+         0     0% 89.87%   253.02kB  0.65%  golang.org/x/net/http2.(*clientStream).doRequest
+         0     0% 89.87%   652.21kB  1.69%  golang.org/x/net/http2.(*dataBuffer).Write
+         0     0% 89.87% 27451.36kB 71.06%  golang.org/x/net/http2.(*gzipReader).Read
+         0     0% 89.87% 27438.47kB 71.03%  golang.org/x/net/http2.(*gzipReader).acquire
+         0     0% 89.87%   652.21kB  1.69%  golang.org/x/net/http2.(*pipe).Write
+         0     0% 89.87%   620.88kB  1.61%  golang.org/x/net/http2.getDataBufferChunk
+         0     0% 89.87% 27438.47kB 71.03%  golang.org/x/net/http2.gzipPoolGet
+         0     0% 89.87%   655.84kB  1.70%  golang.org/x/net/http2.noDialH2RoundTripper.RoundTrip
+         0     0% 89.87%   270.34kB   0.7%  k8s.io/apimachinery/pkg/apis/meta/v1.AddToGroupVersion
+         0     0% 89.87%   310.52kB   0.8%  k8s.io/apimachinery/pkg/runtime.(*Scheme).AddKnownTypes
+         0     0% 89.87%   476.03kB  1.23%  k8s.io/apimachinery/pkg/runtime.(*SchemeBuilder).AddToScheme
+         0     0% 89.87%   222.45kB  0.58%  k8s.io/apimachinery/pkg/runtime/serializer/json.jsonFramer.NewFrameReader
+         0     0% 89.87%  2770.85kB  7.17%  k8s.io/client-go/dynamic.(*dynamicResourceClient).Watch
+         0     0% 89.87%   267.86kB  0.69%  k8s.io/client-go/kubernetes/scheme.init.0
+         0     0% 89.87%   251.47kB  0.65%  k8s.io/client-go/rest.(*RESTClient).Get
+         0     0% 89.87%   251.47kB  0.65%  k8s.io/client-go/rest.(*RESTClient).Verb (inline)
+         0     0% 89.87%  2519.18kB  6.52%  k8s.io/client-go/rest.(*Request).Watch (inline)
+         0     0% 89.87%   623.28kB  1.61%  k8s.io/client-go/rest.(*Request).newHTTPRequest
+         0     0% 89.87%  1120.94kB  2.90%  k8s.io/client-go/rest.(*Request).newStreamWatcher
+         0     0% 89.87%   251.47kB  0.65%  k8s.io/client-go/rest.(*Request).setAcceptHeader
+         0     0% 89.87%  2519.18kB  6.52%  k8s.io/client-go/rest.(*Request).watchInternal
+         0     0% 89.87%   251.47kB  0.65%  k8s.io/client-go/rest.NewRequest
+         0     0% 89.87%   359.03kB  0.93%  main.main
+         0     0% 89.87%   759.76kB  1.97%  net/http.(*Client).Do (inline)
+         0     0% 89.87%   759.76kB  1.97%  net/http.(*Client).do
+         0     0% 89.87%   759.76kB  1.97%  net/http.(*Client).send
+         0     0% 89.87%   759.76kB  1.97%  net/http.(*Transport).RoundTrip
+         0     0% 89.87%   222.45kB  0.58%  net/http.Header.Add (inline)
+         0     0% 89.87%   759.76kB  1.97%  net/http.send
+         0     0% 89.87%   448.68kB  1.16%  regexp.Compile (inline)
+         0     0% 89.87%   448.68kB  1.16%  regexp.MustCompile
+         0     0% 89.87%   289.84kB  0.75%  regexp/syntax.(*compiler).compile
+         0     0% 89.87%   259.48kB  0.67%  regexp/syntax.Compile
+         0     0% 89.87%  2417.36kB  6.26%  runtime.doInit (inline)
+         0     0% 89.87%  2417.36kB  6.26%  runtime.doInit1
+         0     0% 89.87%   194.24kB   0.5%  runtime.goenvs (inline)
+         0     0% 89.87%   194.24kB   0.5%  runtime.goenvs_unix
+         0     0% 89.87%  2782.05kB  7.20%  runtime.main
+         0     0% 89.87%   907.03kB  2.35%  runtime.malg
+         0     0% 89.87%  1029.62kB  2.67%  runtime.newobject
+         0     0% 89.87%   920.63kB  2.38%  runtime.newproc.func1
+         0     0% 89.87%   915.19kB  2.37%  runtime.newproc1
+         0     0% 89.87%   365.11kB  0.95%  runtime.rt0_go
+         0     0% 89.87%   364.64kB  0.94%  runtime.schedinit
+         0     0% 89.87%   936.50kB  2.42%  runtime.systemstack
+         0     0% 89.87%   202.45kB  0.52%  sync.(*Once).Do (partial-inline)
+         0     0% 89.87%   202.45kB  0.52%  sync.(*Once).doSlow
+         0     0% 89.87%  1075.52kB  2.78%  sync.(*Pool).Get
