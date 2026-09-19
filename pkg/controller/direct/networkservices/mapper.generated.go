@@ -25,6 +25,8 @@ package networkservices
 
 import (
 	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
+	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krmnetworkservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
 	krmnetworkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1beta1"
@@ -32,6 +34,140 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AgentGateway_AgentGatewayOutputCardObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AgentGateway_AgentGatewayOutputCard) *krmnetworkservicesv1alpha1.AgentGateway_AgentGatewayOutputCardObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworkservicesv1alpha1.AgentGateway_AgentGatewayOutputCardObservedState{}
+	out.MtlsEndpoint = direct.LazyPtr(in.GetMtlsEndpoint())
+	out.RootCertificates = in.RootCertificates
+	out.ServiceExtensionsServiceAccount = direct.LazyPtr(in.GetServiceExtensionsServiceAccount())
+	return out
+}
+func AgentGateway_AgentGatewayOutputCardObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.AgentGateway_AgentGatewayOutputCardObservedState) *pb.AgentGateway_AgentGatewayOutputCard {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AgentGateway_AgentGatewayOutputCard{}
+	out.MtlsEndpoint = direct.ValueOf(in.MtlsEndpoint)
+	out.RootCertificates = in.RootCertificates
+	out.ServiceExtensionsServiceAccount = direct.ValueOf(in.ServiceExtensionsServiceAccount)
+	return out
+}
+func AgentGateway_GoogleManaged_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AgentGateway_GoogleManaged) *krmnetworkservicesv1alpha1.AgentGateway_GoogleManaged {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworkservicesv1alpha1.AgentGateway_GoogleManaged{}
+	out.GovernedAccessPath = direct.Enum_FromProto(mapCtx, in.GetGovernedAccessPath())
+	return out
+}
+func AgentGateway_GoogleManaged_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.AgentGateway_GoogleManaged) *pb.AgentGateway_GoogleManaged {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AgentGateway_GoogleManaged{}
+	out.GovernedAccessPath = direct.Enum_ToProto[pb.AgentGateway_GoogleManaged_GovernedAccessPath](mapCtx, in.GovernedAccessPath)
+	return out
+}
+func AgentGateway_NetworkConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AgentGateway_NetworkConfig) *krmnetworkservicesv1alpha1.AgentGateway_NetworkConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworkservicesv1alpha1.AgentGateway_NetworkConfig{}
+	out.Egress = AgentGateway_NetworkConfig_Egress_v1alpha1_FromProto(mapCtx, in.GetEgress())
+	out.DNSPeeringConfig = AgentGateway_NetworkConfig_DNSPeeringConfig_v1alpha1_FromProto(mapCtx, in.GetDnsPeeringConfig())
+	return out
+}
+func AgentGateway_NetworkConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.AgentGateway_NetworkConfig) *pb.AgentGateway_NetworkConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AgentGateway_NetworkConfig{}
+	out.Egress = AgentGateway_NetworkConfig_Egress_v1alpha1_ToProto(mapCtx, in.Egress)
+	out.DnsPeeringConfig = AgentGateway_NetworkConfig_DNSPeeringConfig_v1alpha1_ToProto(mapCtx, in.DNSPeeringConfig)
+	return out
+}
+func AgentGateway_NetworkConfig_DNSPeeringConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AgentGateway_NetworkConfig_DnsPeeringConfig) *krmnetworkservicesv1alpha1.AgentGateway_NetworkConfig_DNSPeeringConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworkservicesv1alpha1.AgentGateway_NetworkConfig_DNSPeeringConfig{}
+	out.Domains = in.Domains
+	out.TargetProject = direct.LazyPtr(in.GetTargetProject())
+	if in.GetTargetNetwork() != "" {
+		out.TargetNetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetTargetNetwork()}
+	}
+	return out
+}
+func AgentGateway_NetworkConfig_DNSPeeringConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.AgentGateway_NetworkConfig_DNSPeeringConfig) *pb.AgentGateway_NetworkConfig_DnsPeeringConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AgentGateway_NetworkConfig_DnsPeeringConfig{}
+	out.Domains = in.Domains
+	out.TargetProject = direct.ValueOf(in.TargetProject)
+	if in.TargetNetworkRef != nil {
+		out.TargetNetwork = in.TargetNetworkRef.External
+	}
+	return out
+}
+func AgentGateway_NetworkConfig_Egress_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AgentGateway_NetworkConfig_Egress) *krmnetworkservicesv1alpha1.AgentGateway_NetworkConfig_Egress {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworkservicesv1alpha1.AgentGateway_NetworkConfig_Egress{}
+	if in.GetNetworkAttachment() != "" {
+		out.NetworkAttachmentRef = &krmcomputev1alpha1.ComputeNetworkAttachmentRef{External: in.GetNetworkAttachment()}
+	}
+	out.TrustConfig = AgentGateway_NetworkConfig_Egress_TrustConfig_v1alpha1_FromProto(mapCtx, in.GetTrustConfig())
+	return out
+}
+func AgentGateway_NetworkConfig_Egress_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.AgentGateway_NetworkConfig_Egress) *pb.AgentGateway_NetworkConfig_Egress {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AgentGateway_NetworkConfig_Egress{}
+	if in.NetworkAttachmentRef != nil {
+		out.NetworkAttachment = in.NetworkAttachmentRef.External
+	}
+	out.TrustConfig = AgentGateway_NetworkConfig_Egress_TrustConfig_v1alpha1_ToProto(mapCtx, in.TrustConfig)
+	return out
+}
+func AgentGateway_NetworkConfig_Egress_TrustConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AgentGateway_NetworkConfig_Egress_TrustConfig) *krmnetworkservicesv1alpha1.AgentGateway_NetworkConfig_Egress_TrustConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworkservicesv1alpha1.AgentGateway_NetworkConfig_Egress_TrustConfig{}
+	out.PemCertificates = in.PemCertificates
+	return out
+}
+func AgentGateway_NetworkConfig_Egress_TrustConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.AgentGateway_NetworkConfig_Egress_TrustConfig) *pb.AgentGateway_NetworkConfig_Egress_TrustConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AgentGateway_NetworkConfig_Egress_TrustConfig{}
+	out.PemCertificates = in.PemCertificates
+	return out
+}
+func AgentGateway_SelfManaged_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AgentGateway_SelfManaged) *krmnetworkservicesv1alpha1.AgentGateway_SelfManaged {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworkservicesv1alpha1.AgentGateway_SelfManaged{}
+	out.ResourceURI = direct.LazyPtr(in.GetResourceUri())
+	out.ResourceUris = in.ResourceUris
+	return out
+}
+func AgentGateway_SelfManaged_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.AgentGateway_SelfManaged) *pb.AgentGateway_SelfManaged {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AgentGateway_SelfManaged{}
+	out.ResourceUri = direct.ValueOf(in.ResourceURI)
+	out.ResourceUris = in.ResourceUris
+	return out
+}
 func ExtensionChain_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExtensionChain) *krmnetworkservicesv1alpha1.ExtensionChain {
 	if in == nil {
 		return nil
@@ -64,7 +200,11 @@ func ExtensionChain_Extension_v1alpha1_FromProto(mapCtx *direct.MapContext, in *
 	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
 	out.FailOpen = direct.LazyPtr(in.GetFailOpen())
 	out.ForwardHeaders = in.ForwardHeaders
+	// MISSING: ForwardAttributes
 	out.Metadata = direct.Struct_FromProto(mapCtx, in.GetMetadata())
+	// MISSING: RequestBodySendMode
+	// MISSING: ResponseBodySendMode
+	// MISSING: ObservabilityMode
 	return out
 }
 func ExtensionChain_Extension_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.ExtensionChain_Extension) *pb.ExtensionChain_Extension {
@@ -79,7 +219,11 @@ func ExtensionChain_Extension_v1alpha1_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
 	out.FailOpen = direct.ValueOf(in.FailOpen)
 	out.ForwardHeaders = in.ForwardHeaders
+	// MISSING: ForwardAttributes
 	out.Metadata = direct.Struct_ToProto(mapCtx, in.Metadata)
+	// MISSING: RequestBodySendMode
+	// MISSING: ResponseBodySendMode
+	// MISSING: ObservabilityMode
 	return out
 }
 func ExtensionChain_MatchCondition_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExtensionChain_MatchCondition) *krmnetworkservicesv1alpha1.ExtensionChain_MatchCondition {
@@ -644,6 +788,66 @@ func HttprouteUrlRewrite_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetwo
 	out.HostRewrite = direct.ValueOf(in.HostRewrite)
 	return out
 }
+func NetworkServicesAgentGatewayObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AgentGateway) *krmnetworkservicesv1alpha1.NetworkServicesAgentGatewayObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworkservicesv1alpha1.NetworkServicesAgentGatewayObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Etag
+	out.AgentGatewayCard = AgentGateway_AgentGatewayOutputCardObservedState_v1alpha1_FromProto(mapCtx, in.GetAgentGatewayCard())
+	return out
+}
+func NetworkServicesAgentGatewayObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesAgentGatewayObservedState) *pb.AgentGateway {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AgentGateway{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Etag
+	out.AgentGatewayCard = AgentGateway_AgentGatewayOutputCardObservedState_v1alpha1_ToProto(mapCtx, in.AgentGatewayCard)
+	return out
+}
+func NetworkServicesAgentGatewaySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AgentGateway) *krmnetworkservicesv1alpha1.NetworkServicesAgentGatewaySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworkservicesv1alpha1.NetworkServicesAgentGatewaySpec{}
+	out.GoogleManaged = AgentGateway_GoogleManaged_v1alpha1_FromProto(mapCtx, in.GetGoogleManaged())
+	out.SelfManaged = AgentGateway_SelfManaged_v1alpha1_FromProto(mapCtx, in.GetSelfManaged())
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: Etag
+	out.Protocols = direct.EnumSlice_FromProto(mapCtx, in.Protocols)
+	out.Registries = in.Registries
+	out.NetworkConfig = AgentGateway_NetworkConfig_v1alpha1_FromProto(mapCtx, in.GetNetworkConfig())
+	return out
+}
+func NetworkServicesAgentGatewaySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesAgentGatewaySpec) *pb.AgentGateway {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AgentGateway{}
+	if oneof := AgentGateway_GoogleManaged_v1alpha1_ToProto(mapCtx, in.GoogleManaged); oneof != nil {
+		out.DeploymentMode = &pb.AgentGateway_GoogleManaged_{GoogleManaged: oneof}
+	}
+	if oneof := AgentGateway_SelfManaged_v1alpha1_ToProto(mapCtx, in.SelfManaged); oneof != nil {
+		out.DeploymentMode = &pb.AgentGateway_SelfManaged_{SelfManaged: oneof}
+	}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: Etag
+	out.Protocols = direct.EnumSlice_ToProto[pb.AgentGateway_Protocol](mapCtx, in.Protocols)
+	out.Registries = in.Registries
+	out.NetworkConfig = AgentGateway_NetworkConfig_v1alpha1_ToProto(mapCtx, in.NetworkConfig)
+	return out
+}
 func NetworkServicesAuthzExtensionObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthzExtension) *krmnetworkservicesv1alpha1.NetworkServicesAuthzExtensionObservedState {
 	if in == nil {
 		return nil
@@ -653,6 +857,7 @@ func NetworkServicesAuthzExtensionObservedState_v1alpha1_FromProto(mapCtx *direc
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: Service
+	// MISSING: ForwardAttributes
 	return out
 }
 func NetworkServicesAuthzExtensionObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesAuthzExtensionObservedState) *pb.AuthzExtension {
@@ -664,6 +869,7 @@ func NetworkServicesAuthzExtensionObservedState_v1alpha1_ToProto(mapCtx *direct.
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: Service
+	// MISSING: ForwardAttributes
 	return out
 }
 func NetworkServicesAuthzExtensionSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthzExtension) *krmnetworkservicesv1alpha1.NetworkServicesAuthzExtensionSpec {
@@ -681,6 +887,7 @@ func NetworkServicesAuthzExtensionSpec_v1alpha1_FromProto(mapCtx *direct.MapCont
 	out.FailOpen = direct.LazyPtr(in.GetFailOpen())
 	out.Metadata = direct.Struct_FromProto(mapCtx, in.GetMetadata())
 	out.ForwardHeaders = in.ForwardHeaders
+	// MISSING: ForwardAttributes
 	out.WireFormat = direct.Enum_FromProto(mapCtx, in.GetWireFormat())
 	return out
 }
@@ -699,6 +906,7 @@ func NetworkServicesAuthzExtensionSpec_v1alpha1_ToProto(mapCtx *direct.MapContex
 	out.FailOpen = direct.ValueOf(in.FailOpen)
 	out.Metadata = direct.Struct_ToProto(mapCtx, in.Metadata)
 	out.ForwardHeaders = in.ForwardHeaders
+	// MISSING: ForwardAttributes
 	out.WireFormat = direct.Enum_ToProto[pb.WireFormat](mapCtx, in.WireFormat)
 	return out
 }
@@ -718,6 +926,7 @@ func NetworkServicesGatewaySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in 
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	out.Addresses = in.Addresses
 	out.Ports = in.Ports
+	// MISSING: AllPorts
 	out.Scope = in.GetScope()
 	// MISSING: ServerTLSPolicy
 	// MISSING: CertificateUrls
@@ -727,6 +936,7 @@ func NetworkServicesGatewaySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in 
 	// MISSING: IPVersion
 	// MISSING: EnvoyHeaders
 	// MISSING: RoutingMode
+	// MISSING: AllowGlobalAccess
 	return out
 }
 */
@@ -746,6 +956,7 @@ func NetworkServicesGatewaySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *k
 	out.Type = direct.Enum_ToProto[pb.Gateway_Type](mapCtx, in.Type)
 	out.Addresses = in.Addresses
 	out.Ports = in.Ports
+	// MISSING: AllPorts
 	out.Scope = NetworkServicesGatewaySpec_Scope_ToProto(mapCtx, in.Scope)
 	// MISSING: ServerTLSPolicy
 	// MISSING: CertificateUrls
@@ -755,6 +966,7 @@ func NetworkServicesGatewaySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: IPVersion
 	// MISSING: EnvoyHeaders
 	// MISSING: RoutingMode
+	// MISSING: AllowGlobalAccess
 	return out
 }
 */

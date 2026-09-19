@@ -3176,6 +3176,20 @@
 [missing_field] crd=networksecuritypartnersserealms.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.partnerNetwork" is not set in unstructured objects
 [missing_field] crd=networksecuritypartnersserealms.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.partnerVPC" is not set in unstructured objects
 [missing_field] crd=networksecuritypartnersserealms.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=networkservicesagentgateways.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=networkservicesagentgateways.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.googleManaged.governedAccessPath" is not set in unstructured objects
+[missing_field] crd=networkservicesagentgateways.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=networkservicesagentgateways.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=networkservicesagentgateways.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkConfig.dnsPeeringConfig.domains[]" is not set in unstructured objects
+[missing_field] crd=networkservicesagentgateways.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkConfig.dnsPeeringConfig.targetNetworkRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=networkservicesagentgateways.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkConfig.dnsPeeringConfig.targetProject" is not set in unstructured objects
+[missing_field] crd=networkservicesagentgateways.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkConfig.egress.networkAttachmentRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=networkservicesagentgateways.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkConfig.egress.trustConfig.pemCertificates[]" is not set in unstructured objects
+[missing_field] crd=networkservicesagentgateways.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=networkservicesagentgateways.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.protocols[]" is not set in unstructured objects
+[missing_field] crd=networkservicesagentgateways.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.registries[]" is not set in unstructured objects
+[missing_field] crd=networkservicesagentgateways.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.selfManaged.resourceURI" is not set in unstructured objects
+[missing_field] crd=networkservicesagentgateways.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.selfManaged.resourceUris[]" is not set in unstructured objects
 [missing_field] crd=networkservicesauthzextensions.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecachekeysets.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.publicKey[].managed" is not set in unstructured objects
 [missing_field] crd=networkservicesedgecachekeysets.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.publicKey[].value.value" is not set in unstructured objects

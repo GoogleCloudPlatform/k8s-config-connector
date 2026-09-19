@@ -274,6 +274,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 		// Network Services
 		"//networkservices.googleapis.com/projects/{}/locations/global/edgeCacheServices/{}": true,
+		"//networkservices.googleapis.com/projects/{}/locations/{}/agentGateways/{}":         true,
 
 		// Notebooks
 		"//notebooks.googleapis.com/projects/{}/locations/{}/environments/{}": true,

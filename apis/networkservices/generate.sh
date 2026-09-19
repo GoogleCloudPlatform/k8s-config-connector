@@ -29,16 +29,31 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
+
+PROTO_SHA="054c87e45c4683ea5430ab609cbd4a445c4c4c71"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+
+# Unset SKIP_GENERATE_PROTOS so this specific script fetches the newer/older proto
+OLD_SKIP_GENERATE_PROTOS="${SKIP_GENERATE_PROTOS:-}"
+unset SKIP_GENERATE_PROTOS
+
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
+
+# Restore SKIP_GENERATE_PROTOS
+if [[ -n "${OLD_SKIP_GENERATE_PROTOS}" ]]; then
+  export SKIP_GENERATE_PROTOS="${OLD_SKIP_GENERATE_PROTOS}"
+fi
 
 # --- v1alpha1 ---
 ${CONTROLLERBUILDER} generate-types \
+    --proto-source-path ${PROTO_OUT} \
     --service google.cloud.networkservices.v1 \
     --api-version "networkservices.cnrm.cloud.google.com/v1alpha1" \
     --resource NetworkServicesServiceBinding:ServiceBinding \
     --resource NetworkServicesLBRouteExtension:LbRouteExtension \
     --resource NetworkServicesWasmPlugin:WasmPlugin \
-    --resource NetworkServicesAuthzExtension:AuthzExtension
+    --resource NetworkServicesAuthzExtension:AuthzExtension \
+    --resource NetworkServicesAgentGateway:AgentGateway
 # Note: NetworkServicesEdgeCacheService is handcoded under apis/networkservices/v1alpha1/edgecacheservice_types.go
 # because its proto definition is not published in the public googleapis repository.
 
@@ -47,6 +62,7 @@ ${CONTROLLERBUILDER} generate-types \
 
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
+    --proto-source-path ${PROTO_OUT} \
     --service google.cloud.networkservices.v1 \
     --api-version "networkservices.cnrm.cloud.google.com/v1beta1" \
     --include-skipped-output \
@@ -55,6 +71,7 @@ ${CONTROLLERBUILDER} generate-types \
 
 
 ${CONTROLLERBUILDER} generate-mapper \
+  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.networkservices.v1 \
   --api-version "networkservices.cnrm.cloud.google.com/v1beta1" \
   --include-skipped-output \
