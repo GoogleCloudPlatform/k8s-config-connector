@@ -49,5 +49,7 @@ func authzExtensionFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_Identity(".name")
 	f.Unimplemented_LabelsAnnotations(".labels")
 
+	f.Unimplemented_NotYetTriaged(".forward_attributes")
+
 	return f
 }
