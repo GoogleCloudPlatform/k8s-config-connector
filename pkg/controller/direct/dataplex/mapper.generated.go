@@ -27,6 +27,7 @@ import (
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 	krmdataprocv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
+	krmkmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -2103,7 +2104,7 @@ func Task_ExecutionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task_Executi
 	}
 	out.MaxJobExecutionLifetime = direct.StringDuration_FromProto(mapCtx, in.GetMaxJobExecutionLifetime())
 	if in.GetKmsKey() != "" {
-		out.KMSKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
+		out.KMSKeyRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
 	}
 	return out
 }
