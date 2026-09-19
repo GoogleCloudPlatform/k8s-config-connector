@@ -2,13 +2,14 @@ apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
 metadata:
   annotations:
-    alpha.cnrm.cloud.google.com/reconciler: direct
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
+    cnrm.cloud.google.com/observed-secret-versions: (removed)
     cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
   name: alloydbcluster-${uniqueId}
@@ -27,6 +28,7 @@ spec:
       name: ${networkID}
   projectRef:
     external: ${projectId}
+  resourceID: alloydbcluster-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -49,10 +51,8 @@ status:
   databaseVersion: POSTGRES_16
   encryptionInfo:
   - encryptionType: GOOGLE_DEFAULT_ENCRYPTION
-  externalRef: projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}
   name: projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}
-  observedGeneration: 2
+  observedGeneration: 3
   observedState:
     clusterType: PRIMARY
-    databaseVersion: POSTGRES_16
   uid: "12345678"
