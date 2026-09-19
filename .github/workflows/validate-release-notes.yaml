@@ -40,7 +40,13 @@ jobs:
               return;
             }
 
-            const body = pr.body || '';
+            // Fetch the latest PR data from GitHub API to ensure we don't use stale cached payload
+            const { data: latestPR } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+            });
+            const body = latestPR.body || '';
 
             // 2. Extract ```release-note ... ``` block
             const match = body.match(/```release-note\s*([\s\S]*?)\s*```/i);
