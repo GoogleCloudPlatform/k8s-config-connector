@@ -18,6 +18,7 @@ import (
 	pb "cloud.google.com/go/dataproc/v2/apiv1/dataprocpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -319,7 +320,7 @@ func ExecutionConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Execut
 	out.NetworkURI = direct.LazyPtr(in.GetNetworkUri())
 	out.SubnetworkURI = direct.LazyPtr(in.GetSubnetworkUri())
 	out.NetworkTags = in.NetworkTags
-	out.KMSKeyRef = &refs.KMSCryptoKeyRef{
+	out.KMSKeyRef = &kmsv1beta1.KMSCryptoKeyRef{
 		External: in.GetKmsKey(),
 	}
 	out.IdleTTL = direct.StringDuration_FromProto(mapCtx, in.GetIdleTtl())
