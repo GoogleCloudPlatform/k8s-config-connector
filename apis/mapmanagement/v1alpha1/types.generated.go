@@ -18,6 +18,7 @@
 // krm.version: v1alpha1
 // proto.service: google.maps.mapmanagement.v2beta
 // resource: MapManagementMapConfig:MapConfig
+// resource: MapManagementStyleConfig:StyleConfig
 
 package v1alpha1
 
@@ -64,6 +65,29 @@ type MapFeatures struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.maps.mapmanagement.v2beta.StyleConfig", skipping
+
+// +kcc:proto=google.maps.mapmanagement.v2beta.StyleConfig
+type StyleConfig struct {
+
+	// Optional. The display name of this StyleConfig, as specified by the user.
+	// +kcc:proto:field=google.maps.mapmanagement.v2beta.StyleConfig.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The description of this StyleConfig, as specified by the user.
+	// +kcc:proto:field=google.maps.mapmanagement.v2beta.StyleConfig.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. JSON representation of the style sheet for this StyleConfig. If
+	//  not specified or if provided as an empty string, the base unstyled Google
+	//  map style will be used. See
+	//  https://developers.google.com/maps/documentation/javascript/cloud-customization/json-reference
+	//  for more details on the acceptable JSON format.
+	// +kcc:proto:field=google.maps.mapmanagement.v2beta.StyleConfig.json_style_sheet
+	JsonStyleSheet *string `json:"jsonStyleSheet,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.maps.mapmanagement.v2beta.MapConfig", skipping
 
 // +kcc:observedstate:proto=google.maps.mapmanagement.v2beta.MapConfig
@@ -86,6 +110,30 @@ type MapConfigObservedState struct {
 
 	// Output only. Denotes the last update time of the Map Config. Output only.
 	// +kcc:proto:field=google.maps.mapmanagement.v2beta.MapConfig.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.maps.mapmanagement.v2beta.StyleConfig", skipping
+
+// +kcc:observedstate:proto=google.maps.mapmanagement.v2beta.StyleConfig
+type StyleConfigObservedState struct {
+	// Output only. Identifier. Resource name of this StyleConfig.
+	//  For example: "projects/my-project-123/styleConfigs/234".
+	// +kcc:proto:field=google.maps.mapmanagement.v2beta.StyleConfig.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The unique identifier of this style. This is a read-only field
+	//  that is generated when the StyleConfig is created. Output only.
+	// +kcc:proto:field=google.maps.mapmanagement.v2beta.StyleConfig.style_id
+	StyleID *string `json:"styleID,omitempty"`
+
+	// Output only. Denotes the creation time of the StyleConfig.
+	// +kcc:proto:field=google.maps.mapmanagement.v2beta.StyleConfig.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Denotes the last update time of the StyleConfig.
+	// +kcc:proto:field=google.maps.mapmanagement.v2beta.StyleConfig.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */

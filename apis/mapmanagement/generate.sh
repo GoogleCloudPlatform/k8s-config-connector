@@ -38,7 +38,8 @@ ${CONTROLLERBUILDER} generate-types \
   --service google.maps.mapmanagement.v2beta \
   --api-version mapmanagement.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
-  --resource MapManagementMapConfig:MapConfig
+  --resource MapManagementMapConfig:MapConfig \
+  --resource MapManagementStyleConfig:StyleConfig
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
