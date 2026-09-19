@@ -43,6 +43,10 @@ func (i *AspectTypeIdentity) String() string {
 	return AspectTypeIdentityFormat.ToString(*i)
 }
 
+func (i *AspectTypeIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *AspectTypeIdentity) FromExternal(ref string) error {
 	parsed, match, err := AspectTypeIdentityFormat.Parse(ref)
 	if err != nil {
