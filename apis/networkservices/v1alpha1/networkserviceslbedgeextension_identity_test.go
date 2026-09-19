@@ -97,7 +97,7 @@ func TestNetworkServicesLBEdgeExtensionRef_Normalize(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "resolve from fallback (metadata.name)",
+			name: "resolve from status.externalRef",
 			ref: &NetworkServicesLBEdgeExtensionRef{
 				Name: "my-lbedgeextension",
 			},
@@ -111,39 +111,8 @@ func TestNetworkServicesLBEdgeExtensionRef_Normalize(t *testing.T) {
 							"name":      "my-lbedgeextension",
 							"namespace": "test-ns",
 						},
-						"spec": map[string]interface{}{
-							"location": "us-central1",
-							"projectRef": map[string]interface{}{
-								"external": "my-project",
-							},
-						},
-					},
-				},
-			},
-			wantExternal: "projects/my-project/locations/us-central1/lbEdgeExtensions/my-lbedgeextension",
-			wantErr:      false,
-		},
-		{
-			name: "resolve from fallback (resourceID)",
-			ref: &NetworkServicesLBEdgeExtensionRef{
-				Name: "k8s-name",
-			},
-			defaultNamespace: "test-ns",
-			objects: []runtime.Object{
-				&unstructured.Unstructured{
-					Object: map[string]interface{}{
-						"apiVersion": "networkservices.cnrm.cloud.google.com/v1alpha1",
-						"kind":       "NetworkServicesLBEdgeExtension",
-						"metadata": map[string]interface{}{
-							"name":      "k8s-name",
-							"namespace": "test-ns",
-						},
-						"spec": map[string]interface{}{
-							"resourceID": "my-lbedgeextension",
-							"location":   "us-central1",
-							"projectRef": map[string]interface{}{
-								"external": "my-project",
-							},
+						"status": map[string]interface{}{
+							"externalRef": "projects/my-project/locations/us-central1/lbEdgeExtensions/my-lbedgeextension",
 						},
 					},
 				},
