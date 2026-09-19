@@ -28,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	controllermetrics "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/profiler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
@@ -51,6 +52,7 @@ import (
 var logger = crlog.Log.WithName("setup")
 
 func main() {
+	http.DefaultTransport = gcp.NewUniverseDomainRoundTripper(http.DefaultTransport, gcp.GetUniverseDomain())
 	ctx := contexts.SetupSignalHandler()
 
 	var (
