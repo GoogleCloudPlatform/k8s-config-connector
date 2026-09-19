@@ -52,7 +52,7 @@ X-Xss-Protection: 0
   "cron": "* * * * *",
   "displayName": "test-${uniqueId}",
   "maxConcurrentRunCount": "1",
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/test-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
@@ -96,7 +96,7 @@ X-Xss-Protection: 0
       "cron": "* * * * *",
       "displayName": "test-${uniqueId}",
       "maxConcurrentRunCount": "1",
-      "name": "projects/${projectNumber}/locations/us-central1/schedules/test-${uniqueId}",
+      "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
       "nextRunTime": "2024-04-01T12:34:56.123456Z",
       "startTime": "2024-04-01T12:34:56.123456Z",
       "state": "ACTIVE"
@@ -106,7 +106,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/schedules/test-${uniqueId}?alt=json
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/schedules/${scheduleID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -139,7 +139,7 @@ X-Xss-Protection: 0
   "cron": "* * * * *",
   "displayName": "test-${uniqueId}",
   "maxConcurrentRunCount": "1",
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/test-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
@@ -183,7 +183,7 @@ X-Xss-Protection: 0
       "cron": "* * * * *",
       "displayName": "test-${uniqueId}",
       "maxConcurrentRunCount": "1",
-      "name": "projects/${projectNumber}/locations/us-central1/schedules/test-${uniqueId}",
+      "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
       "nextRunTime": "2024-04-01T12:34:56.123456Z",
       "startTime": "2024-04-01T12:34:56.123456Z",
       "state": "ACTIVE"
@@ -193,7 +193,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/schedules/test-${uniqueId}?alt=json
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/schedules/${scheduleID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -226,7 +226,7 @@ X-Xss-Protection: 0
   "cron": "* * * * *",
   "displayName": "test-${uniqueId}",
   "maxConcurrentRunCount": "1",
-  "name": "projects/${projectNumber}/locations/us-central1/schedules/test-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/${scheduleID}",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
@@ -235,7 +235,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/schedules/test-${uniqueId}?alt=json
+DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/schedules/${scheduleID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
