@@ -72,6 +72,7 @@ var regions = []Region{
 	{Name: "africa-south1", DefaultCIDR: "10.218.0.0/20"},
 	{Name: "northamerica-south1", DefaultCIDR: "10.224.0.0/20"},
 	{Name: "europe-north2", DefaultCIDR: "10.226.0.0/20"},
+	{Name: "asia-southeast3", DefaultCIDR: "10.228.0.0/20"},
 
 	// Some regions appear in results, but don't e.g. have default subnets.
 	{Name: "me-central2"},
