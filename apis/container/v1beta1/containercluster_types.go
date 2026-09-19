@@ -95,6 +95,10 @@ type AddonsConfig struct {
 	/* The status of the Parallelstore CSI driver addon, which allows the usage of Parallelstore instance as volumes. Defaults to disabled; set enabled = true to enable. */
 	// +kcc:proto:field=google.container.v1.AddonsConfig.parallelstore_csi_driver_config
 	ParallelstoreCSIDriverConfig *ParallelstoreCSIDriverConfig `json:"parallelstoreCsiDriverConfig,omitempty"`
+
+	/* The status of the Lustre CSI driver addon, which allows the usage of Lustre instances as volumes. Defaults to disabled; set enabled = true to enable. */
+	// +kcc:proto:field=google.container.v1.AddonsConfig.lustre_csi_driver_config
+	LustreCSIDriverConfig *LustreCSIDriverConfig `json:"lustreCsiDriverConfig,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.AdvancedDatapathObservabilityConfig
@@ -463,6 +467,17 @@ type ParallelstoreCSIDriverConfig struct {
 	// +required
 	// +kcc:proto:field=google.container.v1.ParallelstoreCsiDriverConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// +kcc:proto=google.container.v1.LustreCsiDriverConfig
+type LustreCSIDriverConfig struct {
+	// +required
+	// +kcc:proto:field=google.container.v1.LustreCsiDriverConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// +optional
+	// +kcc:proto:field=google.container.v1.LustreCsiDriverConfig.enable_legacy_lustre_port
+	EnableLegacyLustrePort *bool `json:"enableLegacyLustrePort,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.GkeBackupAgentConfig
