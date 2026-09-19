@@ -29,13 +29,14 @@ var (
 	_ identity.Resource   = &CertificateManagerCertificateMapEntry{}
 )
 
-var CertificateManagerCertificateMapEntryIdentityFormat = gcpurls.Template[CertificateManagerCertificateMapEntryIdentity]("certificatemanager.googleapis.com", "projects/{project}/locations/global/certificateMaps/{certificatemap}/certificateMapEntries/{certificatemapentry}")
+var CertificateManagerCertificateMapEntryIdentityFormat = gcpurls.Template[CertificateManagerCertificateMapEntryIdentity]("certificatemanager.googleapis.com", "projects/{project}/locations/{location}/certificateMaps/{certificatemap}/certificateMapEntries/{certificatemapentry}")
 
 // +k8s:deepcopy-gen=false
 
 // CertificateManagerCertificateMapEntryIdentity is the identity of a GCP CertificateManagerCertificateMapEntry resource.
 type CertificateManagerCertificateMapEntryIdentity struct {
 	Project             string
+	Location            string
 	CertificateMap      string
 	CertificateMapEntry string
 }
@@ -62,7 +63,11 @@ func (i *CertificateManagerCertificateMapEntryIdentity) Host() string {
 }
 
 func (i *CertificateManagerCertificateMapEntryIdentity) ParentString() string {
-	return fmt.Sprintf("projects/%s/locations/global/certificateMaps/%s", i.Project, i.CertificateMap)
+	location := i.Location
+	if location == "" {
+		location = "global"
+	}
+	return fmt.Sprintf("projects/%s/locations/%s/certificateMaps/%s", i.Project, location, i.CertificateMap)
 }
 
 func getIdentityFromCertificateManagerCertificateMapEntrySpec(ctx context.Context, reader client.Reader, obj *CertificateManagerCertificateMapEntry) (*CertificateManagerCertificateMapEntryIdentity, error) {
@@ -91,8 +96,17 @@ func getIdentityFromCertificateManagerCertificateMapEntrySpec(ctx context.Contex
 		return nil, fmt.Errorf("expected CertificateManagerCertificateMapIdentity from mapRef")
 	}
 
+	location := mapID.Location
+	if obj.Spec.Location != nil && *obj.Spec.Location != "" {
+		location = *obj.Spec.Location
+	}
+	if location == "" {
+		location = "global"
+	}
+
 	identity := &CertificateManagerCertificateMapEntryIdentity{
 		Project:             projectID,
+		Location:            location,
 		CertificateMap:      mapID.CertificateMap,
 		CertificateMapEntry: resourceID,
 	}
