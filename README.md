@@ -29,6 +29,8 @@ See https://cloud.google.com/config-connector/docs/overview.
 
 See [Config Connector CLI](./docs/cli/README.md) for documentation on the `config-connector` command-line tool.
 
+See [Managing Config Connector with GitOps (ArgoCD)](./docs/guides/gitops-argocd.md) for instructions on deploying and upgrading via GitOps.
+
 See
 [Choosing an installation type](https://cloud.google.com/config-connector/docs/concepts/installation-types)
 to decide how you want to install Config Connector.
