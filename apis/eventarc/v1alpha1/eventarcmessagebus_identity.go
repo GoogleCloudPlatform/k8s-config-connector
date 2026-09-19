@@ -81,12 +81,12 @@ func getIdentityFromEventarcMessageBusSpec(ctx context.Context, reader client.Re
 		return nil, fmt.Errorf("cannot resolve project: %w", err)
 	}
 
-	identity := &EventarcMessageBusIdentity{
+	id := &EventarcMessageBusIdentity{
 		Project:    projectID,
 		Location:   location,
 		MessageBus: resourceID,
 	}
-	return identity, nil
+	return id, nil
 }
 
 func (obj *EventarcMessageBus) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
