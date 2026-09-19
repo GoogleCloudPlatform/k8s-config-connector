@@ -1,0 +1,27 @@
+apiVersion: dataplex.cnrm.cloud.google.com/v1alpha1
+kind: DataplexDataAttributeBinding
+metadata:
+  labels:
+    cnrm-test: "true"
+    managed-by-cnrm: "true"
+    test-label: test-value-1
+  name: dab-maximal-${uniqueId}
+spec:
+  attributeRefs:
+  - external: projects/${projectId}/locations/us-central1/dataTaxonomies/dt-maximal-${uniqueId}/attributes/attr-maximal-${uniqueId}
+  description: Updated description for maximal test
+  displayName: Maximal Data Attribute Binding
+  labels:
+    cnrm-test: "true"
+    managed-by-cnrm: "true"
+    test-label: test-value-1
+  location: us-central1
+  paths:
+  - attributeRefs:
+    - external: projects/${projectId}/locations/us-central1/dataTaxonomies/dt-maximal-${uniqueId}/attributes/attr-maximal-${uniqueId}
+    name: column1
+  projectRef:
+    external: ${projectId}
+  resourceID: dab-maximal-${uniqueId}
+  resourceRef:
+    external: projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/zones/dataplexzone-${uniqueId}/entities/fake-entity
