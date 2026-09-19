@@ -891,16 +891,10 @@
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].rateLimitOptions.banDurationSec" is not set in unstructured objects
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].rateLimitOptions.banThreshold.count" is not set in unstructured objects
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].rateLimitOptions.banThreshold.intervalSec" is not set in unstructured objects
-[missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].rateLimitOptions.conformAction" is not set in unstructured objects
-[missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].rateLimitOptions.enforceOnKey" is not set in unstructured objects
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].rateLimitOptions.enforceOnKeyConfigs[].enforceOnKeyName" is not set in unstructured objects
-[missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].rateLimitOptions.enforceOnKeyConfigs[].enforceOnKeyType" is not set in unstructured objects
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].rateLimitOptions.enforceOnKeyName" is not set in unstructured objects
-[missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].rateLimitOptions.exceedAction" is not set in unstructured objects
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].rateLimitOptions.exceedRedirectOptions.target" is not set in unstructured objects
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].rateLimitOptions.exceedRedirectOptions.type" is not set in unstructured objects
-[missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].rateLimitOptions.rateLimitThreshold.count" is not set in unstructured objects
-[missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].rateLimitOptions.rateLimitThreshold.intervalSec" is not set in unstructured objects
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].redirectOptions.target" is not set in unstructured objects
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rule[].redirectOptions.type" is not set in unstructured objects
 [missing_field] crd=computesecuritypolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.type" is not set in unstructured objects
