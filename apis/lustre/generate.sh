@@ -37,3 +37,6 @@ ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.lustre.v1 \
   --api-version lustre.cnrm.cloud.google.com/v1alpha1 \
   --resource LustreInstance:Instance
+
+cd ${REPO_ROOT}
+dev/tasks/generate-crds
