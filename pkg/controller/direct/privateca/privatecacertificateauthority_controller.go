@@ -129,6 +129,21 @@ func (a *certificateAuthorityAdapter) Delete(ctx context.Context, deleteOp *dire
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting PrivateCACertificateAuthority", "name", a.id.String())
 
+	// In CAS, an ENABLED CA must be disabled before deletion.
+	getReq := &pb.GetCertificateAuthorityRequest{
+		Name: a.id.String(),
+	}
+	latest, err := a.caClient.GetCertificateAuthority(ctx, getReq)
+	if err == nil && latest.State == pb.CertificateAuthority_ENABLED {
+		disableReq := &pb.DisableCertificateAuthorityRequest{
+			Name: a.id.String(),
+		}
+		disableOp, err := a.caClient.DisableCertificateAuthority(ctx, disableReq)
+		if err == nil {
+			_, _ = disableOp.Wait(ctx)
+		}
+	}
+
 	req := &pb.DeleteCertificateAuthorityRequest{
 		Name:                     a.id.String(),
 		IgnoreActiveCertificates: true,
@@ -170,6 +185,21 @@ func (a *certificateAuthorityAdapter) Create(ctx context.Context, createOp *dire
 		return fmt.Errorf("waiting PrivateCACertificateAuthority %s creation: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully created PrivateCACertificateAuthority", "name", a.id.String())
+
+	if a.desired.Type == pb.CertificateAuthority_SELF_SIGNED {
+		enableReq := &pb.EnableCertificateAuthorityRequest{
+			Name: a.id.String(),
+		}
+		enableOp, err := a.caClient.EnableCertificateAuthority(ctx, enableReq)
+		if err != nil {
+			return fmt.Errorf("enabling PrivateCACertificateAuthority %s: %w", a.id.String(), err)
+		}
+		_, err = enableOp.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("waiting PrivateCACertificateAuthority %s enablement: %w", a.id.String(), err)
+		}
+		log.V(2).Info("successfully enabled PrivateCACertificateAuthority", "name", a.id.String())
+	}
 
 	// Fetch fully-populated resource before calling updateStatus
 	getLatestReq := &pb.GetCertificateAuthorityRequest{
