@@ -13,7 +13,7 @@ spec:
   - user_id
   datasetRef:
     external: bigquerydatasetsample${uniqueId}
-  friendlyName: mv_test3
+  friendlyName: mv_test3_updated
   materializedView:
     enableRefresh: true
     query: |-
