@@ -37,7 +37,8 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version migrationcenter.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --resource MigrationCenterGroup:Group \
-  --resource MigrationCenterPreferenceSet:PreferenceSet
+  --resource MigrationCenterPreferenceSet:PreferenceSet \
+  --resource MigrationCenterSource:Source
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.migrationcenter.v1 \
