@@ -34,6 +34,12 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.iap.v1 \
+  --api-version iap.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --resource IAPSettings:IapSettings
+
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.iap.v1 \
   --api-version iap.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output \
   --resource IAPSettings:IapSettings \
