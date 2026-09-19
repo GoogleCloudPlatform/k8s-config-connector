@@ -21,6 +21,7 @@
 // resource: NetworkConnectivityServiceConnectionPolicy:ServiceConnectionPolicy
 // resource: NetworkConnectivityRegionalEndpoint:RegionalEndpoint
 // resource: NetworkConnectivityMulticloudDataTransferConfig:MulticloudDataTransferConfig
+// resource: NetworkConnectivityTransport:Transport
 
 package v1alpha1
 
@@ -478,5 +479,75 @@ type StateTimeline struct {
 	// Output only. The state and activation time details of the resource state.
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.StateTimeline.states
 	States []StateMetadata `json:"states,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "mockgcp.cloud.networkconnectivity.v1.Transport", skipping
+
+// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.Transport
+type Transport struct {
+	// Optional. List of IP Prefixes that will be advertised to the remote provider. Both IPv4 and IPv6 addresses are supported.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.Transport.advertised_routes
+	AdvertisedRoutes []string `json:"advertisedRoutes,omitempty"`
+
+	// Optional. Bandwidth of the Transport. This must be one of the supported bandwidths for the remote profile, and must be set when no activation key is being provided.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.Transport.bandwidth
+	Bandwidth *string `json:"bandwidth,omitempty"`
+
+	// Output only. Create time stamp.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.Transport.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Optional. Description of the Transport.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.Transport.description
+	Description *string `json:"description,omitempty"`
+
+	// Output only. Google-generated activation key. This is only output if the selected profile supports an OUTPUT key flow. Inputting this to the provider is only valid while the resource is in a PENDING_KEY state. Once the provider has accepted the key, the resource will move to the CONFIGURING state.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.Transport.generated_activation_key
+	GeneratedActivationKey *string `json:"generatedActivationKey,omitempty"`
+
+	// Optional. Labels as key value pairs.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.Transport.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Output only. The maximum transmission unit (MTU) of a packet that can be sent over this transport.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.Transport.mtu_limit
+	MtuLimit *int32 `json:"mtuLimit,omitempty"`
+
+	// Identifier. Name of the resource.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.Transport.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Immutable. Resource URI of the Network that will be peered with this Transport. This field must be provided during resource creation and cannot be changed.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.Transport.network
+	Network *string `json:"network,omitempty"`
+
+	// Output only. VPC Network URI that was created for the VPC Peering connection to the provided `network`. If VPC Peering is disconnected, this can be used to re-establish.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.Transport.peering_network
+	PeeringNetwork *string `json:"peeringNetwork,omitempty"`
+
+	// Optional. Immutable. Key used for establishing a connection with the remote transport. This key can only be provided if the profile supports an INPUT key flow and the resource is in the PENDING_KEY state.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.Transport.provided_activation_key
+	ProvidedActivationKey *string `json:"providedActivationKey,omitempty"`
+
+	// Optional. Immutable. The user supplied account id for the CSP associated with the remote profile.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.Transport.remote_account_id
+	RemoteAccountID *string `json:"remoteAccountID,omitempty"`
+
+	// Optional. Immutable. Name of the remoteTransportProfile that this Transport is connecting to.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.Transport.remote_profile
+	RemoteProfile *string `json:"remoteProfile,omitempty"`
+
+	// Optional. IP version stack for the established connectivity.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.Transport.stack_type
+	StackType *string `json:"stackType,omitempty"`
+
+	// Output only. State of the underlying connectivity.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.Transport.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Update time stamp.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.Transport.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
