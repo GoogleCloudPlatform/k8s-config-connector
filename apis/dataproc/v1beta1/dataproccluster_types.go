@@ -23,6 +23,7 @@ import (
 	parent "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
@@ -156,7 +157,7 @@ type ClusterDiskConfig struct {
 type ClusterEncryptionConfig struct {
 	/* Immutable. */
 	// +optional
-	GcePdKmsKeyRef *refs.KMSCryptoKeyRef `json:"gcePdKmsKeyRef,omitempty"`
+	GcePdKmsKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"gcePdKmsKeyRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataproc.v1.EndpointConfig
@@ -294,7 +295,7 @@ type ClusterKerberosConfig struct {
 
 	/* Immutable. */
 	// +optional
-	KmsKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 
 	/* Immutable. Optional. The name of the on-cluster Kerberos realm. If not specified, the uppercased domain of hostnames will be the realm. */
 	// +optional
