@@ -147,7 +147,6 @@ spec:
                 type: string
             required:
             - destinationProjectRef
-            - location
             - projectRef
             type: object
           status:
