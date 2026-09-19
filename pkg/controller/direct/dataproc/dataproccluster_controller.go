@@ -204,6 +204,14 @@ func (a *dataprocClusterAdapter) Update(ctx context.Context, updateOp *directbas
 	}
 	cluster.Labels["managed-by-cnrm"] = "true"
 
+	// Filter out system-assigned labels from a.actual.Labels to avoid false diffs on update,
+	// without sending them back to GCP.
+	for k := range a.actual.Labels {
+		if strings.HasPrefix(k, "goog-") {
+			delete(a.actual.Labels, k)
+		}
+	}
+
 	// Populate defaults to avoid false drift
 	if cluster.Config == nil {
 		cluster.Config = a.actual.Config
