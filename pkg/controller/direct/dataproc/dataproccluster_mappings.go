@@ -23,6 +23,7 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
@@ -368,7 +369,7 @@ func ClusterKerberosConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.K
 	out.Keystore = direct.LazyPtr(in.GetKeystoreUri())
 	out.KeystorePassword = direct.LazyPtr(in.GetKeystorePasswordUri())
 	if in.GetKmsKeyUri() != "" {
-		out.KmsKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyUri()}
+		out.KmsKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyUri()}
 	}
 	out.Realm = direct.LazyPtr(in.GetRealm())
 	out.RootPrincipalPassword = direct.LazyPtr(in.GetRootPrincipalPasswordUri())
