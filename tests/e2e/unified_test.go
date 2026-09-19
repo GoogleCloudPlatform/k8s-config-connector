@@ -627,6 +627,12 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 				}
 
 				opt.CleanupResources = false // We delete explicitly below
+				var resourcesDeleted bool
+				t.Cleanup(func() {
+					if !resourcesDeleted {
+						create.DeleteResources(h, opt)
+					}
+				})
 				if options.TestPause {
 					opt.SkipWaitForReady = true // Paused resources don't send out an event yet.
 				}
@@ -850,6 +856,7 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 				}
 
 				create.DeleteResources(h, opt)
+				resourcesDeleted = true
 
 				// Verify kube events
 				if h.KubeEvents != nil {
