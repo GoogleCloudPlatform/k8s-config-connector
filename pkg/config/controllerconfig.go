@@ -61,6 +61,18 @@ type ControllerConfig struct {
 
 	// SkipNameValidation bypasses the duplicate controller name check during registration
 	SkipNameValidation bool
+
+	// UniverseDomain is the API host suffix of the Google Cloud universe to target,
+	// for deployments outside the public Google Cloud universe. API endpoints are
+	// resolved as <service>.<UniverseDomain> instead of <service>.googleapis.com.
+	// Empty means the public universe; see GetUniverseDomain.
+	UniverseDomain string
+
+	// UniversePrefix is the universe qualifier applied to project IDs
+	// (<prefix>:my-project) and to service-agent email domains.
+	// It is NOT derived from UniverseDomain; the two are independent values.
+	// Empty means the public universe; see GetUniversePrefix.
+	UniversePrefix string
 }
 
 func (c *ControllerConfig) Init(ctx context.Context) error {
@@ -143,10 +155,12 @@ func (c *ControllerConfig) RESTClientOptions(options ...RESTClientOption) ([]opt
 		opts = append(opts, option.WithQuotaProject(quotaProject))
 	}
 
-	// TODO: support endpoints?
-	// if m.config.Endpoint != "" {
-	// 	opts = append(opts, option.WithEndpoint(m.config.Endpoint))
-	// }
+	// Outside the public universe, let the client library derive each service's
+	// endpoint from the universe domain. Controllers that override their
+	// endpoint explicitly must additionally route it through Endpoint().
+	if !c.IsDefaultUniverse() {
+		opts = append(opts, option.WithUniverseDomain(c.GetUniverseDomain()))
+	}
 
 	return opts, nil
 }
@@ -166,10 +180,12 @@ func (c *ControllerConfig) GRPCClientOptions() ([]option.ClientOption, error) {
 		opts = append(opts, option.WithGRPCDialOption(grpc.WithUnaryInterceptor(c.GRPCUnaryClientInterceptor)))
 	}
 
-	// TODO: support endpoints?
-	// if m.config.Endpoint != "" {
-	// 	opts = append(opts, option.WithEndpoint(m.config.Endpoint))
-	// }
+	// Outside the public universe, let the client library derive each service's
+	// endpoint from the universe domain. Controllers that override their
+	// endpoint explicitly must additionally route it through Endpoint().
+	if !c.IsDefaultUniverse() {
+		opts = append(opts, option.WithUniverseDomain(c.GetUniverseDomain()))
+	}
 
 	return opts, nil
 }
