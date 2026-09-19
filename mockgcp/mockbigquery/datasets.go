@@ -56,6 +56,7 @@ func (s *datasetsServer) GetDataset(ctx context.Context, req *pb.GetDatasetReque
 	if obj.MaxTimeTravelHours == nil {
 		obj.MaxTimeTravelHours = &defaultMaxTimeTravelHours
 	}
+	normalizeDataset(obj)
 
 	return obj, nil
 }
@@ -118,6 +119,7 @@ func (s *datasetsServer) InsertDataset(ctx context.Context, req *pb.InsertDatase
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, status.Errorf(codes.Internal, "error creating dataset: %v", err)
 	}
+	normalizeDataset(obj)
 
 	return obj, nil
 }
@@ -205,6 +207,7 @@ func (s *datasetsServer) UpdateDataset(ctx context.Context, req *pb.UpdateDatase
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
+	normalizeDataset(updated)
 
 	return updated, err
 }
@@ -242,6 +245,7 @@ func (s *datasetsServer) PatchDataset(ctx context.Context, req *pb.PatchDatasetR
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
+	normalizeDataset(updated)
 
 	return updated, err
 }
@@ -297,4 +301,10 @@ func (s *MockService) buildDatasetName(projectName string, datasetID string) (*d
 	}
 
 	return name, nil
+}
+
+func normalizeDataset(obj *pb.Dataset) {
+	if obj.IsCaseInsensitive != nil && !*obj.IsCaseInsensitive {
+		obj.IsCaseInsensitive = nil
+	}
 }

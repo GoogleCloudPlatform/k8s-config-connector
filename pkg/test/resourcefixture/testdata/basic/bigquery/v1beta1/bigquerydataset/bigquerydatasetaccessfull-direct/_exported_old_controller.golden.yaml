@@ -21,6 +21,8 @@ spec:
     role: READER
   - role: OWNER
     specialGroup: projectOwners
+  - role: OWNER
+    userByEmail: user@google.com
   - routine:
       datasetId: bigquerydatasetsample${uniqueId}
       projectId: ${projectId}

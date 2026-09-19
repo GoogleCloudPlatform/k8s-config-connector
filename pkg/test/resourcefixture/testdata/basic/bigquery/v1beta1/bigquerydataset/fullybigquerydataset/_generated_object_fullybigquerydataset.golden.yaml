@@ -19,6 +19,8 @@ spec:
     specialGroup: projectOwners
   - role: OWNER
     userByEmail: user@google.com
+  - role: OWNER
+    userByEmail: user@google.com
   defaultCollation: ""
   defaultEncryptionConfiguration:
     kmsKeyRef:
