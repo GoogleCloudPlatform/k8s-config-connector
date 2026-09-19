@@ -105,6 +105,7 @@ const (
 var (
 	DeletionPolicyAnnotation             = FormatAnnotation("deletion-policy")
 	ReconcileIntervalInSecondsAnnotation = FormatAnnotation("reconcile-interval-in-seconds")
+	ActuationModeAnnotation              = FormatAnnotation("actuation-mode")
 
 	// Annotations for Container objects
 	ProjectIDAnnotation  = FormatAnnotation("project-id")
