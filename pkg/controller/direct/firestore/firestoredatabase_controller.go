@@ -287,6 +287,11 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting FirestoreDatabase", "name", fqn)
 
+	if a.actual == nil {
+		log.V(2).Info("skipping delete for non-existent FirestoreDatabase, assuming it was already deleted", "name", fqn)
+		return true, nil
+	}
+
 	req := &pb.DeleteDatabaseRequest{
 		Name: fqn,
 		Etag: a.actual.Etag,
