@@ -1,0 +1,117 @@
+GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "amount": {
+    "specifiedAmount": {
+      "currencyCode": "USD",
+      "units": "9000000"
+    }
+  },
+  "budgetFilter": {
+    "creditTypes": [
+      "DISCOUNT"
+    ],
+    "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
+    "customPeriod": {
+      "endDate": {
+        "day": 14,
+        "month": 3,
+        "year": 2312
+      },
+      "startDate": {
+        "day": 1,
+        "month": 1,
+        "year": 2140
+      }
+    }
+  },
+  "etag": "abcdef0123A=",
+  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}"
+}
+
+---
+
+POST https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+
+{
+  "budget": {
+    "amount": {
+      "specifiedAmount": {
+        "currencyCode": "USD",
+        "nanos": 0,
+        "units": 9000000
+      }
+    },
+    "budgetFilter": {
+      "creditTypes": [
+        "DISCOUNT"
+      ],
+      "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
+      "customPeriod": {
+        "endDate": {
+          "day": 14,
+          "month": 3,
+          "year": 2312
+        },
+        "startDate": {
+          "day": 1,
+          "month": 1,
+          "year": 2140
+        }
+      }
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "amount": {
+    "specifiedAmount": {
+      "currencyCode": "USD",
+      "units": "9000000"
+    }
+  },
+  "budgetFilter": {
+    "creditTypes": [
+      "DISCOUNT"
+    ],
+    "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
+    "customPeriod": {
+      "endDate": {
+        "day": 14,
+        "month": 3,
+        "year": 2312
+      },
+      "startDate": {
+        "day": 1,
+        "month": 1,
+        "year": 2140
+      }
+    }
+  },
+  "etag": "abcdef0123A=",
+  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}"
+}
