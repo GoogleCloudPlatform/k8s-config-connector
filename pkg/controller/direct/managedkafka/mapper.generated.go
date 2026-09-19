@@ -368,6 +368,8 @@ func ManagedKafkaConnectClusterObservedState_v1alpha1_ToProto(mapCtx *direct.Map
 	out.State = direct.Enum_ToProto[pb.ConnectCluster_State](mapCtx, in.State)
 	return out
 }
+
+/* found existing non-generated mapping function "ManagedKafkaConnectClusterSpec_v1alpha1_FromProto", skipping
 func ManagedKafkaConnectClusterSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ConnectCluster) *krmmanagedkafkav1alpha1.ManagedKafkaConnectClusterSpec {
 	if in == nil {
 		return nil
@@ -382,6 +384,9 @@ func ManagedKafkaConnectClusterSpec_v1alpha1_FromProto(mapCtx *direct.MapContext
 	out.Config = in.Config
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "ManagedKafkaConnectClusterSpec_v1alpha1_ToProto", skipping
 func ManagedKafkaConnectClusterSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.ManagedKafkaConnectClusterSpec) *pb.ConnectCluster {
 	if in == nil {
 		return nil
@@ -396,6 +401,7 @@ func ManagedKafkaConnectClusterSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, 
 	out.Config = in.Config
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "ManagedKafkaConsumerGroupObservedState_v1alpha1_FromProto", skipping
 func ManagedKafkaConsumerGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ConsumerGroup) *krmmanagedkafkav1alpha1.ManagedKafkaConsumerGroupObservedState {
