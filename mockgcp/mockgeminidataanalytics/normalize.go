@@ -20,6 +20,8 @@ import (
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
+// ConfigureVisitor registers normalizing replacements for GeminiDataAnalyticsConversation,
+// ensuring createTime and lastUsedTime are normalized to a standard placeholder.
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
 	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".lastUsedTime", mockgcpregistry.PlaceholderTimestamp)
