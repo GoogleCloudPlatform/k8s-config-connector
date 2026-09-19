@@ -11,5 +11,5 @@
 - **Duplicate GVK declarations**:
   The existing reference file `sslpolicy_reference.go` had already declared `ComputeSSLPolicyGVK`. Redeclaring it in `sslpolicy_types.go` led to a build failure during `go vet`. We resolved this by removing the duplicate GVK declaration from `sslpolicy_types.go`.
 
-- **Automatic Skipper of Mappers**:
-  By specifying `ComputeSSLPolicySpec_v1beta1_FromProto`, `ComputeSSLPolicySpec_v1beta1_ToProto`, `ComputeSSLPolicyStatus_v1beta1_FromProto`, and `ComputeSSLPolicyStatus_v1beta1_ToProto` in a handcoded `sslpolicy_mapper.go` file under `pkg/controller/direct/compute/`, the code generator automatically skipped generating conflicting versions inside `mapper.generated.go`.
+- **Acronym Convention Alignment and Automated Mapping**:
+  By renaming `MinTlsVersion` to `MinTLSVersion` (while preserving `json:"minTlsVersion,omitempty"` to prevent any schema changes), we aligned the Go field name with the acronym naming convention and resolved the "near miss" error in the generator. This allowed the mapping generator (`generate-mapper`) to automatically and fully map all spec and status fields of `ComputeSSLPolicy`. Consequently, the handwritten `computesslpolicy_mapper.go` file was completely deleted, maximizing code reuse and relying 100% on automatically generated mappers.

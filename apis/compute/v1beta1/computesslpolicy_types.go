@@ -45,7 +45,7 @@ type ComputeSSLPolicySpec struct {
 	   to establish a connection with the load balancer. Default value: "TLS_1_0" Possible values: ["TLS_1_0", "TLS_1_1", "TLS_1_2"]. */
 	// +optional
 	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.min_tls_version
-	MinTlsVersion *string `json:"minTlsVersion,omitempty"`
+	MinTLSVersion *string `json:"minTlsVersion,omitempty"`
 
 	/* Profile specifies the set of SSL features that can be used by the
 	   load balancer when negotiating SSL with clients. If using 'CUSTOM',
