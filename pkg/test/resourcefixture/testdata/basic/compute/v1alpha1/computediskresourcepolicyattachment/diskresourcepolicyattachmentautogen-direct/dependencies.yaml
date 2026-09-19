@@ -34,7 +34,8 @@ metadata:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: computedisk-${uniqueId}
 spec:
-  image: ${data.google_compute_image.my_image.self_link}
+  imageRef:
+    external: debian-cloud/debian-11
   projectRef:
     external: ${projectId}
   resourceID: computedisk${uniqueId}
