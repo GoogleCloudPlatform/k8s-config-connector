@@ -99,6 +99,22 @@ func AudioStreamProperty_ToProto(mapCtx *direct.MapContext, in *krm.AudioStreamP
 	out.AudioFormat = AudioFormat_ToProto(mapCtx, in.AudioFormat)
 	return out
 }
+func InputSecurityRule_FromProto(mapCtx *direct.MapContext, in *pb.Input_SecurityRule) *krm.InputSecurityRule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InputSecurityRule{}
+	out.IPRanges = in.IpRanges
+	return out
+}
+func InputSecurityRule_ToProto(mapCtx *direct.MapContext, in *krm.InputSecurityRule) *pb.Input_SecurityRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Input_SecurityRule{}
+	out.IpRanges = in.IPRanges
+	return out
+}
 func InputStreamProperty_FromProto(mapCtx *direct.MapContext, in *pb.InputStreamProperty) *krm.InputStreamProperty {
 	if in == nil {
 		return nil
@@ -117,22 +133,6 @@ func InputStreamProperty_ToProto(mapCtx *direct.MapContext, in *krm.InputStreamP
 	out.LastEstablishTime = direct.StringTimestamp_ToProto(mapCtx, in.LastEstablishTime)
 	out.VideoStreams = direct.Slice_ToProto(mapCtx, in.VideoStreams, VideoStreamProperty_ToProto)
 	out.AudioStreams = direct.Slice_ToProto(mapCtx, in.AudioStreams, AudioStreamProperty_ToProto)
-	return out
-}
-func Input_SecurityRule_FromProto(mapCtx *direct.MapContext, in *pb.Input_SecurityRule) *krm.Input_SecurityRule {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Input_SecurityRule{}
-	out.IPRanges = in.IpRanges
-	return out
-}
-func Input_SecurityRule_ToProto(mapCtx *direct.MapContext, in *krm.Input_SecurityRule) *pb.Input_SecurityRule {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Input_SecurityRule{}
-	out.IpRanges = in.IPRanges
 	return out
 }
 func LiveStreamAssetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Asset) *krm.LiveStreamAssetObservedState {
@@ -193,7 +193,7 @@ func LiveStreamInputSpec_FromProto(mapCtx *direct.MapContext, in *pb.Input) *krm
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	out.Tier = direct.Enum_FromProto(mapCtx, in.GetTier())
 	out.PreprocessingConfig = PreprocessingConfig_FromProto(mapCtx, in.GetPreprocessingConfig())
-	out.SecurityRules = Input_SecurityRule_FromProto(mapCtx, in.GetSecurityRules())
+	out.SecurityRules = InputSecurityRule_FromProto(mapCtx, in.GetSecurityRules())
 	return out
 }
 func LiveStreamInputSpec_ToProto(mapCtx *direct.MapContext, in *krm.LiveStreamInputSpec) *pb.Input {
@@ -206,7 +206,7 @@ func LiveStreamInputSpec_ToProto(mapCtx *direct.MapContext, in *krm.LiveStreamIn
 	out.Type = direct.Enum_ToProto[pb.Input_Type](mapCtx, in.Type)
 	out.Tier = direct.Enum_ToProto[pb.Input_Tier](mapCtx, in.Tier)
 	out.PreprocessingConfig = PreprocessingConfig_ToProto(mapCtx, in.PreprocessingConfig)
-	out.SecurityRules = Input_SecurityRule_ToProto(mapCtx, in.SecurityRules)
+	out.SecurityRules = InputSecurityRule_ToProto(mapCtx, in.SecurityRules)
 	return out
 }
 func PreprocessingConfig_FromProto(mapCtx *direct.MapContext, in *pb.PreprocessingConfig) *krm.PreprocessingConfig {
@@ -214,9 +214,9 @@ func PreprocessingConfig_FromProto(mapCtx *direct.MapContext, in *pb.Preprocessi
 		return nil
 	}
 	out := &krm.PreprocessingConfig{}
-	out.Audio = PreprocessingConfig_Audio_FromProto(mapCtx, in.GetAudio())
-	out.Crop = PreprocessingConfig_Crop_FromProto(mapCtx, in.GetCrop())
-	out.Pad = PreprocessingConfig_Pad_FromProto(mapCtx, in.GetPad())
+	out.Audio = PreprocessingConfigAudio_FromProto(mapCtx, in.GetAudio())
+	out.Crop = PreprocessingConfigCrop_FromProto(mapCtx, in.GetCrop())
+	out.Pad = PreprocessingConfigPad_FromProto(mapCtx, in.GetPad())
 	return out
 }
 func PreprocessingConfig_ToProto(mapCtx *direct.MapContext, in *krm.PreprocessingConfig) *pb.PreprocessingConfig {
@@ -224,20 +224,20 @@ func PreprocessingConfig_ToProto(mapCtx *direct.MapContext, in *krm.Preprocessin
 		return nil
 	}
 	out := &pb.PreprocessingConfig{}
-	out.Audio = PreprocessingConfig_Audio_ToProto(mapCtx, in.Audio)
-	out.Crop = PreprocessingConfig_Crop_ToProto(mapCtx, in.Crop)
-	out.Pad = PreprocessingConfig_Pad_ToProto(mapCtx, in.Pad)
+	out.Audio = PreprocessingConfigAudio_ToProto(mapCtx, in.Audio)
+	out.Crop = PreprocessingConfigCrop_ToProto(mapCtx, in.Crop)
+	out.Pad = PreprocessingConfigPad_ToProto(mapCtx, in.Pad)
 	return out
 }
-func PreprocessingConfig_Audio_FromProto(mapCtx *direct.MapContext, in *pb.PreprocessingConfig_Audio) *krm.PreprocessingConfig_Audio {
+func PreprocessingConfigAudio_FromProto(mapCtx *direct.MapContext, in *pb.PreprocessingConfig_Audio) *krm.PreprocessingConfigAudio {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PreprocessingConfig_Audio{}
+	out := &krm.PreprocessingConfigAudio{}
 	out.Lufs = direct.LazyPtr(in.GetLufs())
 	return out
 }
-func PreprocessingConfig_Audio_ToProto(mapCtx *direct.MapContext, in *krm.PreprocessingConfig_Audio) *pb.PreprocessingConfig_Audio {
+func PreprocessingConfigAudio_ToProto(mapCtx *direct.MapContext, in *krm.PreprocessingConfigAudio) *pb.PreprocessingConfig_Audio {
 	if in == nil {
 		return nil
 	}
@@ -245,18 +245,18 @@ func PreprocessingConfig_Audio_ToProto(mapCtx *direct.MapContext, in *krm.Prepro
 	out.Lufs = direct.ValueOf(in.Lufs)
 	return out
 }
-func PreprocessingConfig_Crop_FromProto(mapCtx *direct.MapContext, in *pb.PreprocessingConfig_Crop) *krm.PreprocessingConfig_Crop {
+func PreprocessingConfigCrop_FromProto(mapCtx *direct.MapContext, in *pb.PreprocessingConfig_Crop) *krm.PreprocessingConfigCrop {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PreprocessingConfig_Crop{}
+	out := &krm.PreprocessingConfigCrop{}
 	out.TopPixels = direct.LazyPtr(in.GetTopPixels())
 	out.BottomPixels = direct.LazyPtr(in.GetBottomPixels())
 	out.LeftPixels = direct.LazyPtr(in.GetLeftPixels())
 	out.RightPixels = direct.LazyPtr(in.GetRightPixels())
 	return out
 }
-func PreprocessingConfig_Crop_ToProto(mapCtx *direct.MapContext, in *krm.PreprocessingConfig_Crop) *pb.PreprocessingConfig_Crop {
+func PreprocessingConfigCrop_ToProto(mapCtx *direct.MapContext, in *krm.PreprocessingConfigCrop) *pb.PreprocessingConfig_Crop {
 	if in == nil {
 		return nil
 	}
@@ -267,18 +267,18 @@ func PreprocessingConfig_Crop_ToProto(mapCtx *direct.MapContext, in *krm.Preproc
 	out.RightPixels = direct.ValueOf(in.RightPixels)
 	return out
 }
-func PreprocessingConfig_Pad_FromProto(mapCtx *direct.MapContext, in *pb.PreprocessingConfig_Pad) *krm.PreprocessingConfig_Pad {
+func PreprocessingConfigPad_FromProto(mapCtx *direct.MapContext, in *pb.PreprocessingConfig_Pad) *krm.PreprocessingConfigPad {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PreprocessingConfig_Pad{}
+	out := &krm.PreprocessingConfigPad{}
 	out.TopPixels = direct.LazyPtr(in.GetTopPixels())
 	out.BottomPixels = direct.LazyPtr(in.GetBottomPixels())
 	out.LeftPixels = direct.LazyPtr(in.GetLeftPixels())
 	out.RightPixels = direct.LazyPtr(in.GetRightPixels())
 	return out
 }
-func PreprocessingConfig_Pad_ToProto(mapCtx *direct.MapContext, in *krm.PreprocessingConfig_Pad) *pb.PreprocessingConfig_Pad {
+func PreprocessingConfigPad_ToProto(mapCtx *direct.MapContext, in *krm.PreprocessingConfigPad) *pb.PreprocessingConfig_Pad {
 	if in == nil {
 		return nil
 	}

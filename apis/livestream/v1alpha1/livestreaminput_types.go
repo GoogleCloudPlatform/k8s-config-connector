@@ -55,7 +55,7 @@ type LiveStreamInputSpec struct {
 
 	// Security rule for access control.
 	// +kcc:proto:field=google.cloud.video.livestream.v1.Input.security_rules
-	SecurityRules *Input_SecurityRule `json:"securityRules,omitempty"`
+	SecurityRules *InputSecurityRule `json:"securityRules,omitempty"`
 }
 
 // LiveStreamInputStatus defines the config connector machine state of LiveStreamInput
@@ -133,4 +133,83 @@ type LiveStreamInputList struct {
 
 func init() {
 	SchemeBuilder.Register(&LiveStreamInput{}, &LiveStreamInputList{})
+}
+
+// +kcc:proto=google.cloud.video.livestream.v1.Input.SecurityRule
+type InputSecurityRule struct {
+	// At least one ip range must match unless none specified. The IP range is
+	//  defined by CIDR block: for example, `192.0.1.0/24` for a range and
+	//  `192.0.1.0/32` for a single IP address.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.Input.SecurityRule.ip_ranges
+	IPRanges []string `json:"ipRanges,omitempty"`
+}
+
+// +kcc:proto=google.cloud.video.livestream.v1.PreprocessingConfig
+type PreprocessingConfig struct {
+	// Audio preprocessing configuration.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.PreprocessingConfig.audio
+	Audio *PreprocessingConfigAudio `json:"audio,omitempty"`
+
+	// Specify the video cropping configuration.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.PreprocessingConfig.crop
+	Crop *PreprocessingConfigCrop `json:"crop,omitempty"`
+
+	// Specify the video pad filter configuration.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.PreprocessingConfig.pad
+	Pad *PreprocessingConfigPad `json:"pad,omitempty"`
+}
+
+// +kcc:proto=google.cloud.video.livestream.v1.PreprocessingConfig.Audio
+type PreprocessingConfigAudio struct {
+	// Specify audio loudness normalization in loudness units relative to full
+	//  scale (LUFS). Enter a value between -24 and 0 according to the following:
+	//
+	//  - -24 is the Advanced Television Systems Committee (ATSC A/85)
+	//  - -23 is the EU R128 broadcast standard
+	//  - -19 is the prior standard for online mono audio
+	//  - -18 is the ReplayGain standard
+	//  - -16 is the prior standard for stereo audio
+	//  - -14 is the new online audio standard recommended by Spotify, as well as
+	//  Amazon Echo
+	//  - 0 disables normalization. The default is 0.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.PreprocessingConfig.Audio.lufs
+	Lufs *float64 `json:"lufs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.video.livestream.v1.PreprocessingConfig.Crop
+type PreprocessingConfigCrop struct {
+	// The number of pixels to crop from the top. The default is 0.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.PreprocessingConfig.Crop.top_pixels
+	TopPixels *int32 `json:"topPixels,omitempty"`
+
+	// The number of pixels to crop from the bottom. The default is 0.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.PreprocessingConfig.Crop.bottom_pixels
+	BottomPixels *int32 `json:"bottomPixels,omitempty"`
+
+	// The number of pixels to crop from the left. The default is 0.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.PreprocessingConfig.Crop.left_pixels
+	LeftPixels *int32 `json:"leftPixels,omitempty"`
+
+	// The number of pixels to crop from the right. The default is 0.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.PreprocessingConfig.Crop.right_pixels
+	RightPixels *int32 `json:"rightPixels,omitempty"`
+}
+
+// +kcc:proto=google.cloud.video.livestream.v1.PreprocessingConfig.Pad
+type PreprocessingConfigPad struct {
+	// The number of pixels to add to the top. The default is 0.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.PreprocessingConfig.Pad.top_pixels
+	TopPixels *int32 `json:"topPixels,omitempty"`
+
+	// The number of pixels to add to the bottom. The default is 0.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.PreprocessingConfig.Pad.bottom_pixels
+	BottomPixels *int32 `json:"bottomPixels,omitempty"`
+
+	// The number of pixels to add to the left. The default is 0.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.PreprocessingConfig.Pad.left_pixels
+	LeftPixels *int32 `json:"leftPixels,omitempty"`
+
+	// The number of pixels to add to the right. The default is 0.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.PreprocessingConfig.Pad.right_pixels
+	RightPixels *int32 `json:"rightPixels,omitempty"`
 }
