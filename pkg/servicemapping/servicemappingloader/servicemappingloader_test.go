@@ -132,6 +132,24 @@ var resourceConfigTestCases = []ResourceConfigTestCase{
 			},
 		},
 	}},
+	{"sovereign regional resource", true, ComputeAddressResourceConfigName, &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"spec": map[string]interface{}{
+				"location": "u-region-1",
+			},
+			"kind":       ComputeAddressKind,
+			"apiVersion": groupToAPIVersion(ComputeGroup),
+		},
+	}},
+	{"compute address resource with sovereign zonal location", false, ComputeAddressResourceConfigName, &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"kind":       ComputeAddressKind,
+			"apiVersion": groupToAPIVersion(ComputeGroup),
+			"spec": map[string]interface{}{
+				"location": "u-region-1-a",
+			},
+		},
+	}},
 	{"KCC compute instance using compute_instance TF resource", true, ComputeInstanceResourceConfigName, &unstructured.Unstructured{
 		Object: map[string]interface{}{
 			"kind":       ComputeInstanceKind,
