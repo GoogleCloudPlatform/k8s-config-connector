@@ -2922,6 +2922,25 @@
 [missing_field] crd=networkconnectivitymulticlouddatatransferconfigs.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=networkconnectivitymulticlouddatatransferconfigs.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=networkconnectivitymulticlouddatatransferconfigs.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=networkconnectivityserviceconnectionmaps.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.consumerPSCConfigs[].consumerInstanceProject" is not set in unstructured objects
+[missing_field] crd=networkconnectivityserviceconnectionmaps.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.consumerPSCConfigs[].disableGlobalAccess" is not set in unstructured objects
+[missing_field] crd=networkconnectivityserviceconnectionmaps.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.consumerPSCConfigs[].ipVersion" is not set in unstructured objects
+[missing_field] crd=networkconnectivityserviceconnectionmaps.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.consumerPSCConfigs[].networkRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=networkconnectivityserviceconnectionmaps.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.consumerPSCConfigs[].producerInstanceID" is not set in unstructured objects
+[missing_field] crd=networkconnectivityserviceconnectionmaps.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.consumerPSCConfigs[].producerInstanceMetadata" is not set in unstructured objects
+[missing_field] crd=networkconnectivityserviceconnectionmaps.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.consumerPSCConfigs[].project" is not set in unstructured objects
+[missing_field] crd=networkconnectivityserviceconnectionmaps.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.consumerPSCConfigs[].serviceAttachmentIPAddressMap" is not set in unstructured objects
+[missing_field] crd=networkconnectivityserviceconnectionmaps.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.consumerPSCConfigs[].state" is not set in unstructured objects
+[missing_field] crd=networkconnectivityserviceconnectionmaps.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=networkconnectivityserviceconnectionmaps.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=networkconnectivityserviceconnectionmaps.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=networkconnectivityserviceconnectionmaps.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.producerPSCConfigs[].automatedDNSCreationSpec.dnsSuffix" is not set in unstructured objects
+[missing_field] crd=networkconnectivityserviceconnectionmaps.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.producerPSCConfigs[].automatedDNSCreationSpec.hostname" is not set in unstructured objects
+[missing_field] crd=networkconnectivityserviceconnectionmaps.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.producerPSCConfigs[].automatedDNSCreationSpec.ttl" is not set in unstructured objects
+[missing_field] crd=networkconnectivityserviceconnectionmaps.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.producerPSCConfigs[].serviceAttachmentRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=networkconnectivityserviceconnectionmaps.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=networkconnectivityserviceconnectionmaps.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceClass" is not set in unstructured objects
+[missing_field] crd=networkconnectivityserviceconnectionmaps.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.token" is not set in unstructured objects
 [missing_field] crd=networkconnectivityserviceconnectionpolicies.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.pscConfig.producerInstanceLocation" is not set in unstructured objects
 [missing_field] crd=networkmanagementconnectivitytests.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.bypassFirewallChecks" is not set in unstructured objects
 [missing_field] crd=networkmanagementconnectivitytests.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.destination.appEngineVersion.uri" is not set in unstructured objects

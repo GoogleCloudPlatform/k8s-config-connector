@@ -22,6 +22,7 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -378,6 +379,30 @@ func Services_ToProto(mapCtx *direct.MapContext, in map[string]krm.StateTimeline
 	out := make(map[string]*pb.StateTimeline)
 	for k, v := range in {
 		out[k] = StateTimeline_ToProto(mapCtx, &v)
+	}
+	return out
+}
+
+func ProducerPSCConfig_FromProto(mapCtx *direct.MapContext, in *pb.ProducerPscConfig) *krm.ProducerPSCConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ProducerPSCConfig{}
+	out.AutomatedDNSCreationSpec = AutomatedDNSCreationSpec_FromProto(mapCtx, in.GetAutomatedDnsCreationSpec())
+	if in.GetServiceAttachmentUri() != "" {
+		out.ServiceAttachmentRef = &refs.ComputeServiceAttachmentRef{External: in.GetServiceAttachmentUri()}
+	}
+	return out
+}
+
+func ProducerPSCConfig_ToProto(mapCtx *direct.MapContext, in *krm.ProducerPSCConfig) *pb.ProducerPscConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ProducerPscConfig{}
+	out.AutomatedDnsCreationSpec = AutomatedDNSCreationSpec_ToProto(mapCtx, in.AutomatedDNSCreationSpec)
+	if in.ServiceAttachmentRef != nil {
+		out.ServiceAttachmentUri = in.ServiceAttachmentRef.External
 	}
 	return out
 }
