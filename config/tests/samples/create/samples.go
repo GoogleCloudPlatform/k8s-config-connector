@@ -125,6 +125,9 @@ type CreateDeleteTestOptions struct { //nolint:revive
 	// Note: we should use server-side apply for both create and update.
 	// If we mix-and-match, we get surprising behaviours e.g. we can't clear a field
 	DoNotUseServerSideApplyForCreate bool
+
+	// OnUpdateStart is called immediately before updates are applied
+	OnUpdateStart func(t *Harness)
 }
 
 func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
@@ -174,6 +177,9 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	}
 
 	if len(opt.Updates) != 0 {
+		if opt.OnUpdateStart != nil {
+			opt.OnUpdateStart(t)
+		}
 		// Record the generation of all resources before patching to detect metadata-only updates
 		for _, updateUnstruct := range opt.Updates {
 			name := k8s.GetNamespacedName(updateUnstruct)
