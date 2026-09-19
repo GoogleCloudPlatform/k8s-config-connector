@@ -196,6 +196,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Device Streaming
 		"//devicestreaming.googleapis.com/projects/{}/deviceSessions/{}": true,
 
+		// GKE Backup
+		"//gkebackup.googleapis.com/projects/{}/locations/{}/restoreChannels/{}": true,
+
 		// Developer Connect
 		"//developerconnect.googleapis.com/projects/{}/locations/{}/accountConnectors/{}": true,
 		"//developerconnect.googleapis.com/projects/{}/locations/{}/insightsConfigs/{}":   true,

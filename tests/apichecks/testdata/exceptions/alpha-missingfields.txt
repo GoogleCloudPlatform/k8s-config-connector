@@ -2550,6 +2550,11 @@
 [missing_field] crd=gkebackupbackups.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.deleteLockDays" is not set in unstructured objects
 [missing_field] crd=gkebackupbackups.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=gkebackupbackups.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.retainDays" is not set in unstructured objects
+[missing_field] crd=gkebackuprestorechannels.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=gkebackuprestorechannels.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationProjectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=gkebackuprestorechannels.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=gkebackuprestorechannels.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=gkebackuprestorechannels.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=gkebackuprestoreplans.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=gkebackuprestoreplans.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.restoreConfig.clusterResourceRestoreScope.excludedGroupKinds[].resourceGroup" is not set in unstructured objects
 [missing_field] crd=gkebackuprestoreplans.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.restoreConfig.clusterResourceRestoreScope.excludedGroupKinds[].resourceKind" is not set in unstructured objects
