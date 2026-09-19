@@ -864,6 +864,68 @@ func NetworkServicesLBRouteExtensionSpec_v1alpha1_ToProto(mapCtx *direct.MapCont
 	out.Metadata = direct.Struct_ToProto(mapCtx, in.Metadata)
 	return out
 }
+func NetworkServicesLBTrafficExtensionObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.LbTrafficExtension) *krmnetworkservicesv1alpha1.NetworkServicesLBTrafficExtensionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworkservicesv1alpha1.NetworkServicesLBTrafficExtensionObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: ForwardingRules
+	return out
+}
+func NetworkServicesLBTrafficExtensionObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesLBTrafficExtensionObservedState) *pb.LbTrafficExtension {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LbTrafficExtension{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: ForwardingRules
+	return out
+}
+func NetworkServicesLBTrafficExtensionSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.LbTrafficExtension) *krmnetworkservicesv1alpha1.NetworkServicesLBTrafficExtensionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworkservicesv1alpha1.NetworkServicesLBTrafficExtensionSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+
+	if v := in.GetForwardingRules(); len(v) != 0 {
+		for i := range v {
+			out.ForwardingRuleRefs = append(out.ForwardingRuleRefs, &krmcomputev1beta1.ForwardingRuleRef{External: v[i]})
+		}
+	}
+
+	out.ExtensionChains = direct.Slice_FromProto(mapCtx, in.ExtensionChains, ExtensionChain_v1alpha1_FromProto)
+	out.LoadBalancingScheme = direct.Enum_FromProto(mapCtx, in.GetLoadBalancingScheme())
+	out.Metadata = direct.Struct_FromProto(mapCtx, in.GetMetadata())
+	return out
+}
+func NetworkServicesLBTrafficExtensionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesLBTrafficExtensionSpec) *pb.LbTrafficExtension {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LbTrafficExtension{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+
+	if v := in.ForwardingRuleRefs; len(v) != 0 {
+		for i := range v {
+			out.ForwardingRules = append(out.ForwardingRules, v[i].External)
+		}
+	}
+
+	out.ExtensionChains = direct.Slice_ToProto(mapCtx, in.ExtensionChains, ExtensionChain_v1alpha1_ToProto)
+	out.LoadBalancingScheme = direct.Enum_ToProto[pb.LoadBalancingScheme](mapCtx, in.LoadBalancingScheme)
+	out.Metadata = direct.Struct_ToProto(mapCtx, in.Metadata)
+	return out
+}
 func NetworkServicesServiceBindingObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krmnetworkservicesv1alpha1.NetworkServicesServiceBindingObservedState {
 	if in == nil {
 		return nil

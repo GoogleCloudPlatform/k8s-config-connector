@@ -37,6 +37,7 @@ ${CONTROLLERBUILDER} generate-types \
     --api-version "networkservices.cnrm.cloud.google.com/v1alpha1" \
     --resource NetworkServicesServiceBinding:ServiceBinding \
     --resource NetworkServicesLBRouteExtension:LbRouteExtension \
+    --resource NetworkServicesLBTrafficExtension:LbTrafficExtension \
     --resource NetworkServicesWasmPlugin:WasmPlugin \
     --resource NetworkServicesAuthzExtension:AuthzExtension
 # Note: NetworkServicesEdgeCacheService is handcoded under apis/networkservices/v1alpha1/edgecacheservice_types.go
