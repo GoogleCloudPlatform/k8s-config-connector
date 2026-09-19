@@ -123,7 +123,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -146,18 +146,16 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/clusters?%24alt=json%3Benum-encoding%3Dint&clusterId=alloydbcluster-${uniqueId}
+POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/clusters?alt=json&clusterId=alloydbcluster-${uniqueId}
 Content-Type: application/json
 
 {
-  "clusterType": 1,
+  "clusterType": "PRIMARY",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "networkConfig": {
-    "network": "projects/${projectId}/global/networks/${networkID}"
-  }
+  "network": "projects/${projectId}/global/networks/${networkID}"
 }
 
 200 OK
@@ -185,7 +183,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/operations/${operationID}
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -281,6 +279,92 @@ X-Xss-Protection: 0
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "automatedBackupPolicy": {
+    "backupWindow": "3600s",
+    "enabled": false,
+    "location": "europe-west4",
+    "timeBasedRetention": {
+      "retentionPeriod": "1209600s"
+    },
+    "weeklySchedule": {
+      "daysOfWeek": [
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "SUNDAY"
+      ],
+      "startTimes": [
+        {
+          "hours": 23
+        }
+      ]
+    }
+  },
+  "clusterType": "PRIMARY",
+  "continuousBackupConfig": {
+    "enabled": true,
+    "recoveryWindowDays": 14
+  },
+  "continuousBackupInfo": {
+    "enabledTime": "2024-04-01T12:34:56.123456Z",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
+    "schedule": [
+      "MONDAY",
+      "TUESDAY",
+      "WEDNESDAY",
+      "THURSDAY",
+      "FRIDAY",
+      "SATURDAY",
+      "SUNDAY"
+    ]
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseVersion": "POSTGRES_17",
+  "dataplexConfig": {
+    "enabled": true
+  },
+  "encryptionInfo": {
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+  },
+  "geminiConfig": {},
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}",
+  "network": "projects/${projectNumber}/global/networks/${networkID}",
+  "networkConfig": {
+    "network": "projects/${projectNumber}/global/networks/${networkID}"
+  },
+  "reconciling": false,
+  "serviceAccountEmail": "c-${projectNumber}-abcdef12@gcp-sa-alloydb.iam.gserviceaccount.com",
+  "state": "READY",
+  "subscriptionType": "STANDARD",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -912,21 +996,21 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.Backup",
     "clusterName": "projects/${projectNumber}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}",
-    "clusterUid": "b76cde24-493a-440a-993d-097d0a4ac350",
-    "createCompletionTime": "2026-08-27T09:04:24.661609231Z",
+    "clusterUid": "fb449851-d33d-4aeb-80e5-55ad4557b046",
+    "createCompletionTime": "2026-08-27T09:23:43.574412185Z",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "databaseVersion": "POSTGRES_17",
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
-    "expiryTime": "2027-08-27T09:03:59.135878Z",
+    "expiryTime": "2027-08-27T09:23:12.343514Z",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/europe-west4/backups/alloydbbackup-${uniqueId}",
     "reconciling": false,
-    "sizeBytes": "51159152",
+    "sizeBytes": "51330781",
     "state": "READY",
     "type": "ON_DEMAND",
     "uid": "111111111111111111111",
@@ -951,21 +1035,21 @@ X-Xss-Protection: 0
 
 {
   "clusterName": "projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}",
-  "clusterUid": "b76cde24-493a-440a-993d-097d0a4ac350",
-  "createCompletionTime": "2026-08-27T09:04:24.661609231Z",
+  "clusterUid": "fb449851-d33d-4aeb-80e5-55ad4557b046",
+  "createCompletionTime": "2026-08-27T09:23:43.574412185Z",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseVersion": "POSTGRES_17",
   "encryptionInfo": {
     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
   },
-  "expiryTime": "2027-08-27T09:03:59.135878Z",
+  "expiryTime": "2027-08-27T09:23:12.343514Z",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/europe-west4/backups/alloydbbackup-${uniqueId}",
   "reconciling": false,
-  "sizeBytes": "51159152",
+  "sizeBytes": "51330781",
   "state": "READY",
   "type": "ON_DEMAND",
   "uid": "111111111111111111111",
@@ -1312,21 +1396,21 @@ X-Xss-Protection: 0
 
 {
   "clusterName": "projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}",
-  "clusterUid": "b76cde24-493a-440a-993d-097d0a4ac350",
-  "createCompletionTime": "2026-08-27T09:04:24.661609231Z",
+  "clusterUid": "fb449851-d33d-4aeb-80e5-55ad4557b046",
+  "createCompletionTime": "2026-08-27T09:23:43.574412185Z",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseVersion": "POSTGRES_17",
   "encryptionInfo": {
     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
   },
-  "expiryTime": "2027-08-27T09:03:59.135878Z",
+  "expiryTime": "2027-08-27T09:23:12.343514Z",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/europe-west4/backups/alloydbbackup-${uniqueId}",
   "reconciling": false,
-  "sizeBytes": "51159152",
+  "sizeBytes": "51330781",
   "state": "READY",
   "type": "ON_DEMAND",
   "uid": "111111111111111111111",
@@ -1771,7 +1855,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1794,13 +1878,13 @@ X-Xss-Protection: 0
     },
     "weeklySchedule": {
       "daysOfWeek": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "SUNDAY"
       ],
       "startTimes": [
         {
@@ -1809,7 +1893,7 @@ X-Xss-Protection: 0
       ]
     }
   },
-  "clusterType": 1,
+  "clusterType": "PRIMARY",
   "continuousBackupConfig": {
     "enabled": true,
     "recoveryWindowDays": 14
@@ -1817,25 +1901,25 @@ X-Xss-Protection: 0
   "continuousBackupInfo": {
     "enabledTime": "2024-04-01T12:34:56.123456Z",
     "encryptionInfo": {
-      "encryptionType": 1
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
     "schedule": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7
+      "MONDAY",
+      "TUESDAY",
+      "WEDNESDAY",
+      "THURSDAY",
+      "FRIDAY",
+      "SATURDAY",
+      "SUNDAY"
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": 5,
+  "databaseVersion": "POSTGRES_17",
   "dataplexConfig": {
     "enabled": true
   },
   "encryptionInfo": {
-    "encryptionType": 1
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
   },
   "geminiConfig": {},
   "labels": {
@@ -1849,15 +1933,15 @@ X-Xss-Protection: 0
   },
   "reconciling": false,
   "serviceAccountEmail": "c-${projectNumber}-abcdef12@gcp-sa-alloydb.iam.gserviceaccount.com",
-  "state": 1,
-  "subscriptionType": 1,
+  "state": "READY",
+  "subscriptionType": "STANDARD",
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1885,7 +1969,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/operations/${operationID}
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
