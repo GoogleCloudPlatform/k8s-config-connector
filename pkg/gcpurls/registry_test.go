@@ -256,7 +256,8 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//monitoring.googleapis.com/projects/{}/services/{}":                       true,
 
 		// Migration Center
-		"//migrationcenter.googleapis.com/projects/{}/locations/{}/groups/{}": true,
+		"//migrationcenter.googleapis.com/projects/{}/locations/{}/groups/{}":         true,
+		"//migrationcenter.googleapis.com/projects/{}/locations/{}/preferenceSets/{}": true,
 
 		// Model Armor
 		"//modelarmor.googleapis.com/projects/{}/locations/{}/templates/{}": true,
