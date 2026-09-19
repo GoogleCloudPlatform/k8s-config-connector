@@ -1,0 +1,8 @@
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  name: transcoder-bucket-${uniqueId}
+spec:
+  location: us-central1
+  softDeletePolicy:
+    retentionDurationSeconds: 604800
