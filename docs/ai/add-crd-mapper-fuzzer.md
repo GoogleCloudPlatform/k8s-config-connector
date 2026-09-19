@@ -129,6 +129,18 @@ To ensure the mapping between the KCC API object and the GCP proto is correct, y
 1.  Create a new fuzzer file in the corresponding direct controller package: `pkg/controller/direct/<service>/<resource>_fuzzer.go`.
 2.  Use `pkg/controller/direct/run/job_fuzzer.go` as an example.
 3.  The fuzzer needs to know which fields to ignore during the round-trip comparison. Use `f.SpecFields.Insert()` and `f.StatusFields.Insert()` to specify fields that exist in the KCC object but not the GCP proto (like annotations). Use `f.UnimplementedFields.Insert()` for fields that are not yet mapped.
+4.  Register your package so the fuzzer actually runs. `FuzzAllMappers` only exercises fuzzers whose `init()` has run, and `init()` only runs if the package is imported. Add a blank import for your direct controller package to `pkg/controller/direct/register/register.go`, keeping the list in alphabetical order:
+
+    ```go
+    // in pkg/controller/direct/register/register.go
+    import (
+        // ...
+        _ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/mynewservice"
+        // ...
+    )
+    ```
+
+    Without this import the fuzzer test passes without ever testing your mapper.
 
 Example Fuzzer:
 ```go
@@ -171,7 +183,7 @@ func myNewResourceFuzzer() fuzztesting.KRMFuzzer {
 
 ## 7. Verify with Fuzzer Tests
 
-Run the fuzzer round-tripper presubmit check to validate your changes. This test can take over 10 minutes, so run it only when you believe your mapper is complete.
+Run the fuzzer round-tripper presubmit check to validate your changes. This test can take over 10 minutes, so run it only when you believe your mapper is complete. If you skipped registering the package in step 6, this check will pass without touching your mapper at all.
 
 ```bash
 dev/ci/presubmits/fuzz-roundtrippers
