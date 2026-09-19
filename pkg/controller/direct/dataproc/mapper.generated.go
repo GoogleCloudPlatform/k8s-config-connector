@@ -2048,7 +2048,7 @@ func ExecutionConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Execut
 	out.SubnetworkURI = direct.LazyPtr(in.GetSubnetworkUri())
 	out.NetworkTags = in.NetworkTags
 	if in.GetKmsKey() != "" {
-		out.KMSKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
+		out.KMSKeyRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
 	}
 	out.IdleTTL = direct.StringDuration_FromProto(mapCtx, in.GetIdleTtl())
 	out.TTL = direct.StringDuration_FromProto(mapCtx, in.GetTtl())
