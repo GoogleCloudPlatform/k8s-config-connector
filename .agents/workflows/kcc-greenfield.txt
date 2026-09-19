@@ -4,6 +4,59 @@ name: checklist-for-kind
 schedule: never
 mode: workflow
 cooldown: 2h
+preconditionScript: |
+  #!/bin/bash
+  # Precondition script to check if all related PRs and Issues are closed.
+
+  set -e
+  set -o pipefail
+
+  # List of issues to exclude from checks
+  EXCLUDED_ISSUES="10588"
+
+  echo "Checking precondition for KCC migration..."
+  echo "RELATED_ISSUES: ${RELATED_ISSUES:-(none)}"
+
+  if [ -z "${RELATED_ISSUES}" ]; then
+    echo "No related issues to check."
+    exit 0
+  fi
+
+  # Convert comma-separated list into an array
+  IFS=',' read -ra ADDR <<< "${RELATED_ISSUES}"
+  for issue in "${ADDR[@]}"; do
+    # Trim whitespace
+    issue=$(echo "${issue}" | tr -d '[:space:]')
+    if [ -z "${issue}" ]; then
+      continue
+    fi
+
+    # Check if the issue is in the excluded list
+    is_excluded=false
+    for excl in ${EXCLUDED_ISSUES}; do
+      if [ "${issue}" = "${excl}" ]; then
+        is_excluded=true
+        break
+      fi
+    done
+
+    if [ "${is_excluded}" = "true" ]; then
+      echo "Excluding issue ${issue} from checks."
+      continue
+    fi
+
+    echo "Checking status of issue/PR #${issue}..."
+    state=$(gh issue view "${issue}" --json state --jq .state 2>/dev/null || echo "UNKNOWN")
+    echo "State of #${issue} is: ${state}"
+
+    if [ "${state}" != "CLOSED" ] && [ "${state}" != "MERGED" ]; then
+      echo "Precondition failed: Issue/PR #${issue} is not closed (State: ${state})."
+      exit 1
+    fi
+  done
+
+  echo "All related issues/PRs are closed."
+  exit 0
 ---
 
 # Checklist for KCC Greenfield Resource Migration
@@ -53,10 +106,13 @@ Only proceed to the next step once the PR for the current step is merged success
      gh issue edit ${SESSION_ID#issue-} --body "<updated_body>"
      ```
      If editing the issue description fails (due to write permissions on public repositories), **fall back to updating a comment**:
-     * Search the comments on the issue for an existing comment posted by yourself (check for author match with your GITHUB_USER_ID) that contains the text `Migration Progress`.
-     * If such a comment exists, edit it with the updated progress using:
+     * Search the comments on the issue for any existing comment containing the text `Migration Progress` or `Migration Progress: {kind}`:
        ```bash
-       gh issue comment edit <comment-id> --body "<updated_comment_body>"
+       gh issue view ${SESSION_ID#issue-} --json comments --jq '.comments[] | select(.body | contains("Migration Progress")) | .id' | tail -n 1
+       ```
+     * If such a comment exists (e.g., `<comment-id>`), edit it with the updated progress using `gh api`:
+       ```bash
+       gh api --method PATCH repos/{owner}/{repo}/issues/comments/<comment-id> -f body="<updated_comment_body>"
        ```
      * If no such comment exists, create a new comment:
        ```bash
