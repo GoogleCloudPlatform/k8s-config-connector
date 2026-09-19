@@ -56,6 +56,128 @@ found existing non-generated mapping function "AllocationOptions_ToProto", skipp
 		return out
 	}
 */
+func AutomatedDNSCreationSpec_FromProto(mapCtx *direct.MapContext, in *pb.AutomatedDnsCreationSpec) *krm.AutomatedDNSCreationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AutomatedDNSCreationSpec{}
+	out.DNSSuffix = direct.LazyPtr(in.GetDnsSuffix())
+	out.Hostname = direct.LazyPtr(in.GetHostname())
+	out.TTL = direct.StringDuration_FromProto(mapCtx, in.GetTtl())
+	return out
+}
+func AutomatedDNSCreationSpec_ToProto(mapCtx *direct.MapContext, in *krm.AutomatedDNSCreationSpec) *pb.AutomatedDnsCreationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutomatedDnsCreationSpec{}
+	out.DnsSuffix = direct.ValueOf(in.DNSSuffix)
+	out.Hostname = direct.ValueOf(in.Hostname)
+	out.Ttl = direct.StringDuration_ToProto(mapCtx, in.TTL)
+	return out
+}
+func ConsumerPSCConfig_FromProto(mapCtx *direct.MapContext, in *pb.ConsumerPscConfig) *krm.ConsumerPSCConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConsumerPSCConfig{}
+	out.ConsumerInstanceProject = direct.LazyPtr(in.GetConsumerInstanceProject())
+	out.DisableGlobalAccess = direct.LazyPtr(in.GetDisableGlobalAccess())
+	out.IPVersion = direct.LazyPtr(in.GetIpVersion())
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.ProducerInstanceID = direct.LazyPtr(in.GetProducerInstanceId())
+	out.ProducerInstanceMetadata = in.ProducerInstanceMetadata
+	out.Project = direct.LazyPtr(in.GetProject())
+	out.ServiceAttachmentIPAddressMap = in.ServiceAttachmentIpAddressMap
+	out.State = direct.LazyPtr(in.GetState())
+	return out
+}
+func ConsumerPSCConfig_ToProto(mapCtx *direct.MapContext, in *krm.ConsumerPSCConfig) *pb.ConsumerPscConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConsumerPscConfig{}
+	out.ConsumerInstanceProject = direct.ValueOf(in.ConsumerInstanceProject)
+	out.DisableGlobalAccess = direct.ValueOf(in.DisableGlobalAccess)
+	out.IpVersion = direct.ValueOf(in.IPVersion)
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	out.ProducerInstanceId = direct.ValueOf(in.ProducerInstanceID)
+	out.ProducerInstanceMetadata = in.ProducerInstanceMetadata
+	out.Project = direct.ValueOf(in.Project)
+	out.ServiceAttachmentIpAddressMap = in.ServiceAttachmentIPAddressMap
+	out.State = direct.ValueOf(in.State)
+	return out
+}
+func ConsumerPSCConnection_FromProto(mapCtx *direct.MapContext, in *pb.ConsumerPscConnection) *krm.ConsumerPSCConnection {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConsumerPSCConnection{}
+	out.DNSAutomationStatus = DNSAutomationStatus_FromProto(mapCtx, in.GetDnsAutomationStatus())
+	out.Error = GoogleRpcStatus_FromProto(mapCtx, in.GetError())
+	out.ErrorInfo = GoogleRpcErrorInfo_FromProto(mapCtx, in.GetErrorInfo())
+	out.ErrorType = direct.LazyPtr(in.GetErrorType())
+	out.ForwardingRule = direct.LazyPtr(in.GetForwardingRule())
+	out.GCEOperation = direct.LazyPtr(in.GetGceOperation())
+	out.IP = direct.LazyPtr(in.GetIp())
+	out.IPVersion = direct.LazyPtr(in.GetIpVersion())
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	out.ProducerInstanceID = direct.LazyPtr(in.GetProducerInstanceId())
+	out.ProducerInstanceMetadata = in.ProducerInstanceMetadata
+	out.Project = direct.LazyPtr(in.GetProject())
+	out.PSCConnectionID = direct.LazyPtr(in.GetPscConnectionId())
+	out.SelectedSubnetwork = direct.LazyPtr(in.GetSelectedSubnetwork())
+	out.ServiceAttachmentURI = direct.LazyPtr(in.GetServiceAttachmentUri())
+	out.State = direct.LazyPtr(in.GetState())
+	return out
+}
+func ConsumerPSCConnection_ToProto(mapCtx *direct.MapContext, in *krm.ConsumerPSCConnection) *pb.ConsumerPscConnection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConsumerPscConnection{}
+	out.DnsAutomationStatus = DNSAutomationStatus_ToProto(mapCtx, in.DNSAutomationStatus)
+	out.Error = GoogleRpcStatus_ToProto(mapCtx, in.Error)
+	out.ErrorInfo = GoogleRpcErrorInfo_ToProto(mapCtx, in.ErrorInfo)
+	out.ErrorType = direct.ValueOf(in.ErrorType)
+	out.ForwardingRule = direct.ValueOf(in.ForwardingRule)
+	out.GceOperation = direct.ValueOf(in.GCEOperation)
+	out.Ip = direct.ValueOf(in.IP)
+	out.IpVersion = direct.ValueOf(in.IPVersion)
+	out.Network = direct.ValueOf(in.Network)
+	out.ProducerInstanceId = direct.ValueOf(in.ProducerInstanceID)
+	out.ProducerInstanceMetadata = in.ProducerInstanceMetadata
+	out.Project = direct.ValueOf(in.Project)
+	out.PscConnectionId = direct.ValueOf(in.PSCConnectionID)
+	out.SelectedSubnetwork = direct.ValueOf(in.SelectedSubnetwork)
+	out.ServiceAttachmentUri = direct.ValueOf(in.ServiceAttachmentURI)
+	out.State = direct.ValueOf(in.State)
+	return out
+}
+func DNSAutomationStatus_FromProto(mapCtx *direct.MapContext, in *pb.DnsAutomationStatus) *krm.DNSAutomationStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DNSAutomationStatus{}
+	out.Error = GoogleRpcStatus_FromProto(mapCtx, in.GetError())
+	out.FQDN = direct.LazyPtr(in.GetFqdn())
+	out.State = direct.LazyPtr(in.GetState())
+	return out
+}
+func DNSAutomationStatus_ToProto(mapCtx *direct.MapContext, in *krm.DNSAutomationStatus) *pb.DnsAutomationStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DnsAutomationStatus{}
+	out.Error = GoogleRpcStatus_ToProto(mapCtx, in.Error)
+	out.Fqdn = direct.ValueOf(in.FQDN)
+	out.State = direct.ValueOf(in.State)
+	return out
+}
 func GoogleRpcErrorInfo_FromProto(mapCtx *direct.MapContext, in *pb.GoogleRpcErrorInfo) *krm.GoogleRpcErrorInfo {
 	if in == nil {
 		return nil
@@ -326,6 +448,62 @@ func NetworkConnectivityRegionalEndpointSpec_ToProto(mapCtx *direct.MapContext, 
 	out.TargetGoogleApi = direct.ValueOf(in.TargetGoogleAPI)
 	return out
 }
+func NetworkConnectivityServiceConnectionMapObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceConnectionMap) *krm.NetworkConnectivityServiceConnectionMapObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkConnectivityServiceConnectionMapObservedState{}
+	out.ConsumerPSCConnections = direct.Slice_FromProto(mapCtx, in.ConsumerPscConnections, ConsumerPSCConnection_FromProto)
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Infrastructure = direct.LazyPtr(in.GetInfrastructure())
+	// MISSING: Name
+	out.ServiceClassURI = direct.LazyPtr(in.GetServiceClassUri())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func NetworkConnectivityServiceConnectionMapObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityServiceConnectionMapObservedState) *pb.ServiceConnectionMap {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceConnectionMap{}
+	out.ConsumerPscConnections = direct.Slice_ToProto(mapCtx, in.ConsumerPSCConnections, ConsumerPSCConnection_ToProto)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Infrastructure = direct.ValueOf(in.Infrastructure)
+	// MISSING: Name
+	out.ServiceClassUri = direct.ValueOf(in.ServiceClassURI)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func NetworkConnectivityServiceConnectionMapSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceConnectionMap) *krm.NetworkConnectivityServiceConnectionMapSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkConnectivityServiceConnectionMapSpec{}
+	out.ConsumerPSCConfigs = direct.Slice_FromProto(mapCtx, in.ConsumerPscConfigs, ConsumerPSCConfig_FromProto)
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	// MISSING: Name
+	out.ProducerPSCConfigs = direct.Slice_FromProto(mapCtx, in.ProducerPscConfigs, ProducerPSCConfig_FromProto)
+	out.ServiceClass = direct.LazyPtr(in.GetServiceClass())
+	out.Token = direct.LazyPtr(in.GetToken())
+	return out
+}
+func NetworkConnectivityServiceConnectionMapSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityServiceConnectionMapSpec) *pb.ServiceConnectionMap {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceConnectionMap{}
+	out.ConsumerPscConfigs = direct.Slice_ToProto(mapCtx, in.ConsumerPSCConfigs, ConsumerPSCConfig_ToProto)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	// MISSING: Name
+	out.ProducerPscConfigs = direct.Slice_ToProto(mapCtx, in.ProducerPSCConfigs, ProducerPSCConfig_ToProto)
+	out.ServiceClass = direct.ValueOf(in.ServiceClass)
+	out.Token = direct.ValueOf(in.Token)
+	return out
+}
 func NetworkConnectivityServiceConnectionPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceConnectionPolicy) *krm.NetworkConnectivityServiceConnectionPolicyObservedState {
 	if in == nil {
 		return nil
@@ -453,6 +631,32 @@ func PSCConnection_ToProto(mapCtx *direct.MapContext, in *krm.PSCConnection) *pb
 	out.State = direct.ValueOf(in.State)
 	return out
 }
+
+/* found existing non-generated mapping function "ProducerPSCConfig_FromProto", skipping
+func ProducerPSCConfig_FromProto(mapCtx *direct.MapContext, in *pb.ProducerPscConfig) *krm.ProducerPSCConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ProducerPSCConfig{}
+	out.AutomatedDNSCreationSpec = AutomatedDNSCreationSpec_FromProto(mapCtx, in.GetAutomatedDnsCreationSpec())
+	// MISSING: ServiceAttachmentURI
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ProducerPSCConfig_ToProto", skipping
+
+	func ProducerPSCConfig_ToProto(mapCtx *direct.MapContext, in *krm.ProducerPSCConfig) *pb.ProducerPscConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ProducerPscConfig{}
+		out.AutomatedDnsCreationSpec = AutomatedDNSCreationSpec_ToProto(mapCtx, in.AutomatedDNSCreationSpec)
+		// MISSING: ServiceAttachmentURI
+		return out
+	}
+*/
 func StateTimeline_FromProto(mapCtx *direct.MapContext, in *pb.StateTimeline) *krm.StateTimeline {
 	if in == nil {
 		return nil
