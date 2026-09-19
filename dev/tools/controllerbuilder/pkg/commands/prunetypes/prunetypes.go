@@ -114,7 +114,8 @@ func PruneTypes(ctx context.Context, o *PruneTypesOptions) error {
 			}
 		}
 		if len(targetFiles) == 0 {
-			return fmt.Errorf("no *.generated.go files found in %s", pkgDir)
+			klog.V(1).Infof("no *.generated.go files found in %s, skipping pruning\n", pkgDir)
+			return nil
 		}
 	} else {
 		pkgDir = filepath.Dir(o.Target)
