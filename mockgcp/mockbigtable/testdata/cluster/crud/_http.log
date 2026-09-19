@@ -45,6 +45,8 @@ X-Xss-Protection: 0
       },
       "instance": {
         "displayName": "Test Instance ${uniqueId}",
+        "edition": "ENTERPRISE",
+        "name": "projects/${projectId}/instances/test-instance-${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "test-instance-${uniqueId}",
@@ -88,6 +90,8 @@ X-Xss-Protection: 0
       },
       "instance": {
         "displayName": "Test Instance ${uniqueId}",
+        "edition": "ENTERPRISE",
+        "name": "projects/${projectId}/instances/test-instance-${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "test-instance-${uniqueId}",
@@ -99,6 +103,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
     "displayName": "Test Instance ${uniqueId}",
+    "edition": "ENTERPRISE",
     "name": "projects/${projectId}/instances/test-instance-${uniqueId}",
     "state": "READY",
     "type": "PRODUCTION"
@@ -125,6 +130,7 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Test Instance ${uniqueId}",
+  "edition": "ENTERPRISE",
   "name": "projects/${projectId}/instances/test-instance-${uniqueId}",
   "state": "READY",
   "type": "PRODUCTION"
