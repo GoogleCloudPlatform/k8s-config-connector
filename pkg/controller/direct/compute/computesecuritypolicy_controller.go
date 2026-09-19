@@ -356,6 +356,49 @@ func (a *SecurityPolicyAdapter) assignGCPDefaults(desired, actual *pb.SecurityPo
 	if desired.Type == nil {
 		desired.Type = actual.Type
 	}
+
+	for _, dRule := range desired.Rules {
+		for _, aRule := range actual.Rules {
+			if dRule.GetPriority() == aRule.GetPriority() {
+				// Align Kind
+				dRule.Kind = aRule.Kind
+				// Align Description if not specified in desired but set in actual
+				if dRule.Description == nil {
+					dRule.Description = aRule.Description
+				}
+				// Align Preview if not specified in desired but set in actual
+				if dRule.Preview == nil {
+					dRule.Preview = aRule.Preview
+				}
+				// Align NetworkMatch
+				dRule.NetworkMatch = aRule.NetworkMatch
+
+				if dRule.Match != nil && aRule.Match != nil {
+					dRule.Match.ExprOptions = aRule.Match.ExprOptions
+					if dRule.Match.Expr != nil && aRule.Match.Expr != nil {
+						dRule.Match.Expr.Description = aRule.Match.Expr.Description
+						dRule.Match.Expr.Location = aRule.Match.Expr.Location
+						dRule.Match.Expr.Title = aRule.Match.Expr.Title
+					}
+				}
+				break
+			}
+		}
+	}
+
+	if desired.AdaptiveProtectionConfig != nil && actual.AdaptiveProtectionConfig != nil {
+		if desired.AdaptiveProtectionConfig.Layer7DdosDefenseConfig != nil && actual.AdaptiveProtectionConfig.Layer7DdosDefenseConfig != nil {
+			dConfigs := desired.AdaptiveProtectionConfig.Layer7DdosDefenseConfig.ThresholdConfigs
+			aConfigs := actual.AdaptiveProtectionConfig.Layer7DdosDefenseConfig.ThresholdConfigs
+			for i := 0; i < len(dConfigs) && i < len(aConfigs); i++ {
+				dConfigs[i].Name = aConfigs[i].Name
+				dConfigs[i].DetectionAbsoluteQps = aConfigs[i].DetectionAbsoluteQps
+				dConfigs[i].DetectionLoadThreshold = aConfigs[i].DetectionLoadThreshold
+				dConfigs[i].DetectionRelativeToBaselineQps = aConfigs[i].DetectionRelativeToBaselineQps
+				dConfigs[i].TrafficGranularityConfigs = aConfigs[i].TrafficGranularityConfigs
+			}
+		}
+	}
 }
 
 func ComputeSecurityPolicyStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicy) *krm.ComputeSecurityPolicyStatus {
