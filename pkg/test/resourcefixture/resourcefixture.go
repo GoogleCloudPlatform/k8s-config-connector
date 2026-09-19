@@ -150,6 +150,62 @@ func LoadWithPathFilter(t *testing.T, pathFilter func(path string) bool, lightFi
 	return allCases
 }
 
+// LoadLabels loads all label test cases found in the testdata/labels directory.
+func LoadLabels(t *testing.T) []ResourceFixture {
+	t.Helper()
+	allCases := make([]ResourceFixture, 0)
+	baseDir := filepath.Join(getTestDataPath(t), "labels")
+	if err := filepath.WalkDir(baseDir, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if !d.IsDir() {
+			return nil
+		}
+
+		relativeDir, err := filepath.Rel(getTestDataPath(t), path)
+		if err != nil {
+			return fmt.Errorf("getting relative path for test dir %q: %w", path, err)
+		}
+
+		fileInfos, err := os.ReadDir(path)
+		if err != nil {
+			return fmt.Errorf("error reading directory '%v': %w", path, err)
+		}
+
+		testToFileName := make(map[string]string)
+		for _, fi := range fileInfos {
+			if fi.IsDir() {
+				continue
+			}
+			if !strings.HasSuffix(fi.Name(), ".yaml") {
+				continue
+			}
+			fileNameNoExt := strings.TrimSuffix(fi.Name(), ".yaml")
+			if value, ok := testToFileName[fileNameNoExt]; ok {
+				return fmt.Errorf("error, conflicting files for test '%v' in '%v': {%v, %v}", fileNameNoExt, path, value, fi.Name())
+			}
+			testToFileName[fileNameNoExt] = fi.Name()
+		}
+
+		if createFile, ok := testToFileName["create"]; ok {
+			updateFile := testToFileName["update"]
+			depFile := testToFileName["dependencies"]
+			name := filepath.Base(path)
+			testType := parseTestTypeFromPath(t, path)
+			rf := loadResourceFixture(t, name, testType, path, relativeDir, createFile, updateFile, depFile)
+			allCases = append(allCases, rf)
+		}
+
+		return nil
+	}); err != nil {
+		t.Fatalf("error walking directory %q: %v", baseDir, err)
+	}
+
+	return allCases
+}
+
 // LoadWithFilter returns all fixtures that match the filter functions - a filter function matches by returning 'true'
 // * use 'lightFilterFunc' for filtering based on test names and types (determining these values is 'lightweight' as it
 // only relies on directory and file names)
