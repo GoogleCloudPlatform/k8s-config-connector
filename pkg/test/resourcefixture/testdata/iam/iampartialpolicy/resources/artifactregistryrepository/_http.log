@@ -117,6 +117,7 @@ X-Xss-Protection: 0
   },
   "mode": "STANDARD_REPOSITORY",
   "name": "projects/${projectId}/locations/us-central1/repositories/artifactregistryrepository-${uniqueId}",
+  "registryUri": "us-central1-docker.pkg.dev/${projectId}/artifactregistryrepository-${uniqueId}",
   "satisfiesPzi": true,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "vulnerabilityScanningConfig": {
@@ -168,7 +169,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   }
 }
 
-200 OK
+403 Forbidden
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -179,17 +180,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "members": [
-        "user:test@example.com",
-        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.admin"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
+  "error": {
+    "code": 403,
+    "message": "Permission 'artifactregistry.repositories.setIamPolicy' denied on resource '//artifactregistry.googleapis.com/projects/${projectId}/locations/us-central1/repositories/artifactregistryrepository-${uniqueId}' (or it may not exist). Remediate access with this Troubleshooter URL or share it with your administrator - https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=CiQwMWEwNDM2MC1iMmU1LTdlY2QtYmJhMS1jMzY0MGM0NDljYmMSY3Byb2plY3RzL2Nucm0tYmFybmktNC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvcmVwb3NpdG9yaWVzL2FydGlmYWN0cmVnaXN0cnlyZXBvc2l0b3J5LTZhdHYyeGtoeGtmd3htYQ%3D%3D .",
+    "status": "PERMISSION_DENIED"
+  }
 }
 
 ---
@@ -209,17 +204,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "members": [
-        "user:test@example.com",
-        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.admin"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
+  "etag": "abcdef0123A="
 }
 
 ---
@@ -233,9 +218,69 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "bindings": [
       {
         "members": [
-          "group:test-group@example.com",
+          "user:test@example.com",
+          "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
+        ],
+        "role": "roles/artifactregistry.admin"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
+  }
+}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Permission 'artifactregistry.repositories.setIamPolicy' denied on resource '//artifactregistry.googleapis.com/projects/${projectId}/locations/us-central1/repositories/artifactregistryrepository-${uniqueId}' (or it may not exist). Remediate access with this Troubleshooter URL or share it with your administrator - https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=CiQwMWEwNDM2MC1iNTNjLTdlYzMtODJmYS1kMTE2OTJjZmY4YzkSY3Byb2plY3RzL2Nucm0tYmFybmktNC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvcmVwb3NpdG9yaWVzL2FydGlmYWN0cmVnaXN0cnlyZXBvc2l0b3J5LTZhdHYyeGtoeGtmd3htYQ%3D%3D .",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/artifactregistryrepository-${uniqueId}:getIamPolicy?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/artifactregistryrepository-${uniqueId}:setIamPolicy?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "user:test@example.com",
           "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
-          "user:test@example.com"
+          "group:test-group@example.com"
         ],
         "role": "roles/artifactregistry.admin"
       },
@@ -251,7 +296,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   }
 }
 
-200 OK
+403 Forbidden
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -262,24 +307,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "members": [
-        "group:test-group@example.com",
-        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
-        "user:test@example.com"
-      ],
-      "role": "roles/artifactregistry.admin"
-    },
-    {
-      "members": [
-        "user:editor@example.com"
-      ],
-      "role": "roles/artifactregistry.editor"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
+  "error": {
+    "code": 403,
+    "message": "Permission 'artifactregistry.repositories.setIamPolicy' denied on resource '//artifactregistry.googleapis.com/projects/${projectId}/locations/us-central1/repositories/artifactregistryrepository-${uniqueId}' (or it may not exist). Remediate access with this Troubleshooter URL or share it with your administrator - https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=CiQwMWEwNDM2MC1iNmNkLTcwNWQtYjYwOS04MDFiNzc4YTRhNzgSY3Byb2plY3RzL2Nucm0tYmFybmktNC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvcmVwb3NpdG9yaWVzL2FydGlmYWN0cmVnaXN0cnlyZXBvc2l0b3J5LTZhdHYyeGtoeGtmd3htYQ%3D%3D .",
+    "status": "PERMISSION_DENIED"
+  }
 }
 
 ---
@@ -299,24 +331,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "members": [
-        "group:test-group@example.com",
-        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
-        "user:test@example.com"
-      ],
-      "role": "roles/artifactregistry.admin"
-    },
-    {
-      "members": [
-        "user:editor@example.com"
-      ],
-      "role": "roles/artifactregistry.editor"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
+  "etag": "abcdef0123A="
 }
 
 ---
@@ -327,12 +342,28 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "policy": {
+    "bindings": [
+      {
+        "members": [
+          "user:test@example.com",
+          "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
+          "group:test-group@example.com"
+        ],
+        "role": "roles/artifactregistry.admin"
+      },
+      {
+        "members": [
+          "user:editor@example.com"
+        ],
+        "role": "roles/artifactregistry.editor"
+      }
+    ],
     "etag": "abcdef0123A=",
     "version": 3
   }
 }
 
-200 OK
+403 Forbidden
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -343,29 +374,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/artifactregistryrepository-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A=",
-  "version": 1
+  "error": {
+    "code": 403,
+    "message": "Permission 'artifactregistry.repositories.setIamPolicy' denied on resource '//artifactregistry.googleapis.com/projects/${projectId}/locations/us-central1/repositories/artifactregistryrepository-${uniqueId}' (or it may not exist). Remediate access with this Troubleshooter URL or share it with your administrator - https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=CiQwMWEwNDM2MC1iODVlLTc3ODktOWIyZi1iMjI0OGQ0YjhlMzYSY3Byb2plY3RzL2Nucm0tYmFybmktNC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvcmVwb3NpdG9yaWVzL2FydGlmYWN0cmVnaXN0cnlyZXBvc2l0b3J5LTZhdHYyeGtoeGtmd3htYQ%3D%3D .",
+    "status": "PERMISSION_DENIED"
+  }
 }
 
 ---
@@ -393,12 +406,80 @@ X-Xss-Protection: 0
   },
   "mode": "STANDARD_REPOSITORY",
   "name": "projects/${projectId}/locations/us-central1/repositories/artifactregistryrepository-${uniqueId}",
+  "registryUri": "us-central1-docker.pkg.dev/${projectId}/artifactregistryrepository-${uniqueId}",
   "satisfiesPzi": true,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "vulnerabilityScanningConfig": {
     "enablementState": "SCANNING_DISABLED",
     "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
     "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/artifactregistryrepository-${uniqueId}:getIamPolicy?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-central1/repositories/artifactregistryrepository-${uniqueId}:setIamPolicy?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "user:test@example.com",
+          "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
+          "group:test-group@example.com"
+        ],
+        "role": "roles/artifactregistry.admin"
+      },
+      {
+        "members": [
+          "user:editor@example.com"
+        ],
+        "role": "roles/artifactregistry.editor"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
+  }
+}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Permission 'artifactregistry.repositories.setIamPolicy' denied on resource '//artifactregistry.googleapis.com/projects/${projectId}/locations/us-central1/repositories/artifactregistryrepository-${uniqueId}' (or it may not exist). Remediate access with this Troubleshooter URL or share it with your administrator - https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=CiQwMWEwNDM2MC1jMWJiLTc2YmMtOWFlNi0zNDQwMWNlMjAyMGUSY3Byb2plY3RzL2Nucm0tYmFybmktNC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvcmVwb3NpdG9yaWVzL2FydGlmYWN0cmVnaXN0cnlyZXBvc2l0b3J5LTZhdHYyeGtoeGtmd3htYQ%3D%3D .",
+    "status": "PERMISSION_DENIED"
   }
 }
 
