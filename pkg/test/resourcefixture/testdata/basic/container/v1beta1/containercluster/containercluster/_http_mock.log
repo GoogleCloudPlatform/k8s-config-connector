@@ -659,7 +659,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
           "variant": "DEFAULT"
         }
       },
-      "machineType": "n4-standard-2"
+      "machineType": "n2-standard-2"
     },
     "notificationConfig": {
       "pubsub": {
@@ -920,11 +920,11 @@ X-Xss-Protection: 0
       "enableNestedVirtualization": true
     },
     "bootDisk": {
-      "diskType": "hyperdisk-balanced",
+      "diskType": "pd-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "hyperdisk-balanced",
+    "diskType": "pd-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
@@ -941,7 +941,7 @@ X-Xss-Protection: 0
         "variant": "DEFAULT"
       }
     },
-    "machineType": "n4-standard-2",
+    "machineType": "n2-standard-2",
     "metadata": {
       "disable-legacy-endpoints": "true"
     },
@@ -986,11 +986,11 @@ X-Xss-Protection: 0
           "enableNestedVirtualization": true
         },
         "bootDisk": {
-          "diskType": "hyperdisk-balanced",
+          "diskType": "pd-balanced",
           "sizeGb": "100"
         },
         "diskSizeGb": 100,
-        "diskType": "hyperdisk-balanced",
+        "diskType": "pd-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
@@ -1007,7 +1007,7 @@ X-Xss-Protection: 0
             "variant": "DEFAULT"
           }
         },
-        "machineType": "n4-standard-2",
+        "machineType": "n2-standard-2",
         "metadata": {
           "disable-legacy-endpoints": "true"
         },
@@ -1321,11 +1321,11 @@ X-Xss-Protection: 0
       "enableNestedVirtualization": true
     },
     "bootDisk": {
-      "diskType": "hyperdisk-balanced",
+      "diskType": "pd-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "hyperdisk-balanced",
+    "diskType": "pd-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
@@ -1342,7 +1342,7 @@ X-Xss-Protection: 0
         "variant": "DEFAULT"
       }
     },
-    "machineType": "n4-standard-2",
+    "machineType": "n2-standard-2",
     "metadata": {
       "disable-legacy-endpoints": "true"
     },
@@ -1387,11 +1387,11 @@ X-Xss-Protection: 0
           "enableNestedVirtualization": true
         },
         "bootDisk": {
-          "diskType": "hyperdisk-balanced",
+          "diskType": "pd-balanced",
           "sizeGb": "100"
         },
         "diskSizeGb": 100,
-        "diskType": "hyperdisk-balanced",
+        "diskType": "pd-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
@@ -1408,7 +1408,7 @@ X-Xss-Protection: 0
             "variant": "DEFAULT"
           }
         },
-        "machineType": "n4-standard-2",
+        "machineType": "n2-standard-2",
         "metadata": {
           "disable-legacy-endpoints": "true"
         },
@@ -1722,11 +1722,11 @@ X-Xss-Protection: 0
       "enableNestedVirtualization": true
     },
     "bootDisk": {
-      "diskType": "hyperdisk-balanced",
+      "diskType": "pd-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "hyperdisk-balanced",
+    "diskType": "pd-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
@@ -1743,7 +1743,7 @@ X-Xss-Protection: 0
         "variant": "DEFAULT"
       }
     },
-    "machineType": "n4-standard-2",
+    "machineType": "n2-standard-2",
     "metadata": {
       "disable-legacy-endpoints": "true"
     },
@@ -1788,11 +1788,11 @@ X-Xss-Protection: 0
           "enableNestedVirtualization": true
         },
         "bootDisk": {
-          "diskType": "hyperdisk-balanced",
+          "diskType": "pd-balanced",
           "sizeGb": "100"
         },
         "diskSizeGb": 100,
-        "diskType": "hyperdisk-balanced",
+        "diskType": "pd-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
@@ -1809,7 +1809,7 @@ X-Xss-Protection: 0
             "variant": "DEFAULT"
           }
         },
-        "machineType": "n4-standard-2",
+        "machineType": "n2-standard-2",
         "metadata": {
           "disable-legacy-endpoints": "true"
         },
@@ -2123,11 +2123,11 @@ X-Xss-Protection: 0
       "enableNestedVirtualization": true
     },
     "bootDisk": {
-      "diskType": "hyperdisk-balanced",
+      "diskType": "pd-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "hyperdisk-balanced",
+    "diskType": "pd-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
@@ -2144,7 +2144,7 @@ X-Xss-Protection: 0
         "variant": "DEFAULT"
       }
     },
-    "machineType": "n4-standard-2",
+    "machineType": "n2-standard-2",
     "metadata": {
       "disable-legacy-endpoints": "true"
     },
@@ -2189,11 +2189,11 @@ X-Xss-Protection: 0
           "enableNestedVirtualization": true
         },
         "bootDisk": {
-          "diskType": "hyperdisk-balanced",
+          "diskType": "pd-balanced",
           "sizeGb": "100"
         },
         "diskSizeGb": 100,
-        "diskType": "hyperdisk-balanced",
+        "diskType": "pd-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
@@ -2210,7 +2210,7 @@ X-Xss-Protection: 0
             "variant": "DEFAULT"
           }
         },
-        "machineType": "n4-standard-2",
+        "machineType": "n2-standard-2",
         "metadata": {
           "disable-legacy-endpoints": "true"
         },
@@ -2594,11 +2594,11 @@ X-Xss-Protection: 0
       "enableNestedVirtualization": true
     },
     "bootDisk": {
-      "diskType": "hyperdisk-balanced",
+      "diskType": "pd-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "hyperdisk-balanced",
+    "diskType": "pd-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
@@ -2615,7 +2615,7 @@ X-Xss-Protection: 0
         "variant": "DEFAULT"
       }
     },
-    "machineType": "n4-standard-2",
+    "machineType": "n2-standard-2",
     "metadata": {
       "disable-legacy-endpoints": "true"
     },
@@ -2660,11 +2660,11 @@ X-Xss-Protection: 0
           "enableNestedVirtualization": true
         },
         "bootDisk": {
-          "diskType": "hyperdisk-balanced",
+          "diskType": "pd-balanced",
           "sizeGb": "100"
         },
         "diskSizeGb": 100,
-        "diskType": "hyperdisk-balanced",
+        "diskType": "pd-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
@@ -2681,7 +2681,7 @@ X-Xss-Protection: 0
             "variant": "DEFAULT"
           }
         },
-        "machineType": "n4-standard-2",
+        "machineType": "n2-standard-2",
         "metadata": {
           "disable-legacy-endpoints": "true"
         },
@@ -2995,11 +2995,11 @@ X-Xss-Protection: 0
       "enableNestedVirtualization": true
     },
     "bootDisk": {
-      "diskType": "hyperdisk-balanced",
+      "diskType": "pd-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "hyperdisk-balanced",
+    "diskType": "pd-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
@@ -3016,7 +3016,7 @@ X-Xss-Protection: 0
         "variant": "DEFAULT"
       }
     },
-    "machineType": "n4-standard-2",
+    "machineType": "n2-standard-2",
     "metadata": {
       "disable-legacy-endpoints": "true"
     },
@@ -3061,11 +3061,11 @@ X-Xss-Protection: 0
           "enableNestedVirtualization": true
         },
         "bootDisk": {
-          "diskType": "hyperdisk-balanced",
+          "diskType": "pd-balanced",
           "sizeGb": "100"
         },
         "diskSizeGb": 100,
-        "diskType": "hyperdisk-balanced",
+        "diskType": "pd-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
@@ -3082,7 +3082,7 @@ X-Xss-Protection: 0
             "variant": "DEFAULT"
           }
         },
-        "machineType": "n4-standard-2",
+        "machineType": "n2-standard-2",
         "metadata": {
           "disable-legacy-endpoints": "true"
         },
@@ -3396,11 +3396,11 @@ X-Xss-Protection: 0
       "enableNestedVirtualization": true
     },
     "bootDisk": {
-      "diskType": "hyperdisk-balanced",
+      "diskType": "pd-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "hyperdisk-balanced",
+    "diskType": "pd-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
@@ -3417,7 +3417,7 @@ X-Xss-Protection: 0
         "variant": "DEFAULT"
       }
     },
-    "machineType": "n4-standard-2",
+    "machineType": "n2-standard-2",
     "metadata": {
       "disable-legacy-endpoints": "true"
     },
@@ -3462,11 +3462,11 @@ X-Xss-Protection: 0
           "enableNestedVirtualization": true
         },
         "bootDisk": {
-          "diskType": "hyperdisk-balanced",
+          "diskType": "pd-balanced",
           "sizeGb": "100"
         },
         "diskSizeGb": 100,
-        "diskType": "hyperdisk-balanced",
+        "diskType": "pd-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
@@ -3483,7 +3483,7 @@ X-Xss-Protection: 0
             "variant": "DEFAULT"
           }
         },
-        "machineType": "n4-standard-2",
+        "machineType": "n2-standard-2",
         "metadata": {
           "disable-legacy-endpoints": "true"
         },
