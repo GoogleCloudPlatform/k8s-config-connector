@@ -73,7 +73,7 @@ require (
 	cloud.google.com/go/securitycenter v1.44.0
 	cloud.google.com/go/speech v1.35.0
 	cloud.google.com/go/storage v1.62.0
-	cloud.google.com/go/video v1.32.0
+	cloud.google.com/go/video v1.33.0
 	cloud.google.com/go/vision/v2 v2.15.0
 	cloud.google.com/go/vmwareengine v1.8.0
 	cloud.google.com/go/vpcaccess v1.13.0
