@@ -52,6 +52,7 @@ var legacyScenarios = func() map[string]bool {
 }()
 
 // TestE2EScenariosV2 runs a Scenario test that runs step-by-step.
+// See testdata/scenarios/README.md for more information.
 func TestE2EScenariosV2(t *testing.T) {
 	if os.Getenv("RUN_E2E") == "" {
 		t.Skip("RUN_E2E not set; skipping")
