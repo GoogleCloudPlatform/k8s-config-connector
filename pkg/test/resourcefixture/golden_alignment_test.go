@@ -519,6 +519,11 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 	realJSON = composerBucketRegex.ReplaceAllString(realJSON, "composerenviron-00000001-bucket")
 	mockJSON = composerBucketRegex.ReplaceAllString(mockJSON, "composerenviron-00000001-bucket")
 
+	// Normalize Composer auto-generated network attachment hashes
+	composerNetworkAttachmentRegex := regexp.MustCompile(`composerenvironment-[a-z0-9]+-[0-9a-f]{8}`)
+	realJSON = composerNetworkAttachmentRegex.ReplaceAllString(realJSON, "composerenvironment-00000001")
+	mockJSON = composerNetworkAttachmentRegex.ReplaceAllString(mockJSON, "composerenvironment-00000001")
+
 	var realObj, mockObj interface{}
 
 	if realJSON != "" {
@@ -1020,6 +1025,8 @@ func getPlaceholdersForKind(kind string) []string {
 		return []string{"${networkID}"}
 	case "ComputeSubnetwork":
 		return []string{"${subnetworkID}"}
+	case "ComputeNetworkAttachment":
+		return []string{"${networkAttachmentID}"}
 	case "ComputeAddress":
 		return []string{"${addressID}"}
 	case "ComputeForwardingRule":

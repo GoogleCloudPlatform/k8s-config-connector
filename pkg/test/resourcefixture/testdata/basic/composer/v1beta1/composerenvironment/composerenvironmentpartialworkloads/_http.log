@@ -61,6 +61,36 @@ X-Xss-Protection: 0
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Service account projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Service account projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
@@ -339,6 +369,7 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "deleted:serviceAccount:sa-22ahnzv2syn7u3a@${projectId}.iam.gserviceaccount.com?uid=107461875422525710649",
         "deleted:serviceAccount:sa-55r6gad2ffdn6zy@${projectId}.iam.gserviceaccount.com?uid=105399162742053131879",
         "deleted:serviceAccount:sa-5zpyiawqlfzslgy@${projectId}.iam.gserviceaccount.com?uid=106437566010412657688",
         "deleted:serviceAccount:sa-bhluh5fpdmgva3q@${projectId}.iam.gserviceaccount.com?uid=110596982982416058716",
@@ -346,16 +377,21 @@ X-Xss-Protection: 0
         "deleted:serviceAccount:sa-fw6fjrr64tbgqui@${projectId}.iam.gserviceaccount.com?uid=114333599021935603943",
         "deleted:serviceAccount:sa-gopms5gdq3auejy@${projectId}.iam.gserviceaccount.com?uid=114668760771411572410",
         "deleted:serviceAccount:sa-httltavrcaickva@${projectId}.iam.gserviceaccount.com?uid=109711865168503891424",
+        "deleted:serviceAccount:sa-icwub4bkx5do7gi@${projectId}.iam.gserviceaccount.com?uid=103122666402338547069",
+        "deleted:serviceAccount:sa-k7n2tgfiwtejb6q@${projectId}.iam.gserviceaccount.com?uid=115744516269375232841",
+        "deleted:serviceAccount:sa-mai7sabylt4yyoq@${projectId}.iam.gserviceaccount.com?uid=100547037450362185412",
         "deleted:serviceAccount:sa-nil3zbt7z7oev3a@${projectId}.iam.gserviceaccount.com?uid=111846257135399305148",
         "deleted:serviceAccount:sa-ptfovrab5gosdea@${projectId}.iam.gserviceaccount.com?uid=103785748942034083758",
+        "deleted:serviceAccount:sa-q2we7lmwzoioi7y@${projectId}.iam.gserviceaccount.com?uid=109997818533686394439",
         "deleted:serviceAccount:sa-ritptiudfnuuymq@${projectId}.iam.gserviceaccount.com?uid=116622176039013547154",
         "deleted:serviceAccount:sa-scviekatomdrjwy@${projectId}.iam.gserviceaccount.com?uid=102197203853628284031",
         "deleted:serviceAccount:sa-tzckjmrnu6nsuwy@${projectId}.iam.gserviceaccount.com?uid=116155834017736730622",
+        "deleted:serviceAccount:sa-uqkfvrbwrmmpkoi@${projectId}.iam.gserviceaccount.com?uid=103241927725186340369",
         "deleted:serviceAccount:sa-vjs5atxxniv53bq@${projectId}.iam.gserviceaccount.com?uid=100842480091124986894",
         "deleted:serviceAccount:sa-yd3km55ce4ty2ji@${projectId}.iam.gserviceaccount.com?uid=116277230954637141698",
         "deleted:serviceAccount:sa-yrvdfce6o6w7r6a@${projectId}.iam.gserviceaccount.com?uid=100433249287894230368",
         "deleted:serviceAccount:sa-zypse5v67snoo6q@${projectId}.iam.gserviceaccount.com?uid=111125809810823243291",
-        "deleted:serviceAccount:sa-22ahnzv2syn7u3a@${projectId}.iam.gserviceaccount.com?uid=107461875422525710649",
+        "serviceAccount:sa-g4ax3ft6yvp2dzy@${projectId}.iam.gserviceaccount.com",
         "serviceAccount:sa-jwwn6vtubkppiqa@${projectId}.iam.gserviceaccount.com",
         "serviceAccount:sa-mwyr7d25kb3rpca@${projectId}.iam.gserviceaccount.com"
       ],
@@ -1149,6 +1185,7 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "deleted:serviceAccount:sa-22ahnzv2syn7u3a@${projectId}.iam.gserviceaccount.com?uid=107461875422525710649",
         "deleted:serviceAccount:sa-55r6gad2ffdn6zy@${projectId}.iam.gserviceaccount.com?uid=105399162742053131879",
         "deleted:serviceAccount:sa-5zpyiawqlfzslgy@${projectId}.iam.gserviceaccount.com?uid=106437566010412657688",
         "deleted:serviceAccount:sa-bhluh5fpdmgva3q@${projectId}.iam.gserviceaccount.com?uid=110596982982416058716",
@@ -1156,16 +1193,21 @@ X-Xss-Protection: 0
         "deleted:serviceAccount:sa-fw6fjrr64tbgqui@${projectId}.iam.gserviceaccount.com?uid=114333599021935603943",
         "deleted:serviceAccount:sa-gopms5gdq3auejy@${projectId}.iam.gserviceaccount.com?uid=114668760771411572410",
         "deleted:serviceAccount:sa-httltavrcaickva@${projectId}.iam.gserviceaccount.com?uid=109711865168503891424",
+        "deleted:serviceAccount:sa-icwub4bkx5do7gi@${projectId}.iam.gserviceaccount.com?uid=103122666402338547069",
+        "deleted:serviceAccount:sa-k7n2tgfiwtejb6q@${projectId}.iam.gserviceaccount.com?uid=115744516269375232841",
+        "deleted:serviceAccount:sa-mai7sabylt4yyoq@${projectId}.iam.gserviceaccount.com?uid=100547037450362185412",
         "deleted:serviceAccount:sa-nil3zbt7z7oev3a@${projectId}.iam.gserviceaccount.com?uid=111846257135399305148",
         "deleted:serviceAccount:sa-ptfovrab5gosdea@${projectId}.iam.gserviceaccount.com?uid=103785748942034083758",
+        "deleted:serviceAccount:sa-q2we7lmwzoioi7y@${projectId}.iam.gserviceaccount.com?uid=109997818533686394439",
         "deleted:serviceAccount:sa-ritptiudfnuuymq@${projectId}.iam.gserviceaccount.com?uid=116622176039013547154",
         "deleted:serviceAccount:sa-scviekatomdrjwy@${projectId}.iam.gserviceaccount.com?uid=102197203853628284031",
         "deleted:serviceAccount:sa-tzckjmrnu6nsuwy@${projectId}.iam.gserviceaccount.com?uid=116155834017736730622",
+        "deleted:serviceAccount:sa-uqkfvrbwrmmpkoi@${projectId}.iam.gserviceaccount.com?uid=103241927725186340369",
         "deleted:serviceAccount:sa-vjs5atxxniv53bq@${projectId}.iam.gserviceaccount.com?uid=100842480091124986894",
         "deleted:serviceAccount:sa-yd3km55ce4ty2ji@${projectId}.iam.gserviceaccount.com?uid=116277230954637141698",
         "deleted:serviceAccount:sa-yrvdfce6o6w7r6a@${projectId}.iam.gserviceaccount.com?uid=100433249287894230368",
         "deleted:serviceAccount:sa-zypse5v67snoo6q@${projectId}.iam.gserviceaccount.com?uid=111125809810823243291",
-        "deleted:serviceAccount:sa-22ahnzv2syn7u3a@${projectId}.iam.gserviceaccount.com?uid=107461875422525710649",
+        "serviceAccount:sa-g4ax3ft6yvp2dzy@${projectId}.iam.gserviceaccount.com",
         "serviceAccount:sa-jwwn6vtubkppiqa@${projectId}.iam.gserviceaccount.com",
         "serviceAccount:sa-mwyr7d25kb3rpca@${projectId}.iam.gserviceaccount.com"
       ],
@@ -1959,6 +2001,7 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "deleted:serviceAccount:sa-22ahnzv2syn7u3a@${projectId}.iam.gserviceaccount.com?uid=107461875422525710649",
         "deleted:serviceAccount:sa-55r6gad2ffdn6zy@${projectId}.iam.gserviceaccount.com?uid=105399162742053131879",
         "deleted:serviceAccount:sa-5zpyiawqlfzslgy@${projectId}.iam.gserviceaccount.com?uid=106437566010412657688",
         "deleted:serviceAccount:sa-bhluh5fpdmgva3q@${projectId}.iam.gserviceaccount.com?uid=110596982982416058716",
@@ -1966,16 +2009,21 @@ X-Xss-Protection: 0
         "deleted:serviceAccount:sa-fw6fjrr64tbgqui@${projectId}.iam.gserviceaccount.com?uid=114333599021935603943",
         "deleted:serviceAccount:sa-gopms5gdq3auejy@${projectId}.iam.gserviceaccount.com?uid=114668760771411572410",
         "deleted:serviceAccount:sa-httltavrcaickva@${projectId}.iam.gserviceaccount.com?uid=109711865168503891424",
+        "deleted:serviceAccount:sa-icwub4bkx5do7gi@${projectId}.iam.gserviceaccount.com?uid=103122666402338547069",
+        "deleted:serviceAccount:sa-k7n2tgfiwtejb6q@${projectId}.iam.gserviceaccount.com?uid=115744516269375232841",
+        "deleted:serviceAccount:sa-mai7sabylt4yyoq@${projectId}.iam.gserviceaccount.com?uid=100547037450362185412",
         "deleted:serviceAccount:sa-nil3zbt7z7oev3a@${projectId}.iam.gserviceaccount.com?uid=111846257135399305148",
         "deleted:serviceAccount:sa-ptfovrab5gosdea@${projectId}.iam.gserviceaccount.com?uid=103785748942034083758",
+        "deleted:serviceAccount:sa-q2we7lmwzoioi7y@${projectId}.iam.gserviceaccount.com?uid=109997818533686394439",
         "deleted:serviceAccount:sa-ritptiudfnuuymq@${projectId}.iam.gserviceaccount.com?uid=116622176039013547154",
         "deleted:serviceAccount:sa-scviekatomdrjwy@${projectId}.iam.gserviceaccount.com?uid=102197203853628284031",
         "deleted:serviceAccount:sa-tzckjmrnu6nsuwy@${projectId}.iam.gserviceaccount.com?uid=116155834017736730622",
+        "deleted:serviceAccount:sa-uqkfvrbwrmmpkoi@${projectId}.iam.gserviceaccount.com?uid=103241927725186340369",
         "deleted:serviceAccount:sa-vjs5atxxniv53bq@${projectId}.iam.gserviceaccount.com?uid=100842480091124986894",
         "deleted:serviceAccount:sa-yd3km55ce4ty2ji@${projectId}.iam.gserviceaccount.com?uid=116277230954637141698",
         "deleted:serviceAccount:sa-yrvdfce6o6w7r6a@${projectId}.iam.gserviceaccount.com?uid=100433249287894230368",
         "deleted:serviceAccount:sa-zypse5v67snoo6q@${projectId}.iam.gserviceaccount.com?uid=111125809810823243291",
-        "deleted:serviceAccount:sa-22ahnzv2syn7u3a@${projectId}.iam.gserviceaccount.com?uid=107461875422525710649",
+        "serviceAccount:sa-g4ax3ft6yvp2dzy@${projectId}.iam.gserviceaccount.com",
         "serviceAccount:sa-jwwn6vtubkppiqa@${projectId}.iam.gserviceaccount.com",
         "serviceAccount:sa-mwyr7d25kb3rpca@${projectId}.iam.gserviceaccount.com"
       ],
@@ -2762,18 +2810,24 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
           "deleted:serviceAccount:sa-fw6fjrr64tbgqui@${projectId}.iam.gserviceaccount.com?uid=114333599021935603943",
           "deleted:serviceAccount:sa-gopms5gdq3auejy@${projectId}.iam.gserviceaccount.com?uid=114668760771411572410",
           "deleted:serviceAccount:sa-httltavrcaickva@${projectId}.iam.gserviceaccount.com?uid=109711865168503891424",
+          "deleted:serviceAccount:sa-icwub4bkx5do7gi@${projectId}.iam.gserviceaccount.com?uid=103122666402338547069",
+          "deleted:serviceAccount:sa-k7n2tgfiwtejb6q@${projectId}.iam.gserviceaccount.com?uid=115744516269375232841",
+          "deleted:serviceAccount:sa-mai7sabylt4yyoq@${projectId}.iam.gserviceaccount.com?uid=100547037450362185412",
           "deleted:serviceAccount:sa-nil3zbt7z7oev3a@${projectId}.iam.gserviceaccount.com?uid=111846257135399305148",
           "deleted:serviceAccount:sa-ptfovrab5gosdea@${projectId}.iam.gserviceaccount.com?uid=103785748942034083758",
+          "deleted:serviceAccount:sa-q2we7lmwzoioi7y@${projectId}.iam.gserviceaccount.com?uid=109997818533686394439",
           "deleted:serviceAccount:sa-ritptiudfnuuymq@${projectId}.iam.gserviceaccount.com?uid=116622176039013547154",
           "deleted:serviceAccount:sa-scviekatomdrjwy@${projectId}.iam.gserviceaccount.com?uid=102197203853628284031",
           "deleted:serviceAccount:sa-tzckjmrnu6nsuwy@${projectId}.iam.gserviceaccount.com?uid=116155834017736730622",
+          "deleted:serviceAccount:sa-uqkfvrbwrmmpkoi@${projectId}.iam.gserviceaccount.com?uid=103241927725186340369",
           "deleted:serviceAccount:sa-vjs5atxxniv53bq@${projectId}.iam.gserviceaccount.com?uid=100842480091124986894",
           "deleted:serviceAccount:sa-yd3km55ce4ty2ji@${projectId}.iam.gserviceaccount.com?uid=116277230954637141698",
           "deleted:serviceAccount:sa-yrvdfce6o6w7r6a@${projectId}.iam.gserviceaccount.com?uid=100433249287894230368",
           "deleted:serviceAccount:sa-zypse5v67snoo6q@${projectId}.iam.gserviceaccount.com?uid=111125809810823243291",
+          "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:sa-g4ax3ft6yvp2dzy@${projectId}.iam.gserviceaccount.com",
           "serviceAccount:sa-jwwn6vtubkppiqa@${projectId}.iam.gserviceaccount.com",
-          "serviceAccount:sa-mwyr7d25kb3rpca@${projectId}.iam.gserviceaccount.com",
-          "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+          "serviceAccount:sa-mwyr7d25kb3rpca@${projectId}.iam.gserviceaccount.com"
         ],
         "role": "roles/composer.worker"
       },
@@ -3563,18 +3617,24 @@ X-Xss-Protection: 0
         "deleted:serviceAccount:sa-fw6fjrr64tbgqui@${projectId}.iam.gserviceaccount.com?uid=114333599021935603943",
         "deleted:serviceAccount:sa-gopms5gdq3auejy@${projectId}.iam.gserviceaccount.com?uid=114668760771411572410",
         "deleted:serviceAccount:sa-httltavrcaickva@${projectId}.iam.gserviceaccount.com?uid=109711865168503891424",
+        "deleted:serviceAccount:sa-icwub4bkx5do7gi@${projectId}.iam.gserviceaccount.com?uid=103122666402338547069",
+        "deleted:serviceAccount:sa-k7n2tgfiwtejb6q@${projectId}.iam.gserviceaccount.com?uid=115744516269375232841",
+        "deleted:serviceAccount:sa-mai7sabylt4yyoq@${projectId}.iam.gserviceaccount.com?uid=100547037450362185412",
         "deleted:serviceAccount:sa-nil3zbt7z7oev3a@${projectId}.iam.gserviceaccount.com?uid=111846257135399305148",
         "deleted:serviceAccount:sa-ptfovrab5gosdea@${projectId}.iam.gserviceaccount.com?uid=103785748942034083758",
+        "deleted:serviceAccount:sa-q2we7lmwzoioi7y@${projectId}.iam.gserviceaccount.com?uid=109997818533686394439",
         "deleted:serviceAccount:sa-ritptiudfnuuymq@${projectId}.iam.gserviceaccount.com?uid=116622176039013547154",
         "deleted:serviceAccount:sa-scviekatomdrjwy@${projectId}.iam.gserviceaccount.com?uid=102197203853628284031",
         "deleted:serviceAccount:sa-tzckjmrnu6nsuwy@${projectId}.iam.gserviceaccount.com?uid=116155834017736730622",
+        "deleted:serviceAccount:sa-uqkfvrbwrmmpkoi@${projectId}.iam.gserviceaccount.com?uid=103241927725186340369",
         "deleted:serviceAccount:sa-vjs5atxxniv53bq@${projectId}.iam.gserviceaccount.com?uid=100842480091124986894",
         "deleted:serviceAccount:sa-yd3km55ce4ty2ji@${projectId}.iam.gserviceaccount.com?uid=116277230954637141698",
         "deleted:serviceAccount:sa-yrvdfce6o6w7r6a@${projectId}.iam.gserviceaccount.com?uid=100433249287894230368",
         "deleted:serviceAccount:sa-zypse5v67snoo6q@${projectId}.iam.gserviceaccount.com?uid=111125809810823243291",
+        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:sa-g4ax3ft6yvp2dzy@${projectId}.iam.gserviceaccount.com",
         "serviceAccount:sa-jwwn6vtubkppiqa@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:sa-mwyr7d25kb3rpca@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+        "serviceAccount:sa-mwyr7d25kb3rpca@${projectId}.iam.gserviceaccount.com"
       ],
       "role": "roles/composer.worker"
     },
@@ -4374,18 +4434,24 @@ X-Xss-Protection: 0
         "deleted:serviceAccount:sa-fw6fjrr64tbgqui@${projectId}.iam.gserviceaccount.com?uid=114333599021935603943",
         "deleted:serviceAccount:sa-gopms5gdq3auejy@${projectId}.iam.gserviceaccount.com?uid=114668760771411572410",
         "deleted:serviceAccount:sa-httltavrcaickva@${projectId}.iam.gserviceaccount.com?uid=109711865168503891424",
+        "deleted:serviceAccount:sa-icwub4bkx5do7gi@${projectId}.iam.gserviceaccount.com?uid=103122666402338547069",
+        "deleted:serviceAccount:sa-k7n2tgfiwtejb6q@${projectId}.iam.gserviceaccount.com?uid=115744516269375232841",
+        "deleted:serviceAccount:sa-mai7sabylt4yyoq@${projectId}.iam.gserviceaccount.com?uid=100547037450362185412",
         "deleted:serviceAccount:sa-nil3zbt7z7oev3a@${projectId}.iam.gserviceaccount.com?uid=111846257135399305148",
         "deleted:serviceAccount:sa-ptfovrab5gosdea@${projectId}.iam.gserviceaccount.com?uid=103785748942034083758",
+        "deleted:serviceAccount:sa-q2we7lmwzoioi7y@${projectId}.iam.gserviceaccount.com?uid=109997818533686394439",
         "deleted:serviceAccount:sa-ritptiudfnuuymq@${projectId}.iam.gserviceaccount.com?uid=116622176039013547154",
         "deleted:serviceAccount:sa-scviekatomdrjwy@${projectId}.iam.gserviceaccount.com?uid=102197203853628284031",
         "deleted:serviceAccount:sa-tzckjmrnu6nsuwy@${projectId}.iam.gserviceaccount.com?uid=116155834017736730622",
+        "deleted:serviceAccount:sa-uqkfvrbwrmmpkoi@${projectId}.iam.gserviceaccount.com?uid=103241927725186340369",
         "deleted:serviceAccount:sa-vjs5atxxniv53bq@${projectId}.iam.gserviceaccount.com?uid=100842480091124986894",
         "deleted:serviceAccount:sa-yd3km55ce4ty2ji@${projectId}.iam.gserviceaccount.com?uid=116277230954637141698",
         "deleted:serviceAccount:sa-yrvdfce6o6w7r6a@${projectId}.iam.gserviceaccount.com?uid=100433249287894230368",
         "deleted:serviceAccount:sa-zypse5v67snoo6q@${projectId}.iam.gserviceaccount.com?uid=111125809810823243291",
+        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:sa-g4ax3ft6yvp2dzy@${projectId}.iam.gserviceaccount.com",
         "serviceAccount:sa-jwwn6vtubkppiqa@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:sa-mwyr7d25kb3rpca@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+        "serviceAccount:sa-mwyr7d25kb3rpca@${projectId}.iam.gserviceaccount.com"
       ],
       "role": "roles/composer.worker"
     },
@@ -5185,18 +5251,24 @@ X-Xss-Protection: 0
         "deleted:serviceAccount:sa-fw6fjrr64tbgqui@${projectId}.iam.gserviceaccount.com?uid=114333599021935603943",
         "deleted:serviceAccount:sa-gopms5gdq3auejy@${projectId}.iam.gserviceaccount.com?uid=114668760771411572410",
         "deleted:serviceAccount:sa-httltavrcaickva@${projectId}.iam.gserviceaccount.com?uid=109711865168503891424",
+        "deleted:serviceAccount:sa-icwub4bkx5do7gi@${projectId}.iam.gserviceaccount.com?uid=103122666402338547069",
+        "deleted:serviceAccount:sa-k7n2tgfiwtejb6q@${projectId}.iam.gserviceaccount.com?uid=115744516269375232841",
+        "deleted:serviceAccount:sa-mai7sabylt4yyoq@${projectId}.iam.gserviceaccount.com?uid=100547037450362185412",
         "deleted:serviceAccount:sa-nil3zbt7z7oev3a@${projectId}.iam.gserviceaccount.com?uid=111846257135399305148",
         "deleted:serviceAccount:sa-ptfovrab5gosdea@${projectId}.iam.gserviceaccount.com?uid=103785748942034083758",
+        "deleted:serviceAccount:sa-q2we7lmwzoioi7y@${projectId}.iam.gserviceaccount.com?uid=109997818533686394439",
         "deleted:serviceAccount:sa-ritptiudfnuuymq@${projectId}.iam.gserviceaccount.com?uid=116622176039013547154",
         "deleted:serviceAccount:sa-scviekatomdrjwy@${projectId}.iam.gserviceaccount.com?uid=102197203853628284031",
         "deleted:serviceAccount:sa-tzckjmrnu6nsuwy@${projectId}.iam.gserviceaccount.com?uid=116155834017736730622",
+        "deleted:serviceAccount:sa-uqkfvrbwrmmpkoi@${projectId}.iam.gserviceaccount.com?uid=103241927725186340369",
         "deleted:serviceAccount:sa-vjs5atxxniv53bq@${projectId}.iam.gserviceaccount.com?uid=100842480091124986894",
         "deleted:serviceAccount:sa-yd3km55ce4ty2ji@${projectId}.iam.gserviceaccount.com?uid=116277230954637141698",
         "deleted:serviceAccount:sa-yrvdfce6o6w7r6a@${projectId}.iam.gserviceaccount.com?uid=100433249287894230368",
         "deleted:serviceAccount:sa-zypse5v67snoo6q@${projectId}.iam.gserviceaccount.com?uid=111125809810823243291",
+        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:sa-g4ax3ft6yvp2dzy@${projectId}.iam.gserviceaccount.com",
         "serviceAccount:sa-jwwn6vtubkppiqa@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:sa-mwyr7d25kb3rpca@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+        "serviceAccount:sa-mwyr7d25kb3rpca@${projectId}.iam.gserviceaccount.com"
       ],
       "role": "roles/composer.worker"
     },
@@ -5996,19 +6068,24 @@ X-Xss-Protection: 0
         "deleted:serviceAccount:sa-fw6fjrr64tbgqui@${projectId}.iam.gserviceaccount.com?uid=114333599021935603943",
         "deleted:serviceAccount:sa-gopms5gdq3auejy@${projectId}.iam.gserviceaccount.com?uid=114668760771411572410",
         "deleted:serviceAccount:sa-httltavrcaickva@${projectId}.iam.gserviceaccount.com?uid=109711865168503891424",
+        "deleted:serviceAccount:sa-icwub4bkx5do7gi@${projectId}.iam.gserviceaccount.com?uid=103122666402338547069",
+        "deleted:serviceAccount:sa-k7n2tgfiwtejb6q@${projectId}.iam.gserviceaccount.com?uid=115744516269375232841",
+        "deleted:serviceAccount:sa-mai7sabylt4yyoq@${projectId}.iam.gserviceaccount.com?uid=100547037450362185412",
         "deleted:serviceAccount:sa-nil3zbt7z7oev3a@${projectId}.iam.gserviceaccount.com?uid=111846257135399305148",
         "deleted:serviceAccount:sa-ptfovrab5gosdea@${projectId}.iam.gserviceaccount.com?uid=103785748942034083758",
+        "deleted:serviceAccount:sa-q2we7lmwzoioi7y@${projectId}.iam.gserviceaccount.com?uid=109997818533686394439",
         "deleted:serviceAccount:sa-ritptiudfnuuymq@${projectId}.iam.gserviceaccount.com?uid=116622176039013547154",
         "deleted:serviceAccount:sa-scviekatomdrjwy@${projectId}.iam.gserviceaccount.com?uid=102197203853628284031",
         "deleted:serviceAccount:sa-tzckjmrnu6nsuwy@${projectId}.iam.gserviceaccount.com?uid=116155834017736730622",
+        "deleted:serviceAccount:sa-uqkfvrbwrmmpkoi@${projectId}.iam.gserviceaccount.com?uid=103241927725186340369",
         "deleted:serviceAccount:sa-vjs5atxxniv53bq@${projectId}.iam.gserviceaccount.com?uid=100842480091124986894",
         "deleted:serviceAccount:sa-yd3km55ce4ty2ji@${projectId}.iam.gserviceaccount.com?uid=116277230954637141698",
         "deleted:serviceAccount:sa-yrvdfce6o6w7r6a@${projectId}.iam.gserviceaccount.com?uid=100433249287894230368",
         "deleted:serviceAccount:sa-zypse5v67snoo6q@${projectId}.iam.gserviceaccount.com?uid=111125809810823243291",
-        "serviceAccount:sa-icwub4bkx5do7gi@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:sa-g4ax3ft6yvp2dzy@${projectId}.iam.gserviceaccount.com",
         "serviceAccount:sa-jwwn6vtubkppiqa@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:sa-mwyr7d25kb3rpca@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+        "serviceAccount:sa-mwyr7d25kb3rpca@${projectId}.iam.gserviceaccount.com"
       ],
       "role": "roles/composer.worker"
     },
@@ -6808,19 +6885,24 @@ X-Xss-Protection: 0
         "deleted:serviceAccount:sa-fw6fjrr64tbgqui@${projectId}.iam.gserviceaccount.com?uid=114333599021935603943",
         "deleted:serviceAccount:sa-gopms5gdq3auejy@${projectId}.iam.gserviceaccount.com?uid=114668760771411572410",
         "deleted:serviceAccount:sa-httltavrcaickva@${projectId}.iam.gserviceaccount.com?uid=109711865168503891424",
+        "deleted:serviceAccount:sa-icwub4bkx5do7gi@${projectId}.iam.gserviceaccount.com?uid=103122666402338547069",
+        "deleted:serviceAccount:sa-k7n2tgfiwtejb6q@${projectId}.iam.gserviceaccount.com?uid=115744516269375232841",
+        "deleted:serviceAccount:sa-mai7sabylt4yyoq@${projectId}.iam.gserviceaccount.com?uid=100547037450362185412",
         "deleted:serviceAccount:sa-nil3zbt7z7oev3a@${projectId}.iam.gserviceaccount.com?uid=111846257135399305148",
         "deleted:serviceAccount:sa-ptfovrab5gosdea@${projectId}.iam.gserviceaccount.com?uid=103785748942034083758",
+        "deleted:serviceAccount:sa-q2we7lmwzoioi7y@${projectId}.iam.gserviceaccount.com?uid=109997818533686394439",
         "deleted:serviceAccount:sa-ritptiudfnuuymq@${projectId}.iam.gserviceaccount.com?uid=116622176039013547154",
         "deleted:serviceAccount:sa-scviekatomdrjwy@${projectId}.iam.gserviceaccount.com?uid=102197203853628284031",
         "deleted:serviceAccount:sa-tzckjmrnu6nsuwy@${projectId}.iam.gserviceaccount.com?uid=116155834017736730622",
+        "deleted:serviceAccount:sa-uqkfvrbwrmmpkoi@${projectId}.iam.gserviceaccount.com?uid=103241927725186340369",
         "deleted:serviceAccount:sa-vjs5atxxniv53bq@${projectId}.iam.gserviceaccount.com?uid=100842480091124986894",
         "deleted:serviceAccount:sa-yd3km55ce4ty2ji@${projectId}.iam.gserviceaccount.com?uid=116277230954637141698",
         "deleted:serviceAccount:sa-yrvdfce6o6w7r6a@${projectId}.iam.gserviceaccount.com?uid=100433249287894230368",
         "deleted:serviceAccount:sa-zypse5v67snoo6q@${projectId}.iam.gserviceaccount.com?uid=111125809810823243291",
-        "serviceAccount:sa-icwub4bkx5do7gi@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:sa-g4ax3ft6yvp2dzy@${projectId}.iam.gserviceaccount.com",
         "serviceAccount:sa-jwwn6vtubkppiqa@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:sa-mwyr7d25kb3rpca@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+        "serviceAccount:sa-mwyr7d25kb3rpca@${projectId}.iam.gserviceaccount.com"
       ],
       "role": "roles/composer.worker"
     },
@@ -7355,16 +7437,20 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkAttachments/${networkAttachmentID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=us-central1&network_attachment=${networkAttachmentID}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Pragma: no-cache
-Server: UploadServer
+Server: ESF
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a0c5199c98
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "error": {
@@ -7372,128 +7458,119 @@ X-Goog-Gcs-Base-Ts: 1a0c5199c98
     "errors": [
       {
         "domain": "global",
-        "message": "The specified bucket does not exist.",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/networkAttachments/${networkAttachmentID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The specified bucket does not exist."
+    "message": "The resource 'projects/${projectId}/regions/us-central1/networkAttachments/${networkAttachmentID}' was not found"
   }
 }
 
 ---
 
-POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkAttachments
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=us-central1
 
 {
-  "iamConfiguration": {
-    "uniformBucketLevelAccess": {
-      "enabled": true
-    }
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycle": {
-    "rule": []
-  },
-  "location": "us-central1",
-  "name": "bucket-${uniqueId}",
-  "storageClass": "STANDARD"
+  "connectionPreference": "ACCEPT_AUTOMATIC",
+  "name": "${networkAttachmentID}",
+  "subnetworks": [
+    "projects/${projectId}/regions/us-central1/subnetworks/default"
+  ]
 }
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Pragma: no-cache
-Server: UploadServer
+Server: ESF
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a0c5199fb7
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "etag": "abcdef0123A=",
-  "generation": "12345678901234",
-  "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    },
-    "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    }
-  },
   "id": "000000000000000000000",
-  "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US-CENTRAL1",
-  "locationType": "region",
-  "metageneration": "1",
-  "name": "bucket-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "satisfiesPZI": true,
-  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
-  },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkAttachments.insert",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkAttachmentID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkAttachments/${networkAttachmentID}",
+  "user": "user@example.com"
 }
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=us-central1&operation=${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: UploadServer
+Server: ESF
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a0c519a1d7
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "etag": "abcdef0123A=",
-  "generation": "12345678901234",
-  "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    },
-    "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    }
-  },
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
-  "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US-CENTRAL1",
-  "locationType": "region",
-  "metageneration": "1",
-  "name": "bucket-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "satisfiesPZI": true,
-  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
-  },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkAttachments.insert",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkAttachmentID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkAttachments/${networkAttachmentID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkAttachments/${networkAttachmentID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=us-central1&network_attachment=${networkAttachmentID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "connectionPreference": "ACCEPT_AUTOMATIC",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#networkAttachment",
+  "name": "${networkAttachmentID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkAttachments/${networkAttachmentID}",
+  "subnetworks": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default"
+  ]
 }
 
 ---
@@ -7553,7 +7630,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "operationType": 1,
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "d5360773-711a-4dec-a8a2-b41adff82156",
+    "resourceUuid": "22b16d17-a18d-4cb8-8365-0a133fa1dad5",
     "state": 1
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
@@ -7584,16 +7661,16 @@ X-Xss-Protection: 0
     "endTime": "2024-04-01T12:34:56.123456Z",
     "operationType": "CREATE",
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "d5360773-711a-4dec-a8a2-b41adff82156",
+    "resourceUuid": "22b16d17-a18d-4cb8-8365-0a133fa1dad5",
     "state": "SUCCEEDED"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.Environment",
     "config": {
-      "airflowByoidUri": "https://d5360773711a4deca8a2b41adff82156-dot-us-central1.composer.byoid.googleusercontent.com",
-      "airflowUri": "https://d5360773711a4deca8a2b41adff82156-dot-us-central1.composer.googleusercontent.com",
-      "dagGcsPrefix": "gs://us-central1-composerenviron-822a1a97-bucket/dags",
+      "airflowByoidUri": "https://22b16d17a18d4cb883650a133fa1dad5-dot-us-central1.composer.byoid.googleusercontent.com",
+      "airflowUri": "https://22b16d17a18d4cb883650a133fa1dad5-dot-us-central1.composer.googleusercontent.com",
+      "dagGcsPrefix": "gs://us-central1-composerenviron-177b9435-bucket/dags",
       "dataRetentionConfig": {
         "airflowMetadataRetentionConfig": {
           "retentionDays": 60,
@@ -7664,10 +7741,10 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
     "storageConfig": {
-      "bucket": "us-central1-composerenviron-822a1a97-bucket"
+      "bucket": "us-central1-composerenviron-177b9435-bucket"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z",
-    "uuid": "d5360773-711a-4dec-a8a2-b41adff82156"
+    "uuid": "22b16d17-a18d-4cb8-8365-0a133fa1dad5"
   }
 }
 
@@ -7690,9 +7767,9 @@ X-Xss-Protection: 0
 
 {
   "config": {
-    "airflowByoidUri": "https://d5360773711a4deca8a2b41adff82156-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://d5360773711a4deca8a2b41adff82156-dot-us-central1.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-822a1a97-bucket/dags",
+    "airflowByoidUri": "https://22b16d17a18d4cb883650a133fa1dad5-dot-us-central1.composer.byoid.googleusercontent.com",
+    "airflowUri": "https://22b16d17a18d4cb883650a133fa1dad5-dot-us-central1.composer.googleusercontent.com",
+    "dagGcsPrefix": "gs://us-central1-composerenviron-177b9435-bucket/dags",
     "dataRetentionConfig": {
       "airflowMetadataRetentionConfig": {
         "retentionDays": 60,
@@ -7764,10 +7841,10 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
   "state": 2,
   "storageConfig": {
-    "bucket": "us-central1-composerenviron-822a1a97-bucket"
+    "bucket": "us-central1-composerenviron-177b9435-bucket"
   },
   "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "d5360773-711a-4dec-a8a2-b41adff82156"
+  "uuid": "22b16d17-a18d-4cb8-8365-0a133fa1dad5"
 }
 
 ---
@@ -7830,7 +7907,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "operationType": 3,
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "d5360773-711a-4dec-a8a2-b41adff82156",
+    "resourceUuid": "22b16d17-a18d-4cb8-8365-0a133fa1dad5",
     "state": 1
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
@@ -7861,16 +7938,16 @@ X-Xss-Protection: 0
     "endTime": "2024-04-01T12:34:56.123456Z",
     "operationType": "UPDATE",
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "d5360773-711a-4dec-a8a2-b41adff82156",
+    "resourceUuid": "22b16d17-a18d-4cb8-8365-0a133fa1dad5",
     "state": "SUCCEEDED"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.Environment",
     "config": {
-      "airflowByoidUri": "https://d5360773711a4deca8a2b41adff82156-dot-us-central1.composer.byoid.googleusercontent.com",
-      "airflowUri": "https://d5360773711a4deca8a2b41adff82156-dot-us-central1.composer.googleusercontent.com",
-      "dagGcsPrefix": "gs://us-central1-composerenviron-822a1a97-bucket/dags",
+      "airflowByoidUri": "https://22b16d17a18d4cb883650a133fa1dad5-dot-us-central1.composer.byoid.googleusercontent.com",
+      "airflowUri": "https://22b16d17a18d4cb883650a133fa1dad5-dot-us-central1.composer.googleusercontent.com",
+      "dagGcsPrefix": "gs://us-central1-composerenviron-177b9435-bucket/dags",
       "dataRetentionConfig": {
         "airflowMetadataRetentionConfig": {
           "retentionDays": 60,
@@ -7941,10 +8018,163 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
     "storageConfig": {
-      "bucket": "us-central1-composerenviron-822a1a97-bucket"
+      "bucket": "us-central1-composerenviron-177b9435-bucket"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z",
-    "uuid": "d5360773-711a-4dec-a8a2-b41adff82156"
+    "uuid": "22b16d17-a18d-4cb8-8365-0a133fa1dad5"
+  }
+}
+
+---
+
+PATCH https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=config.nodeConfig.composerNetworkAttachment
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
+
+{
+  "config": {
+    "nodeConfig": {
+      "composerNetworkAttachment": "projects/${projectId}/regions/us-central1/networkAttachments/${networkAttachmentID}"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": 3,
+    "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "resourceUuid": "22b16d17-a18d-4cb8-8365-0a133fa1dad5",
+    "state": 1
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": "UPDATE",
+    "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "resourceUuid": "22b16d17-a18d-4cb8-8365-0a133fa1dad5",
+    "state": "SUCCEEDED"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.Environment",
+    "config": {
+      "airflowByoidUri": "https://22b16d17a18d4cb883650a133fa1dad5-dot-us-central1.composer.byoid.googleusercontent.com",
+      "airflowUri": "https://22b16d17a18d4cb883650a133fa1dad5-dot-us-central1.composer.googleusercontent.com",
+      "dagGcsPrefix": "gs://us-central1-composerenviron-177b9435-bucket/dags",
+      "dataRetentionConfig": {
+        "airflowMetadataRetentionConfig": {
+          "retentionDays": 60,
+          "retentionMode": "RETENTION_MODE_ENABLED"
+        }
+      },
+      "encryptionConfig": {},
+      "environmentSize": "ENVIRONMENT_SIZE_SMALL",
+      "nodeConfig": {
+        "composerInternalIpv4CidrBlock": "100.64.128.0/20",
+        "composerNetworkAttachment": "projects/${projectId}/regions/us-central1/networkAttachments/${networkAttachmentID}",
+        "ipAllocationPolicy": {},
+        "network": "projects/${projectId}/global/networks/default",
+        "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+      },
+      "privateEnvironmentConfig": {
+        "networkingConfig": {},
+        "networkingType": "PUBLIC"
+      },
+      "softwareConfig": {
+        "auditLogsReplicationMode": "AUDIT_LOGS_REPLICATION_DISABLED",
+        "cloudDataLineageIntegration": {},
+        "imageVersion": "composer-3-airflow-2.11.1-build.19",
+        "webServerPluginsMode": "PLUGINS_ENABLED"
+      },
+      "webServerNetworkAccessControl": {
+        "allowedIpRanges": [
+          {
+            "description": "Allows access from all IPv4 addresses (default value)",
+            "value": "0.0.0.0/0"
+          },
+          {
+            "description": "Allows access from all IPv6 addresses (default value)",
+            "value": "::0/0"
+          }
+        ]
+      },
+      "workloadsConfig": {
+        "dagProcessor": {
+          "count": 1,
+          "cpu": 1,
+          "memoryGb": 4,
+          "storageGb": 1
+        },
+        "scheduler": {
+          "count": 3,
+          "cpu": 0.5,
+          "memoryGb": 2,
+          "storageGb": 1
+        },
+        "triggerer": {
+          "count": 1,
+          "cpu": 1,
+          "memoryGb": 2
+        },
+        "webServer": {
+          "cpu": 1,
+          "memoryGb": 4,
+          "storageGb": 1
+        },
+        "worker": {
+          "cpu": 0.5,
+          "maxCount": 3,
+          "memoryGb": 2,
+          "minCount": 1,
+          "storageGb": 10
+        }
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "storageConfig": {
+      "bucket": "us-central1-composerenviron-177b9435-bucket"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "uuid": "22b16d17-a18d-4cb8-8365-0a133fa1dad5"
   }
 }
 
@@ -7967,9 +8197,9 @@ X-Xss-Protection: 0
 
 {
   "config": {
-    "airflowByoidUri": "https://d5360773711a4deca8a2b41adff82156-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://d5360773711a4deca8a2b41adff82156-dot-us-central1.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-822a1a97-bucket/dags",
+    "airflowByoidUri": "https://22b16d17a18d4cb883650a133fa1dad5-dot-us-central1.composer.byoid.googleusercontent.com",
+    "airflowUri": "https://22b16d17a18d4cb883650a133fa1dad5-dot-us-central1.composer.googleusercontent.com",
+    "dagGcsPrefix": "gs://us-central1-composerenviron-177b9435-bucket/dags",
     "dataRetentionConfig": {
       "airflowMetadataRetentionConfig": {
         "retentionDays": 60,
@@ -7980,8 +8210,11 @@ X-Xss-Protection: 0
     "environmentSize": 1,
     "nodeConfig": {
       "composerInternalIpv4CidrBlock": "100.64.128.0/20",
+      "composerNetworkAttachment": "projects/${projectId}/regions/us-central1/networkAttachments/${networkAttachmentID}",
       "ipAllocationPolicy": {},
-      "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      "network": "projects/${projectId}/global/networks/default",
+      "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+      "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
     },
     "privateEnvironmentConfig": {
       "networkingConfig": {},
@@ -8041,10 +8274,10 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
   "state": 2,
   "storageConfig": {
-    "bucket": "us-central1-composerenviron-822a1a97-bucket"
+    "bucket": "us-central1-composerenviron-177b9435-bucket"
   },
   "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "d5360773-711a-4dec-a8a2-b41adff82156"
+  "uuid": "22b16d17-a18d-4cb8-8365-0a133fa1dad5"
 }
 
 ---
@@ -8070,7 +8303,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "operationType": 2,
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "d5360773-711a-4dec-a8a2-b41adff82156",
+    "resourceUuid": "22b16d17-a18d-4cb8-8365-0a133fa1dad5",
     "state": 1
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
@@ -8101,7 +8334,7 @@ X-Xss-Protection: 0
     "endTime": "2024-04-01T12:34:56.123456Z",
     "operationType": "DELETE",
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "d5360773-711a-4dec-a8a2-b41adff82156",
+    "resourceUuid": "22b16d17-a18d-4cb8-8365-0a133fa1dad5",
     "state": "SUCCEEDED"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
@@ -8112,81 +8345,102 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a0c533891f
-
-{
-  "etag": "abcdef0123A=",
-  "generation": "12345678901234",
-  "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    },
-    "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
-    }
-  },
-  "id": "000000000000000000000",
-  "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US-CENTRAL1",
-  "locationType": "region",
-  "metageneration": "1",
-  "name": "bucket-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "satisfiesPZI": true,
-  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
-  },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a0c5338b15
-
-{
-  "kind": "storage#objects"
-}
-
----
-
-DELETE https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-204 No Content
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkAttachments/${networkAttachmentID}
 Content-Type: application/json
-Pragma: no-cache
-Server: UploadServer
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=us-central1&network_attachment=${networkAttachmentID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a0c5338dcf
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
+{
+  "connectionPreference": "ACCEPT_AUTOMATIC",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#networkAttachment",
+  "name": "${networkAttachmentID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkAttachments/${networkAttachmentID}",
+  "subnetworks": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default"
+  ]
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkAttachments/${networkAttachmentID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=us-central1&network_attachment=${networkAttachmentID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkAttachments.delete",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkAttachmentID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkAttachments/${networkAttachmentID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&region=us-central1&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networkAttachments.delete",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkAttachmentID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkAttachments/${networkAttachmentID}",
+  "user": "user@example.com"
+}
 
 ---
 

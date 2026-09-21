@@ -1224,7 +1224,7 @@ X-Xss-Protection: 0
       "cloudComposerConnectionSubnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
       "enablePrivateEnvironment": true,
       "networkingConfig": {},
-      "networkingType": 2
+      "networkingType": 1
     },
     "softwareConfig": {
       "auditLogsReplicationMode": 1,
@@ -1486,7 +1486,7 @@ X-Xss-Protection: 0
       "cloudComposerConnectionSubnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
       "enablePrivateEnvironment": true,
       "networkingConfig": {},
-      "networkingType": 2
+      "networkingType": 1
     },
     "softwareConfig": {
       "auditLogsReplicationMode": 1,

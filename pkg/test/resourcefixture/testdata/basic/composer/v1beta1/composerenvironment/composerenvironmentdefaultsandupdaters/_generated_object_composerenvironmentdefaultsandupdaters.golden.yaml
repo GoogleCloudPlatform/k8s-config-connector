@@ -19,11 +19,18 @@ spec:
       endTime: "2024-01-01T06:00:00Z"
       recurrence: FREQ=WEEKLY;BYDAY=FR,SA,SU
       startTime: "2024-01-01T00:00:00Z"
+    nodeConfig:
+      networkRef:
+        external: projects/${projectId}/global/networks/default
+      subnetworkRef:
+        external: projects/${projectId}/regions/us-central1/subnetworks/default
     privateEnvironmentConfig:
-      enablePrivateBuildsOnly: true
+      enablePrivateBuildsOnly: false
+      enablePrivateEnvironment: true
     softwareConfig:
       cloudDataLineageIntegration:
         enabled: false
+      webServerPluginsMode: PLUGINS_DISABLED
   location: us-central1
   projectRef:
     external: ${projectId}

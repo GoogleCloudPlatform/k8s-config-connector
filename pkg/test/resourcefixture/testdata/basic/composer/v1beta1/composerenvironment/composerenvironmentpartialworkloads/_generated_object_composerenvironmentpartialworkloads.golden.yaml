@@ -12,6 +12,8 @@ metadata:
 spec:
   config:
     nodeConfig:
+      composerNetworkAttachmentRef:
+        name: ${networkAttachmentID}
       serviceAccountRef:
         name: sa-${uniqueId}
     workloadsConfig:

@@ -10,12 +10,12 @@
   name: iampolicymember-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: //storage.googleapis.com/projects/${projectId}/buckets/bucket-${uniqueId}
-  group: storage.cnrm.cloud.google.com
-  kind: StorageBucket
-  name: bucket-${uniqueId}
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/networkAttachments/attachment-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeNetworkAttachment
+  name: attachment-${uniqueId}
   namespace: ${uniqueId}
-  version: v1beta1
+  version: v1alpha1
 - caisURL: unknown
   group: composer.cnrm.cloud.google.com
   kind: ComposerEnvironment
