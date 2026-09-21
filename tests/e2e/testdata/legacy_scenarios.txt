@@ -1,0 +1,29 @@
+# Legacy scenario names running under TestE2EScript (v1)
+# Do not add new scenarios to this list.
+acquisition
+alloydbcluster
+alloydbinstance
+always-add-finalizers
+bigquerydatatransferconfig_duplication
+bigqueryreservationreservation
+bigtableinstance
+cc_pause_change_reconcile
+ccc_pause_change_reconcile
+ccc_state_into_spec_absent
+ccc_state_into_spec_merge
+computefirewallpolicyrule
+computetargettcpproxy
+containercluster
+fields
+gkehubfeaturemembership
+iam
+iam_add_remove
+labels-apigateway
+powertool
+privilegedaccessmanagerentitlement
+reconciliation_interval
+secretmanagerversionalias
+sql
+sqlinstance-pointers-match
+storageanywherecache
+tracker

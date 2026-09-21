@@ -15,18 +15,11 @@
 package e2e
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
-	"errors"
+	_ "embed"
 	"fmt"
-	"io"
-	"net/http"
-	"net/url"
 	"os"
-	"os/exec"
 	"path/filepath"
-	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -39,41 +32,24 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
-	"k8s.io/apimachinery/pkg/util/wait"
 	"sigs.k8s.io/yaml"
 )
 
-// legacyScenarios lists all existing scenario suites that remain under the V1 runner.
-// Note: "storagebucket" is omitted so it is tested by TestE2EScenariosV2 as the pilot suite.
-var legacyScenarios = map[string]bool{
-	"acquisition":                            true,
-	"alloydbcluster":                         true,
-	"alloydbinstance":                        true,
-	"always-add-finalizers":                  true,
-	"bigquerydatatransferconfig_duplication": true,
-	"bigqueryreservationreservation":         true,
-	"bigtableinstance":                       true,
-	"cc_pause_change_reconcile":              true,
-	"ccc_pause_change_reconcile":             true,
-	"ccc_state_into_spec_absent":             true,
-	"ccc_state_into_spec_merge":              true,
-	"computefirewallpolicyrule":              true,
-	"computetargettcpproxy":                  true,
-	"containercluster":                       true,
-	"fields":                                 true,
-	"gkehubfeaturemembership":                true,
-	"iam":                                    true,
-	"iam_add_remove":                         true,
-	"labels-apigateway":                      true,
-	"powertool":                              true,
-	"privilegedaccessmanagerentitlement":     true,
-	"reconciliation_interval":                true,
-	"secretmanagerversionalias":              true,
-	"sql":                                    true,
-	"sqlinstance-pointers-match":             true,
-	"storageanywherecache":                   true,
-	"tracker":                                true,
-}
+//go:embed testdata/legacy_scenarios.txt
+var legacyScenariosRaw string
+
+var legacyScenarios = func() map[string]bool {
+	m := make(map[string]bool)
+	lines := strings.Split(legacyScenariosRaw, "\n")
+	for _, line := range lines {
+		line = strings.TrimSpace(line)
+		if line == "" || strings.HasPrefix(line, "#") {
+			continue
+		}
+		m[line] = true
+	}
+	return m
+}()
 
 // TestE2EScenariosV2 runs a Scenario test that runs step-by-step.
 func TestE2EScenariosV2(t *testing.T) {
@@ -255,141 +231,6 @@ func TestE2EScenariosV2(t *testing.T) {
 						continue
 					}
 
-					if obj.GroupVersionKind().Kind == "HTTPRequest" {
-						// 1. Get properties
-						verbVal, _, _ := unstructured.NestedString(obj.Object, "verb")
-						if verbVal == "" {
-							verbVal, _, _ = unstructured.NestedString(obj.Object, "method")
-						}
-						if verbVal == "" {
-							verbVal = "GET"
-						}
-						verbVal = strings.ToUpper(verbVal)
-
-						urlVal, _, _ := unstructured.NestedString(obj.Object, "url")
-						if urlVal == "" {
-							urlVal, _, _ = unstructured.NestedString(obj.Object, "path")
-						}
-						if urlVal == "" {
-							h.Fatalf("HTTPRequest must specify a url or path")
-						}
-
-						// 2. Prepare body
-						var reqBody io.Reader
-						if bodyVal, ok := obj.Object["body"]; ok {
-							switch val := bodyVal.(type) {
-							case string:
-								reqBody = strings.NewReader(val)
-							default:
-								bodyBytes, err := json.Marshal(val)
-								if err != nil {
-									h.Fatalf("failed to marshal HTTPRequest body to JSON: %v", err)
-								}
-								reqBody = bytes.NewReader(bodyBytes)
-							}
-						}
-
-						// 3. Build request
-						req, err := http.NewRequestWithContext(ctx, verbVal, urlVal, reqBody)
-						if err != nil {
-							h.Fatalf("failed to create http request: %v", err)
-						}
-
-						// 4. Headers
-						if headersVal, ok := obj.Object["headers"]; ok {
-							if headerMap, ok := headersVal.(map[string]any); ok {
-								for k, v := range headerMap {
-									req.Header.Set(k, fmt.Sprintf("%v", v))
-								}
-							}
-						}
-						if req.Header.Get("Content-Type") == "" && reqBody != nil {
-							req.Header.Set("Content-Type", "application/json")
-						}
-
-						// 5. Send request and capture response
-						resp, err := h.GCPHTTPClient().Do(req)
-						if err != nil {
-							h.Fatalf("HTTPRequest failed: %v", err)
-						}
-						defer resp.Body.Close()
-
-						respBodyBytes, err := io.ReadAll(resp.Body)
-						if err != nil {
-							h.Fatalf("failed to read HTTPRequest response body: %v", err)
-						}
-
-						t.Logf("HTTPRequest response status: %s", resp.Status)
-
-						// 6. Check for LRO polling
-						if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-							var respJSON map[string]any
-							if err := json.Unmarshal(respBodyBytes, &respJSON); err == nil {
-								if isLRO(respJSON) {
-									opName, _ := respJSON["name"].(string)
-									if opName != "" {
-										pollURL, err := buildPollURL(urlVal, opName)
-										if err != nil {
-											h.Fatalf("failed to build poll URL from %q and operation %q: %v", urlVal, opName, err)
-										}
-
-										t.Logf("Starting LRO polling for operation %q using URL %q", opName, pollURL)
-
-										// Pause event sink logging during polling
-										h.Events.Pause()
-
-										pollErr := wait.PollImmediate(2*time.Second, 15*time.Minute, func() (bool, error) {
-											pollReq, err := http.NewRequestWithContext(ctx, "GET", pollURL, nil)
-											if err != nil {
-												return false, err
-											}
-											pollResp, err := h.GCPHTTPClient().Do(pollReq)
-											if err != nil {
-												return false, nil // retry
-											}
-											defer pollResp.Body.Close()
-
-											if pollResp.StatusCode < 200 || pollResp.StatusCode >= 300 {
-												return false, nil // retry
-											}
-
-											pollBodyBytes, err := io.ReadAll(pollResp.Body)
-											if err != nil {
-												return false, nil // retry
-											}
-
-											var pollJSON map[string]any
-											if err := json.Unmarshal(pollBodyBytes, &pollJSON); err != nil {
-												return false, nil // retry
-											}
-
-											done, _ := pollJSON["done"].(bool)
-											if done {
-												if opErr, hasErr := pollJSON["error"]; hasErr {
-													return true, fmt.Errorf("operation failed: %v", opErr)
-												}
-												t.Logf("LRO operation %q completed successfully", opName)
-												return true, nil
-											}
-											return false, nil
-										})
-
-										// Resume event sink logging
-										h.Events.Resume()
-
-										if pollErr != nil {
-											h.Fatalf("LRO polling failed: %v", pollErr)
-										}
-									}
-								}
-							}
-						}
-
-						captureHTTPLogEvents(false, deferHTTPLog)
-						t.Logf("***/Step %d finished in %v", i, time.Since(stepStart))
-						continue
-					}
-
 					// Try to delete this object as part of cleanup
 					objectsToDelete = append(objectsToDelete, obj)
 
@@ -567,15 +408,9 @@ func TestE2EScenariosV2(t *testing.T) {
 								t.Errorf("failed to convert kube object to yaml: %v", err)
 							}
 
-							expectedPath := filepath.Join(script.SourceDir, fmt.Sprintf("_export%02d_mock.yaml", i))
+							expectedPath := filepath.Join(script.SourceDir, fmt.Sprintf("_export%d_mock.yaml", i))
 							if targetGCP != "mock" {
-								expectedPath = filepath.Join(script.SourceDir, fmt.Sprintf("_export%02d.yaml", i))
-							} else {
-								if os.Getenv("WRITE_GOLDEN_OUTPUT") == "" {
-									if _, err := os.Stat(expectedPath); os.IsNotExist(err) {
-										expectedPath = filepath.Join(script.SourceDir, fmt.Sprintf("_export%02d.yaml", i))
-									}
-								}
+								expectedPath = filepath.Join(script.SourceDir, fmt.Sprintf("_export%d.yaml", i))
 							}
 
 							normalizers := []func(string) string{
@@ -601,12 +436,6 @@ func TestE2EScenariosV2(t *testing.T) {
 							expectedPath := filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d_mock.yaml", i))
 							if targetGCP != "mock" {
 								expectedPath = filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d.yaml", i))
-							} else {
-								if os.Getenv("WRITE_GOLDEN_OUTPUT") == "" {
-									if _, err := os.Stat(expectedPath); os.IsNotExist(err) {
-										expectedPath = filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d.yaml", i))
-									}
-								}
 							}
 
 							normalizers := []func(string) string{
@@ -621,10 +450,6 @@ func TestE2EScenariosV2(t *testing.T) {
 								wantPath := filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d_mock.yaml", targetStepForReadAndCompare-1))
 								if targetGCP != "mock" {
 									wantPath = filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d.yaml", targetStepForReadAndCompare-1))
-								} else {
-									if _, err := os.Stat(wantPath); os.IsNotExist(err) {
-										wantPath = filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d.yaml", targetStepForReadAndCompare-1))
-									}
 								}
 								gotPath := expectedPath
 								wantObj, err := getKubeObjectInStringFromFile(wantPath)
@@ -650,7 +475,7 @@ func TestE2EScenariosV2(t *testing.T) {
 							b, _ := os.ReadFile(realPath)
 							h.CompareGoldenFile(realPath, string(b))
 						}
-						realExportPath := filepath.Join(script.SourceDir, fmt.Sprintf("_export%02d.yaml", i))
+						realExportPath := filepath.Join(script.SourceDir, fmt.Sprintf("_export%d.yaml", i))
 						if fileExists(realExportPath) {
 							b, _ := os.ReadFile(realExportPath)
 							h.CompareGoldenFile(realExportPath, string(b))
@@ -672,11 +497,9 @@ func TestE2EScenariosV2(t *testing.T) {
 						}
 
 						for i, stepEvents := range eventsByStep {
-							var expectedPath string
-							if targetGCP == "real" {
+							expectedPath := filepath.Join(script.SourceDir, fmt.Sprintf("_http%02d_mock.log", i))
+							if targetGCP != "mock" {
 								expectedPath = filepath.Join(script.SourceDir, fmt.Sprintf("_http%02d.log", i))
-							} else {
-								expectedPath = filepath.Join(script.SourceDir, fmt.Sprintf("_http%02d_mock.log", i))
 							}
 
 							NormalizeHTTPLog(t, stepEvents.Entries, h.RegisteredServices(), project, uniqueID, "", "")
@@ -691,33 +514,6 @@ func TestE2EScenariosV2(t *testing.T) {
 								continue
 							}
 							h.CompareGoldenFile(expectedPath, got, IgnoreComments)
-						}
-					}
-				}
-
-				// Diff Verification
-				if targetGCP == "mock" {
-					for i := range script.Objects {
-						realHTTPPath := filepath.Join(script.SourceDir, fmt.Sprintf("_http%02d.log", i))
-						mockHTTPPath := filepath.Join(script.SourceDir, fmt.Sprintf("_http%02d_mock.log", i))
-						diffHTTPPath := filepath.Join(script.SourceDir, fmt.Sprintf("_http%02d_mock.diff", i))
-
-						if fileExists(realHTTPPath) && fileExists(mockHTTPPath) {
-							diff := computeDiff(ctx, realHTTPPath, mockHTTPPath)
-							h.CompareGoldenFile(diffHTTPPath, diff)
-						} else {
-							h.AssertGoldenFileNotFound(diffHTTPPath)
-						}
-
-						realObjPath := filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d.yaml", i))
-						mockObjPath := filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d_mock.yaml", i))
-						diffObjPath := filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d_mock.diff", i))
-
-						if fileExists(realObjPath) && fileExists(mockObjPath) {
-							diff := computeDiff(ctx, realObjPath, mockObjPath)
-							h.CompareGoldenFile(diffObjPath, diff)
-						} else {
-							h.AssertGoldenFileNotFound(diffObjPath)
 						}
 					}
 				}
@@ -748,71 +544,4 @@ func fileExists(p string) bool {
 		return false
 	}
 	return true
-}
-
-func computeDiff(ctx context.Context, oldP, newP string) string {
-	var out bytes.Buffer
-
-	cmd := exec.CommandContext(ctx, "diff", oldP, newP)
-	cmd.Stdout = &out
-	cmd.Stderr = os.Stderr
-
-	if err := cmd.Run(); err != nil {
-		var exitError *exec.ExitError
-		if errors.As(err, &exitError) && exitError.ExitCode() == 1 {
-			// This is expected when files differ
-		} else {
-			// Some errors might happen if diff is not installed or permissions,
-			// but we try to do our best.
-		}
-	}
-
-	return out.String()
-}
-
-func isLRO(jsonMap map[string]any) bool {
-	name, ok := jsonMap["name"].(string)
-	if !ok {
-		return false
-	}
-	if strings.Contains(name, "/operations/") || strings.HasPrefix(name, "operations/") {
-		return true
-	}
-	if _, ok := jsonMap["done"]; ok {
-		return true
-	}
-	return false
-}
-
-func buildPollURL(originalURL, opName string) (string, error) {
-	if strings.HasPrefix(opName, "http://") || strings.HasPrefix(opName, "https://") {
-		return opName, nil
-	}
-
-	u, err := url.Parse(originalURL)
-	if err != nil {
-		return "", err
-	}
-
-	parts := strings.Split(u.Path, "/")
-	var versionIndex = -1
-	for i, part := range parts {
-		if strings.HasPrefix(part, "v") && len(part) > 1 {
-			if _, err := strconv.Atoi(part[1:2]); err == nil {
-				versionIndex = i
-				break
-			}
-		}
-	}
-
-	var basePath string
-	if versionIndex != -1 {
-		basePath = strings.Join(parts[:versionIndex+1], "/")
-	} else {
-		basePath = ""
-	}
-
-	u.Path = basePath + "/" + strings.TrimPrefix(opName, "/")
-	u.RawQuery = ""
-	return u.String(), nil
 }

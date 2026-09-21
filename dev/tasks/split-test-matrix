@@ -140,7 +140,7 @@ sample_services=("alloydb" "apigateway" "apigee" "bigquery" "bigqueryconnection"
 scenario_suites=("acquisition" "gkehubfeaturemembership" "powertool" "unclassified")
 
 # V2 dynamic discovery for non-legacy suites
-legacy_scenarios=("acquisition" "alloydbcluster" "alloydbinstance" "always-add-finalizers" "bigquerydatatransferconfig_duplication" "bigqueryreservationreservation" "bigtableinstance" "cc_pause_change_reconcile" "ccc_pause_change_reconcile" "ccc_state_into_spec_absent" "ccc_state_into_spec_merge" "computefirewallpolicyrule" "computetargettcpproxy" "containercluster" "fields" "gkehubfeaturemembership" "iam" "iam_add_remove" "labels-apigateway" "powertool" "privilegedaccessmanagerentitlement" "reconciliation_interval" "secretmanagerversionalias" "sql" "sqlinstance-pointers-match" "storageanywherecache" "tracker")
+mapfile -t legacy_scenarios < <(grep -v '^#' tests/e2e/testdata/legacy_scenarios.txt | grep -v '^$' || true)
 
 scenario_v2_suites=()
 for d in tests/e2e/testdata/scenarios/*/; do
