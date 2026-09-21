@@ -627,12 +627,16 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 				}
 
 				opt.CleanupResources = false // We delete explicitly below
+				forceDelete, _ := strconv.ParseBool(os.Getenv("FORCE_DELETE"))
+				opt.ForceDelete = forceDelete
 				var resourcesDeleted bool
-				t.Cleanup(func() {
-					if !resourcesDeleted {
-						create.DeleteResources(h, opt)
-					}
-				})
+				if forceDelete {
+					t.Cleanup(func() {
+						if !resourcesDeleted {
+							create.DeleteResources(h, opt)
+						}
+					})
+				}
 				if options.TestPause {
 					opt.SkipWaitForReady = true // Paused resources don't send out an event yet.
 				}

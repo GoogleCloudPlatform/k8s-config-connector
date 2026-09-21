@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"io/fs"
+	"os"
 	"path/filepath"
 	"regexp"
 	"sort"
@@ -125,6 +126,10 @@ type CreateDeleteTestOptions struct { //nolint:revive
 	// Note: we should use server-side apply for both create and update.
 	// If we mix-and-match, we get surprising behaviours e.g. we can't clear a field
 	DoNotUseServerSideApplyForCreate bool
+
+	// ForceDelete indicates that resources should be deleted even if the test failed,
+	// disabling deletion protection and abandoning stuck resources if necessary.
+	ForceDelete bool
 }
 
 func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
@@ -363,10 +368,19 @@ func DeleteResources(t *Harness, opts CreateDeleteTestOptions) {
 
 	unstructs := opts.Create
 
-	// Pre-cleanup: disable deletion protection on any resources before deleting them,
-	// so the controller and GCP service can proceed with deletion instead of blocking/hanging.
-	for _, u := range unstructs {
-		disableDeletionProtection(t, u)
+	forceDelete := opts.ForceDelete
+	if !forceDelete {
+		if val, err := strconv.ParseBool(os.Getenv("FORCE_DELETE")); err == nil {
+			forceDelete = val
+		}
+	}
+
+	// When force-deleting after a test failure, disable deletion protection on any
+	// Bigtable resources before deleting them so the controller and GCP service can proceed.
+	if forceDelete && t.Failed() {
+		for _, u := range unstructs {
+			disableDeletionProtection(t, u)
+		}
 	}
 
 	for i := len(unstructs) - 1; i >= 0; i-- {
@@ -379,7 +393,7 @@ func DeleteResources(t *Harness, opts CreateDeleteTestOptions) {
 			t.Errorf("error deleting: %v", err)
 		}
 		if opts.DeleteInOrder && !opts.SkipWaitForDelete {
-			waitForDeleteToComplete(t, u)
+			waitForDeleteToComplete(t, u, forceDelete)
 		}
 	}
 
@@ -399,7 +413,7 @@ func DeleteResources(t *Harness, opts CreateDeleteTestOptions) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			waitForDeleteToComplete(t, u)
+			waitForDeleteToComplete(t, u, forceDelete)
 		}()
 	}
 	wg.Wait()
@@ -475,12 +489,12 @@ func abandonStuckResource(t *Harness, u *unstructured.Unstructured) {
 	}
 }
 
-func waitForDeleteToComplete(t *Harness, u *unstructured.Unstructured) {
+func waitForDeleteToComplete(t *Harness, u *unstructured.Unstructured, forceDelete bool) {
 	defer log.FromContext(t.Ctx).Info("Done waiting for resource to delete", "kind", u.GetKind(), "name", u.GetName())
 	// Do a best-faith cleanup of the resources. Gives a 30 minute buffer for cleanup, though
 	// resources that can be cleaned up quicker exit earlier.
 	timeout := 30 * time.Minute
-	if t.Failed() && strings.HasPrefix(u.GetKind(), "Bigtable") {
+	if forceDelete && t.Failed() && strings.HasPrefix(u.GetKind(), "Bigtable") {
 		timeout = 2 * time.Minute
 	}
 	if u.GetKind() == "StorageBucket" {
@@ -499,9 +513,11 @@ func waitForDeleteToComplete(t *Harness, u *unstructured.Unstructured) {
 	// TODO (b/197783299): think of better way to handle resources that take a longer time to cleanup
 	if err != nil {
 		t.Errorf("error while polling for resource cleanup on %v with name '%v': %v; last seen status: %v", u.GetKind(), u.GetName(), err, u.Object["status"])
-		// If a child resource is stuck in deletion, annotate it with "abandon" policy
+		// If force-delete is enabled and a child resource is stuck in deletion, annotate it with "abandon" policy
 		// so that its finalizer is removed and it doesn't block parent resources (e.g. BigtableInstance) from being deleted.
-		abandonStuckResource(t, u)
+		if forceDelete {
+			abandonStuckResource(t, u)
+		}
 	}
 }
 
