@@ -19,11 +19,10 @@ spec:
       endTime: "2024-01-01T06:00:00Z"
       recurrence: FREQ=WEEKLY;BYDAY=FR,SA,SU
       startTime: "2024-01-01T00:00:00Z"
-    privateEnvironmentConfig:
-      enablePrivateBuildsOnly: true
     softwareConfig:
       cloudDataLineageIntegration:
         enabled: false
+      webServerPluginsMode: PLUGINS_DISABLED
   location: us-central1
   projectRef:
     external: ${projectId}
