@@ -211,10 +211,10 @@ spec:
                                      autorater endpoint to use.
 
                                      Publisher model format:
-                                     `projects/{project}/locations/{location}/publishers/*/models/*`
+                                     `projects/<project>/locations/<location>/publishers/*/models/*`
 
                                      Tuned model endpoint format:
-                                     `projects/{project}/locations/{location}/endpoints/{endpoint}`
+                                     `projects/<project>/locations/<location>/endpoints/<endpoint>`
                                   type: string
                                 flipEnabled:
                                   description: Optional. Default is true. Whether

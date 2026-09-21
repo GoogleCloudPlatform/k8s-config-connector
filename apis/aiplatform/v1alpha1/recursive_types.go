@@ -270,10 +270,10 @@ type AutoraterConfig struct {
 	//  autorater endpoint to use.
 	//
 	//  Publisher model format:
-	//  `projects/{project}/locations/{location}/publishers/*/models/*`
+	//  `projects/<project>/locations/<location>/publishers/*/models/*`
 	//
 	//  Tuned model endpoint format:
-	//  `projects/{project}/locations/{location}/endpoints/{endpoint}`
+	//  `projects/<project>/locations/<location>/endpoints/<endpoint>`
 	// +kcc:proto:field=google.cloud.aiplatform.v1.AutoraterConfig.autorater_model
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AutoraterConfig.autorater_model
 	AutoraterModel *string `json:"autoraterModel,omitempty"`
