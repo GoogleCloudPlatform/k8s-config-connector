@@ -95,3 +95,73 @@ func TestParseAgentRegistryBindingExternal(t *testing.T) {
 		})
 	}
 }
+
+func TestAgentRegistryBindingIdentity_FromExternal(t *testing.T) {
+	tests := []struct {
+		name             string
+		input            string
+		expectedParent   *AgentRegistryBindingParent
+		expectedResource string
+		wantErr          bool
+	}{
+		{
+			name:  "Standard external reference",
+			input: "projects/my-project/locations/us-central1/bindings/my-binding",
+			expectedParent: &AgentRegistryBindingParent{
+				ProjectID: "my-project",
+				Location:  "us-central1",
+			},
+			expectedResource: "my-binding",
+			wantErr:          false,
+		},
+		{
+			name:  "URL format with HTTPS prefix",
+			input: "https://agentregistry.googleapis.com/v1/projects/my-project/locations/us-central1/bindings/my-binding",
+			expectedParent: &AgentRegistryBindingParent{
+				ProjectID: "my-project",
+				Location:  "us-central1",
+			},
+			expectedResource: "my-binding",
+			wantErr:          false,
+		},
+		{
+			name:  "URL format with double slash prefix",
+			input: "//agentregistry.googleapis.com/projects/my-project/locations/us-central1/bindings/my-binding",
+			expectedParent: &AgentRegistryBindingParent{
+				ProjectID: "my-project",
+				Location:  "us-central1",
+			},
+			expectedResource: "my-binding",
+			wantErr:          false,
+		},
+		{
+			name:             "Invalid input",
+			input:            "invalid-input",
+			expectedParent:   nil,
+			expectedResource: "",
+			wantErr:          true,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			id := &AgentRegistryBindingIdentity{}
+			err := id.FromExternal(tc.input)
+			if tc.wantErr {
+				if err == nil {
+					t.Fatal("expected error, got nil")
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if id.Parent().ProjectID != tc.expectedParent.ProjectID || id.Parent().Location != tc.expectedParent.Location {
+				t.Fatalf("expected parent %+v, got %+v", tc.expectedParent, id.Parent())
+			}
+			if id.ID() != tc.expectedResource {
+				t.Fatalf("expected resourceID %q, got %q", tc.expectedResource, id.ID())
+			}
+		})
+	}
+}
