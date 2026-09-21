@@ -128,6 +128,7 @@ func RedisClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.
 		out.KMSKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKey()}
 	}
 	out.AutomatedBackupConfig = AutomatedBackupConfig_FromProto(mapCtx, in.GetAutomatedBackupConfig())
+	out.GCSSource = Cluster_GCSBackupSource_FromProto(mapCtx, in.GetGcsSource())
 
 	return out
 }
@@ -153,6 +154,9 @@ func RedisClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterSpe
 		out.KmsKey = &in.KMSKeyRef.External
 	}
 	out.AutomatedBackupConfig = AutomatedBackupConfig_ToProto(mapCtx, in.AutomatedBackupConfig)
+	if oneof := Cluster_GCSBackupSource_ToProto(mapCtx, in.GCSSource); oneof != nil {
+		out.ImportSources = &pb.Cluster_GcsSource{GcsSource: oneof}
+	}
 	return out
 }
 

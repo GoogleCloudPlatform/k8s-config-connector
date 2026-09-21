@@ -17,3 +17,10 @@
    - **MockGCP HTTP Normalization**: In `mockgcp/mockredis/normalize.go`, you must add a rule (using `ReplacePath`) to map both `.encryptionInfo.lastUpdateTime` and `.response.encryptionInfo.lastUpdateTime` to a stable timestamp (like `2024-04-01T12:34:56.123456Z`) so that `_http.log` is deterministic.
    - **KRM Object Normalization**: Because KRM object golden YAML files (`_generated_object...golden.yaml`) are compared separately and do not use MockGCP's HTTP normalizers, you must also add a rule in `tests/e2e/normalize.go` (mapping `.status.observedState.encryptionInfo.lastUpdateTime` to `mockgcpregistry.PlaceholderTimestamp`) to ensure the golden YAML assertion succeeds.
 8. **Out-of-the-box MockGCP Support for Simple Fields**: In many direct controllers (like `ComputeNetwork`), MockGCP delegates resource storage by cloning the incoming protobuf payload and saving it directly. This means any newly added fields (even if not explicitly validated or handled in MockGCP's controllers) will be automatically stored, returned, and verified correctly in basic E2E fixture tests without any extra mock implementation changes.
+9. **Oneofs and Import Sources in RedisCluster**: When mapping a field that belongs to a protobuf `oneof` (such as `gcs_source` under `import_sources` in `google.cloud.redis.cluster.v1.Cluster`), the Go pb struct uses a wrapper type (like `*pb.Cluster_GcsSource`). In KRM, we map this directly to the inner type `*Cluster_GCSBackupSource` under the spec field `gcsSource`. The generator handles generating the mapping helper `Cluster_GCSBackupSource_ToProto` and `Cluster_GCSBackupSource_FromProto` automatically if the type is reachable. Inside the handwritten `ToProto` mapper, we must wrap it in the oneof wrapper structure:
+   ```go
+   if oneof := Cluster_GCSBackupSource_ToProto(mapCtx, in.GCSSource); oneof != nil {
+       out.ImportSources = &pb.Cluster_GcsSource{GcsSource: oneof}
+   }
+   ```
+
