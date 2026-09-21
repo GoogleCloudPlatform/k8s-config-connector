@@ -113,25 +113,48 @@ func (s *ModelArmorV1) UpdateFloorSetting(ctx context.Context, req *pb.UpdateFlo
 }
 
 type floorSettingName struct {
-	Project  string
-	Location string
+	Project      string
+	Folder       string
+	Organization string
+	Location     string
 }
 
 func (n *floorSettingName) String() string {
-	return fmt.Sprintf("projects/%s/locations/%s/floorSetting", n.Project, n.Location)
+	if n.Project != "" {
+		return fmt.Sprintf("projects/%s/locations/%s/floorSetting", n.Project, n.Location)
+	}
+	if n.Folder != "" {
+		return fmt.Sprintf("folders/%s/locations/%s/floorSetting", n.Folder, n.Location)
+	}
+	if n.Organization != "" {
+		return fmt.Sprintf("organizations/%s/locations/%s/floorSetting", n.Organization, n.Location)
+	}
+	return ""
 }
 
 // parseFloorSettingName parses a string into a floorSettingName.
-// The expected form is `projects/*/locations/*/floorSetting`.
+// The expected form is `projects/*/locations/*/floorSetting`, `folders/*/locations/*/floorSetting` or `organizations/*/locations/*/floorSetting`.
 func (s *MockService) parseFloorSettingName(name string) (*floorSettingName, error) {
 	tokens := strings.Split(name, "/")
-	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "floorSetting" {
-		name := &floorSettingName{
-			Project:  tokens[1],
-			Location: tokens[3],
+	if len(tokens) == 5 && tokens[2] == "locations" && tokens[4] == "floorSetting" {
+		if tokens[0] == "projects" {
+			return &floorSettingName{
+				Project:  tokens[1],
+				Location: tokens[3],
+			}, nil
 		}
-
-		return name, nil
+		if tokens[0] == "folders" {
+			return &floorSettingName{
+				Folder:   tokens[1],
+				Location: tokens[3],
+			}, nil
+		}
+		if tokens[0] == "organizations" {
+			return &floorSettingName{
+				Organization: tokens[1],
+				Location:     tokens[3],
+			}, nil
+		}
 	}
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
