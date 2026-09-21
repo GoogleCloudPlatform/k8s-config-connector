@@ -31,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -299,7 +300,31 @@ func comparePersistentResource(ctx context.Context, actual, desired *pb.Persiste
 	}
 	maskedActual.Name = desired.Name
 
-	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+	clonedDesired := proto.Clone(desired).(*pb.PersistentResource)
+	// If displayName is not specified in desired, but populated in actual, align them
+	if clonedDesired.DisplayName == "" && maskedActual.DisplayName != "" {
+		clonedDesired.DisplayName = maskedActual.DisplayName
+	}
+	// Same for resourcePool IDs and diskSpecs
+	for i, pool := range clonedDesired.ResourcePools {
+		if i < len(maskedActual.ResourcePools) {
+			if pool.Id == "" && maskedActual.ResourcePools[i].Id != "" {
+				pool.Id = maskedActual.ResourcePools[i].Id
+			}
+			if pool.DiskSpec == nil && maskedActual.ResourcePools[i].DiskSpec != nil {
+				pool.DiskSpec = proto.Clone(maskedActual.ResourcePools[i].DiskSpec).(*pb.DiskSpec)
+			} else if pool.DiskSpec != nil && maskedActual.ResourcePools[i].DiskSpec != nil {
+				if pool.DiskSpec.BootDiskSizeGb == 0 && maskedActual.ResourcePools[i].DiskSpec.BootDiskSizeGb != 0 {
+					pool.DiskSpec.BootDiskSizeGb = maskedActual.ResourcePools[i].DiskSpec.BootDiskSizeGb
+				}
+				if pool.DiskSpec.BootDiskType == "" && maskedActual.ResourcePools[i].DiskSpec.BootDiskType != "" {
+					pool.DiskSpec.BootDiskType = maskedActual.ResourcePools[i].DiskSpec.BootDiskType
+				}
+			}
+		}
+	}
+
+	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
 	}
