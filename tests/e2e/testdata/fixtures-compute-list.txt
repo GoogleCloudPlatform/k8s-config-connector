@@ -162,6 +162,8 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomp
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmap-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmapadditive
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmapadditive-direct
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmapredirect
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmapredirect-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmapreducer
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/globalcomputeurlmapreducer-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeurlmap/regionalcomputeurlmap
