@@ -18,7 +18,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -89,15 +88,11 @@ func (r *KMSCryptoKeyRef) ParseExternalToIdentity() (identity.Identity, error) {
 
 func (r *KMSCryptoKeyRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		obj, err := common.ToStructuredType[*KMSCryptoKey](u)
-		if err != nil {
+		selfLink, _, err := unstructured.NestedString(u.Object, "status", "selfLink")
+		if err != nil || selfLink == "" {
 			return ""
 		}
-		identity, err := getIdentityFromKMSCryptoKeySpec(ctx, reader, obj)
-		if err != nil {
-			return ""
-		}
-		return identity.String()
+		return selfLink
 	}
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
