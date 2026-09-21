@@ -196,3 +196,88 @@ func TestComputeURLMapRef_Normalize(t *testing.T) {
 		})
 	}
 }
+
+func TestUrlmapResourceRef_Normalize(t *testing.T) {
+	s := runtime.NewScheme()
+	_ = AddToScheme(s)
+
+	backendService := &unstructured.Unstructured{}
+	backendService.SetGroupVersionKind(ComputeBackendServiceGVK)
+	backendService.SetName("my-backend-service")
+	backendService.SetNamespace("my-ns")
+	backendService.Object["status"] = map[string]interface{}{
+		"selfLink": "https://www.googleapis.com/compute/v1/projects/my-project/global/backendServices/my-backend-service",
+	}
+
+	backendBucket := &unstructured.Unstructured{}
+	backendBucket.SetGroupVersionKind(ComputeBackendBucketGVK)
+	backendBucket.SetName("my-backend-bucket")
+	backendBucket.SetNamespace("my-ns")
+	backendBucket.Object["status"] = map[string]interface{}{
+		"selfLink": "https://www.googleapis.com/compute/v1/projects/my-project/global/backendBuckets/my-backend-bucket",
+	}
+
+	reader := fake.NewClientBuilder().WithScheme(s).WithObjects(backendService, backendBucket).Build()
+
+	tests := []struct {
+		name             string
+		ref              *UrlmapResourceRef
+		defaultNamespace string
+		want             string
+		wantErr          bool
+	}{
+		{
+			name: "external reference",
+			ref: &UrlmapResourceRef{
+				External: "https://www.googleapis.com/compute/v1/projects/my-project/global/backendServices/my-backend-service",
+			},
+			want: "https://www.googleapis.com/compute/v1/projects/my-project/global/backendServices/my-backend-service",
+		},
+		{
+			name: "reference by name to backend service",
+			ref: &UrlmapResourceRef{
+				Name:      "my-backend-service",
+				Namespace: "my-ns",
+			},
+			want: "https://www.googleapis.com/compute/v1/projects/my-project/global/backendServices/my-backend-service",
+		},
+		{
+			name: "reference by name with default namespace",
+			ref: &UrlmapResourceRef{
+				Name: "my-backend-service",
+			},
+			defaultNamespace: "my-ns",
+			want:             "https://www.googleapis.com/compute/v1/projects/my-project/global/backendServices/my-backend-service",
+		},
+		{
+			name: "reference by name to backend bucket",
+			ref: &UrlmapResourceRef{
+				Name:      "my-backend-bucket",
+				Namespace: "my-ns",
+			},
+			want: "https://www.googleapis.com/compute/v1/projects/my-project/global/backendBuckets/my-backend-bucket",
+		},
+		{
+			name: "reference not found",
+			ref: &UrlmapResourceRef{
+				Name:      "non-existent",
+				Namespace: "my-ns",
+			},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.ref.Normalize(context.Background(), reader, tt.defaultNamespace)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Normalize() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !tt.wantErr {
+				if tt.ref.External != tt.want {
+					t.Errorf("Normalize() got = %v, want %v", tt.ref.External, tt.want)
+				}
+			}
+		})
+	}
+}

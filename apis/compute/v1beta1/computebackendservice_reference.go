@@ -22,11 +22,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var _ refsv1beta1.ExternalNormalizer = &ComputeBackendServiceRef{}
+var _ refsv1beta1.Ref = &ComputeBackendServiceRef{}
 var ComputeBackendServiceGVK = GroupVersion.WithKind("ComputeBackendService")
 
 // ComputeBackendServiceRef is a reference to a ComputeBackendService.
@@ -41,6 +43,43 @@ type ComputeBackendServiceRef struct {
 
 	// The namespace of a ComputeBackendService resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func (r *ComputeBackendServiceRef) GetGVK() schema.GroupVersionKind {
+	return ComputeBackendServiceGVK
+}
+
+func (r *ComputeBackendServiceRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *ComputeBackendServiceRef) GetExternal() string {
+	return r.External
+}
+
+func (r *ComputeBackendServiceRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *ComputeBackendServiceRef) ValidateExternal(ref string) error {
+	return nil
+}
+
+func (r *ComputeBackendServiceRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r.External != "" {
+		return nil
+	}
+	ext, err := r.NormalizedExternal(ctx, reader, defaultNamespace)
+	if err != nil {
+		return err
+	}
+	r.SetExternal(ext)
+	return nil
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on ComputeBackendService.
