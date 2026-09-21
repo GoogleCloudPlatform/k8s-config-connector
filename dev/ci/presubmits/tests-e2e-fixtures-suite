@@ -17,6 +17,10 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+# Avoid git issues on some environments where GIT_CONFIG_GLOBAL and GIT_CONFIG_SYSTEM are set to /dev/null
+export GIT_CONFIG_GLOBAL=""
+export GIT_CONFIG_SYSTEM=""
+
 function on_error() {
   echo "<hint_for_agent>Run 'dev/ci/presubmits/tests-e2e-fixtures-suite' to fix.</hint_for_agent>"
 }
