@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -25,10 +26,27 @@ var EventarcMessageBusGVK = GroupVersion.WithKind("EventarcMessageBus")
 // EventarcMessageBusSpec defines the desired state of EventarcMessageBus
 // +kcc:spec:proto=google.cloud.eventarc.v1.MessageBus
 type EventarcMessageBusSpec struct {
-	Parent `json:",inline"`
+	// The project that this resource belongs to.
+	// +kubebuilder:validation:Required
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+
+	// The location of this resource.
+	// +kubebuilder:validation:Required
+	Location *string `json:"location,omitempty"`
 
 	// The EventarcMessageBus name. If not given, the metadata.name will be used.
+	// +kubebuilder:validation:Optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Optional. Resource labels.
+	// +kcc:proto:field=google.cloud.eventarc.v1.MessageBus.labels
+	// +kubebuilder:validation:Optional
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Resource annotations.
+	// +kcc:proto:field=google.cloud.eventarc.v1.MessageBus.annotations
+	// +kubebuilder:validation:Optional
+	Annotations map[string]string `json:"annotations,omitempty"`
 
 	// Optional. Resource display name.
 	// +kcc:proto:field=google.cloud.eventarc.v1.MessageBus.display_name
@@ -42,7 +60,7 @@ type EventarcMessageBusSpec struct {
 	//  `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
 	// +kcc:proto:field=google.cloud.eventarc.v1.MessageBus.crypto_key_name
 	// +kubebuilder:validation:Optional
-	CryptoKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"cryptoKeyRef,omitempty"`
+	CryptoKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"cryptoKeyRef,omitempty"`
 
 	// Optional. Config to control Platform logging for the Message Bus. This log
 	//  configuration is applied to the Message Bus itself, and all the Enrollments

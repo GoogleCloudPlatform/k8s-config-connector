@@ -342,8 +342,6 @@ func EventarcMessageBusObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Labels
-	// MISSING: Annotations
 	// MISSING: CryptoKeyName
 	return out
 }
@@ -357,8 +355,6 @@ func EventarcMessageBusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.Etag = direct.ValueOf(in.Etag)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Labels
-	// MISSING: Annotations
 	// MISSING: CryptoKeyName
 	return out
 }
@@ -368,8 +364,8 @@ func EventarcMessageBusSpec_FromProto(mapCtx *direct.MapContext, in *pb.MessageB
 	}
 	out := &krm.EventarcMessageBusSpec{}
 	// MISSING: Name
-	// MISSING: Labels
-	// MISSING: Annotations
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	// MISSING: CryptoKeyName
 	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
@@ -381,8 +377,8 @@ func EventarcMessageBusSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcM
 	}
 	out := &pb.MessageBus{}
 	// MISSING: Name
-	// MISSING: Labels
-	// MISSING: Annotations
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	// MISSING: CryptoKeyName
 	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)

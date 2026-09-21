@@ -62,6 +62,11 @@ spec:
           spec:
             description: EventarcMessageBusSpec defines the desired state of EventarcMessageBus
             properties:
+              annotations:
+                additionalProperties:
+                  type: string
+                description: Optional. Resource annotations.
+                type: object
               cryptoKeyRef:
                 description: |-
                   Optional. Resource name of a KMS crypto key (managed by the user) used to
@@ -85,20 +90,26 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed KMSCryptoKey.
-                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    description: A reference to an externally managed KMSCryptoKey
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}".
                     type: string
                   name:
-                    description: The `name` of a `KMSCryptoKey` resource.
+                    description: The name of a KMSCryptoKey resource.
                     type: string
                   namespace:
-                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    description: The namespace of a KMSCryptoKey resource.
                     type: string
                 type: object
               displayName:
                 description: Optional. Resource display name.
                 type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. Resource labels.
+                type: object
               location:
+                description: The location of this resource.
                 type: string
               loggingConfig:
                 description: Optional. Config to control Platform logging for the
@@ -122,7 +133,7 @@ spec:
                     type: string
                 type: object
               projectRef:
-                description: The Project that this resource belongs to.
+                description: The project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
