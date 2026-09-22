@@ -79,6 +79,9 @@ crossClusterReplicationConfig:
       name: string
       namespace: string
 deletionProtectionEnabled: boolean
+gcsSource:
+  uris:
+  - string
 kmsKeyRef:
   external: string
   name: string
@@ -371,6 +374,36 @@ zoneDistributionConfig:
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>Optional. The delete operation will fail when the value is set to true.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gcsSource</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. Backups stored in Cloud Storage buckets.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gcsSource.uris</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>Optional. URIs of the GCS objects to import. Example: gs://bucket1/object1, gs://bucket2/folder2/object2</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gcsSource.uris[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
         </td>
     </tr>
     <tr>

@@ -85,6 +85,10 @@ type RedisClusterSpec struct {
 
 	// Optional. Cross cluster replication config.
 	CrossClusterReplicationConfig *CrossClusterReplicationConfig `json:"crossClusterReplicationConfig,omitempty"`
+
+	// Optional. Backups stored in Cloud Storage buckets.
+	// +optional
+	GCSSource *Cluster_GCSBackupSource `json:"gcsSource,omitempty"`
 }
 
 type PscConfigSpec struct {
