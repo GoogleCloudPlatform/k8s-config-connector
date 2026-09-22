@@ -35,17 +35,5 @@
         "new": "149171536167"
       }
     ]
-  },
-  {
-    "controller": "direct",
-    "isNewObject": false,
-    "resource": "LoggingLogBucket/logginglogbucket-${uniqueId}",
-    "fields": [
-      {
-        "id": "description",
-        "old": "Default bucket",
-        "new": ""
-      }
-    ]
   }
 ]

@@ -15,10 +15,13 @@
 apiVersion: logging.cnrm.cloud.google.com/v1beta1
 kind: LoggingLogBucket
 metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
   name: logginglogbucket-${uniqueId}
 spec:
-  resourceID: _Default
   projectRef:
     external: "projects/${projectId}"
   location: "global"
-  retentionDays: 15
+  description: "Updated log bucket with analytics"
+  enableAnalytics: true
+  retentionDays: 20

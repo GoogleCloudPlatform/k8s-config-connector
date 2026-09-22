@@ -3,5 +3,6 @@ kind: LoggingLogBucket
 metadata:
   name: folders-${folderID}-locations-global-buckets--default
 spec:
+  description: Default bucket
   location: global
   retentionDays: 10

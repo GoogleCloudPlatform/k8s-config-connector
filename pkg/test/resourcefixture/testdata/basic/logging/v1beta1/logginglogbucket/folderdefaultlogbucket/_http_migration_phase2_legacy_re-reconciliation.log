@@ -1,4 +1,4 @@
-GET https://logging.googleapis.com/v2/folders/599734334776/locations/global/buckets/_Default?alt=json
+GET https://logging.googleapis.com/v2/folders/23744626671/locations/global/buckets/_Default?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -15,7 +15,7 @@ X-Xss-Protection: 0
 {
   "description": "Default bucket",
   "lifecycleState": "ACTIVE",
-  "name": "folders/599734334776/locations/global/buckets/_Default",
+  "name": "folders/23744626671/locations/global/buckets/_Default",
   "retentionDays": 15,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }

@@ -1,7 +1,7 @@
-GET https://logging.googleapis.com/v2/folders/599734334776/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint
+GET https://logging.googleapis.com/v2/folders/23744626671/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=folders%2F599734334776%2Flocations%2Fglobal%2Fbuckets%2F_Default
+X-Goog-Request-Params: name=folders%2F23744626671%2Flocations%2Fglobal%2Fbuckets%2F_Default
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -14,8 +14,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "description": "Default bucket",
   "lifecycleState": 1,
-  "name": "folders/599734334776/locations/global/buckets/_Default",
+  "name": "folders/23744626671/locations/global/buckets/_Default",
   "retentionDays": 15,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }

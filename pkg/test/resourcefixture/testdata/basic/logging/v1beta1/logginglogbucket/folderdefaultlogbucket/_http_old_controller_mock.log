@@ -121,7 +121,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint
+GET https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?alt=json
 Content-Type: application/json
 
 200 OK
@@ -136,18 +136,17 @@ X-Xss-Protection: 0
 
 {
   "description": "Default bucket",
-  "lifecycleState": 1,
+  "lifecycleState": "ACTIVE",
   "name": "folders/${folderID}/locations/global/buckets/_Default",
   "retentionDays": 30
 }
 
 ---
 
-PATCH https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint&updateMask=retentionDays
+PATCH https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?alt=json&updateMask=retentionDays
 Content-Type: application/json
 
 {
-  "description": "Default bucket",
   "retentionDays": 15
 }
 
@@ -163,7 +162,7 @@ X-Xss-Protection: 0
 
 {
   "description": "Default bucket",
-  "lifecycleState": 1,
+  "lifecycleState": "ACTIVE",
   "name": "folders/${folderID}/locations/global/buckets/_Default",
   "retentionDays": 15,
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -171,7 +170,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint
+GET https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?alt=json
 Content-Type: application/json
 
 200 OK
@@ -186,7 +185,7 @@ X-Xss-Protection: 0
 
 {
   "description": "Default bucket",
-  "lifecycleState": 1,
+  "lifecycleState": "ACTIVE",
   "name": "folders/${folderID}/locations/global/buckets/_Default",
   "retentionDays": 15,
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -194,12 +193,11 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint&updateMask=retentionDays
+PATCH https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?alt=json&updateMask=retentionDays
 Content-Type: application/json
 
 {
-  "description": "Default bucket",
-  "retentionDays": 10
+  "retentionDays": 20
 }
 
 200 OK
@@ -214,15 +212,15 @@ X-Xss-Protection: 0
 
 {
   "description": "Default bucket",
-  "lifecycleState": 1,
+  "lifecycleState": "ACTIVE",
   "name": "folders/${folderID}/locations/global/buckets/_Default",
-  "retentionDays": 10,
+  "retentionDays": 20,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint
+GET https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?alt=json
 Content-Type: application/json
 
 200 OK
@@ -237,9 +235,9 @@ X-Xss-Protection: 0
 
 {
   "description": "Default bucket",
-  "lifecycleState": 1,
+  "lifecycleState": "ACTIVE",
   "name": "folders/${folderID}/locations/global/buckets/_Default",
-  "retentionDays": 10,
+  "retentionDays": 20,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
