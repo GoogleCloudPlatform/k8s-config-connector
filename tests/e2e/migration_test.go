@@ -222,15 +222,15 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 	}
 
 	t.Logf("Phase 1: Creating resource using %v...", oldController)
-	// Create resources (dependencies + primary) in order so that non-Ref dependencies
-	// (such as IAMPolicy on KMSCryptoKey) are Ready before the primary resource is created.
+	// Create resources (dependencies + primary)
 	for _, u := range opt.Create {
 		t.Log("creating object", "GVK", u.GroupVersionKind().String(), "name", u.GetName())
 		if err := h.GetClient().Patch(ctx, u, client.Apply, client.FieldOwner("kcc-tests")); err != nil {
 			t.Fatalf("error creating resource: %v", err)
 		}
-		create.WaitForReady(h, create.DefaultWaitForReadyTimeout, u)
 	}
+	// Wait for them to be ready
+	create.WaitForReady(h, create.DefaultWaitForReadyTimeout, opt.Create...)
 
 	// Record HTTP log for Phase 1
 	eventsPhase1 := h.Events.GetHTTPEvents()

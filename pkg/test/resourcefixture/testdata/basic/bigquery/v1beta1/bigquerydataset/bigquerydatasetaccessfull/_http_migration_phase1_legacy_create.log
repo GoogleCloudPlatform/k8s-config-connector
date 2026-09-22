@@ -1,3 +1,64 @@
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not found: Dataset ${projectId}:bigquerydatasetsample${uniqueId}",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Not found: Dataset ${projectId}:bigquerydatasetsample${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not found: Dataset ${projectId}:bigquerydatasetaccessfull${uniqueId}",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Not found: Dataset ${projectId}:bigquerydatasetaccessfull${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -24,6 +85,139 @@ X-Xss-Protection: 0
     ],
     "message": "Not found: Dataset ${projectId}:bigquerydatasetsample${uniqueId}",
     "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "friendlyName": "mv_test3",
+  "labels": {
+    "cnrm-test": "true",
+    "department_name": "marketing",
+    "managed-by-cnrm": "true"
+  },
+  "tableReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytablesample${uniqueId}"
+  },
+  "view": {
+    "query": "SELECT distinct dt, user_id FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
+    "useLegacySql": false
+  }
+}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not found: Dataset ${projectId}:bigquerydatasetsample${uniqueId}",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Not found: Dataset ${projectId}:bigquerydatasetsample${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "access": [
+    {
+      "dataset": {
+        "dataset": {
+          "datasetId": "bigquerydatasetsample${uniqueId}",
+          "projectId": "${projectId}"
+        },
+        "targetTypes": [
+          "VIEWS"
+        ]
+      }
+    },
+    {
+      "domain": "google.com",
+      "role": "READER"
+    },
+    {
+      "groupByEmail": "kcc-eng@google.com",
+      "role": "READER"
+    },
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "routine": {
+        "datasetId": "bigquerydatasetsample${uniqueId}",
+        "projectId": "${projectId}",
+        "routineId": "bigqueryroutine${uniqueId}"
+      }
+    },
+    {
+      "view": {
+        "datasetId": "bigquerydatasetsample${uniqueId}",
+        "projectId": "${projectId}",
+        "tableId": "bigquerytablesample${uniqueId}"
+      }
+    }
+  ],
+  "datasetReference": {
+    "datasetId": "bigquerydatasetaccessfull${uniqueId}"
+  },
+  "defaultTableExpirationMs": 3600000,
+  "description": "BigQuery Dataset With Full Access Block",
+  "friendlyName": "bigquerydataset-fullaccessblock",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "us-central1"
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "View ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytablesample${uniqueId} to authorize not found in location us-central1.",
+        "reason": "invalid"
+      }
+    ],
+    "message": "View ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytablesample${uniqueId} to authorize not found in location us-central1.",
+    "status": "INVALID_ARGUMENT"
   }
 }
 
@@ -148,6 +342,37 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/routines/bigqueryroutine${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not found: Routine ${projectId}:bigquerydatasetsample${uniqueId}.bigqueryroutine${uniqueId}",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Not found: Routine ${projectId}:bigquerydatasetsample${uniqueId}.bigqueryroutine${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-main-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -172,6 +397,76 @@ X-Xss-Protection: 0
       }
     ],
     "message": "Not found: Table ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/routines?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "definitionBody": "CREATE FUNCTION Add(x FLOAT64, y FLOAT64) RETURNS FLOAT64 AS (x + y);",
+  "routineReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}",
+    "routineId": "bigqueryroutine${uniqueId}"
+  },
+  "routineType": "PROCEDURE"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTime": "123456789",
+  "definitionBody": "CREATE FUNCTION Add(x FLOAT64, y FLOAT64) RETURNS FLOAT64 AS (x + y);",
+  "etag": "abcdef0123A=",
+  "language": "SQL",
+  "lastModifiedTime": "123456789",
+  "routineReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}",
+    "routineId": "bigqueryroutine${uniqueId}"
+  },
+  "routineType": "PROCEDURE"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not found: Table ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytablesample${uniqueId}",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Not found: Table ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytablesample${uniqueId}",
     "status": "NOT_FOUND"
   }
 }
@@ -296,6 +591,36 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/routines/bigqueryroutine${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTime": "123456789",
+  "definitionBody": "CREATE FUNCTION Add(x FLOAT64, y FLOAT64) RETURNS FLOAT64 AS (x + y);",
+  "etag": "abcdef0123A=",
+  "language": "SQL",
+  "lastModifiedTime": "123456789",
+  "routineReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}",
+    "routineId": "bigqueryroutine${uniqueId}"
+  },
+  "routineType": "PROCEDURE"
+}
+
+---
+
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-main-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -367,36 +692,6 @@ X-Xss-Protection: 0
     "type": "DAY"
   },
   "type": "TABLE"
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not found: Table ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytablesample${uniqueId}",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not found: Table ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytablesample${uniqueId}",
-    "status": "NOT_FOUND"
-  }
 }
 
 ---
@@ -476,6 +771,37 @@ X-Xss-Protection: 0
   "view": {
     "query": "SELECT distinct dt, user_id FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "useLegacySql": false
+  }
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not found: Dataset ${projectId}:bigquerydatasetaccessfull${uniqueId}",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Not found: Dataset ${projectId}:bigquerydatasetaccessfull${uniqueId}",
+    "status": "NOT_FOUND"
   }
 }
 
@@ -575,138 +901,6 @@ X-Xss-Protection: 0
     "privacyPolicy": {},
     "query": "SELECT distinct dt, user_id FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "useLegacySql": false
-  }
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/routines/bigqueryroutine${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not found: Routine ${projectId}:bigquerydatasetsample${uniqueId}.bigqueryroutine${uniqueId}",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not found: Routine ${projectId}:bigquerydatasetsample${uniqueId}.bigqueryroutine${uniqueId}",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/routines?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "definitionBody": "CREATE FUNCTION Add(x FLOAT64, y FLOAT64) RETURNS FLOAT64 AS (x + y);",
-  "routineReference": {
-    "datasetId": "bigquerydatasetsample${uniqueId}",
-    "projectId": "${projectId}",
-    "routineId": "bigqueryroutine${uniqueId}"
-  },
-  "routineType": "PROCEDURE"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTime": "123456789",
-  "definitionBody": "CREATE FUNCTION Add(x FLOAT64, y FLOAT64) RETURNS FLOAT64 AS (x + y);",
-  "etag": "abcdef0123A=",
-  "language": "SQL",
-  "lastModifiedTime": "123456789",
-  "routineReference": {
-    "datasetId": "bigquerydatasetsample${uniqueId}",
-    "projectId": "${projectId}",
-    "routineId": "bigqueryroutine${uniqueId}"
-  },
-  "routineType": "PROCEDURE"
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/routines/bigqueryroutine${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTime": "123456789",
-  "definitionBody": "CREATE FUNCTION Add(x FLOAT64, y FLOAT64) RETURNS FLOAT64 AS (x + y);",
-  "etag": "abcdef0123A=",
-  "language": "SQL",
-  "lastModifiedTime": "123456789",
-  "routineReference": {
-    "datasetId": "bigquerydatasetsample${uniqueId}",
-    "projectId": "${projectId}",
-    "routineId": "bigqueryroutine${uniqueId}"
-  },
-  "routineType": "PROCEDURE"
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not found: Dataset ${projectId}:bigquerydatasetaccessfull${uniqueId}",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not found: Dataset ${projectId}:bigquerydatasetaccessfull${uniqueId}",
-    "status": "NOT_FOUND"
   }
 }
 
