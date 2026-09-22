@@ -568,6 +568,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "correlationInfo")
 		delete(v, "labels")
 		delete(v, "instanceCreateTime")
+		delete(v, "managedBackupSource")
 		if qm, ok := v["qualityMetadata"].(map[string]interface{}); ok {
 			if agentInfo, ok := qm["agentInfo"].([]interface{}); ok {
 				for _, a := range agentInfo {
