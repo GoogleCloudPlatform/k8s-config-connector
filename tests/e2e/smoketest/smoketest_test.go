@@ -1086,7 +1086,7 @@ func (h *Harness) GetNamespacedControllerWorkerMetrics(scopedNamespace string, t
 		podNameBytes, err := podNameCmd.Output()
 		if err != nil || strings.TrimSpace(string(podNameBytes)) == "" {
 			if time.Now().After(deadline) {
-				return nil, "", fmt.Errorf("timeout waiting for manager pod in namespace %s: %v", scopedNamespace, err)
+				return nil, "", fmt.Errorf("timeout waiting for manager pod in namespace %s: %w", scopedNamespace, err)
 			}
 			time.Sleep(250 * time.Millisecond)
 			continue
