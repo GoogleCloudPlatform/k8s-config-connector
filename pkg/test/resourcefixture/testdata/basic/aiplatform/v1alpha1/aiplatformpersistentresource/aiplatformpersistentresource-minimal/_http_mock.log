@@ -4,7 +4,7 @@ GRPC /google.cloud.aiplatform.v1.PersistentResourceService/GetPersistentResource
   "name": "projects/${projectId}/locations/us-central1/persistentResources/aip-pres-${uniqueId}"
 }
 
-error: rpc error: code = NotFound desc = persistentResource "projects/${projectNumber}/locations/us-central1/persistentResources/aip-pres-${uniqueId}" not found
+error: rpc error: code = NotFound desc = The PersistentResource does not exist.
 
 {}
 
@@ -81,6 +81,7 @@ OK
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "aip-pres-${uniqueId}",
+  "error": {},
   "name": "projects/${projectNumber}/locations/us-central1/persistentResources/aip-pres-${uniqueId}",
   "resourcePools": [
     {
@@ -113,6 +114,7 @@ OK
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "aip-pres-${uniqueId}",
+  "error": {},
   "name": "projects/${projectNumber}/locations/us-central1/persistentResources/aip-pres-${uniqueId}",
   "resourcePools": [
     {
@@ -145,6 +147,7 @@ OK
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "aip-pres-${uniqueId}",
+  "error": {},
   "name": "projects/${projectNumber}/locations/us-central1/persistentResources/aip-pres-${uniqueId}",
   "resourcePools": [
     {
