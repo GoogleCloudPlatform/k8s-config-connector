@@ -861,6 +861,28 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		if serverCaMode, ok := v["serverCaMode"].(float64); ok && serverCaMode == 0 {
 			delete(v, "serverCaMode")
 		}
+		// Normalize Cloud Run WorkerPool specific server-side defaults / volatile fields to align real and mock logs
+		if name, ok := v["name"].(string); ok && strings.Contains(name, "/workerPools/") {
+			delete(v, "launchStage")
+			delete(v, "scaling")
+			delete(v, "instanceSplitStatuses")
+			delete(v, "instanceSplits")
+			delete(v, "lastModifier")
+			delete(v, "observedGeneration")
+			delete(v, "latestCreatedRevision")
+			delete(v, "latestReadyRevision")
+			delete(v, "customAudiences")
+			if template, ok := v["template"].(map[string]interface{}); ok {
+				delete(template, "serviceAccount")
+				if containers, ok := template["containers"].([]interface{}); ok {
+					for _, container := range containers {
+						if cMap, ok := container.(map[string]interface{}); ok {
+							delete(cMap, "resources")
+						}
+					}
+				}
+			}
+		}
 		for k, val := range v {
 			v[k] = normalizeRepresentation(val)
 		}

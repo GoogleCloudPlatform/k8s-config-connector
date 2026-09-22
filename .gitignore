@@ -161,6 +161,7 @@ e2e.log
 testlogs/
 log
 run-*-failed.log
+unit_tests_run.log
 
 # failing fuzz output
 pkg/fuzztesting/fuzztests/testdata/fuzz/FuzzAllMappers
