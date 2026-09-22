@@ -248,7 +248,11 @@ func (s *datasetsServer) PatchDataset(ctx context.Context, req *pb.PatchDatasetR
 		updated.Description = existing.Description
 	}
 	if updated.MaxTimeTravelHours == nil {
-		updated.MaxTimeTravelHours = existing.MaxTimeTravelHours
+		if existing.MaxTimeTravelHours != nil {
+			updated.MaxTimeTravelHours = existing.MaxTimeTravelHours
+		} else {
+			updated.MaxTimeTravelHours = &defaultMaxTimeTravelHours
+		}
 	}
 	if updated.IsCaseInsensitive == nil {
 		updated.IsCaseInsensitive = existing.IsCaseInsensitive

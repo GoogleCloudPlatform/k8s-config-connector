@@ -7,34 +7,34 @@
 < POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
 ---
 > POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json&prettyPrint=false
-95,96c94
+94,95c93
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-672,673c670
+671,672c669
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-702c699
+701c698
 < POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
 ---
 > POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json&prettyPrint=false
-748c745
+747c744
 <   "defaultTableExpirationMs": 3600000,
 ---
 >   "defaultTableExpirationMs": "3600000",
-832,833c829
+830,831c827
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-909c905
+907c903
 < PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 ---
 > PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-946a943,990
+944a941,988
 >   ]
 > }
 > 
@@ -83,55 +83,52 @@
 >         "tableId": "bigquerytablesample${uniqueId}"
 >       }
 >     }
-947a992
+945a990
 >   "creationTime": "123456789",
-949c994,995
+947c992,993
 <     "datasetId": "bigquerydatasetaccessfull${uniqueId}"
 ---
 >     "datasetId": "bigquerydatasetaccessfull${uniqueId}",
 >     "projectId": "${projectId}"
-951c997
+949c995
 <   "defaultTableExpirationMs": 3600000,
 ---
 >   "defaultTableExpirationMs": "3600000",
-952a999
+950a997
 >   "etag": "abcdef0123A=",
-953a1001,1002
+951a999,1000
 >   "id": "000000000000000000000",
 >   "kind": "bigquery#dataset",
-957a1007
+955a1005
 >   "lastModifiedTime": "123456789",
-959c1009,1012
+957c1007,1009
 <   "maxTimeTravelHours": "168"
 ---
 >   "maxTimeTravelHours": "168",
->   "satisfiesPzs": false,
 >   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetaccessfull${uniqueId}",
 >   "type": "DEFAULT"
-961a1015,1019
+959a1012,1016
 > ---
 > 
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 > Content-Type: application/json
 > 
-1026d1083
-<   "satisfiesPzs": false,
-1033,1034c1090
+1030,1031c1087
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-1106,1107c1162
+1103,1104c1159
 < DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
 < Content-Type: application/json
 ---
 > DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false&prettyPrint=false
-1334,1335c1389
+1331,1332c1386
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-1387,1388c1441
+1384,1385c1438
 < DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
 < Content-Type: application/json
 ---

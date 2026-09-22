@@ -1,16 +1,7 @@
 6d5
 <     cnrm.cloud.google.com/state-into-spec: absent
-10c9
-<   generation: 3
----
->   generation: 2
-41d39
-<   resourceID: bigquerydatasetaccessfull${uniqueId}
-50a49
+50a50
 >   externalRef: projects/${projectId}/datasets/bigquerydatasetaccessfull${uniqueId}
-52c51,53
-<   observedGeneration: 3
----
->   observedGeneration: 2
+52a53,54
 >   observedState:
 >     location: us-central1

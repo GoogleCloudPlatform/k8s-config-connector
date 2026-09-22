@@ -16,7 +16,7 @@ spec:
   parentRef:
     external: //bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}
     kind: BigQueryDataset
-  resourceID: tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectId}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}/tagValues/${tagValueID}
+  resourceID: tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectNumber}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}/tagValues/${tagValueID}
   tagValueRef:
     name: tagstagvalue-${uniqueId}
 status:
@@ -26,6 +26,6 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectId}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}/tagValues/${tagValueID}
-  name: tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectId}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}/tagValues/${tagValueID}
+  externalRef: tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectNumber}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}/tagValues/${tagValueID}
+  name: tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectNumber}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}/tagValues/${tagValueID}
   observedGeneration: 2
