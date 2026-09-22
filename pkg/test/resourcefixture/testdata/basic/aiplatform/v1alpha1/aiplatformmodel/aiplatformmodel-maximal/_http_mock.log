@@ -35,7 +35,7 @@ OK
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.UploadModelOperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.UploadModelOperationMetadata",
     "genericMetadata": {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -57,7 +57,7 @@ OK
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.UploadModelOperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.UploadModelOperationMetadata",
     "genericMetadata": {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -65,20 +65,8 @@ OK
   },
   "name": "projects/${projectNumber}/locations/us-central1/models/model-max-${uniqueId}/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.Model",
-    "containerSpec": {
-      "imageUri": "gcr.io/google-samples/hello-app:1.0"
-    },
-    "description": "Initial description",
-    "displayName": "Maximal Model",
-    "labels": {
-      "label-key": "label-val"
-    },
-    "name": "projects/${projectId}/locations/us-central1/models/model-max-${uniqueId}",
-    "versionAliases": [
-      "alias-one"
-    ],
-    "versionDescription": "Initial version description"
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.UploadModelResponse",
+    "model": "projects/${projectId}/locations/us-central1/models/model-max-${uniqueId}"
   }
 }
 
@@ -264,7 +252,7 @@ OK
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata",
     "genericMetadata": {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "updateTime": "2024-04-01T12:34:56.123456Z"
