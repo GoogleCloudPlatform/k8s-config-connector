@@ -1,0 +1,87 @@
+[
+  {
+    "controller": "direct",
+    "isNewObject": false,
+    "resource": "LoggingLogBucket/logginglogbucket-${uniqueId}",
+    "fields": [
+      {
+        "id": "analytics_enabled",
+        "old": true,
+        "new": false
+      },
+      {
+        "id": "description",
+        "old": "Default bucket",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "direct",
+    "isNewObject": false,
+    "resource": "LoggingLogBucket/logginglogbucket-${uniqueId}",
+    "fields": [
+      {
+        "id": "analytics_enabled",
+        "old": true,
+        "new": false
+      },
+      {
+        "id": "description",
+        "old": "Default bucket",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "direct",
+    "isNewObject": false,
+    "resource": "LoggingLogBucket/logginglogbucket-${uniqueId}",
+    "fields": [
+      {
+        "id": "analytics_enabled",
+        "old": true,
+        "new": false
+      },
+      {
+        "id": "description",
+        "old": "Default bucket",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "direct",
+    "isNewObject": false,
+    "resource": "LoggingLogBucket/logginglogbucket-${uniqueId}",
+    "fields": [
+      {
+        "id": "analytics_enabled",
+        "old": true,
+        "new": false
+      },
+      {
+        "id": "description",
+        "old": "Default bucket",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "direct",
+    "isNewObject": false,
+    "resource": "LoggingLogBucket/logginglogbucket-${uniqueId}",
+    "fields": [
+      {
+        "id": "analytics_enabled",
+        "old": true,
+        "new": false
+      },
+      {
+        "id": "description",
+        "old": "Default bucket",
+        "new": ""
+      }
+    ]
+  }
+]
