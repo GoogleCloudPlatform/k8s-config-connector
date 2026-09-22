@@ -89,6 +89,10 @@ type RedisClusterSpec struct {
 	// Optional. Backups stored in Cloud Storage buckets.
 	// +optional
 	GCSSource *Cluster_GCSBackupSource `json:"gcsSource,omitempty"`
+
+	// Optional. Backups generated and managed by memorystore service.
+	// +optional
+	ManagedBackupSource *Cluster_ManagedBackupSource `json:"managedBackupSource,omitempty"`
 }
 
 type PscConfigSpec struct {

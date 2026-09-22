@@ -146,7 +146,6 @@ type Cluster_GCSBackupSource struct {
 	Uris []string `json:"uris,omitempty"`
 }
 
-/* unreachable type Cluster_ManagedBackupSource
 // +kcc:proto=google.cloud.redis.cluster.v1.Cluster.ManagedBackupSource
 type Cluster_ManagedBackupSource struct {
 	// Optional. Example:
@@ -158,7 +157,6 @@ type Cluster_ManagedBackupSource struct {
 	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.ManagedBackupSource.backup
 	Backup *string `json:"backup,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.redis.cluster.v1.Cluster.StateInfo
 type Cluster_StateInfo struct {

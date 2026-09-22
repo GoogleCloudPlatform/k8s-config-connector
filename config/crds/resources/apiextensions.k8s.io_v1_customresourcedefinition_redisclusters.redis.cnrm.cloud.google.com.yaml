@@ -282,6 +282,17 @@ spec:
                       type: object
                     type: array
                 type: object
+              managedBackupSource:
+                description: Optional. Backups generated and managed by memorystore
+                  service.
+                properties:
+                  backup:
+                    description: 'Optional. Example: //redis.googleapis.com/projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup}
+                      A shorter version (without the prefix) of the backup name is
+                      also supported, like projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup_id}
+                      In this case, it assumes the backup is under redis.googleapis.com.'
+                    type: string
+                type: object
               nodeType:
                 description: Optional. The type of a redis node in the cluster. NodeType
                   determines the underlying machine-type of a redis node.
@@ -979,6 +990,17 @@ spec:
                           type: object
                       type: object
                     type: array
+                type: object
+              managedBackupSource:
+                description: Optional. Backups generated and managed by memorystore
+                  service.
+                properties:
+                  backup:
+                    description: 'Optional. Example: //redis.googleapis.com/projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup}
+                      A shorter version (without the prefix) of the backup name is
+                      also supported, like projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup_id}
+                      In this case, it assumes the backup is under redis.googleapis.com.'
+                    type: string
                 type: object
               nodeType:
                 description: Optional. The type of a redis node in the cluster. NodeType

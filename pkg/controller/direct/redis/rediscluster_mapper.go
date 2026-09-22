@@ -129,6 +129,7 @@ func RedisClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.
 	}
 	out.AutomatedBackupConfig = AutomatedBackupConfig_FromProto(mapCtx, in.GetAutomatedBackupConfig())
 	out.GCSSource = Cluster_GCSBackupSource_FromProto(mapCtx, in.GetGcsSource())
+	out.ManagedBackupSource = Cluster_ManagedBackupSource_FromProto(mapCtx, in.GetManagedBackupSource())
 
 	return out
 }
@@ -156,6 +157,9 @@ func RedisClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterSpe
 	out.AutomatedBackupConfig = AutomatedBackupConfig_ToProto(mapCtx, in.AutomatedBackupConfig)
 	if oneof := Cluster_GCSBackupSource_ToProto(mapCtx, in.GCSSource); oneof != nil {
 		out.ImportSources = &pb.Cluster_GcsSource{GcsSource: oneof}
+	}
+	if oneof := Cluster_ManagedBackupSource_ToProto(mapCtx, in.ManagedBackupSource); oneof != nil {
+		out.ImportSources = &pb.Cluster_ManagedBackupSource_{ManagedBackupSource: oneof}
 	}
 	return out
 }

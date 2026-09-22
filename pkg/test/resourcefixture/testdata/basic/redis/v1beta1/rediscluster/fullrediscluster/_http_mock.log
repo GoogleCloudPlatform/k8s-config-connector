@@ -817,6 +817,9 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
       }
     ]
   },
+  "managedBackupSource": {
+    "backup": "projects/${projectId}/locations/us-central1/backupCollections/backupCollection-${uniqueId}/backups/backup-${uniqueId}"
+  },
   "nodeType": 4,
   "persistenceConfig": {
     "aofConfig": {
@@ -932,6 +935,9 @@ X-Xss-Protection: 0
         }
       ]
     },
+    "managedBackupSource": {
+      "backup": "projects/${projectId}/locations/us-central1/backupCollections/backupCollection-${uniqueId}/backups/backup-${uniqueId}"
+    },
     "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
     "nodeType": "REDIS_STANDARD_SMALL",
     "persistenceConfig": {
@@ -1042,6 +1048,9 @@ X-Xss-Protection: 0
       }
     ]
   },
+  "managedBackupSource": {
+    "backup": "projects/${projectId}/locations/us-central1/backupCollections/backupCollection-${uniqueId}/backups/backup-${uniqueId}"
+  },
   "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
   "persistenceConfig": {
@@ -1122,6 +1131,9 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
         }
       }
     ]
+  },
+  "managedBackupSource": {
+    "backup": "projects/${projectId}/locations/us-central1/backupCollections/backupCollection-${uniqueId}/backups/backup-${uniqueId}"
   },
   "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
@@ -1241,6 +1253,9 @@ X-Xss-Protection: 0
         }
       ]
     },
+    "managedBackupSource": {
+      "backup": "projects/${projectId}/locations/us-central1/backupCollections/backupCollection-${uniqueId}/backups/backup-${uniqueId}"
+    },
     "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
     "nodeType": "REDIS_STANDARD_SMALL",
     "persistenceConfig": {
@@ -1322,6 +1337,9 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
         }
       }
     ]
+  },
+  "managedBackupSource": {
+    "backup": "projects/${projectId}/locations/us-central1/backupCollections/backupCollection-${uniqueId}/backups/backup-${uniqueId}"
   },
   "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
@@ -1441,6 +1459,9 @@ X-Xss-Protection: 0
         }
       ]
     },
+    "managedBackupSource": {
+      "backup": "projects/${projectId}/locations/us-central1/backupCollections/backupCollection-${uniqueId}/backups/backup-${uniqueId}"
+    },
     "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
     "nodeType": "REDIS_STANDARD_SMALL",
     "persistenceConfig": {
@@ -1522,6 +1543,9 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
         }
       }
     ]
+  },
+  "managedBackupSource": {
+    "backup": "projects/${projectId}/locations/us-central1/backupCollections/backupCollection-${uniqueId}/backups/backup-${uniqueId}"
   },
   "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
@@ -1640,6 +1664,9 @@ X-Xss-Protection: 0
           }
         }
       ]
+    },
+    "managedBackupSource": {
+      "backup": "projects/${projectId}/locations/us-central1/backupCollections/backupCollection-${uniqueId}/backups/backup-${uniqueId}"
     },
     "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
     "nodeType": "REDIS_STANDARD_SMALL",
@@ -1723,6 +1750,9 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
       }
     ]
   },
+  "managedBackupSource": {
+    "backup": "projects/${projectId}/locations/us-central1/backupCollections/backupCollection-${uniqueId}/backups/backup-${uniqueId}"
+  },
   "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
   "persistenceConfig": {
@@ -1840,6 +1870,9 @@ X-Xss-Protection: 0
           }
         }
       ]
+    },
+    "managedBackupSource": {
+      "backup": "projects/${projectId}/locations/us-central1/backupCollections/backupCollection-${uniqueId}/backups/backup-${uniqueId}"
     },
     "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
     "nodeType": "REDIS_STANDARD_SMALL",
@@ -1924,6 +1957,9 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
       }
     ]
   },
+  "managedBackupSource": {
+    "backup": "projects/${projectId}/locations/us-central1/backupCollections/backupCollection-${uniqueId}/backups/backup-${uniqueId}"
+  },
   "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
   "persistenceConfig": {
@@ -2041,6 +2077,9 @@ X-Xss-Protection: 0
           }
         }
       ]
+    },
+    "managedBackupSource": {
+      "backup": "projects/${projectId}/locations/us-central1/backupCollections/backupCollection-${uniqueId}/backups/backup-${uniqueId}"
     },
     "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
     "nodeType": "REDIS_STANDARD_SMALL",
@@ -2126,6 +2165,9 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
       }
     ]
   },
+  "managedBackupSource": {
+    "backup": "projects/${projectId}/locations/us-central1/backupCollections/backupCollection-${uniqueId}/backups/backup-${uniqueId}"
+  },
   "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
   "persistenceConfig": {
@@ -2243,6 +2285,9 @@ X-Xss-Protection: 0
           }
         }
       ]
+    },
+    "managedBackupSource": {
+      "backup": "projects/${projectId}/locations/us-central1/backupCollections/backupCollection-${uniqueId}/backups/backup-${uniqueId}"
     },
     "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
     "nodeType": "REDIS_STANDARD_SMALL",
@@ -2355,6 +2400,9 @@ X-Xss-Protection: 0
         }
       }
     ]
+  },
+  "managedBackupSource": {
+    "backup": "projects/${projectId}/locations/us-central1/backupCollections/backupCollection-${uniqueId}/backups/backup-${uniqueId}"
   },
   "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
