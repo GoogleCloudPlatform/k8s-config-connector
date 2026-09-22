@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"reflect"
 	"slices"
 	"sort"
 	"strings"
@@ -142,6 +143,403 @@ func TestMigrationToDirect(t *testing.T) {
 			})
 		}
 	})
+}
+
+// TestBrownfieldLabelsInDirect tests the behaviors of labels in migrated brownfield resources.
+func TestBrownfieldLabelsInDirect(t *testing.T) {
+	if os.Getenv("RUN_E2E") == "" {
+		t.Skip("RUN_E2E not set; skipping")
+	}
+
+	// 1. Return an error if the env var is asking for real GCP.
+	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "real" {
+		t.Fatal("TestBrownfieldLabelsInDirect only runs against mock GCP")
+	}
+
+	ctx := context.Background()
+	ctx, cancel := context.WithCancel(ctx)
+	t.Cleanup(func() {
+		cancel()
+	})
+
+	subtestTimeout := 5 * time.Minute
+
+	t.Run("fixtures", func(t *testing.T) {
+		fixtures := resourcefixture.LoadLabels(t)
+		for _, fixture := range fixtures {
+			fixture := fixture
+			group := fixture.GVK.Group
+
+			if s := os.Getenv("SKIP_TEST_APIGROUP"); s != "" {
+				skippedGroups := strings.Split(s, ",")
+				if slices.Contains(skippedGroups, group) {
+					continue
+				}
+			}
+			if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
+				groups := strings.Split(s, ",")
+				if !slices.Contains(groups, group) {
+					continue
+				}
+			}
+
+			testName := fixture.Name
+			t.Run(testName, func(t *testing.T) {
+				subCtx := addTestTimeout(ctx, t, subtestTimeout, fixture.TestKey)
+				runBrownfieldLabelsScenario(subCtx, t, fixture)
+			})
+		}
+	})
+}
+
+func runBrownfieldLabelsScenario(ctx context.Context, t *testing.T, fixture resourcefixture.ResourceFixture) {
+	uniqueID := testvariable.NewUniqueID()
+
+	// Load objects temporarily to get GVKs for CRD filter
+	dummyProject := testgcp.GCPProject{
+		ProjectID:     "test-labels",
+		ProjectNumber: 123456789,
+	}
+	dummyPrimary := bytesToUnstructured(t, fixture.Create, uniqueID, dummyProject)
+	var dummyDeps []*unstructured.Unstructured
+	if fixture.Dependencies != nil {
+		dependencyYamls := testyaml.SplitYAML(t, fixture.Dependencies)
+		for _, dependBytes := range dependencyYamls {
+			depUnstruct := bytesToUnstructured(t, dependBytes, uniqueID, dummyProject)
+			dummyDeps = append(dummyDeps, depUnstruct)
+		}
+	}
+
+	// Build CRD filter and construct harness
+	keepCRDs := map[schema.GroupKind]bool{}
+	keepCRDs[dummyPrimary.GroupVersionKind().GroupKind()] = true
+	for _, dep := range dummyDeps {
+		keepCRDs[dep.GroupVersionKind().GroupKind()] = true
+	}
+	harnessOptions := []create.HarnessOption{buildCRDFilter(keepCRDs)}
+	h := create.NewHarness(ctx, t, harnessOptions...)
+	project := h.Project
+
+	// Skip if the target resource doesn't support mock GCP.
+	primaryResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)
+	var dependencies []*unstructured.Unstructured
+	if fixture.Dependencies != nil {
+		dependencyYamls := testyaml.SplitYAML(t, fixture.Dependencies)
+		for _, dependBytes := range dependencyYamls {
+			depUnstruct := bytesToUnstructured(t, dependBytes, uniqueID, project)
+			dependencies = append(dependencies, depUnstruct)
+		}
+	}
+
+	// Call MaybeSkip
+	create.MaybeSkip(t, fixture.TestKey, append(dependencies, primaryResource))
+
+	// Find if the resource supports direct controller and what old controller it has
+	config, err := resourceconfig.LoadConfig().GetControllersForGVK(fixture.GVK)
+	if err != nil {
+		t.Fatalf("error getting controllers for GVK %v: %v", fixture.GVK, err)
+	}
+
+	var oldController k8scontrollertype.ReconcilerType
+	for _, c := range config.SupportedControllers {
+		if c == k8scontrollertype.ReconcilerTypeTerraform || c == k8scontrollertype.ReconcilerTypeDCL {
+			oldController = c
+			break
+		}
+	}
+	if oldController == "" {
+		t.Fatalf("no legacy controller (TF or DCL) found for GVK %s", fixture.GVK)
+	}
+
+	supportsDirect := false
+	for _, c := range config.SupportedControllers {
+		if c == k8scontrollertype.ReconcilerTypeDirect {
+			supportsDirect = true
+			break
+		}
+	}
+
+	// Setup namespaces
+	create.SetupNamespacesAndApplyDefaults(h, append(dependencies, primaryResource), project)
+
+	// Hack: set project-id because mockkubeapiserver does not support webhooks
+	for _, u := range append(dependencies, primaryResource) {
+		ensureProjectIDAnnotation(u, project.ProjectID)
+	}
+
+	// Helper to set override on ConfigConnectorContext
+	setCCCControllerOverride := func(reconciler k8scontrollertype.ReconcilerType) {
+		// First delete any existing ConfigConnectorContext
+		existingCCC := &opcorev1beta1.ConfigConnectorContext{}
+		existingCCC.Name = "configconnectorcontext.core.cnrm.cloud.google.com"
+		existingCCC.Namespace = primaryResource.GetNamespace()
+		_ = h.GetClient().Delete(ctx, existingCCC)
+
+		ccc := &opcorev1beta1.ConfigConnectorContext{}
+		ccc.Name = "configconnectorcontext.core.cnrm.cloud.google.com"
+		ccc.Namespace = primaryResource.GetNamespace()
+
+		primaryGK := primaryResource.GroupVersionKind().GroupKind()
+		controllerOverrides := map[string]k8scontrollertype.ReconcilerType{
+			fmt.Sprintf("%s.%s", primaryGK.Kind, primaryGK.Group): reconciler,
+		}
+		ccc.Spec.Experiments = &opcorev1beta1.Experiments{
+			ControllerOverrides: controllerOverrides,
+		}
+		if err := h.GetClient().Create(ctx, ccc); err != nil {
+			t.Fatalf("FAIL: error creating CCC with reconciler %s: %v", reconciler, err)
+		}
+	}
+
+	// Create ConfigConnector
+	cc := &opcorev1beta1.ConfigConnector{}
+	cc.Name = "configconnector.core.cnrm.cloud.google.com"
+	cc.Spec.Mode = "namespaced"
+	if err := h.GetClient().Create(ctx, cc); err != nil {
+		t.Logf("ConfigConnector might already exist or failed: %v", err)
+	}
+
+	// Create the ConfigConnectorContext first so that dependencies can reconcile.
+	setCCCControllerOverride(oldController)
+
+	// Create the dependencies as needed.
+	for _, u := range dependencies {
+		t.Logf("creating dependency resource GVK: %s, name: %s", u.GroupVersionKind(), u.GetName())
+		if err := h.GetClient().Patch(ctx, u, client.Apply, client.FieldOwner("kcc-tests")); err != nil {
+			t.Fatalf("error creating dependency resource: %v", err)
+		}
+	}
+	if len(dependencies) > 0 {
+		create.WaitForReady(h, create.DefaultWaitForReadyTimeout, dependencies...)
+	}
+
+	// Run Phase 1 with legacy controller
+	oldCreateLogStr, oldUpdateLogStr, oldTouchLogStr := runLabelScenarioPhase(ctx, t, h, project, uniqueID, fixture, oldController, "_old_controller", setCCCControllerOverride)
+
+	if !supportsDirect {
+		t.Logf("GVK %s does not support direct controller, skipping direct controller phase", fixture.GVK)
+		return
+	}
+
+	// Run Phase 2 with direct controller
+	newCreateLogStr, newUpdateLogStr, newTouchLogStr := runLabelScenarioPhase(ctx, t, h, project, uniqueID, fixture, k8scontrollertype.ReconcilerTypeDirect, "", setCCCControllerOverride)
+
+	// Clean up dependencies
+	if len(dependencies) > 0 {
+		t.Logf("Deleting dependency resources...")
+		optDeleteDeps := create.CreateDeleteTestOptions{
+			Create:           dependencies,
+			CleanupResources: true,
+		}
+		create.DeleteResources(h, optDeleteDeps)
+	}
+
+	// Compare _http_[operation]_old_controller.log and _http_[operation].log files
+	ops := []struct {
+		name string
+		old  string
+		new  string
+	}{
+		{name: "create", old: oldCreateLogStr, new: newCreateLogStr},
+		{name: "update", old: oldUpdateLogStr, new: newUpdateLogStr},
+		{name: "touch", old: oldTouchLogStr, new: newTouchLogStr},
+	}
+
+	for _, op := range ops {
+		oldEvents := test.ParseHTTPLog(op.old)
+		newEvents := test.ParseHTTPLog(op.new)
+
+		var oldLabels []map[string]string
+		for _, ev := range oldEvents {
+			if ev.Method == "GET" || ev.Method == "DELETE" {
+				continue
+			}
+			oldLabels = append(oldLabels, extractLabelsFromJSON(ev.RequestBody)...)
+		}
+
+		var newLabels []map[string]string
+		for _, ev := range newEvents {
+			if ev.Method == "GET" || ev.Method == "DELETE" {
+				continue
+			}
+			newLabels = append(newLabels, extractLabelsFromJSON(ev.RequestBody)...)
+		}
+
+		if err := compareLabels(op.name, oldLabels, newLabels); err != nil {
+			t.Errorf("Labels discrepancy found in %s: %v", fixture.Name, err)
+		}
+	}
+}
+
+func ensureProjectIDAnnotation(u *unstructured.Unstructured, projectID string) {
+	annotations := u.GetAnnotations()
+	if annotations == nil {
+		annotations = make(map[string]string)
+	}
+	if annotations["cnrm.cloud.google.com/project-id"] == "" {
+		annotations["cnrm.cloud.google.com/project-id"] = projectID
+		u.SetAnnotations(annotations)
+	}
+}
+
+func runLabelScenarioPhase(ctx context.Context, t *testing.T, h *create.Harness, project testgcp.GCPProject, uniqueID string, fixture resourcefixture.ResourceFixture, reconciler k8scontrollertype.ReconcilerType, suffix string, setCCCControllerOverride func(k8scontrollertype.ReconcilerType)) (createLogStr, updateLogStr, touchLogStr string) {
+	setCCCControllerOverride(reconciler)
+
+	// Create primary resource
+	primaryResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)
+	create.SetupNamespacesAndApplyDefaults(h, []*unstructured.Unstructured{primaryResource}, project)
+	ensureProjectIDAnnotation(primaryResource, project.ProjectID)
+
+	// Apply create.yaml
+	h.Events.Clear()
+	t.Logf("Creating primary resource GVK: %s, name: %s via %s controller", primaryResource.GroupVersionKind(), primaryResource.GetName(), reconciler)
+	if err := h.GetClient().Patch(ctx, primaryResource, client.Apply, client.FieldOwner("kcc-tests")); err != nil {
+		t.Fatalf("error applying primary resource: %v", err)
+	}
+	create.WaitForReady(h, create.DefaultWaitForReadyTimeout, primaryResource)
+
+	eventsCreate := h.Events.GetHTTPEvents()
+	createPath := filepath.Join(fixture.AbsoluteSourceDir, fmt.Sprintf("_http_create%s.log", suffix))
+	createLogStr = normalizeAndWriteLog(t, h, project, uniqueID, eventsCreate, createPath)
+
+	// Apply update.yaml
+	if fixture.Update != nil {
+		h.Events.Clear()
+		updateResource := bytesToUnstructured(t, fixture.Update, uniqueID, project)
+		create.SetupNamespacesAndApplyDefaults(h, []*unstructured.Unstructured{updateResource}, project)
+		ensureProjectIDAnnotation(updateResource, project.ProjectID)
+
+		t.Logf("Updating primary resource GVK: %s, name: %s via %s controller", updateResource.GroupVersionKind(), updateResource.GetName(), reconciler)
+		if err := h.GetClient().Patch(ctx, updateResource, client.Apply, client.FieldOwner("kcc-tests"), client.ForceOwnership); err != nil {
+			t.Fatalf("error applying update to primary resource: %v", err)
+		}
+		create.WaitForReady(h, create.DefaultWaitForReadyTimeout, updateResource)
+
+		eventsUpdate := h.Events.GetHTTPEvents()
+		updatePath := filepath.Join(fixture.AbsoluteSourceDir, fmt.Sprintf("_http_update%s.log", suffix))
+		updateLogStr = normalizeAndWriteLog(t, h, project, uniqueID, eventsUpdate, updatePath)
+	} else {
+		updatePath := filepath.Join(fixture.AbsoluteSourceDir, fmt.Sprintf("_http_update%s.log", suffix))
+		if err := os.WriteFile(updatePath, []byte(""), 0644); err != nil {
+			t.Fatalf("error writing empty update log: %v", err)
+		}
+	}
+
+	// Do a touch
+	h.Events.Clear()
+	preTouchRV := getResourceVersion(h, primaryResource)
+
+	uTouch := &unstructured.Unstructured{}
+	uTouch.SetGroupVersionKind(primaryResource.GroupVersionKind())
+	uTouch.SetName(primaryResource.GetName())
+	uTouch.SetNamespace(primaryResource.GetNamespace())
+
+	existingTouch := readObject(h, primaryResource.GroupVersionKind(), primaryResource.GetNamespace(), primaryResource.GetName())
+	annotationsTouch := existingTouch.GetAnnotations()
+	if annotationsTouch == nil {
+		annotationsTouch = make(map[string]string)
+	}
+	annotationsTouch["test.cnrm.cloud.google.com/reconcile-cookie"] = fmt.Sprintf("re-reconcile-%s-v1", reconciler)
+	uTouch.SetAnnotations(annotationsTouch)
+
+	t.Logf("Touching primary resource GVK: %s, name: %s via %s controller", uTouch.GroupVersionKind(), uTouch.GetName(), reconciler)
+	if err := h.GetClient().Patch(ctx, uTouch, client.Apply, client.FieldOwner("kcc-test-touch"), client.ForceOwnership); err != nil {
+		t.Fatalf("error applying touch patch to primary resource: %v", err)
+	}
+
+	waitForReconciliationAfterPatch(h, primaryResource, preTouchRV)
+
+	eventsTouch := h.Events.GetHTTPEvents()
+	touchPath := filepath.Join(fixture.AbsoluteSourceDir, fmt.Sprintf("_http_touch%s.log", suffix))
+	touchLogStr = normalizeAndWriteLog(t, h, project, uniqueID, eventsTouch, touchPath)
+
+	// Delete primary resource
+	t.Logf("Deleting primary resource GVK: %s, name: %s", primaryResource.GroupVersionKind(), primaryResource.GetName())
+	optDelete := create.CreateDeleteTestOptions{
+		Create:           []*unstructured.Unstructured{primaryResource},
+		CleanupResources: true,
+	}
+	create.DeleteResources(h, optDelete)
+
+	return createLogStr, updateLogStr, touchLogStr
+}
+
+func normalizeAndWriteLog(t *testing.T, h *create.Harness, project testgcp.GCPProject, uniqueID string, events []*test.LogEntry, filePath string) string {
+	got, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(events))
+	for _, n := range normalizers {
+		got = n(got)
+	}
+	if err := os.WriteFile(filePath, []byte(got), 0644); err != nil {
+		t.Fatalf("error writing HTTP log to %s: %v", filePath, err)
+	}
+	return got
+}
+
+func extractLabelsFromJSON(jsonStr string) []map[string]string {
+	if jsonStr == "" {
+		return nil
+	}
+	var val any
+	if err := json.Unmarshal([]byte(jsonStr), &val); err != nil {
+		return nil
+	}
+	var results []map[string]string
+	findLabels(val, &results)
+	return results
+}
+
+func findLabels(val any, results *[]map[string]string) {
+	switch v := val.(type) {
+	case map[string]any:
+		for k, val := range v {
+			if k == "labels" || k == "userLabels" {
+				if m, ok := val.(map[string]any); ok {
+					labelsMap := make(map[string]string)
+					for lk, lv := range m {
+						if sv, ok := lv.(string); ok {
+							labelsMap[lk] = sv
+						}
+					}
+					*results = append(*results, labelsMap)
+				}
+			} else {
+				findLabels(val, results)
+			}
+		}
+	case []any:
+		for _, item := range v {
+			findLabels(item, results)
+		}
+	}
+}
+
+func compareLabels(op string, oldLabels, newLabels []map[string]string) error {
+	normalize := func(list []map[string]string) []map[string]string {
+		var res []map[string]string
+		for _, m := range list {
+			if len(m) == 0 {
+				continue
+			}
+			res = append(res, m)
+		}
+		return res
+	}
+
+	normOld := normalize(oldLabels)
+	normNew := normalize(newLabels)
+
+	if len(normOld) != len(normNew) {
+		return fmt.Errorf("discrepancy in %s: old controller sent %d label-writing requests, but new controller sent %d", op, len(normOld), len(normNew))
+	}
+
+	for i := range normOld {
+		o := normOld[i]
+		n := normNew[i]
+		if !reflect.DeepEqual(o, n) {
+			return fmt.Errorf("discrepancy in %s: write request %d labels differ. Old: %v, New: %v", op, i, o, n)
+		}
+	}
+	return nil
 }
 
 func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefixture.ResourceFixture, oldController k8scontrollertype.ReconcilerType) {
