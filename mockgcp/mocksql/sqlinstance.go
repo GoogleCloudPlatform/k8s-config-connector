@@ -671,6 +671,12 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 		if obj.Settings.DatabaseReplicationEnabled == nil {
 			obj.Settings.DatabaseReplicationEnabled = wrapperspb.Bool(true)
 		}
+		if obj.ReplicaConfiguration == nil {
+			obj.ReplicaConfiguration = &pb.ReplicaConfiguration{
+				FailoverTarget: wrapperspb.Bool(false),
+				Kind:           "sql#replicaConfiguration",
+			}
+		}
 	}
 
 	if obj.GeminiConfig == nil {

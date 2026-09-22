@@ -524,6 +524,10 @@ X-Xss-Protection: 0
   "name": "sqlinstance-rep-unset-to-false-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "replicaConfiguration": {
+    "failoverTarget": false,
+    "kind": "sql#replicaConfiguration"
+  },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-rep-unset-to-false-direct-${uniqueId}",
   "serverCaCert": {
@@ -761,6 +765,10 @@ X-Xss-Protection: 0
   "name": "sqlinstance-rep-unset-to-false-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "replicaConfiguration": {
+    "failoverTarget": false,
+    "kind": "sql#replicaConfiguration"
+  },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-rep-unset-to-false-direct-${uniqueId}",
   "serverCaCert": {
@@ -1041,6 +1049,10 @@ X-Xss-Protection: 0
   "name": "sqlinstance-rep-unset-to-false-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "replicaConfiguration": {
+    "failoverTarget": false,
+    "kind": "sql#replicaConfiguration"
+  },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-rep-unset-to-false-direct-${uniqueId}",
   "serverCaCert": {

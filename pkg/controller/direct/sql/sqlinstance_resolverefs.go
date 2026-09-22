@@ -312,7 +312,7 @@ func resolveFailoverDRReplicaRef(ctx context.Context, kube client.Reader, obj *k
 	ref := obj.Spec.ReplicationCluster.FailoverDRReplicaRef
 
 	if ref.External != "" && ref.Name != "" {
-		return fmt.Errorf("cannot specify both spec.replicationCluster.failoverDRReplicaRef.external and spec.replicationCluster.failoverDRReplicaRef.name")
+		return fmt.Errorf("cannot specify both spec.replicationCluster.failoverDrReplicaRef.external and spec.replicationCluster.failoverDrReplicaRef.name")
 	}
 
 	if ref.External != "" {

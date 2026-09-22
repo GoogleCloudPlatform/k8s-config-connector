@@ -15,7 +15,10 @@
 package options
 
 import (
+	"fmt"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -47,10 +50,22 @@ func (o *GenerateOptions) BindPersistentFlags(cmd *cobra.Command) {
 }
 func RepoRoot() (string, error) {
 	cmd := exec.Command("git", "rev-parse", "--show-toplevel")
-	output, err := cmd.Output()
+	if output, err := cmd.Output(); err == nil {
+		return strings.TrimSpace(string(output)), nil
+	}
+	dir, err := os.Getwd()
 	if err != nil {
 		return "", err
 	}
-	repoRoot := strings.TrimSpace(string(output))
-	return repoRoot, nil
+	for {
+		if _, err := os.Stat(filepath.Join(dir, "go.mod")); err == nil {
+			return dir, nil
+		}
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			break
+		}
+		dir = parent
+	}
+	return "", fmt.Errorf("failed to locate repo root (go.mod not found in parents)")
 }

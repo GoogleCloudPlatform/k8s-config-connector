@@ -549,6 +549,10 @@ X-Xss-Protection: 0
   "name": "sqlinstance-replica-advdr-${uniqueId}",
   "project": "${projectId}",
   "region": "us-east1",
+  "replicaConfiguration": {
+    "failoverTarget": false,
+    "kind": "sql#replicaConfiguration"
+  },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-replica-advdr-${uniqueId}",
   "serverCaCert": {
@@ -764,6 +768,10 @@ X-Xss-Protection: 0
   "name": "sqlinstance-replica-advdr-${uniqueId}",
   "project": "${projectId}",
   "region": "us-east1",
+  "replicaConfiguration": {
+    "failoverTarget": false,
+    "kind": "sql#replicaConfiguration"
+  },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-replica-advdr-${uniqueId}",
   "serverCaCert": {
