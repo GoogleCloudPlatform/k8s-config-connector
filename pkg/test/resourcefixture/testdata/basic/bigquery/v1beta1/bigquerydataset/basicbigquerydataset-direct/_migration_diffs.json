@@ -1,0 +1,7 @@
+[
+  {
+    "controller": "direct",
+    "isNewObject": true,
+    "resource": "BigQueryDataset/bigquerydatasetsample${uniqueId}"
+  }
+]

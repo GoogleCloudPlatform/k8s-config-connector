@@ -1,0 +1,172 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "KMSKeyRing/kmskeyring-${uniqueId}",
+    "fields": [
+      {
+        "id": "location",
+        "old": "",
+        "new": "us"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "kmskeyring-${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "KMSCryptoKey/kmscryptokey-${uniqueId}",
+    "fields": [
+      {
+        "id": "destroy_scheduled_duration",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "import_only",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "key_ring",
+        "old": "",
+        "new": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}"
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "3"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.key-one",
+        "old": "",
+        "new": "value-one"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "kmscryptokey-${uniqueId}"
+      },
+      {
+        "id": "purpose",
+        "old": "",
+        "new": "ENCRYPT_DECRYPT"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "version_template.#",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ServiceIdentity/serviceidentity-${uniqueId}",
+    "fields": [
+      {
+        "id": "email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "service",
+        "old": "",
+        "new": "bigquery.googleapis.com"
+      }
+    ]
+  },
+  {
+    "controller": "iampolicy",
+    "isNewObject": false,
+    "resource": "",
+    "fields": [
+      {
+        "id": "spec.bindings[role=roles/cloudkms.cryptoKeyEncrypterDecrypter]",
+        "old": "absent in desired spec",
+        "new": "present in actual spec"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "IAMServiceAccount/iamsa-${uniqueId}",
+    "fields": [
+      {
+        "id": "account_id",
+        "old": "",
+        "new": "iamsa-${uniqueId}"
+      },
+      {
+        "id": "disabled",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "member",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "unique_id",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "direct",
+    "isNewObject": true,
+    "resource": "BigQueryDataset/bigquerydataset${uniqueId}"
+  }
+]

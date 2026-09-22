@@ -1,65 +1,91 @@
-367,368c367
+394,447c394
+< GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "errors": [
+<       {
+<         "domain": "global",
+<         "message": "Service account projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+<         "reason": "notFound"
+<       }
+<     ],
+<     "message": "Service account projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+<     "status": "NOT_FOUND"
+<   }
+< }
+< 
+< ---
+< 
+< GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "email": "iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<   "etag": "abcdef0123A=",
+<   "name": "projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<   "oauth2ClientId": "888888888888888888888",
+<   "projectId": "${projectId}",
+<   "uniqueId": "111111111111111111111"
+< }
+< 
+< ---
+< 
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-397c396
+476c423
 < POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
 ---
 > POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json&prettyPrint=false
-414,415c413,414
+493,494c440,441
 <   "defaultPartitionExpirationMs": 3600000,
 <   "defaultTableExpirationMs": 3600000,
 ---
 >   "defaultPartitionExpirationMs": "3600000",
 >   "defaultTableExpirationMs": "3600000",
-474,475c473
+553,554c500
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-524c522
+603c549
 < PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 ---
 > PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-538a537,540
->       "specialGroup": "projectOwners"
->     },
->     {
->       "role": "OWNER",
-542,544d543
-<   "datasetReference": {
-<     "datasetId": "bigquerydataset${uniqueId}"
-<   },
-549,550c548,549
-<   "defaultPartitionExpirationMs": 3800000,
-<   "defaultTableExpirationMs": 3800000,
----
+620a567,604
+>   "defaultEncryptionConfiguration": {
+>     "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+>   },
 >   "defaultPartitionExpirationMs": "3800000",
 >   "defaultTableExpirationMs": "3800000",
-552a552
+>   "description": "Fully Configured BigQuery Dataset updated",
+>   "friendlyName": "bigquerydataset-fullyconfigured-updated",
 >   "isCaseInsensitive": false,
-557d556
-<   "location": "US",
-583a583,586
->       "specialGroup": "projectOwners"
->     },
->     {
->       "role": "OWNER",
-601a605
->   "isCaseInsensitive": false,
-641a646,649
->       "specialGroup": "projectOwners"
->     },
->     {
->       "role": "OWNER",
-659a668
->   "isCaseInsensitive": false,
-675,676c684,746
-< DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
-< Content-Type: application/json
----
-> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+>   "maxTimeTravelHours": "96",
+>   "storageBillingModel": "LOGICAL"
+> }
 > 
 > 200 OK
 > Content-Type: application/json; charset=UTF-8
@@ -83,42 +109,56 @@
 >     },
 >     {
 >       "role": "OWNER",
->       "specialGroup": "projectOwners"
->     },
->     {
->       "role": "OWNER",
 >       "userByEmail": "user@google.com"
 >     }
 >   ],
 >   "creationTime": "123456789",
->   "datasetReference": {
+622c606,607
+<     "datasetId": "bigquerydataset${uniqueId}"
+---
 >     "datasetId": "bigquerydataset${uniqueId}",
 >     "projectId": "${projectId}"
->   },
->   "defaultCollation": "und:ci",
->   "defaultEncryptionConfiguration": {
->     "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
->   },
+628,629c613,614
+<   "defaultPartitionExpirationMs": 3800000,
+<   "defaultTableExpirationMs": 3800000,
+---
 >   "defaultPartitionExpirationMs": "3800000",
 >   "defaultTableExpirationMs": "3800000",
->   "description": "Fully Configured BigQuery Dataset updated",
+630a616
 >   "etag": "abcdef0123A=",
->   "friendlyName": "bigquerydataset-fullyconfigured-updated",
+631a618,620
 >   "id": "000000000000000000000",
 >   "isCaseInsensitive": false,
 >   "kind": "bigquery#dataset",
->   "labels": {
->     "cnrm-test": "true",
->     "managed-by-cnrm": "true"
->   },
+635a625
 >   "lastModifiedTime": "123456789",
->   "location": "US",
->   "maxTimeTravelHours": "96",
+638c628,630
+<   "storageBillingModel": "LOGICAL"
+---
 >   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
 >   "storageBillingModel": "LOGICAL",
 >   "type": "DEFAULT"
-> }
-> 
+640a633,637
 > ---
 > 
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+> Content-Type: application/json
+> 
+681c678
+<   "isCaseInsensitive": true,
+---
+>   "isCaseInsensitive": false,
+697,698c694
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+740c736
+<   "isCaseInsensitive": true,
+---
+>   "isCaseInsensitive": false,
+756,757c752
+< DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
+< Content-Type: application/json
+---
 > DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false&prettyPrint=false

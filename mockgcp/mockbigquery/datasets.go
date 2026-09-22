@@ -232,8 +232,41 @@ func (s *datasetsServer) PatchDataset(ctx context.Context, req *pb.PatchDatasetR
 	updated.Id = PtrTo(existing.GetDatasetReference().GetProjectId() + ":" + existing.GetDatasetReference().GetDatasetId())
 	updated.Kind = PtrTo("bigquery#dataset")
 	updated.Location = existing.Location
-	updated.Type = existing.Type
+	if updated.FriendlyName == nil {
+		updated.FriendlyName = existing.FriendlyName
+	}
+	if updated.DefaultCollation == nil {
+		updated.DefaultCollation = existing.DefaultCollation
+	}
+	if updated.DefaultPartitionExpirationMs == nil {
+		updated.DefaultPartitionExpirationMs = existing.DefaultPartitionExpirationMs
+	}
+	if updated.DefaultTableExpirationMs == nil {
+		updated.DefaultTableExpirationMs = existing.DefaultTableExpirationMs
+	}
+	if updated.Description == nil {
+		updated.Description = existing.Description
+	}
+	if updated.MaxTimeTravelHours == nil {
+		updated.MaxTimeTravelHours = existing.MaxTimeTravelHours
+	}
+	if updated.IsCaseInsensitive == nil {
+		updated.IsCaseInsensitive = existing.IsCaseInsensitive
+	}
+	if updated.StorageBillingModel == nil {
+		updated.StorageBillingModel = existing.StorageBillingModel
+	}
+	if updated.Labels == nil {
+		updated.Labels = existing.Labels
+	}
+	if updated.Type == nil {
+		updated.Type = existing.Type
+	}
 	updated.SelfLink = PtrTo("https://bigquery.googleapis.com/bigquery/v2/" + name.String())
+
+	if len(updated.Access) == 0 {
+		updated.Access = existing.Access
+	}
 
 	sortAccess(updated)
 

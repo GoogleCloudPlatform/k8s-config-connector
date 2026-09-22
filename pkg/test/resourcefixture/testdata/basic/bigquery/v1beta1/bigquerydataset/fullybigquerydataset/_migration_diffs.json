@@ -2,70 +2,6 @@
   {
     "controller": "tf",
     "isNewObject": true,
-    "resource": "ServiceIdentity/serviceidentity-${uniqueId}",
-    "fields": [
-      {
-        "id": "email",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "project",
-        "old": "",
-        "new": "${projectId}"
-      },
-      {
-        "id": "service",
-        "old": "",
-        "new": "bigquery.googleapis.com"
-      }
-    ]
-  },
-  {
-    "controller": "tf",
-    "isNewObject": true,
-    "resource": "IAMServiceAccount/iamsa-${uniqueId}",
-    "fields": [
-      {
-        "id": "account_id",
-        "old": "",
-        "new": "iamsa-${uniqueId}"
-      },
-      {
-        "id": "disabled",
-        "old": "",
-        "new": "false"
-      },
-      {
-        "id": "email",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "member",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "name",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "project",
-        "old": "",
-        "new": "${projectId}"
-      },
-      {
-        "id": "unique_id",
-        "old": "",
-        "new": ""
-      }
-    ]
-  },
-  {
-    "controller": "tf",
-    "isNewObject": true,
     "resource": "KMSKeyRing/kmskeyring-${uniqueId}",
     "fields": [
       {
@@ -153,6 +89,28 @@
     ]
   },
   {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ServiceIdentity/serviceidentity-${uniqueId}",
+    "fields": [
+      {
+        "id": "email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "service",
+        "old": "",
+        "new": "bigquery.googleapis.com"
+      }
+    ]
+  },
+  {
     "controller": "iampolicy",
     "isNewObject": false,
     "resource": "",
@@ -161,6 +119,48 @@
         "id": "spec.bindings[role=roles/cloudkms.cryptoKeyEncrypterDecrypter]",
         "old": "absent in desired spec",
         "new": "present in actual spec"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "IAMServiceAccount/iamsa-${uniqueId}",
+    "fields": [
+      {
+        "id": "account_id",
+        "old": "",
+        "new": "iamsa-${uniqueId}"
+      },
+      {
+        "id": "disabled",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "member",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "unique_id",
+        "old": "",
+        "new": ""
       }
     ]
   },
