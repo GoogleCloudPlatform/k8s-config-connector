@@ -567,6 +567,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "observabilityConfig")
 		delete(v, "correlationInfo")
 		delete(v, "labels")
+		delete(v, "instanceCreateTime")
 		if qm, ok := v["qualityMetadata"].(map[string]interface{}); ok {
 			if agentInfo, ok := qm["agentInfo"].([]interface{}); ok {
 				for _, a := range agentInfo {
@@ -879,6 +880,10 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		if strings.Contains(v, "/forwardingRules/") {
 			re := regexp.MustCompile(`/forwardingRules/[^/]+`)
 			v = re.ReplaceAllString(v, "/forwardingRules/${forwardingRuleID}")
+		}
+		if strings.Contains(v, "/revisions/") {
+			re := regexp.MustCompile(`/revisions/[a-f0-9]+`)
+			v = re.ReplaceAllString(v, "/revisions/00000000")
 		}
 		if strings.HasPrefix(v, "projects/projects/") {
 			v = v[len("projects/"):]

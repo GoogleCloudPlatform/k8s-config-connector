@@ -71,6 +71,10 @@ resource:
     external: string
     name: string
     namespace: string
+  sqlInstanceRef:
+    external: string
+    name: string
+    namespace: string
 resourceID: string
 resourceType: string
 ```
@@ -230,6 +234,46 @@ resourceType: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>The namespace of a ComputeInstance resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>resource.sqlInstanceRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>resource.sqlInstanceRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The SQLInstance selfLink, when not managed by Config Connector.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>resource.sqlInstanceRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `name` field of a `SQLInstance` resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>resource.sqlInstanceRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The `namespace` field of a `SQLInstance` resource.</p>
         </td>
     </tr>
     <tr>
