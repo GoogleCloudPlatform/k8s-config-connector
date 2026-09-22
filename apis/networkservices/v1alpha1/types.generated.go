@@ -19,6 +19,7 @@
 // proto.service: google.cloud.networkservices.v1
 // resource: NetworkServicesServiceBinding:ServiceBinding
 // resource: NetworkServicesLBRouteExtension:LbRouteExtension
+// resource: NetworkServicesLBEdgeExtension:LbEdgeExtension
 // resource: NetworkServicesWasmPlugin:WasmPlugin
 // resource: NetworkServicesAuthzExtension:AuthzExtension
 
