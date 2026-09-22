@@ -48,15 +48,15 @@ type NetworkServicesServiceLBPolicySpec struct {
 
 	// Optional. Configuration to automatically move traffic away for unhealthy IG/NEG for the associated Backend Service.
 	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceLbPolicy.auto_capacity_drain
-	AutoCapacityDrain *ServiceLbPolicy_AutoCapacityDrain `json:"autoCapacityDrain,omitempty"`
+	AutoCapacityDrain *ServiceLBPolicyAutoCapacityDrain `json:"autoCapacityDrain,omitempty"`
 
 	// Optional. Configuration related to health based failover.
 	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceLbPolicy.failover_config
-	FailoverConfig *ServiceLbPolicy_FailoverConfig `json:"failoverConfig,omitempty"`
+	FailoverConfig *ServiceLBPolicyFailoverConfig `json:"failoverConfig,omitempty"`
 
 	// Optional. Configuration to provide isolation support for the associated Backend Service.
 	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceLbPolicy.isolation_config
-	IsolationConfig *ServiceLbPolicy_IsolationConfig `json:"isolationConfig,omitempty"`
+	IsolationConfig *ServiceLBPolicyIsolationConfig `json:"isolationConfig,omitempty"`
 }
 
 // NetworkServicesServiceLBPolicyStatus defines the config connector machine state of NetworkServicesServiceLBPolicy

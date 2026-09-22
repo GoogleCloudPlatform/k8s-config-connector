@@ -1021,9 +1021,9 @@ func NetworkServicesServiceLBPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapCon
 	out.Labels = in.Labels
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.LoadBalancingAlgorithm = direct.Enum_FromProto(mapCtx, in.GetLoadBalancingAlgorithm())
-	out.AutoCapacityDrain = ServiceLbPolicy_AutoCapacityDrain_v1alpha1_FromProto(mapCtx, in.GetAutoCapacityDrain())
-	out.FailoverConfig = ServiceLbPolicy_FailoverConfig_v1alpha1_FromProto(mapCtx, in.GetFailoverConfig())
-	out.IsolationConfig = ServiceLbPolicy_IsolationConfig_v1alpha1_FromProto(mapCtx, in.GetIsolationConfig())
+	out.AutoCapacityDrain = ServiceLBPolicyAutoCapacityDrain_v1alpha1_FromProto(mapCtx, in.GetAutoCapacityDrain())
+	out.FailoverConfig = ServiceLBPolicyFailoverConfig_v1alpha1_FromProto(mapCtx, in.GetFailoverConfig())
+	out.IsolationConfig = ServiceLBPolicyIsolationConfig_v1alpha1_FromProto(mapCtx, in.GetIsolationConfig())
 	return out
 }
 func NetworkServicesServiceLBPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesServiceLBPolicySpec) *pb.ServiceLbPolicy {
@@ -1035,9 +1035,9 @@ func NetworkServicesServiceLBPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapConte
 	out.Labels = in.Labels
 	out.Description = direct.ValueOf(in.Description)
 	out.LoadBalancingAlgorithm = direct.Enum_ToProto[pb.ServiceLbPolicy_LoadBalancingAlgorithm](mapCtx, in.LoadBalancingAlgorithm)
-	out.AutoCapacityDrain = ServiceLbPolicy_AutoCapacityDrain_v1alpha1_ToProto(mapCtx, in.AutoCapacityDrain)
-	out.FailoverConfig = ServiceLbPolicy_FailoverConfig_v1alpha1_ToProto(mapCtx, in.FailoverConfig)
-	out.IsolationConfig = ServiceLbPolicy_IsolationConfig_v1alpha1_ToProto(mapCtx, in.IsolationConfig)
+	out.AutoCapacityDrain = ServiceLBPolicyAutoCapacityDrain_v1alpha1_ToProto(mapCtx, in.AutoCapacityDrain)
+	out.FailoverConfig = ServiceLBPolicyFailoverConfig_v1alpha1_ToProto(mapCtx, in.FailoverConfig)
+	out.IsolationConfig = ServiceLBPolicyIsolationConfig_v1alpha1_ToProto(mapCtx, in.IsolationConfig)
 	return out
 }
 
@@ -1104,15 +1104,15 @@ found existing non-generated mapping function "NetworkServicesWasmPluginSpec_v1a
 		return out
 	}
 */
-func ServiceLbPolicy_AutoCapacityDrain_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceLbPolicy_AutoCapacityDrain) *krmnetworkservicesv1alpha1.ServiceLbPolicy_AutoCapacityDrain {
+func ServiceLBPolicyAutoCapacityDrain_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceLbPolicy_AutoCapacityDrain) *krmnetworkservicesv1alpha1.ServiceLBPolicyAutoCapacityDrain {
 	if in == nil {
 		return nil
 	}
-	out := &krmnetworkservicesv1alpha1.ServiceLbPolicy_AutoCapacityDrain{}
+	out := &krmnetworkservicesv1alpha1.ServiceLBPolicyAutoCapacityDrain{}
 	out.Enable = direct.LazyPtr(in.GetEnable())
 	return out
 }
-func ServiceLbPolicy_AutoCapacityDrain_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.ServiceLbPolicy_AutoCapacityDrain) *pb.ServiceLbPolicy_AutoCapacityDrain {
+func ServiceLBPolicyAutoCapacityDrain_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.ServiceLBPolicyAutoCapacityDrain) *pb.ServiceLbPolicy_AutoCapacityDrain {
 	if in == nil {
 		return nil
 	}
@@ -1120,15 +1120,15 @@ func ServiceLbPolicy_AutoCapacityDrain_v1alpha1_ToProto(mapCtx *direct.MapContex
 	out.Enable = direct.ValueOf(in.Enable)
 	return out
 }
-func ServiceLbPolicy_FailoverConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceLbPolicy_FailoverConfig) *krmnetworkservicesv1alpha1.ServiceLbPolicy_FailoverConfig {
+func ServiceLBPolicyFailoverConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceLbPolicy_FailoverConfig) *krmnetworkservicesv1alpha1.ServiceLBPolicyFailoverConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krmnetworkservicesv1alpha1.ServiceLbPolicy_FailoverConfig{}
+	out := &krmnetworkservicesv1alpha1.ServiceLBPolicyFailoverConfig{}
 	out.FailoverHealthThreshold = direct.LazyPtr(in.GetFailoverHealthThreshold())
 	return out
 }
-func ServiceLbPolicy_FailoverConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.ServiceLbPolicy_FailoverConfig) *pb.ServiceLbPolicy_FailoverConfig {
+func ServiceLBPolicyFailoverConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.ServiceLBPolicyFailoverConfig) *pb.ServiceLbPolicy_FailoverConfig {
 	if in == nil {
 		return nil
 	}
@@ -1136,16 +1136,16 @@ func ServiceLbPolicy_FailoverConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, 
 	out.FailoverHealthThreshold = direct.ValueOf(in.FailoverHealthThreshold)
 	return out
 }
-func ServiceLbPolicy_IsolationConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceLbPolicy_IsolationConfig) *krmnetworkservicesv1alpha1.ServiceLbPolicy_IsolationConfig {
+func ServiceLBPolicyIsolationConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceLbPolicy_IsolationConfig) *krmnetworkservicesv1alpha1.ServiceLBPolicyIsolationConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krmnetworkservicesv1alpha1.ServiceLbPolicy_IsolationConfig{}
+	out := &krmnetworkservicesv1alpha1.ServiceLBPolicyIsolationConfig{}
 	out.IsolationGranularity = direct.Enum_FromProto(mapCtx, in.GetIsolationGranularity())
 	out.IsolationMode = direct.Enum_FromProto(mapCtx, in.GetIsolationMode())
 	return out
 }
-func ServiceLbPolicy_IsolationConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.ServiceLbPolicy_IsolationConfig) *pb.ServiceLbPolicy_IsolationConfig {
+func ServiceLBPolicyIsolationConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.ServiceLBPolicyIsolationConfig) *pb.ServiceLbPolicy_IsolationConfig {
 	if in == nil {
 		return nil
 	}
