@@ -16,6 +16,7 @@ package mockgcp
 
 import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockaccesscontextmanager"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockagentregistry"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockaiplatform"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockalloydb"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockanalytics"
