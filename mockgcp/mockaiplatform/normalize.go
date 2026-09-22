@@ -30,7 +30,9 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		return
 	}
 
-	replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata", "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata")
+	if strings.Contains(event.URL(), "PipelineService") || strings.Contains(event.URL(), "pipelineJobs") || strings.Contains(event.URL(), "persistentResources") {
+		replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata", "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata")
+	}
 
 	if strings.Contains(event.URL(), "PipelineService") || strings.Contains(event.URL(), "pipelineJobs") {
 		event.VisitResponseStringValues(func(path string, value string) {
