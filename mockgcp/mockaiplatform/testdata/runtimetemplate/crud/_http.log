@@ -69,10 +69,6 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "dataPersistentDiskSpec": {
-    "diskSizeGb": "100",
-    "diskType": "pd-standard"
-  },
   "displayName": "test-${uniqueId}",
   "etag": "abcdef0123A=",
   "eucConfig": {},

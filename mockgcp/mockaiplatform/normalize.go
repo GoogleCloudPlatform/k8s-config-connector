@@ -23,6 +23,10 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if strings.Contains(url, "/notebookRuntimeTemplates") {
+		replacements.RemovePath(".dataPersistentDiskSpec")
+		replacements.RemovePath(".response.dataPersistentDiskSpec")
+	}
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
