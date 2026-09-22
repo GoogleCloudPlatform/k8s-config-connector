@@ -95,6 +95,8 @@ maintenancePolicy:
       minutes: integer
       nanos: integer
       seconds: integer
+managedBackupSource:
+  backup: string
 nodeType: string
 persistenceConfig:
   aofConfig:
@@ -544,6 +546,26 @@ zoneDistributionConfig:
         <td>
             <p><code class="apitype">integer</code></p>
             <p>Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>managedBackupSource</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. Backups generated and managed by memorystore service.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>managedBackupSource.backup</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Optional. Example: //redis.googleapis.com/projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup} A shorter version (without the prefix) of the backup name is also supported, like projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup_id} In this case, it assumes the backup is under redis.googleapis.com.</p>
         </td>
     </tr>
     <tr>
