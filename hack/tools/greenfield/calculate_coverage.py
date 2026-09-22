@@ -29,6 +29,8 @@ def get_gcp_resources(googleapis_dir):
     
     for root, _, files in os.walk(googleapis_dir):
         if "third_party" in root: continue
+        # Skip alpha versions to avoid tracking unstable or non-production APIs.
+        if "alpha" in root: continue
         for file in files:
             if not file.endswith(".proto"): continue
             path = os.path.join(root, file)

@@ -1907,113 +1907,6 @@
     "grpc_client": "https://pkg.go.dev/cloud.google.com/go/aiplatform/apiv1#NewTensorboardClient"
   },
   {
-    "resource": "analyticsadmin/AccessBinding",
-    "service": "analyticsadmin",
-    "kind": "AnalyticsAdminAccessBinding",
-    "patterns": [
-      "accounts/{account}/accessBindings/{access_binding}",
-      "properties/{property}/accessBindings/{access_binding}"
-    ],
-    "layer": "Deeply Nested",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "references": [],
-    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#AccessBinding",
-    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
-    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
-  },
-  {
-    "resource": "analyticsadmin/Audience",
-    "service": "analyticsadmin",
-    "kind": "AnalyticsAdminAudience",
-    "patterns": [
-      "properties/{property}/audiences/{audience}"
-    ],
-    "layer": "Partially Manageable",
-    "available_ops": [
-      "CREATE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [
-      "DELETE"
-    ],
-    "status": "missing",
-    "references": [],
-    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#Audience",
-    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
-    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
-  },
-  {
-    "resource": "analyticsadmin/BigQueryLink",
-    "service": "analyticsadmin",
-    "kind": "AnalyticsAdminBigQueryLink",
-    "patterns": [
-      "properties/{property}/bigQueryLinks/{bigquery_link}"
-    ],
-    "layer": "Deeply Nested",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "references": [],
-    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#BigQueryLink",
-    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
-    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
-  },
-  {
-    "resource": "analyticsadmin/CalculatedMetric",
-    "service": "analyticsadmin",
-    "kind": "AnalyticsAdminCalculatedMetric",
-    "patterns": [
-      "properties/{property}/calculatedMetrics/{calculated_metric}"
-    ],
-    "layer": "Deeply Nested",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "references": [],
-    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#CalculatedMetric",
-    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
-    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
-  },
-  {
-    "resource": "analyticsadmin/ChannelGroup",
-    "service": "analyticsadmin",
-    "kind": "AnalyticsAdminChannelGroup",
-    "patterns": [
-      "properties/{property}/channelGroups/{channel_group}"
-    ],
-    "layer": "Deeply Nested",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "references": [],
-    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#ChannelGroup",
-    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
-    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
-  },
-  {
     "resource": "analyticsadmin/ConversionEvent",
     "service": "analyticsadmin",
     "kind": "AnalyticsAdminConversionEvent",
@@ -2100,98 +1993,6 @@
     "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
   },
   {
-    "resource": "analyticsadmin/DisplayVideo360AdvertiserLink",
-    "service": "analyticsadmin",
-    "kind": "AnalyticsAdminDisplayVideo360AdvertiserLink",
-    "patterns": [
-      "properties/{property}/displayVideo360AdvertiserLinks/{display_video_360_advertiser_link}"
-    ],
-    "layer": "Deeply Nested",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "references": [],
-    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#DisplayVideo360AdvertiserLink",
-    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
-    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
-  },
-  {
-    "resource": "analyticsadmin/EventCreateRule",
-    "service": "analyticsadmin",
-    "kind": "AnalyticsAdminEventCreateRule",
-    "patterns": [
-      "properties/{property}/dataStreams/{data_stream}/eventCreateRules/{event_create_rule}"
-    ],
-    "layer": "Deeply Nested",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "parent": {
-      "target_group": "analyticsadmin.cnrm.cloud.google.com",
-      "target_kind": "AnalyticsAdminDataStream"
-    },
-    "references": [],
-    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#EventCreateRule",
-    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
-    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
-  },
-  {
-    "resource": "analyticsadmin/EventEditRule",
-    "service": "analyticsadmin",
-    "kind": "AnalyticsAdminEventEditRule",
-    "patterns": [
-      "properties/{property}/dataStreams/{data_stream}/eventEditRules/{event_edit_rule}"
-    ],
-    "layer": "Deeply Nested",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "parent": {
-      "target_group": "analyticsadmin.cnrm.cloud.google.com",
-      "target_kind": "AnalyticsAdminDataStream"
-    },
-    "references": [],
-    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#EventEditRule",
-    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
-    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
-  },
-  {
-    "resource": "analyticsadmin/ExpandedDataSet",
-    "service": "analyticsadmin",
-    "kind": "AnalyticsAdminExpandedDataSet",
-    "patterns": [
-      "properties/{property}/expandedDataSets/{expanded_data_set}"
-    ],
-    "layer": "Deeply Nested",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "references": [],
-    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#ExpandedDataSet",
-    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
-    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
-  },
-  {
     "resource": "analyticsadmin/KeyEvent",
     "service": "analyticsadmin",
     "kind": "AnalyticsAdminKeyEvent",
@@ -2234,94 +2035,6 @@
     },
     "references": [],
     "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#MeasurementProtocolSecret",
-    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
-    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
-  },
-  {
-    "resource": "analyticsadmin/ReportingDataAnnotation",
-    "service": "analyticsadmin",
-    "kind": "AnalyticsAdminReportingDataAnnotation",
-    "patterns": [
-      "properties/{property}/reportingDataAnnotations/{reporting_data_annotation}"
-    ],
-    "layer": "Deeply Nested",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "references": [],
-    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#ReportingDataAnnotation",
-    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
-    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
-  },
-  {
-    "resource": "analyticsadmin/SKAdNetworkConversionValueSchema",
-    "service": "analyticsadmin",
-    "kind": "AnalyticsAdminSKAdNetworkConversionValueSchema",
-    "patterns": [
-      "properties/{property}/dataStreams/{data_stream}/sKAdNetworkConversionValueSchema/{skadnetwork_conversion_value_schema}"
-    ],
-    "layer": "Deeply Nested",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "parent": {
-      "target_group": "analyticsadmin.cnrm.cloud.google.com",
-      "target_kind": "AnalyticsAdminDataStream"
-    },
-    "references": [],
-    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#SKAdNetworkConversionValueSchema",
-    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
-    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
-  },
-  {
-    "resource": "analyticsadmin/SearchAds360Link",
-    "service": "analyticsadmin",
-    "kind": "AnalyticsAdminSearchAds360Link",
-    "patterns": [
-      "properties/{property}/searchAds360Links/{search_ads_360_link}"
-    ],
-    "layer": "Deeply Nested",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "references": [],
-    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#SearchAds360Link",
-    "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
-    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
-  },
-  {
-    "resource": "analyticsadmin/SubpropertyEventFilter",
-    "service": "analyticsadmin",
-    "kind": "AnalyticsAdminSubpropertyEventFilter",
-    "patterns": [
-      "properties/{property}/subpropertyEventFilters/{sub_property_event_filter}"
-    ],
-    "layer": "Deeply Nested",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "references": [],
-    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha/adminpb#SubpropertyEventFilter",
     "rest_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminRESTClient",
     "grpc_client": "https://pkg.go.dev/cloud.google.com/go/analytics/admin/apiv1alpha#NewAnalyticsAdminClient"
   },
@@ -2631,26 +2344,6 @@
     "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/apphub/apiv1/apphubpb#Workload",
     "rest_client": "https://pkg.go.dev/cloud.google.com/go/apphub/apiv1#NewRESTClient",
     "grpc_client": "https://pkg.go.dev/cloud.google.com/go/apphub/apiv1#NewClient"
-  },
-  {
-    "resource": "area120tables/Row",
-    "service": "area120tables",
-    "kind": "Area120TablesRow",
-    "patterns": [
-      "tables/{table}/rows/{row}"
-    ],
-    "layer": "Deeply Nested",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "deprecated",
-    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/area120/tables/apiv1alpha1/tablespb#Row",
-    "rest_client": "https://pkg.go.dev/cloud.google.com/go/area120/tables/apiv1alpha1#NewRESTClient",
-    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/area120/tables/apiv1alpha1#NewClient"
   },
   {
     "resource": "artifactregistry/Rule",
@@ -3906,90 +3599,6 @@
     "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/kms/apiv1/kmspb#EkmConnection",
     "rest_client": "https://pkg.go.dev/cloud.google.com/go/kms/apiv1#NewEkmRESTClient",
     "grpc_client": "https://pkg.go.dev/cloud.google.com/go/kms/apiv1#NewEkmClient"
-  },
-  {
-    "resource": "cloudnumberregistry/CustomRange",
-    "service": "cloudnumberregistry",
-    "kind": "CloudNumberRegistryCustomRange",
-    "patterns": [
-      "projects/{project}/locations/{location}/customRanges/{custom_range}"
-    ],
-    "layer": "Easy (Leaf)",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "references": [],
-    "protobuf_object": "MISSING",
-    "rest_client": "MISSING",
-    "grpc_client": "MISSING"
-  },
-  {
-    "resource": "cloudnumberregistry/IpamAdminScope",
-    "service": "cloudnumberregistry",
-    "kind": "CloudNumberRegistryIpamAdminScope",
-    "patterns": [
-      "projects/{project}/locations/{location}/ipamAdminScopes/{ipam_admin_scope}"
-    ],
-    "layer": "Easy (Leaf)",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "references": [],
-    "protobuf_object": "MISSING",
-    "rest_client": "MISSING",
-    "grpc_client": "MISSING"
-  },
-  {
-    "resource": "cloudnumberregistry/Realm",
-    "service": "cloudnumberregistry",
-    "kind": "CloudNumberRegistryRealm",
-    "patterns": [
-      "projects/{project}/locations/{location}/realms/{realm}"
-    ],
-    "layer": "Easy (Leaf)",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "references": [],
-    "protobuf_object": "MISSING",
-    "rest_client": "MISSING",
-    "grpc_client": "MISSING"
-  },
-  {
-    "resource": "cloudnumberregistry/RegistryBook",
-    "service": "cloudnumberregistry",
-    "kind": "CloudNumberRegistryRegistryBook",
-    "patterns": [
-      "projects/{project}/locations/{location}/registryBooks/{registry_book}"
-    ],
-    "layer": "Easy (Leaf)",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "references": [],
-    "protobuf_object": "MISSING",
-    "rest_client": "MISSING",
-    "grpc_client": "MISSING"
   },
   {
     "resource": "cloudresourcemanager/TagKey",
@@ -6908,43 +6517,6 @@
     "grpc_client": "https://pkg.go.dev/cloud.google.com/go/financialservices/apiv1#NewAMLClient"
   },
   {
-    "resource": "gdchardwaremanagement/Hardware",
-    "service": "gdchardwaremanagement",
-    "kind": "GDCHardwareManagementHardware",
-    "patterns": [
-      "projects/{project}/locations/{location}/hardware/{hardware}"
-    ],
-    "layer": "Easy (Leaf)",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "references": [
-      {
-        "field": "config.sku",
-        "target_group": "gdchardwaremanagement.cnrm.cloud.google.com",
-        "target_kind": "GDCHardwareManagementSku"
-      },
-      {
-        "field": "order",
-        "target_group": "gdchardwaremanagement.cnrm.cloud.google.com",
-        "target_kind": "GDCHardwareManagementOrder"
-      },
-      {
-        "field": "site",
-        "target_group": "gdchardwaremanagement.cnrm.cloud.google.com",
-        "target_kind": "GDCHardwareManagementSite"
-      }
-    ],
-    "protobuf_object": "MISSING",
-    "rest_client": "MISSING",
-    "grpc_client": "MISSING"
-  },
-  {
     "resource": "geminidataanalytics/DataAgent",
     "service": "geminidataanalytics",
     "kind": "GeminiDataAnalyticsDataAgent",
@@ -7336,73 +6908,6 @@
     "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/hypercomputecluster/apiv1/hypercomputeclusterpb#Cluster",
     "rest_client": "https://pkg.go.dev/cloud.google.com/go/hypercomputecluster/apiv1#NewRESTClient",
     "grpc_client": "https://pkg.go.dev/cloud.google.com/go/hypercomputecluster/apiv1#NewClient"
-  },
-  {
-    "resource": "hypercomputecluster/MachineLearningRun",
-    "service": "hypercomputecluster",
-    "kind": "HypercomputeClusterMachineLearningRun",
-    "patterns": [
-      "projects/{project}/locations/{location}/machineLearningRuns/{machine_learning_run}"
-    ],
-    "layer": "Easy (Leaf)",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "references": [
-      {
-        "field": "orchestrator.slurm.login_nodes.boot_disk.image",
-        "target_group": "compute.cnrm.cloud.google.com",
-        "target_kind": "ComputeImage"
-      },
-      {
-        "field": "orchestrator.slurm.login_nodes.boot_disk.type",
-        "target_group": "compute.cnrm.cloud.google.com",
-        "target_kind": "ComputeDiskType"
-      },
-      {
-        "field": "orchestrator.slurm.node_sets[].compute_instance.boot_disk.image",
-        "target_group": "compute.cnrm.cloud.google.com",
-        "target_kind": "ComputeImage"
-      },
-      {
-        "field": "orchestrator.slurm.node_sets[].compute_instance.boot_disk.type",
-        "target_group": "compute.cnrm.cloud.google.com",
-        "target_kind": "ComputeDiskType"
-      }
-    ],
-    "protobuf_object": "MISSING",
-    "rest_client": "MISSING",
-    "grpc_client": "MISSING"
-  },
-  {
-    "resource": "hypercomputecluster/MonitoredEvent",
-    "service": "hypercomputecluster",
-    "kind": "HypercomputeClusterMonitoredEvent",
-    "patterns": [
-      "projects/{project}/locations/{location}/machineLearningRuns/{machine_learning_run}/monitoredEvents/{monitored_event}"
-    ],
-    "layer": "Next Layer (1 Parent)",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "parent": {
-      "target_group": "hypercomputecluster.cnrm.cloud.google.com",
-      "target_kind": "HypercomputeClusterMachineLearningRun"
-    },
-    "references": [],
-    "protobuf_object": "MISSING",
-    "rest_client": "MISSING",
-    "grpc_client": "MISSING"
   },
   {
     "resource": "iam/AccessPolicy",
@@ -7907,53 +7412,6 @@
     "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/accounts/apiv1/accountspb#CheckoutSettings",
     "rest_client": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/accounts/apiv1#NewCheckoutSettingsRESTClient",
     "grpc_client": "https://pkg.go.dev/cloud.google.com/go/shopping/merchant/accounts/apiv1#NewCheckoutSettingsClient"
-  },
-  {
-    "resource": "merchantapi/CommissionGroup",
-    "service": "merchantapi",
-    "kind": "MerchantAPICommissionGroup",
-    "patterns": [
-      "accounts/{account}/contracts/{contract}/commissionGroups/{commission_group}"
-    ],
-    "layer": "Deeply Nested",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "parent": {
-      "target_group": "merchantapi.cnrm.cloud.google.com",
-      "target_kind": "MerchantAPIContract"
-    },
-    "references": [],
-    "protobuf_object": "MISSING",
-    "rest_client": "MISSING",
-    "grpc_client": "MISSING"
-  },
-  {
-    "resource": "merchantapi/Contract",
-    "service": "merchantapi",
-    "kind": "MerchantAPIContract",
-    "patterns": [
-      "accounts/{account}/contracts/{contract}"
-    ],
-    "layer": "Partially Manageable",
-    "available_ops": [
-      "CREATE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [
-      "DELETE"
-    ],
-    "status": "missing",
-    "references": [],
-    "protobuf_object": "MISSING",
-    "rest_client": "MISSING",
-    "grpc_client": "MISSING"
   },
   {
     "resource": "merchantapi/ConversionSource",
@@ -8865,27 +8323,6 @@
     "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1/networksecuritypb#MirroringEndpointGroupAssociation",
     "rest_client": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1#NewMirroringRESTClient",
     "grpc_client": "https://pkg.go.dev/cloud.google.com/go/networksecurity/apiv1#NewMirroringClient"
-  },
-  {
-    "resource": "networksecurity/PartnerSSEGateway",
-    "service": "networksecurity",
-    "kind": "NetworkSecurityPartnerSSEGateway",
-    "patterns": [
-      "projects/{project}/locations/{location}/partnerSSEGateways/{partner_sse_gateway}"
-    ],
-    "layer": "Easy (Leaf)",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "references": [],
-    "protobuf_object": "MISSING",
-    "rest_client": "MISSING",
-    "grpc_client": "MISSING"
   },
   {
     "resource": "networksecurity/UrlList",
