@@ -16,6 +16,7 @@ package bigqueryreservation
 
 import (
 	pb "cloud.google.com/go/bigquery/reservation/apiv1/reservationpb"
+	bigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -39,6 +40,9 @@ func BigQueryReservationReservationSpec_v1beta1_ToProto(mapCtx *direct.MapContex
 	// MISSING: ReplicationStatus
 	out.SecondaryLocation = FailoverSpec_ToProto(mapCtx, in.FailOver)
 	out.SchedulingPolicy = SchedulingPolicy_ToProto(mapCtx, in.SchedulingPolicy)
+	if in.ReservationGroupRef != nil {
+		out.ReservationGroup = in.ReservationGroupRef.External
+	}
 	return out
 }
 
@@ -146,6 +150,11 @@ func BigQueryReservationReservationSpec_v1beta1_FromProto(mapCtx *direct.MapCont
 	out.Edition = direct.Enum_FromProto(mapCtx, in.GetEdition())
 
 	out.FailOver = FailoverSpec_FromProto(mapCtx, in)
+	if in.GetReservationGroup() != "" {
+		out.ReservationGroupRef = &bigqueryreservationv1alpha1.BigQueryReservationReservationGroupRef{
+			External: in.GetReservationGroup(),
+		}
+	}
 	// MISSING: MaxSlots
 	// MISSING: ScalingMode
 	// MISSING: ReplicationStatus

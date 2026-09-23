@@ -212,7 +212,6 @@ func BigQueryReservationReservationObservedState_v1beta1_FromProto(mapCtx *direc
 	// MISSING: MaxSlots
 	// MISSING: ScalingMode
 	// MISSING: Labels
-	// MISSING: ReservationGroup
 	// MISSING: ReplicationStatus
 	return out
 }
@@ -235,7 +234,6 @@ func BigQueryReservationReservationObservedState_v1beta1_ToProto(mapCtx *direct.
 	// MISSING: MaxSlots
 	// MISSING: ScalingMode
 	// MISSING: Labels
-	// MISSING: ReservationGroup
 	// MISSING: ReplicationStatus
 	return out
 }
@@ -262,7 +260,9 @@ func BigQueryReservationReservationSpec_v1beta1_FromProto(mapCtx *direct.MapCont
 	// MISSING: MaxSlots
 	// MISSING: ScalingMode
 	// MISSING: Labels
-	// MISSING: ReservationGroup
+	if in.GetReservationGroup() != "" {
+		out.ReservationGroupRef = &krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupRef{External: in.GetReservationGroup()}
+	}
 	// MISSING: ReplicationStatus
 	out.SchedulingPolicy = SchedulingPolicy_v1beta1_FromProto(mapCtx, in.GetSchedulingPolicy())
 	return out
@@ -292,7 +292,9 @@ found existing non-generated mapping function "BigQueryReservationReservationSpe
 		// MISSING: MaxSlots
 		// MISSING: ScalingMode
 		// MISSING: Labels
-		// MISSING: ReservationGroup
+		if in.ReservationGroupRef != nil {
+			out.ReservationGroup = in.ReservationGroupRef.External
+		}
 		// MISSING: ReplicationStatus
 		out.SchedulingPolicy = SchedulingPolicy_v1beta1_ToProto(mapCtx, in.SchedulingPolicy)
 		return out

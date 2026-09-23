@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	bigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1alpha1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -90,6 +91,11 @@ type BigQueryReservationReservationSpec struct {
 	// +optional
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.scheduling_policy
 	SchedulingPolicy *SchedulingPolicy `json:"schedulingPolicy,omitempty"`
+
+	// Optional. The reservation group that this reservation belongs to.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.reservation_group
+	// +optional
+	ReservationGroupRef *bigqueryreservationv1alpha1.BigQueryReservationReservationGroupRef `json:"reservationGroupRef,omitempty"`
 }
 
 // BigQueryReservationReservationStatus defines the config connector machine state of BigQueryReservationReservation

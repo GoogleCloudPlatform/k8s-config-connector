@@ -19,6 +19,7 @@
 package v1beta1
 
 import (
+	bigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	k8sv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1beta1"
@@ -421,6 +422,11 @@ func (in *BigQueryReservationReservationSpec) DeepCopyInto(out *BigQueryReservat
 		in, out := &in.SchedulingPolicy, &out.SchedulingPolicy
 		*out = new(SchedulingPolicy)
 		(*in).DeepCopyInto(*out)
+	}
+	if in.ReservationGroupRef != nil {
+		in, out := &in.ReservationGroupRef, &out.ReservationGroupRef
+		*out = new(bigqueryreservationv1alpha1.BigQueryReservationReservationGroupRef)
+		**out = **in
 	}
 }
 
