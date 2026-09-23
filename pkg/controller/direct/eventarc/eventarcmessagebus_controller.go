@@ -235,10 +235,10 @@ func (a *messageBusAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 		return nil, err
 	}
 
+	u.Object = uObj
 	u.SetName(a.id.MessageBus)
 	u.SetNamespace(obj.Namespace)
 	u.SetGroupVersionKind(krm.EventarcMessageBusGVK)
-	u.Object = uObj
 
 	return u, nil
 }
