@@ -358,6 +358,8 @@ func EventarcMessageBusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	// MISSING: CryptoKeyName
 	return out
 }
+
+/* found existing non-generated mapping function "EventarcMessageBusSpec_FromProto", skipping
 func EventarcMessageBusSpec_FromProto(mapCtx *direct.MapContext, in *pb.MessageBus) *krm.EventarcMessageBusSpec {
 	if in == nil {
 		return nil
@@ -371,6 +373,9 @@ func EventarcMessageBusSpec_FromProto(mapCtx *direct.MapContext, in *pb.MessageB
 	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "EventarcMessageBusSpec_ToProto", skipping
 func EventarcMessageBusSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcMessageBusSpec) *pb.MessageBus {
 	if in == nil {
 		return nil
@@ -384,6 +389,7 @@ func EventarcMessageBusSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcM
 	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "LoggingConfig_FromProto", skipping
 func LoggingConfig_FromProto(mapCtx *direct.MapContext, in *pb.LoggingConfig) *krm.LoggingConfig {

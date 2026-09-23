@@ -1,0 +1,6 @@
+- caisURL: //eventarc.googleapis.com/projects/${projectId}/locations/us-central1/messageBuses/emb-min-${uniqueId}
+  group: eventarc.cnrm.cloud.google.com
+  kind: EventarcMessageBus
+  name: emb-min-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

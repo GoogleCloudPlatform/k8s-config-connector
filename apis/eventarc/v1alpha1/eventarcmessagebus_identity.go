@@ -65,7 +65,7 @@ func (i *EventarcMessageBusIdentity) ParentString() string {
 	return "projects/" + i.Project + "/locations/" + i.Location
 }
 
-func getIdentityFromEventarcMessageBusSpec(ctx context.Context, reader client.Reader, obj *EventarcMessageBus) (*EventarcMessageBusIdentity, error) {
+func NewEventarcMessageBusIdentity(ctx context.Context, reader client.Reader, obj *EventarcMessageBus) (*EventarcMessageBusIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
@@ -90,7 +90,7 @@ func getIdentityFromEventarcMessageBusSpec(ctx context.Context, reader client.Re
 }
 
 func (obj *EventarcMessageBus) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	specIdentity, err := getIdentityFromEventarcMessageBusSpec(ctx, reader, obj)
+	specIdentity, err := NewEventarcMessageBusIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
