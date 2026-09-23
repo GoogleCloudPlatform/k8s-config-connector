@@ -74,6 +74,9 @@ reservationRef:
   name: string
   namespace: string
 resourceID: string
+schedulingPolicy:
+  concurrency: integer
+  maxSlots: integer
 ```
 
 <table class="properties responsive">
@@ -261,6 +264,36 @@ resourceID: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>Immutable. Optional. The BigQueryReservationAssignment ID used for resource creation or acquisition. Service-generated.Can be set only if resource acquisition . For acquisition: This field must be provided to identify the Reservation resource to acquire.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>schedulingPolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. The scheduling policy to use for jobs and queries of this assignee when running under the associated reservation.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>schedulingPolicy.concurrency</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Optional. If present and > 0, the reservation will attempt to limit the concurrency of jobs running for any particular project within it to the given value.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>schedulingPolicy.maxSlots</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Optional. If present and > 0, the reservation will attempt to limit the slot consumption of queries running for any particular project within it to the given value.</p>
         </td>
     </tr>
 </tbody>

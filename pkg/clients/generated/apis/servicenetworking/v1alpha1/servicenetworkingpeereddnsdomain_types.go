@@ -51,9 +51,6 @@ type ServiceNetworkingPeeredDNSDomainSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type PeereddnsdomainObservedStateStatus struct {
-}
-
 type ServiceNetworkingPeeredDNSDomainStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ServiceNetworkingPeeredDNSDomain's current state. */
@@ -65,10 +62,6 @@ type ServiceNetworkingPeeredDNSDomainStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
-
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *PeereddnsdomainObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

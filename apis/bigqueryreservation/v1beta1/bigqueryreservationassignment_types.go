@@ -50,6 +50,11 @@ type BigQueryReservationAssignmentSpec struct {
 	// Service-generated.Can be set only if resource acquisition .
 	// For acquisition: This field must be provided to identify the Reservation resource to acquire.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Optional. The scheduling policy to use for jobs and queries of this
+	//  assignee when running under the associated reservation.
+	// +optional
+	SchedulingPolicy *AssignmentSchedulingPolicy `json:"schedulingPolicy,omitempty"`
 }
 
 // BigQueryReservationAssignmentStatus defines the config connector machine state of BigQueryReservationAssignment
@@ -118,6 +123,21 @@ type Assignee struct {
 	// Exactly one of ProjectRef or FolderRef or OrganizationRef must be specified.
 	// +optional
 	OrganizationRef *refv1beta1.OrganizationRef `json:"organizationRef"`
+}
+
+// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Assignment.scheduling_policy
+type AssignmentSchedulingPolicy struct {
+	// Optional. If present and > 0, the reservation will attempt to limit the
+	//  concurrency of jobs running for any particular project within it to the
+	//  given value.
+	// +optional
+	Concurrency *int64 `json:"concurrency,omitempty"`
+
+	// Optional. If present and > 0, the reservation will attempt to limit the
+	//  slot consumption of queries running for any particular project within it to
+	//  the given value.
+	// +optional
+	MaxSlots *int64 `json:"maxSlots,omitempty"`
 }
 
 func init() {

@@ -51,6 +51,10 @@ func (c *FakeEventarcV1alpha1) EventarcGoogleChannelConfigs(namespace string) v1
 	return newFakeEventarcGoogleChannelConfigs(c, namespace)
 }
 
+func (c *FakeEventarcV1alpha1) EventarcMessageBuses(namespace string) v1alpha1.EventarcMessageBusInterface {
+	return newFakeEventarcMessageBuses(c, namespace)
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeEventarcV1alpha1) RESTClient() rest.Interface {

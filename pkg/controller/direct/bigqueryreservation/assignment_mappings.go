@@ -72,6 +72,26 @@ func BigQueryReservationAssignmentSpec_Assignee_ToProto(mapCtx *direct.MapContex
 	return ""
 }
 
+func BigQueryReservationAssignmentSpec_SchedulingPolicy_ToProto(mapCtx *direct.MapContext, in *krm.AssignmentSchedulingPolicy) *pb.SchedulingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SchedulingPolicy{}
+	out.Concurrency = in.Concurrency
+	out.MaxSlots = in.MaxSlots
+	return out
+}
+
+func BigQueryReservationAssignmentSpec_SchedulingPolicy_FromProto(mapCtx *direct.MapContext, in *pb.SchedulingPolicy) *krm.AssignmentSchedulingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AssignmentSchedulingPolicy{}
+	out.Concurrency = in.Concurrency
+	out.MaxSlots = in.MaxSlots
+	return out
+}
+
 func BigQueryReservationAssignmentSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationAssignmentSpec) *pb.Assignment {
 	if in == nil {
 		return nil
@@ -79,6 +99,7 @@ func BigQueryReservationAssignmentSpec_v1beta1_ToProto(mapCtx *direct.MapContext
 	out := &pb.Assignment{}
 	out.Assignee = BigQueryReservationAssignmentSpec_Assignee_ToProto(mapCtx, in)
 	out.JobType = direct.Enum_ToProto[pb.Assignment_JobType](mapCtx, in.JobType)
+	out.SchedulingPolicy = BigQueryReservationAssignmentSpec_SchedulingPolicy_ToProto(mapCtx, in.SchedulingPolicy)
 	return out
 }
 
@@ -89,6 +110,7 @@ func BigQueryReservationAssignmentSpec_v1beta1_FromProto(mapCtx *direct.MapConte
 	out := &krm.BigQueryReservationAssignmentSpec{}
 	out.Assignee = BigqueryReservationAssignmentSpec_Assignee_FromProto(mapCtx, in)
 	out.JobType = direct.Enum_FromProto(mapCtx, in.GetJobType())
+	out.SchedulingPolicy = BigQueryReservationAssignmentSpec_SchedulingPolicy_FromProto(mapCtx, in.GetSchedulingPolicy())
 	return out
 }
 

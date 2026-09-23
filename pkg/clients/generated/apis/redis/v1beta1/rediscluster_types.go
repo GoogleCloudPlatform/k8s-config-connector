@@ -83,6 +83,12 @@ type ClusterFixedFrequencySchedule struct {
 	StartTime *ClusterStartTime `json:"startTime,omitempty"`
 }
 
+type ClusterGcsSource struct {
+	/* Optional. URIs of the GCS objects to import. Example: gs://bucket1/object1, gs://bucket2/folder2/object2 */
+	// +optional
+	Uris []string `json:"uris,omitempty"`
+}
+
 type ClusterMaintenancePolicy struct {
 	/* Optional. Maintenance window that is applied to resources covered by this policy. Minimum 1. For the current version, the maximum number of weekly_maintenance_window is expected to be one. */
 	// +optional
@@ -184,6 +190,10 @@ type RedisClusterSpec struct {
 	/* Optional. The delete operation will fail when the value is set to true. */
 	// +optional
 	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
+
+	/* Optional. Backups stored in Cloud Storage buckets. */
+	// +optional
+	GcsSource *ClusterGcsSource `json:"gcsSource,omitempty"`
 
 	/* Optional. The KMS key name to encrypt data at rest. */
 	// +optional

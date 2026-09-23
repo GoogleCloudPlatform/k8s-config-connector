@@ -83,5 +83,11 @@ var (
 		Kind:    reflect.TypeOf(EventarcGoogleChannelConfig{}).Name(),
 	}
 
+	EventarcMessageBusGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(EventarcMessageBus{}).Name(),
+	}
+
 	eventarcAPIVersion = SchemeGroupVersion.String()
 )

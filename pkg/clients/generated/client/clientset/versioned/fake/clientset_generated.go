@@ -27,6 +27,8 @@ import (
 	fakeaccesscontextmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1alpha1/fake"
 	accesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1beta1"
 	fakeaccesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1beta1/fake"
+	agentregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/agentregistry/v1alpha1"
+	fakeagentregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/agentregistry/v1alpha1/fake"
 	aiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aiplatform/v1alpha1"
 	fakeaiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aiplatform/v1alpha1/fake"
 	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1beta1"
@@ -135,12 +137,16 @@ import (
 	fakecloudidsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudids/v1beta1/fake"
 	cloudiotv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudiot/v1alpha1"
 	fakecloudiotv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudiot/v1alpha1/fake"
+	cloudnumberregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudnumberregistry/v1alpha1"
+	fakecloudnumberregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudnumberregistry/v1alpha1/fake"
 	cloudquotav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudquota/v1beta1"
 	fakecloudquotav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudquota/v1beta1/fake"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudscheduler/v1beta1"
 	fakecloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudscheduler/v1beta1/fake"
 	cloudsecuritycompliancev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudsecuritycompliance/v1alpha1"
 	fakecloudsecuritycompliancev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudsecuritycompliance/v1alpha1/fake"
+	cloudsupportv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudsupport/v1alpha1"
+	fakecloudsupportv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudsupport/v1alpha1/fake"
 	cloudtalentsolutionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtalentsolution/v1alpha1"
 	fakecloudtalentsolutionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtalentsolution/v1alpha1/fake"
 	cloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtasks/v1alpha1"
@@ -335,6 +341,8 @@ import (
 	fakenotebooksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1alpha1/fake"
 	notebooksv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1beta1"
 	fakenotebooksv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1beta1/fake"
+	oracledatabasev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/oracledatabase/v1alpha1"
+	fakeoracledatabasev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/oracledatabase/v1alpha1/fake"
 	orgpolicyv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/orgpolicy/v1beta1"
 	fakeorgpolicyv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/orgpolicy/v1beta1/fake"
 	osconfigv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/osconfig/v1alpha1"
@@ -532,6 +540,11 @@ func (c *Clientset) AccesscontextmanagerV1beta1() accesscontextmanagerv1beta1.Ac
 // AccesscontextmanagerV1alpha1 retrieves the AccesscontextmanagerV1alpha1Client
 func (c *Clientset) AccesscontextmanagerV1alpha1() accesscontextmanagerv1alpha1.AccesscontextmanagerV1alpha1Interface {
 	return &fakeaccesscontextmanagerv1alpha1.FakeAccesscontextmanagerV1alpha1{Fake: &c.Fake}
+}
+
+// AgentregistryV1alpha1 retrieves the AgentregistryV1alpha1Client
+func (c *Clientset) AgentregistryV1alpha1() agentregistryv1alpha1.AgentregistryV1alpha1Interface {
+	return &fakeagentregistryv1alpha1.FakeAgentregistryV1alpha1{Fake: &c.Fake}
 }
 
 // AiplatformV1alpha1 retrieves the AiplatformV1alpha1Client
@@ -804,6 +817,11 @@ func (c *Clientset) CloudiotV1alpha1() cloudiotv1alpha1.CloudiotV1alpha1Interfac
 	return &fakecloudiotv1alpha1.FakeCloudiotV1alpha1{Fake: &c.Fake}
 }
 
+// CloudnumberregistryV1alpha1 retrieves the CloudnumberregistryV1alpha1Client
+func (c *Clientset) CloudnumberregistryV1alpha1() cloudnumberregistryv1alpha1.CloudnumberregistryV1alpha1Interface {
+	return &fakecloudnumberregistryv1alpha1.FakeCloudnumberregistryV1alpha1{Fake: &c.Fake}
+}
+
 // CloudquotaV1beta1 retrieves the CloudquotaV1beta1Client
 func (c *Clientset) CloudquotaV1beta1() cloudquotav1beta1.CloudquotaV1beta1Interface {
 	return &fakecloudquotav1beta1.FakeCloudquotaV1beta1{Fake: &c.Fake}
@@ -817,6 +835,11 @@ func (c *Clientset) CloudschedulerV1beta1() cloudschedulerv1beta1.Cloudscheduler
 // CloudsecuritycomplianceV1alpha1 retrieves the CloudsecuritycomplianceV1alpha1Client
 func (c *Clientset) CloudsecuritycomplianceV1alpha1() cloudsecuritycompliancev1alpha1.CloudsecuritycomplianceV1alpha1Interface {
 	return &fakecloudsecuritycompliancev1alpha1.FakeCloudsecuritycomplianceV1alpha1{Fake: &c.Fake}
+}
+
+// CloudsupportV1alpha1 retrieves the CloudsupportV1alpha1Client
+func (c *Clientset) CloudsupportV1alpha1() cloudsupportv1alpha1.CloudsupportV1alpha1Interface {
+	return &fakecloudsupportv1alpha1.FakeCloudsupportV1alpha1{Fake: &c.Fake}
 }
 
 // CloudtalentsolutionV1alpha1 retrieves the CloudtalentsolutionV1alpha1Client
@@ -1302,6 +1325,11 @@ func (c *Clientset) NotebooksV1alpha1() notebooksv1alpha1.NotebooksV1alpha1Inter
 // NotebooksV1beta1 retrieves the NotebooksV1beta1Client
 func (c *Clientset) NotebooksV1beta1() notebooksv1beta1.NotebooksV1beta1Interface {
 	return &fakenotebooksv1beta1.FakeNotebooksV1beta1{Fake: &c.Fake}
+}
+
+// OracledatabaseV1alpha1 retrieves the OracledatabaseV1alpha1Client
+func (c *Clientset) OracledatabaseV1alpha1() oracledatabasev1alpha1.OracledatabaseV1alpha1Interface {
+	return &fakeoracledatabasev1alpha1.FakeOracledatabaseV1alpha1{Fake: &c.Fake}
 }
 
 // OrgpolicyV1beta1 retrieves the OrgpolicyV1beta1Client

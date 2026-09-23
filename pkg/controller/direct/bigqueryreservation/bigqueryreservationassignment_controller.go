@@ -232,10 +232,30 @@ func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *dire
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	desiredPb.Name = a.actual.GetName()
 
 	paths := []string{}
-	// TODO
-	// The current proto file doesn't have mutable fields
+
+	actualPolicy := a.actual.GetSchedulingPolicy()
+	desiredPolicy := desiredPb.GetSchedulingPolicy()
+	policyChanged := false
+	if (actualPolicy == nil) != (desiredPolicy == nil) {
+		policyChanged = true
+	} else if actualPolicy != nil && desiredPolicy != nil {
+		if (actualPolicy.Concurrency == nil) != (desiredPolicy.Concurrency == nil) {
+			policyChanged = true
+		} else if actualPolicy.Concurrency != nil && desiredPolicy.Concurrency != nil && *actualPolicy.Concurrency != *desiredPolicy.Concurrency {
+			policyChanged = true
+		}
+		if (actualPolicy.MaxSlots == nil) != (desiredPolicy.MaxSlots == nil) {
+			policyChanged = true
+		} else if actualPolicy.MaxSlots != nil && desiredPolicy.MaxSlots != nil && *actualPolicy.MaxSlots != *desiredPolicy.MaxSlots {
+			policyChanged = true
+		}
+	}
+	if policyChanged {
+		paths = append(paths, "scheduling_policy")
+	}
 
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.String())

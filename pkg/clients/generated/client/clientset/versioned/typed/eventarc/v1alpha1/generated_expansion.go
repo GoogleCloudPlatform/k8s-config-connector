@@ -30,3 +30,5 @@ type EventarcEnrollmentExpansion interface{}
 type EventarcGoogleAPISourceExpansion interface{}
 
 type EventarcGoogleChannelConfigExpansion interface{}
+
+type EventarcMessageBusExpansion interface{}

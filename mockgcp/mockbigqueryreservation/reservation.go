@@ -353,3 +353,35 @@ func (s *ReservationV1) DeleteAssignment(ctx context.Context, req *pb.DeleteAssi
 
 	return &emptypb.Empty{}, nil
 }
+
+// Updates an existing assignment.
+func (s *ReservationV1) UpdateAssignment(ctx context.Context, req *pb.UpdateAssignmentRequest) (*pb.Assignment, error) {
+	name, err := s.parseAssignmentName(req.GetAssignment().GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Assignment{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		obj.SchedulingPolicy = req.GetAssignment().GetSchedulingPolicy()
+	} else {
+		for _, path := range paths {
+			switch path {
+			case "scheduling_policy":
+				obj.SchedulingPolicy = req.GetAssignment().GetSchedulingPolicy()
+			}
+		}
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
