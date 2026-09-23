@@ -2,69 +2,69 @@
 
 ## New Alpha Resources (Direct Reconciler):
 
-*   [`AIPlatformModel`](https://cloud.google.com/config-connector/docs/reference/resource-docs/aiplatform/aiplatformmodel)
+*   `AIPlatformModel`
     *   Manage [Vertex AI models](https://cloud.google.com/vertex-ai/docs/model-registry/introduction)
 
-*   [`APIHubAPI`](https://cloud.google.com/config-connector/docs/reference/resource-docs/apihub/apihubapi)
-    *   Manage [API Hub APIs](https://cloud.google.com/apihub/docs/reference/rest/v1/projects.locations.apis)
+*   `APIHubAPI`
+    *   Manage [API Hub APIs](https://cloud.google.com/apigee/docs/reference/apis/apihub/rest/v1/projects.locations.apis)
 
-*   [`APIHubAttribute`](https://cloud.google.com/config-connector/docs/reference/resource-docs/apihub/apihubattribute)
-    *   Manage [API Hub attributes](https://cloud.google.com/apihub/docs/reference/rest/v1/projects.locations.attributes)
+*   `APIHubAttribute`
+    *   Manage [API Hub attributes](https://cloud.google.com/apigee/docs/reference/apis/apihub/rest/v1/projects.locations.attributes)
 
-*   [`APIHubCuration`](https://cloud.google.com/config-connector/docs/reference/resource-docs/apihub/apihubcuration)
-    *   Manage [API Hub curation](https://cloud.google.com/apihub/docs/reference/rest/v1/projects.locations.apis.versions.specs)
+*   `APIHubCuration`
+    *   Manage [API Hub curation](https://cloud.google.com/apigee/docs/reference/apis/apihub/rest/v1/projects.locations.curations)
 
-*   [`APIHubDependency`](https://cloud.google.com/config-connector/docs/reference/resource-docs/apihub/apihubdependency)
-    *   Manage [API Hub dependencies](https://cloud.google.com/apihub/docs/reference/rest/v1/projects.locations.dependencies)
+*   `APIHubDependency`
+    *   Manage [API Hub dependencies](https://cloud.google.com/apigee/docs/reference/apis/apihub/rest/v1/projects.locations.dependencies)
 
-*   [`APIHubDeployment`](https://cloud.google.com/config-connector/docs/reference/resource-docs/apihub/apihubdeployment)
-    *   Manage [API Hub deployments](https://cloud.google.com/apihub/docs/reference/rest/v1/projects.locations.deployments)
+*   `APIHubDeployment`
+    *   Manage [API Hub deployments](https://cloud.google.com/apigee/docs/reference/apis/apihub/rest/v1/projects.locations.deployments)
 
-*   [`APIHubExternalAPI`](https://cloud.google.com/config-connector/docs/reference/resource-docs/apihub/apihubexternalapi)
-    *   Manage [API Hub external APIs](https://cloud.google.com/apihub/docs/reference/rest/v1/projects.locations.externalApis)
+*   `APIHubExternalAPI`
+    *   Manage [API Hub external APIs](https://cloud.google.com/apigee/docs/reference/apis/apihub/rest/v1/projects.locations.externalApis)
 
-*   [`CCInsightsConversation`](https://cloud.google.com/config-connector/docs/reference/resource-docs/contactcenterinsights/ccinsightsconversation)
-    *   Manage [Contact Center AI Insights conversations](https://cloud.google.com/contact-center/insights/docs/reference/rest/v1/projects.locations.conversations)
+*   `CCInsightsConversation`
+    *   Manage [Contact Center AI Insights conversations](https://docs.cloud.google.com/gemini-enterprise-cx/insights/reference/rest/v1/projects.locations.conversations)
 
-*   [`CCInsightsPhraseMatcher`](https://cloud.google.com/config-connector/docs/reference/resource-docs/contactcenterinsights/ccinsightsphrasematcher)
-    *   Manage [Contact Center AI Insights phrase matchers](https://cloud.google.com/contact-center/insights/docs/reference/rest/v1/projects.locations.phraseMatchers)
+*   `CCInsightsPhraseMatcher`
+    *   Manage [Contact Center AI Insights phrase matchers](https://docs.cloud.google.com/gemini-enterprise-cx/insights/reference/rest/v1/projects.locations.phraseMatchers)
 
-*   [`CCInsightsView`](https://cloud.google.com/config-connector/docs/reference/resource-docs/contactcenterinsights/ccinsightsview)
-    *   Manage [Contact Center AI Insights views](https://cloud.google.com/contact-center/insights/docs/reference/rest/v1/projects.locations.views)
+*   `CCInsightsView`
+    *   Manage [Contact Center AI Insights views](https://docs.cloud.google.com/gemini-enterprise-cx/insights/reference/rest/v1/projects.locations.views)
 
-*   [`ConfigDeliveryFleetPackage`](https://cloud.google.com/config-connector/docs/reference/resource-docs/configdelivery/configdeliveryfleetpackage)
-    *   Manage [Config Delivery fleet packages](https://cloud.google.com/config-delivery/docs/reference/rest/v1/projects.locations.fleetPackages)
+*   `ConfigDeliveryFleetPackage`
+    *   Manage [Config Delivery fleet packages](https://docs.cloud.google.com/kubernetes-engine/config-sync/docs/reference/rest/v1/projects.locations.fleetPackages)
 
-*   [`DialogflowGenerator`](https://cloud.google.com/config-connector/docs/reference/resource-docs/dialogflow/dialogflowgenerator)
-    *   Manage [Dialogflow generators](https://cloud.google.com/dialogflow/cx/docs/reference/rest/v3/projects.locations.agents.generators)
+*   `DialogflowGenerator`
+    *   Manage [Dialogflow generators](https://cloud.google.com/dialogflow/es/docs/reference/rest/v2/projects.locations.generators)
 
-*   [`LiveStreamAsset`](https://cloud.google.com/config-connector/docs/reference/resource-docs/livestream/livestreamasset)
-    *   Manage [Live Stream assets](https://cloud.google.com/video-stitcher/docs/reference/rest/v1/projects.locations.assets)
+*   `LiveStreamAsset`
+    *   Manage [Live Stream assets](https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.assets)
 
-*   [`NetworkSecurityInterceptDeployment`](https://cloud.google.com/config-connector/docs/reference/resource-docs/networksecurity/networksecurityinterceptdeployment)
-    *   Manage [Network Security intercept deployments](https://cloud.google.com/network-security/docs/reference/rest/v1/projects.locations.interceptDeployments)
+*   `NetworkSecurityInterceptDeployment`
+    *   Manage [Network Security intercept deployments](https://cloud.google.com/network-security-integration/docs/reference/rest/v1/projects.locations.interceptDeployments)
 
-*   [`RedisClusterEndpoint`](https://cloud.google.com/config-connector/docs/reference/resource-docs/redis/redisclusterendpoint)
-    *   Manage [Memorystore for Redis Cluster endpoints](https://cloud.google.com/memorystore/docs/cluster/reference/rest/v1/projects.locations.clusters.endpoints)
+*   `NotebookInstanceV2`
+    *   Manage [Agent Platform Workbench instance](https://docs.cloud.google.com/gemini-enterprise-agent-platform/notebooks/workbench/reference/rest/v2/projects.locations.instances)
 
-*   [`SaasServiceMgmtRelease`](https://cloud.google.com/config-connector/docs/reference/resource-docs/saasservicemgmt/saasservicemgmtrelease)
-    *   Manage [SaaS Service Management releases](https://cloud.google.com/service-infrastructure/docs/service-management/reference/rest/v1/services.rollouts)
+*   `RedisClusterEndpoint`
+    *   Manage [Memorystore for Redis Cluster endpoints](https://cloud.google.com/memorystore/docs/cluster/reference/rest/v1/projects.locations.clusters#ClusterEndpoint)
 
-*   [`VMMigrationGroup`](https://cloud.google.com/config-connector/docs/reference/resource-docs/vmmigration/vmmigrationgroup)
-    *   Manage [VM Migration groups](https://cloud.google.com/migrate/vmmigration/docs/reference/rest/v1/projects.locations.groups)
+*   `SaasServiceMgmtRelease`
+    *   Manage [SaaS Service Management releases](https://cloud.google.com/saas-runtime/docs/reference/rest/v1beta1/projects.locations.releases)
+
+*   `VMMigrationGroup`
+    *   Manage [VM Migration groups](https://cloud.google.com/migrate/virtual-machines/docs/5.0/reference/rest/v1/projects.locations.groups)
 
 ## New Fields:
 
-*   [`NetworkServicesEdgeCacheService`](https://cloud.google.com/config-connector/docs/reference/resource-docs/networkservices/networkservicesedgecacheservice)
+*   `NetworkServicesEdgeCacheService`
     *   Added `routeMethods` and `compressionMode` support.
 
 ## Bug Fixes:
 
 *   [`NetworkConnectivityInternalRange`](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/12615)
     *   Fixed continuous reconciliation loop and 400 error on `NetworkConnectivityInternalRange` when auto-allocation fields are set.
-
-*   [`NotebookInstanceV2`](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/12314)
-    *   Fixes and improvements for `NotebookInstanceV2` resource.
 
 ## Other:
 
