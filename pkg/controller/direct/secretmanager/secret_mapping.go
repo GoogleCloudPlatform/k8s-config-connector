@@ -28,6 +28,7 @@ func SecretManagerSecretStatusObservedState_FromProto(mapCtx *direct.MapContext,
 		return nil
 	}
 	out := &krm.SecretManagerSecretObservedState{}
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.VersionAliases = MapStringInt64_ToMapStringString(mapCtx, in.VersionAliases)
 	return out
 }

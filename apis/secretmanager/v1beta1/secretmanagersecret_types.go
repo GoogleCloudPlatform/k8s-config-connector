@@ -192,9 +192,6 @@ type SecretManagerSecretStatus struct {
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 
-	// The time at which the SecretManagerSecret was created.
-	CreateTime *string `json:"createTime,omitempty" tf:"create_time,omitempty"`
-
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
@@ -211,6 +208,9 @@ type SecretManagerSecretStatus struct {
 // SecretManagerSecretSpec defines the desired state of SecretManagerSecret
 // +kcc:observedstate:proto=google.cloud.secretmanager.v1.Secret
 type SecretManagerSecretObservedState struct {
+	// The time at which the SecretManagerSecret was created.
+	CreateTime *string `json:"createTime,omitempty" tf:"create_time,omitempty"`
+
 	VersionAliases map[string]string `json:"versionAliases,omitempty"`
 }
 
