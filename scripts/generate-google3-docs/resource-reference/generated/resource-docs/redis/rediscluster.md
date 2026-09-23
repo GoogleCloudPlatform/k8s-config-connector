@@ -96,7 +96,8 @@ maintenancePolicy:
       nanos: integer
       seconds: integer
 managedBackupSource:
-  backup: string
+  backupRef:
+    external: string
 nodeType: string
 persistenceConfig:
   aofConfig:
@@ -560,12 +561,22 @@ zoneDistributionConfig:
     </tr>
     <tr>
         <td>
-            <p><code>managedBackupSource.backup</code></p>
+            <p><code>managedBackupSource.backupRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. The RedisBackup resource that this managed backup source represents.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>managedBackupSource.backupRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Optional. Example: //redis.googleapis.com/projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup} A shorter version (without the prefix) of the backup name is also supported, like projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup_id} In this case, it assumes the backup is under redis.googleapis.com.</p>
+            <p>A reference to an externally managed RedisBackup resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/backupCollections/{{collectionID}}/backups/{{backupID}}".</p>
         </td>
     </tr>
     <tr>
