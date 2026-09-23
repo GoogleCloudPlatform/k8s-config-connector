@@ -142,6 +142,35 @@ func splitPattern(pattern string) (collection string, parentPath string) {
 	return literals[len(literals)-1], strings.Join(literals[:len(literals)-1], "/")
 }
 
+// ParentPair extracts the collection segment and placeholder naming a resource's
+// direct parent from its resource name pattern. It returns empty strings if
+// the pattern declares no distinct parent.
+func ParentPair(pattern string) (collection string, placeholder string) {
+	segs := strings.Split(pattern, "/")
+
+	type pair struct{ collection, placeholder string }
+	var pairs []pair
+	for i := 0; i+1 < len(segs); i++ {
+		if !strings.HasPrefix(segs[i], "{") && strings.HasPrefix(segs[i+1], "{") {
+			pairs = append(pairs, pair{segs[i], strings.Trim(segs[i+1], "{}")})
+		}
+	}
+	// One pair is the resource's own, leaving nothing for a parent.
+	if len(pairs) < 2 {
+		return "", ""
+	}
+
+	if strings.HasPrefix(segs[len(segs)-1], "{") {
+		if strings.HasPrefix(segs[len(segs)-2], "{") {
+			return "", ""
+		}
+		parent := pairs[len(pairs)-2]
+		return parent.collection, parent.placeholder
+	}
+	last := pairs[len(pairs)-1]
+	return last.collection, last.placeholder
+}
+
 func classifyParent(parentPath string) ParentStyle {
 	switch parentPath {
 	case "":
