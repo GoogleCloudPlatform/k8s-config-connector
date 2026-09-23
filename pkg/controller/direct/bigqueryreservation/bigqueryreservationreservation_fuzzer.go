@@ -55,6 +55,7 @@ func BigQueryReservationReservationFuzzer() fuzztesting.KRMFuzzer {
 
 	f.Unimplemented_LabelsAnnotations(".labels")
 	f.Unimplemented_NotYetTriaged(".reservation_group")
+	f.Unimplemented_NotYetTriaged(".reservation_group_path")
 	f.Unimplemented_NotYetTriaged(".scheduling_policy")
 
 	return f

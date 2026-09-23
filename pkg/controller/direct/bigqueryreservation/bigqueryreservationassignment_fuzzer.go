@@ -44,6 +44,8 @@ func BigQueryReservationAssignmentFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".principal")
 
 	f.Unimplemented_NotYetTriaged(".scheduling_policy")
+	f.Unimplemented_NotYetTriaged(".condition")
+	f.Unimplemented_NotYetTriaged(".precedence")
 
 	return f
 }

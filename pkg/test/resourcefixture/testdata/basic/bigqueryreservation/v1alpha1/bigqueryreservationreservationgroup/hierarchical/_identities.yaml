@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: bigqueryreservation.cnrm.cloud.google.com
+  kind: BigQueryReservationReservationGroup
+  name: bqresgroupparent-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: unknown
+  group: bigqueryreservation.cnrm.cloud.google.com
+  kind: BigQueryReservationReservationGroup
+  name: bqresgroupchild-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

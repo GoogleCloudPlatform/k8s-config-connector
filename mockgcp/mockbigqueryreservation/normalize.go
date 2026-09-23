@@ -15,12 +15,18 @@
 package mockbigqueryreservation
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "bigqueryreservation.googleapis.com") {
+		return
+	}
+
 	// CapacityCommitment API Normalization
 	replacements.ReplacePath(".commitmentStartTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".commitmentEndTime", mockgcpregistry.PlaceholderTimestamp)
@@ -30,6 +36,16 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	// CapacityCommitment KRM Normalization
 	replacements.ReplacePath(".status.commitmentStartTime", mockgcpregistry.PlaceholderTime)
 	replacements.ReplacePath(".status.commitmentEndTime", mockgcpregistry.PlaceholderTime)
+
+	// ReservationGroup API Normalization
+	if strings.Contains(url, "/reservationGroups") {
+		replacements.ReplacePath(".creationTime", mockgcpregistry.PlaceholderTimestamp)
+		replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
+
+		// ReservationGroup KRM Normalization
+		replacements.ReplacePath(".status.observedState.creationTime", mockgcpregistry.PlaceholderTime)
+		replacements.ReplacePath(".status.observedState.updateTime", mockgcpregistry.PlaceholderTime)
+	}
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
