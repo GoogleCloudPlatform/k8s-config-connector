@@ -59,6 +59,9 @@ var realGCPSkipFixtures = map[string]bool{
 	// NetworkSecurity BackendAuthenticationConfig requires invitation-only early access allowlist.
 	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-maximal": true,
 	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-minimal": true,
+	// ManagedKafkaConnectCluster requires managedkafka.connectClusters.create / IAM permissions not present in the live test project.
+	"managedkafka/v1alpha1/managedkafkaconnectcluster/managedkafkaconnectcluster-maximal": true,
+	"managedkafka/v1alpha1/managedkafkaconnectcluster/managedkafkaconnectcluster-minimal": true,
 }
 
 func TestGoldenLogAlignment(t *testing.T) {

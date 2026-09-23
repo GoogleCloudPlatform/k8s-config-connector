@@ -34,9 +34,13 @@ spec:
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: 'Update call failed: error creating: creating ConnectCluster projects/${projectId}/locations/us-central1/connectClusters/connectcluster-${uniqueId}:
-      googleapi: Error 403: The caller does not have permission'
-    reason: UpdateFailed
-    status: "False"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
     type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/connectClusters/connectcluster-${uniqueId}
   observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    state: ACTIVE
+    updateTime: "1970-01-01T00:00:00Z"
