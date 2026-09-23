@@ -25,7 +25,10 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protodesc"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/reflect/protoregistry"
 	"google.golang.org/protobuf/types/descriptorpb"
+	"google.golang.org/protobuf/types/known/structpb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
@@ -271,6 +274,7 @@ func TestGetJSONForKRM(t *testing.T) {
 					{Name: protoPtr("project_id"), Number: protoPtr(int32(1)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_STRING)},
 					{Name: protoPtr("display_name"), Number: protoPtr(int32(2)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_STRING)},
 					{Name: protoPtr("http_header"), Number: protoPtr(int32(3)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_STRING)},
+					{Name: protoPtr("related_uris"), Number: protoPtr(int32(4)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_STRING)},
 				},
 			},
 		},
@@ -283,14 +287,20 @@ func TestGetJSONForKRM(t *testing.T) {
 
 	msg := fd.Messages().ByName("TestMessage")
 	fields := msg.Fields()
+	acronyms := WriteOptions{EmitPluralAcronyms: true}
 
+	// The flag-on case is the one the judgement queue relies on; see
+	// GetJSONForKRM.
 	tests := []struct {
 		fieldName string
+		opts      WriteOptions
 		expected  string
 	}{
-		{"project_id", "projectID"},
-		{"display_name", "displayName"},
-		{"http_header", "httpHeader"},
+		{"project_id", WriteOptions{}, "projectID"},
+		{"display_name", WriteOptions{}, "displayName"},
+		{"http_header", WriteOptions{}, "httpHeader"},
+		{"related_uris", WriteOptions{}, "relatedUris"},
+		{"related_uris", acronyms, "relatedURIs"},
 	}
 
 	for _, tt := range tests {
@@ -300,8 +310,8 @@ func TestGetJSONForKRM(t *testing.T) {
 			continue
 		}
 
-		if got := GetJSONForKRM(field); got != tt.expected {
-			t.Errorf("GetJSONForKRM(%q) = %q, want %q", tt.fieldName, got, tt.expected)
+		if got := GetJSONForKRM(field, tt.opts); got != tt.expected {
+			t.Errorf("GetJSONForKRM(%q, %+v) = %q, want %q", tt.fieldName, tt.opts, got, tt.expected)
 		}
 	}
 }
@@ -356,7 +366,7 @@ func TestGoTypeForField(t *testing.T) {
 			t.Fatalf("could not find field %q", tt.fieldName)
 		}
 
-		got, err := GoTypeForField(field, tt.isTransitiveOutput)
+		got, err := GoTypeForField(field, tt.isTransitiveOutput, WriteOptions{})
 		if err != nil {
 			t.Errorf("GoTypeForField(%q, %v) returned error: %v", tt.fieldName, tt.isTransitiveOutput, err)
 			continue
@@ -540,38 +550,138 @@ func TestWriteFieldRequiredMarker(t *testing.T) {
 	}
 }
 
+// TestWriteMessage checks the rendered output rather than type strings,
+// because a field GoTypeForField cannot type does not fail generation.
+// WriteField writes a "// TODO:" comment in its place and the field is missing
+// from the CRD. The expected output below has both kinds of field.
 func TestWriteMessage(t *testing.T) {
+	mapEntry := func(name string, value *descriptorpb.FieldDescriptorProto) *descriptorpb.DescriptorProto {
+		return &descriptorpb.DescriptorProto{
+			Name: protoPtr(name),
+			Field: []*descriptorpb.FieldDescriptorProto{
+				{Name: protoPtr("key"), Number: protoPtr(int32(1)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_STRING)},
+				value,
+			},
+			Options: &descriptorpb.MessageOptions{MapEntry: protoPtr(true)},
+		}
+	}
+	mapField := func(name string, num int32, entry string) *descriptorpb.FieldDescriptorProto {
+		return &descriptorpb.FieldDescriptorProto{
+			Name: protoPtr(name), Number: protoPtr(num),
+			Type:     typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE),
+			TypeName: protoPtr(".google.cloud.test.v1.TestMessage." + entry),
+			Label:    labelDescriptor(descriptorpb.FieldDescriptorProto_LABEL_REPEATED),
+		}
+	}
+
 	fdp := &descriptorpb.FileDescriptorProto{
-		Name:    protoPtr("test.proto"),
-		Package: protoPtr("google.cloud.test.v1"),
+		Name:       protoPtr("test.proto"),
+		Package:    protoPtr("google.cloud.test.v1"),
+		Dependency: []string{"google/protobuf/timestamp.proto"},
 		MessageType: []*descriptorpb.DescriptorProto{
+			{Name: protoPtr("TargetMessage")},
 			{
 				Name: protoPtr("TestMessage"),
+				NestedType: []*descriptorpb.DescriptorProto{
+					mapEntry("LabelsEntry", &descriptorpb.FieldDescriptorProto{
+						Name: protoPtr("value"), Number: protoPtr(int32(2)),
+						Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_STRING),
+					}),
+					mapEntry("TasksEntry", &descriptorpb.FieldDescriptorProto{
+						Name: protoPtr("value"), Number: protoPtr(int32(2)),
+						Type:     typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE),
+						TypeName: protoPtr(".google.cloud.test.v1.TargetMessage"),
+					}),
+					mapEntry("SeenEntry", &descriptorpb.FieldDescriptorProto{
+						Name: protoPtr("value"), Number: protoPtr(int32(2)),
+						Type:     typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE),
+						TypeName: protoPtr(".google.protobuf.Timestamp"),
+					}),
+					{
+						Name: protoPtr("ByIndexEntry"),
+						Field: []*descriptorpb.FieldDescriptorProto{
+							{Name: protoPtr("key"), Number: protoPtr(int32(1)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_INT32)},
+							{Name: protoPtr("value"), Number: protoPtr(int32(2)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_STRING)},
+						},
+						Options: &descriptorpb.MessageOptions{MapEntry: protoPtr(true)},
+					},
+				},
 				Field: []*descriptorpb.FieldDescriptorProto{
 					{
 						Name:   protoPtr("project_id"),
 						Number: protoPtr(int32(1)),
 						Type:   typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_STRING),
 					},
+					mapField("labels", 2, "LabelsEntry"),
+					mapField("tasks", 3, "TasksEntry"),
+					mapField("seen", 4, "SeenEntry"),
+					mapField("by_index", 5, "ByIndexEntry"),
 				},
 			},
 		},
 	}
 
-	fd, err := protodesc.NewFile(fdp, nil)
+	deps := new(protoregistry.Files)
+	if err := deps.RegisterFile(timestamppb.Now().ProtoReflect().Descriptor().ParentFile()); err != nil {
+		t.Fatalf("registering timestamp.proto: %v", err)
+	}
+	fd, err := protodesc.NewFile(fdp, deps)
 	if err != nil {
 		t.Fatalf("failed to create file descriptor: %v", err)
 	}
 
 	msg := fd.Messages().ByName("TestMessage")
 	var buf bytes.Buffer
-	WriteMessage(&buf, msg, WriteOptions{})
+	// Prepopulating is set because the marker only names its field for a
+	// service that opted in, and the assertions below tell the fields apart by
+	// name. TestWriteFieldMarkerIsScopedToPrepopulating pins that scoping.
+	WriteMessage(&buf, msg, WriteOptions{EmitMessageMaps: true, Prepopulating: true})
 
 	got := buf.String()
-	expected := "\n// +kcc:proto=google.cloud.test.v1.TestMessage\ntype TestMessage struct {\n\t// +kcc:proto:field=google.cloud.test.v1.TestMessage.project_id\n\tProjectID *string `json:\"projectID,omitempty\"`\n}\n"
+	// labels, tasks and seen cover the supported map values: a scalar, a
+	// message, and a message with a special-cased Go type. by_index is still
+	// left out, because a CRD keys additionalProperties by string, and its
+	// TODO line is the only sign of it.
+	expected := strings.Join([]string{
+		"",
+		"// +kcc:proto=google.cloud.test.v1.TestMessage",
+		"type TestMessage struct {",
+		"\t// +kcc:proto:field=google.cloud.test.v1.TestMessage.project_id",
+		"\tProjectID *string `json:\"projectID,omitempty\"`",
+		"",
+		"\t// +kcc:proto:field=google.cloud.test.v1.TestMessage.labels",
+		"\tLabels map[string]string `json:\"labels,omitempty\"`",
+		"",
+		"\t// +kcc:proto:field=google.cloud.test.v1.TestMessage.tasks",
+		"\tTasks map[string]TargetMessage `json:\"tasks,omitempty\"`",
+		"",
+		"\t// +kcc:proto:field=google.cloud.test.v1.TestMessage.seen",
+		"\tSeen map[string]string `json:\"seen,omitempty\"`",
+		"",
+		"\t// TODO: byIndex: unsupported map type with key int32 and value string",
+		"",
+		"}",
+		"",
+	}, "\n")
 
 	if got != expected {
 		t.Errorf("WriteMessage output mismatch.\nGot:\n%q\nWant:\n%q", got, expected)
+	}
+
+	// With EmitMessageMaps off, message-valued maps are left out as they were
+	// before the flag existed, and a "// TODO:" marker names each one.
+	var off bytes.Buffer
+	WriteMessage(&off, msg, WriteOptions{Prepopulating: true})
+	for _, want := range []string{
+		"\t// TODO: tasks: unsupported map type with key string and value message",
+		"\t// TODO: seen: unsupported map type with key string and value message",
+	} {
+		if !strings.Contains(off.String(), want) {
+			t.Errorf("with EmitMessageMaps off, want %q in:\n%s", want, off.String())
+		}
+	}
+	if strings.Contains(off.String(), "Tasks map[string]") {
+		t.Errorf("with EmitMessageMaps off, Tasks should not be generated:\n%s", off.String())
 	}
 }
 
@@ -1018,6 +1128,188 @@ func observedStateTestMessage(t *testing.T) protoreflect.MessageDescriptor {
 		t.Fatalf("failed to create file descriptor: %v", err)
 	}
 	return fd.Messages().ByName("TestMessage")
+}
+
+func TestAcronymCasing(t *testing.T) {
+	tests := []struct {
+		token   string
+		plurals bool
+		want    string
+		wantOK  bool
+	}{
+		// Singular has always worked, with or without the option.
+		{token: "url", plurals: false, want: "URL", wantOK: true},
+		{token: "url", plurals: true, want: "URL", wantOK: true},
+		{token: "uri", plurals: false, want: "URI", wantOK: true},
+		{token: "id", plurals: true, want: "ID", wantOK: true},
+
+		// Plurals are the gap: EqualFold("uris", "URI") is false, so these fell
+		// through to strings.Title and became Uris and Ids.
+		{token: "uris", plurals: false, wantOK: false},
+		{token: "uris", plurals: true, want: "URIs", wantOK: true},
+		{token: "ids", plurals: false, wantOK: false},
+		{token: "ids", plurals: true, want: "IDs", wantOK: true},
+		{token: "fqdns", plurals: true, want: "FQDNs", wantOK: true},
+		{token: "cpus", plurals: true, want: "CPUs", wantOK: true},
+
+		// These are not acronyms either way. "s" must not be stripped down to
+		// nothing, and a word that merely ends in s stays a word.
+		{token: "s", plurals: true, wantOK: false},
+		{token: "values", plurals: true, wantOK: false},
+		{token: "description", plurals: true, wantOK: false},
+	}
+	for _, tt := range tests {
+		got, ok := AcronymCasing(tt.token, tt.plurals)
+		if ok != tt.wantOK {
+			t.Errorf("AcronymCasing(%q, %v) ok = %v, want %v", tt.token, tt.plurals, ok, tt.wantOK)
+			continue
+		}
+		if ok && got != tt.want {
+			t.Errorf("AcronymCasing(%q, %v) = %q, want %q", tt.token, tt.plurals, got, tt.want)
+		}
+	}
+}
+
+// Maps had no tests before this, including the two value types that already
+// worked. A regression here would not fail generation: WriteField replaces a
+// field it cannot type with a "// TODO:" comment, and the field is missing
+// from the CRD.
+func TestGoTypeForFieldMaps(t *testing.T) {
+	mapEntry := func(name string, key, value *descriptorpb.FieldDescriptorProto) *descriptorpb.DescriptorProto {
+		return &descriptorpb.DescriptorProto{
+			Name:    protoPtr(name),
+			Field:   []*descriptorpb.FieldDescriptorProto{key, value},
+			Options: &descriptorpb.MessageOptions{MapEntry: protoPtr(true)},
+		}
+	}
+	strKey := func() *descriptorpb.FieldDescriptorProto {
+		return &descriptorpb.FieldDescriptorProto{Name: protoPtr("key"), Number: protoPtr(int32(1)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_STRING)}
+	}
+	val := func(t descriptorpb.FieldDescriptorProto_Type, typeName string) *descriptorpb.FieldDescriptorProto {
+		f := &descriptorpb.FieldDescriptorProto{Name: protoPtr("value"), Number: protoPtr(int32(2)), Type: typeDescriptor(t)}
+		if typeName != "" {
+			f.TypeName = protoPtr(typeName)
+		}
+		return f
+	}
+	mapField := func(name string, num int32, entry string) *descriptorpb.FieldDescriptorProto {
+		return &descriptorpb.FieldDescriptorProto{
+			Name: protoPtr(name), Number: protoPtr(num),
+			Type:     typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE),
+			TypeName: protoPtr(".google.cloud.test.v1.TestMessage." + entry),
+			Label:    labelDescriptor(descriptorpb.FieldDescriptorProto_LABEL_REPEATED),
+		}
+	}
+
+	fdp := &descriptorpb.FileDescriptorProto{
+		Name:       protoPtr("maps.proto"),
+		Package:    protoPtr("google.cloud.test.v1"),
+		Dependency: []string{"google/protobuf/struct.proto", "google/protobuf/timestamp.proto"},
+		MessageType: []*descriptorpb.DescriptorProto{
+			{Name: protoPtr("TargetMessage")},
+			{
+				Name: protoPtr("TestMessage"),
+				NestedType: []*descriptorpb.DescriptorProto{
+					mapEntry("StringMapEntry", strKey(), val(descriptorpb.FieldDescriptorProto_TYPE_STRING, "")),
+					mapEntry("Int64MapEntry", strKey(), val(descriptorpb.FieldDescriptorProto_TYPE_INT64, "")),
+					mapEntry("MessageMapEntry", strKey(), val(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE, ".google.cloud.test.v1.TargetMessage")),
+					mapEntry("StructMapEntry", strKey(), val(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE, ".google.protobuf.Struct")),
+					mapEntry("TimestampMapEntry", strKey(), val(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE, ".google.protobuf.Timestamp")),
+					mapEntry("IntKeyMapEntry",
+						&descriptorpb.FieldDescriptorProto{Name: protoPtr("key"), Number: protoPtr(int32(1)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_INT32)},
+						val(descriptorpb.FieldDescriptorProto_TYPE_STRING, "")),
+				},
+				Field: []*descriptorpb.FieldDescriptorProto{
+					mapField("string_map", 1, "StringMapEntry"),
+					mapField("int64_map", 2, "Int64MapEntry"),
+					mapField("message_map", 3, "MessageMapEntry"),
+					mapField("struct_map", 4, "StructMapEntry"),
+					mapField("int_key_map", 5, "IntKeyMapEntry"),
+					mapField("timestamp_map", 6, "TimestampMapEntry"),
+				},
+			},
+		},
+	}
+
+	// struct_map refers to google.protobuf.Struct, so struct.proto has to
+	// resolve. The descriptor comes from the structpb package, because the
+	// global registry only holds files that some linked package registered.
+	deps := new(protoregistry.Files)
+	for _, f := range []protoreflect.FileDescriptor{
+		(&structpb.Struct{}).ProtoReflect().Descriptor().ParentFile(),
+		timestamppb.Now().ProtoReflect().Descriptor().ParentFile(),
+	} {
+		if err := deps.RegisterFile(f); err != nil {
+			t.Fatalf("registering %s: %v", f.Path(), err)
+		}
+	}
+	fd, err := protodesc.NewFile(fdp, deps)
+	if err != nil {
+		t.Fatalf("failed to create file descriptor: %v", err)
+	}
+	fields := fd.Messages().ByName("TestMessage").Fields()
+
+	tests := []struct {
+		field   string
+		want    string
+		wantErr bool
+		why     string
+	}{
+		{field: "string_map", want: "map[string]string", why: "worked before this change, without a test"},
+		{field: "int64_map", want: "map[string]int64", why: "worked before this change, without a test"},
+		{
+			field: "message_map", want: "map[string]TargetMessage",
+			why: "the value's message generates as a struct, and the map holds values " +
+				"rather than pointers, as 16 of the 23 message maps in the corpus do",
+		},
+		{
+			field: "int_key_map", wantErr: true,
+			why: "a CRD keys additionalProperties by string",
+		},
+		{
+			field: "struct_map", want: "map[string]apiextensionsv1.JSON",
+			why: "a message with a special-cased Go type uses that type",
+		},
+		{
+			field: "timestamp_map", want: "map[string]string",
+			why: "the same holds when the special-cased type is a scalar",
+		},
+	}
+
+	for _, tt := range tests {
+		f := fields.ByName(protoreflect.Name(tt.field))
+		if f == nil {
+			t.Fatalf("could not find field %q", tt.field)
+		}
+		if !f.IsMap() {
+			t.Fatalf("%q is not a map field; the fixture is wrong", tt.field)
+		}
+		got, err := GoTypeForField(f, false, WriteOptions{EmitMessageMaps: true})
+		if tt.wantErr {
+			if err == nil {
+				t.Errorf("GoTypeForField(%q) = %q, want an error (%s)", tt.field, got, tt.why)
+			}
+			continue
+		}
+		if err != nil {
+			t.Errorf("GoTypeForField(%q) returned error: %v (%s)", tt.field, err, tt.why)
+			continue
+		}
+		if got != tt.want {
+			t.Errorf("GoTypeForField(%q) = %q, want %q (%s)", tt.field, got, tt.want, tt.why)
+		}
+	}
+
+	// With EmitMessageMaps off, every message-valued map is declined, as before
+	// the flag existed. Scalar-valued maps are unaffected.
+	for _, name := range []string{"message_map", "struct_map", "timestamp_map"} {
+		if got, err := GoTypeForField(fields.ByName(protoreflect.Name(name)), false, WriteOptions{}); err == nil {
+			t.Errorf("GoTypeForField(%q) with EmitMessageMaps off = %q, want an error", name, got)
+		}
+	}
+	if got, err := GoTypeForField(fields.ByName("string_map"), false, WriteOptions{}); err != nil || got != "map[string]string" {
+		t.Errorf("GoTypeForField(%q) with EmitMessageMaps off = %q, %v, want map[string]string", "string_map", got, err)
+	}
 }
 
 // TestReservedTypeNamesExistingDeclarationPrecedence verifies that when a type already
