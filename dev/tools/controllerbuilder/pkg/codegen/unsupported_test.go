@@ -113,7 +113,7 @@ func TestWriteFieldMarkerIsScopedToPrepopulating(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			// Act
 			var buf bytes.Buffer
-			WriteField(&buf, field, msg, 0, false, tc.opts)
+			WriteField(&buf, field, msg, 0, false, tc.opts, "")
 
 			// Assert
 			if !strings.Contains(buf.String(), tc.want) {
