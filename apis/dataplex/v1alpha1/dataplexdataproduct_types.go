@@ -1,0 +1,164 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1alpha1
+
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+var DataplexDataProductGVK = GroupVersion.WithKind("DataplexDataProduct")
+
+// DataplexDataProductSpec defines the desired state of DataplexDataProduct
+// +kcc:spec:proto=google.cloud.dataplex.v1.DataProduct
+type DataplexDataProductSpec struct {
+	ParentRef *parent.ProjectAndLocationRef `json:",inline"`
+
+	// The DataplexDataProduct name. If not given, the metadata.name will be used.
+	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Required. User-friendly display name of the data product.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. User-defined labels for the data product.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Description of the data product.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. Emails of the data product owners.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.owner_emails
+	OwnerEmails []string `json:"ownerEmails,omitempty"`
+
+	// Optional. Configuration for access approval for the data product.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.access_approval_config
+	AccessApprovalConfig *DataProduct_AccessApprovalConfig `json:"accessApprovalConfig,omitempty"`
+
+	// Optional. Data product access groups by access group id as key.
+	//  If data product is used only for packaging data assets, then access groups
+	//  may be empty. However, if a data product is used for sharing data assets,
+	//  then at least one access group must be specified.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.access_groups
+	AccessGroups map[string]DataProduct_AccessGroup `json:"accessGroups,omitempty"`
+}
+
+// DataplexDataProductStatus defines the config connector machine state of DataplexDataProduct
+type DataplexDataProductStatus struct {
+	/* Conditions represent the latest available observations of the
+	   object's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+
+	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	// A unique specifier for the DataplexDataProduct resource in GCP.
+	ExternalRef *string `json:"externalRef,omitempty"`
+
+	// ObservedState is the state of the resource as most recently observed in GCP.
+	ObservedState *DataplexDataProductObservedState `json:"observedState,omitempty"`
+}
+
+// DataplexDataProductObservedState is the state of the DataplexDataProduct resource as most recently observed in GCP.
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.DataProduct
+type DataplexDataProductObservedState struct {
+	// Output only. System generated globally unique ID for the data product. This
+	//  ID will be different if you delete and recreate the data product with the
+	//  same name.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. The time when the data product was created.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the data product was last updated.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The number of data assets associated with the data product.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.asset_count
+	AssetCount *int32 `json:"assetCount,omitempty"`
+
+	// Optional. This checksum is computed by the server based on the value of
+	//  other fields, and may be sent on update and delete requests to ensure the
+	//  client has an up-to-date value before proceeding.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.etag
+	Etag *string `json:"etag,omitempty"`
+}
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpdataplexdataproduct;gcpdataplexdataproducts
+// +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
+
+// DataplexDataProduct is the Schema for the DataplexDataProduct API
+// +k8s:openapi-gen=true
+type DataplexDataProduct struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	// +required
+	Spec   DataplexDataProductSpec   `json:"spec,omitempty"`
+	Status DataplexDataProductStatus `json:"status,omitempty"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// DataplexDataProductList contains a list of DataplexDataProduct
+type DataplexDataProductList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DataplexDataProduct `json:"items"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.DataProduct.AccessApprovalConfig
+type DataProduct_AccessApprovalConfig struct {
+	// Optional. Specifies the email addresses of users who are potential
+	//  approvers.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.AccessApprovalConfig.approver_emails
+	ApproverEmails []string `json:"approverEmails,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.DataProduct.AccessGroup
+type DataProduct_AccessGroup struct {
+	// Optional. The ID of the asset that this access group is configured for.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.AccessGroup.asset_id
+	AssetID *string `json:"assetId,omitempty"`
+
+	// Optional. The principal that this access group is configured for.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.AccessGroup.principal
+	Principal *DataProduct_Principal `json:"principal,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.DataProduct.Principal
+type DataProduct_Principal struct {
+	// Optional. An IAM group email to give access to.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.Principal.google_group
+	GoogleGroup *string `json:"googleGroup,omitempty"`
+}
+
+func init() {
+	SchemeBuilder.Register(&DataplexDataProduct{}, &DataplexDataProductList{})
+}
