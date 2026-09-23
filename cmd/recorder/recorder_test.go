@@ -169,12 +169,28 @@ func TestRecorder(t *testing.T) {
 
 func RepoRoot(t *testing.T) string {
 	cmd := exec.Command("git", "rev-parse", "--show-toplevel")
-	output, err := cmd.Output()
-	if err != nil {
-		t.Fatalf("Failed to get repo root: %v", err)
+	output, gitErr := cmd.Output()
+	if gitErr == nil {
+		return strings.TrimSpace(string(output))
 	}
-	repoRoot := strings.TrimSpace(string(output))
-	return repoRoot
+	// Fallback to searching parent directories for go.mod
+	dir, err := os.Getwd()
+	if err != nil {
+		t.Fatalf("Failed to get repo root: git error: %v, os.Getwd error: %v", gitErr, err)
+	}
+	startDir := dir
+	for {
+		if _, err := os.Stat(filepath.Join(dir, "go.mod")); err == nil {
+			return dir
+		}
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			break
+		}
+		dir = parent
+	}
+	t.Fatalf("Failed to get repo root: git error: %v. Fallback search did not find go.mod walking up from %s", gitErr, startDir)
+	return ""
 }
 
 func TestProfileRecorderFootprint(t *testing.T) {

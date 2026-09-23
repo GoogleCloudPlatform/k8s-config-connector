@@ -17,101 +17,101 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// SampleQuerySetIdentity defines the resource reference to DiscoveryEngineSampleQuerySet, which "External" field
-// holds the GCP identifier for the KRM object.
-type SampleQuerySetIdentity struct {
-	parent *SampleQuerySetParent
-	id     string
+var (
+	_ identity.IdentityV2 = &DiscoveryEngineSampleQuerySetIdentity{}
+	_ identity.Resource   = &DiscoveryEngineSampleQuerySet{}
+)
+
+var DiscoveryEngineSampleQuerySetIdentityFormat = gcpurls.Template[DiscoveryEngineSampleQuerySetIdentity]("discoveryengine.googleapis.com", "projects/{project}/locations/{location}/sampleQuerySets/{sampleQuerySet}")
+
+// +k8s:deepcopy-gen=false
+type DiscoveryEngineSampleQuerySetIdentity struct {
+	Project        string
+	Location       string
+	SampleQuerySet string
 }
 
-func (i *SampleQuerySetIdentity) String() string {
-	return i.parent.String() + "/sampleQuerySets/" + i.id
+func (i *DiscoveryEngineSampleQuerySetIdentity) String() string {
+	return DiscoveryEngineSampleQuerySetIdentityFormat.ToString(*i)
 }
 
-func (i *SampleQuerySetIdentity) ID() string {
-	return i.id
+func (i *DiscoveryEngineSampleQuerySetIdentity) FromExternal(ref string) error {
+	parsed, match, err := DiscoveryEngineSampleQuerySetIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of DiscoveryEngineSampleQuerySet external=%q was not known (use %s): %w", ref, DiscoveryEngineSampleQuerySetIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of DiscoveryEngineSampleQuerySet external=%q was not known (use %s)", ref, DiscoveryEngineSampleQuerySetIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
 }
 
-func (i *SampleQuerySetIdentity) Parent() *SampleQuerySetParent {
-	return i.parent
+func (i *DiscoveryEngineSampleQuerySetIdentity) Host() string {
+	return DiscoveryEngineSampleQuerySetIdentityFormat.Host()
 }
 
-type SampleQuerySetParent struct {
-	ProjectID string
-	Location  string
+func (i *DiscoveryEngineSampleQuerySetIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
 }
 
-func (p *SampleQuerySetParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+func getIdentityFromDiscoveryEngineSampleQuerySetSpec(ctx context.Context, reader client.Reader, obj *DiscoveryEngineSampleQuerySet) (*DiscoveryEngineSampleQuerySetIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
+	}
+
+	location := obj.Spec.Location
+	if location == "" {
+		return nil, fmt.Errorf("spec.location is not set")
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	}
+
+	identity := &DiscoveryEngineSampleQuerySetIdentity{
+		Project:        projectID,
+		Location:       location,
+		SampleQuerySet: resourceID,
+	}
+	return identity, nil
 }
 
-// NewSampleQuerySetIdentity builds a SampleQuerySetIdentity from the Config Connector SampleQuerySet object.
-func NewSampleQuerySetIdentity(ctx context.Context, reader client.Reader, obj *DiscoveryEngineSampleQuerySet) (*SampleQuerySetIdentity, error) {
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+func (obj *DiscoveryEngineSampleQuerySet) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromDiscoveryEngineSampleQuerySetSpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
 
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	// Use approved External
+	// Cross-check the identity against the status value, if present.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseSampleQuerySetExternal(externalRef)
-		if err != nil {
+		statusIdentity := &DiscoveryEngineSampleQuerySetIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change DiscoveryEngineSampleQuerySet identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
-	return &SampleQuerySetIdentity{
-		parent: &SampleQuerySetParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
-	}, nil
+
+	return specIdentity, nil
 }
 
-func ParseSampleQuerySetExternal(external string) (parent *SampleQuerySetParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "sampleQuerySets" {
-		return nil, "", fmt.Errorf("format of DiscoveryEngineSampleQuerySet external=%q was not known (use projects/{{projectID}}/locations/{{location}}/sampleQuerySets/{{sampleQuerySetID}})", external)
-	}
-	parent = &SampleQuerySetParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+// ExternalIdentifier implements the identity.ExternalIdentifier interface.
+func (obj *DiscoveryEngineSampleQuerySet) ExternalIdentifier() *string {
+	return obj.Status.ExternalRef
 }
