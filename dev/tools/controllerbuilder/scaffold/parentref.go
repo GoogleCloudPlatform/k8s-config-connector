@@ -24,6 +24,8 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
+	"google.golang.org/genproto/googleapis/api/annotations"
+	"google.golang.org/protobuf/proto"
 )
 
 // sharedRefsPackage holds the reference types services use in common, relative
@@ -158,7 +160,18 @@ func fixedRootField(refType, jsonName, noun string) string {
 // The field is written only when exactly one matching reference type exists.
 func (a *APIScaffolder) referenceTo(role, collection, path, pattern string) (field string, item *JudgementItem) {
 	name := codegen.Singular(collection)
-	candidates := parentRefTypes(a.repoRoot(), filepath.Join(a.BaseDir, a.GoPackage), name)
+	currentService := a.serviceName()
+
+	var candidates map[string]string
+	// 1. Try google.api.resource / google.api.resource_reference from proto first.
+	if targetType := a.targetForPath(path); targetType != "" {
+		candidates = a.candidatesForTarget(targetType, filepath.Join(a.BaseDir, a.GoPackage))
+	}
+	// 2. Fall back to name-based matching if no candidates found from proto.
+	if len(candidates) == 0 {
+		candidates = parentRefTypes(a.repoRoot(), filepath.Join(a.BaseDir, a.GoPackage), currentService, name)
+	}
+
 	if len(candidates) != 1 {
 		detail := fmt.Sprintf("the %s is %s, and no %sRef type exists to point at; "+
 			"add the %s resource first, then model this as a reference", role, path, exportedName(name), role)
@@ -180,7 +193,7 @@ func (a *APIScaffolder) referenceTo(role, collection, path, pattern string) (fie
 
 	field = fmt.Sprintf("\t// A reference to the %s this resource belongs to.\n"+
 		"\t// +kcc:guess\n"+
-		"\t%sRef *%s `json:%q`", path, exportedName(name), goType, name+"Ref,omitempty")
+		"\t// %sRef *%s `json:%q`", path, exportedName(name), goType, name+"Ref,omitempty")
 	return field, &JudgementItem{
 		FieldPath: ".spec." + name + "Ref",
 		Reason:    role + "-ref-guessed",
@@ -188,6 +201,187 @@ func (a *APIScaffolder) referenceTo(role, collection, path, pattern string) (fie
 			"the field name comes from the pattern rather than the proto, so confirm both the name and the target",
 			typeName, collection, pattern),
 	}
+}
+
+// targetForPath finds the google.api.resource or google.api.resource_definition target for path in the proto.
+func (a *APIScaffolder) targetForPath(path string) string {
+	if a.Proto == nil || path == "" {
+		return ""
+	}
+	for _, f := range a.Proto.SortedFiles() {
+		// Check file-level resource_definition annotations
+		if v := proto.GetExtension(f.Options(), annotations.E_ResourceDefinition); v != nil {
+			if rds, ok := v.([]*annotations.ResourceDescriptor); ok {
+				for _, rd := range rds {
+					if rd != nil {
+						for _, p := range rd.GetPattern() {
+							if p == path {
+								return rd.GetType()
+							}
+						}
+					}
+				}
+			}
+		}
+		// Check message-level resource annotations
+		for i := 0; i < f.Messages().Len(); i++ {
+			msg := f.Messages().Get(i)
+			if v := proto.GetExtension(msg.Options(), annotations.E_Resource); v != nil {
+				if rd, ok := v.(*annotations.ResourceDescriptor); ok && rd != nil {
+					for _, p := range rd.GetPattern() {
+						if p == path {
+							return rd.GetType()
+						}
+					}
+				}
+			}
+		}
+	}
+	return ""
+}
+
+// parseResourceTarget parses a resource type into its service and kind components.
+func parseResourceTarget(target string) (service, kind string) {
+	parts := strings.Split(target, "/")
+	if len(parts) == 0 {
+		return "", ""
+	}
+	kind = parts[len(parts)-1]
+	domain := parts[0]
+	service = strings.TrimSuffix(domain, ".googleapis.com")
+	return service, kind
+}
+
+// candidatesForTarget finds reference types matching a known proto resource target type.
+func (a *APIScaffolder) candidatesForTarget(targetType, serviceDir string) map[string]string {
+	targetService, targetKind := parseResourceTarget(targetType)
+	if targetKind == "" {
+		return nil
+	}
+	currentService := a.serviceName()
+	want := strings.ToLower(targetKind) + "ref"
+	re := regexp.MustCompile(`(?m)^type ([A-Z]\w*Ref) struct`)
+
+	// 1. Scan serviceDir if service matches
+	if serviceMatchesPrefix(currentService, targetService) || serviceMatchesPrefix(targetService, currentService) {
+		found := map[string]string{}
+		entries, err := os.ReadDir(serviceDir)
+		if err == nil {
+			for _, e := range entries {
+				if e.IsDir() || !strings.HasSuffix(e.Name(), ".go") {
+					continue
+				}
+				body, err := os.ReadFile(filepath.Join(serviceDir, e.Name()))
+				if err != nil {
+					continue
+				}
+				for _, m := range re.FindAllStringSubmatch(string(body), -1) {
+					if strings.HasSuffix(strings.ToLower(m[1]), want) {
+						found[m[1]] = ""
+					}
+				}
+			}
+		}
+		if len(found) > 0 {
+			return found
+		}
+	}
+
+	// 2. Scan shared refs package
+	sharedDir := filepath.Join(a.repoRoot(), sharedRefsPackage)
+	found := map[string]string{}
+	entries, err := os.ReadDir(sharedDir)
+	if err == nil {
+		for _, e := range entries {
+			if e.IsDir() || !strings.HasSuffix(e.Name(), ".go") {
+				continue
+			}
+			body, err := os.ReadFile(filepath.Join(sharedDir, e.Name()))
+			if err != nil {
+				continue
+			}
+			for _, m := range re.FindAllStringSubmatch(string(body), -1) {
+				typeName := m[1]
+				lowerType := strings.ToLower(typeName)
+				if !strings.HasSuffix(lowerType, want) {
+					continue
+				}
+				// Exact match (e.g. ProjectRef, FolderRef, OrganizationRef)
+				if strings.EqualFold(typeName, want) {
+					found[typeName] = "refsv1beta1"
+					continue
+				}
+				// Service prefix match
+				prefix := strings.TrimSuffix(lowerType, want)
+				if serviceMatchesPrefix(targetService, prefix) || serviceMatchesPrefix(currentService, prefix) {
+					found[typeName] = "refsv1beta1"
+				}
+			}
+		}
+	}
+	return found
+}
+
+// serviceName extracts the service name from APIScaffolder's GoPackage or Group.
+func (a *APIScaffolder) serviceName() string {
+	if a.GoPackage != "" {
+		clean := filepath.Clean(a.GoPackage)
+		parts := strings.Split(clean, string(filepath.Separator))
+		if len(parts) > 0 && parts[0] != "" && parts[0] != "." {
+			return parts[0]
+		}
+	}
+	if a.Group != "" {
+		parts := strings.Split(a.Group, ".")
+		if len(parts) > 0 {
+			return parts[0]
+		}
+	}
+	return ""
+}
+
+// serviceMatchesPrefix checks if a service name matches a prefix on a reference type.
+func serviceMatchesPrefix(service, prefix string) bool {
+	service = strings.ToLower(service)
+	prefix = strings.ToLower(prefix)
+	if service == "" || prefix == "" {
+		return false
+	}
+	if service == prefix {
+		return true
+	}
+	switch service {
+	case "sql", "sqladmin":
+		return prefix == "sql" || prefix == "sqladmin"
+	case "iam":
+		return prefix == "iam" || prefix == "gcpserviceaccount"
+	case "secretmanager":
+		return prefix == "secretmanager" || prefix == "secret"
+	case "bigquery":
+		return prefix == "bigquery"
+	case "compute":
+		return prefix == "compute"
+	case "alloydb":
+		return prefix == "alloydb"
+	case "appengine":
+		return prefix == "appengine"
+	case "kms":
+		return prefix == "kms"
+	}
+	return false
+}
+
+// isAllowedSharedRef ensures that types in apis/refs/v1beta1 only match if
+// they are generic un-prefixed references or their prefix matches the current service.
+func isAllowedSharedRef(typeName, currentService, want string) bool {
+	if strings.EqualFold(typeName, want) {
+		return true
+	}
+	if currentService == "" {
+		return false
+	}
+	prefix := strings.TrimSuffix(strings.ToLower(typeName), want)
+	return serviceMatchesPrefix(currentService, prefix)
 }
 
 // parentRefTypes returns the reference types that could name a parent whose
@@ -199,11 +393,16 @@ func (a *APIScaffolder) referenceTo(role, collection, path, pattern string) (fie
 // unexported types are skipped: apis/kms/v1beta1 declares kmsCryptoKeyRef
 // beside the real KMSCryptoKeyRef, which would make a single match look
 // ambiguous.
-func parentRefTypes(repoRoot, serviceDir, name string) map[string]string {
+//
+// Shared reference types in apis/refs/v1beta1 are only matched if they are
+// un-prefixed generic references or their prefix matches the current service,
+// preventing foreign services (e.g. Chronicle) from accidentally matching
+// service-specific types (e.g. SQLInstanceRef).
+func parentRefTypes(repoRoot, serviceDir, currentService, name string) map[string]string {
 	want := strings.ToLower(name) + "ref"
 	re := regexp.MustCompile(`(?m)^type ([A-Z]\w*Ref) struct`)
 
-	scan := func(dir, qualifier string) map[string]string {
+	scan := func(dir, qualifier string, isShared bool) map[string]string {
 		found := map[string]string{}
 		entries, err := os.ReadDir(dir)
 		if err != nil {
@@ -218,18 +417,26 @@ func parentRefTypes(repoRoot, serviceDir, name string) map[string]string {
 				continue
 			}
 			for _, m := range re.FindAllStringSubmatch(string(body), -1) {
-				if strings.HasSuffix(strings.ToLower(m[1]), want) {
-					found[m[1]] = qualifier
+				typeName := m[1]
+				lowerType := strings.ToLower(typeName)
+				if !strings.HasSuffix(lowerType, want) {
+					continue
 				}
+				if isShared {
+					if !isAllowedSharedRef(typeName, currentService, want) {
+						continue
+					}
+				}
+				found[typeName] = qualifier
 			}
 		}
 		return found
 	}
 
-	if found := scan(serviceDir, ""); len(found) > 0 {
+	if found := scan(serviceDir, "", false); len(found) > 0 {
 		return found
 	}
-	return scan(filepath.Join(repoRoot, sharedRefsPackage), "refsv1beta1")
+	return scan(filepath.Join(repoRoot, sharedRefsPackage), "refsv1beta1", true)
 }
 
 // repoRoot returns the directory above BaseDir when BaseDir is an apis

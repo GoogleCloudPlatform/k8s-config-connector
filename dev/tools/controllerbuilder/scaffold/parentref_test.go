@@ -134,6 +134,9 @@ func TestParentRef(t *testing.T) {
 			if g.wantField != "" && !strings.Contains(field, "+kcc:guess") {
 				t.Errorf("an emitted field must carry the guess marker, got:\n%s", field)
 			}
+			if g.wantField != "" && !strings.Contains(field, "// "+g.wantField) {
+				t.Errorf("an emitted guess field must be commented out, got:\n%s", field)
+			}
 			switch {
 			case g.wantReason == "" && item != nil:
 				t.Errorf("queued %q where nothing was wanted", item.Reason)
@@ -144,6 +147,109 @@ func TestParentRef(t *testing.T) {
 			}
 			if g.wantPath != "" && item != nil && !strings.Contains(item.Detail, g.wantPath) {
 				t.Errorf("the queue entry must name the parent path %q, got: %s", g.wantPath, item.Detail)
+			}
+		})
+	}
+}
+
+// TestParentRefSharedRefsTightening verifies that service-specific types in
+// apis/refs/v1beta1 (such as SQLInstanceRef or ComputeNetworkRef) do not match
+// foreign services (such as Chronicle) when resolving parent references.
+func TestParentRefSharedRefsTightening(t *testing.T) {
+	const sharedRefsSource = `package v1beta1
+
+type SQLInstanceRef struct{}
+type SQLDatabaseRef struct{}
+type ComputeNetworkRef struct{}
+`
+	grid := []struct {
+		name       string
+		goPackage  string
+		pattern    string
+		serviceDir string
+		wantField  string
+		wantReason string
+	}{
+		{
+			name:       "chronicle instance does not match SQLInstanceRef",
+			goPackage:  "chronicle/v1alpha1",
+			pattern:    "projects/{project}/locations/{location}/instances/{instance}/watchlists/{watchlist}",
+			wantField:  "",
+			wantReason: "parent-ref-not-modelled",
+		},
+		{
+			name:       "sql instance matches SQLInstanceRef in shared package",
+			goPackage:  "sql/v1beta1",
+			pattern:    "projects/{project}/instances/{instance}/databases/{database}",
+			wantField:  "InstanceRef *refsv1beta1.SQLInstanceRef `json:\"instanceRef,omitempty\"`",
+			wantReason: "parent-ref-guessed",
+		},
+		{
+			name:       "chronicle network does not match ComputeNetworkRef",
+			goPackage:  "chronicle/v1alpha1",
+			pattern:    "projects/{project}/locations/{location}/networks/{network}/watchlists/{watchlist}",
+			wantField:  "",
+			wantReason: "parent-ref-not-modelled",
+		},
+		{
+			name:       "compute network matches ComputeNetworkRef in shared package",
+			goPackage:  "compute/v1beta1",
+			pattern:    "projects/{project}/global/networks/{network}/peerings/{peering}",
+			wantField:  "NetworkRef *refsv1beta1.ComputeNetworkRef `json:\"networkRef,omitempty\"`",
+			wantReason: "parent-ref-guessed",
+		},
+		{
+			name:       "service package ref takes precedence over shared package",
+			goPackage:  "chronicle/v1alpha1",
+			pattern:    "projects/{project}/locations/{location}/instances/{instance}/watchlists/{watchlist}",
+			serviceDir: "package v1alpha1\n\ntype ChronicleInstanceRef struct{}\n",
+			wantField:  "InstanceRef *ChronicleInstanceRef `json:\"instanceRef,omitempty\"`",
+			wantReason: "parent-ref-guessed",
+		},
+	}
+
+	for _, g := range grid {
+		t.Run(g.name, func(t *testing.T) {
+			repo := t.TempDir()
+			scaffolder := &APIScaffolder{
+				BaseDir:   filepath.Join(repo, "apis"),
+				GoPackage: g.goPackage,
+			}
+			sharedDir := filepath.Join(repo, sharedRefsPackage)
+			if err := os.MkdirAll(sharedDir, 0o755); err != nil {
+				t.Fatalf("creating shared refs dir: %v", err)
+			}
+			if err := os.WriteFile(filepath.Join(sharedDir, "refs.go"), []byte(sharedRefsSource), 0o644); err != nil {
+				t.Fatalf("writing shared refs: %v", err)
+			}
+			if g.serviceDir != "" {
+				pkgDir := filepath.Join(repo, "apis", g.goPackage)
+				if err := os.MkdirAll(pkgDir, 0o755); err != nil {
+					t.Fatalf("creating service dir: %v", err)
+				}
+				if err := os.WriteFile(filepath.Join(pkgDir, "instance_reference.go"), []byte(g.serviceDir), 0o644); err != nil {
+					t.Fatalf("writing service refs: %v", err)
+				}
+			}
+
+			field, item := scaffolder.parentRef(g.pattern)
+
+			if g.wantField == "" && field != "" {
+				t.Errorf("emitted field where none was wanted:\n%s", field)
+			}
+			if g.wantField != "" && !strings.Contains(field, g.wantField) {
+				t.Errorf("field = %q, want to contain %q", field, g.wantField)
+			}
+			if g.wantField != "" && !strings.Contains(field, "// "+g.wantField) {
+				t.Errorf("guess field must be commented out, got:\n%s", field)
+			}
+			switch {
+			case g.wantReason == "" && item != nil:
+				t.Errorf("queued %q where nothing was wanted", item.Reason)
+			case g.wantReason != "" && item == nil:
+				t.Errorf("queued nothing, want reason %q", g.wantReason)
+			case g.wantReason != "" && item.Reason != g.wantReason:
+				t.Errorf("reason = %q, want %q", item.Reason, g.wantReason)
 			}
 		})
 	}
@@ -399,3 +505,66 @@ func TestRepoRoot(t *testing.T) {
 		})
 	}
 }
+
+// TestParseResourceTargetAndServiceMatching pins the target parsing and prefix
+// matching logic that prevents cross-service ref hijacking.
+func TestParseResourceTargetAndServiceMatching(t *testing.T) {
+	for _, tc := range []struct {
+		target      string
+		wantService string
+		wantKind    string
+	}{
+		{"chronicle.googleapis.com/Instance", "chronicle", "Instance"},
+		{"compute.googleapis.com/Network", "compute", "Network"},
+		{"sqladmin.googleapis.com/Instance", "sqladmin", "Instance"},
+		{"bigquery.googleapis.com/Table", "bigquery", "Table"},
+	} {
+		s, k := parseResourceTarget(tc.target)
+		if s != tc.wantService || k != tc.wantKind {
+			t.Errorf("parseResourceTarget(%q) = (%q, %q), want (%q, %q)", tc.target, s, k, tc.wantService, tc.wantKind)
+		}
+	}
+
+	for _, tc := range []struct {
+		service string
+		prefix  string
+		want    bool
+	}{
+		{"sql", "sql", true},
+		{"sqladmin", "sql", true},
+		{"chronicle", "sql", false},
+		{"chronicle", "compute", false},
+		{"compute", "compute", true},
+		{"bigquery", "bigquery", true},
+		{"iam", "gcpserviceaccount", true},
+	} {
+		got := serviceMatchesPrefix(tc.service, tc.prefix)
+		if got != tc.want {
+			t.Errorf("serviceMatchesPrefix(%q, %q) = %v, want %v", tc.service, tc.prefix, got, tc.want)
+		}
+	}
+
+	for _, tc := range []struct {
+		typeName       string
+		currentService string
+		wantRef        string
+		wantAllowed    bool
+	}{
+		{"ProjectRef", "chronicle", "projectref", true},
+		{"FolderRef", "chronicle", "folderref", true},
+		{"OrganizationRef", "chronicle", "organizationref", true},
+		{"BillingAccountRef", "chronicle", "billingaccountref", true},
+		{"SQLInstanceRef", "chronicle", "instanceref", false},
+		{"SQLInstanceRef", "sql", "instanceref", true},
+		{"ComputeNetworkRef", "chronicle", "networkref", false},
+		{"ComputeNetworkRef", "compute", "networkref", true},
+		{"BigQueryTableRef", "spanner", "tableref", false},
+		{"BigQueryTableRef", "bigquery", "tableref", true},
+	} {
+		got := isAllowedSharedRef(tc.typeName, tc.currentService, tc.wantRef)
+		if got != tc.wantAllowed {
+			t.Errorf("isAllowedSharedRef(%q, %q, %q) = %v, want %v", tc.typeName, tc.currentService, tc.wantRef, got, tc.wantAllowed)
+		}
+	}
+}
+

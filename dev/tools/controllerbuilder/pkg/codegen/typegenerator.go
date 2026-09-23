@@ -763,15 +763,6 @@ func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protorefl
 		}
 	}
 
-	// note records a choice the generated type does not otherwise show. It
-	// follows the proto's own comment, which describes the field rather than
-	// what the generator did.
-	for _, line := range strings.Split(strings.TrimSpace(note), "\n") {
-		if line != "" {
-			fmt.Fprintf(out, "\t// %s\n", line)
-		}
-	}
-
 	fmt.Fprintf(out, "\t// %s=%s\n", KCCProtoFieldAnnotation, field.FullName())
 
 	// Emit +required for fields marked REQUIRED (unless OUTPUT_ONLY).
