@@ -184,6 +184,8 @@ When promoting a resource from `v1alpha1` to `v1beta1`, we should keep `krm` as 
 * `docs/ai/add-missing-field.md` describes how to add a missing field, for example when the GCP service adds a new field.
 * `docs/ai/create-crd-for-existing-terraform-resource.md` describes how to create a CRD for an existing terraform resource.
 * `docs/ai/github-workflow.md` describes how to generate github workflows.
+* `docs/ai/greenfield-step1-workflow.md` is the runbook for generating a new resource's types and CRD from its proto, and for working through the judgement queue the generator writes.
+* `docs/ai/refs-decision-guide.md` describes when a field should become a resource reference and when it should stay a string.
 
 # Helpful scripts
 
