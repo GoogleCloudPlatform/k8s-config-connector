@@ -85,6 +85,10 @@ type BigQueryReservationReservationSpec struct {
 	// Optional. This field is only set for reservations using the managed disaster recovery
 	//  feature. Users can set this to create a failover reservation.
 	FailOver *FailoverSpec `json:"failover,omitempty"`
+
+	// Optional. The scheduling policy to use for jobs and queries running under this reservation.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.scheduling_policy
+	SchedulingPolicy *SchedulingPolicySpec `json:"schedulingPolicy,omitempty"`
 }
 
 // BigQueryReservationReservationStatus defines the config connector machine state of BigQueryReservationReservation
@@ -195,6 +199,17 @@ type AutoscaleObservedState struct {
 	//  max_slots for that brief period (less than one minute)
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.Autoscale.current_slots
 	CurrentSlots *int64 `json:"currentSlots,omitempty"`
+}
+
+// +kcc:proto:field=google.cloud.bigquery.reservation.v1.SchedulingPolicy
+type SchedulingPolicySpec struct {
+	// Limit concurrency of jobs for any particular project within the reservation.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.SchedulingPolicy.concurrency
+	Concurrency *int64 `json:"concurrency,omitempty"`
+
+	// Limit slot consumption of queries for any particular project within the reservation.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.SchedulingPolicy.max_slots
+	MaxSlots *int64 `json:"maxSlots,omitempty"`
 }
 
 func init() {
