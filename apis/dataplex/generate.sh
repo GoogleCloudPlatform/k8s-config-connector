@@ -29,10 +29,23 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
 
+PROTO_SHA="28ba5d15234eff44241492ca72b135e1171fc537"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+
+# Unset SKIP_GENERATE_PROTOS so this specific script fetches the newer proto
+OLD_SKIP_GENERATE_PROTOS="${SKIP_GENERATE_PROTOS:-}"
+unset SKIP_GENERATE_PROTOS
+
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
+
+# Restore SKIP_GENERATE_PROTOS
+if [[ -n "${OLD_SKIP_GENERATE_PROTOS}" ]]; then
+  export SKIP_GENERATE_PROTOS="${OLD_SKIP_GENERATE_PROTOS}"
+fi
 
 ${CONTROLLERBUILDER} generate-types \
+    --proto-source-path ${PROTO_OUT} \
     --service google.cloud.dataplex.v1 \
     --api-version "dataplex.cnrm.cloud.google.com/v1alpha1" \
     --resource DataplexLake:Lake \
@@ -43,11 +56,13 @@ ${CONTROLLERBUILDER} generate-types \
     --resource DataplexDataTaxonomy:DataTaxonomy \
     --resource DataplexAspectType:AspectType \
     --resource DataplexDataScan:DataScan \
-    --resource DataplexMetadataJob:MetadataJob
+    --resource DataplexMetadataJob:MetadataJob \
+    --resource DataplexDataProduct:DataProduct
 
 # Handled recursive self-referential fields by defining AspectType_MetadataTemplate manually in dataplexaspecttype_types.go
 
 ${CONTROLLERBUILDER} generate-mapper \
+    --proto-source-path ${PROTO_OUT} \
     --service google.cloud.dataplex.v1 \
     --api-version "dataplex.cnrm.cloud.google.com/v1alpha1"
 
