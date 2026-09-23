@@ -124,7 +124,9 @@ BLOCKED_KINDS=(
     "CloudSecurityComplianceFramework"
     "CloudSecurityComplianceFrameworkDeployment"
     "CloudTalentSolutionCompany"
-    "CloudTasksQueue"
+    # No CRD exists for this kind, so this entry never matches. Commented out
+    # rather than deleted in case the resource is implemented later.
+    # "CloudTasksQueue"
     "ConfigDeliveryFleetPackage"
     "ConfigDeploymentGroup"
     "ConnectorsConnection"
@@ -180,7 +182,9 @@ BLOCKED_KINDS=(
     "GSuiteAddonsDeployment"
     "HypercomputeClusterCluster"
     "InfraManagerDeploymentGroup"
-    "KMSEKMConnection"
+    # No CRD exists for this kind, so this entry never matches. Commented out
+    # rather than deleted in case the resource is implemented later.
+    # "KMSEKMConnection"
     "LicenseManagerConfiguration"
     "LiveStreamAsset"
     "ManagedKafkaConnectCluster"
@@ -229,7 +233,6 @@ BLOCKED_KINDS=(
     "VertexAICustomJob"
     "VertexAIDataset"
     "VertexAIDeploymentResourcePool"
-    "VertexAIEndpoint"
     "VertexAIExampleStore"
     "VertexAIFeatureGroup"
     "VertexAIFeatureOnlineStore"
