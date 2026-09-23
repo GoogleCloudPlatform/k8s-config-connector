@@ -85,6 +85,10 @@ type BigQueryReservationReservationSpec struct {
 	// Optional. This field is only set for reservations using the managed disaster recovery
 	//  feature. Users can set this to create a failover reservation.
 	FailOver *FailoverSpec `json:"failover,omitempty"`
+
+	// Optional. The reservation group that this reservation belongs to.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.reservation_group
+	ReservationGroupRef *ReservationGroupRef `json:"reservationGroupRef,omitempty"`
 }
 
 // BigQueryReservationReservationStatus defines the config connector machine state of BigQueryReservationReservation
