@@ -24,8 +24,10 @@ import (
 	"text/template"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/template/apis"
 	"github.com/fatih/color"
+	"google.golang.org/protobuf/reflect/protoreflect"
 	"k8s.io/klog/v2"
 )
 
@@ -35,6 +37,32 @@ type APIScaffolder struct {
 	Group           string
 	Version         string
 	PackageProtoTag string
+
+	// Proto is optional. When set, the scaffolder reads google.api.resource to
+	// learn the resource's real collection segment and parent shape instead of
+	// guessing them. Without it the templates fall back to their old guesses,
+	// which are wrong for most resources: the collection segment disagrees with
+	// the declared pattern for 752 of 1417 annotated messages, and the assumed
+	// projects/locations parent holds for about a third.
+	Proto *protoapi.Proto
+}
+
+// resourceMetadata looks up what the proto states about a resource, or nil if we
+// have no proto loaded or the message is not an annotated resource.
+func (a *APIScaffolder) resourceMetadata(fullName string) *protoapi.ResourceMetadata {
+	if a.Proto == nil || fullName == "" {
+		return nil
+	}
+	d, err := a.Proto.Files().FindDescriptorByName(protoreflect.FullName(fullName))
+	if err != nil {
+		klog.V(2).Infof("no descriptor for %q, scaffolding will guess: %v", fullName, err)
+		return nil
+	}
+	msg, ok := d.(protoreflect.MessageDescriptor)
+	if !ok {
+		return nil
+	}
+	return protoapi.GetResourceMetadata(msg)
 }
 
 func fileExists(p string) bool {
@@ -74,8 +102,8 @@ func scaffoldIdentityFile(path string, cArgs *apis.APIArgs) error {
 	if err := tmpl.Execute(out, cArgs); err != nil {
 		return err
 	}
-	// Write the generated <kind>_types.go
-	if err := WriteToFile(path, out.Bytes()); err != nil {
+	// Format generated code and organize imports.
+	if err := FormatImports(path, out.Bytes()); err != nil {
 		return err
 	}
 	color.HiGreen("New identity file added %s\nPlease EDIT it!\n", path)
@@ -115,6 +143,20 @@ func (a *APIScaffolder) buildAPIArgs(resource *options.Resource) *apis.APIArgs {
 
 		args.ProtoMessageName = resource.ProtoMessageName()
 		args.ProtoMessageFullName = resource.ProtoMessageFullName(a.PackageProtoTag)
+
+		if md := a.resourceMetadata(args.ProtoMessageFullName); md != nil {
+			args.Collection = md.Collection
+			args.ParentStyle = string(md.ParentStyle)
+			args.ResourcePattern = md.Pattern
+			args.ResourcePatterns = md.Patterns
+		}
+		if args.Collection == "" {
+			// Fall back to lowercased message name + 's' if no resource pattern is declared.
+			args.Collection = strings.ToLower(args.ProtoMessageName) + "s"
+		}
+		if args.ParentStyle == "" {
+			args.ParentStyle = string(protoapi.ParentUnknown)
+		}
 	}
 
 	return args

@@ -1,3 +1,17 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package apis
 
 type APIArgs struct {
@@ -12,6 +26,19 @@ type APIArgs struct {
 	ProtoMessageName string
 	// ProtoMessageFullName is the fully qualified proto message name, e.g. google.cloud.v1.Foo
 	ProtoMessageFullName string
+
+	// Collection is the resource's collection segment as the API spells it, taken
+	// from google.api.resource, e.g. "lbTrafficExtensions". Empty when the proto
+	// declares no pattern, in which case templates fall back to guessing.
+	Collection string
+	// ParentStyle is the shape of the resource's parent: "project_location",
+	// "project", "organization", "folder", "other" or "unknown".
+	ParentStyle string
+	// ResourcePattern is the primary declared pattern, carried through verbatim so the
+	// generated file can show a human what the real name looks like.
+	ResourcePattern string
+	// ResourcePatterns holds all declared patterns from google.api.resource.
+	ResourcePatterns []string
 }
 
 const TypesTemplate = `
