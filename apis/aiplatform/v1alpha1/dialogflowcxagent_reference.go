@@ -25,7 +25,11 @@ import (
 )
 
 var _ refsv1beta1.Ref = &DialogflowCXAgentRef{}
-var DialogflowCXAgentGVK = GroupVersion.WithKind("DialogflowCXAgent")
+var DialogflowCXAgentGVK = schema.GroupVersionKind{
+	Group:   "dialogflowcx.cnrm.cloud.google.com",
+	Version: "v1alpha1",
+	Kind:    "DialogflowCXAgent",
+}
 
 // DialogflowCXAgentRef is a reference to a DialogflowCXAgent.
 type DialogflowCXAgentRef struct {
