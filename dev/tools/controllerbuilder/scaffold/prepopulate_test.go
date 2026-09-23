@@ -145,6 +145,66 @@ func TestPrepopulateSpecAlwaysQueuesTheResource(t *testing.T) {
 	}
 }
 
+// TestPrepopulateSpecQueuesTheEmittedName pins that a queue entry names a field
+// the way the Spec struct spells it. A person works the queue by finding each
+// path in the CRD, so under EmitPluralAcronyms an entry for relatedUris would
+// point at nothing: the struct says relatedURIs.
+func TestPrepopulateSpecQueuesTheEmittedName(t *testing.T) {
+	// Arrange
+	refOpts := &descriptorpb.FieldOptions{}
+	proto.SetExtension(refOpts, annotations.E_ResourceReference,
+		&annotations.ResourceReference{Type: "test.googleapis.com/Thing"})
+	fd, err := protodesc.NewFile(&descriptorpb.FileDescriptorProto{
+		Name:    strPtr("refs.proto"),
+		Package: strPtr("google.cloud.test.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{{
+			Name: strPtr("Widget"),
+			Field: []*descriptorpb.FieldDescriptorProto{{
+				Name:    strPtr("related_uris"),
+				Number:  i32Ptr(1),
+				Type:    fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING),
+				Options: refOpts,
+			}},
+		}},
+	}, nil)
+	if err != nil {
+		t.Fatalf("building file descriptor: %v", err)
+	}
+	msg := fd.Messages().ByName("Widget")
+
+	for _, tc := range []struct {
+		name     string
+		opts     codegen.WriteOptions
+		wantPath string
+	}{
+		{"acronym casing on", codegen.WriteOptions{EmitPluralAcronyms: true}, ".spec.relatedURIs"},
+		{"acronym casing off", codegen.WriteOptions{}, ".spec.relatedUris"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			// Act
+			got, err := PrepopulateSpec(msg, tc.opts)
+
+			// Assert
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			var paths []string
+			for _, j := range got.Judgement {
+				if j.Reason == "possible-reference" {
+					paths = append(paths, j.FieldPath)
+				}
+			}
+			if len(paths) != 1 || paths[0] != tc.wantPath {
+				t.Errorf("possible-reference paths = %v, want [%s]", paths, tc.wantPath)
+			}
+			tag := `json:"` + strings.TrimPrefix(tc.wantPath, ".spec.") + `,`
+			if !strings.Contains(got.SpecFields, tag) {
+				t.Errorf("SpecFields has no %s, so the entry names a field the struct lacks:\n%s", tag, got.SpecFields)
+			}
+		})
+	}
+}
+
 func TestPrepopulateSpecRequiresAMessage(t *testing.T) {
 	if _, err := PrepopulateSpec(nil, codegen.WriteOptions{}); err == nil {
 		t.Fatal("expected an error for a nil message")
