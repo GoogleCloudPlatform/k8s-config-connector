@@ -184,7 +184,7 @@ func SecretManagerSecretObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	}
 	out := &krm.SecretManagerSecretObservedState{}
 	// MISSING: Name
-	// MISSING: CreateTime
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	// MISSING: Labels
 	// MISSING: Topics
 	// MISSING: Ttl
@@ -199,7 +199,7 @@ func SecretManagerSecretObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	}
 	out := &pb.Secret{}
 	// MISSING: Name
-	// MISSING: CreateTime
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	// MISSING: Labels
 	// MISSING: Topics
 	// MISSING: Ttl
