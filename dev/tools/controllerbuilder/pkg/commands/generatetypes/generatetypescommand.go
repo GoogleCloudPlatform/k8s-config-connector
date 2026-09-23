@@ -48,13 +48,14 @@ type GenerateCRDOptions struct {
 	PruneUnusedTypes bool
 
 	EmitRequiredFromProto bool
-
 	// PrepopulateSpec populates <Kind>Spec and <Kind>ObservedState with fields
 	// derived from the resource proto message definition.
 	PrepopulateSpec    bool
 	EmitParentRefs     bool
 	EmitPluralAcronyms bool
 	EmitMessageMaps    bool
+	EmitSiblingRefs    bool
+	EmitReferenceHints bool
 }
 
 func (o *GenerateCRDOptions) InitDefaults() error {
@@ -79,6 +80,8 @@ func (o *GenerateCRDOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().BoolVar(&o.EmitMessageMaps, "emit-message-maps", false, "generate map<string, Message> fields as a map of the value's Go type instead of leaving them out. Opt in one service at a time: it adds fields to the CRD of a resource people already use, and generate-mapper needs the same flag")
 	cmd.Flags().BoolVar(&o.EmitRequiredFromProto, "emit-required-from-proto", false, "emit // +required markers for fields marked REQUIRED in proto. Opt-in per service to avoid breaking CRD schema changes on existing resources")
 	cmd.Flags().BoolVar(&o.EmitParentRefs, "emit-parent-refs", false, "emit one spec field referencing the resource's direct parent, where google.api.resource declares a parent below project and location and a reference type for it already exists. Each field is marked +kcc:guess and recorded in apis/<service>/needs_judgement_call.txt, and a parent with no reference type is recorded there rather than guessed. Opt in one service at a time: it adds a field to the CRD of a resource people already use")
+	cmd.Flags().BoolVar(&o.EmitSiblingRefs, "emit-sibling-refs", false, "mark a string field whose name matches a resource this service declares as a probable reference to it, with a +kcc:guess comment and an entry in apis/<service>/needs_judgement_call.txt. The field stays a string: this reports a candidate rather than generating a reference. Opt in one service at a time, though controller-gen strips the comment, so this cannot change a CRD")
+	cmd.Flags().BoolVar(&o.EmitReferenceHints, "emit-reference-hints", false, "record a spec field, at any depth, whose description or name suggests it points at another resource, in apis/<service>/needs_judgement_call.txt. Uses the rules TestMissingRefs applies, plus looser description and name rules that only hint. Needs --prepopulate-spec. Reports only: the field is still generated as a string")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -151,11 +154,27 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		}
 	}
 
+	// The map is built here rather than beside the scaffolding loop because
+	// WriteVisitedMessages needs it too, and that runs first. SiblingKinds says
+	// why it reads two sources.
+	var siblings map[string]string
+	if o.EmitSiblingRefs {
+		var thisRun []string
+		for _, resource := range o.Resources {
+			thisRun = append(thisRun, resource.Kind)
+		}
+		siblings = codegen.SiblingKinds(
+			filepath.Join(o.OutputAPIDirectory, goPackage),
+			strings.TrimSuffix(gv.Group, ".cnrm.cloud.google.com"),
+			thisRun...)
+	}
+
 	writeOptions := codegen.WriteOptions{
 		EmitRequired:       o.EmitRequiredFromProto,
 		Prepopulating:      o.PrepopulateSpec,
 		EmitPluralAcronyms: o.EmitPluralAcronyms,
 		EmitMessageMaps:    o.EmitMessageMaps,
+		Siblings:           siblings,
 	}
 
 	typeGenerator := codegen.NewTypeGenerator(goPackage, o.OutputAPIDirectory, api)
@@ -222,6 +241,9 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 					if err != nil {
 						return fmt.Errorf("prepopulating spec for %s: %w", resource.Kind, err)
 					}
+					if o.EmitReferenceHints {
+						prepopulated.Judgement = append(prepopulated.Judgement, scaffold.ReferenceHints(msg, writeOptions)...)
+					}
 					// Populate ObservedState using output fields discovered during proto traversal.
 					if details, ok := typeGenerator.OutputFieldsFor(string(msg.FullName())); ok {
 						var obsJudgement []scaffold.JudgementItem
@@ -273,6 +295,22 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 			}
 			judgement = append(judgement, b.String())
 		}
+	}
+
+	// Nested-message matches for the sibling rule, written as comments for the
+	// same reason as the dropped fields above: no single Kind to attribute them
+	// to, and every non-comment line here suppresses [refs] for the Kind it
+	// names.
+	if sg := typeGenerator.SiblingGuesses(); len(sg) > 0 {
+		var b strings.Builder
+		b.WriteString("\n# Fields inside nested messages whose name matches a resource this service\n")
+		b.WriteString("# declares, so they may want to be references. Each carries a +kcc:guess\n")
+		b.WriteString("# marker in types.generated.go. Shared nested messages, so they are listed\n")
+		b.WriteString("# per service rather than against one Kind.\n")
+		for _, f := range sg {
+			fmt.Fprintf(&b, "# possible-reference-by-sibling: %s.%s target=%s\n", f.Message, f.Field, f.Target)
+		}
+		judgement = append(judgement, b.String())
 	}
 
 	if o.PrepopulateSpec || len(judgement) > 0 {
