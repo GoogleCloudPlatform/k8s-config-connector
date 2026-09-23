@@ -66,6 +66,10 @@ type TypeGenerator struct {
 	reservedTypeNames map[string]bool
 
 	unsupportedFields []UnsupportedField
+
+	// rootMessageFQN is the full name of the message VisitProto is visiting.
+	// isServerSet uses it to tell that message from the nested ones below it.
+	rootMessageFQN string
 }
 
 type OutputMessageDetails struct {
@@ -107,6 +111,10 @@ type WriteOptions struct {
 	// nested message is no trouble either, since the map holds one service's
 	// Kinds and a nested message is shared only within a service.
 	Siblings map[string]string
+	// PlaceServerSetFields puts a small allowlist of server-computed fields in
+	// ObservedState when no field of the message carries field_behavior. See
+	// IsServerSetField for the allowlist and the guard.
+	PlaceServerSetFields bool
 }
 
 func NewTypeGenerator(goPackage string, outputBaseDir string, api *protoapi.Proto) *TypeGenerator {
@@ -205,6 +213,7 @@ func (g *TypeGenerator) typesOutputDir() string {
 func (g *TypeGenerator) visitMessage(message protoreflect.MessageDescriptor) error {
 	//klog.Infof("found message %q", messageDescriptor.FullName())
 
+	g.rootMessageFQN = string(message.FullName())
 	g.visitedMessages = append(g.visitedMessages, message)
 
 	msgs, err := FindDependenciesForMessage(message, nil) // TODO: explicitly set ignored fields when generating Go types
@@ -235,6 +244,17 @@ func (g *TypeGenerator) visitMessage(message protoreflect.MessageDescriptor) err
 	return nil
 }
 
+// isServerSet reports what IsServerSetField says for a field of the resource's
+// own message, and false for a field of any other message. identifyOutputs
+// recurses into nested messages, where a field called "id" or "kind" is often
+// the user's to set.
+func (g *TypeGenerator) isServerSet(field protoreflect.FieldDescriptor, msg protoreflect.MessageDescriptor) bool {
+	if string(msg.FullName()) != g.rootMessageFQN {
+		return false
+	}
+	return IsServerSetField(field, msg, g.writeOptions)
+}
+
 // needsObservedState determines if a message requires a separate ObservedState struct.
 // If the regular Go struct and the ObservedState version are identical, we fall back
 // to using the regular Go struct to reduce redundancy.
@@ -254,6 +274,13 @@ func (g *TypeGenerator) needsObservedState(msg protoreflect.MessageDescriptor, s
 	for i := 0; i < msg.Fields().Len(); i++ {
 		f := msg.Fields().Get(i)
 		if IsFieldBehavior(f, annotations.FieldBehavior_OUTPUT_ONLY) {
+			seen[fqn] = true
+			return true
+		}
+		// A server-set field needs the ObservedState struct as much as an
+		// OUTPUT_ONLY field does. Without this, identifyOutputs collects it for a
+		// struct nothing writes.
+		if g.isServerSet(f, msg) {
 			seen[fqn] = true
 			return true
 		}
@@ -295,7 +322,7 @@ func (g *TypeGenerator) identifyOutputs(msg protoreflect.MessageDescriptor, seen
 
 	for i := 0; i < msg.Fields().Len(); i++ {
 		f := msg.Fields().Get(i)
-		isOut := IsFieldBehavior(f, annotations.FieldBehavior_OUTPUT_ONLY)
+		isOut := IsFieldBehavior(f, annotations.FieldBehavior_OUTPUT_ONLY) || g.isServerSet(f, msg)
 
 		if isPrimitive(f) {
 			// Primitive fields are only included if explicitly marked OUTPUT_ONLY.
@@ -520,14 +547,18 @@ func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor, opts WriteO
 		field := msg.Fields().Get(i)
 		if !IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
 			// Only write non-output fields.
-			WriteField(out, field, msg, i, false, opts)
+			WriteField(out, field, msg, i, false, opts, "")
 		}
 	}
 	fmt.Fprintf(out, "}\n")
 }
 
-// ObservedStateFieldNote describes the rendering outcome for a single field in an
-// ObservedState struct.
+// ObservedStateFieldNote describes what WriteObservedStateFields did with one
+// output-only field, so the caller can file a queue entry for a field that did
+// not reach the struct.
+//
+// Rendered holds the field's output, so a caller can pass it to
+// UnsupportedFieldMarker to find a field WriteField could not type.
 type ObservedStateFieldNote struct {
 	// JSONName is the KRM field name in camelCase.
 	JSONName string
@@ -564,7 +595,7 @@ func WriteObservedStateFields(out io.Writer, msgDetails *OutputMessageDetails, o
 			}
 		}
 		var field_ bytes.Buffer
-		WriteField(&field_, field, msg, emitted, useObservedState, observedOpts)
+		WriteField(&field_, field, msg, emitted, useObservedState, observedOpts, placementNote(field, msg, opts))
 		out.Write(field_.Bytes())
 		emitted++
 		notes = append(notes, ObservedStateFieldNote{
@@ -582,8 +613,31 @@ func WriteObservedStateMessage(out io.Writer, msgDetails *OutputMessageDetails, 
 	fmt.Fprintf(out, "\n")
 	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotationObservedState, msg.FullName())
 	fmt.Fprintf(out, "type %s struct {\n", goType)
-	WriteObservedStateFields(out, msgDetails, observedStateMessages, nil, opts)
+	// Clear PlaceServerSetFields to keep placement notes out of the nested
+	// structs in types.generated.go; only the resource's own ObservedState,
+	// which the scaffolder writes, carries one. Every other flag carries over,
+	// or a nested observed field is named and typed differently from the same
+	// proto field in the spec struct beside it.
+	nestedOpts := opts
+	nestedOpts.PlaceServerSetFields = false
+	WriteObservedStateFields(out, msgDetails, observedStateMessages, nil, nestedOpts)
 	fmt.Fprintf(out, "}\n")
+}
+
+// placementNote returns a +kcc:guess marker for a field IsServerSetField places
+// by name, and "" for any other field.
+//
+// The marker goes in the generated type as well as the judgement queue. The
+// allowlist will be wrong for some outlier, and the person who meets it is
+// reading the type, not the queue.
+func placementNote(field protoreflect.FieldDescriptor, msg protoreflect.MessageDescriptor, opts WriteOptions) string {
+	if !IsServerSetField(field, msg, opts) {
+		return ""
+	}
+	// controller-gen strips +kcc: markers from the CRD description, so a
+	// reviewer reading the type sees the guess while kubectl explain still shows
+	// only the proto's own comment.
+	return "+kcc:guess=placement reason=no-field-behavior-on-message"
 }
 
 func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool, opts WriteOptions) (string, error) {
@@ -654,18 +708,22 @@ func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool,
 	return goType, nil
 }
 
-func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protoreflect.MessageDescriptor, fieldIndex int, isTransitiveOutput bool, opts WriteOptions) {
+func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protoreflect.MessageDescriptor, fieldIndex int, isTransitiveOutput bool, opts WriteOptions, note string) {
 	sourceLocations := msg.ParentFile().SourceLocations().ByDescriptor(field)
 
 	jsonName := GetJSONForKRM(field, opts)
 	GoFieldName := goFieldNameOpts(field, opts)
 
-	// A string field named after a resource this service declares is probably a
-	// reference to it. The note records the guess for a reader; the field stays
-	// a string, and the judgement queue carries the matching entry.
-	var note string
-	if target, ok := SiblingResource(field, opts); ok {
-		note = SiblingGuessMarker + target
+	// The caller's own note wins: it knows something more specific than a name
+	// match, such as why a field was placed in ObservedState.
+	//
+	// Otherwise, a string field named after a resource this service declares is
+	// probably a reference to it. The note records the guess for a reader; the
+	// field stays a string, and the queue carries the matching entry.
+	if note == "" {
+		if target, ok := SiblingResource(field, opts); ok {
+			note = SiblingGuessMarker + target
+		}
 	}
 
 	goType, err := GoTypeForField(field, isTransitiveOutput, opts)
@@ -694,6 +752,14 @@ func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protorefl
 			} else {
 				fmt.Fprintf(out, "\t// %s\n", line)
 			}
+		}
+	}
+	// note records a choice the generated type does not otherwise show, such as
+	// a field placed in ObservedState by name. It follows the proto's own
+	// comment, which describes the field rather than what the generator did.
+	for _, line := range strings.Split(strings.TrimSpace(note), "\n") {
+		if line != "" {
+			fmt.Fprintf(out, "\t// %s\n", line)
 		}
 	}
 
@@ -967,6 +1033,73 @@ func IsFieldBehavior(field protoreflect.FieldDescriptor, fieldBehavior annotatio
 	fieldBehaviors := proto.GetExtension(d, annotations.E_FieldBehavior).([]annotations.FieldBehavior)
 	for _, f := range fieldBehaviors {
 		if f == fieldBehavior {
+			return true
+		}
+	}
+	return false
+}
+
+// serverSetFieldNames are fields GCP computes that some protos do not mark
+// OUTPUT_ONLY.
+//
+// A field's name is normally a poor guide to where it belongs, so the list is
+// narrow. Every name here appears zero times in a resource-level Spec across
+// the baseline tree, with one exception:
+//
+// etag appears twice, on AlloyDBCluster and ContainerAttachedCluster, where it
+// is an optimistic-concurrency input that "can be sent on update and delete
+// requests". Against that, 27 greenfield resources carry it status-side and
+// none spec-side, so the list keeps it and the queue asks a human.
+//
+// Three names stay out of the list, because how upstream uses them differs
+// from what their counts suggest:
+//
+//	state   7 upstream Specs, and they are desired state, not observed state.
+//	        ConfigDeliveryFleetPackage calls it "the desired state of the fleet
+//	        package"; DLPConnection marks it Required; VPCFlowLogsConfig is an
+//	        enable/disable toggle defaulting to ENABLED. Moving it would take a
+//	        settable field away.
+//	status  2 upstream Specs, both required input. DLPDiscoveryConfig marks it
+//	        Required. AccessContextManagerServicePerimeter differs: in the GCP
+//	        API "status" names the enforced perimeter config as opposed to the
+//	        dry-run "spec", so it is user-authored configuration whose name
+//	        happens to collide with the CRD's own status.
+//	type    36 upstream Specs.
+//
+// "name" is not in the list because identityFields in the scaffold package
+// already handles it.
+var serverSetFieldNames = map[string]bool{
+	"createTime":        true,
+	"updateTime":        true,
+	"deleteTime":        true,
+	"creationTimestamp": true,
+	"uid":               true,
+	"selfLink":          true,
+	"selfLinkWithID":    true,
+	"id":                true,
+	"kind":              true,
+	"etag":              true,
+}
+
+// IsServerSetField reports whether a field represents server-generated state
+// (such as creationTimestamp, selfLink, or uid) that belongs in ObservedState
+// when the parent message lacks google.api.field_behavior annotations entirely.
+func IsServerSetField(field protoreflect.FieldDescriptor, msg protoreflect.MessageDescriptor, opts WriteOptions) bool {
+	if !opts.PlaceServerSetFields || msg == nil {
+		return false
+	}
+	if hasAnyFieldBehavior(msg) {
+		return false
+	}
+	return serverSetFieldNames[GetJSONForKRM(field, opts)]
+}
+
+// hasAnyFieldBehavior reports whether any field of msg carries a
+// google.api.field_behavior annotation.
+func hasAnyFieldBehavior(msg protoreflect.MessageDescriptor) bool {
+	for i := 0; i < msg.Fields().Len(); i++ {
+		d := msg.Fields().Get(i).Options()
+		if len(proto.GetExtension(d, annotations.E_FieldBehavior).([]annotations.FieldBehavior)) > 0 {
 			return true
 		}
 	}
