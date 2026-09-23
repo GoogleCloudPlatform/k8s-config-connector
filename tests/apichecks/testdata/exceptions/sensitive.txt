@@ -9,3 +9,4 @@ crd=dataprocworkflowtemplates.dataproc.cnrm.cloud.google.com version=v1beta1: fi
 crd=dataprocworkflowtemplates.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.placement.managedCluster.config.securityConfig.kerberosConfig.rootPrincipalPassword" is sensitive data, should use secretRef
 crd=dataprocworkflowtemplates.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.placement.managedCluster.config.securityConfig.kerberosConfig.truststorePassword" is sensitive data, should use secretRef
 crd=dialogflowfulfillments.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.password" is sensitive data, should use secretRef
+crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.adminPassword" is sensitive data, should use secretRef
