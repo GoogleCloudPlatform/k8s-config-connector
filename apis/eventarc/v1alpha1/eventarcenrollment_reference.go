@@ -23,54 +23,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-type EventarcMessageBusRef struct {
-	// The `name` field of a `EventarcMessageBus` resource.
-	Name string `json:"name,omitempty"`
-	// The `namespace` field of a `EventarcMessageBus` resource.
-	Namespace string `json:"namespace,omitempty"`
-	// A reference to an externally managed EventarcMessageBus resource.
-	// Should be in the format `projects/{{projectID}}/locations/{{location}}/messageBuses/{{messageBusID}}`.
-	External string `json:"external,omitempty"`
-}
-
-func (r *EventarcMessageBusRef) GetGVK() schema.GroupVersionKind {
-	return schema.GroupVersionKind{
-		Group:   "eventarc.cnrm.cloud.google.com",
-		Version: "v1alpha1",
-		Kind:    "EventarcMessageBus",
-	}
-}
-
-func (r *EventarcMessageBusRef) GetNamespacedName() types.NamespacedName {
-	return types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-}
-
-func (r *EventarcMessageBusRef) GetExternal() string {
-	return r.External
-}
-
-func (r *EventarcMessageBusRef) SetExternal(ref string) {
-	r.External = ref
-	r.Name = ""
-	r.Namespace = ""
-}
-
-func (r *EventarcMessageBusRef) ValidateExternal(ref string) error {
-	// TODO: implement format validation
-	return nil
-}
-
-func (r *EventarcMessageBusRef) Normalize(ctx context.Context, reader client.Reader, otherNamespace string) error {
-	return refs.NormalizeWithFallback(ctx, reader, r, otherNamespace, nil)
-}
-
-func (r *EventarcMessageBusRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if err := r.Normalize(ctx, reader, otherNamespace); err != nil {
-		return "", err
-	}
-	return r.External, nil
-}
-
 type EventarcPipelineRef struct {
 	// The `name` field of a `EventarcPipeline` resource.
 	Name string `json:"name,omitempty"`
