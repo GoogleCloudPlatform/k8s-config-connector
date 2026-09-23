@@ -27,6 +27,7 @@
 // resource: DataplexDataScan:DataScan
 // resource: DataplexMetadataJob:MetadataJob
 // resource: DataplexMetadataFeed:MetadataFeed
+// resource: DataplexDataProduct:DataProduct
 
 package v1alpha1
 
@@ -237,6 +238,49 @@ type DataDiscoverySpec_StorageConfig_JsonOptions struct {
 	//  (strings, number, or boolean).
 	// +kcc:proto:field=google.cloud.dataplex.v1.DataDiscoverySpec.StorageConfig.JsonOptions.type_inference_disabled
 	TypeInferenceDisabled *bool `json:"typeInferenceDisabled,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.DataProduct.AccessApprovalConfig
+type DataProduct_AccessApprovalConfig struct {
+	// Optional. Specifies the email addresses of users who are potential
+	//  approvers and are notified when an access request is made for the data
+	//  product. The maximum number of emails allowed is 10.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.AccessApprovalConfig.approver_emails
+	ApproverEmails []string `json:"approverEmails,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.DataProduct.AccessGroup
+type DataProduct_AccessGroup struct {
+	// Required. Unique identifier of the access group within the data product.
+	//  User defined. Eg. "analyst", "developer", etc.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.AccessGroup.id
+	ID *string `json:"id,omitempty"`
+
+	// Required. User friendly display name of the access group.
+	//  Eg. "Analyst", "Developer", etc.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.AccessGroup.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. Description of the access group.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.AccessGroup.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. The principal entity associated with this access group.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.AccessGroup.principal
+	Principal *DataProduct_Principal `json:"principal,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.DataProduct.Principal
+type DataProduct_Principal struct {
+	// Optional. Email of the Google Group, as per
+	//  https://cloud.google.com/iam/docs/principals-overview#google-group.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.Principal.google_group
+	GoogleGroup *string `json:"googleGroup,omitempty"`
+
+	// Optional. Specifies the email of the producer service account, as per
+	//  https://cloud.google.com/iam/docs/principals-overview#service-account.
+	// +kcc:proto:field=google.cloud.dataplex.v1.DataProduct.Principal.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
 }
 
 /* unreachable type DataProfileResult

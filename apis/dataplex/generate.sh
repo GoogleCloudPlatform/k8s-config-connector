@@ -44,7 +44,8 @@ ${CONTROLLERBUILDER} generate-types \
     --resource DataplexAspectType:AspectType \
     --resource DataplexDataScan:DataScan \
     --resource DataplexMetadataJob:MetadataJob \
-    --resource DataplexMetadataFeed:MetadataFeed
+    --resource DataplexMetadataFeed:MetadataFeed \
+    --resource DataplexDataProduct:DataProduct
 
 # Handled recursive self-referential fields by defining AspectType_MetadataTemplate manually in dataplexaspecttype_types.go
 
