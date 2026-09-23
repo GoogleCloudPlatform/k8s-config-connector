@@ -302,7 +302,6 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 						}
 					}
 					prepopulated.ExtraImports = scaffold.ExtraImportsFor(prepopulated.SpecFields, prepopulated.ObservedStateFields)
-					judgement = append(judgement, scaffold.FormatJudgementEntries(resource.Kind, gv.Group, prepopulated.Judgement))
 				}
 				if err := scaffolder.AddTypeFile(resource, prepopulated); err != nil {
 					return fmt.Errorf("add type file %s: %w", scaffolder.PathToTypeFile(resource), err)
