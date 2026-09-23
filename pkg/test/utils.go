@@ -21,10 +21,12 @@ import (
 	"path/filepath"
 	"reflect"
 	"regexp"
+	"sort"
 	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/yaml"
 )
@@ -86,6 +88,129 @@ func extractEventsWithURLPrefix(allEvents, urlPrefix string) string {
 		}
 	}
 	return strings.Join(eventStrings, "---")
+}
+
+// CompareRatchetFile compares got against a baseline "known violations" file using
+// ratchet semantics, for checks where the baseline records violations we tolerate but
+// never want more of.
+//
+// It differs from CompareGoldenFile in one critical way: NEW entries always fail the
+// test, including when WRITE_GOLDEN_OUTPUT is set. A golden file silently absorbs new
+// violations during the normal regenerate-goldens workflow, which turns the check into
+// a no-op for exactly the changes it exists to catch.
+//
+// Entries that disappear (violations that were fixed) are pruned from the file when
+// WRITE_GOLDEN_OUTPUT is set, so the baseline can only ever shrink.
+func CompareRatchetFile(t *testing.T, p, fullGot string) {
+	t.Helper()
+
+	wantBytes, err := os.ReadFile(p)
+	if err != nil {
+		if !os.IsNotExist(err) {
+			t.Fatalf("FAIL: failed to read ratchet file %q: %v", p, err)
+		}
+		// No baseline file: only acceptable if there is nothing to record.
+		if strings.TrimSpace(fullGot) == "" {
+			return
+		}
+		t.Fatalf("FAIL: ratchet file %q does not exist but violations were found. "+
+			"Create the baseline deliberately; it is not generated automatically.", p)
+	}
+
+	decision := ComputeRatchet(string(wantBytes), fullGot)
+
+	if len(decision.Added) > 0 {
+		t.Errorf("FAIL: %d new violation(s) not present in %s.\n\n%s\n\n"+
+			"Fix these rather than adding them to the exceptions file. "+
+			"This check does not accept new entries, even with WRITE_GOLDEN_OUTPUT set.",
+			len(decision.Added), p, strings.Join(decision.Added, "\n"))
+		// Deliberately do not write: writing here is what lets violations slip in.
+		return
+	}
+
+	if len(decision.Removed) > 0 {
+		if ShouldPrune(decision, os.Getenv("WRITE_GOLDEN_OUTPUT") != "") {
+			if err := os.WriteFile(p, []byte(decision.Pruned), 0644); err != nil {
+				t.Fatalf("FAIL: failed to write ratchet file %s: %v", p, err)
+			}
+			t.Logf("pruned %d fixed violation(s) from %s", len(decision.Removed), p)
+		} else {
+			t.Logf("%d violation(s) in %s appear to be fixed; rerun with WRITE_GOLDEN_OUTPUT=1 to prune them", len(decision.Removed), p)
+		}
+	}
+}
+
+// ShouldPrune reports whether the baseline file may be rewritten.
+//
+// The critical property of a ratchet lives here: when there are new violations
+// the file is never written, regardless of WRITE_GOLDEN_OUTPUT. Absorbing new
+// entries during the regenerate-goldens workflow is precisely what turns the
+// check into a no-op for the changes it exists to catch.
+func ShouldPrune(d RatchetDecision, writeEnabled bool) bool {
+	if len(d.Added) > 0 {
+		return false
+	}
+	return writeEnabled && len(d.Removed) > 0
+}
+
+// RatchetDecision is the outcome of comparing a ratchet baseline against
+// freshly detected violations.
+type RatchetDecision struct {
+	// Added are violations present in got but not in the baseline. Any entry here
+	// must fail the check; they are never written to the file.
+	Added []string
+	// Removed are baseline entries no longer detected, i.e. fixed.
+	Removed []string
+	// Pruned is the full file content to write when Removed is non-empty: the
+	// baseline's leading comment block followed by the surviving entries.
+	Pruned string
+}
+
+// ComputeRatchet is the pure comparison at the heart of CompareRatchetFile,
+// separated so its behaviour can be tested directly.
+//
+// Comment lines are documentation, not entries. They are excluded from the
+// comparison; counting them would classify a file's own header as violations
+// that have been "fixed", and pruning would then delete the instructions.
+func ComputeRatchet(baselineContent, fullGot string) RatchetDecision {
+	entries := func(s string) []string {
+		var out []string
+		for _, line := range strings.Split(s, "\n") {
+			line = strings.TrimSpace(line)
+			if line == "" || strings.HasPrefix(line, "#") {
+				continue
+			}
+			out = append(out, line)
+		}
+		return out
+	}
+
+	// Leading comment block, preserved verbatim when rewriting.
+	var header []string
+	for _, line := range strings.Split(baselineContent, "\n") {
+		trimmed := strings.TrimSpace(line)
+		if trimmed != "" && !strings.HasPrefix(trimmed, "#") {
+			break
+		}
+		header = append(header, line)
+	}
+
+	baseline := sets.NewString(entries(baselineContent)...)
+	got := sets.NewString(entries(fullGot)...)
+
+	added := got.Difference(baseline).List()
+	removed := baseline.Difference(got).List()
+	sort.Strings(added)
+	sort.Strings(removed)
+
+	// Trailing newline matters: these files are appended to by hand and by
+	// agents. Without it, `cat >> file` concatenates the new entry onto the last
+	// existing one and silently corrupts both.
+	return RatchetDecision{
+		Added:   added,
+		Removed: removed,
+		Pruned:  strings.Join(append(header, got.List()...), "\n") + "\n",
+	}
 }
 
 // CompareGoldenFile performs a file comparison for a golden test.
