@@ -84,6 +84,20 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 		if codegen.IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
 			continue
 		}
+		// A server-set field goes to ObservedState, like an OUTPUT_ONLY one. This
+		// check and the type generator's have to agree, or the field lands in
+		// both structs.
+		if codegen.IsServerSetField(field, msg, opts) {
+			out.Judgement = append(out.Judgement, JudgementItem{
+				FieldPath: ".status.observedState." + codegen.GetJSONForKRM(field, opts),
+				Reason:    "server-set-field-placed",
+				Detail: "moved to ObservedState because its name is on the " +
+					"server-set allowlist, not because the proto says so: no " +
+					"field on this message carries field_behavior. Confirm GCP " +
+					"sets this field and a user never does",
+			})
+			continue
+		}
 		if identityFields[string(field.Name())] {
 			// Identity fields (e.g. "name") are managed via status.externalRef rather
 			// than directly in spec fields.
@@ -94,7 +108,7 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 		// appending it. When the generator cannot type a field it writes a
 		// "// TODO:" comment and moves on, and the field never reaches the CRD.
 		var field_ bytes.Buffer
-		codegen.WriteField(&field_, field, msg, emitted, false, opts)
+		codegen.WriteField(&field_, field, msg, emitted, false, opts, "")
 		buf.Write(field_.Bytes())
 		emitted++
 
@@ -234,4 +248,66 @@ func ExtraImportsFor(bodies ...string) []string {
 	}
 	sort.Strings(out)
 	return out
+}
+
+// OutputOnlyCandidate is a field the proto documents as output-only in prose
+// while carrying no google.api.field_behavior annotation to say so.
+type OutputOnlyCandidate struct {
+	// FieldPath is the KRM path the field was emitted at, e.g. ".spec.createTime".
+	FieldPath string
+	// Comment is the proto's leading comment, so a reviewer can decide without
+	// opening the proto.
+	Comment string
+}
+
+// outputOnlyPrefixes lists comment prefix markers used across Google APIs to
+// designate output-only fields in documentation without proto field_behavior annotations.
+var outputOnlyPrefixes = []string{"Output only.", "[Output Only]"}
+
+// DetectOutputOnlyInComments finds spec fields whose leading proto comments describe
+// them as output-only, but lack explicit google.api.field_behavior annotations.
+// It reports candidates for manual review rather than moving them automatically.
+func DetectOutputOnlyInComments(msg protoreflect.MessageDescriptor, opts codegen.WriteOptions) []OutputOnlyCandidate {
+	if msg == nil {
+		return nil
+	}
+	var out []OutputOnlyCandidate
+	for i := 0; i < msg.Fields().Len(); i++ {
+		field := msg.Fields().Get(i)
+		if codegen.IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) || identityFields[string(field.Name())] {
+			continue
+		}
+		comment, ok := outputOnlyComment(field)
+		if !ok {
+			continue
+		}
+		out = append(out, OutputOnlyCandidate{
+			FieldPath: ".spec." + codegen.GetJSONForKRM(field, opts),
+			Comment:   comment,
+		})
+	}
+	return out
+}
+
+// outputOnlyComment returns a field's leading comment, collapsed onto one line,
+// when the comment opens with one of outputOnlyPrefixes.
+func outputOnlyComment(field protoreflect.FieldDescriptor) (string, bool) {
+	loc := field.ParentFile().SourceLocations().ByDescriptor(field)
+	comment := strings.TrimSpace(loc.LeadingComments)
+	for _, prefix := range outputOnlyPrefixes {
+		if strings.HasPrefix(comment, prefix) {
+			return strings.Join(strings.Fields(comment), " "), true
+		}
+	}
+	return "", false
+}
+
+// FormatOutputOnlyCandidates renders detector output for the report file.
+func FormatOutputOnlyCandidates(kind, group string, items []OutputOnlyCandidate) string {
+	var sb strings.Builder
+	for _, it := range items {
+		sb.WriteString(fmt.Sprintf("kind=%s group=%s: field %q comment=%q\n",
+			kind, group, it.FieldPath, it.Comment))
+	}
+	return sb.String()
 }

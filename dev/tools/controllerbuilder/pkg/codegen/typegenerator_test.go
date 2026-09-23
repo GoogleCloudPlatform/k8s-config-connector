@@ -540,7 +540,7 @@ func TestWriteFieldRequiredMarker(t *testing.T) {
 
 			msg := fd.Messages().ByName("TestMessage")
 			var buf bytes.Buffer
-			WriteField(&buf, msg.Fields().Get(0), msg, 0, false, g.opts)
+			WriteField(&buf, msg.Fields().Get(0), msg, 0, false, g.opts, "")
 
 			got := strings.Contains(buf.String(), "// +required")
 			if got != g.wantMarker {

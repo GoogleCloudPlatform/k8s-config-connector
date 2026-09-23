@@ -62,8 +62,13 @@ func walkSpecFields(msg protoreflect.MessageDescriptor, prefix string, opts code
 			continue
 		}
 		// Skip exactly what PrepopulateSpec drops, or a hint names a path the
-		// CRD does not have. Today that is the identity fields.
+		// CRD does not have. Today that is the identity fields and, where the
+		// flag is on, the server-set ones. Both are only dropped from the
+		// resource's own message, so both are checked only at the top.
 		if top && identityFields[string(field.Name())] {
+			continue
+		}
+		if top && codegen.IsServerSetField(field, msg, opts) {
 			continue
 		}
 		goType, err := codegen.GoTypeForField(field, false, opts)

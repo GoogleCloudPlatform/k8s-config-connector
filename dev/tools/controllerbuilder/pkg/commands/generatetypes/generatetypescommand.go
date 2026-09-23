@@ -50,12 +50,14 @@ type GenerateCRDOptions struct {
 	EmitRequiredFromProto bool
 	// PrepopulateSpec populates <Kind>Spec and <Kind>ObservedState with fields
 	// derived from the resource proto message definition.
-	PrepopulateSpec    bool
-	EmitParentRefs     bool
-	EmitPluralAcronyms bool
-	EmitMessageMaps    bool
-	EmitSiblingRefs    bool
-	EmitReferenceHints bool
+	PrepopulateSpec      bool
+	EmitParentRefs       bool
+	DetectOutputOnly     bool
+	EmitPluralAcronyms   bool
+	EmitMessageMaps      bool
+	EmitSiblingRefs      bool
+	EmitReferenceHints   bool
+	PlaceServerSetFields bool
 }
 
 func (o *GenerateCRDOptions) InitDefaults() error {
@@ -78,6 +80,8 @@ func (o *GenerateCRDOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().BoolVar(&o.PrepopulateSpec, "prepopulate-spec", false, "fill the scaffolded Spec and ObservedState from the proto message instead of emitting a three-field stub, and record what still needs a human in apis/<service>/needs_judgement_call.txt. Opt in one service at a time")
 	cmd.Flags().BoolVar(&o.EmitPluralAcronyms, "emit-plural-acronyms", false, "case plural acronyms as KRM conventions want, so related_uris becomes relatedURIs rather than relatedUris. Opt in one service at a time: it renames fields, which is a breaking change for a resource people already use")
 	cmd.Flags().BoolVar(&o.EmitMessageMaps, "emit-message-maps", false, "generate map<string, Message> fields as a map of the value's Go type instead of leaving them out. Opt in one service at a time: it adds fields to the CRD of a resource people already use, and generate-mapper needs the same flag")
+	cmd.Flags().BoolVar(&o.DetectOutputOnly, "detect-output-only-in-comments", false, "report spec fields whose proto comment says \"Output only.\" while carrying no field_behavior annotation, to apis/<service>/detected_output_only_in_comments.txt. Reports only; moving them is a hand edit")
+	cmd.Flags().BoolVar(&o.PlaceServerSetFields, "place-server-set-fields", false, "put a small allowlist of server-computed fields (createTime, uid, selfLink, etag and a few more) into ObservedState when the proto carries no field_behavior anywhere, instead of leaving them in the Spec for a user to set. Each one is also recorded in apis/<service>/needs_judgement_call.txt. Opt in one service at a time: it moves fields between spec and status, which is a breaking change for a resource people already use")
 	cmd.Flags().BoolVar(&o.EmitRequiredFromProto, "emit-required-from-proto", false, "emit // +required markers for fields marked REQUIRED in proto. Opt-in per service to avoid breaking CRD schema changes on existing resources")
 	cmd.Flags().BoolVar(&o.EmitParentRefs, "emit-parent-refs", false, "emit one spec field referencing the resource's direct parent, where google.api.resource declares a parent below project and location and a reference type for it already exists. Each field is marked +kcc:guess and recorded in apis/<service>/needs_judgement_call.txt, and a parent with no reference type is recorded there rather than guessed. Opt in one service at a time: it adds a field to the CRD of a resource people already use")
 	cmd.Flags().BoolVar(&o.EmitSiblingRefs, "emit-sibling-refs", false, "mark a string field whose name matches a resource this service declares as a probable reference to it, with a +kcc:guess comment and an entry in apis/<service>/needs_judgement_call.txt. The field stays a string: this reports a candidate rather than generating a reference. Opt in one service at a time, though controller-gen strips the comment, so this cannot change a CRD")
@@ -170,11 +174,12 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	}
 
 	writeOptions := codegen.WriteOptions{
-		EmitRequired:       o.EmitRequiredFromProto,
-		Prepopulating:      o.PrepopulateSpec,
-		EmitPluralAcronyms: o.EmitPluralAcronyms,
-		EmitMessageMaps:    o.EmitMessageMaps,
-		Siblings:           siblings,
+		EmitRequired:         o.EmitRequiredFromProto,
+		Prepopulating:        o.PrepopulateSpec,
+		EmitPluralAcronyms:   o.EmitPluralAcronyms,
+		EmitMessageMaps:      o.EmitMessageMaps,
+		Siblings:             siblings,
+		PlaceServerSetFields: o.PlaceServerSetFields,
 	}
 
 	typeGenerator := codegen.NewTypeGenerator(goPackage, o.OutputAPIDirectory, api)
@@ -193,6 +198,8 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	// Accumulate judgement items across all resources in this run so the queue file
 	// is written atomically once at the end.
 	var judgement []string
+	// Candidates are collected per service and written once, like the queue above.
+	var outputOnly []string
 
 	resourceAnnotations := make([]string, 0, len(o.Resources))
 	for _, resource := range o.Resources {
@@ -271,11 +278,39 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 								"in the Spec. Decide what belongs in status",
 						})
 					}
+					if o.DetectOutputOnly {
+						if c := scaffold.DetectOutputOnlyInComments(msg, writeOptions); len(c) > 0 {
+							outputOnly = append(outputOnly, scaffold.FormatOutputOnlyCandidates(resource.Kind, gv.Group, c))
+							// Each candidate also goes into the queue. The report
+							// file alone is easy to miss: the field is in the
+							// Spec, looks generated, and nothing says it is in the
+							// wrong struct. The queue is where a resource's
+							// outstanding decisions are counted, so a finding that
+							// never reaches it is indistinguishable from no
+							// finding at all.
+							for _, cand := range c {
+								// The entry names where the field belongs, not where
+								// it currently sits. It accounts for a field absent
+								// from ObservedState, so a path under .spec would
+								// never line up with what is missing.
+								prepopulated.Judgement = append(prepopulated.Judgement, scaffold.JudgementItem{
+									FieldPath: ".status.observedState." + strings.TrimPrefix(cand.FieldPath, ".spec."),
+									Reason:    "output-only-in-comment-only",
+									Detail:    "proto comment says output only but no field_behavior annotation, so it was generated into the Spec instead. Move it if the comment is right: " + cand.Comment,
+								})
+							}
+						}
+					}
 					prepopulated.ExtraImports = scaffold.ExtraImportsFor(prepopulated.SpecFields, prepopulated.ObservedStateFields)
 					judgement = append(judgement, scaffold.FormatJudgementEntries(resource.Kind, gv.Group, prepopulated.Judgement))
 				}
 				if err := scaffolder.AddTypeFile(resource, prepopulated); err != nil {
 					return fmt.Errorf("add type file %s: %w", scaffolder.PathToTypeFile(resource), err)
+				}
+				// This runs after AddTypeFile, which is where decisions that
+				// depend on the parent shape are recorded.
+				if prepopulated != nil {
+					judgement = append(judgement, scaffold.FormatJudgementEntries(resource.Kind, gv.Group, prepopulated.Judgement))
 				}
 			}
 		}
@@ -316,6 +351,12 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	if o.PrepopulateSpec || len(judgement) > 0 {
 		if err := writeJudgementQueue(o.OutputAPIDirectory, goPackage, judgement); err != nil {
 			return fmt.Errorf("writing judgement queue: %w", err)
+		}
+	}
+
+	if o.DetectOutputOnly {
+		if err := writeOutputOnlyReport(o.OutputAPIDirectory, goPackage, outputOnly); err != nil {
+			return fmt.Errorf("writing output-only report: %w", err)
 		}
 	}
 
@@ -493,4 +534,38 @@ func readFileOrEmpty(path string) string {
 		return ""
 	}
 	return string(b)
+}
+
+// writeOutputOnlyReport records fields the proto documents as output-only in
+// prose while carrying no annotation to say so.
+//
+// The report is deliberately separate from needs_judgement_call.txt. That
+// file drives [refs] suppression, and loadJudgementQueue keys off any
+// non-comment line in it, so these entries would quietly stop TestMissingRefs
+// reporting on resources whose references are perfectly fine.
+func writeOutputOnlyReport(apiDir, goPackage string, entries []string) error {
+	var body strings.Builder
+	for _, e := range entries {
+		body.WriteString(e)
+	}
+	if body.Len() == 0 {
+		return nil
+	}
+
+	serviceDir := filepath.Dir(filepath.Join(apiDir, goPackage))
+	path := filepath.Join(serviceDir, "detected_output_only_in_comments.txt")
+
+	header := "# Spec fields whose proto comment says \"Output only.\" but which carry no\n" +
+		"# google.api.field_behavior annotation, so the generator could not place them\n" +
+		"# in ObservedState by itself.\n" +
+		"#\n" +
+		"# This file reports; it changes nothing. To act on an entry, move the field\n" +
+		"# out of the Spec struct and into the ObservedState struct in\n" +
+		"# <kind>_types.go by hand.\n" +
+		"\n"
+
+	if err := os.MkdirAll(serviceDir, 0755); err != nil {
+		return err
+	}
+	return os.WriteFile(path, []byte(header+body.String()), 0644)
 }
