@@ -124,6 +124,13 @@ spec:
                 x-kubernetes-validations:
                 - message: Location field is immutable
                   rule: self == oldSelf
+              maxSlots:
+                description: Optional. Capping a reservation's idle slot usage is
+                  best effort and its usage may exceed the max_slots value. However,
+                  in terms of autoscale.current_slots (which accounts for the additional
+                  added slots), it will never exceed the max_slots - baseline.
+                format: int64
+                type: integer
               projectRef:
                 description: The Project that this resource belongs to.
                 oneOf:
@@ -166,6 +173,15 @@ spec:
                   Reservation ID. For acquisition: This field must be provided to
                   identify the Reservation resource to acquire.'
                 type: string
+              scalingMode:
+                description: Optional. The scaling mode for the reservation. Valid
+                  values are AUTOSCALE_ONLY, IDLE_SLOTS_ONLY, ALL_SLOTS.
+                enum:
+                - SCALING_MODE_UNSPECIFIED
+                - AUTOSCALE_ONLY
+                - IDLE_SLOTS_ONLY
+                - ALL_SLOTS
+                type: string
               slotCapacity:
                 description: |-
                   Optional. Baseline slots available to this reservation. A slot is a unit of
@@ -179,6 +195,20 @@ spec:
             - location
             - projectRef
             type: object
+            x-kubernetes-validations:
+            - message: maxSlots and scalingMode must be set together
+              rule: has(self.maxSlots) == has(self.scalingMode)
+            - message: maxSlots must be greater than slotCapacity (baseline)
+              rule: '!has(self.maxSlots) || !has(self.slotCapacity) || self.maxSlots
+                > self.slotCapacity'
+            - message: 'scalingMode must align with ignoreIdleSlots: AUTOSCALE_ONLY
+                requires ignoreIdleSlots=true; IDLE_SLOTS_ONLY and ALL_SLOTS require
+                ignoreIdleSlots=false'
+              rule: '!has(self.scalingMode) || self.scalingMode == ''SCALING_MODE_UNSPECIFIED''
+                || (self.scalingMode == ''AUTOSCALE_ONLY'' && has(self.ignoreIdleSlots)
+                && self.ignoreIdleSlots == true) || ((self.scalingMode == ''IDLE_SLOTS_ONLY''
+                || self.scalingMode == ''ALL_SLOTS'') && has(self.ignoreIdleSlots)
+                && self.ignoreIdleSlots == false)'
           status:
             description: BigQueryReservationReservationStatus defines the config connector
               machine state of BigQueryReservationReservation
@@ -367,6 +397,13 @@ spec:
                 x-kubernetes-validations:
                 - message: Location field is immutable
                   rule: self == oldSelf
+              maxSlots:
+                description: Optional. Capping a reservation's idle slot usage is
+                  best effort and its usage may exceed the max_slots value. However,
+                  in terms of autoscale.current_slots (which accounts for the additional
+                  added slots), it will never exceed the max_slots - baseline.
+                format: int64
+                type: integer
               projectRef:
                 description: The Project that this resource belongs to.
                 oneOf:
@@ -409,6 +446,15 @@ spec:
                   Reservation ID. For acquisition: This field must be provided to
                   identify the Reservation resource to acquire.'
                 type: string
+              scalingMode:
+                description: Optional. The scaling mode for the reservation. Valid
+                  values are AUTOSCALE_ONLY, IDLE_SLOTS_ONLY, ALL_SLOTS.
+                enum:
+                - SCALING_MODE_UNSPECIFIED
+                - AUTOSCALE_ONLY
+                - IDLE_SLOTS_ONLY
+                - ALL_SLOTS
+                type: string
               slotCapacity:
                 description: |-
                   Optional. Baseline slots available to this reservation. A slot is a unit of
@@ -422,6 +468,20 @@ spec:
             - location
             - projectRef
             type: object
+            x-kubernetes-validations:
+            - message: maxSlots and scalingMode must be set together
+              rule: has(self.maxSlots) == has(self.scalingMode)
+            - message: maxSlots must be greater than slotCapacity (baseline)
+              rule: '!has(self.maxSlots) || !has(self.slotCapacity) || self.maxSlots
+                > self.slotCapacity'
+            - message: 'scalingMode must align with ignoreIdleSlots: AUTOSCALE_ONLY
+                requires ignoreIdleSlots=true; IDLE_SLOTS_ONLY and ALL_SLOTS require
+                ignoreIdleSlots=false'
+              rule: '!has(self.scalingMode) || self.scalingMode == ''SCALING_MODE_UNSPECIFIED''
+                || (self.scalingMode == ''AUTOSCALE_ONLY'' && has(self.ignoreIdleSlots)
+                && self.ignoreIdleSlots == true) || ((self.scalingMode == ''IDLE_SLOTS_ONLY''
+                || self.scalingMode == ''ALL_SLOTS'') && has(self.ignoreIdleSlots)
+                && self.ignoreIdleSlots == false)'
           status:
             description: BigQueryReservationReservationStatus defines the config connector
               machine state of BigQueryReservationReservation

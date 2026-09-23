@@ -185,6 +185,14 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		report.AddField("concurrency", a.actual.Concurrency, desiredPb.Concurrency)
 		paths = append(paths, "concurrency")
 	}
+	if !reflect.DeepEqual(desiredPb.MaxSlots, a.actual.MaxSlots) {
+		report.AddField("max_slots", a.actual.MaxSlots, desiredPb.MaxSlots)
+		paths = append(paths, "max_slots")
+	}
+	if desiredPb.ScalingMode != a.actual.ScalingMode {
+		report.AddField("scaling_mode", a.actual.ScalingMode, desiredPb.ScalingMode)
+		paths = append(paths, "scaling_mode")
+	}
 
 	// Handle secondaryLocation field which can be modified by API during failover
 	shouldUpdateSecondaryLocation := false

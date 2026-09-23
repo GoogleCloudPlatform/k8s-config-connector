@@ -36,6 +36,9 @@ type Parent struct {
 
 // BigQueryReservationReservationSpec defines the desired state of BigQueryReservationReservation
 // +kcc:spec:proto=google.cloud.bigquery.reservation.v1.Reservation
+// +kubebuilder:validation:XValidation:rule="has(self.maxSlots) == has(self.scalingMode)",message="maxSlots and scalingMode must be set together"
+// +kubebuilder:validation:XValidation:rule="!has(self.maxSlots) || !has(self.slotCapacity) || self.maxSlots > self.slotCapacity",message="maxSlots must be greater than slotCapacity (baseline)"
+// +kubebuilder:validation:XValidation:rule="!has(self.scalingMode) || self.scalingMode == 'SCALING_MODE_UNSPECIFIED' || (self.scalingMode == 'AUTOSCALE_ONLY' && has(self.ignoreIdleSlots) && self.ignoreIdleSlots == true) || ((self.scalingMode == 'IDLE_SLOTS_ONLY' || self.scalingMode == 'ALL_SLOTS') && has(self.ignoreIdleSlots) && self.ignoreIdleSlots == false)",message="scalingMode must align with ignoreIdleSlots: AUTOSCALE_ONLY requires ignoreIdleSlots=true; IDLE_SLOTS_ONLY and ALL_SLOTS require ignoreIdleSlots=false"
 type BigQueryReservationReservationSpec struct {
 	Parent `json:",inline"`
 
@@ -85,6 +88,19 @@ type BigQueryReservationReservationSpec struct {
 	// Optional. This field is only set for reservations using the managed disaster recovery
 	//  feature. Users can set this to create a failover reservation.
 	FailOver *FailoverSpec `json:"failover,omitempty"`
+
+	// Optional. Capping a reservation's idle slot usage is best effort and its
+	//  usage may exceed the max_slots value. However, in terms of
+	//  autoscale.current_slots (which accounts for the additional added slots), it
+	//  will never exceed the max_slots - baseline.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.max_slots
+	MaxSlots *int64 `json:"maxSlots,omitempty"`
+
+	// Optional. The scaling mode for the reservation.
+	//  Valid values are AUTOSCALE_ONLY, IDLE_SLOTS_ONLY, ALL_SLOTS.
+	// +kubebuilder:validation:Enum=SCALING_MODE_UNSPECIFIED;AUTOSCALE_ONLY;IDLE_SLOTS_ONLY;ALL_SLOTS
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.scaling_mode
+	ScalingMode *string `json:"scalingMode,omitempty"`
 }
 
 // BigQueryReservationReservationStatus defines the config connector machine state of BigQueryReservationReservation
