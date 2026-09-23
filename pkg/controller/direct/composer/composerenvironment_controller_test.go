@@ -1019,12 +1019,244 @@ func TestMaximumComposerEnvironment(t *testing.T) {
 		"config.workloads_config",
 		"config.master_authorized_networks_config",
 		"config.recovery_config.scheduled_snapshots_config",
-		"config.data_retention_config",
+		"config.data_retention_config.airflow_metadata_retention_config",
 	}
 
 	for _, mask := range expectedMasks {
 		if _, ok := patches[mask]; !ok {
 			t.Errorf("expected update mask %q to be built, but was missing", mask)
 		}
+	}
+}
+
+func TestFieldUpdatersEdgeCases(t *testing.T) {
+	t.Run("no false drift when empty maps specified in desired and actual maps are nil", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Labels: map[string]string{},
+				Config: &krm.EnvironmentConfig{
+					SoftwareConfig: &krm.SoftwareConfig{
+						AirflowConfigOverrides: map[string]string{},
+						EnvVariables:           map[string]string{},
+						PypiPackages:           map[string]string{},
+					},
+				},
+			},
+		}
+		actual := &composerpb.Environment{
+			Labels: nil,
+			Config: &composerpb.EnvironmentConfig{
+				SoftwareConfig: &composerpb.SoftwareConfig{
+					AirflowConfigOverrides: nil,
+					EnvVariables:           nil,
+					PypiPackages:           nil,
+				},
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error: %v", mapCtx.Err())
+		}
+
+		updates := buildPatches(desired, desiredPb, actual)
+		if len(updates) != 0 {
+			t.Errorf("expected 0 pending updates for empty maps vs nil actual maps, got %d: %v", len(updates), updates)
+		}
+	})
+
+	t.Run("scheduled snapshots disable lifecycle: sends patch on disable, then no diff when actual recoveryConfig is nil", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{
+					RecoveryConfig: &krm.RecoveryConfig{
+						ScheduledSnapshotsConfig: &krm.ScheduledSnapshotsConfig{
+							Enabled: direct.PtrTo(false),
+						},
+					},
+				},
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error: %v", mapCtx.Err())
+		}
+
+		// Reconcile #1: Actual has snapshots enabled -> should produce a PATCH to disable
+		actualEnabled := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				RecoveryConfig: &composerpb.RecoveryConfig{
+					ScheduledSnapshotsConfig: &composerpb.ScheduledSnapshotsConfig{
+						Enabled:                  true,
+						SnapshotLocation:         "gs://test-bucket/snapshots",
+						SnapshotCreationSchedule: "0 5 * * *",
+						TimeZone:                 "UTC",
+					},
+				},
+			},
+		}
+		updates1 := buildPatches(desired, desiredPb, actualEnabled)
+		if len(updates1) != 1 {
+			t.Fatalf("Reconcile #1: expected 1 update to disable snapshots, got %d", len(updates1))
+		}
+		if _, ok := updates1["config.recovery_config.scheduled_snapshots_config"]; !ok {
+			t.Fatalf("Reconcile #1: expected patch for config.recovery_config.scheduled_snapshots_config")
+		}
+
+		// Reconcile #2: GCP API deletes recoveryConfig (returns nil) after disabling -> should produce 0 updates
+		actualDisabledNil := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				RecoveryConfig: nil,
+			},
+		}
+		updates2 := buildPatches(desired, desiredPb, actualDisabledNil)
+		if len(updates2) != 0 {
+			t.Fatalf("Reconcile #2: expected 0 updates when actual recoveryConfig is nil and desired enabled=false, got %d: %v", len(updates2), updates2)
+		}
+	})
+
+	t.Run("partial workloadsConfig update returns mergedDesiredPb with omitted fields preserved", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{
+					WorkloadsConfig: &krm.WorkloadsConfig{
+						Triggerer: &krm.WorkloadsConfig_TriggererResource{
+							Count: direct.LazyPtr(int32(2)),
+						},
+					},
+				},
+			},
+		}
+		actual := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				WorkloadsConfig: &composerpb.WorkloadsConfig{
+					Scheduler: &composerpb.WorkloadsConfig_SchedulerResource{
+						Cpu: 0.5, MemoryGb: 1.875, StorageGb: 1.0, Count: 1,
+					},
+					Triggerer: &composerpb.WorkloadsConfig_TriggererResource{
+						Cpu: 0.5, MemoryGb: 0.5, Count: 1,
+					},
+				},
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error: %v", mapCtx.Err())
+		}
+
+		updates := buildPatches(desired, desiredPb, actual)
+		patch, ok := updates["config.workloads_config"]
+		if !ok {
+			t.Fatalf("expected update for config.workloads_config")
+		}
+		wc := patch.GetConfig().GetWorkloadsConfig()
+		if wc.GetTriggerer().GetCount() != 2 {
+			t.Errorf("expected Triggerer.Count=2, got %d", wc.GetTriggerer().GetCount())
+		}
+		if wc.GetTriggerer().GetCpu() != 0.5 {
+			t.Errorf("expected omitted Triggerer.Cpu=0.5 to be preserved in PATCH payload, got %v", wc.GetTriggerer().GetCpu())
+		}
+		if wc.GetScheduler() == nil || wc.GetScheduler().GetCpu() != 0.5 {
+			t.Errorf("expected omitted Scheduler to be preserved in PATCH payload, got %v", wc.GetScheduler())
+		}
+	})
+
+	t.Run("disable guards for CloudDataLineageIntegration and MasterAuthorizedNetworksConfig return nil when actual is nil", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{
+					SoftwareConfig: &krm.SoftwareConfig{
+						CloudDataLineageIntegration: &krm.CloudDataLineageIntegration{
+							Enabled: direct.PtrTo(false),
+						},
+					},
+					MasterAuthorizedNetworksConfig: &krm.MasterAuthorizedNetworksConfig{
+						Enabled: direct.PtrTo(false),
+					},
+				},
+			},
+		}
+		actual := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				SoftwareConfig:                 &composerpb.SoftwareConfig{},
+				MasterAuthorizedNetworksConfig: nil,
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		rawDesiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error: %v", mapCtx.Err())
+		}
+
+		updates := buildPatches(desired, rawDesiredPb, actual)
+		if len(updates) != 0 {
+			t.Errorf("expected 0 updates when disabled and actual is nil, got %d: %v", len(updates), updates)
+		}
+	})
+}
+
+func TestReconcile_AcquisitionAndPartialImmutableFields(t *testing.T) {
+	desired := &krm.ComposerEnvironment{
+		Spec: krm.ComposerEnvironmentSpec{
+			Config: &krm.EnvironmentConfig{
+				NodeConfig: &krm.NodeConfig{
+					// Omitting ServiceAccountRef
+					IPAllocationPolicy: &krm.IPAllocationPolicy{
+						ClusterSecondaryRangeName: direct.LazyPtr("pods"),
+						// Omitting UseIPAliases and ServicesIPV4CIDRBlock
+					},
+				},
+				PrivateEnvironmentConfig: &krm.PrivateEnvironmentConfig{
+					PrivateClusterConfig: &krm.PrivateClusterConfig{
+						EnablePrivateEndpoint: direct.PtrTo(true),
+						// Omitting MasterIPV4CIDRBlock
+					},
+				},
+			},
+		},
+	}
+
+	actual := &composerpb.Environment{
+		Config: &composerpb.EnvironmentConfig{
+			NodeConfig: &composerpb.NodeConfig{
+				ServiceAccount: "123456789-compute@developer.gserviceaccount.com",
+				IpAllocationPolicy: &composerpb.IPAllocationPolicy{
+					UseIpAliases: true,
+					ClusterIpAllocation: &composerpb.IPAllocationPolicy_ClusterSecondaryRangeName{
+						ClusterSecondaryRangeName: "pods",
+					},
+					ServicesIpAllocation: &composerpb.IPAllocationPolicy_ServicesIpv4CidrBlock{
+						ServicesIpv4CidrBlock: "10.8.0.0/20",
+					},
+				},
+			},
+			PrivateEnvironmentConfig: &composerpb.PrivateEnvironmentConfig{
+				PrivateClusterConfig: &composerpb.PrivateClusterConfig{
+					EnablePrivateEndpoint: true,
+					MasterIpv4CidrBlock:   "172.16.0.0/28",
+				},
+			},
+		},
+	}
+
+	mapCtx := &direct.MapContext{}
+	rawDesiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
+	}
+
+	mergedDesiredPb := proto.Clone(rawDesiredPb).(*composerpb.Environment)
+	populateDesiredWithDefaults(desired, mergedDesiredPb)
+	populateDesiredWithActualIfComputed(desired, mergedDesiredPb, actual)
+
+	if err := validateUpdatableFields(mergedDesiredPb, actual); err != nil {
+		t.Fatalf("expected validateUpdatableFields to succeed on acquisition/partial immutable fields, got error: %v", err)
+	}
+
+	updates := buildPatches(desired, rawDesiredPb, actual)
+	if len(updates) != 0 {
+		t.Errorf("expected 0 pending updates after merging server-assigned immutable fields, got %d: %v", len(updates), updates)
 	}
 }

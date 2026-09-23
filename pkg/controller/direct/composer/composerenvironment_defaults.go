@@ -83,21 +83,28 @@ var computedFieldPaths = []string{
 	"StorageConfig.BucketRef",
 
 	// 2. Config top-level dynamic fields
-	"Config.EnvironmentSize",
-	"Config.NodeCount",
-	"Config.MaintenanceWindow",
 	"Config.DataRetentionConfig",
+	"Config.EnvironmentSize",
+	"Config.MaintenanceWindow",
+	"Config.MasterAuthorizedNetworksConfig",
+	"Config.NodeCount",
 
 	// 3. NodeConfig
 	"Config.NodeConfig.ComposerInternalIPv4CIDRBlock",
 	"Config.NodeConfig.ComposerNetworkAttachmentRef",
-	"Config.NodeConfig.SubnetworkRef",
-	"Config.NodeConfig.IPAllocationPolicy",
-	"Config.NodeConfig.NetworkRef",
-	"Config.NodeConfig.MachineType",
 	"Config.NodeConfig.DiskSizeGB",
+	"Config.NodeConfig.IPAllocationPolicy.ClusterIPV4CIDRBlock",
+	"Config.NodeConfig.IPAllocationPolicy.ClusterSecondaryRangeName",
+	"Config.NodeConfig.IPAllocationPolicy.ServicesIPV4CIDRBlock",
+	"Config.NodeConfig.IPAllocationPolicy.ServicesSecondaryRangeName",
+	"Config.NodeConfig.IPAllocationPolicy.UseIPAliases",
+	"Config.NodeConfig.MachineType",
+	"Config.NodeConfig.NetworkRef",
+	"Config.NodeConfig.ServiceAccountRef",
+	"Config.NodeConfig.SubnetworkRef",
 
 	// 4. SoftwareConfig
+	"Config.SoftwareConfig.CloudDataLineageIntegration",
 	"Config.SoftwareConfig.ImageVersion",
 	"Config.SoftwareConfig.PythonVersion",
 	"Config.SoftwareConfig.SchedulerCount",
@@ -108,22 +115,40 @@ var computedFieldPaths = []string{
 	"Config.DatabaseConfig.Zone",
 
 	// 6. PrivateEnvironmentConfig
+	"Config.PrivateEnvironmentConfig.CloudComposerConnectionSubnetworkRef",
 	"Config.PrivateEnvironmentConfig.CloudComposerNetworkIPv4CIDRBlock",
 	"Config.PrivateEnvironmentConfig.CloudSQLIPv4CIDRBlock",
-	"Config.PrivateEnvironmentConfig.PrivateClusterConfig",
-	"Config.PrivateEnvironmentConfig.WebServerIPv4CIDRBlock",
-	"Config.PrivateEnvironmentConfig.CloudComposerConnectionSubnetworkRef",
 	"Config.PrivateEnvironmentConfig.NetworkingConfig",
+	"Config.PrivateEnvironmentConfig.PrivateClusterConfig.EnablePrivateEndpoint",
+	"Config.PrivateEnvironmentConfig.PrivateClusterConfig.MasterIPV4CIDRBlock",
+	"Config.PrivateEnvironmentConfig.WebServerIPv4CIDRBlock",
 
 	// 7. WorkloadsConfig
-	"Config.WorkloadsConfig.Scheduler",
-	"Config.WorkloadsConfig.DagProcessor",
-	"Config.WorkloadsConfig.Triggerer",
-	"Config.WorkloadsConfig.WebServer",
-	"Config.WorkloadsConfig.Worker",
+	"Config.WorkloadsConfig.DagProcessor.Count",
+	"Config.WorkloadsConfig.DagProcessor.CPU",
+	"Config.WorkloadsConfig.DagProcessor.MemoryGB",
+	"Config.WorkloadsConfig.DagProcessor.StorageGB",
+	"Config.WorkloadsConfig.Scheduler.Count",
+	"Config.WorkloadsConfig.Scheduler.CPU",
+	"Config.WorkloadsConfig.Scheduler.MemoryGB",
+	"Config.WorkloadsConfig.Scheduler.StorageGB",
+	"Config.WorkloadsConfig.Triggerer.Count",
+	"Config.WorkloadsConfig.Triggerer.CPU",
+	"Config.WorkloadsConfig.Triggerer.MemoryGB",
+	"Config.WorkloadsConfig.WebServer.CPU",
+	"Config.WorkloadsConfig.WebServer.MemoryGB",
+	"Config.WorkloadsConfig.WebServer.StorageGB",
+	"Config.WorkloadsConfig.Worker.CPU",
+	"Config.WorkloadsConfig.Worker.MaxCount",
+	"Config.WorkloadsConfig.Worker.MemoryGB",
+	"Config.WorkloadsConfig.Worker.MinCount",
+	"Config.WorkloadsConfig.Worker.StorageGB",
 
 	// 8. WebServerConfig
 	"Config.WebServerConfig.MachineType",
+
+	// 9. RecoveryConfig
+	"Config.RecoveryConfig.ScheduledSnapshotsConfig",
 }
 
 // populateDesiredWithActualIfComputed populates dynamic/computed server-generated values in O(N) linear time
@@ -173,5 +198,51 @@ func populateDesiredWithActualIfComputed(desired *krm.ComposerEnvironment, desir
 		if pair.Actual.Has(fd) {
 			pair.Desired.Set(fd, pair.Actual.Get(fd))
 		}
+	}
+
+	normalizeDisabledFeatureBlocks(desiredPb, actualPb)
+}
+
+// normalizeDisabledFeatureBlocks aligns desiredPb with actualPb when optional boolean-toggle
+// blocks (CloudDataLineageIntegration, ScheduledSnapshotsConfig, MasterAuthorizedNetworksConfig) are
+// explicitly set to enabled: false in spec while GCP returns nil (absent message) in actualPb.
+// On GCP, an absent sub-message (nil) is semantically identical to {enabled: false}. Normalizing
+// desiredPb to nil declaratively before diffing avoids false diffs in both validateUpdatableFields
+// and fieldUpdaters without requiring procedural nil-guards inside individual fieldUpdaters.
+func normalizeDisabledFeatureBlocks(desiredPb, actualPb *composerpb.Environment) {
+	if desiredPb == nil || desiredPb.Config == nil {
+		return
+	}
+
+	// 1. CloudDataLineageIntegration
+	if desiredPb.Config.SoftwareConfig != nil {
+		mergedLineage := desiredPb.Config.SoftwareConfig.GetCloudDataLineageIntegration()
+		actualLineage := actualPb.GetConfig().GetSoftwareConfig().GetCloudDataLineageIntegration()
+		if mergedLineage != nil && !mergedLineage.GetEnabled() && actualLineage == nil {
+			desiredPb.Config.SoftwareConfig.CloudDataLineageIntegration = nil
+		}
+	}
+
+	// 2. ScheduledSnapshotsConfig
+	if desiredPb.Config.RecoveryConfig != nil {
+		mergedSnapshots := desiredPb.Config.RecoveryConfig.GetScheduledSnapshotsConfig()
+		actualSnapshots := actualPb.GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig()
+		if mergedSnapshots != nil && !mergedSnapshots.GetEnabled() &&
+			mergedSnapshots.GetSnapshotLocation() == "" &&
+			mergedSnapshots.GetSnapshotCreationSchedule() == "" &&
+			mergedSnapshots.GetTimeZone() == "" &&
+			actualSnapshots == nil {
+			desiredPb.Config.RecoveryConfig.ScheduledSnapshotsConfig = nil
+			if actualPb.GetConfig().GetRecoveryConfig() == nil {
+				desiredPb.Config.RecoveryConfig = nil
+			}
+		}
+	}
+
+	// 3. MasterAuthorizedNetworksConfig
+	mergedAuth := desiredPb.Config.GetMasterAuthorizedNetworksConfig()
+	actualAuth := actualPb.GetConfig().GetMasterAuthorizedNetworksConfig()
+	if mergedAuth != nil && !mergedAuth.GetEnabled() && len(mergedAuth.GetCidrBlocks()) == 0 && actualAuth == nil {
+		desiredPb.Config.MasterAuthorizedNetworksConfig = nil
 	}
 }
