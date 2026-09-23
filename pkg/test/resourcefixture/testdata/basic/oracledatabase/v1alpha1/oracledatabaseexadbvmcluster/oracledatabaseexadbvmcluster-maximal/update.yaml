@@ -1,0 +1,41 @@
+apiVersion: oracledatabase.cnrm.cloud.google.com/v1alpha1
+kind: OracleDatabaseExadbVMCluster
+metadata:
+  name: exadbvm-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-east4
+  displayName: "Exadb VM Cluster Maximal"
+  odbNetworkRef:
+    external: projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}
+  odbSubnetRef:
+    external: projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/odb-subnet-${uniqueId}
+  backupOdbSubnetRef:
+    external: projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/backup-subnet-${uniqueId}
+  labels:
+    env: staging
+    team: dba
+  properties:
+    clusterName: "exacluster"
+    gridImageID: "gi-image-id-val"
+    nodeCount: 3
+    enabledEcpuCountPerNode: 4
+    additionalEcpuCountPerNode: 2
+    vmFileSystemStorage:
+      sizeInGBsPerNode: 120
+    licenseModel: "LICENSE_INCLUDED"
+    exascaleDbStorageVaultRef:
+      external: projects/${projectId}/locations/us-east4/exascaleDbStorageVaults/vault-${uniqueId}
+    hostnamePrefix: "host-pref"
+    sshPublicKeys:
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6f3v..."
+    dataCollectionOptions:
+      isDiagnosticsEventsEnabled: true
+      isHealthMonitoringEnabled: true
+      isIncidentLogsEnabled: true
+    timeZone:
+      id: "UTC"
+      version: "2024a"
+    shapeAttribute: "SMART_STORAGE"
+    scanListenerPortTCP: 1521
