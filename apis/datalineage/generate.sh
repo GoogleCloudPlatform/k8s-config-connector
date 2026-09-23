@@ -37,6 +37,10 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version datalineage.cnrm.cloud.google.com/v1alpha1 \
   --resource DataLineageProcess:Process
 
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.datacatalog.lineage.v1 \
+  --api-version datalineage.cnrm.cloud.google.com/v1alpha1
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

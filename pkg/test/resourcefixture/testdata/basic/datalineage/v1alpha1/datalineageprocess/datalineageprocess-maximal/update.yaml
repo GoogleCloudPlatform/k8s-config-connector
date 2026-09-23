@@ -1,0 +1,16 @@
+apiVersion: datalineage.cnrm.cloud.google.com/v1alpha1
+kind: DataLineageProcess
+metadata:
+  name: dlprocess-max-${uniqueId}
+spec:
+  location: us
+  projectRef:
+    external: ${projectId}
+  displayName: Updated Maximal Data Lineage Process
+  origin:
+    sourceType: CUSTOM
+    name: myUpdatedCustomIntegration
+  attributes:
+    engine: "spark-updated"
+    version: "3.2.0"
+    debug: "false"

@@ -1,0 +1,9 @@
+apiVersion: datalineage.cnrm.cloud.google.com/v1alpha1
+kind: DataLineageProcess
+metadata:
+  name: dlprocess-min-${uniqueId}
+spec:
+  location: us
+  projectRef:
+    external: ${projectId}
+  displayName: Updated Display Name
