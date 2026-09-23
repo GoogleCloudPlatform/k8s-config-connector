@@ -191,3 +191,25 @@ func PSCConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PSCCo
 	out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
 	return out
 }
+
+func Cluster_ManagedBackupSource_FromProto(mapCtx *direct.MapContext, in *pb.Cluster_ManagedBackupSource) *krm.Cluster_ManagedBackupSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Cluster_ManagedBackupSource{}
+	if in.GetBackup() != "" {
+		out.BackupRef = &krm.RedisBackupRef{External: in.GetBackup()}
+	}
+	return out
+}
+
+func Cluster_ManagedBackupSource_ToProto(mapCtx *direct.MapContext, in *krm.Cluster_ManagedBackupSource) *pb.Cluster_ManagedBackupSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Cluster_ManagedBackupSource{}
+	if in.BackupRef != nil {
+		out.Backup = in.BackupRef.External
+	}
+	return out
+}

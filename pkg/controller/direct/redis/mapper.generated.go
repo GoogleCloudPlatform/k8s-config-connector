@@ -216,22 +216,34 @@ func Cluster_GCSBackupSource_ToProto(mapCtx *direct.MapContext, in *krm.Cluster_
 	out.Uris = in.Uris
 	return out
 }
+
+/* found existing non-generated mapping function "Cluster_ManagedBackupSource_FromProto", skipping
 func Cluster_ManagedBackupSource_FromProto(mapCtx *direct.MapContext, in *pb.Cluster_ManagedBackupSource) *krm.Cluster_ManagedBackupSource {
 	if in == nil {
 		return nil
 	}
 	out := &krm.Cluster_ManagedBackupSource{}
-	out.Backup = direct.LazyPtr(in.GetBackup())
-	return out
-}
-func Cluster_ManagedBackupSource_ToProto(mapCtx *direct.MapContext, in *krm.Cluster_ManagedBackupSource) *pb.Cluster_ManagedBackupSource {
-	if in == nil {
-		return nil
+	if in.GetBackup() != "" {
+		out.BackupRef = &krm.RedisBackupRef{External: in.GetBackup()}
 	}
-	out := &pb.Cluster_ManagedBackupSource{}
-	out.Backup = direct.ValueOf(in.Backup)
 	return out
 }
+*/
+
+/*
+found existing non-generated mapping function "Cluster_ManagedBackupSource_ToProto", skipping
+
+	func Cluster_ManagedBackupSource_ToProto(mapCtx *direct.MapContext, in *krm.Cluster_ManagedBackupSource) *pb.Cluster_ManagedBackupSource {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Cluster_ManagedBackupSource{}
+		if in.BackupRef != nil {
+			out.Backup = in.BackupRef.External
+		}
+		return out
+	}
+*/
 func Cluster_StateInfo_FromProto(mapCtx *direct.MapContext, in *pb.Cluster_StateInfo) *krm.Cluster_StateInfo {
 	if in == nil {
 		return nil

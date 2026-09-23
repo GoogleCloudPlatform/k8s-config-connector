@@ -36,3 +36,5 @@
 [naming_violation] file=pkg/controller/direct/dlp/dlp_controller.go prefix=dlp (expected a valid resource kind prefix)
 [naming_violation] file=pkg/controller/direct/sql/sqlinstance_legacy_fuzzer.go prefix=sqlinstance_legacy (expected a valid resource kind prefix)
 [naming_violation] file=pkg/controller/direct/sql/sqlinstance_legacy_fuzzer_test.go prefix=sqlinstance_legacy (expected a valid resource kind prefix)
+[naming_violation] file=apis/redis/v1beta1/redisbackup_identity.go prefix=redisbackup (expected a valid resource kind prefix)
+[naming_violation] file=apis/redis/v1beta1/redisbackup_reference.go prefix=redisbackup (expected a valid resource kind prefix)

@@ -262,3 +262,10 @@ type RedisClusterList struct {
 func init() {
 	SchemeBuilder.Register(&RedisCluster{}, &RedisClusterList{})
 }
+
+// +kcc:proto=google.cloud.redis.cluster.v1.Cluster.ManagedBackupSource
+type Cluster_ManagedBackupSource struct {
+	// Optional. The RedisBackup resource that this managed backup source represents.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.ManagedBackupSource.backup
+	BackupRef *RedisBackupRef `json:"backupRef,omitempty"`
+}
