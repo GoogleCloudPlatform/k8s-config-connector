@@ -32,6 +32,7 @@ type DataLineageProcess_Origin struct {
 	//  without notice. There will be increase in cost if you use any of the
 	//  source types other than CUSTOM.
 	// +kcc:proto:field=google.cloud.datacatalog.lineage.v1.Origin.source_type
+	// +kubebuilder:validation:Optional
 	SourceType *string `json:"sourceType,omitempty"`
 
 	// If the source_type isn't CUSTOM, the value of this field should be a GCP
@@ -44,6 +45,7 @@ type DataLineageProcess_Origin struct {
 	//  - `{source_type: BIGQUERY, name: "projects/foo/locations/eu"}`
 	//  - `{source_type: CUSTOM,   name: "myCustomIntegration"}`
 	// +kcc:proto:field=google.cloud.datacatalog.lineage.v1.Origin.name
+	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty"`
 }
 
@@ -51,32 +53,32 @@ type DataLineageProcess_Origin struct {
 // +kcc:spec:proto=google.cloud.datacatalog.lineage.v1.Process
 type DataLineageProcessSpec struct {
 	// The project that this resource belongs to.
-	// +required
+	// +kubebuilder:validation:Required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The location of this resource.
-	// +required
+	// +kubebuilder:validation:Required
 	Location *string `json:"location,omitempty"`
 
 	// The DataLineageProcess name. If not given, the metadata.name will be used.
-	// +optional
+	// +kubebuilder:validation:Optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Optional. A human-readable name you can set to display in a user interface.
 	//  Must be not longer than 200 characters and only contain UTF-8 letters
 	//  or numbers, spaces or characters like `_-:&.`
-	// +optional
+	// +kubebuilder:validation:Optional
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Optional. The attributes of the process. Should only be used for the purpose of
 	//  non-semantic management (classifying, describing or labeling the process).
 	//
 	//  Up to 100 attributes are allowed.
-	// +optional
+	// +kubebuilder:validation:Optional
 	Attributes map[string]apiextensionsv1.JSON `json:"attributes,omitempty"`
 
 	// Optional. The origin of this process and its runs and lineage events.
-	// +optional
+	// +kubebuilder:validation:Optional
 	Origin *DataLineageProcess_Origin `json:"origin,omitempty"`
 }
 
