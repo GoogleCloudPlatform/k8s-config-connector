@@ -183,3 +183,128 @@ func TestGetResourceMetadata(t *testing.T) {
 		t.Errorf("len(Patterns) = %d, want 3", len(multiMD.Patterns))
 	}
 }
+
+// TestParentPair pins which segment ParentPair calls the parent. The scaffolder
+// names a reference field from the collection it returns, so a pattern read one
+// pair off puts the wrong resource in somebody's CRD.
+func TestParentPair(t *testing.T) {
+	grid := []struct {
+		name            string
+		pattern         string
+		wantCollection  string
+		wantPlaceholder string
+	}{
+		{
+			name:            "ends on its own collection and id",
+			pattern:         "projects/{project}/locations/{location}/clusters/{cluster}/nodePools/{node_pool}",
+			wantCollection:  "clusters",
+			wantPlaceholder: "cluster",
+		},
+		{
+			// 274 of the 3160 patterns in googleapis end in a literal naming a
+			// singleton, so the last collection/{id} pair is already the parent.
+			name:            "ends in a singleton literal",
+			pattern:         "accounts/{account}/programs/{program}/checkoutSettings",
+			wantCollection:  "programs",
+			wantPlaceholder: "program",
+		},
+		{
+			name:            "project and location parent",
+			pattern:         "projects/{project}/locations/{location}/foos/{foo}",
+			wantCollection:  "locations",
+			wantPlaceholder: "location",
+		},
+		{
+			// The only patterns in googleapis with two placeholders in a row are
+			// 2 of the 3160, both healthcare FHIR. Nothing between them names a
+			// collection, so the pattern has no parent to read.
+			name:            "two placeholders in a row",
+			pattern:         "projects/{project}/locations/{location}/datasets/{dataset}/fhirStores/{fhir_store}/fhir/{resource_type}/{fhir_resource_id}",
+			wantCollection:  "",
+			wantPlaceholder: "",
+		},
+		{
+			name:            "no parent at all",
+			pattern:         "foos/{foo}",
+			wantCollection:  "",
+			wantPlaceholder: "",
+		},
+		{
+			name:            "pattern ending in a literal names no parent",
+			pattern:         "projects/{project}/locations",
+			wantCollection:  "",
+			wantPlaceholder: "",
+		},
+	}
+
+	for _, g := range grid {
+		t.Run(g.name, func(t *testing.T) {
+			// Act
+			collection, placeholder := ParentPair(g.pattern)
+
+			// Assert
+			if collection != g.wantCollection {
+				t.Errorf("ParentPair(%q) collection = %q, want %q", g.pattern, collection, g.wantCollection)
+			}
+			if placeholder != g.wantPlaceholder {
+				t.Errorf("ParentPair(%q) placeholder = %q, want %q", g.pattern, placeholder, g.wantPlaceholder)
+			}
+		})
+	}
+}
+
+func TestParentPattern(t *testing.T) {
+	grid := []struct {
+		pattern string
+		want    string
+	}{
+		{
+			pattern: "projects/{project}/locations/{location}/clusters/{cluster}/nodePools/{node_pool}",
+			want:    "projects/{project}/locations/{location}/clusters/{cluster}",
+		},
+		{
+			pattern: "projects/{project}/locations/{location}/foos/{foo}",
+			want:    "projects/{project}/locations/{location}",
+		},
+		{
+			pattern: "accounts/{account}/programs/{program}/checkoutSettings",
+			want:    "accounts/{account}/programs/{program}",
+		},
+		{
+			pattern: "foos/{foo}",
+			want:    "",
+		},
+		{
+			pattern: "",
+			want:    "",
+		},
+	}
+
+	for _, g := range grid {
+		t.Run(g.pattern, func(t *testing.T) {
+			if got := ParentPattern(g.pattern); got != g.want {
+				t.Errorf("ParentPattern(%q) = %q, want %q", g.pattern, got, g.want)
+			}
+		})
+	}
+}
+
+func TestParseResourceTarget(t *testing.T) {
+	for _, tc := range []struct {
+		target      string
+		wantService string
+		wantKind    string
+	}{
+		{"chronicle.googleapis.com/Watchlist", "chronicle", "Watchlist"},
+		{"compute.googleapis.com/Network", "compute", "Network"},
+		{"sqladmin.googleapis.com/Instance", "sqladmin", "Instance"},
+		{"bigquery.googleapis.com/Table", "bigquery", "Table"},
+		{"", "", ""},
+	} {
+		s, k := ParseResourceTarget(tc.target)
+		if s != tc.wantService || k != tc.wantKind {
+			t.Errorf("ParseResourceTarget(%q) = (%q, %q), want (%q, %q)", tc.target, s, k, tc.wantService, tc.wantKind)
+		}
+	}
+}
+

@@ -142,6 +142,35 @@ func splitPattern(pattern string) (collection string, parentPath string) {
 	return literals[len(literals)-1], strings.Join(literals[:len(literals)-1], "/")
 }
 
+// ParentPair extracts the collection segment and placeholder naming a resource's
+// direct parent from its resource name pattern. It returns empty strings if
+// the pattern declares no distinct parent.
+func ParentPair(pattern string) (collection string, placeholder string) {
+	segs := strings.Split(pattern, "/")
+
+	type pair struct{ collection, placeholder string }
+	var pairs []pair
+	for i := 0; i+1 < len(segs); i++ {
+		if !strings.HasPrefix(segs[i], "{") && strings.HasPrefix(segs[i+1], "{") {
+			pairs = append(pairs, pair{segs[i], strings.Trim(segs[i+1], "{}")})
+		}
+	}
+	// One pair is the resource itself, no parent can be detected here.
+	if len(pairs) < 2 {
+		return "", ""
+	}
+
+	if strings.HasPrefix(segs[len(segs)-1], "{") {
+		if strings.HasPrefix(segs[len(segs)-2], "{") {
+			return "", ""
+		}
+		parent := pairs[len(pairs)-2]
+		return parent.collection, parent.placeholder
+	}
+	last := pairs[len(pairs)-1]
+	return last.collection, last.placeholder
+}
+
 func classifyParent(parentPath string) ParentStyle {
 	switch parentPath {
 	case "":
@@ -158,3 +187,71 @@ func classifyParent(parentPath string) ParentStyle {
 		return ParentOther
 	}
 }
+
+// ParentPattern returns the resource name pattern truncated to include only
+// the direct parent segments. It returns an empty string if no distinct parent exists.
+func ParentPattern(pattern string) string {
+	collection, placeholder := ParentPair(pattern)
+	if collection == "" {
+		return ""
+	}
+	segs := strings.Split(pattern, "/")
+	for i := 0; i+1 < len(segs); i++ {
+		if segs[i] == collection && segs[i+1] == "{"+placeholder+"}" {
+			return strings.Join(segs[:i+2], "/")
+		}
+	}
+	return pattern
+}
+
+// TargetForPath finds the google.api.resource or google.api.resource_definition target
+// (e.g. "chronicle.googleapis.com/Watchlist") for path in the proto.
+func (p *Proto) TargetForPath(path string) string {
+	if p == nil || path == "" {
+		return ""
+	}
+	for _, f := range p.SortedFiles() {
+		// Check file-level resource_definition annotations
+		if v := proto.GetExtension(f.Options(), annotations.E_ResourceDefinition); v != nil {
+			if rds, ok := v.([]*annotations.ResourceDescriptor); ok {
+				for _, rd := range rds {
+					if rd != nil {
+						for _, pattern := range rd.GetPattern() {
+							if pattern == path {
+								return rd.GetType()
+							}
+						}
+					}
+				}
+			}
+		}
+		// Check message-level resource annotations
+		for i := 0; i < f.Messages().Len(); i++ {
+			msg := f.Messages().Get(i)
+			if v := proto.GetExtension(msg.Options(), annotations.E_Resource); v != nil {
+				if rd, ok := v.(*annotations.ResourceDescriptor); ok && rd != nil {
+					for _, pattern := range rd.GetPattern() {
+						if pattern == path {
+							return rd.GetType()
+						}
+					}
+				}
+			}
+		}
+	}
+	return ""
+}
+
+// ParseResourceTarget parses a resource type (e.g. "chronicle.googleapis.com/Watchlist")
+// into its service and kind components (e.g. "chronicle", "Watchlist").
+func ParseResourceTarget(target string) (service, kind string) {
+	parts := strings.Split(target, "/")
+	if len(parts) == 0 {
+		return "", ""
+	}
+	kind = parts[len(parts)-1]
+	domain := parts[0]
+	service = strings.TrimSuffix(domain, ".googleapis.com")
+	return service, kind
+}
+
