@@ -39,6 +39,14 @@
     {
       "pattern": "^bigquerystorage\\.googleapis\\.com/WriteStream$",
       "reason": "The BigQueryWrite service in v1beta2 is marked as deprecated."
+    },
+    {
+      "pattern": "^storage\\.googleapis\\.com/Object",
+      "reason": "Dataplane resource."
+    },
+    {
+      "pattern": "^discoveryengine\\.googleapis\\.com/DiscoveryEngineSampleQuery",
+      "reason": "Dataplane resource."
     }
   ]
 }
