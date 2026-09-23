@@ -35,6 +35,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -86,6 +87,7 @@ func (m *modelReservation) AdapterForObject(ctx context.Context, op *directbase.
 		id:        id,
 		gcpClient: gcpClient,
 		desired:   obj,
+		reader:    reader,
 	}, nil
 }
 
@@ -99,6 +101,7 @@ type ReservationAdapter struct {
 	gcpClient *gcp.Client
 	desired   *krm.BigQueryReservationReservation
 	actual    *pb.Reservation
+	reader    client.Reader
 }
 
 var _ directbase.Adapter = &ReservationAdapter{}
@@ -131,6 +134,11 @@ func (a *ReservationAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
+	if desired.Spec.ReservationGroupRef != nil {
+		if _, err := desired.Spec.ReservationGroupRef.NormalizedExternal(ctx, a.reader, desired.GetNamespace()); err != nil {
+			return err
+		}
+	}
 	desiredPb := BigQueryReservationReservationSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -162,7 +170,13 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log.V(2).Info("updating Reservation", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
-	desiredSpec := &a.desired.DeepCopy().Spec
+	desired := a.desired.DeepCopy()
+	if desired.Spec.ReservationGroupRef != nil {
+		if _, err := desired.Spec.ReservationGroupRef.NormalizedExternal(ctx, a.reader, desired.GetNamespace()); err != nil {
+			return err
+		}
+	}
+	desiredSpec := &desired.Spec
 	desiredPb := BigQueryReservationReservationSpec_ToProto(mapCtx, desiredSpec)
 	desiredPb.Name = a.id.String()
 	if mapCtx.Err() != nil {
@@ -214,6 +228,11 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	} else if desiredPb.Autoscale != nil && a.actual.Autoscale == nil {
 		report.AddField("autoscale", a.actual.Autoscale, desiredPb.Autoscale)
 		paths = append(paths, "autoscale")
+	}
+
+	if !reflect.DeepEqual(desiredPb.ReservationGroup, a.actual.ReservationGroup) {
+		report.AddField("reservation_group", a.actual.ReservationGroup, desiredPb.ReservationGroup)
+		paths = append(paths, "reservation_group")
 	}
 
 	if len(paths) == 0 {
