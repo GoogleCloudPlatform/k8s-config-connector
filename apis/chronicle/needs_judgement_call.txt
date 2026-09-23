@@ -1,0 +1,10 @@
+# Fields the generator emitted mechanically but cannot vouch for.
+# Each entry needs a human decision: is it a reference, should it be omitted,
+# should it be renamed for KRM conventions?
+#
+# While a resource has entries here, TestMissingRefs suppresses its [refs]
+# findings. Clearing them graduates the resource and the ratchet applies.
+
+kind=ChronicleWatchlist group=chronicle.cnrm.cloud.google.com: resource reason=untriaged-bulk-generation (spec was generated mechanically; confirm refs, omissions and KRM names)
+kind=ChronicleWatchlist group=chronicle.cnrm.cloud.google.com: field ".spec.location" reason=location-or-parent-ref (the parent is projects/{project}/locations/{location}/instances/{instance}, which already names the location; a reference to it could replace location and the root reference)
+kind=ChronicleWatchlist group=chronicle.cnrm.cloud.google.com: resource reason=parent-ref-not-modelled (the parent is projects/{project}/locations/{location}/instances/{instance}, and no InstanceRef type exists to point at; add the parent resource first, then model this as a reference)

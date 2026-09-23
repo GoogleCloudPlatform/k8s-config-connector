@@ -1144,6 +1144,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com":        true, // spec.scheduleOptionsV2.manualSchedule is an empty object
 		"bigquerymigrationmigrationworkflows.bigquerymigration.cnrm.cloud.google.com":   true, // spec.tasks[*].translationTaskDetails.teradataOptions is an empty object
 		"bigquerytables.bigquery.cnrm.cloud.google.com":                                 true, // status.observedState is an empty object
+		"chroniclewatchlists.chronicle.cnrm.cloud.google.com":                           true, // spec.entityPopulationMechanism.manual is an empty object
 		"clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com":                          true, // spec.staticIPConnectivity and status.observedState are empty objects
 		"configdeliveryfleetpackages.configdelivery.cnrm.cloud.google.com":              true, // spec.rolloutStrategy.allAtOnce is an empty object
 		"datacatalogentries.datacatalog.cnrm.cloud.google.com":                          true, // spec.featureOnlineStoreSpec and status.observedState.databaseTableSpec.dataplexTable.dataplexSpec.dataFormat.csv are empty objects
