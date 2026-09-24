@@ -57,6 +57,3 @@ spec:
         minutes: 0
         seconds: 0
         nanos: 0
-  managedBackupSource:
-    backupRef:
-      external: projects/${projectId}/locations/us-central1/backupCollections/backupCollection-${uniqueId}/backups/backup-${uniqueId}

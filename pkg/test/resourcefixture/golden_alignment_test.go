@@ -568,7 +568,6 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "correlationInfo")
 		delete(v, "labels")
 		delete(v, "instanceCreateTime")
-		delete(v, "managedBackupSource")
 		if qm, ok := v["qualityMetadata"].(map[string]interface{}); ok {
 			if agentInfo, ok := qm["agentInfo"].([]interface{}); ok {
 				for _, a := range agentInfo {
@@ -862,6 +861,8 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		if serverCaMode, ok := v["serverCaMode"].(float64); ok && serverCaMode == 0 {
 			delete(v, "serverCaMode")
 		}
+		delete(v, "clusterEndpoints")
+		delete(v, "cluster_endpoints")
 		for k, val := range v {
 			v[k] = normalizeRepresentation(val)
 		}
