@@ -41,6 +41,11 @@ func Execute(ctx context.Context, opts *Options) error {
 	// Use a custom FlagSet for klog to avoid conflicts with global flag.CommandLine
 	klogFlags := flag.NewFlagSet("klog", flag.ExitOnError)
 	klog.InitFlags(klogFlags)
+	// Opt into the new klog behavior so that -stderrthreshold is honored even
+	// when -logtostderr=true (the default).
+	// Ref: kubernetes/klog#212, kubernetes/klog#432
+	_ = klogFlags.Set("legacy_stderr_threshold_behavior", "false")
+	_ = klogFlags.Set("stderrthreshold", "INFO")
 	if err := klogFlags.Set("v", fmt.Sprintf("%d", opts.Verbose)); err != nil {
 		fmt.Printf("Failed to set -v flag: %v\n", err)
 	}
