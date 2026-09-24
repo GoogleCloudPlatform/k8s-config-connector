@@ -2425,33 +2425,6 @@
     "grpc_client": "MISSING"
   },
   {
-    "resource": "apihub/Deployment",
-    "service": "apihub",
-    "kind": "APIHubDeployment",
-    "patterns": [
-      "projects/{project}/locations/{location}/deployments/{deployment}"
-    ],
-    "layer": "Easy (Leaf)",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "references": [
-      {
-        "field": "attributes",
-        "target_group": "apihub.cnrm.cloud.google.com",
-        "target_kind": "APIHubAttribute"
-      }
-    ],
-    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/apihub/apiv1/apihubpb#Deployment",
-    "rest_client": "https://pkg.go.dev/cloud.google.com/go/apihub/apiv1#NewRESTClient",
-    "grpc_client": "MISSING"
-  },
-  {
     "resource": "apihub/ExternalApi",
     "service": "apihub",
     "kind": "APIHubExternalAPI",
@@ -2753,36 +2726,9 @@
     "grpc_client": "https://pkg.go.dev/cloud.google.com/go/backupdr/apiv1#NewClient"
   },
   {
-    "resource": "beyondcorp/ClientConnectorService",
-    "service": "beyondcorp",
-    "kind": "BeyondCorpClientConnectorService",
-    "patterns": [
-      "projects/{project}/locations/{location}/clientConnectorServices/{client_connector_service}"
-    ],
-    "layer": "Easy (Leaf)",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "references": [
-      {
-        "field": "egress.peered_vpc.network_vpc",
-        "target_group": "compute.cnrm.cloud.google.com",
-        "target_kind": "ComputeNetwork"
-      }
-    ],
-    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/beyondcorp/clientconnectorservices/apiv1/clientconnectorservicespb#ClientConnectorService",
-    "rest_client": "MISSING",
-    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/beyondcorp/clientconnectorservices/apiv1#NewClient"
-  },
-  {
     "resource": "bigtableadmin/Cluster",
     "service": "bigtableadmin",
-    "kind": "BigtableAdminCluster",
+    "kind": "BigtableCluster",
     "patterns": [
       "projects/{project}/instances/{instance}/clusters/{cluster}"
     ],
@@ -2807,7 +2753,7 @@
   {
     "resource": "bigtableadmin/SchemaBundle",
     "service": "bigtableadmin",
-    "kind": "BigtableAdminSchemaBundle",
+    "kind": "BigtableSchemaBundle",
     "patterns": [
       "projects/{project}/instances/{instance}/tables/{table}/schemaBundles/{schema_bundle}"
     ],
@@ -4653,6 +4599,27 @@
     "grpc_client": "MISSING"
   },
   {
+    "resource": "contentwarehouse/SynonymSet",
+    "service": "contentwarehouse",
+    "kind": "ContentWarehouseSynonymSet",
+    "patterns": [
+      "projects/{project}/locations/{location}/synonymSets/{context}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "implemented",
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
+  },
+  {
     "resource": "dataform/Folder",
     "service": "dataform",
     "kind": "DataformFolder",
@@ -4784,7 +4751,7 @@
   {
     "resource": "datalineage/Process",
     "service": "datalineage",
-    "kind": "DriveLabelsProcess",
+    "kind": "DataLineageProcess",
     "patterns": [
       "projects/{project}/locations/{location}/processes/{process}"
     ],
@@ -4805,7 +4772,7 @@
   {
     "resource": "datalineage/Run",
     "service": "datalineage",
-    "kind": "DriveLabelsRun",
+    "kind": "DataLineageRun",
     "patterns": [
       "projects/{project}/locations/{location}/processes/{process}/runs/{run}"
     ],
@@ -4820,7 +4787,7 @@
     "status": "missing",
     "parent": {
       "target_group": "datalineage.cnrm.cloud.google.com",
-      "target_kind": "DriveLabelsProcess"
+      "target_kind": "DataLineageProcess"
     },
     "references": [],
     "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/datacatalog/lineage/apiv1/lineagepb#Run",
@@ -6397,6 +6364,25 @@
     "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb#Control",
     "rest_client": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1#NewControlRESTClient",
     "grpc_client": "https://pkg.go.dev/cloud.google.com/go/discoveryengine/apiv1#NewControlClient"
+  },
+  {
+    "resource": "discoveryengine/Conversation",
+    "service": "discoveryengine",
+    "kind": "DiscoveryEngineConversation",
+    "patterns": [
+      "projects/{project}/locations/{location}/dataStores/{data_store}/conversations/{conversation}",
+      "projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/conversations/{conversation}",
+      "projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/conversations/{conversation}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "implemented"
   },
   {
     "resource": "discoveryengine/Document",
@@ -8178,6 +8164,27 @@
     "grpc_client": "https://pkg.go.dev/cloud.google.com/go/migrationcenter/apiv1#NewClient"
   },
   {
+    "resource": "modelarmor/Template",
+    "service": "modelarmor",
+    "kind": "ModelArmorTemplate",
+    "patterns": [
+      "projects/{project}/locations/{location}/templates/{template}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "implemented",
+    "references": [],
+    "protobuf_object": "MISSING",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
+  },
+  {
     "resource": "netapp/ActiveDirectory",
     "service": "netapp",
     "kind": "NetappActiveDirectory",
@@ -9539,38 +9546,6 @@
     "grpc_client": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1#NewSaasDeploymentsClient"
   },
   {
-    "resource": "saasservicemgmt/Release",
-    "service": "saasservicemgmt",
-    "kind": "SaasServiceMgmtRelease",
-    "patterns": [
-      "projects/{project}/locations/{location}/releases/{release}"
-    ],
-    "layer": "Easy (Leaf)",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "missing",
-    "references": [
-      {
-        "field": "release_requirements.upgradeable_from_releases[]",
-        "target_group": "saasservicemgmt.cnrm.cloud.google.com",
-        "target_kind": "SaasServiceMgmtRelease"
-      },
-      {
-        "field": "unit_kind",
-        "target_group": "saasservicemgmt.cnrm.cloud.google.com",
-        "target_kind": "SaaSServiceMgmtUnitKind"
-      }
-    ],
-    "protobuf_object": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1/saasservicemgmtpb#Release",
-    "rest_client": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1#NewSaasDeploymentsRESTClient",
-    "grpc_client": "https://pkg.go.dev/cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1#NewSaasDeploymentsClient"
-  },
-  {
     "resource": "securesourcemanager/BranchRule",
     "service": "securesourcemanager",
     "kind": "SecureSourceManagerBranchRule",
@@ -10097,6 +10072,27 @@
     "status": "missing",
     "references": [],
     "protobuf_object": "https://pkg.go.dev/google.golang.org/genproto/googleapis/devtools/testing/v1#DeviceSession",
+    "rest_client": "MISSING",
+    "grpc_client": "MISSING"
+  },
+  {
+    "resource": "vectorsearch/Collection",
+    "service": "vectorsearch",
+    "kind": "VectorSearchCollection",
+    "patterns": [
+      "projects/{project}/locations/{location}/collections/{collection}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "implemented",
+    "references": [],
+    "protobuf_object": "MISSING",
     "rest_client": "MISSING",
     "grpc_client": "MISSING"
   },
