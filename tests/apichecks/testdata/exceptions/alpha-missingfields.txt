@@ -585,8 +585,6 @@
 [missing_field] crd=bigtableclusters.bigtable.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=bigtableclusters.bigtable.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeScalingFactor" is not set in unstructured objects
 [missing_field] crd=bigtableclusters.bigtable.cnrm.cloud.google.com version=v1alpha1: field ".spec.serveNodes" is not set in unstructured objects
-[missing_field] crd=bigtableschemabundles.bigtable.cnrm.cloud.google.com version=v1alpha1: field ".spec.protoSchema.protoDescriptors" is not set in unstructured objects
-[missing_field] crd=bigtableschemabundles.bigtable.cnrm.cloud.google.com version=v1alpha1: field ".spec.tableRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=billingaccounts.billing.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.gkePolicy.checkSets[].checks[].imageAllowlist.allowPattern[]" is not set in unstructured objects
 [missing_field] crd=binaryauthorizationplatformpolicies.binaryauthorization.cnrm.cloud.google.com version=v1alpha1: field ".spec.gkePolicy.checkSets[].checks[].imageFreshnessCheck.maxUploadAgeDays" is not set in unstructured objects
