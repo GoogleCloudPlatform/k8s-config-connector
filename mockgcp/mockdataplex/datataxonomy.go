@@ -112,7 +112,7 @@ func (s *DataTaxonomyService) UpdateDataTaxonomy(ctx context.Context, req *pb.Up
 		switch path {
 		case "description":
 			obj.Description = req.GetDataTaxonomy().GetDescription()
-		case "display_name":
+		case "display_name", "displayName":
 			obj.DisplayName = req.GetDataTaxonomy().GetDisplayName()
 		case "labels":
 			obj.Labels = req.GetDataTaxonomy().GetLabels()
