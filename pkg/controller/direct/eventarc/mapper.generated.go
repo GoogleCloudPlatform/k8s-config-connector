@@ -319,14 +319,74 @@ func EventarcGoogleChannelConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb
 }
 */
 
-/* found existing non-generated mapping function "EventarcGoogleChannelConfigSpec_ToProto", skipping
-func EventarcGoogleChannelConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcGoogleChannelConfigSpec) *pb.GoogleChannelConfig {
+/*
+found existing non-generated mapping function "EventarcGoogleChannelConfigSpec_ToProto", skipping
+
+	func EventarcGoogleChannelConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcGoogleChannelConfigSpec) *pb.GoogleChannelConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.GoogleChannelConfig{}
+		// MISSING: Name
+		// MISSING: CryptoKeyName
+		return out
+	}
+*/
+func EventarcMessageBusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MessageBus) *krm.EventarcMessageBusObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.GoogleChannelConfig{}
+	out := &krm.EventarcMessageBusObservedState{}
 	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: CryptoKeyName
+	return out
+}
+func EventarcMessageBusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EventarcMessageBusObservedState) *pb.MessageBus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MessageBus{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: CryptoKeyName
+	return out
+}
+
+/* found existing non-generated mapping function "EventarcMessageBusSpec_FromProto", skipping
+func EventarcMessageBusSpec_FromProto(mapCtx *direct.MapContext, in *pb.MessageBus) *krm.EventarcMessageBusSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EventarcMessageBusSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: CryptoKeyName
+	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "EventarcMessageBusSpec_ToProto", skipping
+func EventarcMessageBusSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcMessageBusSpec) *pb.MessageBus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MessageBus{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: CryptoKeyName
+	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
 	return out
 }
 */

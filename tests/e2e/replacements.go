@@ -16,6 +16,7 @@ package e2e
 
 import (
 	"fmt"
+	"regexp"
 	"slices"
 	"sort"
 	"strings"
@@ -92,6 +93,14 @@ func (r *Replacements) ApplyReplacements(s string) string {
 	for _, normalizer := range normalizers {
 		s = normalizer(s)
 	}
+
+	// Normalize BackupDR vault service accounts to a standard placeholder
+	reBackupVaultSA := regexp.MustCompile(`(vault-\d+)-\d+(@gcp-sa-backupdr-pr\.iam\.gserviceaccount\.com)`)
+	s = reBackupVaultSA.ReplaceAllString(s, `${1}-12345${2}`)
+
+	reBackupVaultSA2 := regexp.MustCompile(`(vault-\$\{projectNumber\})-\d+(@gcp-sa-backupdr-pr\.iam\.gserviceaccount\.com)`)
+	s = reBackupVaultSA2.ReplaceAllString(s, `${1}-12345${2}`)
+
 	return s
 }
 

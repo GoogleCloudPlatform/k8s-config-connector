@@ -57,8 +57,9 @@ func (r *clusterServer) GetCluster(ctx context.Context, req *pb.GetClusterReques
 	}
 
 	retObj := proto.CloneOf(obj)
-	// pscConfigs is not included in the response
+	// pscConfigs and ImportSources are not included in the response
 	retObj.PscConfigs = nil
+	retObj.ImportSources = nil
 	return retObj, nil
 }
 

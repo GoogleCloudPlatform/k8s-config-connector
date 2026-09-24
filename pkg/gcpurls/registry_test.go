@@ -211,6 +211,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/licenseConfigs/{}":                             true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/collections/{}/dataStores/{}/siteSearchEngine": true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/userStores/{}":                                 true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/sampleQuerySets/{}":                            true,
 
 		// DLP
 		"//dlp.googleapis.com/projects/{}/locations/{}/connections/{}": true,
@@ -276,11 +277,15 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 		// Network Services
 		"//networkservices.googleapis.com/projects/{}/locations/global/edgeCacheServices/{}": true,
+		"//networkservices.googleapis.com/projects/{}/locations/{}/lbEdgeExtensions/{}":      true,
 
 		// Notebooks
 		"//notebooks.googleapis.com/projects/{}/locations/{}/environments/{}": true,
 		"//notebooks.googleapis.com/projects/{}/locations/{}/executions/{}":   true,
 		"//notebooks.googleapis.com/projects/{}/locations/{}/schedules/{}":    true,
+
+		// Oracle Database
+		"//oracledatabase.googleapis.com/projects/{}/locations/{}/exadbVmClusters/{}": true,
 
 		// OSConfig
 		"//osconfig.googleapis.com/projects/{}/guestPolicies/{}": true,
@@ -295,6 +300,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 		// Service Usage
 		"//serviceusage.googleapis.com/projects/{}/services/{}/identity": true,
+
+		// Redis
+		"//redis.googleapis.com/projects/{}/locations/{}/backupCollections/{}/backups/{}": true,
 
 		// Storage
 		"//storage.googleapis.com/projects/{}/buckets/{}":            true,

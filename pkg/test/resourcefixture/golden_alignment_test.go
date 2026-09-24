@@ -567,6 +567,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "observabilityConfig")
 		delete(v, "correlationInfo")
 		delete(v, "labels")
+		delete(v, "instanceCreateTime")
 		if qm, ok := v["qualityMetadata"].(map[string]interface{}); ok {
 			if agentInfo, ok := qm["agentInfo"].([]interface{}); ok {
 				for _, a := range agentInfo {
@@ -698,6 +699,11 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		}
 		if cluster, ok := v["cluster"].(map[string]interface{}); ok {
 			delete(cluster, "initialClusterVersion")
+		}
+		if softwareConfig, ok := v["softwareConfig"].(map[string]interface{}); ok {
+			if iv, ok := softwareConfig["imageVersion"].(string); ok && strings.HasPrefix(iv, "composer-") {
+				softwareConfig["imageVersion"] = regexp.MustCompile(`-build\.\d+$`).ReplaceAllString(iv, "-build.XX")
+			}
 		}
 		if config, ok := v["config"].(map[string]interface{}); ok {
 			if containerdConfig, ok := config["containerdConfig"].(map[string]interface{}); ok {
@@ -860,6 +866,8 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		if serverCaMode, ok := v["serverCaMode"].(float64); ok && serverCaMode == 0 {
 			delete(v, "serverCaMode")
 		}
+		delete(v, "clusterEndpoints")
+		delete(v, "cluster_endpoints")
 		for k, val := range v {
 			v[k] = normalizeRepresentation(val)
 		}
@@ -879,6 +887,10 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		if strings.Contains(v, "/forwardingRules/") {
 			re := regexp.MustCompile(`/forwardingRules/[^/]+`)
 			v = re.ReplaceAllString(v, "/forwardingRules/${forwardingRuleID}")
+		}
+		if strings.Contains(v, "/revisions/") {
+			re := regexp.MustCompile(`/revisions/[a-f0-9]+`)
+			v = re.ReplaceAllString(v, "/revisions/00000000")
 		}
 		if strings.HasPrefix(v, "projects/projects/") {
 			v = v[len("projects/"):]

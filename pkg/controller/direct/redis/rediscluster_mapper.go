@@ -130,6 +130,7 @@ func RedisClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.
 	out.AutomatedBackupConfig = AutomatedBackupConfig_FromProto(mapCtx, in.GetAutomatedBackupConfig())
 	out.GCSSource = Cluster_GCSBackupSource_FromProto(mapCtx, in.GetGcsSource())
 	out.ClusterEndpoints = direct.Slice_FromProto(mapCtx, in.ClusterEndpoints, ClusterEndpoint_FromProto)
+	out.ManagedBackupSource = Cluster_ManagedBackupSource_FromProto(mapCtx, in.GetManagedBackupSource())
 
 	return out
 }
@@ -158,7 +159,10 @@ func RedisClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterSpe
 	if oneof := Cluster_GCSBackupSource_ToProto(mapCtx, in.GCSSource); oneof != nil {
 		out.ImportSources = &pb.Cluster_GcsSource{GcsSource: oneof}
 	}
-	out.ClusterEndpoints = direct.Slice_ToProto(mapCtx, in.ClusterEndpoints, ClusterEndpoint_ToProto)
+	if oneof := Cluster_ManagedBackupSource_ToProto(mapCtx, in.ManagedBackupSource); oneof != nil {
+		out.ImportSources = &pb.Cluster_ManagedBackupSource_{ManagedBackupSource: oneof}
+	}
+  out.ClusterEndpoints = direct.Slice_ToProto(mapCtx, in.ClusterEndpoints, ClusterEndpoint_ToProto)
 	return out
 }
 
@@ -218,6 +222,28 @@ func PSCAutoConnection_ToProto(mapCtx *direct.MapContext, in *krm.PSCAutoConnect
 	}
 	if in.NetworkRef != nil {
 		out.Network = in.NetworkRef.External
+	}
+	return out
+}
+
+func Cluster_ManagedBackupSource_FromProto(mapCtx *direct.MapContext, in *pb.Cluster_ManagedBackupSource) *krm.Cluster_ManagedBackupSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Cluster_ManagedBackupSource{}
+	if in.GetBackup() != "" {
+		out.BackupRef = &krm.RedisBackupRef{External: in.GetBackup()}
+	}
+	return out
+}
+
+func Cluster_ManagedBackupSource_ToProto(mapCtx *direct.MapContext, in *krm.Cluster_ManagedBackupSource) *pb.Cluster_ManagedBackupSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Cluster_ManagedBackupSource{}
+	if in.BackupRef != nil {
+		out.Backup = in.BackupRef.External
 	}
 	return out
 }

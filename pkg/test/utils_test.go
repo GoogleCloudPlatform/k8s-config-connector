@@ -168,6 +168,34 @@ GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/netwo
 200 OK`,
 			wantErr: false,
 		},
+		{
+			name: "consecutive duplicate GETs are collapsed",
+			wantLog: `GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/networks/net-123
+200 OK
+---
+GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/networks/net-123
+200 OK`,
+			gotLog: `GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/networks/net-123
+200 OK`,
+			wantErr: false,
+		},
+		{
+			name: "intermingled non-consecutive duplicate GETs are collapsed when grouped",
+			wantLog: `GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/networks/net-123
+200 OK
+---
+GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/networks/net-456
+200 OK
+---
+GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/networks/net-123
+200 OK`,
+			gotLog: `GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/networks/net-123
+200 OK
+---
+GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/networks/net-456
+200 OK`,
+			wantErr: false,
+		},
 	}
 
 	for _, tc := range testCases {

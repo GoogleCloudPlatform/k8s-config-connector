@@ -146,7 +146,8 @@ type Cluster_GCSBackupSource struct {
 	Uris []string `json:"uris,omitempty"`
 }
 
-/* unreachable type Cluster_ManagedBackupSource
+/* found existing non-generated go type "Cluster_ManagedBackupSource", skipping
+
 // +kcc:proto=google.cloud.redis.cluster.v1.Cluster.ManagedBackupSource
 type Cluster_ManagedBackupSource struct {
 	// Optional. Example:

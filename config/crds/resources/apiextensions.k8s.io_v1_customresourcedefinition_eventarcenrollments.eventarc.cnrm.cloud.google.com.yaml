@@ -131,13 +131,13 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed EventarcMessageBus
-                      resource. Should be in the format `projects/{{projectID}}/locations/{{location}}/messageBuses/{{messageBusID}}`.
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/messageBuses/{{messageBusID}}".
                     type: string
                   name:
-                    description: The `name` field of a `EventarcMessageBus` resource.
+                    description: The name of an EventarcMessageBus resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `EventarcMessageBus` resource.
+                    description: The namespace of an EventarcMessageBus resource.
                     type: string
                 type: object
               projectRef:

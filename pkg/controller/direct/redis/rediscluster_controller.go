@@ -408,9 +408,13 @@ func populateDefaults(cluster *pb.Cluster) *pb.Cluster {
 		cluster.AutomatedBackupConfig = &pb.AutomatedBackupConfig{AutomatedBackupMode: pb.AutomatedBackupConfig_DISABLED}
 	}
 
-	// clear pscConfig as it's not included in the response
+	// clear pscConfig and ImportSources as they are not included in the response
 	if cluster.PscConfigs != nil {
 		cluster.PscConfigs = nil
+	}
+
+	if cluster.GetManagedBackupSource() != nil {
+		cluster.ImportSources = nil
 	}
 
 	return cluster

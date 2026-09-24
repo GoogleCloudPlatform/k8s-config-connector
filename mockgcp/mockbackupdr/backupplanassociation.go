@@ -69,7 +69,7 @@ func (s *BackupDRV1) CreateBackupPlanAssociation(ctx context.Context, req *pb.Cr
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())
 	obj.State = pb.BackupPlanAssociation_CREATING
-	s.populateDefaultsForBackupPlanAssociation(obj, name)
+	s.populateDefaultsForBackupPlanAssociation(ctx, obj, name)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -93,6 +93,9 @@ func (s *BackupDRV1) CreateBackupPlanAssociation(ctx context.Context, req *pb.Cr
 		obj.State = pb.BackupPlanAssociation_ACTIVE
 		// change project ID to project Number
 		obj.BackupPlan = fmt.Sprintf("projects/%d/locations/%s/backupPlans/%s", name.Project.Number, name.Location, strings.TrimPrefix(req.BackupPlanAssociation.GetBackupPlan(), fmt.Sprintf("projects/%s/locations/%s/backupPlans/", name.Project.ID, name.Location)))
+		if obj.GetResourceType() == "sqladmin.googleapis.com/Instance" {
+			obj.BackupPlanRevisionName = obj.BackupPlan + "/revisions/163c3760"
+		}
 		if err := s.storage.Update(ctx, fqn, obj); err != nil {
 			return nil, err
 		}
@@ -159,7 +162,7 @@ func (s *BackupDRV1) parseBackupPlanAssociationName(name string) (*backupPlanAss
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
 
-func (s *MockService) populateDefaultsForBackupPlanAssociation(obj *pb.BackupPlanAssociation, name *backupPlanAssociationName) {
+func (s *MockService) populateDefaultsForBackupPlanAssociation(ctx context.Context, obj *pb.BackupPlanAssociation, name *backupPlanAssociationName) {
 	if obj.RulesConfigInfo == nil {
 		obj.RulesConfigInfo = []*pb.RuleConfigInfo{
 			{
@@ -169,6 +172,33 @@ func (s *MockService) populateDefaultsForBackupPlanAssociation(obj *pb.BackupPla
 		}
 	}
 	uuid := uuid.New().String()
-	backupVaultName := name.BackupPlanAssociationID // backup vault name is refenreced by the backup plan, which we cannot get from the request, just use the name of the backup plan association
+	backupVaultName := name.BackupPlanAssociationID // default fallback
+	if obj.GetResourceType() != "compute.googleapis.com/Instance" {
+		if obj.GetBackupPlan() != "" {
+			planName, err := s.parseBackupPlanName(obj.GetBackupPlan())
+			if err == nil {
+				planFQN := planName.String()
+				plan := &pb.BackupPlan{}
+				if err := s.storage.Get(ctx, planFQN, plan); err == nil {
+					tokens := strings.Split(plan.GetBackupVault(), "/")
+					if len(tokens) > 0 {
+						backupVaultName = tokens[len(tokens)-1]
+					}
+				}
+			}
+		}
+	}
 	obj.DataSource = fmt.Sprintf("projects/%d/locations/%s/backupVaults/%s/dataSources/%s", name.Project.Number, name.Location, backupVaultName, uuid)
+
+	if obj.GetResourceType() == "sqladmin.googleapis.com/Instance" {
+		obj.BackupPlanRevisionId = "v0"
+		obj.BackupPlanRevisionName = obj.GetBackupPlan() + "/revisions/163c3760"
+
+		t, _ := time.Parse(time.RFC3339Nano, "2026-09-16T03:00:11.692Z")
+		obj.ResourceProperties = &pb.BackupPlanAssociation_CloudSqlInstanceBackupPlanAssociationProperties{
+			CloudSqlInstanceBackupPlanAssociationProperties: &pb.CloudSqlInstanceBackupPlanAssociationProperties{
+				InstanceCreateTime: timestamppb.New(t),
+			},
+		}
+	}
 }

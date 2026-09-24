@@ -1400,6 +1400,8 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 
 			case schema.GroupKind{Group: "vpcaccess.cnrm.cloud.google.com", Kind: "VPCAccessConnector"}:
 
+			case schema.GroupKind{Group: "agentregistry.cnrm.cloud.google.com", Kind: "AgentRegistryBinding"}:
+
 			case schema.GroupKind{Group: "apphub.cnrm.cloud.google.com", Kind: "AppHubApplication"}:
 			case schema.GroupKind{Group: "apphub.cnrm.cloud.google.com", Kind: "AppHubServiceProjectAttachment"}:
 

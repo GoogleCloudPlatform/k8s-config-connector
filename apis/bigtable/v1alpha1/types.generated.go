@@ -22,6 +22,7 @@
 // resource: BigtableCluster:Cluster
 // resource: BigtableLogicalView:LogicalView
 // resource: BigtableMaterializedView:MaterializedView
+// resource: BigtableSchemaBundle:SchemaBundle
 
 package v1alpha1
 

@@ -26,6 +26,7 @@ def run_shell(cmd, cwd=None):
 def get_gcp_resources(googleapis_dir):
     resources = {} 
     service_rpcs = {} # Map service to its RPCs
+    service_messages = {} # Map service_pkg to set of message names
     
     for root, _, files in os.walk(googleapis_dir):
         if "third_party" in root: continue
@@ -40,10 +41,16 @@ def get_gcp_resources(googleapis_dir):
                 service_pkg = pkg_match.group(1) if pkg_match else "unknown"
                 if service_pkg not in service_rpcs:
                     service_rpcs[service_pkg] = set()
+                if service_pkg not in service_messages:
+                    service_messages[service_pkg] = set()
                 
                 # Extract RPCs in this file
                 rpc_matches = re.findall(r'rpc\s+([A-Za-z0-9]+)', content)
                 service_rpcs[service_pkg].update(rpc_matches)
+
+                # Extract messages in this file
+                msg_matches = re.findall(r'message\s+([A-Za-z0-9]+)', content)
+                service_messages[service_pkg].update(msg_matches)
 
                 # Split by possible resource markers to isolate blocks
                 blocks = re.split(r'google\.api\.resource', content)
@@ -53,56 +60,127 @@ def get_gcp_resources(googleapis_dir):
                         rtype = type_match.group(1)
                         if "/" not in rtype: continue
                         
-                        if rtype not in resources:
-                            service_name, name = rtype.split('/')
-                            resources[rtype] = {
-                                'service': service_name.split('.')[0],
-                                'pkg': service_pkg,
-                                'name': name,
-                                'ops': set(),
-                                'patterns': []
-                            }
+                        # Determine if this is a standard message-level google.api.resource definition
+                        is_definition = not block.startswith('_reference') and not block.startswith('_container') and not block.startswith('_definition')
                         
-                        p_matches = re.findall(r'pattern:\s*"([^"]+)"', block)
-                        resources[rtype]['patterns'].extend(p_matches)
+                        if is_definition:
+                            if rtype not in resources or not resources[rtype].get('is_proto_defined', False):
+                                service_name, name = rtype.split('/')
+                                resources[rtype] = {
+                                    'service': service_name.split('.')[0],
+                                    'pkg': service_pkg,
+                                    'name': name,
+                                    'ops': set(),
+                                    'patterns': [],
+                                    'is_proto_defined': True
+                                }
+                            p_matches = re.findall(r'pattern:\s*"([^"]+)"', block)
+                            resources[rtype]['patterns'].extend(p_matches)
+                        else:
+                            if rtype not in resources:
+                                service_name, name = rtype.split('/')
+                                resources[rtype] = {
+                                    'service': service_name.split('.')[0],
+                                    'pkg': service_pkg,
+                                    'name': name,
+                                    'ops': set(),
+                                    'patterns': [],
+                                    'is_proto_defined': False
+                                }
+                            p_matches = re.findall(r'pattern:\s*"([^"]+)"', block)
+                            resources[rtype]['patterns'].extend(p_matches)
 
     # 3. Match ops to resources within their service package
     for rtype, info in resources.items():
         name = info['name']
         pkg = info['pkg']
-        if pkg not in service_rpcs: continue
         
-        all_rpcs = service_rpcs[pkg]
-        create_variants = [
-            f"Create{name}", f"Insert{name}", f"BatchCreate{name}", f"Upload{name}", f"Upsert{name}"
-        ]
-        for v in create_variants:
-            if v in all_rpcs:
-                info['ops'].add('CREATE')
-                break
-        read_variants = [
-            f"Get{name}", f"Describe{name}", f"Read{name}", f"BatchGet{name}"
-        ]
-        for v in read_variants:
-            if v in all_rpcs:
-                info['ops'].add('READ')
-                break
-        update_variants = [
-            f"Update{name}", f"Patch{name}", f"BatchUpdate{name}", f"Upsert{name}"
-        ]
-        for v in update_variants:
-            if v in all_rpcs:
-                info['ops'].add('UPDATE')
-                break
-        delete_variants = [
-            f"Delete{name}", f"Finish{name}", f"Abort{name}", 
-            f"Cancel{name}", f"Terminate{name}", f"Destroy{name}", 
-            f"Disable{name}", f"Deactivate{name}", f"Remove{name}"
-        ]
-        for v in delete_variants:
-            if v in all_rpcs:
-                info['ops'].add('DELETE')
-                break
+        if info.get('is_proto_defined', False):
+            # Standard gRPC/Proto resource: match RPCs in its home package and versioned sibling packages
+            all_rpcs = set()
+            if pkg in service_rpcs:
+                all_rpcs.update(service_rpcs[pkg])
+                
+            pkg_prefix = pkg
+            if '.common' in pkg:
+                pkg_prefix = pkg.split('.common')[0]
+            elif '.v' in pkg:
+                m = re.search(r'\.v\d', pkg)
+                if m:
+                    pkg_prefix = pkg[:m.start()]
+                    
+            if pkg_prefix != pkg:
+                for other_pkg, rpcs in service_rpcs.items():
+                    if other_pkg.startswith(pkg_prefix) and other_pkg != pkg:
+                        all_rpcs.update(rpcs)
+                        
+            create_variants = [
+                f"Create{name}", f"Insert{name}", f"BatchCreate{name}", f"Upload{name}", f"Upsert{name}"
+            ]
+            for v in create_variants:
+                if v in all_rpcs:
+                    info['ops'].add('CREATE')
+                    break
+            read_variants = [
+                f"Get{name}", f"Describe{name}", f"Read{name}", f"BatchGet{name}"
+            ]
+            for v in read_variants:
+                if v in all_rpcs:
+                    info['ops'].add('READ')
+                    break
+            update_variants = [
+                f"Update{name}", f"Patch{name}", f"BatchUpdate{name}", f"Upsert{name}"
+            ]
+            for v in update_variants:
+                if v in all_rpcs:
+                    info['ops'].add('UPDATE')
+                    break
+            delete_variants = [
+                f"Delete{name}", f"Finish{name}", f"Abort{name}", 
+                f"Cancel{name}", f"Terminate{name}", f"Destroy{name}", 
+                f"Disable{name}", f"Deactivate{name}", f"Remove{name}"
+            ]
+            for v in delete_variants:
+                if v in all_rpcs:
+                    info['ops'].add('DELETE')
+                    break
+        else:
+            # REST-only or legacy resource: look up operations in request message names
+            endpoint = info['service']
+            
+            # Map some service names if needed (e.g. sql to sqladmin/sql)
+            service_keywords = [endpoint]
+            if endpoint == "sql":
+                service_keywords.append("sqladmin")
+                
+            # Collect all message names from matching packages
+            all_msgs = set()
+            for service_pkg, msgs in service_messages.items():
+                if any(kw in service_pkg for kw in service_keywords):
+                    all_msgs.update(msgs)
+                    
+            create_verbs = ['create', 'insert', 'upload', 'upsert']
+            read_verbs = ['get', 'describe', 'read']
+            update_verbs = ['update', 'patch', 'upsert']
+            delete_verbs = ['delete', 'finish', 'abort', 'cancel', 'terminate', 'destroy', 'disable', 'deactivate', 'remove']
+            
+            for msg in all_msgs:
+                if not msg.endswith('Request'): continue
+                if name.lower() in msg.lower():
+                    msg_lower = msg.lower()
+                    if any(v in msg_lower for v in create_verbs):
+                        info['ops'].add('CREATE')
+                    if any(v in msg_lower for v in read_verbs):
+                        info['ops'].add('READ')
+                    if any(v in msg_lower for v in update_verbs):
+                        info['ops'].add('UPDATE')
+                    if any(v in msg_lower for v in delete_verbs):
+                        info['ops'].add('DELETE')
+                
+    # Clear pkg for non-proto-defined (REST-only) resources as they do not have a true proto package
+    for rtype, info in resources.items():
+        if not info.get('is_proto_defined', False):
+            info['pkg'] = ""
                 
     return resources
 
@@ -298,13 +376,24 @@ def prepare_repo(repo_url, target_dir, sha):
     run_shell("git fetch origin master --depth 100", cwd=target_dir)
     run_shell(f"git checkout -f {sha}", cwd=target_dir)
 
+def singularize_name(name):
+    """Singularizes a resource name cleanly."""
+    if name.endswith('ies'):
+        return name[:-3] + 'y'
+    if name.endswith('es') and name[:-2].endswith(('s', 'sh', 'ch', 'x', 'z')):
+        return name[:-2]
+    if name.endswith('s') and not name.endswith(('ss', 'us')):
+        return name[:-1]
+    return name
+
 def canonicalize_resource_name(name):
-    """Strips hierarchical prefixes (Global, Regional, Zonal) from resource names."""
+    """Strips hierarchical prefixes (Global, Regional, Zonal) from resource names and singularizes them."""
     prefixes = ["Global", "Regional", "Zonal"]
     for p in prefixes:
         if name.startswith(p) and len(name) > len(p) and name[len(p)].isupper():
-            return name[len(p):]
-    return name
+            name = name[len(p):]
+            break
+    return singularize_name(name)
 
 def unify_hierarchies(resources):
     """Groups GCP resources by their canonical name to avoid overcounting."""
@@ -361,15 +450,6 @@ def main():
         prepare_repo("https://github.com/GoogleCloudPlatform/k8s-config-connector.git", kcc_dir, kcc_sha)
 
     gcp_raw = get_gcp_resources(googleapis_dir)
-    
-    # Hardcode StorageBucketObject due to non-standard googleapis definition in v1/v2
-    gcp_raw["storage.googleapis.com/Object"] = {
-        'service': 'storage',
-        'pkg': 'google.storage.v2',
-        'name': 'Object',
-        'ops': {'CREATE', 'READ', 'UPDATE', 'DELETE'},
-        'patterns': ['projects/{project}/buckets/{bucket}/objects/{object}']
-    }
     
     # Apply Skip List before unification
     skip_file = os.path.join(os.path.dirname(__file__), "coverage_skip.json")

@@ -1040,6 +1040,8 @@ cloud.google.com/go/optimization v1.5.1/go.mod h1:NC0gnUD5MWVAF7XLdoYVPmYYVth93Q
 cloud.google.com/go/optimization v1.6.1/go.mod h1:hH2RYPTTM9e9zOiTaYPTiGPcGdNZVnBSBxjIAJzUkqo=
 cloud.google.com/go/optimization v1.6.2/go.mod h1:mWNZ7B9/EyMCcwNl1frUGEuY6CPijSkz88Fz2vwKPOY=
 cloud.google.com/go/optimization v1.6.3/go.mod h1:8ve3svp3W6NFcAEFr4SfJxrldzhUl4VMUJmhrqVKtYA=
+cloud.google.com/go/oracledatabase v1.5.0 h1:18v7ELW3Wmq5BlWTns6IBQ3oDi/OmA58kKKb4/5B/e4=
+cloud.google.com/go/oracledatabase v1.5.0/go.mod h1:gsELsQqqL1CtzKpR1Q8hxHju1ExuL5ZEDu3WOwWhgzc=
 cloud.google.com/go/orchestration v1.3.0/go.mod h1:Sj5tq/JpWiB//X/q3Ngwdl5K7B7Y0KZ7bfv0wL6fqVA=
 cloud.google.com/go/orchestration v1.4.0/go.mod h1:6W5NLFWs2TlniBphAViZEVhrXRSMgUGDfW7vrWKvsBk=
 cloud.google.com/go/orchestration v1.6.0/go.mod h1:M62Bevp7pkxStDfFfTuCOaXgaaqRAga1yKyoMtEoWPQ=

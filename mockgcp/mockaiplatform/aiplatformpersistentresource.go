@@ -21,6 +21,7 @@ import (
 	"time"
 
 	longrunning "google.golang.org/genproto/googleapis/longrunning"
+	rpcstatus "google.golang.org/genproto/googleapis/rpc/status"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -46,6 +47,9 @@ func (s *persistentResourceService) GetPersistentResource(ctx context.Context, r
 
 	obj := &pb.PersistentResource{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The PersistentResource does not exist.")
+		}
 		return nil, err
 	}
 
@@ -74,6 +78,7 @@ func (s *persistentResourceService) CreatePersistentResource(ctx context.Context
 	obj.StartTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 	obj.State = pb.PersistentResource_RUNNING
+	obj.Error = &rpcstatus.Status{}
 
 	for _, pool := range obj.ResourcePools {
 		if pool.Id == "" {
