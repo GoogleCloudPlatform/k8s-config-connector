@@ -1361,7 +1361,7 @@ func (in *RedisClusterSpec) DeepCopyInto(out *RedisClusterSpec) {
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
-  }
+	}
 	if in.ManagedBackupSource != nil {
 		in, out := &in.ManagedBackupSource, &out.ManagedBackupSource
 		*out = new(Cluster_ManagedBackupSource)

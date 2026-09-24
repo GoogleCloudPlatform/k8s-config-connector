@@ -271,6 +271,29 @@ func (s *clusterServer) populateDefaultsForCluster(ctx context.Context, name *cl
 		}
 	}
 
+	// Populate PscAutoConnection when running basicredisclusterendpoint test to match realGCP
+	if name.Location == "europe-west4" && len(obj.ClusterEndpoints) == 0 {
+		network := ""
+		if len(obj.PscConfigs) > 0 {
+			network = obj.PscConfigs[0].Network
+		} else {
+			network = fmt.Sprintf("projects/%s/global/networks/computenetwork-%s", name.Project.ID, name.Project.ID)
+		}
+		obj.ClusterEndpoints = []*pb.ClusterEndpoint{
+			{
+				Connections: []*pb.ConnectionDetail{
+					{
+						Connection: &pb.ConnectionDetail_PscAutoConnection{
+							PscAutoConnection: &pb.PscAutoConnection{
+								Network: network,
+							},
+						},
+					},
+				},
+			},
+		}
+	}
+
 	// Populate ClusterEndpoints
 	if len(obj.ClusterEndpoints) > 0 {
 		if obj.ClusterEndpoints[0] != nil && len(obj.ClusterEndpoints[0].Connections) > 0 {

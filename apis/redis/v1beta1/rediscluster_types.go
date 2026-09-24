@@ -94,7 +94,7 @@ type RedisClusterSpec struct {
 	// +optional
 	// +listType=atomic
 	ClusterEndpoints []ClusterEndpoint `json:"clusterEndpoints,omitempty"`
-  
+
 	// Optional. Backups generated and managed by memorystore service.
 	// +optional
 	ManagedBackupSource *Cluster_ManagedBackupSource `json:"managedBackupSource,omitempty"`
