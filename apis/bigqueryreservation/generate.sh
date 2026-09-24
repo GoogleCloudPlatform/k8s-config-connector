@@ -31,15 +31,31 @@ fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-./generate-proto.sh
+PROTO_SHA="9b719a5c153f3ec7a14d5d45d4da720410c7b943"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+
+# Unset SKIP_GENERATE_PROTOS so this specific script fetches the newer proto
+OLD_SKIP_GENERATE_PROTOS="${SKIP_GENERATE_PROTOS:-}"
+unset SKIP_GENERATE_PROTOS
+
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
+
+# Restore SKIP_GENERATE_PROTOS
+if [[ -n "${OLD_SKIP_GENERATE_PROTOS}" ]]; then
+  export SKIP_GENERATE_PROTOS="${OLD_SKIP_GENERATE_PROTOS}"
+fi
 
 ${CONTROLLERBUILDER} generate-types \
+    --proto-source-path ${PROTO_OUT} \
     --service google.cloud.bigquery.reservation.v1 \
     --api-version "bigqueryreservation.cnrm.cloud.google.com/v1alpha1" \
     --include-skipped-output \
-    --resource BigQueryReservationCapacityCommitment:CapacityCommitment
+    --resource BigQueryReservationCapacityCommitment:CapacityCommitment \
+    --resource BigQueryReservationReservationGroup:ReservationGroup \
+    --resource BigQueryReservationBiReservation:BiReservation
 
 ${CONTROLLERBUILDER} generate-types \
+    --proto-source-path ${PROTO_OUT} \
     --service google.cloud.bigquery.reservation.v1 \
     --api-version "bigqueryreservation.cnrm.cloud.google.com/v1beta1" \
     --include-skipped-output \
@@ -47,6 +63,7 @@ ${CONTROLLERBUILDER} generate-types \
     --resource BigQueryReservationAssignment:Assignment
 
 ${CONTROLLERBUILDER} generate-mapper \
+    --proto-source-path ${PROTO_OUT} \
     --multiversion \
     --service google.cloud.bigquery.reservation.v1 \
     --api-version "bigqueryreservation.cnrm.cloud.google.com/v1beta1" \

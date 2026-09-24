@@ -63,13 +63,24 @@ edition: string
 failover:
   secondaryLocation: string
 ignoreIdleSlots: boolean
+labels:
+  string: string
 location: string
+maxSlots: integer
 projectRef:
   external: string
   kind: string
   name: string
   namespace: string
+reservationGroupRef:
+  external: string
+  name: string
+  namespace: string
 resourceID: string
+scalingMode: string
+schedulingPolicy:
+  concurrency: integer
+  maxSlots: integer
 slotCapacity: integer
 ```
 
@@ -160,12 +171,32 @@ Immutable.</p>
     </tr>
     <tr>
         <td>
+            <p><code>labels</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>Optional. Labels for the reservation.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>location</code></p>
             <p><i>Required</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
             <p>Immutable. You can configure spec.secondaryLocation to enable the reservation fail-over to a secondary location, in which case the primary location could be different from the spec.location.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maxSlots</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Optional. The overall max slots for the reservation.</p>
         </td>
     </tr>
     <tr>
@@ -220,12 +251,92 @@ Immutable.</p>
     </tr>
     <tr>
         <td>
+            <p><code>reservationGroupRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. The reservation group for the reservation.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>reservationGroupRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed BigQueryReservationReservationGroup resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/reservationGroups/{{reservationGroupID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>reservationGroupRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of a BigQueryReservationReservationGroup resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>reservationGroupRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The namespace of a BigQueryReservationReservationGroup resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>resourceID</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
             <p>Immutable. Optional. The BigQuery Reservation ID used for resource creation or acquisition. It must only contain lower case alphanumeric characters or dashes. It must start with a letter and must not end with a dash. Its maximum length is 64 characters. For creation: If specified, this value is used as the Reservation ID. If not provided, a UUID will be generated and assigned as the Reservation ID. For acquisition: This field must be provided to identify the Reservation resource to acquire.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scalingMode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Optional. The scaling mode for the reservation.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>schedulingPolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. The scheduling policy for the reservation.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>schedulingPolicy.concurrency</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Limit concurrency of jobs for any particular project within the reservation.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>schedulingPolicy.maxSlots</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Limit slot consumption of queries for any particular project within the reservation.</p>
         </td>
     </tr>
     <tr>

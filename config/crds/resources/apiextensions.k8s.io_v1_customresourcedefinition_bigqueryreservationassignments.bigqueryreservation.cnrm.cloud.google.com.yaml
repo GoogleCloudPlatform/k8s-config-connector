@@ -193,6 +193,20 @@ spec:
                   be set only if resource acquisition . For acquisition: This field
                   must be provided to identify the Reservation resource to acquire.'
                 type: string
+              schedulingPolicy:
+                description: Optional. The scheduling policy of the assignment.
+                properties:
+                  concurrency:
+                    description: Limit concurrency of jobs for any particular project
+                      within the reservation.
+                    format: int64
+                    type: integer
+                  maxSlots:
+                    description: Limit slot consumption of queries for any particular
+                      project within the reservation.
+                    format: int64
+                    type: integer
+                type: object
             required:
             - assignee
             - jobType
@@ -424,6 +438,20 @@ spec:
                   be set only if resource acquisition . For acquisition: This field
                   must be provided to identify the Reservation resource to acquire.'
                 type: string
+              schedulingPolicy:
+                description: Optional. The scheduling policy of the assignment.
+                properties:
+                  concurrency:
+                    description: Limit concurrency of jobs for any particular project
+                      within the reservation.
+                    format: int64
+                    type: integer
+                  maxSlots:
+                    description: Limit slot consumption of queries for any particular
+                      project within the reservation.
+                    format: int64
+                    type: integer
+                type: object
             required:
             - assignee
             - jobType

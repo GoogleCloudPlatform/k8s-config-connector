@@ -79,6 +79,7 @@ func BigQueryReservationAssignmentSpec_v1beta1_ToProto(mapCtx *direct.MapContext
 	out := &pb.Assignment{}
 	out.Assignee = BigQueryReservationAssignmentSpec_Assignee_ToProto(mapCtx, in)
 	out.JobType = direct.Enum_ToProto[pb.Assignment_JobType](mapCtx, in.JobType)
+	out.SchedulingPolicy = SchedulingPolicySpec_ToProto(mapCtx, in.SchedulingPolicy)
 	return out
 }
 
@@ -89,6 +90,7 @@ func BigQueryReservationAssignmentSpec_v1beta1_FromProto(mapCtx *direct.MapConte
 	out := &krm.BigQueryReservationAssignmentSpec{}
 	out.Assignee = BigqueryReservationAssignmentSpec_Assignee_FromProto(mapCtx, in)
 	out.JobType = direct.Enum_FromProto(mapCtx, in.GetJobType())
+	out.SchedulingPolicy = SchedulingPolicySpec_FromProto(mapCtx, in.GetSchedulingPolicy())
 	return out
 }
 
