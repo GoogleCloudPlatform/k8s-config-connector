@@ -270,30 +270,6 @@ func (s *clusterServer) populateDefaultsForCluster(ctx context.Context, name *cl
 		}
 	}
 
-	// hack: only populate PscAutoConnection when running basicredisclusterendpoint test to match realGCP
-	//todo: remove this when we add spec.clusterEndpoints.pscAutoConnection in RedisCluster
-	if name.Location == "europe-west4" && len(obj.ClusterEndpoints) == 0 {
-		network := ""
-		if len(obj.PscConfigs) > 0 {
-			network = obj.PscConfigs[0].Network
-		} else {
-			network = fmt.Sprintf("projects/%s/global/networks/computenetwork-%s", name.Project.ID, name.Project.ID)
-		}
-		obj.ClusterEndpoints = []*pb.ClusterEndpoint{
-			{
-				Connections: []*pb.ConnectionDetail{
-					{
-						Connection: &pb.ConnectionDetail_PscAutoConnection{
-							PscAutoConnection: &pb.PscAutoConnection{
-								Network: network,
-							},
-						},
-					},
-				},
-			},
-		}
-	}
-
 	// Populate ClusterEndpoints
 	if len(obj.ClusterEndpoints) > 0 {
 		if obj.ClusterEndpoints[0] != nil && len(obj.ClusterEndpoints[0].Connections) > 0 {
@@ -352,6 +328,65 @@ func (s *clusterServer) populateDefaultsForCluster(ctx context.Context, name *cl
 					userConnection.PscConnectionId = fmt.Sprintf("%d", pscConnectionID)
 					userConnection.ServiceAttachment = connectionAttachmentDetails.ServiceAttachment
 					pscConnectionID++
+				}
+			}
+		}
+	}
+
+	// Populate DiscoveryEndpoints and PscConnections from ClusterEndpoints if empty
+	if obj.DiscoveryEndpoints == nil {
+		for _, endpoint := range obj.ClusterEndpoints {
+			if len(endpoint.Connections) > 0 {
+				var network string
+				var address string
+				if endpoint.Connections[0].GetPscAutoConnection() != nil {
+					autoConnection := endpoint.Connections[0].GetPscAutoConnection()
+					network = autoConnection.Network
+					address = autoConnection.Address
+				} else if endpoint.Connections[0].GetPscConnection() != nil {
+					userConnection := endpoint.Connections[0].GetPscConnection()
+					network = userConnection.Network
+					address = userConnection.Address
+				}
+				if network != "" {
+					discoveryEndpoint := &pb.DiscoveryEndpoint{
+						Address: address,
+						Port:    6379,
+						PscConfig: &pb.PscConfig{
+							Network: network,
+						},
+					}
+					obj.DiscoveryEndpoints = append(obj.DiscoveryEndpoints, discoveryEndpoint)
+				}
+			}
+		}
+	}
+
+	if obj.PscConnections == nil {
+		for _, endpoint := range obj.ClusterEndpoints {
+			for _, connections := range endpoint.Connections {
+				if connections.GetPscAutoConnection() != nil {
+					autoConnection := connections.GetPscAutoConnection()
+					pscConnection := &pb.PscConnection{
+						Address:           autoConnection.Address,
+						ForwardingRule:    autoConnection.ForwardingRule,
+						Network:           autoConnection.Network,
+						ProjectId:         autoConnection.ProjectId,
+						PscConnectionId:   autoConnection.PscConnectionId,
+						ServiceAttachment: autoConnection.ServiceAttachment,
+					}
+					obj.PscConnections = append(obj.PscConnections, pscConnection)
+				} else if connections.GetPscConnection() != nil {
+					userConnection := connections.GetPscConnection()
+					pscConnection := &pb.PscConnection{
+						Address:           userConnection.Address,
+						ForwardingRule:    userConnection.ForwardingRule,
+						Network:           userConnection.Network,
+						ProjectId:         userConnection.ProjectId,
+						PscConnectionId:   userConnection.PscConnectionId,
+						ServiceAttachment: userConnection.ServiceAttachment,
+					}
+					obj.PscConnections = append(obj.PscConnections, pscConnection)
 				}
 			}
 		}

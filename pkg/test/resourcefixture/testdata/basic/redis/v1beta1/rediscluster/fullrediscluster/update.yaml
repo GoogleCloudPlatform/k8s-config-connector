@@ -20,7 +20,7 @@ spec:
   shardCount: 6
   pscConfigs:
   - networkRef:
-      name: computenetwork-${uniqueId}
+      external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
   location: us-central1
   projectRef:
     external: ${projectId}
@@ -59,10 +59,3 @@ spec:
         minutes: 0
         seconds: 0
         nanos: 0
-  clusterEndpoints:
-  - connections:
-    - pscAutoConnection:
-        projectRef:
-          external: ${projectId}
-        networkRef:
-          name: computenetwork-${uniqueId}

@@ -106,6 +106,17 @@ func (m *redisClusterModel) AdapterForObject(ctx context.Context, op *directbase
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
+	// Normalized value is "projects/project-id", API only takes "project-id"
+	for i, endpoint := range obj.Spec.ClusterEndpoints {
+		for j, conn := range endpoint.Connections {
+			if conn.PSCAutoConnection != nil && conn.PSCAutoConnection.ProjectRef != nil {
+				conn.PSCAutoConnection.ProjectRef.External = strings.TrimPrefix(conn.PSCAutoConnection.ProjectRef.External, "projects/")
+				endpoint.Connections[j] = conn
+			}
+		}
+		obj.Spec.ClusterEndpoints[i] = endpoint
+	}
+
 	if obj.Spec.KMSKeyRef != nil {
 		resolvedKMSKey, err := refs.ResolveKMSCryptoKeyRef(ctx, kube, obj, obj.Spec.KMSKeyRef)
 		if err != nil {
