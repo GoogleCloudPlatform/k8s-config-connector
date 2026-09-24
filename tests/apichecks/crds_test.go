@@ -31,6 +31,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/refs"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
@@ -61,6 +62,7 @@ func TestMissingRefs(t *testing.T) {
 	}
 
 	var errs []string
+	var notRepresentable []string
 	for _, crd := range crds {
 		for _, version := range crd.Spec.Versions {
 			visitCRDVersion(version, func(field *CRDField) {
@@ -76,80 +78,91 @@ func TestMissingRefs(t *testing.T) {
 				}
 
 				// Check if this is already a ref
-				if strings.HasSuffix(fieldPath, "Ref") {
-					return
-				}
-				if strings.HasSuffix(fieldPath, "Refs[]") || strings.HasSuffix(fieldPath, "Refs") {
-					return
-				}
-				if strings.HasSuffix(fieldPath, "Ref.external") {
-					return
-				}
-				if strings.HasSuffix(fieldPath, "Refs[].external") {
-					return
-				}
-				if strings.HasSuffix(fieldPath, "Ref.name") {
+				if refs.IsReferenceFieldPath(fieldPath) {
 					return
 				}
 
-				isRef := false
-				desc := field.props.Description
-				// Heuristic: look for descriptions like "should be of the form projects/{projectID}/locations/{location}/bars/{name}"
-				if strings.Contains(desc, " projects/") {
-					isRef = true
+				verdict, reason := refs.Classify(fieldPath, field.props.Description)
+				switch verdict {
+				case refs.NotRepresentable:
+					// The field looks like a reference but cannot be one today. It is
+					// recorded with a reason instead of failing the test: these need API
+					// design or new KCC resources, and listing them in missingrefs.txt
+					// would bury the entries someone can act on.
+					notRepresentable = append(notRepresentable,
+						fmt.Sprintf("[not_representable] crd=%s version=%v: field %q reason=%s",
+							crd.Name, version.Name, fieldPath, reason))
+				case refs.IsReference:
+					errs = append(errs, fmt.Sprintf("[refs] crd=%s version=%v: field %q should be a reference", crd.Name, version.Name, fieldPath))
 				}
-				if strings.Contains(desc, "projects/{") {
-					isRef = true
-				}
-				if strings.Contains(desc, "locations/{") {
-					isRef = true
-				}
-				if strings.Contains(desc, "zones/{") {
-					isRef = true
-				}
-				if strings.Contains(desc, "regions/{") {
-					isRef = true
-				}
-				if strings.Contains(desc, "organizations/{") {
-					isRef = true
-				}
-				if strings.Contains(desc, "folders/{") {
-					isRef = true
-				}
-
-				if strings.HasSuffix(fieldPath, "erviceAccount") {
-					isRef = true
-				}
-				// TODO: how to detect KMS Key
-
-				if isRef {
-					// We don't require refs for zones or regions, nor for instanceTypes
-					switch {
-					case strings.HasSuffix(fieldPath, ".zone"), strings.HasSuffix(fieldPath, ".zones"):
-						// ok
-					case strings.HasSuffix(fieldPath, ".region"), strings.HasSuffix(fieldPath, ".regions"):
-						// ok
-					case strings.HasSuffix(fieldPath, ".location"), strings.HasSuffix(fieldPath, ".locations"):
-						// ok
-					case strings.HasSuffix(fieldPath, ".machineType"):
-						// ok
-					case strings.HasSuffix(fieldPath, ".acceleratorType"):
-						// ok
-					default:
-						errs = append(errs, fmt.Sprintf("[refs] crd=%s version=%v: field %q should be a reference", crd.Name, version.Name, fieldPath))
-
-					}
-				}
-
 			})
 		}
 	}
 
 	sort.Strings(errs)
+	sort.Strings(notRepresentable)
 
-	want := strings.Join(errs, "\n")
+	// Deferred refs: correctly detected, but not implementable right now - most
+	// often because the target has no KCC resource and no Ref type yet, and
+	// creating one is a separate step. Recording a field here is a deliberate,
+	// reviewable edit with a stated reason; it is NOT the silent absorption that
+	// a golden file allows. Without this, a correct finding with no legal
+	// resolution blocks all work on the resource.
+	deferred, err := loadDeferredRefs("testdata/exceptions/refs_deferred.txt")
+	if err != nil {
+		t.Fatalf("error loading deferred refs: %v", err)
+	}
+	var remaining []string
+	for _, e := range errs {
+		if deferred.Has(refEntryKey(e)) {
+			continue
+		}
+		remaining = append(remaining, e)
+	}
 
-	test.CompareGoldenFile(t, "testdata/exceptions/missingrefs.txt", want)
+	want := strings.Join(remaining, "\n")
+
+	test.CompareRatchetFile(t, "testdata/exceptions/missingrefs.txt", want)
+	// Not a ratchet: these entries are by construction not actionable, so the
+	// list is expected to grow as new resources are added. Growth is reviewable
+	// in the diff, and each entry carries its reason.
+	test.CompareGoldenFile(t, "testdata/exceptions/refs_not_representable.txt", strings.Join(notRepresentable, "\n"))
+}
+
+// refEntryKey strips the trailing prose from a missingrefs entry, leaving a
+// stable key of the form 'crd=... version=... field="..."' so the deferred list
+// can match entries without repeating the message.
+func refEntryKey(entry string) string {
+	if i := strings.Index(entry, `" `); i >= 0 {
+		return entry[:i+1]
+	}
+	return entry
+}
+
+// loadDeferredRefs reads the deferred-refs list. Every entry must carry a
+// reason=; a deferral without a stated reason is indistinguishable from an
+// oversight.
+func loadDeferredRefs(path string) (sets.String, error) {
+	out := sets.NewString()
+	data, err := os.ReadFile(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return out, nil
+		}
+		return nil, err
+	}
+	for i, line := range strings.Split(string(data), "\n") {
+		line = strings.TrimSpace(line)
+		if line == "" || strings.HasPrefix(line, "#") {
+			continue
+		}
+		if !strings.Contains(line, "reason=") {
+			return nil, fmt.Errorf("%s:%d: deferred ref has no reason=: %q", path, i+1, line)
+		}
+		key, _, _ := strings.Cut(line, " reason=")
+		out.Insert(refEntryKey(strings.TrimSpace(key)))
+	}
+	return out, nil
 }
 
 // Looks for fields that looks like refs, but are in the status.

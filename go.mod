@@ -6,6 +6,10 @@ toolchain go1.26.4
 
 replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
+// The generator module is resolved from the working tree, as mockgcp is, so
+// tests/apichecks runs the same reference rules that generate-types applies.
+replace github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder => ./dev/tools/controllerbuilder
+
 require (
 	cloud.google.com/go/accesscontextmanager v1.14.0
 	cloud.google.com/go/agentregistry v0.2.0

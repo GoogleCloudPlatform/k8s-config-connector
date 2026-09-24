@@ -1,0 +1,14 @@
+# Reference fields correctly detected but not implementable right now.
+#
+# Almost always: the target has no KCC resource and no Ref type yet, and
+# creating <kind>_reference.go / <kind>_identity.go is a separate step. Without
+# this list a correct finding with no legal resolution blocks all work on the
+# resource.
+#
+# This is NOT missingrefs.txt relief by another name. Adding an entry is a
+# deliberate, reviewable edit with a stated reason - not the silent absorption a
+# golden file allows. Every entry needs a reason=.
+#
+# Format:
+#   [refs] crd=<crd> version=v1alpha1: field ".spec.foo" reason=<why>
+#
