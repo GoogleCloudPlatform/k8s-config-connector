@@ -45,6 +45,10 @@ type BigQueryReservationAssignmentSpec struct {
 	// +required
 	JobType *string `json:"jobType,omitempty"`
 
+	// Optional. The scheduling policy of the assignment.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Assignment.scheduling_policy
+	SchedulingPolicy *SchedulingPolicySpec `json:"schedulingPolicy,omitempty"`
+
 	// Immutable. Optional.
 	// The BigQueryReservationAssignment ID used for resource creation or acquisition.
 	// Service-generated.Can be set only if resource acquisition .

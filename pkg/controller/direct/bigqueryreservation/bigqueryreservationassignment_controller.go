@@ -17,6 +17,7 @@ package bigqueryreservation
 import (
 	"context"
 	"fmt"
+	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -234,8 +235,9 @@ func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *dire
 	}
 
 	paths := []string{}
-	// TODO
-	// The current proto file doesn't have mutable fields
+	if !reflect.DeepEqual(desiredPb.SchedulingPolicy, a.actual.SchedulingPolicy) {
+		paths = append(paths, "scheduling_policy")
+	}
 
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.String())

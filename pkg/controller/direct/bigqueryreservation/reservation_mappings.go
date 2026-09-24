@@ -34,8 +34,13 @@ func BigQueryReservationReservationSpec_v1beta1_ToProto(mapCtx *direct.MapContex
 	// MISSING: UpdateTime
 	// MISSING: MultiRegionAuxiliary
 	out.Edition = direct.Enum_ToProto[pb.Edition](mapCtx, in.Edition)
-	// MISSING: MaxSlots
-	// MISSING: ScalingMode
+	out.MaxSlots = in.MaxSlots
+	out.ScalingMode = direct.Enum_ToProto[pb.Reservation_ScalingMode](mapCtx, in.ScalingMode)
+	out.Labels = in.Labels
+	out.SchedulingPolicy = SchedulingPolicySpec_ToProto(mapCtx, in.SchedulingPolicy)
+	if in.ReservationGroupRef != nil {
+		out.ReservationGroup = in.ReservationGroupRef.External
+	}
 	// MISSING: ReplicationStatus
 	out.SecondaryLocation = FailoverSpec_ToProto(mapCtx, in.FailOver)
 	return out
@@ -145,8 +150,15 @@ func BigQueryReservationReservationSpec_v1beta1_FromProto(mapCtx *direct.MapCont
 	out.Edition = direct.Enum_FromProto(mapCtx, in.GetEdition())
 
 	out.FailOver = FailoverSpec_FromProto(mapCtx, in)
-	// MISSING: MaxSlots
-	// MISSING: ScalingMode
+	out.MaxSlots = direct.LazyPtr(in.GetMaxSlots())
+	out.ScalingMode = direct.Enum_FromProto(mapCtx, in.GetScalingMode())
+	out.Labels = in.GetLabels()
+	out.SchedulingPolicy = SchedulingPolicySpec_FromProto(mapCtx, in.GetSchedulingPolicy())
+	if in.GetReservationGroup() != "" {
+		out.ReservationGroupRef = &krm.ReservationGroupRef{
+			External: in.GetReservationGroup(),
+		}
+	}
 	// MISSING: ReplicationStatus
 	return out
 }
@@ -173,4 +185,24 @@ func BigQueryReservationReservationObservedState_ToProto(mapCtx *direct.MapConte
 
 func BigQueryReservationReservationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.BigQueryReservationReservationObservedState {
 	return BigQueryReservationReservationObservedState_v1beta1_FromProto(mapCtx, in)
+}
+
+func SchedulingPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.SchedulingPolicySpec) *pb.SchedulingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SchedulingPolicy{}
+	out.Concurrency = in.Concurrency
+	out.MaxSlots = in.MaxSlots
+	return out
+}
+
+func SchedulingPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.SchedulingPolicy) *krm.SchedulingPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SchedulingPolicySpec{}
+	out.Concurrency = direct.LazyPtr(in.GetConcurrency())
+	out.MaxSlots = direct.LazyPtr(in.GetMaxSlots())
+	return out
 }
