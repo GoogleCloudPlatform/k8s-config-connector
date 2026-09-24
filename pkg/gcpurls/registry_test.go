@@ -301,6 +301,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Service Usage
 		"//serviceusage.googleapis.com/projects/{}/services/{}/identity": true,
 
+		// Redis
+		"//redis.googleapis.com/projects/{}/locations/{}/backupCollections/{}/backups/{}": true,
+
 		// Storage
 		"//storage.googleapis.com/projects/{}/buckets/{}":            true,
 		"//storage.googleapis.com/projects/{}/buckets/{}/objects/{}": true,

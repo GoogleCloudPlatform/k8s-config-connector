@@ -95,6 +95,9 @@ maintenancePolicy:
       minutes: integer
       nanos: integer
       seconds: integer
+managedBackupSource:
+  backupRef:
+    external: string
 nodeType: string
 persistenceConfig:
   aofConfig:
@@ -544,6 +547,36 @@ zoneDistributionConfig:
         <td>
             <p><code class="apitype">integer</code></p>
             <p>Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>managedBackupSource</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. Backups generated and managed by memorystore service.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>managedBackupSource.backupRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. The RedisBackup resource that this managed backup source represents.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>managedBackupSource.backupRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed RedisBackup resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/backupCollections/{{collectionID}}/backups/{{backupID}}".</p>
         </td>
     </tr>
     <tr>

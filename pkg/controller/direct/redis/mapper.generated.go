@@ -216,6 +216,34 @@ func Cluster_GCSBackupSource_ToProto(mapCtx *direct.MapContext, in *krm.Cluster_
 	out.Uris = in.Uris
 	return out
 }
+
+/* found existing non-generated mapping function "Cluster_ManagedBackupSource_FromProto", skipping
+func Cluster_ManagedBackupSource_FromProto(mapCtx *direct.MapContext, in *pb.Cluster_ManagedBackupSource) *krm.Cluster_ManagedBackupSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Cluster_ManagedBackupSource{}
+	if in.GetBackup() != "" {
+		out.BackupRef = &krm.RedisBackupRef{External: in.GetBackup()}
+	}
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "Cluster_ManagedBackupSource_ToProto", skipping
+
+	func Cluster_ManagedBackupSource_ToProto(mapCtx *direct.MapContext, in *krm.Cluster_ManagedBackupSource) *pb.Cluster_ManagedBackupSource {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Cluster_ManagedBackupSource{}
+		if in.BackupRef != nil {
+			out.Backup = in.BackupRef.External
+		}
+		return out
+	}
+*/
 func Cluster_StateInfo_FromProto(mapCtx *direct.MapContext, in *pb.Cluster_StateInfo) *krm.Cluster_StateInfo {
 	if in == nil {
 		return nil
@@ -663,7 +691,6 @@ func RedisClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Clust
 		return nil
 	}
 	out := &krm.RedisClusterObservedState{}
-	// MISSING: ManagedBackupSource
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
@@ -687,7 +714,6 @@ func RedisClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RedisC
 		return nil
 	}
 	out := &pb.Cluster{}
-	// MISSING: ManagedBackupSource
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.State = direct.Enum_ToProto[pb.Cluster_State](mapCtx, in.State)
@@ -714,7 +740,7 @@ func RedisClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.
 	}
 	out := &krm.RedisClusterSpec{}
 	out.GCSSource = Cluster_GCSBackupSource_FromProto(mapCtx, in.GetGcsSource())
-	// MISSING: ManagedBackupSource
+	out.ManagedBackupSource = Cluster_ManagedBackupSource_FromProto(mapCtx, in.GetManagedBackupSource())
 	// MISSING: Name
 	out.ReplicaCount = in.ReplicaCount
 	out.AuthorizationMode = direct.Enum_FromProto(mapCtx, in.GetAuthorizationMode())
@@ -747,7 +773,9 @@ func RedisClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterSpe
 	if oneof := Cluster_GCSBackupSource_ToProto(mapCtx, in.GCSSource); oneof != nil {
 		out.ImportSources = &pb.Cluster_GcsSource{GcsSource: oneof}
 	}
-	// MISSING: ManagedBackupSource
+	if oneof := Cluster_ManagedBackupSource_ToProto(mapCtx, in.ManagedBackupSource); oneof != nil {
+		out.ImportSources = &pb.Cluster_ManagedBackupSource_{ManagedBackupSource: oneof}
+	}
 	// MISSING: Name
 	out.ReplicaCount = in.ReplicaCount
 	out.AuthorizationMode = direct.Enum_ToProto[pb.AuthorizationMode](mapCtx, in.AuthorizationMode)
