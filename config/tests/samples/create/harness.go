@@ -1145,6 +1145,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexZone"}:
 			case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexTask"}:
 			case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexDataTaxonomy"}:
+			case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexAspectType"}:
 
 			case schema.GroupKind{Group: "documentai.cnrm.cloud.google.com", Kind: "DocumentAIProcessorVersion"}:
 
