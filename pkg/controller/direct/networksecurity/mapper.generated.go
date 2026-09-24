@@ -566,6 +566,24 @@ func GrpcEndpoint_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecur
 	out.TargetUri = direct.ValueOf(in.TargetURI)
 	return out
 }
+func InterceptEndpointGroupAssociation_LocationDetailsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterceptEndpointGroupAssociation_LocationDetails) *krmnetworksecurityv1alpha1.InterceptEndpointGroupAssociation_LocationDetailsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.InterceptEndpointGroupAssociation_LocationDetailsObservedState{}
+	out.Location = direct.LazyPtr(in.GetLocation())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func InterceptEndpointGroupAssociation_LocationDetailsObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.InterceptEndpointGroupAssociation_LocationDetailsObservedState) *pb.InterceptEndpointGroupAssociation_LocationDetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterceptEndpointGroupAssociation_LocationDetails{}
+	out.Location = direct.ValueOf(in.Location)
+	out.State = direct.Enum_ToProto[pb.InterceptEndpointGroupAssociation_LocationDetails_State](mapCtx, in.State)
+	return out
+}
 func InterceptEndpointGroup_AssociationDetailsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterceptEndpointGroup_AssociationDetails) *krmnetworksecurityv1alpha1.InterceptEndpointGroup_AssociationDetailsObservedState {
 	if in == nil {
 		return nil
@@ -1218,6 +1236,66 @@ func NetworkSecurityInterceptDeploymentSpec_v1alpha1_ToProto(mapCtx *direct.MapC
 		out.InterceptDeploymentGroup = in.InterceptDeploymentGroupRef.External
 	}
 	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+func NetworkSecurityInterceptEndpointGroupAssociationObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterceptEndpointGroupAssociation) *krmnetworksecurityv1alpha1.NetworkSecurityInterceptEndpointGroupAssociationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityInterceptEndpointGroupAssociationObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.LocationsDetails = direct.Slice_FromProto(mapCtx, in.LocationsDetails, InterceptEndpointGroupAssociation_LocationDetailsObservedState_v1alpha1_FromProto)
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	out.Locations = direct.Slice_FromProto(mapCtx, in.Locations, InterceptLocationObservedState_v1alpha1_FromProto)
+	out.NetworkCookie = direct.LazyPtr(in.GetNetworkCookie())
+	return out
+}
+func NetworkSecurityInterceptEndpointGroupAssociationObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityInterceptEndpointGroupAssociationObservedState) *pb.InterceptEndpointGroupAssociation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterceptEndpointGroupAssociation{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.LocationsDetails = direct.Slice_ToProto(mapCtx, in.LocationsDetails, InterceptEndpointGroupAssociation_LocationDetailsObservedState_v1alpha1_ToProto)
+	out.State = direct.Enum_ToProto[pb.InterceptEndpointGroupAssociation_State](mapCtx, in.State)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	out.Locations = direct.Slice_ToProto(mapCtx, in.Locations, InterceptLocationObservedState_v1alpha1_ToProto)
+	out.NetworkCookie = direct.ValueOf(in.NetworkCookie)
+	return out
+}
+func NetworkSecurityInterceptEndpointGroupAssociationSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterceptEndpointGroupAssociation) *krmnetworksecurityv1alpha1.NetworkSecurityInterceptEndpointGroupAssociationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityInterceptEndpointGroupAssociationSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	if in.GetInterceptEndpointGroup() != "" {
+		out.InterceptEndpointGroupRef = &krmnetworksecurityv1alpha1.NetworkSecurityInterceptEndpointGroupRef{External: in.GetInterceptEndpointGroup()}
+	}
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	return out
+}
+func NetworkSecurityInterceptEndpointGroupAssociationSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityInterceptEndpointGroupAssociationSpec) *pb.InterceptEndpointGroupAssociation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterceptEndpointGroupAssociation{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	if in.InterceptEndpointGroupRef != nil {
+		out.InterceptEndpointGroup = in.InterceptEndpointGroupRef.External
+	}
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
 	return out
 }
 func NetworkSecurityInterceptEndpointGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterceptEndpointGroup) *krmnetworksecurityv1alpha1.NetworkSecurityInterceptEndpointGroupObservedState {
