@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -37,12 +38,14 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/tools/record"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
+	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
@@ -95,7 +98,7 @@ func Add(mgr ctrl.Manager, opt *ReconcilerOptions) error {
 		Watches(
 			&corev1beta1.ConfigConnector{},
 			handler.EnqueueRequestsFromMapFunc(r.enqueueAllConfigConnectorContexts),
-			builder.WithPredicates(predicate.ResourceVersionChangedPredicate{}),
+			builder.WithPredicates(configConnectorConfigHashChangedPredicate()),
 		).
 		For(obj, builder.OnlyMetadata).
 		Build(r)
@@ -106,10 +109,57 @@ func Add(mgr ctrl.Manager, opt *ReconcilerOptions) error {
 	return nil
 }
 
+func configConnectorConfigHashChangedPredicate() predicate.Predicate {
+	return predicate.Funcs{
+		CreateFunc: func(e event.CreateEvent) bool {
+			cc, ok := e.Object.(*corev1beta1.ConfigConnector)
+			if !ok {
+				return false
+			}
+			return controllers.ComputeCCConfigHash(cc) != ""
+		},
+		UpdateFunc: func(e event.UpdateEvent) bool {
+			oldCC, ok1 := e.ObjectOld.(*corev1beta1.ConfigConnector)
+			newCC, ok2 := e.ObjectNew.(*corev1beta1.ConfigConnector)
+			if !ok1 || !ok2 {
+				return false
+			}
+			return controllers.ComputeCCConfigHash(oldCC) != controllers.ComputeCCConfigHash(newCC)
+		},
+		DeleteFunc: func(e event.DeleteEvent) bool {
+			cc, ok := e.Object.(*corev1beta1.ConfigConnector)
+			if !ok {
+				return false
+			}
+			return controllers.ComputeCCConfigHash(cc) != ""
+		},
+		GenericFunc: func(e event.GenericEvent) bool {
+			return false
+		},
+	}
+}
+
 func (r *Reconciler) enqueueAllConfigConnectorContexts(ctx context.Context, obj client.Object) []reconcile.Request {
 	var cccList corev1beta1.ConfigConnectorContextList
-	if err := r.client.List(ctx, &cccList); err != nil {
-		r.log.Error(err, "failed to list ConfigConnectorContexts to trigger rolling update")
+	backoff := wait.Backoff{
+		Duration: 100 * time.Millisecond,
+		Factor:   2.0,
+		Jitter:   0.1,
+		Steps:    4,
+	}
+	var lastErr error
+	err := wait.ExponentialBackoffWithContext(ctx, backoff, func(ctx context.Context) (bool, error) {
+		if listErr := r.client.List(ctx, &cccList); listErr != nil {
+			lastErr = listErr
+			return false, nil
+		}
+		return true, nil
+	})
+	if err != nil {
+		if lastErr != nil {
+			err = lastErr
+		}
+		r.log.Error(err, "failed to list ConfigConnectorContexts to trigger rolling update after retries")
 		return nil
 	}
 	requests := make([]reconcile.Request, 0, len(cccList.Items))
@@ -153,6 +203,7 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 	options := []declarative.ReconcilerOption{
 		declarative.WithPreserveNamespace(),
 		declarative.WithManifestController(manifestLoader),
+		declarative.WithObjectTransform(r.checkResourceSettingsMode()),
 		declarative.WithObjectTransform(r.transformNamespacedComponents()),
 	}
 
@@ -164,7 +215,6 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 		declarative.WithObjectTransform(r.addLabels()),
 		declarative.WithObjectTransform(r.handleCCContextLifecycle()),
 		declarative.WithObjectTransform(r.applyNamespacedCustomizations()),
-		declarative.WithObjectTransform(r.checkResourceSettingsMode()),
 		declarative.WithStatus(&declarative.StatusBuilder{
 			PreflightImpl: preflight,
 		}))
@@ -838,6 +888,11 @@ func (r *Reconciler) checkResourceSettingsMode() declarative.ObjectTransform {
 			if apierrors.IsNotFound(err) {
 				return nil
 			}
+			return err
+		}
+
+		if err := preflight.ValidateResourceSettingsMode(cc, ccc); err != nil {
+			r.recorder.Event(ccc, corev1.EventTypeWarning, "InconsistentResourceSettings", err.Error())
 			return err
 		}
 

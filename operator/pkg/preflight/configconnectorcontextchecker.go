@@ -73,7 +73,7 @@ func (c *ConfigConnectorContextChecker) Preflight(ctx context.Context, o declara
 			// If not found, we use an empty CC object which defaults to Exclusion mode.
 			cc = &corev1beta1.ConfigConnector{}
 		}
-		if err := validateResourceSettingsMode(cc, ccc); err != nil {
+		if err := ValidateResourceSettingsMode(cc, ccc); err != nil {
 			return err
 		}
 	}
@@ -81,13 +81,23 @@ func (c *ConfigConnectorContextChecker) Preflight(ctx context.Context, o declara
 	return nil
 }
 
-func validateResourceSettingsMode(cc *corev1beta1.ConfigConnector, ccc *corev1beta1.ConfigConnectorContext) error {
+// ValidateResourceSettingsMode verifies that ConfigConnector and ConfigConnectorContext do not mix
+// inclusive (mode: include) and exclusive (mode: exclude) ResourceSettings modes.
+// When ResourceSettings is non-nil and Mode is empty, it defaults to exclusive mode ("exclude"),
+// matching the runtime registration controller and config hash canonicalization.
+func ValidateResourceSettingsMode(cc *corev1beta1.ConfigConnector, ccc *corev1beta1.ConfigConnectorContext) error {
 	var ccMode, cccMode corev1beta1.ResourceSettingsMode
 	if cc != nil && cc.Spec.Experiments != nil && cc.Spec.Experiments.ResourceSettings != nil {
 		ccMode = cc.Spec.Experiments.ResourceSettings.Mode
+		if ccMode == "" {
+			ccMode = corev1beta1.ResourceSettingsModeExclude
+		}
 	}
 	if ccc != nil && ccc.Spec.Experiments != nil && ccc.Spec.Experiments.ResourceSettings != nil {
 		cccMode = ccc.Spec.Experiments.ResourceSettings.Mode
+		if cccMode == "" {
+			cccMode = corev1beta1.ResourceSettingsModeExclude
+		}
 	}
 
 	// If one is omitted, we allow it for transition (lenient mode)
@@ -100,6 +110,10 @@ func validateResourceSettingsMode(cc *corev1beta1.ConfigConnector, ccc *corev1be
 		return fmt.Errorf("conflict: ConfigConnector and ConfigConnectorContext cannot mix inclusive (mode: include) and exclusive (mode: exclude) modes")
 	}
 	return nil
+}
+
+func validateResourceSettingsMode(cc *corev1beta1.ConfigConnector, ccc *corev1beta1.ConfigConnectorContext) error {
+	return ValidateResourceSettingsMode(cc, ccc)
 }
 
 func validateGSAFormat(gsa string) error {
