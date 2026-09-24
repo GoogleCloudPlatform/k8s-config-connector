@@ -119,7 +119,16 @@ func (s *datasetsServer) InsertDataset(ctx context.Context, req *pb.InsertDatase
 		return nil, status.Errorf(codes.Internal, "error creating dataset: %v", err)
 	}
 
-	return obj, nil
+	return withSatisfiesPzs(obj), nil
+}
+
+func withSatisfiesPzs(obj *pb.Dataset) *pb.Dataset {
+	if obj.GetLocation() != "" && !strings.EqualFold(obj.GetLocation(), "US") && !strings.EqualFold(obj.GetLocation(), "EU") {
+		resp := proto.CloneOf(obj)
+		resp.SatisfiesPzs = PtrTo(false)
+		return resp
+	}
+	return obj
 }
 
 func sortAccess(obj *pb.Dataset) {
@@ -195,6 +204,9 @@ func (s *datasetsServer) UpdateDataset(ctx context.Context, req *pb.UpdateDatase
 	updated.Id = PtrTo(existing.GetDatasetReference().GetProjectId() + ":" + existing.GetDatasetReference().GetDatasetId())
 	updated.Kind = PtrTo("bigquery#dataset")
 	updated.Location = existing.Location
+	if updated.IsCaseInsensitive == nil {
+		updated.IsCaseInsensitive = existing.IsCaseInsensitive
+	}
 	updated.Type = existing.Type
 	updated.SelfLink = PtrTo("https://bigquery.googleapis.com/bigquery/v2/" + name.String())
 
@@ -206,7 +218,7 @@ func (s *datasetsServer) UpdateDataset(ctx context.Context, req *pb.UpdateDatase
 		return nil, err
 	}
 
-	return updated, err
+	return withSatisfiesPzs(updated), err
 }
 
 func (s *datasetsServer) PatchDataset(ctx context.Context, req *pb.PatchDatasetRequest) (*pb.Dataset, error) {
@@ -280,7 +292,7 @@ func (s *datasetsServer) PatchDataset(ctx context.Context, req *pb.PatchDatasetR
 		return nil, err
 	}
 
-	return updated, err
+	return withSatisfiesPzs(updated), err
 }
 
 func (s *datasetsServer) DeleteDataset(ctx context.Context, req *pb.DeleteDatasetRequest) (*empty.Empty, error) {

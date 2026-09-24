@@ -92,16 +92,20 @@
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 > Content-Type: application/json
 > 
-601a651
+602c651
+<   "isCaseInsensitive": true,
+---
 >   "isCaseInsensitive": false,
-617,618c667
+618,619c667
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-659a709
+661c709
+<   "isCaseInsensitive": true,
+---
 >   "isCaseInsensitive": false,
-675,676c725
+677,678c725
 < DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
 < Content-Type: application/json
 ---

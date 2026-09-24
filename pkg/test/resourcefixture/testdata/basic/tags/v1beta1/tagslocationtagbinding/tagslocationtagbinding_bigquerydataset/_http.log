@@ -157,7 +157,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "description": "For keyname resources.",
-  "parent": "organizations/${folderID}",
+  "parent": "organizations/${organizationID}",
   "shortName": "keyname${uniqueId}"
 }
 
@@ -206,8 +206,8 @@ X-Xss-Protection: 0
     "description": "For keyname resources.",
     "etag": "abcdef0123A=",
     "name": "tagKeys/${tagKeyID}",
-    "namespacedName": "${folderID}/keyname${uniqueId}",
-    "parent": "organizations/${folderID}",
+    "namespacedName": "${organizationID}/keyname${uniqueId}",
+    "parent": "organizations/${organizationID}",
     "shortName": "keyname${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -234,8 +234,8 @@ X-Xss-Protection: 0
   "description": "For keyname resources.",
   "etag": "abcdef0123A=",
   "name": "tagKeys/${tagKeyID}",
-  "namespacedName": "${folderID}/keyname${uniqueId}",
-  "parent": "organizations/${folderID}",
+  "namespacedName": "${organizationID}/keyname${uniqueId}",
+  "parent": "organizations/${organizationID}",
   "shortName": "keyname${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -297,7 +297,7 @@ X-Xss-Protection: 0
     "description": "For valuename resources.",
     "etag": "abcdef0123A=",
     "name": "tagValues/${tagValueID}",
-    "namespacedName": "${folderID}/keyname${uniqueId}/valuename",
+    "namespacedName": "${organizationID}/keyname${uniqueId}/valuename",
     "parent": "tagKeys/${tagKeyID}",
     "shortName": "valuename",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -325,7 +325,7 @@ X-Xss-Protection: 0
   "description": "For valuename resources.",
   "etag": "abcdef0123A=",
   "name": "tagValues/${tagValueID}",
-  "namespacedName": "${folderID}/keyname${uniqueId}/valuename",
+  "namespacedName": "${organizationID}/keyname${uniqueId}/valuename",
   "parent": "tagKeys/${tagKeyID}",
   "shortName": "valuename",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -359,7 +359,7 @@ X-Xss-Protection: 0
     "name": "tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectId}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}/tagValues/${tagValueID}",
     "parent": "//bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
     "tagValue": "tagValues/${tagValueID}",
-    "tagValueNamespacedName": "${folderID}/keyname${uniqueId}/valuename"
+    "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename"
   }
 }
 
@@ -385,7 +385,7 @@ X-Xss-Protection: 0
       "name": "tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectId}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}/tagValues/${tagValueID}",
       "parent": "//bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
       "tagValue": "tagValues/${tagValueID}",
-      "tagValueNamespacedName": "${folderID}/keyname${uniqueId}/valuename"
+      "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename"
     }
   ]
 }
@@ -435,7 +435,7 @@ X-Xss-Protection: 0
   "description": "For valuename resources.",
   "etag": "abcdef0123A=",
   "name": "tagValues/${tagValueID}",
-  "namespacedName": "${folderID}/keyname${uniqueId}/valuename",
+  "namespacedName": "${organizationID}/keyname${uniqueId}/valuename",
   "parent": "tagKeys/${tagKeyID}",
   "shortName": "valuename",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -492,7 +492,7 @@ X-Xss-Protection: 0
     "description": "For valuename resources.",
     "etag": "abcdef0123A=",
     "name": "tagValues/${tagValueID}",
-    "namespacedName": "${folderID}/keyname${uniqueId}/valuename",
+    "namespacedName": "${organizationID}/keyname${uniqueId}/valuename",
     "parent": "tagKeys/${tagKeyID}",
     "shortName": "valuename",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -520,8 +520,8 @@ X-Xss-Protection: 0
   "description": "For keyname resources.",
   "etag": "abcdef0123A=",
   "name": "tagKeys/${tagKeyID}",
-  "namespacedName": "${folderID}/keyname${uniqueId}",
-  "parent": "organizations/${folderID}",
+  "namespacedName": "${organizationID}/keyname${uniqueId}",
+  "parent": "organizations/${organizationID}",
   "shortName": "keyname${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -577,8 +577,8 @@ X-Xss-Protection: 0
     "description": "For keyname resources.",
     "etag": "abcdef0123A=",
     "name": "tagKeys/${tagKeyID}",
-    "namespacedName": "${folderID}/keyname${uniqueId}",
-    "parent": "organizations/${folderID}",
+    "namespacedName": "${organizationID}/keyname${uniqueId}",
+    "parent": "organizations/${organizationID}",
     "shortName": "keyname${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }

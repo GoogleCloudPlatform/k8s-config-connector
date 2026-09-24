@@ -17,6 +17,7 @@ package bigquerydataset
 import (
 	"encoding/json"
 	"fmt"
+	"maps"
 	"reflect"
 	"sort"
 	"strings"
@@ -155,6 +156,7 @@ func cloneBigQueryDatasetMetadate(in *bigquery.DatasetMetadata) *bigquery.Datase
 	out.LastModifiedTime = in.LastModifiedTime
 	out.ETag = in.ETag
 	out.FullID = in.FullID
+	out.Labels = maps.Clone(in.Labels)
 	return out
 }
 
