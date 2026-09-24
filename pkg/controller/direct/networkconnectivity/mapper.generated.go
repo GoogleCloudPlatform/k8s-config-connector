@@ -389,6 +389,76 @@ func NetworkConnectivityServiceConnectionPolicySpec_ToProto(mapCtx *direct.MapCo
 	out.ServiceClass = direct.ValueOf(in.ServiceClass)
 	return out
 }
+func NetworkConnectivityTransportObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Transport) *krm.NetworkConnectivityTransportObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkConnectivityTransportObservedState{}
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.GeneratedActivationKey = direct.LazyPtr(in.GetGeneratedActivationKey())
+	out.MtuLimit = direct.LazyPtr(in.GetMtuLimit())
+	// MISSING: Name
+	out.PeeringNetwork = direct.LazyPtr(in.GetPeeringNetwork())
+	out.State = direct.LazyPtr(in.GetState())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func NetworkConnectivityTransportObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityTransportObservedState) *pb.Transport {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Transport{}
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.GeneratedActivationKey = direct.ValueOf(in.GeneratedActivationKey)
+	out.MtuLimit = direct.ValueOf(in.MtuLimit)
+	// MISSING: Name
+	out.PeeringNetwork = direct.ValueOf(in.PeeringNetwork)
+	out.State = direct.ValueOf(in.State)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func NetworkConnectivityTransportSpec_FromProto(mapCtx *direct.MapContext, in *pb.Transport) *krm.NetworkConnectivityTransportSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkConnectivityTransportSpec{}
+	out.AdvertisedRoutes = in.AdvertisedRoutes
+	out.Bandwidth = direct.LazyPtr(in.GetBandwidth())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	// MISSING: Name
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.ProvidedActivationKey = direct.LazyPtr(in.GetProvidedActivationKey())
+	out.RemoteAccountID = direct.LazyPtr(in.GetRemoteAccountId())
+	if in.GetRemoteProfile() != "" {
+		out.RemoteProfileRef = &krm.NetworkConnectivityRemoteTransportProfileRef{External: in.GetRemoteProfile()}
+	}
+	out.StackType = direct.LazyPtr(in.GetStackType())
+	return out
+}
+func NetworkConnectivityTransportSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityTransportSpec) *pb.Transport {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Transport{}
+	out.AdvertisedRoutes = in.AdvertisedRoutes
+	out.Bandwidth = direct.ValueOf(in.Bandwidth)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	// MISSING: Name
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	out.ProvidedActivationKey = direct.ValueOf(in.ProvidedActivationKey)
+	out.RemoteAccountId = direct.ValueOf(in.RemoteAccountID)
+	if in.RemoteProfileRef != nil {
+		out.RemoteProfile = in.RemoteProfileRef.External
+	}
+	out.StackType = direct.ValueOf(in.StackType)
+	return out
+}
 func PSCConfig_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.PSCConfig {
 	if in == nil {
 		return nil
