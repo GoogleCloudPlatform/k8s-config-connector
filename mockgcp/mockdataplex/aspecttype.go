@@ -90,6 +90,9 @@ func (s *CatalogService) CreateAspectType(ctx context.Context, req *pb.CreateAsp
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 	obj.Etag = uuid.NewString()
+	if obj.Authorization == nil {
+		obj.Authorization = &pb.AspectType_Authorization{}
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -135,6 +138,8 @@ func (s *CatalogService) UpdateAspectType(ctx context.Context, req *pb.UpdateAsp
 				obj.DisplayName = req.GetAspectType().GetDisplayName()
 			case "labels":
 				obj.Labels = req.GetAspectType().GetLabels()
+			case "authorization":
+				obj.Authorization = req.GetAspectType().GetAuthorization()
 			case "metadata_template":
 				obj.MetadataTemplate = req.GetAspectType().GetMetadataTemplate()
 			default:

@@ -65,6 +65,7 @@ OK
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.dataplex.v1.AspectType",
+    "authorization": {},
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Minimal aspect type",
     "etag": "abcdef0123A=",
@@ -96,6 +97,7 @@ GRPC /google.cloud.dataplex.v1.CatalogService/GetAspectType
 OK
 
 {
+  "authorization": {},
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Minimal aspect type",
   "etag": "abcdef0123A=",
@@ -126,6 +128,7 @@ GRPC /google.cloud.dataplex.v1.CatalogService/GetAspectType
 OK
 
 {
+  "authorization": {},
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Minimal aspect type",
   "etag": "abcdef0123A=",
@@ -202,6 +205,7 @@ OK
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.dataplex.v1.AspectType",
+    "authorization": {},
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Minimal aspect type updated",
     "etag": "abcdef0123A=",
@@ -233,6 +237,7 @@ GRPC /google.cloud.dataplex.v1.CatalogService/GetAspectType
 OK
 
 {
+  "authorization": {},
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Minimal aspect type updated",
   "etag": "abcdef0123A=",
@@ -263,6 +268,7 @@ GRPC /google.cloud.dataplex.v1.CatalogService/GetAspectType
 OK
 
 {
+  "authorization": {},
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Minimal aspect type updated",
   "etag": "abcdef0123A=",
@@ -293,6 +299,7 @@ GRPC /google.cloud.dataplex.v1.CatalogService/GetAspectType
 OK
 
 {
+  "authorization": {},
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Minimal aspect type updated",
   "etag": "abcdef0123A=",
