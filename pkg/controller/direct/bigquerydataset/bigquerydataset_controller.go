@@ -17,6 +17,7 @@ package bigquerydataset
 import (
 	"context"
 	"fmt"
+	"maps"
 	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
@@ -140,7 +141,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	mapCtx := &direct.MapContext{}
 
 	desiredDataset := BigQueryDatasetSpec_ToProto(mapCtx, &a.desired.Spec)
-	desiredDataset.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.Labels)
+	desiredDataset.Labels = label.GCPLabels(a.desired)
 
 	// Resolve KMS key reference
 	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
@@ -200,6 +201,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	desired.Labels = label.GCPLabels(a.desired)
 	ApplyBigQueryDatasetGCPDefaults(mapCtx, &desiredKRM.Spec, desired, a.actual)
 
 	// Resolve KMS key reference
@@ -272,28 +274,41 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		resource.Access = desired.Access
 		updateMask.Paths = append(updateMask.Paths, "access")
 	}
-	if desired.Labels != nil && !reflect.DeepEqual(desired.Labels, resource.Labels) {
+	if desired.Labels != nil && !maps.Equal(desired.Labels, resource.Labels) {
 		report.AddField("labels", resource.Labels, desired.Labels)
 		// We always send the full map of labels to GCP, so we do not need to specify each label key in the update mask.
 		resource.Labels = desired.Labels
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
-	if len(updateMask.Paths) == 0 {
-		return nil
+	updated := a.actual
+	if len(updateMask.Paths) > 0 {
+		structuredreporting.ReportDiff(ctx, report)
+
+		// Compute the dataset metadate for update request
+		datasetMetadataToUpdate := BigQueryDataset_ToMetadataToUpdate(mapCtx, resource, updateMask.Paths)
+		// BigQuery's datasets.patch API merges labels rather than replacing the whole map,
+		// and DatasetMetadataToUpdate only sets keys via SetLabel. To remove labels that
+		// were deleted from metadata.labels, we must explicitly call DeleteLabel(k) so
+		// the client serializes {"labels": {"<key>": null}} in the PATCH request.
+		if !maps.Equal(desired.Labels, a.actual.Labels) {
+			for k := range a.actual.Labels {
+				if _, ok := desired.Labels[k]; !ok {
+					datasetMetadataToUpdate.DeleteLabel(k)
+				}
+			}
+		}
+
+		// Call update
+		dsHandler := a.gcpService.DatasetInProject(a.id.Project, a.id.Dataset)
+		var err error
+		updated, err = dsHandler.Update(ctx, *datasetMetadataToUpdate, "")
+		if err != nil {
+			return fmt.Errorf("updating Dataset %s: %w", a.id.String(), err)
+		}
+		log.V(2).Info("successfully updated Dataset", "name", a.id.String())
+	} else {
+		log.V(2).Info("no diff found, skipping update call", "name", a.id.String())
 	}
-
-	structuredreporting.ReportDiff(ctx, report)
-
-	// Compute the dataset metadate for update request
-	datasetMetadataToUpdate := BigQueryDataset_ToMetadataToUpdate(mapCtx, resource, updateMask.Paths)
-
-	// Call update
-	dsHandler := a.gcpService.DatasetInProject(a.id.Project, a.id.Dataset)
-	updated, err := dsHandler.Update(ctx, *datasetMetadataToUpdate, "")
-	if err != nil {
-		return fmt.Errorf("updating Dataset %s: %w", a.id.String(), err)
-	}
-	log.V(2).Info("successfully updated Dataset", "name", a.id.String())
 
 	status := &krm.BigQueryDatasetStatus{}
 	status = BigQueryDatasetStatus_FromProto(mapCtx, updated)
