@@ -36,6 +36,8 @@ status:
   instanceType: READ_REPLICA_INSTANCE
   ipAddress: 10.1.2.3
   observedGeneration: 2
+  observedState:
+    masterInstanceName: ${projectId}:sqlinstance-master-rep-enabled-direct-${uniqueId}
   publicIpAddress: 10.1.2.3
   selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-rep-enabled-direct-${uniqueId}
   serverCaCert:

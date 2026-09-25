@@ -193,63 +193,66 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 
 	// TODO: Move to workflow
 	{
-		if isMysql(obj) {
-			if _, err := s.users.Insert(ctx, &pb.SqlUsersInsertRequest{
-				Instance: name.InstanceName,
-				Project:  name.Project.ID,
-				Body: &pb.User{
-					Name: "root",
-					Host: "%",
-				},
-			}); err != nil {
-				return nil, fmt.Errorf("creating root user: %w", err)
-			}
-		} else if isSqlServer(obj) {
-			users := []*pb.User{
-				{
-					Name: "##MS_PolicyEventProcessingLogin##",
-					UserDetails: &pb.User_SqlserverUserDetails{
-						SqlserverUserDetails: &pb.SqlServerUserDetails{
-							Disabled: true,
-						},
-					},
-				},
-				{
-					Name: "##MS_PolicyTsqlExecutionLogin##",
-					UserDetails: &pb.User_SqlserverUserDetails{
-						SqlserverUserDetails: &pb.SqlServerUserDetails{
-							Disabled: true,
-						},
-					},
-				},
-				{
-					Name: "sqlserver",
-					UserDetails: &pb.User_SqlserverUserDetails{
-						SqlserverUserDetails: &pb.SqlServerUserDetails{
-							ServerRoles: []string{"CustomerDbRootRole"},
-						},
-					},
-				},
-			}
-
-			for _, user := range users {
+		bypassUserCreation := obj.InstanceType == pb.SqlInstanceType_READ_REPLICA_INSTANCE && isMysql8OrAbove(obj)
+		if !bypassUserCreation {
+			if isMysql(obj) {
 				if _, err := s.users.Insert(ctx, &pb.SqlUsersInsertRequest{
 					Instance: name.InstanceName,
 					Project:  name.Project.ID,
-					Body:     user,
+					Body: &pb.User{
+						Name: "root",
+						Host: "%",
+					},
 				}); err != nil {
-					return nil, fmt.Errorf("creating initial user: %w", err)
+					return nil, fmt.Errorf("creating root user: %w", err)
 				}
-			}
-		} else if isPostgres(obj) {
-			if _, err := s.users.Insert(ctx, &pb.SqlUsersInsertRequest{
-				Instance: name.InstanceName,
-				Project:  name.Project.ID,
-				Body: &pb.User{
-					Name: "postgres",
-				},
-			}); err != nil {
-				return nil, fmt.Errorf("creating postgres user: %w", err)
+			} else if isSqlServer(obj) {
+				users := []*pb.User{
+					{
+						Name: "##MS_PolicyEventProcessingLogin##",
+						UserDetails: &pb.User_SqlserverUserDetails{
+							SqlserverUserDetails: &pb.SqlServerUserDetails{
+								Disabled: true,
+							},
+						},
+					},
+					{
+						Name: "##MS_PolicyTsqlExecutionLogin##",
+						UserDetails: &pb.User_SqlserverUserDetails{
+							SqlserverUserDetails: &pb.SqlServerUserDetails{
+								Disabled: true,
+							},
+						},
+					},
+					{
+						Name: "sqlserver",
+						UserDetails: &pb.User_SqlserverUserDetails{
+							SqlserverUserDetails: &pb.SqlServerUserDetails{
+								ServerRoles: []string{"CustomerDbRootRole"},
+							},
+						},
+					},
+				}
+
+				for _, user := range users {
+					if _, err := s.users.Insert(ctx, &pb.SqlUsersInsertRequest{
+						Instance: name.InstanceName,
+						Project:  name.Project.ID,
+						Body:     user,
+					}); err != nil {
+						return nil, fmt.Errorf("creating initial user: %w", err)
+					}
+				}
+			} else if isPostgres(obj) {
+				if _, err := s.users.Insert(ctx, &pb.SqlUsersInsertRequest{
+					Instance: name.InstanceName,
+					Project:  name.Project.ID,
+					Body: &pb.User{
+						Name: "postgres",
+					},
+				}); err != nil {
+					return nil, fmt.Errorf("creating postgres user: %w", err)
+				}
 			}
 		}
 
@@ -668,6 +671,12 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 		if obj.Settings.DatabaseReplicationEnabled == nil {
 			obj.Settings.DatabaseReplicationEnabled = wrapperspb.Bool(true)
 		}
+		if isMysql8OrAbove(obj) && obj.ReplicaConfiguration == nil {
+			obj.ReplicaConfiguration = &pb.ReplicaConfiguration{
+				FailoverTarget: wrapperspb.Bool(false),
+				Kind:           "sql#replicaConfiguration",
+			}
+		}
 	}
 
 	if obj.GeminiConfig == nil {
@@ -879,6 +888,13 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 
 func isMysql(obj *pb.DatabaseInstance) bool {
 	return strings.HasPrefix(obj.GetDatabaseVersion().String(), "MYSQL_")
+}
+
+func isMysql8OrAbove(obj *pb.DatabaseInstance) bool {
+	if !isMysql(obj) {
+		return false
+	}
+	return !strings.HasPrefix(obj.GetDatabaseVersion().String(), "MYSQL_5_")
 }
 
 func isPostgres(obj *pb.DatabaseInstance) bool {

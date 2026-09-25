@@ -104,8 +104,8 @@ func ReplicationCluster_ToProto(mapCtx *direct.MapContext, in *krm.ReplicationCl
 		return nil
 	}
 	out := &pb.ReplicationCluster{}
-	if in.FailoverDrReplicaRef != nil {
-		out.FailoverDrReplicaName = direct.LazyPtr(in.FailoverDrReplicaRef.External)
+	if in.FailoverDRReplicaRef != nil {
+		out.FailoverDrReplicaName = direct.LazyPtr(in.FailoverDRReplicaRef.External)
 	}
 	return out
 }
@@ -758,7 +758,7 @@ func ReplicationCluster_FromProto(mapCtx *direct.MapContext, in *pb.ReplicationC
 	}
 	out := &krm.ReplicationCluster{}
 	if in.FailoverDrReplicaName != nil {
-		out.FailoverDrReplicaRef = &refs.SQLInstanceRef{External: *in.FailoverDrReplicaName}
+		out.FailoverDRReplicaRef = &refs.SQLInstanceRef{External: *in.FailoverDrReplicaName}
 	}
 	return out
 }
@@ -767,11 +767,11 @@ func InstanceReplicationClusterObservedStateGCPToKRM(in *api.ReplicationCluster)
 	if in == nil {
 		return nil
 	}
-	proto := &pb.ReplicationCluster{}
-	if err := common.APIToProto(in, proto); err != nil {
-		panic(fmt.Errorf("converting ReplicationCluster from API: %w", err))
+	return &krm.ReplicationClusterObservedState{
+		FailoverDRReplicaName: direct.LazyPtr(in.FailoverDrReplicaName),
+		DRReplica:             direct.PtrTo(in.DrReplica),
+		PSAWriteEndpoint:      direct.LazyPtr(in.PsaWriteEndpoint),
 	}
-	return ReplicationClusterObservedState_FromProto(nil, proto)
 }
 
 func ReplicationClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ReplicationCluster) *krm.ReplicationClusterObservedState {
@@ -779,8 +779,9 @@ func ReplicationClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 		return nil
 	}
 	out := &krm.ReplicationClusterObservedState{}
-	out.DrReplica = in.DrReplica
-	out.PsaWriteEndpoint = in.PsaWriteEndpoint
+	out.DRReplica = in.DrReplica
+	out.PSAWriteEndpoint = in.PsaWriteEndpoint
+	out.FailoverDRReplicaName = in.FailoverDrReplicaName
 	return out
 }
 
@@ -789,8 +790,9 @@ func ReplicationClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 		return nil
 	}
 	out := &pb.ReplicationCluster{}
-	out.DrReplica = in.DrReplica
-	out.PsaWriteEndpoint = in.PsaWriteEndpoint
+	out.DrReplica = in.DRReplica
+	out.PsaWriteEndpoint = in.PSAWriteEndpoint
+	out.FailoverDrReplicaName = in.FailoverDRReplicaName
 	return out
 }
 
@@ -1112,10 +1114,20 @@ func SQLInstanceStatusGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstanceStatus
 		ServiceAccountEmailAddress:   direct.LazyPtr(in.ServiceAccountEmailAddress),
 	}
 
+	var observedState krm.SQLInstanceObservedState
+	hasObservedState := false
+
+	if in.MasterInstanceName != "" {
+		observedState.MasterInstanceName = direct.LazyPtr(in.MasterInstanceName)
+		hasObservedState = true
+	}
 	if in.ReplicationCluster != nil {
-		out.ObservedState = &krm.SQLInstanceObservedState{
-			ReplicationCluster: InstanceReplicationClusterObservedStateGCPToKRM(in.ReplicationCluster),
-		}
+		observedState.ReplicationCluster = InstanceReplicationClusterObservedStateGCPToKRM(in.ReplicationCluster)
+		hasObservedState = true
+	}
+
+	if hasObservedState {
+		out.ObservedState = &observedState
 	}
 
 	return out, nil
