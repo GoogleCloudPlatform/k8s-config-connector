@@ -153,7 +153,6 @@
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.agentFramework" is not set in unstructured objects
-[missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.classMethods[]" is not set in unstructured objects
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.deploymentSpec.containerConcurrency" is not set in unstructured objects
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.deploymentSpec.env[].name" is not set in unstructured objects
 [missing_field] crd=aiplatformreasoningengines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.deploymentSpec.env[].value" is not set in unstructured objects

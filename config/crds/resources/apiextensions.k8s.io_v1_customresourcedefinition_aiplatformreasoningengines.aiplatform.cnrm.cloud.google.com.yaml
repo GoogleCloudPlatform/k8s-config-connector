@@ -161,12 +161,6 @@ spec:
                       the agent. Currently supported values: "google-adk", "langchain",
                       "langgraph", "ag2", "llama-index", "custom".'
                     type: string
-                  classMethods:
-                    description: Optional. Declarations of the class methods of the
-                      Reasoning Engine.
-                    items:
-                      x-kubernetes-preserve-unknown-fields: true
-                    type: array
                   deploymentSpec:
                     description: Optional. The specification of a Reasoning Engine
                       deployment.
