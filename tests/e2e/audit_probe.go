@@ -39,6 +39,10 @@ import (
 // audit.sh / verify.sh script in the fixture folder mid-flight before deletion.
 func runAutoRESTProbe(ctx context.Context, t *testing.T, h *create.Harness, fixture resourcefixture.ResourceFixture, project testgcp.GCPProject, uniqueID string, opt create.CreateDeleteTestOptions, normalizers ...func(string) string) {
 	t.Helper()
+	if t.Failed() {
+		t.Logf("Skipping runAutoRESTProbe for %s because the test has already failed", fixture.TestKey)
+		return
+	}
 
 	// Pause h.Events so our out-of-band probe requests don't pollute _http.log
 	h.Events.Pause()
