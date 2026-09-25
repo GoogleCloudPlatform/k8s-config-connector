@@ -250,6 +250,9 @@ func (a *adapter) updateStatus(ctx context.Context, op directbase.Operation, lat
 		return mapCtx.Err()
 	}
 	externalRef := a.id.String()
+	if latest != nil && latest.GetName() != "" {
+		externalRef = latest.GetName()
+	}
 	status.ExternalRef = &externalRef
 	return op.UpdateStatus(ctx, status, nil)
 }
