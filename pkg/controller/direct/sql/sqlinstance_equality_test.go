@@ -15,6 +15,7 @@
 package sql
 
 import (
+	"reflect"
 	"testing"
 
 	api "google.golang.org/api/sqladmin/v1beta4"
@@ -237,5 +238,166 @@ func TestDiffInstances_AvailabilityTypeCasing(t *testing.T) {
 
 	if diff.HasDiff() {
 		t.Errorf("DiffInstances() expected no diffs, but got: %v", diff.Fields)
+	}
+}
+
+func TestDiffInstances_ServerCa_NoDiff(t *testing.T) {
+	t.Parallel()
+	desired := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			IpConfiguration: &api.IpConfiguration{
+				ServerCaMode:                  "CUSTOMER_MANAGED_CAS_CA",
+				ServerCaPool:                  "projects/test-project/locations/us-central1/caPools/my-ca-pool",
+				CustomSubjectAlternativeNames: []string{"a.example.com", "b.example.com"},
+			},
+		},
+	}
+
+	actual := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			IpConfiguration: &api.IpConfiguration{
+				ServerCaMode:                  "CUSTOMER_MANAGED_CAS_CA",
+				ServerCaPool:                  "projects/test-project/locations/us-central1/caPools/my-ca-pool",
+				CustomSubjectAlternativeNames: []string{"a.example.com", "b.example.com"},
+			},
+		},
+	}
+
+	diff := DiffInstances(desired, actual)
+
+	if diff.HasDiff() {
+		t.Errorf("DiffInstances() expected no diffs for matching Server CA and SANs, but got: %v", diff.Fields)
+	}
+}
+
+func TestDiffInstances_ServerCa_DefaultNoDiff(t *testing.T) {
+	t.Parallel()
+	// Unset serverCaMode in desired should match default GOOGLE_MANAGED_INTERNAL_CA in actual
+	desired := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			IpConfiguration: &api.IpConfiguration{
+				ServerCaMode: "",
+			},
+		},
+	}
+
+	actual := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			IpConfiguration: &api.IpConfiguration{
+				ServerCaMode: "GOOGLE_MANAGED_INTERNAL_CA",
+			},
+		},
+	}
+
+	diff := DiffInstances(desired, actual)
+
+	if diff.HasDiff() {
+		t.Errorf("DiffInstances() expected no diffs for default GOOGLE_MANAGED_INTERNAL_CA, but got: %v", diff.Fields)
+	}
+}
+
+func TestDiffInstances_ServerCa_WithDiff(t *testing.T) {
+	t.Parallel()
+	desired := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			IpConfiguration: &api.IpConfiguration{
+				ServerCaMode:                  "CUSTOMER_MANAGED_CAS_CA",
+				ServerCaPool:                  "projects/test-project/locations/us-central1/caPools/pool-2",
+				CustomSubjectAlternativeNames: []string{"c.example.com", "a.example.com"},
+			},
+		},
+	}
+
+	actual := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			IpConfiguration: &api.IpConfiguration{
+				ServerCaMode:                  "GOOGLE_MANAGED_CAS_CA",
+				ServerCaPool:                  "projects/test-project/locations/us-central1/caPools/pool-1",
+				CustomSubjectAlternativeNames: []string{"b.example.com", "a.example.com"},
+			},
+		},
+	}
+
+	diff := DiffInstances(desired, actual)
+
+	if !diff.HasDiff() {
+		t.Fatalf("DiffInstances() expected diffs, but got none")
+	}
+
+	expectedDiffs := map[string]struct {
+		Old any
+		New any
+	}{
+		".settings.ipConfiguration.serverCaMode":                  {Old: "GOOGLE_MANAGED_CAS_CA", New: "CUSTOMER_MANAGED_CAS_CA"},
+		".settings.ipConfiguration.serverCaPool":                  {Old: "projects/test-project/locations/us-central1/caPools/pool-1", New: "projects/test-project/locations/us-central1/caPools/pool-2"},
+		".settings.ipConfiguration.customSubjectAlternativeNames": {Old: []string{"b.example.com", "a.example.com"}, New: []string{"c.example.com", "a.example.com"}},
+	}
+
+	if len(diff.Fields) != len(expectedDiffs) {
+		t.Fatalf("DiffInstances() expected %d diffs, got %d. Fields: %v", len(expectedDiffs), len(diff.Fields), diff.Fields)
+	}
+
+	for _, field := range diff.Fields {
+		expected, ok := expectedDiffs[field.ID]
+		if !ok {
+			t.Errorf("Unexpected diff field ID %q", field.ID)
+			continue
+		}
+		if !reflect.DeepEqual(field.Old, expected.Old) {
+			t.Errorf("For field %q, expected Old=%v, got %v", field.ID, expected.Old, field.Old)
+		}
+		if !reflect.DeepEqual(field.New, expected.New) {
+			t.Errorf("For field %q, expected New=%v, got %v", field.ID, expected.New, field.New)
+		}
+	}
+}
+
+func TestDiffInstances_ServerCa_CustomSANs_OrderIndependent(t *testing.T) {
+	t.Parallel()
+	desired := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			IpConfiguration: &api.IpConfiguration{
+				CustomSubjectAlternativeNames: []string{"a.example.com", "b.example.com", "c.example.com"},
+			},
+		},
+	}
+
+	actual := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			IpConfiguration: &api.IpConfiguration{
+				CustomSubjectAlternativeNames: []string{"c.example.com", "a.example.com", "b.example.com"},
+			},
+		},
+	}
+
+	diff := DiffInstances(desired, actual)
+
+	if diff.HasDiff() {
+		t.Errorf("DiffInstances() expected no diffs for re-ordered SANs, but got: %v", diff.Fields)
+	}
+}
+
+func TestDiffInstances_ServerCaPool_PrefixNormalization(t *testing.T) {
+	t.Parallel()
+	desired := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			IpConfiguration: &api.IpConfiguration{
+				ServerCaPool: "projects/test-project/locations/us-central1/caPools/my-ca-pool",
+			},
+		},
+	}
+
+	actual := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			IpConfiguration: &api.IpConfiguration{
+				ServerCaPool: "//privateca.googleapis.com/projects/test-project/locations/us-central1/caPools/my-ca-pool",
+			},
+		},
+	}
+
+	diff := DiffInstances(desired, actual)
+
+	if diff.HasDiff() {
+		t.Errorf("DiffInstances() expected no diffs for normalized CA pool prefixes, but got: %v", diff.Fields)
 	}
 }
