@@ -141,6 +141,12 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	typeGenerator.WithWriteOptions(codegen.WriteOptions{
 		EmitRequired: o.EmitRequiredFromProto,
 	})
+	// Reserve Kind type names to prevent the type generator from duplicating
+	// definitions that will be emitted by the scaffolder in subsequent steps
+	// (particularly during fresh scaffoldings where files do not exist on disk yet).
+	for _, resource := range o.Resources {
+		typeGenerator.WithReservedTypeNames(resource.Kind)
+	}
 
 	resourceAnnotations := make([]string, 0, len(o.Resources))
 	for _, resource := range o.Resources {
