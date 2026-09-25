@@ -103,7 +103,7 @@ Compare to Brownfield resources which are already implemented in KCC.
 
 Instead of doing the coding yourself under this skill, you will coordinate and orchestrate:
 1. Planning the migration steps.
-2. Opening GitHub issues for each step, labeling them with `overseer`, and leaving them unassigned (or assigning them to the current bot user).
+2. Opening GitHub issues for each step, labeling them with `overseer`, and inheriting assignees from the parent workflow issue (`${SESSION_ID#issue-}`).
 3. Monitoring progress of the Pull Requests.
 4. Opening subsequent issues once the prior steps are successfully completed.
 
@@ -114,12 +114,15 @@ Instead of doing the coding yourself under this skill, you will coordinate and o
 > - **Do NOT assign to PRs directly**: You must **never** directly assign PRs to bots or humans. The watch daemon will automatically handle bot and task assignment.
 > - **Do NOT approve, LGTM, or label PRs**: You must **never** approve, LGTM, or add approval/merging labels (such as `lgtm`, `approved`, or `automerge`) to any Pull Requests. These actions require human OWNER review and approval.
 > - **Do NOT work on closed Pull Requests**: If a PR is closed but not merged, dont assign bots to the PR.
-> - **Idempotent Issue Creation & Journal Recording**:
+> - **Idempotent Issue Creation, Assignee Inheritance & Journal Recording**:
+>   - **Fetch parent workflow issue assignees**: Before creating or adopting a child issue, look up the assignees on the parent workflow issue (`${SESSION_ID#issue-}`):
+>     `gh issue view ${SESSION_ID#issue-} --repo GoogleCloudPlatform/k8s-config-connector --json assignees --jq '[.assignees[].login] | join(",")'`
 >   - **Before creating any child issue**, you MUST search GitHub first for an existing open issue for that step:
->     `gh issue list --repo GoogleCloudPlatform/k8s-config-connector --search "<step-title-keywords> {kind}" --json number,title,state,labels`
->   - If an open issue with that title already exists, **DO NOT run `gh issue create`**. Reuse the existing issue number in your progress table and journal file!
->   - **When reusing an existing issue**, verify that it has all the required labels for that step (such as `overseer`, `greenfield`, the step-specific `step/*` label, and `overseer/review` if applicable). If any required labels are missing, add them immediately:
->     `gh issue edit <issue-number> --repo GoogleCloudPlatform/k8s-config-connector --add-label "<required-labels-comma-separated>"`
+>     `gh issue list --repo GoogleCloudPlatform/k8s-config-connector --search "<step-title-keywords> {kind}" --json number,title,state,labels,assignees`
+>   - **When creating a new child issue**, if the parent workflow issue has assignees, inherit them by passing `--assignee "<parent-assignees-comma-separated>"` to `gh issue create`.
+>   - If an open issue with that title already exists, **DO NOT run `gh issue create`**. Reuse (adopt) the existing issue number in your progress table and journal file!
+>   - **When reusing (adopting) an existing issue**, verify that it has all the required labels for that step (such as `overseer`, `greenfield`, the step-specific `step/*` label, and `overseer/review` if applicable) AND all assignees from the parent workflow issue (`${SESSION_ID#issue-}`). If any required labels or parent assignees are missing, add them immediately:
+>     `gh issue edit <issue-number> --repo GoogleCloudPlatform/k8s-config-connector --add-label "<required-labels-comma-separated>" --add-assignee "<parent-assignees-comma-separated>"`
 >   - **Whenever you create an issue or update a step**, immediately write the issue/PR numbers to the local journal file (`.agents/workflows/greenfield-checklist-for-kind/journal/{kind}.md`) and save it so `git status` registers the journal update.
 
 ## Journaling and Progress Tracking
@@ -181,7 +184,7 @@ Open a GitHub issue to coordinate the implementation of direct KRM types, identi
 
 **GitHub Issue Details for Greenfield Resource:**
 *   **Title:** `Greenfield: Implement direct KRM types, identity, and generate.sh for {kind}`
-*   **Assignee:** (leave unassigned or assign to the current bot)
+*   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
 *   **Labels:** `overseer`, `greenfield`,`step/gen-types`, `overseer/review`
 *   **Body:**
     ````
@@ -209,7 +212,7 @@ Open a GitHub issue to coordinate the implementation of the direct controller an
 
 **GitHub Issue Details:**
 *   **Title:** `Greenfield: Implement direct controller, E2E fixtures, and fuzzer for {kind}`
-*   **Assignee:** (leave unassigned or assign to the current bot)
+*   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
 *   **Labels:** `overseer`, `greenfield`, `step/controller`, `overseer/review`
 *   **Body:**
     ````
@@ -232,7 +235,7 @@ Open a GitHub issue to coordinate the implementation of the mockGCP for a specif
 
 **GitHub Issue Details for Greenfield Resource:**
 *   **Title:** `Greenfield: Implement MockGCP and Alignment for {kind}`
-*   **Assignee:** (leave unassigned or assign to the current bot)
+*   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
 *   **Labels:** `overseer`, `greenfield`,`step/mockgcp`
 *   **Body:**
     ````
@@ -250,7 +253,7 @@ Open a GitHub issue to coordinate the alignment of MockGCP logs with RealGCP out
 
 **GitHub Issue Details:**
 *   **Title:** `Greenfield: Align MockGCP logs with RealGCP for {kind}`
-*   **Assignee:** (leave unassigned or assign to the current bot)
+*   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
 *   **Labels:** `overseer`, `greenfield`, `step/mockgcp-alignment`
 *   **Body:**
     ````
