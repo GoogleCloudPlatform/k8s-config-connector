@@ -259,6 +259,10 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Migration Center
 		"//migrationcenter.googleapis.com/projects/{}/locations/{}/groups/{}": true,
 
+		// Map Management
+		"//mapmanagement.googleapis.com/projects/{}/mapConfigs/{}":   true,
+		"//mapmanagement.googleapis.com/projects/{}/styleConfigs/{}": true,
+
 		// Model Armor
 		"//modelarmor.googleapis.com/projects/{}/locations/{}/templates/{}":      true,
 		"//modelarmor.googleapis.com/projects/{}/locations/{}/floorSetting":      true,
