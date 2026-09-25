@@ -1180,6 +1180,7 @@ func DataplexAspectTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: Labels
 	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: DataClassification
 	out.TransferStatus = direct.Enum_FromProto(mapCtx, in.GetTransferStatus())
 	return out
 }
@@ -1194,6 +1195,7 @@ func DataplexAspectTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: Labels
 	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: DataClassification
 	out.TransferStatus = direct.Enum_ToProto[pb.TransferStatus](mapCtx, in.TransferStatus)
 	return out
 }
@@ -1206,6 +1208,7 @@ func DataplexAspectTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.AspectTy
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	// MISSING: Labels
+	// MISSING: DataClassification
 	out.Authorization = AspectType_Authorization_FromProto(mapCtx, in.GetAuthorization())
 	out.MetadataTemplate = AspectType_MetadataTemplate_FromProto(mapCtx, in.GetMetadataTemplate())
 	return out
@@ -1219,6 +1222,7 @@ func DataplexAspectTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexA
 	out.Description = direct.ValueOf(in.Description)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	// MISSING: Labels
+	// MISSING: DataClassification
 	out.Authorization = AspectType_Authorization_ToProto(mapCtx, in.Authorization)
 	out.MetadataTemplate = AspectType_MetadataTemplate_ToProto(mapCtx, in.MetadataTemplate)
 	return out
@@ -1547,6 +1551,28 @@ func DataplexLakeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexLakeSpe
 	out.Metastore = Lake_Metastore_ToProto(mapCtx, in.Metastore)
 	return out
 }
+func DataplexMetadataFeedObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFeed) *krm.DataplexMetadataFeedObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexMetadataFeedObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func DataplexMetadataFeedObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexMetadataFeedObservedState) *pb.MetadataFeed {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataFeed{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
 func DataplexMetadataJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataJob) *krm.DataplexMetadataJobObservedState {
 	if in == nil {
 		return nil
@@ -1823,6 +1849,90 @@ func Lake_MetastoreStatus_ToProto(mapCtx *direct.MapContext, in *krm.Lake_Metast
 	out.Endpoint = direct.ValueOf(in.Endpoint)
 	return out
 }
+func MetadataFeedFilters_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFeed_Filters) *krm.MetadataFeedFilters {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MetadataFeedFilters{}
+
+	if v := in.GetEntryTypes(); len(v) != 0 {
+		for i := range v {
+			out.EntryTypeRefs = append(out.EntryTypeRefs, krm.EntryTypeRef{External: v[i]})
+		}
+	}
+
+	if v := in.GetAspectTypes(); len(v) != 0 {
+		for i := range v {
+			out.AspectTypeRefs = append(out.AspectTypeRefs, krm.AspectTypeRef{External: v[i]})
+		}
+	}
+
+	out.ChangeTypes = direct.EnumSlice_FromProto(mapCtx, in.ChangeTypes)
+	return out
+}
+func MetadataFeedFilters_ToProto(mapCtx *direct.MapContext, in *krm.MetadataFeedFilters) *pb.MetadataFeed_Filters {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataFeed_Filters{}
+
+	if v := in.EntryTypeRefs; len(v) != 0 {
+		for i := range v {
+			out.EntryTypes = append(out.EntryTypes, v[i].External)
+		}
+	}
+
+	if v := in.AspectTypeRefs; len(v) != 0 {
+		for i := range v {
+			out.AspectTypes = append(out.AspectTypes, v[i].External)
+		}
+	}
+
+	out.ChangeTypes = direct.EnumSlice_ToProto[pb.MetadataFeed_Filters_ChangeType](mapCtx, in.ChangeTypes)
+	return out
+}
+func MetadataFeedScope_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFeed_Scope) *krm.MetadataFeedScope {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MetadataFeedScope{}
+	out.OrganizationLevel = direct.LazyPtr(in.GetOrganizationLevel())
+
+	if v := in.GetProjects(); len(v) != 0 {
+		for i := range v {
+			out.ProjectRefs = append(out.ProjectRefs, refsv1beta1.ProjectRef{External: v[i]})
+		}
+	}
+
+	if v := in.GetEntryGroups(); len(v) != 0 {
+		for i := range v {
+			out.EntryGroupRefs = append(out.EntryGroupRefs, krm.EntryGroupRef{External: v[i]})
+		}
+	}
+
+	return out
+}
+func MetadataFeedScope_ToProto(mapCtx *direct.MapContext, in *krm.MetadataFeedScope) *pb.MetadataFeed_Scope {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataFeed_Scope{}
+	out.OrganizationLevel = direct.ValueOf(in.OrganizationLevel)
+
+	if v := in.ProjectRefs; len(v) != 0 {
+		for i := range v {
+			out.Projects = append(out.Projects, v[i].External)
+		}
+	}
+
+	if v := in.EntryGroupRefs; len(v) != 0 {
+		for i := range v {
+			out.EntryGroups = append(out.EntryGroups, v[i].External)
+		}
+	}
+
+	return out
+}
 func MetadataJobExportJobResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataJob_ExportJobResult) *krm.MetadataJobExportJobResultObservedState {
 	if in == nil {
 		return nil
@@ -1936,6 +2046,9 @@ func MetadataJobImportJobResultObservedState_FromProto(mapCtx *direct.MapContext
 	out.UnchangedEntries = direct.LazyPtr(in.GetUnchangedEntries())
 	out.RecreatedEntries = direct.LazyPtr(in.GetRecreatedEntries())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: DeletedEntryLinks
+	// MISSING: CreatedEntryLinks
+	// MISSING: UnchangedEntryLinks
 	return out
 }
 func MetadataJobImportJobResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MetadataJobImportJobResultObservedState) *pb.MetadataJob_ImportJobResult {
@@ -1949,6 +2062,9 @@ func MetadataJobImportJobResultObservedState_ToProto(mapCtx *direct.MapContext, 
 	out.UnchangedEntries = direct.ValueOf(in.UnchangedEntries)
 	out.RecreatedEntries = direct.ValueOf(in.RecreatedEntries)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: DeletedEntryLinks
+	// MISSING: CreatedEntryLinks
+	// MISSING: UnchangedEntryLinks
 	return out
 }
 func MetadataJobImportJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.MetadataJob_ImportJobSpec) *krm.MetadataJobImportJobSpec {
@@ -2001,6 +2117,9 @@ func MetadataJobImportJobSpecScope_FromProto(mapCtx *direct.MapContext, in *pb.M
 		}
 	}
 
+	// MISSING: Glossaries
+	// MISSING: EntryLinkTypes
+	// MISSING: ReferencedEntryScopes
 	return out
 }
 func MetadataJobImportJobSpecScope_ToProto(mapCtx *direct.MapContext, in *krm.MetadataJobImportJobSpecScope) *pb.MetadataJob_ImportJobSpec_ImportJobScope {
@@ -2027,6 +2146,9 @@ func MetadataJobImportJobSpecScope_ToProto(mapCtx *direct.MapContext, in *krm.Me
 		}
 	}
 
+	// MISSING: Glossaries
+	// MISSING: EntryLinkTypes
+	// MISSING: ReferencedEntryScopes
 	return out
 }
 func MetadataJobStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataJob_Status) *krm.MetadataJobStatusObservedState {
