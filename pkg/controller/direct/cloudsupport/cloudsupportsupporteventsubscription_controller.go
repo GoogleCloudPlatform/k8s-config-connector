@@ -129,6 +129,10 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 
 // Find implements the Adapter interface.
 func (a *adapter) Find(ctx context.Context) (bool, error) {
+	if a.id.SupportEventSubscription == "" {
+		return false, nil
+	}
+
 	log := klog.FromContext(ctx)
 	log.V(2).Info("finding CloudSupportSupportEventSubscription", "name", a.id.String())
 
