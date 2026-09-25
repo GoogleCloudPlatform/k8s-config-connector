@@ -39,7 +39,8 @@ ${CONTROLLERBUILDER} generate-types \
     --resource NetworkServicesLBRouteExtension:LbRouteExtension \
     --resource NetworkServicesLBEdgeExtension:LbEdgeExtension \
     --resource NetworkServicesWasmPlugin:WasmPlugin \
-    --resource NetworkServicesAuthzExtension:AuthzExtension
+    --resource NetworkServicesAuthzExtension:AuthzExtension \
+    --resource NetworkServicesAgentGateway:AgentGateway
 # Note: NetworkServicesEdgeCacheService is handcoded under apis/networkservices/v1alpha1/edgecacheservice_types.go
 # because its proto definition is not published in the public googleapis repository.
 
