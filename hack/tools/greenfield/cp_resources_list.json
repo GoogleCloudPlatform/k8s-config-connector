@@ -3856,7 +3856,7 @@
   {
     "resource": "cloudnumberregistry/CustomRange",
     "service": "cloudnumberregistry",
-    "kind": "CloudNumberRegistryCustomRange",
+    "kind": "NumberRegistryCustomRange",
     "patterns": [
       "projects/{project}/locations/{location}/customRanges/{custom_range}"
     ],
@@ -3877,7 +3877,7 @@
   {
     "resource": "cloudnumberregistry/IpamAdminScope",
     "service": "cloudnumberregistry",
-    "kind": "CloudNumberRegistryIpamAdminScope",
+    "kind": "NumberRegistryIpamAdminScope",
     "patterns": [
       "projects/{project}/locations/{location}/ipamAdminScopes/{ipam_admin_scope}"
     ],
@@ -3898,7 +3898,7 @@
   {
     "resource": "cloudnumberregistry/Realm",
     "service": "cloudnumberregistry",
-    "kind": "CloudNumberRegistryRealm",
+    "kind": "NumberRegistryRealm",
     "patterns": [
       "projects/{project}/locations/{location}/realms/{realm}"
     ],
@@ -3919,7 +3919,7 @@
   {
     "resource": "cloudnumberregistry/RegistryBook",
     "service": "cloudnumberregistry",
-    "kind": "CloudNumberRegistryRegistryBook",
+    "kind": "NumberRegistryRegistryBook",
     "patterns": [
       "projects/{project}/locations/{location}/registryBooks/{registry_book}"
     ],
@@ -3940,7 +3940,7 @@
   {
     "resource": "cloudresourcemanager/TagKey",
     "service": "cloudresourcemanager",
-    "kind": "CloudResourceManagerTagKey",
+    "kind": "ResourceManagerTagKey",
     "patterns": [
       "tagKeys/{tag_key}"
     ],
@@ -3961,7 +3961,7 @@
   {
     "resource": "cloudresourcemanager/TagValue",
     "service": "cloudresourcemanager",
-    "kind": "CloudResourceManagerTagValue",
+    "kind": "ResourceManagerTagValue",
     "patterns": [
       "tagValues/{tag_value}"
     ],
@@ -3982,7 +3982,7 @@
   {
     "resource": "cloudsupport/SupportEventSubscription",
     "service": "cloudsupport",
-    "kind": "CloudSupportSupportEventSubscription",
+    "kind": "SupportSupportEventSubscription",
     "patterns": [
       "organizations/{organization}/supportEventSubscriptions/{support_event_subscription}"
     ],
@@ -4003,7 +4003,7 @@
   {
     "resource": "cloudtasks/Queue",
     "service": "cloudtasks",
-    "kind": "CloudTasksQueue",
+    "kind": "TasksQueue",
     "patterns": [
       "projects/{project}/locations/{location}/queues/{queue}"
     ],
