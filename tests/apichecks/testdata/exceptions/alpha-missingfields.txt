@@ -2314,6 +2314,7 @@
 [missing_field] crd=discoveryenginelicenseconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.endDate.day" is not set in unstructured objects
 [missing_field] crd=discoveryenginelicenseconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.endDate.month" is not set in unstructured objects
 [missing_field] crd=discoveryenginelicenseconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.endDate.year" is not set in unstructured objects
+[missing_field] crd=discoveryengineschemas.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.structSchema" is not set in unstructured objects
 [missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostControlIDs[]" is not set in unstructured objects
 [missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.dissociateControlIDs[]" is not set in unstructured objects
 [missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.diversityLevel" is not set in unstructured objects
