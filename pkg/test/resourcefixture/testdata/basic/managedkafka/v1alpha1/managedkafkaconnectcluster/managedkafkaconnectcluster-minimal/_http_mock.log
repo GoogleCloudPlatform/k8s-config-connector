@@ -158,7 +158,7 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
-  "ipCidrRange": "10.0.0.0/24",
+  "ipCidrRange": "10.0.0.0/22",
   "logConfig": {
     "enable": false
   },
@@ -248,7 +248,7 @@ X-Xss-Protection: 0
   "fingerprint": "abcdef0123A=",
   "gatewayAddress": "10.0.0.1",
   "id": "000000000000000000000",
-  "ipCidrRange": "10.0.0.0/24",
+  "ipCidrRange": "10.0.0.0/22",
   "kind": "compute#subnetwork",
   "logConfig": {
     "enable": false
@@ -435,7 +435,8 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
         }
       ]
     }
-  }
+  },
+  "kafkaCluster": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}"
 }
 
 200 OK
@@ -503,6 +504,7 @@ X-Xss-Protection: 0
         ]
       }
     },
+    "kafkaCluster": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}",
     "name": "projects/${projectId}/locations/us-central1/connectClusters/connectcluster-${uniqueId}",
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -541,6 +543,7 @@ X-Xss-Protection: 0
       ]
     }
   },
+  "kafkaCluster": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}",
   "name": "projects/${projectId}/locations/us-central1/connectClusters/connectcluster-${uniqueId}",
   "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -567,6 +570,7 @@ X-Goog-Request-Params: connect_cluster.name=projects%2F${projectId}%2Flocations%
       ]
     }
   },
+  "kafkaCluster": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}",
   "labels": {
     "updated-label": "true"
   },
@@ -638,6 +642,7 @@ X-Xss-Protection: 0
         ]
       }
     },
+    "kafkaCluster": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}",
     "labels": {
       "updated-label": "true"
     },
@@ -679,6 +684,7 @@ X-Xss-Protection: 0
       ]
     }
   },
+  "kafkaCluster": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}",
   "labels": {
     "updated-label": "true"
   },
@@ -874,7 +880,7 @@ X-Xss-Protection: 0
   "fingerprint": "abcdef0123A=",
   "gatewayAddress": "10.0.0.1",
   "id": "000000000000000000000",
-  "ipCidrRange": "10.0.0.0/24",
+  "ipCidrRange": "10.0.0.0/22",
   "kind": "compute#subnetwork",
   "logConfig": {
     "enable": false

@@ -59,9 +59,6 @@ var realGCPSkipFixtures = map[string]bool{
 	// NetworkSecurity BackendAuthenticationConfig requires invitation-only early access allowlist.
 	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-maximal": true,
 	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-minimal": true,
-	// ManagedKafkaConnectCluster requires managedkafka.connectClusters.create / IAM permissions not present in the live test project.
-	"managedkafka/v1alpha1/managedkafkaconnectcluster/managedkafkaconnectcluster-maximal": true,
-	"managedkafka/v1alpha1/managedkafkaconnectcluster/managedkafkaconnectcluster-minimal": true,
 }
 
 func TestGoldenLogAlignment(t *testing.T) {
@@ -857,9 +854,8 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		}
 		// currently unsupported in CRD
 		// todo: recover fields once they are supported
-		if satisfiesPzi, ok := v["satisfiesPzi"].(bool); ok && satisfiesPzi == true {
-			delete(v, "satisfiesPzi")
-		}
+		delete(v, "satisfiesPzi")
+		delete(v, "satisfiesPzs")
 		if serverCaMode, ok := v["serverCaMode"].(float64); ok && serverCaMode == 0 {
 			delete(v, "serverCaMode")
 		}

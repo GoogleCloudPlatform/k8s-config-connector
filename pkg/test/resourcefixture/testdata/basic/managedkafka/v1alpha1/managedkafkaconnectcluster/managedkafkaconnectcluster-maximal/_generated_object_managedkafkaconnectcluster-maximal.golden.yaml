@@ -15,8 +15,6 @@ spec:
     vcpuCount: 3
   clusterRef:
     name: managedkafkacluster-${uniqueId}
-  config:
-    my-config-key: my-updated-config-value
   gcpConfig:
     accessConfig:
       networkConfigs:

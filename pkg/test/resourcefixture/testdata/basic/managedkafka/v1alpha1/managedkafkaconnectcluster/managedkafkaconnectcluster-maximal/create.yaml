@@ -20,7 +20,5 @@ spec:
         - name: computesubnetwork-${uniqueId}-2
         dnsDomainNames:
         - "my-dns-domain.example.com"
-  config:
-    my-config-key: "my-config-value"
   labels:
     my-label: "my-value"
