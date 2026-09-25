@@ -39,6 +39,10 @@ import (
 // audit.sh / verify.sh script in the fixture folder mid-flight before deletion.
 func runAutoRESTProbe(ctx context.Context, t *testing.T, h *create.Harness, fixture resourcefixture.ResourceFixture, project testgcp.GCPProject, uniqueID string, opt create.CreateDeleteTestOptions, normalizers ...func(string) string) {
 	t.Helper()
+	if t.Failed() {
+		t.Logf("Skipping runAutoRESTProbe for %s because the test has already failed", fixture.TestKey)
+		return
+	}
 
 	// Pause h.Events so our out-of-band probe requests don't pollute _http.log
 	h.Events.Pause()
@@ -57,7 +61,7 @@ func runAutoRESTProbe(ctx context.Context, t *testing.T, h *create.Harness, fixt
 	var uniqueURLs []string
 	seen := make(map[string]bool)
 	for _, e := range h.Events.GetHTTPEvents() {
-		if e.Request.Method != "GET" || e.Response.StatusCode != 200 {
+		if e.Request.Method != "GET" || (e.Response.StatusCode != http.StatusOK && e.Response.StatusCode != http.StatusNotFound) {
 			continue
 		}
 		if isGetOperation(e) {
@@ -67,14 +71,7 @@ func runAutoRESTProbe(ctx context.Context, t *testing.T, h *create.Harness, fixt
 		if !shouldProbeURL(u) {
 			continue
 		}
-		body := e.Response.ParseBody()
-		if body == nil {
-			continue
-		}
-		if _, hasItems := body["items"]; hasItems {
-			continue
-		}
-		if _, hasOps := body["operations"]; hasOps {
+		if e.Response.StatusCode == http.StatusOK && isListOrOperationResponse(e.Response.ParseBody()) {
 			continue
 		}
 		if !seen[u] {
@@ -84,6 +81,7 @@ func runAutoRESTProbe(ctx context.Context, t *testing.T, h *create.Harness, fixt
 	}
 
 	var probeEntries test.LogEntries
+	var probedURLs []string
 	var traceIds []string
 	for _, u := range uniqueURLs {
 		req, err := http.NewRequestWithContext(ctx, "GET", u, nil)
@@ -99,15 +97,11 @@ func runAutoRESTProbe(ctx context.Context, t *testing.T, h *create.Harness, fixt
 			t.Logf("Warning: failed to execute probe GET request for %q: %v", u, err)
 			continue
 		}
-		defer resp.Body.Close()
 		respBytes, _ := io.ReadAll(resp.Body)
+		resp.Body.Close()
 
-		traceId := resp.Header.Get("X-Cloud-Trace-Context")
-		if traceId == "" {
-			traceId = resp.Header.Get("Trace-Id")
-		}
-		if traceId != "" {
-			traceIds = append(traceIds, traceId)
+		if resp.StatusCode != http.StatusOK {
+			continue
 		}
 
 		entry := &test.LogEntry{
@@ -124,6 +118,18 @@ func runAutoRESTProbe(ctx context.Context, t *testing.T, h *create.Harness, fixt
 				Body:       string(respBytes),
 			},
 		}
+		if isListOrOperationResponse(entry.Response.ParseBody()) {
+			continue
+		}
+
+		traceId := resp.Header.Get("X-Cloud-Trace-Context")
+		if traceId == "" {
+			traceId = resp.Header.Get("Trace-Id")
+		}
+		if traceId != "" {
+			traceIds = append(traceIds, traceId)
+		}
+
 		entry.Request.Header.Set("X-Audit-Probe", "true")
 		if traceId != "" {
 			entry.Response.Header.Set("X-Gfe-Trace-Id", traceId)
@@ -131,11 +137,12 @@ func runAutoRESTProbe(ctx context.Context, t *testing.T, h *create.Harness, fixt
 		if s := resp.Header.Get("Server"); s != "" {
 			entry.Response.Header.Set("X-Gfe-Server", s)
 		}
+		probedURLs = append(probedURLs, u)
 		probeEntries = append(probeEntries, entry)
 	}
 
 	if h.GCPTarget == create.GCPTargetModeReal && len(probeEntries) > 0 {
-		emitCloudLoggingAuditMarker(ctx, t, probeClient, project, fixture, opt.PrimaryResource, uniqueURLs, traceIds)
+		emitCloudLoggingAuditMarker(ctx, t, probeClient, project, fixture, opt.PrimaryResource, probedURLs, traceIds)
 	}
 
 	if len(probeEntries) > 0 {
@@ -149,6 +156,27 @@ func runAutoRESTProbe(ctx context.Context, t *testing.T, h *create.Harness, fixt
 			t.Logf("Warning: failed to write _audit_probe.log: %v", err)
 		}
 	}
+}
+
+func isListOrOperationResponse(body map[string]any) bool {
+	if body == nil {
+		return true
+	}
+	if _, hasOps := body["operations"]; hasOps {
+		return true
+	}
+	if kind, ok := body["kind"].(string); ok && strings.HasSuffix(kind, "List") {
+		return true
+	}
+	if _, hasItems := body["items"]; hasItems {
+		// List responses in Discovery/JSON APIs do not have a top-level resource "name",
+		// whereas single resources that happen to have a spec field named "items"
+		// (such as NetworkSecurityAddressGroup) always have a top-level "name".
+		if _, hasName := body["name"].(string); !hasName {
+			return true
+		}
+	}
+	return false
 }
 
 func shouldProbeURL(u string) bool {
