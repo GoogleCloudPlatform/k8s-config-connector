@@ -458,6 +458,20 @@
 [missing_field] crd=artifactregistryvpcscconfigs.artifactregistry.cnrm.cloud.google.com version=v1alpha1: field ".spec.vpcscPolicy" is not set in unstructured objects
 [missing_field] crd=assuredworkloadsworkloads.assuredworkloads.cnrm.cloud.google.com version=v1alpha1: field ".spec.enableSovereignControls" is not set in unstructured objects
 [missing_field] crd=assuredworkloadsworkloads.assuredworkloads.cnrm.cloud.google.com version=v1alpha1: field ".spec.partner" is not set in unstructured objects
+[missing_field] crd=backupdrbackups.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupApplianceLocks[].backupApplianceLockInfo.backupApplianceID" is not set in unstructured objects
+[missing_field] crd=backupdrbackups.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupApplianceLocks[].backupApplianceLockInfo.backupApplianceName" is not set in unstructured objects
+[missing_field] crd=backupdrbackups.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupApplianceLocks[].backupApplianceLockInfo.backupImage" is not set in unstructured objects
+[missing_field] crd=backupdrbackups.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupApplianceLocks[].backupApplianceLockInfo.jobName" is not set in unstructured objects
+[missing_field] crd=backupdrbackups.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupApplianceLocks[].backupApplianceLockInfo.lockReason" is not set in unstructured objects
+[missing_field] crd=backupdrbackups.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupApplianceLocks[].backupApplianceLockInfo.slaID" is not set in unstructured objects
+[missing_field] crd=backupdrbackups.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupApplianceLocks[].lockUntilTime" is not set in unstructured objects
+[missing_field] crd=backupdrbackups.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupVault" is not set in unstructured objects
+[missing_field] crd=backupdrbackups.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataSource" is not set in unstructured objects
+[missing_field] crd=backupdrbackups.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.enforcedRetentionEndTime" is not set in unstructured objects
+[missing_field] crd=backupdrbackups.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.expireTime" is not set in unstructured objects
+[missing_field] crd=backupdrbackups.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=backupdrbackups.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=backupdrbackups.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=backupdrmanagementservers.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=backupdrmanagementservers.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=backupdrmanagementservers.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.networks[].peeringMode" is not set in unstructured objects
