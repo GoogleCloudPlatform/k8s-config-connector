@@ -111,7 +111,20 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 }
 
 func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	return nil, nil
+	id := &krm.CloudSupportSupportEventSubscriptionIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		return nil, nil
+	}
+
+	gcp, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &adapter{
+		id:  id,
+		gcp: gcp,
+	}, nil
 }
 
 // Find implements the Adapter interface.
@@ -257,7 +270,7 @@ func (a *adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	obj.Spec.ResourceID = direct.LazyPtr(a.id.SupportEventSubscription)
 
 	if a.id.Organization != "" {
-		obj.Spec.OrganizationRef = &refs.OrganizationRef{External: a.id.Organization}
+		obj.Spec.OrganizationRef = &refs.OrganizationRef{External: a.id.ParentString()}
 	}
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
