@@ -21,6 +21,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/scaffold"
 	cctemplate "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/template/controller"
 	"github.com/spf13/cobra"
@@ -108,6 +109,16 @@ func RunController(ctx context.Context, o *GenerateControllerOptions) error {
 		Group:           gv.Group,
 		Version:         gv.Version,
 		PackageProtoTag: o.ServiceName,
+	}
+
+	// Optional: lets the scaffolder read google.api.resource for the real
+	// collection segment and parent shape. If the proto cannot be loaded we carry
+	// on with the old guesses rather than failing the command.
+	if api, err := protoapi.LoadProto(o.GenerateOptions.ProtoSourcePath, o.GenerateOptions.ProtoOverlayPath); err != nil {
+		klog.Warningf("could not load proto %q, scaffolding will guess the resource name shape: %v",
+			o.GenerateOptions.ProtoSourcePath, err)
+	} else {
+		scaffolder.Proto = api
 	}
 	if scaffolder.RefsFileExist(o.Resource) {
 		klog.V(1).Infof("file %s already exists, skipping\n", scaffolder.PathToRefsFile(o.Resource))
