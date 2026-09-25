@@ -41,6 +41,11 @@ ${CONTROLLERBUILDER} generate-types \
   --resource MapManagementMapConfig:MapConfig \
   --resource MapManagementStyleConfig:StyleConfig
 
+${CONTROLLERBUILDER} generate-mapper \
+  --proto-source-path "${REPO_ROOT}/.build/googleapis-mapmanagement.pb" \
+  --service google.maps.mapmanagement.v2beta \
+  --api-version mapmanagement.cnrm.cloud.google.com/v1alpha1
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

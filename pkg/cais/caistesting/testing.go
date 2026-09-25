@@ -167,6 +167,16 @@ func NormalizeDynamicIDs(s string) string {
 				lines[i] = line[:start] + "${workloadID}"
 			}
 		}
+		// Normalize MapManagement StyleConfig IDs: projects/.../styleConfigs/<styleConfigId>
+		if idx := strings.Index(line, "/styleConfigs/"); idx != -1 {
+			start := idx + len("/styleConfigs/")
+			end := strings.Index(line[start:], "/")
+			if end != -1 {
+				lines[i] = line[:start] + "${styleConfigId}" + line[start+end:]
+			} else {
+				lines[i] = line[:start] + "${styleConfigId}"
+			}
+		}
 	}
 	return strings.Join(lines, "\n")
 }

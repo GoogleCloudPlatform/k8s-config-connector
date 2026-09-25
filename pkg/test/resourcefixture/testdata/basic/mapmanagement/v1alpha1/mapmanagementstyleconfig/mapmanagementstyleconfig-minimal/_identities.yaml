@@ -1,0 +1,6 @@
+- caisURL: //mapmanagement.googleapis.com/projects/${projectId}/styleConfigs/${styleConfigId}
+  group: mapmanagement.cnrm.cloud.google.com
+  kind: MapManagementStyleConfig
+  name: mapmanagementstyleconfig-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
