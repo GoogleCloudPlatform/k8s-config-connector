@@ -193,7 +193,7 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 
 	// TODO: Move to workflow
 	{
-		bypassUserCreation := obj.InstanceType == pb.SqlInstanceType_READ_REPLICA_INSTANCE && obj.DatabaseVersion != pb.SqlDatabaseVersion_MYSQL_5_7
+		bypassUserCreation := obj.InstanceType == pb.SqlInstanceType_READ_REPLICA_INSTANCE && isMysql8OrAbove(obj)
 		if !bypassUserCreation {
 			if isMysql(obj) {
 				if _, err := s.users.Insert(ctx, &pb.SqlUsersInsertRequest{
@@ -671,7 +671,7 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 		if obj.Settings.DatabaseReplicationEnabled == nil {
 			obj.Settings.DatabaseReplicationEnabled = wrapperspb.Bool(true)
 		}
-		if obj.ReplicaConfiguration == nil {
+		if isMysql8OrAbove(obj) && obj.ReplicaConfiguration == nil {
 			obj.ReplicaConfiguration = &pb.ReplicaConfiguration{
 				FailoverTarget: wrapperspb.Bool(false),
 				Kind:           "sql#replicaConfiguration",
@@ -888,6 +888,13 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 
 func isMysql(obj *pb.DatabaseInstance) bool {
 	return strings.HasPrefix(obj.GetDatabaseVersion().String(), "MYSQL_")
+}
+
+func isMysql8OrAbove(obj *pb.DatabaseInstance) bool {
+	if !isMysql(obj) {
+		return false
+	}
+	return !strings.HasPrefix(obj.GetDatabaseVersion().String(), "MYSQL_5_")
 }
 
 func isPostgres(obj *pb.DatabaseInstance) bool {

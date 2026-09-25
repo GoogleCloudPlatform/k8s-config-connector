@@ -524,10 +524,6 @@ X-Xss-Protection: 0
   "name": "sqlinstance-replica-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "replicaConfiguration": {
-    "failoverTarget": false,
-    "kind": "sql#replicaConfiguration"
-  },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-replica-direct-${uniqueId}",
   "serverCaCert": {
@@ -765,10 +761,6 @@ X-Xss-Protection: 0
   "name": "sqlinstance-replica-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "replicaConfiguration": {
-    "failoverTarget": false,
-    "kind": "sql#replicaConfiguration"
-  },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-replica-direct-${uniqueId}",
   "serverCaCert": {

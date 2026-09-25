@@ -598,7 +598,6 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "dataCacheConfig")
 		delete(v, "enableDataplexIntegration")
 		delete(v, "serverCertificateRotationMode")
-		delete(v, "replicaConfiguration")
 		delete(v, "replicationLagMaxSeconds")
 		delete(v, "dataDiskSizeGb")
 		delete(v, "targetId")
