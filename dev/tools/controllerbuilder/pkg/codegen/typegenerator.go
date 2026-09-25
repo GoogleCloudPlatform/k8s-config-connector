@@ -76,6 +76,12 @@ type WriteOptions struct {
 	// EmitRequired generates "// +required" markers for fields annotated with
 	// google.api.field_behavior = REQUIRED.
 	EmitRequired bool
+	// Prepopulating indicates whether --prepopulate-spec is enabled for this run.
+	//
+	// Generator enhancements that would otherwise cause churn across existing
+	// services (e.g., filtering unused imports) are scoped to this flag to maintain
+	// byte-for-byte reproducibility for services that have not yet opted in.
+	Prepopulating bool
 }
 
 func NewTypeGenerator(goPackage string, outputBaseDir string, api *protoapi.Proto) *TypeGenerator {
@@ -122,7 +128,27 @@ func (g *TypeGenerator) WithOnlyUsedImports(onlyUsedImports bool) *TypeGenerator
 // WithWriteOptions selects which proto-derived markers to emit.
 func (g *TypeGenerator) WithWriteOptions(opts WriteOptions) *TypeGenerator {
 	g.writeOptions = opts
+	g.onlyUsedImports = opts.Prepopulating
 	return g
+}
+
+// OutputFieldsFor returns the output-only fields identified for the given message
+// during the proto traversal, or false if none were found. The scaffolder uses
+// these details to populate resource-level ObservedState structs, preserving the
+// inherited output-only behavior from parent messages.
+func (g *TypeGenerator) OutputFieldsFor(fqn string) (*OutputMessageDetails, bool) {
+	for _, details := range g.outputMessages {
+		if string(details.Message.FullName()) == fqn {
+			return details, true
+		}
+	}
+	return nil, false
+}
+
+// ObservedStateMessages returns the set of full proto message names that have
+// corresponding ObservedState types generated.
+func (g *TypeGenerator) ObservedStateMessages() sets.String {
+	return g.observedStateMessages
 }
 
 func (g *TypeGenerator) VisitProto(resourceProtoFullName string) error {
@@ -401,7 +427,7 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 		if goType != nil {
 			klog.V(1).Infof("found existing non-generated go type %q, won't generate", goTypeName)
 			if g.includeSkippedOutput {
-				WriteObservedStateMessageAsComment(&out.body, msgDetails, fmt.Sprintf("found existing non-generated go type %q, skipping", goTypeName), g.observedStateMessages)
+				WriteObservedStateMessageAsComment(&out.body, msgDetails, fmt.Sprintf("found existing non-generated go type %q, skipping", goTypeName), g.observedStateMessages, g.writeOptions)
 			}
 			continue
 		}
@@ -413,7 +439,7 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 		if goType != nil {
 			klog.V(1).Infof("found existing non-generated go type with proto tag %q, won't generate", msg.FullName())
 			if g.includeSkippedOutput {
-				WriteObservedStateMessageAsComment(&out.body, msgDetails, fmt.Sprintf("found existing non-generated go type with proto tag %q, skipping", msg.FullName()), g.observedStateMessages)
+				WriteObservedStateMessageAsComment(&out.body, msgDetails, fmt.Sprintf("found existing non-generated go type with proto tag %q, skipping", msg.FullName()), g.observedStateMessages, g.writeOptions)
 			}
 			continue
 		}
@@ -421,12 +447,12 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 		if g.reservedTypeNames[goTypeName] {
 			klog.V(1).Infof("go type %q is a Kind the scaffolder will declare, won't generate", goTypeName)
 			if g.includeSkippedOutput {
-				WriteObservedStateMessageAsComment(&out.body, msgDetails, fmt.Sprintf("go type %q is a Kind the scaffolder will declare, skipping", goTypeName), g.observedStateMessages)
+				WriteObservedStateMessageAsComment(&out.body, msgDetails, fmt.Sprintf("go type %q is a Kind the scaffolder will declare, skipping", goTypeName), g.observedStateMessages, g.writeOptions)
 			}
 			continue
 		}
 
-		WriteObservedStateMessage(&out.body, msgDetails, g.observedStateMessages)
+		WriteObservedStateMessage(&out.body, msgDetails, g.observedStateMessages, g.writeOptions)
 	}
 	return errors.Join(g.errors...)
 }
@@ -439,9 +465,9 @@ func WriteMessageAsComment(out io.Writer, msg protoreflect.MessageDescriptor, re
 	fmt.Fprintf(out, "*/\n")
 }
 
-func WriteObservedStateMessageAsComment(out io.Writer, msgDetails *OutputMessageDetails, reason string, observedStateMessages sets.String) {
+func WriteObservedStateMessageAsComment(out io.Writer, msgDetails *OutputMessageDetails, reason string, observedStateMessages sets.String, opts WriteOptions) {
 	var b bytes.Buffer
-	WriteObservedStateMessage(&b, msgDetails, observedStateMessages)
+	WriteObservedStateMessage(&b, msgDetails, observedStateMessages, opts)
 	fmt.Fprintf(out, "\n/* %s\n", reason)
 	fmt.Fprintf(out, "%s", strings.ReplaceAll(b.String(), "*/", "* /"))
 	fmt.Fprintf(out, "*/\n")
@@ -463,14 +489,36 @@ func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor, opts WriteO
 	fmt.Fprintf(out, "}\n")
 }
 
-func WriteObservedStateMessage(out io.Writer, msgDetails *OutputMessageDetails, observedStateMessages sets.String) {
-	msg := msgDetails.Message
-	goType := goNameForOutputProtoMessage(msg)
+// ObservedStateFieldNote describes the rendering outcome for a single field in an
+// ObservedState struct.
+type ObservedStateFieldNote struct {
+	// JSONName is the KRM field name in camelCase.
+	JSONName string
+	// Rendered is the Go field declaration, including comments and tags.
+	Rendered string
+	// Skipped is true if the field was suppressed by a skip list (e.g. identity fields).
+	Skipped bool
+}
 
-	fmt.Fprintf(out, "\n")
-	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotationObservedState, msg.FullName())
-	fmt.Fprintf(out, "type %s struct {\n", goType)
-	for i, field := range msgDetails.OutputFields {
+// WriteObservedStateFields writes the struct body fields for an ObservedState
+// message and returns notes describing each emitted or skipped field.
+func WriteObservedStateFields(out io.Writer, msgDetails *OutputMessageDetails, observedStateMessages sets.String, skip map[string]bool, opts WriteOptions) []ObservedStateFieldNote {
+	msg := msgDetails.Message
+	emitted := 0
+	var notes []ObservedStateFieldNote
+
+	// ObservedState structs describe status and must not emit +required markers.
+	observedOpts := opts
+	observedOpts.EmitRequired = false
+
+	for _, field := range msgDetails.OutputFields {
+		if skip[string(field.Name())] {
+			notes = append(notes, ObservedStateFieldNote{
+				JSONName: GetJSONForKRM(field),
+				Skipped:  true,
+			})
+			continue
+		}
 		isMessage := field.Kind() == protoreflect.MessageKind && !field.IsMap()
 		useObservedState := false
 		if isMessage {
@@ -478,9 +526,26 @@ func WriteObservedStateMessage(out io.Writer, msgDetails *OutputMessageDetails, 
 				useObservedState = true
 			}
 		}
-		// ObservedState structs describe status and must not emit +required markers.
-		WriteField(out, field, msg, i, useObservedState, WriteOptions{})
+		var field_ bytes.Buffer
+		WriteField(&field_, field, msg, emitted, useObservedState, observedOpts)
+		out.Write(field_.Bytes())
+		emitted++
+		notes = append(notes, ObservedStateFieldNote{
+			JSONName: GetJSONForKRM(field),
+			Rendered: field_.String(),
+		})
 	}
+	return notes
+}
+
+func WriteObservedStateMessage(out io.Writer, msgDetails *OutputMessageDetails, observedStateMessages sets.String, opts WriteOptions) {
+	msg := msgDetails.Message
+	goType := goNameForOutputProtoMessage(msg)
+
+	fmt.Fprintf(out, "\n")
+	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotationObservedState, msg.FullName())
+	fmt.Fprintf(out, "type %s struct {\n", goType)
+	WriteObservedStateFields(out, msgDetails, observedStateMessages, nil, opts)
 	fmt.Fprintf(out, "}\n")
 }
 

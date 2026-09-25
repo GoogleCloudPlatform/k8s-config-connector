@@ -39,6 +39,16 @@ type APIArgs struct {
 	ResourcePattern string
 	// ResourcePatterns holds all declared patterns from google.api.resource.
 	ResourcePatterns []string
+
+	// SpecFields contains pre-rendered Go struct fields for the Spec struct.
+	// When empty, the default stub is rendered.
+	SpecFields string
+	// ObservedStateFields contains pre-rendered Go struct fields for ObservedState.
+	// Empty when no proto fields are marked OUTPUT_ONLY.
+	ObservedStateFields string
+	// ExtraImports contains additional package imports needed by the rendered fields
+	// (e.g. `common "github.com/.../apis/common"`).
+	ExtraImports []string
 }
 
 const TypesTemplate = `
@@ -62,6 +72,9 @@ import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+{{- range .ExtraImports }}
+	{{ . }}
+{{- end }}
 )
 
 var {{ .Kind }}GVK = GroupVersion.WithKind("{{ .Kind }}")
@@ -79,7 +92,7 @@ type {{ .Kind }}Spec struct {
 
 	// The {{ .Kind }} name. If not given, the metadata.name will be used.
 	ResourceID *string ` + "`" + `json:"resourceID,omitempty"` + "`" + `
-}
+{{ .SpecFields }}}
 
 // {{ .Kind }}Status defines the config connector machine state of {{ .Kind }}
 type {{ .Kind }}Status struct {
@@ -102,7 +115,7 @@ type {{ .Kind }}Status struct {
 // +kcc:observedstate:proto={{ .KindProtoTag }}
 {{- end }}
 type {{ .Kind }}ObservedState struct {
-}
+{{ .ObservedStateFields }}}
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

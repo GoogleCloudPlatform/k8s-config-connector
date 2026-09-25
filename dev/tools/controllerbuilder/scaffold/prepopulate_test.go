@@ -1,0 +1,131 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package scaffold
+
+import (
+	"go/parser"
+	"go/token"
+	"strings"
+	"testing"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
+
+	"google.golang.org/genproto/googleapis/api/annotations"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protodesc"
+	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/types/descriptorpb"
+)
+
+func strPtr(s string) *string { return &s }
+func i32Ptr(i int32) *int32   { return &i }
+
+func fieldType(t descriptorpb.FieldDescriptorProto_Type) *descriptorpb.FieldDescriptorProto_Type {
+	return &t
+}
+
+func behaviorOptions(bs ...annotations.FieldBehavior) *descriptorpb.FieldOptions {
+	o := &descriptorpb.FieldOptions{}
+	proto.SetExtension(o, annotations.E_FieldBehavior, bs)
+	return o
+}
+
+// testMessage builds a proto message with a representative mix of fields: an identifier field,
+// an output-only field, a required field, and a standard optional field.
+func testMessage(t *testing.T) protoreflect.MessageDescriptor {
+	t.Helper()
+	fdp := &descriptorpb.FileDescriptorProto{
+		Name:    strPtr("test.proto"),
+		Package: strPtr("google.cloud.test.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name: strPtr("Widget"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{
+						Name:    strPtr("name"),
+						Number:  i32Ptr(1),
+						Type:    fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING),
+						Options: behaviorOptions(annotations.FieldBehavior_IDENTIFIER),
+					},
+					{
+						Name:    strPtr("create_time"),
+						Number:  i32Ptr(2),
+						Type:    fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING),
+						Options: behaviorOptions(annotations.FieldBehavior_OUTPUT_ONLY),
+					},
+					{
+						Name:    strPtr("display_name"),
+						Number:  i32Ptr(3),
+						Type:    fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING),
+						Options: behaviorOptions(annotations.FieldBehavior_REQUIRED),
+					},
+					{
+						Name:   strPtr("description"),
+						Number: i32Ptr(4),
+						Type:   fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING),
+					},
+				},
+			},
+		},
+	}
+	fd, err := protodesc.NewFile(fdp, nil)
+	if err != nil {
+		t.Fatalf("building file descriptor: %v", err)
+	}
+	return fd.Messages().ByName("Widget")
+}
+
+func TestPrepopulateSpec(t *testing.T) {
+	msg := testMessage(t)
+
+	got, err := PrepopulateSpec(msg, codegen.WriteOptions{EmitRequired: true})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	// The rendered body has to be valid Go inside a struct.
+	src := "package p\ntype S struct {\n" + got.SpecFields + "}\n"
+	if _, err := parser.ParseFile(token.NewFileSet(), "s.go", src, parser.AllErrors); err != nil {
+		t.Fatalf("rendered spec is not valid Go: %v\n\n%s", err, src)
+	}
+
+	for _, want := range []string{
+		"DisplayName *string",
+		"Description *string",
+		"+kcc:proto:field=google.cloud.test.v1.Widget.display_name",
+		"// +required",
+	} {
+		if !strings.Contains(got.SpecFields, want) {
+			t.Errorf("missing %q in:\n%s", want, got.SpecFields)
+		}
+	}
+
+	// Verify that identity fields (e.g. name) and output-only fields (e.g. create_time)
+	// are excluded from the Spec struct.
+	for _, notWant := range []string{
+		"+kcc:proto:field=google.cloud.test.v1.Widget.name\n",
+		"+kcc:proto:field=google.cloud.test.v1.Widget.create_time",
+	} {
+		if strings.Contains(got.SpecFields, notWant) {
+			t.Errorf("unexpected %q in:\n%s", notWant, got.SpecFields)
+		}
+	}
+}
+
+func TestPrepopulateSpecRequiresAMessage(t *testing.T) {
+	if _, err := PrepopulateSpec(nil, codegen.WriteOptions{}); err == nil {
+		t.Fatal("expected an error for a nil message")
+	}
+}

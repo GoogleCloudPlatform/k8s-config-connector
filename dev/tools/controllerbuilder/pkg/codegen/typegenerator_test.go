@@ -840,6 +840,186 @@ func TestReservedTypeNamesSkipsAndComments(t *testing.T) {
 	}
 }
 
+// TestWriteObservedStateFieldsNotes verifies that WriteObservedStateFields generates
+// expected notes: standard fields render successfully into the struct, while fields
+// that cannot be mapped generate TODO markers.
+func TestWriteObservedStateFieldsNotes(t *testing.T) {
+	msg := observedStateTestMessage(t)
+
+	for _, tc := range []struct {
+		name         string
+		field        string
+		wantRendered string
+	}{
+		{
+			name:         "a field with a Go type renders into the struct",
+			field:        "create_time",
+			wantRendered: `json:"createTime`,
+		},
+		{
+			name:         "a field WriteField cannot type leaves a marker",
+			field:        "by_index",
+			wantRendered: "// TODO:",
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			// Arrange
+			details := &OutputMessageDetails{
+				Message:      msg,
+				OutputFields: []protoreflect.FieldDescriptor{msg.Fields().ByName(protoreflect.Name(tc.field))},
+			}
+
+			// Act
+			var buf bytes.Buffer
+			notes := WriteObservedStateFields(&buf, details, sets.NewString(), nil, WriteOptions{})
+
+			// Assert
+			if len(notes) != 1 {
+				t.Fatalf("got %d notes, want one", len(notes))
+			}
+			if notes[0].Skipped {
+				t.Errorf("Skipped = true, want false for a field the skip map does not name")
+			}
+			if !strings.Contains(notes[0].Rendered, tc.wantRendered) {
+				t.Errorf("Rendered = %q, want it to contain %q", notes[0].Rendered, tc.wantRendered)
+			}
+			if !strings.Contains(buf.String(), tc.wantRendered) {
+				t.Errorf("struct body = %q, want it to contain %q", buf.String(), tc.wantRendered)
+			}
+		})
+	}
+}
+
+// TestWriteObservedStateFieldsSkips verifies that fields in the skip map produce
+// no struct output and are marked as Skipped in the returned notes.
+func TestWriteObservedStateFieldsSkips(t *testing.T) {
+	// Arrange
+	msg := observedStateTestMessage(t)
+	details := &OutputMessageDetails{
+		Message:      msg,
+		OutputFields: []protoreflect.FieldDescriptor{msg.Fields().ByName("name")},
+	}
+
+	// Act
+	var buf bytes.Buffer
+	notes := WriteObservedStateFields(&buf, details, sets.NewString(), map[string]bool{"name": true}, WriteOptions{})
+
+	// Assert
+	if len(notes) != 1 {
+		t.Fatalf("got %d notes, want one", len(notes))
+	}
+	if !notes[0].Skipped {
+		t.Errorf("Skipped = false, want true")
+	}
+	if notes[0].Rendered != "" {
+		t.Errorf("Rendered = %q, want empty", notes[0].Rendered)
+	}
+	if buf.String() != "" {
+		t.Errorf("struct body = %q, want empty", buf.String())
+	}
+}
+
+// TestWriteObservedStateFieldsHonoursWriteOptions verifies that WriteObservedStateFields
+// respects WriteOptions while explicitly omitting +required markers (which are
+// invalid on status / observed-state fields).
+func TestWriteObservedStateFieldsHonoursWriteOptions(t *testing.T) {
+	msg := observedStateTestMessage(t)
+
+	for _, tc := range []struct {
+		name         string
+		field        string
+		opts         WriteOptions
+		wantRendered string
+		wantJSONName string
+	}{
+		{
+			name:         "EmitRequired is the one flag that does not carry over",
+			field:        "required_field",
+			opts:         WriteOptions{EmitRequired: true},
+			wantRendered: `json:"requiredField,omitempty"`,
+			wantJSONName: "requiredField",
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			// Arrange
+			details := &OutputMessageDetails{
+				Message:      msg,
+				OutputFields: []protoreflect.FieldDescriptor{msg.Fields().ByName(protoreflect.Name(tc.field))},
+			}
+
+			// Act
+			var buf bytes.Buffer
+			notes := WriteObservedStateFields(&buf, details, sets.NewString(), nil, tc.opts)
+
+			// Assert
+			if len(notes) != 1 {
+				t.Fatalf("got %d notes, want one", len(notes))
+			}
+			if !strings.Contains(buf.String(), tc.wantRendered) {
+				t.Errorf("struct body = %q, want it to contain %q", buf.String(), tc.wantRendered)
+			}
+			if notes[0].JSONName != tc.wantJSONName {
+				t.Errorf("note JSONName = %q, want %q", notes[0].JSONName, tc.wantJSONName)
+			}
+			// A required marker here would make the API server reject a status
+			// KCC itself wrote.
+			if strings.Contains(buf.String(), "+required") {
+				t.Errorf("struct body = %q, want no +required marker", buf.String())
+			}
+		})
+	}
+}
+
+// observedStateTestMessage constructs a mock proto message descriptor with various
+// field behaviors (supported types, unsupported map key types, and required fields)
+// for testing observed-state field emission.
+func observedStateTestMessage(t *testing.T) protoreflect.MessageDescriptor {
+	t.Helper()
+	requiredOpts := &descriptorpb.FieldOptions{}
+	proto.SetExtension(requiredOpts, annotations.E_FieldBehavior,
+		[]annotations.FieldBehavior{annotations.FieldBehavior_REQUIRED})
+
+	fdp := &descriptorpb.FileDescriptorProto{
+		Name:    protoPtr("obs.proto"),
+		Package: protoPtr("google.cloud.test.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name: protoPtr("TestMessage"),
+				NestedType: []*descriptorpb.DescriptorProto{
+					{
+						Name: protoPtr("ByIndexEntry"),
+						Field: []*descriptorpb.FieldDescriptorProto{
+							{Name: protoPtr("key"), Number: protoPtr(int32(1)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_INT32)},
+							{Name: protoPtr("value"), Number: protoPtr(int32(2)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_STRING)},
+						},
+						Options: &descriptorpb.MessageOptions{MapEntry: protoPtr(true)},
+					},
+				},
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: protoPtr("name"), Number: protoPtr(int32(1)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_STRING)},
+					{Name: protoPtr("create_time"), Number: protoPtr(int32(2)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_STRING)},
+					{
+						Name: protoPtr("by_index"), Number: protoPtr(int32(3)),
+						Type:     typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE),
+						TypeName: protoPtr(".google.cloud.test.v1.TestMessage.ByIndexEntry"),
+						Label:    labelDescriptor(descriptorpb.FieldDescriptorProto_LABEL_REPEATED),
+					},
+					{
+						Name: protoPtr("required_field"), Number: protoPtr(int32(6)),
+						Type:    typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_STRING),
+						Options: requiredOpts,
+					},
+				},
+			},
+		},
+	}
+	fd, err := protodesc.NewFile(fdp, nil)
+	if err != nil {
+		t.Fatalf("failed to create file descriptor: %v", err)
+	}
+	return fd.Messages().ByName("TestMessage")
+}
+
 // TestReservedTypeNamesExistingDeclarationPrecedence verifies that when a type already
 // exists in a non-autogenerated file on disk, it is skipped as "found existing non-generated go type"
 // rather than being attributed to the scaffolder reservation.
