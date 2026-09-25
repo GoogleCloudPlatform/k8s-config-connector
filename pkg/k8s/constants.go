@@ -45,6 +45,7 @@ const (
 	Updating                             = "Updating"
 	UpdatingMessage                      = "Update in progress"
 	UpdateFailed                         = "UpdateFailed"
+	UpdateFailedTerminalError            = "UpdateFailedTerminalError"
 	Deleting                             = "Deleting"
 	DeletingMessage                      = "Deletion in progress"
 	Deleted                              = "Deleted"
@@ -100,6 +101,11 @@ const (
 	ManagerNamespaceIsolationDedicated = "dedicated"
 
 	ReconcilerTypeAnnotation = "cnrm.cloud.google.com/reconciler"
+
+	// Terminal error mode annotation values
+	TerminalErrorModeAnnotation = "cnrm.cloud.google.com/terminal-error-mode"
+	TerminalErrorModeNone       = "none"
+	TerminalErrorModeBuiltin    = "builtin"
 )
 
 var (
