@@ -80,8 +80,10 @@ Instead of doing the coding yourself under this skill, you will coordinate and o
 > - **Do NOT work on closed Pull Requests**: If a PR is closed but not merged, dont assign bots to the PR.
 > - **Idempotent Issue Creation & Journal Recording**:
 >   - **Before creating any child issue**, you MUST search GitHub first for an existing open issue for that step:
->     `gh issue list --repo GoogleCloudPlatform/k8s-config-connector --search "<step-title-keywords> {kind}" --json number,title,state`
+>     `gh issue list --repo GoogleCloudPlatform/k8s-config-connector --search "<step-title-keywords> {kind}" --json number,title,state,labels`
 >   - If an open issue with that title already exists, **DO NOT run `gh issue create`**. Reuse the existing issue number in your progress table and journal file!
+>   - **When reusing an existing issue**, verify that it has all the required labels for that step (such as `overseer`, `greenfield`, the step-specific `step/*` label, and `overseer/review` if applicable). If any required labels are missing, add them immediately:
+>     `gh issue edit <issue-number> --repo GoogleCloudPlatform/k8s-config-connector --add-label "<required-labels-comma-separated>"`
 >   - **Whenever you create an issue or update a step**, immediately write the issue/PR numbers to the local journal file (`.agents/workflows/greenfield-checklist-for-kind/journal/{kind}.md`) and save it so `git status` registers the journal update.
 
 ## Journaling and Progress Tracking
@@ -172,7 +174,7 @@ Open a GitHub issue to coordinate the implementation of the direct controller an
 **GitHub Issue Details:**
 *   **Title:** `Greenfield: Implement direct controller, E2E fixtures, and fuzzer for {kind}`
 *   **Assignee:** (leave unassigned or assign to the current bot)
-*   **Labels:** `overseer`, `greenfield`, `step/controller` `overseer/review`
+*   **Labels:** `overseer`, `greenfield`, `step/controller`, `overseer/review`
 *   **Body:**
     ````
     Please follow the skill `.gemini/skills/kcc-direct-controller-logic-greenfield-implementer/SKILL.md` to implement the direct controller and record/verify E2E fixtures for {kind}.
