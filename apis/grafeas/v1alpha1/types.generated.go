@@ -477,6 +477,7 @@ type SbomReferenceNote struct {
 
 /* unreachable type SecretNote
 // +kcc:proto=grafeas.v1.SecretNote
+// +kubebuilder:validation:XPreserveUnknownFields
 type SecretNote struct {
 }
 */

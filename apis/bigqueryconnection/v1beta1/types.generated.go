@@ -88,6 +88,7 @@ type AzureProperties struct {
 /* found existing non-generated go type with proto tag "google.cloud.bigquery.connection.v1.CloudResourceProperties", skipping
 
 // +kcc:proto=google.cloud.bigquery.connection.v1.CloudResourceProperties
+// +kubebuilder:validation:XPreserveUnknownFields
 type CloudResourceProperties struct {
 }
 */

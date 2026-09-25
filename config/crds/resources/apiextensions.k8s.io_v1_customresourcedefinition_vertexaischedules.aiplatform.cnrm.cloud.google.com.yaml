@@ -450,6 +450,7 @@ spec:
                         description: The Workbench runtime configuration to use for
                           the notebook execution.
                         type: object
+                        x-kubernetes-preserve-unknown-fields: true
                     type: object
                   notebookExecutionJobID:
                     description: Optional. User specified ID for the NotebookExecutionJob.
