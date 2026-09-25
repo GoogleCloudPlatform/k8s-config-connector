@@ -17,6 +17,7 @@ package oracledatabase
 import (
 	pb "cloud.google.com/go/oracledatabase/apiv1/oracledatabasepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/oracledatabase/v1alpha1"
+	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	datetime "google.golang.org/genproto/googleapis/type/datetime"
 	timeofdaypb "google.golang.org/genproto/googleapis/type/timeofday"
@@ -82,4 +83,15 @@ func ExadbVMClusterStorageDetails_ToProto(mapCtx *direct.MapContext, in *krm.Exa
 	out := &pb.ExadbVmClusterStorageDetails{}
 	out.SizeInGbsPerNode = direct.ValueOf(in.SizeInGBsPerNode)
 	return out
+}
+
+func OracleDatabaseAutonomousDatabaseSpec_AdminPassword_ToProto(mapCtx *direct.MapContext, in *refsv1beta1secret.Legacy) string {
+	if in == nil {
+		return ""
+	}
+	return direct.ValueOf(in.Value)
+}
+
+func OracleDatabaseAutonomousDatabaseSpec_AdminPassword_FromProto(mapCtx *direct.MapContext, in string) *refsv1beta1secret.Legacy {
+	return nil
 }

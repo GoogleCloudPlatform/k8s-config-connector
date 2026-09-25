@@ -21,6 +21,7 @@ package v1alpha1
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -1102,8 +1103,8 @@ func (in *OracleDatabaseAutonomousDatabaseSpec) DeepCopyInto(out *OracleDatabase
 	}
 	if in.AdminPassword != nil {
 		in, out := &in.AdminPassword, &out.AdminPassword
-		*out = new(string)
-		**out = **in
+		*out = new(secret.Legacy)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.AdminPasswordSecretVersionRef != nil {
 		in, out := &in.AdminPasswordSecretVersionRef, &out.AdminPasswordSecretVersionRef

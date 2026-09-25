@@ -624,7 +624,7 @@ func CertificateSelfManaged_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 	}
 	out := &krmcertificatemanagerv1beta1.CertificateSelfManaged{}
 	out.PemCertificate = direct.LazyPtr(in.GetPemCertificate())
-	out.PemPrivateKey = direct.LazyPtr(in.GetPemPrivateKey())
+	out.PemPrivateKey = CertificateSelfManaged_PemPrivateKey_FromProto(mapCtx, in.GetPemPrivateKey())
 	return out
 }
 */
