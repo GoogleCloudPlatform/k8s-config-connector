@@ -1,0 +1,14 @@
+- caisURL: unknown
+  group: discoveryengine.cnrm.cloud.google.com
+  kind: DiscoveryEngineDataStore
+  name: datastore-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: unknown
+  error: 'resolving spec.dataStoreRef: reference DiscoveryEngineDataStore ${uniqueId}/datastore-${uniqueId}
+    is not ready'
+  group: discoveryengine.cnrm.cloud.google.com
+  kind: DiscoveryEngineSchema
+  name: discoveryengineschema-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
