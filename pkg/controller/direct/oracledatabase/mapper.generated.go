@@ -738,7 +738,7 @@ func OracleDatabaseAutonomousDatabaseSpec_FromProto(mapCtx *direct.MapContext, i
 	// MISSING: Name
 	out.Database = direct.LazyPtr(in.GetDatabase())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.AdminPassword = direct.LazyPtr(in.GetAdminPassword())
+	out.AdminPassword = OracleDatabaseAutonomousDatabaseSpec_AdminPassword_FromProto(mapCtx, in.GetAdminPassword())
 	if in.GetAdminPasswordSecretVersion() != "" {
 		out.AdminPasswordSecretVersionRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetAdminPasswordSecretVersion()}
 	}
@@ -765,7 +765,7 @@ func OracleDatabaseAutonomousDatabaseSpec_ToProto(mapCtx *direct.MapContext, in 
 	// MISSING: Name
 	out.Database = direct.ValueOf(in.Database)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.AdminPassword = direct.ValueOf(in.AdminPassword)
+	out.AdminPassword = OracleDatabaseAutonomousDatabaseSpec_AdminPassword_ToProto(mapCtx, in.AdminPassword)
 	if in.AdminPasswordSecretVersionRef != nil {
 		out.AdminPasswordSecretVersion = in.AdminPasswordSecretVersionRef.External
 	}

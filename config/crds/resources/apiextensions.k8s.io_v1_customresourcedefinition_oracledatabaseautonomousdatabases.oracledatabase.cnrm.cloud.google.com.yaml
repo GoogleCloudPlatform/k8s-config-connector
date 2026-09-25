@@ -68,7 +68,31 @@ spec:
                 description: 'Optional. Immutable. The password for the default ADMIN
                   user. Note: Only one of `admin_password_secret_version` or `admin_password`
                   can be populated.'
-                type: string
+                properties:
+                  value:
+                    description: Value of the field. Cannot be used if 'valueFrom'
+                      is specified.
+                    type: string
+                  valueFrom:
+                    description: Source for the field's value. Cannot be used if 'value'
+                      is specified.
+                    properties:
+                      secretKeyRef:
+                        description: Reference to a value with the given key in the
+                          given Secret in the resource's namespace.
+                        properties:
+                          key:
+                            description: Key that identifies the value to be extracted.
+                            type: string
+                          name:
+                            description: Name of the Secret to extract a value from.
+                            type: string
+                        required:
+                        - key
+                        - name
+                        type: object
+                    type: object
+                type: object
               adminPasswordSecretVersionRef:
                 description: Optional. Immutable. The resource name of a secret version
                   in Secret Manager which contains the database admin user's password.
