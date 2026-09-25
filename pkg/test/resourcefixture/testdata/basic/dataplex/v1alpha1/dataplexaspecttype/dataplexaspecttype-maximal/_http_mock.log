@@ -81,6 +81,7 @@ OK
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.dataplex.v1.AspectType",
+    "authorization": {},
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Maximal aspect type description",
     "displayName": "Maximal Aspect Type",
@@ -128,6 +129,7 @@ GRPC /google.cloud.dataplex.v1.CatalogService/GetAspectType
 OK
 
 {
+  "authorization": {},
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Maximal aspect type description",
   "displayName": "Maximal Aspect Type",
@@ -174,6 +176,7 @@ GRPC /google.cloud.dataplex.v1.CatalogService/GetAspectType
 OK
 
 {
+  "authorization": {},
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Maximal aspect type description",
   "displayName": "Maximal Aspect Type",
@@ -282,6 +285,7 @@ OK
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.dataplex.v1.AspectType",
+    "authorization": {},
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Maximal aspect type description updated",
     "displayName": "Maximal Aspect Type Updated",
@@ -329,6 +333,7 @@ GRPC /google.cloud.dataplex.v1.CatalogService/GetAspectType
 OK
 
 {
+  "authorization": {},
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Maximal aspect type description updated",
   "displayName": "Maximal Aspect Type Updated",
@@ -375,6 +380,7 @@ GRPC /google.cloud.dataplex.v1.CatalogService/GetAspectType
 OK
 
 {
+  "authorization": {},
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Maximal aspect type description updated",
   "displayName": "Maximal Aspect Type Updated",
@@ -421,6 +427,7 @@ GRPC /google.cloud.dataplex.v1.CatalogService/GetAspectType
 OK
 
 {
+  "authorization": {},
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Maximal aspect type description updated",
   "displayName": "Maximal Aspect Type Updated",
