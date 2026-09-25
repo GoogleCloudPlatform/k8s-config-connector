@@ -25,10 +25,453 @@ package oracledatabase
 
 import (
 	pb "cloud.google.com/go/oracledatabase/apiv1/oracledatabasepb"
+	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/oracledatabase/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
 )
 
+func AllConnectionStringsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AllConnectionStrings) *krm.AllConnectionStringsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllConnectionStringsObservedState{}
+	out.High = direct.LazyPtr(in.GetHigh())
+	out.Low = direct.LazyPtr(in.GetLow())
+	out.Medium = direct.LazyPtr(in.GetMedium())
+	return out
+}
+func AllConnectionStringsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AllConnectionStringsObservedState) *pb.AllConnectionStrings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllConnectionStrings{}
+	out.High = direct.ValueOf(in.High)
+	out.Low = direct.ValueOf(in.Low)
+	out.Medium = direct.ValueOf(in.Medium)
+	return out
+}
+func AutonomousDatabaseApexObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AutonomousDatabaseApex) *krm.AutonomousDatabaseApexObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AutonomousDatabaseApexObservedState{}
+	out.ApexVersion = direct.LazyPtr(in.GetApexVersion())
+	out.OrdsVersion = direct.LazyPtr(in.GetOrdsVersion())
+	return out
+}
+func AutonomousDatabaseApexObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AutonomousDatabaseApexObservedState) *pb.AutonomousDatabaseApex {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutonomousDatabaseApex{}
+	out.ApexVersion = direct.ValueOf(in.ApexVersion)
+	out.OrdsVersion = direct.ValueOf(in.OrdsVersion)
+	return out
+}
+func AutonomousDatabaseConnectionStringsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AutonomousDatabaseConnectionStrings) *krm.AutonomousDatabaseConnectionStringsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AutonomousDatabaseConnectionStringsObservedState{}
+	out.AllConnectionStrings = AllConnectionStringsObservedState_FromProto(mapCtx, in.GetAllConnectionStrings())
+	out.Dedicated = direct.LazyPtr(in.GetDedicated())
+	out.High = direct.LazyPtr(in.GetHigh())
+	out.Low = direct.LazyPtr(in.GetLow())
+	out.Medium = direct.LazyPtr(in.GetMedium())
+	out.Profiles = direct.Slice_FromProto(mapCtx, in.Profiles, DatabaseConnectionStringProfileObservedState_FromProto)
+	return out
+}
+func AutonomousDatabaseConnectionStringsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AutonomousDatabaseConnectionStringsObservedState) *pb.AutonomousDatabaseConnectionStrings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutonomousDatabaseConnectionStrings{}
+	out.AllConnectionStrings = AllConnectionStringsObservedState_ToProto(mapCtx, in.AllConnectionStrings)
+	out.Dedicated = direct.ValueOf(in.Dedicated)
+	out.High = direct.ValueOf(in.High)
+	out.Low = direct.ValueOf(in.Low)
+	out.Medium = direct.ValueOf(in.Medium)
+	out.Profiles = direct.Slice_ToProto(mapCtx, in.Profiles, DatabaseConnectionStringProfileObservedState_ToProto)
+	return out
+}
+func AutonomousDatabaseConnectionURLsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AutonomousDatabaseConnectionUrls) *krm.AutonomousDatabaseConnectionURLsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AutonomousDatabaseConnectionURLsObservedState{}
+	out.ApexURI = direct.LazyPtr(in.GetApexUri())
+	out.DatabaseTransformsURI = direct.LazyPtr(in.GetDatabaseTransformsUri())
+	out.GraphStudioURI = direct.LazyPtr(in.GetGraphStudioUri())
+	out.MachineLearningNotebookURI = direct.LazyPtr(in.GetMachineLearningNotebookUri())
+	out.MachineLearningUserManagementURI = direct.LazyPtr(in.GetMachineLearningUserManagementUri())
+	out.MongoDbURI = direct.LazyPtr(in.GetMongoDbUri())
+	out.OrdsURI = direct.LazyPtr(in.GetOrdsUri())
+	out.SQLDevWebURI = direct.LazyPtr(in.GetSqlDevWebUri())
+	return out
+}
+func AutonomousDatabaseConnectionURLsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AutonomousDatabaseConnectionURLsObservedState) *pb.AutonomousDatabaseConnectionUrls {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutonomousDatabaseConnectionUrls{}
+	out.ApexUri = direct.ValueOf(in.ApexURI)
+	out.DatabaseTransformsUri = direct.ValueOf(in.DatabaseTransformsURI)
+	out.GraphStudioUri = direct.ValueOf(in.GraphStudioURI)
+	out.MachineLearningNotebookUri = direct.ValueOf(in.MachineLearningNotebookURI)
+	out.MachineLearningUserManagementUri = direct.ValueOf(in.MachineLearningUserManagementURI)
+	out.MongoDbUri = direct.ValueOf(in.MongoDbURI)
+	out.OrdsUri = direct.ValueOf(in.OrdsURI)
+	out.SqlDevWebUri = direct.ValueOf(in.SQLDevWebURI)
+	return out
+}
+func AutonomousDatabaseProperties_FromProto(mapCtx *direct.MapContext, in *pb.AutonomousDatabaseProperties) *krm.AutonomousDatabaseProperties {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AutonomousDatabaseProperties{}
+	// MISSING: Ocid
+	out.ComputeCount = direct.LazyPtr(in.GetComputeCount())
+	out.CPUCoreCount = direct.LazyPtr(in.GetCpuCoreCount())
+	out.DataStorageSizeTb = direct.LazyPtr(in.GetDataStorageSizeTb())
+	out.DataStorageSizeGB = direct.LazyPtr(in.GetDataStorageSizeGb())
+	out.DbWorkload = direct.Enum_FromProto(mapCtx, in.GetDbWorkload())
+	out.DbEdition = direct.Enum_FromProto(mapCtx, in.GetDbEdition())
+	out.CharacterSet = direct.LazyPtr(in.GetCharacterSet())
+	out.NCharacterSet = direct.LazyPtr(in.GetNCharacterSet())
+	out.PrivateEndpointIP = direct.LazyPtr(in.GetPrivateEndpointIp())
+	out.PrivateEndpointLabel = direct.LazyPtr(in.GetPrivateEndpointLabel())
+	out.DbVersion = direct.LazyPtr(in.GetDbVersion())
+	out.IsAutoScalingEnabled = direct.LazyPtr(in.GetIsAutoScalingEnabled())
+	out.IsStorageAutoScalingEnabled = direct.LazyPtr(in.GetIsStorageAutoScalingEnabled())
+	out.LicenseType = direct.Enum_FromProto(mapCtx, in.GetLicenseType())
+	out.CustomerContacts = direct.Slice_FromProto(mapCtx, in.CustomerContacts, CustomerContact_FromProto)
+	out.SecretID = direct.LazyPtr(in.GetSecretId())
+	out.VaultID = direct.LazyPtr(in.GetVaultId())
+	out.MaintenanceScheduleType = direct.Enum_FromProto(mapCtx, in.GetMaintenanceScheduleType())
+	out.MtlsConnectionRequired = direct.LazyPtr(in.GetMtlsConnectionRequired())
+	out.BackupRetentionPeriodDays = direct.LazyPtr(in.GetBackupRetentionPeriodDays())
+	// MISSING: ActualUsedDataStorageSizeTb
+	// MISSING: AllocatedStorageSizeTb
+	// MISSING: ApexDetails
+	// MISSING: ArePrimaryAllowlistedIpsUsed
+	// MISSING: LifecycleDetails
+	// MISSING: State
+	// MISSING: AutonomousContainerDatabaseID
+	// MISSING: AvailableUpgradeVersions
+	// MISSING: ConnectionStrings
+	// MISSING: ConnectionUrls
+	// MISSING: FailedDataRecoveryDuration
+	// MISSING: MemoryTableGbs
+	// MISSING: IsLocalDataGuardEnabled
+	// MISSING: LocalAdgAutoFailoverMaxDataLossLimit
+	// MISSING: LocalStandbyDb
+	// MISSING: MemoryPerOracleComputeUnitGbs
+	// MISSING: LocalDisasterRecoveryType
+	// MISSING: DataSafeState
+	// MISSING: DatabaseManagementState
+	// MISSING: OpenMode
+	// MISSING: OperationsInsightsState
+	// MISSING: PeerDbIds
+	// MISSING: PermissionLevel
+	// MISSING: PrivateEndpoint
+	// MISSING: RefreshableMode
+	// MISSING: RefreshableState
+	// MISSING: Role
+	// MISSING: ScheduledOperationDetails
+	// MISSING: SQLWebDeveloperURL
+	// MISSING: SupportedCloneRegions
+	// MISSING: UsedDataStorageSizeTbs
+	// MISSING: OciURL
+	// MISSING: TotalAutoBackupStorageSizeGbs
+	// MISSING: NextLongTermBackupTime
+	// MISSING: DataGuardRoleChangedTime
+	// MISSING: DisasterRecoveryRoleChangedTime
+	// MISSING: MaintenanceBeginTime
+	// MISSING: MaintenanceEndTime
+	// MISSING: AllowlistedIps
+	// (near miss): "AllowlistedIps" vs "AllowlistedIPs"
+	out.EncryptionKey = EncryptionKey_FromProto(mapCtx, in.GetEncryptionKey())
+	// MISSING: EncryptionKeyHistoryEntries
+	// MISSING: ServiceAgentEmail
+	out.LocalDataGuardEnabled = in.LocalDataGuardEnabled
+	out.LocalAdgAutoFailoverMaxDataLossLimitDuration = in.LocalAdgAutoFailoverMaxDataLossLimitDuration
+	out.RefreshableClone = in.RefreshableClone
+	return out
+}
+func AutonomousDatabaseProperties_ToProto(mapCtx *direct.MapContext, in *krm.AutonomousDatabaseProperties) *pb.AutonomousDatabaseProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutonomousDatabaseProperties{}
+	// MISSING: Ocid
+	out.ComputeCount = direct.ValueOf(in.ComputeCount)
+	out.CpuCoreCount = direct.ValueOf(in.CPUCoreCount)
+	out.DataStorageSizeTb = direct.ValueOf(in.DataStorageSizeTb)
+	out.DataStorageSizeGb = direct.ValueOf(in.DataStorageSizeGB)
+	out.DbWorkload = direct.Enum_ToProto[pb.DBWorkload](mapCtx, in.DbWorkload)
+	out.DbEdition = direct.Enum_ToProto[pb.AutonomousDatabaseProperties_DatabaseEdition](mapCtx, in.DbEdition)
+	out.CharacterSet = direct.ValueOf(in.CharacterSet)
+	out.NCharacterSet = direct.ValueOf(in.NCharacterSet)
+	out.PrivateEndpointIp = direct.ValueOf(in.PrivateEndpointIP)
+	out.PrivateEndpointLabel = direct.ValueOf(in.PrivateEndpointLabel)
+	out.DbVersion = direct.ValueOf(in.DbVersion)
+	out.IsAutoScalingEnabled = direct.ValueOf(in.IsAutoScalingEnabled)
+	out.IsStorageAutoScalingEnabled = direct.ValueOf(in.IsStorageAutoScalingEnabled)
+	out.LicenseType = direct.Enum_ToProto[pb.AutonomousDatabaseProperties_LicenseType](mapCtx, in.LicenseType)
+	out.CustomerContacts = direct.Slice_ToProto(mapCtx, in.CustomerContacts, CustomerContact_ToProto)
+	out.SecretId = direct.ValueOf(in.SecretID)
+	out.VaultId = direct.ValueOf(in.VaultID)
+	out.MaintenanceScheduleType = direct.Enum_ToProto[pb.AutonomousDatabaseProperties_MaintenanceScheduleType](mapCtx, in.MaintenanceScheduleType)
+	out.MtlsConnectionRequired = direct.ValueOf(in.MtlsConnectionRequired)
+	out.BackupRetentionPeriodDays = direct.ValueOf(in.BackupRetentionPeriodDays)
+	// MISSING: ActualUsedDataStorageSizeTb
+	// MISSING: AllocatedStorageSizeTb
+	// MISSING: ApexDetails
+	// MISSING: ArePrimaryAllowlistedIpsUsed
+	// MISSING: LifecycleDetails
+	// MISSING: State
+	// MISSING: AutonomousContainerDatabaseID
+	// MISSING: AvailableUpgradeVersions
+	// MISSING: ConnectionStrings
+	// MISSING: ConnectionUrls
+	// MISSING: FailedDataRecoveryDuration
+	// MISSING: MemoryTableGbs
+	// MISSING: IsLocalDataGuardEnabled
+	// MISSING: LocalAdgAutoFailoverMaxDataLossLimit
+	// MISSING: LocalStandbyDb
+	// MISSING: MemoryPerOracleComputeUnitGbs
+	// MISSING: LocalDisasterRecoveryType
+	// MISSING: DataSafeState
+	// MISSING: DatabaseManagementState
+	// MISSING: OpenMode
+	// MISSING: OperationsInsightsState
+	// MISSING: PeerDbIds
+	// MISSING: PermissionLevel
+	// MISSING: PrivateEndpoint
+	// MISSING: RefreshableMode
+	// MISSING: RefreshableState
+	// MISSING: Role
+	// MISSING: ScheduledOperationDetails
+	// MISSING: SQLWebDeveloperURL
+	// MISSING: SupportedCloneRegions
+	// MISSING: UsedDataStorageSizeTbs
+	// MISSING: OciURL
+	// MISSING: TotalAutoBackupStorageSizeGbs
+	// MISSING: NextLongTermBackupTime
+	// MISSING: DataGuardRoleChangedTime
+	// MISSING: DisasterRecoveryRoleChangedTime
+	// MISSING: MaintenanceBeginTime
+	// MISSING: MaintenanceEndTime
+	// MISSING: AllowlistedIps
+	// (near miss): "AllowlistedIps" vs "AllowlistedIPs"
+	out.EncryptionKey = EncryptionKey_ToProto(mapCtx, in.EncryptionKey)
+	// MISSING: EncryptionKeyHistoryEntries
+	// MISSING: ServiceAgentEmail
+	out.LocalDataGuardEnabled = in.LocalDataGuardEnabled
+	out.LocalAdgAutoFailoverMaxDataLossLimitDuration = in.LocalAdgAutoFailoverMaxDataLossLimitDuration
+	out.RefreshableClone = in.RefreshableClone
+	return out
+}
+func AutonomousDatabasePropertiesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AutonomousDatabaseProperties) *krm.AutonomousDatabasePropertiesObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AutonomousDatabasePropertiesObservedState{}
+	out.Ocid = direct.LazyPtr(in.GetOcid())
+	// MISSING: ComputeCount
+	// MISSING: CPUCoreCount
+	// MISSING: DataStorageSizeTb
+	// MISSING: DataStorageSizeGB
+	// MISSING: DbWorkload
+	// MISSING: DbEdition
+	// MISSING: CharacterSet
+	// MISSING: NCharacterSet
+	// MISSING: PrivateEndpointIP
+	// MISSING: PrivateEndpointLabel
+	// MISSING: DbVersion
+	// MISSING: IsAutoScalingEnabled
+	// MISSING: IsStorageAutoScalingEnabled
+	// MISSING: LicenseType
+	// MISSING: CustomerContacts
+	// MISSING: SecretID
+	// MISSING: VaultID
+	// MISSING: MaintenanceScheduleType
+	// MISSING: MtlsConnectionRequired
+	// MISSING: BackupRetentionPeriodDays
+	out.ActualUsedDataStorageSizeTb = direct.LazyPtr(in.GetActualUsedDataStorageSizeTb())
+	out.AllocatedStorageSizeTb = direct.LazyPtr(in.GetAllocatedStorageSizeTb())
+	out.ApexDetails = AutonomousDatabaseApexObservedState_FromProto(mapCtx, in.GetApexDetails())
+	// MISSING: ArePrimaryAllowlistedIpsUsed
+	// (near miss): "ArePrimaryAllowlistedIpsUsed" vs "ArePrimaryAllowlistedIPsUsed"
+	out.LifecycleDetails = direct.LazyPtr(in.GetLifecycleDetails())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.AutonomousContainerDatabaseID = direct.LazyPtr(in.GetAutonomousContainerDatabaseId())
+	out.AvailableUpgradeVersions = in.AvailableUpgradeVersions
+	out.ConnectionStrings = AutonomousDatabaseConnectionStringsObservedState_FromProto(mapCtx, in.GetConnectionStrings())
+	// MISSING: ConnectionUrls
+	// (near miss): "ConnectionUrls" vs "ConnectionURLs"
+	out.FailedDataRecoveryDuration = direct.StringDuration_FromProto(mapCtx, in.GetFailedDataRecoveryDuration())
+	// MISSING: MemoryTableGbs
+	// (near miss): "MemoryTableGbs" vs "MemoryTableGBs"
+	out.IsLocalDataGuardEnabled = direct.LazyPtr(in.GetIsLocalDataGuardEnabled())
+	out.LocalAdgAutoFailoverMaxDataLossLimit = direct.LazyPtr(in.GetLocalAdgAutoFailoverMaxDataLossLimit())
+	out.LocalStandbyDb = AutonomousDatabaseStandbySummaryObservedState_FromProto(mapCtx, in.GetLocalStandbyDb())
+	// MISSING: MemoryPerOracleComputeUnitGbs
+	// (near miss): "MemoryPerOracleComputeUnitGbs" vs "MemoryPerOracleComputeUnitGBs"
+	out.LocalDisasterRecoveryType = direct.Enum_FromProto(mapCtx, in.GetLocalDisasterRecoveryType())
+	out.DataSafeState = direct.Enum_FromProto(mapCtx, in.GetDataSafeState())
+	out.DatabaseManagementState = direct.Enum_FromProto(mapCtx, in.GetDatabaseManagementState())
+	out.OpenMode = direct.Enum_FromProto(mapCtx, in.GetOpenMode())
+	out.OperationsInsightsState = direct.Enum_FromProto(mapCtx, in.GetOperationsInsightsState())
+	// MISSING: PeerDbIds
+	// (near miss): "PeerDbIds" vs "PeerDbIDs"
+	out.PermissionLevel = direct.Enum_FromProto(mapCtx, in.GetPermissionLevel())
+	out.PrivateEndpoint = direct.LazyPtr(in.GetPrivateEndpoint())
+	out.RefreshableMode = direct.Enum_FromProto(mapCtx, in.GetRefreshableMode())
+	out.RefreshableState = direct.Enum_FromProto(mapCtx, in.GetRefreshableState())
+	out.Role = direct.Enum_FromProto(mapCtx, in.GetRole())
+	out.ScheduledOperationDetails = direct.Slice_FromProto(mapCtx, in.ScheduledOperationDetails, ScheduledOperationDetailsObservedState_FromProto)
+	out.SQLWebDeveloperURL = direct.LazyPtr(in.GetSqlWebDeveloperUrl())
+	out.SupportedCloneRegions = in.SupportedCloneRegions
+	out.UsedDataStorageSizeTbs = direct.LazyPtr(in.GetUsedDataStorageSizeTbs())
+	out.OciURL = direct.LazyPtr(in.GetOciUrl())
+	// MISSING: TotalAutoBackupStorageSizeGbs
+	// (near miss): "TotalAutoBackupStorageSizeGbs" vs "TotalAutoBackupStorageSizeGBs"
+	out.NextLongTermBackupTime = direct.StringTimestamp_FromProto(mapCtx, in.GetNextLongTermBackupTime())
+	out.DataGuardRoleChangedTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDataGuardRoleChangedTime())
+	out.DisasterRecoveryRoleChangedTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDisasterRecoveryRoleChangedTime())
+	out.MaintenanceBeginTime = direct.StringTimestamp_FromProto(mapCtx, in.GetMaintenanceBeginTime())
+	out.MaintenanceEndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetMaintenanceEndTime())
+	// MISSING: AllowlistedIps
+	// MISSING: EncryptionKey
+	out.EncryptionKeyHistoryEntries = direct.Slice_FromProto(mapCtx, in.EncryptionKeyHistoryEntries, EncryptionKeyHistoryEntryObservedState_FromProto)
+	out.ServiceAgentEmail = direct.LazyPtr(in.GetServiceAgentEmail())
+	// MISSING: LocalDataGuardEnabled
+	// MISSING: LocalAdgAutoFailoverMaxDataLossLimitDuration
+	// MISSING: RefreshableClone
+	return out
+}
+func AutonomousDatabasePropertiesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AutonomousDatabasePropertiesObservedState) *pb.AutonomousDatabaseProperties {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutonomousDatabaseProperties{}
+	out.Ocid = direct.ValueOf(in.Ocid)
+	// MISSING: ComputeCount
+	// MISSING: CPUCoreCount
+	// MISSING: DataStorageSizeTb
+	// MISSING: DataStorageSizeGB
+	// MISSING: DbWorkload
+	// MISSING: DbEdition
+	// MISSING: CharacterSet
+	// MISSING: NCharacterSet
+	// MISSING: PrivateEndpointIP
+	// MISSING: PrivateEndpointLabel
+	// MISSING: DbVersion
+	// MISSING: IsAutoScalingEnabled
+	// MISSING: IsStorageAutoScalingEnabled
+	// MISSING: LicenseType
+	// MISSING: CustomerContacts
+	// MISSING: SecretID
+	// MISSING: VaultID
+	// MISSING: MaintenanceScheduleType
+	// MISSING: MtlsConnectionRequired
+	// MISSING: BackupRetentionPeriodDays
+	out.ActualUsedDataStorageSizeTb = direct.ValueOf(in.ActualUsedDataStorageSizeTb)
+	out.AllocatedStorageSizeTb = direct.ValueOf(in.AllocatedStorageSizeTb)
+	out.ApexDetails = AutonomousDatabaseApexObservedState_ToProto(mapCtx, in.ApexDetails)
+	// MISSING: ArePrimaryAllowlistedIpsUsed
+	// (near miss): "ArePrimaryAllowlistedIpsUsed" vs "ArePrimaryAllowlistedIPsUsed"
+	out.LifecycleDetails = direct.ValueOf(in.LifecycleDetails)
+	out.State = direct.Enum_ToProto[pb.State](mapCtx, in.State)
+	out.AutonomousContainerDatabaseId = direct.ValueOf(in.AutonomousContainerDatabaseID)
+	out.AvailableUpgradeVersions = in.AvailableUpgradeVersions
+	out.ConnectionStrings = AutonomousDatabaseConnectionStringsObservedState_ToProto(mapCtx, in.ConnectionStrings)
+	// MISSING: ConnectionUrls
+	// (near miss): "ConnectionUrls" vs "ConnectionURLs"
+	out.FailedDataRecoveryDuration = direct.StringDuration_ToProto(mapCtx, in.FailedDataRecoveryDuration)
+	// MISSING: MemoryTableGbs
+	// (near miss): "MemoryTableGbs" vs "MemoryTableGBs"
+	out.IsLocalDataGuardEnabled = direct.ValueOf(in.IsLocalDataGuardEnabled)
+	out.LocalAdgAutoFailoverMaxDataLossLimit = direct.ValueOf(in.LocalAdgAutoFailoverMaxDataLossLimit)
+	out.LocalStandbyDb = AutonomousDatabaseStandbySummaryObservedState_ToProto(mapCtx, in.LocalStandbyDb)
+	// MISSING: MemoryPerOracleComputeUnitGbs
+	// (near miss): "MemoryPerOracleComputeUnitGbs" vs "MemoryPerOracleComputeUnitGBs"
+	out.LocalDisasterRecoveryType = direct.Enum_ToProto[pb.AutonomousDatabaseProperties_LocalDisasterRecoveryType](mapCtx, in.LocalDisasterRecoveryType)
+	out.DataSafeState = direct.Enum_ToProto[pb.AutonomousDatabaseProperties_DataSafeState](mapCtx, in.DataSafeState)
+	out.DatabaseManagementState = direct.Enum_ToProto[pb.AutonomousDatabaseProperties_DatabaseManagementState](mapCtx, in.DatabaseManagementState)
+	out.OpenMode = direct.Enum_ToProto[pb.AutonomousDatabaseProperties_OpenMode](mapCtx, in.OpenMode)
+	out.OperationsInsightsState = direct.Enum_ToProto[pb.OperationsInsightsState](mapCtx, in.OperationsInsightsState)
+	// MISSING: PeerDbIds
+	// (near miss): "PeerDbIds" vs "PeerDbIDs"
+	out.PermissionLevel = direct.Enum_ToProto[pb.AutonomousDatabaseProperties_PermissionLevel](mapCtx, in.PermissionLevel)
+	out.PrivateEndpoint = direct.ValueOf(in.PrivateEndpoint)
+	out.RefreshableMode = direct.Enum_ToProto[pb.AutonomousDatabaseProperties_RefreshableMode](mapCtx, in.RefreshableMode)
+	out.RefreshableState = direct.Enum_ToProto[pb.AutonomousDatabaseProperties_RefreshableState](mapCtx, in.RefreshableState)
+	out.Role = direct.Enum_ToProto[pb.AutonomousDatabaseProperties_Role](mapCtx, in.Role)
+	out.ScheduledOperationDetails = direct.Slice_ToProto(mapCtx, in.ScheduledOperationDetails, ScheduledOperationDetailsObservedState_ToProto)
+	out.SqlWebDeveloperUrl = direct.ValueOf(in.SQLWebDeveloperURL)
+	out.SupportedCloneRegions = in.SupportedCloneRegions
+	out.UsedDataStorageSizeTbs = direct.ValueOf(in.UsedDataStorageSizeTbs)
+	out.OciUrl = direct.ValueOf(in.OciURL)
+	// MISSING: TotalAutoBackupStorageSizeGbs
+	// (near miss): "TotalAutoBackupStorageSizeGbs" vs "TotalAutoBackupStorageSizeGBs"
+	out.NextLongTermBackupTime = direct.StringTimestamp_ToProto(mapCtx, in.NextLongTermBackupTime)
+	out.DataGuardRoleChangedTime = direct.StringTimestamp_ToProto(mapCtx, in.DataGuardRoleChangedTime)
+	out.DisasterRecoveryRoleChangedTime = direct.StringTimestamp_ToProto(mapCtx, in.DisasterRecoveryRoleChangedTime)
+	out.MaintenanceBeginTime = direct.StringTimestamp_ToProto(mapCtx, in.MaintenanceBeginTime)
+	out.MaintenanceEndTime = direct.StringTimestamp_ToProto(mapCtx, in.MaintenanceEndTime)
+	// MISSING: AllowlistedIps
+	// MISSING: EncryptionKey
+	out.EncryptionKeyHistoryEntries = direct.Slice_ToProto(mapCtx, in.EncryptionKeyHistoryEntries, EncryptionKeyHistoryEntryObservedState_ToProto)
+	out.ServiceAgentEmail = direct.ValueOf(in.ServiceAgentEmail)
+	// MISSING: LocalDataGuardEnabled
+	// MISSING: LocalAdgAutoFailoverMaxDataLossLimitDuration
+	// MISSING: RefreshableClone
+	return out
+}
+func AutonomousDatabaseStandbySummaryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AutonomousDatabaseStandbySummary) *krm.AutonomousDatabaseStandbySummaryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AutonomousDatabaseStandbySummaryObservedState{}
+	out.LagTimeDuration = direct.StringDuration_FromProto(mapCtx, in.GetLagTimeDuration())
+	out.LifecycleDetails = direct.LazyPtr(in.GetLifecycleDetails())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.DataGuardRoleChangedTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDataGuardRoleChangedTime())
+	out.DisasterRecoveryRoleChangedTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDisasterRecoveryRoleChangedTime())
+	return out
+}
+func AutonomousDatabaseStandbySummaryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AutonomousDatabaseStandbySummaryObservedState) *pb.AutonomousDatabaseStandbySummary {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutonomousDatabaseStandbySummary{}
+	out.LagTimeDuration = direct.StringDuration_ToProto(mapCtx, in.LagTimeDuration)
+	out.LifecycleDetails = direct.ValueOf(in.LifecycleDetails)
+	out.State = direct.Enum_ToProto[pb.State](mapCtx, in.State)
+	out.DataGuardRoleChangedTime = direct.StringTimestamp_ToProto(mapCtx, in.DataGuardRoleChangedTime)
+	out.DisasterRecoveryRoleChangedTime = direct.StringTimestamp_ToProto(mapCtx, in.DisasterRecoveryRoleChangedTime)
+	return out
+}
+func CustomerContact_FromProto(mapCtx *direct.MapContext, in *pb.CustomerContact) *krm.CustomerContact {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomerContact{}
+	out.Email = direct.LazyPtr(in.GetEmail())
+	return out
+}
+func CustomerContact_ToProto(mapCtx *direct.MapContext, in *krm.CustomerContact) *pb.CustomerContact {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomerContact{}
+	out.Email = direct.ValueOf(in.Email)
+	return out
+}
 func DataCollectionOptionsCommon_FromProto(mapCtx *direct.MapContext, in *pb.DataCollectionOptionsCommon) *krm.DataCollectionOptionsCommon {
 	if in == nil {
 		return nil
@@ -47,6 +490,92 @@ func DataCollectionOptionsCommon_ToProto(mapCtx *direct.MapContext, in *krm.Data
 	out.IsDiagnosticsEventsEnabled = direct.ValueOf(in.IsDiagnosticsEventsEnabled)
 	out.IsHealthMonitoringEnabled = direct.ValueOf(in.IsHealthMonitoringEnabled)
 	out.IsIncidentLogsEnabled = direct.ValueOf(in.IsIncidentLogsEnabled)
+	return out
+}
+func DatabaseConnectionStringProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseConnectionStringProfile) *krm.DatabaseConnectionStringProfileObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DatabaseConnectionStringProfileObservedState{}
+	out.ConsumerGroup = direct.Enum_FromProto(mapCtx, in.GetConsumerGroup())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.HostFormat = direct.Enum_FromProto(mapCtx, in.GetHostFormat())
+	out.IsRegional = direct.LazyPtr(in.GetIsRegional())
+	out.Protocol = direct.Enum_FromProto(mapCtx, in.GetProtocol())
+	out.SessionMode = direct.Enum_FromProto(mapCtx, in.GetSessionMode())
+	out.SyntaxFormat = direct.Enum_FromProto(mapCtx, in.GetSyntaxFormat())
+	out.TLSAuthentication = direct.Enum_FromProto(mapCtx, in.GetTlsAuthentication())
+	out.Value = direct.LazyPtr(in.GetValue())
+	return out
+}
+func DatabaseConnectionStringProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseConnectionStringProfileObservedState) *pb.DatabaseConnectionStringProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DatabaseConnectionStringProfile{}
+	out.ConsumerGroup = direct.Enum_ToProto[pb.DatabaseConnectionStringProfile_ConsumerGroup](mapCtx, in.ConsumerGroup)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.HostFormat = direct.Enum_ToProto[pb.DatabaseConnectionStringProfile_HostFormat](mapCtx, in.HostFormat)
+	out.IsRegional = direct.ValueOf(in.IsRegional)
+	out.Protocol = direct.Enum_ToProto[pb.DatabaseConnectionStringProfile_Protocol](mapCtx, in.Protocol)
+	out.SessionMode = direct.Enum_ToProto[pb.DatabaseConnectionStringProfile_SessionMode](mapCtx, in.SessionMode)
+	out.SyntaxFormat = direct.Enum_ToProto[pb.DatabaseConnectionStringProfile_SyntaxFormat](mapCtx, in.SyntaxFormat)
+	out.TlsAuthentication = direct.Enum_ToProto[pb.DatabaseConnectionStringProfile_TLSAuthentication](mapCtx, in.TLSAuthentication)
+	out.Value = direct.ValueOf(in.Value)
+	return out
+}
+func EncryptionKey_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionKey) *krm.EncryptionKey {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionKey{}
+	out.Provider = direct.Enum_FromProto(mapCtx, in.GetProvider())
+	// MISSING: KMSKey
+	return out
+}
+func EncryptionKey_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionKey) *pb.EncryptionKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionKey{}
+	out.Provider = direct.Enum_ToProto[pb.EncryptionKey_Provider](mapCtx, in.Provider)
+	// MISSING: KMSKey
+	return out
+}
+func EncryptionKeyHistoryEntryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionKeyHistoryEntry) *krm.EncryptionKeyHistoryEntryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionKeyHistoryEntryObservedState{}
+	out.EncryptionKey = EncryptionKeyObservedState_FromProto(mapCtx, in.GetEncryptionKey())
+	out.ActivationTime = direct.StringTimestamp_FromProto(mapCtx, in.GetActivationTime())
+	return out
+}
+func EncryptionKeyHistoryEntryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionKeyHistoryEntryObservedState) *pb.EncryptionKeyHistoryEntry {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionKeyHistoryEntry{}
+	out.EncryptionKey = EncryptionKeyObservedState_ToProto(mapCtx, in.EncryptionKey)
+	out.ActivationTime = direct.StringTimestamp_ToProto(mapCtx, in.ActivationTime)
+	return out
+}
+func EncryptionKeyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionKey) *krm.EncryptionKeyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionKeyObservedState{}
+	out.Provider = direct.Enum_FromProto(mapCtx, in.GetProvider())
+	out.KMSKey = direct.LazyPtr(in.GetKmsKey())
+	return out
+}
+func EncryptionKeyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionKeyObservedState) *pb.EncryptionKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionKey{}
+	out.Provider = direct.Enum_ToProto[pb.EncryptionKey_Provider](mapCtx, in.Provider)
+	out.KmsKey = direct.ValueOf(in.KMSKey)
 	return out
 }
 func ExadbVMClusterProperties_FromProto(mapCtx *direct.MapContext, in *pb.ExadbVmClusterProperties) *krm.ExadbVMClusterProperties {
@@ -175,6 +704,86 @@ func IdentityConnectorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.I
 	out.ConnectionState = direct.Enum_ToProto[pb.IdentityConnector_ConnectionState](mapCtx, in.ConnectionState)
 	return out
 }
+func OracleDatabaseAutonomousDatabaseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AutonomousDatabase) *krm.OracleDatabaseAutonomousDatabaseObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OracleDatabaseAutonomousDatabaseObservedState{}
+	// MISSING: Name
+	out.EntitlementID = direct.LazyPtr(in.GetEntitlementId())
+	out.Properties = AutonomousDatabasePropertiesObservedState_FromProto(mapCtx, in.GetProperties())
+	out.PeerAutonomousDatabases = in.PeerAutonomousDatabases
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.DisasterRecoverySupportedLocations = in.DisasterRecoverySupportedLocations
+	return out
+}
+func OracleDatabaseAutonomousDatabaseObservedState_ToProto(mapCtx *direct.MapContext, in *krm.OracleDatabaseAutonomousDatabaseObservedState) *pb.AutonomousDatabase {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutonomousDatabase{}
+	// MISSING: Name
+	out.EntitlementId = direct.ValueOf(in.EntitlementID)
+	out.Properties = AutonomousDatabasePropertiesObservedState_ToProto(mapCtx, in.Properties)
+	out.PeerAutonomousDatabases = in.PeerAutonomousDatabases
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.DisasterRecoverySupportedLocations = in.DisasterRecoverySupportedLocations
+	return out
+}
+func OracleDatabaseAutonomousDatabaseSpec_FromProto(mapCtx *direct.MapContext, in *pb.AutonomousDatabase) *krm.OracleDatabaseAutonomousDatabaseSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OracleDatabaseAutonomousDatabaseSpec{}
+	// MISSING: Name
+	out.Database = direct.LazyPtr(in.GetDatabase())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.AdminPassword = direct.LazyPtr(in.GetAdminPassword())
+	if in.GetAdminPasswordSecretVersion() != "" {
+		out.AdminPasswordSecretVersionRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetAdminPasswordSecretVersion()}
+	}
+	out.Properties = AutonomousDatabaseProperties_FromProto(mapCtx, in.GetProperties())
+	out.Labels = in.Labels
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	out.CIDR = direct.LazyPtr(in.GetCidr())
+	if in.GetOdbNetwork() != "" {
+		out.OdbNetworkRef = &krm.OracleDatabaseODBNetworkRef{External: in.GetOdbNetwork()}
+	}
+	if in.GetOdbSubnet() != "" {
+		out.OdbSubnetRef = &krm.OracleDatabaseODBSubnetRef{External: in.GetOdbSubnet()}
+	}
+	out.SourceConfig = SourceConfig_FromProto(mapCtx, in.GetSourceConfig())
+	return out
+}
+func OracleDatabaseAutonomousDatabaseSpec_ToProto(mapCtx *direct.MapContext, in *krm.OracleDatabaseAutonomousDatabaseSpec) *pb.AutonomousDatabase {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutonomousDatabase{}
+	// MISSING: Name
+	out.Database = direct.ValueOf(in.Database)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.AdminPassword = direct.ValueOf(in.AdminPassword)
+	if in.AdminPasswordSecretVersionRef != nil {
+		out.AdminPasswordSecretVersion = in.AdminPasswordSecretVersionRef.External
+	}
+	out.Properties = AutonomousDatabaseProperties_ToProto(mapCtx, in.Properties)
+	out.Labels = in.Labels
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	out.Cidr = direct.ValueOf(in.CIDR)
+	if in.OdbNetworkRef != nil {
+		out.OdbNetwork = in.OdbNetworkRef.External
+	}
+	if in.OdbSubnetRef != nil {
+		out.OdbSubnet = in.OdbSubnetRef.External
+	}
+	out.SourceConfig = SourceConfig_ToProto(mapCtx, in.SourceConfig)
+	return out
+}
 func OracleDatabaseExadbVMClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExadbVmCluster) *krm.OracleDatabaseExadbVMClusterObservedState {
 	if in == nil {
 		return nil
@@ -239,5 +848,69 @@ func OracleDatabaseExadbVMClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm
 		out.BackupOdbSubnet = in.BackupOdbSubnetRef.External
 	}
 	out.DisplayName = direct.ValueOf(in.DisplayName)
+	return out
+}
+func ScheduledOperationDetailsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ScheduledOperationDetails) *krm.ScheduledOperationDetailsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ScheduledOperationDetailsObservedState{}
+	out.DayOfWeek = direct.Enum_FromProto(mapCtx, in.GetDayOfWeek())
+	out.StartTime = TimeOfDay_FromProto(mapCtx, in.GetStartTime())
+	out.StopTime = TimeOfDay_FromProto(mapCtx, in.GetStopTime())
+	return out
+}
+func ScheduledOperationDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ScheduledOperationDetailsObservedState) *pb.ScheduledOperationDetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ScheduledOperationDetails{}
+	out.DayOfWeek = direct.Enum_ToProto[dayofweekpb.DayOfWeek](mapCtx, in.DayOfWeek)
+	out.StartTime = TimeOfDay_ToProto(mapCtx, in.StartTime)
+	out.StopTime = TimeOfDay_ToProto(mapCtx, in.StopTime)
+	return out
+}
+func SourceConfig_FromProto(mapCtx *direct.MapContext, in *pb.SourceConfig) *krm.SourceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SourceConfig{}
+	if in.GetAutonomousDatabase() != "" {
+		out.AutonomousDatabaseRef = &krm.OracleDatabaseAutonomousDatabaseRef{External: in.GetAutonomousDatabase()}
+	}
+	out.AutomaticBackupsReplicationEnabled = direct.LazyPtr(in.GetAutomaticBackupsReplicationEnabled())
+	out.SourceType = direct.Enum_FromProto(mapCtx, in.GetSourceType())
+	out.CloneType = direct.Enum_FromProto(mapCtx, in.GetCloneType())
+	out.RefreshableMode = direct.Enum_FromProto(mapCtx, in.GetRefreshableMode())
+	out.AutoRefreshFrequencySeconds = direct.LazyPtr(in.GetAutoRefreshFrequencySeconds())
+	out.AutoRefreshPointLagSeconds = in.AutoRefreshPointLagSeconds
+	out.AutoRefreshStartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetAutoRefreshStartTime())
+	if in.GetAutonomousDatabaseBackup() != "" {
+		out.AutonomousDatabaseBackupRef = &krm.OracleDatabaseAutonomousDatabaseBackupRef{External: in.GetAutonomousDatabaseBackup()}
+	}
+	out.BackupTime = direct.StringTimestamp_FromProto(mapCtx, in.GetBackupTime())
+	out.UseLatestAvailableBackup = direct.LazyPtr(in.GetUseLatestAvailableBackup())
+	return out
+}
+func SourceConfig_ToProto(mapCtx *direct.MapContext, in *krm.SourceConfig) *pb.SourceConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SourceConfig{}
+	if in.AutonomousDatabaseRef != nil {
+		out.AutonomousDatabase = in.AutonomousDatabaseRef.External
+	}
+	out.AutomaticBackupsReplicationEnabled = direct.ValueOf(in.AutomaticBackupsReplicationEnabled)
+	out.SourceType = direct.Enum_ToProto[pb.SourceConfig_SourceType](mapCtx, in.SourceType)
+	out.CloneType = direct.Enum_ToProto[pb.SourceConfig_CloneType](mapCtx, in.CloneType)
+	out.RefreshableMode = direct.Enum_ToProto[pb.SourceConfig_RefreshableMode](mapCtx, in.RefreshableMode)
+	out.AutoRefreshFrequencySeconds = direct.ValueOf(in.AutoRefreshFrequencySeconds)
+	out.AutoRefreshPointLagSeconds = in.AutoRefreshPointLagSeconds
+	out.AutoRefreshStartTime = direct.StringTimestamp_ToProto(mapCtx, in.AutoRefreshStartTime)
+	if in.AutonomousDatabaseBackupRef != nil {
+		out.AutonomousDatabaseBackup = in.AutonomousDatabaseBackupRef.External
+	}
+	out.BackupTime = direct.StringTimestamp_ToProto(mapCtx, in.BackupTime)
+	out.UseLatestAvailableBackup = direct.ValueOf(in.UseLatestAvailableBackup)
 	return out
 }

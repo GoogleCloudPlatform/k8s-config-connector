@@ -3286,7 +3286,7 @@
 [missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.odbNetworkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.odbSubnetRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.allowlistedIps[]" is not set in unstructured objects
+[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.allowlistedIPs[]" is not set in unstructured objects
 [missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.backupRetentionPeriodDays" is not set in unstructured objects
 [missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.characterSet" is not set in unstructured objects
 [missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.computeCount" is not set in unstructured objects

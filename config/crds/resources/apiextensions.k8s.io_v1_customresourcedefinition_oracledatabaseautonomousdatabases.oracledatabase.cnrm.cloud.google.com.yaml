@@ -243,7 +243,7 @@ spec:
               properties:
                 description: Optional. The properties of the Autonomous Database.
                 properties:
-                  allowlistedIps:
+                  allowlistedIPs:
                     description: Optional. Immutable. The list of allowlisted IP addresses
                       for the Autonomous Database.
                     items:
@@ -604,7 +604,7 @@ spec:
                               (ORDS) version.
                             type: string
                         type: object
-                      arePrimaryAllowlistedIpsUsed:
+                      arePrimaryAllowlistedIPsUsed:
                         description: Output only. This field indicates the status
                           of Data Guard and Access control for the Autonomous Database.
                           The field's value is null if Data Guard is disabled or Access
@@ -710,7 +710,7 @@ spec:
                               type: object
                             type: array
                         type: object
-                      connectionUrls:
+                      connectionURLs:
                         description: Output only. The Oracle Connection URLs for an
                           Autonomous Database.
                         properties:
@@ -846,12 +846,12 @@ spec:
                         description: Output only. The date and time when maintenance
                           will end.
                         type: string
-                      memoryPerOracleComputeUnitGbs:
+                      memoryPerOracleComputeUnitGBs:
                         description: Output only. The amount of memory enabled per
                           ECPU, in gigabytes.
                         format: int32
                         type: integer
-                      memoryTableGbs:
+                      memoryTableGBs:
                         description: Output only. The memory assigned to in-memory
                           tables in an Autonomous Database.
                         format: int32
@@ -876,7 +876,7 @@ spec:
                         description: Output only. This field indicates the state of
                           Operations Insights for the Autonomous Database.
                         type: string
-                      peerDbIds:
+                      peerDbIDs:
                         description: Output only. The list of OCIDs of standby databases
                           located in Autonomous Data Guard remote regions that are
                           associated with the source database.
@@ -991,7 +991,7 @@ spec:
                         items:
                           type: string
                         type: array
-                      totalAutoBackupStorageSizeGbs:
+                      totalAutoBackupStorageSizeGBs:
                         description: Output only. The storage space used by automatic
                           backups of Autonomous Database, in gigabytes.
                         type: number
