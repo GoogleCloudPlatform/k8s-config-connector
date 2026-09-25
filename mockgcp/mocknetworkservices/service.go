@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	pbhttp "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/networkservices/v1"
+	edgecachepb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkservices/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
@@ -67,12 +68,18 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterNetworkServicesServer(grpcServer, s.v1)
 	pb.RegisterDepServiceServer(grpcServer, s.v1)
+	edgecachepb.RegisterEdgeCacheServicesServerServer(grpcServer, &EdgeCacheServicesServer{MockService: s})
+	edgecachepb.RegisterEdgeCacheOriginsServerServer(grpcServer, &EdgeCacheOriginsServer{MockService: s})
+	edgecachepb.RegisterEdgeCacheKeysetsServerServer(grpcServer, &EdgeCacheKeysetsServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pbhttp.RegisterNetworkServicesHandler,
 		pbhttp.RegisterDepServiceHandler,
+		edgecachepb.RegisterEdgeCacheServicesServerHandler,
+		edgecachepb.RegisterEdgeCacheOriginsServerHandler,
+		edgecachepb.RegisterEdgeCacheKeysetsServerHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err
