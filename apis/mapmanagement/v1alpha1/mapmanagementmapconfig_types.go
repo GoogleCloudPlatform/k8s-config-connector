@@ -22,6 +22,7 @@ import (
 
 var MapManagementMapConfigGVK = GroupVersion.WithKind("MapManagementMapConfig")
 
+// +kcc:proto=google.maps.mapmanagement.v2beta.MapFeatures
 type MapFeatures struct {
 	// Optional. The visual feature to use for this map.
 	// +kubebuilder:validation:Optional

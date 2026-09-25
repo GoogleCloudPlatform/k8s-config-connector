@@ -1,0 +1,137 @@
+POST https://mapmanagement.googleapis.com/v2beta/projects/${projectId}/styleConfigs?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
+
+{
+  "description": "A maximal map style config test",
+  "displayName": "maximal-style-${uniqueId}",
+  "jsonStyleSheet": "[{\"featureType\":\"water\",\"stylers\":[{\"color\":\"#17263c\"}]}]"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A maximal map style config test",
+  "displayName": "maximal-style-${uniqueId}",
+  "jsonStyleSheet": "null",
+  "name": "projects/${projectNumber}/styleConfigs/${styleConfigId}",
+  "styleId": "${styleConfigId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://mapmanagement.googleapis.com/v2beta/projects/${projectNumber}/styleConfigs/${styleConfigId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FstyleConfigs%2F${styleConfigId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A maximal map style config test",
+  "displayName": "maximal-style-${uniqueId}",
+  "jsonStyleSheet": "null",
+  "name": "projects/${projectNumber}/styleConfigs/${styleConfigId}",
+  "styleId": "${styleConfigId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://mapmanagement.googleapis.com/v2beta/projects/${projectNumber}/styleConfigs/${styleConfigId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName%2CjsonStyleSheet
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: style_config.name=projects%2F${projectNumber}%2FstyleConfigs%2F${styleConfigId}
+
+{
+  "description": "An updated maximal map style config test",
+  "displayName": "maximal-style-${uniqueId}-updated",
+  "jsonStyleSheet": "[{\"featureType\":\"water\",\"stylers\":[{\"color\":\"#021019\"}]}]",
+  "name": "projects/${projectNumber}/styleConfigs/${styleConfigId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated maximal map style config test",
+  "displayName": "maximal-style-${uniqueId}-updated",
+  "jsonStyleSheet": "null",
+  "name": "projects/${projectNumber}/styleConfigs/${styleConfigId}",
+  "styleId": "${styleConfigId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://mapmanagement.googleapis.com/v2beta/projects/${projectNumber}/styleConfigs/${styleConfigId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FstyleConfigs%2F${styleConfigId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated maximal map style config test",
+  "displayName": "maximal-style-${uniqueId}-updated",
+  "jsonStyleSheet": "null",
+  "name": "projects/${projectNumber}/styleConfigs/${styleConfigId}",
+  "styleId": "${styleConfigId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://mapmanagement.googleapis.com/v2beta/projects/${projectNumber}/styleConfigs/${styleConfigId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FstyleConfigs%2F${styleConfigId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
