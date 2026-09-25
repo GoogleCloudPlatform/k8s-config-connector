@@ -64,6 +64,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pbv1.RegisterFirewallActivationServer(grpcServer, &FirewallActivationServer{MockService: s})
 	pbv1.RegisterDnsThreatDetectorServiceServer(grpcServer, &DnsThreatDetectorServer{MockService: s})
 	pbv1.RegisterSecurityProfileGroupServiceServer(grpcServer, &SecurityProfileGroupServer{MockService: s})
+	pbv1.RegisterAddressGroupServiceServer(grpcServer, &AddressGroupServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -80,6 +81,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.AddService(pbv1.NewFirewallActivationClient(conn))
 	mux.AddService(pbv1.NewDnsThreatDetectorServiceClient(conn))
 	mux.AddService(pbv1.NewSecurityProfileGroupServiceClient(conn))
+	mux.AddService(pbv1.NewAddressGroupServiceClient(conn))
 	mux.AddOperationsPath("/v1beta1/{prefix=**}/operations/{name}", conn)
 	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 

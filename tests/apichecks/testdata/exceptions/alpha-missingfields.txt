@@ -2950,14 +2950,6 @@
 [missing_field] crd=networkmanagementconnectivitytests.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.sqlInstance.name" is not set in unstructured objects
 [missing_field] crd=networkmanagementconnectivitytests.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.sqlInstance.namespace" is not set in unstructured objects
 [missing_field] crd=networkmanagementvpcflowlogsconfigs.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field ".spec.interconnectAttachmentRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=networksecurityaddressgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.capacity" is not set in unstructured objects
-[missing_field] crd=networksecurityaddressgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=networksecurityaddressgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.items[]" is not set in unstructured objects
-[missing_field] crd=networksecurityaddressgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=networksecurityaddressgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=networksecurityaddressgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=networksecurityaddressgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.purpose[]" is not set in unstructured objects
-[missing_field] crd=networksecurityaddressgroups.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.type" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.customProvider.authzExtension.resources[]" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.customProvider.cloudIAP.enabled" is not set in unstructured objects
 [missing_field] crd=networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com version=v1alpha1: field ".spec.httpRules[].from.notSources[].ipBlocks[].length" is not set in unstructured objects
