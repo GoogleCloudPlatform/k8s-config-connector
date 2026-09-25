@@ -25,6 +25,8 @@ var _ mockgcpregistry.SupportsNormalization = &MockService{}
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
 	replacements.ReplacePath(".metadata.requestTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".metadata.finishTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".metadata.endTime", mockgcpregistry.PlaceholderTimestamp)
 
 	// Instances
 	replacements.ReplacePath(".instances[].createTime", mockgcpregistry.PlaceholderTimestamp)
@@ -42,6 +44,10 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 		replacements.RemovePath(".metadata.requestTime")
 		replacements.RemovePath(".metadata.finishTime")
 	}
+
+	// Schema Bundles
+	replacements.ReplacePath(".schemaBundles[].etag", "abcdef0123A=")
+	replacements.ReplacePath(".etag", "abcdef0123A=")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

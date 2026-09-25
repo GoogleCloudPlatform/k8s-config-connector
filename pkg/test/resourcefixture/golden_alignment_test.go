@@ -1082,10 +1082,25 @@ func isDependencyEvent(ev httpEvent, depKinds map[string]string, primaryKind str
 		// Clean the URL to get the path
 		urlPath := strings.Split(cleanURL(ev.URL), "?")[0]
 
-		// If the path doesn't contain the dependency name, check if it's a POST to create it
+		// If the path doesn't contain the dependency name, check if it's a POST or GRPC to create/operate on it
 		if !strings.Contains(urlPath, depName) {
 			if ev.Method == "POST" && (strings.Contains(ev.RequestBody, depName) || strings.Contains(ev.ResponseBody, depName) || strings.Contains(ev.URL, depName)) {
 				return true
+			}
+			// For Bigtable gRPC calls, resource creation or setup calls
+			// (e.g. /BigtableInstanceAdmin/CreateInstance, /BigtableTableAdmin/CreateTable) use "GRPC"
+			// as the HTTP method and the URL is the RPC method endpoint, which does not contain the
+			// resource ID in the path. Instead, the dependency name is contained in the request or response body.
+			if ev.Method == "GRPC" {
+				parts := strings.Split(ev.URL, "/")
+				if len(parts) > 0 {
+					rpcMethod := parts[len(parts)-1]
+					shortDepKind := strings.TrimPrefix(kind, "Bigtable")
+					shortPrimaryKind := strings.TrimPrefix(primaryKind, "Bigtable")
+					if strings.Contains(rpcMethod, shortDepKind) && !strings.Contains(rpcMethod, shortPrimaryKind) && (strings.Contains(ev.RequestBody, depName) || strings.Contains(ev.ResponseBody, depName)) {
+						return true
+					}
+				}
 			}
 			continue
 		}
