@@ -44,7 +44,6 @@ Vary: X-Origin
   "rpo": "DEFAULT",
   "selfLink": "https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}",
   "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
     "retentionDurationSeconds": "0"
   },
   "storageClass": "STANDARD",

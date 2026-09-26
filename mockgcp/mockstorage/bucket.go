@@ -143,18 +143,24 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 		obj.Location = PtrTo("US")
 	}
 
-	switch obj.GetLocation() {
-	case "ASIA1", "EUR4", "EUR5", "EUR7", "EUR8", "NAM4":
+	if obj.CustomPlacementConfig != nil && len(obj.CustomPlacementConfig.DataLocations) > 0 {
 		obj.LocationType = PtrTo("dual-region")
 		obj.Rpo = PtrTo("DEFAULT")
-	case "EU", "US", "ASIA":
-		obj.LocationType = PtrTo("multi-region")
-		obj.Rpo = PtrTo("DEFAULT")
-	default:
-		obj.Location = PtrTo(strings.ToUpper(obj.GetLocation()))
-		obj.LocationType = PtrTo("region")
-		obj.Rpo = nil
 		obj.SatisfiesPZI = PtrTo(true)
+	} else {
+		switch obj.GetLocation() {
+		case "ASIA1", "EUR4", "EUR5", "EUR7", "EUR8", "NAM4":
+			obj.LocationType = PtrTo("dual-region")
+			obj.Rpo = PtrTo("DEFAULT")
+		case "EU", "US", "ASIA":
+			obj.LocationType = PtrTo("multi-region")
+			obj.Rpo = PtrTo("DEFAULT")
+		default:
+			obj.Location = PtrTo(strings.ToUpper(obj.GetLocation()))
+			obj.LocationType = PtrTo("region")
+			obj.Rpo = nil
+			obj.SatisfiesPZI = PtrTo(true)
+		}
 	}
 
 	obj.SelfLink = PtrTo(fmt.Sprintf("https://www.googleapis.com/storage/v1/b/%s", name.Bucket))
@@ -213,7 +219,9 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 		defaultRetention := time.Hour * 7 * 24
 		softDeletePolicy.RetentionDurationSeconds = PtrTo(int64(defaultRetention.Seconds()))
 	}
-	softDeletePolicy.EffectiveTime = now
+	if softDeletePolicy.GetRetentionDurationSeconds() != 0 {
+		softDeletePolicy.EffectiveTime = now
+	}
 
 	if err := s.populateDefaults(ctx, project, obj); err != nil {
 		return nil, err
@@ -331,6 +339,8 @@ func (s *buckets) PatchBucket(ctx context.Context, req *pb.PatchBucketRequest) (
 				// If the value is zero, we clear the effectiveTime (apparently)
 				if obj.GetSoftDeletePolicy().GetRetentionDurationSeconds() == 0 {
 					obj.SoftDeletePolicy.EffectiveTime = nil
+				} else if obj.SoftDeletePolicy.EffectiveTime == nil {
+					obj.SoftDeletePolicy.EffectiveTime = now
 				}
 			}
 		}

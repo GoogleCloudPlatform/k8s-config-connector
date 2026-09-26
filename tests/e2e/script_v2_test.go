@@ -469,7 +469,7 @@ func TestE2EScenariosV2(t *testing.T) {
 						}
 					}
 
-					// Register real golden file as referenced if we are running in mock mode and using a mock-specific file
+					// Register counterpart golden files as referenced so NoExtraGoldenFiles doesn't delete them
 					if targetGCP == "mock" {
 						realPath := filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d.yaml", i))
 						if fileExists(realPath) {
@@ -480,6 +480,17 @@ func TestE2EScenariosV2(t *testing.T) {
 						if fileExists(realExportPath) {
 							b, _ := os.ReadFile(realExportPath)
 							h.CompareGoldenFile(realExportPath, string(b))
+						}
+					} else {
+						mockPath := filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d_mock.yaml", i))
+						if fileExists(mockPath) {
+							b, _ := os.ReadFile(mockPath)
+							h.CompareGoldenFile(mockPath, string(b))
+						}
+						mockExportPath := filepath.Join(script.SourceDir, fmt.Sprintf("_export%d_mock.yaml", i))
+						if fileExists(mockExportPath) {
+							b, _ := os.ReadFile(mockExportPath)
+							h.CompareGoldenFile(mockExportPath, string(b))
 						}
 					}
 

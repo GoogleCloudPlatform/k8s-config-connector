@@ -44,11 +44,12 @@ Vary: X-Origin
     ]
   },
   "location": "US",
-  "locationType": "multi-region",
+  "locationType": "dual-region",
   "metageneration": "1",
   "name": "storagebucket-sample-${uniqueId}",
   "projectNumber": "${projectNumber}",
   "rpo": "DEFAULT",
+  "satisfiesPZI": true,
   "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}",
   "softDeletePolicy": {
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
@@ -187,7 +188,7 @@ Vary: X-Origin
     ]
   },
   "location": "US",
-  "locationType": "multi-region",
+  "locationType": "dual-region",
   "metageneration": "1",
   "name": "storagebucket-sample-${uniqueId}",
   "owner": {
@@ -195,6 +196,7 @@ Vary: X-Origin
   },
   "projectNumber": "${projectNumber}",
   "rpo": "DEFAULT",
+  "satisfiesPZI": true,
   "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}",
   "softDeletePolicy": {
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
@@ -256,11 +258,12 @@ Vary: X-Origin
     ]
   },
   "location": "US",
-  "locationType": "multi-region",
+  "locationType": "dual-region",
   "metageneration": "1",
   "name": "storagebucket-sample-${uniqueId}",
   "projectNumber": "${projectNumber}",
   "rpo": "DEFAULT",
+  "satisfiesPZI": true,
   "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}",
   "softDeletePolicy": {
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
