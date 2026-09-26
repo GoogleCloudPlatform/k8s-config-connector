@@ -27,48 +27,8 @@ Content-Type: application/json
 {
   "locationId": "us-west2",
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}",
-  "type": 1
+  "type": 2
 }
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.firestore.admin.v1.CreateDatabaseMetadata"
-  },
-  "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.firestore.admin.v1.Database",
-    "appEngineIntegrationMode": 2,
-    "concurrencyMode": 2,
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseEdition": 1,
-    "deleteProtectionState": 1,
-    "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
-    "etag": "abcdef0123A=",
-    "freeTier": true,
-    "locationId": "us-west2",
-    "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}",
-    "pointInTimeRecoveryEnablement": 2,
-    "type": 1,
-    "uid": "111111111111111111111",
-    "updateTime": "2024-04-01T12:34:56.123456Z",
-    "versionRetentionPeriod": "3600s"
-  }
-}
-
----
-
-GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}
-Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -88,18 +48,18 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.firestore.admin.v1.Database",
-    "appEngineIntegrationMode": "DISABLED",
-    "concurrencyMode": "PESSIMISTIC",
+    "appEngineIntegrationMode": 2,
+    "concurrencyMode": 2,
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseEdition": "STANDARD",
-    "deleteProtectionState": "DELETE_PROTECTION_DISABLED",
+    "databaseEdition": 1,
+    "deleteProtectionState": 1,
     "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
     "freeTier": true,
     "locationId": "us-west2",
     "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}",
-    "pointInTimeRecoveryEnablement": "POINT_IN_TIME_RECOVERY_DISABLED",
-    "type": "FIRESTORE_NATIVE",
+    "pointInTimeRecoveryEnablement": 2,
+    "type": 2,
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "versionRetentionPeriod": "3600s"
@@ -133,7 +93,7 @@ X-Xss-Protection: 0
   "locationId": "us-west2",
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}",
   "pointInTimeRecoveryEnablement": 2,
-  "type": 1,
+  "type": 2,
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "versionRetentionPeriod": "3600s"
@@ -145,6 +105,7 @@ POST https://firestore.googleapis.com/v1/projects/${projectId}/databases/firesto
 Content-Type: application/json
 
 {
+  "apiScope": "DATASTORE_MODE_API",
   "fields": [
     {
       "fieldPath": "field1",
@@ -155,7 +116,7 @@ Content-Type: application/json
       "order": "DESCENDING"
     }
   ],
-  "queryScope": "COLLECTION"
+  "queryScope": "COLLECTION_RECURSIVE"
 }
 
 200 OK
@@ -206,6 +167,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.firestore.admin.v1.Index",
+    "apiScope": "DATASTORE_MODE_API",
     "density": "SPARSE_ALL",
     "fields": [
       {
@@ -218,12 +180,12 @@ X-Xss-Protection: 0
       },
       {
         "fieldPath": "__name__",
-        "order": "DESCENDING"
+        "order": "ASCENDING"
       }
     ],
     "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}",
-    "queryScope": "COLLECTION",
-    "state": "CREATING"
+    "queryScope": "COLLECTION_RECURSIVE",
+    "state": "READY"
   }
 }
 
@@ -243,6 +205,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "apiScope": "DATASTORE_MODE_API",
   "density": "SPARSE_ALL",
   "fields": [
     {
@@ -255,11 +218,11 @@ X-Xss-Protection: 0
     },
     {
       "fieldPath": "__name__",
-      "order": "DESCENDING"
+      "order": "ASCENDING"
     }
   ],
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}",
-  "queryScope": "COLLECTION",
+  "queryScope": "COLLECTION_RECURSIVE",
   "state": "READY"
 }
 
@@ -307,7 +270,7 @@ X-Xss-Protection: 0
   "locationId": "us-west2",
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}",
   "pointInTimeRecoveryEnablement": 2,
-  "type": 1,
+  "type": 2,
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "versionRetentionPeriod": "3600s"
@@ -348,7 +311,7 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/databases/${randomDatabaseID}",
     "pointInTimeRecoveryEnablement": 2,
     "previousId": "firestoredatabase-${uniqueId}",
-    "type": 1,
+    "type": 2,
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "versionRetentionPeriod": "3600s"
