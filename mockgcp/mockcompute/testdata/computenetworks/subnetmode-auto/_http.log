@@ -188,6 +188,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.218.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -206,6 +209,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.218.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -228,6 +234,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.140.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -246,6 +255,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.140.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -268,6 +280,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.170.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -286,6 +301,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.170.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -308,6 +326,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.146.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -326,6 +347,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.146.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -348,6 +372,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.174.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -366,6 +393,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.174.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -388,6 +418,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.178.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -406,6 +439,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.178.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -428,6 +464,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.160.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -446,6 +485,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.160.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -468,6 +510,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.190.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -486,6 +531,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.190.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -508,6 +556,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.148.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -526,6 +577,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.148.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -548,6 +602,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.184.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -566,6 +623,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.184.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -588,6 +648,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.152.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -606,6 +669,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.152.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -628,6 +694,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.192.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -646,6 +715,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.192.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -668,6 +740,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.186.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -686,6 +761,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.186.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -708,6 +786,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.166.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -726,6 +807,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.166.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -748,6 +832,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.226.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -766,6 +853,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.226.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -788,6 +878,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.204.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -806,6 +899,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.204.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -828,6 +924,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.132.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -846,6 +945,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.132.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -868,6 +970,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.214.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -886,6 +991,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.214.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -908,6 +1016,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.210.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -926,6 +1037,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.210.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -948,6 +1062,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.154.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -966,6 +1083,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.154.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -988,6 +1108,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.156.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -1006,6 +1129,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.156.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -1028,6 +1154,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.164.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -1046,6 +1175,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.164.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -1068,6 +1200,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.172.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -1086,6 +1221,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.172.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -1108,6 +1246,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.198.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -1126,6 +1267,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.198.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -1148,6 +1292,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.200.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -1166,6 +1313,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.200.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -1188,6 +1338,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.212.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -1206,6 +1359,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.212.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -1240,6 +1396,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.208.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -1258,6 +1417,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.208.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -1280,6 +1442,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.162.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -1298,6 +1463,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.162.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -1320,6 +1488,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.188.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -1338,6 +1509,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.188.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -1360,6 +1534,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.224.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -1378,6 +1555,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.224.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -1400,6 +1580,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.158.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -1418,6 +1601,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.158.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -1440,6 +1626,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.194.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -1458,6 +1647,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.194.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -1480,6 +1672,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.128.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -1498,6 +1693,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.128.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -1520,6 +1718,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.142.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -1538,6 +1739,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.142.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -1560,6 +1764,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.150.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -1578,6 +1785,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.150.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -1600,6 +1810,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.202.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -1618,6 +1831,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.202.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -1640,6 +1856,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.206.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -1658,6 +1877,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.206.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -1680,6 +1902,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.138.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -1698,6 +1923,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.138.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -1720,6 +1948,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.168.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -1738,6 +1969,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.168.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -1760,6 +1994,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.180.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -1778,6 +2015,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.180.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
@@ -1800,6 +2040,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.182.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "default",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
           "privateIpGoogleAccess": false,
@@ -1818,6 +2061,9 @@ X-Xss-Protection: 0
           "id": "1234567890",
           "ipCidrRange": "10.182.0.0/20",
           "kind": "compute#subnetwork",
+          "logConfig": {
+            "enable": false
+          },
           "name": "${networkID}",
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "privateIpGoogleAccess": false,
