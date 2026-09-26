@@ -91,6 +91,11 @@ func (r *InstanceRef) Normalize(ctx context.Context, reader client.Reader, defau
 	}
 
 	fallback := func(u *unstructured.Unstructured) string {
+		ready, err := isResourceReady(u)
+		if err != nil || !ready {
+			return ""
+		}
+
 		// Get external from status.selfLink. This ensures backward compatibility for TF/DCL-based resources that lack status.externalRef.
 		selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
 		if selfLink != "" {
