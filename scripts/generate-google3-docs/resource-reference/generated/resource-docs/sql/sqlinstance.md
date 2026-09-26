@@ -7,6 +7,13 @@ the fields that can cause the instance to restart, see the <a
 href="https://docs.cloud.google.com/sql/docs/postgres/admin-api/v1beta4/instances">REST Resource: instances
 documentation</a>.
 
+Note: The <code>cnrm.cloud.google.com/sqlinstance-advanced-dr: "enabled"</code>
+annotation is not used to trigger failover or switchover operations within
+Config Connector; rather, it is used to declaratively manage
+Disaster Recovery (DR) pairs in Config Connector. Failover and
+switchover must be performed outside of Config Connector, and the DR
+pairs will skip drift correction when a failover or switchover occurs.
+
 <table>
 <thead>
 <tr>
@@ -68,6 +75,9 @@ documentation</a>.
 <tbody>
     <tr>
         <td><code>cnrm.cloud.google.com/project-id</code></td>
+    </tr>
+    <tr>
+        <td><code>cnrm.cloud.google.com/sqlinstance-advanced-dr</code></td>
     </tr>
 </tbody>
 </table>
