@@ -395,10 +395,14 @@ Content-Type: application/json
 {
   "nats": [
     {
+      "endpointTypes": [
+        "ENDPOINT_TYPE_VM"
+      ],
       "icmpIdleTimeoutSec": 40,
       "name": "computerouternat-${uniqueId}",
       "natIpAllocateOption": "AUTO_ONLY",
-      "sourceSubnetworkIpRangesToNat": "ALL_SUBNETWORKS_ALL_IP_RANGES"
+      "sourceSubnetworkIpRangesToNat": "ALL_SUBNETWORKS_ALL_IP_RANGES",
+      "type": "PUBLIC"
     }
   ]
 }

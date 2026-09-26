@@ -70,21 +70,18 @@
 < PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}?alt=json
 ---
 > PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}
-389,396d397
+389,393d397
 <       "autoNetworkTier": "PREMIUM",
 <       "drainNatIps": [],
 <       "effectiveTcpTimeWaitTimeoutSec": 120,
 <       "enableDynamicPortAllocation": false,
 <       "enableEndpointIndependentMapping": true,
-<       "endpointTypes": [
-<         "ENDPOINT_TYPE_VM"
-<       ],
-398d398
+398d401
 <       "logConfig": null,
-401,409c401
+401,402d403
 <       "natIps": [],
 <       "rules": [],
-<       "sourceSubnetworkIpRangesToNat": "ALL_SUBNETWORKS_ALL_IP_RANGES",
+404,409c405
 <       "subnetworks": [],
 <       "tcpEstablishedIdleTimeoutSec": 1200,
 <       "tcpTimeWaitTimeoutSec": 120,
@@ -92,20 +89,20 @@
 <       "type": "PUBLIC",
 <       "udpIdleTimeoutSec": 30
 ---
->       "sourceSubnetworkIpRangesToNat": "ALL_SUBNETWORKS_ALL_IP_RANGES"
-442c434,435
+>       "type": "PUBLIC"
+442c438,439
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}
 > Content-Type: application/json
-473c466
+473c470
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}
-496,497d488
+496,497d492
 <       "enableDynamicPortAllocation": false,
 <       "enableEndpointIndependentMapping": true,
-505,509c496
+505,509c500
 <       "tcpEstablishedIdleTimeoutSec": 1200,
 <       "tcpTimeWaitTimeoutSec": 120,
 <       "tcpTransitoryIdleTimeoutSec": 30,
@@ -113,22 +110,22 @@
 <       "udpIdleTimeoutSec": 30
 ---
 >       "type": "PUBLIC"
-519c506
+519c510
 < PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}?alt=json
 ---
 > PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}
-522,524c509
+522,524c513
 < {
 <   "nats": []
 < }
 ---
 > {}
-554c539,540
+554c543,544
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}
 > Content-Type: application/json
-603a590,603
+603a594,607
 >   "nats": [
 >     {
 >       "autoNetworkTier": "PREMIUM",
