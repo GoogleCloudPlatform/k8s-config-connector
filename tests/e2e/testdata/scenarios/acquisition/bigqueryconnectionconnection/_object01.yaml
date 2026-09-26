@@ -25,7 +25,6 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-central1/connections/test-bqcc-acquisition
   observedGeneration: 1
   observedState:
     cloudResource:
