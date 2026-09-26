@@ -15,9 +15,8 @@
 package v1beta1
 
 import (
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var IAPBrandGVK = GroupVersion.WithKind("IAPBrand")
@@ -41,10 +40,11 @@ type IAPBrandSpec struct {
 // IAPBrandStatus defines the config connector machine state of IAPBrand
 type IAPBrandStatus struct {
 	/* Conditions represent the latest available observations of the
-	   object's current state. */
+	   IAPBrand's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 
-	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. Whether the brand is only intended for usage inside the G Suite organization only. */
@@ -77,6 +77,7 @@ type IAPBrand struct {
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
 // IAPBrandList contains a list of IAPBrand
 type IAPBrandList struct {
 	metav1.TypeMeta `json:",inline"`
