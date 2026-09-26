@@ -123,6 +123,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 	case schema.GroupKind{Group: "bigquerybiglake.cnrm.cloud.google.com", Kind: "BigLakeCatalog"}:
 		exportURI = resolveCAISURI(h, obj)
 
+	case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexDataAttributeBinding"}:
+		exportURI = resolveCAISURI(h, obj)
+
 	case schema.GroupKind{Group: "bigqueryreservation.cnrm.cloud.google.com", Kind: "BigQueryReservationCapacityCommitment"}:
 		exportURI = resolveCAISURI(h, obj)
 
