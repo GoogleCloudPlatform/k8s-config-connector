@@ -31,6 +31,10 @@ type FakeContactcenterinsightsV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeContactcenterinsightsV1alpha1) CCInsightsAnalysisRules(namespace string) v1alpha1.CCInsightsAnalysisRuleInterface {
+	return newFakeCCInsightsAnalysisRules(c, namespace)
+}
+
 func (c *FakeContactcenterinsightsV1alpha1) CCInsightsConversations(namespace string) v1alpha1.CCInsightsConversationInterface {
 	return newFakeCCInsightsConversations(c, namespace)
 }
