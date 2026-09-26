@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: clouddeploy.cnrm.cloud.google.com
+  kind: CloudDeployCustomTargetType
+  name: clouddeploycustomtargettype-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
