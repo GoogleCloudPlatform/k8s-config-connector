@@ -71,3 +71,55 @@ func MigrationCenterGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.Migrati
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
+func MigrationCenterSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Source) *krm.MigrationCenterSourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MigrationCenterSourceObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.PendingFrameCount = direct.LazyPtr(in.GetPendingFrameCount())
+	out.ErrorFrameCount = direct.LazyPtr(in.GetErrorFrameCount())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func MigrationCenterSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MigrationCenterSourceObservedState) *pb.Source {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Source{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.PendingFrameCount = direct.ValueOf(in.PendingFrameCount)
+	out.ErrorFrameCount = direct.ValueOf(in.ErrorFrameCount)
+	out.State = direct.Enum_ToProto[pb.Source_State](mapCtx, in.State)
+	return out
+}
+func MigrationCenterSourceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Source) *krm.MigrationCenterSourceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MigrationCenterSourceSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Priority = direct.LazyPtr(in.GetPriority())
+	out.Managed = direct.LazyPtr(in.GetManaged())
+	return out
+}
+func MigrationCenterSourceSpec_ToProto(mapCtx *direct.MapContext, in *krm.MigrationCenterSourceSpec) *pb.Source {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Source{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Type = direct.Enum_ToProto[pb.Source_SourceType](mapCtx, in.Type)
+	out.Priority = direct.ValueOf(in.Priority)
+	out.Managed = direct.ValueOf(in.Managed)
+	return out
+}
