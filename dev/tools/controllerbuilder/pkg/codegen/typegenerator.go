@@ -41,6 +41,12 @@ type TypeGenerator struct {
 	visitedMessages         []protoreflect.MessageDescriptor
 	outputMessages          []*OutputMessageDetails
 	observedStateMessages   sets.String
+
+	// siblingGuesses are fields of a nested message that the sibling rule
+	// flagged. PrepopulateSpec records the resource's own fields; this generator
+	// writes the nested messages, so their markers are read back out of the
+	// rendered body.
+	siblingGuesses []SiblingGuess
 	generatedFileAnnotation *codegenannotations.FileAnnotation
 	includeSkippedOutput    bool
 	writeOptions            WriteOptions
@@ -84,6 +90,23 @@ type WriteOptions struct {
 	// services (e.g., filtering unused imports) are scoped to this flag to maintain
 	// byte-for-byte reproducibility for services that have not yet opted in.
 	Prepopulating bool
+	// EmitPluralAcronyms cases a plural acronym as KRM conventions want, so
+	// related_uris becomes RelatedURIs rather than RelatedUris. See AcronymCasing
+	// for why this is opt-in.
+	EmitPluralAcronyms bool
+	// EmitMessageMaps generates map<string, Message> fields as a map of the
+	// value's Go type. Without it they are left out, with a "// TODO:" marker
+	// in their place.
+	EmitMessageMaps bool
+	// Siblings maps a lowercased Kind suffix to a Kind this service declares, so
+	// a string field naming one can be marked as a probable reference. See
+	// SiblingResource.
+	//
+	// Unlike the flags above, this one cannot change a CRD: it only adds a
+	// +kcc:guess comment, which controller-gen strips before publishing. A shared
+	// nested message is no trouble either, since the map holds one service's
+	// Kinds and a nested message is shared only within a service.
+	Siblings map[string]string
 }
 
 func NewTypeGenerator(goPackage string, outputBaseDir string, api *protoapi.Proto) *TypeGenerator {
@@ -385,10 +408,11 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 			continue
 		}
 
-		// Render the message to a buffer to scan for any unsupported field markers emitted by WriteField.
+		// Render the message to a buffer to scan for markers emitted by WriteField.
 		var rendered bytes.Buffer
 		WriteMessage(&rendered, msg, g.writeOptions)
 		g.unsupportedFields = append(g.unsupportedFields, scanUnsupported(string(msg.FullName()), rendered.String())...)
+		g.siblingGuesses = append(g.siblingGuesses, scanSiblingGuesses(string(msg.FullName()), rendered.String())...)
 		out.body.Write(rendered.Bytes())
 	}
 	return errors.Join(g.errors...)
@@ -465,6 +489,13 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 
 func WriteMessageAsComment(out io.Writer, msg protoreflect.MessageDescriptor, reason string, opts WriteOptions) {
 	var b bytes.Buffer
+	// Clear the map for this block: it dumps what the generator would have written
+	// for a type the package already declares by hand, so nothing in it reaches
+	// the CRD and there is no guess for anyone to review. With the map left in
+	// place it produced 63 of the 82 markers in the tree, and every one of them
+	// broke "a marker always has a queue entry", because the collector scans only
+	// the messages that are emitted.
+	opts.Siblings = nil
 	WriteMessage(&b, msg, opts)
 	fmt.Fprintf(out, "\n/* %s\n", reason)
 	fmt.Fprintf(out, "%s", strings.ReplaceAll(b.String(), "*/", "* /"))
@@ -520,7 +551,7 @@ func WriteObservedStateFields(out io.Writer, msgDetails *OutputMessageDetails, o
 	for _, field := range msgDetails.OutputFields {
 		if skip[string(field.Name())] {
 			notes = append(notes, ObservedStateFieldNote{
-				JSONName: GetJSONForKRM(field),
+				JSONName: GetJSONForKRM(field, observedOpts),
 				Skipped:  true,
 			})
 			continue
@@ -537,7 +568,7 @@ func WriteObservedStateFields(out io.Writer, msgDetails *OutputMessageDetails, o
 		out.Write(field_.Bytes())
 		emitted++
 		notes = append(notes, ObservedStateFieldNote{
-			JSONName: GetJSONForKRM(field),
+			JSONName: GetJSONForKRM(field, observedOpts),
 			Rendered: field_.String(),
 		})
 	}
@@ -555,17 +586,39 @@ func WriteObservedStateMessage(out io.Writer, msgDetails *OutputMessageDetails, 
 	fmt.Fprintf(out, "}\n")
 }
 
-func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool) (string, error) {
+func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool, opts WriteOptions) (string, error) {
 	if field.IsMap() {
 		entryMsg := field.Message()
-		keyKind := entryMsg.Fields().ByName("key").Kind()
-		valueKind := entryMsg.Fields().ByName("value").Kind()
-		if keyKind == protoreflect.StringKind && valueKind == protoreflect.StringKind {
+		keyField := entryMsg.Fields().ByName("key")
+		valueField := entryMsg.Fields().ByName("value")
+		if keyField.Kind() != protoreflect.StringKind {
+			// A CRD keys additionalProperties by string, so no other key type
+			// can be expressed.
+			return "", fmt.Errorf("unsupported map type with key %v and value %v", keyField.Kind(), valueField.Kind())
+		}
+		switch valueField.Kind() {
+		case protoreflect.StringKind:
 			return "map[string]string", nil
-		} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
+		case protoreflect.Int64Kind:
 			return "map[string]int64", nil
-		} else {
-			return "", fmt.Errorf("unsupported map type with key %v and value %v", keyKind, valueKind)
+		case protoreflect.MessageKind:
+			// Off by default: generating these adds fields to the CRD of a
+			// resource people already use.
+			if !opts.EmitMessageMaps {
+				return "", fmt.Errorf("unsupported map type with key %v and value %v", keyField.Kind(), valueField.Kind())
+			}
+			// FindDependenciesForField already follows the map entry to the
+			// value's message, so its struct is generated like any other nested
+			// message. A message with a special-cased Go type uses that type
+			// instead, so a google.protobuf.Struct value becomes
+			// apiextensionsv1.JSON.
+			valueName := string(valueField.Message().FullName())
+			if goType, ok := protoMessagesNotMappedToGoStruct[valueName]; ok {
+				return "map[string]" + goType, nil
+			}
+			return "map[string]" + GoNameForProtoMessage(valueField.Message()), nil
+		default:
+			return "", fmt.Errorf("unsupported map type with key %v and value %v", keyField.Kind(), valueField.Kind())
 		}
 	}
 
@@ -604,10 +657,18 @@ func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool)
 func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protoreflect.MessageDescriptor, fieldIndex int, isTransitiveOutput bool, opts WriteOptions) {
 	sourceLocations := msg.ParentFile().SourceLocations().ByDescriptor(field)
 
-	jsonName := GetJSONForKRM(field)
-	GoFieldName := goFieldName(field)
+	jsonName := GetJSONForKRM(field, opts)
+	GoFieldName := goFieldNameOpts(field, opts)
 
-	goType, err := GoTypeForField(field, isTransitiveOutput)
+	// A string field named after a resource this service declares is probably a
+	// reference to it. The note records the guess for a reader; the field stays
+	// a string, and the judgement queue carries the matching entry.
+	var note string
+	if target, ok := SiblingResource(field, opts); ok {
+		note = SiblingGuessMarker + target
+	}
+
+	goType, err := GoTypeForField(field, isTransitiveOutput, opts)
 	if err != nil {
 		// Include the field name in the TODO comment when prepopulating is enabled.
 		// This provides clarity for human review and queue processing without
@@ -633,6 +694,15 @@ func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protorefl
 			} else {
 				fmt.Fprintf(out, "\t// %s\n", line)
 			}
+		}
+	}
+
+	// note records a choice the generated type does not otherwise show. It
+	// follows the proto's own comment, which describes the field rather than
+	// what the generator did.
+	for _, line := range strings.Split(strings.TrimSpace(note), "\n") {
+		if line != "" {
+			fmt.Fprintf(out, "\t// %s\n", line)
 		}
 	}
 
@@ -776,17 +846,22 @@ func goTypeForProtoKind(kind protoreflect.Kind) string {
 	return goType
 }
 
-// GetJSONForKRM returns the KRM JSON name for the field,
-// honoring KRM conventions
-func GetJSONForKRM(protoField protoreflect.FieldDescriptor) string {
+// GetJSONForKRM returns the KRM JSON name for the field, cased according to
+// opts.
+//
+// Pass the options the field was written with. A judgement-queue path built
+// with any other options can name a field the generated type does not have:
+// under EmitPluralAcronyms the struct says relatedURIs, but blank options give
+// relatedUris.
+func GetJSONForKRM(protoField protoreflect.FieldDescriptor, opts WriteOptions) string {
 	tokens := strings.Split(string(protoField.Name()), "_")
 	for i, token := range tokens {
 		if i == 0 {
 			// Do not capitalize first token
 			continue
 		}
-		if IsAcronym(token) {
-			token = strings.ToUpper(token)
+		if cased, ok := AcronymCasing(token, opts.EmitPluralAcronyms); ok {
+			token = cased
 		} else {
 			token = strings.Title(token)
 		}
@@ -798,10 +873,14 @@ func GetJSONForKRM(protoField protoreflect.FieldDescriptor) string {
 // goFieldName returns the KRM go name for the field,
 // honoring KRM conventions
 func goFieldName(protoField protoreflect.FieldDescriptor) string {
+	return goFieldNameOpts(protoField, WriteOptions{})
+}
+
+func goFieldNameOpts(protoField protoreflect.FieldDescriptor, opts WriteOptions) string {
 	tokens := strings.Split(string(protoField.Name()), "_")
 	for i, token := range tokens {
-		if IsAcronym(token) {
-			token = strings.ToUpper(token)
+		if cased, ok := AcronymCasing(token, opts.EmitPluralAcronyms); ok {
+			token = cased
 		} else {
 			token = strings.Title(token)
 		}
@@ -910,6 +989,13 @@ type UnsupportedField struct {
 // Go types during this generation run.
 func (g *TypeGenerator) UnsupportedFields() []UnsupportedField {
 	return g.unsupportedFields
+}
+
+// SiblingGuesses returns the nested-message fields the sibling rule flagged
+// during the visit, so the caller can record them in the judgement queue.
+// PrepopulateSpec cannot: it sees only the resource's own fields.
+func (g *TypeGenerator) SiblingGuesses() []SiblingGuess {
+	return g.siblingGuesses
 }
 
 // scanUnsupported returns every unsupported-field marker in a rendered

@@ -98,14 +98,27 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 		buf.Write(field_.Bytes())
 		emitted++
 
+		// A string field named after a resource this service declares is probably
+		// a reference to it. WriteField writes the marker and this records the
+		// matching entry, both through SiblingResource, so the two cannot disagree.
+		// The field stays a string: this reports a candidate, and a person decides.
+		if target, ok := codegen.SiblingResource(field, opts); ok {
+			out.Judgement = append(out.Judgement, JudgementItem{
+				FieldPath: ".spec." + codegen.GetJSONForKRM(field, opts),
+				Reason:    "possible-reference-by-sibling",
+				Detail: "the name matches " + target + ", a resource this service declares; " +
+					"confirm whether it should be a reference",
+			})
+		}
+
 		if _, reason, ok := codegen.UnsupportedFieldMarker(field_.String()); ok {
 			out.Judgement = append(out.Judgement, JudgementItem{
-				FieldPath: ".spec." + codegen.GetJSONForKRM(field),
+				FieldPath: ".spec." + codegen.GetJSONForKRM(field, opts),
 				Reason:    "unsupported-field-type",
 				Detail:    reason,
 			})
 		}
-		if item, ok := judgementFor(field); ok {
+		if item, ok := judgementFor(field, opts); ok {
 			out.Judgement = append(out.Judgement, item)
 		}
 	}
@@ -161,7 +174,7 @@ func PrepopulateObservedState(details *codegen.OutputMessageDetails, observedSta
 
 // judgementFor checks whether a proto field carries a google.api.resource_reference
 // annotation and returns a JudgementItem proposing it as a reference candidate.
-func judgementFor(field protoreflect.FieldDescriptor) (JudgementItem, bool) {
+func judgementFor(field protoreflect.FieldDescriptor, opts codegen.WriteOptions) (JudgementItem, bool) {
 	if field.Options() == nil {
 		return JudgementItem{}, false
 	}
@@ -179,7 +192,7 @@ func judgementFor(field protoreflect.FieldDescriptor) (JudgementItem, bool) {
 	}
 
 	return JudgementItem{
-		FieldPath: ".spec." + codegen.GetJSONForKRM(field),
+		FieldPath: ".spec." + codegen.GetJSONForKRM(field, opts),
 		Reason:    "possible-reference",
 		Detail:    "target=" + target,
 	}, true
