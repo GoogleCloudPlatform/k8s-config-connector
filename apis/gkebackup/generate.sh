@@ -39,7 +39,8 @@ ${CONTROLLERBUILDER} generate-types \
     --resource GKEBackupRestorePlan:RestorePlan \
     --resource GKEBackupBackup:Backup \
     --resource GKEBackupRestore:Restore \
-    --resource GKEBackupBackupChannel:BackupChannel
+    --resource GKEBackupBackupChannel:BackupChannel \
+    --resource GKEBackupRestoreChannel:RestoreChannel
 
 ${CONTROLLERBUILDER} generate-mapper \
     --service google.cloud.gkebackup.v1 \
