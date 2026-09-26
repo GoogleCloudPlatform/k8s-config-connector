@@ -59,17 +59,6 @@ test: generate fmt vet manifests
 	dev/ci/presubmits/unit-tests
 	dev/ci/presubmits/unit-tests-operator
 
-# Setup repository git hooks for automated pre-push presubmit validation
-.PHONY: setup-hooks
-setup-hooks:
-	dev/tasks/install-git-hooks
-
-# Run canonical presubmit / validation checks without pushing
-.PHONY: presubmit validate
-validate presubmit:
-	dev/tasks/validate-and-push --validate-only
-
-
 # Build config-connector binary
 .PHONY: config-connector
 config-connector: generate fmt vet
