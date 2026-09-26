@@ -297,11 +297,11 @@ func TestNewWithInvalidDeviceFileShouldError(t *testing.T) {
 }
 
 func testNewWithInvalidDeviceFileShouldError(t *testing.T, resourceFormat outputsink.ResourceFormat) {
-	sink, err := outputsink.New(tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig()), "/dev/null", resourceFormat)
+	sink, err := outputsink.New(tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig()), "/dev/urandom", resourceFormat)
 	if err == nil {
 		t.Fatalf("expected an error, instead got 'nil'")
 	}
-	expectedMessage := "cannot use output parameter '/dev/null': is neither a 'regular' file or directory"
+	expectedMessage := "cannot use output parameter '/dev/urandom': is neither a 'regular' file or directory"
 	if err.Error() != expectedMessage {
 		t.Fatalf("unexpected error message\ngot:\n  %v\nwant:\n  %v", err.Error(), expectedMessage)
 	}

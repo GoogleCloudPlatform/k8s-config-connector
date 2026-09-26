@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,10 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mockaiplatform
+package mockaiplatformv1
 
 import (
 	"context"
+	"crypto/md5"
+	"encoding/base64"
+	"fmt"
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
@@ -23,8 +26,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/proto"
 
-	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
+	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
@@ -32,7 +36,7 @@ func init() {
 	mockgcpregistry.Register(New)
 }
 
-// MockService represents a mocked aiplatform service.
+// MockService represents a mocked aiplatform v1 service.
 type MockService struct {
 	*common.MockEnvironment
 
@@ -56,18 +60,10 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterTensorboardServiceServer(grpcServer, &tensorboardService{MockService: s})
-	pb.RegisterDatasetServiceServer(grpcServer, &datasetService{MockService: s})
-	pb.RegisterEndpointServiceServer(grpcServer, &endpointService{MockService: s})
-	pb.RegisterMetadataServiceServer(grpcServer, &metadataStoreService{MockService: s})
-	pb.RegisterFeaturestoreServiceServer(grpcServer, &featurestoreService{MockService: s})
-	pb.RegisterModelServiceServer(grpcServer, &modelService{MockService: s})
-	pb.RegisterNotebookServiceServer(grpcServer, &notebookService{MockService: s})
-	pb.RegisterScheduleServiceServer(grpcServer, &scheduleService{MockService: s})
-	pb.RegisterExampleStoreServiceServer(grpcServer, &exampleStoreService{MockService: s})
-	pb.RegisterFeatureOnlineStoreAdminServiceServer(grpcServer, &featureOnlineStoreAdminService{MockService: s})
-	pb.RegisterDeploymentResourcePoolServiceServer(grpcServer, &deploymentResourcePoolService{MockService: s})
 	pb.RegisterPipelineServiceServer(grpcServer, &pipelineService{MockService: s})
+	pb.RegisterFeatureOnlineStoreAdminServiceServer(grpcServer, &featureOnlineStoreAdminService{MockService: s})
+	pb.RegisterModelServiceServer(grpcServer, &modelService{MockService: s})
+	pb.RegisterPersistentResourceServiceServer(grpcServer, &persistentResourceService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -76,22 +72,21 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
-	mux.AddService(pb.NewTensorboardServiceClient(conn))
-	mux.AddService(pb.NewDatasetServiceClient(conn))
-	mux.AddService(pb.NewEndpointServiceClient(conn))
-	mux.AddService(pb.NewMetadataServiceClient(conn))
-	mux.AddService(pb.NewFeaturestoreServiceClient(conn))
-	mux.AddService(pb.NewModelServiceClient(conn))
-	mux.AddService(pb.NewNotebookServiceClient(conn))
-	mux.AddService(pb.NewScheduleServiceClient(conn))
-	mux.AddService(pb.NewExampleStoreServiceClient(conn))
-	mux.AddService(pb.NewFeatureOnlineStoreAdminServiceClient(conn))
-	mux.AddService(pb.NewDeploymentResourcePoolServiceClient(conn))
 	mux.AddService(pb.NewPipelineServiceClient(conn))
+	mux.AddService(pb.NewFeatureOnlineStoreAdminServiceClient(conn))
+	mux.AddService(pb.NewModelServiceClient(conn))
+	mux.AddService(pb.NewPersistentResourceServiceClient(conn))
 
 	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
-	mux.AddOperationsPath("/v1beta1/{prefix=**}/operations/{name}", conn)
-	mux.AddOperationsPath("/ui/{prefix=**}/operations/{name}", conn)
 
 	return mux, nil
+}
+
+func computeEtag(obj proto.Message) string {
+	b, err := proto.Marshal(obj)
+	if err != nil {
+		panic(fmt.Sprintf("converting to proto: %v", err))
+	}
+	hash := md5.Sum(b)
+	return base64.StdEncoding.EncodeToString(hash[:])
 }
