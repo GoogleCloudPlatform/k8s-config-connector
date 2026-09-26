@@ -618,6 +618,9 @@ Content-Type: application/json
 
 {
   "description": "An UPDATED BigQuery Table that inherits its encryption key from its parent dataset.",
+  "encryptionConfiguration": {
+    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+  },
   "friendlyName": "BigQueryTable Inherited Encryption Example",
   "labels": {
     "cnrm-test": "true",
