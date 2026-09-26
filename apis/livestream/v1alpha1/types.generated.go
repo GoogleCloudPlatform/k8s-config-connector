@@ -18,5 +18,78 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.video.livestream.v1
 // resource: LiveStreamAsset:Asset
+// resource: LiveStreamInput:Input
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.video.livestream.v1.AudioFormat
+type AudioFormat struct {
+	// Audio codec used in this audio stream.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.AudioFormat.codec
+	Codec *string `json:"codec,omitempty"`
+
+	// The number of audio channels.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.AudioFormat.channel_count
+	ChannelCount *int32 `json:"channelCount,omitempty"`
+
+	// A list of channel names specifying the layout of the audio channels.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.AudioFormat.channel_layout
+	ChannelLayout []string `json:"channelLayout,omitempty"`
+}
+
+// +kcc:proto=google.cloud.video.livestream.v1.AudioStreamProperty
+type AudioStreamProperty struct {
+	// Index of this audio stream.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.AudioStreamProperty.index
+	Index *int32 `json:"index,omitempty"`
+
+	// Properties of the audio format.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.AudioStreamProperty.audio_format
+	AudioFormat *AudioFormat `json:"audioFormat,omitempty"`
+}
+
+// +kcc:proto=google.cloud.video.livestream.v1.InputStreamProperty
+type InputStreamProperty struct {
+	// The time that the current input stream is accepted and the connection is
+	//  established.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.InputStreamProperty.last_establish_time
+	LastEstablishTime *string `json:"lastEstablishTime,omitempty"`
+
+	// Properties of the video streams.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.InputStreamProperty.video_streams
+	VideoStreams []VideoStreamProperty `json:"videoStreams,omitempty"`
+
+	// Properties of the audio streams.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.InputStreamProperty.audio_streams
+	AudioStreams []AudioStreamProperty `json:"audioStreams,omitempty"`
+}
+
+// +kcc:proto=google.cloud.video.livestream.v1.VideoFormat
+type VideoFormat struct {
+	// Video codec used in this video stream.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.VideoFormat.codec
+	Codec *string `json:"codec,omitempty"`
+
+	// The width of the video stream in pixels.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.VideoFormat.width_pixels
+	WidthPixels *int32 `json:"widthPixels,omitempty"`
+
+	// The height of the video stream in pixels.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.VideoFormat.height_pixels
+	HeightPixels *int32 `json:"heightPixels,omitempty"`
+
+	// The frame rate of the input video stream.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.VideoFormat.frame_rate
+	FrameRate *float64 `json:"frameRate,omitempty"`
+}
+
+// +kcc:proto=google.cloud.video.livestream.v1.VideoStreamProperty
+type VideoStreamProperty struct {
+	// Index of this video stream.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.VideoStreamProperty.index
+	Index *int32 `json:"index,omitempty"`
+
+	// Properties of the video format.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.VideoStreamProperty.video_format
+	VideoFormat *VideoFormat `json:"videoFormat,omitempty"`
+}
