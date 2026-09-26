@@ -21,4 +21,6 @@
 
 package v1alpha1
 
+type ModelArmorFloorSettingExpansion interface{}
+
 type ModelArmorTemplateExpansion interface{}

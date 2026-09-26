@@ -36,6 +36,7 @@ type EventarcV1alpha1Interface interface {
 	EventarcEnrollmentsGetter
 	EventarcGoogleAPISourcesGetter
 	EventarcGoogleChannelConfigsGetter
+	EventarcMessageBusesGetter
 }
 
 // EventarcV1alpha1Client is used to interact with features provided by the eventarc.cnrm.cloud.google.com group.
@@ -61,6 +62,10 @@ func (c *EventarcV1alpha1Client) EventarcGoogleAPISources(namespace string) Even
 
 func (c *EventarcV1alpha1Client) EventarcGoogleChannelConfigs(namespace string) EventarcGoogleChannelConfigInterface {
 	return newEventarcGoogleChannelConfigs(c, namespace)
+}
+
+func (c *EventarcV1alpha1Client) EventarcMessageBuses(namespace string) EventarcMessageBusInterface {
+	return newEventarcMessageBuses(c, namespace)
 }
 
 // NewForConfig creates a new EventarcV1alpha1Client for the given config.

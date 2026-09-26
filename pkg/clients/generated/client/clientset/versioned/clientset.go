@@ -27,6 +27,7 @@ import (
 
 	accesscontextmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1alpha1"
 	accesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1beta1"
+	agentregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/agentregistry/v1alpha1"
 	aiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/aiplatform/v1alpha1"
 	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1beta1"
 	analyticsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/analytics/v1alpha1"
@@ -81,9 +82,11 @@ import (
 	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudidentity/v1beta1"
 	cloudidsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudids/v1beta1"
 	cloudiotv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudiot/v1alpha1"
+	cloudnumberregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudnumberregistry/v1alpha1"
 	cloudquotav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudquota/v1beta1"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudscheduler/v1beta1"
 	cloudsecuritycompliancev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudsecuritycompliance/v1alpha1"
+	cloudsupportv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudsupport/v1alpha1"
 	cloudtalentsolutionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtalentsolution/v1alpha1"
 	cloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtasks/v1alpha1"
 	colabv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/colab/v1alpha1"
@@ -181,6 +184,7 @@ import (
 	networkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkservices/v1beta1"
 	notebooksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1alpha1"
 	notebooksv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/notebooks/v1beta1"
+	oracledatabasev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/oracledatabase/v1alpha1"
 	orgpolicyv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/orgpolicy/v1beta1"
 	osconfigv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/osconfig/v1alpha1"
 	osconfigv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/osconfig/v1beta1"
@@ -248,6 +252,7 @@ type Interface interface {
 	Discovery() discovery.DiscoveryInterface
 	AccesscontextmanagerV1beta1() accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Interface
 	AccesscontextmanagerV1alpha1() accesscontextmanagerv1alpha1.AccesscontextmanagerV1alpha1Interface
+	AgentregistryV1alpha1() agentregistryv1alpha1.AgentregistryV1alpha1Interface
 	AiplatformV1alpha1() aiplatformv1alpha1.AiplatformV1alpha1Interface
 	AlloydbV1beta1() alloydbv1beta1.AlloydbV1beta1Interface
 	AnalyticsV1alpha1() analyticsv1alpha1.AnalyticsV1alpha1Interface
@@ -302,9 +307,11 @@ type Interface interface {
 	CloudidentityV1beta1() cloudidentityv1beta1.CloudidentityV1beta1Interface
 	CloudidsV1beta1() cloudidsv1beta1.CloudidsV1beta1Interface
 	CloudiotV1alpha1() cloudiotv1alpha1.CloudiotV1alpha1Interface
+	CloudnumberregistryV1alpha1() cloudnumberregistryv1alpha1.CloudnumberregistryV1alpha1Interface
 	CloudquotaV1beta1() cloudquotav1beta1.CloudquotaV1beta1Interface
 	CloudschedulerV1beta1() cloudschedulerv1beta1.CloudschedulerV1beta1Interface
 	CloudsecuritycomplianceV1alpha1() cloudsecuritycompliancev1alpha1.CloudsecuritycomplianceV1alpha1Interface
+	CloudsupportV1alpha1() cloudsupportv1alpha1.CloudsupportV1alpha1Interface
 	CloudtalentsolutionV1alpha1() cloudtalentsolutionv1alpha1.CloudtalentsolutionV1alpha1Interface
 	CloudtasksV1alpha1() cloudtasksv1alpha1.CloudtasksV1alpha1Interface
 	ColabV1alpha1() colabv1alpha1.ColabV1alpha1Interface
@@ -402,6 +409,7 @@ type Interface interface {
 	NetworkservicesV1beta1() networkservicesv1beta1.NetworkservicesV1beta1Interface
 	NotebooksV1alpha1() notebooksv1alpha1.NotebooksV1alpha1Interface
 	NotebooksV1beta1() notebooksv1beta1.NotebooksV1beta1Interface
+	OracledatabaseV1alpha1() oracledatabasev1alpha1.OracledatabaseV1alpha1Interface
 	OrgpolicyV1beta1() orgpolicyv1beta1.OrgpolicyV1beta1Interface
 	OsconfigV1alpha1() osconfigv1alpha1.OsconfigV1alpha1Interface
 	OsconfigV1beta1() osconfigv1beta1.OsconfigV1beta1Interface
@@ -467,6 +475,7 @@ type Clientset struct {
 	*discovery.DiscoveryClient
 	accesscontextmanagerV1beta1      *accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Client
 	accesscontextmanagerV1alpha1     *accesscontextmanagerv1alpha1.AccesscontextmanagerV1alpha1Client
+	agentregistryV1alpha1            *agentregistryv1alpha1.AgentregistryV1alpha1Client
 	aiplatformV1alpha1               *aiplatformv1alpha1.AiplatformV1alpha1Client
 	alloydbV1beta1                   *alloydbv1beta1.AlloydbV1beta1Client
 	analyticsV1alpha1                *analyticsv1alpha1.AnalyticsV1alpha1Client
@@ -521,9 +530,11 @@ type Clientset struct {
 	cloudidentityV1beta1             *cloudidentityv1beta1.CloudidentityV1beta1Client
 	cloudidsV1beta1                  *cloudidsv1beta1.CloudidsV1beta1Client
 	cloudiotV1alpha1                 *cloudiotv1alpha1.CloudiotV1alpha1Client
+	cloudnumberregistryV1alpha1      *cloudnumberregistryv1alpha1.CloudnumberregistryV1alpha1Client
 	cloudquotaV1beta1                *cloudquotav1beta1.CloudquotaV1beta1Client
 	cloudschedulerV1beta1            *cloudschedulerv1beta1.CloudschedulerV1beta1Client
 	cloudsecuritycomplianceV1alpha1  *cloudsecuritycompliancev1alpha1.CloudsecuritycomplianceV1alpha1Client
+	cloudsupportV1alpha1             *cloudsupportv1alpha1.CloudsupportV1alpha1Client
 	cloudtalentsolutionV1alpha1      *cloudtalentsolutionv1alpha1.CloudtalentsolutionV1alpha1Client
 	cloudtasksV1alpha1               *cloudtasksv1alpha1.CloudtasksV1alpha1Client
 	colabV1alpha1                    *colabv1alpha1.ColabV1alpha1Client
@@ -621,6 +632,7 @@ type Clientset struct {
 	networkservicesV1beta1           *networkservicesv1beta1.NetworkservicesV1beta1Client
 	notebooksV1alpha1                *notebooksv1alpha1.NotebooksV1alpha1Client
 	notebooksV1beta1                 *notebooksv1beta1.NotebooksV1beta1Client
+	oracledatabaseV1alpha1           *oracledatabasev1alpha1.OracledatabaseV1alpha1Client
 	orgpolicyV1beta1                 *orgpolicyv1beta1.OrgpolicyV1beta1Client
 	osconfigV1alpha1                 *osconfigv1alpha1.OsconfigV1alpha1Client
 	osconfigV1beta1                  *osconfigv1beta1.OsconfigV1beta1Client
@@ -689,6 +701,11 @@ func (c *Clientset) AccesscontextmanagerV1beta1() accesscontextmanagerv1beta1.Ac
 // AccesscontextmanagerV1alpha1 retrieves the AccesscontextmanagerV1alpha1Client
 func (c *Clientset) AccesscontextmanagerV1alpha1() accesscontextmanagerv1alpha1.AccesscontextmanagerV1alpha1Interface {
 	return c.accesscontextmanagerV1alpha1
+}
+
+// AgentregistryV1alpha1 retrieves the AgentregistryV1alpha1Client
+func (c *Clientset) AgentregistryV1alpha1() agentregistryv1alpha1.AgentregistryV1alpha1Interface {
+	return c.agentregistryV1alpha1
 }
 
 // AiplatformV1alpha1 retrieves the AiplatformV1alpha1Client
@@ -961,6 +978,11 @@ func (c *Clientset) CloudiotV1alpha1() cloudiotv1alpha1.CloudiotV1alpha1Interfac
 	return c.cloudiotV1alpha1
 }
 
+// CloudnumberregistryV1alpha1 retrieves the CloudnumberregistryV1alpha1Client
+func (c *Clientset) CloudnumberregistryV1alpha1() cloudnumberregistryv1alpha1.CloudnumberregistryV1alpha1Interface {
+	return c.cloudnumberregistryV1alpha1
+}
+
 // CloudquotaV1beta1 retrieves the CloudquotaV1beta1Client
 func (c *Clientset) CloudquotaV1beta1() cloudquotav1beta1.CloudquotaV1beta1Interface {
 	return c.cloudquotaV1beta1
@@ -974,6 +996,11 @@ func (c *Clientset) CloudschedulerV1beta1() cloudschedulerv1beta1.Cloudscheduler
 // CloudsecuritycomplianceV1alpha1 retrieves the CloudsecuritycomplianceV1alpha1Client
 func (c *Clientset) CloudsecuritycomplianceV1alpha1() cloudsecuritycompliancev1alpha1.CloudsecuritycomplianceV1alpha1Interface {
 	return c.cloudsecuritycomplianceV1alpha1
+}
+
+// CloudsupportV1alpha1 retrieves the CloudsupportV1alpha1Client
+func (c *Clientset) CloudsupportV1alpha1() cloudsupportv1alpha1.CloudsupportV1alpha1Interface {
+	return c.cloudsupportV1alpha1
 }
 
 // CloudtalentsolutionV1alpha1 retrieves the CloudtalentsolutionV1alpha1Client
@@ -1461,6 +1488,11 @@ func (c *Clientset) NotebooksV1beta1() notebooksv1beta1.NotebooksV1beta1Interfac
 	return c.notebooksV1beta1
 }
 
+// OracledatabaseV1alpha1 retrieves the OracledatabaseV1alpha1Client
+func (c *Clientset) OracledatabaseV1alpha1() oracledatabasev1alpha1.OracledatabaseV1alpha1Interface {
+	return c.oracledatabaseV1alpha1
+}
+
 // OrgpolicyV1beta1 retrieves the OrgpolicyV1beta1Client
 func (c *Clientset) OrgpolicyV1beta1() orgpolicyv1beta1.OrgpolicyV1beta1Interface {
 	return c.orgpolicyV1beta1
@@ -1803,6 +1835,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.agentregistryV1alpha1, err = agentregistryv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.aiplatformV1alpha1, err = aiplatformv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2019,6 +2055,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.cloudnumberregistryV1alpha1, err = cloudnumberregistryv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.cloudquotaV1beta1, err = cloudquotav1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2028,6 +2068,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.cloudsecuritycomplianceV1alpha1, err = cloudsecuritycompliancev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.cloudsupportV1alpha1, err = cloudsupportv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -2419,6 +2463,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.oracledatabaseV1alpha1, err = oracledatabasev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.orgpolicyV1beta1, err = orgpolicyv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2674,6 +2722,7 @@ func New(c rest.Interface) *Clientset {
 	var cs Clientset
 	cs.accesscontextmanagerV1beta1 = accesscontextmanagerv1beta1.New(c)
 	cs.accesscontextmanagerV1alpha1 = accesscontextmanagerv1alpha1.New(c)
+	cs.agentregistryV1alpha1 = agentregistryv1alpha1.New(c)
 	cs.aiplatformV1alpha1 = aiplatformv1alpha1.New(c)
 	cs.alloydbV1beta1 = alloydbv1beta1.New(c)
 	cs.analyticsV1alpha1 = analyticsv1alpha1.New(c)
@@ -2728,9 +2777,11 @@ func New(c rest.Interface) *Clientset {
 	cs.cloudidentityV1beta1 = cloudidentityv1beta1.New(c)
 	cs.cloudidsV1beta1 = cloudidsv1beta1.New(c)
 	cs.cloudiotV1alpha1 = cloudiotv1alpha1.New(c)
+	cs.cloudnumberregistryV1alpha1 = cloudnumberregistryv1alpha1.New(c)
 	cs.cloudquotaV1beta1 = cloudquotav1beta1.New(c)
 	cs.cloudschedulerV1beta1 = cloudschedulerv1beta1.New(c)
 	cs.cloudsecuritycomplianceV1alpha1 = cloudsecuritycompliancev1alpha1.New(c)
+	cs.cloudsupportV1alpha1 = cloudsupportv1alpha1.New(c)
 	cs.cloudtalentsolutionV1alpha1 = cloudtalentsolutionv1alpha1.New(c)
 	cs.cloudtasksV1alpha1 = cloudtasksv1alpha1.New(c)
 	cs.colabV1alpha1 = colabv1alpha1.New(c)
@@ -2828,6 +2879,7 @@ func New(c rest.Interface) *Clientset {
 	cs.networkservicesV1beta1 = networkservicesv1beta1.New(c)
 	cs.notebooksV1alpha1 = notebooksv1alpha1.New(c)
 	cs.notebooksV1beta1 = notebooksv1beta1.New(c)
+	cs.oracledatabaseV1alpha1 = oracledatabasev1alpha1.New(c)
 	cs.orgpolicyV1beta1 = orgpolicyv1beta1.New(c)
 	cs.osconfigV1alpha1 = osconfigv1alpha1.New(c)
 	cs.osconfigV1beta1 = osconfigv1beta1.New(c)

@@ -718,6 +718,11 @@ func (in *BackupplanassociationResource) DeepCopyInto(out *Backupplanassociation
 		*out = new(v1alpha1.ResourceRef)
 		**out = **in
 	}
+	if in.SqlInstanceRef != nil {
+		in, out := &in.SqlInstanceRef, &out.SqlInstanceRef
+		*out = new(v1alpha1.ResourceRef)
+		**out = **in
+	}
 	return
 }
 

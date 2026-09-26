@@ -55,9 +55,6 @@ type BigtableLogicalViewSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type LogicalviewObservedStateStatus struct {
-}
-
 type BigtableLogicalViewStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigtableLogicalView's current state. */
@@ -73,10 +70,6 @@ type BigtableLogicalViewStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
-
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *LogicalviewObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

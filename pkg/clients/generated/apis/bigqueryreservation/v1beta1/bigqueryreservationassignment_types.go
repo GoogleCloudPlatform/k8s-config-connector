@@ -52,6 +52,16 @@ type AssignmentAssignee struct {
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 }
 
+type AssignmentSchedulingPolicy struct {
+	/* Optional. If present and > 0, the reservation will attempt to limit the concurrency of jobs running for any particular project within it to the given value. */
+	// +optional
+	Concurrency *int64 `json:"concurrency,omitempty"`
+
+	/* Optional. If present and > 0, the reservation will attempt to limit the slot consumption of queries running for any particular project within it to the given value. */
+	// +optional
+	MaxSlots *int64 `json:"maxSlots,omitempty"`
+}
+
 type BigQueryReservationAssignmentSpec struct {
 	/* Immutable. Required. The resource which will use the reservation. E.g. `projects/myproject`, `folders/123`, or `organizations/456`. */
 	Assignee AssignmentAssignee `json:"assignee"`
@@ -65,6 +75,10 @@ type BigQueryReservationAssignmentSpec struct {
 	/* Immutable. Optional. The BigQueryReservationAssignment ID used for resource creation or acquisition. Service-generated.Can be set only if resource acquisition . For acquisition: This field must be provided to identify the Reservation resource to acquire. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Optional. The scheduling policy to use for jobs and queries of this assignee when running under the associated reservation. */
+	// +optional
+	SchedulingPolicy *AssignmentSchedulingPolicy `json:"schedulingPolicy,omitempty"`
 }
 
 type AssignmentObservedStateStatus struct {

@@ -31,12 +31,17 @@ import (
 
 type ModelarmorV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	ModelArmorFloorSettingsGetter
 	ModelArmorTemplatesGetter
 }
 
 // ModelarmorV1alpha1Client is used to interact with features provided by the modelarmor.cnrm.cloud.google.com group.
 type ModelarmorV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *ModelarmorV1alpha1Client) ModelArmorFloorSettings(namespace string) ModelArmorFloorSettingInterface {
+	return newModelArmorFloorSettings(c, namespace)
 }
 
 func (c *ModelarmorV1alpha1Client) ModelArmorTemplates(namespace string) ModelArmorTemplateInterface {

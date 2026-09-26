@@ -47,6 +47,10 @@ func (c *FakeNetworkservicesV1alpha1) NetworkServicesEdgeCacheServices(namespace
 	return newFakeNetworkServicesEdgeCacheServices(c, namespace)
 }
 
+func (c *FakeNetworkservicesV1alpha1) NetworkServicesLBEdgeExtensions(namespace string) v1alpha1.NetworkServicesLBEdgeExtensionInterface {
+	return newFakeNetworkServicesLBEdgeExtensions(c, namespace)
+}
+
 func (c *FakeNetworkservicesV1alpha1) NetworkServicesLBRouteExtensions(namespace string) v1alpha1.NetworkServicesLBRouteExtensionInterface {
 	return newFakeNetworkServicesLBRouteExtensions(c, namespace)
 }

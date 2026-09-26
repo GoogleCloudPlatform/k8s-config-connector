@@ -50,9 +50,6 @@ type DataformFolderSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type FolderObservedStateStatus struct {
-}
-
 type DataformFolderStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataformFolder's current state. */
@@ -64,10 +61,6 @@ type DataformFolderStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
-
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *FolderObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

@@ -24,6 +24,7 @@ package fake
 import (
 	accesscontextmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/accesscontextmanager/v1alpha1"
 	accesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/accesscontextmanager/v1beta1"
+	agentregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/agentregistry/v1alpha1"
 	aiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/aiplatform/v1alpha1"
 	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/alloydb/v1beta1"
 	analyticsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/analytics/v1alpha1"
@@ -78,9 +79,11 @@ import (
 	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudidentity/v1beta1"
 	cloudidsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudids/v1beta1"
 	cloudiotv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudiot/v1alpha1"
+	cloudnumberregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudnumberregistry/v1alpha1"
 	cloudquotav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudquota/v1beta1"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudscheduler/v1beta1"
 	cloudsecuritycompliancev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudsecuritycompliance/v1alpha1"
+	cloudsupportv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudsupport/v1alpha1"
 	cloudtalentsolutionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudtalentsolution/v1alpha1"
 	cloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudtasks/v1alpha1"
 	colabv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/colab/v1alpha1"
@@ -178,6 +181,7 @@ import (
 	networkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkservices/v1beta1"
 	notebooksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/notebooks/v1alpha1"
 	notebooksv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/notebooks/v1beta1"
+	oracledatabasev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/oracledatabase/v1alpha1"
 	orgpolicyv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/orgpolicy/v1beta1"
 	osconfigv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/osconfig/v1alpha1"
 	osconfigv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/osconfig/v1beta1"
@@ -249,6 +253,7 @@ var codecs = serializer.NewCodecFactory(scheme)
 var localSchemeBuilder = runtime.SchemeBuilder{
 	accesscontextmanagerv1beta1.AddToScheme,
 	accesscontextmanagerv1alpha1.AddToScheme,
+	agentregistryv1alpha1.AddToScheme,
 	aiplatformv1alpha1.AddToScheme,
 	alloydbv1beta1.AddToScheme,
 	analyticsv1alpha1.AddToScheme,
@@ -303,9 +308,11 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	cloudidentityv1beta1.AddToScheme,
 	cloudidsv1beta1.AddToScheme,
 	cloudiotv1alpha1.AddToScheme,
+	cloudnumberregistryv1alpha1.AddToScheme,
 	cloudquotav1beta1.AddToScheme,
 	cloudschedulerv1beta1.AddToScheme,
 	cloudsecuritycompliancev1alpha1.AddToScheme,
+	cloudsupportv1alpha1.AddToScheme,
 	cloudtalentsolutionv1alpha1.AddToScheme,
 	cloudtasksv1alpha1.AddToScheme,
 	colabv1alpha1.AddToScheme,
@@ -403,6 +410,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	networkservicesv1beta1.AddToScheme,
 	notebooksv1alpha1.AddToScheme,
 	notebooksv1beta1.AddToScheme,
+	oracledatabasev1alpha1.AddToScheme,
 	orgpolicyv1beta1.AddToScheme,
 	osconfigv1alpha1.AddToScheme,
 	osconfigv1beta1.AddToScheme,
