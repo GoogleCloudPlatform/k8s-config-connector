@@ -933,6 +933,40 @@ func DataStore_BillingEstimation_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	out.WebsiteDataUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.WebsiteDataUpdateTime)
 	return out
 }
+func DiscoveryEngineACLConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.AclConfig) *krmdiscoveryenginev1alpha1.DiscoveryEngineACLConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineACLConfigObservedState{}
+	// MISSING: Name
+	return out
+}
+func DiscoveryEngineACLConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineACLConfigObservedState) *discoveryenginepb.AclConfig {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.AclConfig{}
+	// MISSING: Name
+	return out
+}
+func DiscoveryEngineACLConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.AclConfig) *krmdiscoveryenginev1alpha1.DiscoveryEngineACLConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineACLConfigSpec{}
+	// MISSING: Name
+	out.IdpConfig = IdpConfig_v1alpha1_FromProto(mapCtx, in.GetIdpConfig())
+	return out
+}
+func DiscoveryEngineACLConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineACLConfigSpec) *discoveryenginepb.AclConfig {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.AclConfig{}
+	// MISSING: Name
+	out.IdpConfig = IdpConfig_v1alpha1_ToProto(mapCtx, in.IdpConfig)
+	return out
+}
 func DiscoveryEngineControlSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Control) *krmdiscoveryenginev1alpha1.DiscoveryEngineControlSpec {
 	if in == nil {
 		return nil
@@ -1553,6 +1587,40 @@ func Engine_SearchEngineConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *k
 	out := &pb.Engine_SearchEngineConfig{}
 	out.SearchTier = direct.Enum_ToProto[pb.SearchTier](mapCtx, in.SearchTier)
 	out.SearchAddOns = direct.EnumSlice_ToProto[pb.SearchAddOn](mapCtx, in.SearchAddOns)
+	return out
+}
+func IdpConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.IdpConfig) *krmdiscoveryenginev1alpha1.IdpConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.IdpConfig{}
+	out.IdpType = direct.Enum_FromProto(mapCtx, in.GetIdpType())
+	out.ExternalIdpConfig = IdpConfig_ExternalIdpConfig_v1alpha1_FromProto(mapCtx, in.GetExternalIdpConfig())
+	return out
+}
+func IdpConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.IdpConfig) *discoveryenginepb.IdpConfig {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.IdpConfig{}
+	out.IdpType = direct.Enum_ToProto[discoveryenginepb.IdpConfig_IdpType](mapCtx, in.IdpType)
+	out.ExternalIdpConfig = IdpConfig_ExternalIdpConfig_v1alpha1_ToProto(mapCtx, in.ExternalIdpConfig)
+	return out
+}
+func IdpConfig_ExternalIdpConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.IdpConfig_ExternalIdpConfig) *krmdiscoveryenginev1alpha1.IdpConfig_ExternalIdpConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.IdpConfig_ExternalIdpConfig{}
+	out.WorkforcePoolName = direct.LazyPtr(in.GetWorkforcePoolName())
+	return out
+}
+func IdpConfig_ExternalIdpConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.IdpConfig_ExternalIdpConfig) *discoveryenginepb.IdpConfig_ExternalIdpConfig {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.IdpConfig_ExternalIdpConfig{}
+	out.WorkforcePoolName = direct.ValueOf(in.WorkforcePoolName)
 	return out
 }
 func Query_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Query) *krmdiscoveryenginev1alpha1.Query {
