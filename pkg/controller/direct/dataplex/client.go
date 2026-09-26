@@ -45,6 +45,14 @@ func (m *gcpClient) options() ([]option.ClientOption, error) {
 	return opts, nil
 }
 
+func (m *gcpClient) restOptions() ([]option.ClientOption, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	return opts, nil
+}
+
 func (m *gcpClient) client(ctx context.Context) (*api.Client, error) {
 	opts, err := m.options()
 	if err != nil {
@@ -90,4 +98,18 @@ func (m *gcpClient) dataTaxonomyClient(ctx context.Context, location string) (*a
 	}
 
 	return grpcClient, err
+}
+
+func (m *gcpClient) dataScanRESTClient(ctx context.Context) (*api.DataScanClient, error) {
+	opts, err := m.restOptions()
+	if err != nil {
+		return nil, err
+	}
+
+	restClient, err := api.NewDataScanRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building dataplex data scan REST client: %w", err)
+	}
+
+	return restClient, err
 }
