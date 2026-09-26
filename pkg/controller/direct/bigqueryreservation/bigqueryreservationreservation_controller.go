@@ -77,6 +77,12 @@ func (m *modelReservation) AdapterForObject(ctx context.Context, op *directbase.
 		return nil, err
 	}
 
+	if obj.Spec.ReservationGroupRef != nil {
+		if _, err := obj.Spec.ReservationGroupRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
+			return nil, err
+		}
+	}
+
 	// Get bigqueryreservation GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -214,6 +220,11 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	} else if desiredPb.Autoscale != nil && a.actual.Autoscale == nil {
 		report.AddField("autoscale", a.actual.Autoscale, desiredPb.Autoscale)
 		paths = append(paths, "autoscale")
+	}
+
+	if !reflect.DeepEqual(desiredPb.ReservationGroup, a.actual.ReservationGroup) {
+		report.AddField("reservation_group", a.actual.ReservationGroup, desiredPb.ReservationGroup)
+		paths = append(paths, "reservation_group")
 	}
 
 	if len(paths) == 0 {
