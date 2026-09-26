@@ -1,0 +1,57 @@
+GET https://billingbudgets.googleapis.com/v1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=billingAccounts%2F${billingAccountId}%2Fbudgets%2F${billingAccountBudgetId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "amount": {
+    "specifiedAmount": {
+      "currencyCode": "USD",
+      "units": "9000000"
+    }
+  },
+  "budgetFilter": {
+    "calendarPeriod": 1,
+    "creditTypes": [
+      "DISCOUNT"
+    ],
+    "creditTypesTreatment": 3,
+    "labels": {
+      "label-one": [
+        "value-one"
+      ]
+    },
+    "projects": [
+      "projects/project-1-${uniqueId}"
+    ],
+    "services": [
+      "services/0245-C3C9-3864"
+    ]
+  },
+  "displayName": "sample-budget",
+  "etag": "abcdef0123A=",
+  "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}",
+  "notificationsRule": {
+    "monitoringNotificationChannels": [
+      "projects/${projectId}/notificationChannels/${notificationChannelID}"
+    ],
+    "pubsubTopic": "projects/${projectId}/topics/pubsubtopic-1-${uniqueId}",
+    "schemaVersion": "1.0"
+  },
+  "thresholdRules": [
+    {
+      "spendBasis": 1,
+      "thresholdPercent": 0.5
+    }
+  ]
+}

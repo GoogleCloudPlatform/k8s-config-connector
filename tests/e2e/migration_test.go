@@ -235,7 +235,7 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 	// Record HTTP log for Phase 1
 	eventsPhase1 := h.Events.GetHTTPEvents()
 	if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
-		got, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(eventsPhase1))
+		got, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(sortEvents(eventsPhase1)))
 		h.CompareGoldenFile(filepath.Join(fixture.AbsoluteSourceDir, "_http_migration_phase1_legacy_create.log"), got, normalizers...)
 	}
 
@@ -268,7 +268,7 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 	// Record HTTP log for Phase 2
 	eventsPhase2 := h.Events.GetHTTPEvents()[len(eventsPhase1):]
 	if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
-		got, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(eventsPhase2))
+		got, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(sortEvents(eventsPhase2)))
 		h.CompareGoldenFile(filepath.Join(fixture.AbsoluteSourceDir, "_http_migration_phase2_legacy_re-reconciliation.log"), got, normalizers...)
 	}
 
@@ -321,7 +321,7 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 
 	// Record HTTP log for Phase 3
 	if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
-		got, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(eventsPhase3))
+		got, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(sortEvents(eventsPhase3)))
 		h.CompareGoldenFile(filepath.Join(fixture.AbsoluteSourceDir, "_http_migration_phase3_direct_takeover.log"), got, normalizers...)
 	}
 
@@ -372,14 +372,14 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 
 	// Record HTTP log for Phase 4
 	if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
-		got, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(eventsPhase4))
+		got, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(sortEvents(eventsPhase4)))
 		h.CompareGoldenFile(filepath.Join(fixture.AbsoluteSourceDir, "_http_migration_phase4_direct_re-reconciliation.log"), got, normalizers...)
 	}
 
 	// Record raw structured diffs
 	if os.Getenv("GOLDEN_OBJECT_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 		rawDiffsStr := formatDiffsRaw(t, diffListener)
-		_, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(h.Events.GetHTTPEvents()))
+		_, normalizers := LegacyNormalize(t, h, project, uniqueID, test.LogEntries(sortEvents(h.Events.GetHTTPEvents())))
 		h.CompareGoldenFile(filepath.Join(fixture.AbsoluteSourceDir, "_migration_diffs.json"), rawDiffsStr, normalizers...)
 	}
 
@@ -539,4 +539,16 @@ func jsonFriendlyMap(m protoreflect.Map) any {
 		return true
 	})
 	return res
+}
+
+func sortEvents(events []*test.LogEntry) []*test.LogEntry {
+	sorted := make([]*test.LogEntry, len(events))
+	copy(sorted, events)
+	sort.SliceStable(sorted, func(i, j int) bool {
+		if sorted[i].Request.Method != sorted[j].Request.Method {
+			return sorted[i].Request.Method < sorted[j].Request.Method
+		}
+		return sorted[i].Request.URL < sorted[j].Request.URL
+	})
+	return sorted
 }

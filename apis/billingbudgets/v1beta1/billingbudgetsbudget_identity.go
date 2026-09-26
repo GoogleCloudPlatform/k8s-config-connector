@@ -65,6 +65,10 @@ func getIdentityFromBillingBudgetsBudgetSpec(ctx context.Context, reader client.
 		return nil, err
 	}
 
+	if parsed, match, err := BillingBudgetsBudgetIdentityFormat.Parse(resourceID); err == nil && match {
+		resourceID = parsed.Budget
+	}
+
 	if budget.Spec.BillingAccountRef == nil {
 		return nil, fmt.Errorf("spec.billingAccountRef is required")
 	}
