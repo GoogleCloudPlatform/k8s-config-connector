@@ -92,7 +92,7 @@ tagValueRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: string of the format `//cloudresourcemanager.googleapis.com/projects/{{value}}`, where {{value}} is the `number` field of a `Project` resource.</p>
+            <p>The external identifier of the resource to which the tag is bound. Supported formats depend on Kind.</p>
         </td>
     </tr>
     <tr>
