@@ -110,6 +110,9 @@ addonsConfig:
     disabled: boolean
   kalmConfig:
     enabled: boolean
+  lustreCsiDriverConfig:
+    enableLegacyLustrePort: boolean
+    enabled: boolean
   networkPolicyConfig:
     disabled: boolean
   parallelstoreCsiDriverConfig:
@@ -756,6 +759,36 @@ workloadIdentityConfig:
     <tr>
         <td>
             <p><code>addonsConfig.kalmConfig.enabled</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>addonsConfig.lustreCsiDriverConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The status of the Lustre CSI driver addon, which allows the usage of Lustre instances as volumes. Defaults to disabled; set enabled = true to enable.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>addonsConfig.lustreCsiDriverConfig.enableLegacyLustrePort</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>addonsConfig.lustreCsiDriverConfig.enabled</code></p>
             <p><i>Required*</i></p>
         </td>
         <td>

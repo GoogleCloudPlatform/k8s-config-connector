@@ -41,6 +41,9 @@ spec:
       disabled: false
     kalmConfig:
       enabled: true
+    lustreCsiDriverConfig:
+      enableLegacyLustrePort: true
+      enabled: true
     networkPolicyConfig:
       disabled: false
     parallelstoreCsiDriverConfig:
