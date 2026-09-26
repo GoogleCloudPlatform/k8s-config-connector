@@ -130,7 +130,7 @@ func (r *redisServer) populateDefaultsForInstance(name *instanceName, obj *pb.In
 	obj.Port = 6379
 
 	if obj.SecondaryIpRange == "auto" {
-		obj.SecondaryIpRange = "10.20.30.16/28"
+		obj.SecondaryIpRange = ""
 	}
 
 	if obj.RedisVersion == "" {
@@ -147,12 +147,17 @@ func (r *redisServer) populateDefaultsForInstance(name *instanceName, obj *pb.In
 	}
 
 	// alternativeLocationId will be present in the instance response if and only if the instance is created as STANDARD_HA tier
-	if obj.Tier == pb.Instance_STANDARD_HA && obj.AlternativeLocationId == "" {
-		obj.AlternativeLocationId = zone
-		obj.Nodes = append(obj.Nodes, &pb.NodeInfo{
-			Id:   "node-1",
-			Zone: zone,
-		})
+	if obj.Tier == pb.Instance_STANDARD_HA {
+		if obj.ReplicaCount == 0 {
+			obj.ReplicaCount = 1
+		}
+		if obj.AlternativeLocationId == "" {
+			obj.AlternativeLocationId = zone
+			obj.Nodes = append(obj.Nodes, &pb.NodeInfo{
+				Id:   "node-1",
+				Zone: zone,
+			})
+		}
 	}
 
 	if obj.AuthorizedNetwork == "" {
