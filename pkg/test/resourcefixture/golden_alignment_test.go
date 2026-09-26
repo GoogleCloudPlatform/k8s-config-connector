@@ -690,6 +690,9 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "portName")
 			delete(v, "protocol")
 		}
+		if kind, ok := v["kind"].(string); ok && kind == "compute#securityPolicyRule" {
+			delete(v, "kind")
+		}
 		if kind, ok := v["kind"].(string); ok && kind == "compute#instanceGroupManager" {
 			return map[string]interface{}{"kind": kind}
 		}
