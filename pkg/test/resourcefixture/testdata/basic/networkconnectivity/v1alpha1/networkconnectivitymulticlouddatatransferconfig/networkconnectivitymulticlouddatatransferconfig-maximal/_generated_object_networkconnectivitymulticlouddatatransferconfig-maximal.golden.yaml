@@ -26,4 +26,6 @@ status:
   externalRef: projects/${projectId}/locations/europe-west1/multicloudDataTransferConfigs/nc-mcdt-${uniqueId}
   observedGeneration: 2
   observedState:
+    createTime: "1970-01-01T00:00:00Z"
     uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"
