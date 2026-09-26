@@ -353,3 +353,97 @@ func (s *ReservationV1) DeleteAssignment(ctx context.Context, req *pb.DeleteAssi
 
 	return &emptypb.Empty{}, nil
 }
+
+func (s *ReservationV1) GetBiReservation(ctx context.Context, req *pb.GetBiReservationRequest) (*pb.BiReservation, error) {
+	name, err := s.parseBiReservationName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.BiReservation{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			// Singleton always exists. Return default state (size: 0, preferred tables: nil)
+			obj = &pb.BiReservation{
+				Name: fqn,
+				Size: 0,
+			}
+			return obj, nil
+		}
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *ReservationV1) UpdateBiReservation(ctx context.Context, req *pb.UpdateBiReservationRequest) (*pb.BiReservation, error) {
+	name, err := s.parseBiReservationName(req.BiReservation.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	now := time.Now()
+
+	obj := &pb.BiReservation{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			obj = &pb.BiReservation{
+				Name: fqn,
+				Size: 0,
+			}
+		} else {
+			return nil, err
+		}
+	}
+
+	if err := fields.UpdateByFieldMask(obj, req.BiReservation, req.UpdateMask.Paths); err != nil {
+		return nil, fmt.Errorf("update field_mask.paths: %w", err)
+	}
+
+	obj.UpdateTime = &timestamppb.Timestamp{
+		Seconds: now.Unix(),
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			if err := s.storage.Create(ctx, fqn, obj); err != nil {
+				return nil, err
+			}
+		} else {
+			return nil, err
+		}
+	}
+
+	return obj, nil
+}
+
+type biReservationName struct {
+	Project  *projects.ProjectData
+	Location string
+}
+
+func (n *biReservationName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/biReservation"
+}
+
+func (s *MockService) parseBiReservationName(name string) (*biReservationName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "biReservation" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &biReservationName{
+			Project:  project,
+			Location: tokens[3],
+		}
+		return name, nil
+	}
+
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
