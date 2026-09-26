@@ -559,7 +559,22 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				protoreflect.Uint64Kind,
 				protoreflect.Fixed64Kind,
 				protoreflect.BytesKind:
-				if protoIsPointerInGo(protoField) {
+				useCustomMethod := ""
+
+				switch protoField.Kind() {
+				case protoreflect.StringKind:
+					if krmField.Type != "*string" && krmField.Type != "string" {
+						useCustomMethod = fmt.Sprintf("%s_%s_FromProto", goTypeName, protoFieldName)
+					}
+				}
+
+				if useCustomMethod != "" {
+					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+						krmFieldName,
+						useCustomMethod,
+						protoAccessor,
+					)
+				} else if protoIsPointerInGo(protoField) {
 					fmt.Fprintf(out, "\tout.%s = in.%s\n",
 						krmFieldName,
 						protoFieldName,

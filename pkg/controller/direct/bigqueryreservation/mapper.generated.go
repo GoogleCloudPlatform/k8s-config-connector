@@ -80,7 +80,7 @@ func BigQueryReservationAssignmentSpec_v1beta1_FromProto(mapCtx *direct.MapConte
 	}
 	out := &krmbigqueryreservationv1beta1.BigQueryReservationAssignmentSpec{}
 	// MISSING: Name
-	out.Assignee = direct.LazyPtr(in.GetAssignee())
+	out.Assignee = BigQueryReservationAssignmentSpec_Assignee_FromProto(mapCtx, in.GetAssignee())
 	out.JobType = direct.Enum_FromProto(mapCtx, in.GetJobType())
 	// MISSING: EnableGeminiInBigquery
 	return out

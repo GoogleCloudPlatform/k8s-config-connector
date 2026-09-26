@@ -283,7 +283,7 @@ func LoggingLogSinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.LogSink) *kr
 	}
 	out := &krm.LoggingLogSinkSpec{}
 	// MISSING: Name
-	out.Destination = in.GetDestination()
+	out.Destination = LoggingLogSinkSpec_Destination_FromProto(mapCtx, in.GetDestination())
 	out.Filter = direct.LazyPtr(in.GetFilter())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Disabled = direct.LazyPtr(in.GetDisabled())

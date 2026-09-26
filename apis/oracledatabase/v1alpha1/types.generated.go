@@ -18,8 +18,41 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.oracledatabase.v1
 // resource: OracleDatabaseExadbVMCluster:ExadbVmCluster
+// resource: OracleDatabaseAutonomousDatabase:AutonomousDatabase
 
 package v1alpha1
+
+/* unreachable type AllConnectionStrings
+// +kcc:proto=google.cloud.oracledatabase.v1.AllConnectionStrings
+type AllConnectionStrings struct {
+}
+*/
+
+/* unreachable type AutonomousDatabaseApex
+// +kcc:proto=google.cloud.oracledatabase.v1.AutonomousDatabaseApex
+type AutonomousDatabaseApex struct {
+}
+*/
+
+/* unreachable type AutonomousDatabaseConnectionStrings
+// +kcc:proto=google.cloud.oracledatabase.v1.AutonomousDatabaseConnectionStrings
+type AutonomousDatabaseConnectionStrings struct {
+}
+*/
+
+/* unreachable type AutonomousDatabaseStandbySummary
+// +kcc:proto=google.cloud.oracledatabase.v1.AutonomousDatabaseStandbySummary
+type AutonomousDatabaseStandbySummary struct {
+}
+*/
+
+// +kcc:proto=google.cloud.oracledatabase.v1.CustomerContact
+type CustomerContact struct {
+	// Required. The email address used by Oracle to send notifications regarding
+	//  databases and infrastructure.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.CustomerContact.email
+	Email *string `json:"email,omitempty"`
+}
 
 // +kcc:proto=google.cloud.oracledatabase.v1.DataCollectionOptionsCommon
 type DataCollectionOptionsCommon struct {
@@ -36,11 +69,48 @@ type DataCollectionOptionsCommon struct {
 	IsIncidentLogsEnabled *bool `json:"isIncidentLogsEnabled,omitempty"`
 }
 
+/* unreachable type DatabaseConnectionStringProfile
+// +kcc:proto=google.cloud.oracledatabase.v1.DatabaseConnectionStringProfile
+type DatabaseConnectionStringProfile struct {
+}
+*/
+
 /* unreachable type IdentityConnector
 // +kcc:proto=google.cloud.oracledatabase.v1.IdentityConnector
 type IdentityConnector struct {
 }
 */
+
+/* unreachable type ScheduledOperationDetails
+// +kcc:proto=google.cloud.oracledatabase.v1.ScheduledOperationDetails
+type ScheduledOperationDetails struct {
+}
+*/
+
+// +kcc:proto=google.type.TimeOfDay
+type TimeOfDay struct {
+	// Hours of a day in 24 hour format. Must be greater than or equal to 0 and
+	//  typically must be less than or equal to 23. An API may choose to allow the
+	//  value "24:00:00" for scenarios like business closing time.
+	// +kcc:proto:field=google.type.TimeOfDay.hours
+	Hours *int32 `json:"hours,omitempty"`
+
+	// Minutes of an hour. Must be greater than or equal to 0 and less than or
+	//  equal to 59.
+	// +kcc:proto:field=google.type.TimeOfDay.minutes
+	Minutes *int32 `json:"minutes,omitempty"`
+
+	// Seconds of a minute. Must be greater than or equal to 0 and typically must
+	//  be less than or equal to 59. An API may allow the value 60 if it allows
+	//  leap-seconds.
+	// +kcc:proto:field=google.type.TimeOfDay.seconds
+	Seconds *int32 `json:"seconds,omitempty"`
+
+	// Fractions of seconds, in nanoseconds. Must be greater than or equal to 0
+	//  and less than or equal to 999,999,999.
+	// +kcc:proto:field=google.type.TimeOfDay.nanos
+	Nanos *int32 `json:"nanos,omitempty"`
+}
 
 // +kcc:proto=google.type.TimeZone
 type TimeZone struct {
@@ -51,6 +121,138 @@ type TimeZone struct {
 	// Optional. IANA Time Zone Database version number. For example "2019a".
 	// +kcc:proto:field=google.type.TimeZone.version
 	Version *string `json:"version,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.oracledatabase.v1.AllConnectionStrings
+type AllConnectionStringsObservedState struct {
+	// Output only. The database service provides the highest level of resources
+	//  to each SQL statement.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.AllConnectionStrings.high
+	High *string `json:"high,omitempty"`
+
+	// Output only. The database service provides the least level of resources to
+	//  each SQL statement.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.AllConnectionStrings.low
+	Low *string `json:"low,omitempty"`
+
+	// Output only. The database service provides a lower level of resources to
+	//  each SQL statement.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.AllConnectionStrings.medium
+	Medium *string `json:"medium,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.oracledatabase.v1.AutonomousDatabaseApex
+type AutonomousDatabaseApexObservedState struct {
+	// Output only. The Oracle APEX Application Development version.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.AutonomousDatabaseApex.apex_version
+	ApexVersion *string `json:"apexVersion,omitempty"`
+
+	// Output only. The Oracle REST Data Services (ORDS) version.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.AutonomousDatabaseApex.ords_version
+	OrdsVersion *string `json:"ordsVersion,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.oracledatabase.v1.AutonomousDatabaseConnectionStrings
+type AutonomousDatabaseConnectionStringsObservedState struct {
+	// Output only. Returns all connection strings that can be used to connect to
+	//  the Autonomous Database.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.AutonomousDatabaseConnectionStrings.all_connection_strings
+	AllConnectionStrings *AllConnectionStringsObservedState `json:"allConnectionStrings,omitempty"`
+
+	// Output only. The database service provides the least level of resources to
+	//  each SQL statement, but supports the most number of concurrent SQL
+	//  statements.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.AutonomousDatabaseConnectionStrings.dedicated
+	Dedicated *string `json:"dedicated,omitempty"`
+
+	// Output only. The database service provides the highest level of resources
+	//  to each SQL statement.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.AutonomousDatabaseConnectionStrings.high
+	High *string `json:"high,omitempty"`
+
+	// Output only. The database service provides the least level of resources to
+	//  each SQL statement.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.AutonomousDatabaseConnectionStrings.low
+	Low *string `json:"low,omitempty"`
+
+	// Output only. The database service provides a lower level of resources to
+	//  each SQL statement.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.AutonomousDatabaseConnectionStrings.medium
+	Medium *string `json:"medium,omitempty"`
+
+	// Output only. A list of connection string profiles to allow clients to
+	//  group, filter, and select values based on the structured metadata.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.AutonomousDatabaseConnectionStrings.profiles
+	Profiles []DatabaseConnectionStringProfileObservedState `json:"profiles,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.oracledatabase.v1.AutonomousDatabaseStandbySummary
+type AutonomousDatabaseStandbySummaryObservedState struct {
+	// Output only. The amount of time, in seconds, that the data of the standby
+	//  database lags in comparison to the data of the primary database.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.AutonomousDatabaseStandbySummary.lag_time_duration
+	LagTimeDuration *string `json:"lagTimeDuration,omitempty"`
+
+	// Output only. The additional details about the current lifecycle state of
+	//  the Autonomous Database.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.AutonomousDatabaseStandbySummary.lifecycle_details
+	LifecycleDetails *string `json:"lifecycleDetails,omitempty"`
+
+	// Output only. The current lifecycle state of the Autonomous Database.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.AutonomousDatabaseStandbySummary.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The date and time the Autonomous Data Guard role was switched
+	//  for the standby Autonomous Database.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.AutonomousDatabaseStandbySummary.data_guard_role_changed_time
+	DataGuardRoleChangedTime *string `json:"dataGuardRoleChangedTime,omitempty"`
+
+	// Output only. The date and time the Disaster Recovery role was switched for
+	//  the standby Autonomous Database.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.AutonomousDatabaseStandbySummary.disaster_recovery_role_changed_time
+	DisasterRecoveryRoleChangedTime *string `json:"disasterRecoveryRoleChangedTime,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.oracledatabase.v1.DatabaseConnectionStringProfile
+type DatabaseConnectionStringProfileObservedState struct {
+	// Output only. The current consumer group being used by the connection.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.DatabaseConnectionStringProfile.consumer_group
+	ConsumerGroup *string `json:"consumerGroup,omitempty"`
+
+	// Output only. The display name for the database connection.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.DatabaseConnectionStringProfile.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Output only. The host name format being currently used in connection
+	//  string.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.DatabaseConnectionStringProfile.host_format
+	HostFormat *string `json:"hostFormat,omitempty"`
+
+	// Output only. This field indicates if the connection string is regional and
+	//  is only applicable for cross-region Data Guard.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.DatabaseConnectionStringProfile.is_regional
+	IsRegional *bool `json:"isRegional,omitempty"`
+
+	// Output only. The protocol being used by the connection.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.DatabaseConnectionStringProfile.protocol
+	Protocol *string `json:"protocol,omitempty"`
+
+	// Output only. The current session mode of the connection.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.DatabaseConnectionStringProfile.session_mode
+	SessionMode *string `json:"sessionMode,omitempty"`
+
+	// Output only. The syntax of the connection string.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.DatabaseConnectionStringProfile.syntax_format
+	SyntaxFormat *string `json:"syntaxFormat,omitempty"`
+
+	// Output only. This field indicates the TLS authentication type of the
+	//  connection.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.DatabaseConnectionStringProfile.tls_authentication
+	TLSAuthentication *string `json:"tlsAuthentication,omitempty"`
+
+	// Output only. The value of the connection string.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.DatabaseConnectionStringProfile.value
+	Value *string `json:"value,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.oracledatabase.v1.IdentityConnector
@@ -64,4 +266,19 @@ type IdentityConnectorObservedState struct {
 	// Output only. The connection state of the identity connector.
 	// +kcc:proto:field=google.cloud.oracledatabase.v1.IdentityConnector.connection_state
 	ConnectionState *string `json:"connectionState,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.oracledatabase.v1.ScheduledOperationDetails
+type ScheduledOperationDetailsObservedState struct {
+	// Output only. Day of week.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.ScheduledOperationDetails.day_of_week
+	DayOfWeek *string `json:"dayOfWeek,omitempty"`
+
+	// Output only. Auto start time.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.ScheduledOperationDetails.start_time
+	StartTime *TimeOfDay `json:"startTime,omitempty"`
+
+	// Output only. Auto stop time.
+	// +kcc:proto:field=google.cloud.oracledatabase.v1.ScheduledOperationDetails.stop_time
+	StopTime *TimeOfDay `json:"stopTime,omitempty"`
 }
