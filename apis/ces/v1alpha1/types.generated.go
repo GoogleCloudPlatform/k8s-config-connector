@@ -731,6 +731,15 @@ type LanguageSettings struct {
 	FallbackAction *string `json:"fallbackAction,omitempty"`
 }
 
+/* unreachable type ListValue
+// +kcc:proto=google.protobuf.ListValue
+type ListValue struct {
+	// Repeated field of dynamically typed values.
+	// +kcc:proto:field=google.protobuf.ListValue.values
+	Values []Value `json:"values,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.ces.v1beta.LoggingSettings
 type LoggingSettings struct {
 	// Optional. Configuration for how sensitive data should be redacted.
@@ -978,15 +987,6 @@ type VPCScSettings struct {
 	//  not yet apply to Python tools that may make direct HTTP calls.
 	// +kcc:proto:field=google.cloud.ces.v1beta.VpcScSettings.allowed_origins
 	AllowedOrigins []string `json:"allowedOrigins,omitempty"`
-}
-*/
-
-/* unreachable type ListValue
-// +kcc:proto=google.protobuf.ListValue
-type ListValue struct {
-	// Repeated field of dynamically typed values.
-	// +kcc:proto:field=google.protobuf.ListValue.values
-	Values []Value `json:"values,omitempty"`
 }
 */
 

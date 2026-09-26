@@ -1,3 +1,6 @@
+[not_representable] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.metadata.featureAttributionsSchemaURI" reason=gcs-object-path-string-for-now-decomposable-as-bucketref-plus-path
+[not_representable] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputSpec.gcsBaseDirectory.outputURIPrefix" reason=gcs-prefix-needs-bucket-ref-plus-path
+[not_representable] crd=aiplatformmodelmonitors.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trainingDataset.columnizedDataset.bigquerySource.tableURI" reason=bq-scheme-not-a-gcp-resource-name
 [not_representable] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.containerSpec.imageURI" reason=container-image-uri-not-a-storage-object
 [not_representable] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.explanationSpec.metadata.featureAttributionsSchemaURI" reason=gcs-object-path-string-for-now-decomposable-as-bucketref-plus-path
 [not_representable] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.metadataSchemaURI" reason=gcs-object-path-string-for-now-decomposable-as-bucketref-plus-path

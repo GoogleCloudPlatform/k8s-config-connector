@@ -351,32 +351,6 @@ type Build struct {
 }
 */
 
-/* unreachable type Build_FailureInfo
-// +kcc:proto=google.devtools.cloudbuild.v1.Build.FailureInfo
-type Build_FailureInfo struct {
-	// The name of the failure.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.FailureInfo.type
-	Type *string `json:"type,omitempty"`
-
-	// Explains the failure issue in more detail using hard-coded text.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.FailureInfo.detail
-	Detail *string `json:"detail,omitempty"`
-}
-*/
-
-/* unreachable type Build_Warning
-// +kcc:proto=google.devtools.cloudbuild.v1.Build.Warning
-type Build_Warning struct {
-	// Explanation of the warning generated.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.Warning.text
-	Text *string `json:"text,omitempty"`
-
-	// The priority for this warning.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.Warning.priority
-	Priority *string `json:"priority,omitempty"`
-}
-*/
-
 /* unreachable type BuildApproval
 // +kcc:proto=google.devtools.cloudbuild.v1.BuildApproval
 type BuildApproval struct {
@@ -761,6 +735,32 @@ type BuildTrigger struct {
 	//  Repo API is received.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildTrigger.repository_event_config
 	RepositoryEventConfig *RepositoryEventConfig `json:"repositoryEventConfig,omitempty"`
+}
+*/
+
+/* unreachable type Build_FailureInfo
+// +kcc:proto=google.devtools.cloudbuild.v1.Build.FailureInfo
+type Build_FailureInfo struct {
+	// The name of the failure.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.FailureInfo.type
+	Type *string `json:"type,omitempty"`
+
+	// Explains the failure issue in more detail using hard-coded text.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.FailureInfo.detail
+	Detail *string `json:"detail,omitempty"`
+}
+*/
+
+/* unreachable type Build_Warning
+// +kcc:proto=google.devtools.cloudbuild.v1.Build.Warning
+type Build_Warning struct {
+	// Explanation of the warning generated.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.Warning.text
+	Text *string `json:"text,omitempty"`
+
+	// The priority for this warning.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.Warning.priority
+	Priority *string `json:"priority,omitempty"`
 }
 */
 
@@ -1508,6 +1508,23 @@ type Artifacts_ArtifactObjectsObservedState struct {
 }
 */
 
+/* unreachable type BuildApprovalObservedState
+// +kcc:observedstate:proto=google.devtools.cloudbuild.v1.BuildApproval
+type BuildApprovalObservedState struct {
+	// Output only. The state of this build's approval.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildApproval.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Configuration for manual approval of this build.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildApproval.config
+	Config *ApprovalConfig `json:"config,omitempty"`
+
+	// Output only. Result of manual approval for this Build.
+	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildApproval.result
+	Result *ApprovalResultObservedState `json:"result,omitempty"`
+}
+*/
+
 /* unreachable type BuildObservedState
 // +kcc:observedstate:proto=google.devtools.cloudbuild.v1.Build
 type BuildObservedState struct {
@@ -1589,23 +1606,6 @@ type BuildObservedState struct {
 	// Output only. Contains information about the build when status=FAILURE.
 	// +kcc:proto:field=google.devtools.cloudbuild.v1.Build.failure_info
 	FailureInfo *Build_FailureInfo `json:"failureInfo,omitempty"`
-}
-*/
-
-/* unreachable type BuildApprovalObservedState
-// +kcc:observedstate:proto=google.devtools.cloudbuild.v1.BuildApproval
-type BuildApprovalObservedState struct {
-	// Output only. The state of this build's approval.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildApproval.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. Configuration for manual approval of this build.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildApproval.config
-	Config *ApprovalConfig `json:"config,omitempty"`
-
-	// Output only. Result of manual approval for this Build.
-	// +kcc:proto:field=google.devtools.cloudbuild.v1.BuildApproval.result
-	Result *ApprovalResultObservedState `json:"result,omitempty"`
 }
 */
 
