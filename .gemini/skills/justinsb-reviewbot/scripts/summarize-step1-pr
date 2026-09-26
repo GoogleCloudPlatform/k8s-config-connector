@@ -1,0 +1,195 @@
+#!/usr/bin/env python3
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import sys
+import json
+import subprocess
+import argparse
+import os
+
+def run_cmd(cmd, cwd=None, text=True):
+    res = subprocess.run(cmd, capture_output=True, text=text, cwd=cwd)
+    return res
+
+def get_kcc_root():
+    if os.environ.get("KCC_ROOT"):
+        return os.path.abspath(os.environ.get("KCC_ROOT"))
+    possible_paths = [
+        "k8s-config-connector",
+        os.path.expanduser("~/projects/kcc/reviewprs/k8s-config-connector")
+    ]
+    for path in possible_paths:
+        if os.path.exists(path) and os.path.exists(os.path.join(path, ".git")):
+            return os.path.abspath(path)
+    print("Error: Could not locate k8s-config-connector repository root.", file=sys.stderr)
+    sys.exit(1)
+
+def extract_go_structs(kcc_root, merge_base):
+    # Find changed files under apis/
+    git_diff_cmd = ["git", "diff", "--name-only", merge_base, "HEAD", "--", "apis/"]
+    res = run_cmd(git_diff_cmd, cwd=kcc_root)
+    if res.returncode != 0:
+        return "", ""
+    
+    files = res.stdout.strip().split("\n")
+    specs = []
+    violations = []
+    
+    for f in files:
+        if not f or not f.endswith(".go"):
+            continue
+        # Ignore generated files
+        if "generated" in f or "zz_generated" in f:
+            continue
+            
+        full_path = os.path.join(kcc_root, f)
+        if not os.path.exists(full_path):
+            continue
+            
+        with open(full_path, "r", encoding="utf-8") as file_obj:
+            content = file_obj.read()
+            
+        # Parse the file to find Go structs
+        lines = content.split("\n")
+        file_structs = []
+        for line in lines:
+            stripped = line.strip()
+            if stripped.startswith("type ") and " struct" in stripped:
+                parts = stripped.split("{")[0].strip()
+                file_structs.append(f"  - {parts}")
+                
+                # Check for custom reference type defined outside of canonical reference files or /refs/ directory
+                struct_name = parts.split("type ")[1].split(" ")[0].strip()
+                struct_name = struct_name.split("[")[0].strip()
+                if (struct_name.endswith("Ref") or struct_name.endswith("Refs")) and not f.endswith("_reference.go") and "/refs/" not in f:
+                    violations.append(f"  - {struct_name} (defined in {f})")
+        
+        if file_structs:
+            specs.append(f"// File: {f}\n" + "\n".join(file_structs))
+                
+    specs_output = "\n\n".join(specs) if specs else ""
+    violations_output = ""
+    if violations:
+        violations_output = "\n⚠️ **Custom Reference Violations Detected**:\n" + "\n".join(violations) + "\n"
+        
+    return specs_output, violations_output
+
+def main():
+    parser = argparse.ArgumentParser(description="PR Review Summary Tool")
+    parser.add_argument("pr", help="PR number or branch name")
+    args = parser.parse_args()
+
+    kcc_root = get_kcc_root()
+
+    # Query PR info using gh
+    print(f"Fetching PR #{args.pr} metadata from GitHub...")
+    gh_cmd = ["gh", "pr", "view", args.pr, "--json", "number,title,state,mergeable,statusCheckRollup,headRefName"]
+    res = run_cmd(gh_cmd, cwd=kcc_root)
+    if res.returncode != 0:
+        print(f"Error fetching PR: {res.stderr}", file=sys.stderr)
+        sys.exit(1)
+
+    pr_data = json.loads(res.stdout)
+    pr_num = pr_data.get("number")
+    title = pr_data.get("title")
+    mergeable = pr_data.get("mergeable")
+    head_branch = pr_data.get("headRefName")
+    
+    # Fetch latest master from remote first
+    remote = "upstream"
+    git_show_upstream = run_cmd(["git", "rev-parse", "--verify", "upstream/master"], cwd=kcc_root)
+    if git_show_upstream.returncode != 0:
+        remote = "origin"
+    print(f"Fetching latest master from remote '{remote}'...")
+    run_cmd(["git", "fetch", remote, "master"], cwd=kcc_root)
+
+    # Check out the PR branch if not already checked out
+    if not os.environ.get("KCC_ROOT"):
+        current_branch = run_cmd(["git", "branch", "--show-current"], cwd=kcc_root).stdout.strip()
+        if current_branch != head_branch:
+            print(f"Checking out PR branch '{head_branch}'...")
+            checkout_res = run_cmd(["gh", "pr", "checkout", str(pr_num)], cwd=kcc_root)
+            if checkout_res.returncode != 0:
+                print(f"Error checking out PR branch: {checkout_res.stderr}", file=sys.stderr)
+                sys.exit(1)
+
+    # 1. Check Mergeability / Conflicts
+    conflict_status = "✅ No merge conflicts"
+    if mergeable == "CONFLICTING":
+        conflict_status = "❌ Merge conflicts detected with master"
+    elif mergeable == "UNKNOWN":
+        conflict_status = "⚠️ Mergeability status unknown (checks still running/processing on GitHub)"
+
+    # 2. Check GitHub Actions status check rollup
+    failing_checks = []
+    pending_checks = []
+    status_rollup = pr_data.get("statusCheckRollup") or []
+    for check in status_rollup:
+        conclusion = check.get("conclusion")
+        status = check.get("status")
+        state = check.get("state")
+        name = check.get("name") or check.get("context")
+        if conclusion == "FAILURE" or state == "FAILURE":
+            failing_checks.append(name)
+        elif status in ["IN_PROGRESS", "QUEUED", "REQUESTED", "WAITING"] or state in ["PENDING"]:
+            pending_checks.append(name)
+
+    actions_status = "✅ All GitHub Actions checks passed"
+    if failing_checks:
+        actions_status = f"❌ Failing checks:\n" + "\n".join([f"  - {c}" for c in failing_checks])
+    elif pending_checks:
+        actions_status = f"⏳ Pending checks:\n" + "\n".join([f"  - {c}" for c in pending_checks])
+
+    # 3. Check CRD Diffs against merge-base
+    base = "upstream/master"
+    git_show_upstream = run_cmd(["git", "rev-parse", "--verify", "upstream/master"], cwd=kcc_root)
+    if git_show_upstream.returncode != 0:
+        base = "master"
+        
+    merge_base_res = run_cmd(["git", "merge-base", base, "HEAD"], cwd=kcc_root)
+    if merge_base_res.returncode != 0:
+        print("Error: Could not find merge-base.", file=sys.stderr)
+        sys.exit(1)
+    merge_base = merge_base_res.stdout.strip()
+
+    print(f"Computing CRD schema diffs against merge-base {merge_base}...")
+    diff_script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "diff-crds")
+    diff_res = run_cmd([diff_script_path, "--base", merge_base], cwd=kcc_root)
+    
+    crd_diff_status = "✅ No CRD schema differences detected"
+    if diff_res.returncode != 0:
+        crd_diff_status = f"❌ Error running diff-crds: {diff_res.stderr}"
+    elif diff_res.stdout.strip():
+        crd_diff_status = f"⚠️ CRD Schema differences detected:\n```\n{diff_res.stdout.strip()}\n```"
+
+    # Extract Go struct definitions
+    go_structs, violations = extract_go_structs(kcc_root, merge_base)
+    go_structs_output = ""
+    if go_structs:
+        go_structs_output = f"\n**Go Struct Definitions**:\n```go\n{go_structs}\n```\n"
+
+    # Print markdown summary
+    print("\n" + "="*40)
+    print(f"### PR Review Summary: #{pr_num} - {title}")
+    print(f"Branch: `{head_branch}` (compared against merge-base `{merge_base[:8]}`)\n")
+    print(f"**Merge Status**:\n{conflict_status}\n")
+    print(f"**GitHub Actions Status**:\n{actions_status}\n")
+    print(f"**CRD Schema Diffs**:\n{crd_diff_status}\n" + go_structs_output + violations)
+    print("="*40)
+
+
+if __name__ == "__main__":
+    main()
+
