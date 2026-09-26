@@ -224,12 +224,15 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	// TODO: Where/how do we want to enforce immutability?
 	updateMask := &fieldmaskpb.FieldMask{}
 
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 	// TODO: I think we can do this with a helper
 	if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.Spec.DisplayName) {
 		updateMask.Paths = append(updateMask.Paths, "display_name")
+		report.AddField("display_name", a.actual.Spec.DisplayName, a.desired.Spec.DisplayName)
 	}
 	if !reflect.DeepEqual(a.desired.Spec.Restrictions, a.actual.Spec.Restrictions) {
 		updateMask.Paths = append(updateMask.Paths, "restrictions")
+		report.AddField("restrictions", a.actual.Spec.Restrictions, a.desired.Spec.Restrictions)
 	}
 
 	// TODO: Annotations
@@ -240,11 +243,6 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if len(updateMask.Paths) == 0 {
 		klog.Warningf("unexpected empty update mask, desired: %v, actual: %v", a.desired, a.actual)
 		return nil
-	}
-
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-	for _, path := range updateMask.Paths {
-		report.AddField(path, nil, nil)
 	}
 	structuredreporting.ReportDiff(ctx, report)
 
