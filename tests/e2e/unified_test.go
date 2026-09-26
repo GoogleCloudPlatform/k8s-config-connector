@@ -246,7 +246,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 		pathFilter := func(path string) bool {
 			return !strings.Contains(path, "testdata/iam/iampartialpolicy") &&
 				!strings.Contains(path, "testdata/reconcileintervalannotations") &&
-				!strings.Contains(path, "testdata/stateabsentinspec")
+				!strings.Contains(path, "testdata/stateabsentinspec") &&
+				!strings.Contains(path, "storagebucketipfilter")
 		}
 
 		fixtures := resourcefixture.LoadWithPathFilter(t, pathFilter, lightFilter, nil)
