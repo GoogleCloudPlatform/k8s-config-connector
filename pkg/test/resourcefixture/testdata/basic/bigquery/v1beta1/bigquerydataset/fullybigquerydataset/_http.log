@@ -188,9 +188,7 @@ X-Xss-Protection: 0
   "done": true,
   "name": "operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/mockgcp.api.serviceusage.v1beta1.ServiceIdentity",
-    "email": "bq-${projectNumber}@bigquery-encryption.iam.gserviceaccount.com",
-    "uniqueId": "12345678"
+    "@type": "type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity"
   }
 }
 
@@ -401,6 +399,10 @@ Content-Type: application/json
     {
       "role": "OWNER",
       "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
     }
   ],
   "datasetReference": {
@@ -438,6 +440,10 @@ X-Xss-Protection: 0
     {
       "role": "OWNER",
       "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
     }
   ],
   "creationTime": "123456789",
@@ -487,6 +493,10 @@ X-Xss-Protection: 0
     {
       "role": "OWNER",
       "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
     }
   ],
   "creationTime": "123456789",
@@ -539,6 +549,14 @@ Content-Type: application/json
     {
       "role": "OWNER",
       "userByEmail": "user@google.com"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
     }
   ],
   "defaultCollation": "und:ci",
@@ -580,7 +598,7 @@ X-Xss-Protection: 0
     },
     {
       "role": "OWNER",
-      "specialGroup": "projectOwners"
+      "userByEmail": "user@google.com"
     },
     {
       "role": "OWNER",
@@ -643,7 +661,7 @@ X-Xss-Protection: 0
     },
     {
       "role": "OWNER",
-      "specialGroup": "projectOwners"
+      "userByEmail": "user@google.com"
     },
     {
       "role": "OWNER",
@@ -705,7 +723,7 @@ X-Xss-Protection: 0
     },
     {
       "role": "OWNER",
-      "specialGroup": "projectOwners"
+      "userByEmail": "user@google.com"
     },
     {
       "role": "OWNER",
