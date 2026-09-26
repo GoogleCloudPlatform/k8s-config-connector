@@ -22,11 +22,17 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var _ refsv1beta1.ExternalNormalizer = &ClusterRef{}
+var _ refsv1beta1.Ref = &ClusterRef{}
+
+func init() {
+	refsv1beta1.Register(&ClusterRef{}, &ManagedKafkaCluster{})
+}
 
 // ClusterRef is a reference to a ManagedKafkaCluster.
 type ClusterRef struct {
@@ -39,6 +45,38 @@ type ClusterRef struct {
 
 	// The namespace of a ManagedKafkaCluster resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func (r *ClusterRef) GetGVK() schema.GroupVersionKind {
+	return ManagedKafkaClusterGVK
+}
+
+func (r *ClusterRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *ClusterRef) GetExternal() string {
+	return r.External
+}
+
+func (r *ClusterRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *ClusterRef) ValidateExternal(ref string) error {
+	if _, _, err := ParseClusterExternal(ref); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *ClusterRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on ManagedKafkaCluster.

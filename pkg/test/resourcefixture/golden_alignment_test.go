@@ -886,9 +886,8 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		}
 		// currently unsupported in CRD
 		// todo: recover fields once they are supported
-		if satisfiesPzi, ok := v["satisfiesPzi"].(bool); ok && satisfiesPzi == true {
-			delete(v, "satisfiesPzi")
-		}
+		delete(v, "satisfiesPzi")
+		delete(v, "satisfiesPzs")
 		if serverCaMode, ok := v["serverCaMode"].(float64); ok && serverCaMode == 0 {
 			delete(v, "serverCaMode")
 		}

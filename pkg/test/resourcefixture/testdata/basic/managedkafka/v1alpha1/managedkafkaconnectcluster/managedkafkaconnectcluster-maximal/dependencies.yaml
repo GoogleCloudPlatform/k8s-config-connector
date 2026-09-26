@@ -1,0 +1,51 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computenetwork-${uniqueId}-1
+spec:
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computesubnetwork-${uniqueId}-1
+spec:
+  region: us-central1
+  networkRef:
+    name: computenetwork-${uniqueId}-1
+  ipCidrRange: 10.0.0.0/22
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computesubnetwork-${uniqueId}-2
+spec:
+  region: us-central1
+  networkRef:
+    name: computenetwork-${uniqueId}-1
+  ipCidrRange: 10.0.4.0/22
+---
+apiVersion: managedkafka.cnrm.cloud.google.com/v1beta1
+kind: ManagedKafkaCluster
+metadata:
+  name: managedkafkacluster-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  capacityConfig:
+    vcpuCount: 3
+    memoryBytes: 3221225472 # 3GB
+  gcpConfig:
+    accessConfig:
+      networkConfigs:
+      - subnetworkRef:
+          name: computesubnetwork-${uniqueId}-1
+  rebalanceConfig:
+    mode: NO_REBALANCE
