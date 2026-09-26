@@ -978,12 +978,9 @@
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.defaultRouteAction.weightedBackendServices[].headerAction.responseHeadersToRemove[]" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.defaultRouteAction.weightedBackendServices[].weight" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.defaultService.backendBucketRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.defaultUrlRedirect.hostRedirect" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.defaultUrlRedirect.httpsRedirect" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.defaultUrlRedirect.pathRedirect" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.defaultUrlRedirect.prefixRedirect" is not set in unstructured objects
-[missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.defaultUrlRedirect.redirectResponseCode" is not set in unstructured objects
-[missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.defaultUrlRedirect.stripQuery" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.headerAction.requestHeadersToAdd[].headerName" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.headerAction.requestHeadersToAdd[].headerValue" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.headerAction.requestHeadersToAdd[].replace" is not set in unstructured objects
