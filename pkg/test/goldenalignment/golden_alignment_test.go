@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package resourcefixture
+package goldenalignment
 
 import (
 	"encoding/json"
@@ -25,6 +25,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 	"github.com/google/go-cmp/cmp"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -62,13 +63,9 @@ var realGCPSkipFixtures = map[string]bool{
 }
 
 func TestGoldenLogAlignment(t *testing.T) {
-	rootDir := "testdata/basic"
-	absRootDir, err := filepath.Abs(rootDir)
-	if err != nil {
-		t.Fatalf("failed to get absolute path for %s: %v", rootDir, err)
-	}
+	absRootDir := repo.GetBasicIntegrationTestDataPath()
 
-	err = filepath.WalkDir(absRootDir, func(path string, d fs.DirEntry, err error) error {
+	err := filepath.WalkDir(absRootDir, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -109,14 +106,76 @@ func TestGoldenLogAlignment(t *testing.T) {
 	}
 }
 
-func TestRealHTTPLogsDoNotContainMockGCP(t *testing.T) {
-	rootDir := "testdata/basic"
-	absRootDir, err := filepath.Abs(rootDir)
+func loadLegacyScenarios(t *testing.T, path string) map[string]bool {
+	raw, err := os.ReadFile(path)
 	if err != nil {
-		t.Fatalf("failed to get absolute path for %s: %v", rootDir, err)
+		t.Fatalf("failed to read legacy scenarios: %v", err)
 	}
+	m := make(map[string]bool)
+	for _, line := range strings.Split(string(raw), "\n") {
+		line = strings.TrimSpace(line)
+		if line != "" && !strings.HasPrefix(line, "#") {
+			m[line] = true
+		}
+	}
+	return m
+}
 
-	err = filepath.WalkDir(absRootDir, func(path string, d fs.DirEntry, err error) error {
+func TestScenarioGoldenLogAlignment(t *testing.T) {
+	root := repo.GetRootOrTestFatal(t)
+	legacyScenariosPath := filepath.Join(root, "tests", "e2e", "testdata", "legacy_scenarios.txt")
+	legacyScenarios := loadLegacyScenarios(t, legacyScenariosPath)
+
+	absScenarioDir := filepath.Join(root, "tests", "e2e", "testdata", "scenarios")
+
+	err := filepath.WalkDir(absScenarioDir, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if d.IsDir() {
+			scriptPath := filepath.Join(path, "script.yaml")
+			if fileExists(scriptPath) {
+				relPath, _ := filepath.Rel(absScenarioDir, path)
+				parts := strings.Split(relPath, string(filepath.Separator))
+				if len(parts) == 0 {
+					return nil
+				}
+				suite := parts[0]
+				if legacyScenarios[suite] {
+					return nil
+				}
+
+				t.Run(relPath, func(t *testing.T) {
+					// Scan steps 0 to 99
+					for i := 0; i < 100; i++ {
+						realHTTPPath := filepath.Join(path, fmt.Sprintf("_http%02d.log", i))
+						mockHTTPPath := filepath.Join(path, fmt.Sprintf("_http%02d_mock.log", i))
+
+						if fileExists(realHTTPPath) && fileExists(mockHTTPPath) {
+							t.Run(fmt.Sprintf("http-step%02d", i), func(t *testing.T) {
+								compareLogs(t, realHTTPPath, mockHTTPPath, nil, "")
+							})
+						}
+
+						// TODO: Add comparison for KRM objects (_object%02d.yaml vs _object%02d_mock.yaml) when recorded side-by-side.
+					}
+				})
+			}
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		t.Fatalf("error walking directory: %v", err)
+	}
+}
+
+func TestRealHTTPLogsDoNotContainMockGCP(t *testing.T) {
+	absRootDir := repo.GetBasicIntegrationTestDataPath()
+
+	err := filepath.WalkDir(absRootDir, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -872,6 +931,10 @@ func normalizeRepresentation(obj interface{}) interface{} {
 					// output-only or unsupported fields
 					delete(swc, "managedGroupConfig")
 					delete(swc, "startupConfig")
+					if ifp, ok := swc["instanceFlexPolicy"].(map[string]interface{}); ok {
+						delete(ifp, "instanceMachineTypes")
+						delete(ifp, "instanceSelectionResults")
+					}
 					if ifp, ok := swc["instanceFlexibilityPolicy"].(map[string]interface{}); ok {
 						delete(ifp, "instanceMachineTypes")
 						delete(ifp, "instanceSelectionResults")

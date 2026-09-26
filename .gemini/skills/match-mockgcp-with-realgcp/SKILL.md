@@ -52,7 +52,7 @@ Before aligning mock behavior, ensure authentic `_http.log` files are recorded a
 2.  **Verify Alignment & Inspect Discrepancies**:
     Run `TestGoldenLogAlignment` (or inspect diff between `_http.log` and `_http_mock.log`) to identify discrepancies:
     ```bash
-    go test -v ./pkg/test/resourcefixture -run "TestGoldenLogAlignment/<fixture_name>"
+    go test -v ./pkg/test/goldenalignment -run "TestGoldenLogAlignment/<fixture_name>"
     ```
 
 3.  **Iterative Resolution (Exit Criteria)**:
@@ -90,5 +90,5 @@ Verify that all test directories associated with your target resource are verifi
 2. Confirm that `hack/compare-mock` executes with zero test failures across all resolved fixtures before concluding mock alignment.
 3. **Run Golden Log Alignment Test**: Confirm that all resolved fixtures pass the golden log alignment test with zero errors:
    ```bash
-   go test -v ./pkg/test/resourcefixture -run "TestGoldenLogAlignment/<kind_lowercase>"
+   go test -v ./pkg/test/goldenalignment -run "TestGoldenLogAlignment/<kind_lowercase>"
    ```
