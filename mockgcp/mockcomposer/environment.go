@@ -193,6 +193,11 @@ func (s *ComposerV1) UpdateEnvironment(ctx context.Context, req *pb.UpdateEnviro
 								updated.Config.SoftwareConfig = &pb.SoftwareConfig{}
 							}
 							updated.Config.SoftwareConfig.CloudDataLineageIntegration = req.GetEnvironment().GetConfig().GetSoftwareConfig().GetCloudDataLineageIntegration()
+						case "webserverpluginsmode":
+							if updated.Config.SoftwareConfig == nil {
+								updated.Config.SoftwareConfig = &pb.SoftwareConfig{}
+							}
+							updated.Config.SoftwareConfig.WebServerPluginsMode = req.GetEnvironment().GetConfig().GetSoftwareConfig().GetWebServerPluginsMode()
 						default:
 							updated.Config.SoftwareConfig = req.GetEnvironment().GetConfig().GetSoftwareConfig()
 						}
@@ -272,6 +277,46 @@ func (s *ComposerV1) UpdateEnvironment(ctx context.Context, req *pb.UpdateEnviro
 						updated.Config.DataRetentionConfig.TaskLogsRetentionConfig = drc.GetTaskLogsRetentionConfig()
 					default:
 						updated.Config.DataRetentionConfig = drc
+					}
+				case "privateenvironmentconfig":
+					if updated.Config == nil {
+						updated.Config = &pb.EnvironmentConfig{}
+					}
+					if updated.Config.PrivateEnvironmentConfig == nil {
+						updated.Config.PrivateEnvironmentConfig = &pb.PrivateEnvironmentConfig{}
+					}
+					subField := ""
+					if len(tokens) > 2 {
+						subField = normalizeField(tokens[2])
+					}
+					switch subField {
+					case "enableprivatebuildsonly":
+						updated.Config.PrivateEnvironmentConfig.EnablePrivateBuildsOnly = req.GetEnvironment().GetConfig().GetPrivateEnvironmentConfig().GetEnablePrivateBuildsOnly()
+					case "enableprivateenvironment":
+						updated.Config.PrivateEnvironmentConfig.EnablePrivateEnvironment = req.GetEnvironment().GetConfig().GetPrivateEnvironmentConfig().GetEnablePrivateEnvironment()
+					default:
+						updated.Config.PrivateEnvironmentConfig = req.GetEnvironment().GetConfig().GetPrivateEnvironmentConfig()
+					}
+				case "nodeconfig":
+					if updated.Config == nil {
+						updated.Config = &pb.EnvironmentConfig{}
+					}
+					if updated.Config.NodeConfig == nil {
+						updated.Config.NodeConfig = &pb.NodeConfig{}
+					}
+					subField := ""
+					if len(tokens) > 2 {
+						subField = normalizeField(tokens[2])
+					}
+					switch subField {
+					case "composernetworkattachment":
+						updated.Config.NodeConfig.ComposerNetworkAttachment = req.GetEnvironment().GetConfig().GetNodeConfig().GetComposerNetworkAttachment()
+					case "network":
+						updated.Config.NodeConfig.Network = req.GetEnvironment().GetConfig().GetNodeConfig().GetNetwork()
+					case "subnetwork":
+						updated.Config.NodeConfig.Subnetwork = req.GetEnvironment().GetConfig().GetNodeConfig().GetSubnetwork()
+					default:
+						return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 					}
 				default:
 					return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)

@@ -21,20 +21,21 @@ spec:
   projectRef:
     external: ${projectId}
   config:
-    # 1. nodeConfig.serviceAccountRef is OMITTED -> verifies computedFieldPaths copies SA from actualPb
-    privateEnvironmentConfig:
-      enablePrivateBuildsOnly: true
-    # 2. dataRetentionConfig: updates retentionDays to 30 with explicit required retentionMode
+    # 1. nodeConfig.serviceAccountRef remains OMITTED -> verifies computedFieldPaths copies default SA
+    # 2. privateEnvironmentConfig.enablePrivateBuildsOnly is OMITTED -> verifies computedFieldPaths
+    #    copies true from actualPb and updater #21 does not emit a false-drift PATCH
+    # 3. dataRetentionConfig: updates retentionDays to 30 with explicit required retentionMode
     dataRetentionConfig:
       airflowMetadataRetentionConfig:
         retentionMode: RETENTION_MODE_ENABLED
         retentionDays: 30
-    # 3. maintenanceWindow: updates recurrence with explicit required startTime and endTime
+    # 4. maintenanceWindow: updates recurrence with explicit required startTime and endTime
     maintenanceWindow:
       startTime: "2024-01-01T00:00:00Z"
       endTime: "2024-01-01T06:00:00Z"
       recurrence: "FREQ=WEEKLY;BYDAY=FR,SA,SU"
-    # 4. Disables cloudDataLineageIntegration -> verifies disable normalization and no PATCH loop
+    # 5. Disables cloudDataLineageIntegration and updates webServerPluginsMode (#20)
     softwareConfig:
       cloudDataLineageIntegration:
         enabled: false
+      webServerPluginsMode: PLUGINS_DISABLED

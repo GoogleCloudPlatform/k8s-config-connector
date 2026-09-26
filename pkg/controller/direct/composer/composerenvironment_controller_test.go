@@ -565,8 +565,10 @@ func TestFieldUpdatersConsistency(t *testing.T) {
 		}
 		seenMasks[u.mask] = true
 
-		if !isValidUpdatePrefix(u.mask) {
-			t.Errorf("isValidUpdatePrefix(%q) returned false for registered fieldUpdater", u.mask)
+		for _, m := range strings.Split(u.mask, ",") {
+			if !isValidUpdatePrefix(m) {
+				t.Errorf("isValidUpdatePrefix(%q) returned false for registered fieldUpdater %q", m, u.mask)
+			}
 		}
 	}
 }
@@ -909,10 +911,37 @@ func TestMaximumComposerEnvironment(t *testing.T) {
 						"EXTRA_VAR": "true",
 					},
 					SchedulerCount:       direct.LazyPtr(int32(2)),
-					WebServerPluginsMode: direct.LazyPtr("PLUGINS_DISABLED"),
+					WebServerPluginsMode: direct.LazyPtr("PLUGINS_ENABLED"),
 				},
-				NodeConfig:               createSpec.Spec.Config.NodeConfig,
-				PrivateEnvironmentConfig: createSpec.Spec.Config.PrivateEnvironmentConfig,
+				NodeConfig: &krm.NodeConfig{
+					NetworkRef: &computerefs.ComputeNetworkRef{
+						External: "projects/p1/global/networks/network-updated",
+					},
+					SubnetworkRef: &computev1beta1.ComputeSubnetworkRef{
+						External: "projects/p1/regions/us-central1/subnetworks/subnet-updated",
+					},
+					ServiceAccountRef: createSpec.Spec.Config.NodeConfig.ServiceAccountRef,
+					MachineType:       createSpec.Spec.Config.NodeConfig.MachineType,
+					DiskSizeGB:        createSpec.Spec.Config.NodeConfig.DiskSizeGB,
+					ComposerNetworkAttachmentRef: &computev1alpha1.ComputeNetworkAttachmentRef{
+						External: "projects/p1/regions/us-central1/networkAttachments/attachment-updated",
+					},
+					ComposerInternalIPv4CIDRBlock: createSpec.Spec.Config.NodeConfig.ComposerInternalIPv4CIDRBlock,
+					Tags:                          createSpec.Spec.Config.NodeConfig.Tags,
+					EnableIPMasqAgent:             createSpec.Spec.Config.NodeConfig.EnableIPMasqAgent,
+					IPAllocationPolicy:            createSpec.Spec.Config.NodeConfig.IPAllocationPolicy,
+				},
+				PrivateEnvironmentConfig: &krm.PrivateEnvironmentConfig{
+					EnablePrivateEnvironment:             direct.PtrTo(false),
+					EnablePrivateBuildsOnly:              direct.PtrTo(false),
+					CloudComposerConnectionSubnetworkRef: createSpec.Spec.Config.PrivateEnvironmentConfig.CloudComposerConnectionSubnetworkRef,
+					EnablePrivatelyUsedPublicIPs:         createSpec.Spec.Config.PrivateEnvironmentConfig.EnablePrivatelyUsedPublicIPs,
+					CloudComposerNetworkIPv4CIDRBlock:    createSpec.Spec.Config.PrivateEnvironmentConfig.CloudComposerNetworkIPv4CIDRBlock,
+					CloudSQLIPv4CIDRBlock:                createSpec.Spec.Config.PrivateEnvironmentConfig.CloudSQLIPv4CIDRBlock,
+					WebServerIPv4CIDRBlock:               createSpec.Spec.Config.PrivateEnvironmentConfig.WebServerIPv4CIDRBlock,
+					PrivateClusterConfig:                 createSpec.Spec.Config.PrivateEnvironmentConfig.PrivateClusterConfig,
+					NetworkingConfig:                     createSpec.Spec.Config.PrivateEnvironmentConfig.NetworkingConfig,
+				},
 				WebServerNetworkAccessControl: &krm.WebServerNetworkAccessControl{
 					AllowedIPRanges: []krm.WebServerNetworkAccessControl_AllowedIPRange{
 						{
@@ -1014,17 +1043,28 @@ func TestMaximumComposerEnvironment(t *testing.T) {
 		"config.software_config.airflow_config_overrides",
 		"config.software_config.pypi_packages",
 		"config.software_config.env_variables",
+		"config.software_config.web_server_plugins_mode",
 		"config.web_server_network_access_control",
 		"config.database_config.machine_type",
 		"config.workloads_config",
 		"config.master_authorized_networks_config",
 		"config.recovery_config.scheduled_snapshots_config",
 		"config.data_retention_config.airflow_metadata_retention_config",
+		"config.private_environment_config.enable_private_builds_only",
+		"config.private_environment_config.enable_private_environment",
+		"config.node_config.composer_network_attachment",
+		"config.node_config.network,config.node_config.subnetwork",
 	}
 
 	for _, mask := range expectedMasks {
 		if _, ok := patches[mask]; !ok {
 			t.Errorf("expected update mask %q to be built, but was missing", mask)
+		}
+	}
+	if netPatch, ok := patches["config.node_config.network,config.node_config.subnetwork"]; ok {
+		nc := netPatch.GetConfig().GetNodeConfig()
+		if nc.GetNetwork() != "projects/p1/global/networks/network-updated" || nc.GetSubnetwork() != "projects/p1/regions/us-central1/subnetworks/subnet-updated" {
+			t.Errorf("expected combined network+subnetwork patch to contain both updated network and subnetwork, got network=%q subnetwork=%q", nc.GetNetwork(), nc.GetSubnetwork())
 		}
 	}
 }
@@ -1193,6 +1233,82 @@ func TestFieldUpdatersEdgeCases(t *testing.T) {
 		updates := buildPatches(desired, rawDesiredPb, actual)
 		if len(updates) != 0 {
 			t.Errorf("expected 0 updates when disabled and actual is nil, got %d: %v", len(updates), updates)
+		}
+	})
+
+	t.Run("partial nodeConfig networkRef update returns mergedDesiredPb with omitted subnetwork preserved", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{
+					NodeConfig: &krm.NodeConfig{
+						NetworkRef: &computerefs.ComputeNetworkRef{
+							External: "projects/p1/global/networks/net-new",
+						},
+						// SubnetworkRef omitted -> should be preserved from actual via computedFieldPaths
+					},
+				},
+			},
+		}
+		actual := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				NodeConfig: &composerpb.NodeConfig{
+					Network:    "projects/p1/global/networks/net-old",
+					Subnetwork: "projects/p1/regions/us-central1/subnetworks/sub-existing",
+				},
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		rawDesiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error: %v", mapCtx.Err())
+		}
+		updates := buildPatches(desired, rawDesiredPb, actual)
+		patch, ok := updates["config.node_config.network,config.node_config.subnetwork"]
+		if !ok {
+			t.Fatalf("expected update for config.node_config.network,config.node_config.subnetwork, got %v", updates)
+		}
+		nc := patch.GetConfig().GetNodeConfig()
+		if nc.GetNetwork() != "projects/p1/global/networks/net-new" || nc.GetSubnetwork() != "projects/p1/regions/us-central1/subnetworks/sub-existing" {
+			t.Errorf("expected network=net-new and preserved subnetwork=sub-existing, got network=%q subnetwork=%q", nc.GetNetwork(), nc.GetSubnetwork())
+		}
+	})
+
+	t.Run("omitting Composer 3 mutable fields when actual has non-zero values does not emit PATCH", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{},
+			},
+		}
+		actual := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				SoftwareConfig: &composerpb.SoftwareConfig{
+					WebServerPluginsMode: composerpb.SoftwareConfig_PLUGINS_DISABLED,
+				},
+				PrivateEnvironmentConfig: &composerpb.PrivateEnvironmentConfig{
+					EnablePrivateBuildsOnly:  true,
+					EnablePrivateEnvironment: true,
+				},
+				NodeConfig: &composerpb.NodeConfig{
+					Network:                   "projects/p1/global/networks/net1",
+					Subnetwork:                "projects/p1/regions/us-central1/subnetworks/sub1",
+					ComposerNetworkAttachment: "projects/p1/regions/us-central1/networkAttachments/att1",
+				},
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		rawDesiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error: %v", mapCtx.Err())
+		}
+		mergedDesiredPb := proto.Clone(rawDesiredPb).(*composerpb.Environment)
+		populateDesiredWithDefaults(desired, mergedDesiredPb)
+		populateDesiredWithActualIfComputed(desired, mergedDesiredPb, actual)
+		if err := validateUpdatableFields(mergedDesiredPb, actual); err != nil {
+			t.Fatalf("expected validateUpdatableFields to succeed when C3 mutable fields are omitted, got %v", err)
+		}
+		updates := buildPatches(desired, rawDesiredPb, actual)
+		if len(updates) != 0 {
+			t.Errorf("expected 0 updates when C3 mutable fields are omitted in spec, got %d: %v", len(updates), updates)
 		}
 	})
 }
