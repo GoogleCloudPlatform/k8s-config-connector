@@ -931,6 +931,15 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 	// Note: we don't have the harness yet, we have to look to the env var
 	gcpTarget := os.Getenv("E2E_GCP_TARGET")
 
+	if gcpTarget == "real" {
+		for _, resource := range resources {
+			gvk := resource.GroupVersionKind()
+			if gvk.Group == "contactcenterinsights.cnrm.cloud.google.com" && gvk.Kind == "CCInsightsIssueModel" {
+				t.Skip("skipping CCInsightsIssueModel on real GCP because V1 models are deprecated")
+			}
+		}
+	}
+
 	if gcpTarget == "mock" {
 		for _, resource := range resources {
 			gvk := resource.GroupVersionKind()
@@ -1360,6 +1369,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "contactcenterinsights.cnrm.cloud.google.com", Kind: "CCInsightsPhraseMatcher"}:
 			case schema.GroupKind{Group: "contactcenterinsights.cnrm.cloud.google.com", Kind: "CCInsightsView"}:
 			case schema.GroupKind{Group: "contactcenterinsights.cnrm.cloud.google.com", Kind: "CCInsightsConversation"}:
+			case schema.GroupKind{Group: "contactcenterinsights.cnrm.cloud.google.com", Kind: "CCInsightsIssueModel"}:
 
 			case schema.GroupKind{Group: "developerconnect.cnrm.cloud.google.com", Kind: "DevConnectInsightsConfig"}:
 			case schema.GroupKind{Group: "developerconnect.cnrm.cloud.google.com", Kind: "DevConnectAccountConnector"}:
