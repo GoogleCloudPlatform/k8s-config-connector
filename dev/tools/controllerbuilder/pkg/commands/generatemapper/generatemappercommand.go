@@ -41,6 +41,9 @@ type GenerateMapperOptions struct {
 	OutputMapperDirectory string
 
 	Multiversion bool
+
+	EmitPluralAcronyms bool
+	EmitMessageMaps    bool
 }
 
 func (o *GenerateMapperOptions) InitDefaults() error {
@@ -61,6 +64,8 @@ func (o *GenerateMapperOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.APIDirectory, "api-dir", o.APIDirectory, "base directory for reading APIs")
 	cmd.Flags().StringVar(&o.OutputMapperDirectory, "output-dir", o.OutputMapperDirectory, "base directory for writing mappers")
 	cmd.Flags().BoolVar(&o.Multiversion, "multiversion", o.Multiversion, "generate mappers with version specifiers, to support mixed versions")
+	cmd.Flags().BoolVar(&o.EmitPluralAcronyms, "emit-plural-acronyms", false, "match KRM field names that case plural acronyms as KRM conventions want, so related_uris maps to relatedURIs. Pass it for a service whose generate-types call passes it. Opt in one service at a time: it maps fields that existing mappers leave out, which changes those controllers")
+	cmd.Flags().BoolVar(&o.EmitMessageMaps, "emit-message-maps", false, "write the conversion loop for map<string, Message> fields instead of calling a <Field>_FromProto helper. Pass it for a service whose generate-types call passes it. Opt in one service at a time: it also rewrites hand-written map fields in existing mappers")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -147,6 +152,8 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 
 	mapperGenerator := codegen.NewMapperGenerator(pathForMessage, o.OutputMapperDirectory, generatedFileAnnotation, o.Multiversion)
 	mapperGenerator.WithIncludeSkippedOutput(o.GenerateOptions.IncludeSkippedOutput)
+	mapperGenerator.WithEmitPluralAcronyms(o.EmitPluralAcronyms)
+	mapperGenerator.WithEmitMessageMaps(o.EmitMessageMaps)
 
 	// Ensure that our first proto package is always imported with the "pb" alias.
 	firstService, err := api.GetFileDescriptorByPackage(o.ServiceNames[0])

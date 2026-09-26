@@ -49,6 +49,23 @@ type APIArgs struct {
 	// ExtraImports contains additional package imports needed by the rendered fields
 	// (e.g. `common "github.com/.../apis/common"`).
 	ExtraImports []string
+	// ParentRefField is pre-rendered Go source for one Spec field naming the
+	// resource's direct parent, such as a clusterRef on a ContainerNodePool.
+	// Empty unless --emit-parent-refs is on and a reference type for the parent
+	// already exists, which leaves every other resource rendering as before.
+	ParentRefField string
+	// RootRefField is pre-rendered Go source for the Spec field naming the root
+	// of the resource's name, projectRef for most resources. Empty for a
+	// resource that is itself a root, such as a billing account.
+	RootRefField string
+	// LocationField is pre-rendered Go source for the Spec field naming the
+	// resource's location, region or zone. Empty when the resource's name has
+	// none, as in projects/{project}/topics/{topic}, or when the location is the
+	// resource itself.
+	LocationField string
+	// SkipGVK leaves out the <Kind>GVK declaration because the package already
+	// has one, usually in a hand-written <kind>_reference.go.
+	SkipGVK bool
 }
 
 const TypesTemplate = `
@@ -76,19 +93,27 @@ import (
 	{{ . }}
 {{- end }}
 )
+{{- if not .SkipGVK }}
 
 var {{ .Kind }}GVK = GroupVersion.WithKind("{{ .Kind }}")
+{{- end }}
 
 // {{ .Kind }}Spec defines the desired state of {{ .Kind }}
 {{- if .KindProtoTag }}
 // +kcc:spec:proto={{ .KindProtoTag }}
 {{- end }}
 type {{ .Kind }}Spec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef ` + "`" + `json:"projectRef"` + "`" + `
+{{- if .RootRefField }}
+{{ .RootRefField }}
+{{- end }}
+{{- if .LocationField }}
 
-	// The location of this resource.
-	Location string ` + "`" + `json:"location"` + "`" + `
+{{ .LocationField }}
+{{- end }}
+{{- if .ParentRefField }}
+
+{{ .ParentRefField }}
+{{- end }}
 
 	// The {{ .Kind }} name. If not given, the metadata.name will be used.
 	ResourceID *string ` + "`" + `json:"resourceID,omitempty"` + "`" + `
