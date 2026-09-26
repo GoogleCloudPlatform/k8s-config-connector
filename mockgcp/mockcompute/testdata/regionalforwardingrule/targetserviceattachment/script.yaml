@@ -1,0 +1,23 @@
+- exec: gcloud compute networks create consumer-network-${uniqueId} --project=${projectId} --subnet-mode=custom
+- exec: gcloud compute networks create producer-network-${uniqueId} --project=${projectId} --subnet-mode=custom
+- exec: gcloud compute networks subnets create consumer-subnet-${uniqueId} --network=consumer-network-${uniqueId} --region=us-central1 --range=10.0.0.0/24 --project=${projectId}
+- exec: gcloud compute networks subnets create producer-subnet-${uniqueId} --network=producer-network-${uniqueId} --region=us-central1 --range=10.0.2.0/24 --project=${projectId}
+- exec: gcloud compute networks subnets create nat-subnet-${uniqueId} --network=producer-network-${uniqueId} --region=us-central1 --range=10.0.1.0/24 --purpose=PRIVATE_SERVICE_CONNECT --project=${projectId}
+- exec: gcloud compute health-checks create tcp hc-${uniqueId} --port=80 --project=${projectId}
+- exec: gcloud compute backend-services create bs-${uniqueId} --load-balancing-scheme=internal --protocol=tcp --region=us-central1 --health-checks=hc-${uniqueId} --project=${projectId}
+- exec: gcloud compute forwarding-rules create producer-${uniqueId} --region=us-central1 --load-balancing-scheme=internal --subnet=producer-subnet-${uniqueId} --backend-service=bs-${uniqueId} --ports=80 --project=${projectId}
+- exec: gcloud compute service-attachments create sa-${uniqueId} --region=us-central1 --producer-forwarding-rule=producer-${uniqueId} --nat-subnets=nat-subnet-${uniqueId} --connection-preference=ACCEPT_AUTOMATIC --project=${projectId}
+- exec: gcloud compute addresses create ip-${uniqueId} --region=us-central1 --subnet=consumer-subnet-${uniqueId} --project=${projectId}
+- exec: gcloud compute forwarding-rules create test-${uniqueId} --region=us-central1 --network=consumer-network-${uniqueId} --address=ip-${uniqueId} --target-service-attachment=sa-${uniqueId} --project=${projectId}
+- exec: gcloud compute forwarding-rules describe test-${uniqueId} --region=us-central1 --project=${projectId}
+- exec: gcloud compute forwarding-rules delete test-${uniqueId} --region=us-central1 --project=${projectId} --quiet
+- exec: gcloud compute addresses delete ip-${uniqueId} --region=us-central1 --project=${projectId} --quiet
+- exec: gcloud compute service-attachments delete sa-${uniqueId} --region=us-central1 --project=${projectId} --quiet
+- exec: gcloud compute forwarding-rules delete producer-${uniqueId} --region=us-central1 --project=${projectId} --quiet
+- exec: gcloud compute backend-services delete bs-${uniqueId} --region=us-central1 --project=${projectId} --quiet
+- exec: gcloud compute health-checks delete hc-${uniqueId} --project=${projectId} --quiet
+- exec: gcloud compute networks subnets delete nat-subnet-${uniqueId} --region=us-central1 --project=${projectId} --quiet
+- exec: gcloud compute networks subnets delete producer-subnet-${uniqueId} --region=us-central1 --project=${projectId} --quiet
+- exec: gcloud compute networks subnets delete consumer-subnet-${uniqueId} --region=us-central1 --project=${projectId} --quiet
+- exec: gcloud compute networks delete producer-network-${uniqueId} --project=${projectId} --quiet
+- exec: gcloud compute networks delete consumer-network-${uniqueId} --project=${projectId} --quiet
