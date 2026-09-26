@@ -478,6 +478,9 @@ privateClusterConfig:
     namespace: string
   publicEndpoint: string
 privateIpv6GoogleAccess: string
+privilegedAdmissionConfig:
+  allowlistPaths:
+  - string
 protectConfig:
   workloadConfig:
     auditMode: string
@@ -4533,6 +4536,36 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         <td>
             <p><code class="apitype">string</code></p>
             <p>The desired state of IPv6 connectivity to Google Services. By default, no private IPv6 access to or from Google Services (all access will be via IPv4).</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>privilegedAdmissionConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Policy for privileged workloads admission.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>privilegedAdmissionConfig.allowlistPaths</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>The customer allowlist Cloud Storage paths for the cluster. These paths are used with the `--autopilot-privileged-admission` flag to authorize privileged workloads in Autopilot clusters.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>privilegedAdmissionConfig.allowlistPaths[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
         </td>
     </tr>
     <tr>
