@@ -358,7 +358,14 @@ func SortRepeatedFields(msg protoreflect.Message) {
 
 func sortProtoReflectList(list protoreflect.List) {
 	n := list.Len()
-	if n <= 1 {
+	if n == 0 {
+		return
+	}
+	if n == 1 {
+		val := list.Get(0)
+		if msgVal, ok := val.Interface().(protoreflect.Message); ok {
+			SortRepeatedFields(msgVal)
+		}
 		return
 	}
 
