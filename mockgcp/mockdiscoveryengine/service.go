@@ -71,6 +71,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterEngineServiceServer(grpcServer, &engineService{MockService: s})
 	pb_v1beta.RegisterUserStoreServiceServer(grpcServer, &userStoreService{MockService: s})
 	pb_v1beta.RegisterServingConfigServiceServer(grpcServer, &servingConfigService{MockService: s})
+	pb_v1beta.RegisterSampleQuerySetServiceServer(grpcServer, &sampleQuerySetService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -85,6 +86,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.AddService(pb.NewEngineServiceClient(conn))
 	mux.AddService(pb_v1beta.NewUserStoreServiceClient(conn))
 	mux.AddService(pb_v1beta.NewServingConfigServiceClient(conn))
+	mux.AddService(pb_v1beta.NewSampleQuerySetServiceClient(conn))
 	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
 	return mux, nil
