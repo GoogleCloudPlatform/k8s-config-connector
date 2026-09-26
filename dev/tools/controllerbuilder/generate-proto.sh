@@ -108,6 +108,10 @@ cp ${REPO_ROOT}/mockgcp/apis/google/cloud/config/v1/config.proto google/cloud/co
 mkdir -p google/cloud/dataplex/v1
 cp ${REPO_ROOT}/mockgcp/apis/google/cloud/dataplex/v1/catalog.proto google/cloud/dataplex/v1/catalog.proto
 
+# Overwrite monitoring dashboard protos with the updated version that has OpsAnalyticsQuery
+mkdir -p google/monitoring/dashboard/v1
+cp ${REPO_ROOT}/mockgcp/apis/google/monitoring/dashboard/v1/*.proto google/monitoring/dashboard/v1/
+
 
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"
