@@ -81,3 +81,9 @@ type Adapter interface {
 	// Assumes Find has previously returned true.
 	Export(ctx context.Context) (*unstructured.Unstructured, error)
 }
+
+// UnreadableDeleter is an optional interface that Adapters can implement
+// if the resource can still be deleted when Find() fails with certain errors (e.g. HTTP 400).
+type UnreadableDeleter interface {
+	IsUnreadableButDeletable(err error) bool
+}
