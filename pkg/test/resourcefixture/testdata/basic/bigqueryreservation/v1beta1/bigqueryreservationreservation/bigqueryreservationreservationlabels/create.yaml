@@ -1,0 +1,18 @@
+apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1beta1
+kind: BigQueryReservationReservation
+metadata:
+  name: bigqueryreservationreservation-${uniqueId}
+  labels:
+    custom-label: "foo"
+    another-label: "bar"
+spec:
+  autoscale:
+    maxSlots: 50
+  concurrency: 0
+  edition: STANDARD
+  ignoreIdleSlots: true
+  location: us-west2
+  projectRef:
+    external: ${projectId}
+  resourceID: bigqueryreservationreservation${uniqueId}
+  slotCapacity: 0
