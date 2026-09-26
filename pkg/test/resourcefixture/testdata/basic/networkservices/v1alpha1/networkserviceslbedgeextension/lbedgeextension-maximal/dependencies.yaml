@@ -1,0 +1,79 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeHealthCheck
+metadata:
+  name: hc-${uniqueId}
+spec:
+  location: global
+  checkIntervalSec: 5
+  timeoutSec: 5
+  healthyThreshold: 2
+  unhealthyThreshold: 2
+  httpHealthCheck:
+    port: 80
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: bs-lb-${uniqueId}
+spec:
+  location: global
+  loadBalancingScheme: EXTERNAL_MANAGED
+  protocol: HTTP
+  healthChecks:
+    - healthCheckRef:
+        name: hc-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: bs-callout-${uniqueId}
+spec:
+  location: global
+  loadBalancingScheme: EXTERNAL_MANAGED
+  protocol: HTTP2
+  healthChecks:
+    - healthCheckRef:
+        name: hc-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: bs-callout2-${uniqueId}
+spec:
+  location: global
+  loadBalancingScheme: EXTERNAL_MANAGED
+  protocol: HTTP2
+  healthChecks:
+    - healthCheckRef:
+        name: hc-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeURLMap
+metadata:
+  name: urlmap-${uniqueId}
+spec:
+  location: global
+  defaultService:
+    backendServiceRef:
+      name: bs-lb-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeTargetHTTPProxy
+metadata:
+  name: proxy-${uniqueId}
+spec:
+  location: global
+  urlMapRef:
+    name: urlmap-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  name: fr-${uniqueId}
+spec:
+  location: global
+  loadBalancingScheme: EXTERNAL_MANAGED
+  target:
+    targetHTTPProxyRef:
+      name: proxy-${uniqueId}
+  portRange: "80"
