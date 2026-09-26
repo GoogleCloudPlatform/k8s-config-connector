@@ -42,6 +42,7 @@ import (
 	"k8s.io/client-go/dynamic"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/event"
 	addonv1alpha1 "sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/apis/v1alpha1"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
 )
@@ -1460,5 +1461,349 @@ func TestControllerOverridesField(t *testing.T) {
 	}
 	if !found {
 		t.Fatalf("field .spec.experiments.controllerOverrides not found in unstructured object")
+	}
+}
+
+func TestNamespacedResourceSettingsConfigHashes(t *testing.T) {
+	t.Parallel()
+	ctx := context.Background()
+	mgr, stop := testmain.StartTestManagerFromNewTestEnv()
+	defer stop()
+	c := mgr.GetClient()
+	testcontroller.EnsureNamespaceExists(c, k8s.OperatorSystemNamespace)
+	testcontroller.EnsureNamespaceExists(c, k8s.CNRMSystemNamespace)
+	testcontroller.EnsureNamespaceExists(c, "foo-ns")
+
+	groupStorage := "storage.cnrm.cloud.google.com"
+	kindBucket := "StorageBucket"
+	groupPubSub := "pubsub.cnrm.cloud.google.com"
+	kindTopic := "PubSubTopic"
+
+	cc := &corev1beta1.ConfigConnector{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: corev1beta1.ConfigConnectorAllowedName,
+		},
+		Spec: corev1beta1.ConfigConnectorSpec{
+			Mode: k8s.NamespacedMode,
+			Experiments: &corev1beta1.CCExperiments{
+				ResourceSettings: &corev1beta1.ResourceSettings{
+					Mode: corev1beta1.ResourceSettingsModeExclude,
+					Resources: []corev1beta1.ResourceFilter{
+						{Group: &groupPubSub, Kind: &kindTopic},
+					},
+				},
+			},
+		},
+	}
+	if err := c.Create(ctx, cc); err != nil {
+		t.Fatalf("error creating ConfigConnector: %v", err)
+	}
+
+	ccc := &corev1beta1.ConfigConnectorContext{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      corev1beta1.ConfigConnectorContextAllowedName,
+			Namespace: "foo-ns",
+		},
+		Spec: corev1beta1.ConfigConnectorContextSpec{
+			GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
+			Experiments: &corev1beta1.Experiments{
+				ResourceSettings: &corev1beta1.ResourceSettings{
+					Mode: corev1beta1.ResourceSettingsModeExclude,
+					Resources: []corev1beta1.ResourceFilter{
+						{Group: &groupStorage, Kind: &kindBucket},
+					},
+				},
+			},
+		},
+	}
+
+	m := testcontroller.ParseObjects(ctx, t, testcontroller.GetPerNamespaceManifest())
+	objs, err := transformNamespacedComponentTemplates(ctx, c, ccc, m.Items)
+	if err != nil {
+		t.Fatalf("transformNamespacedComponentTemplates failed: %v", err)
+	}
+
+	expectedCCHash := controllers.ComputeCCConfigHash(cc)
+	expectedCCCHash := controllers.ComputeCCCConfigHash(ccc)
+
+	foundSts := false
+	for _, item := range objs {
+		if controllers.IsControllerManagerStatefulSet(item) {
+			foundSts = true
+			annotations, _, _ := unstructured.NestedStringMap(item.UnstructuredObject().Object, "spec", "template", "metadata", "annotations")
+			if got := annotations[k8s.CCConfigHashAnnotation]; got != expectedCCHash {
+				t.Errorf("expected %s=%q, got %q", k8s.CCConfigHashAnnotation, expectedCCHash, got)
+			}
+			if got := annotations[k8s.CCCConfigHashAnnotation]; got != expectedCCCHash {
+				t.Errorf("expected %s=%q, got %q", k8s.CCCConfigHashAnnotation, expectedCCCHash, got)
+			}
+		}
+	}
+	if !foundSts {
+		t.Fatalf("expected controller-manager StatefulSet in transformed objects")
+	}
+
+	// Clearing CCC ResourceSettings should remove ccc-config-hash while preserving cc-config-hash
+	ccc.Spec.Experiments.ResourceSettings = nil
+	objsAfterClear, err := transformNamespacedComponentTemplates(ctx, c, ccc, objs)
+	if err != nil {
+		t.Fatalf("transformNamespacedComponentTemplates failed: %v", err)
+	}
+	for _, item := range objsAfterClear {
+		if controllers.IsControllerManagerStatefulSet(item) {
+			annotations, _, _ := unstructured.NestedStringMap(item.UnstructuredObject().Object, "spec", "template", "metadata", "annotations")
+			if got := annotations[k8s.CCConfigHashAnnotation]; got != expectedCCHash {
+				t.Errorf("expected %s=%q to remain intact, got %q", k8s.CCConfigHashAnnotation, expectedCCHash, got)
+			}
+			if _, exists := annotations[k8s.CCCConfigHashAnnotation]; exists {
+				t.Errorf("expected %s to be removed when CCC ResourceSettings is nil", k8s.CCCConfigHashAnnotation)
+			}
+		}
+	}
+}
+
+func TestEnqueueAllConfigConnectorContexts(t *testing.T) {
+	t.Parallel()
+	ctx := context.Background()
+	mgr, stop := testmain.StartTestManagerFromNewTestEnv()
+	defer stop()
+	c := mgr.GetClient()
+
+	for _, ns := range []string{"team-a", "team-b"} {
+		testcontroller.EnsureNamespaceExists(c, ns)
+		ccc := &corev1beta1.ConfigConnectorContext{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      corev1beta1.ConfigConnectorContextAllowedName,
+				Namespace: ns,
+			},
+			Spec: corev1beta1.ConfigConnectorContextSpec{
+				GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
+			},
+		}
+		if err := c.Create(ctx, ccc); err != nil {
+			t.Fatalf("failed to create CCC in %s: %v", ns, err)
+		}
+	}
+
+	r := newConfigConnectorReconciler(c)
+	reqs := r.enqueueAllConfigConnectorContexts(ctx, &corev1beta1.ConfigConnector{})
+	if len(reqs) != 2 {
+		t.Fatalf("expected 2 reconcile requests, got %d", len(reqs))
+	}
+}
+
+type flakyListClient struct {
+	client.Client
+	failuresRemaining int
+	calls             int
+}
+
+func (f *flakyListClient) List(ctx context.Context, list client.ObjectList, opts ...client.ListOption) error {
+	f.calls++
+	if f.failuresRemaining > 0 {
+		f.failuresRemaining--
+		return fmt.Errorf("transient API list error")
+	}
+	return f.Client.List(ctx, list, opts...)
+}
+
+func TestEnqueueAllConfigConnectorContexts_RetryOnTransientError(t *testing.T) {
+	t.Parallel()
+	ctx := context.Background()
+	mgr, stop := testmain.StartTestManagerFromNewTestEnv()
+	defer stop()
+	c := mgr.GetClient()
+
+	for _, ns := range []string{"team-a", "team-b"} {
+		testcontroller.EnsureNamespaceExists(c, ns)
+		ccc := &corev1beta1.ConfigConnectorContext{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      corev1beta1.ConfigConnectorContextAllowedName,
+				Namespace: ns,
+			},
+			Spec: corev1beta1.ConfigConnectorContextSpec{
+				GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
+			},
+		}
+		if err := c.Create(ctx, ccc); err != nil {
+			t.Fatalf("failed to create CCC in %s: %v", ns, err)
+		}
+	}
+
+	flaky := &flakyListClient{
+		Client:            c,
+		failuresRemaining: 2,
+	}
+	r := newConfigConnectorReconciler(flaky)
+	reqs := r.enqueueAllConfigConnectorContexts(ctx, &corev1beta1.ConfigConnector{})
+	if len(reqs) != 2 {
+		t.Fatalf("expected 2 reconcile requests after retry recovery, got %d", len(reqs))
+	}
+	if flaky.calls != 3 {
+		t.Fatalf("expected 3 List calls (2 failures + 1 success), got %d", flaky.calls)
+	}
+}
+
+func TestConfigConnectorConfigHashChangedPredicate(t *testing.T) {
+	t.Parallel()
+	pred := configConnectorConfigHashChangedPredicate()
+
+	groupStorage := "storage.cnrm.cloud.google.com"
+	kindBucket := "StorageBucket"
+	groupPubSub := "pubsub.cnrm.cloud.google.com"
+	kindTopic := "PubSubTopic"
+
+	baseCC := &corev1beta1.ConfigConnector{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:            corev1beta1.ConfigConnectorAllowedName,
+			ResourceVersion: "1",
+		},
+		Spec: corev1beta1.ConfigConnectorSpec{
+			Mode: k8s.NamespacedMode,
+			Experiments: &corev1beta1.CCExperiments{
+				ResourceSettings: &corev1beta1.ResourceSettings{
+					Mode: corev1beta1.ResourceSettingsModeExclude,
+					Resources: []corev1beta1.ResourceFilter{
+						{Group: &groupStorage, Kind: &kindBucket},
+					},
+				},
+			},
+		},
+	}
+
+	// 1. Status or ResourceVersion update alone must NOT trigger reconcile
+	statusUpdatedCC := baseCC.DeepCopy()
+	statusUpdatedCC.ResourceVersion = "2"
+	statusUpdatedCC.Status.Healthy = true
+	statusUpdatedCC.Status.ObservedGeneration = 1
+	if pred.Update(event.UpdateEvent{ObjectOld: baseCC, ObjectNew: statusUpdatedCC}) {
+		t.Errorf("expected UpdateFunc=false when only status/resourceVersion changed")
+	}
+
+	// 2. Equivalent ResourceSettings (different order / duplicates) must NOT trigger reconcile
+	reorderedCC := baseCC.DeepCopy()
+	reorderedCC.ResourceVersion = "3"
+	reorderedCC.Spec.Experiments.ResourceSettings.Resources = []corev1beta1.ResourceFilter{
+		{Group: &groupStorage, Kind: &kindBucket},
+		{Group: &groupStorage, Kind: &kindBucket},
+	}
+	if pred.Update(event.UpdateEvent{ObjectOld: baseCC, ObjectNew: reorderedCC}) {
+		t.Errorf("expected UpdateFunc=false when canonical config hash is unchanged")
+	}
+
+	// 3. Changing ResourceSettings must trigger reconcile
+	modifiedCC := baseCC.DeepCopy()
+	modifiedCC.ResourceVersion = "4"
+	modifiedCC.Spec.Experiments.ResourceSettings.Resources = []corev1beta1.ResourceFilter{
+		{Group: &groupPubSub, Kind: &kindTopic},
+	}
+	if !pred.Update(event.UpdateEvent{ObjectOld: baseCC, ObjectNew: modifiedCC}) {
+		t.Errorf("expected UpdateFunc=true when ResourceSettings changed")
+	}
+
+	// 4. Removing ResourceSettings (resetting to nil) must trigger reconcile
+	clearedCC := baseCC.DeepCopy()
+	clearedCC.ResourceVersion = "5"
+	clearedCC.Spec.Experiments.ResourceSettings = nil
+	if !pred.Update(event.UpdateEvent{ObjectOld: baseCC, ObjectNew: clearedCC}) {
+		t.Errorf("expected UpdateFunc=true when ResourceSettings is cleared")
+	}
+
+	// 5. Create/Delete events only trigger if ResourceSettings is configured
+	if pred.Create(event.CreateEvent{Object: clearedCC}) {
+		t.Errorf("expected CreateFunc=false when ResourceSettings is nil")
+	}
+	if !pred.Create(event.CreateEvent{Object: baseCC}) {
+		t.Errorf("expected CreateFunc=true when ResourceSettings is configured")
+	}
+}
+
+func TestResourceSettingsModeConflictRejectsTransformAndSurfacesStatus(t *testing.T) {
+	t.Parallel()
+	ctx := context.Background()
+	mgr, stop := testmain.StartTestManagerFromNewTestEnv()
+	defer stop()
+	c := mgr.GetClient()
+	testcontroller.EnsureNamespaceExists(c, k8s.OperatorSystemNamespace)
+	testcontroller.EnsureNamespaceExists(c, k8s.CNRMSystemNamespace)
+	testcontroller.EnsureNamespaceExists(c, "conflict-ns")
+
+	groupStorage := "storage.cnrm.cloud.google.com"
+	kindBucket := "StorageBucket"
+
+	cc := &corev1beta1.ConfigConnector{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: corev1beta1.ConfigConnectorAllowedName,
+		},
+		Spec: corev1beta1.ConfigConnectorSpec{
+			Mode: k8s.NamespacedMode,
+			Experiments: &corev1beta1.CCExperiments{
+				ResourceSettings: &corev1beta1.ResourceSettings{
+					Mode: corev1beta1.ResourceSettingsModeInclude,
+					Resources: []corev1beta1.ResourceFilter{
+						{Group: &groupStorage, Kind: &kindBucket},
+					},
+				},
+			},
+		},
+	}
+	if err := c.Create(ctx, cc); err != nil {
+		t.Fatalf("error creating ConfigConnector: %v", err)
+	}
+
+	ccc := &corev1beta1.ConfigConnectorContext{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:       corev1beta1.ConfigConnectorContextAllowedName,
+			Namespace:  "conflict-ns",
+			Generation: 2,
+		},
+		Spec: corev1beta1.ConfigConnectorContextSpec{
+			GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
+			Experiments: &corev1beta1.Experiments{
+				ResourceSettings: &corev1beta1.ResourceSettings{
+					Mode: corev1beta1.ResourceSettingsModeExclude,
+					Resources: []corev1beta1.ResourceFilter{
+						{Group: &groupStorage, Kind: &kindBucket},
+					},
+				},
+			},
+		},
+	}
+	if err := c.Create(ctx, ccc); err != nil {
+		t.Fatalf("error creating ConfigConnectorContext: %v", err)
+	}
+
+	mockEventRecorder := testmocks.NewMockEventRecorder(t, mgr.GetScheme())
+	r := &Reconciler{
+		client:   c,
+		recorder: mockEventRecorder,
+		log:      logr.Discard(),
+	}
+
+	m := testcontroller.ParseObjects(ctx, t, testcontroller.GetPerNamespaceManifest())
+	transformErr := r.checkResourceSettingsMode()(ctx, ccc, m)
+	if transformErr == nil || !strings.Contains(transformErr.Error(), "cannot mix inclusive") {
+		t.Fatalf("expected mode conflict error from checkResourceSettingsMode, got: %v", transformErr)
+	}
+
+	if _, err := transformNamespacedComponentTemplates(ctx, c, ccc, m.Items); err == nil || !strings.Contains(err.Error(), "cannot mix inclusive") {
+		t.Fatalf("expected mode conflict error from transformNamespacedComponentTemplates, got: %v", err)
+	}
+
+	nn := client.ObjectKeyFromObject(ccc)
+	if err := r.handleReconcileFailed(ctx, nn, transformErr); err != nil {
+		t.Fatalf("handleReconcileFailed returned unexpected error: %v", err)
+	}
+
+	updatedCCC := &corev1beta1.ConfigConnectorContext{}
+	if err := c.Get(ctx, nn, updatedCCC); err != nil {
+		t.Fatalf("error getting updated ConfigConnectorContext: %v", err)
+	}
+	status := updatedCCC.GetCommonStatus()
+	if status.Healthy {
+		t.Errorf("expected status.healthy=false on mode conflict, got true")
+	}
+	if len(status.Errors) != 1 || !strings.Contains(status.Errors[0], "cannot mix inclusive") {
+		t.Errorf("expected status.errors to contain mode conflict message, got: %v", status.Errors)
 	}
 }

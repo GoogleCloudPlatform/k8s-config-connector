@@ -104,3 +104,27 @@ func RemoveEnvVar(content string, targetKey string) string {
 
 	return strings.Join(newLines, "\n")
 }
+
+// InjectNamespacedSecretVolume injects GOOGLE_APPLICATION_CREDENTIALS and the kcc-google-service-account
+// secret volume/volumeMount into manager manifests so per-namespace manager pods can boot
+// in a local Kind environment without a GKE Workload Identity metadata server.
+func InjectNamespacedSecretVolume(content string, secretName string) string {
+	content = InjectEnvVar(content, "GOOGLE_APPLICATION_CREDENTIALS", "/var/secrets/google/key.json")
+
+	mountTarget := "        name: manager\n"
+	mountReplacement := "        name: manager\n        volumeMounts:\n        - mountPath: /var/secrets/google\n          name: gcp-service-account\n"
+	if !strings.Contains(content, "mountPath: /var/secrets/google") {
+		content = strings.Replace(content, mountTarget, mountReplacement, 1)
+	}
+
+	for _, saName := range []string{"cnrm-controller-manager-${NAMESPACE?}", "controller-manager"} {
+		volTarget := fmt.Sprintf("      serviceAccountName: %s\n", saName)
+		if strings.Contains(content, volTarget) && !strings.Contains(content, "secretName: "+secretName) {
+			volReplacement := fmt.Sprintf("      serviceAccountName: %s\n      volumes:\n      - name: gcp-service-account\n        secret:\n          secretName: %s\n", saName, secretName)
+			content = strings.Replace(content, volTarget, volReplacement, 1)
+			break
+		}
+	}
+
+	return content
+}
