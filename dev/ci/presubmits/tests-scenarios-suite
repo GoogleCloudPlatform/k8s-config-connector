@@ -33,9 +33,6 @@ cd "${REPO_ROOT}"
 
 . "${REPO_ROOT}/dev/tasks/setup-envtest"
 
-export RUN_E2E=1
-export E2E_GCP_TARGET="${E2E_GCP_TARGET:-mock}"
-export E2E_KUBE_TARGET="${E2E_KUBE_TARGET:-envtest}"
 export USE_FULL_TEST_NAMES=true
 export TEST_TIMEOUT=15m
 
@@ -53,5 +50,4 @@ if [[ -z "${PREBUILT_TEST_BINARY:-}" ]]; then
 fi
 
 echo "Running ${SUITE} scenarios tests..."
-cd tests/e2e
 ${PREBUILT_TEST_BINARY} -test.run "^TestE2EScript/scenarios/${SUITE}$" -test.timeout 15m -test.v
