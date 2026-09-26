@@ -274,6 +274,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/multicloudDataTransferConfigs/{}": true,
 		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/remoteTransportProfiles/{}":       true,
 		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/transports/{}":                    true,
+		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/serviceConnectionMaps/{}":         true,
 
 		// Network Security
 		"//networksecurity.googleapis.com/projects/{}/locations/{}/backendAuthenticationConfigs/{}": true,
