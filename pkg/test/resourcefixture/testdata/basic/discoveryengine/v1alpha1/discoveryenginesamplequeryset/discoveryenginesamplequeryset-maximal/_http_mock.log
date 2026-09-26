@@ -17,7 +17,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "SampleQuerySet with name \"projects/${projectNumber}/locations/global/sampleQuerySets/sqs-${uniqueId}\" does not exist.",
+    "message": "SampleQuerySet projects/${projectNumber}/locations/global/sampleQuerySets/sqs-${uniqueId} not found.",
     "status": "NOT_FOUND"
   }
 }
