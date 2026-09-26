@@ -60,6 +60,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource NetworkSecurityFirewallEndpoint:FirewallEndpoint \
   --resource NetworkSecurityDNSThreatDetector:DnsThreatDetector \
   --resource NetworkSecurityURLList:UrlList \
+  --resource NetworkSecurityInterceptEndpointGroupAssociation:InterceptEndpointGroupAssociation \
   --proto-source-path ${PROTO_OUT}
 
 # Run for google.cloud.networksecurity.v1alpha1 resources (PartnerSSERealm)
