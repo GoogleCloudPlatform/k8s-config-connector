@@ -101,6 +101,8 @@ columnLayout:
         - minAlignmentPeriod: string
           sliceNameTemplate: string
           timeSeriesQuery:
+            opsAnalyticsQuery:
+              sql: string
             outputFullDuration: boolean
             prometheusQuery: string
             timeSeriesFilter:
@@ -166,6 +168,8 @@ columnLayout:
           targetAxis: string
           value: float
         timeSeriesQuery:
+          opsAnalyticsQuery:
+            sql: string
           outputFullDuration: boolean
           prometheusQuery: string
           timeSeriesFilter:
@@ -241,6 +245,8 @@ columnLayout:
             - string
           tableTemplate: string
           timeSeriesQuery:
+            opsAnalyticsQuery:
+              sql: string
             outputFullDuration: boolean
             prometheusQuery: string
             timeSeriesFilter:
@@ -301,6 +307,8 @@ columnLayout:
           plotType: string
           targetAxis: string
           timeSeriesQuery:
+            opsAnalyticsQuery:
+              sql: string
             outputFullDuration: boolean
             prometheusQuery: string
             timeSeriesFilter:
@@ -416,6 +424,8 @@ gridLayout:
       - minAlignmentPeriod: string
         sliceNameTemplate: string
         timeSeriesQuery:
+          opsAnalyticsQuery:
+            sql: string
           outputFullDuration: boolean
           prometheusQuery: string
           timeSeriesFilter:
@@ -481,6 +491,8 @@ gridLayout:
         targetAxis: string
         value: float
       timeSeriesQuery:
+        opsAnalyticsQuery:
+          sql: string
         outputFullDuration: boolean
         prometheusQuery: string
         timeSeriesFilter:
@@ -556,6 +568,8 @@ gridLayout:
           - string
         tableTemplate: string
         timeSeriesQuery:
+          opsAnalyticsQuery:
+            sql: string
           outputFullDuration: boolean
           prometheusQuery: string
           timeSeriesFilter:
@@ -616,6 +630,8 @@ gridLayout:
         plotType: string
         targetAxis: string
         timeSeriesQuery:
+          opsAnalyticsQuery:
+            sql: string
           outputFullDuration: boolean
           prometheusQuery: string
           timeSeriesFilter:
@@ -727,6 +743,8 @@ mosaicLayout:
         - minAlignmentPeriod: string
           sliceNameTemplate: string
           timeSeriesQuery:
+            opsAnalyticsQuery:
+              sql: string
             outputFullDuration: boolean
             prometheusQuery: string
             timeSeriesFilter:
@@ -792,6 +810,8 @@ mosaicLayout:
           targetAxis: string
           value: float
         timeSeriesQuery:
+          opsAnalyticsQuery:
+            sql: string
           outputFullDuration: boolean
           prometheusQuery: string
           timeSeriesFilter:
@@ -867,6 +887,8 @@ mosaicLayout:
             - string
           tableTemplate: string
           timeSeriesQuery:
+            opsAnalyticsQuery:
+              sql: string
             outputFullDuration: boolean
             prometheusQuery: string
             timeSeriesFilter:
@@ -927,6 +949,8 @@ mosaicLayout:
           plotType: string
           targetAxis: string
           timeSeriesQuery:
+            opsAnalyticsQuery:
+              sql: string
             outputFullDuration: boolean
             prometheusQuery: string
             timeSeriesFilter:
@@ -1046,6 +1070,8 @@ rowLayout:
         - minAlignmentPeriod: string
           sliceNameTemplate: string
           timeSeriesQuery:
+            opsAnalyticsQuery:
+              sql: string
             outputFullDuration: boolean
             prometheusQuery: string
             timeSeriesFilter:
@@ -1111,6 +1137,8 @@ rowLayout:
           targetAxis: string
           value: float
         timeSeriesQuery:
+          opsAnalyticsQuery:
+            sql: string
           outputFullDuration: boolean
           prometheusQuery: string
           timeSeriesFilter:
@@ -1186,6 +1214,8 @@ rowLayout:
             - string
           tableTemplate: string
           timeSeriesQuery:
+            opsAnalyticsQuery:
+              sql: string
             outputFullDuration: boolean
             prometheusQuery: string
             timeSeriesFilter:
@@ -1246,6 +1276,8 @@ rowLayout:
           plotType: string
           targetAxis: string
           timeSeriesQuery:
+            opsAnalyticsQuery:
+              sql: string
             outputFullDuration: boolean
             prometheusQuery: string
             timeSeriesFilter:
@@ -1828,6 +1860,26 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>Required. The query for the PieChart. See, `google.monitoring.dashboard.v1.TimeSeriesQuery`.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Preview: A query used to fetch a time series, category series, or numeric series with SQL.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A SQL query to fetch time series, category series, or numeric series data.</p>
         </td>
     </tr>
     <tr>
@@ -2488,6 +2540,26 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>Required. Fields for querying time series data from the Stackdriver metrics API.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].scorecard.timeSeriesQuery.opsAnalyticsQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Preview: A query used to fetch a time series, category series, or numeric series with SQL.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].scorecard.timeSeriesQuery.opsAnalyticsQuery.sql</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A SQL query to fetch time series, category series, or numeric series data.</p>
         </td>
     </tr>
     <tr>
@@ -3262,6 +3334,26 @@ rowLayout:
     </tr>
     <tr>
         <td>
+            <p><code>columnLayout.columns[].widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.opsAnalyticsQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Preview: A query used to fetch a time series, category series, or numeric series with SQL.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A SQL query to fetch time series, category series, or numeric series data.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>columnLayout.columns[].widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.outputFullDuration</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -3868,6 +3960,26 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>Fields for querying time series data from the Stackdriver metrics API.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].xyChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Preview: A query used to fetch a time series, category series, or numeric series with SQL.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].xyChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A SQL query to fetch time series, category series, or numeric series data.</p>
         </td>
     </tr>
     <tr>
@@ -5092,6 +5204,26 @@ rowLayout:
     </tr>
     <tr>
         <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Preview: A query used to fetch a time series, category series, or numeric series with SQL.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A SQL query to fetch time series, category series, or numeric series data.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.outputFullDuration</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -5748,6 +5880,26 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>Required. Fields for querying time series data from the Stackdriver metrics API.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].scorecard.timeSeriesQuery.opsAnalyticsQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Preview: A query used to fetch a time series, category series, or numeric series with SQL.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].scorecard.timeSeriesQuery.opsAnalyticsQuery.sql</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A SQL query to fetch time series, category series, or numeric series data.</p>
         </td>
     </tr>
     <tr>
@@ -6522,6 +6674,26 @@ rowLayout:
     </tr>
     <tr>
         <td>
+            <p><code>gridLayout.widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.opsAnalyticsQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Preview: A query used to fetch a time series, category series, or numeric series with SQL.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A SQL query to fetch time series, category series, or numeric series data.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>gridLayout.widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.outputFullDuration</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -7128,6 +7300,26 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>Fields for querying time series data from the Stackdriver metrics API.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].xyChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Preview: A query used to fetch a time series, category series, or numeric series with SQL.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].xyChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A SQL query to fetch time series, category series, or numeric series data.</p>
         </td>
     </tr>
     <tr>
@@ -8302,6 +8494,26 @@ rowLayout:
     </tr>
     <tr>
         <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Preview: A query used to fetch a time series, category series, or numeric series with SQL.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A SQL query to fetch time series, category series, or numeric series data.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.outputFullDuration</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -8958,6 +9170,26 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>Required. Fields for querying time series data from the Stackdriver metrics API.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.scorecard.timeSeriesQuery.opsAnalyticsQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Preview: A query used to fetch a time series, category series, or numeric series with SQL.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.scorecard.timeSeriesQuery.opsAnalyticsQuery.sql</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A SQL query to fetch time series, category series, or numeric series data.</p>
         </td>
     </tr>
     <tr>
@@ -9732,6 +9964,26 @@ rowLayout:
     </tr>
     <tr>
         <td>
+            <p><code>mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.opsAnalyticsQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Preview: A query used to fetch a time series, category series, or numeric series with SQL.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A SQL query to fetch time series, category series, or numeric series data.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.outputFullDuration</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -10338,6 +10590,26 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>Fields for querying time series data from the Stackdriver metrics API.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.xyChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Preview: A query used to fetch a time series, category series, or numeric series with SQL.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.xyChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A SQL query to fetch time series, category series, or numeric series data.</p>
         </td>
     </tr>
     <tr>
@@ -11602,6 +11874,26 @@ rowLayout:
     </tr>
     <tr>
         <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Preview: A query used to fetch a time series, category series, or numeric series with SQL.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A SQL query to fetch time series, category series, or numeric series data.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.outputFullDuration</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -12258,6 +12550,26 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>Required. Fields for querying time series data from the Stackdriver metrics API.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].scorecard.timeSeriesQuery.opsAnalyticsQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Preview: A query used to fetch a time series, category series, or numeric series with SQL.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].scorecard.timeSeriesQuery.opsAnalyticsQuery.sql</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A SQL query to fetch time series, category series, or numeric series data.</p>
         </td>
     </tr>
     <tr>
@@ -13032,6 +13344,26 @@ rowLayout:
     </tr>
     <tr>
         <td>
+            <p><code>rowLayout.rows[].widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.opsAnalyticsQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Preview: A query used to fetch a time series, category series, or numeric series with SQL.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A SQL query to fetch time series, category series, or numeric series data.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>rowLayout.rows[].widgets[].timeSeriesTable.dataSets[].timeSeriesQuery.outputFullDuration</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -13638,6 +13970,26 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>Fields for querying time series data from the Stackdriver metrics API.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].xyChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Preview: A query used to fetch a time series, category series, or numeric series with SQL.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].xyChart.dataSets[].timeSeriesQuery.opsAnalyticsQuery.sql</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A SQL query to fetch time series, category series, or numeric series data.</p>
         </td>
     </tr>
     <tr>
