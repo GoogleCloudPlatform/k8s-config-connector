@@ -82,5 +82,53 @@ Apply the baseline validations from `kcc-direct-base-types-implementer`, plus th
   - Use `// +kubebuilder:validation:Enum=VALUE1;VALUE2` to provide validation in the CRD while keeping the Go type simple.
 - **Exception Files**: Do not add exceptions to any exception files (e.g., in `dev/tools/controllerbuilder/`) other than `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
 
-### 4. Journaling
+### 4. Opt-in generation flags
+
+`generate-types` can derive a lot more from the proto than it does by default. Every
+flag below is **off unless you pass it**, because turning one on for a resource that
+already exists can rename fields, move them between spec and status, or tighten the
+CRD schema — all breaking changes. A greenfield resource has no users yet, so it is
+the right place to turn them on.
+
+Add them to the service's `generate.sh` so the choice is recorded and regeneration
+is reproducible. Opt in **one service at a time**.
+
+| Flag | What it does |
+|---|---|
+| `--prepopulate-spec` | Fills the scaffolded Spec from the proto instead of leaving it empty. This is the main one; most of the others only matter alongside it. |
+| `--emit-required-from-proto` | Emits `// +required` for fields the proto marks `REQUIRED`. |
+| `--emit-parent-refs` | Names the resource's real root, location and parent from the proto's `google.api.resource` pattern, rather than guessing. |
+| `--emit-sibling-refs` | Generates a `<Kind>Ref` for a field that points at another resource in the same service being generated in the same run. |
+| `--emit-reference-hints` | Reports fields that look like references without guessing at one. |
+| `--emit-plural-acronyms` | Cases plural acronyms the way KRM conventions want, so `related_uris` becomes `relatedURIs` rather than `relatedUris`. |
+| `--emit-message-maps` | Generates `map<string, Message>` fields as a map of the value's Go type instead of dropping them. `generate-mapper` needs the same flag. |
+| `--place-server-set-fields` | Moves an allowlist of server-computed names (`createTime`, `uid`, `selfLink`, `etag`, …) into ObservedState when the proto carries no `field_behavior` anywhere. |
+| `--detect-output-only-in-comments` | Reports spec fields whose proto comment says "Output only." but that carry no annotation. Reports only — moving one is a hand edit. |
+
+### 5. Work the judgement queue
+
+Several of the flags above make a call the proto could not make for them. Rather
+than hide those calls, the generator writes each one to
+`apis/<service>/needs_judgement_call.txt`, and `--detect-output-only-in-comments`
+writes its findings to `apis/<service>/detected_output_only_in_comments.txt`.
+
+**The queue is a to-do list, not an output artifact.** Each entry names a field path,
+a reason and enough detail to decide. For each one either accept the generator's
+choice or hand-edit the type, then delete the entry.
+
+A resource is in exactly one of two states. **While it has queue entries, its
+`[refs]` findings in `TestMissingRefs` are suppressed** — the generator has already
+admitted it was unsure, so the ratchet does not also shout about it. Once you clear
+the entries, the check applies in full.
+
+That is the reason not to leave entries sitting: a stale queue is not a harmless
+to-do, it is a check that is switched off. Equally, do not delete an entry you have
+not actually looked at.
+
+Note that a reference guess can be confidently wrong. Shared reference types are
+matched by name suffix, so a proto whose pattern ends in `instances/{instance}` can
+pick up an unrelated `Ref` type from another service. The queue is where you catch
+that.
+
+### 6. Journaling
 Append any quirks about the proto-to-struct mapping (e.g., field name collisions) to `.gemini/journals/<service>.md` using the format described in the `kcc-agentic-journaler` skill.
