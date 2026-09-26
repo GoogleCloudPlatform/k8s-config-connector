@@ -59,3 +59,6 @@ a top-level field `TEST` on the object:
 We also support a few special kinds:
 
 * `kind: SystemRun` will wait for a specified `duration` (in seconds or as a duration string like "2s") to allow for background reconciliation. It will capture all HTTP traffic during the wait but mark it as skippable in the golden log comparison (useful for avoiding flaky background traffic in logs).
+
+* `kind: HTTPRequest` will execute an authenticated HTTP REST request against GCP APIs and optionally poll resulting Long Running Operations (LROs) to completion. Supports fields like `method` (defaults to GET), `url`, `body`, `waitForOperation` (defaults to true), and `timeout` (defaults to 5m). Variable substitutions `${projectId}` and `${uniqueId}` are supported in `url` and `body`.
+
