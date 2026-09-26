@@ -1108,10 +1108,27 @@ func isDependencyEvent(ev httpEvent, depKinds map[string]string, primaryKind str
 		// Clean the URL to get the path
 		urlPath := strings.Split(cleanURL(ev.URL), "?")[0]
 
-		// If the path doesn't contain the dependency name, check if it's a POST to create it
+		// If the path doesn't contain the dependency name, check if it's a POST or GRPC to create/operate on it
 		if !strings.Contains(urlPath, depName) {
 			if ev.Method == "POST" && (strings.Contains(ev.RequestBody, depName) || strings.Contains(ev.ResponseBody, depName) || strings.Contains(ev.URL, depName)) {
 				return true
+			}
+			if ev.Method == "GRPC" {
+				parts := strings.Split(ev.URL, "/")
+				if len(parts) > 0 {
+					rpcMethod := parts[len(parts)-1]
+					shortDepKind := kind
+					for _, prefix := range []string{"Bigtable", "Spanner", "KMS", "Compute"} {
+						shortDepKind = strings.TrimPrefix(shortDepKind, prefix)
+					}
+					shortPrimaryKind := primaryKind
+					for _, prefix := range []string{"Bigtable", "Spanner", "KMS", "Compute"} {
+						shortPrimaryKind = strings.TrimPrefix(shortPrimaryKind, prefix)
+					}
+					if strings.Contains(rpcMethod, shortDepKind) && !strings.Contains(rpcMethod, shortPrimaryKind) && (strings.Contains(ev.RequestBody, depName) || strings.Contains(ev.ResponseBody, depName)) {
+						return true
+					}
+				}
 			}
 			continue
 		}
