@@ -336,7 +336,7 @@ OK
         }
       },
       "displayName": "Very high CPU usage",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionID}"
     }
   ],
   "creationRecord": {
@@ -352,7 +352,7 @@ OK
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "notificationChannels": [
     "projects/${projectId}/notificationChannels/${notificationChannelID}",
     "projects/${projectId}/notificationChannels/${notificationChannelID}"
@@ -369,7 +369,7 @@ OK
 GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
 
 {
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}"
 }
 
 OK
@@ -400,7 +400,7 @@ OK
         }
       },
       "displayName": "Very high CPU usage",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionID}"
     }
   ],
   "creationRecord": {
@@ -416,7 +416,7 @@ OK
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "notificationChannels": [
     "projects/${projectId}/notificationChannels/${notificationChannelID}",
     "projects/${projectId}/notificationChannels/${notificationChannelID}"
@@ -466,7 +466,7 @@ GRPC /google.monitoring.v3.AlertPolicyService/UpdateAlertPolicy
       "content": "“Just the place for a Snark!” the Bellman cried,\nAs he monitored his resources with care;\nSupporting each metric on the top of the tide\nBy a finger entwined in his hair.\n\n“Just the place for a Snark! I have measured it twice:\nThat alone should discourage the crew.\nJust the place for a Snark! I have measured it thrice:\nWhat I measure three times is true.”"
     },
     "enabled": false,
-    "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+    "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
     "notificationChannels": [
       "projects/${projectId}/notificationChannels/${notificationChannelID}",
       "projects/${projectId}/notificationChannels/${notificationChannelID}"
@@ -523,7 +523,7 @@ OK
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "notificationChannels": [
     "projects/${projectId}/notificationChannels/${notificationChannelID}",
     "projects/${projectId}/notificationChannels/${notificationChannelID}"
@@ -540,7 +540,7 @@ OK
 GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
 
 {
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}"
 }
 
 OK
@@ -586,7 +586,7 @@ OK
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "notificationChannels": [
     "projects/${projectId}/notificationChannels/${notificationChannelID}",
     "projects/${projectId}/notificationChannels/${notificationChannelID}"
@@ -603,7 +603,7 @@ OK
 GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
 
 {
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}"
 }
 
 OK
@@ -649,7 +649,7 @@ OK
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "notificationChannels": [
     "projects/${projectId}/notificationChannels/${notificationChannelID}",
     "projects/${projectId}/notificationChannels/${notificationChannelID}"
@@ -666,7 +666,7 @@ OK
 GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
 
 {
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}"
 }
 
 OK
@@ -712,7 +712,7 @@ OK
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "notificationChannels": [
     "projects/${projectId}/notificationChannels/${notificationChannelID}",
     "projects/${projectId}/notificationChannels/${notificationChannelID}"
@@ -729,7 +729,7 @@ OK
 GRPC /google.monitoring.v3.AlertPolicyService/DeleteAlertPolicy
 
 {
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}"
 }
 
 OK
