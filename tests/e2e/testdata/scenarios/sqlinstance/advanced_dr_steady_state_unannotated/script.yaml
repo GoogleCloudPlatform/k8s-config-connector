@@ -1,0 +1,161 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Step 00: Provision Primary instance with advanced DR enabled.
+# Expected: Ready=True on GCP.
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-primary-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/sqlinstance-advanced-dr: "enabled"
+spec:
+  databaseVersion: MYSQL_8_0
+  region: us-west1
+  replicationCluster:
+    failoverDrReplicaRef:
+      name: sqlinstance-replica-${uniqueId}
+  settings:
+    locationPreference:
+      zone: us-west1-a
+    tier: db-perf-optimized-N-2
+    edition: ENTERPRISE_PLUS
+    backupConfiguration:
+      enabled: true
+      binaryLogEnabled: true
+      startTime: "12:00"
+      backupRetentionSettings:
+        retainedBackups: 15
+        retentionUnit: COUNT
+      transactionLogRetentionDays: 14
+---
+# Step 01: Provision DR Replica in secondary region with advanced DR enabled.
+# Expected: Ready=True on GCP.
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-replica-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/sqlinstance-advanced-dr: "enabled"
+spec:
+  databaseVersion: MYSQL_8_0
+  instanceType: READ_REPLICA_INSTANCE
+  masterInstanceRef:
+    name: sqlinstance-primary-${uniqueId}
+  region: us-east1
+  settings:
+    locationPreference:
+      zone: us-east1-c
+    tier: db-perf-optimized-N-2
+    edition: ENTERPRISE_PLUS
+---
+# Step 02: Read Primary instance to verify replication cluster is established.
+# Expected: Ready=True with failoverDRReplicaName populated in status.observedState.
+TEST: READ-OBJECT
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-primary-${uniqueId}
+---
+# Step 03: Remove annotation from Primary while in declared role.
+# Expected: Reconciles to Ready=True cleanly (GCP role matches declared spec).
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-primary-${uniqueId}
+spec:
+  databaseVersion: MYSQL_8_0
+  region: us-west1
+  replicationCluster:
+    failoverDrReplicaRef:
+      name: sqlinstance-replica-${uniqueId}
+  settings:
+    locationPreference:
+      zone: us-west1-a
+    tier: db-perf-optimized-N-2
+    edition: ENTERPRISE_PLUS
+    backupConfiguration:
+      enabled: true
+      binaryLogEnabled: true
+      startTime: "12:00"
+      backupRetentionSettings:
+        retainedBackups: 15
+        retentionUnit: COUNT
+      transactionLogRetentionDays: 14
+---
+# Step 04: Remove annotation from Replica while in declared role.
+# Expected: Reconciles to Ready=True cleanly (GCP role matches declared spec).
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-replica-${uniqueId}
+spec:
+  databaseVersion: MYSQL_8_0
+  instanceType: READ_REPLICA_INSTANCE
+  masterInstanceRef:
+    name: sqlinstance-primary-${uniqueId}
+  region: us-east1
+  settings:
+    locationPreference:
+      zone: us-east1-c
+    tier: db-perf-optimized-N-2
+    edition: ENTERPRISE_PLUS
+---
+# Step 05: Update non-role mutable field (userLabels) on Primary without annotation.
+# Expected: Reconciles to Ready=True, sends PATCH to GCP, and updates GCP resource.
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-primary-${uniqueId}
+  labels:
+    maintenance: "primary-update"
+spec:
+  databaseVersion: MYSQL_8_0
+  region: us-west1
+  replicationCluster:
+    failoverDrReplicaRef:
+      name: sqlinstance-replica-${uniqueId}
+  settings:
+    locationPreference:
+      zone: us-west1-a
+    tier: db-perf-optimized-N-2
+    edition: ENTERPRISE_PLUS
+    backupConfiguration:
+      enabled: true
+      binaryLogEnabled: true
+      startTime: "12:00"
+      backupRetentionSettings:
+        retainedBackups: 15
+        retentionUnit: COUNT
+      transactionLogRetentionDays: 14
+---
+# Step 06: Update non-role mutable field (userLabels) on Replica without annotation.
+# Expected: Reconciles to Ready=True, sends PATCH to GCP, and updates GCP resource.
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-replica-${uniqueId}
+  labels:
+    maintenance: "replica-update"
+spec:
+  databaseVersion: MYSQL_8_0
+  instanceType: READ_REPLICA_INSTANCE
+  masterInstanceRef:
+    name: sqlinstance-primary-${uniqueId}
+  region: us-east1
+  settings:
+    locationPreference:
+      zone: us-east1-c
+    tier: db-perf-optimized-N-2
+    edition: ENTERPRISE_PLUS
