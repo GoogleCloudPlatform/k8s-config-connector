@@ -116,6 +116,11 @@ spec:
                   will execute with the slot capacity specified in the slot_capacity
                   field at most.
                 type: boolean
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. Labels for the reservation.
+                type: object
               location:
                 description: Immutable. You can configure spec.secondaryLocation to
                   enable the reservation fail-over to a secondary location, in which
@@ -124,6 +129,10 @@ spec:
                 x-kubernetes-validations:
                 - message: Location field is immutable
                   rule: self == oldSelf
+              maxSlots:
+                description: Optional. The overall max slots for the reservation.
+                format: int64
+                type: integer
               projectRef:
                 description: The Project that this resource belongs to.
                 oneOf:
@@ -156,6 +165,36 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
+              reservationGroupRef:
+                description: Optional. The reservation group for the reservation.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed BigQueryReservationReservationGroup
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/reservationGroups/{{reservationGroupID}}".
+                    type: string
+                  name:
+                    description: The name of a BigQueryReservationReservationGroup
+                      resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a BigQueryReservationReservationGroup
+                      resource.
+                    type: string
+                type: object
               resourceID:
                 description: 'Immutable. Optional. The BigQuery Reservation ID used
                   for resource creation or acquisition. It must only contain lower
@@ -166,6 +205,23 @@ spec:
                   Reservation ID. For acquisition: This field must be provided to
                   identify the Reservation resource to acquire.'
                 type: string
+              scalingMode:
+                description: Optional. The scaling mode for the reservation.
+                type: string
+              schedulingPolicy:
+                description: Optional. The scheduling policy for the reservation.
+                properties:
+                  concurrency:
+                    description: Limit concurrency of jobs for any particular project
+                      within the reservation.
+                    format: int64
+                    type: integer
+                  maxSlots:
+                    description: Limit slot consumption of queries for any particular
+                      project within the reservation.
+                    format: int64
+                    type: integer
+                type: object
               slotCapacity:
                 description: |-
                   Optional. Baseline slots available to this reservation. A slot is a unit of
@@ -359,6 +415,11 @@ spec:
                   will execute with the slot capacity specified in the slot_capacity
                   field at most.
                 type: boolean
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. Labels for the reservation.
+                type: object
               location:
                 description: Immutable. You can configure spec.secondaryLocation to
                   enable the reservation fail-over to a secondary location, in which
@@ -367,6 +428,10 @@ spec:
                 x-kubernetes-validations:
                 - message: Location field is immutable
                   rule: self == oldSelf
+              maxSlots:
+                description: Optional. The overall max slots for the reservation.
+                format: int64
+                type: integer
               projectRef:
                 description: The Project that this resource belongs to.
                 oneOf:
@@ -399,6 +464,36 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
+              reservationGroupRef:
+                description: Optional. The reservation group for the reservation.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed BigQueryReservationReservationGroup
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/reservationGroups/{{reservationGroupID}}".
+                    type: string
+                  name:
+                    description: The name of a BigQueryReservationReservationGroup
+                      resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a BigQueryReservationReservationGroup
+                      resource.
+                    type: string
+                type: object
               resourceID:
                 description: 'Immutable. Optional. The BigQuery Reservation ID used
                   for resource creation or acquisition. It must only contain lower
@@ -409,6 +504,23 @@ spec:
                   Reservation ID. For acquisition: This field must be provided to
                   identify the Reservation resource to acquire.'
                 type: string
+              scalingMode:
+                description: Optional. The scaling mode for the reservation.
+                type: string
+              schedulingPolicy:
+                description: Optional. The scheduling policy for the reservation.
+                properties:
+                  concurrency:
+                    description: Limit concurrency of jobs for any particular project
+                      within the reservation.
+                    format: int64
+                    type: integer
+                  maxSlots:
+                    description: Limit slot consumption of queries for any particular
+                      project within the reservation.
+                    format: int64
+                    type: integer
+                type: object
               slotCapacity:
                 description: |-
                   Optional. Baseline slots available to this reservation. A slot is a unit of
