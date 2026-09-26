@@ -15,8 +15,6 @@
 package secretmanager
 
 import (
-	"strconv"
-
 	pb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -208,28 +206,7 @@ func SecretManagerSecretObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: CustomerManagedEncryption
 	return out
 }
-func SecretManagerSecretSpec_FromProto(mapCtx *direct.MapContext, in *pb.Secret) *krm.SecretManagerSecretSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecretManagerSecretSpec{}
-	// MISSING: Name
-	out.Replication = Replication_FromProto(mapCtx, in.GetReplication())
-	// MISSING: CreateTime
-	// MISSING: Topics
-	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
-	// MISSING: Ttl
-	// MISSING: Etag
-	out.Rotation = Rotation_FromProto(mapCtx, in.GetRotation())
-	for k, v := range in.VersionAliases {
-		out.VersionAliases[k] = strconv.FormatInt(v, 10)
-	}
-	out.Annotations = in.Annotations
-	// MISSING: Labels
-	// MISSING: VersionDestroyTtl
-	// MISSING: CustomerManagedEncryption
-	return out
-}
+
 func SecretManagerSecretVersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SecretVersion) *krm.SecretManagerSecretVersionObservedState {
 	if in == nil {
 		return nil
