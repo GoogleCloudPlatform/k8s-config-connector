@@ -60,6 +60,8 @@ type TypeGenerator struct {
 	reservedTypeNames map[string]bool
 
 	unsupportedFields []UnsupportedField
+
+	derivedMessageMaps []DerivedMessageMap
 }
 
 type OutputMessageDetails struct {
@@ -397,6 +399,19 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 		var rendered bytes.Buffer
 		WriteMessage(&rendered, msg, g.writeOptions)
 		g.unsupportedFields = append(g.unsupportedFields, scanUnsupported(string(msg.FullName()), rendered.String())...)
+		if g.writeOptions.EmitMessageMaps {
+			for i := 0; i < msg.Fields().Len(); i++ {
+				f := msg.Fields().Get(i)
+				if protoMsg, goType, ok := MessageMapValueInfo(f); ok {
+					g.derivedMessageMaps = append(g.derivedMessageMaps, DerivedMessageMap{
+						Message:   string(msg.FullName()),
+						Field:     GetJSONForKRM(f, g.writeOptions),
+						ProtoType: protoMsg,
+						GoType:    goType,
+					})
+				}
+			}
+		}
 		out.body.Write(rendered.Bytes())
 	}
 	return errors.Join(g.errors...)
@@ -466,6 +481,19 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 			continue
 		}
 
+		if g.writeOptions.EmitMessageMaps {
+			for _, f := range msgDetails.OutputFields {
+				if protoMsg, goType, ok := MessageMapValueInfo(f); ok {
+					g.derivedMessageMaps = append(g.derivedMessageMaps, DerivedMessageMap{
+						Message:   string(msg.FullName()),
+						Field:     GetJSONForKRM(f, g.writeOptions),
+						ProtoType: protoMsg,
+						GoType:    goType,
+					})
+				}
+			}
+		}
+
 		WriteObservedStateMessage(&out.body, msgDetails, g.observedStateMessages, g.writeOptions)
 	}
 	return errors.Join(g.errors...)
@@ -508,6 +536,8 @@ func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor, opts WriteO
 type ObservedStateFieldNote struct {
 	// JSONName is the KRM field name in camelCase.
 	JSONName string
+	// Field is the proto field descriptor.
+	Field protoreflect.FieldDescriptor
 	// Rendered is the Go field declaration, including comments and tags.
 	Rendered string
 	// Skipped is true if the field was suppressed by a skip list (e.g. identity fields).
@@ -529,6 +559,7 @@ func WriteObservedStateFields(out io.Writer, msgDetails *OutputMessageDetails, o
 		if skip[string(field.Name())] {
 			notes = append(notes, ObservedStateFieldNote{
 				JSONName: GetJSONForKRM(field, observedOpts),
+				Field:    field,
 				Skipped:  true,
 			})
 			continue
@@ -546,6 +577,7 @@ func WriteObservedStateFields(out io.Writer, msgDetails *OutputMessageDetails, o
 		emitted++
 		notes = append(notes, ObservedStateFieldNote{
 			JSONName: GetJSONForKRM(field, observedOpts),
+			Field:    field,
 			Rendered: field_.String(),
 		})
 	}
@@ -979,4 +1011,68 @@ func UnsupportedFieldMarker(rendered string) (field, reason string, ok bool) {
 	}
 	return "", "", false
 }
+
+// DerivedMessageMap describes a map<string, Message> field that was generated as map[string]<GoType>.
+type DerivedMessageMap struct {
+	// Message is the fully-qualified proto message name that contains the field.
+	Message string
+	// Field is the KRM JSON name of the field.
+	Field string
+	// ProtoType is the fully-qualified proto message type of the map's values.
+	ProtoType string
+	// GoType is the Go type the message was mapped to.
+	GoType string
+}
+
+// DerivedMessageMaps returns the collection of message-valued map fields generated
+// with --emit-message-maps during this run, sorted deterministically without duplicates.
+func (g *TypeGenerator) DerivedMessageMaps() []DerivedMessageMap {
+	seen := make(map[string]bool)
+	var out []DerivedMessageMap
+	for _, m := range g.derivedMessageMaps {
+		key := fmt.Sprintf("%s.%s", m.Message, m.Field)
+		if seen[key] {
+			continue
+		}
+		seen[key] = true
+		out = append(out, m)
+	}
+	sort.Slice(out, func(i, j int) bool {
+		if out[i].Message != out[j].Message {
+			return out[i].Message < out[j].Message
+		}
+		return out[i].Field < out[j].Field
+	})
+	return out
+}
+
+// MessageMapValueInfo returns the proto message name, derived Go type, and true
+// if field is a map whose key is string and whose value is a message.
+func MessageMapValueInfo(field protoreflect.FieldDescriptor) (protoMsg, goType string, ok bool) {
+	if !field.IsMap() {
+		return "", "", false
+	}
+	entryMsg := field.Message()
+	if entryMsg == nil {
+		return "", "", false
+	}
+	keyField := entryMsg.Fields().ByName("key")
+	valueField := entryMsg.Fields().ByName("value")
+	if keyField == nil || valueField == nil {
+		return "", "", false
+	}
+	if keyField.Kind() != protoreflect.StringKind || valueField.Kind() != protoreflect.MessageKind {
+		return "", "", false
+	}
+	valMsg := valueField.Message()
+	if valMsg == nil {
+		return "", "", false
+	}
+	protoMsg = string(valMsg.FullName())
+	if specialType, ok := protoMessagesNotMappedToGoStruct[protoMsg]; ok {
+		return protoMsg, specialType, true
+	}
+	return protoMsg, GoNameForProtoMessage(valMsg), true
+}
+
 

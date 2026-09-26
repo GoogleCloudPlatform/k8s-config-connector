@@ -554,7 +554,8 @@ func TestWriteFieldRequiredMarker(t *testing.T) {
 // because a field GoTypeForField cannot type does not fail generation.
 // WriteField writes a "// TODO:" comment in its place and the field is missing
 // from the CRD. The expected output below has both kinds of field.
-func TestWriteMessage(t *testing.T) {
+func buildTestMessageWithMaps(t *testing.T) protoreflect.MessageDescriptor {
+	t.Helper()
 	mapEntry := func(name string, value *descriptorpb.FieldDescriptorProto) *descriptorpb.DescriptorProto {
 		return &descriptorpb.DescriptorProto{
 			Name: protoPtr(name),
@@ -630,7 +631,11 @@ func TestWriteMessage(t *testing.T) {
 		t.Fatalf("failed to create file descriptor: %v", err)
 	}
 
-	msg := fd.Messages().ByName("TestMessage")
+	return fd.Messages().ByName("TestMessage")
+}
+
+func TestWriteMessage(t *testing.T) {
+	msg := buildTestMessageWithMaps(t)
 	var buf bytes.Buffer
 	// Prepopulating is set because the marker only names its field for a
 	// service that opted in, and the assertions below tell the fields apart by
@@ -1375,3 +1380,63 @@ type BillingAccount struct {
 		t.Errorf("body should not contain %q when type exists on disk; got:\n%s", dontWantReserved, body)
 	}
 }
+
+func TestMessageMapValueInfo(t *testing.T) {
+	msg := buildTestMessageWithMaps(t)
+
+	tasksField := msg.Fields().ByName("tasks")
+	protoMsg, goType, ok := MessageMapValueInfo(tasksField)
+	if !ok || protoMsg != "google.cloud.test.v1.TargetMessage" || goType != "TargetMessage" {
+		t.Errorf("MessageMapValueInfo(tasks) = (%q, %q, %v), want (google.cloud.test.v1.TargetMessage, TargetMessage, true)", protoMsg, goType, ok)
+	}
+
+	seenField := msg.Fields().ByName("seen")
+	protoMsg, goType, ok = MessageMapValueInfo(seenField)
+	if !ok || protoMsg != "google.protobuf.Timestamp" || goType != "string" {
+		t.Errorf("MessageMapValueInfo(seen) = (%q, %q, %v), want (google.protobuf.Timestamp, string, true)", protoMsg, goType, ok)
+	}
+
+	labelsField := msg.Fields().ByName("labels")
+	if _, _, ok := MessageMapValueInfo(labelsField); ok {
+		t.Errorf("MessageMapValueInfo(labels) should report ok=false for string map")
+	}
+
+	byIndexField := msg.Fields().ByName("by_index")
+	if _, _, ok := MessageMapValueInfo(byIndexField); ok {
+		t.Errorf("MessageMapValueInfo(by_index) should report ok=false for int-keyed map")
+	}
+
+	projectIDField := msg.Fields().ByName("project_id")
+	if _, _, ok := MessageMapValueInfo(projectIDField); ok {
+		t.Errorf("MessageMapValueInfo(project_id) should report ok=false for scalar field")
+	}
+}
+
+func TestTypeGeneratorDerivedMessageMaps(t *testing.T) {
+	dir := t.TempDir()
+	if err := os.MkdirAll(filepath.Join(dir, "test"), 0755); err != nil {
+		t.Fatal(err)
+	}
+	msg := buildTestMessageWithMaps(t)
+
+	g := NewTypeGenerator("test", dir, nil)
+	g.visitedMessages = []protoreflect.MessageDescriptor{msg}
+	g.WithWriteOptions(WriteOptions{EmitMessageMaps: true})
+
+	if err := g.WriteVisitedMessages(); err != nil {
+		t.Fatalf("WriteVisitedMessages: %v", err)
+	}
+
+	got := g.DerivedMessageMaps()
+	if len(got) != 2 {
+		t.Fatalf("len(DerivedMessageMaps()) = %d, want 2; got: %+v", len(got), got)
+	}
+	// Sorted deterministically by Message then Field: "seen" before "tasks".
+	if got[0].Field != "seen" || got[0].GoType != "string" || got[0].ProtoType != "google.protobuf.Timestamp" {
+		t.Errorf("got[0] = %+v, want seen string", got[0])
+	}
+	if got[1].Field != "tasks" || got[1].GoType != "TargetMessage" || got[1].ProtoType != "google.cloud.test.v1.TargetMessage" {
+		t.Errorf("got[1] = %+v, want tasks TargetMessage", got[1])
+	}
+}
+

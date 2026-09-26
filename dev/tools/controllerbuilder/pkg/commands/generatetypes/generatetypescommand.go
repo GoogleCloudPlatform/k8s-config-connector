@@ -267,6 +267,15 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 			}
 			judgement = append(judgement, b.String())
 		}
+		if maps := typeGenerator.DerivedMessageMaps(); len(maps) > 0 {
+			var b strings.Builder
+			b.WriteString("\n# Message maps derived as map[string]<GoType>. Verify that the\n")
+			b.WriteString("# proto message type has been mapped to the correct Go type.\n")
+			for _, m := range maps {
+				fmt.Fprintf(&b, "# derived-message-map: %s.%s proto=%s goType=%s\n", m.Message, m.Field, m.ProtoType, m.GoType)
+			}
+			judgement = append(judgement, b.String())
+		}
 	}
 
 	if o.PrepopulateSpec || len(judgement) > 0 {

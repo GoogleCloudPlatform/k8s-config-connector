@@ -104,6 +104,14 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 				Reason:    "unsupported-field-type",
 				Detail:    reason,
 			})
+		} else if opts.EmitMessageMaps {
+			if protoMsg, goType, ok := codegen.MessageMapValueInfo(field); ok {
+				out.Judgement = append(out.Judgement, JudgementItem{
+					FieldPath: ".spec." + codegen.GetJSONForKRM(field, opts),
+					Reason:    "message-map-derived",
+					Detail:    fmt.Sprintf("derived as map[string]%s from proto %s; verify Go type and mapping", goType, protoMsg),
+				})
+			}
 		}
 		if item, ok := judgementFor(field, opts); ok {
 			out.Judgement = append(out.Judgement, item)
@@ -152,6 +160,14 @@ func PrepopulateObservedState(details *codegen.OutputMessageDetails, observedSta
 					Reason:    "unsupported-field-type",
 					Detail:    reason,
 				})
+			} else if opts.EmitMessageMaps && n.Field != nil {
+				if protoMsg, goType, ok := codegen.MessageMapValueInfo(n.Field); ok {
+					judgement = append(judgement, JudgementItem{
+						FieldPath: ".status.observedState." + n.JSONName,
+						Reason:    "message-map-derived",
+						Detail:    fmt.Sprintf("derived as map[string]%s from proto %s; verify Go type and mapping", goType, protoMsg),
+					})
+				}
 			}
 		}
 	}

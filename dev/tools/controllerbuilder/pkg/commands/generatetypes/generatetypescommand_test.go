@@ -49,6 +49,12 @@ func TestMergeQueueLines(t *testing.T) {
 			want:     []string{"# dropped: google.cloud.x.v1.Msg.field reason=z"},
 		},
 		{
+			name:     "derived message map comment lines are preserved",
+			existing: header + "# derived-message-map: google.cloud.x.v1.Msg.field proto=google.cloud.x.v1.Sub goType=Sub\n",
+			added:    "",
+			want:     []string{"# derived-message-map: google.cloud.x.v1.Msg.field proto=google.cloud.x.v1.Sub goType=Sub"},
+		},
+		{
 			name:     "no existing file",
 			existing: "",
 			added:    "KindA .spec.a reason=x\n\n",
