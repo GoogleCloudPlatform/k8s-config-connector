@@ -21,11 +21,11 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var VertexAISpecialistPoolGVK = GroupVersion.WithKind("VertexAISpecialistPool")
+var AIPlatformSpecialistPoolGVK = GroupVersion.WithKind("AIPlatformSpecialistPool")
 
-// VertexAISpecialistPoolSpec defines the desired state of VertexAISpecialistPool
+// AIPlatformSpecialistPoolSpec defines the desired state of AIPlatformSpecialistPool
 // +kcc:spec:proto=google.cloud.aiplatform.v1.SpecialistPool
-type VertexAISpecialistPoolSpec struct {
+type AIPlatformSpecialistPoolSpec struct {
 	// The project that this resource belongs to.
 	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
@@ -34,7 +34,7 @@ type VertexAISpecialistPoolSpec struct {
 	// +required
 	Location *string `json:"location"`
 
-	// The VertexAISpecialistPool name. If not given, the metadata.name will be used.
+	// The AIPlatformSpecialistPool name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Required. The user-defined name of the SpecialistPool.
@@ -54,8 +54,8 @@ type VertexAISpecialistPoolSpec struct {
 	SpecialistWorkerEmails []string `json:"specialistWorkerEmails,omitempty"`
 }
 
-// VertexAISpecialistPoolStatus defines the config connector machine state of VertexAISpecialistPool
-type VertexAISpecialistPoolStatus struct {
+// AIPlatformSpecialistPoolStatus defines the config connector machine state of AIPlatformSpecialistPool
+type AIPlatformSpecialistPoolStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
@@ -63,16 +63,16 @@ type VertexAISpecialistPoolStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the VertexAISpecialistPool resource in GCP.
+	// A unique specifier for the AIPlatformSpecialistPool resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *VertexAISpecialistPoolObservedState `json:"observedState,omitempty"`
+	ObservedState *AIPlatformSpecialistPoolObservedState `json:"observedState,omitempty"`
 }
 
-// VertexAISpecialistPoolObservedState is the state of the VertexAISpecialistPool resource as most recently observed in GCP.
+// AIPlatformSpecialistPoolObservedState is the state of the AIPlatformSpecialistPool resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.SpecialistPool
-type VertexAISpecialistPoolObservedState struct {
+type AIPlatformSpecialistPoolObservedState struct {
 	// Output only. The number of managers in this SpecialistPool.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.SpecialistPool.specialist_managers_count
 	SpecialistManagersCount *int32 `json:"specialistManagersCount,omitempty"`
@@ -84,7 +84,7 @@ type VertexAISpecialistPoolObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpvertexaispecialistpool;gcpvertexaispecialistpools
+// +kubebuilder:resource:categories=gcp,shortName=gcpaiplatformspecialistpool;gcpaiplatformspecialistpools
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
@@ -94,27 +94,27 @@ type VertexAISpecialistPoolObservedState struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// VertexAISpecialistPool is the Schema for the VertexAISpecialistPool API
+// AIPlatformSpecialistPool is the Schema for the AIPlatformSpecialistPool API
 // +k8s:openapi-gen=true
-type VertexAISpecialistPool struct {
+type AIPlatformSpecialistPool struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// +required
-	Spec   VertexAISpecialistPoolSpec   `json:"spec,omitempty"`
-	Status VertexAISpecialistPoolStatus `json:"status,omitempty"`
+	Spec   AIPlatformSpecialistPoolSpec   `json:"spec,omitempty"`
+	Status AIPlatformSpecialistPoolStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// VertexAISpecialistPoolList contains a list of VertexAISpecialistPool
-type VertexAISpecialistPoolList struct {
+// AIPlatformSpecialistPoolList contains a list of AIPlatformSpecialistPool
+type AIPlatformSpecialistPoolList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []VertexAISpecialistPool `json:"items"`
+	Items           []AIPlatformSpecialistPool `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&VertexAISpecialistPool{}, &VertexAISpecialistPoolList{})
+	SchemeBuilder.Register(&AIPlatformSpecialistPool{}, &AIPlatformSpecialistPoolList{})
 }
 
 // Declaring dummy variable to keep the unused import of apiextensionsv1 if types.generated.go is compiled separately.
