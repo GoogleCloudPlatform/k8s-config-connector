@@ -1,0 +1,15 @@
+apiVersion: cloudnumberregistry.cnrm.cloud.google.com/v1alpha1
+kind: CloudNumberRegistryIpamAdminScope
+metadata:
+  name: cnr-ias-max-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: global
+  resourceID: ipamadminscope-max-${uniqueId}
+  enabledAddonPlatforms:
+  - COMPUTE_ENGINE
+  scopeRefs:
+  - external: organizations/${TEST_ORG_ID}
+  labels:
+    foo: bar

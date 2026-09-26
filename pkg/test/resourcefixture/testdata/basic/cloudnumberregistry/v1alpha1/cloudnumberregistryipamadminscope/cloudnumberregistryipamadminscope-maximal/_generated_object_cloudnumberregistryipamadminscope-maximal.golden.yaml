@@ -1,0 +1,33 @@
+apiVersion: cloudnumberregistry.cnrm.cloud.google.com/v1alpha1
+kind: CloudNumberRegistryIpamAdminScope
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: cnr-ias-max-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  enabledAddonPlatforms:
+  - COMPUTE_ENGINE
+  labels:
+    foo: updated
+  location: global
+  projectRef:
+    external: ${projectId}
+  resourceID: ipamadminscope-max-${uniqueId}
+  scopeRefs:
+  - external: organizations/${folderID}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: 'Update call failed: error creating: creating IpamAdminScope projects/${projectId}/locations/global/ipamAdminScopes/ipamadminscope-max-${uniqueId}:
+      rpc error: code = FailedPrecondition desc = com.google.apps.framework.request.FailedPreconditionException:
+      OrgNumberRegistry must be created for organization ${folderID} with admin project
+      ${projectNumber} before creating an IPAM admin scope. Code: FAILED_PRECONDITION'
+    reason: UpdateFailed
+    status: "False"
+    type: Ready
+  observedGeneration: 2
