@@ -278,6 +278,26 @@ func FakeServiceMappings() []v1alpha1.ServiceMapping {
 				},
 			},
 		},
+		{
+			ObjectMeta: metav1.ObjectMeta{
+				Namespace: "cnrm-system",
+				Name:      "datacatalog.cnrm.cloud.google.com",
+			},
+			Spec: v1alpha1.ServiceMappingSpec{
+				Name:            "datacatalog",
+				ServiceHostName: "datacatalog",
+				Version:         "v1beta1",
+				Resources: []v1alpha1.ResourceConfig{
+					{
+						Kind: "DataCatalogTaxonomy",
+						ResourceID: v1alpha1.ResourceID{
+							TargetField: "name",
+						},
+						ServerGeneratedIDField: "name",
+					},
+				},
+			},
+		},
 	}
 }
 
