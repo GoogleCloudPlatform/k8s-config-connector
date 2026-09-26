@@ -17,9 +17,15 @@ package resourceoverrides
 import (
 	"context"
 	"fmt"
+	"regexp"
+	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides/operations"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
+
+var iamCustomRoleIDRegex = regexp.MustCompile(`^[a-zA-Z0-9_\.]{3,64}$`)
 
 func GetIAMCustomRoleResourceOverrides() ResourceOverrides {
 	ro := ResourceOverrides{
@@ -32,12 +38,46 @@ func GetIAMCustomRoleResourceOverrides() ResourceOverrides {
 func buildIAMCustomRole() ResourceOverride {
 	h := &IAMCustomRole{}
 	o := ResourceOverride{
-		PreTerraformExport: h.PreTerraformExport,
+		ConfigValidate:        h.ConfigValidate,
+		PreActuationTransform: h.PreActuationTransform,
+		PreTerraformExport:    h.PreTerraformExport,
 	}
 	return o
 }
 
 type IAMCustomRole struct {
+}
+
+func (h *IAMCustomRole) ConfigValidate(u *unstructured.Unstructured) error {
+	resourceID, exists, err := unstructured.NestedString(u.Object, "spec", k8s.ResourceIDFieldName)
+	if err != nil {
+		return fmt.Errorf("error reading spec.%s: %w", k8s.ResourceIDFieldName, err)
+	}
+	if exists && resourceID != "" {
+		if !iamCustomRoleIDRegex.MatchString(resourceID) {
+			return fmt.Errorf("invalid spec.%s %q: IAM custom role IDs must match regex %s (letters, numbers, underscores, and periods only, length 3-64; hyphens are not allowed)", k8s.ResourceIDFieldName, resourceID, iamCustomRoleIDRegex.String())
+		}
+	}
+	return nil
+}
+
+func (h *IAMCustomRole) PreActuationTransform(r *k8s.Resource) error {
+	resourceID, exists, err := unstructured.NestedString(r.Spec, k8s.ResourceIDFieldName)
+	if err != nil {
+		return fmt.Errorf("error reading spec.%s: %w", k8s.ResourceIDFieldName, err)
+	}
+	if !exists || resourceID == "" {
+		// Default spec.resourceID from metadata.name with hyphens replaced by underscores,
+		// because Google Cloud IAM custom role IDs do not allow hyphens (must match ^[a-zA-Z0-9_\.]{3,64}$).
+		sanitized := strings.ReplaceAll(r.GetName(), "-", "_")
+		if !iamCustomRoleIDRegex.MatchString(sanitized) {
+			return fmt.Errorf("defaulted role ID %q from metadata.name %q is invalid: IAM custom role IDs must match regex %s (length 3-64, alphanumeric, underscores, and periods only)", sanitized, r.GetName(), iamCustomRoleIDRegex.String())
+		}
+		if err := unstructured.SetNestedField(r.Spec, sanitized, k8s.ResourceIDFieldName); err != nil {
+			return fmt.Errorf("error defaulting sanitized spec.%s: %w", k8s.ResourceIDFieldName, err)
+		}
+	}
+	return nil
 }
 
 func (h *IAMCustomRole) PreTerraformExport(_ context.Context, op *operations.TerraformExport) error {
@@ -58,3 +98,4 @@ func (h *IAMCustomRole) PreTerraformExport(_ context.Context, op *operations.Ter
 
 	return nil
 }
+
