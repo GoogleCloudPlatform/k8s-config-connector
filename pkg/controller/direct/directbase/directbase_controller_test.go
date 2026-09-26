@@ -17,6 +17,7 @@ package directbase
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"strings"
 	"testing"
 	"time"
@@ -25,7 +26,12 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
+	"google.golang.org/api/googleapi"
+	"google.golang.org/genproto/googleapis/rpc/errdetails"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	corev1 "k8s.io/api/core/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -424,5 +430,508 @@ func TestReconcile_FindUnresolvableDependency_Delete(t *testing.T) {
 
 	if readyCondition["reason"] != k8s.DependencyNotReady {
 		t.Errorf("expected condition reason to be %s, got: %v", k8s.DependencyNotReady, readyCondition["reason"])
+	}
+}
+
+func TestReconcile_TerminalErrorModeBuiltin_HaltRetries(t *testing.T) {
+	ctx := context.TODO()
+	scheme := runtime.NewScheme()
+	_ = corev1.AddToScheme(scheme)
+	_ = operatorv1beta1.AddToScheme(scheme)
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(testGVK)
+	u.SetName("test-resource")
+	u.SetNamespace("test-ns")
+	u.SetGeneration(1)
+	u.SetAnnotations(map[string]string{
+		k8s.TerminalErrorModeAnnotation: k8s.TerminalErrorModeBuiltin,
+	})
+
+	stWithBadRequest, _ := status.New(codes.InvalidArgument, "Invalid parameter").WithDetails(
+		&errdetails.BadRequest{
+			FieldViolations: []*errdetails.BadRequest_FieldViolation{
+				{
+					Field:       "spec.name",
+					Description: "Must match regex ^[a-z0-9-]+$",
+				},
+			},
+		},
+	)
+
+	adapter := &mockAdapter{
+		findFound: false,
+		createErr: stWithBadRequest.Err(),
+	}
+	model := &mockModel{
+		adapter: adapter,
+	}
+
+	k8sClient := fake.NewClientBuilder().
+		WithScheme(scheme).
+		WithStatusSubresource(u).
+		WithRuntimeObjects(u).
+		Build()
+
+	r := &DirectReconciler{
+		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
+			k8sClient,
+			record.NewFakeRecorder(100),
+		),
+		Client:          k8sClient,
+		scheme:          scheme,
+		gvk:             testGVK,
+		model:           model,
+		jitterGenerator: &mockJitterGenerator{},
+	}
+
+	req := reconcile.Request{
+		NamespacedName: types.NamespacedName{
+			Namespace: "test-ns",
+			Name:      "test-resource",
+		},
+	}
+
+	res, err := r.Reconcile(ctx, req)
+	if err != nil {
+		t.Fatalf("expected reconcile to return nil error on terminal error under builtin mode, got: %v", err)
+	}
+
+	if res.Requeue || res.RequeueAfter != 0 {
+		t.Errorf("expected reconcile to halt (Result{}), got: %v", res)
+	}
+
+	// Verify status condition is UpdateFailedTerminalError and observedGeneration is 1
+	obj := &unstructured.Unstructured{}
+	obj.SetGroupVersionKind(testGVK)
+	if err := k8sClient.Get(ctx, req.NamespacedName, obj); err != nil {
+		t.Fatalf("failed to retrieve object: %v", err)
+	}
+
+	observedGen, found, err := unstructured.NestedInt64(obj.Object, "status", "observedGeneration")
+	if err != nil || !found || observedGen != 1 {
+		t.Errorf("expected status.observedGeneration to be 1, found: %v, got: %v", found, observedGen)
+	}
+
+	conditions, found, err := unstructured.NestedSlice(obj.Object, "status", "conditions")
+	if err != nil || !found || len(conditions) == 0 {
+		t.Fatalf("expected status conditions to be present, found: %v, err: %v", found, err)
+	}
+
+	readyCond := conditions[0].(map[string]interface{})
+	if readyCond["status"] != string(corev1.ConditionFalse) {
+		t.Errorf("expected condition status to be False, got: %v", readyCond["status"])
+	}
+	if readyCond["reason"] != k8s.UpdateFailedTerminalError {
+		t.Errorf("expected condition reason to be %s, got: %v", k8s.UpdateFailedTerminalError, readyCond["reason"])
+	}
+}
+
+func TestReconcile_TerminalErrorModeBuiltin_SkipWhenHalted(t *testing.T) {
+	ctx := context.TODO()
+	scheme := runtime.NewScheme()
+	_ = corev1.AddToScheme(scheme)
+	_ = operatorv1beta1.AddToScheme(scheme)
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(testGVK)
+	u.SetName("test-resource")
+	u.SetNamespace("test-ns")
+	u.SetGeneration(1)
+	u.SetAnnotations(map[string]string{
+		k8s.TerminalErrorModeAnnotation: k8s.TerminalErrorModeBuiltin,
+	})
+	_ = unstructured.SetNestedField(u.Object, int64(1), "status", "observedGeneration")
+	_ = unstructured.SetNestedSlice(u.Object, []interface{}{
+		map[string]interface{}{
+			"type":    "Ready",
+			"status":  string(corev1.ConditionFalse),
+			"reason":  k8s.UpdateFailedTerminalError,
+			"message": "Update call failed: invalid argument",
+		},
+	}, "status", "conditions")
+
+	adapter := &mockAdapter{
+		findFound: false,
+		findErr:   fmt.Errorf("Find should not be called"),
+	}
+	model := &mockModel{
+		adapter: adapter,
+	}
+
+	k8sClient := fake.NewClientBuilder().
+		WithScheme(scheme).
+		WithStatusSubresource(u).
+		WithRuntimeObjects(u).
+		Build()
+
+	r := &DirectReconciler{
+		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
+			k8sClient,
+			record.NewFakeRecorder(100),
+		),
+		Client:          k8sClient,
+		scheme:          scheme,
+		gvk:             testGVK,
+		model:           model,
+		jitterGenerator: &mockJitterGenerator{},
+	}
+
+	req := reconcile.Request{
+		NamespacedName: types.NamespacedName{
+			Namespace: "test-ns",
+			Name:      "test-resource",
+		},
+	}
+
+	res, err := r.Reconcile(ctx, req)
+	if err != nil {
+		t.Fatalf("expected nil error when skipping halted terminal error, got: %v", err)
+	}
+
+	if res.Requeue || res.RequeueAfter != 0 {
+		t.Errorf("expected Result{}, got: %v", res)
+	}
+
+	if adapter.createCalled || adapter.updateCalled || adapter.deleteCalled {
+		t.Errorf("expected no adapter calls when halted, got create=%v update=%v delete=%v",
+			adapter.createCalled, adapter.updateCalled, adapter.deleteCalled)
+	}
+}
+
+func TestReconcile_TerminalErrorModeBuiltin_ResumeOnSpecUpdate(t *testing.T) {
+	ctx := context.TODO()
+	scheme := runtime.NewScheme()
+	_ = corev1.AddToScheme(scheme)
+	_ = operatorv1beta1.AddToScheme(scheme)
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(testGVK)
+	u.SetName("test-resource")
+	u.SetNamespace("test-ns")
+	u.SetGeneration(2) // Generation incremented on spec update
+	u.SetAnnotations(map[string]string{
+		k8s.TerminalErrorModeAnnotation: k8s.TerminalErrorModeBuiltin,
+	})
+	_ = unstructured.SetNestedField(u.Object, int64(1), "status", "observedGeneration") // Previous observed generation was 1
+	_ = unstructured.SetNestedSlice(u.Object, []interface{}{
+		map[string]interface{}{
+			"type":    "Ready",
+			"status":  string(corev1.ConditionFalse),
+			"reason":  k8s.UpdateFailedTerminalError,
+			"message": "Update call failed: invalid argument",
+		},
+	}, "status", "conditions")
+
+	adapter := &mockAdapter{
+		findFound: false, // will call Create
+	}
+	model := &mockModel{
+		adapter: adapter,
+	}
+
+	k8sClient := fake.NewClientBuilder().
+		WithScheme(scheme).
+		WithStatusSubresource(u).
+		WithRuntimeObjects(u).
+		Build()
+
+	r := &DirectReconciler{
+		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
+			k8sClient,
+			record.NewFakeRecorder(100),
+		),
+		Client:          k8sClient,
+		scheme:          scheme,
+		gvk:             testGVK,
+		model:           model,
+		jitterGenerator: &mockJitterGenerator{},
+	}
+
+	req := reconcile.Request{
+		NamespacedName: types.NamespacedName{
+			Namespace: "test-ns",
+			Name:      "test-resource",
+		},
+	}
+
+	res, err := r.Reconcile(ctx, req)
+	if err != nil {
+		t.Fatalf("expected successful reconcile on resumed spec update, got: %v", err)
+	}
+
+	if !adapter.createCalled {
+		t.Errorf("expected Adapter.Create to be called on spec update")
+	}
+
+	if res.RequeueAfter == 0 {
+		t.Errorf("expected RequeueAfter to be scheduled after successful reconcile, got: %v", res)
+	}
+
+	// Verify status is updated to UpToDate with observedGeneration 2
+	obj := &unstructured.Unstructured{}
+	obj.SetGroupVersionKind(testGVK)
+	if err := k8sClient.Get(ctx, req.NamespacedName, obj); err != nil {
+		t.Fatalf("failed to retrieve object: %v", err)
+	}
+
+	observedGen, found, err := unstructured.NestedInt64(obj.Object, "status", "observedGeneration")
+	if err != nil || !found || observedGen != 2 {
+		t.Errorf("expected status.observedGeneration to be 2, found: %v, got: %v", found, observedGen)
+	}
+
+	conditions, found, err := unstructured.NestedSlice(obj.Object, "status", "conditions")
+	if err != nil || !found || len(conditions) == 0 {
+		t.Fatalf("expected status conditions to be present, found: %v, err: %v", found, err)
+	}
+
+	readyCond := conditions[0].(map[string]interface{})
+	if readyCond["status"] != string(corev1.ConditionTrue) {
+		t.Errorf("expected condition status to be True, got: %v", readyCond["status"])
+	}
+	if readyCond["reason"] != k8s.UpToDate {
+		t.Errorf("expected condition reason to be UpToDate, got: %v", readyCond["reason"])
+	}
+}
+
+func TestReconcile_TerminalErrorModeNone_ForcesRetry(t *testing.T) {
+	ctx := context.TODO()
+	scheme := runtime.NewScheme()
+	_ = corev1.AddToScheme(scheme)
+	_ = operatorv1beta1.AddToScheme(scheme)
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(testGVK)
+	u.SetName("test-resource")
+	u.SetNamespace("test-ns")
+	u.SetGeneration(1)
+	u.SetAnnotations(map[string]string{
+		k8s.TerminalErrorModeAnnotation: k8s.TerminalErrorModeNone,
+	})
+
+	adapter := &mockAdapter{
+		findFound: false,
+		createErr: status.Error(codes.InvalidArgument, "Invalid field parameter"),
+	}
+	model := &mockModel{
+		adapter: adapter,
+	}
+
+	k8sClient := fake.NewClientBuilder().
+		WithScheme(scheme).
+		WithStatusSubresource(u).
+		WithRuntimeObjects(u).
+		Build()
+
+	r := &DirectReconciler{
+		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
+			k8sClient,
+			record.NewFakeRecorder(100),
+		),
+		Client:          k8sClient,
+		scheme:          scheme,
+		gvk:             testGVK,
+		model:           model,
+		jitterGenerator: &mockJitterGenerator{},
+	}
+
+	req := reconcile.Request{
+		NamespacedName: types.NamespacedName{
+			Namespace: "test-ns",
+			Name:      "test-resource",
+		},
+	}
+
+	_, err := r.Reconcile(ctx, req)
+	if err == nil {
+		t.Fatalf("expected non-nil error to trigger workqueue retry when mode is none, got nil")
+	}
+
+	// Verify status condition is UpdateFailed (not UpdateFailedTerminalError)
+	obj := &unstructured.Unstructured{}
+	obj.SetGroupVersionKind(testGVK)
+	if err := k8sClient.Get(ctx, req.NamespacedName, obj); err != nil {
+		t.Fatalf("failed to retrieve object: %v", err)
+	}
+
+	conditions, found, err := unstructured.NestedSlice(obj.Object, "status", "conditions")
+	if err != nil || !found || len(conditions) == 0 {
+		t.Fatalf("expected status conditions to be present, found: %v, err: %v", found, err)
+	}
+
+	readyCond := conditions[0].(map[string]interface{})
+	if readyCond["reason"] != k8s.UpdateFailed {
+		t.Errorf("expected condition reason to be %s, got: %v", k8s.UpdateFailed, readyCond["reason"])
+	}
+}
+
+func TestReconcile_TransientError_ContinuesRetrying(t *testing.T) {
+	ctx := context.TODO()
+	scheme := runtime.NewScheme()
+	_ = corev1.AddToScheme(scheme)
+	_ = operatorv1beta1.AddToScheme(scheme)
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(testGVK)
+	u.SetName("test-resource")
+	u.SetNamespace("test-ns")
+	u.SetGeneration(1)
+	u.SetAnnotations(map[string]string{
+		k8s.TerminalErrorModeAnnotation: k8s.TerminalErrorModeBuiltin,
+	})
+
+	// Transient error: HTTP 400 with RESOURCE_IN_USE_BY_ANOTHER_RESOURCE
+	transientErr := &googleapi.Error{
+		Code:    http.StatusBadRequest,
+		Message: "The resource is currently in use",
+		Errors: []googleapi.ErrorItem{
+			{
+				Reason:  "RESOURCE_IN_USE_BY_ANOTHER_RESOURCE",
+				Message: "Resource is in use by another resource",
+			},
+		},
+	}
+
+	adapter := &mockAdapter{
+		findFound: false,
+		createErr: transientErr,
+	}
+	model := &mockModel{
+		adapter: adapter,
+	}
+
+	k8sClient := fake.NewClientBuilder().
+		WithScheme(scheme).
+		WithStatusSubresource(u).
+		WithRuntimeObjects(u).
+		Build()
+
+	r := &DirectReconciler{
+		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
+			k8sClient,
+			record.NewFakeRecorder(100),
+		),
+		Client:          k8sClient,
+		scheme:          scheme,
+		gvk:             testGVK,
+		model:           model,
+		jitterGenerator: &mockJitterGenerator{},
+	}
+
+	req := reconcile.Request{
+		NamespacedName: types.NamespacedName{
+			Namespace: "test-ns",
+			Name:      "test-resource",
+		},
+	}
+
+	_, err := r.Reconcile(ctx, req)
+	if err == nil {
+		t.Fatalf("expected non-nil error to trigger workqueue retry for transient error, got nil")
+	}
+
+	// Verify status condition is UpdateFailed (not UpdateFailedTerminalError)
+	obj := &unstructured.Unstructured{}
+	obj.SetGroupVersionKind(testGVK)
+	if err := k8sClient.Get(ctx, req.NamespacedName, obj); err != nil {
+		t.Fatalf("failed to retrieve object: %v", err)
+	}
+
+	conditions, found, err := unstructured.NestedSlice(obj.Object, "status", "conditions")
+	if err != nil || !found || len(conditions) == 0 {
+		t.Fatalf("expected status conditions to be present, found: %v, err: %v", found, err)
+	}
+
+	readyCond := conditions[0].(map[string]interface{})
+	if readyCond["reason"] != k8s.UpdateFailed {
+		t.Errorf("expected condition reason to be %s, got: %v", k8s.UpdateFailed, readyCond["reason"])
+	}
+}
+
+func TestReconcile_TerminalErrorModeBuiltin_DeletePrecedence(t *testing.T) {
+	ctx := context.TODO()
+	scheme := runtime.NewScheme()
+	_ = corev1.AddToScheme(scheme)
+	_ = operatorv1beta1.AddToScheme(scheme)
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(testGVK)
+	u.SetName("test-resource")
+	u.SetNamespace("test-ns")
+	u.SetGeneration(1)
+	u.SetAnnotations(map[string]string{
+		k8s.TerminalErrorModeAnnotation: k8s.TerminalErrorModeBuiltin,
+	})
+
+	now := metav1.Now()
+	u.SetDeletionTimestamp(&now)
+	u.SetFinalizers([]string{k8s.ControllerFinalizerName})
+
+	_ = unstructured.SetNestedField(u.Object, int64(1), "status", "observedGeneration")
+	_ = unstructured.SetNestedSlice(u.Object, []interface{}{
+		map[string]interface{}{
+			"type":    "Ready",
+			"status":  string(corev1.ConditionFalse),
+			"reason":  k8s.UpdateFailedTerminalError,
+			"message": "Update call failed: invalid argument",
+		},
+	}, "status", "conditions")
+
+	adapter := &mockAdapter{
+		findFound:     true,
+		deleteDeleted: true,
+	}
+	model := &mockModel{
+		adapter: adapter,
+	}
+
+	k8sClient := fake.NewClientBuilder().
+		WithScheme(scheme).
+		WithStatusSubresource(u).
+		WithRuntimeObjects(u).
+		Build()
+
+	r := &DirectReconciler{
+		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
+			k8sClient,
+			record.NewFakeRecorder(100),
+		),
+		Client:          k8sClient,
+		scheme:          scheme,
+		gvk:             testGVK,
+		model:           model,
+		jitterGenerator: &mockJitterGenerator{},
+	}
+
+	req := reconcile.Request{
+		NamespacedName: types.NamespacedName{
+			Namespace: "test-ns",
+			Name:      "test-resource",
+		},
+	}
+
+	_, err := r.Reconcile(ctx, req)
+	if err != nil {
+		t.Fatalf("expected successful reconcile on deletion, got: %v", err)
+	}
+
+	if !adapter.deleteCalled {
+		t.Errorf("expected Adapter.Delete to be called when deleting resource in terminal error state")
+	}
+
+	// Verify object has been finalized / deleted
+	obj := &unstructured.Unstructured{}
+	obj.SetGroupVersionKind(testGVK)
+	err = k8sClient.Get(ctx, req.NamespacedName, obj)
+	if err != nil && !apierrors.IsNotFound(err) {
+		t.Fatalf("failed to retrieve object: %v", err)
+	}
+
+	if err == nil {
+		for _, f := range obj.GetFinalizers() {
+			if f == k8s.ControllerFinalizerName {
+				t.Errorf("expected finalizer to be removed, but still found %s", f)
+			}
+		}
 	}
 }

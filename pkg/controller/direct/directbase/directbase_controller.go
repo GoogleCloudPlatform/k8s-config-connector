@@ -22,7 +22,9 @@ import (
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase/errorutil"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
@@ -200,9 +202,10 @@ type DirectReconciler struct {
 }
 
 type reconcileContext struct {
-	gvk            schema.GroupVersionKind
-	Reconciler     *DirectReconciler
-	NamespacedName types.NamespacedName
+	gvk                 schema.GroupVersionKind
+	Reconciler          *DirectReconciler
+	NamespacedName      types.NamespacedName
+	terminalErrorHalted bool
 }
 
 func (r *DirectReconciler) mapSecretToResources(ctx context.Context, obj client.Object) ([]reconcile.Request, error) {
@@ -259,9 +262,17 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 		return reconcile.Result{}, nil
 	}
 
+	if isTerminalErrorHalted(obj) {
+		logger.V(2).Info("Skipping reconcile as resource is in terminal error state and generation has not changed", "resource", request.NamespacedName)
+		return reconcile.Result{}, nil
+	}
+
 	requeue, err := runCtx.doReconcile(ctx, obj)
 	if err != nil {
 		return reconcile.Result{}, err
+	}
+	if runCtx.terminalErrorHalted {
+		return reconcile.Result{}, nil
 	}
 	if requeue {
 		return reconcile.Result{Requeue: true}, nil
@@ -501,7 +512,44 @@ func (r *reconcileContext) handleUpdateFailed(ctx context.Context, policy *unstr
 			"resource", k8s.GetNamespacedName(policy), "event", k8s.UpdateFailed)
 		return fmt.Errorf("Update call failed: %w", origErr)
 	}
+
+	mode := policy.GetAnnotations()[k8s.TerminalErrorModeAnnotation]
+	if mode == k8s.TerminalErrorModeBuiltin && errorutil.IsTerminalError(origErr) {
+		logger.Info("terminal error detected under builtin mode; halting retries", "resource", k8s.GetNamespacedName(policy), "error", origErr)
+		r.terminalErrorHalted = true
+		return r.Reconciler.HandleUpdateFailedTerminalError(ctx, resource, origErr)
+	}
+
 	return r.Reconciler.HandleUpdateFailed(ctx, resource, origErr)
+}
+
+func isTerminalErrorHalted(u *unstructured.Unstructured) bool {
+	if u.GetDeletionTimestamp() != nil {
+		return false
+	}
+	if u.GetAnnotations()[k8s.TerminalErrorModeAnnotation] != k8s.TerminalErrorModeBuiltin {
+		return false
+	}
+	observedGen, found, err := unstructured.NestedInt64(u.Object, "status", "observedGeneration")
+	if err != nil || !found || observedGen != u.GetGeneration() {
+		return false
+	}
+	conditions, found, err := unstructured.NestedSlice(u.Object, "status", "conditions")
+	if err != nil || !found {
+		return false
+	}
+	for _, c := range conditions {
+		cMap, ok := c.(map[string]interface{})
+		if !ok {
+			continue
+		}
+		if cMap["type"] == k8sv1alpha1.ReadyConditionType {
+			if cMap["status"] == string(corev1.ConditionFalse) && cMap["reason"] == k8s.UpdateFailedTerminalError {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 func (r *reconcileContext) handleDeleted(ctx context.Context, policy *unstructured.Unstructured) error {
