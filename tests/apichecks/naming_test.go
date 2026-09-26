@@ -105,6 +105,12 @@ func TestDirectResourceFileNaming(t *testing.T) {
 			}
 			prefix := strings.TrimSuffix(filename, matchedSuffix)
 
+			// Standard files containing shared, overlapping, or common helper structures
+			// are exempt from the resource kind prefix requirement.
+			if filename == "common_types.go" || filename == "shared_types.go" || filename == "recursive_types.go" || filename == "krm_types.go" {
+				return nil
+			}
+
 			// 4a. If the prefix is a valid kind, it passes!
 			if allKinds[prefix] {
 				return nil

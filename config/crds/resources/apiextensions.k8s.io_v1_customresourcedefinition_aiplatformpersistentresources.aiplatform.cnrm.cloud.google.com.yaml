@@ -298,9 +298,11 @@ spec:
                           format: int32
                           type: integer
                         bootDiskType:
-                          description: 'Type of the boot disk (default is "pd-ssd").
-                            Valid values: "pd-ssd" (Persistent Disk Solid State Drive)
-                            or "pd-standard" (Persistent Disk Hard Disk Drive).'
+                          description: 'Type of the boot disk. For non-A3U machines,
+                            the default value is "pd-ssd", for A3U machines, the default
+                            value is "hyperdisk-balanced". Valid values: "pd-ssd"
+                            (Persistent Disk Solid State Drive), "pd-standard" (Persistent
+                            Disk Hard Disk Drive) or "hyperdisk-balanced".'
                           type: string
                       type: object
                     id:
@@ -320,6 +322,23 @@ spec:
                         acceleratorType:
                           description: Immutable. The type of accelerator(s) that
                             may be attached to the machine as per [accelerator_count][google.cloud.aiplatform.v1.MachineSpec.accelerator_count].
+                          type: string
+                        gpuPartitionSize:
+                          description: |-
+                            Optional. Immutable. The Nvidia GPU partition size.
+
+                             When specified, the requested accelerators will be partitioned into
+                             smaller GPU partitions. For example, if the request is for 8 units of
+                             NVIDIA A100 GPUs, and gpu_partition_size="1g.10gb", the service will
+                             create 8 * 7 = 56 partitioned MIG instances.
+
+                             The partition size must be a value supported by the requested accelerator.
+                             Refer to
+                             [Nvidia GPU
+                             Partitioning](https://cloud.google.com/kubernetes-engine/docs/how-to/gpus-multi#multi-instance_gpu_partitions)
+                             for the available partition sizes.
+
+                             If set, the accelerator_count should be set to 1.
                           type: string
                         machineType:
                           description: |-
