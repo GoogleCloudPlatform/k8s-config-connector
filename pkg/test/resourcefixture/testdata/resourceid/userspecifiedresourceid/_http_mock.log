@@ -86,6 +86,7 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
+  "satisfiesPzs": false,
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset_${uniqueId}",
   "type": "DEFAULT"
 }
@@ -149,31 +150,7 @@ PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets
 Content-Type: application/json
 
 {
-  "access": [
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    },
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    }
-  ],
-  "friendlyName": "bigquerydataset-sample-updated",
-  "isCaseInsensitive": false,
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "maxTimeTravelHours": "168"
+  "friendlyName": "bigquerydataset-sample-updated"
 }
 
 200 OK
@@ -213,7 +190,6 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-sample-updated",
   "id": "000000000000000000000",
-  "isCaseInsensitive": false,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
@@ -222,6 +198,7 @@ X-Xss-Protection: 0
   "lastModifiedTime": "123456789",
   "location": "us-central1",
   "maxTimeTravelHours": "168",
+  "satisfiesPzs": false,
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset_${uniqueId}",
   "type": "DEFAULT"
 }
@@ -268,7 +245,6 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-sample-updated",
   "id": "000000000000000000000",
-  "isCaseInsensitive": false,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
@@ -277,6 +253,7 @@ X-Xss-Protection: 0
   "lastModifiedTime": "123456789",
   "location": "us-central1",
   "maxTimeTravelHours": "168",
+  "satisfiesPzs": false,
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset_${uniqueId}",
   "type": "DEFAULT"
 }
@@ -322,7 +299,6 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-sample-updated",
   "id": "000000000000000000000",
-  "isCaseInsensitive": false,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
@@ -331,6 +307,7 @@ X-Xss-Protection: 0
   "lastModifiedTime": "123456789",
   "location": "us-central1",
   "maxTimeTravelHours": "168",
+  "satisfiesPzs": false,
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset_${uniqueId}",
   "type": "DEFAULT"
 }

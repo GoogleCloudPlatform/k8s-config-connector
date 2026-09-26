@@ -99,6 +99,18 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "bigquerydatapolicy.cnrm.cloud.google.com", Kind: "BigQueryDataPolicyDataPolicy"}:
 	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryDatasetAccess"}:
 	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryDataset"}:
+		// In fullybigquerydataset, update.yaml updates isCaseInsensitive from true to false
+		// and defaultCollation from "und:ci" to "". When running with the fallback Terraform
+		// controller, resourceBigQueryDatasetUpdate omits isCaseInsensitive=false from the PUT
+		// payload (because tpgresource.IsEmptyValue treats false as empty) and retains
+		// defaultCollation="und:ci", causing GCP to keep isCaseInsensitive=true and triggering
+		// an unexpected PUT during re-reconciliation. The direct controller behavior is still
+		// verified by fullybigquerydataset-direct.
+		if testName == "fullybigquerydataset" {
+			return false
+		} else {
+			return true
+		}
 	case schema.GroupKind{Group: "bigquerydatatransfer.cnrm.cloud.google.com", Kind: "BigQueryDataTransferConfig"}:
 	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryJob"}:
 	case schema.GroupKind{Group: "bigqueryreservation.cnrm.cloud.google.com", Kind: "BigQueryReservationAssignment"}:

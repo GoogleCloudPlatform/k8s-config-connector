@@ -47,22 +47,26 @@ func (s *TagBindingsServer) normalizeParent(parent string) (string, error) {
 	}
 
 	tokens := strings.Split(path, "/")
-	for i, token := range tokens {
-		if token == "projects" && i+1 < len(tokens) {
-			projectIDOrNumber := tokens[i+1]
-			// Optimisation: check if it is already a number
-			if _, err := strconv.ParseInt(projectIDOrNumber, 10, 64); err == nil {
-				continue
-			}
-			if projectIDOrNumber == "_" {
-				continue
-			}
+	// Real GCP preserves the project ID (rather than converting to project number)
+	// for BigQuery Dataset TagBinding parent links (//bigquery.googleapis.com/projects/{projectId}/datasets/{datasetId}).
+	if !(service == "bigquery.googleapis.com" && len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "datasets") {
+		for i, token := range tokens {
+			if token == "projects" && i+1 < len(tokens) {
+				projectIDOrNumber := tokens[i+1]
+				// Optimisation: check if it is already a number
+				if _, err := strconv.ParseInt(projectIDOrNumber, 10, 64); err == nil {
+					continue
+				}
+				if projectIDOrNumber == "_" {
+					continue
+				}
 
-			project, err := s.Projects.GetProjectByIDOrNumber(projectIDOrNumber)
-			if err != nil {
-				return "", err
+				project, err := s.Projects.GetProjectByIDOrNumber(projectIDOrNumber)
+				if err != nil {
+					return "", err
+				}
+				tokens[i+1] = fmt.Sprintf("%d", project.Number)
 			}
-			tokens[i+1] = fmt.Sprintf("%d", project.Number)
 		}
 	}
 

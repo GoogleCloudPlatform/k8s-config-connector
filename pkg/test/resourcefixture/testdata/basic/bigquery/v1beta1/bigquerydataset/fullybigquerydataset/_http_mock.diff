@@ -22,44 +22,18 @@
 < PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 ---
 > PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-538a537,540
->       "specialGroup": "projectOwners"
->     },
->     {
->       "role": "OWNER",
-542,544d543
-<   "datasetReference": {
-<     "datasetId": "bigquerydataset${uniqueId}"
-<   },
-549,550c548,549
-<   "defaultPartitionExpirationMs": 3800000,
-<   "defaultTableExpirationMs": 3800000,
----
+541a540,577
+>   "defaultEncryptionConfiguration": {
+>     "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+>   },
 >   "defaultPartitionExpirationMs": "3800000",
 >   "defaultTableExpirationMs": "3800000",
-552a552
+>   "description": "Fully Configured BigQuery Dataset updated",
+>   "friendlyName": "bigquerydataset-fullyconfigured-updated",
 >   "isCaseInsensitive": false,
-557d556
-<   "location": "US",
-583a583,586
->       "specialGroup": "projectOwners"
->     },
->     {
->       "role": "OWNER",
-601a605
->   "isCaseInsensitive": false,
-641a646,649
->       "specialGroup": "projectOwners"
->     },
->     {
->       "role": "OWNER",
-659a668
->   "isCaseInsensitive": false,
-675,676c684,746
-< DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
-< Content-Type: application/json
----
-> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+>   "maxTimeTravelHours": "96",
+>   "storageBillingModel": "LOGICAL"
+> }
 > 
 > 200 OK
 > Content-Type: application/json; charset=UTF-8
@@ -83,42 +57,56 @@
 >     },
 >     {
 >       "role": "OWNER",
->       "specialGroup": "projectOwners"
->     },
->     {
->       "role": "OWNER",
 >       "userByEmail": "user@google.com"
 >     }
 >   ],
 >   "creationTime": "123456789",
->   "datasetReference": {
+543c579,580
+<     "datasetId": "bigquerydataset${uniqueId}"
+---
 >     "datasetId": "bigquerydataset${uniqueId}",
 >     "projectId": "${projectId}"
->   },
->   "defaultCollation": "und:ci",
->   "defaultEncryptionConfiguration": {
->     "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
->   },
+549,550c586,587
+<   "defaultPartitionExpirationMs": 3800000,
+<   "defaultTableExpirationMs": 3800000,
+---
 >   "defaultPartitionExpirationMs": "3800000",
 >   "defaultTableExpirationMs": "3800000",
->   "description": "Fully Configured BigQuery Dataset updated",
+551a589
 >   "etag": "abcdef0123A=",
->   "friendlyName": "bigquerydataset-fullyconfigured-updated",
+552a591,593
 >   "id": "000000000000000000000",
 >   "isCaseInsensitive": false,
 >   "kind": "bigquery#dataset",
->   "labels": {
->     "cnrm-test": "true",
->     "managed-by-cnrm": "true"
->   },
+556a598
 >   "lastModifiedTime": "123456789",
->   "location": "US",
->   "maxTimeTravelHours": "96",
+559c601,603
+<   "storageBillingModel": "LOGICAL"
+---
 >   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
 >   "storageBillingModel": "LOGICAL",
 >   "type": "DEFAULT"
-> }
-> 
+561a606,610
 > ---
 > 
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+> Content-Type: application/json
+> 
+602c651
+<   "isCaseInsensitive": true,
+---
+>   "isCaseInsensitive": false,
+618,619c667
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+661c709
+<   "isCaseInsensitive": true,
+---
+>   "isCaseInsensitive": false,
+677,678c725
+< DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
+< Content-Type: application/json
+---
 > DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false&prettyPrint=false
