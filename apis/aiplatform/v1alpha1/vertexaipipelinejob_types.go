@@ -120,7 +120,7 @@ type DNSPeeringConfig struct {
 
 	// Required. The project ID hosting the Cloud DNS managed zone that contains the 'domain'.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.DnsPeeringConfig.target_project
-	TargetProject *string `json:"targetProject,omitempty"`
+	TargetProjectRef *refsv1beta1.ProjectRef `json:"targetProjectRef,omitempty"`
 
 	// Required. The VPC network name in the target_project where the DNS zone specified by 'domain' is visible.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.DnsPeeringConfig.target_network
