@@ -29,13 +29,14 @@ var (
 	_ identity.Resource   = &CertificateManagerCertificateMap{}
 )
 
-var CertificateManagerCertificateMapIdentityFormat = gcpurls.Template[CertificateManagerCertificateMapIdentity]("certificatemanager.googleapis.com", "projects/{project}/locations/global/certificateMaps/{certificatemap}")
+var CertificateManagerCertificateMapIdentityFormat = gcpurls.Template[CertificateManagerCertificateMapIdentity]("certificatemanager.googleapis.com", "projects/{project}/locations/{location}/certificateMaps/{certificatemap}")
 
 // +k8s:deepcopy-gen=false
 
 // CertificateManagerCertificateMapIdentity is the identity of a GCP CertificateManagerCertificateMap resource.
 type CertificateManagerCertificateMapIdentity struct {
 	Project        string
+	Location       string
 	CertificateMap string
 }
 
@@ -60,6 +61,14 @@ func (i *CertificateManagerCertificateMapIdentity) Host() string {
 	return CertificateManagerCertificateMapIdentityFormat.Host()
 }
 
+func (i *CertificateManagerCertificateMapIdentity) ParentString() string {
+	location := i.Location
+	if location == "" {
+		location = "global"
+	}
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, location)
+}
+
 func getIdentityFromCertificateManagerCertificateMapSpec(ctx context.Context, reader client.Reader, obj *CertificateManagerCertificateMap) (*CertificateManagerCertificateMapIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
@@ -71,8 +80,14 @@ func getIdentityFromCertificateManagerCertificateMapSpec(ctx context.Context, re
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
+	location := "global"
+	if obj.Spec.Location != nil && *obj.Spec.Location != "" {
+		location = *obj.Spec.Location
+	}
+
 	identity := &CertificateManagerCertificateMapIdentity{
 		Project:        projectID,
+		Location:       location,
 		CertificateMap: resourceID,
 	}
 	return identity, nil

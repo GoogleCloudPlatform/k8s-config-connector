@@ -39,6 +39,10 @@ type CertificateManagerCertificateMapEntrySpec struct {
 	// +optional
 	Hostname *string `json:"hostname,omitempty"`
 
+	/* Immutable. The Certificate Manager location. If not specified, the location is derived from mapRef or defaults to "global". */
+	// +optional
+	Location *string `json:"location,omitempty"`
+
 	/* A map entry that is inputted into the certificate map. */
 	// +required
 	MapRef CertificateManagerCertificateMapRef `json:"mapRef"`
