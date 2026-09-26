@@ -1388,6 +1388,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - multicluster.core.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - netapp.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1809,6 +1821,18 @@ rules:
   - delete
 - apiGroups:
   - storagetransfer.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - syncer.gkelabs.io
   resources:
   - '*'
   verbs:
