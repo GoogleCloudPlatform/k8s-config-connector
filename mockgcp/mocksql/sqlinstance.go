@@ -1135,10 +1135,6 @@ func (s *sqlInstancesService) Switchover(ctx context.Context, req *pb.SqlInstanc
 		obj.MasterInstanceName = ""
 		oldMaster.MasterInstanceName = name.Project.ID + ":" + name.InstanceName
 
-		// Swap ReplicationCluster
-		obj.ReplicationCluster = oldMaster.ReplicationCluster
-		oldMaster.ReplicationCluster = nil
-
 		// Set replica names
 		replicaName := oldMasterName.InstanceName
 		if oldMasterName.Project.ID != name.Project.ID {
@@ -1146,6 +1142,15 @@ func (s *sqlInstancesService) Switchover(ctx context.Context, req *pb.SqlInstanc
 		}
 		obj.ReplicaNames = []string{replicaName}
 		oldMaster.ReplicaNames = nil
+
+		// Update ReplicationCluster
+		obj.ReplicationCluster = &pb.ReplicationCluster{
+			FailoverDrReplicaName: &replicaName,
+			DrReplica:             proto.Bool(false),
+		}
+		oldMaster.ReplicationCluster = &pb.ReplicationCluster{
+			DrReplica: proto.Bool(true),
+		}
 
 		oldMaster.Etag = fields.ComputeWeakEtag(oldMaster)
 

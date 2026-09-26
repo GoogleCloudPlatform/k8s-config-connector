@@ -17,7 +17,10 @@ package e2e
 import (
 	"context"
 	_ "embed"
+	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
@@ -228,6 +231,73 @@ func TestE2EScenariosV2(t *testing.T) {
 						}
 
 						captureHTTPLogEvents(true, deferHTTPLog)
+						t.Logf("***/Step %d finished in %v", i, time.Since(stepStart))
+						continue
+					}
+
+					if obj.GroupVersionKind().Kind == "HTTPRequest" {
+						method, _, _ := unstructured.NestedString(obj.Object, "method")
+						if method == "" {
+							method = "GET"
+						}
+						urlStr, _, _ := unstructured.NestedString(obj.Object, "url")
+						bodyStr, _, _ := unstructured.NestedString(obj.Object, "body")
+						waitForOperation := true
+						if v, ok, _ := unstructured.NestedBool(obj.Object, "waitForOperation"); ok {
+							waitForOperation = v
+						}
+						waitTimeout := 5 * time.Minute
+						if d, ok, _ := unstructured.NestedString(obj.Object, "timeout"); ok {
+							if parsed, err := time.ParseDuration(d); err == nil {
+								waitTimeout = parsed
+							}
+						}
+
+						// Substitute ${projectId} and ${uniqueId}
+						urlStr = strings.ReplaceAll(urlStr, "${projectId}", project.ProjectID)
+						urlStr = strings.ReplaceAll(urlStr, "${uniqueId}", uniqueID)
+						bodyStr = strings.ReplaceAll(bodyStr, "${projectId}", project.ProjectID)
+						bodyStr = strings.ReplaceAll(bodyStr, "${uniqueId}", uniqueID)
+
+						var reqBody io.Reader
+						if bodyStr != "" {
+							reqBody = strings.NewReader(bodyStr)
+						}
+
+						req, err := http.NewRequestWithContext(ctx, method, urlStr, reqBody)
+						if err != nil {
+							h.Fatalf("failed to create http request: %v", err)
+						}
+						if bodyStr != "" {
+							req.Header.Set("Content-Type", "application/json")
+						}
+
+						httpClient := h.GCPHTTPClient()
+						resp, err := httpClient.Do(req)
+						if err != nil {
+							h.Fatalf("http request failed: %v", err)
+						}
+						defer resp.Body.Close()
+
+						respBytes, err := io.ReadAll(resp.Body)
+						if err != nil {
+							h.Fatalf("failed to read response body: %v", err)
+						}
+						if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+							h.Fatalf("http request returned non-2xx status %d: %s", resp.StatusCode, string(respBytes))
+						}
+
+						// Auto-detect and poll LRO to completion on real GCP
+						if waitForOperation {
+							var opMap map[string]any
+							if err := json.Unmarshal(respBytes, &opMap); err == nil {
+								if pollURL := getOperationPollURL(urlStr, opMap); pollURL != "" {
+									pollLROToCompletion(ctx, h, httpClient, pollURL, waitTimeout)
+								}
+							}
+						}
+
+						captureHTTPLogEvents(false, deferHTTPLog)
 						t.Logf("***/Step %d finished in %v", i, time.Since(stepStart))
 						continue
 					}
