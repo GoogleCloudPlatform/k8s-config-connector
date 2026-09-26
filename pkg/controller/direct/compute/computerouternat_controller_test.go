@@ -158,11 +158,8 @@ func TestCompareComputeRouterNAT(t *testing.T) {
 					},
 				},
 			},
-			wantDiff:  true,
-			wantPaths: []string{"nat_ips", "subnetworks"},
-			// Future expected:
-			// wantDiff: false,
-			// wantPaths: nil,
+			wantDiff:  false,
+			wantPaths: nil,
 		},
 		{
 			// 2. Missing Server Defaults for Unset Fields
@@ -183,11 +180,8 @@ func TestCompareComputeRouterNAT(t *testing.T) {
 				EndpointTypes:       []string{"ENDPOINT_TYPE_VM"},
 				NatIpAllocateOption: proto.String("AUTO_ONLY"),
 			},
-			wantDiff:  true,
-			wantPaths: []string{"endpoint_types", "type"},
-			// Future expected:
-			// wantDiff: false,
-			// wantPaths: nil,
+			wantDiff:  false,
+			wantPaths: nil,
 		},
 		{
 			// 3. Wrong Default for enable_endpoint_independent_mapping
@@ -200,11 +194,8 @@ func TestCompareComputeRouterNAT(t *testing.T) {
 			actual: &computepb.RouterNat{
 				EnableEndpointIndependentMapping: proto.Bool(false),
 			},
-			wantDiff:  true,
-			wantPaths: []string{"enable_endpoint_independent_mapping"},
-			// Future expected:
-			// wantDiff: false,
-			// wantPaths: nil,
+			wantDiff:  false,
+			wantPaths: nil,
 		},
 		{
 			// 4. Wrong Default for enable_dynamic_port_allocation on Private NAT
@@ -222,11 +213,8 @@ func TestCompareComputeRouterNAT(t *testing.T) {
 				Type:                        proto.String("PRIVATE"),
 				EnableDynamicPortAllocation: proto.Bool(true),
 			},
-			wantDiff:  true,
-			wantPaths: []string{"enable_dynamic_port_allocation"},
-			// Future expected:
-			// wantDiff: false,
-			// wantPaths: nil,
+			wantDiff:  false,
+			wantPaths: nil,
 		},
 		{
 			// 5. Terraform Set vs Direct Slice Ordering
@@ -247,11 +235,8 @@ func TestCompareComputeRouterNAT(t *testing.T) {
 					"projects/p1/regions/r1/addresses/addr-1",
 				},
 			},
-			wantDiff:  true,
-			wantPaths: []string{"nat_ips"},
-			// Future expected:
-			// wantDiff: false,
-			// wantPaths: nil,
+			wantDiff:  false,
+			wantPaths: nil,
 		},
 		{
 			// 6. Positive Control: Genuine Field Modification
@@ -268,9 +253,6 @@ func TestCompareComputeRouterNAT(t *testing.T) {
 			},
 			wantDiff:  true,
 			wantPaths: []string{"min_ports_per_vm"},
-			// Future expected:
-			// wantDiff: true,
-			// wantPaths: []string{"min_ports_per_vm"},
 		},
 	}
 
