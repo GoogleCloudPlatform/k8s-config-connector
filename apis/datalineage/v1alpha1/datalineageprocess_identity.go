@@ -18,7 +18,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
@@ -90,23 +89,5 @@ func getIdentityFromDataLineageProcessSpec(ctx context.Context, reader client.Re
 }
 
 func (obj *DataLineageProcess) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	specIdentity, err := getIdentityFromDataLineageProcessSpec(ctx, reader, obj)
-	if err != nil {
-		return nil, err
-	}
-
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
-	if externalRef != "" {
-		// Validate desired with actual
-		statusIdentity := &DataLineageProcessIdentity{}
-		if err := statusIdentity.FromExternal(externalRef); err != nil {
-			return nil, err
-		}
-
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change DataLineageProcess identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
-		}
-	}
-
-	return specIdentity, nil
+	return getIdentityFromDataLineageProcessSpec(ctx, reader, obj)
 }

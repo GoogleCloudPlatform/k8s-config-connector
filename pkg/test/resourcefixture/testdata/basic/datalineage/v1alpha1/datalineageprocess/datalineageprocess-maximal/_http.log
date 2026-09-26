@@ -1,0 +1,208 @@
+GET https://datalineage.googleapis.com/v1/projects/${projectId}/locations/us/processes/dlprocess-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fprocesses%2Fdlprocess-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://datalineage.googleapis.com/v1/projects/${projectId}/locations/us/processes?%24alt=json%3Benum-encoding%3Dint&requestId=123456
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus
+
+{
+  "attributes": {
+    "debug": "true",
+    "engine": "spark",
+    "version": "3.1.2"
+  },
+  "displayName": "Maximal Data Lineage Process",
+  "name": "projects/${projectId}/locations/us/processes/dlprocess-max-${uniqueId}",
+  "origin": {
+    "name": "myCustomIntegration",
+    "sourceType": 1
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "attributes": {
+    "debug": "true",
+    "engine": "spark",
+    "version": "3.1.2"
+  },
+  "displayName": "Maximal Data Lineage Process",
+  "name": "projects/${projectNumber}/locations/us/processes/dlprocess-max-${uniqueId}",
+  "origin": {
+    "name": "myCustomIntegration",
+    "sourceType": 1
+  }
+}
+
+---
+
+GET https://datalineage.googleapis.com/v1/projects/${projectId}/locations/us/processes/dlprocess-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fprocesses%2Fdlprocess-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "attributes": {
+    "debug": "true",
+    "engine": "spark",
+    "version": "3.1.2"
+  },
+  "displayName": "Maximal Data Lineage Process",
+  "name": "projects/${projectNumber}/locations/us/processes/dlprocess-max-${uniqueId}",
+  "origin": {
+    "name": "myCustomIntegration",
+    "sourceType": 1
+  }
+}
+
+---
+
+PATCH https://datalineage.googleapis.com/v1/projects/${projectId}/locations/us/processes/dlprocess-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&requestId=123456&updateMask=attributes%2CdisplayName%2Corigin
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: process.name=projects%2F${projectId}%2Flocations%2Fus%2Fprocesses%2Fdlprocess-max-${uniqueId}
+
+{
+  "attributes": {
+    "debug": "false",
+    "engine": "spark-updated",
+    "version": "3.2.0"
+  },
+  "displayName": "Updated Maximal Data Lineage Process",
+  "name": "projects/${projectId}/locations/us/processes/dlprocess-max-${uniqueId}",
+  "origin": {
+    "name": "myUpdatedCustomIntegration",
+    "sourceType": 1
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "attributes": {
+    "debug": "false",
+    "engine": "spark-updated",
+    "version": "3.2.0"
+  },
+  "displayName": "Updated Maximal Data Lineage Process",
+  "name": "projects/${projectNumber}/locations/us/processes/dlprocess-max-${uniqueId}",
+  "origin": {
+    "name": "myUpdatedCustomIntegration",
+    "sourceType": 1
+  }
+}
+
+---
+
+GET https://datalineage.googleapis.com/v1/projects/${projectId}/locations/us/processes/dlprocess-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fprocesses%2Fdlprocess-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "attributes": {
+    "debug": "false",
+    "engine": "spark-updated",
+    "version": "3.2.0"
+  },
+  "displayName": "Updated Maximal Data Lineage Process",
+  "name": "projects/${projectNumber}/locations/us/processes/dlprocess-max-${uniqueId}",
+  "origin": {
+    "name": "myUpdatedCustomIntegration",
+    "sourceType": 1
+  }
+}
+
+---
+
+DELETE https://datalineage.googleapis.com/v1/projects/${projectId}/locations/us/processes/dlprocess-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fprocesses%2Fdlprocess-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.datacatalog.lineage.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": 1,
+    "resource": "projects/${projectId}/locations/us/processes/dlprocess-max-${uniqueId}",
+    "resourceUuid": "dlprocess-max-${uniqueId}",
+    "state": 3
+  },
+  "name": "projects/${projectNumber}/locations/us/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
