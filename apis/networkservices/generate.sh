@@ -38,6 +38,7 @@ ${CONTROLLERBUILDER} generate-types \
     --resource NetworkServicesServiceBinding:ServiceBinding \
     --resource NetworkServicesLBRouteExtension:LbRouteExtension \
     --resource NetworkServicesLBEdgeExtension:LbEdgeExtension \
+    --resource NetworkServicesLBTrafficExtension:LbTrafficExtension \
     --resource NetworkServicesWasmPlugin:WasmPlugin \
     --resource NetworkServicesAuthzExtension:AuthzExtension
 # Note: NetworkServicesEdgeCacheService is handcoded under apis/networkservices/v1alpha1/edgecacheservice_types.go
