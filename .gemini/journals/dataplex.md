@@ -33,3 +33,15 @@
 - **Problem**: Dataplex `DataTaxonomy` creation requests sent to the GCP API in regional locations like `us-central1` can consistently fail with gRPC code 13 (`INTERNAL` error: `An internal error has occurred`) even when all API enablements and IAM permissions are verified correct. Multi-region and global locations are rejected as invalid path locations.
 - **Solution**: Hand-coded the direct controller and fuzzer following KCC standard practices and verified complete fuzzer field mapping coverage with the targeted test framework (`FOCUS=DataplexDataTaxonomy go test ./pkg/fuzztesting/fuzztests/ -v -run=TestFocusedMappers`). Updated API field presence exceptions golden file.
 - **Impact**: Highlights potential GCP service-side limitations or quirks for the `DataTaxonomy` API in test projects, requiring the direct controller logic and schema mappings to be carefully designed and tested offline/via fuzzer when live API execution is obstructed by service-side Internal errors.
+
+### [2026-09-26] Implement Greenfield DataplexMetadataFeed Direct Controller, Fixtures, and Fuzzer
+- **Context**: Implementing the Greenfield direct controller, E2E fixtures, and fuzzer for `DataplexMetadataFeed` under `v1alpha1`.
+- **Problem**:
+  1. In GCP, `MetadataFeed` strictly requires a Pub/Sub topic endpoint (`MetadataFeed must have a pubsub topic`).
+  2. Dataplex service agent (`service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com`) must have both `pubsub.topics.get` and `pubsub.topics.publish` on the topic (e.g. `roles/pubsub.admin`).
+  3. GCP normalizes project IDs in `scope.projects` to project numbers (`projects/{projectNumber}`) in GET responses. Without normalizing project numbers back to project IDs via `ProjectMapper.ReplaceProjectNumberWithIDInLink`, re-reconciliation sees a diff on `scope` and triggers unnecessary update calls.
+- **Solution**:
+  1. Included `PubSubTopic` and `IAMPolicyMember` (granting `roles/pubsub.admin` to Dataplex SA) in `dependencies.yaml` for both minimal and maximal fixtures.
+  2. Integrated `projectMapper.ReplaceProjectNumberWithIDInLink` inside `dataplexmetadatafeed_controller.go` to normalize relative resource and project references in both `desired` and `actual` states before comparison.
+  3. Implemented fuzzer and unit tests, and successfully recorded and verified golden traffic against real GCP (`cnrm-barni-4`).
+- **Impact**: Eliminates spurious diffs on re-reconciliation and ensures seamless interoperation between Dataplex metadata feeds and Pub/Sub.
