@@ -73,6 +73,10 @@ type ServiceperimeterEgressTo struct {
 }
 
 type ServiceperimeterIdentities struct {
+	/* A Google group identity, in the format of a Google Groups email address. */
+	// +optional
+	Group *string `json:"group,omitempty"`
+
 	/* A reference to an IAMServiceAccount resource. */
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
