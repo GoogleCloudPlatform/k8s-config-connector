@@ -15,6 +15,7 @@
 package scaffold
 
 import (
+	"fmt"
 	"go/parser"
 	"go/token"
 	"strings"
@@ -145,6 +146,66 @@ func TestPrepopulateSpecAlwaysQueuesTheResource(t *testing.T) {
 	}
 }
 
+// TestPrepopulateSpecQueuesTheEmittedName pins that a queue entry names a field
+// the way the Spec struct spells it. A person works the queue by finding each
+// path in the CRD, so under EmitPluralAcronyms an entry for relatedUris would
+// point at nothing: the struct says relatedURIs.
+func TestPrepopulateSpecQueuesTheEmittedName(t *testing.T) {
+	// Arrange
+	refOpts := &descriptorpb.FieldOptions{}
+	proto.SetExtension(refOpts, annotations.E_ResourceReference,
+		&annotations.ResourceReference{Type: "test.googleapis.com/Thing"})
+	fd, err := protodesc.NewFile(&descriptorpb.FileDescriptorProto{
+		Name:    strPtr("refs.proto"),
+		Package: strPtr("google.cloud.test.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{{
+			Name: strPtr("Widget"),
+			Field: []*descriptorpb.FieldDescriptorProto{{
+				Name:    strPtr("related_uris"),
+				Number:  i32Ptr(1),
+				Type:    fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING),
+				Options: refOpts,
+			}},
+		}},
+	}, nil)
+	if err != nil {
+		t.Fatalf("building file descriptor: %v", err)
+	}
+	msg := fd.Messages().ByName("Widget")
+
+	for _, tc := range []struct {
+		name     string
+		opts     codegen.WriteOptions
+		wantPath string
+	}{
+		{"acronym casing on", codegen.WriteOptions{EmitPluralAcronyms: true}, ".spec.relatedURIs"},
+		{"acronym casing off", codegen.WriteOptions{}, ".spec.relatedUris"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			// Act
+			got, err := PrepopulateSpec(msg, tc.opts)
+
+			// Assert
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			var paths []string
+			for _, j := range got.Judgement {
+				if j.Reason == "possible-reference" {
+					paths = append(paths, j.FieldPath)
+				}
+			}
+			if len(paths) != 1 || paths[0] != tc.wantPath {
+				t.Errorf("possible-reference paths = %v, want [%s]", paths, tc.wantPath)
+			}
+			tag := `json:"` + strings.TrimPrefix(tc.wantPath, ".spec.") + `,`
+			if !strings.Contains(got.SpecFields, tag) {
+				t.Errorf("SpecFields has no %s, so the entry names a field the struct lacks:\n%s", tag, got.SpecFields)
+			}
+		})
+	}
+}
+
 func TestPrepopulateSpecRequiresAMessage(t *testing.T) {
 	if _, err := PrepopulateSpec(nil, codegen.WriteOptions{}); err == nil {
 		t.Fatal("expected an error for a nil message")
@@ -180,4 +241,84 @@ func TestFormatJudgementEntries(t *testing.T) {
 	if !strings.Contains(lines[1], `: field ".spec.network" reason=`) {
 		t.Errorf("field-level entry has the wrong shape: %s", lines[1])
 	}
+}
+
+func TestDetectOutputOnlyInComments(t *testing.T) {
+	// Arrange
+	msg := commentedMessage(t,
+		"Output only. Set by the server.",                   // field_0, the long-standing spelling
+		"[Output Only] IP address on the Google side.",      // field_1, how Compute writes it
+		"The display name of the widget.",                   // field_2, no signal
+		"Set by the user. Output only in some other sense.", // field_3, marker not at the front
+	)
+	want := []string{".spec.field0", ".spec.field1"}
+
+	// Act
+	got := DetectOutputOnlyInComments(msg, codegen.WriteOptions{})
+
+	// Assert
+	var paths []string
+	for _, c := range got {
+		paths = append(paths, c.FieldPath)
+	}
+	if len(paths) != len(want) {
+		t.Fatalf("got %v, want %v", paths, want)
+	}
+	for i := range want {
+		if paths[i] != want[i] {
+			t.Errorf("got %v, want %v", paths, want)
+		}
+	}
+}
+
+// A field the proto already annotates needs no prose detection. Reporting it
+// would queue a field the generator has already placed correctly.
+func TestDetectOutputOnlySkipsAnnotatedFields(t *testing.T) {
+	// Arrange
+	unannotated := commentedMessage(t, "[Output Only] Set by the server.")
+	annotated := testMessage(t)
+
+	// Act
+	fromUnannotated := DetectOutputOnlyInComments(unannotated, codegen.WriteOptions{})
+	fromAnnotated := DetectOutputOnlyInComments(annotated, codegen.WriteOptions{})
+
+	// Assert
+	if len(fromUnannotated) != 1 {
+		t.Errorf("unannotated field should be reported, got %d", len(fromUnannotated))
+	}
+	if len(fromAnnotated) != 0 {
+		t.Errorf("annotated fields should not be reported, got %v", fromAnnotated)
+	}
+}
+
+// commentedMessage builds a message whose fields carry leading comments, which
+// is what DetectOutputOnlyInComments reads. SourceCodeInfo paths are
+// [4=message_type, msgIndex, 2=field, fieldIndex].
+func commentedMessage(t *testing.T, comments ...string) protoreflect.MessageDescriptor {
+	t.Helper()
+	var fields []*descriptorpb.FieldDescriptorProto
+	var locs []*descriptorpb.SourceCodeInfo_Location
+	for i, c := range comments {
+		fields = append(fields, &descriptorpb.FieldDescriptorProto{
+			Name:   strPtr(fmt.Sprintf("field_%d", i)),
+			Number: i32Ptr(int32(i + 1)),
+			Type:   fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING),
+		})
+		locs = append(locs, &descriptorpb.SourceCodeInfo_Location{
+			Path:            []int32{4, 0, 2, int32(i)},
+			Span:            []int32{int32(i), 0, 1},
+			LeadingComments: strPtr(" " + c + "\n"),
+		})
+	}
+	fdp := &descriptorpb.FileDescriptorProto{
+		Name:           strPtr("commented.proto"),
+		Package:        strPtr("google.cloud.test.v1"),
+		MessageType:    []*descriptorpb.DescriptorProto{{Name: strPtr("Widget"), Field: fields}},
+		SourceCodeInfo: &descriptorpb.SourceCodeInfo{Location: locs},
+	}
+	fd, err := protodesc.NewFile(fdp, nil)
+	if err != nil {
+		t.Fatalf("building file descriptor: %v", err)
+	}
+	return fd.Messages().ByName("Widget")
 }

@@ -16,6 +16,7 @@ package codegen
 
 import (
 	"fmt"
+	"go/types"
 	"io"
 	"path/filepath"
 	"sort"
@@ -46,6 +47,14 @@ type MapperGenerator struct {
 	importedPackages map[string]importedPackage
 
 	includeSkippedOutput bool
+
+	// emitPluralAcronyms matches KRM field names that case a plural acronym as
+	// KRM conventions want. See resolveKRMFieldName.
+	emitPluralAcronyms bool
+
+	// emitMessageMaps writes the conversion loop for map<string, Message>
+	// fields. See WithEmitMessageMaps.
+	emitMessageMaps bool
 }
 
 type importedPackage struct {
@@ -68,6 +77,23 @@ func NewMapperGenerator(goPathForMessage OutputFunc, outputBaseDir string, gener
 // WithIncludeSkippedOutput sets whether to output skipped mappers as commented-out code
 func (g *MapperGenerator) WithIncludeSkippedOutput(includeSkippedOutput bool) *MapperGenerator {
 	g.includeSkippedOutput = includeSkippedOutput
+	return g
+}
+
+// WithEmitPluralAcronyms matches KRM field names that case a plural acronym as
+// KRM conventions want, such as RelatedURIs for related_uris. Pass the value
+// generate-types used for the same service.
+func (g *MapperGenerator) WithEmitPluralAcronyms(emitPluralAcronyms bool) *MapperGenerator {
+	g.emitPluralAcronyms = emitPluralAcronyms
+	return g
+}
+
+// WithEmitMessageMaps writes the conversion loop for map<string, Message>
+// fields instead of calling a "<Field>_FromProto" helper. It also applies to
+// hand-written map fields, so pass the value generate-types used for the same
+// service.
+func (g *MapperGenerator) WithEmitMessageMaps(emitMessageMaps bool) *MapperGenerator {
+	g.emitMessageMaps = emitMessageMaps
 	return g
 }
 
@@ -283,6 +309,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 			protoAccessor := "Get" + protoFieldName + "()"
 
 			krmFieldName := goFieldName(protoField)
+			krmFieldName = resolveKRMFieldName(protoField, krmFieldName, goFields, v.emitPluralAcronyms)
 			krmField := goFields[krmFieldName]
 			if krmField == nil {
 				// Support refs
@@ -477,6 +504,23 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 						useSliceFromProtoFunction = ""
 					} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
 						useSliceFromProtoFunction = ""
+					} else if fromProto, _, elemType, ok := mapValueConverters(protoField, krmField.Type, versionSpecifier); ok && v.emitMessageMaps && keyKind == protoreflect.StringKind {
+						useSliceFromProtoFunction = ""
+						useCustomMethod = ""
+						krmValueGoType, krmValueIsPointer := krmMapValueType(elemType, krmField.Type, krmImportName)
+						fmt.Fprintf(out, "\tif in.%s != nil {\n", protoFieldName)
+						fmt.Fprintf(out, "\t\tout.%s = make(map[string]%s, len(in.%s))\n",
+							krmFieldName, krmValueGoType, protoFieldName)
+						fmt.Fprintf(out, "\t\tfor k, v := range in.%s {\n", protoFieldName)
+						if krmValueIsPointer {
+							fmt.Fprintf(out, "\t\t\tout.%s[k] = %s(mapCtx, v)\n", krmFieldName, fromProto)
+							fmt.Fprintf(out, "\t\t}\n\t}\n")
+						} else {
+							fmt.Fprintf(out, "\t\t\tif c := %s(mapCtx, v); c != nil {\n", fromProto)
+							fmt.Fprintf(out, "\t\t\t\tout.%s[k] = *c\n", krmFieldName)
+							fmt.Fprintf(out, "\t\t\t}\n\t\t}\n\t}\n")
+						}
+						continue
 					} else {
 						useSliceFromProtoFunction = ""
 						useCustomMethod = krmFieldName + "_FromProto"
@@ -608,6 +652,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 			protoFieldPackage := v.goPackageForProto(protoField.ParentFile())
 
 			krmFieldName := goFieldName(protoField)
+			krmFieldName = resolveKRMFieldName(protoField, krmFieldName, goFields, v.emitPluralAcronyms)
 			krmField := goFields[krmFieldName]
 			if krmField == nil {
 				// Support refs
@@ -786,6 +831,21 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 						useSliceToProtoFunction = ""
 					} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
 						useSliceToProtoFunction = ""
+					} else if _, toProto, elemType, ok := mapValueConverters(protoField, krmField.Type, versionSpecifier); ok && v.emitMessageMaps && keyKind == protoreflect.StringKind {
+						useSliceToProtoFunction = ""
+						useCustomMethod = ""
+						protoValueType := "pb." + protoNameForType(entryMsg.Fields().ByName("value").Message())
+						fmt.Fprintf(out, "\tif in.%s != nil {\n", krmFieldName)
+						fmt.Fprintf(out, "\t\tout.%s = make(map[string]*%s, len(in.%s))\n", protoFieldName, protoValueType, krmFieldName)
+						fmt.Fprintf(out, "\t\tfor k, v := range in.%s {\n", krmFieldName)
+						_, krmValueIsPointer := krmMapValueType(elemType, krmField.Type, krmImportName)
+						valueArg := "&v"
+						if krmValueIsPointer {
+							valueArg = "v"
+						}
+						fmt.Fprintf(out, "\t\t\tout.%s[k] = %s(mapCtx, %s)\n", protoFieldName, toProto, valueArg)
+						fmt.Fprintf(out, "\t\t}\n\t}\n")
+						continue
 					} else {
 						useSliceToProtoFunction = ""
 						useCustomMethod = krmFieldName + "_ToProto"
@@ -976,6 +1036,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		}
 
 		krmFieldName := goFieldName(protoField)
+		krmFieldName = resolveKRMFieldName(protoField, krmFieldName, goFields, v.emitPluralAcronyms)
 		krmField, ok := goFields[krmFieldName]
 		if !ok {
 			// This can happen if the field is not in the KRM struct (e.g. output-only).
@@ -1119,6 +1180,57 @@ func sortIntoMessageSlice(messages protoreflect.MessageDescriptors) []protorefle
 		return out[i].FullName() < out[j].FullName()
 	})
 	return out
+}
+
+// mapValueConverters returns the functions that convert a map's values from
+// and to proto, and the Go type of those values. It reports false when the
+// mapper should keep using the existing custom-method path instead.
+//
+// Before this, a map whose value is a message called a "<Field>_FromProto"
+// helper that does not exist, so the generated mapper did not compile. A value
+// whose message has a special-cased Go type uses that type's converter, and
+// any other message uses the converter generated for its struct.
+func mapValueConverters(protoField protoreflect.FieldDescriptor, krmFieldType, versionSpecifier string) (fromProto, toProto, elemType string, ok bool) {
+	// Some hand-written types declare a proto map as a slice, such as
+	// artifactregistry's Repository.cleanup_policies, which is a
+	// []CleanupPolicy. A map loop does not compile against a slice, so those
+	// keep the custom-method path.
+	if !strings.HasPrefix(krmFieldType, "map[string]") {
+		return "", "", "", false
+	}
+	entryMsg := protoField.Message()
+	valueField := entryMsg.Fields().ByName("value")
+	if valueField.Kind() != protoreflect.MessageKind {
+		return "", "", "", false
+	}
+	valueMsg := valueField.Message()
+	// A message in protoMessagesNotMappedToGoStruct has no generated struct.
+	// Its values take the Go type the message maps to instead, such as string
+	// for google.protobuf.Timestamp, and the converters the direct package
+	// provides for that type.
+	if goType, unmapped := protoMessagesNotMappedToGoStruct[string(valueMsg.FullName())]; unmapped {
+		return krmFromProtoFunctionName(valueField, ""), krmToProtoFunctionName(valueField, ""), goType, true
+	}
+	// Generated converters carry the version suffix, as in
+	// CommonUsageStats_v1alpha1_FromProto, and the non-map path appends it the
+	// same way. The special-cased converters live in the direct package and
+	// have no suffix.
+	name := GoNameForProtoMessage(valueMsg)
+	return name + versionSpecifier + "_FromProto", name + versionSpecifier + "_ToProto", name, true
+}
+
+// krmMapValueType returns the Go type of a KRM map's values as written by the
+// mapper package, along with whether the type is a pointer.
+func krmMapValueType(elemType, krmFieldType, krmImportName string) (goType string, isPointer bool) {
+	isPointer = strings.HasPrefix(strings.TrimPrefix(krmFieldType, "map[string]"), "*")
+	elem := elemType
+	if !strings.Contains(elem, ".") && types.Universe.Lookup(elem) == nil {
+		elem = krmImportName + "." + elem
+	}
+	if isPointer {
+		return "*" + elem, true
+	}
+	return elem, false
 }
 
 func krmFromProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldName string) string {
@@ -1310,4 +1422,28 @@ func usesPointersInProtoBinding(msg protoreflect.MessageDescriptor) bool {
 	default:
 		return false
 	}
+}
+
+// resolveKRMFieldName reconciles the name the mapper computes for a proto field
+// with the name the KRM struct actually uses.
+//
+// The two can disagree on plural acronyms. A type generated with
+// EmitPluralAcronyms has RelatedURIs where goFieldName produces RelatedUris, so
+// the lookup misses and the mapper reports the field as MISSING. When
+// pluralAcronyms is set, the other spelling is tried as well. It is off unless
+// a service opts in, because the other spelling also matches fields that
+// existing mappers leave out, and mapping them changes those controllers.
+//
+// Returns the computed name unchanged when nothing better is found, so the
+// caller's own not-found handling still runs.
+func resolveKRMFieldName(protoField protoreflect.FieldDescriptor, computed string, goFields map[string]*gocode.StructField, pluralAcronyms bool) string {
+	if _, ok := goFields[computed]; ok || !pluralAcronyms {
+		return computed
+	}
+	if alt := goFieldNameOpts(protoField, WriteOptions{EmitPluralAcronyms: true}); alt != computed {
+		if _, ok := goFields[alt]; ok {
+			return alt
+		}
+	}
+	return computed
 }
