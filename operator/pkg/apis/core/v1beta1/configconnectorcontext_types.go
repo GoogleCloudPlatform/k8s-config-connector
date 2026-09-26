@@ -83,6 +83,10 @@ type ConfigConnectorContextSpec struct {
 	ManagerNamespace string `json:"managerNamespace,omitempty"`
 
 	Experiments *Experiments `json:"experiments,omitempty"`
+
+	// ResourceKinds allows specifying which resource kinds to enable or disable in this namespace.
+	// +optional
+	ResourceKinds *ResourceKinds `json:"resourceKinds,omitempty"`
 }
 
 // Experiments contains experimental features.
