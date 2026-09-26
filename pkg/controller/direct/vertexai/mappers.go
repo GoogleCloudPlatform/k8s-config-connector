@@ -242,3 +242,51 @@ func JSON_v1alpha1_ToProto(mapCtx *direct.MapContext, in *apiextensionsv1.JSON) 
 	}
 	return out
 }
+
+func VertexAICustomJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomJob) *krmv1alpha1.VertexAICustomJobSpec {
+	return VertexAICustomJobSpec_v1alpha1_FromProto(mapCtx, in)
+}
+
+func VertexAICustomJobSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.VertexAICustomJobSpec) *pb.CustomJob {
+	return VertexAICustomJobSpec_v1alpha1_ToProto(mapCtx, in)
+}
+
+func VertexAICustomJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomJob) *krmv1alpha1.VertexAICustomJobObservedState {
+	out := VertexAICustomJobObservedState_v1alpha1_FromProto(mapCtx, in)
+	if out != nil && in != nil {
+		out.WebAccessURIs = in.GetWebAccessUris()
+	}
+	return out
+}
+
+func VertexAICustomJobObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.VertexAICustomJobObservedState) *pb.CustomJob {
+	out := VertexAICustomJobObservedState_v1alpha1_ToProto(mapCtx, in)
+	if out != nil && in != nil {
+		out.WebAccessUris = in.WebAccessURIs
+	}
+	return out
+}
+
+func PythonPackageSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PythonPackageSpec) *krmv1alpha1.PythonPackageSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.PythonPackageSpec{}
+	out.ExecutorImageURI = direct.LazyPtr(in.GetExecutorImageUri())
+	out.PackageURIs = in.GetPackageUris()
+	out.PythonModule = direct.LazyPtr(in.GetPythonModule())
+	out.Args = in.Args
+	return out
+}
+
+func PythonPackageSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.PythonPackageSpec) *pb.PythonPackageSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PythonPackageSpec{}
+	out.ExecutorImageUri = direct.ValueOf(in.ExecutorImageURI)
+	out.PackageUris = in.PackageURIs
+	out.PythonModule = direct.ValueOf(in.PythonModule)
+	out.Args = in.Args
+	return out
+}

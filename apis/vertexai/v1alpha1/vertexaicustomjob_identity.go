@@ -103,10 +103,33 @@ func (obj *VertexAICustomJob) GetIdentity(ctx context.Context, reader client.Rea
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change VertexAICustomJob identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		if !IsProjectIDMatch(statusIdentity.Project, specIdentity.Project) {
+			return nil, fmt.Errorf("cannot change VertexAICustomJob project (old=%q, new=%q)", statusIdentity.Project, specIdentity.Project)
 		}
+		if statusIdentity.Location != specIdentity.Location {
+			return nil, fmt.Errorf("cannot change VertexAICustomJob location (old=%q, new=%q)", statusIdentity.Location, specIdentity.Location)
+		}
+		return statusIdentity, nil
 	}
 
 	return specIdentity, nil
+}
+
+// IsProjectIDMatch returns true if two project identifiers are considered matching,
+// or if we can't reliably compare them because one is an alphanumeric project ID
+// and the other is a numeric project number.
+func IsProjectIDMatch(p1, p2 string) bool {
+	if p1 == p2 {
+		return true
+	}
+	if p1 == "" || p2 == "" {
+		return false
+	}
+	p1IsNumeric := isNumeric(p1)
+	p2IsNumeric := isNumeric(p2)
+	if p1IsNumeric != p2IsNumeric {
+		// Skip strict matching if one is project ID (alphanumeric) and the other is project number (numeric).
+		return true
+	}
+	return p1 == p2
 }
