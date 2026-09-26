@@ -29,6 +29,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+// AddressGroupServer implements the mock GCP server for NetworkSecurity AddressGroups.
 type AddressGroupServer struct {
 	*MockService
 	pbv1.UnimplementedAddressGroupServiceServer
