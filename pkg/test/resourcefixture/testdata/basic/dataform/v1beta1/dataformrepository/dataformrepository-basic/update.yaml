@@ -20,3 +20,4 @@ spec:
   projectRef:
     external: ${projectId}
   region: us-west2
+  displayName: "Updated Dataform Repository"
