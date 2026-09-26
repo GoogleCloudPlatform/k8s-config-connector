@@ -6920,8 +6920,8 @@ func (in *ComputeSSLPolicySpec) DeepCopyInto(out *ComputeSSLPolicySpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.MinTlsVersion != nil {
-		in, out := &in.MinTlsVersion, &out.MinTlsVersion
+	if in.MinTLSVersion != nil {
+		in, out := &in.MinTLSVersion, &out.MinTLSVersion
 		*out = new(string)
 		**out = **in
 	}
