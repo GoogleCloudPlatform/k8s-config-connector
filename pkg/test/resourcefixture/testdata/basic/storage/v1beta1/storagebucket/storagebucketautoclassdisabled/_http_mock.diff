@@ -1,0 +1,146 @@
+29a30
+>   "autoclass": {},
+40,42d40
+<   "lifecycle": {
+<     "rule": []
+<   },
+44,45c42
+<   "name": "storagebucket-acdisabled-${uniqueId}",
+<   "storageClass": "STANDARD"
+---
+>   "name": "storagebucket-acdisabled-${uniqueId}"
+55a53
+>   "autoclass": {},
+102a101
+>   "autoclass": {},
+144,199d142
+< {}
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Pragma: no-cache
+< Server: UploadServer
+< Vary: Origin
+< Vary: X-Origin
+< 
+< {
+<   "etag": "abcdef0123A=",
+<   "generation": "12345678901234",
+<   "iamConfiguration": {
+<     "bucketPolicyOnly": {
+<       "enabled": true,
+<       "lockedTime": "2024-04-01T12:34:56.123456Z"
+<     },
+<     "publicAccessPrevention": "inherited",
+<     "uniformBucketLevelAccess": {
+<       "enabled": true,
+<       "lockedTime": "2024-04-01T12:34:56.123456Z"
+<     }
+<   },
+<   "id": "000000000000000000000",
+<   "kind": "storage#bucket",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+<   },
+<   "location": "US",
+<   "locationType": "multi-region",
+<   "metageneration": "1",
+<   "name": "storagebucket-acdisabled-${uniqueId}",
+<   "projectNumber": "${projectNumber}",
+<   "rpo": "DEFAULT",
+<   "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-acdisabled-${uniqueId}",
+<   "softDeletePolicy": {
+<     "effectiveTime": "2024-04-01T12:34:56.123456Z",
+<     "retentionDurationSeconds": "604800"
+<   },
+<   "storageClass": "STANDARD",
+<   "timeCreated": "2024-04-01T12:34:56.123456Z",
+<   "updated": "2024-04-01T12:34:56.123456Z"
+< }
+< 
+< ---
+< 
+< GET https://storage.googleapis.com/storage/v1/b/storagebucket-acdisabled-${uniqueId}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: UploadServer
+< Vary: Origin
+< Vary: X-Origin
+< 
+201,202c144
+<   "etag": "abcdef0123A=",
+<   "generation": "12345678901234",
+---
+>   "autoclass": {},
+204,208d145
+<     "bucketPolicyOnly": {
+<       "enabled": true,
+<       "lockedTime": "2024-04-01T12:34:56.123456Z"
+<     },
+<     "publicAccessPrevention": "inherited",
+210,211c147
+<       "enabled": true,
+<       "lockedTime": "2024-04-01T12:34:56.123456Z"
+---
+>       "enabled": true
+214,215d149
+<   "id": "000000000000000000000",
+<   "kind": "storage#bucket",
+218a153
+>     "label-two": "value-two",
+222,248c157
+<   "locationType": "multi-region",
+<   "metageneration": "1",
+<   "name": "storagebucket-acdisabled-${uniqueId}",
+<   "projectNumber": "${projectNumber}",
+<   "rpo": "DEFAULT",
+<   "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-acdisabled-${uniqueId}",
+<   "softDeletePolicy": {
+<     "effectiveTime": "2024-04-01T12:34:56.123456Z",
+<     "retentionDurationSeconds": "604800"
+<   },
+<   "storageClass": "STANDARD",
+<   "timeCreated": "2024-04-01T12:34:56.123456Z",
+<   "updated": "2024-04-01T12:34:56.123456Z"
+< }
+< 
+< ---
+< 
+< PATCH https://storage.googleapis.com/storage/v1/b/storagebucket-acdisabled-${uniqueId}?alt=json&prettyPrint=false
+< Content-Type: application/json
+< 
+< {
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-one",
+<     "label-two": "value-two",
+<     "managed-by-cnrm": "true"
+<   }
+---
+>   "name": "storagebucket-acdisabled-${uniqueId}"
+258a168
+>   "autoclass": {},
+306a217
+>   "autoclass": {},
+342,359d252
+< }
+< 
+< ---
+< 
+< GET https://storage.googleapis.com/storage/v1/b/storagebucket-acdisabled-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: UploadServer
+< Vary: Origin
+< Vary: X-Origin
+< 
+< {
+<   "kind": "storage#objects",
+<   "prefixes": [
+<     "testfolder",
+<     "testmanagedfolder"
+<   ]
