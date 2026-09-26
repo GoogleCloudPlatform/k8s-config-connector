@@ -124,8 +124,60 @@ func TestPrepopulateSpec(t *testing.T) {
 	}
 }
 
+func TestPrepopulateSpecAlwaysQueuesTheResource(t *testing.T) {
+	msg := testMessage(t)
+
+	got, err := PrepopulateSpec(msg, codegen.WriteOptions{})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	// Verify that a resource-level judgement entry is always generated so the resource
+	// is flagged for triage even if no explicit resource reference annotations were detected.
+	if len(got.Judgement) == 0 {
+		t.Fatal("expected at least a resource-level judgement entry")
+	}
+	if got.Judgement[0].Reason != "untriaged-bulk-generation" {
+		t.Errorf("first entry reason = %q, want untriaged-bulk-generation", got.Judgement[0].Reason)
+	}
+	if got.Judgement[0].FieldPath != "" {
+		t.Errorf("resource-level entry should have no field path, got %q", got.Judgement[0].FieldPath)
+	}
+}
+
 func TestPrepopulateSpecRequiresAMessage(t *testing.T) {
 	if _, err := PrepopulateSpec(nil, codegen.WriteOptions{}); err == nil {
 		t.Fatal("expected an error for a nil message")
+	}
+}
+
+func TestFormatJudgementEntries(t *testing.T) {
+	items := []JudgementItem{
+		{Reason: "untriaged-bulk-generation", Detail: "generated mechanically"},
+		{FieldPath: ".spec.network", Reason: "possible-reference", Detail: "target=compute.googleapis.com/Network"},
+	}
+
+	got := FormatJudgementEntries("ExampleWidget", "example.cnrm.cloud.google.com", items)
+	lines := strings.Split(strings.TrimSpace(got), "\n")
+	if len(lines) != 2 {
+		t.Fatalf("got %d lines, want 2:\n%s", len(lines), got)
+	}
+
+	// Verify that entries conform to the expected format: kind=<Kind> group=<Group>: ... reason=<Reason>
+	for _, l := range lines {
+		for _, need := range []string{"kind=ExampleWidget", "group=example.cnrm.cloud.google.com", "reason="} {
+			if !strings.Contains(l, need) {
+				t.Errorf("line missing %q: %s", need, l)
+			}
+		}
+		if head, _, _ := strings.Cut(l, ":"); strings.Contains(head, "reason=") {
+			t.Errorf("reason must follow the colon so the head parses cleanly: %s", l)
+		}
+	}
+	if !strings.Contains(lines[0], ": resource reason=") {
+		t.Errorf("resource-level entry has the wrong shape: %s", lines[0])
+	}
+	if !strings.Contains(lines[1], `: field ".spec.network" reason=`) {
+		t.Errorf("field-level entry has the wrong shape: %s", lines[1])
 	}
 }

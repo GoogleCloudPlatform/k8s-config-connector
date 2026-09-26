@@ -61,9 +61,24 @@ func TestMissingRefs(t *testing.T) {
 		t.Fatalf("error loading crds: %v", err)
 	}
 
+	// Resources still awaiting the judgement pass. Their [refs] findings are
+	// suppressed: a mechanically generated resource has ref-shaped string fields
+	// by construction, and missingrefs.txt is a ratchet, so without this the first
+	// bulk-generation PR could not merge. Clearing a resource's queue graduates it
+	// and the ratchet applies as normal.
+	queued, err := loadJudgementQueue(judgementQueueGlob)
+	if err != nil {
+		t.Fatalf("error loading judgement queues: %v", err)
+	}
+
 	var errs []string
 	var notRepresentable []string
+	suppressedCRDs := sets.NewString()
 	for _, crd := range crds {
+		if queued.Has(crd.Spec.Names.Kind, crd.Spec.Group) {
+			suppressedCRDs.Insert(crd.Name)
+			continue
+		}
 		for _, version := range crd.Spec.Versions {
 			visitCRDVersion(version, func(field *CRDField) {
 				fieldPath := field.FieldPath
@@ -118,6 +133,17 @@ func TestMissingRefs(t *testing.T) {
 			continue
 		}
 		remaining = append(remaining, e)
+	}
+
+	// Carry forward existing ratchet baseline entries for suppressed CRDs so that
+	// queue suppression does not falsely appear as a fix or prune baseline entries.
+	if suppressedCRDs.Len() > 0 {
+		carried, err := carryForwardSuppressed("testdata/exceptions/missingrefs.txt", suppressedCRDs)
+		if err != nil {
+			t.Fatalf("error carrying forward suppressed entries: %v", err)
+		}
+		remaining = append(remaining, carried...)
+		sort.Strings(remaining)
 	}
 
 	want := strings.Join(remaining, "\n")

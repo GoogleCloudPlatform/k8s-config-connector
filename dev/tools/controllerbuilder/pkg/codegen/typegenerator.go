@@ -58,6 +58,8 @@ type TypeGenerator struct {
 	// of the proto message (e.g., BillingAccount or APIHubInstance), reserving these names
 	// prevents duplicate type definitions.
 	reservedTypeNames map[string]bool
+
+	unsupportedFields []UnsupportedField
 }
 
 type OutputMessageDetails struct {
@@ -383,7 +385,11 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 			continue
 		}
 
-		WriteMessage(&out.body, msg, g.writeOptions)
+		// Render the message to a buffer to scan for any unsupported field markers emitted by WriteField.
+		var rendered bytes.Buffer
+		WriteMessage(&rendered, msg, g.writeOptions)
+		g.unsupportedFields = append(g.unsupportedFields, scanUnsupported(string(msg.FullName()), rendered.String())...)
+		out.body.Write(rendered.Bytes())
 	}
 	return errors.Join(g.errors...)
 }
@@ -603,7 +609,14 @@ func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protorefl
 
 	goType, err := GoTypeForField(field, isTransitiveOutput)
 	if err != nil {
-		fmt.Fprintf(out, "\n\t// TODO: %v\n\n", err)
+		// Include the field name in the TODO comment when prepopulating is enabled.
+		// This provides clarity for human review and queue processing without
+		// altering existing generated files when the flag is disabled.
+		if opts.Prepopulating {
+			fmt.Fprintf(out, "\n\t// TODO: %s: %v\n\n", jsonName, err)
+		} else {
+			fmt.Fprintf(out, "\n\t// TODO: %v\n\n", err)
+		}
 		return
 	}
 
@@ -880,3 +893,51 @@ func IsFieldBehavior(field protoreflect.FieldDescriptor, fieldBehavior annotatio
 	}
 	return false
 }
+
+// UnsupportedField represents a proto field for which the generator could not
+// produce a compatible Go type. The field is omitted from the generated struct
+// and CRD.
+type UnsupportedField struct {
+	// Message is the fully-qualified proto message name that contains the field.
+	Message string
+	// Field is the KRM JSON name of the field.
+	Field string
+	// Reason explains why the field could not be generated.
+	Reason string
+}
+
+// UnsupportedFields returns the collection of fields that could not be mapped to
+// Go types during this generation run.
+func (g *TypeGenerator) UnsupportedFields() []UnsupportedField {
+	return g.unsupportedFields
+}
+
+// scanUnsupported returns every unsupported-field marker in a rendered
+// message body.
+func scanUnsupported(msgName, body string) []UnsupportedField {
+	var out []UnsupportedField
+	for _, line := range strings.Split(body, "\n") {
+		if field, reason, ok := UnsupportedFieldMarker(line); ok {
+			out = append(out, UnsupportedField{Message: msgName, Field: field, Reason: reason})
+		}
+	}
+	return out
+}
+
+// UnsupportedFieldMarker parses the field name and reason from a
+// "// TODO: <field>: <reason>" or "// TODO: <reason>" comment in rendered output.
+// WriteField emits these comments when a field cannot be mapped to a Go type.
+func UnsupportedFieldMarker(rendered string) (field, reason string, ok bool) {
+	for _, line := range strings.Split(rendered, "\n") {
+		after, found := strings.CutPrefix(strings.TrimSpace(line), "// TODO: ")
+		if !found {
+			continue
+		}
+		if field, reason, named := strings.Cut(after, ": "); named {
+			return field, reason, true
+		}
+		return "", after, true
+	}
+	return "", "", false
+}
+
