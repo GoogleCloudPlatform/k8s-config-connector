@@ -7,6 +7,7 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a0dbcd2002
 
 {
   "error": {
@@ -65,6 +66,7 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a0dbcd2318
 
 {
   "etag": "abcdef0123A=",
@@ -103,7 +105,6 @@ Vary: X-Origin
   "rpo": "DEFAULT",
   "selfLink": "https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}",
   "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
     "retentionDurationSeconds": "0"
   },
   "storageClass": "STANDARD",
@@ -124,6 +125,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a0dbcd2384
 
 {
   "etag": "abcdef0123A=",
@@ -162,7 +164,6 @@ Vary: X-Origin
   "rpo": "DEFAULT",
   "selfLink": "https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}",
   "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
     "retentionDurationSeconds": "0"
   },
   "storageClass": "STANDARD",

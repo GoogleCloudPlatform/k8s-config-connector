@@ -1,11 +1,12 @@
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a0dbcc8d8f
 
 {
   "customPlacementConfig": {
@@ -44,11 +45,12 @@ Vary: X-Origin
     ]
   },
   "location": "US",
-  "locationType": "multi-region",
+  "locationType": "dual-region",
   "metageneration": "1",
   "name": "storagebucket-sample-${uniqueId}",
   "projectNumber": "${projectNumber}",
   "rpo": "DEFAULT",
+  "satisfiesPZI": true,
   "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}",
   "softDeletePolicy": {
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
@@ -66,7 +68,7 @@ Vary: X-Origin
 
 PATCH https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {}
 
@@ -76,6 +78,7 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a0dbcc8dd3
 
 {
   "acl": [
@@ -187,7 +190,7 @@ Vary: X-Origin
     ]
   },
   "location": "US",
-  "locationType": "multi-region",
+  "locationType": "dual-region",
   "metageneration": "1",
   "name": "storagebucket-sample-${uniqueId}",
   "owner": {
@@ -195,6 +198,7 @@ Vary: X-Origin
   },
   "projectNumber": "${projectNumber}",
   "rpo": "DEFAULT",
+  "satisfiesPZI": true,
   "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}",
   "softDeletePolicy": {
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
@@ -211,13 +215,14 @@ Vary: X-Origin
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a0dbcc8df7
 
 {
   "customPlacementConfig": {
@@ -256,11 +261,12 @@ Vary: X-Origin
     ]
   },
   "location": "US",
-  "locationType": "multi-region",
+  "locationType": "dual-region",
   "metageneration": "1",
   "name": "storagebucket-sample-${uniqueId}",
   "projectNumber": "${projectNumber}",
   "rpo": "DEFAULT",
+  "satisfiesPZI": true,
   "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}",
   "softDeletePolicy": {
     "effectiveTime": "2024-04-01T12:34:56.123456Z",

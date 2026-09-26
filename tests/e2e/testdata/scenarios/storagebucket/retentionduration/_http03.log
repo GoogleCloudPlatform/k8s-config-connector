@@ -6,6 +6,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a0dbcce35a
 
 {
   "etag": "abcdef0123A=",
@@ -44,7 +45,6 @@ Vary: X-Origin
   "rpo": "DEFAULT",
   "selfLink": "https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}",
   "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
     "retentionDurationSeconds": "0"
   },
   "storageClass": "STANDARD",
@@ -73,6 +73,7 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a0dbcce489
 
 {
   "acl": [
@@ -208,6 +209,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a0dbcce4ad
 
 {
   "etag": "abcdef0123A=",

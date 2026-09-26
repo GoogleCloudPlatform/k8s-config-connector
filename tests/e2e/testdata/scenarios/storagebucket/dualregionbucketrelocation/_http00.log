@@ -7,6 +7,7 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a0dbcc8a31
 
 {
   "error": {
@@ -70,6 +71,7 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a0dbcc8c5a
 
 {
   "customPlacementConfig": {
@@ -108,11 +110,12 @@ Vary: X-Origin
     ]
   },
   "location": "US",
-  "locationType": "multi-region",
+  "locationType": "dual-region",
   "metageneration": "1",
   "name": "storagebucket-sample-${uniqueId}",
   "projectNumber": "${projectNumber}",
   "rpo": "DEFAULT",
+  "satisfiesPZI": true,
   "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}",
   "softDeletePolicy": {
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
@@ -136,6 +139,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a0dbcc8c88
 
 {
   "customPlacementConfig": {
@@ -174,11 +178,12 @@ Vary: X-Origin
     ]
   },
   "location": "US",
-  "locationType": "multi-region",
+  "locationType": "dual-region",
   "metageneration": "1",
   "name": "storagebucket-sample-${uniqueId}",
   "projectNumber": "${projectNumber}",
   "rpo": "DEFAULT",
+  "satisfiesPZI": true,
   "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}",
   "softDeletePolicy": {
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
