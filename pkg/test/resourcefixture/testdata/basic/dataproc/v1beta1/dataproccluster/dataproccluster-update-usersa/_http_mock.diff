@@ -42,8 +42,8 @@
 856c857
 < PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json&updateMask=config.securityConfig.identityConfig.userServiceAccountMapping
 ---
-> PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=config.securityConfig.identityConfig.userServiceAccountMapping%2Clabels
-859a861,862
+> PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=config.securityConfig.identityConfig.userServiceAccountMapping
+737a739,740
 >   "clusterName": "dataproccluster-${uniqueId}",
 >   "clusterUuid": "${dataStoreClusterUUID}",
 864a868,870
