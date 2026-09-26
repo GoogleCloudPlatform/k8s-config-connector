@@ -1,0 +1,33 @@
+apiVersion: apigee.cnrm.cloud.google.com/v1alpha1
+kind: ApigeeAPIProduct
+metadata:
+  name: apigeeapiproduct-${uniqueId}
+spec:
+  organizationRef:
+    external: organizations/${projectId}
+  approvalType: auto
+  displayName: "Maximal API Product"
+  description: "A complete and maximal API product test"
+  scopes:
+    - "read"
+    - "write"
+  quota: "100"
+  quotaInterval: "1"
+  quotaTimeUnit: "hour"
+  quotaCounterScope: "PROXY"
+  attributes:
+    - name: "env"
+      value: "prod"
+    - name: "team"
+      value: "apigee"
+  operationGroup:
+    operationConfigType: "proxy"
+    operationConfigs:
+      - apiSource: "my-api-source"
+        operations:
+          - resource: "/v1/users"
+            methods: ["GET", "POST"]
+        quota:
+          limit: "50"
+          interval: "1"
+          timeUnit: "minute"
