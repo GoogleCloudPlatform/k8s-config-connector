@@ -104,6 +104,10 @@ git reset --hard ${GOOGLEAPI_VERSION}
 mkdir -p google/cloud/config/v1
 cp ${REPO_ROOT}/mockgcp/apis/google/cloud/config/v1/config.proto google/cloud/config/v1/config.proto
 
+# Overwrite catalog.proto with the updated version that has MetadataFeed
+mkdir -p google/cloud/dataplex/v1
+cp ${REPO_ROOT}/mockgcp/apis/google/cloud/dataplex/v1/catalog.proto google/cloud/dataplex/v1/catalog.proto
+
 
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"
