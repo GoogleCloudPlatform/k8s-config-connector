@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ set -o nounset
 set -o pipefail
 
 function on_error() {
-  echo "<hint_for_agent>Run 'dev/ci/presubmits/tests-scenarios-suite' to fix.</hint_for_agent>"
+  echo "<hint_for_agent>Run 'dev/ci/presubmits/tests-scenarios-v2-suite' to fix.</hint_for_agent>"
 }
 trap on_error ERR
 
@@ -52,6 +52,6 @@ if [[ -z "${PREBUILT_TEST_BINARY:-}" ]]; then
   fi
 fi
 
-echo "Running ${SUITE} scenarios tests..."
+echo "Running ${SUITE} V2 scenarios tests..."
 cd tests/e2e
-${PREBUILT_TEST_BINARY} -test.run "^TestE2EScript/scenarios/${SUITE}$" -test.timeout 15m -test.v
+${PREBUILT_TEST_BINARY} -test.run "^TestE2EScenariosV2/scenarios/${SUITE}$" -test.timeout 15m -test.v

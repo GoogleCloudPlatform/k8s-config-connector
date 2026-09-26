@@ -268,9 +268,19 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if err != nil {
 		return err
 	}
+
+	parent := a.id.ParentString()
+	externalRef := parent + "/connections/" + a.id.Connection
+
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", fqn)
-		return nil
+		status := &krm.BigQueryConnectionConnectionStatus{}
+		status.ObservedState = BigQueryConnectionConnectionStatusObservedState_FromProto(mapCtx, a.actual)
+		status.ExternalRef = &externalRef
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		return setStatus(u, status)
 	}
 
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
@@ -292,6 +302,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	status := &krm.BigQueryConnectionConnectionStatus{}
 	status.ObservedState = BigQueryConnectionConnectionStatusObservedState_FromProto(mapCtx, updated)
+	status.ExternalRef = &externalRef
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
