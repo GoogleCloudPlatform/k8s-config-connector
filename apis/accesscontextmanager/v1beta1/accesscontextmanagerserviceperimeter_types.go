@@ -134,6 +134,12 @@ type AccessContextManagerServicePerimeterConfig struct {
 }
 
 type AccessContextManagerServicePerimeterEgressPolicy struct {
+	/* Optional. Human-readable title for the egress rule. The title must be unique
+	within the perimeter and cannot exceed 100 characters. */
+	// +kubebuilder:validation:MaxLength=100
+	// +optional
+	Title *string `json:"title,omitempty"`
+
 	/* Defines conditions on the source of a request causing this 'EgressPolicy' to apply. */
 	// +optional
 	EgressFrom *AccessContextManagerServicePerimeterEgressFrom `json:"egressFrom,omitempty"`
@@ -224,6 +230,12 @@ type AccessContextManagerServicePerimeterMethodSelector struct {
 }
 
 type AccessContextManagerServicePerimeterIngressPolicy struct {
+	/* Optional. Human-readable title for the ingress rule. The title must be unique
+	within the perimeter and cannot exceed 100 characters. */
+	// +kubebuilder:validation:MaxLength=100
+	// +optional
+	Title *string `json:"title,omitempty"`
+
 	/* Defines the conditions on the source of a request causing this 'IngressPolicy'
 	to apply. */
 	// +optional

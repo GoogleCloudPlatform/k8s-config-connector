@@ -135,6 +135,11 @@ Access is granted if any EgressPolicy grants it. Must be empty for
 a perimeter bridge.`,
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
+									"title": {
+										Type:        schema.TypeString,
+										Optional:    true,
+										Description: `Human readable title. Must be unique within the perimeter. Does not affect behavior.`,
+									},
 									"egress_from": {
 										Type:        schema.TypeList,
 										Optional:    true,
@@ -250,6 +255,11 @@ separately. Access is granted if any 'Ingress Policy' grants it.
 Must be empty for a perimeter bridge.`,
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
+									"title": {
+										Type:        schema.TypeString,
+										Optional:    true,
+										Description: `Human readable title. Must be unique within the perimeter. Does not affect behavior.`,
+									},
 									"ingress_from": {
 										Type:     schema.TypeList,
 										Optional: true,
@@ -470,6 +480,11 @@ Access is granted if any EgressPolicy grants it. Must be empty for
 a perimeter bridge.`,
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
+									"title": {
+										Type:        schema.TypeString,
+										Optional:    true,
+										Description: `Human readable title. Must be unique within the perimeter. Does not affect behavior.`,
+									},
 									"egress_from": {
 										Type:        schema.TypeList,
 										Optional:    true,
@@ -585,6 +600,11 @@ separately. Access is granted if any 'Ingress Policy' grants it.
 Must be empty for a perimeter bridge.`,
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
+									"title": {
+										Type:        schema.TypeString,
+										Optional:    true,
+										Description: `Human readable title. Must be unique within the perimeter. Does not affect behavior.`,
+									},
 									"ingress_from": {
 										Type:     schema.TypeList,
 										Optional: true,
@@ -1282,6 +1302,7 @@ func flattenAccessContextManagerServicePerimeterStatusIngressPolicies(v interfac
 			continue
 		}
 		transformed = append(transformed, map[string]interface{}{
+			"title":        original["title"],
 			"ingress_from": flattenAccessContextManagerServicePerimeterStatusIngressPoliciesIngressFrom(original["ingressFrom"], d, config),
 			"ingress_to":   flattenAccessContextManagerServicePerimeterStatusIngressPoliciesIngressTo(original["ingressTo"], d, config),
 		})
@@ -1422,6 +1443,7 @@ func flattenAccessContextManagerServicePerimeterStatusEgressPolicies(v interface
 			continue
 		}
 		transformed = append(transformed, map[string]interface{}{
+			"title":       original["title"],
 			"egress_from": flattenAccessContextManagerServicePerimeterStatusEgressPoliciesEgressFrom(original["egressFrom"], d, config),
 			"egress_to":   flattenAccessContextManagerServicePerimeterStatusEgressPoliciesEgressTo(original["egressTo"], d, config),
 		})
@@ -1597,6 +1619,7 @@ func flattenAccessContextManagerServicePerimeterSpecIngressPolicies(v interface{
 			continue
 		}
 		transformed = append(transformed, map[string]interface{}{
+			"title":        original["title"],
 			"ingress_from": flattenAccessContextManagerServicePerimeterSpecIngressPoliciesIngressFrom(original["ingressFrom"], d, config),
 			"ingress_to":   flattenAccessContextManagerServicePerimeterSpecIngressPoliciesIngressTo(original["ingressTo"], d, config),
 		})
@@ -1737,6 +1760,7 @@ func flattenAccessContextManagerServicePerimeterSpecEgressPolicies(v interface{}
 			continue
 		}
 		transformed = append(transformed, map[string]interface{}{
+			"title":       original["title"],
 			"egress_from": flattenAccessContextManagerServicePerimeterSpecEgressPoliciesEgressFrom(original["egressFrom"], d, config),
 			"egress_to":   flattenAccessContextManagerServicePerimeterSpecEgressPoliciesEgressTo(original["egressTo"], d, config),
 		})
@@ -1972,6 +1996,9 @@ func expandAccessContextManagerServicePerimeterStatusIngressPolicies(v interface
 		}
 		original := raw.(map[string]interface{})
 		transformed := make(map[string]interface{})
+		if title := original["title"]; !tpgresource.IsEmptyValue(reflect.ValueOf(title)) {
+			transformed["title"] = title
+		}
 
 		transformedIngressFrom, err := expandAccessContextManagerServicePerimeterStatusIngressPoliciesIngressFrom(original["ingress_from"], d, config)
 		if err != nil {
@@ -2179,6 +2206,9 @@ func expandAccessContextManagerServicePerimeterStatusEgressPolicies(v interface{
 		}
 		original := raw.(map[string]interface{})
 		transformed := make(map[string]interface{})
+		if title := original["title"]; !tpgresource.IsEmptyValue(reflect.ValueOf(title)) {
+			transformed["title"] = title
+		}
 
 		transformedEgressFrom, err := expandAccessContextManagerServicePerimeterStatusEgressPoliciesEgressFrom(original["egress_from"], d, config)
 		if err != nil {
@@ -2453,6 +2483,9 @@ func expandAccessContextManagerServicePerimeterSpecIngressPolicies(v interface{}
 		}
 		original := raw.(map[string]interface{})
 		transformed := make(map[string]interface{})
+		if title := original["title"]; !tpgresource.IsEmptyValue(reflect.ValueOf(title)) {
+			transformed["title"] = title
+		}
 
 		transformedIngressFrom, err := expandAccessContextManagerServicePerimeterSpecIngressPoliciesIngressFrom(original["ingress_from"], d, config)
 		if err != nil {
@@ -2660,6 +2693,9 @@ func expandAccessContextManagerServicePerimeterSpecEgressPolicies(v interface{},
 		}
 		original := raw.(map[string]interface{})
 		transformed := make(map[string]interface{})
+		if title := original["title"]; !tpgresource.IsEmptyValue(reflect.ValueOf(title)) {
+			transformed["title"] = title
+		}
 
 		transformedEgressFrom, err := expandAccessContextManagerServicePerimeterSpecEgressPoliciesEgressFrom(original["egress_from"], d, config)
 		if err != nil {
