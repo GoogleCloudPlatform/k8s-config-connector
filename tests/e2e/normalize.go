@@ -1141,6 +1141,13 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 					replacement.PathIDs[workloadID] = "${workloadID}"
 				}
 			}
+			if u.GetKind() == "MapManagementStyleConfig" {
+				parts := strings.Split(s, "/")
+				if len(parts) > 0 {
+					styleConfigID := parts[len(parts)-1]
+					replacement.PathIDs[styleConfigID] = "${styleConfigId}"
+				}
+			}
 		}
 		return s
 	})
@@ -1242,6 +1249,26 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 				for _, match := range matches {
 					if len(match) > 1 {
 						normalizer.Replacements.PathIDs[match[1]] = "${folderID}"
+					}
+				}
+			}
+		}
+	}
+
+	// Find MapManagement styleConfig IDs in URL or Body and add to PathIDs
+	styleConfigIDRegex := regexp.MustCompile(`/styleConfigs/([a-zA-Z0-9_-]+)`)
+	for _, event := range events {
+		if !strings.Contains(event.Request.URL, "mapmanagement") {
+			continue
+		}
+		if matches := styleConfigIDRegex.FindStringSubmatch(event.Request.URL); len(matches) > 1 {
+			normalizer.Replacements.PathIDs[matches[1]] = "${styleConfigId}"
+		}
+		if event.Response.Body != "" {
+			if matches := styleConfigIDRegex.FindAllStringSubmatch(event.Response.Body, -1); len(matches) > 0 {
+				for _, match := range matches {
+					if len(match) > 1 {
+						normalizer.Replacements.PathIDs[match[1]] = "${styleConfigId}"
 					}
 				}
 			}

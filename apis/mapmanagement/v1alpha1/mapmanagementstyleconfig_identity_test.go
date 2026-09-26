@@ -66,3 +66,14 @@ func TestMapManagementStyleConfigIdentity_FromExternal(t *testing.T) {
 		})
 	}
 }
+
+func TestMapManagementStyleConfigIdentity_ParentString(t *testing.T) {
+	id := &MapManagementStyleConfigIdentity{
+		Project:     "test-project",
+		StyleConfig: "test-style",
+	}
+	expected := "projects/test-project"
+	if actual := id.ParentString(); actual != expected {
+		t.Errorf("ParentString() = %q, want %q", actual, expected)
+	}
+}
