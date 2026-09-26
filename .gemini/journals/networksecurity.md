@@ -36,3 +36,15 @@
 - **Problem**: The proto contains reference fields to `SecurityProfile` resource (`threat_prevention_profile`, `custom_mirroring_profile`, `custom_intercept_profile`, `url_filtering_profile`), which must be represented as proper KCC reference fields rather than raw string fields.
 - **Solution**: Mapped all of these fields as `NetworkSecuritySecurityProfileRef` pointers (e.g., `ThreatPreventionProfileRef *NetworkSecuritySecurityProfileRef`), leveraging the existing `NetworkSecuritySecurityProfileRef` type. Scaffolded types, implemented `IdentityV2`, and regenerated clients and CRD schemas.
 - **Impact**: Ensures that `NetworkSecuritySecurityProfileGroup` resources can seamlessly reference their underlying security profiles in an idiomatic KCC manner.
+
+### [2026-09-16] Implement Direct Controller, E2E Fixtures, and Fuzzer for NetworkSecurityMirroringDeploymentGroup
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `NetworkSecurityMirroringDeploymentGroup` (Issue #13197).
+- **Problem**: Greenfield implementation of MirroringDeploymentGroup required choosing between direct gRPC dial and official GAPIC clients, registering the direct controller, achieving 100% field coverage in tests, and resolving OAuth scope errors.
+- **Solution**:
+  1. Determined that MirroringDeploymentGroup GVK is mapped directly under the main `networksecurity` package in `mapper.generated.go`.
+  2. Initially implemented manual gRPC client dial which caused OAuth scope authorization issues in real GCP recording.
+  3. Switched to official GAPIC `NewMirroringRESTClient` from `cloud.google.com/go/networksecurity/apiv1`, leveraging REST-based client transport with `m.config.RESTClientOptions()`. This clean GAPIC client resolved all OAuth issues and simplified LRO waiting via the `.Wait(ctx)` API.
+  4. Registered the direct controller in `static_config.go`.
+  5. Implemented minimal and maximal test fixtures achieving 100% field coverage, updating the exceptions list.
+  6. Successfully recorded real GCP traffic logs (`_http.log`) and golden files via `./hack/record-gcp`.
+- **Impact**: Provides full-fidelity, robust, and beautifully tested direct controller support for NetworkSecurityMirroringDeploymentGroup in Config Connector.
