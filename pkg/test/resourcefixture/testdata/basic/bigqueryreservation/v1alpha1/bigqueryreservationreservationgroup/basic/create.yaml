@@ -1,0 +1,8 @@
+apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1alpha1
+kind: BigQueryReservationReservationGroup
+metadata:
+  name: bqresgroupbasic-${uniqueId}
+spec:
+  location: us-central1
+  projectRef:
+    external: ${projectId}

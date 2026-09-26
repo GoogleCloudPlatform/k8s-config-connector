@@ -60,6 +60,10 @@ func BigQueryReservationAssignmentObservedState_v1beta1_FromProto(mapCtx *direct
 	// MISSING: Name
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	// MISSING: EnableGeminiInBigquery
+	// MISSING: SchedulingPolicy
+	// MISSING: Principal
+	// MISSING: Precedence
+	// MISSING: Condition
 	return out
 }
 func BigQueryReservationAssignmentObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigqueryreservationv1beta1.BigQueryReservationAssignmentObservedState) *pb.Assignment {
@@ -70,6 +74,10 @@ func BigQueryReservationAssignmentObservedState_v1beta1_ToProto(mapCtx *direct.M
 	// MISSING: Name
 	out.State = direct.Enum_ToProto[pb.Assignment_State](mapCtx, in.State)
 	// MISSING: EnableGeminiInBigquery
+	// MISSING: SchedulingPolicy
+	// MISSING: Principal
+	// MISSING: Precedence
+	// MISSING: Condition
 	return out
 }
 
@@ -83,6 +91,10 @@ func BigQueryReservationAssignmentSpec_v1beta1_FromProto(mapCtx *direct.MapConte
 	out.Assignee = direct.LazyPtr(in.GetAssignee())
 	out.JobType = direct.Enum_FromProto(mapCtx, in.GetJobType())
 	// MISSING: EnableGeminiInBigquery
+	// MISSING: SchedulingPolicy
+	// MISSING: Principal
+	// MISSING: Precedence
+	// MISSING: Condition
 	return out
 }
 */
@@ -99,6 +111,10 @@ found existing non-generated mapping function "BigQueryReservationAssignmentSpec
 		out.Assignee = BigQueryReservationAssignmentSpec_Assignee_ToProto(mapCtx, in.Assignee)
 		out.JobType = direct.Enum_ToProto[pb.Assignment_JobType](mapCtx, in.JobType)
 		// MISSING: EnableGeminiInBigquery
+		// MISSING: SchedulingPolicy
+		// MISSING: Principal
+		// MISSING: Precedence
+		// MISSING: Condition
 		return out
 	}
 */
@@ -174,6 +190,70 @@ func BigQueryReservationCapacityCommitmentStatus_v1alpha1_ToProto(mapCtx *direct
 	// MISSING: IsFlatRate
 	return out
 }
+func BigQueryReservationReservationGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ReservationGroup) *krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupObservedState{}
+	// MISSING: Name
+	out.CreationTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreationTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func BigQueryReservationReservationGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupObservedState) *pb.ReservationGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReservationGroup{}
+	// MISSING: Name
+	out.CreationTime = direct.StringTimestamp_ToProto(mapCtx, in.CreationTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func BigQueryReservationReservationGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ReservationGroup) *krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupSpec{}
+	// MISSING: Name
+	if in.GetParentGroup() != "" {
+		out.ParentGroupRef = &krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupRef{External: in.GetParentGroup()}
+	}
+	return out
+}
+func BigQueryReservationReservationGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupSpec) *pb.ReservationGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReservationGroup{}
+	// MISSING: Name
+	if in.ParentGroupRef != nil {
+		out.ParentGroup = in.ParentGroupRef.External
+	}
+	return out
+}
+func BigQueryReservationReservationGroupStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ReservationGroup) *krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupStatus{}
+	// MISSING: Name
+	// MISSING: ParentGroup
+	// MISSING: CreationTime
+	// MISSING: UpdateTime
+	return out
+}
+func BigQueryReservationReservationGroupStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigqueryreservationv1alpha1.BigQueryReservationReservationGroupStatus) *pb.ReservationGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReservationGroup{}
+	// MISSING: Name
+	// MISSING: ParentGroup
+	// MISSING: CreationTime
+	// MISSING: UpdateTime
+	return out
+}
 
 /* found existing non-generated mapping function "BigQueryReservationReservationObservedState_v1beta1_FromProto", skipping
 func BigQueryReservationReservationObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krmbigqueryreservationv1beta1.BigQueryReservationReservationObservedState {
@@ -191,7 +271,11 @@ func BigQueryReservationReservationObservedState_v1beta1_FromProto(mapCtx *direc
 	// MISSING: OriginalPrimaryLocation
 	// MISSING: MaxSlots
 	// MISSING: ScalingMode
+	// MISSING: Labels
+	// MISSING: ReservationGroup
 	// MISSING: ReplicationStatus
+	// MISSING: SchedulingPolicy
+	// MISSING: ReservationGroupPath
 	return out
 }
 */
@@ -212,7 +296,11 @@ func BigQueryReservationReservationObservedState_v1beta1_ToProto(mapCtx *direct.
 	// MISSING: OriginalPrimaryLocation
 	// MISSING: MaxSlots
 	// MISSING: ScalingMode
+	// MISSING: Labels
+	// MISSING: ReservationGroup
 	// MISSING: ReplicationStatus
+	// MISSING: SchedulingPolicy
+	// MISSING: ReservationGroupPath
 	return out
 }
 */
@@ -237,7 +325,11 @@ func BigQueryReservationReservationSpec_v1beta1_FromProto(mapCtx *direct.MapCont
 	// MISSING: OriginalPrimaryLocation
 	// MISSING: MaxSlots
 	// MISSING: ScalingMode
+	// MISSING: Labels
+	// MISSING: ReservationGroup
 	// MISSING: ReplicationStatus
+	// MISSING: SchedulingPolicy
+	// MISSING: ReservationGroupPath
 	return out
 }
 */
@@ -262,7 +354,11 @@ func BigQueryReservationReservationSpec_v1beta1_ToProto(mapCtx *direct.MapContex
 	// MISSING: OriginalPrimaryLocation
 	// MISSING: MaxSlots
 	// MISSING: ScalingMode
+	// MISSING: Labels
+	// MISSING: ReservationGroup
 	// MISSING: ReplicationStatus
+	// MISSING: SchedulingPolicy
+	// MISSING: ReservationGroupPath
 	return out
 }
 */
