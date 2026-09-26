@@ -437,6 +437,7 @@ X-Goog-Request-Params: project_id=${projectId}&region=us-central1
       "queryFileUri": "gs://config-connector-sample/hivejob_sample.sql"
     },
     "labels": {
+      "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
     "placement": {
@@ -468,6 +469,7 @@ X-Xss-Protection: 0
     "queryFileUri": "gs://config-connector-sample/hivejob_sample.sql"
   },
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "placement": {
