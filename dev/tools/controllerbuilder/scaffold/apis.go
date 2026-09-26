@@ -195,9 +195,18 @@ func (a *APIScaffolder) PathToTypeFile(resource options.Resource) string {
 	return filepath.Join(a.BaseDir, a.GoPackage, fileName)
 }
 
-func (a *APIScaffolder) AddTypeFile(resource options.Resource) error {
+// AddTypeFile scaffolds <kind>_types.go.
+//
+// When prepopulated is non-nil, the Spec and ObservedState struct bodies are
+// generated from the proto message definitions along with any required package imports.
+func (a *APIScaffolder) AddTypeFile(resource options.Resource, prepopulated *PrepopulateResult) error {
 	typeFilePath := a.PathToTypeFile(resource)
 	cArgs := a.buildAPIArgs(&resource)
+	if prepopulated != nil {
+		cArgs.SpecFields = prepopulated.SpecFields
+		cArgs.ObservedStateFields = prepopulated.ObservedStateFields
+		cArgs.ExtraImports = prepopulated.ExtraImports
+	}
 	return scaffoldTypeFile(typeFilePath, cArgs)
 }
 

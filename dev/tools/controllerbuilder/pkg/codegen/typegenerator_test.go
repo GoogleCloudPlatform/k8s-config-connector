@@ -756,3 +756,330 @@ type PSCConfig struct {
 		t.Error("everything is generator-owned when the package does not exist yet")
 	}
 }
+
+// TestReservedTypeNamesSkipsAndComments verifies that reserved type names are not emitted
+// as active Go types, and are written as comments when includeSkippedOutput is enabled.
+func TestReservedTypeNamesSkipsAndComments(t *testing.T) {
+	fdp := &descriptorpb.FileDescriptorProto{
+		Name:    protoPtr("test.proto"),
+		Package: protoPtr("google.cloud.test.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name: protoPtr("BillingAccount"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: protoPtr("name"), Number: protoPtr(int32(1)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_STRING)},
+				},
+			},
+		},
+	}
+	fd, err := protodesc.NewFile(fdp, nil)
+	if err != nil {
+		t.Fatalf("failed to create file descriptor: %v", err)
+	}
+	msg := fd.Messages().ByName("BillingAccount")
+	goTypeName := "BillingAccount"
+
+	for _, tc := range []struct {
+		name                 string
+		includeSkippedOutput bool
+		reserved             bool
+		wantComment          bool
+		wantActive           bool
+	}{
+		{
+			name:                 "not reserved, generated actively",
+			includeSkippedOutput: false,
+			reserved:             false,
+			wantComment:          false,
+			wantActive:           true,
+		},
+		{
+			name:                 "reserved, skipped silently when includeSkippedOutput is false",
+			includeSkippedOutput: false,
+			reserved:             true,
+			wantComment:          false,
+			wantActive:           false,
+		},
+		{
+			name:                 "reserved, generated as comment when includeSkippedOutput is true",
+			includeSkippedOutput: true,
+			reserved:             true,
+			wantComment:          true,
+			wantActive:           false,
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			dir := t.TempDir()
+			pkgDir := filepath.Join(dir, "test")
+			if err := os.MkdirAll(pkgDir, 0755); err != nil {
+				t.Fatalf("MkdirAll: %v", err)
+			}
+			g := NewTypeGenerator("test", dir, nil)
+			g.visitedMessages = []protoreflect.MessageDescriptor{msg}
+			g.includeSkippedOutput = tc.includeSkippedOutput
+			if tc.reserved {
+				g.WithReservedTypeNames(goTypeName)
+			}
+			if err := g.WriteVisitedMessages(); err != nil {
+				t.Fatalf("WriteVisitedMessages: %v", err)
+			}
+			f := g.generatedFiles[generatedFileKey{GoPackage: "test", FileName: "types.generated.go"}]
+			body := ""
+			if f != nil {
+				body = f.body.String()
+			}
+			hasComment := strings.Contains(body, "/* go type "+`"`+goTypeName+`"`+" is a Kind the scaffolder will declare, skipping")
+			hasActive := strings.Contains(body, "type "+goTypeName+" struct") && !hasComment
+			if hasActive != tc.wantActive {
+				t.Errorf("hasActive = %v, want %v; body = %s", hasActive, tc.wantActive, body)
+			}
+			if hasComment != tc.wantComment {
+				t.Errorf("hasComment = %v, want %v; body = %s", hasComment, tc.wantComment, body)
+			}
+		})
+	}
+}
+
+// TestWriteObservedStateFieldsNotes verifies that WriteObservedStateFields generates
+// expected notes: standard fields render successfully into the struct, while fields
+// that cannot be mapped generate TODO markers.
+func TestWriteObservedStateFieldsNotes(t *testing.T) {
+	msg := observedStateTestMessage(t)
+
+	for _, tc := range []struct {
+		name         string
+		field        string
+		wantRendered string
+	}{
+		{
+			name:         "a field with a Go type renders into the struct",
+			field:        "create_time",
+			wantRendered: `json:"createTime`,
+		},
+		{
+			name:         "a field WriteField cannot type leaves a marker",
+			field:        "by_index",
+			wantRendered: "// TODO:",
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			// Arrange
+			details := &OutputMessageDetails{
+				Message:      msg,
+				OutputFields: []protoreflect.FieldDescriptor{msg.Fields().ByName(protoreflect.Name(tc.field))},
+			}
+
+			// Act
+			var buf bytes.Buffer
+			notes := WriteObservedStateFields(&buf, details, sets.NewString(), nil, WriteOptions{})
+
+			// Assert
+			if len(notes) != 1 {
+				t.Fatalf("got %d notes, want one", len(notes))
+			}
+			if notes[0].Skipped {
+				t.Errorf("Skipped = true, want false for a field the skip map does not name")
+			}
+			if !strings.Contains(notes[0].Rendered, tc.wantRendered) {
+				t.Errorf("Rendered = %q, want it to contain %q", notes[0].Rendered, tc.wantRendered)
+			}
+			if !strings.Contains(buf.String(), tc.wantRendered) {
+				t.Errorf("struct body = %q, want it to contain %q", buf.String(), tc.wantRendered)
+			}
+		})
+	}
+}
+
+// TestWriteObservedStateFieldsSkips verifies that fields in the skip map produce
+// no struct output and are marked as Skipped in the returned notes.
+func TestWriteObservedStateFieldsSkips(t *testing.T) {
+	// Arrange
+	msg := observedStateTestMessage(t)
+	details := &OutputMessageDetails{
+		Message:      msg,
+		OutputFields: []protoreflect.FieldDescriptor{msg.Fields().ByName("name")},
+	}
+
+	// Act
+	var buf bytes.Buffer
+	notes := WriteObservedStateFields(&buf, details, sets.NewString(), map[string]bool{"name": true}, WriteOptions{})
+
+	// Assert
+	if len(notes) != 1 {
+		t.Fatalf("got %d notes, want one", len(notes))
+	}
+	if !notes[0].Skipped {
+		t.Errorf("Skipped = false, want true")
+	}
+	if notes[0].Rendered != "" {
+		t.Errorf("Rendered = %q, want empty", notes[0].Rendered)
+	}
+	if buf.String() != "" {
+		t.Errorf("struct body = %q, want empty", buf.String())
+	}
+}
+
+// TestWriteObservedStateFieldsHonoursWriteOptions verifies that WriteObservedStateFields
+// respects WriteOptions while explicitly omitting +required markers (which are
+// invalid on status / observed-state fields).
+func TestWriteObservedStateFieldsHonoursWriteOptions(t *testing.T) {
+	msg := observedStateTestMessage(t)
+
+	for _, tc := range []struct {
+		name         string
+		field        string
+		opts         WriteOptions
+		wantRendered string
+		wantJSONName string
+	}{
+		{
+			name:         "EmitRequired is the one flag that does not carry over",
+			field:        "required_field",
+			opts:         WriteOptions{EmitRequired: true},
+			wantRendered: `json:"requiredField,omitempty"`,
+			wantJSONName: "requiredField",
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			// Arrange
+			details := &OutputMessageDetails{
+				Message:      msg,
+				OutputFields: []protoreflect.FieldDescriptor{msg.Fields().ByName(protoreflect.Name(tc.field))},
+			}
+
+			// Act
+			var buf bytes.Buffer
+			notes := WriteObservedStateFields(&buf, details, sets.NewString(), nil, tc.opts)
+
+			// Assert
+			if len(notes) != 1 {
+				t.Fatalf("got %d notes, want one", len(notes))
+			}
+			if !strings.Contains(buf.String(), tc.wantRendered) {
+				t.Errorf("struct body = %q, want it to contain %q", buf.String(), tc.wantRendered)
+			}
+			if notes[0].JSONName != tc.wantJSONName {
+				t.Errorf("note JSONName = %q, want %q", notes[0].JSONName, tc.wantJSONName)
+			}
+			// A required marker here would make the API server reject a status
+			// KCC itself wrote.
+			if strings.Contains(buf.String(), "+required") {
+				t.Errorf("struct body = %q, want no +required marker", buf.String())
+			}
+		})
+	}
+}
+
+// observedStateTestMessage constructs a mock proto message descriptor with various
+// field behaviors (supported types, unsupported map key types, and required fields)
+// for testing observed-state field emission.
+func observedStateTestMessage(t *testing.T) protoreflect.MessageDescriptor {
+	t.Helper()
+	requiredOpts := &descriptorpb.FieldOptions{}
+	proto.SetExtension(requiredOpts, annotations.E_FieldBehavior,
+		[]annotations.FieldBehavior{annotations.FieldBehavior_REQUIRED})
+
+	fdp := &descriptorpb.FileDescriptorProto{
+		Name:    protoPtr("obs.proto"),
+		Package: protoPtr("google.cloud.test.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name: protoPtr("TestMessage"),
+				NestedType: []*descriptorpb.DescriptorProto{
+					{
+						Name: protoPtr("ByIndexEntry"),
+						Field: []*descriptorpb.FieldDescriptorProto{
+							{Name: protoPtr("key"), Number: protoPtr(int32(1)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_INT32)},
+							{Name: protoPtr("value"), Number: protoPtr(int32(2)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_STRING)},
+						},
+						Options: &descriptorpb.MessageOptions{MapEntry: protoPtr(true)},
+					},
+				},
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: protoPtr("name"), Number: protoPtr(int32(1)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_STRING)},
+					{Name: protoPtr("create_time"), Number: protoPtr(int32(2)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_STRING)},
+					{
+						Name: protoPtr("by_index"), Number: protoPtr(int32(3)),
+						Type:     typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE),
+						TypeName: protoPtr(".google.cloud.test.v1.TestMessage.ByIndexEntry"),
+						Label:    labelDescriptor(descriptorpb.FieldDescriptorProto_LABEL_REPEATED),
+					},
+					{
+						Name: protoPtr("required_field"), Number: protoPtr(int32(6)),
+						Type:    typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_STRING),
+						Options: requiredOpts,
+					},
+				},
+			},
+		},
+	}
+	fd, err := protodesc.NewFile(fdp, nil)
+	if err != nil {
+		t.Fatalf("failed to create file descriptor: %v", err)
+	}
+	return fd.Messages().ByName("TestMessage")
+}
+
+// TestReservedTypeNamesExistingDeclarationPrecedence verifies that when a type already
+// exists in a non-autogenerated file on disk, it is skipped as "found existing non-generated go type"
+// rather than being attributed to the scaffolder reservation.
+func TestReservedTypeNamesExistingDeclarationPrecedence(t *testing.T) {
+	fdp := &descriptorpb.FileDescriptorProto{
+		Name:    protoPtr("test.proto"),
+		Package: protoPtr("google.cloud.test.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name: protoPtr("BillingAccount"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: protoPtr("name"), Number: protoPtr(int32(1)), Type: typeDescriptor(descriptorpb.FieldDescriptorProto_TYPE_STRING)},
+				},
+			},
+		},
+	}
+	fd, err := protodesc.NewFile(fdp, nil)
+	if err != nil {
+		t.Fatalf("failed to create file descriptor: %v", err)
+	}
+	msg := fd.Messages().ByName("BillingAccount")
+	goTypeName := "BillingAccount"
+
+	dir := t.TempDir()
+	pkgDir := filepath.Join(dir, "test")
+	if err := os.MkdirAll(pkgDir, 0755); err != nil {
+		t.Fatalf("MkdirAll: %v", err)
+	}
+
+	// Write an existing non-generated type declaration.
+	existingCode := `package test
+
+type BillingAccount struct {
+	Name string
+}
+`
+	if err := os.WriteFile(filepath.Join(pkgDir, "billingaccount_types.go"), []byte(existingCode), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	g := NewTypeGenerator("test", dir, nil)
+	g.visitedMessages = []protoreflect.MessageDescriptor{msg}
+	g.includeSkippedOutput = true
+	g.WithReservedTypeNames(goTypeName)
+
+	if err := g.WriteVisitedMessages(); err != nil {
+		t.Fatalf("WriteVisitedMessages: %v", err)
+	}
+
+	f := g.generatedFiles[generatedFileKey{GoPackage: "test", FileName: "types.generated.go"}]
+	if f == nil {
+		t.Fatal("expected generated file")
+	}
+	body := f.body.String()
+	wantExisting := `/* found existing non-generated go type "BillingAccount", skipping`
+	if !strings.Contains(body, wantExisting) {
+		t.Errorf("body missing %q; got:\n%s", wantExisting, body)
+	}
+	dontWantReserved := `is a Kind the scaffolder will declare`
+	if strings.Contains(body, dontWantReserved) {
+		t.Errorf("body should not contain %q when type exists on disk; got:\n%s", dontWantReserved, body)
+	}
+}
