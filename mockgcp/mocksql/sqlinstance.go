@@ -187,6 +187,8 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 		return nil, err
 	}
 
+	obj.ReplicationCluster = nil
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -307,14 +309,14 @@ func (s *sqlInstancesService) ensureMasterReflectsReplica(ctx context.Context, n
 
 		shouldUpdate := false
 
+		replicaName := name.InstanceName
+		if name.Project.ID != masterName.Project.ID {
+			replicaName = name.Project.ID + ":" + name.InstanceName
+		}
+
 		// Add to replicaNames
 		{
 			found := false
-			replicaName := name.InstanceName
-			if name.Project.ID != masterName.Project.ID {
-				replicaName = name.Project.ID + ":" + name.InstanceName
-			}
-
 			for _, s := range master.ReplicaNames {
 				if s == replicaName {
 					found = true
@@ -916,7 +918,10 @@ func validateDatabaseInstance(obj *pb.DatabaseInstance) error {
 
 		if !obj.GetSettings().GetBackupConfiguration().GetEnabled().GetValue() {
 			if obj.GetSettings().GetBackupConfiguration().GetBinaryLogEnabled().GetValue() {
-				return status.Errorf(codes.InvalidArgument, "Binary log must be disabled when backup is disabled or the instance must be a replica instance with a MySQL 5.7 or above version.")
+				isReplica := obj.InstanceType == pb.SqlInstanceType_READ_REPLICA_INSTANCE || obj.MasterInstanceName != ""
+				if !isReplica || !isMysql(obj) {
+					return status.Errorf(codes.InvalidArgument, "Binary log must be disabled when backup is disabled or the instance must be a replica instance with a MySQL 5.7 or above version.")
+				}
 			}
 		}
 	}
@@ -989,11 +994,18 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 		if specifiedMaintenanceVersion != "" {
 			obj.MaintenanceVersion = specifiedMaintenanceVersion
 		}
+		if body.ReplicationCluster != nil {
+			obj.ReplicationCluster = proto.CloneOf(body.ReplicationCluster)
+		}
 	}
 
 	obj.Settings.SettingsVersion = wrapperspb.Int64(obj.GetSettings().GetSettingsVersion().GetValue() + 1)
 
 	populateDefaults(obj)
+
+	if err := s.handleDRPairing(ctx, *name, obj); err != nil {
+		return nil, err
+	}
 
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
@@ -1013,6 +1025,41 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 	return s.operations.startLRO(ctx, op, obj, func() (proto.Message, error) {
 		return obj, nil
 	})
+}
+
+func (s *sqlInstancesService) handleDRPairing(ctx context.Context, name InstanceName, obj *pb.DatabaseInstance) error {
+	if obj.ReplicationCluster != nil && obj.ReplicationCluster.FailoverDrReplicaName != nil && *obj.ReplicationCluster.FailoverDrReplicaName != "" {
+		replicaInstanceName := *obj.ReplicationCluster.FailoverDrReplicaName
+		tokens := strings.Split(replicaInstanceName, ":")
+		replicaName := name
+		if len(tokens) >= 2 {
+			replicaName.Project = &projects.ProjectData{ID: tokens[0]}
+			replicaName.InstanceName = tokens[1]
+		} else {
+			replicaName.InstanceName = tokens[0]
+		}
+		replicaFQN := replicaName.String()
+		replica := &pb.DatabaseInstance{}
+		if err := s.storage.Get(ctx, replicaFQN, replica); err == nil {
+			primaryIdentifier := name.InstanceName
+			primaryWithProject := name.Project.ID + ":" + name.InstanceName
+			if replica.MasterInstanceName == primaryIdentifier || replica.MasterInstanceName == primaryWithProject {
+				formattedDrReplicaName := replicaName.Project.ID + ":" + replicaName.InstanceName
+				obj.ReplicationCluster.FailoverDrReplicaName = &formattedDrReplicaName
+				if replica.ReplicationCluster == nil {
+					replica.ReplicationCluster = &pb.ReplicationCluster{}
+				}
+				replica.ReplicationCluster.DrReplica = proto.Bool(true)
+				replica.Etag = fields.ComputeWeakEtag(replica)
+				if err := s.storage.Update(ctx, replicaFQN, replica); err != nil {
+					return err
+				}
+			}
+		}
+	} else if obj.ReplicationCluster != nil && (obj.ReplicationCluster.DrReplica == nil || !*obj.ReplicationCluster.DrReplica) {
+		obj.ReplicationCluster = nil
+	}
+	return nil
 }
 
 func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUpdateRequest) (*pb.Operation, error) {
@@ -1065,6 +1112,10 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 	populateDefaults(obj)
 
 	obj.Settings.SettingsVersion = wrapperspb.Int64(existing.GetSettings().GetSettingsVersion().GetValue() + 1)
+
+	if err := s.handleDRPairing(ctx, *name, obj); err != nil {
+		return nil, err
+	}
 
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
@@ -1135,10 +1186,6 @@ func (s *sqlInstancesService) Switchover(ctx context.Context, req *pb.SqlInstanc
 		obj.MasterInstanceName = ""
 		oldMaster.MasterInstanceName = name.Project.ID + ":" + name.InstanceName
 
-		// Swap ReplicationCluster
-		obj.ReplicationCluster = oldMaster.ReplicationCluster
-		oldMaster.ReplicationCluster = nil
-
 		// Set replica names
 		replicaName := oldMasterName.InstanceName
 		if oldMasterName.Project.ID != name.Project.ID {
@@ -1146,6 +1193,32 @@ func (s *sqlInstancesService) Switchover(ctx context.Context, req *pb.SqlInstanc
 		}
 		obj.ReplicaNames = []string{replicaName}
 		oldMaster.ReplicaNames = nil
+
+		// Update ReplicationCluster
+		drReplicaTargetName := oldMasterName.Project.ID + ":" + oldMasterName.InstanceName
+		obj.ReplicationCluster = &pb.ReplicationCluster{
+			FailoverDrReplicaName: &drReplicaTargetName,
+		}
+		oldMaster.ReplicationCluster = &pb.ReplicationCluster{
+			DrReplica: proto.Bool(true),
+		}
+
+		// Swap BackupConfiguration
+		if oldMaster.Settings != nil && obj.Settings != nil {
+			oldMasterBackup := oldMaster.Settings.BackupConfiguration
+			objBackup := obj.Settings.BackupConfiguration
+			if oldMasterBackup != nil {
+				obj.Settings.BackupConfiguration = proto.CloneOf(oldMasterBackup)
+			}
+			if objBackup != nil {
+				oldMaster.Settings.BackupConfiguration = proto.CloneOf(objBackup)
+			} else {
+				oldMaster.Settings.BackupConfiguration = &pb.BackupConfiguration{
+					Enabled:          wrapperspb.Bool(false),
+					BinaryLogEnabled: wrapperspb.Bool(true),
+				}
+			}
+		}
 
 		oldMaster.Etag = fields.ComputeWeakEtag(oldMaster)
 

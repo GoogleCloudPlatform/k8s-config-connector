@@ -775,6 +775,9 @@ X-Xss-Protection: 0
   "name": "west-${uniqueId}",
   "project": "${projectId}",
   "region": "us-west1",
+  "replicationCluster": {
+    "failoverDrReplicaName": "${projectId}:east-${uniqueId}"
+  },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/west-${uniqueId}",
   "serverCaCert": {
@@ -877,6 +880,9 @@ X-Xss-Protection: 0
   "replicaConfiguration": {
     "failoverTarget": false,
     "kind": "sql#replicaConfiguration"
+  },
+  "replicationCluster": {
+    "drReplica": true
   },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/east-${uniqueId}",
@@ -1040,6 +1046,9 @@ X-Xss-Protection: 0
   "name": "west-${uniqueId}",
   "project": "${projectId}",
   "region": "us-west1",
+  "replicationCluster": {
+    "drReplica": true
+  },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/west-${uniqueId}",
   "serverCaCert": {
@@ -1141,6 +1150,9 @@ X-Xss-Protection: 0
   "replicaConfiguration": {
     "failoverTarget": false,
     "kind": "sql#replicaConfiguration"
+  },
+  "replicationCluster": {
+    "failoverDrReplicaName": "${projectId}:west-${uniqueId}"
   },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/east-${uniqueId}",
@@ -1303,6 +1315,9 @@ X-Xss-Protection: 0
   "name": "west-${uniqueId}",
   "project": "${projectId}",
   "region": "us-west1",
+  "replicationCluster": {
+    "failoverDrReplicaName": "${projectId}:east-${uniqueId}"
+  },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/west-${uniqueId}",
   "serverCaCert": {
@@ -1405,6 +1420,9 @@ X-Xss-Protection: 0
   "replicaConfiguration": {
     "failoverTarget": false,
     "kind": "sql#replicaConfiguration"
+  },
+  "replicationCluster": {
+    "drReplica": true
   },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/east-${uniqueId}",
@@ -1567,6 +1585,9 @@ X-Xss-Protection: 0
   "name": "west-${uniqueId}",
   "project": "${projectId}",
   "region": "us-west1",
+  "replicationCluster": {
+    "failoverDrReplicaName": "${projectId}:east-${uniqueId}"
+  },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/west-${uniqueId}",
   "serverCaCert": {
