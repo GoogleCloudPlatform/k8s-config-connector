@@ -223,7 +223,8 @@ type Instance_ConnectionDetail struct {
 }
 */
 
-/* unreachable type Instance_GCSBackupSource
+/* found existing non-generated go type "Instance_GCSBackupSource", skipping
+
 // +kcc:proto=google.cloud.memorystore.v1.Instance.GcsBackupSource
 type Instance_GCSBackupSource struct {
 	// Optional. Example: gs://bucket1/object1, gs://bucket2/folder2/object2
