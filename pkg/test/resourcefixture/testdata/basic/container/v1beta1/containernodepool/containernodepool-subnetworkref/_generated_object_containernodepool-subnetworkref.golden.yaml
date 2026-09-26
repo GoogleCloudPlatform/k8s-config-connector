@@ -16,7 +16,6 @@ metadata:
 spec:
   clusterRef:
     name: cluster-sample-${uniqueId}
-  initialNodeCount: 1
   location: us-central1-a
   networkConfig:
     subnetworkRef:

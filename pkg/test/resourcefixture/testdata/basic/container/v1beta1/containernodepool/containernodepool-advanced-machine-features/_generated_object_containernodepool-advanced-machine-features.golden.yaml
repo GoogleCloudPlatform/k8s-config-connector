@@ -25,7 +25,6 @@ spec:
     advancedMachineFeatures:
       enableNestedVirtualization: true
       threadsPerCore: 1
-    machineType: n4-standard-2
     taint:
     - effect: NO_SCHEDULE
       key: newKey

@@ -44,7 +44,9 @@ func (s *ClusterManagerV1) GetNodePool(ctx context.Context, req *pb.GetNodePoolR
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	return obj, nil
+	resp := proto.Clone(obj).(*pb.NodePool)
+	resp.InitialNodeCount = 0 // INPUT_ONLY in GKE API: not returned on GET
+	return resp, nil
 }
 
 func (s *ClusterManagerV1) ListNodePools(ctx context.Context, req *pb.ListNodePoolsRequest) (*pb.ListNodePoolsResponse, error) {
@@ -62,7 +64,8 @@ func (s *ClusterManagerV1) ListNodePools(ctx context.Context, req *pb.ListNodePo
 
 	var nodePools []*pb.NodePool
 	if err := s.storage.List(ctx, (*pb.NodePool)(nil).ProtoReflect().Descriptor(), storage.ListOptions{Prefix: nodePoolPrefix}, func(msg proto.Message) error {
-		np := msg.(*pb.NodePool)
+		np := proto.Clone(msg.(*pb.NodePool)).(*pb.NodePool)
+		np.InitialNodeCount = 0 // INPUT_ONLY in GKE API
 		nodePools = append(nodePools, np)
 		return nil
 	}); err != nil {
@@ -121,6 +124,14 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(project *projects.ProjectDat
 		obj.Version = cluster.CurrentNodeVersion
 	}
 
+	if len(obj.Locations) == 0 {
+		if len(cluster.Locations) > 0 {
+			obj.Locations = cluster.Locations
+		} else if cluster.Location != "" {
+			obj.Locations = []string{cluster.Location}
+		}
+	}
+
 	if obj.Config == nil {
 		obj.Config = &pb.NodeConfig{}
 	}
@@ -177,13 +188,23 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(project *projects.ProjectDat
 		obj.NetworkConfig.EnablePrivateNodes = cluster.NetworkConfig.DefaultEnablePrivateNodes
 	}
 	if obj.NetworkConfig.PodIpv4CidrBlock == "" {
-		obj.NetworkConfig.PodIpv4CidrBlock = "10.92.0.0/14"
+		if cluster.IpAllocationPolicy != nil && cluster.IpAllocationPolicy.ClusterIpv4CidrBlock != "" {
+			obj.NetworkConfig.PodIpv4CidrBlock = cluster.IpAllocationPolicy.ClusterIpv4CidrBlock
+		} else if cluster.ClusterIpv4Cidr != "" {
+			obj.NetworkConfig.PodIpv4CidrBlock = cluster.ClusterIpv4Cidr
+		} else {
+			obj.NetworkConfig.PodIpv4CidrBlock = "10.112.0.0/14"
+		}
+	}
+	if obj.NetworkConfig.PodRange == "" {
+		if cluster.IpAllocationPolicy != nil && cluster.IpAllocationPolicy.ClusterSecondaryRangeName != "" {
+			obj.NetworkConfig.PodRange = cluster.IpAllocationPolicy.ClusterSecondaryRangeName
+		} else {
+			obj.NetworkConfig.PodRange = fmt.Sprintf("gke-%s-pods-7b2f8c84", cluster.Name)
+		}
 	}
 	if obj.NetworkConfig.PodIpv4RangeUtilization == 0 {
 		obj.NetworkConfig.PodIpv4RangeUtilization = 0.001
-	}
-	if obj.NetworkConfig.PodRange == "" {
-		obj.NetworkConfig.PodRange = obj.Name + "-pods-12345678"
 	}
 	if obj.NetworkConfig.Subnetwork == "" {
 		obj.NetworkConfig.Subnetwork = cluster.NetworkConfig.Subnetwork
@@ -467,9 +488,30 @@ func (s *ClusterManagerV1) SetNodePoolSize(ctx context.Context, req *pb.SetNodeP
 		return nil, err
 	}
 
+	// Update corresponding IGMs
+	for _, igmUrl := range obj.InstanceGroupUrls {
+		prefix := "https://www.googleapis.com/compute/v1/"
+		if !strings.HasPrefix(igmUrl, prefix) {
+			continue
+		}
+		igmFqn := strings.TrimPrefix(igmUrl, prefix)
+		igm := &computepb.InstanceGroupManager{}
+		if err := s.storage.Get(ctx, igmFqn, igm); err == nil {
+			igm.TargetSize = PtrTo(req.NodeCount)
+			if igm.CurrentActions == nil {
+				igm.CurrentActions = &computepb.InstanceGroupManagerActionsSummary{}
+			}
+			igm.CurrentActions.None = PtrTo(req.NodeCount)
+			if err := s.storage.Update(ctx, igmFqn, igm); err != nil {
+				klog.Errorf("failed to update mock IGM size: %v", err)
+			}
+		}
+	}
+
 	op := &pb.Operation{
-		Zone:       name.Location,
-		TargetLink: buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
+		Zone:          name.Location,
+		TargetLink:    buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
+		OperationType: pb.Operation_SET_NODE_POOL_SIZE,
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return obj, nil
