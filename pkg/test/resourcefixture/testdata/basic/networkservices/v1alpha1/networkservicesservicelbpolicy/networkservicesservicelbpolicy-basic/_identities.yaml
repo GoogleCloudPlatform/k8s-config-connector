@@ -1,0 +1,6 @@
+- caisURL: //networkservices.googleapis.com/projects/${projectId}/locations/global/serviceLbPolicies/networkservicesservicelbpolicy-${uniqueId}
+  group: networkservices.cnrm.cloud.google.com
+  kind: NetworkServicesServiceLBPolicy
+  name: networkservicesservicelbpolicy-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

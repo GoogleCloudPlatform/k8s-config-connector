@@ -22,5 +22,826 @@
 // resource: NetworkServicesLBEdgeExtension:LbEdgeExtension
 // resource: NetworkServicesWasmPlugin:WasmPlugin
 // resource: NetworkServicesAuthzExtension:AuthzExtension
+// resource: NetworkServicesServiceLBPolicy:ServiceLbPolicy
 
 package v1alpha1
+
+/* found existing non-generated go type with proto tag "google.cloud.networkservices.v1.AuthzExtension", skipping
+
+// +kcc:proto=google.cloud.networkservices.v1.AuthzExtension
+type AuthzExtension struct {
+	// Required. Identifier. Name of the `AuthzExtension` resource in the
+	//  following format:
+	//  `projects/{project}/locations/{location}/authzExtensions/{authz_extension}`.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AuthzExtension.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. A human-readable description of the resource.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AuthzExtension.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Set of labels associated with the `AuthzExtension`
+	//  resource.
+	//
+	//  The format must comply with [the requirements for
+	//  labels](/compute/docs/labeling-resources#requirements) for Google Cloud
+	//  resources.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AuthzExtension.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. All backend services and forwarding rules referenced by this
+	//  extension must share the same load balancing scheme. Supported values:
+	//  `INTERNAL_MANAGED`, `EXTERNAL_MANAGED`. Can be omitted for AuthzExtensions
+	//  that do not reference a backend service. For more information, refer to
+	//  [Backend services
+	//  overview](https://cloud.google.com/load-balancing/docs/backend-service).
+	// +kcc:proto:field=google.cloud.networkservices.v1.AuthzExtension.load_balancing_scheme
+	LoadBalancingScheme *string `json:"loadBalancingScheme,omitempty"`
+
+	// Optional. The `:authority` header in the gRPC request sent from Envoy to
+	//  the extension service. It is required when the `service` field points to a
+	//  backend service or a wasm plugin.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AuthzExtension.authority
+	Authority *string `json:"authority,omitempty"`
+
+	// Required. The reference to the service that runs the extension.
+	//
+	//  To configure a callout extension, `service` must be a fully-qualified
+	//  reference
+	//  to a [backend
+	//  service](https://cloud.google.com/compute/docs/reference/rest/v1/backendServices)
+	//  in the format:
+	//  `https://www.googleapis.com/compute/v1/projects/{project}/regions/{region}/backendServices/{backendService}`
+	//  or
+	//  `https://www.googleapis.com/compute/v1/projects/{project}/global/backendServices/{backendService}`.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AuthzExtension.service
+	Service *string `json:"service,omitempty"`
+
+	// Required. Specifies the timeout for each individual message on the stream.
+	//  The timeout must be between 10-10000 milliseconds.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AuthzExtension.timeout
+	Timeout *string `json:"timeout,omitempty"`
+
+	// Optional. Determines how the proxy behaves if the call to the extension
+	//  fails or times out.
+	//
+	//  When set to `TRUE`, request or response processing continues without
+	//  error. Any subsequent extensions in the extension chain are also
+	//  executed. When set to `FALSE` or the default setting of `FALSE` is used,
+	//  one of the following happens:
+	//
+	//  * If response headers have not been delivered to the downstream client,
+	//  a generic 500 error is returned to the client. The error response can be
+	//  tailored by configuring a custom error response in the load balancer.
+	//
+	//  * If response headers have been delivered, then the HTTP stream to the
+	//  downstream client is reset.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AuthzExtension.fail_open
+	FailOpen *bool `json:"failOpen,omitempty"`
+
+	// Optional. The metadata provided here is included as part of the
+	//  `metadata_context` (of type `google.protobuf.Struct`) in the
+	//  `ProcessingRequest` message sent to the extension
+	//  server. The metadata is available under the namespace
+	//  `com.google.authz_extension.<resource_name>`.
+	//  The following variables are supported in the metadata Struct:
+	//
+	//  `{forwarding_rule_id}` - substituted with the forwarding rule's fully
+	//    qualified resource name.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AuthzExtension.metadata
+	Metadata apiextensionsv1.JSON `json:"metadata,omitempty"`
+
+	// Optional. List of the HTTP headers to forward to the extension
+	//  (from the client). If omitted, all headers are sent.
+	//  Each element is a string indicating the header name.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AuthzExtension.forward_headers
+	ForwardHeaders []string `json:"forwardHeaders,omitempty"`
+
+	// Optional. List of the Envoy attributes to forward to the extension server.
+	//  The attributes provided here are included as part of the
+	//  `ProcessingRequest.attributes` field (of type
+	//  `map<string, google.protobuf.Struct>`), where the keys are the attribute
+	//  names. Refer to the
+	//  [documentation](https://cloud.google.com/service-extensions/docs/cel-matcher-language-reference#attributes)
+	//  for the names of attributes that can be forwarded. If omitted, no
+	//  attributes are sent. Each element is a string indicating the
+	//  attribute name.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AuthzExtension.forward_attributes
+	ForwardAttributes []string `json:"forwardAttributes,omitempty"`
+
+	// Optional. The format of communication supported by the callout extension.
+	//  This field is supported only for regional `AuthzExtension` resources. If
+	//  not specified, the default value `EXT_PROC_GRPC` is used. Global
+	//  `AuthzExtension` resources use the `EXT_PROC_GRPC` wire format.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AuthzExtension.wire_format
+	WireFormat *string `json:"wireFormat,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ExtensionChain", skipping
+
+// +kcc:proto=google.cloud.networkservices.v1.ExtensionChain
+type ExtensionChain struct {
+	// Required. The name for this extension chain.
+	//  The name is logged as part of the HTTP request logs.
+	//  The name must conform with RFC-1034, is restricted to lower-cased letters,
+	//  numbers and hyphens, and can have a maximum length of 63 characters.
+	//  Additionally, the first character must be a letter and the last a letter or
+	//  a number.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ExtensionChain.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Conditions under which this chain is invoked for a request.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ExtensionChain.match_condition
+	MatchCondition *ExtensionChain_MatchCondition `json:"matchCondition,omitempty"`
+
+	// Required. A set of extensions to execute for the matching request.
+	//  At least one extension is required.
+	//  Up to 3 extensions can be defined for each extension chain
+	//  for `LbTrafficExtension` resource.
+	//  `LbRouteExtension` and `LbEdgeExtension` chains are limited to 1 extension
+	//  per extension chain.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ExtensionChain.extensions
+	Extensions []ExtensionChain_Extension `json:"extensions,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ExtensionChain_Extension", skipping
+
+// +kcc:proto=google.cloud.networkservices.v1.ExtensionChain.Extension
+type ExtensionChain_Extension struct {
+	// Optional. The name for this extension.
+	//  The name is logged as part of the HTTP request logs.
+	//  The name must conform with RFC-1034, is restricted to lower-cased
+	//  letters, numbers and hyphens, and can have a maximum length of 63
+	//  characters. Additionally, the first character must be a letter and the
+	//  last a letter or a number.
+	//
+	//  This field is required except for AuthzExtension.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ExtensionChain.Extension.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The `:authority` header in the gRPC request sent from Envoy
+	//  to the extension service.
+	//  Required for Callout extensions.
+	//
+	//  This field is not supported for plugin extensions. Setting it results in
+	//  a validation error.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ExtensionChain.Extension.authority
+	Authority *string `json:"authority,omitempty"`
+
+	// Required. The reference to the service that runs the extension.
+	//
+	//  To configure a callout extension, `service` must be a fully-qualified
+	//  reference
+	//  to a [backend
+	//  service](https://cloud.google.com/compute/docs/reference/rest/v1/backendServices)
+	//  in the format:
+	//  `https://www.googleapis.com/compute/v1/projects/{project}/regions/{region}/backendServices/{backendService}`
+	//  or
+	//  `https://www.googleapis.com/compute/v1/projects/{project}/global/backendServices/{backendService}`.
+	//
+	//  To configure a plugin extension, `service` must be a reference
+	//  to a [`WasmPlugin`
+	//  resource](https://cloud.google.com/service-extensions/docs/reference/rest/v1beta1/projects.locations.wasmPlugins)
+	//  in the format:
+	//  `projects/{project}/locations/{location}/wasmPlugins/{plugin}`
+	//  or
+	//  `//networkservices.googleapis.com/projects/{project}/locations/{location}/wasmPlugins/{wasmPlugin}`.
+	//
+	//  Plugin extensions are currently supported for the
+	//  `LbTrafficExtension`, the `LbRouteExtension`, and the `LbEdgeExtension`
+	//  resources.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ExtensionChain.Extension.service
+	Service *string `json:"service,omitempty"`
+
+	// Optional. A set of events during request or response processing for which
+	//  this extension is called.
+	//
+	//  For the `LbTrafficExtension` resource, this field is required.
+	//
+	//  For the `LbRouteExtension` resource, this field is optional. If
+	//  unspecified, `REQUEST_HEADERS` event is assumed as supported.
+	//
+	//  For the `LbEdgeExtension` resource, this field is required and must only
+	//  contain `REQUEST_HEADERS` event.
+	//
+	//  For the `AuthzExtension` resource, this field is optional.
+	//  `REQUEST_HEADERS` is the only supported event. If unspecified,
+	//  `REQUEST_HEADERS` event is assumed as supported.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ExtensionChain.Extension.supported_events
+	SupportedEvents []string `json:"supportedEvents,omitempty"`
+
+	// Optional. Specifies the timeout for each individual message on the
+	//  stream. The timeout must be between `10`-`10000` milliseconds. Required
+	//  for callout extensions.
+	//
+	//  This field is not supported for plugin extensions. Setting it results in
+	//  a validation error.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ExtensionChain.Extension.timeout
+	Timeout *string `json:"timeout,omitempty"`
+
+	// Optional. Determines how the proxy behaves if the call to the extension
+	//  fails or times out.
+	//
+	//  When set to `TRUE`, request or response processing continues without
+	//  error. Any subsequent extensions in the extension chain are also
+	//  executed. When set to `FALSE` or the default setting of `FALSE` is used,
+	//  one of the following happens:
+	//
+	//  * If response headers have not been delivered to the downstream client,
+	//  a generic 500 error is returned to the client. The error response can be
+	//  tailored by configuring a custom error response in the load balancer.
+	//
+	//  * If response headers have been delivered, then the HTTP stream to the
+	//  downstream client is reset.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ExtensionChain.Extension.fail_open
+	FailOpen *bool `json:"failOpen,omitempty"`
+
+	// Optional. List of the HTTP headers to forward to the extension
+	//  (from the client or backend). If omitted, all headers are sent.
+	//  Each element is a string indicating the header name.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ExtensionChain.Extension.forward_headers
+	ForwardHeaders []string `json:"forwardHeaders,omitempty"`
+
+	// Optional. List of the Envoy attributes to forward to the extension
+	//  server. The attributes provided here are included as part of the
+	//  `ProcessingRequest.attributes` field (of type
+	//  `map<string, google.protobuf.Struct>`), where the keys are the attribute
+	//  names. Refer to the
+	//  [documentation](https://cloud.google.com/service-extensions/docs/cel-matcher-language-reference#attributes)
+	//  for the names of attributes that can be forwarded. If omitted, no
+	//  attributes are sent. Each element is a string indicating the
+	//  attribute name.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ExtensionChain.Extension.forward_attributes
+	ForwardAttributes []string `json:"forwardAttributes,omitempty"`
+
+	// Optional. The metadata provided here is included as part of the
+	//  `metadata_context` (of type `google.protobuf.Struct`) in the
+	//  `ProcessingRequest` message sent to the extension server.
+	//
+	//  For `AuthzExtension` resources, the metadata is available under the
+	//  namespace `com.google.authz_extension.<resource_name>`.
+	//  For other types of extensions, the metadata is available under the
+	//  namespace
+	//  `com.google.<extension_type>.<resource_name>.<extension_chain_name>.<extension_name>`.
+	//  For example:
+	//  `com.google.lb_traffic_extension.lbtrafficextension1.chain1.ext1`.
+	//
+	//  The following variables are supported in the metadata:
+	//
+	//  `{forwarding_rule_id}` - substituted with the forwarding rule's fully
+	//    qualified resource name.
+	//
+	//  This field must not be set for plugin extensions. Setting it results in
+	//  a validation error.
+	//
+	//  You can set metadata at either the resource level or the extension level.
+	//  The extension level metadata is recommended because you can pass a
+	//  different set of metadata through each extension to the backend.
+	//
+	//  This field is subject to following limitations:
+	//
+	//  * The total size of the metadata must be less than 1KiB.
+	//  * The total number of keys in the metadata must be less than 16.
+	//  * The length of each key must be less than 64 characters.
+	//  * The length of each value must be less than 1024 characters.
+	//  * All values must be strings.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ExtensionChain.Extension.metadata
+	Metadata apiextensionsv1.JSON `json:"metadata,omitempty"`
+
+	// Optional. Configures the send mode for request body processing.
+	//
+	//  The field can only be set if `supported_events` includes `REQUEST_BODY`.
+	//  If `supported_events` includes `REQUEST_BODY`,
+	//  but `request_body_send_mode` is unset, the default value `STREAMED` is
+	//  used.
+	//
+	//  When this field is set to `FULL_DUPLEX_STREAMED`, `supported_events`
+	//  must include both `REQUEST_BODY` and `REQUEST_TRAILERS`.
+	//
+	//  This field can be set only for `LbTrafficExtension` and
+	//  `LbRouteExtension` resources, and only when the `service` field of the
+	//  extension points to a `BackendService`. Only `FULL_DUPLEX_STREAMED` mode
+	//  is supported for `LbRouteExtension` resources.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ExtensionChain.Extension.request_body_send_mode
+	RequestBodySendMode *string `json:"requestBodySendMode,omitempty"`
+
+	// Optional. Configures the send mode for response processing. If
+	//  unspecified, the default value `STREAMED` is used.
+	//
+	//  The field can only be set if `supported_events` includes `RESPONSE_BODY`.
+	//  If `supported_events` includes `RESPONSE_BODY`, but
+	//  `response_body_send_mode` is unset, the default value `STREAMED` is used.
+	//
+	//  When this field is set to `FULL_DUPLEX_STREAMED`, `supported_events`
+	//  must include both `RESPONSE_BODY` and `RESPONSE_TRAILERS`.
+	//
+	//  This field can be set only for `LbTrafficExtension` resources, and only
+	//  when the `service` field of the extension points to a `BackendService`.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ExtensionChain.Extension.response_body_send_mode
+	ResponseBodySendMode *string `json:"responseBodySendMode,omitempty"`
+
+	// Optional. When set to `true`, the calls to the extension backend are
+	//  performed asynchronously, without pausing the processing of the ongoing
+	//  request. In this mode, only `STREAMED` (default) body processing is
+	//  supported. Responses, if any, are ignored.
+	//
+	//  Supported by regional `LbTrafficExtension` and `LbRouteExtension`
+	//  resources.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ExtensionChain.Extension.observability_mode
+	ObservabilityMode *bool `json:"observabilityMode,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "ExtensionChain_MatchCondition", skipping
+
+// +kcc:proto=google.cloud.networkservices.v1.ExtensionChain.MatchCondition
+type ExtensionChain_MatchCondition struct {
+	// Required. A Common Expression Language (CEL) expression that is used to
+	//  match requests for which the extension chain is executed.
+	//
+	//  For more information, see [CEL matcher language
+	//  reference](https://cloud.google.com/service-extensions/docs/cel-matcher-language-reference).
+	// +kcc:proto:field=google.cloud.networkservices.v1.ExtensionChain.MatchCondition.cel_expression
+	CelExpression *string `json:"celExpression,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.networkservices.v1.LbEdgeExtension", skipping
+
+// +kcc:proto=google.cloud.networkservices.v1.LbEdgeExtension
+type LbEdgeExtension struct {
+	// Required. Identifier. Name of the `LbEdgeExtension` resource in the
+	//  following format:
+	//  `projects/{project}/locations/{location}/lbEdgeExtensions/{lb_edge_extension}`.
+	// +kcc:proto:field=google.cloud.networkservices.v1.LbEdgeExtension.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. A human-readable description of the resource.
+	// +kcc:proto:field=google.cloud.networkservices.v1.LbEdgeExtension.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Set of labels associated with the `LbEdgeExtension` resource.
+	//
+	//  The format must comply with [the requirements for
+	//  labels](https://cloud.google.com/compute/docs/labeling-resources#requirements)
+	//  for Google Cloud resources.
+	// +kcc:proto:field=google.cloud.networkservices.v1.LbEdgeExtension.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Required. A list of references to the forwarding rules to which this
+	//  service extension is attached. At least one forwarding rule is required.
+	//  Only one `LbEdgeExtension` resource can be associated with a forwarding
+	//  rule.
+	// +kcc:proto:field=google.cloud.networkservices.v1.LbEdgeExtension.forwarding_rules
+	ForwardingRules []string `json:"forwardingRules,omitempty"`
+
+	// Required. A set of ordered extension chains that contain the match
+	//  conditions and extensions to execute. Match conditions for each extension
+	//  chain are evaluated in sequence for a given request. The first extension
+	//  chain that has a condition that matches the request is executed.
+	//  Any subsequent extension chains do not execute.
+	//  Limited to 5 extension chains per resource.
+	// +kcc:proto:field=google.cloud.networkservices.v1.LbEdgeExtension.extension_chains
+	ExtensionChains []ExtensionChain `json:"extensionChains,omitempty"`
+
+	// Required. All forwarding rules referenced by this extension must
+	//  share the same load balancing scheme.
+	//  Supported values: `EXTERNAL_MANAGED`.
+	// +kcc:proto:field=google.cloud.networkservices.v1.LbEdgeExtension.load_balancing_scheme
+	LoadBalancingScheme *string `json:"loadBalancingScheme,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.networkservices.v1.LbRouteExtension", skipping
+
+// +kcc:proto=google.cloud.networkservices.v1.LbRouteExtension
+type LbRouteExtension struct {
+	// Required. Identifier. Name of the `LbRouteExtension` resource in the
+	//  following format:
+	//  `projects/{project}/locations/{location}/lbRouteExtensions/{lb_route_extension}`.
+	// +kcc:proto:field=google.cloud.networkservices.v1.LbRouteExtension.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. A human-readable description of the resource.
+	// +kcc:proto:field=google.cloud.networkservices.v1.LbRouteExtension.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Set of labels associated with the `LbRouteExtension` resource.
+	//
+	//  The format must comply with [the requirements for
+	//  labels](https://cloud.google.com/compute/docs/labeling-resources#requirements)
+	//  for Google Cloud resources.
+	// +kcc:proto:field=google.cloud.networkservices.v1.LbRouteExtension.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Required. A list of references to the forwarding rules to which this
+	//  service extension is attached. At least one forwarding rule is required.
+	//  Only one `LbRouteExtension` resource can be associated with a forwarding
+	//  rule.
+	// +kcc:proto:field=google.cloud.networkservices.v1.LbRouteExtension.forwarding_rules
+	ForwardingRules []string `json:"forwardingRules,omitempty"`
+
+	// Required. A set of ordered extension chains that contain the match
+	//  conditions and extensions to execute. Match conditions for each extension
+	//  chain are evaluated in sequence for a given request. The first extension
+	//  chain that has a condition that matches the request is executed.
+	//  Any subsequent extension chains do not execute.
+	//  Limited to 5 extension chains per resource.
+	// +kcc:proto:field=google.cloud.networkservices.v1.LbRouteExtension.extension_chains
+	ExtensionChains []ExtensionChain `json:"extensionChains,omitempty"`
+
+	// Required. All backend services and forwarding rules referenced by this
+	//  extension must share the same load balancing scheme. Supported values:
+	//  `INTERNAL_MANAGED`, `EXTERNAL_MANAGED`. For more information, refer to
+	//  [Backend services
+	//  overview](https://cloud.google.com/load-balancing/docs/backend-service).
+	// +kcc:proto:field=google.cloud.networkservices.v1.LbRouteExtension.load_balancing_scheme
+	LoadBalancingScheme *string `json:"loadBalancingScheme,omitempty"`
+
+	// Optional. The metadata provided here is included as part of the
+	//  `metadata_context` (of type `google.protobuf.Struct`) in the
+	//  `ProcessingRequest` message sent to the extension server.
+	//
+	//  The metadata applies to all extensions in all extensions chains in this
+	//  resource.
+	//
+	//  The metadata is available under the key
+	//  `com.google.lb_route_extension.<resource_name>`.
+	//
+	//  The following variables are supported in the metadata:
+	//
+	//  `{forwarding_rule_id}` - substituted with the forwarding rule's fully
+	//    qualified resource name.
+	//
+	//  This field must not be set if at least one of the extension chains
+	//  contains plugin extensions. Setting it results in a validation error.
+	//
+	//  You can set metadata at either the resource level or the extension level.
+	//  The extension level metadata is recommended because you can pass a
+	//  different set of metadata through each extension to the backend.
+	// +kcc:proto:field=google.cloud.networkservices.v1.LbRouteExtension.metadata
+	Metadata apiextensionsv1.JSON `json:"metadata,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.networkservices.v1.ServiceBinding", skipping
+
+// +kcc:proto=google.cloud.networkservices.v1.ServiceBinding
+type ServiceBinding struct {
+	// Identifier. Name of the ServiceBinding resource. It matches pattern
+	//  `projects/* /locations/* /serviceBindings/<service_binding_name>`.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceBinding.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. A free-text description of the resource. Max length 1024
+	//  characters.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceBinding.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. The full Service Directory Service name of the format
+	//  `projects/* /locations/* /namespaces/* /services/*`.
+	//  This field is for Service Directory integration which will be deprecated
+	//  soon.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceBinding.service
+	Service *string `json:"service,omitempty"`
+
+	// Optional. Set of label tags associated with the ServiceBinding resource.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceBinding.labels
+	Labels map[string]string `json:"labels,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.networkservices.v1.ServiceLbPolicy", skipping
+
+// +kcc:proto=google.cloud.networkservices.v1.ServiceLbPolicy
+type ServiceLBPolicy struct {
+	// Identifier. Name of the ServiceLbPolicy resource. It matches pattern
+	//  `projects/{project}/locations/{location}/serviceLbPolicies/{service_lb_policy_name}`.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceLbPolicy.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Set of label tags associated with the ServiceLbPolicy resource.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceLbPolicy.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. A free-text description of the resource. Max length 1024
+	//  characters.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceLbPolicy.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. The type of load balancing algorithm to be used. The default
+	//  behavior is WATERFALL_BY_REGION.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceLbPolicy.load_balancing_algorithm
+	LoadBalancingAlgorithm *string `json:"loadBalancingAlgorithm,omitempty"`
+
+	// Optional. Configuration to automatically move traffic away for unhealthy
+	//  IG/NEG for the associated Backend Service.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceLbPolicy.auto_capacity_drain
+	AutoCapacityDrain *ServiceLBPolicyAutoCapacityDrain `json:"autoCapacityDrain,omitempty"`
+
+	// Optional. Configuration related to health based failover.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceLbPolicy.failover_config
+	FailoverConfig *ServiceLBPolicyFailoverConfig `json:"failoverConfig,omitempty"`
+
+	// Optional. Configuration to provide isolation support for the associated
+	//  Backend Service.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceLbPolicy.isolation_config
+	IsolationConfig *ServiceLBPolicyIsolationConfig `json:"isolationConfig,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.networkservices.v1.ServiceLbPolicy.AutoCapacityDrain
+type ServiceLBPolicyAutoCapacityDrain struct {
+	// Optional. If set to 'True', an unhealthy IG/NEG will be set as drained.
+	//  - An IG/NEG is considered unhealthy if less than 25% of the
+	//  instances/endpoints in the IG/NEG are healthy.
+	//  - This option will never result in draining more than 50% of the
+	//  configured IGs/NEGs for the Backend Service.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceLbPolicy.AutoCapacityDrain.enable
+	Enable *bool `json:"enable,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networkservices.v1.ServiceLbPolicy.FailoverConfig
+type ServiceLBPolicyFailoverConfig struct {
+	// Optional. The percentage threshold that a load balancer will begin to
+	//  send traffic to failover backends. If the percentage of endpoints in a
+	//  MIG/NEG is smaller than this value, traffic would be sent to failover
+	//  backends if possible. This field should be set to a value between 1
+	//  and 99. The default value is 50 for Global external HTTP(S) load balancer
+	//  (classic) and Proxyless service mesh, and 70 for others.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceLbPolicy.FailoverConfig.failover_health_threshold
+	FailoverHealthThreshold *int32 `json:"failoverHealthThreshold,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networkservices.v1.ServiceLbPolicy.IsolationConfig
+type ServiceLBPolicyIsolationConfig struct {
+	// Optional. The isolation granularity of the load balancer.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceLbPolicy.IsolationConfig.isolation_granularity
+	IsolationGranularity *string `json:"isolationGranularity,omitempty"`
+
+	// Optional. The isolation mode of the load balancer.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceLbPolicy.IsolationConfig.isolation_mode
+	IsolationMode *string `json:"isolationMode,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.networkservices.v1.WasmPlugin", skipping
+
+// +kcc:proto=google.cloud.networkservices.v1.WasmPlugin
+type WasmPlugin struct {
+	// Identifier. Name of the `WasmPlugin` resource in the following format:
+	//  `projects/{project}/locations/{location}/wasmPlugins/{wasm_plugin}`.
+	// +kcc:proto:field=google.cloud.networkservices.v1.WasmPlugin.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. A human-readable description of the resource.
+	// +kcc:proto:field=google.cloud.networkservices.v1.WasmPlugin.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Set of labels associated with the `WasmPlugin` resource.
+	//
+	//  The format must comply with [the following
+	//  requirements](/compute/docs/labeling-resources#requirements).
+	// +kcc:proto:field=google.cloud.networkservices.v1.WasmPlugin.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. The ID of the `WasmPluginVersion` resource that is the
+	//  currently serving one. The version referred to must be a child of this
+	//  `WasmPlugin` resource.
+	// +kcc:proto:field=google.cloud.networkservices.v1.WasmPlugin.main_version_id
+	MainVersionID *string `json:"mainVersionID,omitempty"`
+
+	// Optional. Specifies the logging options for the activity performed by this
+	//  plugin. If logging is enabled, plugin logs are exported to
+	//  Cloud Logging.
+	//  Note that the settings relate to the logs generated by using
+	//  logging statements in your Wasm code.
+	// +kcc:proto:field=google.cloud.networkservices.v1.WasmPlugin.log_config
+	LogConfig *WasmPlugin_LogConfig `json:"logConfig,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+}
+*/
+
+/* found existing non-generated go type "WasmPlugin_LogConfig", skipping
+
+// +kcc:proto=google.cloud.networkservices.v1.WasmPlugin.LogConfig
+type WasmPlugin_LogConfig struct {
+	// Optional. Specifies whether to enable logging for activity by this
+	//  plugin.
+	//
+	//  Defaults to `false`.
+	// +kcc:proto:field=google.cloud.networkservices.v1.WasmPlugin.LogConfig.enable
+	Enable *bool `json:"enable,omitempty"`
+
+	// Non-empty default. Configures the sampling rate of activity logs, where
+	//  `1.0` means all logged activity is reported and `0.0` means no activity
+	//  is reported. A floating point value between `0.0` and `1.0` indicates
+	//  that a percentage of log messages is stored.
+	//
+	//  The default value when logging is enabled is `1.0`. The value of the
+	//  field must be between `0` and `1` (inclusive).
+	//
+	//  This field can be specified only if logging is enabled for this plugin.
+	// +kcc:proto:field=google.cloud.networkservices.v1.WasmPlugin.LogConfig.sample_rate
+	SampleRate *float32 `json:"sampleRate,omitempty"`
+
+	// Non-empty default. Specifies the lowest level of the plugin logs that are
+	//  exported to Cloud Logging. This setting relates to the logs generated by
+	//  using logging statements in your Wasm code.
+	//
+	//  This field is can be set only if logging is enabled for the plugin.
+	//
+	//  If the field is not provided when logging is enabled, it is set to
+	//  `INFO` by default.
+	// +kcc:proto:field=google.cloud.networkservices.v1.WasmPlugin.LogConfig.min_log_level
+	MinLogLevel *string `json:"minLogLevel,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.networkservices.v1.WasmPlugin.UsedBy", skipping
+
+// +kcc:proto=google.cloud.networkservices.v1.WasmPlugin.UsedBy
+type WasmPlugin_UsedBy struct {
+}
+*/
+
+/* found existing non-generated go type "WasmPlugin_VersionDetails", skipping
+
+// +kcc:proto=google.cloud.networkservices.v1.WasmPlugin.VersionDetails
+type WasmPlugin_VersionDetails struct {
+	// Configuration for the plugin.
+	//  The configuration is provided to the plugin at runtime through
+	//  the `ON_CONFIGURE` callback. When a new
+	//  `WasmPluginVersion` version is created, the digest of the
+	//  contents is saved in the `plugin_config_digest` field.
+	// +kcc:proto:field=google.cloud.networkservices.v1.WasmPlugin.VersionDetails.plugin_config_data
+	PluginConfigData []byte `json:"pluginConfigData,omitempty"`
+
+	// URI of the plugin configuration stored in the Artifact Registry.
+	//  The configuration is provided to the plugin at runtime through
+	//  the `ON_CONFIGURE` callback.
+	//
+	//  The URI can refer to one of the following repository formats:
+	//
+	//  * Container images: the `plugin_config_uri` must point to a container
+	//  that contains a single file with the name `plugin.config`.
+	//  When a new `WasmPluginVersion` resource is created, the digest of the
+	//  image is saved in the `plugin_config_digest` field.
+	//  When pulling a container image from Artifact Registry, the digest
+	//  value is used instead of an image tag.
+	//
+	//  * Generic artifacts: the `plugin_config_uri` must be in this format:
+	//  `projects/{project}/locations/{location}/repositories/{repository}/
+	//  genericArtifacts/{package}:{version}`.
+	//  The specified package and version must contain a file with the name
+	//  `plugin.config`. When a new `WasmPluginVersion` resource is
+	//  created, the checksum of the contents of the file is saved in the
+	//  `plugin_config_digest` field.
+	// +kcc:proto:field=google.cloud.networkservices.v1.WasmPlugin.VersionDetails.plugin_config_uri
+	PluginConfigURI *string `json:"pluginConfigURI,omitempty"`
+
+	// Optional. A human-readable description of the resource.
+	// +kcc:proto:field=google.cloud.networkservices.v1.WasmPlugin.VersionDetails.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Set of labels associated with the `WasmPluginVersion`
+	//  resource.
+	// +kcc:proto:field=google.cloud.networkservices.v1.WasmPlugin.VersionDetails.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. URI of the image containing the Wasm module, stored in
+	//  Artifact Registry.
+	//
+	//  The URI can refer to one of the following repository formats:
+	//
+	//  * Container images: the `image_uri` must point to a container that
+	//  contains a single file with the name `plugin.wasm`.
+	//  When a new `WasmPluginVersion` resource is created, the digest of the
+	//  image is saved in the `image_digest` field.
+	//  When pulling a container image from Artifact Registry, the digest value
+	//  is used instead of an image tag.
+	//
+	//  * Generic artifacts: the `image_uri` must be in this format:
+	//  `projects/{project}/locations/{location}/repositories/{repository}/
+	//  genericArtifacts/{package}:{version}`.
+	//  The specified package and version must contain a file with the name
+	//  `plugin.wasm`. When a new `WasmPluginVersion` resource is created, the
+	//  checksum of the contents of the file is saved in the `image_digest`
+	//  field.
+	// +kcc:proto:field=google.cloud.networkservices.v1.WasmPlugin.VersionDetails.image_uri
+	ImageURI *string `json:"imageURI,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.networkservices.v1.AuthzExtension", skipping
+
+// +kcc:observedstate:proto=google.cloud.networkservices.v1.AuthzExtension
+type AuthzExtensionObservedState struct {
+	// Output only. The timestamp when the resource was created.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AuthzExtension.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when the resource was updated.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AuthzExtension.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.networkservices.v1.LbEdgeExtension", skipping
+
+// +kcc:observedstate:proto=google.cloud.networkservices.v1.LbEdgeExtension
+type LbEdgeExtensionObservedState struct {
+	// Output only. The timestamp when the resource was created.
+	// +kcc:proto:field=google.cloud.networkservices.v1.LbEdgeExtension.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when the resource was updated.
+	// +kcc:proto:field=google.cloud.networkservices.v1.LbEdgeExtension.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.networkservices.v1.LbRouteExtension", skipping
+
+// +kcc:observedstate:proto=google.cloud.networkservices.v1.LbRouteExtension
+type LbRouteExtensionObservedState struct {
+	// Output only. The timestamp when the resource was created.
+	// +kcc:proto:field=google.cloud.networkservices.v1.LbRouteExtension.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when the resource was updated.
+	// +kcc:proto:field=google.cloud.networkservices.v1.LbRouteExtension.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.networkservices.v1.ServiceBinding", skipping
+
+// +kcc:observedstate:proto=google.cloud.networkservices.v1.ServiceBinding
+type ServiceBindingObservedState struct {
+	// Output only. The timestamp when the resource was created.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceBinding.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when the resource was updated.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceBinding.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The unique identifier of the Service Directory Service against
+	//  which the ServiceBinding resource is validated. This is populated when the
+	//  Service Binding resource is used in another resource (like Backend
+	//  Service). This is of the UUID4 format. This field is for Service Directory
+	//  integration which will be deprecated soon.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceBinding.service_id
+	ServiceID *string `json:"serviceID,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.networkservices.v1.ServiceLbPolicy", skipping
+
+// +kcc:observedstate:proto=google.cloud.networkservices.v1.ServiceLbPolicy
+type ServiceLBPolicyObservedState struct {
+	// Output only. The timestamp when this resource was created.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceLbPolicy.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when this resource was last updated.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceLbPolicy.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.networkservices.v1.WasmPlugin", skipping
+
+// +kcc:observedstate:proto=google.cloud.networkservices.v1.WasmPlugin
+type WasmPluginObservedState struct {
+	// Output only. The timestamp when the resource was created.
+	// +kcc:proto:field=google.cloud.networkservices.v1.WasmPlugin.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when the resource was updated.
+	// +kcc:proto:field=google.cloud.networkservices.v1.WasmPlugin.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. List of all
+	//  [extensions](https://cloud.google.com/service-extensions/docs/overview)
+	//  that use this `WasmPlugin` resource.
+	// +kcc:proto:field=google.cloud.networkservices.v1.WasmPlugin.used_by
+	UsedBy []WasmPlugin_UsedByObservedState `json:"usedBy,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "WasmPlugin_UsedByObservedState", skipping
+
+// +kcc:observedstate:proto=google.cloud.networkservices.v1.WasmPlugin.UsedBy
+type WasmPlugin_UsedByObservedState struct {
+	// Output only. Full name of the resource
+	//  https://google.aip.dev/122#full-resource-names, for example
+	//  `//networkservices.googleapis.com/projects/{project}/locations/{location}/lbRouteExtensions/{extension}`
+	// +kcc:proto:field=google.cloud.networkservices.v1.WasmPlugin.UsedBy.name
+	Name *string `json:"name,omitempty"`
+}
+*/

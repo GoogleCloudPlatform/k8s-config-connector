@@ -725,7 +725,12 @@ func GoNameForProtoMessage(msg protoreflect.MessageDescriptor) string {
 		}
 		parts[i] = strings.Join(tokens, "")
 	}
-	return strings.Join(parts, "_")
+	res := strings.Join(parts, "_")
+	if strings.Contains(string(msg.FullName()), "ServiceLbPolicy") {
+		res = strings.ReplaceAll(res, "_", "")
+		res = strings.ReplaceAll(res, "ServiceLbPolicy", "ServiceLBPolicy")
+	}
+	return res
 }
 
 func goNameForOutputProtoMessage(msg protoreflect.MessageDescriptor) string {
