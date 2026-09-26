@@ -49,6 +49,7 @@ func (s *configServiceV2) createDefaultObjects(ctx context.Context, name *logBuc
 		}
 		if name.project != nil {
 			bucket.Name = fmt.Sprintf("projects/%s/locations/global/buckets/_Default", name.project.ID)
+			bucket.AnalyticsEnabled = true
 		}
 		// TODO: Other parent
 
@@ -201,10 +202,18 @@ func (s *configServiceV2) UpdateBucket(ctx context.Context, req *pb.UpdateBucket
 		switch path {
 		case "description":
 			updated.Description = req.GetBucket().GetDescription()
-		case "retentionDays":
+		case "retentionDays", "retention_days":
 			updated.RetentionDays = req.GetBucket().GetRetentionDays()
-		// case "labels":
-		// 	updated.Labels = req.GetDnsAuthorization().GetLabels()
+		case "analyticsEnabled", "analytics_enabled":
+			if len(paths) > 1 {
+				return nil, status.Errorf(codes.InvalidArgument, "Buckets cannot be upgraded at the same time as making updates to other bucket fields")
+			}
+			if existing.GetAnalyticsEnabled() && !req.GetBucket().GetAnalyticsEnabled() {
+				return nil, status.Errorf(codes.InvalidArgument, "Buckets can't be downgraded to disable advanced analytics")
+			}
+			updated.AnalyticsEnabled = req.GetBucket().GetAnalyticsEnabled()
+		case "locked":
+			updated.Locked = req.GetBucket().GetLocked()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
@@ -221,6 +230,9 @@ func (s *configServiceV2) DeleteBucket(ctx context.Context, req *pb.DeleteBucket
 	name, err := s.parseLogBucketName(req.Name)
 	if err != nil {
 		return nil, err
+	}
+	if name.BucketName == "_Default" || name.BucketName == "_Required" {
+		return nil, status.Errorf(codes.InvalidArgument, "Cannot delete bucket")
 	}
 	if err := s.createDefaultObjects(ctx, name); err != nil {
 		return nil, err
