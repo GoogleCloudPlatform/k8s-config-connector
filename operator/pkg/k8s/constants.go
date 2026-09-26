@@ -52,6 +52,8 @@ const (
 	BillingProjectPolicy               = "BILLING_PROJECT"
 	UserProjectOverrideFlag            = "--user-project-override"
 	BillingProjectFlag                 = "--billing-project"
+	UniverseDomainFlag                 = "--universe-domain"
+	UniversePrefixFlag                 = "--universe-prefix"
 	CNRMManagerContainerName           = "manager"
 	KCCUnmanagedDetectorContainerName  = "unmanageddetector"
 	ManagerNamespaceIsolationFlag      = "manager-namespace-isolation"

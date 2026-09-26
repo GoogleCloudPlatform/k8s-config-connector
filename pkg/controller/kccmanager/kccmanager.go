@@ -114,6 +114,15 @@ type Config struct {
 	// If empty, the manager is cluster-scoped.
 	ScopedNamespace string
 
+	// UniverseDomain is the API host suffix of the Google Cloud universe to
+	// target, e.g. "s3nsapis.fr". Empty targets the public googleapis.com
+	// universe.
+	UniverseDomain string
+
+	// UniversePrefix is the universe qualifier applied to project IDs and
+	// service-agent emails, e.g. "s3ns". It is not derived from UniverseDomain.
+	UniversePrefix string
+
 	// used for smoke testing only; options not meant to be used in production.
 	testConfig
 }
@@ -358,6 +367,8 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		UserAgent:                  gcp.KCCUserAgent(),
 		EnableMetricsTransport:     cfg.EnableMetricsTransport,
 		SkipNameValidation:         cfg.SkipNameValidation,
+		UniverseDomain:             cfg.UniverseDomain,
+		UniversePrefix:             cfg.UniversePrefix,
 	}
 	if !cfg.skipControllerRegistration {
 		// Bootstrap the Google Terraform provider
@@ -366,6 +377,10 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		tfCfg.BillingProject = cfg.BillingProject
 		tfCfg.GCPAccessToken = cfg.GCPAccessToken
 		tfCfg.EnableMetricsTransport = cfg.EnableMetricsTransport
+		// Only the domain: the TF provider has no notion of a universe prefix.
+		// Prefixed project IDs are opaque strings to it, exactly as
+		// domain-scoped IDs ("google.com:my-project") always have been.
+		tfCfg.UniverseDomain = cfg.UniverseDomain
 
 		provider, err := tfprovider.New(ctx, tfCfg)
 		if err != nil {
@@ -389,6 +404,13 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		dclOptions.HTTPClient = cfg.HTTPClient
 		dclOptions.UserAgent = gcp.KCCUserAgent()
 		dclOptions.EnableMetricsTransport = cfg.EnableMetricsTransport
+		// dclOptions embeds config.ControllerConfig, so it carries the universe
+		// settings, but the DCL client does not consume them yet: DCL bakes a
+		// base path into each generated resource and offers only a single
+		// global override. DCL-backed resources therefore still target
+		// googleapis.com in a universe. See docs/designs/universe-domain-support.md.
+		dclOptions.UniverseDomain = cfg.UniverseDomain
+		dclOptions.UniversePrefix = cfg.UniversePrefix
 
 		dclConfig, err := clientconfig.New(ctx, dclOptions)
 		if err != nil {
