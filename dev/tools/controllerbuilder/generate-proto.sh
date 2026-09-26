@@ -108,6 +108,10 @@ cp ${REPO_ROOT}/mockgcp/apis/google/cloud/config/v1/config.proto google/cloud/co
 mkdir -p google/cloud/dataplex/v1
 cp ${REPO_ROOT}/mockgcp/apis/google/cloud/dataplex/v1/catalog.proto google/cloud/dataplex/v1/catalog.proto
 
+# Overwrite data_products.proto with the updated version that has DataProduct
+mkdir -p google/cloud/dataplex/v1
+cp ${REPO_ROOT}/mockgcp/apis/google/cloud/dataplex/v1/data_products.proto google/cloud/dataplex/v1/data_products.proto
+
 
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"

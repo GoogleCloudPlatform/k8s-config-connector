@@ -371,6 +371,70 @@ func DataDiscoverySpec_StorageConfig_JsonOptions_ToProto(mapCtx *direct.MapConte
 	out.TypeInferenceDisabled = direct.ValueOf(in.TypeInferenceDisabled)
 	return out
 }
+func DataProduct_AccessApprovalConfig_FromProto(mapCtx *direct.MapContext, in *pb.DataProduct_AccessApprovalConfig) *krm.DataProduct_AccessApprovalConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataProduct_AccessApprovalConfig{}
+	out.ApproverEmails = in.ApproverEmails
+	return out
+}
+func DataProduct_AccessApprovalConfig_ToProto(mapCtx *direct.MapContext, in *krm.DataProduct_AccessApprovalConfig) *pb.DataProduct_AccessApprovalConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataProduct_AccessApprovalConfig{}
+	out.ApproverEmails = in.ApproverEmails
+	return out
+}
+func DataProduct_AccessGroup_FromProto(mapCtx *direct.MapContext, in *pb.DataProduct_AccessGroup) *krm.DataProduct_AccessGroup {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataProduct_AccessGroup{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Principal = DataProduct_Principal_FromProto(mapCtx, in.GetPrincipal())
+	return out
+}
+func DataProduct_AccessGroup_ToProto(mapCtx *direct.MapContext, in *krm.DataProduct_AccessGroup) *pb.DataProduct_AccessGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataProduct_AccessGroup{}
+	out.Id = direct.ValueOf(in.ID)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Principal = DataProduct_Principal_ToProto(mapCtx, in.Principal)
+	return out
+}
+func DataProduct_Principal_FromProto(mapCtx *direct.MapContext, in *pb.DataProduct_Principal) *krm.DataProduct_Principal {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataProduct_Principal{}
+	out.GoogleGroup = direct.LazyPtr(in.GetGoogleGroup())
+	out.ServiceAccount = in.ServiceAccount
+	return out
+}
+func DataProduct_Principal_ToProto(mapCtx *direct.MapContext, in *krm.DataProduct_Principal) *pb.DataProduct_Principal {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataProduct_Principal{}
+	if oneof := DataProduct_Principal_GoogleGroup_ToProto(mapCtx, in.GoogleGroup); oneof != nil {
+		out.Type = oneof
+	}
+	out.ServiceAccount = in.ServiceAccount
+	return out
+}
+func DataProduct_Principal_GoogleGroup_ToProto(mapCtx *direct.MapContext, in *string) *pb.DataProduct_Principal_GoogleGroup {
+	if in == nil {
+		return nil
+	}
+	return &pb.DataProduct_Principal_GoogleGroup{GoogleGroup: *in}
+}
 func DataProfileResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataProfileResult) *krm.DataProfileResultObservedState {
 	if in == nil {
 		return nil
@@ -1251,6 +1315,62 @@ func DataplexDataAttributeBindingObservedState_ToProto(mapCtx *direct.MapContext
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: Etag
 	// MISSING: Attributes
+	return out
+}
+func DataplexDataProductObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataProduct) *krm.DataplexDataProductObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexDataProductObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.AssetCount = direct.LazyPtr(in.GetAssetCount())
+	return out
+}
+func DataplexDataProductObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexDataProductObservedState) *pb.DataProduct {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataProduct{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.AssetCount = direct.ValueOf(in.AssetCount)
+	return out
+}
+func DataplexDataProductSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataProduct) *krm.DataplexDataProductSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexDataProductSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Icon = in.GetIcon()
+	out.OwnerEmails = in.OwnerEmails
+	out.AccessGroups = AccessGroups_FromProto(mapCtx, in.AccessGroups)
+	out.AccessApprovalConfig = DataProduct_AccessApprovalConfig_FromProto(mapCtx, in.GetAccessApprovalConfig())
+	return out
+}
+func DataplexDataProductSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexDataProductSpec) *pb.DataProduct {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataProduct{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	out.Icon = in.Icon
+	out.OwnerEmails = in.OwnerEmails
+	out.AccessGroups = AccessGroups_ToProto(mapCtx, in.AccessGroups)
+	out.AccessApprovalConfig = DataProduct_AccessApprovalConfig_ToProto(mapCtx, in.AccessApprovalConfig)
 	return out
 }
 func DataplexDataScanObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataScan) *krm.DataplexDataScanObservedState {
