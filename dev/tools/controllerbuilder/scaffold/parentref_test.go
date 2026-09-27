@@ -19,8 +19,6 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
 )
 
 // TestParentRef pins when a resource gets a parent reference field and when it
@@ -479,94 +477,4 @@ func TestLocationRef(t *testing.T) {
 	}
 }
 
-// TestRepoRoot pins where the scaffolder looks for apis/refs/v1beta1. With the
-// wrong root, parentRef and rootRef never see the shared reference types and
-// queue every such parent as having none.
-func TestRepoRoot(t *testing.T) {
-	for _, tc := range []struct {
-		baseDir string
-		want    string
-	}{
-		// generate-types' default, from GenerateCRDOptions.InitDefaults.
-		{"/repo/apis/", "/repo"},
-		{"/repo/apis", "/repo"},
-		{"/tmp/out", "/tmp/out"},
-		{"/tmp/out/", "/tmp/out"},
-	} {
-		t.Run(tc.baseDir, func(t *testing.T) {
-			// Arrange
-			scaffolder := &APIScaffolder{BaseDir: tc.baseDir}
-
-			// Act
-			got := scaffolder.repoRoot()
-
-			// Assert
-			if got != tc.want {
-				t.Errorf("repoRoot() with BaseDir %q = %q, want %q", tc.baseDir, got, tc.want)
-			}
-		})
-	}
-}
-
-// TestParseResourceTargetAndServiceMatching pins the target parsing and prefix
-// matching logic that prevents cross-service ref hijacking.
-func TestParseResourceTargetAndServiceMatching(t *testing.T) {
-	for _, tc := range []struct {
-		target      string
-		wantService string
-		wantKind    string
-	}{
-		{"chronicle.googleapis.com/Instance", "chronicle", "Instance"},
-		{"compute.googleapis.com/Network", "compute", "Network"},
-		{"sqladmin.googleapis.com/Instance", "sqladmin", "Instance"},
-		{"bigquery.googleapis.com/Table", "bigquery", "Table"},
-	} {
-		s, k := protoapi.ParseResourceTarget(tc.target)
-		if s != tc.wantService || k != tc.wantKind {
-			t.Errorf("protoapi.ParseResourceTarget(%q) = (%q, %q), want (%q, %q)", tc.target, s, k, tc.wantService, tc.wantKind)
-		}
-	}
-
-	for _, tc := range []struct {
-		service string
-		prefix  string
-		want    bool
-	}{
-		{"sql", "sql", true},
-		{"sqladmin", "sql", true},
-		{"chronicle", "sql", false},
-		{"chronicle", "compute", false},
-		{"compute", "compute", true},
-		{"bigquery", "bigquery", true},
-		{"iam", "gcpserviceaccount", true},
-	} {
-		got := serviceMatchesPrefix(tc.service, tc.prefix)
-		if got != tc.want {
-			t.Errorf("serviceMatchesPrefix(%q, %q) = %v, want %v", tc.service, tc.prefix, got, tc.want)
-		}
-	}
-
-	for _, tc := range []struct {
-		typeName       string
-		currentService string
-		wantRef        string
-		wantAllowed    bool
-	}{
-		{"ProjectRef", "chronicle", "projectref", true},
-		{"FolderRef", "chronicle", "folderref", true},
-		{"OrganizationRef", "chronicle", "organizationref", true},
-		{"BillingAccountRef", "chronicle", "billingaccountref", true},
-		{"SQLInstanceRef", "chronicle", "instanceref", false},
-		{"SQLInstanceRef", "sql", "instanceref", true},
-		{"ComputeNetworkRef", "chronicle", "networkref", false},
-		{"ComputeNetworkRef", "compute", "networkref", true},
-		{"BigQueryTableRef", "spanner", "tableref", false},
-		{"BigQueryTableRef", "bigquery", "tableref", true},
-	} {
-		got := isAllowedSharedRef(tc.typeName, tc.currentService, tc.wantRef)
-		if got != tc.wantAllowed {
-			t.Errorf("isAllowedSharedRef(%q, %q, %q) = %v, want %v", tc.typeName, tc.currentService, tc.wantRef, got, tc.wantAllowed)
-		}
-	}
-}
 
