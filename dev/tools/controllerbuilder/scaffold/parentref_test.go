@@ -423,6 +423,41 @@ func TestLocationRef(t *testing.T) {
 			wantDetail: "the parent is projects/{project}/zones/{zone}, and no shared reference type",
 		},
 		{
+			// Binary Authorization's policy. ParentPair needs two pairs, so it
+			// reads no parent from a single one.
+			name:       "a singleton under a location with nothing above it",
+			pattern:    "locations/{location}/policy",
+			wantField:  field,
+			wantReason: "location-or-parent-ref",
+			wantDetail: "no parent was found in locations/{location}/policy;",
+		},
+		{
+			// Healthcare. The name ends in two placeholders, so ParentPair reads
+			// no parent, and ProjectAndLocationRef would be the wrong suggestion.
+			name:       "a name ending in two placeholders",
+			pattern:    "projects/{project}/locations/{location}/datasets/{dataset}/fhirStores/{fhir_store}/fhir/{resource_type}/{fhir_resource_id}",
+			wantField:  field,
+			wantReason: "location-or-parent-ref",
+			wantDetail: "no parent was found in",
+		},
+		{
+			// Security Command Center. The location is the parent, but not the
+			// second pair.
+			name:       "a location parent after two other pairs",
+			pattern:    "organizations/{organization}/sources/{source}/locations/{location}/findings/{finding}",
+			wantField:  field,
+			wantReason: "location-or-parent-ref",
+			wantDetail: "the parent is organizations/{organization}/sources/{source}/locations/{location}, and no shared reference type",
+		},
+		{
+			// IAM workforce pools. The location is the parent and the first pair.
+			name:       "a location parent with nothing above it",
+			pattern:    "locations/{location}/workforcePools/{workforce_pool}",
+			wantField:  field,
+			wantReason: "location-or-parent-ref",
+			wantDetail: "the parent is locations/{location}, and no shared reference type",
+		},
+		{
 			name:       "a project with no location",
 			pattern:    "projects/{project}/topics/{topic}",
 			wantField:  "",

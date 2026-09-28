@@ -20,6 +20,8 @@ import (
 	"slices"
 	"strings"
 	"testing"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 )
 
 func TestMergeQueueLines(t *testing.T) {
@@ -115,4 +117,56 @@ func readQueue(t *testing.T, path string) string {
 		t.Fatalf("reading queue: %v", err)
 	}
 	return string(b)
+}
+
+// generate-types only adds a parent reference to a prepopulated Spec, so
+// --emit-parent-refs on its own is rejected rather than ignored.
+func TestValidateEmitParentRefsNeedsPrepopulateSpec(t *testing.T) {
+	for _, tc := range []struct {
+		name            string
+		prepopulateSpec bool
+		emitParentRefs  bool
+		wantErr         string
+	}{
+		{
+			name: "neither flag",
+		},
+		{
+			name:            "only --prepopulate-spec",
+			prepopulateSpec: true,
+		},
+		{
+			name:            "both flags",
+			prepopulateSpec: true,
+			emitParentRefs:  true,
+		},
+		{
+			name:           "only --emit-parent-refs",
+			emitParentRefs: true,
+			wantErr:        "`--emit-parent-refs` requires `--prepopulate-spec`",
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			// Arrange
+			o := &GenerateCRDOptions{
+				GenerateOptions: &options.GenerateOptions{ProtoSourcePath: "googleapis.pb"},
+				ServiceName:     "google.cloud.example.v1",
+				Resources:       options.ResourceList{{Kind: "ExampleWidget", ProtoName: "Widget"}},
+				PrepopulateSpec: tc.prepopulateSpec,
+				EmitParentRefs:  tc.emitParentRefs,
+			}
+
+			// Act
+			err := o.validate()
+
+			// Assert
+			gotErr := ""
+			if err != nil {
+				gotErr = err.Error()
+			}
+			if gotErr != tc.wantErr {
+				t.Errorf("validate() error = %q, want %q", gotErr, tc.wantErr)
+			}
+		})
+	}
 }

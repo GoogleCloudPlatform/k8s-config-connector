@@ -101,12 +101,12 @@ func (a *APIScaffolder) locationRef(pattern string) (field string, item *Judgeme
 	}
 
 	segs := strings.Split(pattern, "/")
-	collection, placeholder := "", ""
+	collection, placeholder, at := "", "", 0
 	for i := 0; i+1 < len(segs); i++ {
 		switch segs[i] {
 		case "locations", "regions", "zones":
 			if strings.HasPrefix(segs[i+1], "{") {
-				collection, placeholder = segs[i], strings.Trim(segs[i+1], "{}")
+				collection, placeholder, at = segs[i], strings.Trim(segs[i+1], "{}"), i
 			}
 		}
 		if collection != "" {
@@ -126,6 +126,11 @@ func (a *APIScaffolder) locationRef(pattern string) (field string, item *Judgeme
 	var detail string
 	parentCollection, parentPlaceholder := protoapi.ParentPair(pattern)
 	switch {
+	case parentCollection == "":
+		// ParentPair finds no parent in a name with one pair, such as
+		// locations/{location}/policy, or in one that ends in two placeholders.
+		detail = fmt.Sprintf("no parent was found in %s; "+
+			"keep location unless a reference to the parent replaces it", pattern)
 	case parentCollection != collection || parentPlaceholder != placeholder:
 		detail = fmt.Sprintf("the parent is %s, which already names the location; "+
 			"a reference to it could replace location and the root reference",
@@ -136,8 +141,10 @@ func (a *APIScaffolder) locationRef(pattern string) (field string, item *Judgeme
 		detail = "parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace " +
 			"projectRef and location; the CRD keeps the same keys"
 	default:
+		// The location need not be the second pair, as in
+		// organizations/{organization}/sources/{source}/locations/{location}/findings/{finding}.
 		detail = fmt.Sprintf("the parent is %s, and no shared reference type covers it yet; "+
-			"keep location unless one is added", strings.Join(segs[:4], "/"))
+			"keep location unless one is added", strings.Join(segs[:at+2], "/"))
 	}
 	return locationField, &JudgementItem{
 		FieldPath: ".spec.location",
