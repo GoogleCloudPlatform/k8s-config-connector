@@ -70,7 +70,7 @@ func (s *sampleQuerySetService) GetSampleQuerySet(ctx context.Context, req *pb_v
 	obj := &pb_v1beta.SampleQuerySet{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "SampleQuerySet with name %q does not exist.", fqn)
+			return nil, status.Errorf(codes.NotFound, "SampleQuerySet %s not found.", fqn)
 		}
 		return nil, err
 	}
