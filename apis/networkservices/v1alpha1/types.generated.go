@@ -20,6 +20,7 @@
 // resource: NetworkServicesServiceBinding:ServiceBinding
 // resource: NetworkServicesLBRouteExtension:LbRouteExtension
 // resource: NetworkServicesLBEdgeExtension:LbEdgeExtension
+// resource: NetworkServicesLBTrafficExtension:LbTrafficExtension
 // resource: NetworkServicesWasmPlugin:WasmPlugin
 // resource: NetworkServicesAuthzExtension:AuthzExtension
 
