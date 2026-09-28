@@ -23,6 +23,7 @@ preconditionScript: |
   fi
 
   # Convert comma-separated list into an array
+  has_open_issue=false
   IFS=',' read -ra ADDR <<< "${RELATED_ISSUES}"
   for issue in "${ADDR[@]}"; do
     # Trim whitespace
@@ -50,10 +51,45 @@ preconditionScript: |
     echo "State of #${issue} is: ${state}"
 
     if [ "${state}" != "CLOSED" ] && [ "${state}" != "MERGED" ]; then
-      echo "Precondition failed: Issue/PR #${issue} is not closed (State: ${state})."
-      exit 1
+      has_open_issue=true
+
+      # Check if this open child issue has an open linked PR that isn't recorded yet
+      open_pr=$(gh api graphql -f query='
+        query($issue: Int!) {
+          repository(owner: "GoogleCloudPlatform", name: "k8s-config-connector") {
+            issue(number: $issue) {
+              timelineItems(itemTypes: [CROSS_REFERENCED_EVENT, CONNECTED_EVENT], last: 20) {
+                nodes {
+                  ... on CrossReferencedEvent { source { ... on PullRequest { number state } } }
+                  ... on ConnectedEvent { subject { ... on PullRequest { number state } } }
+                }
+              }
+            }
+          }
+        }' -F issue="${issue}" 2>/dev/null | jq -r '[.data.repository.issue.timelineItems.nodes[]? | (.source // .subject) | select(. != null and .state == "OPEN") | .number] | last // empty' 2>/dev/null || true)
+
+      if [ -n "${open_pr}" ]; then
+        parent_issue="${SESSION_ID#issue-}"
+        is_recorded=false
+        if [[ ",${RELATED_ISSUES// /}," == *",${open_pr},"* ]]; then
+          is_recorded=true
+        elif [ -n "${parent_issue}" ] && gh issue view "${parent_issue}" --json body,comments --jq '[.body, .comments[].body] | join("\n")' 2>/dev/null | grep -qE "#${open_pr}\b|pull/${open_pr}\b"; then
+          is_recorded=true
+        fi
+
+        if [ "${is_recorded}" = "false" ]; then
+          echo "New unrecorded PR #${open_pr} found for open issue #${issue}. Waking agent once to update table."
+          exit 0
+        fi
+        echo "Open PR #${open_pr} for issue #${issue} is already recorded in parent issue."
+      fi
     fi
   done
+
+  if [ "${has_open_issue}" = "true" ]; then
+    echo "Precondition failed: One or more related issues/PRs are not closed."
+    exit 1
+  fi
 
   echo "All related issues/PRs are closed."
   exit 0
@@ -95,7 +131,7 @@ The journal should contain:
    * Status (e.g. `Open`, `PR Created`, `Merged`, `Completed`)
    * Date Started and Date Completed
 
-Only proceed to the next step once the PR for the current step is merged successfully.
+If the current step's child issue is still `OPEN` and has an open Pull Request linked to it (including when a previously recorded PR was closed without merging and replaced by a new open PR), update the table's `GitHub Pull Request` column with the latest open PR link/number (replacing any closed PR) and set `Status` to `PR Created` in both the local journal file and the parent issue description/comment, then stop. Only proceed to the next step once the PR for the current step is merged successfully.
 
 3. In addition to the local journal file, **update the parent issue description** (using the issue ID/number extracted from `${SESSION_ID#issue-}`) or fall back to updating a comment:
    * **Formatting the GitHub Description/Comment**: To keep the parent GitHub issue clean and avoid excessively chatty updates, the body posted to GitHub (description or comment) must **only** include the current step, the progress tracking table, and **at most the 3 most recent status update notes**. Do not include the entire historical list of check logs or updates under the table in the GitHub description/comment; all older history must remain in the local journal file on the branch only.
@@ -106,7 +142,7 @@ Only proceed to the next step once the PR for the current step is merged success
      If editing the issue description fails (due to write permissions on public repositories), **fall back to updating a comment**:
      * Search the comments on the issue for any existing comment containing the text `Migration Progress` or `Migration Progress: {kind}`:
        ```bash
-       gh issue view ${SESSION_ID#issue-} --json comments --jq '.comments[] | select(.body | contains("Migration Progress")) | .id' | tail -n 1
+       gh api repos/{owner}/{repo}/issues/${SESSION_ID#issue-}/comments --jq '.[] | select(.body | contains("Migration Progress")) | .id' | tail -n 1
        ```
      * If such a comment exists (e.g., `<comment-id>`), edit it with the updated progress using `gh api`:
        ```bash
@@ -114,7 +150,7 @@ Only proceed to the next step once the PR for the current step is merged success
        ```
      * If no such comment exists, create a new comment:
        ```bash
-       gh issue comment create ${SESSION_ID#issue-} --body "<updated_comment_body>"
+       gh issue comment ${SESSION_ID#issue-} --body "<updated_comment_body>"
        ```
 4. Once all steps of the migration for the resource kind are successfully completed and verified merged, update the parent issue description to show completion, and close the parent issue:
    ```bash
