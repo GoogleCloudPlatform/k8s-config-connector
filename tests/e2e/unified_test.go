@@ -310,7 +310,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					// Therefore, GCP does not allow configuring NAT on a router that does not exist yet.
 					// Similarly, deleting a network or router will fail if active NAT/subnetwork configurations are still attached.
 					// Setting CreateInOrder and DeleteInOrder ensures dependencies are fully ready first during creation and cleaned up last during deletion.
-					if strings.Contains(fixture.Name, "computesubnetwork") || strings.Contains(fixture.Name, "computerouternat") {
+					if strings.Contains(fixture.Name, "computesubnetwork") || strings.Contains(fixture.Name, "computerouternat") || strings.Contains(fixture.Name, "lustreinstance") {
 						opt.CreateInOrder = true
 						opt.DeleteInOrder = true
 					}
