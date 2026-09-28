@@ -54,6 +54,7 @@ type GenerateCRDOptions struct {
 	PrepopulateSpec    bool
 	EmitPluralAcronyms bool
 	EmitMessageMaps    bool
+	EmitParentRefs     bool
 }
 
 func (o *GenerateCRDOptions) InitDefaults() error {
@@ -77,6 +78,7 @@ func (o *GenerateCRDOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().BoolVar(&o.EmitPluralAcronyms, "emit-plural-acronyms", false, "case plural acronyms as KRM conventions want, so related_uris becomes relatedURIs rather than relatedUris. Opt in one service at a time: it renames fields, which is a breaking change for a resource people already use")
 	cmd.Flags().BoolVar(&o.EmitMessageMaps, "emit-message-maps", false, "generate map<string, Message> fields as a map of the value's Go type instead of leaving them out. Opt in one service at a time: it adds fields to the CRD of a resource people already use, and generate-mapper needs the same flag")
 	cmd.Flags().BoolVar(&o.EmitRequiredFromProto, "emit-required-from-proto", false, "emit // +required markers for fields marked REQUIRED in proto. Opt-in per service to avoid breaking CRD schema changes on existing resources")
+	cmd.Flags().BoolVar(&o.EmitParentRefs, "emit-parent-refs", false, "emit one spec field referencing the resource's direct parent, where google.api.resource declares a parent below project and location and a reference type for it already exists. Requires --prepopulate-spec. Each field is marked +kcc:guess and recorded in apis/<service>/needs_judgement_call.txt, and a parent with no reference type is recorded there rather than guessed. Opt in one service at a time: it adds a field to the CRD of a resource people already use")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -133,6 +135,10 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		Group:           gv.Group,
 		Version:         gv.Version,
 		PackageProtoTag: o.ServiceName,
+		// Without the proto the scaffolder has no google.api.resource to read, so
+		// ResourcePattern is empty and there is no parent to name.
+		Proto:          api,
+		EmitParentRefs: o.EmitParentRefs,
 	}
 	if scaffolder.DocFileNotExist() {
 		if err := scaffolder.AddDocFile(); err != nil {
@@ -244,10 +250,14 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 						})
 					}
 					prepopulated.ExtraImports = scaffold.ExtraImportsFor(prepopulated.SpecFields, prepopulated.ObservedStateFields)
-					judgement = append(judgement, scaffold.FormatJudgementEntries(resource.Kind, gv.Group, prepopulated.Judgement))
 				}
 				if err := scaffolder.AddTypeFile(resource, prepopulated); err != nil {
 					return fmt.Errorf("add type file %s: %w", scaffolder.PathToTypeFile(resource), err)
+				}
+				// This runs after AddTypeFile, which is where decisions that
+				// depend on the parent shape are recorded.
+				if prepopulated != nil {
+					judgement = append(judgement, scaffold.FormatJudgementEntries(resource.Kind, gv.Group, prepopulated.Judgement))
 				}
 			}
 		}
@@ -343,6 +353,11 @@ func (o *GenerateCRDOptions) validate() error {
 	}
 	if len(o.Resources) == 0 {
 		return fmt.Errorf("`--resource` is required")
+	}
+	// Parent references are added to the prepopulated Spec, so on its own
+	// the flag would do nothing.
+	if o.EmitParentRefs && !o.PrepopulateSpec {
+		return fmt.Errorf("`--emit-parent-refs` requires `--prepopulate-spec`")
 	}
 	return nil
 }
