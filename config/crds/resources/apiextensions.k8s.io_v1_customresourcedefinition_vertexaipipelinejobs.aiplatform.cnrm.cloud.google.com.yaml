@@ -221,10 +221,39 @@ spec:
                               description: The namespace of a ComputeNetwork resource.
                               type: string
                           type: object
-                        targetProject:
+                        targetProjectRef:
                           description: Required. The project ID hosting the Cloud
                             DNS managed zone that contains the 'domain'.
-                          type: string
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: The `projectID` field of a project, when
+                                not managed by Config Connector.
+                              type: string
+                            kind:
+                              description: The kind of the Project resource; optional
+                                but must be `Project` if provided.
+                              type: string
+                            name:
+                              description: The `name` field of a `Project` resource.
+                              type: string
+                            namespace:
+                              description: The `namespace` field of a `Project` resource.
+                              type: string
+                          type: object
                       type: object
                     type: array
                   networkAttachmentRef:
