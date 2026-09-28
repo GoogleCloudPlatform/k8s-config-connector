@@ -1,0 +1,126 @@
+steps:
+  # 1. Build the multi-binary builder image containing all compiled Go binaries
+  - name: 'gcr.io/cloud-builders/docker'
+    env:
+      - 'DOCKER_BUILDKIT=1'
+    args:
+      - 'build'
+      - '-t'
+      - '${_IMAGE_PREFIX}builder:${_IMAGE_TAG}'
+      - '-f'
+      - 'build/builder/Dockerfile'
+      - '.'
+
+  # 2. Build thin controller manager image
+  - name: 'gcr.io/cloud-builders/docker'
+    env:
+      - 'DOCKER_BUILDKIT=1'
+    args:
+      - 'build'
+      - '-t'
+      - '${_IMAGE_PREFIX}controller:${_IMAGE_TAG}'
+      - '-f'
+      - 'build/manager/Dockerfile'
+      - '--build-arg'
+      - 'BUILDER_IMG=${_IMAGE_PREFIX}builder:${_IMAGE_TAG}'
+      - '--build-arg'
+      - 'GKE_DISTROLESS_IMG=gcr.io/gke-release/gke-distroless/static:gke_distroless_20260207.00_p0'
+      - '.'
+
+  # 3. Build thin recorder image
+  - name: 'gcr.io/cloud-builders/docker'
+    env:
+      - 'DOCKER_BUILDKIT=1'
+    args:
+      - 'build'
+      - '-t'
+      - '${_IMAGE_PREFIX}recorder:${_IMAGE_TAG}'
+      - '-f'
+      - 'build/recorder/Dockerfile'
+      - '--build-arg'
+      - 'BUILDER_IMG=${_IMAGE_PREFIX}builder:${_IMAGE_TAG}'
+      - '--build-arg'
+      - 'GKE_DISTROLESS_IMG=gcr.io/gke-release/gke-distroless/static:gke_distroless_20260207.00_p0'
+      - '.'
+
+  # 4. Build thin webhook image
+  - name: 'gcr.io/cloud-builders/docker'
+    env:
+      - 'DOCKER_BUILDKIT=1'
+    args:
+      - 'build'
+      - '-t'
+      - '${_IMAGE_PREFIX}webhook:${_IMAGE_TAG}'
+      - '-f'
+      - 'build/webhook/Dockerfile'
+      - '--build-arg'
+      - 'BUILDER_IMG=${_IMAGE_PREFIX}builder:${_IMAGE_TAG}'
+      - '--build-arg'
+      - 'GKE_DISTROLESS_IMG=gcr.io/gke-release/gke-distroless/static:gke_distroless_20260207.00_p0'
+      - '.'
+
+  # 5. Build thin deletion defender image
+  - name: 'gcr.io/cloud-builders/docker'
+    env:
+      - 'DOCKER_BUILDKIT=1'
+    args:
+      - 'build'
+      - '-t'
+      - '${_IMAGE_PREFIX}deletiondefender:${_IMAGE_TAG}'
+      - '-f'
+      - 'build/deletiondefender/Dockerfile'
+      - '--build-arg'
+      - 'BUILDER_IMG=${_IMAGE_PREFIX}builder:${_IMAGE_TAG}'
+      - '--build-arg'
+      - 'GKE_DISTROLESS_IMG=gcr.io/gke-release/gke-distroless/static:gke_distroless_20260207.00_p0'
+      - '.'
+
+  # 6. Build thin unmanaged detector image
+  - name: 'gcr.io/cloud-builders/docker'
+    env:
+      - 'DOCKER_BUILDKIT=1'
+    args:
+      - 'build'
+      - '-t'
+      - '${_IMAGE_PREFIX}unmanageddetector:${_IMAGE_TAG}'
+      - '-f'
+      - 'build/unmanageddetector/Dockerfile'
+      - '--build-arg'
+      - 'BUILDER_IMG=${_IMAGE_PREFIX}builder:${_IMAGE_TAG}'
+      - '--build-arg'
+      - 'GKE_DISTROLESS_IMG=gcr.io/gke-release/gke-distroless/static:gke_distroless_20260207.00_p0'
+      - '.'
+
+  # 7. Build operator image
+  - name: 'gcr.io/cloud-builders/docker'
+    env:
+      - 'DOCKER_BUILDKIT=1'
+    args:
+      - 'build'
+      - '-t'
+      - '${_IMAGE_PREFIX}operator:${_IMAGE_TAG}'
+      - '-f'
+      - 'operator/Dockerfile'
+      - '--build-arg'
+      - 'GKE_DISTROLESS_IMG=gcr.io/gke-release/gke-distroless/static:gke_distroless_20260207.00_p0'
+      - '.'
+
+images:
+  - '${_IMAGE_PREFIX}controller:${_IMAGE_TAG}'
+  - '${_IMAGE_PREFIX}recorder:${_IMAGE_TAG}'
+  - '${_IMAGE_PREFIX}webhook:${_IMAGE_TAG}'
+  - '${_IMAGE_PREFIX}deletiondefender:${_IMAGE_TAG}'
+  - '${_IMAGE_PREFIX}unmanageddetector:${_IMAGE_TAG}'
+  - '${_IMAGE_PREFIX}operator:${_IMAGE_TAG}'
+
+options:
+  machineType: 'E2_HIGHCPU_8'
+  logging: CLOUD_LOGGING_ONLY
+  env:
+    - 'DOCKER_BUILDKIT=1'
+
+substitutions:
+  _IMAGE_PREFIX: ''
+  _IMAGE_TAG: 'latest'
+
+timeout: 1800s
