@@ -93,10 +93,11 @@ func (m *routerNATModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 	}
 
 	return &RouterNATAdapter{
-		gcpClient: routersClient,
-		id:        id.(*krm.ComputeRouterNATIdentity),
-		desired:   resource,
-		reader:    reader,
+		gcpClient:  routersClient,
+		id:         id.(*krm.ComputeRouterNATIdentity),
+		desiredKRM: &desired.Spec,
+		desired:    resource,
+		reader:     reader,
 	}, nil
 }
 
@@ -123,12 +124,13 @@ func (m *routerNATModel) AdapterForURL(ctx context.Context, url string) (directb
 }
 
 type RouterNATAdapter struct {
-	gcpClient *compute.RoutersClient
-	id        *krm.ComputeRouterNATIdentity
-	desired   *computepb.RouterNat
-	actual    *computepb.RouterNat
-	router    *computepb.Router
-	reader    client.Reader
+	gcpClient  *compute.RoutersClient
+	id         *krm.ComputeRouterNATIdentity
+	desiredKRM *krm.ComputeRouterNATSpec
+	desired    *computepb.RouterNat
+	actual     *computepb.RouterNat
+	router     *computepb.Router
+	reader     client.Reader
 }
 
 var _ directbase.Adapter = &RouterNATAdapter{}
@@ -240,7 +242,7 @@ func (a *RouterNATAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating ComputeRouterNAT", "name", a.id)
 
-	diffs, _, err := compareComputeRouterNAT(ctx, a.actual, a.desired)
+	diffs, _, err := compareComputeRouterNAT(ctx, a.actual, a.desiredKRM)
 	if err != nil {
 		return err
 	}
@@ -267,7 +269,7 @@ func (a *RouterNATAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 		}
 
 		mapCtx := &direct.MapContext{}
-		desiredKRM := ComputeRouterNATSpec_FromProto(mapCtx, a.desired)
+		desiredKRM := a.desiredKRM.DeepCopy()
 		actualKRM := ComputeRouterNATSpec_FromProto(mapCtx, a.actual)
 		if err := mapCtx.Err(); err != nil {
 			return err
@@ -446,12 +448,8 @@ func (a *RouterNATAdapter) updateStatus(ctx context.Context, op directbase.Opera
 	return op.UpdateStatus(ctx, status, nil)
 }
 
-func compareComputeRouterNAT(ctx context.Context, actual, desired *computepb.RouterNat) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+func compareComputeRouterNAT(ctx context.Context, actual *computepb.RouterNat, desired *krm.ComputeRouterNATSpec) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
 	mapCtx := &direct.MapContext{}
-	desiredKRM := ComputeRouterNATSpec_FromProto(mapCtx, desired)
-	if err := mapCtx.Err(); err != nil {
-		return nil, nil, err
-	}
 
 	normalize := func(ctx context.Context, pb *computepb.RouterNat) error {
 		return common.NormalizeManagedComputeURIs(mapCtx, pb, ComputeRouterNATSpec_FromProto, ComputeRouterNATSpec_ToProto)
@@ -459,7 +457,7 @@ func compareComputeRouterNAT(ctx context.Context, actual, desired *computepb.Rou
 
 	return common.CompareBrownfieldSpec(
 		ctx,
-		desiredKRM,
+		desired,
 		actual,
 		ComputeRouterNATSpec_FromProto,
 		ComputeRouterNATSpec_ToProto,
