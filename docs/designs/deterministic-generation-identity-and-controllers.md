@@ -170,7 +170,7 @@ This closes Step 1's fourth gap: a kind can't advance while its blocking entries
 | Q2 Controller layout | `<kind>_controller.generated.go` is regenerated and never edited. An optional hand-written `<kind>_controller.go` wins, the same rule generate-mapper uses. |
 | Q3 Unset fields | **Deferred.** The diff logic lives in one generated `compare<Kind>()` function, marked `// TODO(controller-gen): unset-field semantics pending maintainer decision`. For now it behaves like today's greenfield pipeline. |
 | Q4 Archetypes | Every archetype is needed. They **ship in staggered PR phases, starting with archetype A.** |
-| Q5 Order | The identity and reference generator comes first, then controllers. |
+| Q5 Order | **Revised:** first build what doesn't depend on the open Step 1 PRs. PR 0.1 (the API model) and phase 1 (the fuzzer) run in parallel, then phase 2 (controllers). The rest of phase 0, identity and reference, follows #13401 (9.1). The order of stages for each kind doesn't change. |
 | Q6 Identity layout | The same split as Q2: `<kind>_identity.generated.go` and `<kind>_reference.generated.go`. **Tests check that they behave in the standard way.** A failing test means the kind needs custom logic, as well as a queue entry. |
 | Q7 Queue | Reuse Step 1's queue file and line format, with new reasons. Every guess marker needs a matching entry. Open entries block promotion to beta, but not the alpha merge. |
 | Q8 Fuzzer and fixtures | Generate fuzzers deterministically, **plus skeleton fixtures** whose placeholder values each get a queue entry. |
@@ -337,7 +337,26 @@ phase 2 builds stage 4 for archetype A, and later phases extend stage 4 to other
 
 > [!IMPORTANT]
 > Every archetype is needed, but they **ship as staggered PR phases of experimentation, starting with archetype A**. A
-> phase must pass its offline and pilot gates before the next phase starts.
+> phase must pass its offline and pilot gates before any phase that builds on it starts.
+
+### 9.1 Order and dependencies
+
+The order in which generators are built is separate from the order of stages a kind goes through. Each kind still goes
+through types, identity and reference, fuzzer, then controller. Existing kinds already have hand-written identities, so
+they have passed stage 2, and the fuzzer and controller generators can be built first.
+
+| Work | Depends on | Start |
+|---|---|---|
+| PR 0.1: API model and archetype classifier | Nothing in Step 1 | Now |
+| Phase 1: fuzzer | Nothing in Step 1. It reads the Step 1 types wherever the fields landed. The stage 3 gate is weaker until #13403 lands. | Now, alongside PR 0.1 |
+| Phase 2: archetype-A controllers | PR 0.1, and an identity in the canonical form for each kind. 105 of the 155 archetype-A kinds with controllers have one, and so do 17 of the 23 archetype-A kinds in the backlog. | After PR 0.1 |
+| PRs 0.2 to 0.7: identity and reference | #13401 for nested kinds and roots other than a project, or a project and location. It adds the parent helpers (`ParentPair`, `ParentPattern`, `TargetForPath`) and the Spec layout the identity is built from. | After #13401 |
+
+The open Step 1 PRs all edit the same generator files (`pkg/codegen/{common,mappergenerator,typegenerator}.go`,
+`scaffold/*`, `generate-types`, `generate-mapper`, and `protoapi/resource.go`). New work goes in new files to avoid
+conflicts with them.
+
+### 9.2 Phases
 
 **Phase 0: stage 2, identity and reference**
 
@@ -398,7 +417,7 @@ phase 2 builds stage 4 for archetype A, and later phases extend stage 4 to other
 
 | # | Blocker | Fixed in |
 |---|---|---|
-| B1 | Parts of Step 1 are still open. `--prepopulate-spec` and the queue have merged (#13399, #13400), so phase 0 can start for kinds rooted at a project or a project and location. Nested kinds and other roots need #13401. The stage 3 gate is weaker until reference hints (#13403) land, because fewer reference candidates get queued. | Dependency, tracked in #13411 |
+| B1 | Parts of Step 1 are still open. `--prepopulate-spec` and the queue have merged (#13399, #13400). PR 0.1, phase 1 and phase 2 don't depend on the rest (9.1). The rest of phase 0 needs #13401 for nested kinds and other roots. The stage 3 gate is weaker until reference hints (#13403) land, because fewer reference candidates get queued. | Dependency, tracked in #13411 |
 | B2 | The generator reads no service or method descriptors. | PR 0.1 |
 | B3 | The templates are out of date. [controller.go](../../dev/tools/controllerbuilder/template/controller/controller.go) doesn't compile as emitted, uses `CompareProtoMessage`, and uses the legacy identity. [identity.go](../../dev/tools/controllerbuilder/template/apis/identity.go) and [refs.go](../../dev/tools/controllerbuilder/template/apis/refs.go) emit `strings.Split` and `ExternalNormalizer`. | New templates in PRs 0.2 and 2.1. The old templates stay, so default output doesn't change. |
 | B4 | Identity and refs can only be produced through `generate-controller` (gap 2). | PR 0.2 |
@@ -429,7 +448,7 @@ phase 2 builds stage 4 for archetype A, and later phases extend stage 4 to other
 | Maintainers don't accept `.generated.go` controllers | Generated mappers set the precedent. The phase 2 numbers come before any adoption. |
 | The template is subtly wrong for a whole class of API | Queue reasons and the offline test catch it. Fixes for one kind go in hooks, not forks of the template. |
 | Kinds stall at a gate because nobody works the queue | The aggregate report makes stuck kinds visible, and stage PRs that need no review can be batched. |
-| The rest of Step 1 slips | Phase 0 doesn't need #13401 for kinds rooted at a project or a project and location. |
+| The rest of Step 1 slips | PR 0.1, the fuzzer and the controller generator don't depend on it. Identity for kinds rooted at a project, or a project and location, doesn't need #13401 either. |
 
 ## 12. Open items for maintainers
 
