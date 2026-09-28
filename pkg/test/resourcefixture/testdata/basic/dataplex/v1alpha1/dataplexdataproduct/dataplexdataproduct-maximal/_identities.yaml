@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: dataplex.cnrm.cloud.google.com
+  kind: DataplexDataProduct
+  name: dataplexdataproduct-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
