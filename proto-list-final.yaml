@@ -2763,13 +2763,6 @@ kind: DatalabelingEvaluationJob
 protopath: google.cloud.datalabeling.v1beta1.EvaluationJob
 validated: null
 ---
-service: datalabeling
-package: google.cloud.datalabeling.v1beta1
-proto: Instruction
-kind: DatalabelingInstruction
-protopath: google.cloud.datalabeling.v1beta1.Instruction
-validated: null
----
 service: dataplex
 package: google.cloud.dataplex.v1
 proto: Environment
