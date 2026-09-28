@@ -60,6 +60,8 @@ type TypeGenerator struct {
 	reservedTypeNames map[string]bool
 
 	unsupportedFields []UnsupportedField
+
+	derivedMessageMaps []DerivedMessageMap
 }
 
 type OutputMessageDetails struct {
@@ -84,6 +86,14 @@ type WriteOptions struct {
 	// services (e.g., filtering unused imports) are scoped to this flag to maintain
 	// byte-for-byte reproducibility for services that have not yet opted in.
 	Prepopulating bool
+	// EmitPluralAcronyms cases a plural acronym as KRM conventions want, so
+	// related_uris becomes RelatedURIs rather than RelatedUris. See AcronymCasing
+	// for why this is opt-in.
+	EmitPluralAcronyms bool
+	// EmitMessageMaps generates map<string, Message> fields as a map of the
+	// value's Go type. Without it they are left out, with a "// TODO:" marker
+	// in their place.
+	EmitMessageMaps bool
 }
 
 func NewTypeGenerator(goPackage string, outputBaseDir string, api *protoapi.Proto) *TypeGenerator {
@@ -389,6 +399,19 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 		var rendered bytes.Buffer
 		WriteMessage(&rendered, msg, g.writeOptions)
 		g.unsupportedFields = append(g.unsupportedFields, scanUnsupported(string(msg.FullName()), rendered.String())...)
+		if g.writeOptions.EmitMessageMaps {
+			for i := 0; i < msg.Fields().Len(); i++ {
+				f := msg.Fields().Get(i)
+				if protoMsg, goType, ok := MessageMapValueInfo(f); ok {
+					g.derivedMessageMaps = append(g.derivedMessageMaps, DerivedMessageMap{
+						Message:   string(msg.FullName()),
+						Field:     GetJSONForKRM(f, g.writeOptions),
+						ProtoType: protoMsg,
+						GoType:    goType,
+					})
+				}
+			}
+		}
 		out.body.Write(rendered.Bytes())
 	}
 	return errors.Join(g.errors...)
@@ -458,6 +481,19 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 			continue
 		}
 
+		if g.writeOptions.EmitMessageMaps {
+			for _, f := range msgDetails.OutputFields {
+				if protoMsg, goType, ok := MessageMapValueInfo(f); ok {
+					g.derivedMessageMaps = append(g.derivedMessageMaps, DerivedMessageMap{
+						Message:   string(msg.FullName()),
+						Field:     GetJSONForKRM(f, g.writeOptions),
+						ProtoType: protoMsg,
+						GoType:    goType,
+					})
+				}
+			}
+		}
+
 		WriteObservedStateMessage(&out.body, msgDetails, g.observedStateMessages, g.writeOptions)
 	}
 	return errors.Join(g.errors...)
@@ -500,6 +536,8 @@ func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor, opts WriteO
 type ObservedStateFieldNote struct {
 	// JSONName is the KRM field name in camelCase.
 	JSONName string
+	// Field is the proto field descriptor.
+	Field protoreflect.FieldDescriptor
 	// Rendered is the Go field declaration, including comments and tags.
 	Rendered string
 	// Skipped is true if the field was suppressed by a skip list (e.g. identity fields).
@@ -520,7 +558,8 @@ func WriteObservedStateFields(out io.Writer, msgDetails *OutputMessageDetails, o
 	for _, field := range msgDetails.OutputFields {
 		if skip[string(field.Name())] {
 			notes = append(notes, ObservedStateFieldNote{
-				JSONName: GetJSONForKRM(field),
+				JSONName: GetJSONForKRM(field, observedOpts),
+				Field:    field,
 				Skipped:  true,
 			})
 			continue
@@ -537,7 +576,8 @@ func WriteObservedStateFields(out io.Writer, msgDetails *OutputMessageDetails, o
 		out.Write(field_.Bytes())
 		emitted++
 		notes = append(notes, ObservedStateFieldNote{
-			JSONName: GetJSONForKRM(field),
+			JSONName: GetJSONForKRM(field, observedOpts),
+			Field:    field,
 			Rendered: field_.String(),
 		})
 	}
@@ -555,17 +595,39 @@ func WriteObservedStateMessage(out io.Writer, msgDetails *OutputMessageDetails, 
 	fmt.Fprintf(out, "}\n")
 }
 
-func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool) (string, error) {
+func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool, opts WriteOptions) (string, error) {
 	if field.IsMap() {
 		entryMsg := field.Message()
-		keyKind := entryMsg.Fields().ByName("key").Kind()
-		valueKind := entryMsg.Fields().ByName("value").Kind()
-		if keyKind == protoreflect.StringKind && valueKind == protoreflect.StringKind {
+		keyField := entryMsg.Fields().ByName("key")
+		valueField := entryMsg.Fields().ByName("value")
+		if keyField.Kind() != protoreflect.StringKind {
+			// A CRD keys additionalProperties by string, so no other key type
+			// can be expressed.
+			return "", fmt.Errorf("unsupported map type with key %v and value %v", keyField.Kind(), valueField.Kind())
+		}
+		switch valueField.Kind() {
+		case protoreflect.StringKind:
 			return "map[string]string", nil
-		} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
+		case protoreflect.Int64Kind:
 			return "map[string]int64", nil
-		} else {
-			return "", fmt.Errorf("unsupported map type with key %v and value %v", keyKind, valueKind)
+		case protoreflect.MessageKind:
+			// Off by default: generating these adds fields to the CRD of a
+			// resource people already use.
+			if !opts.EmitMessageMaps {
+				return "", fmt.Errorf("unsupported map type with key %v and value %v", keyField.Kind(), valueField.Kind())
+			}
+			// FindDependenciesForField already follows the map entry to the
+			// value's message, so its struct is generated like any other nested
+			// message. A message with a special-cased Go type uses that type
+			// instead, so a google.protobuf.Struct value becomes
+			// apiextensionsv1.JSON.
+			valueName := string(valueField.Message().FullName())
+			if goType, ok := protoMessagesNotMappedToGoStruct[valueName]; ok {
+				return "map[string]" + goType, nil
+			}
+			return "map[string]" + GoNameForProtoMessage(valueField.Message()), nil
+		default:
+			return "", fmt.Errorf("unsupported map type with key %v and value %v", keyField.Kind(), valueField.Kind())
 		}
 	}
 
@@ -604,10 +666,10 @@ func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool)
 func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protoreflect.MessageDescriptor, fieldIndex int, isTransitiveOutput bool, opts WriteOptions) {
 	sourceLocations := msg.ParentFile().SourceLocations().ByDescriptor(field)
 
-	jsonName := GetJSONForKRM(field)
-	GoFieldName := goFieldName(field)
+	jsonName := GetJSONForKRM(field, opts)
+	GoFieldName := goFieldNameOpts(field, opts)
 
-	goType, err := GoTypeForField(field, isTransitiveOutput)
+	goType, err := GoTypeForField(field, isTransitiveOutput, opts)
 	if err != nil {
 		// Include the field name in the TODO comment when prepopulating is enabled.
 		// This provides clarity for human review and queue processing without
@@ -776,17 +838,22 @@ func goTypeForProtoKind(kind protoreflect.Kind) string {
 	return goType
 }
 
-// GetJSONForKRM returns the KRM JSON name for the field,
-// honoring KRM conventions
-func GetJSONForKRM(protoField protoreflect.FieldDescriptor) string {
+// GetJSONForKRM returns the KRM JSON name for the field, cased according to
+// opts.
+//
+// Pass the options the field was written with. A judgement-queue path built
+// with any other options can name a field the generated type does not have:
+// under EmitPluralAcronyms the struct says relatedURIs, but blank options give
+// relatedUris.
+func GetJSONForKRM(protoField protoreflect.FieldDescriptor, opts WriteOptions) string {
 	tokens := strings.Split(string(protoField.Name()), "_")
 	for i, token := range tokens {
 		if i == 0 {
 			// Do not capitalize first token
 			continue
 		}
-		if IsAcronym(token) {
-			token = strings.ToUpper(token)
+		if cased, ok := AcronymCasing(token, opts.EmitPluralAcronyms); ok {
+			token = cased
 		} else {
 			token = strings.Title(token)
 		}
@@ -798,10 +865,14 @@ func GetJSONForKRM(protoField protoreflect.FieldDescriptor) string {
 // goFieldName returns the KRM go name for the field,
 // honoring KRM conventions
 func goFieldName(protoField protoreflect.FieldDescriptor) string {
+	return goFieldNameOpts(protoField, WriteOptions{})
+}
+
+func goFieldNameOpts(protoField protoreflect.FieldDescriptor, opts WriteOptions) string {
 	tokens := strings.Split(string(protoField.Name()), "_")
 	for i, token := range tokens {
-		if IsAcronym(token) {
-			token = strings.ToUpper(token)
+		if cased, ok := AcronymCasing(token, opts.EmitPluralAcronyms); ok {
+			token = cased
 		} else {
 			token = strings.Title(token)
 		}
@@ -940,4 +1011,68 @@ func UnsupportedFieldMarker(rendered string) (field, reason string, ok bool) {
 	}
 	return "", "", false
 }
+
+// DerivedMessageMap describes a map<string, Message> field that was generated as map[string]<GoType>.
+type DerivedMessageMap struct {
+	// Message is the fully-qualified proto message name that contains the field.
+	Message string
+	// Field is the KRM JSON name of the field.
+	Field string
+	// ProtoType is the fully-qualified proto message type of the map's values.
+	ProtoType string
+	// GoType is the Go type the message was mapped to.
+	GoType string
+}
+
+// DerivedMessageMaps returns the collection of message-valued map fields generated
+// with --emit-message-maps during this run, sorted deterministically without duplicates.
+func (g *TypeGenerator) DerivedMessageMaps() []DerivedMessageMap {
+	seen := make(map[string]bool)
+	var out []DerivedMessageMap
+	for _, m := range g.derivedMessageMaps {
+		key := fmt.Sprintf("%s.%s", m.Message, m.Field)
+		if seen[key] {
+			continue
+		}
+		seen[key] = true
+		out = append(out, m)
+	}
+	sort.Slice(out, func(i, j int) bool {
+		if out[i].Message != out[j].Message {
+			return out[i].Message < out[j].Message
+		}
+		return out[i].Field < out[j].Field
+	})
+	return out
+}
+
+// MessageMapValueInfo returns the proto message name, derived Go type, and true
+// if field is a map whose key is string and whose value is a message.
+func MessageMapValueInfo(field protoreflect.FieldDescriptor) (protoMsg, goType string, ok bool) {
+	if !field.IsMap() {
+		return "", "", false
+	}
+	entryMsg := field.Message()
+	if entryMsg == nil {
+		return "", "", false
+	}
+	keyField := entryMsg.Fields().ByName("key")
+	valueField := entryMsg.Fields().ByName("value")
+	if keyField == nil || valueField == nil {
+		return "", "", false
+	}
+	if keyField.Kind() != protoreflect.StringKind || valueField.Kind() != protoreflect.MessageKind {
+		return "", "", false
+	}
+	valMsg := valueField.Message()
+	if valMsg == nil {
+		return "", "", false
+	}
+	protoMsg = string(valMsg.FullName())
+	if specialType, ok := protoMessagesNotMappedToGoStruct[protoMsg]; ok {
+		return protoMsg, specialType, true
+	}
+	return protoMsg, GoNameForProtoMessage(valMsg), true
+}
+
 

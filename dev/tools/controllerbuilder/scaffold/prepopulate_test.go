@@ -27,6 +27,7 @@ import (
 	"google.golang.org/protobuf/reflect/protodesc"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/descriptorpb"
+	"k8s.io/apimachinery/pkg/util/sets"
 )
 
 func strPtr(s string) *string { return &s }
@@ -145,6 +146,66 @@ func TestPrepopulateSpecAlwaysQueuesTheResource(t *testing.T) {
 	}
 }
 
+// TestPrepopulateSpecQueuesTheEmittedName pins that a queue entry names a field
+// the way the Spec struct spells it. A person works the queue by finding each
+// path in the CRD, so under EmitPluralAcronyms an entry for relatedUris would
+// point at nothing: the struct says relatedURIs.
+func TestPrepopulateSpecQueuesTheEmittedName(t *testing.T) {
+	// Arrange
+	refOpts := &descriptorpb.FieldOptions{}
+	proto.SetExtension(refOpts, annotations.E_ResourceReference,
+		&annotations.ResourceReference{Type: "test.googleapis.com/Thing"})
+	fd, err := protodesc.NewFile(&descriptorpb.FileDescriptorProto{
+		Name:    strPtr("refs.proto"),
+		Package: strPtr("google.cloud.test.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{{
+			Name: strPtr("Widget"),
+			Field: []*descriptorpb.FieldDescriptorProto{{
+				Name:    strPtr("related_uris"),
+				Number:  i32Ptr(1),
+				Type:    fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING),
+				Options: refOpts,
+			}},
+		}},
+	}, nil)
+	if err != nil {
+		t.Fatalf("building file descriptor: %v", err)
+	}
+	msg := fd.Messages().ByName("Widget")
+
+	for _, tc := range []struct {
+		name     string
+		opts     codegen.WriteOptions
+		wantPath string
+	}{
+		{"acronym casing on", codegen.WriteOptions{EmitPluralAcronyms: true}, ".spec.relatedURIs"},
+		{"acronym casing off", codegen.WriteOptions{}, ".spec.relatedUris"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			// Act
+			got, err := PrepopulateSpec(msg, tc.opts)
+
+			// Assert
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			var paths []string
+			for _, j := range got.Judgement {
+				if j.Reason == "possible-reference" {
+					paths = append(paths, j.FieldPath)
+				}
+			}
+			if len(paths) != 1 || paths[0] != tc.wantPath {
+				t.Errorf("possible-reference paths = %v, want [%s]", paths, tc.wantPath)
+			}
+			tag := `json:"` + strings.TrimPrefix(tc.wantPath, ".spec.") + `,`
+			if !strings.Contains(got.SpecFields, tag) {
+				t.Errorf("SpecFields has no %s, so the entry names a field the struct lacks:\n%s", tag, got.SpecFields)
+			}
+		})
+	}
+}
+
 func TestPrepopulateSpecRequiresAMessage(t *testing.T) {
 	if _, err := PrepopulateSpec(nil, codegen.WriteOptions{}); err == nil {
 		t.Fatal("expected an error for a nil message")
@@ -181,3 +242,109 @@ func TestFormatJudgementEntries(t *testing.T) {
 		t.Errorf("field-level entry has the wrong shape: %s", lines[1])
 	}
 }
+
+func testMessageWithMap(t *testing.T) (protoreflect.MessageDescriptor, protoreflect.FieldDescriptor) {
+	t.Helper()
+	fd, err := protodesc.NewFile(&descriptorpb.FileDescriptorProto{
+		Name:    strPtr("maps.proto"),
+		Package: strPtr("google.cloud.test.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{Name: strPtr("TargetMessage")},
+			{
+				Name: strPtr("Widget"),
+				NestedType: []*descriptorpb.DescriptorProto{
+					{
+						Name: strPtr("TasksEntry"),
+						Field: []*descriptorpb.FieldDescriptorProto{
+							{Name: strPtr("key"), Number: i32Ptr(1), Type: fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)},
+							{Name: strPtr("value"), Number: i32Ptr(2), Type: fieldType(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE), TypeName: strPtr(".google.cloud.test.v1.TargetMessage")},
+						},
+						Options: &descriptorpb.MessageOptions{MapEntry: proto.Bool(true)},
+					},
+				},
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{
+						Name:     strPtr("tasks"),
+						Number:   i32Ptr(1),
+						Type:     fieldType(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE),
+						TypeName: strPtr(".google.cloud.test.v1.Widget.TasksEntry"),
+						Label:    descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum(),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		t.Fatalf("building file descriptor: %v", err)
+	}
+	msg := fd.Messages().ByName("Widget")
+	return msg, msg.Fields().ByName("tasks")
+}
+
+func TestPrepopulateSpecQueuesDerivedMessageMaps(t *testing.T) {
+	msg, _ := testMessageWithMap(t)
+
+	// EmitMessageMaps: true -> should emit message-map-derived
+	got, err := PrepopulateSpec(msg, codegen.WriteOptions{EmitMessageMaps: true})
+	if err != nil {
+		t.Fatalf("PrepopulateSpec failed: %v", err)
+	}
+	var derived []JudgementItem
+	for _, j := range got.Judgement {
+		if j.Reason == "message-map-derived" {
+			derived = append(derived, j)
+		}
+	}
+	if len(derived) != 1 {
+		t.Fatalf("expected 1 message-map-derived item, got %d: %+v", len(derived), got.Judgement)
+	}
+	if derived[0].FieldPath != ".spec.tasks" {
+		t.Errorf("FieldPath = %q, want .spec.tasks", derived[0].FieldPath)
+	}
+	if !strings.Contains(derived[0].Detail, "TargetMessage") {
+		t.Errorf("Detail = %q, want mention of TargetMessage", derived[0].Detail)
+	}
+
+	// EmitMessageMaps: false -> should not emit message-map-derived
+	gotOff, err := PrepopulateSpec(msg, codegen.WriteOptions{EmitMessageMaps: false})
+	if err != nil {
+		t.Fatalf("PrepopulateSpec failed: %v", err)
+	}
+	for _, j := range gotOff.Judgement {
+		if j.Reason == "message-map-derived" {
+			t.Errorf("unexpected message-map-derived item when EmitMessageMaps is false: %+v", j)
+		}
+	}
+}
+
+func TestPrepopulateObservedStateQueuesDerivedMessageMaps(t *testing.T) {
+	msg, field := testMessageWithMap(t)
+	details := &codegen.OutputMessageDetails{
+		Message:      msg,
+		OutputFields: []protoreflect.FieldDescriptor{field},
+	}
+
+	// EmitMessageMaps: true -> should emit message-map-derived
+	_, jOn := PrepopulateObservedState(details, sets.NewString(), codegen.WriteOptions{EmitMessageMaps: true})
+	var derived []JudgementItem
+	for _, j := range jOn {
+		if j.Reason == "message-map-derived" {
+			derived = append(derived, j)
+		}
+	}
+	if len(derived) != 1 {
+		t.Fatalf("expected 1 message-map-derived item, got %d: %+v", len(derived), jOn)
+	}
+	if derived[0].FieldPath != ".status.observedState.tasks" {
+		t.Errorf("FieldPath = %q, want .status.observedState.tasks", derived[0].FieldPath)
+	}
+
+	// EmitMessageMaps: false -> should not emit message-map-derived
+	_, jOff := PrepopulateObservedState(details, sets.NewString(), codegen.WriteOptions{EmitMessageMaps: false})
+	for _, j := range jOff {
+		if j.Reason == "message-map-derived" {
+			t.Errorf("unexpected message-map-derived item when EmitMessageMaps is false: %+v", j)
+		}
+	}
+}
+
