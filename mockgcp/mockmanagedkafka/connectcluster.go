@@ -140,22 +140,26 @@ func (s *managedKafkaConnect) UpdateConnectCluster(ctx context.Context, req *pb.
 		switch path {
 		case "labels":
 			obj.Labels = req.GetConnectCluster().GetLabels()
-		case "capacityConfig.memoryBytes":
+		case "capacityConfig.memoryBytes", "capacity_config.memory_bytes":
 			if obj.CapacityConfig == nil {
 				obj.CapacityConfig = &pb.CapacityConfig{}
 			}
 			obj.CapacityConfig.MemoryBytes = req.GetConnectCluster().GetCapacityConfig().GetMemoryBytes()
-		case "capacityConfig.vcpuCount":
+		case "capacityConfig.vcpuCount", "capacity_config.vcpu_count":
 			if obj.CapacityConfig == nil {
 				obj.CapacityConfig = &pb.CapacityConfig{}
 			}
 			obj.CapacityConfig.VcpuCount = req.GetConnectCluster().GetCapacityConfig().GetVcpuCount()
-		case "gcpConfig.accessConfig.networkConfigs":
+		case "capacityConfig", "capacity_config":
+			obj.CapacityConfig = req.GetConnectCluster().GetCapacityConfig()
+		case "gcpConfig.accessConfig.networkConfigs", "gcp_config.access_config.network_configs":
 			// In ManagedKafka, platformConfig is used, so GetGcpConfig returns it
 			if obj.GetGcpConfig() == nil {
 				obj.PlatformConfig = &pb.ConnectCluster_GcpConfig{GcpConfig: &pb.ConnectGcpConfig{}}
 			}
 			obj.GetGcpConfig().AccessConfig = req.GetConnectCluster().GetGcpConfig().GetAccessConfig()
+		case "gcpConfig", "gcp_config", "platformConfig", "platform_config":
+			obj.PlatformConfig = req.GetConnectCluster().GetPlatformConfig()
 		case "name":
 			obj.Name = req.GetConnectCluster().GetName()
 		case "config":

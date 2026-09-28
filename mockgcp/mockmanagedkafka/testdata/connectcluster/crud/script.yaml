@@ -1,0 +1,12 @@
+- pre: gcloud compute networks create test-kafka-nw-${uniqueId} --project=${projectId} --subnet-mode=custom --bgp-routing-mode=regional
+- pre: gcloud compute networks subnets create test-kafka-sn-${uniqueId} --project=${projectId} --network=test-kafka-nw-${uniqueId} --region=us-central1 --range=10.0.0.0/24
+- pre: gcloud managed-kafka clusters create test-kafka-cluster-${uniqueId} --project=${projectId} --location=us-central1 --cpu=3 --memory=4Gi --subnets=projects/${projectId}/regions/us-central1/subnetworks/test-kafka-sn-${uniqueId}
+- exec: gcloud beta managed-kafka connect-clusters create test-connect-cluster-${uniqueId} --project=${projectId} --location=us-central1 --kafka-cluster=test-kafka-cluster-${uniqueId} --cpu=3 --memory=3Gi --primary-subnet=projects/${projectId}/regions/us-central1/subnetworks/test-kafka-sn-${uniqueId} --labels=env=test
+- exec: gcloud beta managed-kafka connect-clusters list --project=${projectId} --location=us-central1
+- exec: gcloud beta managed-kafka connect-clusters describe test-connect-cluster-${uniqueId} --project=${projectId} --location=us-central1
+- exec: gcloud beta managed-kafka connect-clusters update test-connect-cluster-${uniqueId} --project=${projectId} --location=us-central1 --labels=env=test,updated=true --cpu=4 --memory=4Gi --primary-subnet=projects/${projectId}/regions/us-central1/subnetworks/test-kafka-sn-${uniqueId}
+- exec: gcloud beta managed-kafka connect-clusters describe test-connect-cluster-${uniqueId} --project=${projectId} --location=us-central1
+- exec: gcloud beta managed-kafka connect-clusters delete test-connect-cluster-${uniqueId} --project=${projectId} --location=us-central1 --quiet
+- post: gcloud managed-kafka clusters delete test-kafka-cluster-${uniqueId} --project=${projectId} --location=us-central1 --quiet
+- post: gcloud compute networks subnets delete test-kafka-sn-${uniqueId} --project=${projectId} --region=us-central1 --quiet
+- post: gcloud compute networks delete test-kafka-nw-${uniqueId} --project=${projectId} --quiet
