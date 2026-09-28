@@ -306,9 +306,18 @@ func TestRootRef(t *testing.T) {
 			wantReason: "root-ref-not-modelled",
 		},
 		{
-			name:      "a resource that is itself a root",
-			pattern:   "billingAccounts/{billing_account}",
-			wantField: "",
+			name:       "a billing account, which names no root above itself",
+			pattern:    "billingAccounts/{billing_account}",
+			wantField:  "",
+			wantReason: "root-not-in-name",
+		},
+		{
+			// folders is a fixed root, but here it is the resource itself, so a
+			// folderRef would point the Folder at itself.
+			name:       "a folder, which names no root above itself",
+			pattern:    "folders/{folder}",
+			wantField:  "",
+			wantReason: "root-not-in-name",
 		},
 	}
 
@@ -476,5 +485,3 @@ func TestLocationRef(t *testing.T) {
 		})
 	}
 }
-
-

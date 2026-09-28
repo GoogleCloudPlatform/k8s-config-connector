@@ -45,14 +45,15 @@ func (a *APIScaffolder) parentRef(pattern string) (field string, item *Judgement
 
 // rootRef renders the Spec field naming the root of a resource's name, and the
 // queue entry that goes with it when the root is one KCC has no fixed field
-// for.
+// for, or when the name has no root at all.
 //
 // A project, and a resource with no pattern, get projectRef; an organization
 // or folder gets organizationRef or folderRef. Any other root, such as
 // properties/{property} in Analytics, is looked up the way parentRef looks up
-// a parent. A pattern that is only the root itself, such as
-// billingAccounts/{billing_account}, names no root to point at, so it gets no
-// field.
+// a parent. A pattern that is only the resource itself, such as
+// folders/{folder}, names no root to point at, so it gets no field, only a
+// queue entry: such a resource usually still lives in an organization, folder
+// or project, given in a parent field rather than in its name.
 //
 // It reads the first segment rather than protoapi.ParentStyle, which calls
 // "organizations/{organization}/locations/{location}/..." ParentOther.
@@ -62,7 +63,12 @@ func (a *APIScaffolder) rootRef(pattern string) (field string, item *JudgementIt
 	case pattern == "":
 		return fixedRootField("ProjectRef", "projectRef", "project"), nil
 	case len(segs) < 3:
-		return "", nil
+		return "", &JudgementItem{
+			Reason: "root-not-in-name",
+			Detail: fmt.Sprintf("the name %s has nothing above the resource, so no root reference was emitted; "+
+				"if the resource or its Create request takes a parent, as Folder, Project and TagKey do, "+
+				"model that parent as a reference", pattern),
+		}
 	}
 	switch segs[0] {
 	case "projects":

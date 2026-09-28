@@ -55,8 +55,9 @@ type APIArgs struct {
 	// already exists, which leaves every other resource rendering as before.
 	ParentRefField string
 	// RootRefField is pre-rendered Go source for the Spec field naming the root
-	// of the resource's name, projectRef for most resources. Empty for a
-	// resource that is itself a root, such as a billing account.
+	// of the resource's name, projectRef for most resources. Empty when the name
+	// has nothing above the resource, as in folders/{folder}, which rootRef
+	// queues for review instead.
 	RootRefField string
 	// LocationField is pre-rendered Go source for the Spec field naming the
 	// resource's location, region or zone. Empty when the resource's name has

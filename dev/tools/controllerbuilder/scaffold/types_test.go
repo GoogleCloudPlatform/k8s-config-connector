@@ -62,7 +62,7 @@ func TestTypesTemplateRendersValidGo(t *testing.T) {
 		{name: "stub", args: base},
 		{name: "prepopulated", args: prepopulated},
 		{name: "organization-rooted", args: organizationRooted},
-		{name: "a resource that is its own root", args: selfRooted},
+		{name: "no root or location in the name, as for a Folder", args: selfRooted},
 		{name: "GVK declared elsewhere", args: func() apis.APIArgs { a := base; a.SkipGVK = true; return a }()},
 	} {
 		t.Run(tc.name, func(t *testing.T) {

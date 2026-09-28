@@ -14,15 +14,21 @@
 
 package codegen
 
-import "strings"
+import (
+	"strings"
 
-// Singular strips a regular English plural and gives up on anything else. It
-// stays narrow on purpose. A match here puts a question in front of a reviewer,
-// and no GCP resource name uses an irregular plural.
+	"k8s.io/klog/v2"
+)
+
+// Singular turns the plural collection segment of a resource pattern into the
+// singular noun a reference is named after. For "keyRings/{key_ring}" it
+// gives "keyRing", so the scaffolder looks for a type such as KMSKeyRingRef
+// and names the field keyRingRef rather than keyRingsRef.
 //
-// The scaffolder uses it to name a parent reference from the collection segment
-// of a google.api.resource pattern, so "keyRings/{key_ring}" can be reported as
-// a KMSKeyRing rather than a KMSKeyRings.
+// It handles only regular plurals (-s, -es, -ies) and leaves words such as
+// "status" or "analysis" alone, to avoid false positives. Its answer is only
+// ever a guess: whether or not referenceTo finds a matching type, it queues an
+// entry in needs_judgement_call.txt for a reviewer to confirm.
 func Singular(s string) string {
 	switch {
 	case strings.HasSuffix(s, "ies") && len(s) > 4:
@@ -41,5 +47,8 @@ func Singular(s string) string {
 		// subnetworks -> subnetwork
 		return s[:len(s)-1]
 	}
+	// No rule matched: s is already singular, or an irregular plural these
+	// rules do not cover.
+	klog.Infof("Singular: %q matched no plural rule; returning it unchanged", s)
 	return s
 }
