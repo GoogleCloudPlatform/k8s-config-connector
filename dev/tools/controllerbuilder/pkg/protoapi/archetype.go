@@ -41,7 +41,8 @@ const (
 	// descriptors cannot tell those apart from server-generated IDs, so the
 	// generator has to queue C kinds for judgement.
 	ArchetypeServerGeneratedID Archetype = "C"
-	// ArchetypeSingleton (D) has Get and Update but no Create.
+	// ArchetypeSingleton (D) has Get and Update, and neither Create nor Delete
+	// (AIP-156).
 	ArchetypeSingleton Archetype = "D"
 	// ArchetypeNonstandard (E) means the API is nonstandard for the resource:
 	// it has neither a Get nor a Create, or one of its Get, Create, Update
@@ -123,7 +124,7 @@ func ClassifyArchetype(api *ResourceAPI) Archetype {
 	switch {
 	case !get && !create, hasNonstandardRequest(api):
 		return ArchetypeNonstandard
-	case get && !create && update:
+	case get && !create && update && !del:
 		return ArchetypeSingleton
 	case crud && hasID && hasMask:
 		return ArchetypeStandard

@@ -84,6 +84,10 @@ type ResourceAPI struct {
 	// HasLabels reports that the resource message has a map<string, string>
 	// labels field.
 	HasLabels bool
+	// ExtraUpdateMethods lists any additional Update<Resource>* methods on
+	// Service that return (or whose LRO returns) the resource message, such
+	// as per-field update RPCs.
+	ExtraUpdateMethods []string
 }
 
 // StandardMethod describes one standard method of a resource.
@@ -128,6 +132,7 @@ type StandardMethod struct {
 	AllowMissingField string
 	ValidateOnlyField string
 	RequestIDField    string
+	ForceField        string
 
 	// MethodSignatures holds the method's google.api.method_signature
 	// options, e.g. "parent,repository,repository_id".
@@ -233,6 +238,36 @@ func (api *ResourceAPI) setMethods(svc protoreflect.ServiceDescriptor, methods m
 	api.Update = newStandardMethod(methods.update, "Update", api.Message, aip)
 	api.Delete = newStandardMethod(methods.delete, "Delete", api.Message, aip)
 	api.List = newStandardMethod(methods.list, "List", api.Message, aip)
+	if aip {
+		api.ExtraUpdateMethods = extraUpdateMethods(svc, api.Message)
+	}
+}
+
+// extraUpdateMethods returns sorted names of methods on svc named
+// Update<Resource><Suffix> whose response (or LRO response_type) is msg.
+func extraUpdateMethods(svc protoreflect.ServiceDescriptor, msg protoreflect.MessageDescriptor) []string {
+	prefix := "Update" + string(msg.Name())
+	wantFull := string(msg.FullName())
+	var out []string
+	methods := svc.Methods()
+	for i := 0; i < methods.Len(); i++ {
+		m := methods.Get(i)
+		name := string(m.Name())
+		if !strings.HasPrefix(name, prefix) || name == prefix {
+			continue
+		}
+		resp := string(m.Output().FullName())
+		if m.Output().FullName() == longRunningOperation {
+			if r, _, ok := operationInfo(m); ok {
+				resp = qualifyTypeName(m.ParentFile().Package(), r)
+			}
+		}
+		if resp == wantFull {
+			out = append(out, name)
+		}
+	}
+	sort.Strings(out)
+	return out
 }
 
 // servicesInPackage returns the services declared in pkg, sorted by full name
@@ -431,6 +466,7 @@ func newStandardMethod(m protoreflect.MethodDescriptor, verb string, resource pr
 		AllowMissingField: fieldIfPresent(req, "allow_missing"),
 		ValidateOnlyField: fieldIfPresent(req, "validate_only"),
 		RequestIDField:    fieldIfPresent(req, "request_id"),
+		ForceField:        fieldIfPresent(req, "force"),
 		Response:          string(m.Output().FullName()),
 	}
 	if aip {

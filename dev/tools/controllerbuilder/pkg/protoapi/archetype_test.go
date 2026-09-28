@@ -98,9 +98,14 @@ func TestClassifyArchetype(t *testing.T) {
 			want: ArchetypeSingleton,
 		},
 		{
-			name: "singleton beats the other shapes, whatever update and delete look like",
-			api:  &ResourceAPI{Message: msg, Style: StyleAIP, Get: get, Update: updateWithoutMask, Delete: del, List: list},
+			name: "singleton beats update-without-mask when there is no create and no delete",
+			api:  &ResourceAPI{Message: msg, Style: StyleAIP, Get: get, Update: updateWithoutMask, List: list},
 			want: ArchetypeSingleton,
+		},
+		{
+			name: "get, update and delete without create is other, not singleton",
+			api:  &ResourceAPI{Message: msg, Style: StyleAIP, Get: get, Update: updateWithoutMask, Delete: del, List: list},
+			want: ArchetypeOther,
 		},
 		{
 			name: "standard",
