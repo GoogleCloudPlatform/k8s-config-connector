@@ -15,6 +15,8 @@
 package managedkafka
 
 import (
+	pb "cloud.google.com/go/managedkafka/apiv1/managedkafkapb"
+	krmmanagedkafkav1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/managedkafka/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -38,5 +40,39 @@ func ConnectGCPConfig_SecretPaths_ToProto(mapCtx *direct.MapContext, in []refs.S
 	for i, v := range in {
 		out[i] = v.External
 	}
+	return out
+}
+
+func ManagedKafkaConnectClusterSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ConnectCluster) *krmmanagedkafkav1alpha1.ManagedKafkaConnectClusterSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmmanagedkafkav1alpha1.ManagedKafkaConnectClusterSpec{}
+	out.GCPConfig = ConnectGCPConfig_v1alpha1_FromProto(mapCtx, in.GetGcpConfig())
+	if in.GetKafkaCluster() != "" {
+		out.ClusterRef = &krmmanagedkafkav1alpha1.ClusterRef{External: in.GetKafkaCluster()}
+	}
+	out.Labels = in.Labels
+	out.CapacityConfig = CapacityConfig_v1alpha1_FromProto(mapCtx, in.GetCapacityConfig())
+	out.Config = in.Config
+	return out
+}
+
+func ManagedKafkaConnectClusterSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.ManagedKafkaConnectClusterSpec) *pb.ConnectCluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ConnectCluster{}
+	if in.GCPConfig != nil {
+		if gcpConfig := ConnectGCPConfig_v1alpha1_ToProto(mapCtx, in.GCPConfig); gcpConfig != nil {
+			out.PlatformConfig = &pb.ConnectCluster_GcpConfig{GcpConfig: gcpConfig}
+		}
+	}
+	if in.ClusterRef != nil {
+		out.KafkaCluster = in.ClusterRef.External
+	}
+	out.Labels = in.Labels
+	out.CapacityConfig = CapacityConfig_v1alpha1_ToProto(mapCtx, in.CapacityConfig)
+	out.Config = in.Config
 	return out
 }

@@ -1,6 +1,6 @@
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -30,7 +30,7 @@ X-Xss-Protection: 0
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "autoCreateSubnetworks": false,
@@ -66,7 +66,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -98,7 +98,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -125,7 +125,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -155,10 +155,10 @@ X-Xss-Protection: 0
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "ipCidrRange": "10.0.0.0/24",
+  "ipCidrRange": "10.0.0.0/22",
   "logConfig": {
     "enable": false
   },
@@ -196,7 +196,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -229,7 +229,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -248,7 +248,7 @@ X-Xss-Protection: 0
   "fingerprint": "abcdef0123A=",
   "gatewayAddress": "10.0.0.1",
   "id": "000000000000000000000",
-  "ipCidrRange": "10.0.0.0/24",
+  "ipCidrRange": "10.0.0.0/22",
   "kind": "compute#subnetwork",
   "logConfig": {
     "enable": false
@@ -267,7 +267,7 @@ X-Xss-Protection: 0
 
 GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Fmanagedkafkacluster-${uniqueId}
 
 404 Not Found
@@ -292,7 +292,7 @@ X-Xss-Protection: 0
 
 POST https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters?%24alt=json%3Benum-encoding%3Dint&clusterId=managedkafkacluster-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
@@ -325,10 +325,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.managedkafka.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}",
     "verb": "create"
   },
@@ -339,7 +341,7 @@ X-Xss-Protection: 0
 
 GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
@@ -359,12 +361,15 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.managedkafka.v1.Cluster",
+    "bootstrapAddress": "bootstrap-qa0g-j712x1io3l361vgkls9x1wykmbaxht.11de1b6d.us-central1.managedkafka.s.cloud.goog",
+    "brokerCapacityConfig": {},
     "capacityConfig": {
       "memoryBytes": "3221225472",
       "vcpuCount": "3"
@@ -379,23 +384,29 @@ X-Xss-Protection: 0
         ]
       }
     },
+    "kafkaVersion": "3.7.x",
     "name": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}",
+    "publicClusterDetails": {},
     "rebalanceConfig": {
       "mode": "NO_REBALANCE"
     },
     "satisfiesPzi": false,
     "satisfiesPzs": false,
     "state": "ACTIVE",
+    "tlsConfig": {
+      "trustConfig": {}
+    },
+    "updateOptions": {},
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
 ---
 
-GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/connectClusters/connectcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Fmanagedkafkacluster-${uniqueId}%2Ftopics%2Fmanagedkafkatopic-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FconnectClusters%2Fconnectcluster-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -410,24 +421,33 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "org.apache.kafka.common.errors.UnknownTopicOrPartitionException: This server does not host this topic-partition.",
+    "message": "Resource 'projects/${projectId}/locations/us-central1/connectClusters/connectcluster-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics?%24alt=json%3Benum-encoding%3Dint&topicId=managedkafkatopic-${uniqueId}
+POST https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/connectClusters?%24alt=json%3Benum-encoding%3Dint&connectClusterId=connectcluster-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Fmanagedkafkacluster-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
-  "configs": {
-    "cleanup.policy": "compact"
+  "capacityConfig": {
+    "memoryBytes": "3221225472",
+    "vcpuCount": "3"
   },
-  "partitionCount": 2,
-  "replicationFactor": 3
+  "gcpConfig": {
+    "accessConfig": {
+      "networkConfigs": [
+        {
+          "primarySubnet": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+        }
+      ]
+    }
+  },
+  "kafkaCluster": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}"
 }
 
 200 OK
@@ -441,20 +461,24 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "configs": {
-    "cleanup.policy": "compact"
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.managedkafka.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/connectClusters/connectcluster-${uniqueId}",
+    "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}",
-  "partitionCount": 2,
-  "replicationFactor": 3
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
 
 ---
 
-GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Fmanagedkafkacluster-${uniqueId}%2Ftopics%2Fmanagedkafkatopic-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -467,103 +491,48 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "configs": {
-    "cleanup.policy": "compact"
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.managedkafka.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/connectClusters/connectcluster-${uniqueId}",
+    "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}",
-  "partitionCount": 2,
-  "replicationFactor": 3
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.managedkafka.v1.ConnectCluster",
+    "capacityConfig": {
+      "memoryBytes": "3221225472",
+      "vcpuCount": "3"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "gcpConfig": {
+      "accessConfig": {
+        "networkConfigs": [
+          {
+            "primarySubnet": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+          }
+        ]
+      }
+    },
+    "kafkaCluster": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-central1/connectClusters/connectcluster-${uniqueId}",
+    "satisfiesPzi": false,
+    "satisfiesPzs": false,
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
 
-PATCH https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=configs%2CpartitionCount
+GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/connectClusters/connectcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: topic.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Fmanagedkafkacluster-${uniqueId}%2Ftopics%2Fmanagedkafkatopic-${uniqueId}
-
-{
-  "configs": {
-    "cleanup.policy": "delete",
-    "min.insync.replicas": "3"
-  },
-  "name": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}",
-  "partitionCount": 3,
-  "replicationFactor": 3
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "configs": {
-    "cleanup.policy": "delete",
-    "min.insync.replicas": "3"
-  },
-  "name": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}",
-  "partitionCount": 3,
-  "replicationFactor": 3
-}
-
----
-
-GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Fmanagedkafkacluster-${uniqueId}%2Ftopics%2Fmanagedkafkatopic-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "configs": {
-    "cleanup.policy": "delete",
-    "min.insync.replicas": "3"
-  },
-  "name": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}",
-  "partitionCount": 3,
-  "replicationFactor": 3
-}
-
----
-
-DELETE https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}/topics/managedkafkatopic-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Fmanagedkafkacluster-${uniqueId}%2Ftopics%2Fmanagedkafkatopic-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
-
----
-
-GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Fmanagedkafkacluster-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FconnectClusters%2Fconnectcluster-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -585,15 +554,13 @@ X-Xss-Protection: 0
     "accessConfig": {
       "networkConfigs": [
         {
-          "subnet": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+          "primarySubnet": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
         }
       ]
     }
   },
-  "name": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}",
-  "rebalanceConfig": {
-    "mode": 1
-  },
+  "kafkaCluster": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/connectClusters/connectcluster-${uniqueId}",
   "satisfiesPzi": false,
   "satisfiesPzs": false,
   "state": 2,
@@ -602,10 +569,31 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+PATCH https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/connectClusters/connectcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Fmanagedkafkacluster-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: connect_cluster.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FconnectClusters%2Fconnectcluster-${uniqueId}
+
+{
+  "capacityConfig": {
+    "memoryBytes": "3221225472",
+    "vcpuCount": "3"
+  },
+  "gcpConfig": {
+    "accessConfig": {
+      "networkConfigs": [
+        {
+          "primarySubnet": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+        }
+      ]
+    }
+  },
+  "kafkaCluster": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}",
+  "labels": {
+    "updated-label": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/connectClusters/connectcluster-${uniqueId}"
+}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -618,12 +606,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.managedkafka.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}",
-    "verb": "delete"
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/connectClusters/connectcluster-${uniqueId}",
+    "verb": "update"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
@@ -632,7 +622,7 @@ X-Xss-Protection: 0
 
 GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
@@ -652,6 +642,248 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/connectClusters/connectcluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.managedkafka.v1.ConnectCluster",
+    "capacityConfig": {
+      "memoryBytes": "3221225472",
+      "vcpuCount": "3"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "gcpConfig": {
+      "accessConfig": {
+        "networkConfigs": [
+          {
+            "primarySubnet": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+          }
+        ]
+      }
+    },
+    "kafkaCluster": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-central1/connectClusters/connectcluster-${uniqueId}",
+    "satisfiesPzi": false,
+    "satisfiesPzs": false,
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/connectClusters/connectcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FconnectClusters%2Fconnectcluster-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "capacityConfig": {
+    "memoryBytes": "3221225472",
+    "vcpuCount": "3"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "gcpConfig": {
+    "accessConfig": {
+      "networkConfigs": [
+        {
+          "primarySubnet": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+        }
+      ]
+    }
+  },
+  "kafkaCluster": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}",
+  "labels": {
+    "updated-label": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/connectClusters/connectcluster-${uniqueId}",
+  "satisfiesPzi": false,
+  "satisfiesPzs": false,
+  "state": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/connectClusters/connectcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FconnectClusters%2Fconnectcluster-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.managedkafka.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/connectClusters/connectcluster-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.managedkafka.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/connectClusters/connectcluster-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Fmanagedkafkacluster-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bootstrapAddress": "bootstrap-qa0g-j712x1io3l361vgkls9x1wykmbaxht.11de1b6d.us-central1.managedkafka.s.cloud.goog",
+  "brokerCapacityConfig": {},
+  "capacityConfig": {
+    "memoryBytes": "3221225472",
+    "vcpuCount": "3"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "gcpConfig": {
+    "accessConfig": {
+      "networkConfigs": [
+        {
+          "subnet": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+        }
+      ]
+    }
+  },
+  "kafkaVersion": "3.7.x",
+  "name": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}",
+  "publicClusterDetails": {},
+  "rebalanceConfig": {
+    "mode": 1
+  },
+  "satisfiesPzi": false,
+  "satisfiesPzs": false,
+  "state": 2,
+  "tlsConfig": {
+    "trustConfig": {}
+  },
+  "updateOptions": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Fmanagedkafkacluster-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.managedkafka.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.managedkafka.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/clusters/managedkafkacluster-${uniqueId}",
     "verb": "delete"
   },
@@ -665,7 +897,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -684,7 +916,7 @@ X-Xss-Protection: 0
   "fingerprint": "abcdef0123A=",
   "gatewayAddress": "10.0.0.1",
   "id": "000000000000000000000",
-  "ipCidrRange": "10.0.0.0/24",
+  "ipCidrRange": "10.0.0.0/22",
   "kind": "compute#subnetwork",
   "logConfig": {
     "enable": false
@@ -703,7 +935,7 @@ X-Xss-Protection: 0
 
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -734,7 +966,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -767,7 +999,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -794,7 +1026,7 @@ X-Xss-Protection: 0
 
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -824,7 +1056,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
