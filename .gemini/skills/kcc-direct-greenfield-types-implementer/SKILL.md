@@ -109,20 +109,54 @@ is reproducible. Opt in **one service at a time**.
 
 Several of the flags above make a call the proto could not make for them. Rather
 than hide those calls, the generator writes each one to
-`apis/<service>/needs_judgement_call.txt`.
+`apis/<service>/judgement_queue.yaml`. Pass `--prepopulate-spec` and
+`--emit-reference-hints` together, so every field `TestMissingRefs` would flag
+also gets an entry.
 
-**The queue is a to-do list, not an output artifact.** Each entry names a field path,
-a reason and enough detail to decide. For each one either accept the generator's
-choice or hand-edit the type, then delete the entry.
+Each entry names a resource (`kind` and `group`) or a shared proto message
+(`protoMessage`), a `field`, a `reason` and a `detail`. New entries start as
+`status: open`. This is from `apis/chronicle`, with the second entry already
+resolved:
 
-A resource is in exactly one of two states. **While it has queue entries, its
-`[refs]` findings in `TestMissingRefs` are suppressed** — the generator has already
-admitted it was unsure, so the ratchet does not also shout about it. Once you clear
-the entries, the check applies in full.
+```yaml
+entries:
+  - kind: ChronicleWatchlist
+    group: chronicle.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ChronicleWatchlist
+    group: chronicle.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/instances/{instance}, and no InstanceRef type exists to point at; add the parent resource first, then model this as a reference
+    status: resolved
+    resolution: deferred
+    note: kept location and projectRef until ChronicleInstance exists
+```
 
-That is the reason not to leave entries sitting: a stale queue is not a harmless
-to-do, it is a check that is switched off. Equally, do not delete an entry you have
-not actually looked at.
+Review each open entry. Then set `status: resolved` and a `resolution`:
+
+| Resolution | Use it when | Note |
+|---|---|---|
+| `accepted` | The generated output is right as it is. | Optional |
+| `edited` | You changed the type by hand. | Required: say what you changed |
+| `deferred` | The finding is right but is handled elsewhere, such as `refs_deferred.txt`. | Required: say where |
+| `not-applicable` | The finding is wrong for this resource. | Required: say why |
+
+**Never delete an entry.** The file is the record of what was decided. An
+`edited` entry and its note are how a hand edit gets reported. Regenerating keeps
+your status, resolution and note, and only refreshes `detail`.
+
+**An open reference entry suppresses one `[refs]` finding.** `TestMissingRefs`
+skips a finding only when an open entry has the same kind, group and field and a
+`possible-reference*` reason. Every other finding on the resource is still checked.
+Once you resolve the entry, the check applies to that field again. So if you
+resolve a reference entry without adding the reference, also add the field to
+`tests/apichecks/testdata/exceptions/refs_deferred.txt` with a `reason=`, or
+`TestMissingRefs` fails.
+
+Other reasons, including `untriaged-bulk-generation`, do not suppress anything.
+They are there so a person looks at them.
 
 Note that a reference guess can be confidently wrong. Shared reference types are
 matched by name suffix, so a proto whose pattern ends in `instances/{instance}` can

@@ -13,38 +13,39 @@ fixtures are later steps and are not produced here.
 
 1. **Generate** the types and CRD mechanically, filling the Spec from the proto.
 2. **Inventory** what the generator could not decide, from the queue it writes.
-3. **Judgement pass** where an agent or a human resolves those, and clears the queue.
+3. **Judgement pass** where an agent or a human resolves those, and marks each queue entry resolved.
 4. **Verify** the resource against the API checks.
 5. **Ready for identity and refs** — the handoff to the next step.
 
 Stage 2 is the part the pipeline gained, and it is what makes a mechanical first pass mergeable at
 all. A generated resource has reference-shaped string fields by construction, and `missingrefs.txt`
-is a ratchet that fails on any new entry, so without a queue to suppress those findings the first
-bulk-generation PR could not land.
+is a ratchet that fails on any new entry. Without an open queue entry for each of those fields, the
+first bulk-generation PR could not land.
 
 | Stage | What it does | Runnable today? |
 |---|---|---|
 | 1. Generate | Types, CRD, Spec filled from the proto | Yes |
-| 2. Inventory | Reads `needs_judgement_call.txt` | Yes |
+| 2. Inventory | Reads `judgement_queue.yaml` | Yes |
 | 3. Judgement pass | Refs, omissions, KRM renames | Yes, by hand |
 | 4. Register and verify | Manifest entry, baselines, checks | Yes |
 | 5. Ready for identity and refs | Hands off to the next step | No — see [Gaps](#gaps) |
 
 ## Before you start
 
-All four generator changes are on master. Two are opt-in per service, so a service that has not
-turned them on yet still gets the old behaviour:
+The generator changes are on master. Three are opt-in per service, so a service that has not turned
+them on yet still gets the old behaviour:
 
 | Capability | How you get it |
 |---|---|
 | Spec filled from the proto message | `--prepopulate-spec` |
+| A queue entry for each field `TestMissingRefs` would flag | `--emit-reference-hints`, always with `--prepopulate-spec` |
 | `+required` from `field_behavior` | `--emit-required-from-proto` |
 | Real collection segment and parent shape | always on |
-| `[refs]` suppression while a resource is queued | always on, reads the queue |
+| `[refs]` suppression for a field with an open reference entry | always on, reads the queue |
 
-The two flags are opt-in because turning them on for a resource people already use can change its
+The flags are opt-in because turning them on for a resource people already use can change its
 CRD schema — nested types are shared between spec and status, so a `+required` marker can reach
-places you did not intend. For a new greenfield resource neither risk applies, so turn both on.
+places you did not intend. For a new greenfield resource neither risk applies, so turn them on.
 
 Two things to check before picking a resource, both of which waste a day if you skip them:
 
@@ -61,7 +62,7 @@ from a full checkout rather than letting `generate-proto.sh` rebuild every descr
 ## Stage 1 — Generate
 
 Add the resource to its service's `generate.sh`. 131 services already have one; you are appending a
-line to the `v1alpha1` block, and adding the two flags if the service has not opted in yet. Both
+line to the `v1alpha1` block, and adding the three flags if the service has not opted in yet. The
 flags are per-invocation, so enabling them here enables them for every resource in that block.
 
 ```bash
@@ -70,6 +71,7 @@ ${CONTROLLERBUILDER} generate-types \
     --service google.cloud.networkservices.v1 \
     --api-version "networkservices.cnrm.cloud.google.com/v1alpha1" \
     --prepopulate-spec \
+    --emit-reference-hints \
     --emit-required-from-proto \
     --resource NetworkServicesLBRouteExtension:LbRouteExtension \
     --resource NetworkServicesLBTrafficExtension:LbTrafficExtension
@@ -92,7 +94,7 @@ Then run it:
 |---|---|
 | `apis/<service>/<version>/<kind>_types.go` | Spec filled from the proto, with `+required` markers and `+kcc:proto:field=` annotations |
 | `apis/<service>/<version>/types.generated.go` | Every proto message as a complete Go struct |
-| `apis/<service>/needs_judgement_call.txt` | What the generator could not decide (stage 2) |
+| `apis/<service>/judgement_queue.yaml` | What the generator could not decide (stage 2) |
 | `config/crds/resources/*.yaml` | The CRD |
 
 One behaviour surprises everyone the first time. `prunetypes` comments the generated struct out as
@@ -102,26 +104,43 @@ regenerated away, and the file is not where the fix belongs.
 
 ## Stage 2 — Inventory what needs judgement
 
-The generator writes what it could not decide to `apis/<service>/needs_judgement_call.txt`. The file
+The generator writes what it could not decide to `apis/<service>/judgement_queue.yaml`. The file
 is per service rather than global so that generating two services in parallel never produces a
 conflicting diff in the same file.
 
+```yaml
+entries:
+  - kind: NetworkServicesLBTrafficExtension
+    group: networkservices.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: NetworkServicesLBTrafficExtension
+    group: networkservices.cnrm.cloud.google.com
+    field: .spec.extensionChains[].extensions[].service
+    reason: possible-reference-by-description
+    status: open
 ```
-kind=NetworkServicesLBTrafficExtension group=networkservices.cnrm.cloud.google.com: resource reason=untriaged-bulk-generation (spec was generated mechanically; confirm refs, omissions and KRM names)
-kind=NetworkServicesLBTrafficExtension group=networkservices.cnrm.cloud.google.com: field ".spec.forwardingRules" reason=possible-reference (target=compute.googleapis.com/ForwardingRule)
-```
 
-Two kinds of entry. The **resource-level** one is always emitted, whether or not anything was
-detected, and it is the entry that actually drives suppression. The **field-level** ones come from
-`google.api.resource_reference` and are a bonus on top.
+The **resource-level** `untriaged-bulk-generation` entry is always written. It records that nobody
+has reviewed the generated Spec yet. It does not suppress anything.
 
-That distinction matters more than it looks. `LbTrafficExtension`, for example, carries no
-`resource_reference` on any field, including `forwarding_rules`, which is precisely the field that
-has to become a ref. A queue built only from annotations would have been empty there, nothing would
-have been suppressed, and the resource would have gone straight into the ratchet and failed.
+The **field-level** `possible-reference*` entries are the ones that matter for the checks.
+`--emit-reference-hints` writes one for each field that `refs.Classify` flags, which is the same rule
+`TestMissingRefs` uses, so each finding the test would report already has an entry at the same path.
+`google.api.resource_reference` annotations add `possible-reference` entries on top.
 
-While a resource has entries here, its `[refs]` findings are suppressed and it will not fail
-`TestMissingRefs`. That is the only thing suppressed — every other check applies normally.
+That is why the hints flag is needed. `LbTrafficExtension` carries no `resource_reference` on any
+field. A queue built only from annotations would have had no entry for
+`extensionChains[].extensions[].service`, and the resource would have failed `TestMissingRefs`.
+
+No rule catches every reference. `forwarding_rules` on the same message has to become a ref, but
+its description names neither a template nor a resource, so neither the queue nor the test flags
+it. Stage 3 is where a person catches those.
+
+While a `possible-reference*` entry is open, `TestMissingRefs` skips the finding at that kind, group
+and field. Nothing else is suppressed: other fields of the resource and every other check apply
+normally.
 
 ## Stage 3 — The judgement pass
 
@@ -157,9 +176,13 @@ itself, with no hand-editing.
 Do not add entries to `missingrefs.txt` to make a finding go away — implement the reference, or
 defer it explicitly in `refs_deferred.txt` with a reason.
 
-**Clearing the queue entries graduates the resource.** Suppression stops, and anything it still owes
-lands in `missingrefs.txt` as a normal finding. A resource is in exactly one state at a time, which
-is what stops these files contradicting each other.
+**Resolve each entry; do not delete it.** Set `status: resolved`, a `resolution` (`accepted`,
+`edited`, `deferred` or `not-applicable`) and, for all but `accepted`, a `note` saying what you did.
+The file keeps the record, and regenerating keeps your resolutions.
+
+Resolving a reference entry ends the suppression of that one field. If you implemented the
+reference, the finding is gone. If you did not, list the field in `refs_deferred.txt` with a reason,
+or `TestMissingRefs` fails on it.
 
 ## Stage 4 — Verify
 
@@ -178,6 +201,7 @@ go test ./tests/apichecks/...
 - The CRD spec contains every proto field, and `OUTPUT_ONLY` fields appear under
   `status.observedState`.
 - `go test ./tests/apichecks/...` passes.
+- Every queue entry for the resource has `status: resolved`.
 
 Expect `alpha-missingfields.txt` to grow, and leave it. It records fields no test fixture exercises,
 and Step 1 has no fixtures by design. Entries are attributed by `crd=` and are removed once fixtures
@@ -198,7 +222,7 @@ scaffolding a controller. See [Gaps](#gaps) and [What comes next](#what-comes-ne
 | Resource types | `apis/<service>/<version>/<kind>_types.go` | `generate-types` | everything | generated, then hand-edited |
 | All proto types | `apis/<service>/<version>/types.generated.go` | `generate-types` | the CRD generator | generated, never hand-edit |
 | CRD | `config/crds/resources/*.yaml` | `generate-crds` | the CRD checks | generated |
-| Judgement queue | `apis/<service>/needs_judgement_call.txt` | `--prepopulate-spec` | `TestMissingRefs` | work queue |
+| Judgement queue | `apis/<service>/judgement_queue.yaml` | `--prepopulate-spec`, then you set each status | `TestMissingRefs`, `TestJudgementQueueIsWellFormed` | work queue and record |
 | Owed references | `testdata/exceptions/missingrefs.txt` | recomputed each run | `TestMissingRefs` | **ratchet** |
 | Deferred references | `testdata/exceptions/refs_deferred.txt` | you, with a reason | `TestMissingRefs` | hand-maintained input |
 | Unrepresentable refs | `testdata/exceptions/refs_not_representable.txt` | recomputed each run | `TestMissingRefs` | golden |
@@ -223,10 +247,11 @@ Four places the pipeline stops short. These are stated here, not solved.
 2. **Identity and refs cannot be produced on their own.** They come from `generate-controller`,
    which also scaffolds and registers a full controller. Getting to stage 5 needs either a
    scaffold-only flag or a separate subcommand.
-3. **No aggregate view of the queue.** The files are per-service by design, so a run across many
-   services has no single report of what is outstanding to drive the judgement pass from.
-4. **Nothing forces the queue to drain.** A resource can sit queued indefinitely with its `[refs]`
-   findings suppressed the whole time, which makes suppression permanent in practice.
+3. **No report of open entries.** The files are per-service by design. `TestJudgementQueueIsWellFormed`
+   logs counts by reason and resolution across all services, but only in the test log, and it does
+   not list which entries are open.
+4. **Nothing forces open entries to be resolved.** An open reference entry suppresses its field in
+   `TestMissingRefs` for as long as it stays open.
 
 ## What comes next
 
