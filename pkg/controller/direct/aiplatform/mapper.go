@@ -17,7 +17,7 @@ package aiplatform
 import (
 	"encoding/json"
 
-	aiplatformpb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
+	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/wrapperspb"
@@ -41,7 +41,7 @@ func Int32Value_ToProto(mapCtx *direct.MapContext, in *krm.Int32Value) *wrappers
 	return wrapperspb.Int32(*in.Value)
 }
 
-func Schema_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.Schema) *krm.Schema {
+func Schema_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.Schema {
 	if in == nil {
 		return nil
 	}
@@ -95,12 +95,12 @@ func Schema_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.Schema) *krm.S
 	return out
 }
 
-func Schema_ToProto(mapCtx *direct.MapContext, in *krm.Schema) *aiplatformpb.Schema {
+func Schema_ToProto(mapCtx *direct.MapContext, in *krm.Schema) *pb.Schema {
 	if in == nil {
 		return nil
 	}
-	out := &aiplatformpb.Schema{}
-	out.Type = direct.Enum_ToProto[aiplatformpb.Type](mapCtx, in.Type)
+	out := &pb.Schema{}
+	out.Type = direct.Enum_ToProto[pb.Type](mapCtx, in.Type)
 	out.Format = direct.ValueOf(in.Format)
 	out.Title = direct.ValueOf(in.Title)
 	out.Description = direct.ValueOf(in.Description)
@@ -128,7 +128,7 @@ func Schema_ToProto(mapCtx *direct.MapContext, in *krm.Schema) *aiplatformpb.Sch
 	out.Pattern = direct.ValueOf(in.Pattern)
 	out.Example = Value_ToProto(mapCtx, in.Example)
 	if len(in.AnyOf) > 0 {
-		out.AnyOf = make([]*aiplatformpb.Schema, 0, len(in.AnyOf))
+		out.AnyOf = make([]*pb.Schema, 0, len(in.AnyOf))
 		for _, x := range in.AnyOf {
 			var nested krm.Schema
 			if err := json.Unmarshal(x.Raw, &nested); err != nil {
