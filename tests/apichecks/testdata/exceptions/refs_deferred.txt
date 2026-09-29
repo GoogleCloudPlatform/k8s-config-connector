@@ -12,3 +12,4 @@
 # Format:
 #   [refs] crd=<crd> version=v1alpha1: field ".spec.foo" reason=<why>
 #
+[refs] crd=ccinsightsanalysisrules.contactcenterinsights.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotatorSelector.summarizationConfig.conversationProfile" reason=target DialogflowConversationProfile has no KCC resource or Ref type yet
