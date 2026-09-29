@@ -91,3 +91,17 @@ func (m *gcpClient) dataTaxonomyClient(ctx context.Context, location string) (*a
 
 	return grpcClient, err
 }
+
+func (m *gcpClient) dataProductClient(ctx context.Context) (*api.DataProductClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+
+	restClient, err := api.NewDataProductRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building dataplex data product client: %w", err)
+	}
+
+	return restClient, nil
+}

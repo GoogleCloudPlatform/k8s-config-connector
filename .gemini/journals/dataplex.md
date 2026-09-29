@@ -44,3 +44,16 @@
   4. Handwrote custom mapping functions `AccessGroups_FromProto` and `AccessGroups_ToProto` in `pkg/controller/direct/dataplex/dataproduct_mapping.go` to successfully translate between KRM maps and protobuf maps.
   5. Implemented `DataProductIdentity` utilizing `gcpurls.Template` with standard Project and Location references.
 - **Impact**: Provides a robust template for implementing KRM types, hand-written map mappers, and custom GCP-to-KRM model mapping for complex direct resources.
+
+### [2026-09-28] Implement Greenfield DataplexDataProduct Controller, Fixtures, and Fuzzer
+- **Context**: Implementing Greenfield direct controller, E2E fixtures, and fuzzer for `DataplexDataProduct` under `v1alpha1`.
+- **Problem**:
+  1. `pb.DataProduct_AccessGroup` requires both `id` and `display_name` fields in the protobuf payload when sending create/update requests to GCP. If omitted, GCP returns a 400 Bad Request error (`Access group ID missing in access_groups map for key '<key>'`).
+  2. In roundtrip fuzzer tests, map subfields need normalization in `FilterSpec` so that generated random values for unmapped subfields (`description`, `principal.service_account`) are stripped and `id`/`display_name` match the map key.
+- **Solution**:
+  1. In `pkg/controller/direct/dataplex/dataproduct_mapping.go`, updated `AccessGroups_ToProto` to default `mapped.Id = k` and `mapped.DisplayName = k` when empty.
+  2. In `pkg/controller/direct/dataplex/dataplexdataproduct_fuzzer.go`, configured `FilterSpec` to synchronize `Id` and `DisplayName` with the map key and strip unmapped fields.
+  3. Added `DataplexDataProduct` to `pkg/controller/resourceconfig/static_config.go`.
+  4. Successfully recorded `dataplexdataproduct-minimal` and `dataplexdataproduct-maximal` against real GCP, achieving 100% field coverage in `alpha-missingfields.txt`.
+- **Impact**: Fully functional direct controller and verified real GCP golden logs for DataplexDataProduct.
+

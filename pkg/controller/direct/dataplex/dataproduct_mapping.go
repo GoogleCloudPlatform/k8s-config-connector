@@ -42,6 +42,12 @@ func AccessGroups_ToProto(mapCtx *direct.MapContext, in map[string]v1alpha1.Data
 	for k, v := range in {
 		mapped := DataProduct_AccessGroup_ToProto(mapCtx, &v)
 		if mapped != nil {
+			if mapped.Id == "" {
+				mapped.Id = k
+			}
+			if mapped.DisplayName == "" {
+				mapped.DisplayName = k
+			}
 			out[k] = mapped
 		}
 	}
