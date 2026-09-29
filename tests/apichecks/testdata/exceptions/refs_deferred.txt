@@ -12,3 +12,4 @@
 # Format:
 #   [refs] crd=<crd> version=v1alpha1: field ".spec.foo" reason=<why>
 #
+[refs] crd=networkservicesagentgateways.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.registries" reason=AgentRegistry resources are not yet modeled in KCC and registries contains multiple resource types (e.g. Agents, mcpServers)
