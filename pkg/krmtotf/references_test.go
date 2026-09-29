@@ -440,6 +440,55 @@ func TestResolveResourceReferenceToTFResource(t *testing.T) {
 			},
 		},
 		{
+			name: "external reference - full path with target field empty",
+			config: map[string]interface{}{
+				"key1": "val1",
+				"barRef": map[string]interface{}{
+					"external": "projects/p/regions/r/routers/my-bar",
+				},
+			},
+			refConfig: v1alpha1.ReferenceConfig{
+				TFField: tfField,
+				TypeConfig: v1alpha1.TypeConfig{
+					Key: "barRef",
+					GVK: schema.GroupVersionKind{
+						Group:   "test1.cnrm.cloud.google.com",
+						Version: "v1alpha1",
+						Kind:    "Test1Bar",
+					},
+				},
+			},
+			expectedFinalConfig: map[string]interface{}{
+				"key1":     "val1",
+				"barField": "my-bar",
+			},
+		},
+		{
+			name: "external reference - full path with target field self_link",
+			config: map[string]interface{}{
+				"key1": "val1",
+				"barRef": map[string]interface{}{
+					"external": "projects/p/regions/r/routers/my-bar",
+				},
+			},
+			refConfig: v1alpha1.ReferenceConfig{
+				TFField: tfField,
+				TypeConfig: v1alpha1.TypeConfig{
+					Key:         "barRef",
+					TargetField: "self_link",
+					GVK: schema.GroupVersionKind{
+						Group:   "test1.cnrm.cloud.google.com",
+						Version: "v1alpha1",
+						Kind:    "Test1Bar",
+					},
+				},
+			},
+			expectedFinalConfig: map[string]interface{}{
+				"key1":     "val1",
+				"barField": "projects/p/regions/r/routers/my-bar",
+			},
+		},
+		{
 			name: "list of objects with external references",
 			config: map[string]interface{}{
 				"key1": "val1",
