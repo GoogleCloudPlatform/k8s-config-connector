@@ -204,6 +204,9 @@ const header = `# Judgement queue for this service, written by controllerbuilder
 #
 # Do not delete entries. The file is also the record of what was decided, and
 # regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other.
 `
 
 // Write saves a queue file with its header.

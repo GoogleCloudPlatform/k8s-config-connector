@@ -34,18 +34,27 @@ const judgementQueueGlob = "../../apis/*/" + judgement.FileName
 // judgementQueue holds every entry from every per-service queue file.
 type judgementQueue struct {
 	entries []judgement.Entry
-	// openResources holds "<Kind>.<group>" for each resource with at least
-	// one open entry.
-	openResources sets.String
+	// openRefFields holds refFieldKey(kind, group, field) for each open entry
+	// with a reference reason.
+	openRefFields sets.String
 }
 
-// Has reports whether a resource still has open entries. TestMissingRefs
-// skips the [refs] findings of such a resource.
-func (q *judgementQueue) Has(kind, group string) bool {
+func refFieldKey(kind, group, field string) string {
+	return kind + "." + group + "|" + field
+}
+
+// SuppressesRef reports whether an open queue entry already says this field
+// may need to be a reference. TestMissingRefs skips such a finding: the
+// generator has flagged it, and a person still has to decide.
+//
+// Only reference reasons count. An open entry about something else, such as
+// a field placed in status or the untriaged-bulk-generation marker, does not
+// hide a [refs] finding.
+func (q *judgementQueue) SuppressesRef(kind, group, fieldPath string) bool {
 	if q == nil {
 		return false
 	}
-	return q.openResources.Has(kind + "." + group)
+	return q.openRefFields.Has(refFieldKey(kind, group, fieldPath))
 }
 
 // loadJudgementQueue reads and validates every queue file matching glob.
@@ -56,7 +65,7 @@ func loadJudgementQueue(glob string) (*judgementQueue, error) {
 	if err != nil {
 		return nil, err
 	}
-	out := &judgementQueue{openResources: sets.NewString()}
+	out := &judgementQueue{openRefFields: sets.NewString()}
 	for _, path := range paths {
 		q, err := judgement.Read(path)
 		if err != nil {
@@ -64,8 +73,8 @@ func loadJudgementQueue(glob string) (*judgementQueue, error) {
 		}
 		for _, e := range q.Entries {
 			out.entries = append(out.entries, e)
-			if e.IsOpen() && e.Kind != "" {
-				out.openResources.Insert(e.Kind + "." + e.Group)
+			if e.IsOpen() && e.Kind != "" && e.Field != "" && judgement.IsReferenceReason(e.Reason) {
+				out.openRefFields.Insert(refFieldKey(e.Kind, e.Group, e.Field))
 			}
 		}
 	}
@@ -105,10 +114,9 @@ func (q *judgementQueue) summary() string {
 	return b.String()
 }
 
-// carryForwardSuppressed returns the baseline entries belonging to suppressed
-// CRDs, so that suppressing a resource does not read as having fixed the
-// findings it already owed.
-func carryForwardSuppressed(baselinePath string, suppressedCRDs sets.String) ([]string, error) {
+// carryForwardSuppressed returns the baseline entries that match a suppressed
+// finding, so that suppressing a finding does not read as having fixed it.
+func carryForwardSuppressed(baselinePath string, suppressed sets.String) ([]string, error) {
 	data, err := os.ReadFile(baselinePath)
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -122,63 +130,31 @@ func carryForwardSuppressed(baselinePath string, suppressedCRDs sets.String) ([]
 		if line == "" || strings.HasPrefix(line, "#") {
 			continue
 		}
-		if name := crdNameFromEntry(line); name != "" && suppressedCRDs.Has(name) {
+		if suppressed.Has(line) {
 			out = append(out, line)
 		}
 	}
 	return out, nil
 }
 
-// crdNameFromEntry pulls the CRD name out of an entry like
-// `[refs] crd=foos.example.com version=v1beta1: field "..." should be a reference`.
-func crdNameFromEntry(entry string) string {
-	_, rest, ok := strings.Cut(entry, "crd=")
-	if !ok {
-		return ""
-	}
-	name, _, _ := strings.Cut(rest, " ")
-	return strings.TrimSuffix(name, ":")
-}
-
-func TestCRDNameFromEntry(t *testing.T) {
-	grid := []struct {
-		entry string
-		want  string
-	}{
-		{`[refs] crd=foos.example.com version=v1beta1: field ".spec.bar" should be a reference`, "foos.example.com"},
-		{`[refs] crd=foos.example.com: field ".spec.bar" should be a reference`, "foos.example.com"},
-		{`no crd token here`, ""},
-	}
-	for _, g := range grid {
-		if got := crdNameFromEntry(g.entry); got != g.want {
-			t.Errorf("crdNameFromEntry(%q) = %q, want %q", g.entry, got, g.want)
-		}
-	}
-}
-
 func TestCarryForwardSuppressed(t *testing.T) {
 	dir := t.TempDir()
 	path := filepath.Join(dir, "missingrefs.txt")
-	content := `# baseline
-[refs] crd=queued.example.com version=v1alpha1: field ".spec.a" should be a reference
-[refs] crd=other.example.com version=v1beta1: field ".spec.b" should be a reference
-[refs] crd=queued.example.com version=v1alpha1: field ".spec.c" should be a reference
-`
-	if err := os.WriteFile(path, []byte(content), 0644); err != nil {
+	a := `[refs] crd=queued.example.com version=v1alpha1: field ".spec.a" should be a reference`
+	b := `[refs] crd=other.example.com version=v1beta1: field ".spec.b" should be a reference`
+	c := `[refs] crd=queued.example.com version=v1alpha1: field ".spec.c" should be a reference`
+	if err := os.WriteFile(path, []byte("# baseline\n"+a+"\n"+b+"\n"+c+"\n"), 0644); err != nil {
 		t.Fatal(err)
 	}
 
-	got, err := carryForwardSuppressed(path, sets.NewString("queued.example.com"))
+	// Only .spec.a is suppressed. .spec.c belongs to the same CRD but has no
+	// queue entry, so it is checked as usual and not carried.
+	got, err := carryForwardSuppressed(path, sets.NewString(a))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if len(got) != 2 {
-		t.Fatalf("carried %d entries, want 2: %v", len(got), got)
-	}
-	for _, e := range got {
-		if !strings.Contains(e, "queued.example.com") {
-			t.Errorf("carried an entry for a resource that is not suppressed: %q", e)
-		}
+	if len(got) != 1 || got[0] != a {
+		t.Fatalf("carried %v, want only %q", got, a)
 	}
 
 	// Nothing suppressed means nothing carried, so the normal path is untouched.
@@ -203,12 +179,20 @@ func writeQueueFile(t *testing.T, dir, service, content string) {
 }
 
 func TestLoadJudgementQueue(t *testing.T) {
+	const (
+		lb      = "NetworkServicesLBTrafficExtension"
+		lbGroup = "networkservices.cnrm.cloud.google.com"
+	)
 	dir := t.TempDir()
 	writeQueueFile(t, dir, "networkservices", `entries:
 - kind: NetworkServicesLBTrafficExtension
   group: networkservices.cnrm.cloud.google.com
+  reason: untriaged-bulk-generation
+  status: open
+- kind: NetworkServicesLBTrafficExtension
+  group: networkservices.cnrm.cloud.google.com
   field: .spec.forwardingRules
-  reason: possible-reference
+  reason: possible-reference-by-description
   status: open
 - kind: NetworkServicesLBTrafficExtension
   group: networkservices.cnrm.cloud.google.com
@@ -235,22 +219,29 @@ func TestLoadJudgementQueue(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	if len(q.entries) != 4 {
-		t.Errorf("entries = %d, want 4", len(q.entries))
+	if len(q.entries) != 5 {
+		t.Errorf("entries = %d, want 5", len(q.entries))
 	}
-	if !q.Has("NetworkServicesLBTrafficExtension", "networkservices.cnrm.cloud.google.com") {
-		t.Error("expected the networkservices resource to be queued")
+	for _, tc := range []struct {
+		name         string
+		kind, group  string
+		field        string
+		wantSuppress bool
+	}{
+		{"open reference entry", lb, lbGroup, ".spec.forwardingRules", true},
+		{"same resource, field with no entry", lb, lbGroup, ".spec.network", false},
+		{"open entry with a non-reference reason", lb, lbGroup, ".spec.labels", false},
+		{"resolved reference entry", "DataprocBatch", "dataproc.cnrm.cloud.google.com", ".spec.serviceAccount", false},
+		{"unrelated resource", "StorageBucket", "storage.cnrm.cloud.google.com", ".spec.forwardingRules", false},
+	} {
+		if got := q.SuppressesRef(tc.kind, tc.group, tc.field); got != tc.wantSuppress {
+			t.Errorf("%s: SuppressesRef(%s, %s) = %v, want %v", tc.name, tc.kind, tc.field, got, tc.wantSuppress)
+		}
 	}
-	// Every dataproc entry is resolved, so the resource is checked in full.
-	if q.Has("DataprocBatch", "dataproc.cnrm.cloud.google.com") {
-		t.Error("a resource whose entries are all resolved must not be suppressed")
-	}
-	if q.Has("StorageBucket", "storage.cnrm.cloud.google.com") {
-		t.Error("an unrelated resource must not be suppressed")
-	}
-	// A message entry names no Kind, so it suppresses nothing.
-	if got := q.openResources.Len(); got != 1 {
-		t.Errorf("open resources = %d, want 1", got)
+	// The untriaged marker and the message entry name no field of a Kind, so
+	// only the one reference entry counts.
+	if got := q.openRefFields.Len(); got != 1 {
+		t.Errorf("open reference fields = %d, want 1", got)
 	}
 }
 
@@ -261,8 +252,8 @@ func TestLoadJudgementQueueNoFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if len(q.entries) != 0 || q.openResources.Len() != 0 {
-		t.Errorf("expected an empty queue, got %d entries across %d resources", len(q.entries), q.openResources.Len())
+	if len(q.entries) != 0 || q.openRefFields.Len() != 0 {
+		t.Errorf("expected an empty queue, got %d entries and %d suppressed fields", len(q.entries), q.openRefFields.Len())
 	}
 }
 
@@ -287,5 +278,5 @@ func TestJudgementQueueIsWellFormed(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error loading judgement queues: %v", err)
 	}
-	t.Logf("%d entries, %d resources with open entries\n%s", len(q.entries), q.openResources.Len(), q.summary())
+	t.Logf("%d entries, %d open reference fields\n%s", len(q.entries), q.openRefFields.Len(), q.summary())
 }
