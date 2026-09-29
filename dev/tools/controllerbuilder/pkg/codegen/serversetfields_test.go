@@ -15,6 +15,8 @@
 package codegen
 
 import (
+	"bytes"
+	"strings"
 	"testing"
 
 	"google.golang.org/genproto/googleapis/api/annotations"
@@ -148,5 +150,49 @@ func TestIsServerSetFieldOnlyAppliesToTheRootMessage(t *testing.T) {
 	}
 	if away {
 		t.Error("creationTimestamp below the visited message is server-set, want not server-set")
+	}
+}
+
+// TestWriteFieldWritesNoteOnce covers both places a note comes from: the
+// caller, which passes the placement note for a server-set field, and the
+// sibling rule inside WriteField.
+func TestWriteFieldWritesNoteOnce(t *testing.T) {
+	// Arrange
+	fd := serverSetTestFile(t)
+	msg := fd.Messages().ByName("Discovery")
+	creationTimestamp := msg.Fields().ByName("creation_timestamp")
+	description := msg.Fields().ByName("description")
+
+	tests := []struct {
+		name   string
+		field  protoreflect.FieldDescriptor
+		opts   WriteOptions
+		note   string
+		marker string
+	}{
+		{
+			name:   "note from the caller",
+			field:  creationTimestamp,
+			note:   placementNote(creationTimestamp, msg, WriteOptions{PlaceServerSetFields: true}),
+			marker: "+kcc:guess=placement",
+		},
+		{
+			name:   "note from the sibling rule",
+			field:  description,
+			opts:   WriteOptions{Siblings: map[string]string{"description": "TestDescription"}},
+			marker: SiblingGuessMarker + "TestDescription",
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			// Act
+			var buf bytes.Buffer
+			WriteField(&buf, tc.field, msg, 0, false, tc.opts, tc.note)
+
+			// Assert
+			if got := strings.Count(buf.String(), tc.marker); got != 1 {
+				t.Errorf("WriteField() wrote %q %d times, want once:\n%s", tc.marker, got, buf.String())
+			}
+		})
 	}
 }
