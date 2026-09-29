@@ -90,6 +90,7 @@ echo "===> [Step 5] Building container images from source via Cloud Build..."
 if ! gcloud artifacts docker images list "${IMAGE_PREFIX%/}" --include-tags --filter="TAGS:${IMAGE_TAG}" --format="value(TAGS)" 2>/dev/null | grep -q "${IMAGE_TAG}"; then
     gcloud builds submit \
         --project="${PROJECT}" \
+        --ignore-file="${RUN_DIR}/.gcloudignore" \
         --config="${RUN_DIR}/cloudbuild.yaml" \
         --substitutions="_IMAGE_PREFIX=${IMAGE_PREFIX},_IMAGE_TAG=${IMAGE_TAG}" \
         .
