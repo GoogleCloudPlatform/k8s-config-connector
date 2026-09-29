@@ -181,14 +181,13 @@ Vary: X-Origin
 {
   "kind": "storage#objects",
   "prefixes": [
-    "testfolder",
-    "testmanagedfolder"
+    "testmanagedfolder/"
   ]
 }
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/managedFolders/testmanagedfolder?alt=json
+GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/managedFolders/testmanagedfolder%2F?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive

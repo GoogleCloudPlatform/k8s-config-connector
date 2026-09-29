@@ -158,7 +158,11 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 	}
 
 	obj.SelfLink = PtrTo(fmt.Sprintf("https://www.googleapis.com/storage/v1/b/%s", name.Bucket))
-	obj.StorageClass = PtrTo("STANDARD")
+	if req.GetBucket().GetStorageClass() != "" {
+		obj.StorageClass = PtrTo(req.GetBucket().GetStorageClass())
+	} else {
+		obj.StorageClass = PtrTo("STANDARD")
+	}
 	obj.TimeCreated = now
 	obj.Updated = now
 	obj.Metageneration = PtrTo(int64(1))
@@ -219,6 +223,10 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 		return nil, err
 	}
 
+	if err := validateBucket(obj); err != nil {
+		return nil, err
+	}
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -254,6 +262,24 @@ func (s *buckets) populateDefaults(ctx context.Context, project *projects.Projec
 		obj.DefaultObjectAcl = append(obj.DefaultObjectAcl, buildObjectACL(ctx, project, obj, "OWNER", "owners"))
 		obj.DefaultObjectAcl = append(obj.DefaultObjectAcl, buildObjectACL(ctx, project, obj, "OWNER", "editors"))
 		obj.DefaultObjectAcl = append(obj.DefaultObjectAcl, buildObjectACL(ctx, project, obj, "READER", "viewers"))
+	}
+	return nil
+}
+
+func validateBucket(obj *pb.Bucket) error {
+	if obj.Autoclass != nil && obj.Autoclass.GetEnabled() {
+		if obj.GetStorageClass() != "" && obj.GetStorageClass() != "STANDARD" {
+			return status.Errorf(codes.InvalidArgument, "Cannot set default storage class on bucket with Autoclass enabled to storage class other than STANDARD.")
+		}
+	}
+	if obj.IpFilter != nil && len(obj.IpFilter.VpcNetworkSources) > 0 {
+		for _, source := range obj.IpFilter.VpcNetworkSources {
+			network := source.GetNetwork()
+			tokens := strings.Split(network, "/")
+			if len(tokens) != 5 || tokens[0] != "projects" || tokens[2] != "global" || tokens[3] != "networks" || tokens[1] == "" || tokens[4] == "" {
+				return status.Errorf(codes.InvalidArgument, "VPC network name '%s' is invalid. The name of a VPC network source must be in the format 'projects/{PROJECT_ID}/global/networks/{NETWORK_NAME}'.", source.GetNetwork())
+			}
+		}
 	}
 	return nil
 }
@@ -320,6 +346,9 @@ func (s *buckets) PatchBucket(ctx context.Context, req *pb.PatchBucketRequest) (
 		if patch.IpFilter != nil {
 			obj.IpFilter = patch.IpFilter
 		}
+		if patch.StorageClass != nil {
+			obj.StorageClass = patch.StorageClass
+		}
 
 		if patch.SoftDeletePolicy != nil {
 			if patch.SoftDeletePolicy.RetentionDurationSeconds != nil {
@@ -378,6 +407,10 @@ func (s *buckets) PatchBucket(ctx context.Context, req *pb.PatchBucketRequest) (
 		return nil, err
 	}
 
+	if err := validateBucket(obj); err != nil {
+		return nil, err
+	}
+
 	obj.Etag = PtrTo(computeEtag(obj))
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
@@ -387,11 +420,7 @@ func (s *buckets) PatchBucket(ctx context.Context, req *pb.PatchBucketRequest) (
 	retObj := proto.CloneOf(obj)
 	projection := req.GetProjection()
 	uniform := obj.GetIamConfiguration().GetUniformBucketLevelAccess().GetEnabled()
-	emptyPatch := req.GetBucket() == nil || proto.Equal(req.GetBucket(), &pb.Bucket{})
-	stripAcl := projection == "noAcl" ||
-		(uniform && emptyPatch) ||
-		(uniform && len(req.GetBucket().GetLabels()) > 0) ||
-		(uniform && req.GetBucket().GetAutoclass() != nil && !req.GetBucket().GetAutoclass().GetEnabled())
+	stripAcl := projection == "noAcl" || uniform
 	if stripAcl {
 		retObj.Acl = nil
 		retObj.DefaultObjectAcl = nil

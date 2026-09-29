@@ -16,12 +16,16 @@ package mockstorage
 
 import (
 	"context"
+	"strings"
 	"time"
 
+	grpcpb "cloud.google.com/go/storage/control/apiv2/controlpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 )
 
 type objects struct {
@@ -30,14 +34,142 @@ type objects struct {
 }
 
 func (s *objects) ListObjects(ctx context.Context, req *pb.ListObjectsRequest) (*pb.Objects, error) {
-	// A stub implementation, just to support deletion (for now)
-
 	httpmux.SetExpiresHeader(ctx, time.Now())
+
+	bucketName := req.GetBucket()
+	prefix := req.GetPrefix()
+	delimiter := req.GetDelimiter()
+
+	var prefixes []string
+
+	// List HTTP folders from s.storage
+	folderKind := (&pb.Folder{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, folderKind, storage.ListOptions{}, func(obj proto.Message) error {
+		folder := obj.(*pb.Folder)
+		if folder.GetBucket() != bucketName {
+			return nil
+		}
+		name := folder.GetName() // e.g. "testfolder/"
+		if strings.HasPrefix(name, prefix) {
+			rel := name[len(prefix):]
+			if delimiter != "" {
+				idx := strings.Index(rel, delimiter)
+				if idx >= 0 {
+					p := prefix + rel[:idx+len(delimiter)]
+					prefixes = append(prefixes, p)
+				}
+			} else {
+				prefixes = append(prefixes, name)
+			}
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	// List HTTP managed folders from s.storage
+	httpManagedFolderKind := (&pb.ManagedFolder{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, httpManagedFolderKind, storage.ListOptions{}, func(obj proto.Message) error {
+		folder := obj.(*pb.ManagedFolder)
+		if folder.GetBucket() != bucketName {
+			return nil
+		}
+		name := folder.GetName() // e.g. "testmanagedfolder/"
+		if strings.HasPrefix(name, prefix) {
+			rel := name[len(prefix):]
+			if delimiter != "" {
+				idx := strings.Index(rel, delimiter)
+				if idx >= 0 {
+					p := prefix + rel[:idx+len(delimiter)]
+					prefixes = append(prefixes, p)
+				}
+			} else {
+				prefixes = append(prefixes, name)
+			}
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	// List control folders from s.storage
+	controlFolderKind := (&grpcpb.Folder{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, controlFolderKind, storage.ListOptions{}, func(obj proto.Message) error {
+		folder := obj.(*grpcpb.Folder)
+		bucketID, err := parseBucketIDFromControlName(folder.GetName())
+		if err != nil || bucketID != bucketName {
+			return nil
+		}
+		tokens := strings.Split(folder.GetName(), "/folders/")
+		if len(tokens) < 2 {
+			return nil
+		}
+		name := tokens[1]
+		if !strings.HasSuffix(name, "/") {
+			name += "/"
+		}
+		if strings.HasPrefix(name, prefix) {
+			rel := name[len(prefix):]
+			if delimiter != "" {
+				idx := strings.Index(rel, delimiter)
+				if idx >= 0 {
+					p := prefix + rel[:idx+len(delimiter)]
+					prefixes = append(prefixes, p)
+				}
+			} else {
+				prefixes = append(prefixes, name)
+			}
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	// List control managed folders from s.storage
+	controlManagedFolderKind := (&grpcpb.ManagedFolder{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, controlManagedFolderKind, storage.ListOptions{}, func(obj proto.Message) error {
+		folder := obj.(*grpcpb.ManagedFolder)
+		bucketID, err := parseBucketIDFromControlName(folder.GetName())
+		if err != nil || bucketID != bucketName {
+			return nil
+		}
+		tokens := strings.Split(folder.GetName(), "/managedFolders/")
+		if len(tokens) < 2 {
+			return nil
+		}
+		name := tokens[1]
+		if !strings.HasSuffix(name, "/") {
+			name += "/"
+		}
+		if strings.HasPrefix(name, prefix) {
+			rel := name[len(prefix):]
+			if delimiter != "" {
+				idx := strings.Index(rel, delimiter)
+				if idx >= 0 {
+					p := prefix + rel[:idx+len(delimiter)]
+					prefixes = append(prefixes, p)
+				}
+			} else {
+				prefixes = append(prefixes, name)
+			}
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	uniquePrefixes := make(map[string]bool)
+	var finalPrefixes []string
+	for _, p := range prefixes {
+		if !uniquePrefixes[p] {
+			uniquePrefixes[p] = true
+			finalPrefixes = append(finalPrefixes, p)
+		}
+	}
 
 	ret := &pb.Objects{}
 	ret.Kind = PtrTo("storage#objects")
-	ret.Prefixes = append(ret.Prefixes, "testfolder")
-	ret.Prefixes = append(ret.Prefixes, "testmanagedfolder")
+	ret.Prefixes = finalPrefixes
 	return ret, nil
 }
 
