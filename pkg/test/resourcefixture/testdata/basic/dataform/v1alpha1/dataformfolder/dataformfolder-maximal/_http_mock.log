@@ -1,0 +1,112 @@
+GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ffolders%2Fdffolder-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "Resource 'projects/${projectId}/locations/us-central1/folders/dffolder-max-${uniqueId}' was not found"
+}
+
+---
+
+POST https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/folders?%24alt=json%3Benum-encoding%3Dint&folderId=dffolder-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "displayName": "Maximal Folder ${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/folders/dffolder-max-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creatorIamPrincipal": "user:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+  "displayName": "Maximal Folder ${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/folders/${folderID}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ffolders%2F${folderID}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creatorIamPrincipal": "user:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+  "displayName": "Maximal Folder ${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/folders/${folderID}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: folder.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ffolders%2F${folderID}
+
+{
+  "displayName": "Updated Maximal Folder ${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/folders/${folderID}"
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creatorIamPrincipal": "user:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+  "displayName": "Updated Maximal Folder ${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/folders/${folderID}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ffolders%2F${folderID}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creatorIamPrincipal": "user:overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+  "displayName": "Updated Maximal Folder ${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/folders/${folderID}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ffolders%2F${folderID}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{}
