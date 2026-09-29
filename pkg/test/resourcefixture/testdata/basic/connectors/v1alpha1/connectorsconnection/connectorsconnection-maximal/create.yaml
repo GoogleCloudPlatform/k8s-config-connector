@@ -1,0 +1,24 @@
+apiVersion: connectors.cnrm.cloud.google.com/v1alpha1
+kind: ConnectorsConnection
+metadata:
+  name: connectorsconnection-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  connectorVersionRef:
+    external: projects/${projectId}/locations/global/providers/gcp/connectors/gcs/versions/1
+  serviceAccountRef:
+    name: sa-${uniqueId}
+  configVariables:
+    - key: project_id
+      stringValue: ${projectId}
+  description: Maximal ConnectorsConnection create
+  labels:
+    label-one: value-one
+  suspended: false
+  nodeConfig:
+    minNodeCount: 1
+    maxNodeCount: 2
+  lockConfig:
+    locked: false
