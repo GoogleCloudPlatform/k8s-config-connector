@@ -22,9 +22,12 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-// TestMapsToGoStruct pins which messages a caller walking the generated types
-// may descend into. A Timestamp is written as a string, so a walk that entered
-// it would report fields no generated struct has.
+// TestMapsToGoStruct checks which proto messages are generated as a Go struct
+// of their own. Timestamp is generated as a string and Struct as
+// apiextensionsv1.JSON, so neither is a struct. ListValue has no special
+// mapping, so it is generated as a struct. The walk in scaffold.ReferenceHints
+// relies on this to avoid descending into a Timestamp and reporting fields like
+// .seconds that the CRD does not have.
 func TestMapsToGoStruct(t *testing.T) {
 	for _, tc := range []struct {
 		msg  protoreflect.MessageDescriptor

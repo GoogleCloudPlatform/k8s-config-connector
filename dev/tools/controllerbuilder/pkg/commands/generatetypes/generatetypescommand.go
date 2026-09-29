@@ -154,9 +154,10 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		}
 	}
 
-	// The map is built here rather than beside the scaffolding loop because
-	// WriteVisitedMessages needs it too, and that runs first. SiblingKinds says
-	// why it reads two sources.
+	// For --emit-sibling-refs, collect the Kinds in this run and those already
+	// in the package. A string field named after one of them is flagged as a
+	// possible reference. Both WriteVisitedMessages and PrepopulateSpec read
+	// the map, so it goes into writeOptions before either runs.
 	var siblings map[string]string
 	if o.EmitSiblingRefs {
 		var thisRun []string
@@ -310,10 +311,10 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		}
 	}
 
-	// Nested-message matches for the sibling rule, written as comments for the
-	// same reason as the dropped fields above: no single Kind to attribute them
-	// to, and every non-comment line here suppresses [refs] for the Kind it
-	// names.
+	// Write sibling matches from nested messages as comments, like the dropped
+	// fields above. A nested message can be shared by several resources, so
+	// there is no single Kind to list them under. A queue entry would also
+	// make TestMissingRefs suppress that Kind's [refs] findings.
 	if sg := typeGenerator.SiblingGuesses(); len(sg) > 0 {
 		var b strings.Builder
 		b.WriteString("\n# Fields inside nested messages whose name matches a resource this service\n")
