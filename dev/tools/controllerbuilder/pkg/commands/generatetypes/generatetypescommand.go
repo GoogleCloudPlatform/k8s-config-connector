@@ -200,9 +200,19 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	// is written atomically once at the end.
 	var judgement []string
 
+	// Each --resource is resolved once here, so the warning is logged once and
+	// the scaffolding below uses the same message.
+	protoFullNames := make(map[string]string, len(o.Resources))
 	resourceAnnotations := make([]string, 0, len(o.Resources))
 	for _, resource := range o.Resources {
-		resourceProtoFullName := resolveProtoFullName(api, o.ServiceName, resource)
+		resourceProtoFullName, matches := resolveProtoFullName(api, o.ServiceName, resource)
+		protoFullNames[resource.Kind] = resourceProtoFullName
+		if item, ok := ambiguousResourceItem(resource, matches); ok {
+			klog.Warningf("%s: %s", resource.Kind, item.Detail)
+			if o.PrepopulateSpec {
+				judgement = append(judgement, scaffold.FormatJudgementEntries(resource.Kind, gv.Group, []scaffold.JudgementItem{item}))
+			}
+		}
 		log.V(2).Info("visiting proto", "name", resourceProtoFullName)
 		if err := typeGenerator.VisitProto(resourceProtoFullName); err != nil {
 			return err
@@ -239,7 +249,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 			} else {
 				var prepopulated *scaffold.PrepopulateResult
 				if o.PrepopulateSpec {
-					msg, err := resourceMessage(api, o.ServiceName, resource)
+					msg, err := resourceMessage(api, protoFullNames[resource.Kind])
 					if err != nil {
 						return err
 					}
@@ -439,16 +449,17 @@ func (o *GenerateCRDOptions) validate() error {
 }
 
 // resolveProtoFullName returns the fully qualified proto name for a --resource
-// entry. A name that contains a dot is returned as is. Otherwise each
-// comma-separated service is tried in order and the first match wins. If more
-// than one service has the message, a warning is logged.
-func resolveProtoFullName(api *protoapi.Proto, serviceName string, resource options.Resource) string {
+// entry, and every service-qualified name that exists. A name that contains a
+// dot is returned as is. Otherwise each comma-separated service is tried in
+// order and the first match wins.
+func resolveProtoFullName(api *protoapi.Proto, serviceName string, resource options.Resource) (string, []string) {
 	if strings.Contains(resource.ProtoName, ".") {
-		return resource.ProtoName
+		return resource.ProtoName, nil
 	}
 	// The same message name can exist in several of the listed services.
-	// We collect all matches so we can warn when there is more than one.
-	// We still return the first match, so the generated output does not change.
+	// We return all matches so the caller can flag it when there is more than
+	// one. We still use the first match, so the generated output does not
+	// change.
 	//
 	// Example: notebooks lists v1 and v2, and both have an Instance message.
 	// NotebookInstanceV2 was generated from v1 without any warning, and the
@@ -460,22 +471,34 @@ func resolveProtoFullName(api *protoapi.Proto, serviceName string, resource opti
 			matches = append(matches, candidate)
 		}
 	}
-	if len(matches) > 1 {
-		klog.Warningf("%q resolves in %d of the declared services (%s); using %s. "+
-			"Qualify the --resource proto name to choose deliberately.",
-			resource.ProtoName, len(matches), strings.Join(matches, ", "), matches[0])
-	}
 	if len(matches) > 0 {
-		return matches[0]
+		return matches[0], matches
 	}
 	// Nothing matched, so fall back to the first service and let the caller's
 	// lookup produce the error with the full name in it.
-	return strings.Split(serviceName, ",")[0] + "." + resource.ProtoName
+	return strings.Split(serviceName, ",")[0] + "." + resource.ProtoName, nil
 }
 
-// resourceMessage looks up the descriptor for a --resource entry.
-func resourceMessage(api *protoapi.Proto, serviceName string, resource options.Resource) (protoreflect.MessageDescriptor, error) {
-	fullName := resolveProtoFullName(api, serviceName, resource)
+// ambiguousResourceItem returns a queue item when a --resource proto name
+// matched more than one service. matches is what resolveProtoFullName
+// returned, and the first entry is the one that was used.
+//
+// The warning alone scrolls past in generate.sh output. The queue is the file
+// someone reviews, so the choice is recorded there too.
+func ambiguousResourceItem(resource options.Resource, matches []string) (scaffold.JudgementItem, bool) {
+	if len(matches) < 2 {
+		return scaffold.JudgementItem{}, false
+	}
+	return scaffold.JudgementItem{
+		Reason: "ambiguous-proto-name",
+		Detail: fmt.Sprintf("%s exists in %d of the listed services (%s); generated from %s. "+
+			"Put the full proto name in --resource to choose one",
+			resource.ProtoName, len(matches), strings.Join(matches, ", "), matches[0]),
+	}, true
+}
+
+// resourceMessage looks up the descriptor for a fully qualified proto name.
+func resourceMessage(api *protoapi.Proto, fullName string) (protoreflect.MessageDescriptor, error) {
 	d, err := api.Files().FindDescriptorByName(protoreflect.FullName(fullName))
 	if err != nil {
 		return nil, fmt.Errorf("finding proto message %s: %w", fullName, err)
