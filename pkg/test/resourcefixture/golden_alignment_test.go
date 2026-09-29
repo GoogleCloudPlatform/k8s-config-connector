@@ -38,6 +38,8 @@ var mockGCPSkipFixtures = map[string]bool{
 	"composer/v1beta1/composerenvironment/composerenvironmentwithkms":    true,
 	"composer/v1beta1/composerenvironment/composerenvironmentwithrefs":   true,
 	"composer/v1beta1/composerenvironment/composerenvironmentnodeconfig": true,
+	// Outdated real GCP log for maximal fixture contains failed PATCH calls from before the organizationNumber controller fix
+	"storageinsights/v1alpha1/storageinsightsdatasetconfig/storageinsightsdatasetconfig-maximal": true,
 }
 
 var realGCPSkipFixtures = map[string]bool{
@@ -569,6 +571,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "correlationInfo")
 		delete(v, "labels")
 		delete(v, "instanceCreateTime")
+		delete(v, "activityDataRetentionPeriodDays")
 		if qm, ok := v["qualityMetadata"].(map[string]interface{}); ok {
 			if agentInfo, ok := qm["agentInfo"].([]interface{}); ok {
 				for _, a := range agentInfo {
