@@ -92,8 +92,11 @@
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.mavenConfig.allowSnapshotOverwrites" is not set in unstructured objects
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.mavenConfig.versionPolicy" is not set in unstructured objects
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.remoteRepositoryConfig.dockerRepository.publicRepository" is not set in unstructured objects
+[missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.remoteRepositoryConfig.mavenRepository.customRepository.uri" is not set in unstructured objects
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.remoteRepositoryConfig.mavenRepository.publicRepository" is not set in unstructured objects
+[missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.remoteRepositoryConfig.npmRepository.customRepository.uri" is not set in unstructured objects
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.remoteRepositoryConfig.npmRepository.publicRepository" is not set in unstructured objects
+[missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.remoteRepositoryConfig.pythonRepository.customRepository.uri" is not set in unstructured objects
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.remoteRepositoryConfig.pythonRepository.publicRepository" is not set in unstructured objects
 [missing_field] crd=assetfeeds.asset.cnrm.cloud.google.com version=v1beta1: field ".spec.folderRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=assetfeeds.asset.cnrm.cloud.google.com version=v1beta1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
