@@ -42,14 +42,12 @@ PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dataform.v1beta1 \
   --api-version dataform.cnrm.cloud.google.com/v1alpha1 \
-  --overlay ${REPO_ROOT}/apis/dataform/v1alpha1/overlay.proto \
   --resource DataformFolder:Folder \
   --proto-source-path ${PROTO_OUT}
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dataform.v1 \
   --api-version dataform.cnrm.cloud.google.com/v1alpha1 \
-  --overlay ${REPO_ROOT}/apis/dataform/v1alpha1/overlay.proto \
   --resource DataformTeamFolder:TeamFolder \
   --proto-source-path ${PROTO_OUT}
 
