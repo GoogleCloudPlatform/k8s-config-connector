@@ -222,3 +222,108 @@ func TestValidateEmitReferenceHintsNeedsPrepopulateSpec(t *testing.T) {
 		})
 	}
 }
+
+// generate-types only checks output-only comments while prepopulating the
+// Spec, so --detect-output-only-in-comments on its own is rejected rather than
+// ignored.
+func TestValidateDetectOutputOnlyNeedsPrepopulateSpec(t *testing.T) {
+	for _, tc := range []struct {
+		name             string
+		prepopulateSpec  bool
+		detectOutputOnly bool
+		wantErr          string
+	}{
+		{
+			name: "neither flag",
+		},
+		{
+			name:            "only --prepopulate-spec",
+			prepopulateSpec: true,
+		},
+		{
+			name:             "both flags",
+			prepopulateSpec:  true,
+			detectOutputOnly: true,
+		},
+		{
+			name:             "only --detect-output-only-in-comments",
+			detectOutputOnly: true,
+			wantErr:          "`--detect-output-only-in-comments` requires `--prepopulate-spec`",
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			// Arrange
+			o := &GenerateCRDOptions{
+				GenerateOptions:  &options.GenerateOptions{ProtoSourcePath: "googleapis.pb"},
+				ServiceName:      "google.cloud.example.v1",
+				Resources:        options.ResourceList{{Kind: "ExampleWidget", ProtoName: "Widget"}},
+				PrepopulateSpec:  tc.prepopulateSpec,
+				DetectOutputOnly: tc.detectOutputOnly,
+			}
+
+			// Act
+			err := o.validate()
+
+			// Assert
+			gotErr := ""
+			if err != nil {
+				gotErr = err.Error()
+			}
+			if gotErr != tc.wantErr {
+				t.Errorf("validate() error = %q, want %q", gotErr, tc.wantErr)
+			}
+		})
+	}
+}
+
+// generate-types only moves server-set fields out of a prepopulated Spec, so
+// --place-server-set-fields on its own is rejected rather than ignored.
+func TestValidatePlaceServerSetFieldsNeedsPrepopulateSpec(t *testing.T) {
+	for _, tc := range []struct {
+		name                 string
+		prepopulateSpec      bool
+		placeServerSetFields bool
+		wantErr              string
+	}{
+		{
+			name: "neither flag",
+		},
+		{
+			name:            "only --prepopulate-spec",
+			prepopulateSpec: true,
+		},
+		{
+			name:                 "both flags",
+			prepopulateSpec:      true,
+			placeServerSetFields: true,
+		},
+		{
+			name:                 "only --place-server-set-fields",
+			placeServerSetFields: true,
+			wantErr:              "`--place-server-set-fields` requires `--prepopulate-spec`",
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			// Arrange
+			o := &GenerateCRDOptions{
+				GenerateOptions:      &options.GenerateOptions{ProtoSourcePath: "googleapis.pb"},
+				ServiceName:          "google.cloud.example.v1",
+				Resources:            options.ResourceList{{Kind: "ExampleWidget", ProtoName: "Widget"}},
+				PrepopulateSpec:      tc.prepopulateSpec,
+				PlaceServerSetFields: tc.placeServerSetFields,
+			}
+
+			// Act
+			err := o.validate()
+
+			// Assert
+			gotErr := ""
+			if err != nil {
+				gotErr = err.Error()
+			}
+			if gotErr != tc.wantErr {
+				t.Errorf("validate() error = %q, want %q", gotErr, tc.wantErr)
+			}
+		})
+	}
+}
