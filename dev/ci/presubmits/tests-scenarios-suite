@@ -31,27 +31,8 @@ fi
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
 
-. "${REPO_ROOT}/dev/tasks/setup-envtest"
-
-export RUN_E2E=1
-export E2E_GCP_TARGET="${E2E_GCP_TARGET:-mock}"
-export E2E_KUBE_TARGET="${E2E_KUBE_TARGET:-envtest}"
 export USE_FULL_TEST_NAMES=true
 export TEST_TIMEOUT=15m
+export RUN_TESTS="^TestE2EScript/scenarios/${SUITE}$"
 
-if [[ -z "${PREBUILT_TEST_BINARY:-}" ]]; then
-  if [[ -f "${REPO_ROOT}/bin/tests-e2e" ]]; then
-    export PREBUILT_TEST_BINARY="${REPO_ROOT}/bin/tests-e2e"
-  else
-    export PREBUILT_TEST_BINARY="${REPO_ROOT}/.build/tests-e2e"
-    mkdir -p "${REPO_ROOT}/.build"
-    if [[ ! -f "${PREBUILT_TEST_BINARY}" ]]; then
-      echo "Prebuilding e2e tests..."
-      time go test -c -o "${PREBUILT_TEST_BINARY}" ./tests/e2e
-    fi
-  fi
-fi
-
-echo "Running ${SUITE} scenarios tests..."
-cd tests/e2e
-${PREBUILT_TEST_BINARY} -test.run "^TestE2EScript/scenarios/${SUITE}$" -test.timeout 15m -test.v
+exec "${REPO_ROOT}/dev/tasks/run-e2e"
