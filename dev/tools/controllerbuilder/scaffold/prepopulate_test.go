@@ -423,23 +423,70 @@ func TestDetectOutputOnlySkipsAnnotatedFields(t *testing.T) {
 	}
 }
 
+// With --place-server-set-fields, a field on the server-set allowlist is
+// already in ObservedState and has its own server-set-field-placed entry.
+// Reporting it here too would add an entry saying it was left in the Spec.
+func TestDetectOutputOnlySkipsServerSetFields(t *testing.T) {
+	// Arrange: no field_behavior anywhere, like compute's Network.
+	msg := namedCommentedMessage(t, [][2]string{
+		{"creation_timestamp", "[Output Only] Creation timestamp in RFC3339 text format."},              // on the allowlist
+		{"firewall_policy", "[Output Only] URL of the firewall policy the network is associated with."}, // not on it
+	})
+
+	tests := []struct {
+		name string
+		opts codegen.WriteOptions
+		want []string
+	}{
+		{"server-set placement on", codegen.WriteOptions{PlaceServerSetFields: true}, []string{".spec.firewallPolicy"}},
+		{"server-set placement off", codegen.WriteOptions{}, []string{".spec.creationTimestamp", ".spec.firewallPolicy"}},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			// Act
+			got := DetectOutputOnlyInComments(msg, tc.opts)
+
+			// Assert
+			var paths []string
+			for _, c := range got {
+				paths = append(paths, c.FieldPath)
+			}
+			if strings.Join(paths, ",") != strings.Join(tc.want, ",") {
+				t.Errorf("got %v, want %v", paths, tc.want)
+			}
+		})
+	}
+}
+
 // commentedMessage builds a message whose fields carry leading comments, which
-// is what DetectOutputOnlyInComments reads. SourceCodeInfo paths are
-// [4=message_type, msgIndex, 2=field, fieldIndex].
+// is what DetectOutputOnlyInComments reads. The fields are named field_0,
+// field_1 and so on.
 func commentedMessage(t *testing.T, comments ...string) protoreflect.MessageDescriptor {
+	t.Helper()
+	var fields [][2]string
+	for i, c := range comments {
+		fields = append(fields, [2]string{fmt.Sprintf("field_%d", i), c})
+	}
+	return namedCommentedMessage(t, fields)
+}
+
+// namedCommentedMessage is commentedMessage for a test that needs real field
+// names. Each entry is {name, comment}. SourceCodeInfo paths are
+// [4=message_type, msgIndex, 2=field, fieldIndex].
+func namedCommentedMessage(t *testing.T, named [][2]string) protoreflect.MessageDescriptor {
 	t.Helper()
 	var fields []*descriptorpb.FieldDescriptorProto
 	var locs []*descriptorpb.SourceCodeInfo_Location
-	for i, c := range comments {
+	for i, nc := range named {
 		fields = append(fields, &descriptorpb.FieldDescriptorProto{
-			Name:   strPtr(fmt.Sprintf("field_%d", i)),
+			Name:   strPtr(nc[0]),
 			Number: i32Ptr(int32(i + 1)),
 			Type:   fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING),
 		})
 		locs = append(locs, &descriptorpb.SourceCodeInfo_Location{
 			Path:            []int32{4, 0, 2, int32(i)},
 			Span:            []int32{int32(i), 0, 1},
-			LeadingComments: strPtr(" " + c + "\n"),
+			LeadingComments: strPtr(" " + nc[1] + "\n"),
 		})
 	}
 	fdp := &descriptorpb.FileDescriptorProto{

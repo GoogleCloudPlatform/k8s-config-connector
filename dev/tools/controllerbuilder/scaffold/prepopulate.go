@@ -293,7 +293,11 @@ func DetectOutputOnlyInComments(msg protoreflect.MessageDescriptor, opts codegen
 	var out []OutputOnlyCandidate
 	for i := 0; i < msg.Fields().Len(); i++ {
 		field := msg.Fields().Get(i)
-		if codegen.IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) || identityFields[string(field.Name())] {
+		// Skip the fields PrepopulateSpec leaves out of the Spec. These are
+		// OUTPUT_ONLY fields, identity fields, and server-set fields when
+		// --place-server-set-fields is enabled. A server-set field is already
+		// in ObservedState with its own queue entry.
+		if codegen.IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) || identityFields[string(field.Name())] || codegen.IsServerSetField(field, msg, opts) {
 			continue
 		}
 		comment, ok := outputOnlyComment(field)
