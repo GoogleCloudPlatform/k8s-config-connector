@@ -327,9 +327,11 @@ spec:
                           format: int32
                           type: integer
                         bootDiskType:
-                          description: 'Type of the boot disk (default is "pd-ssd").
-                            Valid values: "pd-ssd" (Persistent Disk Solid State Drive)
-                            or "pd-standard" (Persistent Disk Hard Disk Drive).'
+                          description: 'Type of the boot disk. For non-A3U machines,
+                            the default value is "pd-ssd", for A3U machines, the default
+                            value is "hyperdisk-balanced". Valid values: "pd-ssd"
+                            (Persistent Disk Solid State Drive), "pd-standard" (Persistent
+                            Disk Hard Disk Drive) or "hyperdisk-balanced".'
                           type: string
                       type: object
                     id:
