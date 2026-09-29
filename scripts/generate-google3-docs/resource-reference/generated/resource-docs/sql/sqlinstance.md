@@ -311,7 +311,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The SQLInstance selfLink, when not managed by Config Connector.</p>
+            <p>The SQLInstance name, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -421,7 +421,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The SQLInstance selfLink, when not managed by Config Connector.</p>
+            <p>The SQLInstance name, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -651,7 +651,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The SQLInstance selfLink, when not managed by Config Connector.</p>
+            <p>The SQLInstance name, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
