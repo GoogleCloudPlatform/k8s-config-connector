@@ -444,11 +444,26 @@ func resolveProtoFullName(api *protoapi.Proto, serviceName string, resource opti
 	if strings.Contains(resource.ProtoName, ".") {
 		return resource.ProtoName
 	}
+	// Collect every service the bare name resolves in, not just the first.
+	// When this took the first match silently, NotebookInstanceV2 was generated
+	// from notebooks.v1.Instance while its Kind and its upstream counterpart both
+	// say v2: the block declares v1 and v2, both have an Instance, and v1 won.
+	// The v1 message is shaped differently enough that 39 CRD fields went missing
+	// without anything reporting a problem.
+	var matches []string
 	for _, svc := range strings.Split(serviceName, ",") {
 		candidate := svc + "." + resource.ProtoName
 		if _, err := api.Files().FindDescriptorByName(protoreflect.FullName(candidate)); err == nil {
-			return candidate
+			matches = append(matches, candidate)
 		}
+	}
+	if len(matches) > 1 {
+		klog.Warningf("%q resolves in %d of the declared services (%s); using %s. "+
+			"Qualify the --resource proto name to choose deliberately.",
+			resource.ProtoName, len(matches), strings.Join(matches, ", "), matches[0])
+	}
+	if len(matches) > 0 {
+		return matches[0]
 	}
 	// Nothing matched, so fall back to the first service and let the caller's
 	// lookup produce the error with the full name in it.
