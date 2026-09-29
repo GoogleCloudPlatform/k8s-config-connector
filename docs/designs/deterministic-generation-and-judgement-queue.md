@@ -10,9 +10,9 @@ instead of reading the whole proto.
 Two pieces make this work. The generator now reads more of what the proto states, such as
 `field_behavior` annotations and `google.api.resource` patterns, so less is left to whoever finishes
 the resource, and what is left comes out the same every time. It also records everything it guessed
-or left out in `apis/<service>/needs_judgement_call.txt`, the judgement queue, which the API checks
-read as well. Generation becomes the first step and judgement the second, and neither has to wait
-for the other.
+or left out in `apis/<service>/judgement_queue.yaml`, the judgement queue, which the API checks
+read as well. A person marks each entry resolved, so the file also records what was decided.
+Generation becomes the first step and judgement the second, and neither has to wait for the other.
 
 Every change is opt-in, behind a flag or behind `--prepopulate-spec`, apart from fixes to output that
 would not otherwise compile. With the flags off, output is byte-identical to what the generator
@@ -68,25 +68,75 @@ omission later.
 
 ### 5.2 The judgement queue
 
-Each service has one file, `apis/<service>/needs_judgement_call.txt`. A line looks like:
+Each service has one file, `apis/<service>/judgement_queue.yaml`. The Go types, and the code that
+reads, merges and writes the file, live in `dev/tools/controllerbuilder/pkg/judgement`. The generator
+and `tests/apichecks` both use that package, so they agree on the format.
 
-```
-kind=NetworkServicesLBTrafficExtension group=networkservices.cnrm.cloud.google.com: field ".spec.location" reason=location-or-parent-ref (parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; ...)
+```yaml
+entries:
+  - kind: NetworkServicesLBTrafficExtension
+    group: networkservices.cnrm.cloud.google.com
+    field: .spec.extensionChains[].extensions[].service
+    reason: possible-reference-by-description
+    status: open
+  - kind: NetworkServicesLBTrafficExtension
+    group: networkservices.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: resolved
+    resolution: accepted
 ```
 
-- Entries are keyed by Kind and group, because the queue is written before the CRD exists.
-- `generate-types` merges into the file rather than replacing it, because `generate.sh` often calls
-  it more than once per service and a replaced file would lose the earlier calls' entries.
-- Findings in a nested message, which several Kinds may share, are written as `#` comment lines,
-  since there is no single Kind to name.
-- `TestJudgementQueueIsWellFormed` checks the format of every queue in the tree.
-- While a Kind has any entry, `TestMissingRefs` skips its `[refs]` findings, and carries its existing
-  `missingrefs.txt` entries forward so that queueing never looks like a fix. Once a person clears a
-  Kind's entries, the Kind leaves the queue and the ratchet applies as usual.
+This is an excerpt of the generator's output for LbTrafficExtension, with the second entry marked
+resolved.
+
+**Fields.**
+
+- An entry is about a resource or about a nested proto message. A resource entry sets `kind` and
+  `group`, because the queue is written before the CRD exists. A message entry sets `protoMessage`,
+  because several Kinds may share the message and there is no single Kind to name. An entry sets one
+  or the other, never both.
+- `field` is the KRM path for a resource entry, such as `.spec.location`, and the proto field name
+  for a message entry. It is empty for an entry about the whole resource.
+- `reason` is required. `detail` is optional and gives the generator's reasoning.
+- `status` is `open` or `resolved`. A resolved entry has a `resolution`: `accepted`, `edited`,
+  `deferred` or `not-applicable`. `edited`, `deferred` and `not-applicable` also need a `note`
+  saying what was done, where, or why.
+
+**Merging.** `generate-types` merges into the file rather than replacing it, because `generate.sh`
+often calls it more than once per service. An entry is identified by kind, group, protoMessage,
+field and reason. `detail` is left out of the key, so rewording it does not create a second entry.
+
+- An entry the file already has keeps its status, resolution and note, and takes the new detail.
+  Regenerating never reopens a resolved entry.
+- A new entry is added as `open`.
+- An entry that was not generated this time is kept, because each call only knows its own
+  resources.
+
+**Entries are never deleted.** A person marks an entry resolved instead. So an empty queue means
+nothing was generated, and a queue with no open entries means everything was reviewed. The
+resolutions are also the data on how good each guess is: a reason whose entries are mostly `edited`
+points at a rule that needs work.
+
+**Checks.**
+
+- `TestJudgementQueueIsWellFormed` reads every queue in the tree. A file with an unknown key, a
+  missing field or a duplicate entry fails, so a typo cannot quietly change what is suppressed. The
+  test logs the counts by reason and resolution.
+- `TestMissingRefs` skips a `[refs]` finding only while an open entry names the same kind, group and
+  field with a `possible-reference*` reason. It carries a skipped finding's existing
+  `missingrefs.txt` entry forward, so that queueing never looks like a fix. Once the entry is
+  resolved, the field is checked as usual.
+- Other reasons, including `untriaged-bulk-generation`, suppress nothing.
+
+This depends on `--emit-reference-hints` running with `--prepopulate-spec`. The hints apply
+`refs.Classify`, the same rule as `TestMissingRefs`, so each field the test flags already has an
+entry at the same path.
 
 The workflow has two steps. First, generate the resource with the flags on, which gives compiling
 types and a queue. Second, a person works through the queue: accept or rewrite each guess, add
-references, move fields, and delete the entry.
+references, move fields, and mark the entry resolved.
 
 ### 5.3 What the generator now reads from the proto
 
@@ -169,7 +219,8 @@ flags off.
    `TestMissingRefs`, and the `replace` directive that lets `tests/apichecks` import them.
 2. Reading `google.api.resource`, which the parent, root and location fields depend on.
 3. `--prepopulate-spec`: the Spec and ObservedState filled from the proto.
-4. The judgement queue: writing it, merging into it, and the checks that read it.
+4. The judgement queue: writing it, merging into it, and the checks that read it. A follow-up moves
+   it to YAML with a status per entry, and makes `TestMissingRefs` suppress per field.
 5. Parent, root and location from the resource pattern.
 6. Reference hints and sibling references.
 7. The field-behavior flags: `--emit-required-from-proto`, `--place-server-set-fields` and
@@ -198,8 +249,8 @@ generates one new resource, ChronicleWatchlist, with every flag on.
   broke the code and confirmed that the test fails.
 - For every PR, we ran the generator with its flags off on real protos and diffed the output against
   a binary built from master.
-- `TestJudgementQueueIsWellFormed` checks the queue format, and `TestMissingRefs`, with its ratchet
-  and golden files, checks the reference rules.
+- `TestJudgementQueueIsWellFormed` validates every queue and logs the counts by reason and
+  resolution. `TestMissingRefs`, with its ratchet and golden files, checks the reference rules.
 - Scaffolded packages compile in a scratch directory, except for the DeepCopy methods, which
   controller-gen adds in a later step.
 
