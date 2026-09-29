@@ -94,7 +94,7 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 				Detail: "moved to ObservedState because its name is on the " +
 					"server-set allowlist, not because the proto says so: no " +
 					"field on this message carries field_behavior. Confirm GCP " +
-					"sets this field and a user never does",
+					"sets this field instead of a user",
 			})
 			continue
 		}
@@ -306,8 +306,8 @@ func DetectOutputOnlyInComments(msg protoreflect.MessageDescriptor, opts codegen
 	return out
 }
 
-// outputOnlyComment returns a field's leading comment, collapsed onto one line,
-// when the comment opens with one of outputOnlyPrefixes.
+// outputOnlyComment returns a field's leading comment, formatted as a single
+// line, if the comment opens with one of outputOnlyPrefixes.
 func outputOnlyComment(field protoreflect.FieldDescriptor) (string, bool) {
 	loc := field.ParentFile().SourceLocations().ByDescriptor(field)
 	comment := strings.TrimSpace(loc.LeadingComments)

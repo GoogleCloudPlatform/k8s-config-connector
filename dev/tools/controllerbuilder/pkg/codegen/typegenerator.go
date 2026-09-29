@@ -246,10 +246,10 @@ func (g *TypeGenerator) visitMessage(message protoreflect.MessageDescriptor) err
 	return nil
 }
 
-// isServerSet reports what IsServerSetField says for a field of the resource's
-// own message, and false for a field of any other message. identifyOutputs
-// recurses into nested messages, where a field called "id" or "kind" is often
-// the user's to set.
+// isServerSet applies IsServerSetField only to fields of the resource's
+// top-level message. It returns false for fields of nested messages, which
+// identifyOutputs also visits, because a nested field named "id" or "kind" is
+// often set by the user.
 func (g *TypeGenerator) isServerSet(field protoreflect.FieldDescriptor, msg protoreflect.MessageDescriptor) bool {
 	if string(msg.FullName()) != g.rootMessageFQN {
 		return false
@@ -279,9 +279,9 @@ func (g *TypeGenerator) needsObservedState(msg protoreflect.MessageDescriptor, s
 			seen[fqn] = true
 			return true
 		}
-		// A server-set field needs the ObservedState struct as much as an
-		// OUTPUT_ONLY field does. Without this, identifyOutputs collects it for a
-		// struct nothing writes.
+		// A server-set field counts as an output here too, as it does in
+		// identifyOutputs. Otherwise the message gets no ObservedState struct
+		// and the field is not written anywhere.
 		if g.isServerSet(f, msg) {
 			seen[fqn] = true
 			return true
@@ -581,12 +581,10 @@ func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor, opts WriteO
 	fmt.Fprintf(out, "}\n")
 }
 
-// ObservedStateFieldNote describes what WriteObservedStateFields did with one
-// output-only field, so the caller can file a queue entry for a field that did
-// not reach the struct.
-//
-// Rendered holds the field's output, so a caller can pass it to
-// UnsupportedFieldMarker to find a field WriteField could not type.
+// ObservedStateFieldNote records how WriteObservedStateFields handled one
+// field. Callers use it to add a judgement queue entry for a field that did
+// not make it into the struct. Pass Rendered to UnsupportedFieldMarker to
+// check whether WriteField could type the field.
 type ObservedStateFieldNote struct {
 	// JSONName is the KRM field name in camelCase.
 	JSONName string
@@ -656,19 +654,19 @@ func WriteObservedStateMessage(out io.Writer, msgDetails *OutputMessageDetails, 
 	fmt.Fprintf(out, "}\n")
 }
 
-// placementNote returns a +kcc:guess marker for a field IsServerSetField places
-// by name, and "" for any other field.
+// placementNote returns a +kcc:guess marker for a field that IsServerSetField
+// moves to ObservedState because of its name. It returns "" for any other
+// field.
 //
-// The marker goes in the generated type as well as the judgement queue. The
-// allowlist will be wrong for some outlier, and the person who meets it is
-// reading the type, not the queue.
+// The marker is written into the generated Go type as well as the judgement
+// queue. The allowlist will be wrong for some fields, and the person who finds
+// one is usually reading the Go type, not the queue.
 func placementNote(field protoreflect.FieldDescriptor, msg protoreflect.MessageDescriptor, opts WriteOptions) string {
 	if !IsServerSetField(field, msg, opts) {
 		return ""
 	}
-	// controller-gen strips +kcc: markers from the CRD description, so a
-	// reviewer reading the type sees the guess while kubectl explain still shows
-	// only the proto's own comment.
+	// controller-gen drops +kcc: markers from the CRD description, so the
+	// guess shows up in the Go type but not in kubectl explain.
 	return "+kcc:guess=placement reason=no-field-behavior-on-message"
 }
 
