@@ -170,3 +170,55 @@ func TestValidateEmitParentRefsNeedsPrepopulateSpec(t *testing.T) {
 		})
 	}
 }
+
+// generate-types only collects reference hints while prepopulating the Spec,
+// so --emit-reference-hints on its own is rejected rather than ignored.
+func TestValidateEmitReferenceHintsNeedsPrepopulateSpec(t *testing.T) {
+	for _, tc := range []struct {
+		name               string
+		prepopulateSpec    bool
+		emitReferenceHints bool
+		wantErr            string
+	}{
+		{
+			name: "neither flag",
+		},
+		{
+			name:            "only --prepopulate-spec",
+			prepopulateSpec: true,
+		},
+		{
+			name:               "both flags",
+			prepopulateSpec:    true,
+			emitReferenceHints: true,
+		},
+		{
+			name:               "only --emit-reference-hints",
+			emitReferenceHints: true,
+			wantErr:            "`--emit-reference-hints` requires `--prepopulate-spec`",
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			// Arrange
+			o := &GenerateCRDOptions{
+				GenerateOptions:    &options.GenerateOptions{ProtoSourcePath: "googleapis.pb"},
+				ServiceName:        "google.cloud.example.v1",
+				Resources:          options.ResourceList{{Kind: "ExampleWidget", ProtoName: "Widget"}},
+				PrepopulateSpec:    tc.prepopulateSpec,
+				EmitReferenceHints: tc.emitReferenceHints,
+			}
+
+			// Act
+			err := o.validate()
+
+			// Assert
+			gotErr := ""
+			if err != nil {
+				gotErr = err.Error()
+			}
+			if gotErr != tc.wantErr {
+				t.Errorf("validate() error = %q, want %q", gotErr, tc.wantErr)
+			}
+		})
+	}
+}
