@@ -50,6 +50,12 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".automations[].updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".automations[].etag", PlaceholderEtag)
 
+	// Array normalization for ListCustomTargetTypes
+	replacements.ReplacePath(".customTargetTypes[].uid", PlaceholderUID)
+	replacements.ReplacePath(".customTargetTypes[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".customTargetTypes[].updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".customTargetTypes[].etag", PlaceholderEtag)
+
 	replacements.ReplacePath(".rules[].promoteReleaseRule.condition", map[string]interface{}{
 		"targetsPresentCondition": make(map[string]interface{}),
 	})
@@ -67,6 +73,11 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".response.automations[].createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".response.automations[].updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".response.automations[].etag", PlaceholderEtag)
+
+	replacements.ReplacePath(".response.customTargetTypes[].uid", PlaceholderUID)
+	replacements.ReplacePath(".response.customTargetTypes[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.customTargetTypes[].updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.customTargetTypes[].etag", PlaceholderEtag)
 
 	replacements.ReplacePath(".response.rules[].promoteReleaseRule.condition", map[string]interface{}{
 		"targetsPresentCondition": make(map[string]interface{}),
