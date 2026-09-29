@@ -1,0 +1,15 @@
+apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
+kind: AIPlatformReasoningEngine
+metadata:
+  name: aiplatformreasoningengine-max-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: reasoningengine-max-${uniqueId}
+  description: Reasoning Engine maximal test
+  labels:
+    env: test
+    tier: standard
+  spec:
+    agentFramework: google-adk

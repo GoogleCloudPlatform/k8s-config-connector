@@ -1,0 +1,6 @@
+- caisURL: //aiplatform.googleapis.com/projects/${projectId}/locations/us-central1/reasoningEngines/${reasoningEngineID}
+  group: aiplatform.cnrm.cloud.google.com
+  kind: AIPlatformReasoningEngine
+  name: aiplatformreasoningengine-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
