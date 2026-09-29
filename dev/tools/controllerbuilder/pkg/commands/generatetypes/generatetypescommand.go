@@ -346,7 +346,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		queued = append(queued, judgement.Entry{
 			ProtoMessage: f.Message,
 			Field:        f.Field,
-			Reason:       "possible-reference-by-sibling",
+			Reason:       judgement.ReasonPossibleReferenceBySibling,
 			Detail:       "the name matches " + f.Target + ", a resource this service declares; confirm whether it should be a reference",
 			Status:       judgement.StatusOpen,
 		})
