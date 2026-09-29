@@ -151,34 +151,82 @@ type ArtifactRegistryRepositoryRemoteRepositoryConfig struct {
 
 // +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.DockerRepository
 type ArtifactRegistryRepositoryDockerRepository struct {
+	// Customer-specified remote repository.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.DockerRepository.custom_repository
+	CustomRepository *ArtifactRegistryRepositoryDockerRepositoryCustomRepository `json:"customRepository,omitempty"`
+
 	// One of the publicly available Docker repositories supported by Artifact
 	//  Registry.
 	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.DockerRepository.public_repository
 	PublicRepository *string `json:"publicRepository,omitempty"`
 }
 
+// +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.DockerRepository.CustomRepository
+type ArtifactRegistryRepositoryDockerRepositoryCustomRepository struct {
+	// An http/https uri reference to the custom remote repository, for ex:
+	//  "https://registry-1.docker.io".
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.DockerRepository.CustomRepository.uri
+	URI *string `json:"uri,omitempty"`
+}
+
 // +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.MavenRepository
 type ArtifactRegistryRepositoryMavenRepository struct {
+	// Customer-specified remote repository.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.MavenRepository.custom_repository
+	CustomRepository *ArtifactRegistryRepositoryMavenRepositoryCustomRepository `json:"customRepository,omitempty"`
+
 	// One of the publicly available Maven repositories supported by Artifact
 	//  Registry.
 	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.MavenRepository.public_repository
 	PublicRepository *string `json:"publicRepository,omitempty"`
 }
 
+// +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.MavenRepository.CustomRepository
+type ArtifactRegistryRepositoryMavenRepositoryCustomRepository struct {
+	// An http/https uri reference to the upstream remote repository, for ex:
+	//  "https://my.maven.registry/".
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.MavenRepository.CustomRepository.uri
+	URI *string `json:"uri,omitempty"`
+}
+
 // +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.NpmRepository
 type ArtifactRegistryRepositoryNpmRepository struct {
+	// Customer-specified remote repository.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.NpmRepository.custom_repository
+	CustomRepository *ArtifactRegistryRepositoryNpmRepositoryCustomRepository `json:"customRepository,omitempty"`
+
 	// One of the publicly available Npm repositories supported by Artifact
 	//  Registry.
 	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.NpmRepository.public_repository
 	PublicRepository *string `json:"publicRepository,omitempty"`
 }
 
+// +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.NpmRepository.CustomRepository
+type ArtifactRegistryRepositoryNpmRepositoryCustomRepository struct {
+	// An http/https uri reference to the upstream remote repository, for ex:
+	//  "https://my.npm.registry/".
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.NpmRepository.CustomRepository.uri
+	URI *string `json:"uri,omitempty"`
+}
+
 // +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.PythonRepository
 type ArtifactRegistryRepositoryPythonRepository struct {
+	// Customer-specified remote repository.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.PythonRepository.custom_repository
+	CustomRepository *ArtifactRegistryRepositoryPythonRepositoryCustomRepository `json:"customRepository,omitempty"`
+
 	// One of the publicly available Python repositories supported by Artifact
 	//  Registry.
 	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.PythonRepository.public_repository
 	PublicRepository *string `json:"publicRepository,omitempty"`
+}
+
+// +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.PythonRepository.CustomRepository
+type ArtifactRegistryRepositoryPythonRepositoryCustomRepository struct {
+	// An http/https uri reference to the upstream remote repository, for ex:
+	//  "https://my.python.registry/".
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.PythonRepository.CustomRepository.uri
+	URI *string `json:"uri,omitempty"`
 }
 
 // +genclient
