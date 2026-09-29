@@ -22,6 +22,7 @@ import (
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/scaffold"
 )
 
 func TestMergeQueueLines(t *testing.T) {
@@ -323,6 +324,49 @@ func TestValidatePlaceServerSetFieldsNeedsPrepopulateSpec(t *testing.T) {
 			}
 			if gotErr != tc.wantErr {
 				t.Errorf("validate() error = %q, want %q", gotErr, tc.wantErr)
+			}
+		})
+	}
+}
+
+// A bare --resource name that exists in more than one listed service gets a
+// resource-level queue entry naming every match and the one that was used.
+func TestAmbiguousResourceItem(t *testing.T) {
+	resource := options.Resource{Kind: "NotebookInstanceV2", ProtoName: "Instance"}
+	for _, tc := range []struct {
+		name     string
+		matches  []string
+		wantLine string
+	}{
+		{
+			name: "qualified name or no match",
+		},
+		{
+			name:    "one match",
+			matches: []string{"google.cloud.notebooks.v2.Instance"},
+		},
+		{
+			name:    "two matches",
+			matches: []string{"google.cloud.notebooks.v1.Instance", "google.cloud.notebooks.v2.Instance"},
+			wantLine: "kind=NotebookInstanceV2 group=notebooks.cnrm.cloud.google.com: resource reason=ambiguous-proto-name " +
+				"(Instance exists in 2 of the listed services (google.cloud.notebooks.v1.Instance, google.cloud.notebooks.v2.Instance); " +
+				"generated from google.cloud.notebooks.v1.Instance. Put the full proto name in --resource to choose one)\n",
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			// Act
+			item, ok := ambiguousResourceItem(resource, tc.matches)
+
+			// Assert
+			if ok != (tc.wantLine != "") {
+				t.Fatalf("ok = %v, want %v", ok, tc.wantLine != "")
+			}
+			if !ok {
+				return
+			}
+			got := scaffold.FormatJudgementEntries(resource.Kind, "notebooks.cnrm.cloud.google.com", []scaffold.JudgementItem{item})
+			if got != tc.wantLine {
+				t.Errorf("queue line:\n got %q\nwant %q", got, tc.wantLine)
 			}
 		})
 	}
