@@ -614,6 +614,31 @@ func TestSortRepeatedFields_ValidValues(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "sorts nested lists inside a single-element list",
+			input: &descriptorpb.FileDescriptorProto{
+				MessageType: []*descriptorpb.DescriptorProto{
+					{
+						Name: stringPtr("Single"),
+						Field: []*descriptorpb.FieldDescriptorProto{
+							{Name: stringPtr("b_field")},
+							{Name: stringPtr("a_field")},
+						},
+					},
+				},
+			},
+			want: &descriptorpb.FileDescriptorProto{
+				MessageType: []*descriptorpb.DescriptorProto{
+					{
+						Name: stringPtr("Single"),
+						Field: []*descriptorpb.FieldDescriptorProto{
+							{Name: stringPtr("a_field")},
+							{Name: stringPtr("b_field")},
+						},
+					},
+				},
+			},
+		},
 	}
 
 	for _, tc := range tests {

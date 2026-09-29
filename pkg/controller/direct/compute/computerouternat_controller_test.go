@@ -21,6 +21,7 @@ import (
 
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/protobuf/proto"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -126,7 +127,7 @@ func TestRouterNATAdapter_RequestBuilding(t *testing.T) {
 func TestCompareComputeRouterNAT(t *testing.T) {
 	tests := []struct {
 		name      string
-		desired   *computepb.RouterNat
+		desired   *krm.ComputeRouterNATSpec
 		actual    *computepb.RouterNat
 		wantDiff  bool
 		wantPaths []string
@@ -140,11 +141,15 @@ func TestCompareComputeRouterNAT(t *testing.T) {
 			// nat_ips: ["https://www.googleapis.com/compute/v1/projects/p1/regions/r1/addresses/addr-1"]
 			// subnetworks: [{"name": "https://www.googleapis.com/compute/v1/projects/p1/regions/r1/subnetworks/sub-1", "source_ip_ranges_to_nat": ["ALL_IP_RANGES"]}]
 			name: "Reference URL Prefix Mismatch",
-			desired: &computepb.RouterNat{
-				NatIps: []string{"projects/p1/regions/r1/addresses/addr-1"},
-				Subnetworks: []*computepb.RouterNatSubnetworkToNat{
+			desired: &krm.ComputeRouterNATSpec{
+				NatIps: []krm.ComputeAddressRef{
+					{External: "projects/p1/regions/r1/addresses/addr-1"},
+				},
+				Subnetwork: []krm.RouternatSubnetwork{
 					{
-						Name:                proto.String("projects/p1/regions/r1/subnetworks/sub-1"),
+						SubnetworkRef: krm.ComputeSubnetworkRef{
+							External: "projects/p1/regions/r1/subnetworks/sub-1",
+						},
 						SourceIpRangesToNat: []string{"ALL_IP_RANGES"},
 					},
 				},
@@ -158,11 +163,8 @@ func TestCompareComputeRouterNAT(t *testing.T) {
 					},
 				},
 			},
-			wantDiff:  true,
-			wantPaths: []string{"nat_ips", "subnetworks"},
-			// Future expected:
-			// wantDiff: false,
-			// wantPaths: nil,
+			wantDiff:  false,
+			wantPaths: nil,
 		},
 		{
 			// 2. Missing Server Defaults for Unset Fields
@@ -175,19 +177,16 @@ func TestCompareComputeRouterNAT(t *testing.T) {
 			// endpoint_types: ["ENDPOINT_TYPE_VM"]
 			// nat_ip_allocate_option: "AUTO_ONLY"
 			name: "Missing Server Defaults for Unset Fields",
-			desired: &computepb.RouterNat{
-				NatIpAllocateOption: proto.String("AUTO_ONLY"),
+			desired: &krm.ComputeRouterNATSpec{
+				NatIpAllocateOption: direct.LazyPtr("AUTO_ONLY"),
 			},
 			actual: &computepb.RouterNat{
 				Type:                proto.String("PUBLIC"),
 				EndpointTypes:       []string{"ENDPOINT_TYPE_VM"},
 				NatIpAllocateOption: proto.String("AUTO_ONLY"),
 			},
-			wantDiff:  true,
-			wantPaths: []string{"endpoint_types", "type"},
-			// Future expected:
-			// wantDiff: false,
-			// wantPaths: nil,
+			wantDiff:  false,
+			wantPaths: nil,
 		},
 		{
 			// 3. Wrong Default for enable_endpoint_independent_mapping
@@ -196,15 +195,12 @@ func TestCompareComputeRouterNAT(t *testing.T) {
 			// Actual (GCP Proto):
 			// enable_endpoint_independent_mapping: false
 			name:    "Wrong Default for enable_endpoint_independent_mapping",
-			desired: &computepb.RouterNat{},
+			desired: &krm.ComputeRouterNATSpec{},
 			actual: &computepb.RouterNat{
 				EnableEndpointIndependentMapping: proto.Bool(false),
 			},
-			wantDiff:  true,
-			wantPaths: []string{"enable_endpoint_independent_mapping"},
-			// Future expected:
-			// wantDiff: false,
-			// wantPaths: nil,
+			wantDiff:  false,
+			wantPaths: nil,
 		},
 		{
 			// 4. Wrong Default for enable_dynamic_port_allocation on Private NAT
@@ -215,18 +211,15 @@ func TestCompareComputeRouterNAT(t *testing.T) {
 			// type: "PRIVATE"
 			// enable_dynamic_port_allocation: true
 			name: "Wrong Default for enable_dynamic_port_allocation on Private NAT",
-			desired: &computepb.RouterNat{
-				Type: proto.String("PRIVATE"),
+			desired: &krm.ComputeRouterNATSpec{
+				Type: direct.LazyPtr("PRIVATE"),
 			},
 			actual: &computepb.RouterNat{
 				Type:                        proto.String("PRIVATE"),
 				EnableDynamicPortAllocation: proto.Bool(true),
 			},
-			wantDiff:  true,
-			wantPaths: []string{"enable_dynamic_port_allocation"},
-			// Future expected:
-			// wantDiff: false,
-			// wantPaths: nil,
+			wantDiff:  false,
+			wantPaths: nil,
 		},
 		{
 			// 5. Terraform Set vs Direct Slice Ordering
@@ -235,10 +228,10 @@ func TestCompareComputeRouterNAT(t *testing.T) {
 			// Actual (GCP Proto):
 			// nat_ips: ["projects/.../addr-2", "projects/.../addr-1"]
 			name: "Terraform Set vs Direct Slice Ordering",
-			desired: &computepb.RouterNat{
-				NatIps: []string{
-					"projects/p1/regions/r1/addresses/addr-1",
-					"projects/p1/regions/r1/addresses/addr-2",
+			desired: &krm.ComputeRouterNATSpec{
+				NatIps: []krm.ComputeAddressRef{
+					{External: "projects/p1/regions/r1/addresses/addr-1"},
+					{External: "projects/p1/regions/r1/addresses/addr-2"},
 				},
 			},
 			actual: &computepb.RouterNat{
@@ -247,11 +240,8 @@ func TestCompareComputeRouterNAT(t *testing.T) {
 					"projects/p1/regions/r1/addresses/addr-1",
 				},
 			},
-			wantDiff:  true,
-			wantPaths: []string{"nat_ips"},
-			// Future expected:
-			// wantDiff: false,
-			// wantPaths: nil,
+			wantDiff:  false,
+			wantPaths: nil,
 		},
 		{
 			// 6. Positive Control: Genuine Field Modification
@@ -260,17 +250,14 @@ func TestCompareComputeRouterNAT(t *testing.T) {
 			// Actual (GCP Proto):
 			// min_ports_per_vm: 64
 			name: "Positive Control: Genuine Field Modification",
-			desired: &computepb.RouterNat{
-				MinPortsPerVm: proto.Int32(128),
+			desired: &krm.ComputeRouterNATSpec{
+				MinPortsPerVm: direct.LazyPtr(int64(128)),
 			},
 			actual: &computepb.RouterNat{
 				MinPortsPerVm: proto.Int32(64),
 			},
 			wantDiff:  true,
 			wantPaths: []string{"min_ports_per_vm"},
-			// Future expected:
-			// wantDiff: true,
-			// wantPaths: []string{"min_ports_per_vm"},
 		},
 	}
 
