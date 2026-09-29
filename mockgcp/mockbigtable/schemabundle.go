@@ -37,6 +37,7 @@ import (
 	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 )
 
+// GetSchemaBundle retrieves a Bigtable SchemaBundle by name.
 func (s *tableAdminServer) GetSchemaBundle(ctx context.Context, req *pb.GetSchemaBundleRequest) (*pb.SchemaBundle, error) {
 	name, err := s.parseSchemaBundleName(req.GetName())
 	if err != nil {
@@ -56,6 +57,7 @@ func (s *tableAdminServer) GetSchemaBundle(ctx context.Context, req *pb.GetSchem
 	return obj, nil
 }
 
+// CreateSchemaBundle creates a new Bigtable SchemaBundle.
 func (s *tableAdminServer) CreateSchemaBundle(ctx context.Context, req *pb.CreateSchemaBundleRequest) (*longrunningpb.Operation, error) {
 	reqName := req.GetParent() + "/schemaBundles/" + req.GetSchemaBundleId()
 	name, err := s.parseSchemaBundleName(reqName)
@@ -94,6 +96,7 @@ func (s *tableAdminServer) CreateSchemaBundle(ctx context.Context, req *pb.Creat
 	})
 }
 
+// UpdateSchemaBundle updates an existing Bigtable SchemaBundle.
 func (s *tableAdminServer) UpdateSchemaBundle(ctx context.Context, req *pb.UpdateSchemaBundleRequest) (*longrunningpb.Operation, error) {
 	reqBundle := req.GetSchemaBundle()
 	if reqBundle == nil {
@@ -159,6 +162,7 @@ func (s *tableAdminServer) UpdateSchemaBundle(ctx context.Context, req *pb.Updat
 	})
 }
 
+// DeleteSchemaBundle deletes a Bigtable SchemaBundle by name.
 func (s *tableAdminServer) DeleteSchemaBundle(ctx context.Context, req *pb.DeleteSchemaBundleRequest) (*emptypb.Empty, error) {
 	name, err := s.parseSchemaBundleName(req.GetName())
 	if err != nil {
@@ -178,6 +182,7 @@ func (s *tableAdminServer) DeleteSchemaBundle(ctx context.Context, req *pb.Delet
 	return &emptypb.Empty{}, nil
 }
 
+// ListSchemaBundles lists all Bigtable SchemaBundles under a table.
 func (s *tableAdminServer) ListSchemaBundles(ctx context.Context, req *pb.ListSchemaBundlesRequest) (*pb.ListSchemaBundlesResponse, error) {
 	tableName, err := s.parseTableName(req.GetParent())
 	if err != nil {
