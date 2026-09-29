@@ -438,18 +438,21 @@ func (o *GenerateCRDOptions) validate() error {
 	return nil
 }
 
-// resolveProtoFullName maps a --resource entry to a fully qualified proto message
-// name, trying each comma-separated service in turn.
+// resolveProtoFullName returns the fully qualified proto name for a --resource
+// entry. A name that contains a dot is returned as is. Otherwise each
+// comma-separated service is tried in order and the first match wins. If more
+// than one service has the message, a warning is logged.
 func resolveProtoFullName(api *protoapi.Proto, serviceName string, resource options.Resource) string {
 	if strings.Contains(resource.ProtoName, ".") {
 		return resource.ProtoName
 	}
-	// Collect every service the bare name resolves in, not just the first.
-	// When this took the first match silently, NotebookInstanceV2 was generated
-	// from notebooks.v1.Instance while its Kind and its upstream counterpart both
-	// say v2: the block declares v1 and v2, both have an Instance, and v1 won.
-	// The v1 message is shaped differently enough that 39 CRD fields went missing
-	// without anything reporting a problem.
+	// The same message name can exist in several of the listed services.
+	// We collect all matches so we can warn when there is more than one.
+	// We still return the first match, so the generated output does not change.
+	//
+	// Example: notebooks lists v1 and v2, and both have an Instance message.
+	// NotebookInstanceV2 was generated from v1 without any warning, and the
+	// CRD ended up missing 39 fields.
 	var matches []string
 	for _, svc := range strings.Split(serviceName, ",") {
 		candidate := svc + "." + resource.ProtoName
