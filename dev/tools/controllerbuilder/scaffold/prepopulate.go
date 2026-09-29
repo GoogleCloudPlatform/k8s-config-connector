@@ -318,13 +318,3 @@ func outputOnlyComment(field protoreflect.FieldDescriptor) (string, bool) {
 	}
 	return "", false
 }
-
-// FormatOutputOnlyCandidates renders detector output for the report file.
-func FormatOutputOnlyCandidates(kind, group string, items []OutputOnlyCandidate) string {
-	var sb strings.Builder
-	for _, it := range items {
-		sb.WriteString(fmt.Sprintf("kind=%s group=%s: field %q comment=%q\n",
-			kind, group, it.FieldPath, it.Comment))
-	}
-	return sb.String()
-}
