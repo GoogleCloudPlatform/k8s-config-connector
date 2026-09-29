@@ -187,7 +187,6 @@ BLOCKED_KINDS=(
     "MapManagementMapConfig"
     "MapsPlatformDatasetsDataset"
     "MarketingPlatformAdminAnalyticsAccountLink"
-    "MigrationCenterGroup"
     "ModelArmorTemplate"
     "NetworkConnectivityMulticloudDataTransferConfig"
     "NetworkManagementVpcFlowLogsConfig"
