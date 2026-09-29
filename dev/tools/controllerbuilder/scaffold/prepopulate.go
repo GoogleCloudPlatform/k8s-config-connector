@@ -277,8 +277,10 @@ type OutputOnlyCandidate struct {
 	Comment string
 }
 
-// outputOnlyPrefixes lists comment prefix markers used across Google APIs to
-// designate output-only fields in documentation without proto field_behavior annotations.
+// outputOnlyPrefixes are the markers Google API comments use to say a field is
+// output only when the proto has no field_behavior annotation. They match
+// regardless of case, because compute writes both "[Output Only]" and
+// "[Output only]".
 var outputOnlyPrefixes = []string{"Output only.", "[Output Only]"}
 
 // DetectOutputOnlyInComments finds spec fields whose leading proto comments describe
@@ -312,7 +314,7 @@ func outputOnlyComment(field protoreflect.FieldDescriptor) (string, bool) {
 	loc := field.ParentFile().SourceLocations().ByDescriptor(field)
 	comment := strings.TrimSpace(loc.LeadingComments)
 	for _, prefix := range outputOnlyPrefixes {
-		if strings.HasPrefix(comment, prefix) {
+		if len(comment) >= len(prefix) && strings.EqualFold(comment[:len(prefix)], prefix) {
 			return strings.Join(strings.Fields(comment), " "), true
 		}
 	}

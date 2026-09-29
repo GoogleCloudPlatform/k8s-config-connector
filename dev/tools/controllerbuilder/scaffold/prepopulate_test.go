@@ -377,6 +377,32 @@ func TestDetectOutputOnlyInComments(t *testing.T) {
 	}
 }
 
+// Compute writes both "[Output Only]" and "[Output only]", so the prefixes
+// match in any case. A comment where the words run on into a condition does not
+// match, because the field is only output some of the time.
+func TestDetectOutputOnlyIgnoresCase(t *testing.T) {
+	// Arrange
+	msg := commentedMessage(t,
+		"[Output only] Number of network endpoints in the group.",                       // field_0, compute's other spelling
+		"Output Only. The overall outcome of the test.",                                 // field_1, devtools.testing
+		"[Output only for type PARTNER. Input only for PARTNER_PROVIDER.] Pairing key.", // field_2, compute, conditional
+		"Output only for the create operation. Required for update.",                    // field_3, spanner-style, conditional
+	)
+	want := []string{".spec.field0", ".spec.field1"}
+
+	// Act
+	got := DetectOutputOnlyInComments(msg, codegen.WriteOptions{})
+
+	// Assert
+	var paths []string
+	for _, c := range got {
+		paths = append(paths, c.FieldPath)
+	}
+	if strings.Join(paths, ",") != strings.Join(want, ",") {
+		t.Errorf("got %v, want %v", paths, want)
+	}
+}
+
 // A field the proto already annotates needs no prose detection. Reporting it
 // would queue a field the generator has already placed correctly.
 func TestDetectOutputOnlySkipsAnnotatedFields(t *testing.T) {
