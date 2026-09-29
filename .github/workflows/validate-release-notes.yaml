@@ -31,6 +31,7 @@ jobs:
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
           script: |
+            const pr = context.payload.pull_request;
             const sender = context.payload.sender?.login || '';
 
             // 1. Bypass validation for automated bots
@@ -39,12 +40,6 @@ jobs:
               return;
             }
 
-            // Fetch live PR body from API to handle description edits and reruns correctly
-            const { data: pr } = await github.rest.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number
-            });
             const body = pr.body || '';
 
             // 2. Extract ```release-note ... ``` block

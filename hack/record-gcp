@@ -30,10 +30,7 @@ export ARTIFACTS
 rm -rf "${ARTIFACTS}"
 
 # Run the tests specified on the command line
-if [[ $1 =~ TestE2EScenariosV2.* ]]; then
-  # Prefix looks good
-  RUN_TESTS=$1
-elif [[ $1 =~ TestE2EScript.* ]]; then
+if [[ $1 =~ TestE2EScript.* ]]; then
   # Prefix looks good
   RUN_TESTS=$1
 elif [[ $1 =~ TestAllInSeries.* ]]; then

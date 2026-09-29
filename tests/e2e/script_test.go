@@ -82,12 +82,6 @@ func TestE2EScript(t *testing.T) {
 				if os.Getenv("SKIP_ALL") != "" {
 					t.Skip("SKIP_ALL is set")
 				}
-
-				suite := strings.Split(scenarioPath, "/")[0]
-				if !legacyScenarios[suite] {
-					t.Skip("non-legacy scenario, running under TestE2EScenariosV2")
-				}
-
 				uniqueID := testvariable.NewUniqueID()
 				folderID := ""
 
