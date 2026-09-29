@@ -98,6 +98,20 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 		buf.Write(field_.Bytes())
 		emitted++
 
+		// A string field named after a resource in this service may be a
+		// reference to it. WriteField has already written a +kcc:guess marker
+		// above the field, and this adds the queue entry. Both use
+		// SiblingResource, so every marker gets an entry. The field stays a
+		// string. A reviewer decides whether to make it a reference.
+		if target, ok := codegen.SiblingResource(field, opts); ok {
+			out.Judgement = append(out.Judgement, JudgementItem{
+				FieldPath: ".spec." + codegen.GetJSONForKRM(field, opts),
+				Reason:    "possible-reference-by-sibling",
+				Detail: "the name matches " + target + ", a resource this service declares; " +
+					"confirm whether it should be a reference",
+			})
+		}
+
 		if _, reason, ok := codegen.UnsupportedFieldMarker(field_.String()); ok {
 			out.Judgement = append(out.Judgement, JudgementItem{
 				FieldPath: ".spec." + codegen.GetJSONForKRM(field, opts),

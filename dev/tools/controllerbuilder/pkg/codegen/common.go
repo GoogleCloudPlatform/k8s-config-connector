@@ -14,7 +14,11 @@
 
 package codegen
 
-import "strings"
+import (
+	"strings"
+
+	"google.golang.org/protobuf/reflect/protoreflect"
+)
 
 const (
 	// KCCProtoMessageAnnotationMisc is used for go structs that map to proto messages, but are not top-level Spec structs
@@ -73,6 +77,14 @@ var protoMessagesNotMappedToGoStruct = map[string]string{
 	"google.protobuf.Struct":            "apiextensionsv1.JSON",
 	"google.rpc.Status":                 "common.Status",
 	"google.cloud.connectors.v1.Secret": "secretmanagerv1beta1.SecretRef",
+}
+
+// MapsToGoStruct reports whether the generator writes msg as a struct of its
+// own, and false for the messages protoMessagesNotMappedToGoStruct maps to a
+// scalar or a shared type instead.
+func MapsToGoStruct(msg protoreflect.MessageDescriptor) bool {
+	_, special := protoMessagesNotMappedToGoStruct[string(msg.FullName())]
+	return !special
 }
 
 // QualifierImports maps the package qualifier of each Go type in
