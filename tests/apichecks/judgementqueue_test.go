@@ -18,94 +18,91 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
 // judgementQueueGlob finds the per-service work queues written by the bulk
 // generator. The files are per service, not global, so that generating two
 // services in parallel never produces a conflicting diff in the same file.
-const judgementQueueGlob = "../../apis/*/needs_judgement_call.txt"
+const judgementQueueGlob = "../../apis/*/" + judgement.FileName
 
-// judgementQueue tracks resources whose generated types have pending triage items.
-// Resources with entries in this queue have their [refs] findings suppressed in
-// TestMissingRefs until triaged.
+// judgementQueue holds every entry from every per-service queue file.
 type judgementQueue struct {
-	// resources holds "<Kind>.<group>" keys.
-	resources sets.String
-	// entries counts individual field-level items, for reporting.
-	entries int
+	entries []judgement.Entry
+	// openResources holds "<Kind>.<group>" for each resource with at least
+	// one open entry.
+	openResources sets.String
 }
 
+// Has reports whether a resource still has open entries. TestMissingRefs
+// skips the [refs] findings of such a resource.
 func (q *judgementQueue) Has(kind, group string) bool {
 	if q == nil {
 		return false
 	}
-	return q.resources.Has(kind + "." + group)
+	return q.openResources.Has(kind + "." + group)
 }
 
-// loadJudgementQueue reads every per-service queue file matching glob.
-//
-// Each line names one field a human still has to decide about:
-//
-//	kind=<Kind> group=<group>: field ".spec.foo" reason=<why>
-//
-// reason= is mandatory, for the same rationale as refs_deferred.txt: an entry
-// with no stated reason is indistinguishable from an oversight, and this file
-// suppresses a check, so an accidental entry silently weakens the ratchet.
+// loadJudgementQueue reads and validates every queue file matching glob.
+// A file that does not validate is an error, so a typo cannot quietly change
+// what is suppressed.
 func loadJudgementQueue(glob string) (*judgementQueue, error) {
 	paths, err := filepath.Glob(glob)
 	if err != nil {
 		return nil, err
 	}
-	q := &judgementQueue{resources: sets.NewString()}
+	out := &judgementQueue{openResources: sets.NewString()}
 	for _, path := range paths {
-		data, err := os.ReadFile(path)
+		q, err := judgement.Read(path)
 		if err != nil {
 			return nil, err
 		}
-		for i, line := range strings.Split(string(data), "\n") {
-			line = strings.TrimSpace(line)
-			if line == "" || strings.HasPrefix(line, "#") {
-				continue
+		for _, e := range q.Entries {
+			out.entries = append(out.entries, e)
+			if e.IsOpen() && e.Kind != "" {
+				out.openResources.Insert(e.Kind + "." + e.Group)
 			}
-			kind, group, err := parseJudgementEntry(line)
-			if err != nil {
-				return nil, fmt.Errorf("%s:%d: %w", path, i+1, err)
-			}
-			q.resources.Insert(kind + "." + group)
-			q.entries++
 		}
 	}
-	return q, nil
+	return out, nil
 }
 
-// parseJudgementEntry pulls the resource identity out of one queue line. The
-// resource is keyed by Kind and group rather than CRD name because the generator
-// writes this file before the CRD exists, and knows only the Kind and group.
-func parseJudgementEntry(line string) (kind, group string, err error) {
-	if !strings.Contains(line, "reason=") {
-		return "", "", fmt.Errorf("entry has no reason=: %q", line)
-	}
-	head, _, _ := strings.Cut(line, ":")
-	for _, tok := range strings.Fields(head) {
-		k, v, ok := strings.Cut(tok, "=")
-		if !ok {
-			continue
+// summary counts entries by reason, split into open and each resolution.
+// It shows which guesses people keep and which they rewrite, which is what
+// tells us where the generator needs work.
+func (q *judgementQueue) summary() string {
+	counts := map[string]map[string]int{}
+	for _, e := range q.entries {
+		state := string(e.Status)
+		if e.Status == judgement.StatusResolved {
+			state = string(e.Resolution)
 		}
-		switch k {
-		case "kind":
-			kind = v
-		case "group":
-			group = v
+		if counts[e.Reason] == nil {
+			counts[e.Reason] = map[string]int{}
 		}
+		counts[e.Reason][state]++
 	}
-	if kind == "" || group == "" {
-		return "", "", fmt.Errorf("entry must set kind= and group=: %q", line)
+	reasons := make([]string, 0, len(counts))
+	for r := range counts {
+		reasons = append(reasons, r)
 	}
-	return kind, group, nil
+	sort.Strings(reasons)
+	var b strings.Builder
+	for _, r := range reasons {
+		b.WriteString(r)
+		for _, state := range []string{"open", "accepted", "edited", "deferred", "not-applicable"} {
+			if n := counts[r][state]; n > 0 {
+				fmt.Fprintf(&b, " %s=%d", state, n)
+			}
+		}
+		b.WriteString("\n")
+	}
+	return b.String()
 }
 
 // carryForwardSuppressed returns the baseline entries belonging to suppressed
@@ -194,147 +191,101 @@ func TestCarryForwardSuppressed(t *testing.T) {
 	}
 }
 
-func TestParseJudgementEntry(t *testing.T) {
-	grid := []struct {
-		name      string
-		line      string
-		wantKind  string
-		wantGroup string
-		wantErr   string
-	}{
-		{
-			name:      "well formed",
-			line:      `kind=NetworkServicesLBTrafficExtension group=networkservices.cnrm.cloud.google.com: field ".spec.forwardingRules" reason=possible-reference`,
-			wantKind:  "NetworkServicesLBTrafficExtension",
-			wantGroup: "networkservices.cnrm.cloud.google.com",
-		},
-		{
-			// The field path contains a colon in some descriptions; only the
-			// first colon separates the head.
-			name:      "colon in the tail is fine",
-			line:      `kind=Foo group=example.com: field ".spec.bar" reason=renamed: bar -> barRef`,
-			wantKind:  "Foo",
-			wantGroup: "example.com",
-		},
-		{
-			name:    "missing reason is rejected",
-			line:    `kind=Foo group=example.com: field ".spec.bar"`,
-			wantErr: "no reason=",
-		},
-		{
-			name:    "missing group is rejected",
-			line:    `kind=Foo: field ".spec.bar" reason=x`,
-			wantErr: "must set kind= and group=",
-		},
-		{
-			name:    "missing kind is rejected",
-			line:    `group=example.com: field ".spec.bar" reason=x`,
-			wantErr: "must set kind= and group=",
-		},
+func writeQueueFile(t *testing.T, dir, service, content string) {
+	t.Helper()
+	d := filepath.Join(dir, service)
+	if err := os.MkdirAll(d, 0755); err != nil {
+		t.Fatal(err)
 	}
-
-	for _, g := range grid {
-		t.Run(g.name, func(t *testing.T) {
-			kind, group, err := parseJudgementEntry(g.line)
-			if g.wantErr != "" {
-				if err == nil || !strings.Contains(err.Error(), g.wantErr) {
-					t.Fatalf("err = %v, want it to contain %q", err, g.wantErr)
-				}
-				return
-			}
-			if err != nil {
-				t.Fatalf("unexpected error: %v", err)
-			}
-			if kind != g.wantKind || group != g.wantGroup {
-				t.Errorf("got kind=%q group=%q, want kind=%q group=%q", kind, group, g.wantKind, g.wantGroup)
-			}
-		})
+	if err := os.WriteFile(filepath.Join(d, judgement.FileName), []byte(content), 0644); err != nil {
+		t.Fatal(err)
 	}
 }
 
 func TestLoadJudgementQueue(t *testing.T) {
 	dir := t.TempDir()
-	write := func(service, content string) {
-		t.Helper()
-		d := filepath.Join(dir, service)
-		if err := os.MkdirAll(d, 0755); err != nil {
-			t.Fatal(err)
-		}
-		if err := os.WriteFile(filepath.Join(d, "needs_judgement_call.txt"), []byte(content), 0644); err != nil {
-			t.Fatal(err)
-		}
-	}
-
-	write("networkservices", `# Fields the generator could not decide.
-kind=NetworkServicesLBTrafficExtension group=networkservices.cnrm.cloud.google.com: field ".spec.forwardingRules" reason=possible-reference
-
-kind=NetworkServicesLBTrafficExtension group=networkservices.cnrm.cloud.google.com: field ".spec.labels" reason=deliberate-omission
+	writeQueueFile(t, dir, "networkservices", `entries:
+- kind: NetworkServicesLBTrafficExtension
+  group: networkservices.cnrm.cloud.google.com
+  field: .spec.forwardingRules
+  reason: possible-reference
+  status: open
+- kind: NetworkServicesLBTrafficExtension
+  group: networkservices.cnrm.cloud.google.com
+  field: .spec.labels
+  reason: deliberate-omission
+  status: open
+- protoMessage: google.cloud.networkservices.v1.ExtensionChain
+  field: name
+  reason: possible-reference-by-sibling
+  status: open
 `)
-	write("dataproc", `kind=DataprocBatch group=dataproc.cnrm.cloud.google.com: field ".spec.serviceAccount" reason=possible-reference
+	writeQueueFile(t, dir, "dataproc", `entries:
+- kind: DataprocBatch
+  group: dataproc.cnrm.cloud.google.com
+  field: .spec.serviceAccount
+  reason: possible-reference
+  status: resolved
+  resolution: edited
+  note: changed to serviceAccountRef
 `)
 
-	q, err := loadJudgementQueue(filepath.Join(dir, "*", "needs_judgement_call.txt"))
+	q, err := loadJudgementQueue(filepath.Join(dir, "*", judgement.FileName))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	if q.entries != 3 {
-		t.Errorf("entries = %d, want 3", q.entries)
-	}
-	// Two entries for one resource collapse to a single suppressed resource.
-	if got := q.resources.Len(); got != 2 {
-		t.Errorf("resources = %d, want 2", got)
+	if len(q.entries) != 4 {
+		t.Errorf("entries = %d, want 4", len(q.entries))
 	}
 	if !q.Has("NetworkServicesLBTrafficExtension", "networkservices.cnrm.cloud.google.com") {
 		t.Error("expected the networkservices resource to be queued")
 	}
-	if !q.Has("DataprocBatch", "dataproc.cnrm.cloud.google.com") {
-		t.Error("expected the dataproc resource to be queued")
+	// Every dataproc entry is resolved, so the resource is checked in full.
+	if q.Has("DataprocBatch", "dataproc.cnrm.cloud.google.com") {
+		t.Error("a resource whose entries are all resolved must not be suppressed")
 	}
 	if q.Has("StorageBucket", "storage.cnrm.cloud.google.com") {
 		t.Error("an unrelated resource must not be suppressed")
 	}
+	// A message entry names no Kind, so it suppresses nothing.
+	if got := q.openResources.Len(); got != 1 {
+		t.Errorf("open resources = %d, want 1", got)
+	}
 }
 
 func TestLoadJudgementQueueNoFiles(t *testing.T) {
-	// The normal state of the repo today: no service has been bulk-generated, so
-	// nothing is suppressed and TestMissingRefs behaves exactly as before.
-	q, err := loadJudgementQueue(filepath.Join(t.TempDir(), "*", "needs_judgement_call.txt"))
+	// No service has been bulk-generated, so nothing is suppressed and
+	// TestMissingRefs behaves exactly as before.
+	q, err := loadJudgementQueue(filepath.Join(t.TempDir(), "*", judgement.FileName))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if q.entries != 0 || q.resources.Len() != 0 {
-		t.Errorf("expected an empty queue, got %d entries across %d resources", q.entries, q.resources.Len())
-	}
-	if q.Has("StorageBucket", "storage.cnrm.cloud.google.com") {
-		t.Error("empty queue must not suppress anything")
+	if len(q.entries) != 0 || q.openResources.Len() != 0 {
+		t.Errorf("expected an empty queue, got %d entries across %d resources", len(q.entries), q.openResources.Len())
 	}
 }
 
 func TestLoadJudgementQueueRejectsBadEntry(t *testing.T) {
 	dir := t.TempDir()
-	d := filepath.Join(dir, "svc")
-	if err := os.MkdirAll(d, 0755); err != nil {
-		t.Fatal(err)
-	}
-	if err := os.WriteFile(filepath.Join(d, "needs_judgement_call.txt"),
-		[]byte("kind=Foo group=example.com: field \".spec.bar\"\n"), 0644); err != nil {
-		t.Fatal(err)
-	}
+	writeQueueFile(t, dir, "svc", "entries:\n- kind: Foo\n  group: example.com\n  field: .spec.bar\n  status: open\n")
 
-	if _, err := loadJudgementQueue(filepath.Join(dir, "*", "needs_judgement_call.txt")); err == nil {
-		t.Fatal("expected an error for an entry with no reason=")
-	} else if !strings.Contains(err.Error(), "needs_judgement_call.txt:1") {
-		t.Errorf("error should name the file and line, got: %v", err)
+	_, err := loadJudgementQueue(filepath.Join(dir, "*", judgement.FileName))
+	if err == nil {
+		t.Fatal("expected an error for an entry with no reason")
+	}
+	if !strings.Contains(err.Error(), filepath.Join("svc", judgement.FileName)) {
+		t.Errorf("error should name the file, got: %v", err)
 	}
 }
 
 // TestJudgementQueueIsWellFormed validates the real files in the repo, so a
-// malformed entry fails here rather than silently widening the suppression.
+// malformed entry fails here rather than silently changing what is
+// suppressed. Run it with -v to see the counts by reason.
 func TestJudgementQueueIsWellFormed(t *testing.T) {
 	q, err := loadJudgementQueue(judgementQueueGlob)
 	if err != nil {
 		t.Fatalf("error loading judgement queues: %v", err)
 	}
-	t.Logf("%d open entries across %d resources", q.entries, q.resources.Len())
+	t.Logf("%d entries, %d resources with open entries\n%s", len(q.entries), q.openResources.Len(), q.summary())
 }

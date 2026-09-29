@@ -18,10 +18,12 @@ import (
 	"fmt"
 	"go/parser"
 	"go/token"
+	"reflect"
 	"strings"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
 
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/proto"
@@ -213,34 +215,25 @@ func TestPrepopulateSpecRequiresAMessage(t *testing.T) {
 	}
 }
 
-func TestFormatJudgementEntries(t *testing.T) {
+func TestJudgementEntries(t *testing.T) {
 	items := []JudgementItem{
 		{Reason: "untriaged-bulk-generation", Detail: "generated mechanically"},
 		{FieldPath: ".spec.network", Reason: "possible-reference", Detail: "target=compute.googleapis.com/Network"},
 	}
 
-	got := FormatJudgementEntries("ExampleWidget", "example.cnrm.cloud.google.com", items)
-	lines := strings.Split(strings.TrimSpace(got), "\n")
-	if len(lines) != 2 {
-		t.Fatalf("got %d lines, want 2:\n%s", len(lines), got)
-	}
+	got := JudgementEntries("ExampleWidget", "example.cnrm.cloud.google.com", items)
 
-	// Verify that entries conform to the expected format: kind=<Kind> group=<Group>: ... reason=<Reason>
-	for _, l := range lines {
-		for _, need := range []string{"kind=ExampleWidget", "group=example.cnrm.cloud.google.com", "reason="} {
-			if !strings.Contains(l, need) {
-				t.Errorf("line missing %q: %s", need, l)
-			}
-		}
-		if head, _, _ := strings.Cut(l, ":"); strings.Contains(head, "reason=") {
-			t.Errorf("reason must follow the colon so the head parses cleanly: %s", l)
-		}
+	want := []judgement.Entry{
+		{Kind: "ExampleWidget", Group: "example.cnrm.cloud.google.com", Reason: "untriaged-bulk-generation", Detail: "generated mechanically", Status: judgement.StatusOpen},
+		{Kind: "ExampleWidget", Group: "example.cnrm.cloud.google.com", Field: ".spec.network", Reason: "possible-reference", Detail: "target=compute.googleapis.com/Network", Status: judgement.StatusOpen},
 	}
-	if !strings.Contains(lines[0], ": resource reason=") {
-		t.Errorf("resource-level entry has the wrong shape: %s", lines[0])
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("got %+v\nwant %+v", got, want)
 	}
-	if !strings.Contains(lines[1], `: field ".spec.network" reason=`) {
-		t.Errorf("field-level entry has the wrong shape: %s", lines[1])
+	for _, e := range got {
+		if err := e.Validate(); err != nil {
+			t.Errorf("entry %+v is not valid: %v", e, err)
+		}
 	}
 }
 

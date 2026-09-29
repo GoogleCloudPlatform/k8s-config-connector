@@ -21,6 +21,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
 
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/proto"
@@ -36,7 +37,7 @@ var identityFields = map[string]bool{
 }
 
 // JudgementItem represents a finding or field needing human review, recorded in
-// the service's needs_judgement_call.txt queue file.
+// the service's judgement_queue.yaml.
 type JudgementItem struct {
 	// FieldPath is the KRM JSON path, e.g. ".spec.forwardingRules".
 	FieldPath string
@@ -229,24 +230,20 @@ func judgementFor(field protoreflect.FieldDescriptor, opts codegen.WriteOptions)
 	}, true
 }
 
-// FormatJudgementEntries renders queue lines for one resource, in the format
-// apis/<service>/needs_judgement_call.txt expects.
-func FormatJudgementEntries(kind, group string, items []JudgementItem) string {
-	var sb strings.Builder
+// JudgementEntries turns one resource's items into open queue entries.
+func JudgementEntries(kind, group string, items []JudgementItem) []judgement.Entry {
+	out := make([]judgement.Entry, 0, len(items))
 	for _, it := range items {
-		// A resource-level item has no field path.
-		subject := "resource"
-		if it.FieldPath != "" {
-			subject = fmt.Sprintf("field %q", it.FieldPath)
-		}
-		sb.WriteString(fmt.Sprintf("kind=%s group=%s: %s reason=%s",
-			kind, group, subject, it.Reason))
-		if it.Detail != "" {
-			sb.WriteString(" (" + it.Detail + ")")
-		}
-		sb.WriteString("\n")
+		out = append(out, judgement.Entry{
+			Kind:   kind,
+			Group:  group,
+			Field:  it.FieldPath,
+			Reason: it.Reason,
+			Detail: it.Detail,
+			Status: judgement.StatusOpen,
+		})
 	}
-	return sb.String()
+	return out
 }
 
 // ExtraImportsFor scans rendered field bodies and returns required package imports
