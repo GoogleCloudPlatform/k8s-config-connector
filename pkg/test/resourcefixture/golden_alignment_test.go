@@ -954,7 +954,6 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "observedGeneration")
 			delete(v, "latestCreatedRevision")
 			delete(v, "latestReadyRevision")
-			delete(v, "customAudiences")
 			if template, ok := v["template"].(map[string]interface{}); ok {
 				delete(template, "serviceAccount")
 				if containers, ok := template["containers"].([]interface{}); ok {

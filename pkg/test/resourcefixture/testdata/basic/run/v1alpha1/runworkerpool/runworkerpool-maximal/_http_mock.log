@@ -215,9 +215,6 @@ X-Xss-Protection: 0
     "clientVersion": "1.0.0",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "test@google.com",
-    "customAudiences": [
-      "https://example.com"
-    ],
     "description": "Maximal WorkerPool description",
     "etag": "abcdef0123A=",
     "generation": "1",
@@ -286,9 +283,6 @@ X-Xss-Protection: 0
   "clientVersion": "1.0.0",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "creator": "${creatorID}",
-  "customAudiences": [
-    "https://example.com"
-  ],
   "description": "Maximal WorkerPool description",
   "etag": "abcdef0123A=",
   "generation": "12345678901234",
@@ -526,9 +520,6 @@ X-Xss-Protection: 0
     "clientVersion": "1.0.0",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "test@google.com",
-    "customAudiences": [
-      "https://example.com"
-    ],
     "description": "Updated Maximal WorkerPool description",
     "etag": "abcdef0123A=",
     "generation": "2",
@@ -597,9 +588,6 @@ X-Xss-Protection: 0
   "clientVersion": "1.0.0",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "creator": "${creatorID}",
-  "customAudiences": [
-    "https://example.com"
-  ],
   "description": "Updated Maximal WorkerPool description",
   "etag": "abcdef0123A=",
   "generation": "12345678901234",
