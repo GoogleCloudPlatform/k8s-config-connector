@@ -52,4 +52,19 @@
   - Added comprehensive identity unit tests with `cmp.Diff`.
 - **Impact**: Provides valid direct KRM types, CRD, and IdentityV2 for CCInsightsAnalysisRule.
 
+### [2026-09-30] CCInsightsAnalysisRule Direct Controller and E2E Fixtures
+- **Context**: Implementing Greenfield direct controller, fuzzer, and recording/verifying E2E fixtures for `CCInsightsAnalysisRule`.
+- **Problem**:
+  1. `CreateAnalysisRuleRequest` takes parent and `AnalysisRule` proto with server-generated ID returned on `created.Name`.
+  2. GCP API requires `display_name` to be non-empty upon creation, and if `active: true`, at least one annotator must be enabled in `annotatorSelector`.
+  3. Server-assigned numeric ID required normalization in `tests/e2e/normalize.go`, `tests/e2e/replacements.go`, and `pkg/cais/caistesting/testing.go`.
+- **Solution**:
+  1. Implemented isolated controller under `pkg/controller/direct/contactcenterinsights/ccinsightsanalysisrule/` using official GAPIC REST client (`contactcenterinsights.NewRESTClient`).
+  2. Defaulted `DisplayName` to resource name in `AdapterForObject` if unspecified, and populated default in `compare`.
+  3. Implemented round-trip fuzzer registered via `fuzztesting.RegisterKRMFuzzer`.
+  4. Added `CCInsightsAnalysisRule` to `tests/e2e/normalize.go` (`${analysisRuleId}`), `replacements.go`, and `caistesting/testing.go`.
+  5. Recorded minimal and maximal fixtures against real GCP (`RECORD_AUDIT_PROBE=1 ./hack/record-gcp`), and verified re-reconciliation and audit log generation.
+- **Impact**: Fully functional direct controller and E2E test coverage for `CCInsightsAnalysisRule`.
+
+
 
