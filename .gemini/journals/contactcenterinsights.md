@@ -42,3 +42,14 @@
 - **Solution**: Set the full resource name (including the user-provided ID) on the `PhraseMatcher.Name` field in the `Create` request.
 - **Impact**: Other resources in `contactcenterinsights` (like `View`) likely follow this same pattern.
 
+### [2026-09-29] CCInsightsAnalysisRule Greenfield Types Scaffolding
+- **Context**: Greenfield implementation of CCInsightsAnalysisRule (Step 1: types, CRD, and IdentityV2) under `contactcenterinsights.cnrm.cloud.google.com/v1alpha1`.
+- **Solution**:
+  - Added `CCInsightsAnalysisRule:AnalysisRule` to `apis/contactcenterinsights/generate.sh`.
+  - Defined `CCInsightsAnalysisRuleSpec` and `CCInsightsAnalysisRuleObservedState` in `apis/contactcenterinsights/v1alpha1/ccinsightsanalysisrule_types.go`, using pointer fields for all primitives (including `Location *string`).
+  - Implemented `IdentityV2` in `ccinsightsanalysisrule_identity.go` with template `projects/{project}/locations/{location}/analysisRules/{analysisRule}` and added URL format exception to `pkg/gcpurls/registry_test.go`.
+  - Implemented `CCInsightsAnalysisRuleRef` in `ccinsightsanalysisrule_reference.go` delegating `Normalize` to `refs.Normalize`.
+  - Added comprehensive identity unit tests with `cmp.Diff`.
+- **Impact**: Provides valid direct KRM types, CRD, and IdentityV2 for CCInsightsAnalysisRule.
+
+

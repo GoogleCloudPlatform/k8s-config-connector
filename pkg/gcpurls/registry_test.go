@@ -160,6 +160,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}": true,
 
 		// Contact Center Insights
+		"//contactcenterinsights.googleapis.com/projects/{}/locations/{}/analysisRules/{}": true,
 		"//contactcenterinsights.googleapis.com/projects/{}/locations/{}/conversations/{}": true,
 		"//contactcenterinsights.googleapis.com/projects/{}/locations/{}/qaScorecards/{}":  true,
 
