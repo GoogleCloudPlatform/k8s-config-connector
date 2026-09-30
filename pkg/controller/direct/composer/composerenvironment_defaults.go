@@ -118,6 +118,8 @@ var computedFieldPaths = []string{
 	"Config.PrivateEnvironmentConfig.CloudComposerConnectionSubnetworkRef",
 	"Config.PrivateEnvironmentConfig.CloudComposerNetworkIPv4CIDRBlock",
 	"Config.PrivateEnvironmentConfig.CloudSQLIPv4CIDRBlock",
+	"Config.PrivateEnvironmentConfig.EnablePrivateBuildsOnly",
+	"Config.PrivateEnvironmentConfig.EnablePrivateEnvironment",
 	"Config.PrivateEnvironmentConfig.NetworkingConfig",
 	"Config.PrivateEnvironmentConfig.PrivateClusterConfig.EnablePrivateEndpoint",
 	"Config.PrivateEnvironmentConfig.PrivateClusterConfig.MasterIPV4CIDRBlock",

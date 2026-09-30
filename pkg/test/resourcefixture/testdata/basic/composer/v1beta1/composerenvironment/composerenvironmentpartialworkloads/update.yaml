@@ -24,6 +24,8 @@ spec:
     nodeConfig:
       serviceAccountRef:
         name: sa-${uniqueId}
+      composerNetworkAttachmentRef:
+        name: attachment-${uniqueId}
     workloadsConfig:
       scheduler:
         count: 3

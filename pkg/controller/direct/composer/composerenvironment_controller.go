@@ -252,7 +252,7 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		req := &composerpb.UpdateEnvironmentRequest{
 			Name: a.id.String(),
 			UpdateMask: &fieldmaskpb.FieldMask{
-				Paths: []string{u.mask},
+				Paths: strings.Split(u.mask, ","),
 			},
 			Environment: patch,
 		}
@@ -286,8 +286,10 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 // isValidUpdatePrefix checks whether a modified field path matches any registered update mask prefix.
 func isValidUpdatePrefix(path string) bool {
 	for _, u := range fieldUpdaters {
-		if path == u.mask || strings.HasPrefix(path, u.mask+".") {
-			return true
+		for _, m := range strings.Split(u.mask, ",") {
+			if path == m || strings.HasPrefix(path, m+".") {
+				return true
+			}
 		}
 	}
 	return false
@@ -626,6 +628,99 @@ var fieldUpdaters = []fieldUpdater{
 							TaskLogsRetentionConfig: rawDesiredPb.GetConfig().GetDataRetentionConfig().GetTaskLogsRetentionConfig(),
 						},
 					},
+				}
+			}
+			return nil
+		},
+	},
+	// 20. config.software_config.web_server_plugins_mode
+	{
+		mask: "config.software_config.web_server_plugins_mode",
+		build: func(desired *krm.ComposerEnvironment, rawDesiredPb, mergedDesiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
+			if desired.Spec.Config != nil && desired.Spec.Config.SoftwareConfig != nil && desired.Spec.Config.SoftwareConfig.WebServerPluginsMode != nil && mergedDesiredPb.GetConfig().GetSoftwareConfig().GetWebServerPluginsMode() != actualPb.GetConfig().GetSoftwareConfig().GetWebServerPluginsMode() {
+				return &composerpb.Environment{
+					Config: &composerpb.EnvironmentConfig{
+						SoftwareConfig: &composerpb.SoftwareConfig{
+							WebServerPluginsMode: rawDesiredPb.GetConfig().GetSoftwareConfig().GetWebServerPluginsMode(),
+						},
+					},
+				}
+			}
+			return nil
+		},
+	},
+	// 21. config.private_environment_config.enable_private_builds_only
+	{
+		mask: "config.private_environment_config.enable_private_builds_only",
+		build: func(desired *krm.ComposerEnvironment, rawDesiredPb, mergedDesiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
+			if desired.Spec.Config != nil && desired.Spec.Config.PrivateEnvironmentConfig != nil && desired.Spec.Config.PrivateEnvironmentConfig.EnablePrivateBuildsOnly != nil && mergedDesiredPb.GetConfig().GetPrivateEnvironmentConfig().GetEnablePrivateBuildsOnly() != actualPb.GetConfig().GetPrivateEnvironmentConfig().GetEnablePrivateBuildsOnly() {
+				return &composerpb.Environment{
+					Config: &composerpb.EnvironmentConfig{
+						PrivateEnvironmentConfig: &composerpb.PrivateEnvironmentConfig{
+							EnablePrivateBuildsOnly: rawDesiredPb.GetConfig().GetPrivateEnvironmentConfig().GetEnablePrivateBuildsOnly(),
+						},
+					},
+				}
+			}
+			return nil
+		},
+	},
+	// 22. config.private_environment_config.enable_private_environment
+	{
+		mask: "config.private_environment_config.enable_private_environment",
+		build: func(desired *krm.ComposerEnvironment, rawDesiredPb, mergedDesiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
+			if desired.Spec.Config != nil && desired.Spec.Config.PrivateEnvironmentConfig != nil && desired.Spec.Config.PrivateEnvironmentConfig.EnablePrivateEnvironment != nil && mergedDesiredPb.GetConfig().GetPrivateEnvironmentConfig().GetEnablePrivateEnvironment() != actualPb.GetConfig().GetPrivateEnvironmentConfig().GetEnablePrivateEnvironment() {
+				return &composerpb.Environment{
+					Config: &composerpb.EnvironmentConfig{
+						PrivateEnvironmentConfig: &composerpb.PrivateEnvironmentConfig{
+							EnablePrivateEnvironment: rawDesiredPb.GetConfig().GetPrivateEnvironmentConfig().GetEnablePrivateEnvironment(),
+						},
+					},
+				}
+			}
+			return nil
+		},
+	},
+	// 23. config.node_config.composer_network_attachment
+	{
+		mask: "config.node_config.composer_network_attachment",
+		build: func(desired *krm.ComposerEnvironment, rawDesiredPb, mergedDesiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
+			if desired.Spec.Config != nil && desired.Spec.Config.NodeConfig != nil && desired.Spec.Config.NodeConfig.ComposerNetworkAttachmentRef != nil {
+				mergedAttachment := refs.TrimComputeURIPrefix(mergedDesiredPb.GetConfig().GetNodeConfig().GetComposerNetworkAttachment())
+				actualAttachment := refs.TrimComputeURIPrefix(actualPb.GetConfig().GetNodeConfig().GetComposerNetworkAttachment())
+				if mergedAttachment != actualAttachment {
+					return &composerpb.Environment{
+						Config: &composerpb.EnvironmentConfig{
+							NodeConfig: &composerpb.NodeConfig{
+								ComposerNetworkAttachment: refs.TrimComputeURIPrefix(rawDesiredPb.GetConfig().GetNodeConfig().GetComposerNetworkAttachment()),
+							},
+						},
+					}
+				}
+			}
+			return nil
+		},
+	},
+	// 24. config.node_config.network,config.node_config.subnetwork
+	{
+		mask: "config.node_config.network,config.node_config.subnetwork",
+		build: func(desired *krm.ComposerEnvironment, rawDesiredPb, mergedDesiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
+			if desired.Spec.Config != nil && desired.Spec.Config.NodeConfig != nil && (desired.Spec.Config.NodeConfig.NetworkRef != nil || desired.Spec.Config.NodeConfig.SubnetworkRef != nil) {
+				mergedNC := mergedDesiredPb.GetConfig().GetNodeConfig()
+				actualNC := actualPb.GetConfig().GetNodeConfig()
+				mergedNet := refs.TrimComputeURIPrefix(mergedNC.GetNetwork())
+				actualNet := refs.TrimComputeURIPrefix(actualNC.GetNetwork())
+				mergedSub := refs.TrimComputeURIPrefix(mergedNC.GetSubnetwork())
+				actualSub := refs.TrimComputeURIPrefix(actualNC.GetSubnetwork())
+				if mergedNet != actualNet || mergedSub != actualSub {
+					return &composerpb.Environment{
+						Config: &composerpb.EnvironmentConfig{
+							NodeConfig: &composerpb.NodeConfig{
+								Network:    mergedNet,
+								Subnetwork: mergedSub,
+							},
+						},
+					}
 				}
 			}
 			return nil

@@ -344,6 +344,213 @@ func TestFieldUpdatersBuild(t *testing.T) {
 			t.Errorf("expected worker maxCount=6, got %v", workloadPatch.GetConfig().GetWorkloadsConfig().GetWorker().GetMaxCount())
 		}
 	})
+
+	t.Run("detects web_server_plugins_mode update", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{
+					SoftwareConfig: &krm.SoftwareConfig{
+						WebServerPluginsMode: direct.LazyPtr("PLUGINS_DISABLED"),
+					},
+				},
+			},
+		}
+		actual := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				SoftwareConfig: &composerpb.SoftwareConfig{
+					WebServerPluginsMode: composerpb.SoftwareConfig_PLUGINS_ENABLED,
+				},
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
+		}
+
+		updates := buildPatches(desired, desiredPb, actual)
+		patch, ok := updates["config.software_config.web_server_plugins_mode"]
+		if !ok {
+			t.Fatalf("expected update for 'config.software_config.web_server_plugins_mode', got %v", updates)
+		}
+		if patch.GetConfig().GetSoftwareConfig().GetWebServerPluginsMode() != composerpb.SoftwareConfig_PLUGINS_DISABLED {
+			t.Errorf("expected PLUGINS_DISABLED, got %v", patch.GetConfig().GetSoftwareConfig().GetWebServerPluginsMode())
+		}
+	})
+
+	t.Run("detects enable_private_builds_only update", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{
+					PrivateEnvironmentConfig: &krm.PrivateEnvironmentConfig{
+						EnablePrivateBuildsOnly: direct.PtrTo(false),
+					},
+				},
+			},
+		}
+		actual := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				PrivateEnvironmentConfig: &composerpb.PrivateEnvironmentConfig{
+					EnablePrivateBuildsOnly: true,
+				},
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
+		}
+
+		updates := buildPatches(desired, desiredPb, actual)
+		patch, ok := updates["config.private_environment_config.enable_private_builds_only"]
+		if !ok {
+			t.Fatalf("expected update for 'config.private_environment_config.enable_private_builds_only', got %v", updates)
+		}
+		if patch.GetConfig().GetPrivateEnvironmentConfig().GetEnablePrivateBuildsOnly() {
+			t.Errorf("expected EnablePrivateBuildsOnly=false in patch, got true")
+		}
+	})
+
+	t.Run("detects enable_private_environment update", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{
+					PrivateEnvironmentConfig: &krm.PrivateEnvironmentConfig{
+						EnablePrivateEnvironment: direct.LazyPtr(true),
+					},
+				},
+			},
+		}
+		actual := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				PrivateEnvironmentConfig: &composerpb.PrivateEnvironmentConfig{
+					EnablePrivateEnvironment: false,
+				},
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
+		}
+
+		updates := buildPatches(desired, desiredPb, actual)
+		patch, ok := updates["config.private_environment_config.enable_private_environment"]
+		if !ok {
+			t.Fatalf("expected update for 'config.private_environment_config.enable_private_environment', got %v", updates)
+		}
+		if !patch.GetConfig().GetPrivateEnvironmentConfig().GetEnablePrivateEnvironment() {
+			t.Errorf("expected EnablePrivateEnvironment=true in patch, got false")
+		}
+	})
+
+	t.Run("detects composer_network_attachment update and normalizes URI prefix", func(t *testing.T) {
+		// 1. No spurious update when desired and actual differ only by Compute URI prefix
+		sameDesired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{
+					NodeConfig: &krm.NodeConfig{
+						ComposerNetworkAttachmentRef: &computev1alpha1.ComputeNetworkAttachmentRef{
+							External: "https://www.googleapis.com/compute/v1/projects/p1/regions/us-central1/networkAttachments/att-1",
+						},
+					},
+				},
+			},
+		}
+		actual := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				NodeConfig: &composerpb.NodeConfig{
+					ComposerNetworkAttachment: "projects/p1/regions/us-central1/networkAttachments/att-1",
+				},
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		sameDesiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &sameDesired.Spec)
+		if updates := buildPatches(sameDesired, sameDesiredPb, actual); len(updates) != 0 {
+			t.Fatalf("expected 0 updates when only URI prefix differs, got %v", updates)
+		}
+
+		// 2. Emits normalized patch when attachment changes
+		changedDesired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{
+					NodeConfig: &krm.NodeConfig{
+						ComposerNetworkAttachmentRef: &computev1alpha1.ComputeNetworkAttachmentRef{
+							External: "https://www.googleapis.com/compute/v1/projects/p1/regions/us-central1/networkAttachments/att-2",
+						},
+					},
+				},
+			},
+		}
+		changedDesiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &changedDesired.Spec)
+		updates := buildPatches(changedDesired, changedDesiredPb, actual)
+		patch, ok := updates["config.node_config.composer_network_attachment"]
+		if !ok {
+			t.Fatalf("expected update for 'config.node_config.composer_network_attachment', got %v", updates)
+		}
+		if got := patch.GetConfig().GetNodeConfig().GetComposerNetworkAttachment(); got != "projects/p1/regions/us-central1/networkAttachments/att-2" {
+			t.Errorf("expected normalized attachment path, got %q", got)
+		}
+	})
+
+	t.Run("detects network and subnetwork update and normalizes URI prefixes", func(t *testing.T) {
+		// 1. No spurious update when desired and actual differ only by Compute URI prefixes
+		sameDesired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{
+					NodeConfig: &krm.NodeConfig{
+						NetworkRef: &computerefs.ComputeNetworkRef{
+							External: "https://www.googleapis.com/compute/v1/projects/p1/global/networks/net-1",
+						},
+						SubnetworkRef: &computev1beta1.ComputeSubnetworkRef{
+							External: "projects/p1/regions/us-central1/subnetworks/sub-1",
+						},
+					},
+				},
+			},
+		}
+		actual := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				NodeConfig: &composerpb.NodeConfig{
+					Network:    "projects/p1/global/networks/net-1",
+					Subnetwork: "https://www.googleapis.com/compute/v1/projects/p1/regions/us-central1/subnetworks/sub-1",
+				},
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		sameDesiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &sameDesired.Spec)
+		if updates := buildPatches(sameDesired, sameDesiredPb, actual); len(updates) != 0 {
+			t.Fatalf("expected 0 updates when only URI prefixes differ, got %v", updates)
+		}
+
+		// 2. When only subnetworkRef is updated and networkRef has a full URI prefix, preserves canonical network and updates subnetwork
+		changedDesired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{
+					NodeConfig: &krm.NodeConfig{
+						NetworkRef: &computerefs.ComputeNetworkRef{
+							External: "https://www.googleapis.com/compute/v1/projects/p1/global/networks/net-1",
+						},
+						SubnetworkRef: &computev1beta1.ComputeSubnetworkRef{
+							External: "https://www.googleapis.com/compute/v1/projects/p1/regions/us-central1/subnetworks/sub-2",
+						},
+					},
+				},
+			},
+		}
+		changedDesiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &changedDesired.Spec)
+		updates := buildPatches(changedDesired, changedDesiredPb, actual)
+		patch, ok := updates["config.node_config.network,config.node_config.subnetwork"]
+		if !ok {
+			t.Fatalf("expected update for 'config.node_config.network,config.node_config.subnetwork', got %v", updates)
+		}
+		if gotNet := patch.GetConfig().GetNodeConfig().GetNetwork(); gotNet != "projects/p1/global/networks/net-1" {
+			t.Errorf("expected preserved normalized network 'projects/p1/global/networks/net-1', got %q", gotNet)
+		}
+		if gotSub := patch.GetConfig().GetNodeConfig().GetSubnetwork(); gotSub != "projects/p1/regions/us-central1/subnetworks/sub-2" {
+			t.Errorf("expected updated normalized subnetwork 'projects/p1/regions/us-central1/subnetworks/sub-2', got %q", gotSub)
+		}
+	})
 }
 
 func TestValidateUpdatableFields(t *testing.T) {
@@ -371,6 +578,59 @@ func TestValidateUpdatableFields(t *testing.T) {
 		err := validateUpdatableFields(desiredPb, actual)
 		if err != nil {
 			t.Errorf("expected nil error, got %v", err)
+		}
+	})
+
+	t.Run("returns nil for valid updates on Composer 3 mutable fields", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{
+					SoftwareConfig: &krm.SoftwareConfig{
+						WebServerPluginsMode: direct.LazyPtr("PLUGINS_DISABLED"),
+					},
+					PrivateEnvironmentConfig: &krm.PrivateEnvironmentConfig{
+						EnablePrivateBuildsOnly:  direct.PtrTo(false),
+						EnablePrivateEnvironment: direct.LazyPtr(true),
+					},
+					NodeConfig: &krm.NodeConfig{
+						ComposerNetworkAttachmentRef: &computev1alpha1.ComputeNetworkAttachmentRef{
+							External: "projects/p1/regions/us-central1/networkAttachments/att-2",
+						},
+						NetworkRef: &computerefs.ComputeNetworkRef{
+							External: "projects/p1/global/networks/net-2",
+						},
+						SubnetworkRef: &computev1beta1.ComputeSubnetworkRef{
+							External: "projects/p1/regions/us-central1/subnetworks/sub-2",
+						},
+					},
+				},
+			},
+		}
+		actual := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				SoftwareConfig: &composerpb.SoftwareConfig{
+					WebServerPluginsMode: composerpb.SoftwareConfig_PLUGINS_ENABLED,
+				},
+				PrivateEnvironmentConfig: &composerpb.PrivateEnvironmentConfig{
+					EnablePrivateBuildsOnly:  true,
+					EnablePrivateEnvironment: false,
+				},
+				NodeConfig: &composerpb.NodeConfig{
+					ComposerNetworkAttachment: "projects/p1/regions/us-central1/networkAttachments/att-1",
+					Network:                   "projects/p1/global/networks/net-1",
+					Subnetwork:                "projects/p1/regions/us-central1/subnetworks/sub-1",
+				},
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
+		}
+
+		err := validateUpdatableFields(desiredPb, actual)
+		if err != nil {
+			t.Errorf("expected nil error for Composer 3 mutable fields, got %v", err)
 		}
 	})
 
@@ -565,8 +825,10 @@ func TestFieldUpdatersConsistency(t *testing.T) {
 		}
 		seenMasks[u.mask] = true
 
-		if !isValidUpdatePrefix(u.mask) {
-			t.Errorf("isValidUpdatePrefix(%q) returned false for registered fieldUpdater", u.mask)
+		for _, m := range strings.Split(u.mask, ",") {
+			if !isValidUpdatePrefix(m) {
+				t.Errorf("isValidUpdatePrefix(%q) returned false for registered fieldUpdater %q", m, u.mask)
+			}
 		}
 	}
 }
@@ -909,10 +1171,37 @@ func TestMaximumComposerEnvironment(t *testing.T) {
 						"EXTRA_VAR": "true",
 					},
 					SchedulerCount:       direct.LazyPtr(int32(2)),
-					WebServerPluginsMode: direct.LazyPtr("PLUGINS_DISABLED"),
+					WebServerPluginsMode: direct.LazyPtr("PLUGINS_ENABLED"),
 				},
-				NodeConfig:               createSpec.Spec.Config.NodeConfig,
-				PrivateEnvironmentConfig: createSpec.Spec.Config.PrivateEnvironmentConfig,
+				NodeConfig: &krm.NodeConfig{
+					NetworkRef: &computerefs.ComputeNetworkRef{
+						External: "projects/p1/global/networks/network-updated",
+					},
+					SubnetworkRef: &computev1beta1.ComputeSubnetworkRef{
+						External: "projects/p1/regions/us-central1/subnetworks/subnet-updated",
+					},
+					ServiceAccountRef: createSpec.Spec.Config.NodeConfig.ServiceAccountRef,
+					MachineType:       createSpec.Spec.Config.NodeConfig.MachineType,
+					DiskSizeGB:        createSpec.Spec.Config.NodeConfig.DiskSizeGB,
+					ComposerNetworkAttachmentRef: &computev1alpha1.ComputeNetworkAttachmentRef{
+						External: "projects/p1/regions/us-central1/networkAttachments/attachment-updated",
+					},
+					ComposerInternalIPv4CIDRBlock: createSpec.Spec.Config.NodeConfig.ComposerInternalIPv4CIDRBlock,
+					Tags:                          createSpec.Spec.Config.NodeConfig.Tags,
+					EnableIPMasqAgent:             createSpec.Spec.Config.NodeConfig.EnableIPMasqAgent,
+					IPAllocationPolicy:            createSpec.Spec.Config.NodeConfig.IPAllocationPolicy,
+				},
+				PrivateEnvironmentConfig: &krm.PrivateEnvironmentConfig{
+					EnablePrivateEnvironment:             direct.PtrTo(false),
+					EnablePrivateBuildsOnly:              direct.PtrTo(false),
+					CloudComposerConnectionSubnetworkRef: createSpec.Spec.Config.PrivateEnvironmentConfig.CloudComposerConnectionSubnetworkRef,
+					EnablePrivatelyUsedPublicIPs:         createSpec.Spec.Config.PrivateEnvironmentConfig.EnablePrivatelyUsedPublicIPs,
+					CloudComposerNetworkIPv4CIDRBlock:    createSpec.Spec.Config.PrivateEnvironmentConfig.CloudComposerNetworkIPv4CIDRBlock,
+					CloudSQLIPv4CIDRBlock:                createSpec.Spec.Config.PrivateEnvironmentConfig.CloudSQLIPv4CIDRBlock,
+					WebServerIPv4CIDRBlock:               createSpec.Spec.Config.PrivateEnvironmentConfig.WebServerIPv4CIDRBlock,
+					PrivateClusterConfig:                 createSpec.Spec.Config.PrivateEnvironmentConfig.PrivateClusterConfig,
+					NetworkingConfig:                     createSpec.Spec.Config.PrivateEnvironmentConfig.NetworkingConfig,
+				},
 				WebServerNetworkAccessControl: &krm.WebServerNetworkAccessControl{
 					AllowedIPRanges: []krm.WebServerNetworkAccessControl_AllowedIPRange{
 						{
@@ -1014,17 +1303,28 @@ func TestMaximumComposerEnvironment(t *testing.T) {
 		"config.software_config.airflow_config_overrides",
 		"config.software_config.pypi_packages",
 		"config.software_config.env_variables",
+		"config.software_config.web_server_plugins_mode",
 		"config.web_server_network_access_control",
 		"config.database_config.machine_type",
 		"config.workloads_config",
 		"config.master_authorized_networks_config",
 		"config.recovery_config.scheduled_snapshots_config",
 		"config.data_retention_config.airflow_metadata_retention_config",
+		"config.private_environment_config.enable_private_builds_only",
+		"config.private_environment_config.enable_private_environment",
+		"config.node_config.composer_network_attachment",
+		"config.node_config.network,config.node_config.subnetwork",
 	}
 
 	for _, mask := range expectedMasks {
 		if _, ok := patches[mask]; !ok {
 			t.Errorf("expected update mask %q to be built, but was missing", mask)
+		}
+	}
+	if netPatch, ok := patches["config.node_config.network,config.node_config.subnetwork"]; ok {
+		nc := netPatch.GetConfig().GetNodeConfig()
+		if nc.GetNetwork() != "projects/p1/global/networks/network-updated" || nc.GetSubnetwork() != "projects/p1/regions/us-central1/subnetworks/subnet-updated" {
+			t.Errorf("expected combined network+subnetwork patch to contain both updated network and subnetwork, got network=%q subnetwork=%q", nc.GetNetwork(), nc.GetSubnetwork())
 		}
 	}
 }
@@ -1193,6 +1493,82 @@ func TestFieldUpdatersEdgeCases(t *testing.T) {
 		updates := buildPatches(desired, rawDesiredPb, actual)
 		if len(updates) != 0 {
 			t.Errorf("expected 0 updates when disabled and actual is nil, got %d: %v", len(updates), updates)
+		}
+	})
+
+	t.Run("partial nodeConfig networkRef update returns mergedDesiredPb with omitted subnetwork preserved", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{
+					NodeConfig: &krm.NodeConfig{
+						NetworkRef: &computerefs.ComputeNetworkRef{
+							External: "projects/p1/global/networks/net-new",
+						},
+						// SubnetworkRef omitted -> should be preserved from actual via computedFieldPaths
+					},
+				},
+			},
+		}
+		actual := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				NodeConfig: &composerpb.NodeConfig{
+					Network:    "projects/p1/global/networks/net-old",
+					Subnetwork: "projects/p1/regions/us-central1/subnetworks/sub-existing",
+				},
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		rawDesiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error: %v", mapCtx.Err())
+		}
+		updates := buildPatches(desired, rawDesiredPb, actual)
+		patch, ok := updates["config.node_config.network,config.node_config.subnetwork"]
+		if !ok {
+			t.Fatalf("expected update for config.node_config.network,config.node_config.subnetwork, got %v", updates)
+		}
+		nc := patch.GetConfig().GetNodeConfig()
+		if nc.GetNetwork() != "projects/p1/global/networks/net-new" || nc.GetSubnetwork() != "projects/p1/regions/us-central1/subnetworks/sub-existing" {
+			t.Errorf("expected network=net-new and preserved subnetwork=sub-existing, got network=%q subnetwork=%q", nc.GetNetwork(), nc.GetSubnetwork())
+		}
+	})
+
+	t.Run("omitting Composer 3 mutable fields when actual has non-zero values does not emit PATCH", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{},
+			},
+		}
+		actual := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				SoftwareConfig: &composerpb.SoftwareConfig{
+					WebServerPluginsMode: composerpb.SoftwareConfig_PLUGINS_DISABLED,
+				},
+				PrivateEnvironmentConfig: &composerpb.PrivateEnvironmentConfig{
+					EnablePrivateBuildsOnly:  true,
+					EnablePrivateEnvironment: true,
+				},
+				NodeConfig: &composerpb.NodeConfig{
+					Network:                   "projects/p1/global/networks/net1",
+					Subnetwork:                "projects/p1/regions/us-central1/subnetworks/sub1",
+					ComposerNetworkAttachment: "projects/p1/regions/us-central1/networkAttachments/att1",
+				},
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		rawDesiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error: %v", mapCtx.Err())
+		}
+		mergedDesiredPb := proto.Clone(rawDesiredPb).(*composerpb.Environment)
+		populateDesiredWithDefaults(desired, mergedDesiredPb)
+		populateDesiredWithActualIfComputed(desired, mergedDesiredPb, actual)
+		if err := validateUpdatableFields(mergedDesiredPb, actual); err != nil {
+			t.Fatalf("expected validateUpdatableFields to succeed when C3 mutable fields are omitted, got %v", err)
+		}
+		updates := buildPatches(desired, rawDesiredPb, actual)
+		if len(updates) != 0 {
+			t.Errorf("expected 0 updates when C3 mutable fields are omitted in spec, got %d: %v", len(updates), updates)
 		}
 	})
 }
