@@ -241,14 +241,16 @@ func TestProtoLinkForKCCOverride(t *testing.T) {
 	}
 }
 
-func TestRestRootOverrideByResourcePath(t *testing.T) {
+// TestRestRootsTriesOverridesLast checks that derived roots come first, so an
+// override is only used when nothing derived verifies.
+func TestRestRootsTriesOverridesLast(t *testing.T) {
 	got := restRoots("networkservices", "projects.locations.meshes", "https://cloud.google.com/networking/", serviceConfig{})
-	want := []string{
-		"https://docs.cloud.google.com/service-mesh/docs/reference/network-services/rest",
-		"https://docs.cloud.google.com/networking/docs/reference/rest",
+	want := []root{
+		{url: "https://docs.cloud.google.com/networking/docs/reference/rest"},
+		{url: "https://docs.cloud.google.com/service-mesh/docs/reference/network-services/rest", override: true},
 	}
 	if !reflect.DeepEqual(got, want) {
-		t.Errorf("got %q, want %q", got, want)
+		t.Errorf("got %+v, want %+v", got, want)
 	}
 }
 
