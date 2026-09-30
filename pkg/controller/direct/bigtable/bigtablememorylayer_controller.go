@@ -13,7 +13,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -32,12 +31,12 @@ type bigtableMemoryLayerModelImpl struct {
 	config *config.ControllerConfig
 }
 
-func (m *bigtableMemoryLayerModelImpl) client(ctx context.Context) (*bigtableadmin.InstanceAdminClient, error) {
-	opts := []option.ClientOption{
-		option.WithCredentialsFile(m.config.UserAgent),
+func (m *bigtableMemoryLayerModelImpl) client(ctx context.Context) (*bigtableadmin.BigtableInstanceAdminClient, error) {
+	opts, err := m.config.GRPCClientOptions()
+	if err != nil {
+		return nil, err
 	}
-	opts = append(opts, m.config.ClientOptions()...)
-	return bigtableadmin.NewInstanceAdminClient(ctx, opts...)
+	return bigtableadmin.NewBigtableInstanceAdminClient(ctx, opts...)
 }
 
 func resolveClusterRef(ctx context.Context, reader client.Reader, obj *krm.BigtableMemoryLayer, ref *krm.ClusterRef) (projectID, instanceID, clusterID string, err error) {
@@ -52,7 +51,9 @@ func resolveClusterRef(ctx context.Context, reader client.Reader, obj *krm.Bigta
 	return tokens[1], tokens[3], tokens[5], nil
 }
 
-func (m *bigtableMemoryLayerModelImpl) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *bigtableMemoryLayerModelImpl) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
 	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
@@ -106,7 +107,7 @@ func (m *bigtableMemoryLayerModelImpl) AdapterForURL(ctx context.Context, url st
 }
 
 type bigtableMemoryLayerAdapter struct {
-	gcpClient       *bigtableadmin.InstanceAdminClient
+	gcpClient       *bigtableadmin.BigtableInstanceAdminClient
 	memoryLayerName string
 	obj             *krm.BigtableMemoryLayer
 }
@@ -211,7 +212,11 @@ func (a *bigtableMemoryLayerAdapter) Export(ctx context.Context) (*unstructured.
 	}
 
 	a.obj.Spec = *spec
-	return direct.ObjToUnstructured(a.obj)
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(a.obj)
+	if err != nil {
+		return nil, err
+	}
+	return &unstructured.Unstructured{Object: uObj}, nil
 }
 
 func (a *bigtableMemoryLayerAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
