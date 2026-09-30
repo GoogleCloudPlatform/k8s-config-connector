@@ -375,7 +375,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=customAudiences%2Cdescription%2Cscaling%2Ctemplate
+PATCH https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Cscaling%2Ctemplate
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: location=us-central1
