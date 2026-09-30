@@ -599,7 +599,10 @@ func (a *sqlInstanceAdapter) Find(ctx context.Context) (bool, error) {
 
 	instance, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
 	if err != nil {
-		return false, nil
+		if direct.IsNotFound(err) {
+			return false, nil
+		}
+		return false, fmt.Errorf("getting SQLInstance %s: %w", a.resourceID, err)
 	}
 
 	a.actual = instance
