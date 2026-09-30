@@ -38,8 +38,6 @@ var mockGCPSkipFixtures = map[string]bool{
 	"composer/v1beta1/composerenvironment/composerenvironmentwithkms":    true,
 	"composer/v1beta1/composerenvironment/composerenvironmentwithrefs":   true,
 	"composer/v1beta1/composerenvironment/composerenvironmentnodeconfig": true,
-	// Outdated real GCP log for maximal fixture contains failed PATCH calls from before the organizationNumber controller fix
-	"storageinsights/v1alpha1/storageinsightsdatasetconfig/storageinsightsdatasetconfig-maximal": true,
 }
 
 var realGCPSkipFixtures = map[string]bool{
