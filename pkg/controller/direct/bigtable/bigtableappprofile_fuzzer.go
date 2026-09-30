@@ -48,6 +48,7 @@ func bigtableAppProfileFuzzer() fuzztesting.KRMFuzzer {
 	// The default value of `.data_boost_isolation_read_only.compute_billing_owner` is
 	// COMPUTE_BILLING_OWNER_UNSPECIFIED, which does not roundtrip due to our Enum_FromProto implementation.
 	f.UnimplementedFields.Insert(".data_boost_isolation_read_only.compute_billing_owner")
+	f.Unimplemented_NotYetTriaged(".standard_isolation.memory_config")
 
 	return f
 }
