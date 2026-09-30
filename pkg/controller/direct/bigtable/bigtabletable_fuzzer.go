@@ -46,10 +46,14 @@ func bigtableTableFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".restore_info")         // Fields under restore_info are not supported yet
 	f.Unimplemented_NotYetTriaged(".tiered_storage_config")
 	f.Unimplemented_NotYetTriaged(".effective_automated_backup_policy")
+	f.Unimplemented_NotYetTriaged(".effective_automated_backup_policy.keep_hot_duration")
 	f.Unimplemented_NotYetTriaged(".effective_automated_backup_policy.keep_hot_duration.seconds")
 	f.Unimplemented_NotYetTriaged(".effective_automated_backup_policy.keep_hot_duration.nanos")
+	f.Unimplemented_NotYetTriaged(".effective_automated_backup_policy.disabled")
+	f.Unimplemented_NotYetTriaged(".automated_backup_policy.keep_hot_duration")
 	f.Unimplemented_NotYetTriaged(".automated_backup_policy.keep_hot_duration.seconds")
 	f.Unimplemented_NotYetTriaged(".automated_backup_policy.keep_hot_duration.nanos")
+	f.Unimplemented_NotYetTriaged(".automated_backup_policy.disabled")
 
 	return f
 }
