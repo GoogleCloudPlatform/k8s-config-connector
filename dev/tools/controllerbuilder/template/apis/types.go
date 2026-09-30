@@ -67,6 +67,10 @@ type APIArgs struct {
 	// SkipGVK leaves out the <Kind>GVK declaration because the package already
 	// has one, usually in a hand-written <kind>_reference.go.
 	SkipGVK bool
+	// SourceLinks is the pre-rendered "API sources" comment block, with the
+	// +kcc:source markers, written between the license and the package
+	// clause. Empty unless --emit-source-links is on.
+	SourceLinks string
 }
 
 const TypesTemplate = `
@@ -83,6 +87,10 @@ const TypesTemplate = `
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+{{- if .SourceLinks }}
+
+{{ .SourceLinks }}
+{{- end }}
 
 package {{ .Version }}
 
