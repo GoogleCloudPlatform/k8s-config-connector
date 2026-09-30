@@ -41,6 +41,7 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/reflect/protoregistry"
 	"gopkg.in/yaml.v3"
+	"k8s.io/klog/v2"
 )
 
 // The keys of the +kcc:source:<key>=<url> markers.
@@ -228,7 +229,7 @@ func (r *Resolver) resourceDocsLink(ctx context.Context, in input, discoveryLink
 		return link
 	}
 	if in.version == "" || in.rpath == "" {
-		link.URL = roots[0]
+		link.URL = roots[0].url
 		link.Guess = judgement.ReasonVerifyResourceDocsLink
 		link.Detail = "the proto declares no google.api.resource pattern, so the page for this resource could not be derived; " +
 			"this is a guess at the API's REST reference, find the resource in it"
@@ -237,10 +238,18 @@ func (r *Resolver) resourceDocsLink(ctx context.Context, in input, discoveryLink
 	tail := "/" + in.version + "/" + in.rpath
 	var tried []string
 	for _, root := range roots {
-		candidate := root + tail
+		candidate := root.url + tail
 		tried = append(tried, candidate)
 		if final, ok := r.fetch(ctx, candidate); ok && final.Host == docsHost &&
 			strings.HasSuffix(strings.TrimSuffix(final.Path, "/"), tail) {
+			if root.override {
+				// Say so, so we learn which overrides are still needed.
+				why := "no root could be derived"
+				if derived := tried[:len(tried)-1]; len(derived) > 0 {
+					why = "none of the derived pages loaded: " + strings.Join(derived, ", ")
+				}
+				klog.Infof("resource-docs for %s %s came from restRootOverrides; %s", in.api, in.rpath, why)
+			}
 			link.URL = candidate
 			return link
 		}
@@ -251,10 +260,13 @@ func (r *Resolver) resourceDocsLink(ctx context.Context, in input, discoveryLink
 	return link
 }
 
-// restRootOverrides are docs roots for APIs whose REST reference does not sit
-// at <product>/docs/reference/rest. A key is an API name, or an API name and
-// a resource path for an API documented under more than one product. Every
-// entry was checked by hand.
+// restRootOverrides are docs roots for APIs whose REST reference cannot be
+// derived from the service config or the Discovery directory. A key is an API
+// name, or an API name and a resource path for an API documented under more
+// than one product. Every entry was checked by hand.
+//
+// They are tried last, and using one is logged. The goal is to remove them:
+// an entry whose API now verifies through a derived root is no longer needed.
 var restRootOverrides = map[string]string{
 	"bigtableadmin": "bigtable/docs/reference/admin/rest",
 	"privateca":     "certificate-authority-service/docs/reference/rest",
@@ -266,27 +278,34 @@ var restRootOverrides = map[string]string{
 	"networkservices/projects.locations.meshes":              "service-mesh/docs/reference/network-services/rest",
 }
 
-// restRoots returns candidate REST reference roots, best first, each as
+// root is a candidate REST reference root, as
 // https://docs.cloud.google.com/<path>.
-func restRoots(api, rpath, discoveryLink string, cfg serviceConfig) []string {
-	var out []string
-	add := func(p string) {
+type root struct {
+	url string
+	// override is set for a root from restRootOverrides.
+	override bool
+}
+
+// restRoots returns candidate REST reference roots, best first: the ones
+// derived from the service config and the Discovery directory, then the
+// hand-written overrides.
+func restRoots(api, rpath, discoveryLink string, cfg serviceConfig) []root {
+	var out []root
+	addRoot := func(p string, override bool) {
 		p = strings.Trim(p, "/")
 		if p == "" {
 			return
 		}
 		u := "https://" + docsHost + "/" + p
 		for _, existing := range out {
-			if existing == u {
+			if existing.url == u {
 				return
 			}
 		}
-		out = append(out, u)
+		out = append(out, root{url: u, override: override})
 	}
+	add := func(p string) { addRoot(p, false) }
 
-	// A hand-checked override beats any heuristic.
-	add(restRootOverrides[api+"/"+rpath])
-	add(restRootOverrides[api])
 	// The service config names its reference for some APIs. It usually
 	// points at the RPC reference, and the REST reference sits beside it;
 	// notebooks v2 points at the REST reference directly.
@@ -301,6 +320,9 @@ func restRoots(api, rpath, discoveryLink string, cfg serviceConfig) []string {
 	if p := docsPath(cfg.Publishing.DocumentationURI); p != "" {
 		add(strings.SplitN(p, "/", 2)[0] + "/docs/reference/rest")
 	}
+	// Last resort: a hand-checked override.
+	addRoot(restRootOverrides[api+"/"+rpath], true)
+	addRoot(restRootOverrides[api], true)
 	return out
 }
 
