@@ -182,6 +182,7 @@ func (a *RouterNATAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	}
 
 	a.desired.Name = proto.String(a.id.ComputeRouterNAT)
+	ApplyRouterNATCreationDefaults(a.desired)
 
 	// Check if already exists in a.router.Nats
 	exists := false
@@ -403,6 +404,28 @@ func (a *RouterNATAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 
 	if !found {
 		log.Info("ComputeRouterNAT already deleted or not found on router", "name", a.id)
+		return true, nil
+	}
+
+	if len(newNats) == 0 {
+		a.router.Nats = []*computepb.RouterNat{}
+		updateReq := &computepb.UpdateRouterRequest{
+			Project:        a.id.Project,
+			Region:         a.id.Region,
+			Router:         a.id.Router,
+			RouterResource: a.router,
+		}
+		op, err := a.gcpClient.Update(ctx, updateReq)
+		if err != nil {
+			return false, fmt.Errorf("deleting compute ComputeRouterNAT %s: %w", a.id.String(), err)
+		}
+
+		err = op.Wait(ctx)
+		if err != nil {
+			return false, fmt.Errorf("waiting for deletion of compute ComputeRouterNAT %s: %w", a.id.String(), err)
+		}
+
+		log.Info("successfully deleted compute ComputeRouterNAT", "name", a.id)
 		return true, nil
 	}
 
