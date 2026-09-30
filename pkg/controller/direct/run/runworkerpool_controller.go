@@ -16,6 +16,9 @@ package run
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -184,6 +187,10 @@ func (a *WorkerPoolAdapter) Create(ctx context.Context, createOp *directbase.Cre
 		created = latest
 	}
 
+	if err := createOp.SetMBUR(ctx, a.computeMBUR); err != nil {
+		return fmt.Errorf("setting MBUR: %w", err)
+	}
+
 	return a.updateStatus(ctx, createOp, created)
 }
 
@@ -193,7 +200,12 @@ func (a *WorkerPoolAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 
 	a.desired.Name = a.id.String()
 
-	diffs, updateMask, err := compareWorkerPool(ctx, a.actual, a.desired)
+	mburMatch, err := updateOp.CompareMBUR(a.computeMBUR)
+	if err != nil {
+		return fmt.Errorf("comparing MBUR: %w", err)
+	}
+
+	diffs, updateMask, err := compareWorkerPool(ctx, a.actual, a.desired, mburMatch)
 	if err != nil {
 		return err
 	}
@@ -221,12 +233,28 @@ func (a *WorkerPoolAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 		if err == nil {
 			latest = latestGet
 		}
+
+		if err := updateOp.SetMBUR(ctx, a.computeMBUR); err != nil {
+			return fmt.Errorf("setting MBUR: %w", err)
+		}
 	}
 
 	return a.updateStatus(ctx, updateOp, latest)
 }
 
-func compareWorkerPool(ctx context.Context, actual, desired *pb.WorkerPool) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+func (a *WorkerPoolAdapter) computeMBUR() (string, error) {
+	if len(a.desired.CustomAudiences) == 0 {
+		return "", nil
+	}
+	bytes, err := json.Marshal(a.desired.CustomAudiences)
+	if err != nil {
+		return "", fmt.Errorf("marshalling customAudiences: %w", err)
+	}
+	h := sha256.Sum256(bytes)
+	return hex.EncodeToString(h[:]), nil
+}
+
+func compareWorkerPool(ctx context.Context, actual, desired *pb.WorkerPool, mburMatch bool) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
 	maskedActual, err := mappers.OnlySpecFields(actual, RunWorkerPoolSpec_v1alpha1_FromProto, RunWorkerPoolSpec_v1alpha1_ToProto)
 	if err != nil {
 		return nil, nil, err
@@ -292,13 +320,11 @@ func compareWorkerPool(ctx context.Context, actual, desired *pb.WorkerPool) (*st
 		}
 	}
 
-	// CustomAudiences is mutable-but-unreadable (missing from the GET response).
-	// If the generation matches the observed generation, we can safely copy CustomAudiences
-	// from clonedDesired to maskedActual to avoid false diffs.
-	if actual != nil && actual.GetGeneration() == actual.GetObservedGeneration() {
-		if len(clonedDesired.CustomAudiences) > 0 && len(maskedActual.CustomAudiences) == 0 {
-			maskedActual.CustomAudiences = clonedDesired.CustomAudiences
-		}
+	// CustomAudiences is mutable-but-unreadable (missing from the GET response in real GCP).
+	// If the SHA-256 hash stored in the mutable-unreadable-fields-hash annotation matches desired state,
+	// the user hasn't changed customAudiences, so we copy desired.CustomAudiences into maskedActual to suppress false diffs.
+	if mburMatch && len(clonedDesired.CustomAudiences) > 0 && len(maskedActual.CustomAudiences) == 0 {
+		maskedActual.CustomAudiences = clonedDesired.CustomAudiences
 	}
 
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())

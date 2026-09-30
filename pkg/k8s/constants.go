@@ -135,8 +135,9 @@ var (
 	KCCStabilityLabel    = FormatAnnotation("stability-level")
 	UnmanagedFieldsList  = FormatAnnotation("unmanaged")
 
-	MutableButUnreadableFieldsAnnotation = FormatAnnotation("mutable-but-unreadable-fields")
-	ObservedSecretVersionsAnnotation     = FormatAnnotation("observed-secret-versions")
+	MutableButUnreadableFieldsAnnotation  = FormatAnnotation("mutable-but-unreadable-fields")
+	MutableUnreadableFieldsHashAnnotation = FormatAnnotation("mutable-unreadable-fields-hash")
+	ObservedSecretVersionsAnnotation      = FormatAnnotation("observed-secret-versions")
 
 	SupportsSSAAnnotation = FormatAnnotation("supports-ssa")
 

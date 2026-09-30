@@ -50,7 +50,10 @@ func (s *workerPools) GetWorkerPool(ctx context.Context, req *pb.GetWorkerPoolRe
 		return nil, err
 	}
 
-	return obj, nil
+	ret := proto.CloneOf(obj)
+	// CustomAudiences is mutable-but-unreadable in real GCP Cloud Run v2 API
+	ret.CustomAudiences = nil
+	return ret, nil
 }
 
 func (s *workerPools) CreateWorkerPool(ctx context.Context, req *pb.CreateWorkerPoolRequest) (*longrunning.Operation, error) {
@@ -90,7 +93,9 @@ func (s *workerPools) CreateWorkerPool(ctx context.Context, req *pb.CreateWorker
 		return nil, err
 	}
 	return s.operations.StartLRO(ctx, req.Parent, obj, func() (proto.Message, error) {
-		return obj, nil
+		ret := proto.CloneOf(obj)
+		ret.CustomAudiences = nil
+		return ret, nil
 	})
 }
 
@@ -161,7 +166,9 @@ func (s *workerPools) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorker
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return s.operations.StartLRO(ctx, lroPrefix, obj, func() (protoreflect.ProtoMessage, error) {
-		return obj, nil
+		ret := proto.CloneOf(obj)
+		ret.CustomAudiences = nil
+		return ret, nil
 	})
 }
 
