@@ -124,9 +124,6 @@ X-Xss-Protection: 0
     "description": "Maximal test data product description",
     "displayName": "Maximal Data Product ${uniqueId}",
     "etag": "abcdef0123A=",
-    "labels": {
-      "env": "test"
-    },
     "name": "projects/${projectId}/locations/us-central1/dataProducts/dataplexdataproduct-maximal-${uniqueId}",
     "ownerEmails": [
       "owner1@example.com",
@@ -289,9 +286,6 @@ X-Xss-Protection: 0
     "description": "Updated maximal test data product description",
     "displayName": "Updated Maximal Data Product ${uniqueId}",
     "etag": "abcdef0123A=",
-    "labels": {
-      "env": "staging"
-    },
     "name": "projects/${projectId}/locations/us-central1/dataProducts/dataplexdataproduct-maximal-${uniqueId}",
     "ownerEmails": [
       "owner3@example.com"

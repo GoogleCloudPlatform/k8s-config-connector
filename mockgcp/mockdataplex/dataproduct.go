@@ -124,7 +124,9 @@ func (s *DataProductService) CreateDataProduct(ctx context.Context, req *pb.Crea
 
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
-		return obj, nil
+		lroResponse := proto.Clone(obj).(*pb.DataProduct)
+		lroResponse.Labels = nil
+		return lroResponse, nil
 	})
 }
 
@@ -199,7 +201,9 @@ func (s *DataProductService) UpdateDataProduct(ctx context.Context, req *pb.Upda
 
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
-		return obj, nil
+		lroResponse := proto.Clone(obj).(*pb.DataProduct)
+		lroResponse.Labels = nil
+		return lroResponse, nil
 	})
 }
 
