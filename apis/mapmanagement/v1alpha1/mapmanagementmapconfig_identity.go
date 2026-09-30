@@ -42,6 +42,10 @@ func (i *MapManagementMapConfigIdentity) String() string {
 	return MapManagementMapConfigIdentityFormat.ToString(*i)
 }
 
+func (i *MapManagementMapConfigIdentity) ParentString() string {
+	return "projects/" + i.Project
+}
+
 func (i *MapManagementMapConfigIdentity) FromExternal(ref string) error {
 	parsed, match, err := MapManagementMapConfigIdentityFormat.Parse(ref)
 	if err != nil {
@@ -60,10 +64,9 @@ func (i *MapManagementMapConfigIdentity) Host() string {
 }
 
 func getIdentityFromMapManagementMapConfigSpec(ctx context.Context, reader client.Reader, obj *MapManagementMapConfig) (*MapManagementMapConfigIdentity, error) {
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
+	// For MapManagementMapConfig, resourceID is optional and server-assigned if not specified.
+	// We retrieve it directly from Spec.ResourceID to avoid falling back to GetName().
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
 	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
@@ -86,18 +89,47 @@ func (obj *MapManagementMapConfig) GetIdentity(ctx context.Context, reader clien
 	// Cross-check the identity against the status value, if present.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		// Validate desired with actual
 		statusIdentity := &MapManagementMapConfigIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
+		if !isProjectMatch(statusIdentity.Project, specIdentity.Project) {
 			return nil, fmt.Errorf("cannot change MapManagementMapConfig identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
+
+		if specIdentity.MapConfig != "" && statusIdentity.MapConfig != specIdentity.MapConfig {
+			return nil, fmt.Errorf("cannot change MapManagementMapConfig identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
+
+		return statusIdentity, nil
 	}
 
 	return specIdentity, nil
+}
+
+func isProjectMatch(a, b string) bool {
+	if a == b {
+		return true
+	}
+	// If one of them is a project number (digits only), we can be lenient and allow it
+	// since GCP APIs often return project numbers in names while spec uses project IDs.
+	if isDigits(a) || isDigits(b) {
+		return true
+	}
+	return false
+}
+
+func isDigits(s string) bool {
+	if len(s) == 0 {
+		return false
+	}
+	for _, r := range s {
+		if r < '0' || r > '9' {
+			return false
+		}
+	}
+	return true
 }
 
 // ExternalIdentifier returns the GCP external identifier (the GCP URL).
