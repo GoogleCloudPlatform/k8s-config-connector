@@ -68,3 +68,15 @@
 - **Problem**: When a `Control` is created under a `dataStore` that is attached to an `Engine`, the real GCP DiscoveryEngine API returns the resource `name` in responses under the `engines/{engine}` hierarchy rather than `dataStores/{dataStore}`.
 - **Solution**: Implemented `buildControlResponseName` in `mockdiscoveryengine/control.go` to inspect whether the target `dataStore` is attached to an `Engine` and return the matching engine control URI. Verified log alignment across minimal and maximal test fixtures with zero drift.
 - **Impact**: Ensures accurate MockGCP simulation for DiscoveryEngine controls under both standalone and engine-associated datastores.
+
+### [2026-09-30] DiscoveryEngineSitemap Direct Controller Implementation
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `DiscoveryEngineSitemap` (Issue #13528).
+- **Problem**:
+  1. `CreateSitemap` requires Advanced Site Search to be enabled on the parent `DataStore` / `SiteSearchEngine`, otherwise returning `400 Bad Request: Only Advanced Site Search data stores are permitted to use the Sitemap API`.
+  2. The DiscoveryEngine API returns the project number instead of the project ID in resource names on create/fetch and strictly requires the canonical project number in the resource name for `DeleteSitemap`.
+  3. `DiscoveryEngineSitemap` has server-generated IDs and has no Update RPC in GCP API (it is immutable).
+- **Solution**:
+  1. In `Create`, if `CreateSitemap` reports that Advanced Site Search is required, call `EnableAdvancedSiteSearch` on the parent `siteSearchEngine` LRO and retry `CreateSitemap`.
+  2. During `Create`, only set `a.id.Sitemap` to preserve the user's project ID in `a.id.String()` for KRM status consistency, while in `Delete`, call `Find` first and use `a.actual.GetName()` (which carries the server-assigned project number) for `DeleteSitemap`.
+  3. Handled immutability in `Update` by performing spec diff comparison and no-oping if diffs are detected to avoid reconciliation loops.
+- **Impact**: Enables smooth creation, re-reconciliation, and deletion of `DiscoveryEngineSitemap` resources with automatic advanced site search provisioning.
