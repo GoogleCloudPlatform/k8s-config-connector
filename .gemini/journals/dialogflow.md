@@ -40,8 +40,8 @@
   - Implemented the identity and external ref logic in `dialogflowsiptrunk_identity.go` with unit tests in `dialogflowsiptrunk_identity_test.go`.
 - **Impact**: Provides a correct scaffolding, CRD, identity, and reference setup for DialogflowSipTrunk, preparing the codebase for the subsequent adapter and reconciliation controller implementation steps.
 
-### [2026-09-29] DialogflowKnowledgeBase MockGCP and Alignment (Phase 3)
-- **Context**: Greenfield implementation of Phase 3 (MockGCP and Alignment) for `DialogflowKnowledgeBase` under `apis/dialogflow/v1alpha1` (Issue #13519).
+### [2026-09-30] DialogflowKnowledgeBase MockGCP and Alignment (Phase 3)
+- **Context**: Greenfield implementation of Phase 3 (MockGCP and Alignment) for `DialogflowKnowledgeBase` under `apis/dialogflow/v1alpha1` (Issues #13519, #13536).
 - **Problem**:
   - `DialogflowKnowledgeBase` requires mock CRUD operations (Get, Create, Update, Delete, List) against the simulated Dialogflow service.
   - Knowledge Base IDs are server-generated base64 strings upon creation (`projects/{project}/locations/{location}/knowledgeBases/{id}`).
