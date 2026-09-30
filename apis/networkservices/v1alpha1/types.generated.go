@@ -23,5 +23,40 @@
 // resource: NetworkServicesLBTrafficExtension:LbTrafficExtension
 // resource: NetworkServicesWasmPlugin:WasmPlugin
 // resource: NetworkServicesAuthzExtension:AuthzExtension
+// resource: NetworkServicesServiceLBPolicy:ServiceLbPolicy
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.networkservices.v1.ServiceLbPolicy.AutoCapacityDrain
+type ServiceLbPolicy_AutoCapacityDrain struct {
+	// Optional. If set to 'True', an unhealthy IG/NEG will be set as drained.
+	//  - An IG/NEG is considered unhealthy if less than 25% of the
+	//  instances/endpoints in the IG/NEG are healthy.
+	//  - This option will never result in draining more than 50% of the
+	//  configured IGs/NEGs for the Backend Service.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceLbPolicy.AutoCapacityDrain.enable
+	Enable *bool `json:"enable,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networkservices.v1.ServiceLbPolicy.FailoverConfig
+type ServiceLbPolicy_FailoverConfig struct {
+	// Optional. The percentage threshold that a load balancer will begin to
+	//  send traffic to failover backends. If the percentage of endpoints in a
+	//  MIG/NEG is smaller than this value, traffic would be sent to failover
+	//  backends if possible. This field should be set to a value between 1
+	//  and 99. The default value is 50 for Global external HTTP(S) load balancer
+	//  (classic) and Proxyless service mesh, and 70 for others.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceLbPolicy.FailoverConfig.failover_health_threshold
+	FailoverHealthThreshold *int32 `json:"failoverHealthThreshold,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networkservices.v1.ServiceLbPolicy.IsolationConfig
+type ServiceLbPolicy_IsolationConfig struct {
+	// Optional. The isolation granularity of the load balancer.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceLbPolicy.IsolationConfig.isolation_granularity
+	IsolationGranularity *string `json:"isolationGranularity,omitempty"`
+
+	// Optional. The isolation mode of the load balancer.
+	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceLbPolicy.IsolationConfig.isolation_mode
+	IsolationMode *string `json:"isolationMode,omitempty"`
+}
