@@ -310,6 +310,15 @@ func compareDatasetConfig(ctx context.Context, actual, desired *pb.DatasetConfig
 	populateDefaults(maskedActual)
 	populateDefaults(clonedDesired)
 
+	// If organizationNumber is not specified in desired spec, GCP auto-populates it from the project's organization.
+	// We ignore differences when desired.OrganizationNumber == 0.
+	if clonedDesired.OrganizationNumber == 0 {
+		maskedActual.OrganizationNumber = 0
+	}
+
+	// skipVerificationAndIngest is a write-only request flag not returned by GCP.
+	maskedActual.SkipVerificationAndIngest = clonedDesired.SkipVerificationAndIngest
+
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
