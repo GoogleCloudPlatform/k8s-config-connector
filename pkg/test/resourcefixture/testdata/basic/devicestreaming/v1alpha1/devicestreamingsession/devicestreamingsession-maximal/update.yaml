@@ -1,7 +1,7 @@
 apiVersion: devicestreaming.cnrm.cloud.google.com/v1alpha1
 kind: DeviceStreamingSession
 metadata:
-  name: session-${uniqueId}
+  name: devicestreamingsession-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
