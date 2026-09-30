@@ -56,7 +56,7 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 		// GCP default AvailailbilityType is ZONAL.
 		out.Settings.AvailabilityType = "ZONAL"
 	}
-	if in.Spec.Settings.BackupConfiguration == nil && actual != nil && !actual.Settings.BackupConfiguration.Enabled {
+	if in.Spec.Settings.BackupConfiguration == nil && actual != nil && actual.Settings != nil && actual.Settings.BackupConfiguration != nil && !actual.Settings.BackupConfiguration.Enabled {
 		// If desired backupConfiguration is not specified and actual is disabled, use the actual.
 		out.Settings.BackupConfiguration = actual.Settings.BackupConfiguration
 	}
@@ -123,7 +123,7 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 			}
 		}
 	}
-	if in.Spec.Settings.LocationPreference == nil && actual != nil {
+	if in.Spec.Settings.LocationPreference == nil && actual != nil && actual.Settings != nil {
 		// Use GCP specified locationPreference.
 		out.Settings.LocationPreference = actual.Settings.LocationPreference
 	}
@@ -139,14 +139,23 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 		// GCP default StorageAutoResize is true.
 		out.Settings.StorageAutoResize = direct.PtrTo(true)
 	}
-	if in.Spec.Settings.DiskSize == nil && actual != nil && *out.Settings.StorageAutoResize {
+	if in.Spec.Settings.DiskSize == nil && actual != nil && actual.Settings != nil && *out.Settings.StorageAutoResize {
 		// If desired DiskSize is not specified and StorageAutoResize is enabled, use the actual disk size.
 		// Note: This must be set AFTER setting the default value for StorageAutoResize.
 		out.Settings.DataDiskSizeGb = actual.Settings.DataDiskSizeGb
 	}
-	if actual != nil {
+	if actual != nil && actual.Settings != nil {
 		// GCP API requires we set the current settings version, otherwise update will fail.
 		out.Settings.SettingsVersion = actual.Settings.SettingsVersion
+	}
+
+	// WARNING: spec.settings.dataCacheConfig is being UNMANAGED when is unspecified in the KRM object.
+	if (in.Spec.Settings.DataCacheConfig == nil || in.Spec.Settings.DataCacheConfig.DataCacheEnabled == nil) &&
+		actual != nil && actual.Settings != nil && actual.Settings.DataCacheConfig != nil {
+		if out.Settings.DataCacheConfig == nil {
+			out.Settings.DataCacheConfig = &api.DataCacheConfig{}
+		}
+		out.Settings.DataCacheConfig.DataCacheEnabled = actual.Settings.DataCacheConfig.DataCacheEnabled
 	}
 
 	// WARNING: spec.settings.databaseReplicationEnabled is being UNMANAGED when is unspecified in the KRM object.
