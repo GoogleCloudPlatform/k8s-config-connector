@@ -28,115 +28,76 @@
 > ---
 > 
 > PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}
-260,263d285
+260d285
 <       "drainNatIps": [],
-<       "enableEndpointIndependentMapping": true,
-<       "icmpIdleTimeoutSec": 30,
+263d287
 <       "logConfig": null,
-266,274c288
+266,267d289
 <       "natIps": [],
 <       "rules": [],
-<       "sourceSubnetworkIpRangesToNat": "ALL_SUBNETWORKS_ALL_IP_RANGES",
+269d290
 <       "subnetworks": [],
-<       "tcpEstablishedIdleTimeoutSec": 1200,
-<       "tcpTimeWaitTimeoutSec": 120,
-<       "tcpTransitoryIdleTimeoutSec": 30,
-<       "type": "PUBLIC",
-<       "udpIdleTimeoutSec": 30
----
->       "sourceSubnetworkIpRangesToNat": "ALL_SUBNETWORKS_ALL_IP_RANGES"
-307c321,322
+307c328,329
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}
 > Content-Type: application/json
-338c353
+338c360
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}
-361d375
-<       "enableEndpointIndependentMapping": true,
-365d378
-<       "icmpIdleTimeoutSec": 30,
-369,373c382
-<       "tcpEstablishedIdleTimeoutSec": 1200,
-<       "tcpTimeWaitTimeoutSec": 120,
-<       "tcpTransitoryIdleTimeoutSec": 30,
-<       "type": "PUBLIC",
-<       "udpIdleTimeoutSec": 30
----
->       "type": "PUBLIC"
-383c392
+383c405
 < PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}?alt=json
 ---
 > PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}
-389,393d397
+389,392d410
 <       "autoNetworkTier": "PREMIUM",
 <       "drainNatIps": [],
 <       "effectiveTcpTimeWaitTimeoutSec": 120,
 <       "enableDynamicPortAllocation": false,
-<       "enableEndpointIndependentMapping": true,
-398d401
+398d415
 <       "logConfig": null,
-401,402d403
+401,402d417
 <       "natIps": [],
 <       "rules": [],
-404,409c405
+404d418
 <       "subnetworks": [],
-<       "tcpEstablishedIdleTimeoutSec": 1200,
-<       "tcpTimeWaitTimeoutSec": 120,
-<       "tcpTransitoryIdleTimeoutSec": 30,
-<       "type": "PUBLIC",
-<       "udpIdleTimeoutSec": 30
----
->       "type": "PUBLIC"
-442c438,439
+442c456,457
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}
 > Content-Type: application/json
-473c470
+473c488
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}
-496,497d492
+496d510
 <       "enableDynamicPortAllocation": false,
-<       "enableEndpointIndependentMapping": true,
-505,509c500
-<       "tcpEstablishedIdleTimeoutSec": 1200,
-<       "tcpTimeWaitTimeoutSec": 120,
-<       "tcpTransitoryIdleTimeoutSec": 30,
-<       "type": "PUBLIC",
-<       "udpIdleTimeoutSec": 30
----
->       "type": "PUBLIC"
-519c510
+519c533
 < PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}?alt=json
 ---
-> PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}
-522,524c513
-< {
+> PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}
+523c537,544
 <   "nats": []
-< }
 ---
-> {}
-554c543,544
+>   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+>   "description": "example router description",
+>   "id": "000000000000000000000",
+>   "kind": "compute#router",
+>   "name": "${routerID}",
+>   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+>   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}"
+541c562
+<   "operationType": "patch",
+---
+>   "operationType": "update",
+554c575,576
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}
 > Content-Type: application/json
-603a594,607
->   "nats": [
->     {
->       "autoNetworkTier": "PREMIUM",
->       "effectiveTcpTimeWaitTimeoutSec": 120,
->       "endpointTypes": [
->         "ENDPOINT_TYPE_VM"
->       ],
->       "icmpIdleTimeoutSec": 40,
->       "name": "computerouternat-${uniqueId}",
->       "natIpAllocateOption": "AUTO_ONLY",
->       "sourceSubnetworkIpRangesToNat": "ALL_SUBNETWORKS_ALL_IP_RANGES",
->       "type": "PUBLIC"
->     }
->   ],
+572c594
+<   "operationType": "patch",
+---
+>   "operationType": "update",
