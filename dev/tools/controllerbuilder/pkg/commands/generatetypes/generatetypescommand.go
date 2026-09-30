@@ -29,6 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/sourcelinks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/scaffold"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/klog/v2"
@@ -59,6 +60,7 @@ type GenerateCRDOptions struct {
 	EmitSiblingRefs      bool
 	EmitReferenceHints   bool
 	PlaceServerSetFields bool
+	EmitSourceLinks      bool
 }
 
 func (o *GenerateCRDOptions) InitDefaults() error {
@@ -86,6 +88,7 @@ func (o *GenerateCRDOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().BoolVar(&o.EmitRequiredFromProto, "emit-required-from-proto", false, "emit // +required markers for fields marked REQUIRED in proto. Opt-in per service to avoid breaking CRD schema changes on existing resources")
 	cmd.Flags().BoolVar(&o.EmitParentRefs, "emit-parent-refs", false, "emit one spec field referencing the resource's direct parent, where google.api.resource declares a parent below project and location and a reference type for it already exists. Requires --prepopulate-spec. Each field is marked +kcc:guess and recorded in apis/<service>/judgement_queue.yaml, and a parent with no reference type is recorded there rather than guessed. Opt in one service at a time: it adds a field to the CRD of a resource people already use")
 	cmd.Flags().BoolVar(&o.EmitSiblingRefs, "emit-sibling-refs", false, "mark a string field whose name matches a resource this service declares as a probable reference to it, with a +kcc:guess comment and an entry in apis/<service>/judgement_queue.yaml. The field stays a string: this reports a candidate rather than generating a reference. Opt in one service at a time, though controller-gen strips the comment, so this cannot change a CRD")
+	cmd.Flags().BoolVar(&o.EmitSourceLinks, "emit-source-links", false, "write links to the resource's proto, its service docs and its REST reference page as +kcc:source markers at the top of a new <kind>_types.go. The docs links are guessed and checked online in the same run; a link that does not check out is still written, marked +kcc:guess and recorded in apis/<service>/judgement_queue.yaml. Only a newly scaffolded types file gets links, so existing resources do not change")
 	cmd.Flags().BoolVar(&o.EmitReferenceHints, "emit-reference-hints", false, "record a spec field, at any depth, whose description or name suggests it points at another resource, in apis/<service>/judgement_queue.yaml. Uses the rules TestMissingRefs applies, plus looser description and name rules that only hint. Requires --prepopulate-spec. Reports only: the field is still generated as a string")
 }
 
@@ -201,6 +204,18 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	// file is written once at the end.
 	var queued []judgement.Entry
 
+	var linkResolver *sourcelinks.Resolver
+	if o.EmitSourceLinks {
+		root, err := options.RepoRoot()
+		if err != nil {
+			return err
+		}
+		linkResolver, err = sourcelinks.NewResolver(root)
+		if err != nil {
+			return fmt.Errorf("setting up --emit-source-links: %w", err)
+		}
+	}
+
 	// Each --resource is resolved once here, so the warning is logged once and
 	// the scaffolding below uses the same message.
 	protoFullNames := make(map[string]string, len(o.Resources))
@@ -306,7 +321,16 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 					}
 					prepopulated.ExtraImports = scaffold.ExtraImportsFor(prepopulated.SpecFields, prepopulated.ObservedStateFields)
 				}
-				if err := scaffolder.AddTypeFile(resource, prepopulated); err != nil {
+				var sourceLinks string
+				if linkResolver != nil {
+					var linkEntries []judgement.Entry
+					sourceLinks, linkEntries, err = resolveSourceLinks(ctx, linkResolver, api, resource.Kind, gv.Group, protoFullNames[resource.Kind])
+					if err != nil {
+						return err
+					}
+					queued = append(queued, linkEntries...)
+				}
+				if err := scaffolder.AddTypeFile(resource, prepopulated, sourceLinks); err != nil {
 					return fmt.Errorf("add type file %s: %w", scaffolder.PathToTypeFile(resource), err)
 				}
 				// This runs after AddTypeFile, which is where decisions that
@@ -502,6 +526,37 @@ func resourceMessage(api *protoapi.Proto, fullName string) (protoreflect.Message
 		return nil, fmt.Errorf("%s is not a message", fullName)
 	}
 	return msg, nil
+}
+
+// resolveSourceLinks returns the source link block for a new types file, and
+// an open queue entry for each link that did not verify. The network is only
+// used to check the docs links; when it fails, the links are still written
+// and queued, so generation never stops for it.
+func resolveSourceLinks(ctx context.Context, r *sourcelinks.Resolver, api *protoapi.Proto, kind, group, fullName string) (string, []judgement.Entry, error) {
+	msg, err := resourceMessage(api, fullName)
+	if err != nil {
+		return "", nil, err
+	}
+	var pattern string
+	if md := protoapi.GetResourceMetadata(msg); md != nil {
+		pattern = md.Pattern
+	}
+	links := r.Resolve(ctx, sourcelinks.Resource{Message: msg, Pattern: pattern, Files: api.Files()})
+	var entries []judgement.Entry
+	for _, l := range links {
+		if l.Guess == "" {
+			continue
+		}
+		klog.Warningf("%s: %s link not verified: %s", kind, l.Key, l.Detail)
+		entries = append(entries, judgement.Entry{
+			Kind:   kind,
+			Group:  group,
+			Reason: l.Guess,
+			Detail: l.Detail,
+			Status: judgement.StatusOpen,
+		})
+	}
+	return sourcelinks.Render(kind, links), entries, nil
 }
 
 // writeJudgementQueue merges entries into apis/<service>/judgement_queue.yaml.
