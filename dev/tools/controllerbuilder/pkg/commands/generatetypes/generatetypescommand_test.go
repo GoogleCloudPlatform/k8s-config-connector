@@ -26,10 +26,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/scaffold"
 )
 
-func openEntry(kind, field, reason string) judgement.Entry {
-	return judgement.Entry{Kind: kind, Group: "discoveryengine.cnrm.cloud.google.com", Field: field, Reason: reason, Status: judgement.StatusOpen}
-}
-
 // generate.sh calls generate-types once per proto version, so the queue has to
 // survive several calls for the same service.
 func TestWriteJudgementQueueKeepsEarlierCalls(t *testing.T) {
@@ -135,6 +131,10 @@ func readQueueFile(t *testing.T, path string) string {
 		t.Fatalf("reading queue: %v", err)
 	}
 	return string(b)
+}
+
+func openEntry(kind, field, reason string) judgement.Entry {
+	return judgement.Entry{Kind: kind, Group: "discoveryengine.cnrm.cloud.google.com", Field: field, Reason: reason, Status: judgement.StatusOpen}
 }
 
 // generate-types only adds a parent reference to a prepopulated Spec, so
