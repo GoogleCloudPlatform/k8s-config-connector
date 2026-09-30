@@ -60,12 +60,14 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterSipTrunksServer(grpcServer, &sipTrunksServer{MockService: s})
 	pb.RegisterGeneratorsServer(grpcServer, &generatorsServer{MockService: s})
+	pb.RegisterKnowledgeBasesServer(grpcServer, &knowledgeBasesServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	grpcMux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		grpcpb.RegisterSipTrunksHandler,
 		grpcpb.RegisterGeneratorsHandler,
+		grpcpb.RegisterKnowledgeBasesHandler,
 	)
 	if err != nil {
 		return nil, err

@@ -39,3 +39,18 @@
   - Moved the generated output `types.generated.go` to `siptrunk_types.generated.go` and restored `types.generated.go` for the other Dialogflow v2 resources.
   - Implemented the identity and external ref logic in `dialogflowsiptrunk_identity.go` with unit tests in `dialogflowsiptrunk_identity_test.go`.
 - **Impact**: Provides a correct scaffolding, CRD, identity, and reference setup for DialogflowSipTrunk, preparing the codebase for the subsequent adapter and reconciliation controller implementation steps.
+
+### [2026-09-29] DialogflowKnowledgeBase MockGCP and Alignment (Phase 3)
+- **Context**: Greenfield implementation of Phase 3 (MockGCP and Alignment) for `DialogflowKnowledgeBase` under `apis/dialogflow/v1alpha1` (Issue #13519).
+- **Problem**:
+  - `DialogflowKnowledgeBase` requires mock CRUD operations (Get, Create, Update, Delete, List) against the simulated Dialogflow service.
+  - Knowledge Base IDs are server-generated base64 strings upon creation (`projects/{project}/locations/{location}/knowledgeBases/{id}`).
+  - Dynamic IDs in HTTP logs and CAIS identities required normalization to ensure deterministic golden file comparison across mock and real GCP.
+- **Solution**:
+  - Implemented `knowledgeBasesServer` in `mockgcp/mockdialogflow/knowledgebase.go` supporting global, regional, and agent knowledge base paths, generating standard numeric base64-encoded IDs.
+  - Registered `pb.RegisterKnowledgeBasesServer` and `grpcpb.RegisterKnowledgeBasesHandler` in `mockgcp/mockdialogflow/service.go`.
+  - Configured `Previsit` in `mockgcp/mockdialogflow/normalize.go` to replace server-generated knowledge base IDs with `${knowledgeBaseID}`.
+  - Added `DialogflowKnowledgeBase` to `config/tests/samples/create/harness.go` and dynamic ID normalization in `pkg/cais/caistesting/testing.go`.
+  - Generated and matched mock HTTP logs (`_http_mock.log`) and golden objects for both `dialogflowknowledgebase-minimal` and `dialogflowknowledgebase-maximal`.
+- **Impact**: Enables hermetic E2E testing and continuous integration verification of `DialogflowKnowledgeBase` against MockGCP with 0-diff alignment.
+

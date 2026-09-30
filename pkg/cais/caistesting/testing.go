@@ -157,6 +157,10 @@ func NormalizeDynamicIDs(s string) string {
 				lines[i] = line[:start] + "${folderId}"
 			}
 		}
+		// Normalize DialogflowKnowledgeBase server-generated knowledge base IDs
+		if idx := strings.Index(line, "/knowledgeBases/"); idx != -1 && strings.Contains(line, "dialogflow") {
+			lines[i] = line[:idx+len("/knowledgeBases/")]
+		}
 		// Normalize AssuredWorkloads Workload IDs: locations/.../workloads/<workloadId>
 		if idx := strings.Index(line, "/workloads/"); idx != -1 {
 			start := idx + len("/workloads/")
