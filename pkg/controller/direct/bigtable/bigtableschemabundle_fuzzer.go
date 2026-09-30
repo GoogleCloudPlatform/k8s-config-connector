@@ -37,6 +37,7 @@ func BigtableSchemaBundleFuzzer() fuzztesting.KRMFuzzer {
 
 	f.Unimplemented_Identity(".name")
 	f.Unimplemented_NotYetTriaged(".etag")
+	f.Unimplemented_NotYetTriaged(".avro_schema")
 
 	return f
 }
