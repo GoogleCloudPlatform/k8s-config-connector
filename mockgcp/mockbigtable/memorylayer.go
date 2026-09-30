@@ -46,7 +46,7 @@ func (s *instanceAdminServer) UpdateMemoryLayer(ctx context.Context, req *pb.Upd
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			// If not found, we create it.
-			obj = proto.CloneOf(req.MemoryLayer).(*pb.MemoryLayer)
+			obj = proto.Clone(req.MemoryLayer).(*pb.MemoryLayer)
 			if err := s.storage.Create(ctx, fqn, obj); err != nil {
 				return nil, err
 			}
