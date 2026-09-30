@@ -1419,6 +1419,50 @@ func DiscoveryEngineSessionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 	out.IsPinned = direct.ValueOf(in.IsPinned)
 	return out
 }
+func DiscoveryEngineSitemapObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Sitemap) *krmdiscoveryenginev1alpha1.DiscoveryEngineSitemapObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineSitemapObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	return out
+}
+func DiscoveryEngineSitemapObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineSitemapObservedState) *pb.Sitemap {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Sitemap{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	return out
+}
+func DiscoveryEngineSitemapSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Sitemap) *krmdiscoveryenginev1alpha1.DiscoveryEngineSitemapSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineSitemapSpec{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	// MISSING: Name
+	return out
+}
+func DiscoveryEngineSitemapSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineSitemapSpec) *pb.Sitemap {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Sitemap{}
+	if oneof := DiscoveryEngineSitemapSpec_Uri_ToProto(mapCtx, in.URI); oneof != nil {
+		out.Feed = oneof
+	}
+	// MISSING: Name
+	return out
+}
+func DiscoveryEngineSitemapSpec_Uri_ToProto(mapCtx *direct.MapContext, in *string) *pb.Sitemap_Uri {
+	if in == nil {
+		return nil
+	}
+	return &pb.Sitemap_Uri{Uri: *in}
+}
 func DiscoveryEngineUserStoreObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.UserStore) *krmdiscoveryenginev1alpha1.DiscoveryEngineUserStoreObservedState {
 	if in == nil {
 		return nil

@@ -29,31 +29,47 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh HEAD
 
+PROTO_SHA="665784f816da130b27edb566694b2441d0cfddf2"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 
-${CONTROLLERBUILDER} generate-types --service google.cloud.discoveryengine.v1 --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+# Unset SKIP_GENERATE_PROTOS so this specific script fetches the proto
+OLD_SKIP_GENERATE_PROTOS="${SKIP_GENERATE_PROTOS:-}"
+unset SKIP_GENERATE_PROTOS
+
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
+
+# Restore SKIP_GENERATE_PROTOS
+if [[ -n "${OLD_SKIP_GENERATE_PROTOS}" ]]; then
+  export SKIP_GENERATE_PROTOS="${OLD_SKIP_GENERATE_PROTOS}"
+fi
+
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.discoveryengine.v1 \
+  --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
   --resource DiscoveryEngineControl:Control \
   --resource DiscoveryEngineDataStore:DataStore \
   --resource DiscoveryEngineEngine:Engine \
   --resource DiscoveryEngineIdentityMappingStore:IdentityMappingStore \
   --resource DiscoveryEngineDataStoreTargetSite:TargetSite \
   --resource DiscoveryEngineConversation:Conversation \
-  --resource DiscoveryEngineSession:Session
+  --resource DiscoveryEngineSession:Session \
+  --resource DiscoveryEngineSitemap:Sitemap
 mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1_types.generated.go
 
-${CONTROLLERBUILDER} generate-types --service google.cloud.discoveryengine.v1beta --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.discoveryengine.v1beta \
+  --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
   --resource DiscoveryEngineSampleQuerySet:SampleQuerySet \
   --resource DiscoveryEngineLicenseConfig:LicenseConfig \
   --resource DiscoveryEngineServingConfig:ServingConfig \
   --resource DiscoveryEngineUserStore:UserStore
 mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1beta_types.generated.go
 
-
-
-
-
 ${CONTROLLERBUILDER} generate-mapper \
+  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.discoveryengine.v1,google.cloud.discoveryengine.v1beta \
   --api-version "discoveryengine.cnrm.cloud.google.com/v1alpha1" \
   --multiversion
