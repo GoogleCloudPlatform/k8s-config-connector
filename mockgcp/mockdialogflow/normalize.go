@@ -39,4 +39,16 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 	if !strings.Contains(event.URL(), "dialogflow.googleapis.com") {
 		return
 	}
+
+	event.VisitResponseStringValues(func(path string, value string) {
+		if path == ".name" && strings.Contains(value, "/knowledgeBases/") {
+			tokens := strings.Split(value, "/")
+			for i := 0; i < len(tokens)-1; i++ {
+				if tokens[i] == "knowledgeBases" {
+					kbID := tokens[i+1]
+					replacements.ReplaceStringValue(kbID, "${knowledgeBaseID}")
+				}
+			}
+		}
+	})
 }

@@ -23,7 +23,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/global/knowledgeBases/MjQ5ODY3NjU5NTQ0MzYzMDA4MQ
+  externalRef: projects/${projectId}/locations/global/knowledgeBases/${knowledgeBaseID}
   observedGeneration: 2
   observedState:
-    name: projects/${projectId}/locations/global/knowledgeBases/MjQ5ODY3NjU5NTQ0MzYzMDA4MQ
+    name: projects/${projectId}/locations/global/knowledgeBases/${knowledgeBaseID}
