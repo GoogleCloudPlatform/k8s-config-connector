@@ -1,152 +1,106 @@
 # How to Handle Labels for Direct Resources
 
-This document provides instructions on how to handle GCP labels for direct resources in KCC. The standard approach is to use the Kubernetes `metadata.labels` field as the single source of truth for the labels on the GCP resource. This means the `labels` field should not be part of the resource's `Spec`.
+This document describes how to handle GCP labels for direct resources in KCC.
 
-To properly handle labels for a direct resource, follow these steps:
+Which field holds the labels depends on whether the resource is **greenfield**(implemented via direct controller) or **brownfield**(migrated from TF/DCL controller):
 
-### 1. Remove Labels from the API Specification
+| Resource type | Source of truth for GCP labels |
+|---|---|---|
+| **greenfield** | `spec.labels` |
+| **brownfield** | `metadata.labels` for backward compatibility and gradually migrate to `spec.labels` |
 
-First, ensure that the `labels` field is not part of the resource's `Spec`. If it exists, comment it out.
+## Greenfield resources: use `spec.labels`
 
-**File to edit:** `apis/backupdr/v1alpha1/backupdrbackupplan_types.go`
+For greenfield direct resources, user-specified labels are modeled like any other GCP field.
 
-In `apis/backupdr/v1alpha1/backupdrbackupplan_types.go`, the `Labels` field in the `BackupDRBackupPlanSpec` struct should be commented out:
+> [!WARNING]
+> Do **not** comment out the `Labels` field in the `Spec`, and do **not** mark `.labels` as unimplemented in the fuzzer (`Unimplemented_LabelsAnnotations`, `Unimplemented_NotYetTriaged`, or `UnimplementedFields.Insert`). If the GCP API supports labels, they must be exposed in `spec.labels`.
+> If the GCP API supports labels, the direct controller **must** pass them through to GCP. Silently dropping labels is a bug.
+> 
+### 1. Keep `Labels` in the API Spec
+
+**File to edit:** `apis/<service>/<version>/<kind>_types.go`
 
 ```go
-type BackupDRBackupPlanSpec struct {
+// +kcc:spec:proto=google.cloud.<service>.v1.<Kind>
+type <Kind>Spec struct {
     // ... other fields ...
 
-    // KRM-style labels for the resource.
+    // Optional. Labels as key value pairs.
+    // +kcc:proto:field=google.cloud.<service>.v1.<Kind>.labels
     // +optional
-    // Labels map[string]string `json:"labels,omitempty"`
+    Labels map[string]string `json:"labels,omitempty"`
 
     // ... other fields ...
 }
 ```
 
-After commenting out the field, regenerate the CRDs by running:
+If the field was previously commented out, uncomment it and regenerate the CRDs and mappers:
 
 ```bash
-dev/tasks/generate-crds
+dev/tasks/generate-types-and-mappers
 ```
 
-### 2. Update the Fuzzer Test
+### 2. Map labels in the mapper
 
-Next, update the fuzzer test to acknowledge that labels are intentionally unimplemented in the spec.
+The generated `<Kind>Spec_ToProto` / `<Kind>Spec_FromProto` should now contain:
 
-**File to edit:** `pkg/controller/direct/backupdr/backupdrbackupplan_fuzzer.go`
+```go
+out.Labels = in.Labels
+```
 
-Add the following line to your fuzzer configuration:
+If the mapper is hand-written, add this line to both directions. Make sure there is no leftover `// MISSING: Labels` comment.
+
+### 3. Update the Fuzzer
+
+**File to edit:** `pkg/controller/direct/<service>/<kind>_fuzzer.go`
+
+Treat labels as a regular spec field:
+
+```go
+f.SpecField(".labels")
+```
+
+Remove any line that marks labels as unimplemented. Labels can be marked unimplemented in any of these forms, and all of them must be removed:
 
 ```go
 f.Unimplemented_LabelsAnnotations(".labels")
+f.Unimplemented_NotYetTriaged(".labels")
+f.UnimplementedFields.Insert(".labels")
 ```
 
-This tells the fuzzer to ignore the `.labels` field during testing, preventing false positives.
+### 4. Update the Controller
 
-### 3. Update the Controller to Handle Labels
+The desired proto built from `<Kind>Spec_ToProto` already contains the labels. Do **not** overwrite `desired.Labels` with `metadata.labels`.
 
-Finally, modify the controller to correctly map Kubernetes metadata labels to the GCP resource labels. The recommended pattern is to handle all the logic for constructing the desired GCP resource state, including labels, within the `AdapterForObject` function.
+In `Update()`, make sure label changes are detected and that `labels` is included in the update mask. For example, if you compute the diff with `common.CompareProtoMessage`, `labels` is included automatically because it is a spec field.
 
-**File to edit:** `pkg/controller/direct/backupdr/backupdrbackupplan_controller.go`
+### 5. Update Fixture Tests
 
-In `pkg/controller/direct/backupdr/backupdrbackupplan_controller.go`, the `AdapterForObject` function would be updated as follows:
+**Path to edit:** `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/`
 
-```go
-import (
-    // ... other imports
-    "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
-)
+Set `spec.labels` in `create.yaml` and change it in `update.yaml` (add, modify, and/or remove a key) so that label updates are covered by the golden HTTP logs.
 
-// ...
-
-func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
-    u := op.GetUnstructured()
-    reader := op.Reader
-    obj := &krm.BackupDRBackupPlan{}
-    if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
-        return nil, fmt.Errorf("error converting to %T: %w", obj, err)
-    }
-
-    // ...
-
-    // Convert KCC resource spec to GCP proto message
-    mapCtx := &direct.MapContext{}
-    desiredProto := BackupDRBackupPlanSpec_ToProto(mapCtx, &obj.Spec)
-    if mapCtx.Err() != nil {
-        return nil, mapCtx.Err()
-    }
-
-    // Handle GCP Labels
-    desiredProto.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
-
-    // ...
-
-    return &Adapter{
-        // ...
-        desired: desiredProto,
-        // ...
-    }, nil
-}
+```yaml
+# create.yaml
+spec:
+  labels:
+    env: "test"
+    team: "foo"
 ```
 
-By preparing the desired state in `AdapterForObject`, the `Create` and `Update` methods become simpler and can use the `desired` proto message stored in the adapter directly.
+```yaml
+# update.yaml
+spec:
+  labels:
+    env: "prod"   # modified
+    owner: "bar"  # added; "team" removed
+```
 
-### 4. Update Fixture Tests
+---
 
-After implementing the label handling in the controller, update the resource fixture tests to reflect the changes and verify the new behavior.
+## Brownfield resources: use `metadata.labels` for backward compatibility
 
-**Path to edit:** `pkg/test/resourcefixture/testdata/basic/backupdr/v1alpha1/backupdrbackupplan/`
+For brownfield resources, the Terraform/DCL controllers map Kubernetes `metadata.labels` to GCP labels. To avoid breaking existing users, the direct controller **must** keep the same behavior.
 
-1.  **Remove `spec.labels` from existing tests:**
-    If `create.yaml` or `update.yaml` in existing test fixtures contain a `labels` field within the `spec`, remove it. The labels are now managed via `metadata.labels`.
-
-2.  **Add a new test case for labels:**
-    Create a new test fixture directory (e.g., `backupdrbackupplan-labels`). This test will specifically verify that `metadata.labels` are correctly propagated to the GCP resource.
-
-    **`create.yaml` for `backupdrbackupplan-labels` test:**
-    ```yaml
-    apiVersion: backupdr.cnrm.cloud.google.com/v1alpha1
-    kind: BackupDRBackupPlan
-    metadata:
-      name: backupdrbackupplan-labels
-    labels: 
-        app.kubernetes.io/name: "mock-app"
-        app.kubernetes.io/instance: "mock-instance"
-        app.kubernetes.io/version: "v1.0.0"
-        app.kubernetes.io/component: "mock-component"
-        app.kubernetes.io/part-of: "mock-part-of"
-        app.kubernetes.io/managed-by: "configmanagement.gke.io"
-        applyset.kubernetes.io/id: mock-applyset-id
-        configmanagement.gke.io/sync-name: mock-sync-name
-        configmanagement.gke.io/sync-namespace: mock-sync-namespace
-        custom-label: "foo" # valid label
-    spec:
-      location: us-central1
-      # ... other required spec fields
-    ```
-
-    **`update.yaml` for `backupdrbackupplan-labels` test:**
-    ```yaml
-    apiVersion: backupdr.cnrm.cloud.google.com/v1alpha1
-    kind: BackupDRBackupPlan
-    metadata:
-      name: backupdrbackupplan-labels
-    labels: 
-        app.kubernetes.io/name: "mock-app"
-        app.kubernetes.io/instance: "mock-instance"
-        app.kubernetes.io/version: "v1.0.0"
-        app.kubernetes.io/component: "mock-component"
-        app.kubernetes.io/part-of: "mock-part-of"
-        app.kubernetes.io/managed-by: "configmanagement.gke.io"
-        applyset.kubernetes.io/id: mock-applyset-id
-        configmanagement.gke.io/sync-name: mock-sync-name
-        configmanagement.gke.io/sync-namespace: mock-sync-namespace
-        custom-label: "bar" # updated valid label
-    spec:
-      location: us-central1
-      # ... other required spec fields
-    ```
-    This `update.yaml` tests updating one label (`custom-label`), and implicitly removing the invalid labels.
-
-By following these steps, you ensure that labels are handled consistently and correctly for direct resources, leveraging the standard Kubernetes `metadata.labels` field as the source of truth.
+See the [kcc-direct-brownfield-labels](../../.gemini/skills/kcc-direct-brownfield-labels/SKILL.md) skill has more detail.
