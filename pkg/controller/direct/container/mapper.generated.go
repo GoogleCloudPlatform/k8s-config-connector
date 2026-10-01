@@ -307,6 +307,8 @@ func BinaryAuthorization_ToProto(mapCtx *direct.MapContext, in *krm.BinaryAuthor
 	out.EvaluationMode = direct.Enum_ToProto[pb.BinaryAuthorization_EvaluationMode](mapCtx, in.EvaluationMode)
 	return out
 }
+
+/* found existing non-generated mapping function "CertificateAuthorityDomainConfig_FromProto", skipping
 func CertificateAuthorityDomainConfig_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig) *krm.CertificateAuthorityDomainConfig {
 	if in == nil {
 		return nil
@@ -317,16 +319,22 @@ func CertificateAuthorityDomainConfig_FromProto(mapCtx *direct.MapContext, in *p
 	// (near miss): "GcpSecretManagerCertificateConfig" vs "GCPSecretManagerCertificateConfig"
 	return out
 }
-func CertificateAuthorityDomainConfig_ToProto(mapCtx *direct.MapContext, in *krm.CertificateAuthorityDomainConfig) *pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "CertificateAuthorityDomainConfig_ToProto", skipping
+
+	func CertificateAuthorityDomainConfig_ToProto(mapCtx *direct.MapContext, in *krm.CertificateAuthorityDomainConfig) *pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig{}
+		out.Fqdns = in.Fqdns
+		// MISSING: GcpSecretManagerCertificateConfig
+		// (near miss): "GcpSecretManagerCertificateConfig" vs "GCPSecretManagerCertificateConfig"
+		return out
 	}
-	out := &pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig{}
-	out.Fqdns = in.Fqdns
-	// MISSING: GcpSecretManagerCertificateConfig
-	// (near miss): "GcpSecretManagerCertificateConfig" vs "GCPSecretManagerCertificateConfig"
-	return out
-}
+*/
 func CloudRunConfig_FromProto(mapCtx *direct.MapContext, in *pb.CloudRunConfig) *krm.CloudRunConfig {
 	if in == nil {
 		return nil
@@ -1978,6 +1986,8 @@ func NodeManagementObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Node
 	out.UpgradeOptions = AutoUpgradeOptionsObservedState_ToProto(mapCtx, in.UpgradeOptions)
 	return out
 }
+
+/* found existing non-generated mapping function "NodeNetworkConfig_FromProto", skipping
 func NodeNetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeNetworkConfig) *krm.NodeNetworkConfig {
 	if in == nil {
 		return nil
@@ -1999,27 +2009,33 @@ func NodeNetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeNetworkCo
 	}
 	return out
 }
-func NodeNetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeNetworkConfig) *pb.NodeNetworkConfig {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "NodeNetworkConfig_ToProto", skipping
+
+	func NodeNetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeNetworkConfig) *pb.NodeNetworkConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.NodeNetworkConfig{}
+		out.CreatePodRange = direct.ValueOf(in.CreatePodRange)
+		out.PodRange = direct.ValueOf(in.PodRange)
+		// MISSING: PodIPV4CIDRBlock
+		// (near miss): "PodIPV4CIDRBlock" vs "PodIpv4CidrBlock"
+		out.EnablePrivateNodes = in.EnablePrivateNodes
+		// MISSING: NetworkPerformanceConfig
+		// MISSING: PodCIDROverprovisionConfig
+		// (near miss): "PodCIDROverprovisionConfig" vs "PodCidrOverprovisionConfig"
+		out.AdditionalNodeNetworkConfigs = direct.Slice_ToProto(mapCtx, in.AdditionalNodeNetworkConfigs, AdditionalNodeNetworkConfig_ToProto)
+		out.AdditionalPodNetworkConfigs = direct.Slice_ToProto(mapCtx, in.AdditionalPodNetworkConfigs, AdditionalPodNetworkConfig_ToProto)
+		// MISSING: PodIPV4RangeUtilization
+		if in.SubnetworkRef != nil {
+			out.Subnetwork = in.SubnetworkRef.External
+		}
+		return out
 	}
-	out := &pb.NodeNetworkConfig{}
-	out.CreatePodRange = direct.ValueOf(in.CreatePodRange)
-	out.PodRange = direct.ValueOf(in.PodRange)
-	// MISSING: PodIPV4CIDRBlock
-	// (near miss): "PodIPV4CIDRBlock" vs "PodIpv4CidrBlock"
-	out.EnablePrivateNodes = in.EnablePrivateNodes
-	// MISSING: NetworkPerformanceConfig
-	// MISSING: PodCIDROverprovisionConfig
-	// (near miss): "PodCIDROverprovisionConfig" vs "PodCidrOverprovisionConfig"
-	out.AdditionalNodeNetworkConfigs = direct.Slice_ToProto(mapCtx, in.AdditionalNodeNetworkConfigs, AdditionalNodeNetworkConfig_ToProto)
-	out.AdditionalPodNetworkConfigs = direct.Slice_ToProto(mapCtx, in.AdditionalPodNetworkConfigs, AdditionalPodNetworkConfig_ToProto)
-	// MISSING: PodIPV4RangeUtilization
-	if in.SubnetworkRef != nil {
-		out.Subnetwork = in.SubnetworkRef.External
-	}
-	return out
-}
+*/
 func NodePoolAutoConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodePoolAutoConfig) *krm.NodePoolAutoConfig {
 	if in == nil {
 		return nil
@@ -2106,6 +2122,8 @@ func NodePoolManagement_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolManag
 	// MISSING: UpgradeOptions
 	return out
 }
+
+/* found existing non-generated mapping function "NodePoolNodeConfig_FromProto", skipping
 func NodePoolNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.NodePoolNodeConfig {
 	if in == nil {
 		return nil
@@ -2163,63 +2181,69 @@ func NodePoolNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) 
 	// MISSING: BootDisk
 	return out
 }
-func NodePoolNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolNodeConfig) *pb.NodeConfig {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "NodePoolNodeConfig_ToProto", skipping
+
+	func NodePoolNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolNodeConfig) *pb.NodeConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.NodeConfig{}
+		out.MachineType = direct.ValueOf(in.MachineType)
+		// MISSING: DiskSizeGB
+		// (near miss): "DiskSizeGB" vs "DiskSizeGb"
+		out.OauthScopes = in.OauthScopes
+		if in.ServiceAccountRef != nil {
+			out.ServiceAccount = in.ServiceAccountRef.External
+		}
+		out.Metadata = in.Metadata
+		out.ImageType = direct.ValueOf(in.ImageType)
+		out.Labels = in.Labels
+		out.LocalSsdCount = direct.ValueOf(in.LocalSsdCount)
+		out.Tags = in.Tags
+		out.Preemptible = direct.ValueOf(in.Preemptible)
+		// MISSING: Accelerators
+		out.DiskType = direct.ValueOf(in.DiskType)
+		out.MinCpuPlatform = direct.ValueOf(in.MinCPUPlatform)
+		// MISSING: WorkloadMetadataConfig
+		// MISSING: Taints
+		out.SandboxConfig = SandboxConfig_ToProto(mapCtx, in.SandboxConfig)
+		if in.NodeGroupRef != nil {
+			out.NodeGroup = in.NodeGroupRef.External
+		}
+		out.ReservationAffinity = ReservationAffinity_ToProto(mapCtx, in.ReservationAffinity)
+		out.ShieldedInstanceConfig = ShieldedInstanceConfig_ToProto(mapCtx, in.ShieldedInstanceConfig)
+		out.LinuxNodeConfig = LinuxNodeConfig_ToProto(mapCtx, in.LinuxNodeConfig)
+		out.KubeletConfig = KubeletConfig_ToProto(mapCtx, in.KubeletConfig)
+		// MISSING: BootDiskKMSKey
+		out.GcfsConfig = GcfsConfig_ToProto(mapCtx, in.GcfsConfig)
+		out.AdvancedMachineFeatures = NodeConfig_AdvancedMachineFeatures_ToProto(mapCtx, in.AdvancedMachineFeatures)
+		// MISSING: Gvnic
+		out.Spot = direct.ValueOf(in.Spot)
+		out.ConfidentialNodes = ConfidentialNodes_ToProto(mapCtx, in.ConfidentialNodes)
+		out.FastSocket = FastSocket_ToProto(mapCtx, in.FastSocket)
+		out.ResourceLabels = in.ResourceLabels
+		// MISSING: LoggingConfig
+		out.WindowsNodeConfig = WindowsNodeConfig_ToProto(mapCtx, in.WindowsNodeConfig)
+		// MISSING: LocalNvmeSsdBlockConfig
+		out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_ToProto(mapCtx, in.EphemeralStorageLocalSsdConfig)
+		// MISSING: SoleTenantConfig
+		out.ContainerdConfig = ContainerdConfig_ToProto(mapCtx, in.ContainerdConfig)
+		out.ResourceManagerTags = map_string_string_ToProto(mapCtx, in.ResourceManagerTags)
+		// MISSING: EnableConfidentialStorage
+		// MISSING: SecondaryBootDisks
+		// MISSING: StoragePools
+		// MISSING: SecondaryBootDiskUpdateStrategy
+		// MISSING: MaxRunDuration
+		// MISSING: LocalSsdEncryptionMode
+		// MISSING: EffectiveCgroupMode
+		// MISSING: FlexStart
+		// MISSING: BootDisk
+		return out
 	}
-	out := &pb.NodeConfig{}
-	out.MachineType = direct.ValueOf(in.MachineType)
-	// MISSING: DiskSizeGB
-	// (near miss): "DiskSizeGB" vs "DiskSizeGb"
-	out.OauthScopes = in.OauthScopes
-	if in.ServiceAccountRef != nil {
-		out.ServiceAccount = in.ServiceAccountRef.External
-	}
-	out.Metadata = in.Metadata
-	out.ImageType = direct.ValueOf(in.ImageType)
-	out.Labels = in.Labels
-	out.LocalSsdCount = direct.ValueOf(in.LocalSsdCount)
-	out.Tags = in.Tags
-	out.Preemptible = direct.ValueOf(in.Preemptible)
-	// MISSING: Accelerators
-	out.DiskType = direct.ValueOf(in.DiskType)
-	out.MinCpuPlatform = direct.ValueOf(in.MinCPUPlatform)
-	// MISSING: WorkloadMetadataConfig
-	// MISSING: Taints
-	out.SandboxConfig = SandboxConfig_ToProto(mapCtx, in.SandboxConfig)
-	if in.NodeGroupRef != nil {
-		out.NodeGroup = in.NodeGroupRef.External
-	}
-	out.ReservationAffinity = ReservationAffinity_ToProto(mapCtx, in.ReservationAffinity)
-	out.ShieldedInstanceConfig = ShieldedInstanceConfig_ToProto(mapCtx, in.ShieldedInstanceConfig)
-	out.LinuxNodeConfig = LinuxNodeConfig_ToProto(mapCtx, in.LinuxNodeConfig)
-	out.KubeletConfig = KubeletConfig_ToProto(mapCtx, in.KubeletConfig)
-	// MISSING: BootDiskKMSKey
-	out.GcfsConfig = GcfsConfig_ToProto(mapCtx, in.GcfsConfig)
-	out.AdvancedMachineFeatures = NodeConfig_AdvancedMachineFeatures_ToProto(mapCtx, in.AdvancedMachineFeatures)
-	// MISSING: Gvnic
-	out.Spot = direct.ValueOf(in.Spot)
-	out.ConfidentialNodes = ConfidentialNodes_ToProto(mapCtx, in.ConfidentialNodes)
-	out.FastSocket = FastSocket_ToProto(mapCtx, in.FastSocket)
-	out.ResourceLabels = in.ResourceLabels
-	// MISSING: LoggingConfig
-	out.WindowsNodeConfig = WindowsNodeConfig_ToProto(mapCtx, in.WindowsNodeConfig)
-	// MISSING: LocalNvmeSsdBlockConfig
-	out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_ToProto(mapCtx, in.EphemeralStorageLocalSsdConfig)
-	// MISSING: SoleTenantConfig
-	out.ContainerdConfig = ContainerdConfig_ToProto(mapCtx, in.ContainerdConfig)
-	out.ResourceManagerTags = map_string_string_ToProto(mapCtx, in.ResourceManagerTags)
-	// MISSING: EnableConfidentialStorage
-	// MISSING: SecondaryBootDisks
-	// MISSING: StoragePools
-	// MISSING: SecondaryBootDiskUpdateStrategy
-	// MISSING: MaxRunDuration
-	// MISSING: LocalSsdEncryptionMode
-	// MISSING: EffectiveCgroupMode
-	// MISSING: FlexStart
-	// MISSING: BootDisk
-	return out
-}
+*/
 func NodePoolQueuedProvisioning_FromProto(mapCtx *direct.MapContext, in *pb.NodePool_QueuedProvisioning) *krm.NodePoolQueuedProvisioning {
 	if in == nil {
 		return nil
