@@ -472,3 +472,15 @@ go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/orchest
 
 EOF
 
+# Cloud Monitoring Dashboard patches
+sed -i '/string prometheus_query = 6;/a \ \ \ \ // A query used to fetch time series with SQL.\n    OpsAnalyticsQuery ops_analytics_query = 8;' ${REPO_ROOT}/mockgcp/third_party/googleapis/google/monitoring/dashboard/v1/metrics.proto
+cat >> ${REPO_ROOT}/mockgcp/third_party/googleapis/google/monitoring/dashboard/v1/metrics.proto <<EOF
+
+// A query that produces an aggregated response and supporting data.
+message OpsAnalyticsQuery {
+  // A SQL query to fetch time series, category series, or numeric series data.
+  string sql = 2;
+}
+EOF
+
+
