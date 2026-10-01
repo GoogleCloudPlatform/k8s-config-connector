@@ -22,8 +22,6 @@ spec:
     linuxNodeConfig:
       cgroupMode: CGROUP_MODE_V2
       swapConfig:
-        bootDiskProfile:
-          swapSizePercent: 10
         enabled: false
     machineType: e2-medium
   resourceID: nodepool-sample-${uniqueId}

@@ -825,7 +825,7 @@ X-Xss-Protection: 0
       "networkConfig": {
         "podIpv4CidrBlock": "10.92.0.0/14",
         "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "podRange": "gke-containercluster-${uniqueId}-pods-7b2f8c84",
         "subnetwork": "projects/${projectId}/regions/us-west1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
@@ -1208,7 +1208,7 @@ X-Xss-Protection: 0
       "networkConfig": {
         "podIpv4CidrBlock": "10.92.0.0/14",
         "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "podRange": "gke-containercluster-${uniqueId}-pods-7b2f8c84",
         "subnetwork": "projects/${projectId}/regions/us-west1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
@@ -1806,7 +1806,7 @@ X-Xss-Protection: 0
       "networkConfig": {
         "podIpv4CidrBlock": "10.92.0.0/14",
         "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "podRange": "gke-containercluster-${uniqueId}-pods-7b2f8c84",
         "subnetwork": "projects/${projectId}/regions/us-west1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
@@ -2193,7 +2193,7 @@ X-Xss-Protection: 0
       "networkConfig": {
         "podIpv4CidrBlock": "10.92.0.0/14",
         "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "podRange": "gke-containercluster-${uniqueId}-pods-7b2f8c84",
         "subnetwork": "projects/${projectId}/regions/us-west1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,
@@ -2580,7 +2580,7 @@ X-Xss-Protection: 0
       "networkConfig": {
         "podIpv4CidrBlock": "10.92.0.0/14",
         "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "podRange": "gke-containercluster-${uniqueId}-pods-7b2f8c84",
         "subnetwork": "projects/${projectId}/regions/us-west1/subnetworks/default"
       },
       "podIpv4CidrSize": 24,

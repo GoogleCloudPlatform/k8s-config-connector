@@ -710,7 +710,7 @@ X-Xss-Protection: 0
         "enablePrivateNodes": true,
         "podIpv4CidrBlock": "10.92.0.0/14",
         "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "podRange": "gke-containercluster-${uniqueId}-pods-7b2f8c84",
         "subnetwork": "projects/${projectId}/regions/northamerica-northeast1/subnetworks/${subnetworkID}"
       },
       "podIpv4CidrSize": 24,
@@ -1080,7 +1080,7 @@ X-Xss-Protection: 0
         "enablePrivateNodes": true,
         "podIpv4CidrBlock": "10.92.0.0/14",
         "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "podRange": "gke-containercluster-${uniqueId}-pods-7b2f8c84",
         "subnetwork": "projects/${projectId}/regions/northamerica-northeast1/subnetworks/${subnetworkID}"
       },
       "podIpv4CidrSize": 24,
@@ -1450,7 +1450,7 @@ X-Xss-Protection: 0
         "enablePrivateNodes": true,
         "podIpv4CidrBlock": "10.92.0.0/14",
         "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "podRange": "gke-containercluster-${uniqueId}-pods-7b2f8c84",
         "subnetwork": "projects/${projectId}/regions/northamerica-northeast1/subnetworks/${subnetworkID}"
       },
       "podIpv4CidrSize": 24,
@@ -1820,7 +1820,7 @@ X-Xss-Protection: 0
         "enablePrivateNodes": true,
         "podIpv4CidrBlock": "10.92.0.0/14",
         "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "podRange": "gke-containercluster-${uniqueId}-pods-7b2f8c84",
         "subnetwork": "projects/${projectId}/regions/northamerica-northeast1/subnetworks/${subnetworkID}"
       },
       "podIpv4CidrSize": 24,
@@ -2214,7 +2214,7 @@ X-Xss-Protection: 0
         "enablePrivateNodes": true,
         "podIpv4CidrBlock": "10.92.0.0/14",
         "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "podRange": "gke-containercluster-${uniqueId}-pods-7b2f8c84",
         "subnetwork": "projects/${projectId}/regions/northamerica-northeast1/subnetworks/${subnetworkID}"
       },
       "podIpv4CidrSize": 24,
@@ -2587,7 +2587,7 @@ X-Xss-Protection: 0
         "enablePrivateNodes": true,
         "podIpv4CidrBlock": "10.92.0.0/14",
         "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "podRange": "gke-containercluster-${uniqueId}-pods-7b2f8c84",
         "subnetwork": "projects/${projectId}/regions/northamerica-northeast1/subnetworks/${subnetworkID}"
       },
       "podIpv4CidrSize": 24,
@@ -2960,7 +2960,7 @@ X-Xss-Protection: 0
         "enablePrivateNodes": true,
         "podIpv4CidrBlock": "10.92.0.0/14",
         "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "podRange": "gke-containercluster-${uniqueId}-pods-7b2f8c84",
         "subnetwork": "projects/${projectId}/regions/northamerica-northeast1/subnetworks/${subnetworkID}"
       },
       "podIpv4CidrSize": 24,
