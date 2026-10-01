@@ -61,11 +61,11 @@ func TestMissingRefs(t *testing.T) {
 		t.Fatalf("error loading crds: %v", err)
 	}
 
-	// Resources still awaiting the judgement pass. Their [refs] findings are
+	// Resources with open judgement queue entries. Their [refs] findings are
 	// suppressed: a mechanically generated resource has ref-shaped string fields
 	// by construction, and missingrefs.txt is a ratchet, so without this the first
-	// bulk-generation PR could not merge. Clearing a resource's queue graduates it
-	// and the ratchet applies as normal.
+	// bulk-generation PR could not merge. Once every entry for a resource is
+	// resolved, the ratchet applies as normal.
 	queued, err := loadJudgementQueue(judgementQueueGlob)
 	if err != nil {
 		t.Fatalf("error loading judgement queues: %v", err)

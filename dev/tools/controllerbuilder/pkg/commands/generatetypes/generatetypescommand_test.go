@@ -17,64 +17,14 @@ package generatetypes
 import (
 	"os"
 	"path/filepath"
-	"slices"
+	"reflect"
 	"strings"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/scaffold"
 )
-
-func TestMergeQueueLines(t *testing.T) {
-	header := "# header line one\n#\n# header line two\n\n"
-	for _, tc := range []struct {
-		name     string
-		existing string
-		added    string
-		want     []string
-	}{
-		{
-			name:     "existing lines come first, then new ones",
-			existing: header + "KindA .spec.a reason=x\n",
-			added:    "KindB .spec.b reason=y\n",
-			want:     []string{"KindA .spec.a reason=x", "KindB .spec.b reason=y"},
-		},
-		{
-			name:     "a line already present is not repeated",
-			existing: header + "KindA .spec.a reason=x\n",
-			added:    "KindA .spec.a reason=x\nKindB .spec.b reason=y\n",
-			want:     []string{"KindA .spec.a reason=x", "KindB .spec.b reason=y"},
-		},
-		{
-			name:     "header lines are dropped and other comments kept",
-			existing: header + "# dropped: google.cloud.x.v1.Msg.field reason=z\n",
-			added:    "",
-			want:     []string{"# dropped: google.cloud.x.v1.Msg.field reason=z"},
-		},
-		{
-			name:     "derived message map comment lines are preserved",
-			existing: header + "# derived-message-map: google.cloud.x.v1.Msg.field proto=google.cloud.x.v1.Sub goType=Sub\n",
-			added:    "",
-			want:     []string{"# derived-message-map: google.cloud.x.v1.Msg.field proto=google.cloud.x.v1.Sub goType=Sub"},
-		},
-		{
-			name:     "no existing file",
-			existing: "",
-			added:    "KindA .spec.a reason=x\n\n",
-			want:     []string{"KindA .spec.a reason=x"},
-		},
-	} {
-		t.Run(tc.name, func(t *testing.T) {
-			// Act
-			got := mergeQueueLines(header, tc.existing, tc.added)
-
-			// Assert
-			if !slices.Equal(got, tc.want) {
-				t.Errorf("got %q, want %q", got, tc.want)
-			}
-		})
-	}
-}
 
 // generate.sh calls generate-types once per proto version, so the queue has to
 // survive several calls for the same service.
@@ -82,28 +32,32 @@ func TestWriteJudgementQueueKeepsEarlierCalls(t *testing.T) {
 	// Arrange
 	apiDir := t.TempDir()
 	goPackage := "discoveryengine/v1alpha1"
-	path := filepath.Join(apiDir, "discoveryengine", "needs_judgement_call.txt")
+	path := filepath.Join(apiDir, "discoveryengine", judgement.FileName)
+	a := openEntry("KindA", ".spec.a", "x")
+	b := openEntry("KindB", ".spec.b", "y")
 
 	// Act
-	if err := writeJudgementQueue(apiDir, goPackage, []string{"KindA .spec.a reason=x\n"}); err != nil {
+	if err := writeJudgementQueue(apiDir, goPackage, []judgement.Entry{a}); err != nil {
 		t.Fatalf("first call: %v", err)
 	}
-	if err := writeJudgementQueue(apiDir, goPackage, []string{"KindB .spec.b reason=y\n"}); err != nil {
+	if err := writeJudgementQueue(apiDir, goPackage, []judgement.Entry{b}); err != nil {
 		t.Fatalf("second call: %v", err)
 	}
-	afterTwo := readQueue(t, path)
-	if err := writeJudgementQueue(apiDir, goPackage, []string{"KindB .spec.b reason=y\n"}); err != nil {
+	afterTwo := readQueueFile(t, path)
+	if err := writeJudgementQueue(apiDir, goPackage, []judgement.Entry{b}); err != nil {
 		t.Fatalf("third call: %v", err)
 	}
-	afterThree := readQueue(t, path)
+	afterThree := readQueueFile(t, path)
 
 	// Assert
-	for _, entry := range []string{"KindA .spec.a reason=x", "KindB .spec.b reason=y"} {
-		if strings.Count(afterTwo, entry) != 1 {
-			t.Errorf("want %q exactly once after two calls, got:\n%s", entry, afterTwo)
-		}
+	q, err := judgement.Read(path)
+	if err != nil {
+		t.Fatalf("reading queue: %v", err)
 	}
-	if strings.Count(afterTwo, "# Fields emitted during generation that require human review") != 1 {
+	if want := []judgement.Entry{a, b}; !reflect.DeepEqual(q.Entries, want) {
+		t.Errorf("entries = %+v, want %+v", q.Entries, want)
+	}
+	if strings.Count(afterTwo, "# Judgement queue") != 1 {
 		t.Errorf("want the header exactly once, got:\n%s", afterTwo)
 	}
 	if afterThree != afterTwo {
@@ -111,13 +65,76 @@ func TestWriteJudgementQueueKeepsEarlierCalls(t *testing.T) {
 	}
 }
 
-func readQueue(t *testing.T, path string) string {
+// A person resolves an entry by editing the file. Regenerating must keep that.
+func TestWriteJudgementQueueKeepsResolutions(t *testing.T) {
+	// Arrange
+	apiDir := t.TempDir()
+	goPackage := "discoveryengine/v1alpha1"
+	path := filepath.Join(apiDir, "discoveryengine", judgement.FileName)
+	a := openEntry("KindA", ".spec.a", "possible-reference")
+	if err := writeJudgementQueue(apiDir, goPackage, []judgement.Entry{a}); err != nil {
+		t.Fatalf("first call: %v", err)
+	}
+	q, err := judgement.Read(path)
+	if err != nil {
+		t.Fatalf("reading queue: %v", err)
+	}
+	q.Entries[0].Status = judgement.StatusResolved
+	q.Entries[0].Resolution = judgement.ResolutionEdited
+	q.Entries[0].Note = "changed to aRef"
+	if err := judgement.Write(path, q); err != nil {
+		t.Fatalf("writing the resolution: %v", err)
+	}
+
+	// Act
+	if err := writeJudgementQueue(apiDir, goPackage, []judgement.Entry{a}); err != nil {
+		t.Fatalf("regenerating: %v", err)
+	}
+
+	// Assert
+	got, err := judgement.Read(path)
+	if err != nil {
+		t.Fatalf("reading queue: %v", err)
+	}
+	if len(got.Entries) != 1 || got.Entries[0].Status != judgement.StatusResolved || got.Entries[0].Note != "changed to aRef" {
+		t.Errorf("regenerating reopened or lost the resolution: %+v", got.Entries)
+	}
+}
+
+// A queue that does not parse may hold resolutions someone typed by hand, so
+// the generator stops rather than overwriting it.
+func TestWriteJudgementQueueRejectsABrokenFile(t *testing.T) {
+	apiDir := t.TempDir()
+	path := filepath.Join(apiDir, "discoveryengine", judgement.FileName)
+	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
+		t.Fatal(err)
+	}
+	broken := "entries:\n- kind: KindA\n  reason: x\n  status: open\n"
+	if err := os.WriteFile(path, []byte(broken), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	err := writeJudgementQueue(apiDir, "discoveryengine/v1alpha1", []judgement.Entry{openEntry("KindB", ".spec.b", "y")})
+
+	if err == nil {
+		t.Fatal("expected an error for a queue that does not validate")
+	}
+	if got := readQueueFile(t, path); got != broken {
+		t.Errorf("the broken file was overwritten:\n%s", got)
+	}
+}
+
+func readQueueFile(t *testing.T, path string) string {
 	t.Helper()
 	b, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatalf("reading queue: %v", err)
 	}
 	return string(b)
+}
+
+func openEntry(kind, field, reason string) judgement.Entry {
+	return judgement.Entry{Kind: kind, Group: "discoveryengine.cnrm.cloud.google.com", Field: field, Reason: reason, Status: judgement.StatusOpen}
 }
 
 // generate-types only adds a parent reference to a prepopulated Spec, so
@@ -334,9 +351,9 @@ func TestValidatePlaceServerSetFieldsNeedsPrepopulateSpec(t *testing.T) {
 func TestAmbiguousResourceItem(t *testing.T) {
 	resource := options.Resource{Kind: "NotebookInstanceV2", ProtoName: "Instance"}
 	for _, tc := range []struct {
-		name     string
-		matches  []string
-		wantLine string
+		name    string
+		matches []string
+		want    *scaffold.JudgementItem
 	}{
 		{
 			name: "qualified name or no match",
@@ -348,9 +365,11 @@ func TestAmbiguousResourceItem(t *testing.T) {
 		{
 			name:    "two matches",
 			matches: []string{"google.cloud.notebooks.v1.Instance", "google.cloud.notebooks.v2.Instance"},
-			wantLine: "kind=NotebookInstanceV2 group=notebooks.cnrm.cloud.google.com: resource reason=ambiguous-proto-name " +
-				"(Instance exists in 2 of the listed services (google.cloud.notebooks.v1.Instance, google.cloud.notebooks.v2.Instance); " +
-				"generated from google.cloud.notebooks.v1.Instance. Put the full proto name in --resource to choose one)\n",
+			want: &scaffold.JudgementItem{
+				Reason: "ambiguous-proto-name",
+				Detail: "Instance exists in 2 of the listed services (google.cloud.notebooks.v1.Instance, google.cloud.notebooks.v2.Instance); " +
+					"generated from google.cloud.notebooks.v1.Instance. Put the full proto name in --resource to choose one",
+			},
 		},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
@@ -358,15 +377,11 @@ func TestAmbiguousResourceItem(t *testing.T) {
 			item, ok := ambiguousResourceItem(resource, tc.matches)
 
 			// Assert
-			if ok != (tc.wantLine != "") {
-				t.Fatalf("ok = %v, want %v", ok, tc.wantLine != "")
+			if ok != (tc.want != nil) {
+				t.Fatalf("ok = %v, want %v", ok, tc.want != nil)
 			}
-			if !ok {
-				return
-			}
-			got := scaffold.FormatJudgementEntries(resource.Kind, "notebooks.cnrm.cloud.google.com", []scaffold.JudgementItem{item})
-			if got != tc.wantLine {
-				t.Errorf("queue line:\n got %q\nwant %q", got, tc.wantLine)
+			if ok && item != *tc.want {
+				t.Errorf("item:\n got %+v\nwant %+v", item, *tc.want)
 			}
 		})
 	}

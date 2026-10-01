@@ -28,7 +28,7 @@ import (
 // It handles only regular plurals (-s, -es, -ies) and leaves words such as
 // "status" or "analysis" alone, to avoid false positives. Its answer is only
 // ever a guess: whether or not referenceTo finds a matching type, it queues an
-// entry in needs_judgement_call.txt for a reviewer to confirm.
+// entry in judgement_queue.yaml for a reviewer to confirm.
 func Singular(s string) string {
 	switch {
 	case strings.HasSuffix(s, "ies") && len(s) > 4:
