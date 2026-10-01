@@ -91,13 +91,13 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed EventarcPipeline
-                      resource. Should be in the format `projects/{{projectID}}/locations/{{location}}/pipelines/{{pipelineID}}`.
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/pipelines/{{pipelineID}}".
                     type: string
                   name:
-                    description: The `name` field of a `EventarcPipeline` resource.
+                    description: The name of an EventarcPipeline resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `EventarcPipeline` resource.
+                    description: The namespace of an EventarcPipeline resource.
                     type: string
                 type: object
               displayName:

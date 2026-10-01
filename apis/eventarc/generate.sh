@@ -41,7 +41,8 @@ ${CONTROLLERBUILDER} generate-types \
   --resource EventarcEnrollment:Enrollment \
   --resource EventarcChannelConnection:ChannelConnection \
   --resource EventarcGoogleAPISource:GoogleApiSource \
-  --resource EventarcMessageBus:MessageBus
+  --resource EventarcMessageBus:MessageBus \
+  --resource EventarcPipeline:Pipeline
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.eventarc.v1 \
