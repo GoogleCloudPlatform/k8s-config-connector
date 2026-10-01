@@ -179,7 +179,7 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 
 	obj.GceZone = obj.Settings.LocationPreference.Zone
 
-	if obj.DnsName == nil {
+	if obj.DnsName == nil && obj.Settings.GetIpConfiguration().GetServerCaMode() != "" {
 		obj.DnsName = PtrTo(name.InstanceName + ".example." + obj.Region + ".sql.goog.")
 	}
 
@@ -762,9 +762,6 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 			ipConfiguration.SslMode = pb.IpConfiguration_ALLOW_UNENCRYPTED_AND_ENCRYPTED
 		}
 	}
-	if ipConfiguration.ServerCaMode == nil {
-		ipConfiguration.ServerCaMode = PtrTo("GOOGLE_MANAGED_INTERNAL_CA")
-	}
 
 	if settings.LocationPreference == nil {
 		settings.LocationPreference = &pb.LocationPreference{
@@ -1095,6 +1092,7 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 	obj.CreateTime = existing.CreateTime
 	obj.DatabaseInstalledVersion = existing.DatabaseInstalledVersion
 	obj.DatabaseVersion = existing.DatabaseVersion
+	obj.DnsName = existing.DnsName
 	obj.GceZone = existing.GceZone
 	obj.IpAddresses = existing.IpAddresses
 	obj.ServerCaCert = existing.ServerCaCert

@@ -2127,6 +2127,17 @@ spec:
         name: sqlinstance-ca-pool-sample
       customSubjectAlternativeNames:
         - "db.internal.example.com"
+---
+apiVersion: privateca.cnrm.cloud.google.com/v1beta1
+kind: PrivateCACAPool
+metadata:
+  name: sqlinstance-ca-pool-sample
+spec:
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: projects/${PROJECT_ID?}
+  location: us-central1
+  tier: DEVOPS
 ```
 
 ### Postgres SQL Instance High Availability

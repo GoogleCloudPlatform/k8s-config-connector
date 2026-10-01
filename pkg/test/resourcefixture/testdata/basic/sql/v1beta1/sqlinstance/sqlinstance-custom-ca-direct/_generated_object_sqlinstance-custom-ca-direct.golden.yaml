@@ -15,7 +15,7 @@ metadata:
   namespace: ${uniqueId}
 spec:
   databaseVersion: POSTGRES_16
-  region: us-central1
+  region: europe-north2
   settings:
     ipConfiguration:
       customSubjectAlternativeNames:
@@ -25,7 +25,7 @@ spec:
       serverCAPoolRef:
         name: privatecacapool-dep2-${uniqueId}
     locationPreference:
-      zone: us-central1-a
+      zone: europe-north2-a
     tier: db-custom-1-3840
 status:
   conditions:
@@ -34,7 +34,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  connectionName: ${projectId}:us-central1:sqlinstance-custom-ca-direct-${uniqueId}
+  connectionName: ${projectId}:europe-north2:sqlinstance-custom-ca-direct-${uniqueId}
   dnsName: ${dnsName}
   firstIpAddress: 10.1.2.3
   instanceType: CLOUD_SQL_INSTANCE
