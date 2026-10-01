@@ -141,7 +141,8 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/contactcenterinsights/v1/*.proto \
 		./third_party/googleapis/google/cloud/configdelivery/v1/*.proto \
 		./third_party/googleapis/google/cloud/saasplatform/saasservicemgmt/v1beta1/*.proto \
-		./third_party/googleapis/google/cloud/devicestreaming/v1/*.proto
+		./third_party/googleapis/google/cloud/devicestreaming/v1/*.proto \
+		./third_party/googleapis/google/cloud/datacatalog/lineage/v1/*.proto
 
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:
