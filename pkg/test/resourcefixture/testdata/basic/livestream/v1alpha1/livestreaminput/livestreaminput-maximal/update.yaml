@@ -1,0 +1,29 @@
+apiVersion: livestream.cnrm.cloud.google.com/v1alpha1
+kind: LiveStreamInput
+metadata:
+  name: livestreaminput-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  resourceID: livestreaminput-maximal-${uniqueId}
+  type: RTMP_PUSH
+  tier: HD
+  labels:
+    label-one: "value-one"
+  preprocessingConfig:
+    audio:
+      lufs: -16
+    crop:
+      topPixels: 20
+      bottomPixels: 20
+      leftPixels: 20
+      rightPixels: 20
+    pad:
+      topPixels: 10
+      bottomPixels: 10
+      leftPixels: 10
+      rightPixels: 10
+  securityRules:
+    ipRanges:
+      - 192.168.0.0/16

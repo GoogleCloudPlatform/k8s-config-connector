@@ -31,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -38,20 +39,20 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.LiveStreamAssetGVK, NewAssetModel)
+	registry.RegisterModel(krm.LiveStreamInputGVK, NewInputModel)
 }
 
-func NewAssetModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	return &assetModel{config: *config}, nil
+func NewInputModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &inputModel{config: *config}, nil
 }
 
-var _ directbase.Model = &assetModel{}
+var _ directbase.Model = &inputModel{}
 
-type assetModel struct {
+type inputModel struct {
 	config config.ControllerConfig
 }
 
-func (m *assetModel) client(ctx context.Context) (*gcp.Client, error) {
+func (m *inputModel) client(ctx context.Context) (*gcp.Client, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
@@ -64,10 +65,10 @@ func (m *assetModel) client(ctx context.Context) (*gcp.Client, error) {
 	return gcpClient, nil
 }
 
-func (m *assetModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+func (m *inputModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
 	reader := op.Reader
-	obj := &krm.LiveStreamAsset{}
+	obj := &krm.LiveStreamInput{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
@@ -76,7 +77,7 @@ func (m *assetModel) AdapterForObject(ctx context.Context, op *directbase.Adapte
 	if err != nil {
 		return nil, err
 	}
-	id := idBase.(*krm.LiveStreamAssetIdentity)
+	id := idBase.(*krm.LiveStreamInputIdentity)
 
 	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
@@ -88,12 +89,12 @@ func (m *assetModel) AdapterForObject(ctx context.Context, op *directbase.Adapte
 	}
 
 	mapCtx := &direct.MapContext{}
-	desired := LiveStreamAssetSpec_ToProto(mapCtx, &obj.Spec)
+	desired := LiveStreamInputSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
 
-	return &assetAdapter{
+	return &inputAdapter{
 		id:        id,
 		gcpClient: gcpClient,
 		desired:   desired,
@@ -101,60 +102,72 @@ func (m *assetModel) AdapterForObject(ctx context.Context, op *directbase.Adapte
 	}, nil
 }
 
-func (m *assetModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	return nil, nil
+func (m *inputModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	id := &krm.LiveStreamInputIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		return nil, nil
+	}
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &inputAdapter{
+		id:        id,
+		gcpClient: gcpClient,
+		model:     m,
+	}, nil
 }
 
-type assetAdapter struct {
-	id        *krm.LiveStreamAssetIdentity
+type inputAdapter struct {
+	id        *krm.LiveStreamInputIdentity
 	gcpClient *gcp.Client
-	desired   *pb.Asset
-	actual    *pb.Asset
-	model     *assetModel
+	desired   *pb.Input
+	actual    *pb.Input
+	model     *inputModel
 }
 
-var _ directbase.Adapter = &assetAdapter{}
+var _ directbase.Adapter = &inputAdapter{}
 
-func (a *assetAdapter) Find(ctx context.Context) (bool, error) {
+func (a *inputAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("finding LiveStreamAsset", "id", a.id)
+	log.V(2).Info("finding LiveStreamInput", "id", a.id)
 
-	req := &pb.GetAssetRequest{
+	req := &pb.GetInputRequest{
 		Name: a.id.String(),
 	}
-	asset, err := a.gcpClient.GetAsset(ctx, req)
+	input, err := a.gcpClient.GetInput(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting LiveStreamAsset %s: %w", a.id.String(), err)
+		return false, fmt.Errorf("getting LiveStreamInput %s: %w", a.id.String(), err)
 	}
 
-	a.actual = asset
+	a.actual = input
 	return true, nil
 }
 
-func (a *assetAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+func (a *inputAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating LiveStreamAsset", "id", a.id)
+	log.V(2).Info("creating LiveStreamInput", "id", a.id)
 
-	req := &pb.CreateAssetRequest{
+	req := &pb.CreateInputRequest{
 		Parent:  a.id.ParentString(),
-		AssetId: a.id.Asset,
-		Asset:   a.desired,
+		InputId: a.id.Input,
+		Input:   a.desired,
 	}
-	op, err := a.gcpClient.CreateAsset(ctx, req)
+	op, err := a.gcpClient.CreateInput(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating LiveStreamAsset %s: %w", a.id.String(), err)
+		return fmt.Errorf("creating LiveStreamInput %s: %w", a.id.String(), err)
 	}
 
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("waiting for LiveStreamAsset %s creation: %w", a.id.String(), err)
+		return fmt.Errorf("waiting for LiveStreamInput %s creation: %w", a.id.String(), err)
 	}
 
 	// Fetch fully-populated resource after creation
-	refetched, err := a.gcpClient.GetAsset(ctx, &pb.GetAssetRequest{Name: a.id.String()})
+	refetched, err := a.gcpClient.GetInput(ctx, &pb.GetInputRequest{Name: a.id.String()})
 	if err != nil {
 		refetched = created
 	}
@@ -163,34 +176,57 @@ func (a *assetAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 	return a.updateStatus(ctx, createOp, refetched)
 }
 
-func (a *assetAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+func (a *inputAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating LiveStreamAsset", "id", a.id)
+	log.V(2).Info("updating LiveStreamInput", "id", a.id)
 
-	diffs, _, err := a.compareAsset(ctx, a.actual, a.desired)
+	diffs, updateMask, err := a.compareInput(ctx, a.actual, a.desired)
 	if err != nil {
 		return err
 	}
 
+	latest := a.actual
 	if diffs.HasDiff() {
 		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
-		return fmt.Errorf("LiveStreamAsset is immutable and cannot be updated")
+
+		desiredCopy := proto.Clone(a.desired).(*pb.Input)
+		desiredCopy.Name = a.id.String()
+
+		req := &pb.UpdateInputRequest{
+			Input:      desiredCopy,
+			UpdateMask: updateMask,
+		}
+
+		op, err := a.gcpClient.UpdateInput(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating LiveStreamInput %s: %w", a.id.String(), err)
+		}
+		latest, err = op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("waiting LiveStreamInput %s update: %w", a.id.String(), err)
+		}
+
+		// Fetch fully-populated resource after update
+		refetched, err := a.gcpClient.GetInput(ctx, &pb.GetInputRequest{Name: a.id.String()})
+		if err != nil {
+			refetched = latest
+		}
+		latest = refetched
 	}
 
-	return a.updateStatus(ctx, updateOp, a.actual)
+	return a.updateStatus(ctx, updateOp, latest)
 }
 
-func (a *assetAdapter) compareAsset(ctx context.Context, actual, desired *pb.Asset) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	maskedActual, err := mappers.OnlySpecFields(actual, LiveStreamAssetSpec_FromProto, LiveStreamAssetSpec_ToProto)
+func (a *inputAdapter) compareInput(ctx context.Context, actual, desired *pb.Input) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	maskedActual, err := mappers.OnlySpecFields(actual, LiveStreamInputSpec_FromProto, LiveStreamInputSpec_ToProto)
 	if err != nil {
 		return nil, nil, err
 	}
 	maskedActual.Name = desired.Name
 
-	// Since crc32c is filled by the server if omitted, copy it to desired to avoid false drift
-	if desired.Crc32C == "" && maskedActual.Crc32C != "" {
-		desired.Crc32C = maskedActual.Crc32C
+	if desired.Tier == pb.Input_TIER_UNSPECIFIED && maskedActual.Tier == pb.Input_HD {
+		desired.Tier = pb.Input_HD
 	}
 
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
@@ -200,10 +236,10 @@ func (a *assetAdapter) compareAsset(ctx context.Context, actual, desired *pb.Ass
 	return diffs, updateMask, nil
 }
 
-func (a *assetAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.Asset) error {
+func (a *inputAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.Input) error {
 	mapCtx := &direct.MapContext{}
-	status := krm.LiveStreamAssetStatus{}
-	status.ObservedState = LiveStreamAssetObservedState_FromProto(mapCtx, latest)
+	status := krm.LiveStreamInputStatus{}
+	status.ObservedState = LiveStreamInputObservedState_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -213,20 +249,20 @@ func (a *assetAdapter) updateStatus(ctx context.Context, op directbase.Operation
 	return op.UpdateStatus(ctx, &status, nil)
 }
 
-func (a *assetAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+func (a *inputAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krm.LiveStreamAsset{}
+	obj := &krm.LiveStreamInput{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(LiveStreamAssetSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(LiveStreamInputSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
 
-	obj.Spec.ResourceID = direct.LazyPtr(a.id.Asset)
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.Input)
 	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
 	obj.Spec.Location = direct.LazyPtr(a.id.Location)
 
@@ -236,29 +272,29 @@ func (a *assetAdapter) Export(ctx context.Context) (*unstructured.Unstructured, 
 	}
 
 	u.Object = uObj
-	u.SetName(a.id.Asset)
-	u.SetGroupVersionKind(krm.LiveStreamAssetGVK)
+	u.SetName(a.id.Input)
+	u.SetGroupVersionKind(krm.LiveStreamInputGVK)
 
 	return u, nil
 }
 
-func (a *assetAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+func (a *inputAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting LiveStreamAsset", "id", a.id)
+	log.V(2).Info("deleting LiveStreamInput", "id", a.id)
 
-	req := &pb.DeleteAssetRequest{Name: a.id.String()}
-	op, err := a.gcpClient.DeleteAsset(ctx, req)
+	req := &pb.DeleteInputRequest{Name: a.id.String()}
+	op, err := a.gcpClient.DeleteInput(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
-			log.V(2).Info("skipping delete for non-existent LiveStreamAsset, assuming it was already deleted", "id", a.id.String())
+			log.V(2).Info("skipping delete for non-existent LiveStreamInput, assuming it was already deleted", "id", a.id.String())
 			return true, nil
 		}
-		return false, fmt.Errorf("deleting LiveStreamAsset %s: %w", a.id.String(), err)
+		return false, fmt.Errorf("deleting LiveStreamInput %s: %w", a.id.String(), err)
 	}
 
 	err = op.Wait(ctx)
 	if err != nil {
-		return false, fmt.Errorf("waiting delete LiveStreamAsset %s: %w", a.id.String(), err)
+		return false, fmt.Errorf("waiting delete LiveStreamInput %s: %w", a.id.String(), err)
 	}
 	return true, nil
 }
