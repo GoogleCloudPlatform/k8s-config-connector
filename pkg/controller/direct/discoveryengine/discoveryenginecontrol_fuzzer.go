@@ -23,27 +23,27 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMSpecFuzzer(fuzzControl())
+	fuzztesting.RegisterKRMSpecFuzzer(controlFuzzer())
 }
 
-func fuzzControl() fuzztesting.KRMFuzzer {
+func controlFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.Control{},
 		DiscoveryEngineControlSpec_v1alpha1_FromProto, DiscoveryEngineControlSpec_v1alpha1_ToProto,
 	)
 
-	f.UnimplementedFields.Insert(".name")                          // special field
-	f.UnimplementedFields.Insert(".associated_serving_config_ids") // not implemented
+	f.SpecField(".display_name")
+	f.SpecField(".solution_type")
+	f.SpecField(".use_cases")
+	f.SpecField(".conditions")
 
-	f.SpecFields.Insert(".display_name")
-	f.SpecFields.Insert(".solution_type")
-	f.SpecFields.Insert(".use_cases")
-	f.SpecFields.Insert(".conditions")
+	f.SpecField(".boost_action")
+	f.SpecField(".filter_action")
+	f.SpecField(".redirect_action")
+	f.SpecField(".synonyms_action")
+	f.SpecField(".promote_action")
 
-	f.SpecFields.Insert(".boost_action")
-	f.SpecFields.Insert(".filter_action")
-	f.SpecFields.Insert(".redirect_action")
-	f.SpecFields.Insert(".synonyms_action")
-	f.SpecFields.Insert(".promote_action")
+	f.Unimplemented_Identity(".name")
+	f.Unimplemented_NotYetTriaged(".associated_serving_config_ids")
 
 	return f
 }

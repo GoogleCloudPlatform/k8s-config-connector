@@ -2288,17 +2288,11 @@
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostAction.interpolationBoostSpec.controlPoints[].boostAmount" is not set in unstructured objects
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostAction.interpolationBoostSpec.fieldName" is not set in unstructured objects
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostAction.interpolationBoostSpec.interpolationType" is not set in unstructured objects
-[missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.conditions[].activeTimeRange[].endTime" is not set in unstructured objects
-[missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.conditions[].activeTimeRange[].startTime" is not set in unstructured objects
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.conditions[].queryRegex" is not set in unstructured objects
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.conditions[].queryTerms[].fullMatch" is not set in unstructured objects
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.conditions[].queryTerms[].value" is not set in unstructured objects
-[missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.filterAction.dataStoreRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.filterAction.filter" is not set in unstructured objects
-[missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.promoteAction.dataStoreRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.promoteAction.searchLinkPromotion.description" is not set in unstructured objects
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.promoteAction.searchLinkPromotion.document" is not set in unstructured objects
@@ -2307,9 +2301,6 @@
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.promoteAction.searchLinkPromotion.title" is not set in unstructured objects
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.promoteAction.searchLinkPromotion.uri" is not set in unstructured objects
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.redirectAction.redirectURI" is not set in unstructured objects
-[missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.solutionType" is not set in unstructured objects
-[missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.synonymsAction.synonyms[]" is not set in unstructured objects
-[missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.useCases[]" is not set in unstructured objects
 [missing_field] crd=discoveryengineconversations.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.messages[].reply.summary.safetyAttributes.categories[]" is not set in unstructured objects
 [missing_field] crd=discoveryengineconversations.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.messages[].reply.summary.safetyAttributes.scores[]" is not set in unstructured objects
 [missing_field] crd=discoveryengineconversations.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.messages[].reply.summary.summarySkippedReasons[]" is not set in unstructured objects
