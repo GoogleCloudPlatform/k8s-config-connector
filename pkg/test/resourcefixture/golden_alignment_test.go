@@ -751,6 +751,9 @@ func normalizeRepresentation(obj interface{}) interface{} {
 				}
 				if backupConfig, ok := settings["backupConfiguration"].(map[string]interface{}); ok {
 					delete(backupConfig, "backupTier")
+					if rla, ok := backupConfig["replicationLogArchivingEnabled"].(bool); ok && !rla {
+						delete(backupConfig, "replicationLogArchivingEnabled")
+					}
 				}
 			}
 		}

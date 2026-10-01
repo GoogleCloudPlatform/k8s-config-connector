@@ -16,6 +16,17 @@ generate-grpc-for-google-protos: tools
 		--go-grpc_opt paths=source_relative \
 		./.build/googleapis/google/cloud/tpu/v2/*.proto
 
+	go -C ../../mockgcp/tools/patch-proto run . --file ./.build/googleapis/google/cloud/sql/v1beta4/cloud_sql_resources.proto --message IpConfiguration --mode append <<EOF
+  // The server CA mode.
+  optional string server_ca_mode = 11;
+
+  // The server CA pool.
+  optional string server_ca_pool = 12;
+
+  // Custom Subject Alternative Names.
+  repeated string custom_subject_alternative_names = 13;
+EOF
+
 	PATH=.build/bin/:${PATH} .build/bin/protoc/bin/protoc \
 		-I ./.build/googleapis \
 		--experimental_allow_proto3_optional \
