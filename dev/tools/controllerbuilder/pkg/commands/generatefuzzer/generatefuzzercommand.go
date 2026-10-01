@@ -34,6 +34,8 @@ type generateFuzzerOptions struct {
 	apiVersion  string
 	maxAttempts int
 	llmModel    string
+
+	deterministic deterministicOptions
 }
 
 func (o *generateFuzzerOptions) BindFlags(cmd *cobra.Command) {
@@ -41,6 +43,7 @@ func (o *generateFuzzerOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.apiVersion, "api-version", o.apiVersion, "API version to generate fuzzer for")
 	cmd.Flags().StringVar(&o.llmModel, "llm-model", o.llmModel, "LLM model to use for fuzzer generation")
 	cmd.Flags().IntVar(&o.maxAttempts, "max-attempts", 5, "Maximum number of attempts to generate a valid fuzzer")
+	o.deterministic.BindFlags(cmd)
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -51,11 +54,21 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 		fmt.Fprintf(os.Stderr, "Error initializing defaults: %v\n", err)
 		os.Exit(1)
 	}
+	if err := opt.deterministic.InitDefaults(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error initializing defaults: %v\n", err)
+		os.Exit(1)
+	}
 
 	cmd := &cobra.Command{
 		Use:   "generate-fuzzer",
 		Short: "Generate fuzzer tests for proto messages",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
+			if opt.deterministic.enabled {
+				return opt.validateDeterministic(cmd)
+			}
+			if err := validateLLMMode(cmd); err != nil {
+				return err
+			}
 			if opt.message == "" {
 				// TODO: extract messages from generate.sh or api directory
 				return fmt.Errorf("--message flag is required")
@@ -67,6 +80,9 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()
+			if opt.deterministic.enabled {
+				return RunGenerateDeterministicFuzzers(ctx, opt)
+			}
 			if err := RunGenerateFuzzer(ctx, opt); err != nil {
 				return err
 			}
