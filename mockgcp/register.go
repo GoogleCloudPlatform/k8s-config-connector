@@ -68,6 +68,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockiam"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockiap"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocklicensemanager"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocklivestream"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocklogging"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmanagedkafka"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmapmanagement"
