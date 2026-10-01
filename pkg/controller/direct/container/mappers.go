@@ -585,3 +585,45 @@ func NodePoolNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolNodeC
 	out.ResourceManagerTags = map_string_string_ToProto(mapCtx, in.ResourceManagerTags)
 	return out
 }
+
+// WindowsNodeConfig_FromProto maps pb.WindowsNodeConfig to krm.WindowsNodeConfig.
+// Supports both short names (OS_2022, OS_2019) and full proto enum names.
+func WindowsNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.WindowsNodeConfig) *krm.WindowsNodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WindowsNodeConfig{}
+	switch in.GetOsVersion() {
+	case pb.WindowsNodeConfig_OS_VERSION_LTSC2022:
+		out.OSVersion = direct.LazyPtr("OS_2022")
+	case pb.WindowsNodeConfig_OS_VERSION_LTSC2019:
+		out.OSVersion = direct.LazyPtr("OS_2019")
+	case pb.WindowsNodeConfig_OS_VERSION_UNSPECIFIED:
+		out.OSVersion = nil
+	default:
+		out.OSVersion = direct.Enum_FromProto(mapCtx, in.GetOsVersion())
+	}
+	return out
+}
+
+// WindowsNodeConfig_ToProto maps krm.WindowsNodeConfig to pb.WindowsNodeConfig.
+// Supports both short names (OS_2022, OS_2019) and full proto enum names.
+func WindowsNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.WindowsNodeConfig) *pb.WindowsNodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WindowsNodeConfig{}
+	if in.OSVersion != nil {
+		switch *in.OSVersion {
+		case "OS_2022", "OS_VERSION_LTSC2022":
+			out.OsVersion = pb.WindowsNodeConfig_OS_VERSION_LTSC2022
+		case "OS_2019", "OS_VERSION_LTSC2019":
+			out.OsVersion = pb.WindowsNodeConfig_OS_VERSION_LTSC2019
+		case "OS_VERSION_UNSPECIFIED":
+			out.OsVersion = pb.WindowsNodeConfig_OS_VERSION_UNSPECIFIED
+		default:
+			out.OsVersion = direct.Enum_ToProto[pb.WindowsNodeConfig_OSVersion](mapCtx, in.OSVersion)
+		}
+	}
+	return out
+}
