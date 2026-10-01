@@ -47,6 +47,12 @@ ${CONTROLLERBUILDER} generate-mapper \
   --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output
 
+${CONTROLLERBUILDER} generate-fuzzer \
+  --deterministic \
+  --service mockgcp.cloud.networkconnectivity.v1 \
+  --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
+  --resource NetworkConnectivityTransport:Transport
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
