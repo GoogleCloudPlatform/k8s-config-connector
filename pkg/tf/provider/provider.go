@@ -63,6 +63,11 @@ type Config struct {
 
 	// EnableMetricsTransport enables automatic wrapping of HTTP clients with metrics transport
 	EnableMetricsTransport bool
+
+	// UniverseDomain is the API host suffix of the Google Cloud universe to target,
+	// e.g. "s3nsapis.fr". Empty targets the public googleapis.com universe.
+	// https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/provider_reference#universe_domain
+	UniverseDomain string
 }
 
 var DefaultConfig = NewConfig()
@@ -90,6 +95,33 @@ func NewConfig() Config {
 	}
 }
 
+// buildProviderConfig maps our Config onto the google provider's own
+// configuration attributes.
+//
+// Split out from New so it can be tested without calling Provider.Configure,
+// which mutates package-level state in the provider (notably
+// transport_tpg.DefaultBasePaths, which universe_domain rewrites in place).
+func buildProviderConfig(config Config) map[string]interface{} {
+	cfgMap := map[string]interface{}{}
+	if config.GCPAccessToken != "" {
+		cfgMap["access_token"] = config.GCPAccessToken
+	}
+
+	cfgMap["scopes"] = config.Scopes
+	cfgMap["user_project_override"] = config.UserProjectOverride
+	cfgMap["billing_project"] = config.BillingProject
+
+	// Only set universe_domain when targeting a non-public universe. The
+	// provider rewrites its base paths in place when this is set, so setting it
+	// unconditionally (even to "googleapis.com") would put the public path
+	// through code it does not go through today.
+	if config.UniverseDomain != "" {
+		cfgMap["universe_domain"] = config.UniverseDomain
+	}
+
+	return cfgMap
+}
+
 // New builds a new tfschema.Provider for the google provider.
 func New(ctx context.Context, config Config) (*tfschema.Provider, error) {
 
@@ -105,14 +137,7 @@ func New(ctx context.Context, config Config) (*tfschema.Provider, error) {
 	}
 
 	googleProvider := provider.Provider()
-	cfgMap := map[string]interface{}{}
-	if config.GCPAccessToken != "" {
-		cfgMap["access_token"] = config.GCPAccessToken
-	}
-
-	cfgMap["scopes"] = config.Scopes
-	cfgMap["user_project_override"] = config.UserProjectOverride
-	cfgMap["billing_project"] = config.BillingProject
+	cfgMap := buildProviderConfig(config)
 
 	schema := tfschema.InternalMap(googleProvider.Schema).CoreConfigSchema()
 	cfg := terraform.NewResourceConfigShimmed(krmtotf.MapToCtyVal(cfgMap, schema.ImpliedType()), schema)

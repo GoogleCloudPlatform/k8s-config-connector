@@ -67,8 +67,34 @@ type ConfigConnectorSpec struct {
 	//+kubebuilder:validation:Optional
 	StateIntoSpec *StateIntoSpecValue `json:"stateIntoSpec,omitempty"`
 
+	// Universe configures Config Connector to target a Google Cloud universe
+	// other than the public one, for example Google Cloud Dedicated or a
+	// sovereign cloud. Leave unset for public Google Cloud.
+	//+kubebuilder:validation:Optional
+	Universe *UniverseSpec `json:"universe,omitempty"`
+
 	// ConfigConnector specific experiments
 	Experiments *CCExperiments `json:"experiments,omitempty"`
+}
+
+// UniverseSpec identifies a Google Cloud universe. Both fields are required
+// together: a universe is only usable when both are known.
+type UniverseSpec struct {
+	// Domain is the API host suffix of the universe. API endpoints are resolved
+	// as `<service>.<domain>` instead of `<service>.googleapis.com`.
+	// For example "s3nsapis.fr".
+	//+kubebuilder:validation:Required
+	//+kubebuilder:validation:MinLength=1
+	Domain string `json:"domain"`
+
+	// Prefix is the universe qualifier applied to project IDs
+	// (`<prefix>:my-project`) and to service-agent email domains.
+	// For example "s3ns".
+	// It is not derived from `domain`: the two are independent values and a
+	// universe may use any combination of them.
+	//+kubebuilder:validation:Required
+	//+kubebuilder:validation:MinLength=1
+	Prefix string `json:"prefix"`
 }
 
 type CCExperiments struct {

@@ -166,6 +166,32 @@ spec:
                 - Absent
                 - Merge
                 type: string
+              universe:
+                description: |-
+                  Universe configures Config Connector to target a Google Cloud universe
+                  other than the public one, for example Google Cloud Dedicated or a
+                  sovereign cloud. Leave unset for public Google Cloud.
+                properties:
+                  domain:
+                    description: |-
+                      Domain is the API host suffix of the universe. API endpoints are resolved
+                      as `<service>.<domain>` instead of `<service>.googleapis.com`.
+                      For example "s3nsapis.fr".
+                    minLength: 1
+                    type: string
+                  prefix:
+                    description: |-
+                      Prefix is the universe qualifier applied to project IDs
+                      (`<prefix>:my-project`) and to service-agent email domains.
+                      For example "s3ns".
+                      It is not derived from `domain`: the two are independent values and a
+                      universe may use any combination of them.
+                    minLength: 1
+                    type: string
+                required:
+                - domain
+                - prefix
+                type: object
             type: object
           status:
             description: ConfigConnectorStatus defines the observed state of ConfigConnector
