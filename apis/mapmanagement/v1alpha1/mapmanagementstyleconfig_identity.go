@@ -60,11 +60,12 @@ func (i *MapManagementStyleConfigIdentity) Host() string {
 	return MapManagementStyleConfigIdentityFormat.Host()
 }
 
+func (i *MapManagementStyleConfigIdentity) ParentString() string {
+	return "projects/" + i.Project
+}
+
 func getIdentityFromMapManagementStyleConfigSpec(ctx context.Context, reader client.Reader, obj *MapManagementStyleConfig) (*MapManagementStyleConfigIdentity, error) {
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
 	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
@@ -93,9 +94,14 @@ func (obj *MapManagementStyleConfig) GetIdentity(ctx context.Context, reader cli
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change MapManagementStyleConfig identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		if specIdentity.StyleConfig == "" {
+			return statusIdentity, nil
 		}
+
+		if specIdentity.StyleConfig != statusIdentity.StyleConfig {
+			return nil, fmt.Errorf("cannot change MapManagementStyleConfig identity (old=%q, new=%q)", statusIdentity.StyleConfig, specIdentity.StyleConfig)
+		}
+		return statusIdentity, nil
 	}
 
 	return specIdentity, nil
