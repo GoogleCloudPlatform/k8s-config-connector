@@ -49,3 +49,16 @@
   1. Modified `Delete` in `discoveryengineengine_controller.go` to ignore the `unsupported result type <nil>: <nil>` error when waiting for deletion.
   2. Kept `disableAnalytics: false` unchanged between `create.yaml` and `update.yaml` so that it doesn't trigger a diff and isn't included in the update mask.
 - **Impact**: Ensures that deletion is correctly reported as a success, and updates run successfully against real GCP without encountering immutable field update mask errors.
+
+### [2026-09-30] DiscoveryEngineControl Direct Controller, Collection Link, and Engine Dependency
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `DiscoveryEngineControl`.
+- **Problem**:
+  1. `DiscoveryEngineControlIdentityFormat` was missing `collections/{collection}` in its template format. GCP API rejected resource names without `collections/default_collection` with `400 Bad Request`.
+  2. GCP API requires that the parent `DiscoveryEngineDataStore` must be associated with an existing `DiscoveryEngineEngine` before any `Control` can be created under that dataStore.
+  3. Action fields (e.g. `synonyms_action`, `boost_action`) on Control are immutable in GCP; modifying them triggers `Field "updateMask" contains an immutable path`.
+  4. For synonyms controls, `conditions.queryTerms` cannot be specified; only `conditions.activeTimeRange` is permitted.
+- **Solution**:
+  1. Updated `DiscoveryEngineControlIdentityFormat` to include `collections/{collection}` and parse `Collection` from the parent DataStore link.
+  2. Added `DiscoveryEngineEngine` to `dependencies.yaml` for both minimal and maximal test fixtures.
+  3. Kept action fields unchanged in `update.yaml` and tested updates on mutable fields (`displayName` and `conditions.activeTimeRange`).
+- **Impact**: Enables proper direct reconciliation and successful E2E golden file recording against real GCP for `DiscoveryEngineControl`.

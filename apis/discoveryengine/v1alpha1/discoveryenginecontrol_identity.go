@@ -30,18 +30,23 @@ var (
 	_ identity.Resource   = &DiscoveryEngineControl{}
 )
 
-var DiscoveryEngineControlIdentityFormat = gcpurls.Template[DiscoveryEngineControlIdentity]("discoveryengine.googleapis.com", "projects/{project}/locations/{location}/dataStores/{datastore}/controls/{control}")
+var DiscoveryEngineControlIdentityFormat = gcpurls.Template[DiscoveryEngineControlIdentity]("discoveryengine.googleapis.com", "projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}/controls/{control}")
 
 // +k8s:deepcopy-gen=false
 type DiscoveryEngineControlIdentity struct {
-	Project   string
-	Location  string
-	Datastore string
-	Control   string
+	Project    string
+	Location   string
+	Collection string
+	DataStore  string
+	Control    string
 }
 
 func (i *DiscoveryEngineControlIdentity) String() string {
 	return DiscoveryEngineControlIdentityFormat.ToString(*i)
+}
+
+func (i *DiscoveryEngineControlIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s/collections/%s/dataStores/%s", i.Project, i.Location, i.Collection, i.DataStore)
 }
 
 func (i *DiscoveryEngineControlIdentity) FromExternal(ref string) error {
@@ -97,7 +102,7 @@ func getIdentityFromDiscoveryEngineControlSpec(ctx context.Context, reader clien
 	}
 
 	// Validation checks: parent's project/location should match control's project/location
-	if dataStoreLink.ProjectID != projectID {
+	if !IsProjectIDMatch(dataStoreLink.ProjectID, projectID) {
 		return nil, fmt.Errorf("resolved spec.dataStoreRef project %q does not match spec.projectRef %q", dataStoreLink.ProjectID, projectID)
 	}
 	if dataStoreLink.Location != location {
@@ -105,10 +110,11 @@ func getIdentityFromDiscoveryEngineControlSpec(ctx context.Context, reader clien
 	}
 
 	identity := &DiscoveryEngineControlIdentity{
-		Project:   projectID,
-		Location:  location,
-		Datastore: dataStoreLink.DataStore,
-		Control:   resourceID,
+		Project:    projectID,
+		Location:   location,
+		Collection: dataStoreLink.Collection,
+		DataStore:  dataStoreLink.DataStore,
+		Control:    resourceID,
 	}
 	return identity, nil
 }
@@ -128,9 +134,10 @@ func (obj *DiscoveryEngineControl) GetIdentity(ctx context.Context, reader clien
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
+		if !IsProjectIDMatch(statusIdentity.Project, specIdentity.Project) || statusIdentity.Location != specIdentity.Location || statusIdentity.Collection != specIdentity.Collection || statusIdentity.DataStore != specIdentity.DataStore || statusIdentity.Control != specIdentity.Control {
 			return nil, fmt.Errorf("cannot change DiscoveryEngineControl identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
+		specIdentity.Project = statusIdentity.Project
 	}
 
 	return specIdentity, nil
