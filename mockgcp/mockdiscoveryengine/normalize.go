@@ -31,22 +31,21 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.RemovePath(".servingConfigDataStore")
 	replacements.RemovePath(".response.servingConfigDataStore")
 
-	replacements.TransformLRO(func(m map[string]any) {
-		if resp, ok := m["response"].(map[string]any); ok {
-			if len(resp) == 0 || (len(resp) == 1 && resp["@type"] == "type.googleapis.com/google.protobuf.Empty") {
-				delete(m, "response")
-			}
-		}
-	})
-
 	transformFunc := func(m map[string]any) {
 		name, _ := m["name"].(string)
-		if strings.Contains(name, "/engines/") {
-			// For Engines, the real log does not have createTime, updateTime, marketplaceAgentVisibility, observabilityConfig
+		if strings.Contains(name, "/operations/") {
+			if resp, ok := m["response"].(map[string]any); ok {
+				if len(resp) == 0 || (len(resp) == 1 && resp["@type"] == "type.googleapis.com/google.protobuf.Empty") {
+					delete(m, "response")
+				}
+			}
+		} else if strings.Contains(name, "/engines/") {
+			// For Engines, the real log does not have createTime, updateTime, marketplaceAgentVisibility, observabilityConfig, sessionConfig
 			delete(m, "createTime")
 			delete(m, "updateTime")
 			delete(m, "marketplaceAgentVisibility")
 			delete(m, "observabilityConfig")
+			delete(m, "sessionConfig")
 		} else if strings.Contains(name, "/dataStores/") {
 			// For DataStores, the real log has createTime, naturalLanguageQueryUnderstandingConfig, solutionTypes
 			if m["createTime"] != nil {
