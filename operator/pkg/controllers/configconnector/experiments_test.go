@@ -19,8 +19,11 @@ import (
 	"testing"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/controller"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/utils/ptr"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
 )
 
@@ -158,5 +161,52 @@ func TestApplyMultiClusterLeaderElection(t *testing.T) {
 				t.Fatalf("StatefulSet not found in manifest")
 			}
 		})
+	}
+}
+
+func TestApplyResourceSettingsConfigHash(t *testing.T) {
+	ctx := context.Background()
+	r := &Reconciler{}
+	m := testcontroller.ParseObjects(ctx, t, testcontroller.ClusterModeComponents)
+
+	ccWithSettings := &corev1beta1.ConfigConnector{
+		Spec: corev1beta1.ConfigConnectorSpec{
+			Experiments: &corev1beta1.CCExperiments{
+				ResourceSettings: &corev1beta1.ResourceSettings{
+					Mode: corev1beta1.ResourceSettingsModeExclude,
+					Resources: []corev1beta1.ResourceFilter{
+						{Group: ptr.To("storage.cnrm.cloud.google.com"), Kind: ptr.To("StorageBucket")},
+					},
+				},
+			},
+		},
+	}
+
+	if err := r.applyExperiments(ctx, ccWithSettings, m); err != nil {
+		t.Fatalf("applyExperiments failed: %v", err)
+	}
+
+	expectedHash := controllers.ComputeCCConfigHash(ccWithSettings)
+	for _, item := range m.Items {
+		if IsControllerManagerStatefulSet(item) {
+			templateAnnotations, _, _ := unstructured.NestedStringMap(item.UnstructuredObject().Object, "spec", "template", "metadata", "annotations")
+			if got := templateAnnotations[k8s.CCConfigHashAnnotation]; got != expectedHash {
+				t.Errorf("expected pod template annotation %s=%q, got %q", k8s.CCConfigHashAnnotation, expectedHash, got)
+			}
+		}
+	}
+
+	// Removing ResourceSettings should remove the cc-config-hash annotation
+	ccWithoutSettings := &corev1beta1.ConfigConnector{}
+	if err := r.applyExperiments(ctx, ccWithoutSettings, m); err != nil {
+		t.Fatalf("applyExperiments failed: %v", err)
+	}
+	for _, item := range m.Items {
+		if IsControllerManagerStatefulSet(item) {
+			templateAnnotations, _, _ := unstructured.NestedStringMap(item.UnstructuredObject().Object, "spec", "template", "metadata", "annotations")
+			if _, exists := templateAnnotations[k8s.CCConfigHashAnnotation]; exists {
+				t.Errorf("expected pod template annotation %s to be removed", k8s.CCConfigHashAnnotation)
+			}
+		}
 	}
 }

@@ -256,6 +256,48 @@ func TestValidateResourceSettingsMode(t *testing.T) {
 			},
 			err: nil,
 		},
+		{
+			name: "Implicit Default Conflict (CC: ResourceSettings with defaulted empty mode, CCC: Inclusive)",
+			cc: &corev1beta1.ConfigConnector{
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Experiments: &corev1beta1.CCExperiments{
+						ResourceSettings: &corev1beta1.ResourceSettings{},
+					},
+				},
+			},
+			ccc: &corev1beta1.ConfigConnectorContext{
+				Spec: corev1beta1.ConfigConnectorContextSpec{
+					Experiments: &corev1beta1.Experiments{
+						ResourceSettings: &corev1beta1.ResourceSettings{
+							Mode: corev1beta1.ResourceSettingsModeInclude,
+						},
+					},
+				},
+			},
+			err: fmt.Errorf("conflict: ConfigConnector and ConfigConnectorContext cannot mix inclusive (mode: include) and exclusive (mode: exclude) modes"),
+		},
+		{
+			name: "Explicit Conflict (CC: Inclusive, CCC: Exclusive)",
+			cc: &corev1beta1.ConfigConnector{
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Experiments: &corev1beta1.CCExperiments{
+						ResourceSettings: &corev1beta1.ResourceSettings{
+							Mode: corev1beta1.ResourceSettingsModeInclude,
+						},
+					},
+				},
+			},
+			ccc: &corev1beta1.ConfigConnectorContext{
+				Spec: corev1beta1.ConfigConnectorContextSpec{
+					Experiments: &corev1beta1.Experiments{
+						ResourceSettings: &corev1beta1.ResourceSettings{
+							Mode: corev1beta1.ResourceSettingsModeExclude,
+						},
+					},
+				},
+			},
+			err: fmt.Errorf("conflict: ConfigConnector and ConfigConnectorContext cannot mix inclusive (mode: include) and exclusive (mode: exclude) modes"),
+		},
 	}
 
 	for _, tc := range tests {
