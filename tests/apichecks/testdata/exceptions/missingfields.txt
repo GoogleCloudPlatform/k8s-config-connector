@@ -850,7 +850,6 @@
 [missing_field] crd=computerouters.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.bgp.keepaliveInterval" is not set in unstructured objects
 [missing_field] crd=computerouters.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.encryptedInterconnectRouter" is not set in unstructured objects
 [missing_field] crd=computeroutes.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=computeroutes.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.nextHopGateway" is not set in unstructured objects
 [missing_field] crd=computeroutes.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.nextHopILBRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeroutes.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.nextHopInstanceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeroutes.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.nextHopVPNTunnelRef" is not set; neither 'external' nor 'name' are set

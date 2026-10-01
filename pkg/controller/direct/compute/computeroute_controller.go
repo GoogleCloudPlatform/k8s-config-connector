@@ -23,6 +23,7 @@ package compute
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	compute "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
@@ -35,6 +36,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -184,7 +186,7 @@ func (a *RouteAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating ComputeRoute", "name", a.id)
 
-	diffs, _, err := compareComputeRoute(ctx, a.actual, a.desired)
+	diffs, _, err := compareComputeRoute(ctx, a.actual, a.desired, a.id)
 	if err != nil {
 		return err
 	}
@@ -269,12 +271,51 @@ func (a *RouteAdapter) updateStatus(ctx context.Context, op directbase.Operation
 	return op.UpdateStatus(ctx, status, nil)
 }
 
-func compareComputeRoute(ctx context.Context, actual, desired *computepb.Route) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+func canonicalizeComputeNetwork(t *string, projectID string) *string {
+	if t == nil {
+		return nil
+	}
+	trimmed := apirefs.TrimComputeURIPrefix(*t)
+	if !strings.Contains(trimmed, "/") {
+		if projectID != "" {
+			trimmed = fmt.Sprintf("projects/%s/global/networks/%s", projectID, trimmed)
+		}
+	} else if strings.HasPrefix(trimmed, "global/networks/") {
+		if projectID != "" {
+			trimmed = fmt.Sprintf("projects/%s/%s", projectID, trimmed)
+		}
+	}
+	return &trimmed
+}
+
+func canonicalizeNextHopGateway(t *string, projectID string) *string {
+	if t == nil {
+		return nil
+	}
+	trimmed := apirefs.TrimComputeURIPrefix(*t)
+	if !strings.Contains(trimmed, "/") {
+		if projectID != "" {
+			trimmed = fmt.Sprintf("projects/%s/global/gateways/%s", projectID, trimmed)
+		}
+	} else if strings.HasPrefix(trimmed, "global/gateways/") {
+		if projectID != "" {
+			trimmed = fmt.Sprintf("projects/%s/%s", projectID, trimmed)
+		}
+	}
+	return &trimmed
+}
+
+func compareComputeRoute(ctx context.Context, actual, desired *computepb.Route, id *krm.ComputeRouteIdentity) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
 	maskedActual, err := mappers.OnlySpecFields(actual, ComputeRouteSpec_v1beta1_FromProto, ComputeRouteSpec_v1beta1_ToProto)
 	if err != nil {
 		return nil, nil, err
 	}
 	maskedActual.Name = desired.Name
+
+	projectID := ""
+	if id != nil {
+		projectID = id.Project
+	}
 
 	clonedDesired := proto.CloneOf(desired)
 
@@ -282,6 +323,11 @@ func compareComputeRoute(ctx context.Context, actual, desired *computepb.Route) 
 		if obj.Priority == nil {
 			obj.Priority = direct.PtrTo[uint32](1000)
 		}
+		obj.Network = canonicalizeComputeNetwork(obj.Network, projectID)
+		obj.NextHopGateway = canonicalizeNextHopGateway(obj.NextHopGateway, projectID)
+		obj.NextHopIlb = canonicalizeComputeURL(obj.NextHopIlb)
+		obj.NextHopInstance = canonicalizeComputeURL(obj.NextHopInstance)
+		obj.NextHopVpnTunnel = canonicalizeComputeURL(obj.NextHopVpnTunnel)
 	}
 	populateDefaults(maskedActual)
 	populateDefaults(clonedDesired)

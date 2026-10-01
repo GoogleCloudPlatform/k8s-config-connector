@@ -37,3 +37,9 @@
   3. Pre-normalized all URL fields (e.g., `InstanceTemplate`, `HealthCheck`, `TargetPools`, and zone names) to relative paths using `refs.TrimComputeURIPrefix` and `lastComponent` before diff comparison.
   4. Duplicated `regionalcomputeinstancegroupmanager` and `zonalcomputeinstancegroupmanager` to `-direct` variants with direct-reconciler annotations, successfully recorded golden files and HTTP traffic against MockGCP, and passed the full presubmit suites.
 - **Impact**: Clean package-isolated direct controller supporting both zonal and regional instance group managers while completely avoiding any drift loops or false diffs.
+
+### [2026-10-01] ComputeRoute diff discrepancies fix
+- **Context**: ComputeRoute migration to direct controller (#13581)
+- **Problem**: In `ComputeRoute` direct controller, `compareComputeRoute` directly compared proto fields without normalizing URL schemes/prefixes or expanding short names. Consequently, `network` (`https://www.googleapis.com/compute/v1/...` from GCP vs `projects/...` from normalized KRM) and `next_hop_gateway` (`https://.../gateways/default-internet-gateway` from GCP vs `default-internet-gateway` from KRM) caused false-positive diffs and failed reconciliation.
+- **Solution**: Implemented canonicalization helpers (`canonicalizeComputeNetwork`, `canonicalizeNextHopGateway`, and `canonicalizeComputeURL`) in `computeroute_controller.go` to normalize URL prefixes and short names to the standard GCP relative paths before running `common.DiffForTopLevelFields`.
+- **Impact**: Clean transition during migration to direct controller without unexpected update failures or diffs.
