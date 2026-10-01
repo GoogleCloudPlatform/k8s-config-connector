@@ -1,0 +1,14 @@
+7d6
+<     cnrm.cloud.google.com/state-into-spec: absent
+11c10
+<   generation: 3
+---
+>   generation: 2
+29d27
+<   resourceID: nodepool-sample-${uniqueId}
+36a35
+>   externalRef: projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}
+41c40
+<   observedGeneration: 3
+---
+>   observedGeneration: 2
