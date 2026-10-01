@@ -20,7 +20,7 @@ metadata:
     alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   databaseVersion: POSTGRES_16
-  region: us-central1
+  region: europe-north2
   settings:
     ipConfiguration:
       serverCAMode: CUSTOMER_MANAGED_CAS_CA
@@ -29,5 +29,5 @@ spec:
       customSubjectAlternativeNames:
         - "db.example.com"
     locationPreference:
-      zone: us-central1-a
+      zone: europe-north2-a
     tier: db-custom-1-3840

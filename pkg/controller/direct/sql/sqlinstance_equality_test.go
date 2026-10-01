@@ -15,9 +15,11 @@
 package sql
 
 import (
+	"context"
 	"reflect"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/changecookies"
 	api "google.golang.org/api/sqladmin/v1beta4"
 )
 
@@ -399,5 +401,63 @@ func TestDiffInstances_ServerCaPool_PrefixNormalization(t *testing.T) {
 
 	if diff.HasDiff() {
 		t.Errorf("DiffInstances() expected no diffs for normalized CA pool prefixes, but got: %v", diff.Fields)
+	}
+}
+
+func TestToProto_PreservesServerCaFields(t *testing.T) {
+	t.Parallel()
+	ctx := context.Background()
+	adapter := &sqlInstanceAdapter{}
+
+	base := &api.DatabaseInstance{
+		Name: "my-instance",
+		Settings: &api.Settings{
+			IpConfiguration: &api.IpConfiguration{
+				ServerCaMode:                  "CUSTOMER_MANAGED_CAS_CA",
+				ServerCaPool:                  "projects/test-project/locations/us-central1/caPools/pool-1",
+				CustomSubjectAlternativeNames: []string{"db.example.com"},
+			},
+		},
+	}
+	updated := &api.DatabaseInstance{
+		Name: "my-instance",
+		Settings: &api.Settings{
+			IpConfiguration: &api.IpConfiguration{
+				ServerCaMode:                  "CUSTOMER_MANAGED_CAS_CA",
+				ServerCaPool:                  "projects/test-project/locations/us-central1/caPools/pool-2",
+				CustomSubjectAlternativeNames: []string{"db.example.com", "db-replica.example.com"},
+			},
+		},
+	}
+
+	baseProto, err := adapter.toProto(ctx, base)
+	if err != nil {
+		t.Fatalf("toProto(base) failed: %v", err)
+	}
+	updatedProto, err := adapter.toProto(ctx, updated)
+	if err != nil {
+		t.Fatalf("toProto(updated) failed: %v", err)
+	}
+
+	if got := baseProto.GetSettings().GetIpConfiguration().GetServerCaMode(); got != "CUSTOMER_MANAGED_CAS_CA" {
+		t.Errorf("expected ServerCaMode CUSTOMER_MANAGED_CAS_CA, got %q", got)
+	}
+	if got := baseProto.GetSettings().GetIpConfiguration().GetServerCaPool(); got != "projects/test-project/locations/us-central1/caPools/pool-1" {
+		t.Errorf("expected ServerCaPool pool-1, got %q", got)
+	}
+	if got := baseProto.GetSettings().GetIpConfiguration().GetCustomSubjectAlternativeNames(); !reflect.DeepEqual(got, []string{"db.example.com"}) {
+		t.Errorf("expected CustomSubjectAlternativeNames [db.example.com], got %v", got)
+	}
+
+	cookie1, err := changecookies.ComputeChangeCookie(baseProto, baseProto)
+	if err != nil {
+		t.Fatalf("ComputeChangeCookie(base) failed: %v", err)
+	}
+	cookie2, err := changecookies.ComputeChangeCookie(updatedProto, baseProto)
+	if err != nil {
+		t.Fatalf("ComputeChangeCookie(updated) failed: %v", err)
+	}
+	if cookie1 == cookie2 {
+		t.Errorf("expected change cookie to differ when serverCaPool and customSubjectAlternativeNames change, got identical cookie %q", cookie1)
 	}
 }
