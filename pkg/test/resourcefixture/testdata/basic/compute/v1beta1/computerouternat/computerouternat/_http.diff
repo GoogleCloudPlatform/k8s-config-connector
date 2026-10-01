@@ -1,94 +1,64 @@
-1001c1001
+1009c1009
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
-1028c1028
+1026d1025
+<   "etag": "abcdef0123A=",
+1037c1036
 < PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
 > PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
-1034d1033
+1043d1041
 <       "drainNatIps": [],
-1036,1037d1034
-<       "icmpIdleTimeoutSec": 30,
+1046d1043
 <       "logConfig": null,
-1064,1068c1061
-<       ],
-<       "tcpEstablishedIdleTimeoutSec": 1200,
-<       "tcpTimeWaitTimeoutSec": 120,
-<       "tcpTransitoryIdleTimeoutSec": 30,
-<       "udpIdleTimeoutSec": 30
----
->       ]
-1101c1094,1095
+1111c1108,1109
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 > Content-Type: application/json
-1132c1126
+1142c1140
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
-1160d1153
-<       "icmpIdleTimeoutSec": 30,
-1188,1192c1181
-<       "tcpEstablishedIdleTimeoutSec": 1200,
-<       "tcpTimeWaitTimeoutSec": 120,
-<       "tcpTransitoryIdleTimeoutSec": 30,
-<       "type": "PUBLIC",
-<       "udpIdleTimeoutSec": 30
+1159d1156
+<   "etag": "abcdef0123A=",
+1174c1171
+<         "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/addresses/${addressID}"
 ---
->       "type": "PUBLIC"
-1202c1191
+>         "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}"
+1180,1181c1177,1178
+<               "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+<               "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/addresses/${addressID}"
+---
+>               "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}",
+>               "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}"
+1212c1209
 < PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
 ---
-> PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
-1205,1207c1194
-< {
+> PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
+1216c1213,1221
 <   "nats": []
-< }
 ---
-> {}
-1237c1224,1225
+>   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+>   "description": "example router description",
+>   "encryptedInterconnectRouter": false,
+>   "id": "000000000000000000000",
+>   "kind": "compute#router",
+>   "name": "${routerID}",
+>   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+>   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}"
+1234c1239
+<   "operationType": "patch",
+---
+>   "operationType": "update",
+1247c1252,1253
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 > Content-Type: application/json
-1479a1468,1505
->   "nats": [
->     {
->       "autoNetworkTier": "PREMIUM",
->       "effectiveTcpTimeWaitTimeoutSec": 120,
->       "enableEndpointIndependentMapping": false,
->       "endpointTypes": [
->         "ENDPOINT_TYPE_VM"
->       ],
->       "name": "computerouternat-${uniqueId}",
->       "natIpAllocateOption": "MANUAL_ONLY",
->       "natIps": [
->         "projects/${projectId}/regions/us-central1/addresses/${addressID}"
->       ],
->       "rules": [
->         {
->           "action": {
->             "sourceNatActiveIps": [
->               "projects/${projectId}/regions/us-central1/addresses/${addressID}",
->               "projects/${projectId}/regions/us-central1/addresses/${addressID}"
->             ]
->           },
->           "description": "nat rule examples",
->           "match": "inIpRange(destination.ip, '1.1.0.0/16') || inIpRange(destination.ip, '2.2.0.0/16')",
->           "ruleNumber": 100
->         }
->       ],
->       "sourceSubnetworkIpRangesToNat": "LIST_OF_SUBNETWORKS",
->       "subnetworks": [
->         {
->           "name": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
->           "sourceIpRangesToNat": [
->             "ALL_IP_RANGES"
->           ]
->         }
->       ],
->       "type": "PUBLIC"
->     }
->   ],
+1265c1271
+<   "operationType": "patch",
+---
+>   "operationType": "update",
