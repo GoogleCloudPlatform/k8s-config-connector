@@ -17,32 +17,40 @@ package v1alpha1
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+var _ refs.Ref = &EventarcPipelineRef{}
+
+// EventarcPipelineRef is a reference to a GCP EventarcPipeline.
 type EventarcPipelineRef struct {
-	// The `name` field of a `EventarcPipeline` resource.
-	Name string `json:"name,omitempty"`
-	// The `namespace` field of a `EventarcPipeline` resource.
-	Namespace string `json:"namespace,omitempty"`
-	// A reference to an externally managed EventarcPipeline resource.
-	// Should be in the format `projects/{{projectID}}/locations/{{location}}/pipelines/{{pipelineID}}`.
+	// A reference to an externally managed EventarcPipeline resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/pipelines/{{pipelineID}}".
 	External string `json:"external,omitempty"`
+
+	// The name of an EventarcPipeline resource.
+	Name string `json:"name,omitempty"`
+
+	// The namespace of an EventarcPipeline resource.
+	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refs.Register(&EventarcPipelineRef{}, &EventarcPipeline{})
 }
 
 func (r *EventarcPipelineRef) GetGVK() schema.GroupVersionKind {
-	return schema.GroupVersionKind{
-		Group:   "eventarc.cnrm.cloud.google.com",
-		Version: "v1alpha1",
-		Kind:    "EventarcPipeline",
-	}
+	return EventarcPipelineGVK
 }
 
 func (r *EventarcPipelineRef) GetNamespacedName() types.NamespacedName {
-	return types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
 }
 
 func (r *EventarcPipelineRef) GetExternal() string {
@@ -56,12 +64,23 @@ func (r *EventarcPipelineRef) SetExternal(ref string) {
 }
 
 func (r *EventarcPipelineRef) ValidateExternal(ref string) error {
-	// TODO: implement format validation
+	id := &EventarcPipelineIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
+	}
 	return nil
 }
 
-func (r *EventarcPipelineRef) Normalize(ctx context.Context, reader client.Reader, otherNamespace string) error {
-	return refs.NormalizeWithFallback(ctx, reader, r, otherNamespace, nil)
+func (r *EventarcPipelineRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &EventarcPipelineIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+func (r *EventarcPipelineRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	return refs.Normalize(ctx, reader, r, defaultNamespace)
 }
 
 func (r *EventarcPipelineRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
