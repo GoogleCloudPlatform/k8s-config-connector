@@ -17,7 +17,6 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -31,36 +30,43 @@ var (
 )
 
 var RegionalContainerNodePoolIdentityFormat = gcpurls.Template[ContainerNodePoolIdentity]("container.googleapis.com", "projects/{project}/locations/{location}/clusters/{cluster}/nodePools/{nodePool}")
-var ZonalContainerNodePoolIdentityFormat = gcpurls.Template[ContainerNodePoolIdentity]("container.googleapis.com", "projects/{project}/zones/{zone}/clusters/{cluster}/nodePools/{nodePool}")
+var ZonalContainerNodePoolIdentityFormat = gcpurls.Template[ContainerNodePoolIdentity]("container.googleapis.com", "projects/{project}/zones/{location}/clusters/{cluster}/nodePools/{nodePool}")
 
 // +k8s:deepcopy-gen=false
 // ContainerNodePoolIdentity is the identity of a GCP ContainerNodePool resource.
+//
+// Note on migration diff: In the legacy (Terraform) controller, the resource paths for
+// Create and Update were inconsistent: Create used the legacy zonal path (.../zones/{zone}/clusters/{cluster}/nodePools)
+// and populated status.externalRef with "zones/{zone}", while Update used the canonical
+// location-based path (.../locations/{location}/clusters/{cluster}/nodePools/{nodepool}).
+// In the direct controller, we make the identity and paths consistent across the entire
+// resource lifecycle by always using the canonical "locations/{location}" format for both
+// regional and zonal node pools. This intentional alignment causes a diff in status.externalRef
+// and HTTP traffic logs when migrating from the legacy controller.
 type ContainerNodePoolIdentity struct {
 	Project  string
 	Location string
-	Zone     string
 	Cluster  string
 	NodePool string
 }
 
+// String returns the canonical GCP resource name in the format
+// "projects/{project}/locations/{location}/clusters/{cluster}/nodePools/{nodePool}".
 func (i *ContainerNodePoolIdentity) String() string {
-	if i.Zone != "" {
-		return ZonalContainerNodePoolIdentityFormat.ToString(*i)
-	}
 	return RegionalContainerNodePoolIdentityFormat.ToString(*i)
 }
 
 func (i *ContainerNodePoolIdentity) FromExternal(ref string) error {
 	ref = identity.StripReferencePrefixes(ref, "container.googleapis.com")
-	if parsed, match, _ := ZonalContainerNodePoolIdentityFormat.Parse(ref); match {
-		*i = *parsed
-		return nil
-	}
 	if parsed, match, _ := RegionalContainerNodePoolIdentityFormat.Parse(ref); match {
 		*i = *parsed
 		return nil
 	}
-	return fmt.Errorf("format of ContainerNodePool external=%q was not known (use %s or %s)", ref, ZonalContainerNodePoolIdentityFormat.CanonicalForm(), RegionalContainerNodePoolIdentityFormat.CanonicalForm())
+	if parsed, match, _ := ZonalContainerNodePoolIdentityFormat.Parse(ref); match {
+		*i = *parsed
+		return nil
+	}
+	return fmt.Errorf("format of ContainerNodePool external=%q was not known (use %s or %s)", ref, RegionalContainerNodePoolIdentityFormat.CanonicalForm(), ZonalContainerNodePoolIdentityFormat.CanonicalForm())
 }
 
 func (i *ContainerNodePoolIdentity) Host() string {
@@ -69,10 +75,12 @@ func (i *ContainerNodePoolIdentity) Host() string {
 
 // ParentString returns the parent ContainerCluster GCP URI.
 func (i *ContainerNodePoolIdentity) ParentString() string {
-	if i.Zone != "" {
-		return fmt.Sprintf("projects/%s/zones/%s/clusters/%s", i.Project, i.Zone, i.Cluster)
-	}
 	return fmt.Sprintf("projects/%s/locations/%s/clusters/%s", i.Project, i.Location, i.Cluster)
+}
+
+// LocationValue returns the location (zone or region) of the node pool.
+func (i *ContainerNodePoolIdentity) LocationValue() string {
+	return i.Location
 }
 
 func getIdentityFromContainerNodePoolSpec(ctx context.Context, reader client.Reader, obj *ContainerNodePool) (*ContainerNodePoolIdentity, error) {
@@ -98,14 +106,9 @@ func getIdentityFromContainerNodePoolSpec(ctx context.Context, reader client.Rea
 
 	identity := &ContainerNodePoolIdentity{
 		Project:  clusterId.Project,
+		Location: location,
 		Cluster:  clusterId.Cluster,
 		NodePool: resourceID,
-	}
-
-	if len(strings.Split(location, "-")) == 3 {
-		identity.Zone = location
-	} else {
-		identity.Location = location
 	}
 
 	return identity, nil

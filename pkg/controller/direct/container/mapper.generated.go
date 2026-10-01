@@ -308,6 +308,8 @@ func BinaryAuthorization_ToProto(mapCtx *direct.MapContext, in *krm.BinaryAuthor
 	out.EvaluationMode = direct.Enum_ToProto[pb.BinaryAuthorization_EvaluationMode](mapCtx, in.EvaluationMode)
 	return out
 }
+
+/* found existing non-generated mapping function "CertificateAuthorityDomainConfig_FromProto", skipping
 func CertificateAuthorityDomainConfig_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig) *krm.CertificateAuthorityDomainConfig {
 	if in == nil {
 		return nil
@@ -318,16 +320,22 @@ func CertificateAuthorityDomainConfig_FromProto(mapCtx *direct.MapContext, in *p
 	// (near miss): "GcpSecretManagerCertificateConfig" vs "GCPSecretManagerCertificateConfig"
 	return out
 }
-func CertificateAuthorityDomainConfig_ToProto(mapCtx *direct.MapContext, in *krm.CertificateAuthorityDomainConfig) *pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "CertificateAuthorityDomainConfig_ToProto", skipping
+
+	func CertificateAuthorityDomainConfig_ToProto(mapCtx *direct.MapContext, in *krm.CertificateAuthorityDomainConfig) *pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig{}
+		out.Fqdns = in.Fqdns
+		// MISSING: GcpSecretManagerCertificateConfig
+		// (near miss): "GcpSecretManagerCertificateConfig" vs "GCPSecretManagerCertificateConfig"
+		return out
 	}
-	out := &pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig{}
-	out.Fqdns = in.Fqdns
-	// MISSING: GcpSecretManagerCertificateConfig
-	// (near miss): "GcpSecretManagerCertificateConfig" vs "GCPSecretManagerCertificateConfig"
-	return out
-}
+*/
 func CloudRunConfig_FromProto(mapCtx *direct.MapContext, in *pb.CloudRunConfig) *krm.CloudRunConfig {
 	if in == nil {
 		return nil
@@ -870,6 +878,7 @@ found existing non-generated mapping function "ContainerNodePoolSpec_ToProto", s
 		return out
 	}
 */
+/* found existing non-generated mapping function "ContainerdConfig_FromProto", skipping
 func ContainerdConfig_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConfig) *krm.ContainerdConfig {
 	if in == nil {
 		return nil
@@ -878,6 +887,8 @@ func ContainerdConfig_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConf
 	out.PrivateRegistryAccessConfig = PrivateRegistryAccessConfig_FromProto(mapCtx, in.GetPrivateRegistryAccessConfig())
 	return out
 }
+*/
+/* found existing non-generated mapping function "ContainerdConfig_ToProto", skipping
 func ContainerdConfig_ToProto(mapCtx *direct.MapContext, in *krm.ContainerdConfig) *pb.ContainerdConfig {
 	if in == nil {
 		return nil
@@ -886,6 +897,7 @@ func ContainerdConfig_ToProto(mapCtx *direct.MapContext, in *krm.ContainerdConfi
 	out.PrivateRegistryAccessConfig = PrivateRegistryAccessConfig_ToProto(mapCtx, in.PrivateRegistryAccessConfig)
 	return out
 }
+*/
 func ControlPlaneEndpointsConfig_FromProto(mapCtx *direct.MapContext, in *pb.ControlPlaneEndpointsConfig) *krm.ControlPlaneEndpointsConfig {
 	if in == nil {
 		return nil
@@ -1166,6 +1178,8 @@ func FastSocket_ToProto(mapCtx *direct.MapContext, in *krm.FastSocket) *pb.FastS
 	out.Enabled = direct.ValueOf(in.Enabled)
 	return out
 }
+
+/* found existing non-generated mapping function "GCPSecretManagerCertificateConfig_FromProto", skipping
 func GCPSecretManagerCertificateConfig_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig_GCPSecretManagerCertificateConfig) *krm.GCPSecretManagerCertificateConfig {
 	if in == nil {
 		return nil
@@ -1174,6 +1188,8 @@ func GCPSecretManagerCertificateConfig_FromProto(mapCtx *direct.MapContext, in *
 	// MISSING: SecretURI
 	return out
 }
+*/
+/* found existing non-generated mapping function "GCPSecretManagerCertificateConfig_ToProto", skipping
 func GCPSecretManagerCertificateConfig_ToProto(mapCtx *direct.MapContext, in *krm.GCPSecretManagerCertificateConfig) *pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig_GCPSecretManagerCertificateConfig {
 	if in == nil {
 		return nil
@@ -1182,6 +1198,7 @@ func GCPSecretManagerCertificateConfig_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: SecretURI
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "GKEBackupAgentConfig_FromProto", skipping
 func GKEBackupAgentConfig_FromProto(mapCtx *direct.MapContext, in *pb.GkeBackupAgentConfig) *krm.GKEBackupAgentConfig {
@@ -1484,6 +1501,7 @@ found existing non-generated mapping function "KubeletConfig_ToProto", skipping
 		return out
 	}
 */
+/* found existing non-generated mapping function "LinuxNodeConfig_FromProto", skipping
 func LinuxNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.LinuxNodeConfig) *krm.LinuxNodeConfig {
 	if in == nil {
 		return nil
@@ -1496,6 +1514,8 @@ func LinuxNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.LinuxNodeConfig
 	// MISSING: TransparentHugepageDefrag
 	return out
 }
+*/
+/* found existing non-generated mapping function "LinuxNodeConfig_ToProto", skipping
 func LinuxNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.LinuxNodeConfig) *pb.LinuxNodeConfig {
 	if in == nil {
 		return nil
@@ -1508,6 +1528,7 @@ func LinuxNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.LinuxNodeConfig)
 	// MISSING: TransparentHugepageDefrag
 	return out
 }
+*/
 func LoggingConfig_FromProto(mapCtx *direct.MapContext, in *pb.LoggingConfig) *krm.LoggingConfig {
 	if in == nil {
 		return nil
@@ -1979,6 +2000,8 @@ func NodeManagementObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Node
 	out.UpgradeOptions = AutoUpgradeOptionsObservedState_ToProto(mapCtx, in.UpgradeOptions)
 	return out
 }
+
+/* found existing non-generated mapping function "NodeNetworkConfig_FromProto", skipping
 func NodeNetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeNetworkConfig) *krm.NodeNetworkConfig {
 	if in == nil {
 		return nil
@@ -2000,27 +2023,33 @@ func NodeNetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeNetworkCo
 	}
 	return out
 }
-func NodeNetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeNetworkConfig) *pb.NodeNetworkConfig {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "NodeNetworkConfig_ToProto", skipping
+
+	func NodeNetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeNetworkConfig) *pb.NodeNetworkConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.NodeNetworkConfig{}
+		out.CreatePodRange = direct.ValueOf(in.CreatePodRange)
+		out.PodRange = direct.ValueOf(in.PodRange)
+		// MISSING: PodIPV4CIDRBlock
+		// (near miss): "PodIPV4CIDRBlock" vs "PodIpv4CidrBlock"
+		out.EnablePrivateNodes = in.EnablePrivateNodes
+		// MISSING: NetworkPerformanceConfig
+		// MISSING: PodCIDROverprovisionConfig
+		// (near miss): "PodCIDROverprovisionConfig" vs "PodCidrOverprovisionConfig"
+		out.AdditionalNodeNetworkConfigs = direct.Slice_ToProto(mapCtx, in.AdditionalNodeNetworkConfigs, AdditionalNodeNetworkConfig_ToProto)
+		out.AdditionalPodNetworkConfigs = direct.Slice_ToProto(mapCtx, in.AdditionalPodNetworkConfigs, AdditionalPodNetworkConfig_ToProto)
+		// MISSING: PodIPV4RangeUtilization
+		if in.SubnetworkRef != nil {
+			out.Subnetwork = in.SubnetworkRef.External
+		}
+		return out
 	}
-	out := &pb.NodeNetworkConfig{}
-	out.CreatePodRange = direct.ValueOf(in.CreatePodRange)
-	out.PodRange = direct.ValueOf(in.PodRange)
-	// MISSING: PodIPV4CIDRBlock
-	// (near miss): "PodIPV4CIDRBlock" vs "PodIpv4CidrBlock"
-	out.EnablePrivateNodes = in.EnablePrivateNodes
-	// MISSING: NetworkPerformanceConfig
-	// MISSING: PodCIDROverprovisionConfig
-	// (near miss): "PodCIDROverprovisionConfig" vs "PodCidrOverprovisionConfig"
-	out.AdditionalNodeNetworkConfigs = direct.Slice_ToProto(mapCtx, in.AdditionalNodeNetworkConfigs, AdditionalNodeNetworkConfig_ToProto)
-	out.AdditionalPodNetworkConfigs = direct.Slice_ToProto(mapCtx, in.AdditionalPodNetworkConfigs, AdditionalPodNetworkConfig_ToProto)
-	// MISSING: PodIPV4RangeUtilization
-	if in.SubnetworkRef != nil {
-		out.Subnetwork = in.SubnetworkRef.External
-	}
-	return out
-}
+*/
 func NodePoolAutoConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodePoolAutoConfig) *krm.NodePoolAutoConfig {
 	if in == nil {
 		return nil
@@ -2733,6 +2762,8 @@ func VerticalPodAutoscaling_ToProto(mapCtx *direct.MapContext, in *krm.VerticalP
 	out.Enabled = direct.ValueOf(in.Enabled)
 	return out
 }
+
+/* found existing non-generated mapping function "WindowsNodeConfig_FromProto", skipping
 func WindowsNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.WindowsNodeConfig) *krm.WindowsNodeConfig {
 	if in == nil {
 		return nil
@@ -2741,14 +2772,20 @@ func WindowsNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.WindowsNodeCo
 	out.OSVersion = direct.Enum_FromProto(mapCtx, in.GetOsVersion())
 	return out
 }
-func WindowsNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.WindowsNodeConfig) *pb.WindowsNodeConfig {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "WindowsNodeConfig_ToProto", skipping
+
+	func WindowsNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.WindowsNodeConfig) *pb.WindowsNodeConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.WindowsNodeConfig{}
+		out.OsVersion = direct.Enum_ToProto[pb.WindowsNodeConfig_OSVersion](mapCtx, in.OSVersion)
+		return out
 	}
-	out := &pb.WindowsNodeConfig{}
-	out.OsVersion = direct.Enum_ToProto[pb.WindowsNodeConfig_OSVersion](mapCtx, in.OSVersion)
-	return out
-}
+*/
 func WorkloadIdentityConfig_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadIdentityConfig) *krm.WorkloadIdentityConfig {
 	if in == nil {
 		return nil
