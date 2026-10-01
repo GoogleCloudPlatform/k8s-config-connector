@@ -37,10 +37,10 @@ type BigtableMemoryLayerSpec struct {
 
 // BigtableMemoryLayerStatus defines the config connector machine state of BigtableMemoryLayer
 type BigtableMemoryLayerStatus struct {
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
-	ExternalRef *string `json:"externalRef,omitempty"`
-	Name *string `json:"name,omitempty"`
+	Conditions         []v1alpha1.Condition `json:"conditions,omitempty"`
+	ObservedGeneration *int64               `json:"observedGeneration,omitempty"`
+	ExternalRef        *string              `json:"externalRef,omitempty"`
+	Name               *string              `json:"name,omitempty"`
 }
 
 // +genclient
