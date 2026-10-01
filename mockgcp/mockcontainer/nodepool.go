@@ -250,13 +250,13 @@ func (s *ClusterManagerV1) populateNodeConfig(obj *pb.NodeConfig) error {
 		obj.BootDisk.SizeGb = int64(obj.DiskSizeGb)
 	}
 
-	// EffectiveCgroupMode
-	if obj.EffectiveCgroupMode == pb.NodeConfig_EFFECTIVE_CGROUP_MODE_UNSPECIFIED {
-		obj.EffectiveCgroupMode = pb.NodeConfig_EFFECTIVE_CGROUP_MODE_V2
-	}
-
 	if obj.ImageType == "" {
 		obj.ImageType = "COS_CONTAINERD"
+	}
+
+	// EffectiveCgroupMode (Windows nodes do not support Linux cgroups)
+	if obj.EffectiveCgroupMode == pb.NodeConfig_EFFECTIVE_CGROUP_MODE_UNSPECIFIED && !strings.HasPrefix(obj.ImageType, "WINDOWS") {
+		obj.EffectiveCgroupMode = pb.NodeConfig_EFFECTIVE_CGROUP_MODE_V2
 	}
 
 	if obj.KubeletConfig == nil {
