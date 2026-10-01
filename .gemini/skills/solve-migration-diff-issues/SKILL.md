@@ -10,7 +10,7 @@ You MUST run the **4-Step Development Sequence** in exact sequential order (Step
 
 * **NEVER skip Step 1.** You must always run the migration test against real GCP first. This is required to exercise the actual GCP APIs, generate GCP project audit logs, and produce a baseline `_migration_diffs.json` from real GCP behavior. **Note that the automated agent has full access to a real GCP project in its environment (pre-configured inside the runtime container/sandbox via Application Default Credentials or environment variables) and is fully expected and required to run `./hack/record-gcp` against live GCP.**
 * **NEVER jump straight to Step 3 or Step 4.** Writing code or testing solely against MockGCP without first diagnosing on real GCP violates this workflow.
-* **WHENEVER A TEST CASE IS UPDATED, WE MUST RECORD REAL GCP LOGS AGAIN.** If you make any modifications to a test case configuration, manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or the controller's runtime mapping configuration, you **MUST** run the test case against real GCP (`hack/record-gcp` or with `E2E_GCP_TARGET=real`) to regenerate the authentic logs baseline before comparing or committing any mock log changes. Do not attempt to manually edit the logs or bypass recording live traffic.
+* **WHENEVER A TEST CASE OR CONTROLLER CODE IS UPDATED, WE MUST RECORD REAL GCP LOGS AGAIN.** If you make any modifications to a test case configuration, manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or **the controller code itself (including comparison logic, mappers, or adapter methods)**, you **MUST** run the migration test against real GCP (`./hack/record-gcp TestMigrationToDirect/fixtures/...` or with `E2E_GCP_TARGET=real`) to regenerate authentic golden logs and verify clean, 0-write takeover. Do not attempt to manually edit the logs or bypass recording live traffic.
 
 ---
 
@@ -62,8 +62,9 @@ Using the diff produced in Step 1, identify why the Direct controller sees a dif
 * **Legacy Controller Bugs (Phase 2 Writes):** If there is an unexpected write in Phase 2, that means there is a bug in the legacy controller. If Phase 3 and Phase 4 have the same write as Phase 2, it is not a breaking change.
 
 ### Step 3: Formulate the Fix in the Direct Controller
-1. Locate the comparison logic for the resource:
+1. Locate or Refactor the comparison logic for the resource:
    * For most resources, the comparison is done directly inside the `Update` method (or helper functions) in the controller file: `pkg/controller/direct/<service>/<resource>_controller.go`.
+   * **BROWNFIELD COMPARISON REQUIREMENT:** Whenever there is a diff in state comparison for a brownfield resource, the controller comparison logic must be refactored using the standard **`common.CompareBrownfieldSpec`** (or **`common.CompareBrownfieldSpecAndLabels`** if label comparison is involved) utility instead of hand-writing custom comparison, defaulting, `MergeUnsetFields`, or slice sorting logic. This standardizes the 5-step brownfield comparison workflow (converting specs to protos, merging actual unset fields, sorting repeated lists, and producing field masks and top-level diffs automatically). A lightweight `normalize` hook should be passed for any reference/compute link formatting.
    * For extremely large or complex resources (like BigQuery Table), it may be split out into a separate file: `pkg/controller/direct/<service>/<resource>_compare.go`.
 2. **Prevent Parameter Swap Bugs:** When writing or editing comparison functions, **always** explicitly name the parameters `actual` and `desired` instead of `a` and `b`. This prevents accidentally swapping them during comparison and diff reporting.
 3. **Ignore Undesired Optional Fields:** If a field is optional in KRM and is omitted from the spec (desired is `nil`), the comparison logic should **ignore** the actual value returned by GCP rather than attempting to delete it.
