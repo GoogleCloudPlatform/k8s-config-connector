@@ -1,0 +1,109 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: multiclusterleases.multicluster.core.cnrm.cloud.google.com
+spec:
+  group: multicluster.core.cnrm.cloud.google.com
+  names:
+    kind: MultiClusterLease
+    listKind: MultiClusterLeaseList
+    plural: multiclusterleases
+    singular: multiclusterlease
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.holderIdentity
+      name: Holder (Spec)
+      type: string
+    - jsonPath: .status.globalHolderIdentity
+      name: Leader (Status)
+      type: string
+    - format: date-time
+      jsonPath: .status.globalRenewTime
+      name: Renew Time (Status)
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: MultiClusterLease is the Schema for the multiclusterleases API
+        properties:
+          apiVersion:
+            type: string
+          kind:
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              holderIdentity:
+                type: string
+              leaseDurationSeconds:
+                format: int32
+                type: integer
+              renewDeadlineSeconds:
+                format: int32
+                type: integer
+              renewTime:
+                format: date-time
+                type: string
+              retryPeriodSeconds:
+                format: int32
+                type: integer
+            type: object
+          status:
+            properties:
+              conditions:
+                items:
+                  properties:
+                    lastTransitionTime:
+                      format: date-time
+                      type: string
+                    message:
+                      type: string
+                    observedGeneration:
+                      format: int64
+                      type: integer
+                    reason:
+                      type: string
+                    status:
+                      type: string
+                    type:
+                      type: string
+                  type: object
+                type: array
+              globalHolderIdentity:
+                type: string
+              globalLeaseDurationSeconds:
+                format: int32
+                type: integer
+              globalLeaseTransitions:
+                format: int32
+                type: integer
+              globalRenewTime:
+                type: string
+              observedGeneration:
+                format: int64
+                type: integer
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
