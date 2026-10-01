@@ -1,3 +1,8 @@
+---
+name: create-fuzzer
+description: Guides implementing a round-trip KRM fuzzer for a direct Config Connector resource controller.
+---
+
 # Skill: Create Fuzzer for Direct Controller
 
 This skill guides an automated agent through the process of implementing a round-trip KRM fuzzer for a direct Config Connector resource controller. Round-trip fuzz testing verifies the mapping functions can accurately convert KRM objects to GCP protos and back without losing or misrepresenting data.

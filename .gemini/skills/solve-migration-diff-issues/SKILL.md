@@ -1,3 +1,8 @@
+---
+name: solve-migration-diff-issues
+description: Guides diagnosing, explaining, and fixing takeover diff issues when migrating a controller in KCC from Terraform/DCL to the Direct approach.
+---
+
 # Skill: Solve Migration Diff Issues for Direct Takeover
 
 This skill guides an automated agent through diagnosing, explaining, and fixing "takeover diff" issues when migrating a Kubernetes controller in KCC from Terraform/DCL to the Direct approach.

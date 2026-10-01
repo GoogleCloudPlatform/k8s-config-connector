@@ -1,3 +1,8 @@
+---
+name: opt-in-to-strict-testing
+description: Guides through opting a resource or API group into strict testing (Server-Side Apply and re-reconciliation testing).
+---
+
 # Skill: Opt-in to Strict Testing
 
 This skill guides an automated agent through the process of opting a resource (or all resources in an API group) into strict testing. Strict testing enables server-side apply for creates and re-reconciliation tests to ensure the controllers are 100% correct in differencing detection.

@@ -1,3 +1,8 @@
+---
+name: match-mockgcp-with-realgcp
+description: Provides a structured workflow for aligning the MockGCP implementation and normalizers with authentic real GCP HTTP logs (_http.log).
+---
+
 # Skill: Match Mock behaviour with real GCP API
 
 This skill provides a structured workflow for aligning the MockGCP implementation and normalizers with authentic real GCP HTTP logs (`_http.log`).
