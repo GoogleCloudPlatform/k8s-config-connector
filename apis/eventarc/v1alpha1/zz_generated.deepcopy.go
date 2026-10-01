@@ -737,7 +737,7 @@ func (in *EventarcGoogleAPISourceSpec) DeepCopyInto(out *EventarcGoogleAPISource
 	}
 	if in.CryptoKeyRef != nil {
 		in, out := &in.CryptoKeyRef, &out.CryptoKeyRef
-		*out = new(v1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 	if in.LoggingConfig != nil {
