@@ -2748,6 +2748,8 @@ func VerticalPodAutoscaling_ToProto(mapCtx *direct.MapContext, in *krm.VerticalP
 	out.Enabled = direct.ValueOf(in.Enabled)
 	return out
 }
+
+/* found existing non-generated mapping function "WindowsNodeConfig_FromProto", skipping
 func WindowsNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.WindowsNodeConfig) *krm.WindowsNodeConfig {
 	if in == nil {
 		return nil
@@ -2756,14 +2758,20 @@ func WindowsNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.WindowsNodeCo
 	out.OSVersion = direct.Enum_FromProto(mapCtx, in.GetOsVersion())
 	return out
 }
-func WindowsNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.WindowsNodeConfig) *pb.WindowsNodeConfig {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "WindowsNodeConfig_ToProto", skipping
+
+	func WindowsNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.WindowsNodeConfig) *pb.WindowsNodeConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.WindowsNodeConfig{}
+		out.OsVersion = direct.Enum_ToProto[pb.WindowsNodeConfig_OSVersion](mapCtx, in.OSVersion)
+		return out
 	}
-	out := &pb.WindowsNodeConfig{}
-	out.OsVersion = direct.Enum_ToProto[pb.WindowsNodeConfig_OSVersion](mapCtx, in.OSVersion)
-	return out
-}
+*/
 func WorkloadIdentityConfig_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadIdentityConfig) *krm.WorkloadIdentityConfig {
 	if in == nil {
 		return nil
