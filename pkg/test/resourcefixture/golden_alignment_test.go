@@ -587,6 +587,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "revisionCreateTime")
 		delete(v, "uid")
 		delete(v, "reconciling")
+		delete(v, "networkCookie")
 		delete(v, "naturalLanguageQueryUnderstandingConfig")
 		delete(v, "solutionTypes")
 		delete(v, "source")
@@ -1108,6 +1109,26 @@ func getPlaceholdersForKind(kind string) []string {
 	return nil
 }
 
+func trimKindPrefix(kind string) string {
+	prefixes := []string{
+		"Bigtable",
+		"NetworkSecurity",
+		"NetworkServices",
+		"Compute",
+		"Storage",
+		"Spanner",
+		"PubSub",
+		"KMS",
+		"IAM",
+		"AlloyDB",
+		"BigQuery",
+	}
+	for _, p := range prefixes {
+		kind = strings.TrimPrefix(kind, p)
+	}
+	return kind
+}
+
 func filterDependencyEvents(events []httpEvent, depKinds map[string]string, primaryKind string) []httpEvent {
 	var filtered []httpEvent
 	for _, ev := range events {
@@ -1162,16 +1183,16 @@ func isDependencyEvent(ev httpEvent, depKinds map[string]string, primaryKind str
 			if ev.Method == "POST" && (strings.Contains(ev.RequestBody, depName) || strings.Contains(ev.ResponseBody, depName) || strings.Contains(ev.URL, depName)) {
 				return true
 			}
-			// For Bigtable gRPC calls, resource creation or setup calls
-			// (e.g. /BigtableInstanceAdmin/CreateInstance, /BigtableTableAdmin/CreateTable) use "GRPC"
+			// For gRPC calls, resource creation or setup calls
+			// (e.g. /BigtableInstanceAdmin/CreateInstance, /Mirroring/CreateMirroringEndpointGroup) use "GRPC"
 			// as the HTTP method and the URL is the RPC method endpoint, which does not contain the
 			// resource ID in the path. Instead, the dependency name is contained in the request or response body.
 			if ev.Method == "GRPC" {
 				parts := strings.Split(ev.URL, "/")
 				if len(parts) > 0 {
 					rpcMethod := parts[len(parts)-1]
-					shortDepKind := strings.TrimPrefix(kind, "Bigtable")
-					shortPrimaryKind := strings.TrimPrefix(primaryKind, "Bigtable")
+					shortDepKind := trimKindPrefix(kind)
+					shortPrimaryKind := trimKindPrefix(primaryKind)
 					if strings.Contains(rpcMethod, shortDepKind) && !strings.Contains(rpcMethod, shortPrimaryKind) && (strings.Contains(ev.RequestBody, depName) || strings.Contains(ev.ResponseBody, depName)) {
 						return true
 					}
