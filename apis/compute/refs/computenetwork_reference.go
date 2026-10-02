@@ -154,7 +154,20 @@ func (r *ComputeNetworkRef) Normalize(ctx context.Context, reader client.Reader,
 		if selfLink != "" {
 			return apirefs.TrimComputeURIPrefix(selfLink)
 		}
-		return ""
+
+		projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
+		if err != nil {
+			return ""
+		}
+		resourceID, err := refsv1beta1.GetResourceID(u)
+		if err != nil {
+			return ""
+		}
+		id := &ComputeNetworkIdentity{
+			Project: projectID,
+			Network: resourceID,
+		}
+		return id.String()
 	}
 	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
