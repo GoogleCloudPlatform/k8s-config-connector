@@ -8,7 +8,6 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
   name: migrationcentersources.migrationcenter.cnrm.cloud.google.com
 spec:
@@ -70,11 +69,8 @@ spec:
                 description: User-friendly display name.
                 type: string
               location:
-                description: Immutable. The location of this resource.
+                description: The location of this resource.
                 type: string
-                x-kubernetes-validations:
-                - message: Location field is immutable
-                  rule: self == oldSelf
               managed:
                 description: If `true`, the source is managed by other service(s).
                 type: boolean
@@ -121,12 +117,6 @@ spec:
                 type: string
               type:
                 description: Data source type.
-                enum:
-                - SOURCE_TYPE_UNKNOWN
-                - SOURCE_TYPE_UPLOAD
-                - SOURCE_TYPE_GUEST_OS_SCAN
-                - SOURCE_TYPE_INVENTORY_SCAN
-                - SOURCE_TYPE_CUSTOM
                 type: string
             required:
             - location
@@ -193,11 +183,6 @@ spec:
                     type: integer
                   state:
                     description: Output only. The state of the source.
-                    enum:
-                    - STATE_UNSPECIFIED
-                    - ACTIVE
-                    - DELETING
-                    - INVALID
                     type: string
                   updateTime:
                     description: Output only. The timestamp when the source was last
