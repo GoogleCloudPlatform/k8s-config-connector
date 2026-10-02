@@ -85,6 +85,7 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
+  "satisfiesPzs": false,
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
   "type": "DEFAULT"
 }
@@ -380,13 +381,10 @@ X-Xss-Protection: 0
   "location": "us-central1",
   "materializedView": {
     "enableRefresh": true,
-    "lastRefreshTime": "123456789",
     "query": "SELECT\ndistinct dt, user_id\nFROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "refreshIntervalMs": "1800000"
   },
-  "materializedViewStatus": {
-    "refreshWatermark": "2024-04-01T12:34:56.123456Z"
-  },
+  "materializedViewStatus": {},
   "numActiveLogicalBytes": "0",
   "numBytes": "0",
   "numLongTermBytes": "0",
