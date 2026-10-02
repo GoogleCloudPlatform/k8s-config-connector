@@ -85,6 +85,11 @@ func (UnderlyingResourceOutOfSyncPredicate) Update(e event.UpdateEvent) bool {
 		}
 	}
 
+	// Changes to the backoff max delay annotation should trigger a reconcile
+	if oldValue, newValue := e.ObjectOld.GetAnnotations()[k8s.BackoffMaxDelayInSecondsAnnotation], e.ObjectNew.GetAnnotations()[k8s.BackoffMaxDelayInSecondsAnnotation]; oldValue != newValue {
+		return true
+	}
+
 	// The object's generation will increment when the spec is updated, so a different
 	// generation implies potential work to be done on the underlying API.
 	if e.ObjectNew.GetGeneration() != e.ObjectOld.GetGeneration() {
