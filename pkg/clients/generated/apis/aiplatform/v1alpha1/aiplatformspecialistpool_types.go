@@ -38,7 +38,7 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
-type VertexAISpecialistPoolSpec struct {
+type AIPlatformSpecialistPoolSpec struct {
 	/* Required. The user-defined name of the SpecialistPool. The name can be up to 128 characters long and can consist of any UTF-8 characters. This field should be unique on project-level. */
 	DisplayName string `json:"displayName"`
 
@@ -48,7 +48,7 @@ type VertexAISpecialistPoolSpec struct {
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The VertexAISpecialistPool name. If not given, the metadata.name will be used. */
+	/* The AIPlatformSpecialistPool name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -61,7 +61,7 @@ type VertexAISpecialistPoolSpec struct {
 	SpecialistWorkerEmails []string `json:"specialistWorkerEmails,omitempty"`
 }
 
-type VertexaispecialistpoolObservedStateStatus struct {
+type SpecialistpoolObservedStateStatus struct {
 	/* Output only. The resource name of the pending data labeling jobs. */
 	// +optional
 	PendingDataLabelingJobs []string `json:"pendingDataLabelingJobs,omitempty"`
@@ -71,11 +71,11 @@ type VertexaispecialistpoolObservedStateStatus struct {
 	SpecialistManagersCount *int32 `json:"specialistManagersCount,omitempty"`
 }
 
-type VertexAISpecialistPoolStatus struct {
+type AIPlatformSpecialistPoolStatus struct {
 	/* Conditions represent the latest available observations of the
-	   VertexAISpecialistPool's current state. */
+	   AIPlatformSpecialistPool's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the VertexAISpecialistPool resource in GCP. */
+	/* A unique specifier for the AIPlatformSpecialistPool resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -85,12 +85,12 @@ type VertexAISpecialistPoolStatus struct {
 
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	ObservedState *VertexaispecialistpoolObservedStateStatus `json:"observedState,omitempty"`
+	ObservedState *SpecialistpoolObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpvertexaispecialistpool;gcpvertexaispecialistpools
+// +kubebuilder:resource:categories=gcp,shortName=gcpaiplatformspecialistpool;gcpaiplatformspecialistpools
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
@@ -100,25 +100,25 @@ type VertexAISpecialistPoolStatus struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// VertexAISpecialistPool is the Schema for the aiplatform API
+// AIPlatformSpecialistPool is the Schema for the aiplatform API
 // +k8s:openapi-gen=true
-type VertexAISpecialistPool struct {
+type AIPlatformSpecialistPool struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   VertexAISpecialistPoolSpec   `json:"spec,omitempty"`
-	Status VertexAISpecialistPoolStatus `json:"status,omitempty"`
+	Spec   AIPlatformSpecialistPoolSpec   `json:"spec,omitempty"`
+	Status AIPlatformSpecialistPoolStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// VertexAISpecialistPoolList contains a list of VertexAISpecialistPool
-type VertexAISpecialistPoolList struct {
+// AIPlatformSpecialistPoolList contains a list of AIPlatformSpecialistPool
+type AIPlatformSpecialistPoolList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []VertexAISpecialistPool `json:"items"`
+	Items           []AIPlatformSpecialistPool `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&VertexAISpecialistPool{}, &VertexAISpecialistPoolList{})
+	SchemeBuilder.Register(&AIPlatformSpecialistPool{}, &AIPlatformSpecialistPoolList{})
 }
