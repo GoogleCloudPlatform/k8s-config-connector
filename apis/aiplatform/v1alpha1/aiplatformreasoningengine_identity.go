@@ -66,11 +66,8 @@ func (i *AIPlatformReasoningEngineIdentity) Host() string {
 }
 
 func getIdentityFromAIPlatformReasoningEngineSpec(ctx context.Context, reader client.Reader, obj *AIPlatformReasoningEngine) (*AIPlatformReasoningEngineIdentity, error) {
-	// AIPlatformReasoningEngine supports service-generated ID in addition to user-specified ID.
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
+	// AIPlatformReasoningEngine only supports service-generated IDs (GCP assigns a numeric ID upon creation).
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
 	location, err := refs.GetLocation(obj)
 	if err != nil {
@@ -102,6 +99,13 @@ func (obj *AIPlatformReasoningEngine) GetIdentity(ctx context.Context, reader cl
 		statusIdentity := &AIPlatformReasoningEngineIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
+		}
+
+		if specIdentity.ReasoningEngine == "" {
+			if statusIdentity.Project != specIdentity.Project || statusIdentity.Location != specIdentity.Location {
+				return nil, fmt.Errorf("cannot change AIPlatformReasoningEngine parent (old parent=%s/%s, new parent=%s/%s)", statusIdentity.Project, statusIdentity.Location, specIdentity.Project, specIdentity.Location)
+			}
+			return statusIdentity, nil
 		}
 
 		if statusIdentity.String() != specIdentity.String() {

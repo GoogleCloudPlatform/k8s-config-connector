@@ -30,7 +30,7 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
-	if !strings.Contains(event.URL(), "aiplatform.googleapis.com") {
+	if !strings.Contains(event.URL(), "aiplatform.googleapis.com") && !strings.Contains(event.URL(), "google.cloud.aiplatform") {
 		return
 	}
 
@@ -48,5 +48,31 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 
 	if strings.Contains(event.URL(), "tensorboards") && strings.Contains(event.URL(), "experiments") {
 		replacements.ReplaceStringValue("updateMask=description%2CdisplayName%2Clabels%2Csource", "updateMask=description%2CdisplayName%2Clabels")
+	}
+
+	if strings.Contains(event.URL(), "ReasoningEngineService") || strings.Contains(event.URL(), "reasoningEngines") {
+		previsitReasoningEngine := func(val string) {
+			if strings.Contains(val, "/reasoningEngines/") {
+				tokens := strings.Split(val, "/")
+				for i := 0; i < len(tokens)-1; i++ {
+					if tokens[i] == "reasoningEngines" {
+						id := tokens[i+1]
+						if idx := strings.Index(id, "?"); idx != -1 {
+							id = id[:idx]
+						}
+						if isNumeric(id) {
+							replacements.ReplaceStringValue(id, "${reasoningEngineID}")
+						}
+					}
+				}
+			}
+		}
+		previsitReasoningEngine(event.URL())
+		event.VisitRequestStringValues(func(path string, value string) {
+			previsitReasoningEngine(value)
+		})
+		event.VisitResponseStringValues(func(path string, value string) {
+			previsitReasoningEngine(value)
+		})
 	}
 }

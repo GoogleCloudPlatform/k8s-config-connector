@@ -41,3 +41,16 @@
   3. Created `pkg/controller/direct/aiplatform/vertexaipipelinejob_fuzzer.go` and configured fuzzer fields utilizing the fluent builder pattern.
   4. Scaffolded E2E golden tests under `pkg/test/resourcefixture/testdata/basic/aiplatform/v1alpha1/vertexaipipelinejob/` (`vertexaipipelinejob-minimal` and `vertexaipipelinejob-maximal`), including `dependencies.yaml` to provision a `StorageBucket` used as the `gcsOutputDirectory` parameter.
 - **Impact**: Ensures standard, fully compliant Greenfield controller implementation and E2E testing framework support for VertexAIPipelineJob.
+
+### 2026-09-29 Implementing AIPlatformReasoningEngine Greenfield Direct Controller, Fuzzer, and E2E Fixtures
+- **Context**: Implementing the direct controller, E2E fixtures, and fuzzer for `AIPlatformReasoningEngine` (Issue #13501).
+- **Problem**: 
+  1. `ReasoningEngine` in GCP Vertex AI uses purely service-generated numerical identifiers (e.g., `projects/<project-number>/locations/<location>/reasoningEngines/<id>`). When parsing the created resource name from the LRO response, overwriting the identity struct directly converted the project ID to project number, causing subsequent reconciliations in `GetIdentity()` to detect a parent project mismatch between `status.externalRef` and `spec.projectRef`.
+  2. The E2E normalizer in `mockgcp/mockaiplatform/normalize.go` only checked for `aiplatform.googleapis.com` in `event.URL()`, skipping gRPC requests matching `/google.cloud.aiplatform.v1.ReasoningEngineService/...`.
+  3. `spec.agentFramework` must be one of `[google-adk, langchain, langgraph, ag2, llama-index, custom, a2a]`.
+- **Solution**:
+  1. Updated `AIPlatformReasoningEngineAdapter.Create` to parse only the `ReasoningEngine` ID segment from the LRO response into `a.id.ReasoningEngine`, keeping `a.id.Project` consistent with `spec.projectRef`.
+  2. Updated `mockgcp/mockaiplatform/normalize.go` and `pkg/cais/caistesting/testing.go` to normalize reasoning engine dynamic IDs with `${reasoningEngineID}` for both gRPC and CAIS logs.
+  3. Recorded and verified both minimal and maximal fixtures against real GCP.
+- **Impact**: Cleanly reconciles `AIPlatformReasoningEngine` with service-generated IDs, and enables reliable, reproducible E2E tests against real GCP.
+
