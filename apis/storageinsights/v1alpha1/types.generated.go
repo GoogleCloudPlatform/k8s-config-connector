@@ -92,41 +92,6 @@ type ObjectMetadataReportOptions struct {
 type ParquetOptions struct {
 }
 
-/* unreachable type ReportConfig
-// +kcc:proto=google.cloud.storageinsights.v1.ReportConfig
-type ReportConfig struct {
-	// name of resource. It will be of form
-	//  projects/<project>/locations/<location>/reportConfigs/<report-config-id>.
-	// +kcc:proto:field=google.cloud.storageinsights.v1.ReportConfig.name
-	Name *string `json:"name,omitempty"`
-
-	// The frequency of report generation.
-	// +kcc:proto:field=google.cloud.storageinsights.v1.ReportConfig.frequency_options
-	FrequencyOptions *FrequencyOptions `json:"frequencyOptions,omitempty"`
-
-	// Options for CSV formatted reports.
-	// +kcc:proto:field=google.cloud.storageinsights.v1.ReportConfig.csv_options
-	CsvOptions *CsvOptions `json:"csvOptions,omitempty"`
-
-	// Options for Parquet formatted reports.
-	// +kcc:proto:field=google.cloud.storageinsights.v1.ReportConfig.parquet_options
-	ParquetOptions *ParquetOptions `json:"parquetOptions,omitempty"`
-
-	// Report for exporting object metadata.
-	// +kcc:proto:field=google.cloud.storageinsights.v1.ReportConfig.object_metadata_report_options
-	ObjectMetadataReportOptions *ObjectMetadataReportOptions `json:"objectMetadataReportOptions,omitempty"`
-
-	// Labels as key value pairs
-	// +kcc:proto:field=google.cloud.storageinsights.v1.ReportConfig.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// User provided display name which can be empty and limited to 256 characters
-	//  that is editable.
-	// +kcc:proto:field=google.cloud.storageinsights.v1.ReportConfig.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-}
-*/
-
 // +kcc:proto=google.type.Date
 type Date struct {
 	// Year of the date. Must be from 1 to 9999, or 0 to specify a date without
@@ -145,16 +110,3 @@ type Date struct {
 	// +kcc:proto:field=google.type.Date.day
 	Day *int32 `json:"day,omitempty"`
 }
-
-/* unreachable type ReportConfigObservedState
-// +kcc:observedstate:proto=google.cloud.storageinsights.v1.ReportConfig
-type ReportConfigObservedState struct {
-	// Output only. [Output only] Create time stamp
-	// +kcc:proto:field=google.cloud.storageinsights.v1.ReportConfig.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. [Output only] Update time stamp
-	// +kcc:proto:field=google.cloud.storageinsights.v1.ReportConfig.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-}
-*/

@@ -86,7 +86,8 @@ type Release_ReleaseRequirements struct {
 	UpgradeableFromReleases []string `json:"upgradeableFromReleases,omitempty"`
 }
 
-/* unreachable type Tenant
+/* found existing non-generated go type with proto tag "google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant", skipping
+
 // +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant
 type Tenant struct {
 	// Identifier. The resource name (full URI of the resource) following the
@@ -200,7 +201,8 @@ type ReleaseObservedState struct {
 }
 */
 
-/* unreachable type TenantObservedState
+/* found existing non-generated go type with proto tag "google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant", skipping
+
 // +kcc:observedstate:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant
 type TenantObservedState struct {
 	// Output only. The unique identifier of the resource. UID is unique in the
