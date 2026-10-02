@@ -24,6 +24,7 @@ import (
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"google.golang.org/api/option"
@@ -66,6 +67,10 @@ func (m *modelProcessorVersion) AdapterForObject(ctx context.Context, op *direct
 	obj := &krmv1beta1.DocumentAIProcessorVersion{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
+	}
+
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	id, err := krmv1beta1.NewProcessorVersionIdentity(ctx, reader, obj)
