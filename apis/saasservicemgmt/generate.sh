@@ -33,6 +33,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 
 # The bulk generation flags below were added with SaaSServiceMgmtTenant.
+# SaaSServiceMgmtRollout was added later with the same flags.
 # --emit-required-from-proto is left out: it would mark UnitVariable.variable
 # as required, which changes the SaasServiceMgmtRelease CRD.
 ${CONTROLLERBUILDER} generate-types \
@@ -41,6 +42,7 @@ ${CONTROLLERBUILDER} generate-types \
   --include-skipped-output \
   --resource SaasServiceMgmtRelease:Release \
   --resource SaaSServiceMgmtTenant:Tenant \
+  --resource SaaSServiceMgmtRollout:Rollout \
   --prepopulate-spec \
   --emit-plural-acronyms \
   --emit-message-maps \
