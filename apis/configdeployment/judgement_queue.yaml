@@ -1,0 +1,74 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other.
+
+entries:
+  - kind: ConfigDeployment
+    group: configdeployment.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ConfigDeployment
+    group: configdeployment.cnrm.cloud.google.com
+    field: .spec.serviceAccount
+    reason: possible-reference
+    detail: target=iam.googleapis.com/ServiceAccount
+    status: open
+  - kind: ConfigDeployment
+    group: configdeployment.cnrm.cloud.google.com
+    field: .spec.workerPool
+    reason: possible-reference
+    detail: target=cloudbuild.googleapis.com/WorkerPool
+    status: open
+  - kind: ConfigDeployment
+    group: configdeployment.cnrm.cloud.google.com
+    field: .spec.terraformBlueprint.externalValues.KEY.deploymentSource.deployment
+    reason: possible-reference-by-description
+    status: open
+  - kind: ConfigDeployment
+    group: configdeployment.cnrm.cloud.google.com
+    field: .spec.artifactsGCSBucket
+    reason: possible-reference-by-description
+    status: open
+  - kind: ConfigDeployment
+    group: configdeployment.cnrm.cloud.google.com
+    field: .spec.serviceAccount
+    reason: possible-reference-by-description
+    status: open
+  - kind: ConfigDeployment
+    group: configdeployment.cnrm.cloud.google.com
+    field: .spec.workerPool
+    reason: possible-reference-by-description
+    status: open
+  - kind: ConfigDeployment
+    group: configdeployment.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: open
+  - protoMessage: google.cloud.config.v1.ApplyResults
+    field: outputs
+    reason: message-map-derived
+    detail: derived as map[string]TerraformOutput from proto google.cloud.config.v1.TerraformOutput; verify Go type and mapping
+    status: open
+  - protoMessage: google.cloud.config.v1.TerraformBlueprint
+    field: externalValues
+    reason: message-map-derived
+    detail: derived as map[string]ExternalValueSource from proto google.cloud.config.v1.ExternalValueSource; verify Go type and mapping
+    status: open
+  - protoMessage: google.cloud.config.v1.TerraformBlueprint
+    field: inputValues
+    reason: message-map-derived
+    detail: derived as map[string]TerraformVariable from proto google.cloud.config.v1.TerraformVariable; verify Go type and mapping
+    status: open
