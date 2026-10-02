@@ -1,0 +1,51 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package judgement
+
+// Reasons for an entry that says a string field may need to be a reference.
+// The generator writes these, and TestMissingRefs uses IsReferenceReason to
+// decide which [refs] findings an open entry covers. Keeping both in one place
+// means the two cannot drift apart.
+const (
+	// ReasonPossibleReference: the proto field has a
+	// google.api.resource_reference annotation.
+	ReasonPossibleReference = "possible-reference"
+	// ReasonPossibleReferenceByDescription: refs.Classify, the rule
+	// TestMissingRefs applies, says the field is a reference.
+	ReasonPossibleReferenceByDescription = "possible-reference-by-description"
+	// ReasonPossibleReferenceByDescriptionLoose: a looser description rule
+	// matched. TestMissingRefs would not flag the field.
+	ReasonPossibleReferenceByDescriptionLoose = "possible-reference-by-description-loose"
+	// ReasonPossibleReferenceByName: the field name matches a known
+	// reference type.
+	ReasonPossibleReferenceByName = "possible-reference-by-name"
+	// ReasonPossibleReferenceBySibling: the field name matches a resource the
+	// same service declares.
+	ReasonPossibleReferenceBySibling = "possible-reference-by-sibling"
+)
+
+var referenceReasons = map[string]bool{
+	ReasonPossibleReference:                   true,
+	ReasonPossibleReferenceByDescription:      true,
+	ReasonPossibleReferenceByDescriptionLoose: true,
+	ReasonPossibleReferenceByName:             true,
+	ReasonPossibleReferenceBySibling:          true,
+}
+
+// IsReferenceReason reports whether reason says a field may need to be a
+// reference.
+func IsReferenceReason(reason string) bool {
+	return referenceReasons[reason]
+}
