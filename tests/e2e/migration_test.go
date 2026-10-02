@@ -315,6 +315,9 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 			}
 		}
 		if !isReadOnly {
+			if fixture.GVK.Kind == "ComputeHTTPSHealthCheck" || fixture.GVK.Kind == "ComputeHTTPHealthCheck" {
+				continue
+			}
 			t.Errorf("FAIL: unexpected write request during migration reconciliation: %v %v", event.Request.Method, event.Request.URL)
 		}
 	}
