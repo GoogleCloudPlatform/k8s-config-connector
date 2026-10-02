@@ -51,7 +51,9 @@ Before running the test cases against real or mock GCP, you **MUST** remove the 
 > If the environment does not have a pre-configured GCP project ID, or if running `hack/record-gcp` fails due to authentication/project ID errors, you **MUST STOP IMMEDIATELY** and ask the user to provide a valid GCP Project ID. Do not try to bypass this requirement.
 >
 > **WHENEVER A TEST CASE IS UPDATED, WE MUST RECORD REAL GCP LOGS AGAIN.**
-> If you make any modifications to a test case configuration, manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or the controller's runtime mapping configuration, you **MUST** run the test case against real GCP (`hack/record-gcp`) to regenerate the authentic `_http.log` baseline before comparing or committing any mock log changes. Do not attempt to manually edit the logs or bypass recording live traffic.
+> If you make any modifications to a test case configuration or manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or modify the controller's GCP request structures, you **MUST** run the test case against real GCP (`hack/record-gcp`) to regenerate the authentic `_http.log` baseline before comparing or committing any mock log changes. Do not attempt to manually edit the logs or bypass recording live traffic.
+>
+> **Do NOT re-run real GCP for log normalization or mock alignment**: Run-to-run variations in HTTP logs (such as LRO polling counts, dynamic timestamps, tokens, or cookies) should be normalized in normalizers (`tests/e2e/normalize.go`, `mockgcp/mock<service>/normalize.go`) rather than re-recording against real GCP. Mock alignment is performed exclusively using `hack/compare-mock`.
 
 > [!WARNING]
 > **Do not run `go test` directly**: When running or recording E2E tests, always prefer using `./dev/tasks/run-e2e` (or scripts like `hack/record-gcp` and `hack/compare-mock` that wrap it) instead of running `go test` directly in the shell or IDE. Running `go test` directly may bypass `KUBEBUILDER_ASSETS` configuration and fall back to an older global version of `kube-apiserver` (such as a legacy `/usr/local/kubebuilder/bin/` copy), leading to incorrect fields like `metadata.selfLink` being generated in the golden files.
@@ -106,13 +108,15 @@ For standard E2E fixture tests under `pkg/test/resourcefixture/testdata/basic/`,
       ```
 
 3.  **Verification Criteria for Real GCP Recording (MANDATORY)**:
-    Checking `git status` or top-level `PASS`/`FAIL` exit codes can be misleading (e.g. 0-diff is valid for unaffected fixtures, unmatched regex gives a false `PASS`, and a successful recording can mark the subtest as `FAIL` because it wrote a new golden log).
+    Checking `git status` or top-level `PASS`/`FAIL` exit codes can be misleading (e.g. 0-diff is valid for unaffected fixtures, unmatched regex gives a false `PASS`).
     Instead, verify that each discovered fixture completed its full lifecycle by checking stdout for:
     1. `=== RUN   TestAllInSeries/fixtures/<testname>` (confirms the subtest matched and started).
     2. Resource reached `Ready` (`status.condition.status: True`) for create (and update, if present).
     3. Deletion completed (`Done waiting for resource to delete`).
     4. `wrote updated golden output to .../_http.log` was logged (or `_http.log` was updated/written on disk).
     5. No fatal errors (`t.Fatalf` / timeout / permission errors) aborted the test before cleanup.
+
+    > **Note**: Once these 5 criteria are verified, recording is complete. Any remaining diffs or run-to-run variations in subsequent test passes should be resolved via normalizers (`tests/e2e/normalize.go`, etc.), NOT by re-running `hack/record-gcp`.
 
 4. The script executes the tests with `E2E_GCP_TARGET=real`, `WRITE_GOLDEN_OUTPUT=1`, and records the traffic to `_http.log`.
 5. **If the script fails** (e.g. due to permissions or an invalid/missing default project ID), you **MUST** not skip this step. Ask the user for a valid GCP project ID to test against, and then run:

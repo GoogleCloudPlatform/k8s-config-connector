@@ -43,7 +43,9 @@ This skill guides the implementation of the `Adapter` interface and the creation
 
     > [!WARNING]
     > **WHENEVER A TEST CASE IS UPDATED, WE MUST RECORD REAL GCP LOGS AGAIN.**
-    > If you make any modifications to a test case configuration, manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or the controller's runtime mapping configuration, you **MUST** run the test case against real GCP (`hack/record-gcp` or with `E2E_GCP_TARGET=real`) to regenerate the authentic `_http.log` baseline before comparing or committing any mock log changes. Do not attempt to manually edit the logs or bypass recording live traffic.
+    > If you make any modifications to a test case configuration or manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or modify the controller's GCP request structures, you **MUST** run the test case against real GCP (`hack/record-gcp` or with `E2E_GCP_TARGET=real`) to regenerate the authentic `_http.log` baseline before comparing or committing any mock log changes. Do not attempt to manually edit the logs or bypass recording live traffic.
+    >
+    > **Do NOT re-run real GCP for log normalization or mock alignment**: Run-to-run variations in HTTP logs (such as LRO polling counts, dynamic timestamps, tokens, or cookies) should be normalized in `tests/e2e/normalize.go` or MockGCP normalizers without re-recording against live GCP. Mock alignment is done exclusively with `hack/compare-mock`.
 
     ```bash
     # Run from the repository root

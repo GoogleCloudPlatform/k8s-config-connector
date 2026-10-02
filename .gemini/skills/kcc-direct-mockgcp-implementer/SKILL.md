@@ -38,7 +38,9 @@ Before running the test cases against real or mock GCP, you **MUST** ensure the 
 
   > [!WARNING]
   > **WHENEVER A TEST CASE IS UPDATED, WE MUST RECORD REAL GCP LOGS AGAIN.**
-  > If you make any modifications to a test case configuration, manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or the controller's runtime mapping configuration, you **MUST** run the test case against real GCP (`hack/record-gcp` or with `E2E_GCP_TARGET=real`) to regenerate the authentic `_http.log` baseline before comparing or committing any mock log changes. Do not attempt to manually edit the logs or bypass recording live traffic.
+  > If you make any modifications to a test case configuration or manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or modify the controller's GCP request structures, you **MUST** run the test case against real GCP (`hack/record-gcp` or with `E2E_GCP_TARGET=real`) to regenerate the authentic `_http.log` baseline before comparing or committing any mock log changes. Do not attempt to manually edit the logs or bypass recording live traffic.
+  >
+  > **Do NOT re-run real GCP during MockGCP alignment**: When updating MockGCP implementations or normalizers, do NOT re-run `hack/record-gcp`. Mock alignment is performed exclusively using `hack/compare-mock`.
 
 Use the `match-mockgcp-with-realgcp` skill at .gemini/skills/match-mockgcp-with-realgcp/SKILL.md) to align MockGCP behavior with real GCP golden logs for all fixtures under `pkg/test/resourcefixture/testdata/basic/<group>/<api_version>/<kind_lowercase>/`.
   

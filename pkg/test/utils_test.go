@@ -15,6 +15,7 @@
 package test
 
 import (
+	"os"
 	"testing"
 )
 
@@ -206,4 +207,56 @@ GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/netwo
 			}
 		})
 	}
+}
+
+func TestCompareGoldenFile_WriteGoldenOutput(t *testing.T) {
+	t.Run("WRITE_GOLDEN_OUTPUT=1 overwrites file and does not fail", func(t *testing.T) {
+		t.Setenv("WRITE_GOLDEN_OUTPUT", "1")
+		tmpDir := t.TempDir()
+		filePath := tmpDir + "/test.golden"
+
+		if err := os.WriteFile(filePath, []byte("old-content"), 0644); err != nil {
+			t.Fatalf("failed to write initial file: %v", err)
+		}
+
+		mockT := &testing.T{}
+		CompareGoldenFile(mockT, filePath, "new-content")
+
+		if mockT.Failed() {
+			t.Errorf("CompareGoldenFile failed when WRITE_GOLDEN_OUTPUT=1 was set, expected success")
+		}
+
+		data, err := os.ReadFile(filePath)
+		if err != nil {
+			t.Fatalf("failed to read updated file: %v", err)
+		}
+		if string(data) != "new-content" {
+			t.Errorf("file content = %q; want %q", string(data), "new-content")
+		}
+	})
+
+	t.Run("WRITE_GOLDEN_OUTPUT='' fails on diff and does not overwrite", func(t *testing.T) {
+		t.Setenv("WRITE_GOLDEN_OUTPUT", "")
+		tmpDir := t.TempDir()
+		filePath := tmpDir + "/test.golden"
+
+		if err := os.WriteFile(filePath, []byte("old-content"), 0644); err != nil {
+			t.Fatalf("failed to write initial file: %v", err)
+		}
+
+		mockT := &testing.T{}
+		CompareGoldenFile(mockT, filePath, "new-content")
+
+		if !mockT.Failed() {
+			t.Errorf("CompareGoldenFile succeeded on diff when WRITE_GOLDEN_OUTPUT was empty, expected failure")
+		}
+
+		data, err := os.ReadFile(filePath)
+		if err != nil {
+			t.Fatalf("failed to read file: %v", err)
+		}
+		if string(data) != "old-content" {
+			t.Errorf("file content = %q; want %q", string(data), "old-content")
+		}
+	})
 }

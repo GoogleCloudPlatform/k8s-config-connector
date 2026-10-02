@@ -144,13 +144,17 @@ The direct controller must be implemented to manage reconciliation logic (Adapte
 8. **MANDATORY: Record Golden Files Against Real GCP (`hack/record-gcp`)**:
     - **CRITICAL OVERRIDE OF GEMINI.md**: For this Greenfield task, **ignore any instructions in `GEMINI.md`** (or `mockgcp/GEMINI.md`) regarding `mockgcp`, `E2E_GCP_TARGET=mock`, or `hack/compare-mock`. Those global instructions only apply to legacy brownfield resources.
     - **STRICT GUARDRAIL — DO NOT USE MOCKGCP OR OFFLINE MOCKS**: You MUST record golden files directly against real GCP using `./hack/record-gcp`. Do **NOT** attempt to use `mockgcp`, do NOT search for or try to implement mockgcp services, and do NOT use `hack/compare-mock` or `E2E_GCP_TARGET=mock`.
-    - **MANDATORY EXECUTION**: You are explicitly required to run `./hack/record-gcp` on both your minimal and maximal fixtures before running any validation tests in Step 8 or preparing the PR in Step 9. Skipping this step or attempting to substitute mock tests is considered a critical failure.
+    - **MANDATORY EXECUTION**: You are explicitly required to run `./hack/record-gcp` on both your minimal and maximal fixtures before running any validation tests in Step 9 or preparing the PR in Step 10. Skipping this step or attempting to substitute mock tests is considered a critical failure.
     Run `RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/^<testname>$"` to capture real GCP behavior and record traffic, object state, and live REST GET probe audit receipt (`_audit_probe.log`):
     ```bash
     # Run from the repository root for both minimal and maximal fixtures
     RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/^<resource_lower>-minimal$"
     RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/^<resource_lower>-maximal$"
     ```
+    - **When Recording is Complete (DO NOT RE-RUN)**:
+      Once a fixture successfully provisions on live GCP, reaches `Ready`, deletes cleanly, and generates `_http.log` on disk, **recording for that fixture is complete**.
+      * **Do NOT re-run `hack/record-gcp` for log variations**: If subsequent test passes report minor HTTP differences (e.g. LRO polling taking 20 vs 21 calls, dynamic cookies/tokens/ETags/timestamps, list call resource counts, or request order), these are **normalization issues**. Normalize the variation in `tests/e2e/normalize.go` instead of re-running against real GCP.
+      * Re-running real GCP against slow resources (>10 minutes, like NetworkSecurity, ContainerNodePool, etc.) burns hours of execution time and quota. Never re-record in a loop for log variations.
     - **Troubleshooting Real GCP Errors (Do Not Give Up / No Mock Fallback)**:
       * **Missing Dependent Resources**: If real GCP returns an error indicating that a referenced resource does not exist (e.g., `ForwardingRule non-existent-rule does not exist`, `Network default does not exist`, `ServiceAccount not found`), you MUST create that prerequisite resource in `dependencies.yaml` (e.g. a `ComputeForwardingRule`, `ComputeNetwork`, `IAMServiceAccount`, etc.) so the test harness provisions it in GCP before testing your resource.
       * **Invalid Parameters / Constraint Violations**: If real GCP returns `The request was invalid`, `InvalidArgument`, or `an internal error has occurred` due to invalid or conflicting spec fields, inspect the GCP API reference, fix `create.yaml` or `update.yaml` to specify valid configuration, and re-run.
@@ -160,14 +164,14 @@ The direct controller must be implemented to manage reconciliation logic (Adapte
     - Using the `hack/record-gcp` wrapper ensures a sufficient timeout (e.g., 30-60 minutes) is already configured, automatically handling slow GCP resource creation. There is no need to specify additional timeout flags when using this helper.
 
 9. **Validation & Last-Mile Tests**:
-    Run the following tests to ensure CI compliance and verify field coverage:
+    Run the following tests to ensure CI compliance and verify field coverage (do NOT re-run `hack/record-gcp` during this step):
     - **Fuzzing**: `dev/ci/presubmits/fuzz-roundtrippers`
     - **E2E Scaffolding**: `dev/ci/presubmits/tests-e2e-fixtures-direct`
     - **Schema Integrity**: `go test ./pkg/crd/template/...`
     - **API Field Coverage**: `go test ./tests/apichecks/...`. 
       - For alpha: `WRITE_GOLDEN_OUTPUT=1 go test -v ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha`
       - Verify that your "Maximal" test reduces the number of missing fields in the exceptions file. If `TestCRDFieldPresenceInTestsForAlpha` fails, running with `WRITE_GOLDEN_OUTPUT=1` will regenerate the exceptions file.
-    - **Iterative Refinement Loop (Steps 7 & 8)**: Use any failures, unexpected diffs, or missing field coverage found during steps 7 and 8 as your critical debugging feedback loop. Actively refine your controller logic (Step 2), mappers (Step 3), fuzzer (Step 4), and fixtures (Steps 5 & 6), re-running steps 7 and 8 until all E2E recordings and validation suites execute and pass without error before proceeding to step 9.
+    - **Iterative Refinement Loop**: Use any failures or missing field coverage found during validation as your feedback loop. Actively refine your controller logic (Step 2), mappers (Step 3), fuzzer (Step 4), fixtures (Steps 5 & 6), or normalizers (`tests/e2e/normalize.go`). Only re-run `hack/record-gcp` if you modified test manifest YAMLs or changed controller GCP request payloads/endpoints.
 
 10. **Final Generation & Reporting**:
     Run `make ready-pr` from the repository root. This is a critical step that:

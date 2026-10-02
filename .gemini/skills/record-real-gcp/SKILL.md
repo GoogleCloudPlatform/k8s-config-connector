@@ -13,7 +13,15 @@ This skill provides a structured workflow for running end-to-end tests against r
 *   **Run find-test-targets Before Committing**: Always run `go run ./hack/find-test-targets` before committing code/manifest updates (or before pushing to the PR branch) to ensure all working tree changes and local modifications are analyzed for affected test fixtures.
 *   **Provide Timestamps in PDT**: When starting and finishing running `hack/record-gcp`, capture and provide the exact timestamps in PDT in your summary comment so reviewers can cross-verify against GCP server logs.
 *   **Record All Affected Test Fixtures**: Never record only a subset of affected fixtures. Ensure all test folder names identified for the affected Kinds are executed and recorded.
-*   **Handling record-gcp Failures**: If `record-gcp` fails, the bot should attempt to debug and fix the test case configuration (e.g., resolving IP address range conflicts, API/service enablement, or configuration schema issues). If it still fails after 3 distinct retry attempts, the bot must halt, escalate the failure to the human reviewer, and clearly explain the blocker/error in a comment.
+*   **When Recording is Done (DO NOT RE-RUN for Log Variations)**:
+    Once a test fixture successfully creates, reconciles to `Ready`, deletes on live GCP, and writes `_http.log` to disk, **recording for that fixture is complete**.
+    - **NEVER re-run `hack/record-gcp` for run-to-run HTTP variations or golden log diffs**: Differences like LRO polling counts (e.g., 20 vs 21 calls), list query counts, dynamic cookies/tokens/ETags/URIs, or timestamps are **normalization issues**. Normalize the variation in `tests/e2e/normalize.go`, `tests/e2e/normalize_legacy.go`, or per-service `normalize.go` instead of re-recording against real GCP.
+    - **NEVER re-run `hack/record-gcp` during MockGCP alignment or unit/presubmit testing**: Mock alignment is performed exclusively using `hack/compare-mock`.
+    - **ONLY re-run `hack/record-gcp` if**:
+      * You explicitly modified test manifest YAMLs (`create.yaml`, `update.yaml`, `dependencies.yaml`).
+      * You modified the controller's GCP API request payloads or endpoints to send different requests to live GCP.
+*   **Cost and Token Protection for Slow Resources**: Resources that take >10 minutes to provision/delete (such as `NetworkSecurity`, `ContainerCluster`, `ContainerNodePool`, `SQLInstance`, `ComposerEnvironment`) must NEVER be repeatedly re-recorded. Re-running slow tests burns significant agent time and quota.
+*   **Handling record-gcp Failures**: If `record-gcp` fails due to live GCP provisioning errors (e.g., resolving IP address range conflicts, missing dependencies, API/service enablement, or configuration schema issues), debug and fix the configuration. If it still fails after 3 distinct retry attempts, the bot must halt, escalate the failure to the human reviewer, and clearly explain the blocker/error in a comment.
 
 ---
 
@@ -112,3 +120,5 @@ Do NOT rely solely on top-level exit codes or `git status`. Verify that each tes
 3. Deletion completed (`Done waiting for resource to delete`).
 4. `wrote updated golden output to .../_http.log` was logged (and file exists on disk).
 5. No fatal panics, timeouts, or permission aborts.
+
+> **Important**: Once all 5 criteria above are satisfied, the recording against real GCP is **successful and complete**. Any minor discrepancies or run-to-run variations in subsequent test passes are normalization concerns that must be addressed in test normalizers (`tests/e2e/normalize.go`, etc.), NOT by re-running `hack/record-gcp`.

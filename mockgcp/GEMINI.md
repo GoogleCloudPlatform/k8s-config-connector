@@ -79,6 +79,9 @@ Mock services often need to normalize responses to ensure stable golden logs (e.
 **Purpose of Normalization**
 Normalization is STRICTLY for removing randomness and non-reproducible values (like timestamps, UUIDs, generated IP addresses, etc.) to ensure tests are stable. It MUST NOT be used to paper over behavioral differences between mockgcp and real GCP. For example, if a real GCP API returns a project number in a specific field but the mock returns a project ID, you should fix the mock implementation to correctly return the project number rather than writing a normalizer to hide the discrepancy. Our goal is to make mockgcp accurately reflect real GCP behavior so controllers are forced to handle real-world API responses properly.
 
+**Handling Run-to-Run Variations**
+Variations between test runs (such as LRO polling request counts, dynamic server cookies/tokens, list query counts, or timestamps) are normalization concerns. When encountering such differences, update the service's normalizers in `normalize.go` (or `tests/e2e/normalize.go`) to mask the volatile values. **NEVER re-run `hack/record-gcp`** to try to resolve run-to-run HTTP variations or mock alignment diffs.
+
 **Critical Rule: Previsit Scoping**
 
 The `Previsit` method is **globally executed** for every event across all registered services. To prevent one service's normalization rules from affecting another service's tests, you MUST explicitly scope the `Previsit` logic to the relevant service URL.
