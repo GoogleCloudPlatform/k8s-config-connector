@@ -111,7 +111,7 @@ func (o *CreateOperation) RecordUpdatingEvent() {
 // This was the previous behaviour for resources where the resource ID is server-generated.
 // We now consider status.externalRef the canonical source of truth for resource identity, but we keep this
 // function for backwards compatibility for server-generated-id resources that were previously managed by Terraform/DCL.
-// More info in docs/ai/server-generated-id.md
+// More info in .gemini/skills/kcc-direct-service-generated-id/SKILL.md
 func (o *CreateOperation) SetSpecResourceID(ctx context.Context, resourceID string) error {
 	log := klog.FromContext(ctx)
 
