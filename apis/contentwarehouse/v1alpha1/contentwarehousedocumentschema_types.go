@@ -118,3 +118,17 @@ type ContentWarehouseDocumentSchemaList struct {
 func init() {
 	SchemeBuilder.Register(&ContentWarehouseDocumentSchema{}, &ContentWarehouseDocumentSchemaList{})
 }
+
+// PropertyTypeOptions is written by hand to give the list items a type.
+// PropertyDefinition contains PropertyTypeOptions, so the type is recursive.
+// Without these markers controller-gen leaves the items schema empty, and the
+// API server rejects the CRD.
+// +kcc:proto=google.cloud.contentwarehouse.v1.PropertyTypeOptions
+type PropertyTypeOptions struct {
+	// Required. List of property definitions.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyTypeOptions.property_definitions
+	// +required
+	// +kubebuilder:validation:items:XPreserveUnknownFields
+	// +kubebuilder:validation:items:Type=object
+	PropertyDefinitions []PropertyDefinition `json:"propertyDefinitions,omitempty"`
+}
