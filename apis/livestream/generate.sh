@@ -36,6 +36,7 @@ ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.video.livestream.v1 \
   --api-version livestream.cnrm.cloud.google.com/v1alpha1 \
   --resource LiveStreamAsset:Asset \
+  --resource LiveStreamChannel:Channel \
   --resource LiveStreamInput:Input
 
 ${CONTROLLERBUILDER} generate-mapper --service google.cloud.video.livestream.v1 --api-version livestream.cnrm.cloud.google.com/v1alpha1

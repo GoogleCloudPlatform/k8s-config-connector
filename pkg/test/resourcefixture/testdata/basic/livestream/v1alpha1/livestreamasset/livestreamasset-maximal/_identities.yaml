@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //livestream.googleapis.com/projects/${projectId}/locations/us-central1/assets/livestreamasset-maximal-${uniqueId}
   group: livestream.cnrm.cloud.google.com
   kind: LiveStreamAsset
   name: livestreamasset-maximal-${uniqueId}

@@ -35,6 +35,7 @@
 [not_representable] crd=healthcarefhirstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.streamConfigs[].bigqueryDestination.datasetUri" reason=bq-scheme-not-a-gcp-resource-name
 [not_representable] crd=livestreamassets.livestream.cnrm.cloud.google.com version=v1alpha1: field ".spec.image.uri" reason=gcs-object-path-string-for-now-decomposable-as-bucketref-plus-path
 [not_representable] crd=livestreamassets.livestream.cnrm.cloud.google.com version=v1alpha1: field ".spec.video.uri" reason=gcs-object-path-string-for-now-decomposable-as-bucketref-plus-path
+[not_representable] crd=livestreamchannels.livestream.cnrm.cloud.google.com version=v1alpha1: field ".spec.output.uri" reason=gcs-object-path-string-for-now-decomposable-as-bucketref-plus-path
 [not_representable] crd=redisclusters.redis.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcsSource.uris" reason=gcs-object-path-string-for-now-decomposable-as-bucketref-plus-path
 [not_representable] crd=redisclusters.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.gcsSource.uris" reason=gcs-object-path-string-for-now-decomposable-as-bucketref-plus-path
 [not_representable] crd=transcoderjobs.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.inputs[].uri" reason=gcs-object-path-string-for-now-decomposable-as-bucketref-plus-path
