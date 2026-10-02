@@ -1,0 +1,14 @@
+apiVersion: financialservices.cnrm.cloud.google.com/v1alpha1
+kind: FinancialServicesInstance
+metadata:
+  name: financialservicesinstance-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  resourceID: financialservicesinstance-${uniqueId}
+  kmsKeyRef:
+    name: kmscryptokey-${uniqueId}
+  labels:
+    env: test
+    managed-by: cnrm

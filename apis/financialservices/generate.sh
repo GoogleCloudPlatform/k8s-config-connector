@@ -36,6 +36,10 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version financialservices.cnrm.cloud.google.com/v1alpha1 \
   --resource FinancialServicesInstance:Instance
 
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.financialservices.v1 \
+  --api-version financialservices.cnrm.cloud.google.com/v1alpha1
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
