@@ -1,0 +1,130 @@
+{
+  "_comment": "Resources that successfully passed the check (e.g., resources that correctly lack an update.yaml when no update method was found) are not included in this report to keep it concise.",
+  "discrepancies": [
+    {
+      "resource_name": "ApigeeEnvironment",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "ApigeeOrganization",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "BigQueryDataset",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "BigtableInstance",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "BillingBudgetsBudget",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "CloudBuildTrigger",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "CloudIDSEndpoint",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "ContainerAttachedCluster",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "IAMAccessBoundaryPolicy",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "IAMCustomRole",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "IAMWorkforcePool",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "IAMWorkforcePoolProvider",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "IdentityPlatformConfig",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "IdentityPlatformOAuthIDPConfig",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "IdentityPlatformTenant",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "IdentityPlatformTenantOAuthIDPConfig",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "ResourceManagerPolicy",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "SQLDatabase",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "SQLUser",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "SecretManagerSecretVersion",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "ServiceNetworkingConnection",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "SourceRepoRepository",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "StorageBucketAccessControl",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "StorageDefaultObjectAccessControl",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    },
+    {
+      "resource_name": "StorageTransferJob",
+      "check_failed": true,
+      "reason": "no update/patch/setter found but update is supported in fixture test cases; root-cause and add special handling for the resources in the GCP mutability generator"
+    }
+  ]
+}

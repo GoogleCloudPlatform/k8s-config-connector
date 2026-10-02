@@ -1,0 +1,209 @@
+[
+  {
+    "resource_name": "AlloyDBBackup",
+    "should_be_mutable": [],
+    "potentially_should_be_mutable": [
+      "backupId",
+      "clusterNameRef",
+      "description",
+      "encryptionConfig.kmsKeyName"
+    ]
+  },
+  {
+    "resource_name": "AlloyDBCluster",
+    "should_be_mutable": [],
+    "potentially_should_be_mutable": [
+      "clusterId",
+      "encryptionConfig.kmsKeyNameRef",
+      "restoreBackupSource",
+      "restoreBackupSource.backupNameRef",
+      "restoreContinuousBackupSource",
+      "restoreContinuousBackupSource.clusterRef",
+      "restoreContinuousBackupSource.pointInTime"
+    ]
+  },
+  {
+    "resource_name": "BigtableTable",
+    "should_be_mutable": [],
+    "potentially_should_be_mutable": [
+      "instanceRef",
+      "splitKeys"
+    ]
+  },
+  {
+    "resource_name": "BinaryAuthorizationPolicy",
+    "should_be_mutable": [],
+    "potentially_should_be_mutable": [
+      "selfLink",
+      "updateTime"
+    ]
+  },
+  {
+    "resource_name": "CertificateManagerCertificate",
+    "should_be_mutable": [],
+    "potentially_should_be_mutable": [
+      "managed",
+      "managed.dnsAuthorizationsRefs",
+      "managed.domains",
+      "managed.issuanceConfigRef",
+      "selfManaged",
+      "selfManaged.certificatePem",
+      "selfManaged.pemCertificate",
+      "selfManaged.pemPrivateKey",
+      "selfManaged.privateKeyPem"
+    ]
+  },
+  {
+    "resource_name": "ComputeInstance",
+    "should_be_mutable": [
+      "scheduling.localSsdRecoveryTimeout",
+      "scheduling.localSsdRecoveryTimeout.nanos",
+      "scheduling.localSsdRecoveryTimeout.seconds",
+      "scheduling.maxRunDuration",
+      "scheduling.maxRunDuration.nanos",
+      "scheduling.maxRunDuration.seconds",
+      "scheduling.preemptible",
+      "scheduling.provisioningModel"
+    ],
+    "potentially_should_be_mutable": []
+  },
+  {
+    "resource_name": "ComputeInterconnectAttachment",
+    "should_be_mutable": [],
+    "potentially_should_be_mutable": [
+      "candidateSubnets",
+      "edgeAvailabilityDomain",
+      "encryption",
+      "interconnect",
+      "ipsecInternalAddressesRef",
+      "routerRef",
+      "type",
+      "vlanTag8021q"
+    ]
+  },
+  {
+    "resource_name": "ComputeNetwork",
+    "should_be_mutable": [],
+    "potentially_should_be_mutable": [
+      "autoCreateSubnetworks",
+      "description",
+      "internalIpv6Range",
+      "mtu"
+    ]
+  },
+  {
+    "resource_name": "ComputeSubnetwork",
+    "should_be_mutable": [],
+    "potentially_should_be_mutable": [
+      "description",
+      "networkRef",
+      "purpose"
+    ]
+  },
+  {
+    "resource_name": "EdgeContainerCluster",
+    "should_be_mutable": [],
+    "potentially_should_be_mutable": [
+      "controlPlane.local",
+      "controlPlane.local.nodeLocation",
+      "controlPlane.remote",
+      "controlPlane.remote.nodeLocation",
+      "controlPlaneEncryption.kmsKeyRef",
+      "fleet",
+      "fleet.projectRef",
+      "networking.clusterIpv4CidrBlocks",
+      "networking.clusterIpv6CidrBlocks",
+      "networking.servicesIpv4CidrBlocks",
+      "networking.servicesIpv6CidrBlocks"
+    ]
+  },
+  {
+    "resource_name": "FirestoreIndex",
+    "should_be_mutable": [],
+    "potentially_should_be_mutable": [
+      "collection",
+      "database",
+      "fields",
+      "fields.arrayConfig",
+      "fields.fieldPath",
+      "fields.order",
+      "queryScope"
+    ]
+  },
+  {
+    "resource_name": "KMSCryptoKey",
+    "should_be_mutable": [],
+    "potentially_should_be_mutable": [
+      "keyRingRef",
+      "skipInitialVersionCreation",
+      "versionTemplate.protectionLevel"
+    ]
+  },
+  {
+    "resource_name": "ResourceManagerPolicy",
+    "should_be_mutable": [],
+    "potentially_should_be_mutable": [
+      "constraint"
+    ]
+  },
+  {
+    "resource_name": "SecretManagerSecret",
+    "should_be_mutable": [],
+    "potentially_should_be_mutable": [
+      "replication.userManaged",
+      "replication.userManaged.replicas",
+      "replication.userManaged.replicas.location",
+      "rotation.rotationPeriod",
+      "secretId",
+      "ttl"
+    ]
+  },
+  {
+    "resource_name": "SecretManagerSecretVersion",
+    "should_be_mutable": [],
+    "potentially_should_be_mutable": [
+      "isSecretDataBase64",
+      "secretData",
+      "secretRef"
+    ]
+  },
+  {
+    "resource_name": "ServiceDirectoryEndpoint",
+    "should_be_mutable": [],
+    "potentially_should_be_mutable": [
+      "endpointId",
+      "serviceRef"
+    ]
+  },
+  {
+    "resource_name": "ServiceDirectoryNamespace",
+    "should_be_mutable": [],
+    "potentially_should_be_mutable": [
+      "namespaceId"
+    ]
+  },
+  {
+    "resource_name": "ServiceDirectoryService",
+    "should_be_mutable": [],
+    "potentially_should_be_mutable": [
+      "serviceId"
+    ]
+  },
+  {
+    "resource_name": "VertexAIEndpoint",
+    "should_be_mutable": [],
+    "potentially_should_be_mutable": [
+      "encryptionSpec",
+      "encryptionSpec.kmsKeyNameRef",
+      "networkRef"
+    ]
+  },
+  {
+    "resource_name": "VertexAIIndex",
+    "should_be_mutable": [],
+    "potentially_should_be_mutable": [
+      "metadata.config",
+      "metadata.config.shardSize"
+    ]
+  }
+]
