@@ -1,0 +1,14 @@
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogSink
+metadata:
+  name: foldersink-${uniqueId}
+spec:
+  destination:
+    bigQueryDatasetRef:
+      external: projects/${projectId}/datasets/foldersink${uniqueId}
+  filter: resource.type="bigquery_dataset" AND logName:"cloudaudit.googleapis.com"
+  folderRef:
+    external: ${folderID}
+  includeChildren: true
+  resourceID: foldersink-${uniqueId}
+  uniqueWriterIdentity: true
