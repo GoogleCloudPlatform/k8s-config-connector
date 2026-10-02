@@ -16,6 +16,9 @@ generate-grpc-for-google-protos: tools
 		--go-grpc_opt paths=source_relative \
 		./.build/googleapis/google/cloud/tpu/v2/*.proto
 
+	# Apply PerformanceCaptureConfig patch to sql protos
+	printf 'optional PerformanceCaptureConfig performance_capture_config = 101; message PerformanceCaptureConfig { optional bool enabled = 1; optional int32 probe_threshold = 2; optional int32 probing_interval_seconds = 3; optional int32 running_threads_threshold = 4; optional int32 seconds_behind_source_threshold = 5; optional int32 transaction_duration_threshold = 6; }' | go run ../../mockgcp/tools/patch-proto/main.go --file .build/googleapis/google/cloud/sql/v1beta4/cloud_sql_resources.proto --message Settings --mode append
+
 	PATH=.build/bin/:${PATH} .build/bin/protoc/bin/protoc \
 		-I ./.build/googleapis \
 		--experimental_allow_proto3_optional \
