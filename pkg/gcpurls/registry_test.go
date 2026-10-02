@@ -189,6 +189,8 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//dataproc.googleapis.com/v1/projects/{}/regions/{}/clusters/{}":        true,
 
 		// Dialogflow
+		"//dialogflow.googleapis.com/projects/{}/conversationProfiles/{}":              true,
+		"//dialogflow.googleapis.com/projects/{}/locations/{}/conversationProfiles/{}": true,
 		"//dialogflow.googleapis.com/projects/{}/locations/{}/conversationDatasets/{}": true,
 		"//dialogflow.googleapis.com/projects/{}/locations/{}/generators/{}":           true,
 		"//dialogflow.googleapis.com/projects/{}/knowledgeBases/{}":                    true,
