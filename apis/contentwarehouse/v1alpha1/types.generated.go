@@ -489,6 +489,8 @@ type PropertyDefinition_SchemaSource struct {
 	ProcessorType *string `json:"processorType,omitempty"`
 }
 
+/* found existing non-generated go type "PropertyTypeOptions", skipping
+
 // +kcc:proto=google.cloud.contentwarehouse.v1.PropertyTypeOptions
 type PropertyTypeOptions struct {
 	// Required. List of property definitions.
@@ -496,6 +498,7 @@ type PropertyTypeOptions struct {
 	// +required
 	PropertyDefinitions []PropertyDefinition `json:"propertyDefinitions,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "PublishAction", skipping
 
