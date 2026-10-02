@@ -1456,6 +1456,8 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "mapmanagement.cnrm.cloud.google.com", Kind: "MapManagementMapConfig"}:
 			case schema.GroupKind{Group: "mapmanagement.cnrm.cloud.google.com", Kind: "MapManagementStyleConfig"}:
 
+			case schema.GroupKind{Group: "livestream.cnrm.cloud.google.com", Kind: "LiveStreamInput"}:
+
 			default:
 				t.Skipf("gk %v not suppported by mock gcp %v; skipping", gvk.GroupKind(), testKey)
 			}

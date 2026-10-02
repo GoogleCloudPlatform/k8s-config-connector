@@ -22,10 +22,15 @@ import (
 	"context"
 	"net/http"
 
+	"google.golang.org/grpc"
+
+	pb "cloud.google.com/go/video/livestream/apiv1/livestreampb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
+	gw "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/video/livestream/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
-	"google.golang.org/grpc"
 )
 
 func init() {
@@ -36,14 +41,18 @@ func init() {
 type MockService struct {
 	*common.MockEnvironment
 	storage storage.Storage
+
+	operations *operations.Operations
 }
 
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
-	return &MockService{
+	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
+		operations:      operations.NewOperationsService(storage),
 	}
+	return s
 }
 
 func (s *MockService) ExpectedHosts() []string {
@@ -51,8 +60,23 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
+	pb.RegisterLivestreamServiceServer(grpcServer, &LivestreamServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	return nil, nil
+	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
+		gw.RegisterLivestreamServiceHandler,
+		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
+	if err != nil {
+		return nil, err
+	}
+
+	// Returns slightly non-standard errors
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 {
+			error.Errors = nil
+		}
+	}
+
+	return mux, nil
 }
