@@ -1585,6 +1585,16 @@ func (h *Harness) NoExtraGoldenFiles(glob string) {
 	goldenFilesSet := sets.New(h.goldenFiles...)
 
 	for _, gotFile := range gotFiles {
+		if h.GCPTarget == GCPTargetModeMock {
+			if !strings.Contains(filepath.Base(gotFile), "_mock") {
+				continue
+			}
+		} else {
+			if strings.Contains(filepath.Base(gotFile), "_mock") {
+				continue
+			}
+		}
+
 		abs, err := filepath.Abs(gotFile)
 		if err != nil {
 			h.Fatalf("error getting absolute path for %q: %v", gotFile, err)
