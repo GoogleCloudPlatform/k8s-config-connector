@@ -16,7 +16,9 @@ package testcontroller
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"os"
 	"reflect"
 	"strconv"
 	"strings"
@@ -187,7 +189,23 @@ func ReplaceTestVars(t *testing.T, b []byte, uniqueID string, project testgcp.GC
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestKCCAlloyDBProject.Key), testgcp.TestKCCAlloyDBProject.Get(), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestKCCAlloyDBProjectNumber.Key), testgcp.TestKCCAlloyDBProjectNumber.Get(), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestSharedReservationsProject.Key), testgcp.TestSharedReservationsProject.Get(), -1)
+	s = strings.Replace(s, "${serviceAccountEmail}", getServiceAccountEmail(), -1)
 	return []byte(s)
+}
+
+func getServiceAccountEmail() string {
+	if path := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"); path != "" {
+		if data, err := os.ReadFile(path); err == nil {
+			var cred struct {
+				ClientEmail string `json:"client_email"`
+			}
+			if err := json.Unmarshal(data, &cred); err == nil && cred.ClientEmail != "" {
+				return cred.ClientEmail
+			}
+		}
+	}
+	// Fallback to a default dummy value if not set, so tests don't crash
+	return "kcc-tester@test-project.iam.gserviceaccount.com"
 }
 
 // Collects an expected number of events from the API server. The timeout is applied on a per-event basis, so it is possible this function

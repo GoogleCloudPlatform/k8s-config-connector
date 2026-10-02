@@ -1,0 +1,164 @@
+83a84,106
+> GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}?alt=json
+> Content-Type: application/json
+> 
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "error": {
+>     "code": 404,
+>     "message": "KeyRing projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId} not found.",
+>     "status": "NOT_FOUND"
+>   }
+> }
+> 
+> ---
+> 
+136c159
+< GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}?alt=json
+---
+> POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings?alt=json&keyRingId=kmskeyring-${uniqueId}
+139c162
+< 404 Not Found
+---
+> 200 OK
+150,154c173,174
+<   "error": {
+<     "code": 404,
+<     "message": "KeyRing projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId} not found.",
+<     "status": "NOT_FOUND"
+<   }
+---
+>   "createTime": "2024-04-01T12:34:56.123456Z",
+>   "name": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}"
+159c179,180
+< GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+---
+> GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}?alt=json
+> Content-Type: application/json
+172,177c193,194
+<   "email": "iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<   "etag": "abcdef0123A=",
+<   "name": "projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<   "oauth2ClientId": "888888888888888888888",
+<   "projectId": "${projectId}",
+<   "uniqueId": "111111111111111111111"
+---
+>   "createTime": "2024-04-01T12:34:56.123456Z",
+>   "name": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}"
+182,183c199
+< POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings?alt=json&keyRingId=kmskeyring-${uniqueId}
+< Content-Type: application/json
+---
+> GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+196,197c212,217
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+<   "name": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}"
+---
+>   "email": "iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+>   "etag": "abcdef0123A=",
+>   "name": "projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+>   "oauth2ClientId": "888888888888888888888",
+>   "projectId": "${projectId}",
+>   "uniqueId": "111111111111111111111"
+942a963,1001
+> GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "email": "iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+>   "etag": "abcdef0123A=",
+>   "name": "projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+>   "oauth2ClientId": "888888888888888888888",
+>   "projectId": "${projectId}",
+>   "uniqueId": "111111111111111111111"
+> }
+> 
+> ---
+> 
+> DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {}
+> 
+> ---
+> 
+997c1056,1057
+< GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+---
+> GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}?alt=json
+> Content-Type: application/json
+1010,1015c1070,1071
+<   "email": "iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<   "etag": "abcdef0123A=",
+<   "name": "projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<   "oauth2ClientId": "888888888888888888888",
+<   "projectId": "${projectId}",
+<   "uniqueId": "111111111111111111111"
+---
+>   "createTime": "2024-04-01T12:34:56.123456Z",
+>   "name": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}"
+1020,1035d1075
+< DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {}
+< 
+< ---
+< 
+1126,1145d1165
+< }
+< 
+< ---
+< 
+< GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+<   "name": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}"

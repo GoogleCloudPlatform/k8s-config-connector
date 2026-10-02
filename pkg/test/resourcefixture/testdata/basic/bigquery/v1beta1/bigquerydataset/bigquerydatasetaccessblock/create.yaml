@@ -26,5 +26,7 @@ spec:
   access:
     - role: OWNER
       specialGroup: projectOwners
+    - role: OWNER
+      userByEmail: ${serviceAccountEmail}
     - role: READER
       domain: google.com
