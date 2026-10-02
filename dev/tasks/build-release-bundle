@@ -192,7 +192,6 @@ BLOCKED_KINDS=(
     "NetworkManagementVpcFlowLogsConfig"
     "NetworkSecurityAddressGroup"
     "NetworkSecurityBackendAuthenticationConfig"
-    "NetworkSecurityDNSThreatDetector"
     "NetworkSecurityGatewaySecurityPolicy"
     "NetworkSecurityInterceptDeployment"
     "NetworkSecurityInterceptDeploymentGroup"
