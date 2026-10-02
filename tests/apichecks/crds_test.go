@@ -61,11 +61,12 @@ func TestMissingRefs(t *testing.T) {
 		t.Fatalf("error loading crds: %v", err)
 	}
 
-	// Resources with open judgement queue entries. Their [refs] findings are
-	// suppressed: a mechanically generated resource has ref-shaped string fields
-	// by construction, and missingrefs.txt is a ratchet, so without this the first
-	// bulk-generation PR could not merge. Once every entry for a resource is
-	// resolved, the ratchet applies as normal.
+	// A finding is skipped while an open judgement queue entry with a
+	// reference reason names the same kind, group and field. The generator has
+	// already flagged the field and a person still has to decide, and
+	// missingrefs.txt is a ratchet, so without this the first bulk-generation
+	// PR could not merge. Every other field of the resource is checked as
+	// usual, and so is this one once its entry is resolved.
 	queued, err := loadJudgementQueue(judgementQueueGlob)
 	if err != nil {
 		t.Fatalf("error loading judgement queues: %v", err)
@@ -73,12 +74,8 @@ func TestMissingRefs(t *testing.T) {
 
 	var errs []string
 	var notRepresentable []string
-	suppressedCRDs := sets.NewString()
+	suppressed := sets.NewString()
 	for _, crd := range crds {
-		if queued.Has(crd.Spec.Names.Kind, crd.Spec.Group) {
-			suppressedCRDs.Insert(crd.Name)
-			continue
-		}
 		for _, version := range crd.Spec.Versions {
 			visitCRDVersion(version, func(field *CRDField) {
 				fieldPath := field.FieldPath
@@ -108,7 +105,12 @@ func TestMissingRefs(t *testing.T) {
 						fmt.Sprintf("[not_representable] crd=%s version=%v: field %q reason=%s",
 							crd.Name, version.Name, fieldPath, reason))
 				case refs.IsReference:
-					errs = append(errs, fmt.Sprintf("[refs] crd=%s version=%v: field %q should be a reference", crd.Name, version.Name, fieldPath))
+					finding := fmt.Sprintf("[refs] crd=%s version=%v: field %q should be a reference", crd.Name, version.Name, fieldPath)
+					if queued.SuppressesRef(crd.Spec.Names.Kind, crd.Spec.Group, fieldPath) {
+						suppressed.Insert(finding)
+						return
+					}
+					errs = append(errs, finding)
 				}
 			})
 		}
@@ -135,10 +137,10 @@ func TestMissingRefs(t *testing.T) {
 		remaining = append(remaining, e)
 	}
 
-	// Carry forward existing ratchet baseline entries for suppressed CRDs so that
-	// queue suppression does not falsely appear as a fix or prune baseline entries.
-	if suppressedCRDs.Len() > 0 {
-		carried, err := carryForwardSuppressed("testdata/exceptions/missingrefs.txt", suppressedCRDs)
+	// Keep baseline entries for suppressed findings, so that suppressing a
+	// finding does not look like a fix and prune it from the ratchet.
+	if suppressed.Len() > 0 {
+		carried, err := carryForwardSuppressed("testdata/exceptions/missingrefs.txt", suppressed)
 		if err != nil {
 			t.Fatalf("error carrying forward suppressed entries: %v", err)
 		}
@@ -1144,6 +1146,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com":        true, // spec.scheduleOptionsV2.manualSchedule is an empty object
 		"bigquerymigrationmigrationworkflows.bigquerymigration.cnrm.cloud.google.com":   true, // spec.tasks[*].translationTaskDetails.teradataOptions is an empty object
 		"bigquerytables.bigquery.cnrm.cloud.google.com":                                 true, // status.observedState is an empty object
+		"chroniclewatchlists.chronicle.cnrm.cloud.google.com":                           true, // spec.entityPopulationMechanism.manual is an empty object
 		"clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com":                          true, // spec.staticIPConnectivity and status.observedState are empty objects
 		"configdeliveryfleetpackages.configdelivery.cnrm.cloud.google.com":              true, // spec.rolloutStrategy.allAtOnce is an empty object
 		"datacatalogentries.datacatalog.cnrm.cloud.google.com":                          true, // spec.featureOnlineStoreSpec and status.observedState.databaseTableSpec.dataplexTable.dataplexSpec.dataFormat.csv are empty objects
