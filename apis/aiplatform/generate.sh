@@ -32,6 +32,11 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 
+# The bulk generation flags below were added with AIPlatformCachedContent.
+# Three flags are left out because they change the types of existing kinds:
+# --emit-required-from-proto marks fields in existing structs as required,
+# --emit-plural-acronyms renames GCSSource.Uris to URIs, and
+# --emit-sibling-refs adds reference guesses to two existing status structs.
 ${CONTROLLERBUILDER} generate-types \
     --service google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1 \
     --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
@@ -44,7 +49,15 @@ ${CONTROLLERBUILDER} generate-types \
     --resource VertexAIStudy:Study \
     --resource VertexAITrainingPipeline:TrainingPipeline \
     --resource VertexAISchedule:Schedule \
-    --resource AIPlatformReasoningEngine:ReasoningEngine
+    --resource AIPlatformReasoningEngine:ReasoningEngine \
+    --resource AIPlatformCachedContent:CachedContent \
+    --prepopulate-spec \
+    --emit-message-maps \
+    --place-server-set-fields \
+    --detect-output-only-in-comments \
+    --emit-parent-refs \
+    --emit-reference-hints \
+    --emit-source-links
 
 # Handled recursive self-referential fields by defining ListValue, Value, and ExplanationParameters manually in recursive_types.go
 
