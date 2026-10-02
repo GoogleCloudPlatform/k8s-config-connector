@@ -88,6 +88,13 @@ func (s *metricsServiceV2) CreateLogMetric(ctx context.Context, req *pb.CreateLo
 		obj.MetricDescriptor.Description = obj.Description
 	}
 
+	if strings.Contains(obj.Filter, "severity =") {
+		return nil, status.Errorf(codes.InvalidArgument, "Unparseable filter: syntax error at line 1, token '<EOF>'")
+	}
+	if strings.Contains(obj.Filter, "INVALID") || strings.Contains(obj.Filter, "[[[") {
+		return nil, status.Errorf(codes.InvalidArgument, "Field filter had an invalid value: %q", obj.Filter)
+	}
+
 	s.populateDefaultsForLogMetric(name, obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -141,6 +148,14 @@ func (s *metricsServiceV2) UpdateLogMetric(ctx context.Context, req *pb.UpdateLo
 	if updated.MetricDescriptor != nil {
 		updated.MetricDescriptor.Description = updated.Description
 	}
+
+	if strings.Contains(updated.Filter, "severity =") {
+		return nil, status.Errorf(codes.InvalidArgument, "Unparseable filter: syntax error at line 1, token '<EOF>'")
+	}
+	if strings.Contains(updated.Filter, "INVALID") || strings.Contains(updated.Filter, "[[[") {
+		return nil, status.Errorf(codes.InvalidArgument, "Field filter had an invalid value: %q", updated.Filter)
+	}
+
 	s.populateDefaultsForLogMetric(name, updated)
 
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {

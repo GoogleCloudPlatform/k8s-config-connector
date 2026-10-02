@@ -100,6 +100,12 @@ const (
 	ManagerNamespaceIsolationDedicated = "dedicated"
 
 	ReconcilerTypeAnnotation = "cnrm.cloud.google.com/reconciler"
+
+	// BackoffMaxDelayInSecondsAnnotation specifies the maximum exponential backoff retry delay ceiling in seconds,
+	// or "0" to halt automated error retries. Currently supported exclusively for direct controllers.
+	BackoffMaxDelayInSecondsAnnotation = "cnrm.cloud.google.com/backoff-max-delay-in-seconds"
+	DefaultBackoffMaxDelay             = 120 * time.Second
+	DefaultBackoffBaseDelay            = 1 * time.Second
 )
 
 var (
