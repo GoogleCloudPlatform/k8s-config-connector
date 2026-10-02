@@ -1111,6 +1111,10 @@ func flattenNodePool(d *schema.ResourceData, config *transport_tpg.Config, np *c
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("Error reading instance group manage URL '%q'", url)
 		}
+		if strings.HasPrefix(matches[3], "gk3") {
+			// IGM is autopilot so we know it will not be found, skip it
+			continue
+		}
 		igm, err := config.NewComputeClient(userAgent).InstanceGroupManagers.Get(matches[1], matches[2], matches[3]).Do()
 		if transport_tpg.IsGoogleApiErrorWithCode(err, 404) {
 			// The IGM URL in is stale; don't include it

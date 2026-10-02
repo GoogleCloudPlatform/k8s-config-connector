@@ -751,6 +751,8 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "controlPlaneEndpointsConfig")
 			delete(v, "addonsConfig")
 			delete(v, "zone")
+			delete(v, "instanceGroupUrls")
+			delete(v, "locations")
 		}
 		if cluster, ok := v["cluster"].(map[string]interface{}); ok {
 			delete(cluster, "initialClusterVersion")

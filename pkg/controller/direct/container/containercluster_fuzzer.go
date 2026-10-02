@@ -125,7 +125,6 @@ func containerClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".alpha_cluster_feature_gates")
 	f.Unimplemented_NotYetTriaged(".anonymous_authentication_config")
 	f.Unimplemented_NotYetTriaged(".authenticator_groups_config.enabled")
-	f.Unimplemented_NotYetTriaged(".autopilot.privileged_admission_config")
 	f.Unimplemented_NotYetTriaged(".autopilot.workload_policy_config")
 	f.Unimplemented_NotYetTriaged(".autopilot.cluster_policy_config")
 	f.Unimplemented_NotYetTriaged(".autoscaling")

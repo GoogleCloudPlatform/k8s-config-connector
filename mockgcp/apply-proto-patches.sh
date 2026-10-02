@@ -267,6 +267,28 @@ go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/container/v1b
       [(google.api.field_behavior) = OUTPUT_ONLY];
 EOF
 
+# Append PrivilegedAdmissionConfig message and update Autopilot & ClusterUpdate
+cat <<EOF >> ${REPO_ROOT}/mockgcp/third_party/googleapis/google/container/v1beta1/cluster_service.proto
+
+// PrivilegedAdmissionConfig stores the list of authorized allowlist paths for the cluster.
+message PrivilegedAdmissionConfig {
+  // The customer allowlist Cloud Storage paths for the cluster.
+  repeated string allowlist_paths = 1;
+}
+EOF
+
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/container/v1beta1/cluster_service.proto --message Autopilot --mode append <<EOF
+
+  // PrivilegedAdmissionConfig is the configuration related to privileged admission control.
+  PrivilegedAdmissionConfig privileged_admission_config = 4;
+EOF
+
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/container/v1beta1/cluster_service.proto --message ClusterUpdate --mode append <<EOF
+
+  // DesiredPrivilegedAdmissionConfig is the desired privileged admission control.
+  optional PrivilegedAdmissionConfig desired_privileged_admission_config = 157;
+EOF
+
 
 
 # ResourceManager v1 patches - temporarily switching to proto3 because patch-proto has issues with proto2
