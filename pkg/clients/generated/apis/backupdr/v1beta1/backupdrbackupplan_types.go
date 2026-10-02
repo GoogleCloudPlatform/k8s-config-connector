@@ -174,6 +174,10 @@ type BackupDRBackupPlanSpec struct {
 	/* Immutable. */
 	Location string `json:"location"`
 
+	/* Optional. Applicable only for CloudSQL resource_type. Configures how long logs will be stored. It is defined in “days”. This value should be greater than or equal to minimum enforced log retention duration of the backup vault. */
+	// +optional
+	LogRetentionDays *int64 `json:"logRetentionDays,omitempty"`
+
 	/* The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
