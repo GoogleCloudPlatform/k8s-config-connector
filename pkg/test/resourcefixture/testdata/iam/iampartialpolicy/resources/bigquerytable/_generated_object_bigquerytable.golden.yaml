@@ -3,9 +3,6 @@ kind: IAMPartialPolicy
 metadata:
   annotations:
     cnrm.cloud.google.com/state-into-spec: absent
-  finalizers:
-  - cnrm.cloud.google.com/finalizer
-  - cnrm.cloud.google.com/deletion-defender
   generation: 2
   labels:
     cnrm-test: "true"
@@ -26,24 +23,13 @@ spec:
     kind: BigQueryTable
     name: bigquerytable-${uniqueId}
 status:
-  allBindings:
-  - members:
-    - group:test-group@example.com
-    - serviceAccount:test-sa@test-project.iam.gserviceaccount.com
-    - user:editor@example.com
-    - user:test@example.com
-    role: roles/bigquery.dataEditor
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: The resource is up to date
-    reason: UpToDate
-    status: "True"
+    message: 'Update call failed: error setting policy: error applying changes: summary:
+      Error setting IAM policy for bigquery table "projects/${projectId}/datasets/dataset_${uniqueId}/tables/test_table":
+      googleapi: Error 400: IAM setPolicy failed for Table ${projectId}:dataset_${uniqueId}.test_table:
+      Group test-group@example.com does not exist.'
+    reason: UpdateFailed
+    status: "False"
     type: Ready
-  lastAppliedBindings:
-  - members:
-    - group:test-group@example.com
-    - serviceAccount:test-sa@test-project.iam.gserviceaccount.com
-    - user:editor@example.com
-    - user:test@example.com
-    role: roles/bigquery.dataEditor
   observedGeneration: 2
