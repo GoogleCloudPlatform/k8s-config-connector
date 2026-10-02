@@ -72,7 +72,7 @@ Another no-op annotation (`test.cnrm.cloud.google.com/reconcile-cookie: re-recon
 When qualifying a Direct controller or updating fixtures, run the migration suite against real GCP with golden output recording enabled:
 
 ```bash
-E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=real GOLDEN_REQUEST_CHECKS=1 GOLDEN_OBJECT_CHECKS=1 WRITE_GOLDEN_OUTPUT=1 RUN_E2E=1 go test ./tests/e2e -v -run TestMigrationToDirect/fixtures/<fixture-name>$
+./hack/record-gcp "TestMigrationToDirect/fixtures/<fixture-name>$"
 ```
 
 *Replace `<fixture-name>` with the name of the test fixture (e.g., `computenetworkdeleteoncreate`).*

@@ -94,11 +94,8 @@ and it normally logs an error like "foo not set" (in this case, simply add that 
 
 1. Capture golden object and HTTP golden logs against real GCP.
 
-   1. Run the following command to generate the golden object (`_generated_object_\[testname\].golden.yaml` file):
-      `E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=real GOLDEN_OBJECT_CHECKS=1 WRITE_GOLDEN_OUTPUT=1 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/[testname]`.
-
-   1. Run the following command to generate the golden request (`_http.log` file):
-      `E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=real GOLDEN_REQUEST_CHECKS=1 WRITE_GOLDEN_OUTPUT=1 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/[testname]`.
+   1. Run the following command to generate the golden object (`_generated_object_\[testname\].golden.yaml` file) and the golden request (`_http.log` file):
+      `hack/record-gcp fixtures/[testname]`.
 
    1. Ensure both `GOLDEN_OBJECT_CHECKS` and `GOLDEN_REQUEST_CHECKS` pass:
       `E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=real GOLDEN_OBJECT_CHECKS=1 GOLDEN_REQUEST_CHECKS=1 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/[testname]`.
