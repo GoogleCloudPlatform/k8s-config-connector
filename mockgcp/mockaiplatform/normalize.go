@@ -51,6 +51,11 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 	}
 
 	if strings.Contains(event.URL(), "ReasoningEngineService") || strings.Contains(event.URL(), "reasoningEngines") {
+		replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateReasoningEngineOperationMetadata", "type.googleapis.com/google.cloud.aiplatform.v1.CreateReasoningEngineOperationMetadata")
+		replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.UpdateReasoningEngineOperationMetadata", "type.googleapis.com/google.cloud.aiplatform.v1.UpdateReasoningEngineOperationMetadata")
+		replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata", "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata")
+		replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.ReasoningEngine", "type.googleapis.com/google.cloud.aiplatform.v1.ReasoningEngine")
+
 		previsitReasoningEngine := func(val string) {
 			if strings.Contains(val, "/reasoningEngines/") {
 				tokens := strings.Split(val, "/")
