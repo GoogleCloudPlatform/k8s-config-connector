@@ -1149,6 +1149,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"chroniclewatchlists.chronicle.cnrm.cloud.google.com":                           true, // spec.entityPopulationMechanism.manual is an empty object
 		"clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com":                          true, // spec.staticIPConnectivity and status.observedState are empty objects
 		"configdeliveryfleetpackages.configdelivery.cnrm.cloud.google.com":              true, // spec.rolloutStrategy.allAtOnce is an empty object
+		"contentwarehousedocumentschemas.contentwarehouse.cnrm.cloud.google.com":        true, // spec.propertyDefinitions[].dateTimeTypeOptions, textTypeOptions, and four other *TypeOptions are empty objects
 		"datacatalogentries.datacatalog.cnrm.cloud.google.com":                          true, // spec.featureOnlineStoreSpec and status.observedState.databaseTableSpec.dataplexTable.dataplexSpec.dataFormat.csv are empty objects
 		"datacatalogpolicytags.datacatalog.cnrm.cloud.google.com":                       true, // status.observedState is an empty object
 		"dataformrepositories.dataform.cnrm.cloud.google.com":                           true, // status.observedState is an empty object

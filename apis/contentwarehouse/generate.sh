@@ -31,17 +31,34 @@ source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
+# The bulk generation flags below were added with ContentWarehouseDocumentSchema.
+# Adding them did not change the types of ContentWarehouseRuleSet,
+# ContentWarehouseDocument and ContentWarehouseSynonymSet.
 ${CONTROLLERBUILDER} generate-types \
     --service google.cloud.contentwarehouse.v1 \
     --api-version "contentwarehouse.cnrm.cloud.google.com/v1alpha1" \
     --include-skipped-output \
     --resource ContentWarehouseRuleSet:RuleSet \
     --resource ContentWarehouseDocument:Document \
-    --resource ContentWarehouseSynonymSet:SynonymSet
+    --resource ContentWarehouseSynonymSet:SynonymSet \
+    --resource ContentWarehouseDocumentSchema:DocumentSchema \
+    --prepopulate-spec \
+    --emit-required-from-proto \
+    --emit-plural-acronyms \
+    --emit-message-maps \
+    --place-server-set-fields \
+    --detect-output-only-in-comments \
+    --emit-parent-refs \
+    --emit-sibling-refs \
+    --emit-reference-hints \
+    --emit-source-links
 
+# Match the generate-types flags that change field names and map fields.
 ${CONTROLLERBUILDER} generate-mapper \
     --service google.cloud.contentwarehouse.v1 \
-    --api-version "contentwarehouse.cnrm.cloud.google.com/v1alpha1"
+    --api-version "contentwarehouse.cnrm.cloud.google.com/v1alpha1" \
+    --emit-plural-acronyms \
+    --emit-message-maps
 
 cd "${REPO_ROOT}"
 dev/tasks/generate-crds
