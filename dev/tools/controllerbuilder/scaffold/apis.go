@@ -210,9 +210,13 @@ func (a *APIScaffolder) PathToTypeFile(resource options.Resource) string {
 //
 // When prepopulated is non-nil, the Spec and ObservedState struct bodies are
 // generated from the proto message definitions along with any required package imports.
-func (a *APIScaffolder) AddTypeFile(resource options.Resource, prepopulated *PrepopulateResult) error {
+//
+// sourceLinks is the comment block from sourcelinks.Render, written above the
+// package clause. Pass "" to leave it out.
+func (a *APIScaffolder) AddTypeFile(resource options.Resource, prepopulated *PrepopulateResult, sourceLinks string) error {
 	typeFilePath := a.PathToTypeFile(resource)
 	cArgs := a.buildAPIArgs(&resource)
+	cArgs.SourceLinks = sourceLinks
 	cArgs.SkipGVK = packageDeclaresGVK(filepath.Join(a.BaseDir, a.GoPackage), cArgs.Kind)
 	if prepopulated != nil {
 		cArgs.SpecFields = prepopulated.SpecFields
