@@ -85,6 +85,54 @@ func Release_ReleaseRequirements_ToProto(mapCtx *direct.MapContext, in *krm.Rele
 	out.UpgradeableFromReleases = in.UpgradeableFromReleases
 	return out
 }
+func SaaSServiceMgmtTenantObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Tenant) *krm.SaaSServiceMgmtTenantObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SaaSServiceMgmtTenantObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func SaaSServiceMgmtTenantObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtTenantObservedState) *pb.Tenant {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tenant{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func SaaSServiceMgmtTenantSpec_FromProto(mapCtx *direct.MapContext, in *pb.Tenant) *krm.SaaSServiceMgmtTenantSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SaaSServiceMgmtTenantSpec{}
+	// MISSING: Name
+	out.ConsumerResource = direct.LazyPtr(in.GetConsumerResource())
+	out.Saas = direct.LazyPtr(in.GetSaas())
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	return out
+}
+func SaaSServiceMgmtTenantSpec_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtTenantSpec) *pb.Tenant {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tenant{}
+	// MISSING: Name
+	out.ConsumerResource = direct.ValueOf(in.ConsumerResource)
+	out.Saas = direct.ValueOf(in.Saas)
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	return out
+}
 func SaasServiceMgmtReleaseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Release) *krm.SaasServiceMgmtReleaseObservedState {
 	if in == nil {
 		return nil
