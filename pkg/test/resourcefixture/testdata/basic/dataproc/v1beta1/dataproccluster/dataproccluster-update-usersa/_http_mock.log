@@ -852,7 +852,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=config.securityConfig.identityConfig.userServiceAccountMapping%2Clabels
+PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=config.securityConfig.identityConfig.userServiceAccountMapping
 Content-Type: application/json
 
 {

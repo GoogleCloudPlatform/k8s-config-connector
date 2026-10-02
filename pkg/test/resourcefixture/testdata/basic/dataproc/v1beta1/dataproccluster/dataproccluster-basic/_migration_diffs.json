@@ -1,0 +1,39 @@
+[
+  {
+    "controller": "dcl",
+    "isNewObject": true,
+    "resource": "DataprocAutoscalingPolicy/dataprocautoscalingpolicy-${uniqueId}"
+  },
+  {
+    "controller": "dcl",
+    "isNewObject": true,
+    "resource": "DataprocCluster/dataproccluster-${uniqueId}"
+  },
+  {
+    "controller": "iampolicymember",
+    "isNewObject": true,
+    "resource": "IAMPolicyMember/",
+    "fields": [
+      {
+        "id": "etag",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "member",
+        "old": "",
+        "new": "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "projects/${projectId}"
+      },
+      {
+        "id": "role",
+        "old": "",
+        "new": "roles/dataproc.worker"
+      }
+    ]
+  }
+]
