@@ -155,13 +155,6 @@ type TerraformVariable struct {
 	InputValue *Value `json:"inputValue,omitempty"`
 }
 
-// +kcc:proto=google.protobuf.ListValue
-type ListValue struct {
-	// Repeated field of dynamically typed values.
-	// +kcc:proto:field=google.protobuf.ListValue.values
-	Values []Value `json:"values,omitempty"`
-}
-
 // +kcc:proto=google.protobuf.Value
 type Value struct {
 	// Represents a null value.

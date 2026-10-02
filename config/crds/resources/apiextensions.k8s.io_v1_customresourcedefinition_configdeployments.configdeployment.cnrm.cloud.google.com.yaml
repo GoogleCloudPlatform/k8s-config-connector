@@ -217,7 +217,9 @@ spec:
                                 values:
                                   description: Repeated field of dynamically typed
                                     values.
-                                  items: {}
+                                  items:
+                                    type: object
+                                    x-kubernetes-preserve-unknown-fields: true
                                   type: array
                               type: object
                             nullValue:
@@ -342,7 +344,9 @@ spec:
                                     values:
                                       description: Repeated field of dynamically typed
                                         values.
-                                      items: {}
+                                      items:
+                                        type: object
+                                        x-kubernetes-preserve-unknown-fields: true
                                       type: array
                                   type: object
                                 nullValue:
