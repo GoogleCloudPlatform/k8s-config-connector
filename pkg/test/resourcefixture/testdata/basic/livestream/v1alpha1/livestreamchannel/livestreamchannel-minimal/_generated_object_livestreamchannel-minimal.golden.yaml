@@ -1,0 +1,68 @@
+apiVersion: livestream.cnrm.cloud.google.com/v1alpha1
+kind: LiveStreamChannel
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: livestreamchannel-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  elementaryStreams:
+  - key: es-video
+    videoStream:
+      h264:
+        bitrateBps: 2500000
+        frameRate: 30
+        heightPixels: 720
+        widthPixels: 1280
+  - audioStream:
+      bitrateBps: 160000
+      channelCount: 2
+      codec: aac
+    key: es-audio
+  inputAttachments:
+  - inputRef:
+      name: livestreamchannel-min-input-${uniqueId}
+    key: input-attachment-1
+  location: us-central1
+  manifests:
+  - fileName: manifest.m3u8
+    key: manifest-hls
+    muxStreams:
+    - mux-video
+    - mux-audio
+    type: HLS
+  muxStreams:
+  - container: fmp4
+    elementaryStreams:
+    - es-video
+    key: mux-video
+    segmentSettings:
+      segmentDuration: 2s
+  - container: fmp4
+    elementaryStreams:
+    - es-audio
+    key: mux-audio
+    segmentSettings:
+      segmentDuration: 2s
+  output:
+    uri: gs://livestreamchannel-min-${uniqueId}/output/
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/channels/livestreamchannel-minimal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    activeInput: input-attachment-1
+    createTime: "1970-01-01T00:00:00Z"
+    streamingState: STOPPED
+    updateTime: "1970-01-01T00:00:00Z"
