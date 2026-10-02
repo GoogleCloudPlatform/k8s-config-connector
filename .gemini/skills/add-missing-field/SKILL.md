@@ -1,3 +1,8 @@
+---
+name: add-missing-field
+description: Guides through adding a missing field to a GCP resource managed by KCC using the "direct" controller approach.
+---
+
 # Skill: Add Missing Field
 
 This skill guides an automated agent through adding a missing field to a GCP resource managed by KCC using the "direct" controller approach.

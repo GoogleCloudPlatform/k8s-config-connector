@@ -1,3 +1,8 @@
+---
+name: add-new-mockgcp-resource
+description: Provides a structured workflow for adding a new mock service to mockgcp.
+---
+
 # Skill: Add New MockGCP Resource
 
 This skill provides a structured workflow for adding a new mock service to `mockgcp`.

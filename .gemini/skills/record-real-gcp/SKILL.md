@@ -1,3 +1,8 @@
+---
+name: record-real-gcp
+description: Structured workflow for running end-to-end tests against real GCP APIs to generate and record authentic golden HTTP logs (_http.log).
+---
+
 # Skill: Record Real GCP Logs
 
 This skill provides a structured workflow for running end-to-end tests against real GCP APIs to generate and record authentic golden HTTP logs (`_http.log`).

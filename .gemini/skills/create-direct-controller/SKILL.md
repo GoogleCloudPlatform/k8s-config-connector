@@ -1,3 +1,8 @@
+---
+name: create-direct-controller
+description: Guides migrating a resource from Terraform/DCL to a Direct controller, including dual-controller registration and side-by-side golden testing.
+---
+
 # Create Direct Controller Skill
 
 ## Process for Migrating from Terraform/DCL to Direct Controller
