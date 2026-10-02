@@ -49,3 +49,29 @@ func (s *MockService) parseMapConfigName(name string) (*mapConfigName, error) {
 	}
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is malformed", name)
 }
+
+type styleConfigName struct {
+	Project     *projects.ProjectData
+	StyleConfig string
+}
+
+func (n *styleConfigName) String() string {
+	return fmt.Sprintf("projects/%d/styleConfigs/%s", n.Project.Number, n.StyleConfig)
+}
+
+func (s *MockService) parseStyleConfigName(name string) (*styleConfigName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "styleConfigs" {
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &styleConfigName{
+			Project:     project,
+			StyleConfig: tokens[3],
+		}, nil
+	}
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is malformed", name)
+}

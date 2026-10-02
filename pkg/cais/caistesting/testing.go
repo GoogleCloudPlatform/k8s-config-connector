@@ -180,6 +180,7 @@ func NormalizeDynamicIDs(s string) string {
 			} else {
 				lines[i] = line[:start] + "${styleConfigId}"
 			}
+			lines[i] = strings.Replace(lines[i], "projects/${projectNumber}/styleConfigs/", "projects/${projectId}/styleConfigs/", 1)
 		}
 	}
 	return strings.Join(lines, "\n")
