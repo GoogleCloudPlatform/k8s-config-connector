@@ -237,7 +237,8 @@ type Document struct {
 }
 */
 
-/* unreachable type DocumentSchema
+/* found existing non-generated go type with proto tag "google.cloud.contentwarehouse.v1.DocumentSchema", skipping
+
 // +kcc:proto=google.cloud.contentwarehouse.v1.DocumentSchema
 type DocumentSchema struct {
 	// The resource name of the document schema.
@@ -2495,7 +2496,8 @@ type DocumentObservedState struct {
 }
 */
 
-/* unreachable type DocumentSchemaObservedState
+/* found existing non-generated go type with proto tag "google.cloud.contentwarehouse.v1.DocumentSchema", skipping
+
 // +kcc:observedstate:proto=google.cloud.contentwarehouse.v1.DocumentSchema
 type DocumentSchemaObservedState struct {
 	// Output only. The time when the document schema is last updated.
