@@ -866,7 +866,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -889,11 +889,11 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters:createsecondary?%24alt=json%3Benum-encoding%3Dint&clusterId=alloydbcluster-2-${uniqueId}
+POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters:createsecondary?alt=json&cluster_id=alloydbcluster-2-${uniqueId}
 Content-Type: application/json
 
 {
-  "clusterType": 2,
+  "clusterType": "SECONDARY",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -931,7 +931,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/operations/${operationID}
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1030,7 +1030,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1053,13 +1053,13 @@ X-Xss-Protection: 0
     },
     "weeklySchedule": {
       "daysOfWeek": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "SUNDAY"
       ],
       "startTimes": [
         {
@@ -1068,7 +1068,7 @@ X-Xss-Protection: 0
       ]
     }
   },
-  "clusterType": 2,
+  "clusterType": "SECONDARY",
   "continuousBackupConfig": {
     "enabled": true,
     "recoveryWindowDays": 14
@@ -1076,22 +1076,22 @@ X-Xss-Protection: 0
   "continuousBackupInfo": {
     "enabledTime": "2024-04-01T12:34:56.123456Z",
     "encryptionInfo": {
-      "encryptionType": 1
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
     "schedule": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7
+      "MONDAY",
+      "TUESDAY",
+      "WEDNESDAY",
+      "THURSDAY",
+      "FRIDAY",
+      "SATURDAY",
+      "SUNDAY"
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": 4,
+  "databaseVersion": "POSTGRES_16",
   "encryptionInfo": {
-    "encryptionType": 1
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
   },
   "geminiConfig": {},
   "labels": {
@@ -1107,21 +1107,20 @@ X-Xss-Protection: 0
   "secondaryConfig": {
     "primaryClusterName": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}"
   },
-  "state": 1,
-  "subscriptionType": 1,
+  "state": "READY",
+  "subscriptionType": "STANDARD",
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupPolicy
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?alt=json&updateMask=automatedBackupPolicy
 Content-Type: application/json
 
 {
   "automatedBackupPolicy": {
     "backupWindow": "3600s",
-    "enabled": false,
     "labels": {
       "source": "kcc-test"
     },
@@ -1131,13 +1130,13 @@ Content-Type: application/json
     },
     "weeklySchedule": {
       "daysOfWeek": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "SUNDAY"
       ],
       "startTimes": [
         {
@@ -1146,27 +1145,22 @@ Content-Type: application/json
       ]
     }
   },
-  "clusterType": 2,
+  "clusterType": "SECONDARY",
   "continuousBackupConfig": {
     "enabled": true,
     "recoveryWindowDays": 14
   },
-  "databaseVersion": 4,
-  "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}",
-  "network": "projects/${projectId}/global/networks/${networkID}",
+  "network": "projects/${projectNumber}/global/networks/${networkID}",
   "networkConfig": {
-    "network": "projects/${projectId}/global/networks/${networkID}"
+    "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
-  "reconciling": false,
   "secondaryConfig": {
     "primaryClusterName": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}"
-  },
-  "subscriptionType": 1
+  }
 }
 
 200 OK
@@ -1194,7 +1188,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/operations/${operationID}
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1296,7 +1290,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -1322,13 +1316,13 @@ X-Xss-Protection: 0
     },
     "weeklySchedule": {
       "daysOfWeek": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "SUNDAY"
       ],
       "startTimes": [
         {
@@ -1337,7 +1331,7 @@ X-Xss-Protection: 0
       ]
     }
   },
-  "clusterType": 2,
+  "clusterType": "SECONDARY",
   "continuousBackupConfig": {
     "enabled": true,
     "recoveryWindowDays": 14
@@ -1345,22 +1339,22 @@ X-Xss-Protection: 0
   "continuousBackupInfo": {
     "enabledTime": "2024-04-01T12:34:56.123456Z",
     "encryptionInfo": {
-      "encryptionType": 1
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
     "schedule": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7
+      "MONDAY",
+      "TUESDAY",
+      "WEDNESDAY",
+      "THURSDAY",
+      "FRIDAY",
+      "SATURDAY",
+      "SUNDAY"
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": 4,
+  "databaseVersion": "POSTGRES_16",
   "encryptionInfo": {
-    "encryptionType": 1
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
   },
   "geminiConfig": {},
   "labels": {
@@ -1376,15 +1370,15 @@ X-Xss-Protection: 0
   "secondaryConfig": {
     "primaryClusterName": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}"
   },
-  "state": 1,
-  "subscriptionType": 1,
+  "state": "READY",
+  "subscriptionType": "STANDARD",
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?alt=json&force=true
 Content-Type: application/json
 
 200 OK
@@ -1412,7 +1406,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/operations/${operationID}
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
