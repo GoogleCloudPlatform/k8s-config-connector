@@ -178,7 +178,9 @@ spec:
                       properties:
                         propertyDefinitions:
                           description: Required. List of property definitions.
-                          items: {}
+                          items:
+                            type: object
+                            x-kubernetes-preserve-unknown-fields: true
                           type: array
                       required:
                       - propertyDefinitions
