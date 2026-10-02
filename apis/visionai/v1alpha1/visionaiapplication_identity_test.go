@@ -68,6 +68,9 @@ func TestVisionAIApplicationIdentity_FromExternal(t *testing.T) {
 				if i.Application != tt.want.Application {
 					t.Errorf("Application = %v, want %v", i.Application, tt.want.Application)
 				}
+				if gotParent := i.ParentString(); gotParent != "projects/"+tt.want.Project+"/locations/"+tt.want.Location {
+					t.Errorf("ParentString() = %v, want %v", gotParent, "projects/"+tt.want.Project+"/locations/"+tt.want.Location)
+				}
 			}
 		})
 	}

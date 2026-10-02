@@ -1,0 +1,18 @@
+GET https://visionai.googleapis.com/v1/projects/${projectId}/locations/us-central1/applications/visionaiapplication-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "App Minimal Updated ${uniqueId}",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/applications/visionaiapplication-minimal-${uniqueId}",
+  "runtimeInfo": {},
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

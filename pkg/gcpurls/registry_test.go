@@ -179,6 +179,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 		// Vision
 
+		// Vision AI
+		"//visionai.googleapis.com/projects/{}/locations/{}/applications/{}": true,
+
 		// Workflow Executions
 
 	}

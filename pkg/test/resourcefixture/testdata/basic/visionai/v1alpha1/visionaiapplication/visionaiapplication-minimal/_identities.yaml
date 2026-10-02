@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: visionai.cnrm.cloud.google.com
+  kind: VisionAIApplication
+  name: visionaiapplication-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
