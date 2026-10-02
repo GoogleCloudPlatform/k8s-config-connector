@@ -90,6 +90,7 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 			delete(obj, "satisfiesPzi")
 			delete(obj, "sizeGb")
 			delete(obj, "recommendedSize")
+			delete(obj, "loadBalancer")
 
 			if obj["creationTimestamp"] != nil {
 				obj["creationTimestamp"] = mockgcpregistry.PlaceholderTimestamp

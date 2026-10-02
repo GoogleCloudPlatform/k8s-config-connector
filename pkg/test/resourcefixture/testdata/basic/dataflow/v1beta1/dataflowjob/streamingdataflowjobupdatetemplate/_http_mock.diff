@@ -1,4 +1,4 @@
-923,939c923
+924,940c924
 < GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
 < 
 < 200 OK
@@ -18,24 +18,24 @@
 < POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/templates?alt=json&prettyPrint=false
 ---
 > POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/templates?%24alt=json%3Benum-encoding%3Dint
-947,951d930
+948,952d931
 <     "additionalUserLabels": {
 <       "cnrm-test": "true",
 <       "label-one": "value-one",
 <       "managed-by-cnrm": "true"
 <     },
-953c932
+954c933
 <     "ipConfiguration": "WORKER_IP_PUBLIC",
 ---
 >     "ipConfiguration": 1,
-956,957c935
+957,958c936
 <     "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
 <     "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
 ---
 >     "network": "projects/${projectId}/global/networks/${subnetworkID}",
-963a942
+964a943
 >   "location": "us-central1",
-967,1099d945
+968,1100d946
 <   }
 < }
 < 
@@ -169,7 +169,7 @@
 <         "templateLocation": "gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery"
 <       }
 <     }
-1101,1163c947
+1102,1164c948
 <   "id": "000000000000000000000",
 <   "labels": {
 <     "cnrm-test": "true",
@@ -235,32 +235,32 @@
 <   ]
 ---
 >   "projectId": "${projectId}"
-1166,1169d949
+1167,1170d950
 < ---
 < 
 < GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
 < 
-1182c962
+1183c963
 <   "currentState": "JOB_STATE_RUNNING",
 ---
 >   "currentState": 2,
-1193,1194c973,974
+1194,1195c974,975
 <         "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
 <         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
 ---
 >         "network": "projects/${projectId}/global/networks/${subnetworkID}",
 >         "serviceAccountEmail": "",
-1202,1206d981
+1203,1207d982
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
 <   },
-1211c986
+1212c987
 <   "type": "JOB_TYPE_STREAMING"
 ---
 >   "type": 2
-1216,1268c991,992
+1217,1269c992,993
 < GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
 < 
 < 200 OK
@@ -317,66 +317,66 @@
 ---
 > GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
 > Content-Type: application/json
-1282c1006
+1283c1007
 <   "currentState": "JOB_STATE_RUNNING",
 ---
 >   "currentState": 2,
-1293,1294c1017,1018
+1294,1295c1018,1019
 <         "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
 <         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
 ---
 >         "network": "projects/${projectId}/global/networks/${subnetworkID}",
 >         "serviceAccountEmail": "",
-1302,1306d1025
+1303,1307d1026
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
 <   },
-1311c1030
+1312c1031
 <   "type": "JOB_TYPE_STREAMING"
 ---
 >   "type": 2
-1316c1035
+1317c1036
 < POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/templates:launch?alt=json&gcsPath=gs%3A%2F%2Fdataflow-templates%2F2020-02-10-00_RC00%2FPubSub_to_BigQuery&prettyPrint=false
 ---
 > POST https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/templates:launch?%24alt=json%3Benum-encoding%3Dint&gcsPath=gs%3A%2F%2Fdataflow-templates%2F2020-02-10-00_RC00%2FPubSub_to_BigQuery
-1324,1328d1042
+1325,1329d1043
 <     "additionalUserLabels": {
 <       "cnrm-test": "true",
 <       "label-one": "value-one",
 <       "managed-by-cnrm": "true"
 <     },
-1330c1044
+1331c1045
 <     "ipConfiguration": "WORKER_IP_PUBLIC",
 ---
 >     "ipConfiguration": 1,
-1333,1334c1047
+1334,1335c1048
 <     "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
 <     "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
 ---
 >     "network": "projects/${projectId}/global/networks/${subnetworkID}",
-1360c1073
+1361c1074
 <     "currentState": "JOB_STATE_RUNNING",
 ---
 >     "currentState": 2,
-1371,1372c1084,1085
+1372,1373c1085,1086
 <           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
 <           "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
 ---
 >           "network": "projects/${projectId}/global/networks/${subnetworkID}",
 >           "serviceAccountEmail": "",
-1380,1384d1092
+1381,1385d1093
 <     "labels": {
 <       "cnrm-test": "true",
 <       "label-one": "value-one",
 <       "managed-by-cnrm": "true"
 <     },
-1389c1097
+1390c1098
 <     "type": "JOB_TYPE_STREAMING"
 ---
 >     "type": 2
-1395,1663c1103,1104
+1396,1664c1104,1105
 < GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false&view=JOB_VIEW_ALL
 < 
 < 200 OK
@@ -649,45 +649,45 @@
 ---
 > GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
 > Content-Type: application/json
-1677c1118
+1678c1119
 <   "currentState": "JOB_STATE_RUNNING",
 ---
 >   "currentState": 2,
-1688,1689c1129,1130
+1689,1690c1130,1131
 <         "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
 <         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
 ---
 >         "network": "projects/${projectId}/global/networks/${subnetworkID}",
 >         "serviceAccountEmail": "",
-1697,1701d1137
+1698,1702d1138
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
 <   },
-1706c1142
+1707c1143
 <   "type": "JOB_TYPE_STREAMING"
 ---
 >   "type": 2
-1711c1147
+1712c1148
 < PUT https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json&prettyPrint=false
 ---
 > PUT https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
-1715c1151
+1716c1152
 <   "requestedState": "JOB_STATE_CANCELLED"
 ---
 >   "requestedState": 5
-1729c1165
+1730c1166
 <   "currentState": "JOB_STATE_CANCELLING",
 ---
 >   "currentState": 10,
-1733,1734c1169,1170
+1734,1735c1170,1171
 <   "requestedState": "JOB_STATE_CANCELLED",
 <   "type": "JOB_TYPE_STREAMING"
 ---
 >   "requestedState": 5,
 >   "type": 2
-1739,1826c1175,1176
+1740,1827c1176,1177
 < GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
 < 
 < 200 OK
@@ -779,31 +779,31 @@
 ---
 > GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
 > Content-Type: application/json
-1840c1190
+1841c1191
 <   "currentState": "JOB_STATE_CANCELLING",
 ---
 >   "currentState": 10,
-1851,1852c1201,1202
+1852,1853c1202,1203
 <         "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
 <         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
 ---
 >         "network": "projects/${projectId}/global/networks/${subnetworkID}",
 >         "serviceAccountEmail": "",
-1860,1864d1209
+1861,1865d1210
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
 <   },
-1868c1213
+1869c1214
 <   "requestedState": "JOB_STATE_CANCELLED",
 ---
 >   "requestedState": 5,
-1870c1215
+1871c1216
 <   "type": "JOB_TYPE_STREAMING"
 ---
 >   "type": 2
-1875,1891c1220,1221
+1876,1892c1221,1222
 < GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/jobs:aggregated?alt=json&filter=ACTIVE&pageSize=25&pageToken=&prettyPrint=false&view=JOB_VIEW_SUMMARY
 < 
 < 200 OK
@@ -824,23 +824,23 @@
 ---
 > GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint&view=JOB_VIEW_SUMMARY
 > Content-Type: application/json
-1905c1235
+1906c1236
 <   "currentState": "JOB_STATE_CANCELLED",
 ---
 >   "currentState": 5,
-1916,1917c1246,1247
+1917,1918c1247,1248
 <         "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${subnetworkID}",
 <         "serviceAccountEmail": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
 ---
 >         "network": "projects/${projectId}/global/networks/${subnetworkID}",
 >         "serviceAccountEmail": "",
-1925,1929d1254
+1926,1930d1255
 <   "labels": {
 <     "cnrm-test": "true",
 <     "label-one": "value-one",
 <     "managed-by-cnrm": "true"
 <   },
-1934c1259
+1935c1260
 <   "type": "JOB_TYPE_STREAMING"
 ---
 >   "type": 2

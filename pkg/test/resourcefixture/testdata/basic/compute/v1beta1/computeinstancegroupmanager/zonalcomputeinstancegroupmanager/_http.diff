@@ -1,65 +1,65 @@
-863c863
+864c864
 < GET https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}
-892c892
+893c893
 < POST https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers?alt=json
 ---
 > POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers
-898d897
+899d898
 <       "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
-903d901
+904d902
 <   "instanceTemplate": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
-957c955
+958c956
 < GET https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
-989c987
+990c988
 < GET https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}
-1005d1002
+1006d1003
 <       "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
-1013,1014c1010
+1014,1015c1011
 <   "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupManagerID}",
 <   "instanceTemplate": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
 ---
 >   "instanceGroup": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupManagerID}",
-1051c1047
+1052c1048
 < PATCH https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}?alt=json
 ---
 > PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}
-1057d1052
+1058d1053
 <       "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
-1062,1063c1057
+1063,1064c1058
 <   "fingerprint": "abcdef0123A=",
 <   "instanceTemplate": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
 ---
 >   "name": "${instanceGroupManagerID}",
-1116c1110
+1117c1111
 < GET https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
-1148c1142
+1149c1143
 < GET https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}
-1164d1157
+1165d1158
 <       "healthCheck": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
-1172,1173c1165
+1173,1174c1166
 <   "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupManagerID}",
 <   "instanceTemplate": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/instanceTemplates/${instanceTemplateID}",
 ---
 >   "instanceGroup": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroups/${instanceGroupManagerID}",
-1210c1202
+1211c1203
 < DELETE https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/${instanceGroupManagerID}
-1241c1233
+1242c1234
 < GET https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
-1269,1297d1260
+1270,1298d1261
 < }
 < 
 < ---
