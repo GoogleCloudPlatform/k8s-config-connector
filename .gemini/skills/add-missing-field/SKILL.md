@@ -40,6 +40,7 @@ This skill guides an automated agent through adding a missing field to a GCP res
    - To quickly verify that your mappers and fuzzer mapping logic are correct and round-trip successfully, run focused fuzzer tests using the `FOCUS` environment variable:
      `FOCUS=MyResourceKind go test -v ./pkg/fuzztesting/fuzztests/... -run TestFocusedMappers`
      *(For example: `FOCUS=ComputeNetwork go test -v ./pkg/fuzztesting/fuzztests/... -run TestFocusedMappers`)*
+   - Alternatively, you can run/add a fast unit test directly in the controller's package (e.g. `go test -v ./pkg/controller/direct/<group>/...`) calling `fuzzer.FuzzSpec` and `fuzzer.FuzzStatus` without needing to build the entire controller tree.
 
 5. **Create a Test**
    - Find existing tests under `pkg/test/resourcefixture/testdata/basic/group/version/kind/`.

@@ -1,0 +1,35 @@
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
+kind: ArtifactRegistryRepository
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+    label-one: value-one
+  name: arremoterepo-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: test remote repository with common repository updated description
+  format: DOCKER
+  location: us-west1
+  mode: REMOTE_REPOSITORY
+  remoteRepositoryConfig:
+    commonRepository:
+      uri: https://registry-1.docker.io
+    description: test common remote repository
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  createTime: "1970-01-01T00:00:00Z"
+  name: arremoterepo-${uniqueId}
+  observedGeneration: 2
+  updateTime: "1970-01-01T00:00:00Z"

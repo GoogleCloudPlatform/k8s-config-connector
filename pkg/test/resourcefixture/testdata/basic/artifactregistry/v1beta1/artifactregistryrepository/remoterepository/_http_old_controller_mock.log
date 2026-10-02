@@ -1,0 +1,274 @@
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arremoterepo-${uniqueId}?alt=json
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories?alt=json&repository_id=arremoterepo-${uniqueId}
+Content-Type: application/json
+
+{
+  "description": "test remote repository with common repository description",
+  "format": "DOCKER",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "mode": "REMOTE_REPOSITORY",
+  "remoteRepositoryConfig": {
+    "description": "test common remote repository"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.Repository",
+    "description": "test remote repository with common repository description",
+    "format": "DOCKER",
+    "labels": {
+      "cnrm-test": "true",
+      "label-one": "value-one",
+      "managed-by-cnrm": "true"
+    },
+    "mode": "REMOTE_REPOSITORY",
+    "name": "projects/${projectId}/locations/us-west1/repositories/arremoterepo-${uniqueId}",
+    "remoteRepositoryConfig": {
+      "description": "test common remote repository"
+    },
+    "satisfiesPzi": true,
+    "vulnerabilityScanningConfig": {
+      "enablementState": "SCANNING_DISABLED",
+      "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+      "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+    }
+  }
+}
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arremoterepo-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test remote repository with common repository description",
+  "format": "DOCKER",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "mode": "REMOTE_REPOSITORY",
+  "name": "projects/${projectId}/locations/us-west1/repositories/arremoterepo-${uniqueId}",
+  "registryUri": "us-west1-docker.pkg.dev/${projectId}/arremoterepo-${uniqueId}",
+  "remoteRepositoryConfig": {
+    "description": "test common remote repository"
+  },
+  "satisfiesPzi": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vulnerabilityScanningConfig": {
+    "enablementState": "SCANNING_DISABLED",
+    "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+PATCH https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arremoterepo-${uniqueId}?alt=json&updateMask=description
+Content-Type: application/json
+
+{
+  "cleanupPolicies": {},
+  "description": "test remote repository with common repository updated description",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test remote repository with common repository updated description",
+  "format": "DOCKER",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "mode": "REMOTE_REPOSITORY",
+  "name": "projects/${projectId}/locations/us-west1/repositories/arremoterepo-${uniqueId}",
+  "remoteRepositoryConfig": {
+    "description": "test common remote repository"
+  },
+  "satisfiesPzi": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vulnerabilityScanningConfig": {
+    "enablementState": "SCANNING_DISABLED",
+    "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arremoterepo-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test remote repository with common repository updated description",
+  "format": "DOCKER",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "mode": "REMOTE_REPOSITORY",
+  "name": "projects/${projectId}/locations/us-west1/repositories/arremoterepo-${uniqueId}",
+  "registryUri": "us-west1-docker.pkg.dev/${projectId}/arremoterepo-${uniqueId}",
+  "remoteRepositoryConfig": {
+    "description": "test common remote repository"
+  },
+  "satisfiesPzi": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vulnerabilityScanningConfig": {
+    "enablementState": "SCANNING_DISABLED",
+    "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arremoterepo-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

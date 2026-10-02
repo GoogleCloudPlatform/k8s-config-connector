@@ -1,0 +1,109 @@
+1c1
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arremoterepo-${uniqueId}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arremoterepo-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+24c24
+< POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories?alt=json&repository_id=arremoterepo-${uniqueId}
+---
+> POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories?%24alt=json%3Benum-encoding%3Dint&repositoryId=arremoterepo-${uniqueId}
+29c29
+<   "format": "DOCKER",
+---
+>   "format": 1,
+35c35
+<   "mode": "REMOTE_REPOSITORY",
+---
+>   "mode": 3,
+36a37,39
+>     "commonRepository": {
+>       "uri": "https://registry-1.docker.io"
+>     },
+60c63
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+90a94,96
+>       "commonRepository": {
+>         "uri": "https://registry-1.docker.io"
+>       },
+104c110
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arremoterepo-${uniqueId}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arremoterepo-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+120c126
+<   "format": "DOCKER",
+---
+>   "format": 1,
+126c132
+<   "mode": "REMOTE_REPOSITORY",
+---
+>   "mode": 3,
+129a136,138
+>     "commonRepository": {
+>       "uri": "https://registry-1.docker.io"
+>     },
+135c144
+<     "enablementState": "SCANNING_DISABLED",
+---
+>     "enablementState": 2,
+143c152
+< PATCH https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arremoterepo-${uniqueId}?alt=json&updateMask=description
+---
+> PATCH https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arremoterepo-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description
+147d155
+<   "cleanupPolicies": {},
+148a157
+>   "format": 1,
+152a162,169
+>   },
+>   "mode": 3,
+>   "name": "projects/${projectId}/locations/us-west1/repositories/arremoterepo-${uniqueId}",
+>   "remoteRepositoryConfig": {
+>     "commonRepository": {
+>       "uri": "https://registry-1.docker.io"
+>     },
+>     "description": "test common remote repository"
+169c186
+<   "format": "DOCKER",
+---
+>   "format": 1,
+175c192
+<   "mode": "REMOTE_REPOSITORY",
+---
+>   "mode": 3,
+177a195,197
+>     "commonRepository": {
+>       "uri": "https://registry-1.docker.io"
+>     },
+183c203
+<     "enablementState": "SCANNING_DISABLED",
+---
+>     "enablementState": 2,
+191c211
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arremoterepo-${uniqueId}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arremoterepo-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+207c227
+<   "format": "DOCKER",
+---
+>   "format": 1,
+213c233
+<   "mode": "REMOTE_REPOSITORY",
+---
+>   "mode": 3,
+216a237,239
+>     "commonRepository": {
+>       "uri": "https://registry-1.docker.io"
+>     },
+222c245
+<     "enablementState": "SCANNING_DISABLED",
+---
+>     "enablementState": 2,
+230c253
+< DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arremoterepo-${uniqueId}?alt=json
+---
+> DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arremoterepo-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+252c275
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}

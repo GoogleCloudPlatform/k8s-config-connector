@@ -23,4 +23,6 @@
        out.ImportSources = &pb.Cluster_GcsSource{GcsSource: oneof}
    }
    ```
+10. **Direct Controller Package-Level Fuzzer Tests**: Running `go test ./pkg/fuzztesting/fuzztests/...` builds every controller in KCC, which can take several minutes or exceed shell timeouts. Adding or running a unit test directly in `pkg/controller/direct/<group>/<resource>_fuzzer_test.go` calling `ResourceFuzzer().FuzzSpec(t, seed)` and `FuzzStatus(t, seed)` allows fast iteration in under a second.
+
 

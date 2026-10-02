@@ -128,6 +128,10 @@ type ArtifactRegistryRepositoryVirtualRepositoryConfig struct {
 
 // +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig
 type ArtifactRegistryRepositoryRemoteRepositoryConfig struct {
+	// Common remote repository settings.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.common_repository
+	CommonRepository *ArtifactRegistryRepositoryCommonRepository `json:"commonRepository,omitempty"`
+
 	// Specific settings for a Docker remote repository.
 	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.docker_repository
 	DockerRepository *ArtifactRegistryRepositoryDockerRepository `json:"dockerRepository,omitempty"`
@@ -147,6 +151,13 @@ type ArtifactRegistryRepositoryRemoteRepositoryConfig struct {
 	// The description of the remote source.
 	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.description
 	Description *string `json:"description,omitempty"`
+}
+
+// +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.CommonRemoteRepository
+type ArtifactRegistryRepositoryCommonRepository struct {
+	// Required. A common public repository base for remote repository.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.CommonRemoteRepository.uri
+	URI *string `json:"uri,omitempty"`
 }
 
 // +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.DockerRepository
