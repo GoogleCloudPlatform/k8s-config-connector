@@ -1,0 +1,35 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: producer-net-min-${uniqueId}
+spec:
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: consumer-net-min-${uniqueId}
+spec:
+  autoCreateSubnetworks: false
+---
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityMirroringDeploymentGroup
+metadata:
+  name: mirroringdg-min-${uniqueId}
+spec:
+  projectRef:
+    external: "projects/${projectId}"
+  location: global
+  networkRef:
+    name: producer-net-min-${uniqueId}
+---
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityMirroringEndpointGroup
+metadata:
+  name: mirroringeg-min-${uniqueId}
+spec:
+  projectRef:
+    external: "projects/${projectId}"
+  location: global
+  mirroringDeploymentGroupRef:
+    name: mirroringdg-min-${uniqueId}

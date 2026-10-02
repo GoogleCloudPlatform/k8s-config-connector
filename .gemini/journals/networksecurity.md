@@ -36,3 +36,16 @@
 - **Problem**: The proto contains reference fields to `SecurityProfile` resource (`threat_prevention_profile`, `custom_mirroring_profile`, `custom_intercept_profile`, `url_filtering_profile`), which must be represented as proper KCC reference fields rather than raw string fields.
 - **Solution**: Mapped all of these fields as `NetworkSecuritySecurityProfileRef` pointers (e.g., `ThreatPreventionProfileRef *NetworkSecuritySecurityProfileRef`), leveraging the existing `NetworkSecuritySecurityProfileRef` type. Scaffolded types, implemented `IdentityV2`, and regenerated clients and CRD schemas.
 - **Impact**: Ensures that `NetworkSecuritySecurityProfileGroup` resources can seamlessly reference their underlying security profiles in an idiomatic KCC manner.
+
+### [2026-10-02] Direct Controller & E2E Testing for NetworkSecurityMirroringEndpointGroupAssociation
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `NetworkSecurityMirroringEndpointGroupAssociation` (Issue #13578).
+- **Problem**: 
+  1. GCP Network Security Packet Mirroring enforces a strict constraint: `associated network must be different than the network of the deployment group`. Setting `networkRef` on the association to the same network as `MirroringDeploymentGroup` causes GCP to return 400 `InvalidArgument`.
+  2. The GCP HTTP response includes a server-generated `networkCookie` integer field which varies across runs.
+  3. `NetworkSecurityMirroringEndpointGroup` had previously used `grpc.Dial` with `GRPCClientOptions()`, which causes OAuth scope errors in test environments compared to GAPIC REST client (`NewMirroringRESTClient`).
+- **Solution**:
+  1. Configured dependencies in `dependencies.yaml` to create two separate `ComputeNetwork` resources (`producer-net` for `MirroringDeploymentGroup` and `consumer-net` for `MirroringEndpointGroupAssociation`).
+  2. Added normalization for `networkCookie` in `tests/e2e/normalize.go`.
+  3. Updated `mirroringendpointgroup` and new `mirroringdeploymentgroup` to use `NewMirroringRESTClient` with `RESTClientOptions()`.
+- **Impact**: Enables smooth multi-network Packet Mirroring setups and stable golden file recording for Network Security mirroring resources.
+

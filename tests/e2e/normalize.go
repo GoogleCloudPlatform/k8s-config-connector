@@ -1394,6 +1394,8 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	visitor.replacePaths[".items[].labelFingerprint"] = "abcdef0123A="
 	visitor.replacePaths[".gatewayAddress"] = "10.0.0.1"
 	visitor.replacePaths[".items[].gatewayAddress"] = "10.0.0.1"
+	visitor.replacePaths[".networkCookie"] = 12345678
+	visitor.replacePaths[".response.networkCookie"] = 12345678
 
 	// Misc Operations
 	visitor.replacePaths[".insertTime"] = mockgcpregistry.PlaceholderTimestamp
