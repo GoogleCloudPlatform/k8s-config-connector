@@ -17,3 +17,10 @@
 - **Solution**: Named the struct field with an explicit underscore: `Google_api_source string`. This allows the lowercase of the struct field `google_api_source` to perfectly match the placeholder `{google_api_source}`, resolving the mapping successfully.
 - **Impact**: Future developers can safely keep underscores in the GCP template placeholders by declaring fields in Go with matching underscores (e.g., `Google_api_source`), allowing clean alignment with canonical GCP URL formats.
 
+### [2026-10-01] EventarcPipeline Server-Defaulted RetryPolicy Reconciliation
+- **Context**: Implementing direct controller and recording E2E fixtures for `EventarcPipeline` (Issue #13607).
+- **Problem**: When `retryPolicy` is omitted in the KRM spec, the Eventarc API automatically populates a default `retryPolicy` with `maxAttempts: 5`, `minRetryDelay: "1s"`, and `maxRetryDelay: "60s"`. During re-reconciliation, `DiffForTopLevelFields` detected a diff between `desired` (nil `RetryPolicy`) and `actual` (server-defaulted `RetryPolicy`), causing spurious update calls.
+- **Solution**: Implemented `populateDefaults` inside `compareEventarcPipeline` in `eventarcpipeline_controller.go` to populate the default retry policy values on both desired and actual before computing top-level field diffs.
+- **Impact**: Prevents false positive update loops during re-reconciliation for resources where optional retry policy fields are server-defaulted by GCP.
+
+

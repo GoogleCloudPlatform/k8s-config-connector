@@ -1,0 +1,6 @@
+- caisURL: //eventarc.googleapis.com/projects/${projectId}/locations/us-central1/pipelines/eventarcpipeline-minimal-${uniqueId}
+  group: eventarc.cnrm.cloud.google.com
+  kind: EventarcPipeline
+  name: eventarcpipeline-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
