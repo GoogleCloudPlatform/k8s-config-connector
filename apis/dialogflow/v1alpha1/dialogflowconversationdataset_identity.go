@@ -60,11 +60,12 @@ func (i *DialogflowConversationDatasetIdentity) Host() string {
 	return DialogflowConversationDatasetIdentityFormat.Host()
 }
 
+func (i *DialogflowConversationDatasetIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func getIdentityFromDialogflowConversationDatasetSpec(ctx context.Context, reader client.Reader, obj *DialogflowConversationDataset) (*DialogflowConversationDatasetIdentity, error) {
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
 	location := ""
 	if obj.Spec.Location != nil {
@@ -100,9 +101,13 @@ func (obj *DialogflowConversationDataset) GetIdentity(ctx context.Context, reade
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
+		if statusIdentity.Project != specIdentity.Project || statusIdentity.Location != specIdentity.Location {
+			return nil, fmt.Errorf("cannot change DialogflowConversationDataset parent (old parent=%q, new parent=%q)", statusIdentity.ParentString(), specIdentity.ParentString())
+		}
+		if specIdentity.ConversationDataset != "" && statusIdentity.ConversationDataset != specIdentity.ConversationDataset {
 			return nil, fmt.Errorf("cannot change DialogflowConversationDataset identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
+		return statusIdentity, nil
 	}
 
 	return specIdentity, nil

@@ -91,6 +91,16 @@ mv "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/dialogflow/mapper.ge
 rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/dialogflow/" || true
 sed -i 's/package dialogflow/package generator/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/mapper.generated.go"
 
+# Generate mapper for Dialogflow v2 service (ConversationDataset)
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.dialogflow.v2 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --output-dir "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset"
+
+mv "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/dialogflow/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/mapper.generated.go" || true
+rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/dialogflow/" || true
+sed -i 's/package dialogflow/package conversationdataset/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/mapper.generated.go"
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
