@@ -32,6 +32,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 
+# The bulk generation flags below were added with GKEBackupRestoreChannel.
+# Adding them did not change the types of the other five GKEBackup kinds.
 ${CONTROLLERBUILDER} generate-types \
     --service google.cloud.gkebackup.v1  \
     --api-version gkebackup.cnrm.cloud.google.com/v1alpha1 \
@@ -39,11 +41,25 @@ ${CONTROLLERBUILDER} generate-types \
     --resource GKEBackupRestorePlan:RestorePlan \
     --resource GKEBackupBackup:Backup \
     --resource GKEBackupRestore:Restore \
-    --resource GKEBackupBackupChannel:BackupChannel
+    --resource GKEBackupBackupChannel:BackupChannel \
+    --resource GKEBackupRestoreChannel:RestoreChannel \
+    --prepopulate-spec \
+    --emit-required-from-proto \
+    --emit-plural-acronyms \
+    --emit-message-maps \
+    --place-server-set-fields \
+    --detect-output-only-in-comments \
+    --emit-parent-refs \
+    --emit-sibling-refs \
+    --emit-reference-hints \
+    --emit-source-links
 
+# Match the generate-types flags that change field names and map fields.
 ${CONTROLLERBUILDER} generate-mapper \
     --service google.cloud.gkebackup.v1 \
-    --api-version gkebackup.cnrm.cloud.google.com/v1alpha1
+    --api-version gkebackup.cnrm.cloud.google.com/v1alpha1 \
+    --emit-plural-acronyms \
+    --emit-message-maps
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
