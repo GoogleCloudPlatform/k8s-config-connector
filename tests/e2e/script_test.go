@@ -106,6 +106,7 @@ func TestE2EScript(t *testing.T) {
 
 				h := create.NewHarness(ctx, t, harnessOptions...)
 				project := h.Project
+				targetGCP := os.Getenv("E2E_GCP_TARGET")
 				script := loadScript(t, filepath.Join(scenarioDir, scenarioPath), uniqueID, project)
 
 				create.SetupNamespacesAndApplyDefaults(h, script.Objects, project)
@@ -492,7 +493,11 @@ func TestE2EScript(t *testing.T) {
 								t.Errorf("failed to convert kube object to yaml: %v", err)
 							}
 
-							expectedPath := filepath.Join(script.SourceDir, fmt.Sprintf("_export%d.yaml", i))
+							goldenFileName := fmt.Sprintf("_export%d.yaml", i)
+							if targetGCP == "mock" {
+								goldenFileName = fmt.Sprintf("_export%d_mock.yaml", i)
+							}
+							expectedPath := filepath.Join(script.SourceDir, goldenFileName)
 							normalizers := []func(string) string{
 								IgnoreComments,
 							}
@@ -512,7 +517,11 @@ func TestE2EScript(t *testing.T) {
 							if err != nil {
 								t.Errorf("failed to convert kube object to yaml: %v", err)
 							}
-							expectedPath := filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d.yaml", i))
+							goldenFileName := fmt.Sprintf("_object%02d.yaml", i)
+							if targetGCP == "mock" {
+								goldenFileName = fmt.Sprintf("_object%02d_mock.yaml", i)
+							}
+							expectedPath := filepath.Join(script.SourceDir, goldenFileName)
 							normalizers := []func(string) string{
 								IgnoreComments,
 								IgnoreAnnotations(map[string]struct{}{
@@ -522,13 +531,17 @@ func TestE2EScript(t *testing.T) {
 							h.CompareGoldenFile(expectedPath, string(got), normalizers...)
 							// Compares the kube object spec read at the current
 							// step (which should be equivalent to the golden
-							// file, i.e. "_object%02d.yaml") and the kube
+							// file, i.e. "_object%02d.yaml" or "_object%02d_mock.yaml") and the kube
 							// object read at a different step.
 							// targetStepForReadAndCompare contains the step to
 							// compare with. The step number follows 1-based
 							// numbering.
 							if targetStepForReadAndCompare > 0 {
-								wantPath := filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d.yaml", targetStepForReadAndCompare-1))
+								wantFileName := fmt.Sprintf("_object%02d.yaml", targetStepForReadAndCompare-1)
+								if targetGCP == "mock" {
+									wantFileName = fmt.Sprintf("_object%02d_mock.yaml", targetStepForReadAndCompare-1)
+								}
+								wantPath := filepath.Join(script.SourceDir, wantFileName)
 								gotPath := expectedPath
 								wantObj, err := getKubeObjectInStringFromFile(wantPath)
 								if err != nil {
@@ -561,7 +574,11 @@ func TestE2EScript(t *testing.T) {
 						}
 
 						for i, stepEvents := range eventsByStep {
-							expectedPath := filepath.Join(script.SourceDir, fmt.Sprintf("_http%02d.log", i))
+							goldenFileName := fmt.Sprintf("_http%02d.log", i)
+							if targetGCP == "mock" {
+								goldenFileName = fmt.Sprintf("_http%02d_mock.log", i)
+							}
+							expectedPath := filepath.Join(script.SourceDir, goldenFileName)
 							NormalizeHTTPLog(t, stepEvents.Entries, h.RegisteredServices(), project, uniqueID, "", "")
 							got := x.Render(stepEvents.Entries)
 							if stepEvents.SkipCheck {

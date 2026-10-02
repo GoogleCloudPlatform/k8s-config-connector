@@ -34,12 +34,19 @@ if [[ ! -f "${PREBUILT_TEST_BINARY}" ]]; then
   time go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e
 fi
 
+export E2E_GCP_TARGET="${E2E_GCP_TARGET:-mock}"
+export E2E_KUBE_TARGET="${E2E_KUBE_TARGET:-envtest}"
+export RUN_E2E=1
+export GOLDEN_REQUEST_CHECKS=1
+export GOLDEN_OBJECT_CHECKS=1
+export WRITE_GOLDEN_OUTPUT=1
+
 # Running direct and tracker tests
 export KCC_RECONCILE_FLAG_GATE=USE_DEPENDENCY_TRACKER
 export ONLY_TEST_APIGROUPS="iam.cnrm.cloud.google.com"
 
 echo "Running sample iam tests with the gcptracker..."
-${PREBUILT_TEST_BINARY} -test.run "^TestAllInSeries/samples$" -test.timeout 15m -test.v
+(cd tests/e2e && ${PREBUILT_TEST_BINARY} -test.run "^TestAllInSeries/samples$" -test.timeout 15m -test.v)
 
 echo "Running gcptracker scenarios tests..."
 (cd tests/e2e && ${PREBUILT_TEST_BINARY} -test.run "^TestE2EScript/scenarios/tracker/tracker-iampartialpolicy$" -test.timeout 15m -test.v)
