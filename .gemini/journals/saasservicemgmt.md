@@ -6,6 +6,13 @@
   - **Identifier Handling in Diff**: Restoring `maskedActual.Name = desired.Name` in `compareUnit` is essential after `mappers.OnlySpecFields` to avoid false diffs on the `name` field during re-reconciliation.
   - **Synchronous Operations**: `CreateUnit`, `UpdateUnit`, and `DeleteUnit` are all synchronous calls on `SaasDeploymentsClient`, avoiding LRO polling.
 
+### [2026-10-01] Scaffolding Types and Identity for SaaSServiceMgmtRolloutKind
+- **Context**: Greenfield scaffolding of direct KRM types, identity, reference, and generate.sh for `SaaSServiceMgmtRolloutKind`.
+- **Observations**:
+  - `RolloutKind` protobuf message is located in `google.cloud.saasplatform.saasservicemgmt.v1beta1` under `rollouts_resources.proto`.
+  - The resource uses URL template `projects/{project}/locations/{location}/rolloutKinds/{rolloutkind}` and maps to `saasservicemgmt.googleapis.com/RolloutKind`.
+  - `pb.ErrorBudget` contains proto3 optional fields `allowed_count` and `allowed_percentage` mapping to `*int32`. A manual mapper in `pkg/controller/direct/saasservicemgmt/mapper.go` was created to assign pointer fields directly.
+
 ### [2026-07-03] Direct Controller and Fuzzer Implementation for SaasServiceMgmtRelease
 - **Context**: Implementing the Greenfield direct controller, KRM fuzzer, and test fixtures for `SaasServiceMgmtRelease`.
 - **Observations**: 
