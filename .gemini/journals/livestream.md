@@ -14,3 +14,17 @@
   1. `LiveStreamInput` labels cannot be updated after creation in GCP LiveStream API (`googleapi: Error 400: The request was invalid: labels can't be updated`). Spec labels should remain constant between creation and updates, while `preprocessingConfig` and `securityRules` are mutable.
   2. `LiveStreamInput` generates a dynamic `uri` stream key and IP address upon creation. Added normalization rules in `mockgcp/mocklivestream/normalize.go` so that the stream key and URI in responses are normalized for golden file comparisons.
 
+### [2026-10-02] LiveStreamChannel direct controller and GCP behavior
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `LiveStreamChannel`.
+- **Findings**:
+  1. GCP server defaults for `Channel`:
+     - `inputConfig.inputSwitchMode` defaults to `FAILOVER_PREFER_PRIMARY` (enum 1).
+     - `logConfig.logSeverity` defaults to `OFF` (enum 1).
+     - `timecodeConfig.source` defaults to `MEDIA_TIMESTAMP` (enum 1).
+     - `manifests`: `maxSegmentCount` defaults to 5, `segmentKeepDuration` defaults to `60s`.
+     - `elementaryStreams.videoStream.h264`: `entropyCoder` defaults to `"cabac"`, `gopDuration` defaults to `2s`, `profile` defaults to `"main"`, `vbvSizeBits` defaults to `bitrateBps`, and `vbvFullnessBits` defaults to `0.9 * bitrateBps`.
+     - `elementaryStreams.audioStream`: `sampleRateHertz` defaults to `48000`.
+  2. Input and Asset references in GCP API responses return canonical resource paths using the numeric GCP Project Number rather than Project ID. Used `projectMapper.ReplaceProjectNumberWithIDInLink` to normalize both `inputAttachments[].input` and `staticOverlays[].asset` in `compareChannel`.
+  3. Stream constraints: For `fmp4` containers, each `muxStream` must contain exactly one video or audio elementary stream. Text streams with `cea608` or `cea708` passthrough are embedded in video and cannot be included into `muxStreams`.
+  4. In YAML manifests for KRM, mapping keys like `y:` in `position` must be quoted (`"y":`) to prevent YAML 1.1 boolean parsing as `true`.
+
