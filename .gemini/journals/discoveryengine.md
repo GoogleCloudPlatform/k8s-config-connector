@@ -62,3 +62,9 @@
   2. Added `DiscoveryEngineEngine` to `dependencies.yaml` for both minimal and maximal test fixtures.
   3. Kept action fields unchanged in `update.yaml` and tested updates on mutable fields (`displayName` and `conditions.activeTimeRange`).
 - **Impact**: Enables proper direct reconciliation and successful E2E golden file recording against real GCP for `DiscoveryEngineControl`.
+
+### [2026-10-01] DiscoveryEngineControl MockGCP Alignment and Dynamic Engine Association
+- **Context**: Aligning MockGCP behavior with Real GCP logs for `DiscoveryEngineControl` (Issue #13608).
+- **Problem**: When a `Control` is created under a `dataStore` that is attached to an `Engine`, the real GCP DiscoveryEngine API returns the resource `name` in responses under the `engines/{engine}` hierarchy rather than `dataStores/{dataStore}`.
+- **Solution**: Implemented `buildControlResponseName` in `mockdiscoveryengine/control.go` to inspect whether the target `dataStore` is attached to an `Engine` and return the matching engine control URI. Verified log alignment across minimal and maximal test fixtures with zero drift.
+- **Impact**: Ensures accurate MockGCP simulation for DiscoveryEngine controls under both standalone and engine-associated datastores.
