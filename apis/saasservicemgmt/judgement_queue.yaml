@@ -31,3 +31,37 @@ entries:
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
     status: open
+  - kind: SaaSServiceMgmtRollout
+    group: saasservicemgmt.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: SaaSServiceMgmtRollout
+    group: saasservicemgmt.cnrm.cloud.google.com
+    field: .spec.release
+    reason: possible-reference-by-sibling
+    detail: the name matches SaasServiceMgmtRelease, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - kind: SaaSServiceMgmtRollout
+    group: saasservicemgmt.cnrm.cloud.google.com
+    field: .spec.release
+    reason: possible-reference
+    detail: target=saasservicemgmt.googleapis.com/Release
+    status: open
+  - kind: SaaSServiceMgmtRollout
+    group: saasservicemgmt.cnrm.cloud.google.com
+    field: .spec.rolloutKind
+    reason: possible-reference
+    detail: target=saasservicemgmt.googleapis.com/RolloutKind
+    status: open
+  - kind: SaaSServiceMgmtRollout
+    group: saasservicemgmt.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: open
+  - protoMessage: google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout
+    field: release
+    reason: possible-reference-by-sibling
+    detail: the name matches SaasServiceMgmtRelease, a resource this service declares; confirm whether it should be a reference
+    status: open
