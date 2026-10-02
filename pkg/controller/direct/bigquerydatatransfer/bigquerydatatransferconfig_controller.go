@@ -56,9 +56,9 @@ type model struct {
 	config config.ControllerConfig
 }
 
-func (m *model) client(ctx context.Context) (*gcp.Client, error) {
+func (m *model) client(ctx context.Context, projectID string) (*gcp.Client, error) {
 	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	opts, err := m.config.RESTClientOptions(config.WithDefaultQuotaProject(projectID))
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +180,7 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	}
 
 	// Get bigquerydatatransfer GCP client
-	gcpClient, err := m.client(ctx)
+	gcpClient, err := m.client(ctx, projectID)
 	if err != nil {
 		return nil, err
 	}
