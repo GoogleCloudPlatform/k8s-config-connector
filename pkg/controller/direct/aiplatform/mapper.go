@@ -17,7 +17,7 @@ package aiplatform
 import (
 	"encoding/json"
 
-	aiplatformpb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
+	aiplatformpb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/wrapperspb"
