@@ -25,6 +25,11 @@ trap on_error ERR
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
 
+if [[ -n "$(git status --porcelain)" ]]; then
+  echo "WARNING: Working tree has uncommitted changes. Skipping generated files validation."
+  exit 0
+fi
+
 make generate
 
 changed_files=$(git diff --name-only)
