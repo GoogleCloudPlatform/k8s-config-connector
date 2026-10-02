@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
+	pbv1 "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
@@ -69,6 +70,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDeploymentResourcePoolServiceServer(grpcServer, &deploymentResourcePoolService{MockService: s})
 	pb.RegisterPipelineServiceServer(grpcServer, &pipelineService{MockService: s})
 	pb.RegisterPersistentResourceServiceServer(grpcServer, &persistentResourceService{MockService: s})
+	pbv1.RegisterReasoningEngineServiceServer(grpcServer, &reasoningEngineService{MockService: s})
 
 	// Also register under v1 name so that v1 gRPC clients can call it
 	desc := pb.FeatureOnlineStoreAdminService_ServiceDesc
@@ -107,6 +109,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.AddService(pb.NewDeploymentResourcePoolServiceClient(conn))
 	mux.AddService(pb.NewPipelineServiceClient(conn))
 	mux.AddService(pb.NewPersistentResourceServiceClient(conn))
+	mux.AddService(pbv1.NewReasoningEngineServiceClient(conn))
 
 	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 	mux.AddOperationsPath("/v1beta1/{prefix=**}/operations/{name}", conn)
