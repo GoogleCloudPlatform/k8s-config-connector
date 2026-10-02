@@ -218,3 +218,15 @@ type ConfigDeploymentList struct {
 func init() {
 	SchemeBuilder.Register(&ConfigDeployment{}, &ConfigDeploymentList{})
 }
+
+// ListValue is written by hand to give the list items a type. Value contains
+// ListValue, so the type is recursive. Without these markers controller-gen
+// leaves the items schema empty, and the API server rejects the CRD.
+// +kcc:proto=google.protobuf.ListValue
+type ListValue struct {
+	// Repeated field of dynamically typed values.
+	// +kcc:proto:field=google.protobuf.ListValue.values
+	// +kubebuilder:validation:items:XPreserveUnknownFields
+	// +kubebuilder:validation:items:Type=object
+	Values []Value `json:"values,omitempty"`
+}
