@@ -82,14 +82,15 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `ComputeInterconnectAttachment`
-                      resource.'
+                    description: A reference to an externally managed ComputeInterconnectAttachment
+                      resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/interconnectAttachments/{{interconnectAttachmentID}}".
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The name of a ComputeInterconnectAttachment resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The namespace of a ComputeInterconnectAttachment
+                      resource.
                     type: string
                 type: object
               ipRange:

@@ -10,7 +10,7 @@
   name: computerouter-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-west2/interconnectAttachments/computeinterconnectattachment-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeInterconnectAttachment
   name: computeinterconnectattachment-${uniqueId}

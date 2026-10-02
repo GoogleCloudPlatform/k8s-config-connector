@@ -221,7 +221,7 @@ vpnInterfaces:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `ComputeInterconnectAttachment` resource.</p>
+            <p>A reference to an externally managed ComputeInterconnectAttachment resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/interconnectAttachments/{{interconnectAttachmentID}}".</p>
         </td>
     </tr>
     <tr>
@@ -231,7 +231,7 @@ vpnInterfaces:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeInterconnectAttachment resource.</p>
         </td>
     </tr>
     <tr>
@@ -241,7 +241,7 @@ vpnInterfaces:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeInterconnectAttachment resource.</p>
         </td>
     </tr>
     <tr>
