@@ -42,7 +42,9 @@ This skill guides the implementation of the `Adapter` interface
 
     > [!WARNING]
     > **WHENEVER A TEST CASE IS UPDATED, WE MUST RECORD REAL GCP LOGS AGAIN.**
-    > If you make any modifications to a test case configuration, manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or the controller's runtime mapping configuration, you **MUST** run the test case against real GCP (`hack/record-gcp` or with `E2E_GCP_TARGET=real`) to regenerate the authentic `_http.log` baseline before comparing or committing any mock log changes. Do not attempt to manually edit the logs or bypass recording live traffic.
+    > If you make any modifications to a test case configuration or manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or modify the controller's live GCP API request structures, you **MUST** run the test case against real GCP (`hack/record-gcp` or with `E2E_GCP_TARGET=real`) to regenerate the authentic `_http.log` baseline before comparing or committing any mock log changes. Do not attempt to manually edit the logs or bypass recording live traffic.
+    >
+    > **Do NOT re-run real GCP for log normalization or mock alignment**: Run-to-run variations (e.g. LRO polling counts, dynamic timestamps, tokens, or cookies) should be normalized in `tests/e2e/normalize.go` or MockGCP normalizers without re-recording against live GCP. Mock alignment is done exclusively with `hack/compare-mock`.
 
     - **Iterative Adapter Fixes**: If there are discrepancies between legacy and direct controller behavior, iteratively refine `Adapter` methods (`Find`, `Create`, `Update`, `Delete`) and re-verify using the [`match-mockgcp-with-realgcp`](.gemini/skills/match-mockgcp-with-realgcp/SKILL.md) skill.
 

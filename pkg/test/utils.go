@@ -288,7 +288,7 @@ func CompareGoldenFile(t *testing.T, p, fullGot string, normalizers ...func(s st
 		if onlyWarn {
 			t.Logf("found diff in golden output %s, but ONLY_WARN_ON_GOLDEN_DIFFS=%s so will treat as a warning", p, os.Getenv("ONLY_WARN_ON_GOLDEN_DIFFS"))
 			t.Logf("unexpected diff in %s: %s", p, diff)
-		} else {
+		} else if !writeGoldenOutput {
 			t.Errorf("FAIL: unexpected diff in %s: %s", p, diff)
 		}
 	}
