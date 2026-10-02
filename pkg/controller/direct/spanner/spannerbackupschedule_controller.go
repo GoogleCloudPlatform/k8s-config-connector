@@ -35,6 +35,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -75,10 +76,6 @@ func (m *modelBackupSchedule) AdapterForObject(ctx context.Context, op *directba
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
-
 	id, err := krm.NewBackupScheduleIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
@@ -93,6 +90,7 @@ func (m *modelBackupSchedule) AdapterForObject(ctx context.Context, op *directba
 		id:        id,
 		gcpClient: gcpClient,
 		desired:   obj,
+		reader:    reader,
 	}, nil
 }
 
@@ -106,6 +104,7 @@ type BackupScheduleAdapter struct {
 	gcpClient *gcp.DatabaseAdminClient
 	desired   *krm.SpannerBackupSchedule
 	actual    *spannerbackupschedulespb.BackupSchedule
+	reader    client.Reader
 }
 
 var _ directbase.Adapter = &BackupScheduleAdapter{}
@@ -136,6 +135,10 @@ func (a *BackupScheduleAdapter) Create(ctx context.Context, createOp *directbase
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating BackupSchedule", "name", a.id)
 	mapCtx := &direct.MapContext{}
+
+	if err := common.NormalizeReferences(ctx, a.reader, a.desired, nil); err != nil {
+		return fmt.Errorf("normalizing references: %w", err)
+	}
 
 	desired := a.desired.DeepCopy()
 	resource := SpannerBackupScheduleSpec_ToProto(mapCtx, &desired.Spec)
@@ -168,6 +171,10 @@ func (a *BackupScheduleAdapter) Update(ctx context.Context, updateOp *directbase
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating BackupSchedule", "name", a.id)
 	mapCtx := &direct.MapContext{}
+
+	if err := common.NormalizeReferences(ctx, a.reader, a.desired, nil); err != nil {
+		return fmt.Errorf("normalizing references: %w", err)
+	}
 
 	desiredPb := SpannerBackupScheduleSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
