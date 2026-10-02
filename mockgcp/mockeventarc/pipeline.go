@@ -70,23 +70,7 @@ func (s *EventarcV1) CreatePipeline(ctx context.Context, req *pb.CreatePipelineR
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 
-	if obj.RetryPolicy == nil {
-		obj.RetryPolicy = &pb.Pipeline_RetryPolicy{
-			MaxAttempts:   5,
-			MinRetryDelay: &durationpb.Duration{Seconds: 1},
-			MaxRetryDelay: &durationpb.Duration{Seconds: 60},
-		}
-	} else {
-		if obj.RetryPolicy.MaxAttempts == 0 {
-			obj.RetryPolicy.MaxAttempts = 5
-		}
-		if obj.RetryPolicy.MinRetryDelay == nil {
-			obj.RetryPolicy.MinRetryDelay = &durationpb.Duration{Seconds: 1}
-		}
-		if obj.RetryPolicy.MaxRetryDelay == nil {
-			obj.RetryPolicy.MaxRetryDelay = &durationpb.Duration{Seconds: 60}
-		}
-	}
+	s.populateDefaultsForPipeline(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -229,6 +213,26 @@ func (s *EventarcV1) ListPipelines(ctx context.Context, req *pb.ListPipelinesReq
 	}
 
 	return response, nil
+}
+
+func (s *EventarcV1) populateDefaultsForPipeline(obj *pb.Pipeline) {
+	if obj.RetryPolicy == nil {
+		obj.RetryPolicy = &pb.Pipeline_RetryPolicy{
+			MaxAttempts:   5,
+			MinRetryDelay: &durationpb.Duration{Seconds: 1},
+			MaxRetryDelay: &durationpb.Duration{Seconds: 60},
+		}
+	} else {
+		if obj.RetryPolicy.MaxAttempts == 0 {
+			obj.RetryPolicy.MaxAttempts = 5
+		}
+		if obj.RetryPolicy.MinRetryDelay == nil {
+			obj.RetryPolicy.MinRetryDelay = &durationpb.Duration{Seconds: 1}
+		}
+		if obj.RetryPolicy.MaxRetryDelay == nil {
+			obj.RetryPolicy.MaxRetryDelay = &durationpb.Duration{Seconds: 60}
+		}
+	}
 }
 
 type pipelineName struct {
