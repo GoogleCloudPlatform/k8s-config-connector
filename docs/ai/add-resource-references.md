@@ -2,7 +2,7 @@ This document provides instructions on how to handle API resource references in 
 
 ## Background
 
-In KCC, a resource can reference another resource. For example, a `StorageBucket` might have a `kmsKeyName` field that references a `KMSKey` resource. When KCC sees such a reference, it needs to resolve the reference to the fully-qualified GCP resource name.
+In KCC, a resource can reference another resource. For example, a `StorageBucket` might have a `kmsKeyName` field that references a `KMSCryptoKey` resource. When KCC sees such a reference, it needs to resolve the reference to the fully-qualified GCP resource name.
 
 The way KCC handles this is by defining a "reference" object. This object is a struct that implements the `refsv1beta1.Ref` interface. This interface has methods that allow the generic normalization logic to resolve the reference.
 
@@ -10,7 +10,7 @@ The reference object is typically placed in its own file, `apis/<service>/<versi
 
 ## Task
 
-Your task is to identify fields in KCC's API that are references to other GCP resources, and change them to use the KCC reference object.
+Your task is to identify fields in KCC's API that are references to other GCP resources, and change them to use the KCC reference object, following the established conventions.
 
 ### Identifying Reference Fields
 
@@ -22,9 +22,21 @@ There are two cases to consider:
 
 ### Changing a Field to a Reference
 
-Once you have identified a reference field, you need to change its type to be a pointer to the reference object. For example, if you have a field `KmsKeyName *string`, and you have determined that it is a reference to a `KMSKey` resource, you should change it to `KmsKeyRef *KMSKeyRef`.
+Once you have identified a reference field, you need to change its definition in the Go struct to follow the naming convention required by the `mapper-generator`.
 
-If the reference object does not exist, you should create one. You can use `apis/bigquerybiglake/v1alpha1/table_reference.go` as a template.
+-   **Go Field Name:** The Go struct field name **must** be the `UpperCamelCase` version of the original GCP proto field name, with a `Ref` suffix. For a proto field `kms_key_name`, the Go field name must be `KmsKeyNameRef`. This is critical for the auto-mapper to work.
+-   **JSON Tag:** The `json` tag determines the field name in the YAML/JSON representation of the resource. It can be different from the Go field name. This is useful for backward compatibility, for example when migrating a Beta resource that had a different field name.
+-   **Field Type:** The Go type for this field must be a pointer to the reference struct, e.g., `*KMSCryptoKeyRef`.
+
+For example, if you have a proto field `kms_key_name` that is a reference to a `KMSCryptoKey` resource, and the old field was named `kmsKeyName`, you should change the Go struct definition from `KmsKeyName *string` to:
+
+```go
+KmsKeyNameRef *KMSCryptoKeyRef `json:"kmsKeyName,omitempty"`
+```
+
+In this example, `KmsKeyNameRef` is the Go field name that the auto-mapper uses. `kmsKeyName` is the field name in the YAML, which is kept for backward compatibility. If there are no backward compatibility concerns, the json tag should be the camelCase version of the Go field name (e.g., `kmsKeyNameRef`).
+
+If the reference object (e.g., `KMSCryptoKeyRef`) does not exist, you should create one. You can use `apis/bigquerybiglake/v1alpha1/table_reference.go` as a template.
 
 Here is an example of a reference object:
 
