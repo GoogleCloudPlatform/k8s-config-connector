@@ -223,7 +223,7 @@ X-Xss-Protection: 0
         "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10"
       },
       "displayName": "SQL Log Alert Condition Daily Boolean",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionID}"
     }
   ],
   "creationRecord": {
@@ -236,7 +236,7 @@ X-Xss-Protection: 0
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "userLabels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -275,7 +275,7 @@ X-Xss-Protection: 0
         "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10"
       },
       "displayName": "SQL Log Alert Condition Daily Boolean",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionID}"
     }
   ],
   "creationRecord": {
@@ -288,7 +288,7 @@ X-Xss-Protection: 0
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "userLabels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -318,7 +318,7 @@ Content-Type: application/json
         "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20"
       },
       "displayName": "SQL Log Alert Condition Daily Boolean",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionID}"
     }
   ],
   "displayName": "Test SQL Alert Policy Daily Boolean",
@@ -357,7 +357,7 @@ X-Xss-Protection: 0
         "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20"
       },
       "displayName": "SQL Log Alert Condition Daily Boolean",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionID}"
     }
   ],
   "creationRecord": {
@@ -370,7 +370,7 @@ X-Xss-Protection: 0
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "userLabels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -410,7 +410,7 @@ X-Xss-Protection: 0
         "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20"
       },
       "displayName": "SQL Log Alert Condition Daily Boolean",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionID}"
     }
   ],
   "creationRecord": {
@@ -423,7 +423,7 @@ X-Xss-Protection: 0
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "userLabels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
