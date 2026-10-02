@@ -55,8 +55,8 @@ RUN_E2E=1 E2E_GCP_TARGET=mock E2E_KUBE_TARGET=envtest go test -v ./tests/e2e -ru
 # Run all fixtures for a service (matches any fixture with "storage" in its name)
 RUN_E2E=1 E2E_GCP_TARGET=mock E2E_KUBE_TARGET=envtest go test -v ./tests/e2e -run TestAllInSeries/fixtures/storage
 
-# Record against real GCP manually (not recommended over hack/record-gcp)
-RUN_E2E=1 E2E_GCP_TARGET=real E2E_KUBE_TARGET=envtest WRITE_GOLDEN_OUTPUT=1 GOLDEN_OBJECT_CHECKS=1 GOLDEN_REQUEST_CHECKS=1 go test -v ./tests/e2e -run TestAllInSeries/fixtures/storagebucketbasic
+# Record against real GCP: always use hack/record-gcp (it also accepts a test name pattern)
+hack/record-gcp "fixtures/^storagebucketbasic$"
 ```
 
 ## Creating a New Test

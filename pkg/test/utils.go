@@ -278,17 +278,10 @@ func CompareGoldenFile(t *testing.T, p, fullGot string, normalizers ...func(s st
 	}
 
 	if diff := cmp.Diff(want, got); diff != "" {
-		onlyWarn := false
-		for _, f := range strings.Split(os.Getenv("ONLY_WARN_ON_GOLDEN_DIFFS"), ",") {
-			if f == filepath.Base(p) {
-				onlyWarn = true
-			}
-		}
-
-		if onlyWarn {
+		if shouldOnlyWarnOnGoldenDiff(p) {
 			t.Logf("found diff in golden output %s, but ONLY_WARN_ON_GOLDEN_DIFFS=%s so will treat as a warning", p, os.Getenv("ONLY_WARN_ON_GOLDEN_DIFFS"))
 			t.Logf("unexpected diff in %s: %s", p, diff)
-		} else if !writeGoldenOutput {
+		} else {
 			t.Errorf("FAIL: unexpected diff in %s: %s", p, diff)
 		}
 	}
@@ -301,6 +294,15 @@ func CompareGoldenFile(t *testing.T, p, fullGot string, normalizers ...func(s st
 		}
 		t.Logf("wrote updated golden output to %s", p)
 	}
+}
+
+func shouldOnlyWarnOnGoldenDiff(p string) bool {
+	for _, f := range strings.Split(os.Getenv("ONLY_WARN_ON_GOLDEN_DIFFS"), ",") {
+		if f == filepath.Base(p) || f == "*" {
+			return true
+		}
+	}
+	return false
 }
 
 // IgnoreLeadingComments is a normalizer function that strips comments.
@@ -375,7 +377,12 @@ func CompareGoldenObject(t *testing.T, p string, got []byte) {
 		return
 	}
 
-	t.Errorf("FAIL: unexpected diff in %s: %s", p, diff)
+	if shouldOnlyWarnOnGoldenDiff(p) {
+		t.Logf("found diff in golden output %s, but ONLY_WARN_ON_GOLDEN_DIFFS=%s so will treat as a warning", p, os.Getenv("ONLY_WARN_ON_GOLDEN_DIFFS"))
+		t.Logf("unexpected diff in %s: %s", p, diff)
+	} else {
+		t.Errorf("FAIL: unexpected diff in %s: %s", p, diff)
+	}
 
 	if writeGoldenOutput {
 		// Write the output to the golden file

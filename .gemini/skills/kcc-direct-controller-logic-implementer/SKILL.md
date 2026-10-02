@@ -48,18 +48,10 @@ This skill guides the implementation of the `Adapter` interface and the creation
     > **Do NOT re-run real GCP for log normalization or mock alignment**: Run-to-run variations in HTTP logs (such as LRO polling counts, dynamic timestamps, tokens, or cookies) should be normalized in `tests/e2e/normalize.go` or MockGCP normalizers without re-recording against live GCP. Mock alignment is done exclusively with `hack/compare-mock`.
 
     ```bash
-    # Run from the repository root
-    RUN_E2E=1 \
-    E2E_GCP_TARGET=real \
-    E2E_KUBE_TARGET=envtest \
-    GOLDEN_REQUEST_CHECKS=1 \
-    GOLDEN_OBJECT_CHECKS=1 \
-    WRITE_GOLDEN_OUTPUT=1 \
-    go test -v ./tests/e2e \
-      -timeout 60m \
-      -run TestAllInSeries/fixtures/<resource_lower>-minimal
+    # Run from the repository root; records both the -minimal and -maximal fixtures in one run
+    hack/record-gcp "fixtures/^<resource_lower>-(minimal|maximal)$"
     ```
-    Repeat for the `-maximal` fixture. Commit the resulting `_http.log` and `_generated_object_*.golden.yaml` files.
+    Commit the resulting `_http.log` and `_generated_object_*.golden.yaml` files.
 
 5.  **Verify Field Coverage**:
     Run the API check tests:
