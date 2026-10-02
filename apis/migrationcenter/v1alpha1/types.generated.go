@@ -134,7 +134,8 @@ type SoleTenantNodeType struct {
 	NodeName *string `json:"nodeName,omitempty"`
 }
 
-/* unreachable type Source
+/* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.Source", skipping
+
 // +kcc:proto=google.cloud.migrationcenter.v1.Source
 type Source struct {
 
@@ -272,7 +273,8 @@ type PreferenceSetObservedState struct {
 }
 */
 
-/* unreachable type SourceObservedState
+/* found existing non-generated go type with proto tag "google.cloud.migrationcenter.v1.Source", skipping
+
 // +kcc:observedstate:proto=google.cloud.migrationcenter.v1.Source
 type SourceObservedState struct {
 	// Output only. The full name of the source.
