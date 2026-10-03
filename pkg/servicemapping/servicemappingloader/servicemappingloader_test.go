@@ -108,6 +108,15 @@ var resourceConfigTestCases = []ResourceConfigTestCase{
 			"apiVersion": groupToAPIVersion(ComputeGroup),
 		},
 	}},
+	{"sovereign regional resource", true, ComputeAddressResourceConfigName, &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"spec": map[string]interface{}{
+				"location": "u-region-1",
+			},
+			"kind":       ComputeAddressKind,
+			"apiVersion": groupToAPIVersion(ComputeGroup),
+		},
+	}},
 	{"global resource", true, ComputeGlobalAddressResourceConfigName, &unstructured.Unstructured{
 		Object: map[string]interface{}{
 			"spec": map[string]interface{}{
