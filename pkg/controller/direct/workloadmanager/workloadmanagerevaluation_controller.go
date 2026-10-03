@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workloadmanager/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -209,7 +210,7 @@ func compareResource(ctx context.Context, actual, desired *workloadmanagerpb.Eva
 	mapCtx := &direct.MapContext{}
 	spec := WorkloadManagerEvaluationSpec_FromProto(mapCtx, actual)
 	if actual.GetKmsKey() != "" {
-		spec.KmsKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: actual.GetKmsKey()}
+		spec.KmsKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: actual.GetKmsKey()}
 	}
 	maskedActual := WorkloadManagerEvaluationSpec_ToProto(mapCtx, spec)
 	if spec.KmsKeyRef != nil {
@@ -252,7 +253,7 @@ func (a *EvaluationAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 	mapCtx := &direct.MapContext{}
 	obj.Spec = direct.ValueOf(WorkloadManagerEvaluationSpec_FromProto(mapCtx, a.actual))
 	if a.actual.GetKmsKey() != "" {
-		obj.Spec.KmsKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: a.actual.GetKmsKey()}
+		obj.Spec.KmsKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: a.actual.GetKmsKey()}
 	}
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
