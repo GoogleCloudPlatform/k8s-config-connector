@@ -7,110 +7,129 @@
 < POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
 ---
 > POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json&prettyPrint=false
-94,95c93
+95,96c94
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-670,671c668
+671,672c669
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-700c697
+701c698
 < POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
 ---
 > POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json&prettyPrint=false
-746c743
+747c744
 <   "defaultTableExpirationMs": 3600000,
 ---
 >   "defaultTableExpirationMs": "3600000",
-829,830c826
+831,832c828
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-906c902
+908c904
 < PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 ---
-> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
-909,958d904
-< {
-<   "access": [
-<     {
-<       "dataset": {
-<         "dataset": {
-<           "datasetId": "bigquerydatasetsample${uniqueId}",
-<           "projectId": "${projectId}"
-<         },
-<         "targetTypes": [
-<           "VIEWS"
-<         ]
-<       }
-<     },
-<     {
-<       "domain": "google.com",
-<       "role": "READER"
-<     },
-<     {
-<       "role": "OWNER",
-<       "specialGroup": "projectOwners"
-<     },
-<     {
-<       "routine": {
-<         "datasetId": "bigquerydatasetsample${uniqueId}",
-<         "projectId": "${projectId}",
-<         "routineId": "bigqueryroutine${uniqueId}"
-<       }
-<     },
-<     {
-<       "view": {
-<         "datasetId": "bigquerydatasetsample${uniqueId}",
-<         "projectId": "${projectId}",
-<         "tableId": "bigquerytablesample${uniqueId}"
-<       }
-<     }
-<   ],
-<   "datasetReference": {
-<     "datasetId": "bigquerydatasetaccessfull${uniqueId}"
-<   },
-<   "defaultTableExpirationMs": 3600000,
-<   "description": "BigQuery Dataset With Full Access Block",
-<   "friendlyName": "bigquerydataset-fullaccessblock",
-<   "labels": {
-<     "cnrm-test": "true",
-<     "managed-by-cnrm": "true"
-<   },
-<   "location": "us-central1",
-<   "maxTimeTravelHours": "168"
-< }
-< 
-986a933,936
->       "groupByEmail": "kcc-eng@google.com",
+> PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+945a942,989
+>   ]
+> }
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "access": [
+>     {
+>       "dataset": {
+>         "dataset": {
+>           "datasetId": "bigquerydatasetsample${uniqueId}",
+>           "projectId": "${projectId}"
+>         },
+>         "targetTypes": [
+>           "VIEWS"
+>         ]
+>       }
+>     },
+>     {
+>       "domain": "google.com",
 >       "role": "READER"
 >     },
 >     {
-1029,1030c979
+>       "role": "OWNER",
+>       "specialGroup": "projectOwners"
+>     },
+>     {
+>       "routine": {
+>         "datasetId": "bigquerydatasetsample${uniqueId}",
+>         "projectId": "${projectId}",
+>         "routineId": "bigqueryroutine${uniqueId}"
+>       }
+>     },
+>     {
+>       "view": {
+>         "datasetId": "bigquerydatasetsample${uniqueId}",
+>         "projectId": "${projectId}",
+>         "tableId": "bigquerytablesample${uniqueId}"
+>       }
+>     }
+946a991
+>   "creationTime": "123456789",
+948c993,994
+<     "datasetId": "bigquerydatasetaccessfull${uniqueId}"
+---
+>     "datasetId": "bigquerydatasetaccessfull${uniqueId}",
+>     "projectId": "${projectId}"
+950c996
+<   "defaultTableExpirationMs": 3600000,
+---
+>   "defaultTableExpirationMs": "3600000",
+951a998
+>   "etag": "abcdef0123A=",
+952a1000,1001
+>   "id": "000000000000000000000",
+>   "kind": "bigquery#dataset",
+956a1006
+>   "lastModifiedTime": "123456789",
+958c1008,1011
+<   "maxTimeTravelHours": "168"
+---
+>   "maxTimeTravelHours": "168",
+>   "satisfiesPzs": false,
+>   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetaccessfull${uniqueId}",
+>   "type": "DEFAULT"
+960a1014,1018
+> ---
+> 
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+> Content-Type: application/json
+> 
+1031,1032c1089
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-1059a1009,1012
->       "groupByEmail": "kcc-eng@google.com",
->       "role": "READER"
->     },
->     {
-1102,1103c1055
+1104,1105c1161
 < DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
 < Content-Type: application/json
 ---
 > DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false&prettyPrint=false
-1329,1330c1281
+1331,1332c1387
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-1382,1383c1333
+1384,1385c1439
 < DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
 < Content-Type: application/json
 ---

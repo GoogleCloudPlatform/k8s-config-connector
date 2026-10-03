@@ -17,6 +17,7 @@ package bigquerydataset
 import (
 	"context"
 	"fmt"
+	"maps"
 	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
@@ -25,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	bigquery "cloud.google.com/go/bigquery"
@@ -139,11 +141,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	mapCtx := &direct.MapContext{}
 
 	desiredDataset := BigQueryDatasetSpec_ToProto(mapCtx, &a.desired.Spec)
-	desiredDataset.Labels = make(map[string]string)
-	for k, v := range a.desired.GetObjectMeta().GetLabels() {
-		desiredDataset.Labels[k] = v
-	}
-	desiredDataset.Labels["managed-by-cnrm"] = "true"
+	desiredDataset.Labels = label.GCPLabels(a.desired)
 
 	// Resolve KMS key reference
 	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
@@ -203,6 +201,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	desired.Labels = label.GCPLabels(a.desired)
+	ApplyBigQueryDatasetGCPDefaults(mapCtx, &desiredKRM.Spec, desired, a.actual)
 
 	// Resolve KMS key reference
 	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
@@ -212,8 +212,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		}
 		desired.DefaultEncryptionConfig.KMSKeyName = kmsRef.External
 	}
-
 	resource := cloneBigQueryDatasetMetadate(a.actual)
+
 	// Check for immutable fields
 	if desiredKRM.Spec.Location != nil && !reflect.DeepEqual(desired.Location, resource.Location) {
 		return fmt.Errorf("BigQueryDataset %s/%s location cannot be changed, actual: %s, desired: %s", u.GetNamespace(), u.GetName(), resource.Location, desired.Location)
@@ -254,7 +254,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if desiredKRM.Spec.IsCaseInsensitive != nil && !reflect.DeepEqual(desired.IsCaseInsensitive, resource.IsCaseInsensitive) {
 		report.AddField("is_case_sensitive", resource.IsCaseInsensitive, desired.IsCaseInsensitive)
 		resource.IsCaseInsensitive = desired.IsCaseInsensitive
-		updateMask.Paths = append(updateMask.Paths, "is_case_sensitive")
+		updateMask.Paths = append(updateMask.Paths, "is_case_insensitive")
 	}
 	if desired.StorageBillingModel != "" && !reflect.DeepEqual(desired.StorageBillingModel, resource.StorageBillingModel) {
 		report.AddField("storage_billing_model", resource.StorageBillingModel, desired.StorageBillingModel)
@@ -269,36 +269,54 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		resource.MaxTimeTravel = desired.MaxTimeTravel
 		updateMask.Paths = append(updateMask.Paths, "max_time_travel")
 	}
-	if desired.Access != nil && resource.Access != nil && len(desired.Access) > 0 && !reflect.DeepEqual(desired.Access, resource.Access) {
+	if desired.Access != nil && foundDiffDatasetAccessEntry(desired.Access, resource.Access) {
 		report.AddField("access", resource.Access, desired.Access)
-		for _, access := range desired.Access {
-			resource.Access = append(resource.Access, access)
+		resource.Access = desired.Access
+		updateMask.Paths = append(updateMask.Paths, "access")
+	}
+	if desired.Labels != nil && !maps.Equal(desired.Labels, resource.Labels) {
+		report.AddField("labels", resource.Labels, desired.Labels)
+		// We always send the full map of labels to GCP, so we do not need to specify each label key in the update mask.
+		resource.Labels = desired.Labels
+		updateMask.Paths = append(updateMask.Paths, "labels")
+	}
+	updated := a.actual
+	if len(updateMask.Paths) > 0 {
+		structuredreporting.ReportDiff(ctx, report)
+
+		// Compute the dataset metadate for update request
+		datasetMetadataToUpdate := BigQueryDataset_ToMetadataToUpdate(mapCtx, resource, updateMask.Paths)
+		// BigQuery's datasets.patch API merges labels rather than replacing the whole map,
+		// and DatasetMetadataToUpdate only sets keys via SetLabel. To remove labels that
+		// were deleted from metadata.labels, we must explicitly call DeleteLabel(k) so
+		// the client serializes {"labels": {"<key>": null}} in the PATCH request.
+		if !maps.Equal(desired.Labels, a.actual.Labels) {
+			for k := range a.actual.Labels {
+				if _, ok := desired.Labels[k]; !ok {
+					datasetMetadataToUpdate.DeleteLabel(k)
+				}
+			}
 		}
-	}
-	if len(updateMask.Paths) == 0 {
-		return nil
-	}
 
-	structuredreporting.ReportDiff(ctx, report)
-
-	// Compute the dataset metadate for update request
-	datasetMetadataToUpdate := BigQueryDataset_ToMetadataToUpdate(mapCtx, resource, updateMask.Paths)
-	for k, v := range a.desired.GetObjectMeta().GetLabels() {
-		datasetMetadataToUpdate.SetLabel(k, v)
+		// Call update
+		dsHandler := a.gcpService.DatasetInProject(a.id.Project, a.id.Dataset)
+		var err error
+		updated, err = dsHandler.Update(ctx, *datasetMetadataToUpdate, "")
+		if err != nil {
+			return fmt.Errorf("updating Dataset %s: %w", a.id.String(), err)
+		}
+		log.V(2).Info("successfully updated Dataset", "name", a.id.String())
+	} else {
+		log.V(2).Info("no diff found, skipping update call", "name", a.id.String())
 	}
-	datasetMetadataToUpdate.SetLabel("managed-by-cnrm", "true")
-	// Call update
-	dsHandler := a.gcpService.DatasetInProject(a.id.Project, a.id.Dataset)
-	updated, err := dsHandler.Update(ctx, *datasetMetadataToUpdate, "")
-	if err != nil {
-		return fmt.Errorf("updating Dataset %s: %w", a.id.String(), err)
-	}
-	log.V(2).Info("successfully updated Dataset", "name", a.id.String())
 
 	status := &krm.BigQueryDatasetStatus{}
 	status = BigQueryDatasetStatus_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
+	}
+	if status.ExternalRef == nil {
+		status.ExternalRef = direct.LazyPtr(a.id.String())
 	}
 	return updateOp.UpdateStatus(ctx, status, nil)
 }

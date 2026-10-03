@@ -599,6 +599,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-fullyconfigured-updated",
   "id": "000000000000000000000",
+  "isCaseInsensitive": true,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
@@ -657,6 +658,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-fullyconfigured-updated",
   "id": "000000000000000000000",
+  "isCaseInsensitive": true,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
