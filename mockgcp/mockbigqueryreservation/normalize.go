@@ -30,6 +30,10 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	// CapacityCommitment KRM Normalization
 	replacements.ReplacePath(".status.commitmentStartTime", mockgcpregistry.PlaceholderTime)
 	replacements.ReplacePath(".status.commitmentEndTime", mockgcpregistry.PlaceholderTime)
+
+	// BiReservation Normalization
+	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".status.observedState.updateTime", mockgcpregistry.PlaceholderTime)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
