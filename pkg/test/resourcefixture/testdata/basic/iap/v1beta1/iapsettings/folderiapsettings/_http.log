@@ -1,0 +1,245 @@
+GET https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-User-Project: ${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "KCC Integration Tests",
+  "etag": "abcdef0123A=",
+  "name": "folders/${folderID}",
+  "parent": "organizations/${organizationID}",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://iap.googleapis.com/v1/folders/${folderID}:iapSettings?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}
+X-Goog-User-Project: ${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "folders/${folderID}"
+}
+
+---
+
+PATCH https://iap.googleapis.com/v1/folders/${folderID}:iapSettings?%24alt=json%3Benum-encoding%3Dint&updateMask=iapSettings.accessSettings.corsSettings.allowHttpOptions%2CiapSettings.accessSettings.reauthSettings%2CiapSettings.applicationSettings.cookieDomain
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: iap_settings.name=folders%2F${folderID}
+X-Goog-User-Project: ${projectNumber}
+
+{
+  "accessSettings": {
+    "corsSettings": {
+      "allowHttpOptions": true
+    },
+    "reauthSettings": {
+      "maxAge": "300s",
+      "method": 1,
+      "policyType": 2
+    }
+  },
+  "applicationSettings": {
+    "cookieDomain": ".example.com"
+  },
+  "name": "folders/${folderID}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "accessSettings": {
+    "corsSettings": {
+      "allowHttpOptions": true
+    },
+    "reauthSettings": {
+      "maxAge": "300s",
+      "method": 1,
+      "policyType": 2
+    }
+  },
+  "applicationSettings": {
+    "cookieDomain": ".example.com"
+  },
+  "name": "folders/${folderID}"
+}
+
+---
+
+GET https://iap.googleapis.com/v1/folders/${folderID}:iapSettings?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}
+X-Goog-User-Project: ${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "accessSettings": {
+    "corsSettings": {
+      "allowHttpOptions": true
+    },
+    "reauthSettings": {
+      "maxAge": "300s",
+      "method": 1,
+      "policyType": 2
+    }
+  },
+  "applicationSettings": {
+    "cookieDomain": ".example.com"
+  },
+  "name": "folders/${folderID}"
+}
+
+---
+
+PATCH https://iap.googleapis.com/v1/folders/${folderID}:iapSettings?%24alt=json%3Benum-encoding%3Dint&updateMask=iapSettings.accessSettings.corsSettings.allowHttpOptions%2CiapSettings.accessSettings.reauthSettings%2CiapSettings.applicationSettings.cookieDomain
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: iap_settings.name=folders%2F${folderID}
+X-Goog-User-Project: ${projectNumber}
+
+{
+  "accessSettings": {
+    "corsSettings": {
+      "allowHttpOptions": false
+    },
+    "reauthSettings": {
+      "maxAge": "600s",
+      "method": 3,
+      "policyType": 1
+    }
+  },
+  "applicationSettings": {
+    "cookieDomain": ".updated-example.com"
+  },
+  "name": "folders/${folderID}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "accessSettings": {
+    "corsSettings": {
+      "allowHttpOptions": false
+    },
+    "reauthSettings": {
+      "maxAge": "600s",
+      "method": 3,
+      "policyType": 1
+    }
+  },
+  "applicationSettings": {
+    "cookieDomain": ".updated-example.com"
+  },
+  "name": "folders/${folderID}"
+}
+
+---
+
+GET https://iap.googleapis.com/v1/folders/${folderID}:iapSettings?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}
+X-Goog-User-Project: ${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "accessSettings": {
+    "corsSettings": {
+      "allowHttpOptions": false
+    },
+    "reauthSettings": {
+      "maxAge": "600s",
+      "method": 3,
+      "policyType": 1
+    }
+  },
+  "applicationSettings": {
+    "cookieDomain": ".updated-example.com"
+  },
+  "name": "folders/${folderID}"
+}
+
+---
+
+PATCH https://iap.googleapis.com/v1/folders/${folderID}:iapSettings?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: iap_settings.name=folders%2F${folderID}
+X-Goog-User-Project: ${projectNumber}
+
+{
+  "name": "folders/${folderID}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "folders/${folderID}"
+}
