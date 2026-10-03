@@ -46,22 +46,22 @@ func ArtifactRegistryRepositoryFuzzer() fuzztesting.KRMFuzzer {
 
 		if remoteConfig := in.GetRemoteRepositoryConfig(); remoteConfig != nil {
 			if r := remoteConfig.GetDockerRepository(); r != nil {
-				if r.GetPublicRepository() == pb.RemoteRepositoryConfig_DockerRepository_PUBLIC_REPOSITORY_UNSPECIFIED {
+				if r.GetPublicRepository() == pb.RemoteRepositoryConfig_DockerRepository_PUBLIC_REPOSITORY_UNSPECIFIED && r.GetCustomRepository() == nil {
 					r.Upstream = nil
 				}
 			}
 			if r := remoteConfig.GetMavenRepository(); r != nil {
-				if r.GetPublicRepository() == pb.RemoteRepositoryConfig_MavenRepository_PUBLIC_REPOSITORY_UNSPECIFIED {
+				if r.GetPublicRepository() == pb.RemoteRepositoryConfig_MavenRepository_PUBLIC_REPOSITORY_UNSPECIFIED && r.GetCustomRepository() == nil {
 					r.Upstream = nil
 				}
 			}
 			if r := remoteConfig.GetNpmRepository(); r != nil {
-				if r.GetPublicRepository() == pb.RemoteRepositoryConfig_NpmRepository_PUBLIC_REPOSITORY_UNSPECIFIED {
+				if r.GetPublicRepository() == pb.RemoteRepositoryConfig_NpmRepository_PUBLIC_REPOSITORY_UNSPECIFIED && r.GetCustomRepository() == nil {
 					r.Upstream = nil
 				}
 			}
 			if r := remoteConfig.GetPythonRepository(); r != nil {
-				if r.GetPublicRepository() == pb.RemoteRepositoryConfig_PythonRepository_PUBLIC_REPOSITORY_UNSPECIFIED {
+				if r.GetPublicRepository() == pb.RemoteRepositoryConfig_PythonRepository_PUBLIC_REPOSITORY_UNSPECIFIED && r.GetCustomRepository() == nil {
 					r.Upstream = nil
 				}
 			}
@@ -84,10 +84,6 @@ func ArtifactRegistryRepositoryFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".remote_repository_config.apt_repository")
 	f.Unimplemented_NotYetTriaged(".remote_repository_config.yum_repository")
 	f.Unimplemented_NotYetTriaged(".remote_repository_config.common_repository")
-	f.Unimplemented_NotYetTriaged(".remote_repository_config.docker_repository.custom_repository")
-	f.Unimplemented_NotYetTriaged(".remote_repository_config.maven_repository.custom_repository")
-	f.Unimplemented_NotYetTriaged(".remote_repository_config.npm_repository.custom_repository")
-	f.Unimplemented_NotYetTriaged(".remote_repository_config.python_repository.custom_repository")
 
 	f.SpecField(".maven_config")
 	f.SpecField(".docker_config")

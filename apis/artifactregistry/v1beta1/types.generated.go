@@ -188,7 +188,8 @@ type RemoteRepositoryConfig_DockerRepository struct {
 }
 */
 
-/* unreachable type RemoteRepositoryConfig_DockerRepository_CustomRepository
+/* found existing non-generated go type with proto tag "google.devtools.artifactregistry.v1.RemoteRepositoryConfig.DockerRepository.CustomRepository", skipping
+
 // +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.DockerRepository.CustomRepository
 type RemoteRepositoryConfig_DockerRepository_CustomRepository struct {
 	// An http/https uri reference to the custom remote repository, for ex:
@@ -213,7 +214,8 @@ type RemoteRepositoryConfig_MavenRepository struct {
 }
 */
 
-/* unreachable type RemoteRepositoryConfig_MavenRepository_CustomRepository
+/* found existing non-generated go type with proto tag "google.devtools.artifactregistry.v1.RemoteRepositoryConfig.MavenRepository.CustomRepository", skipping
+
 // +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.MavenRepository.CustomRepository
 type RemoteRepositoryConfig_MavenRepository_CustomRepository struct {
 	// An http/https uri reference to the upstream remote repository, for ex:
@@ -238,7 +240,8 @@ type RemoteRepositoryConfig_NpmRepository struct {
 }
 */
 
-/* unreachable type RemoteRepositoryConfig_NpmRepository_CustomRepository
+/* found existing non-generated go type with proto tag "google.devtools.artifactregistry.v1.RemoteRepositoryConfig.NpmRepository.CustomRepository", skipping
+
 // +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.NpmRepository.CustomRepository
 type RemoteRepositoryConfig_NpmRepository_CustomRepository struct {
 	// An http/https uri reference to the upstream remote repository, for ex:
@@ -263,7 +266,8 @@ type RemoteRepositoryConfig_PythonRepository struct {
 }
 */
 
-/* unreachable type RemoteRepositoryConfig_PythonRepository_CustomRepository
+/* found existing non-generated go type with proto tag "google.devtools.artifactregistry.v1.RemoteRepositoryConfig.PythonRepository.CustomRepository", skipping
+
 // +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.PythonRepository.CustomRepository
 type RemoteRepositoryConfig_PythonRepository_CustomRepository struct {
 	// An http/https uri reference to the upstream remote repository, for ex:
