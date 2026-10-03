@@ -40,6 +40,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
@@ -149,11 +150,7 @@ func (a *dataprocClusterAdapter) Create(ctx context.Context, createOp *directbas
 	cluster.ClusterName = a.id.Cluster
 	cluster.ProjectId = a.id.Project
 
-	cluster.Labels = make(map[string]string)
-	for k, v := range a.desired.GetObjectMeta().GetLabels() {
-		cluster.Labels[k] = v
-	}
-	cluster.Labels["managed-by-cnrm"] = "true"
+	cluster.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
 
 	req := &pb.CreateClusterRequest{
 		ProjectId: a.id.Project,
@@ -198,11 +195,7 @@ func (a *dataprocClusterAdapter) Update(ctx context.Context, updateOp *directbas
 	cluster.ClusterName = a.id.Cluster
 	cluster.ProjectId = a.id.Project
 
-	cluster.Labels = make(map[string]string)
-	for k, v := range a.desired.GetObjectMeta().GetLabels() {
-		cluster.Labels[k] = v
-	}
-	cluster.Labels["managed-by-cnrm"] = "true"
+	cluster.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
 
 	// Populate defaults to avoid false drift
 	if cluster.Config == nil {

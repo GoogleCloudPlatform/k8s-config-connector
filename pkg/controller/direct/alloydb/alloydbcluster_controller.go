@@ -28,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/alloydb/apiv1beta"
@@ -330,11 +331,7 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 	}
 
 	// 5. Handle labels.
-	resource.Labels = make(map[string]string)
-	for k, v := range a.desired.GetObjectMeta().GetLabels() {
-		resource.Labels[k] = v
-	}
-	resource.Labels["managed-by-cnrm"] = "true"
+	resource.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
 
 	var created *alloydbpb.Cluster
 	if desired.Spec.RestoreBackupSource != nil || desired.Spec.RestoreContinuousBackupSource != nil {
@@ -539,11 +536,7 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	}
 
 	// 5. Handle labels.
-	desiredPb.Labels = make(map[string]string)
-	for k, v := range a.desired.GetObjectMeta().GetLabels() {
-		desiredPb.Labels[k] = v
-	}
-	desiredPb.Labels["managed-by-cnrm"] = "true"
+	desiredPb.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
 
 	// 6. Set resource name. This step is not needed for other operations.
 	desiredPb.Name = a.id.String()

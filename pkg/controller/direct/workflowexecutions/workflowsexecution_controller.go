@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 
 	gcp "cloud.google.com/go/workflows/executions/apiv1"
 	executionpb "cloud.google.com/go/workflows/executions/apiv1/executionspb"
@@ -139,11 +140,7 @@ func (a *ExecutionAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.Labels = make(map[string]string)
-	for k, v := range a.desired.GetObjectMeta().GetLabels() {
-		resource.Labels[k] = v
-	}
-	resource.Labels["managed-by-cnrm"] = "true"
+	resource.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
 	resource.Name = a.id.External
 
 	id, err := a.id.ParseExternalToIdentity()

@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 
 	gcp "cloud.google.com/go/networkservices/apiv1"
 	networkservicespb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
@@ -133,11 +134,7 @@ func (a *ServiceBindingAdapter) Create(ctx context.Context, createOp *directbase
 		return mapCtx.Err()
 	}
 	resource.Name = a.id.String()
-	resource.Labels = make(map[string]string)
-	for k, v := range a.desired.GetObjectMeta().GetLabels() {
-		resource.Labels[k] = v
-	}
-	resource.Labels["managed-by-cnrm"] = "true"
+	resource.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
 
 	req := &networkservicespb.CreateServiceBindingRequest{
 		Parent:           a.id.Parent().String(),
