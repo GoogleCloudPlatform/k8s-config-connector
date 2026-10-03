@@ -213,6 +213,7 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if err := ResolveEnvironmentRefs(ctx, a.k8sClient, desired); err != nil {
 		return err
 	}
+	// 1. Pure user intent from KRM
 	rawDesiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -236,6 +237,7 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 	hasUpdate := false
 
+	// 4. Updaters detect drift using rawDesiredPb/mergedDesiredPb and build composite payloads from mergedDesiredPb
 	// Cloud Composer does not support more than one path in a single PATCH request's updateMask
 	// (e.g. labels and workloads_config cannot be combined in one request). Therefore, we
 	// iterate through fieldUpdaters to issue individual patch calls one field at a time.
