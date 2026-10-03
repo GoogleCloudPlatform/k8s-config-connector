@@ -1,0 +1,95 @@
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateInstance
+
+{
+  "instanceId": "instance-${uniqueId}",
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateMemoryLayer
+
+{
+  "memoryLayer": {
+    "name": "projects/${projectId}/instances/instance-${uniqueId}/clusters/cluster-${uniqueId}/memoryLayer"
+  },
+  "updateMask": "*"
+}
+
+OK
+
+{
+  "name": "operations/projects/${projectId}/instances/instance-${uniqueId}/clusters/cluster-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "operations/projects/${projectId}/instances/instance-${uniqueId}/clusters/cluster-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.MemoryLayer",
+    "name": "projects/${projectId}/instances/instance-${uniqueId}/clusters/cluster-${uniqueId}/memoryLayer"
+  }
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetMemoryLayer
+
+{
+  "name": "projects/${projectId}/instances/instance-${uniqueId}/clusters/cluster-${uniqueId}/memoryLayer"
+}
+
+OK
+
+{
+  "name": "projects/${projectId}/instances/instance-${uniqueId}/clusters/cluster-${uniqueId}/memoryLayer"
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateMemoryLayer
+
+{
+  "memoryLayer": {
+    "name": "projects/${projectId}/instances/instance-${uniqueId}/clusters/cluster-${uniqueId}/memoryLayer"
+  },
+  "updateMask": "memory_config"
+}
+
+OK
+
+{
+  "name": "operations/projects/${projectId}/instances/instance-${uniqueId}/clusters/cluster-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "operations/projects/${projectId}/instances/instance-${uniqueId}/clusters/cluster-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.MemoryLayer",
+    "name": "projects/${projectId}/instances/instance-${uniqueId}/clusters/cluster-${uniqueId}/memoryLayer"
+  }
+}
+

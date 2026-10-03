@@ -45,6 +45,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource BigtableLogicalView:LogicalView \
   --resource BigtableMaterializedView:MaterializedView \
   --resource BigtableSchemaBundle:SchemaBundle \
+  --resource BigtableMemoryLayer:MemoryLayer \
   --proto-source-path ${PROTO_OUT}
 
 # --- v1beta1 ---
