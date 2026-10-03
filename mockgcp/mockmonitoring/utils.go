@@ -23,6 +23,10 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
+// computeEtag generates an MD5 checksum for a proto message.
+// For dashboards, Name and prior Etag are cleared on the clone so the Etag is
+// deterministically computed strictly from the dashboard specification,
+// independent of server-assigned random UUIDs or existing etag values.
 func computeEtag(obj proto.Message) string {
 	clone := proto.Clone(obj)
 	if dashboard, ok := clone.(*pb.Dashboard); ok {

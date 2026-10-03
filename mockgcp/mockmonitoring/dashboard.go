@@ -172,7 +172,7 @@ func (d *dashboardDefaulter) visitWidget(obj *pb.Widget) {
 		d.visitPieChart(content.PieChart)
 
 	case *pb.Widget_TimeSeriesTable:
-		d.visitTimeSeriesTable(content.TimeSeriesTable)
+		// No defaults
 
 	case *pb.Widget_LogsPanel:
 		d.visitLogsPanel(content.LogsPanel)
@@ -231,9 +231,6 @@ func (d *dashboardDefaulter) visitLogsPanel(obj *pb.LogsPanel) {
 }
 
 func (d *dashboardDefaulter) visitPieChart(obj *pb.PieChart) {
-}
-
-func (d *dashboardDefaulter) visitTimeSeriesTable(obj *pb.TimeSeriesTable) {
 }
 
 type dashboardValidator struct {
