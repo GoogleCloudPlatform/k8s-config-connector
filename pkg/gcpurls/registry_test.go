@@ -72,6 +72,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 	ignoredTemplates := map[string]bool{
 		// AI Platform
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}":               true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/extensions/{}":                  true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/metadataStores/{}/contexts/{}":  true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/studies/{}":                     true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/schedules/{}":                   true,
@@ -189,6 +190,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//dataproc.googleapis.com/v1/projects/{}/regions/{}/clusters/{}":        true,
 
 		// Dialogflow
+		"//dialogflow.googleapis.com/projects/{}/locations/{}/agents/{}/tools/{}":      true,
 		"//dialogflow.googleapis.com/projects/{}/locations/{}/conversationDatasets/{}": true,
 		"//dialogflow.googleapis.com/projects/{}/locations/{}/generators/{}":           true,
 		"//dialogflow.googleapis.com/projects/{}/knowledgeBases/{}":                    true,
