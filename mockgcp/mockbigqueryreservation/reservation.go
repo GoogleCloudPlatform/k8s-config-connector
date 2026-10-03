@@ -74,11 +74,33 @@ func (s *ReservationV1) CreateReservation(ctx context.Context, req *pb.CreateRes
 		}
 	}
 
+	if err := validateReservationScaling(obj); err != nil {
+		return nil, err
+	}
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	return obj, nil
+}
+
+func validateReservationScaling(obj *pb.Reservation) error {
+	if obj.GetMaxSlots() < 0 {
+		return status.Error(codes.InvalidArgument, "max_slots must be non-negative")
+	}
+	if (obj.GetMaxSlots() > 0) != (obj.GetScalingMode() != pb.Reservation_SCALING_MODE_UNSPECIFIED) {
+		return status.Error(codes.InvalidArgument, "max_slots and scaling_mode must be specified together")
+	}
+	if obj.GetMaxSlots() > 0 {
+		if obj.GetAutoscale() != nil {
+			return status.Error(codes.InvalidArgument, "max_slots cannot be used with autoscale")
+		}
+		if obj.GetMaxSlots() < obj.GetSlotCapacity() {
+			return status.Error(codes.InvalidArgument, "max_slots cannot be less than slot_capacity")
+		}
+	}
+	return nil
 }
 
 func (s *ReservationV1) GetReservation(ctx context.Context, req *pb.GetReservationRequest) (*pb.Reservation, error) {
@@ -133,6 +155,10 @@ func (s *ReservationV1) UpdateReservation(ctx context.Context, req *pb.UpdateRes
 
 	if err := fields.UpdateByFieldMask(obj, req.Reservation, req.UpdateMask.Paths); err != nil {
 		return nil, fmt.Errorf("update field_mask.paths: %w", err)
+	}
+
+	if err := validateReservationScaling(obj); err != nil {
+		return nil, err
 	}
 
 	if updateSecondaryLocation {
