@@ -911,16 +911,13 @@
 [missing_field] crd=computesnapshots.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.storageLocations[]" is not set in unstructured objects
 [missing_field] crd=computesslpolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.customFeatures[]" is not set in unstructured objects
 [missing_field] crd=computesubnetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=computesubnetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.ipv6AccessType" is not set in unstructured objects
 [missing_field] crd=computesubnetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.logConfig.aggregationInterval" is not set in unstructured objects
 [missing_field] crd=computesubnetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.logConfig.filterExpr" is not set in unstructured objects
 [missing_field] crd=computesubnetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.logConfig.flowSampling" is not set in unstructured objects
 [missing_field] crd=computesubnetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.logConfig.metadata" is not set in unstructured objects
 [missing_field] crd=computesubnetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.logConfig.metadataFields[]" is not set in unstructured objects
-[missing_field] crd=computesubnetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.privateIpv6GoogleAccess" is not set in unstructured objects
 [missing_field] crd=computesubnetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.purpose" is not set in unstructured objects
 [missing_field] crd=computesubnetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.role" is not set in unstructured objects
-[missing_field] crd=computesubnetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.stackType" is not set in unstructured objects
 [missing_field] crd=computetargethttpproxies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.httpKeepAliveTimeoutSec" is not set in unstructured objects
 [missing_field] crd=computetargethttpproxies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.proxyBind" is not set in unstructured objects
 [missing_field] crd=computetargethttpsproxies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.certificateManagerCertificates[].external" is not set in unstructured objects
