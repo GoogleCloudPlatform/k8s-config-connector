@@ -36,6 +36,11 @@ type BigQueryConfig struct {
 	// +kcc:proto:field=google.pubsub.v1.BigQueryConfig.use_topic_schema
 	UseTopicSchema *bool `json:"useTopicSchema,omitempty"`
 
+	// When true, use the BigQuery table's schema as the columns to write to in BigQuery.
+	// +kcc:proto:field=google.pubsub.v1.BigQueryConfig.use_table_schema
+	// +optional
+	UseTableSchema *bool `json:"useTableSchema,omitempty"`
+
 	// When true, write the subscription name, messageId, publishTime, attributes, and orderingKey to additional columns in the table.
 	// The subscription name, messageId, and publishTime fields are put in their own columns while all other message properties (other than data) are written to a JSON object in the attributes column.
 	// +kcc:proto:field=google.pubsub.v1.BigQueryConfig.write_metadata
