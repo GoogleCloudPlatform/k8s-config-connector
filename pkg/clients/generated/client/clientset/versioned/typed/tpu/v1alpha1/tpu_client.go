@@ -32,6 +32,7 @@ import (
 type TpuV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	TPUNodesGetter
+	TPUQueuedResourcesGetter
 	TPUVirtualMachinesGetter
 }
 
@@ -42,6 +43,10 @@ type TpuV1alpha1Client struct {
 
 func (c *TpuV1alpha1Client) TPUNodes(namespace string) TPUNodeInterface {
 	return newTPUNodes(c, namespace)
+}
+
+func (c *TpuV1alpha1Client) TPUQueuedResources(namespace string) TPUQueuedResourceInterface {
+	return newTPUQueuedResources(c, namespace)
 }
 
 func (c *TpuV1alpha1Client) TPUVirtualMachines(namespace string) TPUVirtualMachineInterface {

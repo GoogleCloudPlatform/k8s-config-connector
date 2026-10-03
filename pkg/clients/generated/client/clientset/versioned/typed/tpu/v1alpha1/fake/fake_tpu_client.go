@@ -35,6 +35,10 @@ func (c *FakeTpuV1alpha1) TPUNodes(namespace string) v1alpha1.TPUNodeInterface {
 	return newFakeTPUNodes(c, namespace)
 }
 
+func (c *FakeTpuV1alpha1) TPUQueuedResources(namespace string) v1alpha1.TPUQueuedResourceInterface {
+	return newFakeTPUQueuedResources(c, namespace)
+}
+
 func (c *FakeTpuV1alpha1) TPUVirtualMachines(namespace string) v1alpha1.TPUVirtualMachineInterface {
 	return newFakeTPUVirtualMachines(c, namespace)
 }
