@@ -64,30 +64,6 @@ func DocumentAIProcessorObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext
 	// MISSING: SatisfiesPzi
 	return out
 }
-func DocumentAIProcessorSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Processor) *krmdocumentaiv1alpha1.DocumentAIProcessorSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmdocumentaiv1alpha1.DocumentAIProcessorSpec{}
-	out.Type = direct.LazyPtr(in.GetType())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	// MISSING: KMSKeyName
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	return out
-}
-func DocumentAIProcessorSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdocumentaiv1alpha1.DocumentAIProcessorSpec) *pb.Processor {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Processor{}
-	out.Type = direct.ValueOf(in.Type)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	// MISSING: KMSKeyName
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	return out
-}
 func DocumentAIProcessorVersionObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ProcessorVersion) *krmdocumentaiv1beta1.DocumentAIProcessorVersionObservedState {
 	if in == nil {
 		return nil
