@@ -945,6 +945,9 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			if gvk.Group == "" && gvk.Kind == "SystemRun" {
 				continue
 			}
+			if gvk.Group == "" && gvk.Kind == "HTTPRequest" {
+				continue
+			}
 			if strings.Contains(testKey, "dclbasedresourceserviceaccountref") {
 				t.Skip()
 			}

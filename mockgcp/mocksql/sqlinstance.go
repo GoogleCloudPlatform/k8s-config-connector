@@ -307,14 +307,14 @@ func (s *sqlInstancesService) ensureMasterReflectsReplica(ctx context.Context, n
 
 		shouldUpdate := false
 
+		replicaName := name.InstanceName
+		if name.Project.ID != masterName.Project.ID {
+			replicaName = name.Project.ID + ":" + name.InstanceName
+		}
+
 		// Add to replicaNames
 		{
 			found := false
-			replicaName := name.InstanceName
-			if name.Project.ID != masterName.Project.ID {
-				replicaName = name.Project.ID + ":" + name.InstanceName
-			}
-
 			for _, s := range master.ReplicaNames {
 				if s == replicaName {
 					found = true
@@ -323,6 +323,19 @@ func (s *sqlInstancesService) ensureMasterReflectsReplica(ctx context.Context, n
 			if !found {
 				master.ReplicaNames = append(master.ReplicaNames, replicaName)
 				shouldUpdate = true
+			}
+		}
+
+		// Update ReplicationCluster on master and replica if paired
+		if master.ReplicationCluster != nil && master.ReplicationCluster.FailoverDrReplicaName != nil {
+			if *master.ReplicationCluster.FailoverDrReplicaName == replicaName || *master.ReplicationCluster.FailoverDrReplicaName == name.InstanceName {
+				if newInstance != nil && (newInstance.InstanceType == pb.SqlInstanceType_READ_REPLICA_INSTANCE || newInstance.MasterInstanceName != "") {
+					newInstance.ReplicationCluster = &pb.ReplicationCluster{
+						DrReplica: proto.Bool(true),
+					}
+					newInstance.Etag = fields.ComputeWeakEtag(newInstance)
+					_ = s.storage.Update(ctx, name.String(), newInstance)
+				}
 			}
 		}
 
@@ -916,7 +929,10 @@ func validateDatabaseInstance(obj *pb.DatabaseInstance) error {
 
 		if !obj.GetSettings().GetBackupConfiguration().GetEnabled().GetValue() {
 			if obj.GetSettings().GetBackupConfiguration().GetBinaryLogEnabled().GetValue() {
-				return status.Errorf(codes.InvalidArgument, "Binary log must be disabled when backup is disabled or the instance must be a replica instance with a MySQL 5.7 or above version.")
+				isReplica := obj.InstanceType == pb.SqlInstanceType_READ_REPLICA_INSTANCE || obj.MasterInstanceName != ""
+				if !isReplica || !isMysql(obj) {
+					return status.Errorf(codes.InvalidArgument, "Binary log must be disabled when backup is disabled or the instance must be a replica instance with a MySQL 5.7 or above version.")
+				}
 			}
 		}
 	}
@@ -1076,6 +1092,30 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 		return nil, err
 	}
 
+	if obj.ReplicationCluster != nil && obj.ReplicationCluster.FailoverDrReplicaName != nil {
+		replicaInstanceName := *obj.ReplicationCluster.FailoverDrReplicaName
+		tokens := strings.Split(replicaInstanceName, ":")
+		replicaName := name
+		if len(tokens) >= 2 {
+			replicaName.Project = &projects.ProjectData{ID: tokens[0]}
+			replicaName.InstanceName = tokens[1]
+		} else {
+			replicaName.InstanceName = tokens[0]
+		}
+		replicaFQN := replicaName.String()
+		replica := &pb.DatabaseInstance{}
+		if err := s.storage.Get(ctx, replicaFQN, replica); err == nil {
+			isReplica := replica.InstanceType == pb.SqlInstanceType_READ_REPLICA_INSTANCE || replica.MasterInstanceName != ""
+			if isReplica && (replica.ReplicationCluster == nil || !replica.ReplicationCluster.GetDrReplica()) {
+				replica.ReplicationCluster = &pb.ReplicationCluster{
+					DrReplica: proto.Bool(true),
+				}
+				replica.Etag = fields.ComputeWeakEtag(replica)
+				_ = s.storage.Update(ctx, replicaFQN, replica)
+			}
+		}
+	}
+
 	op := &pb.Operation{
 		TargetProject: name.Project.ID,
 		OperationType: pb.Operation_UPDATE,
@@ -1135,10 +1175,6 @@ func (s *sqlInstancesService) Switchover(ctx context.Context, req *pb.SqlInstanc
 		obj.MasterInstanceName = ""
 		oldMaster.MasterInstanceName = name.Project.ID + ":" + name.InstanceName
 
-		// Swap ReplicationCluster
-		obj.ReplicationCluster = oldMaster.ReplicationCluster
-		oldMaster.ReplicationCluster = nil
-
 		// Set replica names
 		replicaName := oldMasterName.InstanceName
 		if oldMasterName.Project.ID != name.Project.ID {
@@ -1146,6 +1182,31 @@ func (s *sqlInstancesService) Switchover(ctx context.Context, req *pb.SqlInstanc
 		}
 		obj.ReplicaNames = []string{replicaName}
 		oldMaster.ReplicaNames = nil
+
+		// Update ReplicationCluster
+		obj.ReplicationCluster = &pb.ReplicationCluster{
+			FailoverDrReplicaName: &replicaName,
+		}
+		oldMaster.ReplicationCluster = &pb.ReplicationCluster{
+			DrReplica: proto.Bool(true),
+		}
+
+		// Swap BackupConfiguration
+		if oldMaster.Settings != nil && obj.Settings != nil {
+			oldMasterBackup := oldMaster.Settings.BackupConfiguration
+			objBackup := obj.Settings.BackupConfiguration
+			if oldMasterBackup != nil {
+				obj.Settings.BackupConfiguration = proto.CloneOf(oldMasterBackup)
+			}
+			if objBackup != nil {
+				oldMaster.Settings.BackupConfiguration = proto.CloneOf(objBackup)
+			} else {
+				oldMaster.Settings.BackupConfiguration = &pb.BackupConfiguration{
+					Enabled:          wrapperspb.Bool(false),
+					BinaryLogEnabled: wrapperspb.Bool(true),
+				}
+			}
+		}
 
 		oldMaster.Etag = fields.ComputeWeakEtag(oldMaster)
 
