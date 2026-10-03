@@ -116,6 +116,9 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.currentBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".status.observedState.nextBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
 
+	// Connectors
+	visitor.replacePaths[".status.observedState.connectionRevision"] = int64(1234567890)
+
 	// Apigee
 	visitor.replacePaths[".status.expiresAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
 	visitor.replacePaths[".status.createdAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
@@ -1601,6 +1604,10 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	visitor.replacePaths[".nextBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".response.currentBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".response.nextBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
+
+	// Connectors
+	visitor.replacePaths[".connectionRevision"] = "1234567890"
+	visitor.replacePaths[".response.connectionRevision"] = "1234567890"
 
 	// Dataplex
 	visitor.replacePaths[".response.status.updateTime"] = mockgcpregistry.PlaceholderTimestamp
