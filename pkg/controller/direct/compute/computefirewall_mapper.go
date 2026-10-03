@@ -117,7 +117,7 @@ func FirewallDeny_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.FirewallDen
 }
 
 func FirewallLogConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallLogConfig) *krm.FirewallLogConfig {
-	if in == nil {
+	if in == nil || !in.GetEnable() {
 		return nil
 	}
 	out := &krm.FirewallLogConfig{}
