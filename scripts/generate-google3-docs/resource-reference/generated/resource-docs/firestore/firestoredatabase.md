@@ -66,6 +66,7 @@ projectRef:
   name: string
   namespace: string
 resourceID: string
+type: string
 ```
 
 <table class="properties responsive">
@@ -173,6 +174,16 @@ resourceID: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>The FirestoreDatabase name. If not given, the metadata.name will be used.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>type</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The type of the database. See https://cloud.google.com/datastore/docs/firestore-or-datastore for information about how to choose.</p>
         </td>
     </tr>
 </tbody>
