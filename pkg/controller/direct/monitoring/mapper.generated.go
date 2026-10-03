@@ -2146,7 +2146,7 @@ func UptimeCheckConfig_HTTPCheck_BasicAuthentication_FromProto(mapCtx *direct.Ma
 	}
 	out := &krm.UptimeCheckConfig_HTTPCheck_BasicAuthentication{}
 	out.Username = direct.LazyPtr(in.GetUsername())
-	out.Password = direct.LazyPtr(in.GetPassword())
+	out.Password = UptimeCheckConfig_HTTPCheck_BasicAuthentication_Password_FromProto(mapCtx, in.GetPassword())
 	return out
 }
 */

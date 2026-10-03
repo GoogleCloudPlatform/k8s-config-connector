@@ -369,7 +369,7 @@ found existing non-generated mapping function "NetworkConnectivityServiceConnect
 		out.Description = direct.LazyPtr(in.GetDescription())
 		// MISSING: Labels
 		// MISSING: Name
-		out.Network = direct.LazyPtr(in.GetNetwork())
+		out.Network = NetworkConnectivityServiceConnectionPolicySpec_Network_FromProto(mapCtx, in.GetNetwork())
 		out.PSCConfig = PSCConfig_FromProto(mapCtx, in.GetPscConfig())
 		out.ServiceClass = direct.LazyPtr(in.GetServiceClass())
 		return out
