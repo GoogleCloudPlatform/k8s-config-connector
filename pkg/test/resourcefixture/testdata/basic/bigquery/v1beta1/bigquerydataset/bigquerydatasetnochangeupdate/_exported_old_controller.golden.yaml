@@ -6,6 +6,7 @@ metadata:
   labels:
     cnrm-test: "true"
     managed-by-cnrm: "true"
+    updated-by: robot
   name: bigquerydatasetsample${uniqueId}
 spec:
   access:
