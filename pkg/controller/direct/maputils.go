@@ -599,7 +599,7 @@ func Struct_FromProto(mapCtx *MapContext, in *structpb.Struct) *apiextensionsv1.
 }
 
 func Struct_ToProto(mapCtx *MapContext, in *apiextensionsv1.JSON) *structpb.Struct {
-	if in == nil {
+	if in == nil || len(in.Raw) == 0 || string(in.Raw) == "null" {
 		return nil
 	}
 	var m map[string]interface{}

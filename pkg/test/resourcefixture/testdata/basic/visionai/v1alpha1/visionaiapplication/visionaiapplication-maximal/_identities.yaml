@@ -1,0 +1,12 @@
+- caisURL: //pubsub.googleapis.com/projects/${projectId}/topics/visionai-topic-${uniqueId}
+  group: pubsub.cnrm.cloud.google.com
+  kind: PubSubTopic
+  name: visionai-topic-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: visionai.cnrm.cloud.google.com
+  kind: VisionAIApplication
+  name: visionaiapplication-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

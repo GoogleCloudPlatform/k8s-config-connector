@@ -5,3 +5,9 @@
 - **Problem 2 (Go Client Generation Name Mismatch)**: Running `make generate-go-client` maps the nested `ApplicationAnnotations` type of `google.cloud.visionai.v1.Application` to `ApplicationApplicationAnnotations`, but fields still refer to it as `ApplicationAnnotations`, causing compilation errors.
 - **Solution 2**: Added a type alias `type ApplicationAnnotations = ApplicationApplicationAnnotations` under `pkg/clients/generated/apis/visionai/v1alpha1/visionaiapplication_types.go`. Handled this dynamically by inserting the patch via `sed` right after `generate-go-crd-clients` in `scripts/generate-go-crd-clients/generate-clients.sh`.
 - **Impact**: Unblocks deepcopy and go-client generation for the `VisionAIApplication` resource, ensuring 100% pre-submit validation compliance.
+
+### [2026-10-01] VisionAIApplication Direct Controller, E2E Fixtures, and Fuzzer Implementation
+- **Context**: Implemented the direct controller, E2E fixtures, and fuzzer for `VisionAIApplication` (Group: `visionai.cnrm.cloud.google.com`, Version: `v1alpha1`).
+- **Learning 1 (Mutable-but-unreadable EventDeliveryConfig)**: The Vision AI GCP API accepts `applicationConfigs.eventDeliveryConfig` on Create/Update requests, but does not return it in GET requests for undeployed applications. Handled this using the mutable-but-unreadable reconciliation pattern (matching `updateTime` and `observedGeneration` against status to prevent false diffs during re-reconciliation).
+- **Learning 2 (Empty JSON Handling in Struct_ToProto)**: `direct.Struct_ToProto` panicked on empty `apiextensionsv1.JSON{}` (when `.Raw` is empty or nil) during fuzzing. Added `len(in.Raw) == 0` check in `pkg/controller/direct/maputils.go`.
+- **Impact**: Verified full create/update/re-reconciliation/delete lifecycle against live GCP and captured audit logs proving real GCP execution.
