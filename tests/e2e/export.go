@@ -104,6 +104,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, options *
 	case schema.GroupKind{Group: "developerconnect.cnrm.cloud.google.com", Kind: "DevConnectInsightsConfig"}:
 		exportURI = resolveCAISURI(h, obj)
 
+	case schema.GroupKind{Group: "cloudsupport.cnrm.cloud.google.com", Kind: "CloudSupportSupportEventSubscription"}:
+		exportURI = resolveCAISURI(h, obj)
+
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogBucket"}:
 		exportURI = resolveCAISURI(h, obj)
 
