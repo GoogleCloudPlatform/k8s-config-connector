@@ -1,0 +1,6 @@
+- caisURL: //cloudnumberregistry.googleapis.com/projects/${projectId}/locations/global/ipamAdminScopes/ipamadminscope-max-${uniqueId}
+  group: cloudnumberregistry.cnrm.cloud.google.com
+  kind: CloudNumberRegistryIpamAdminScope
+  name: cnr-ias-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
