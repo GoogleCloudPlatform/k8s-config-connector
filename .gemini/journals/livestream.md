@@ -28,3 +28,10 @@
   3. Stream constraints: For `fmp4` containers, each `muxStream` must contain exactly one video or audio elementary stream. Text streams with `cea608` or `cea708` passthrough are embedded in video and cannot be included into `muxStreams`.
   4. In YAML manifests for KRM, mapping keys like `y:` in `position` must be quoted (`"y":`) to prevent YAML 1.1 boolean parsing as `true`.
 
+### [2026-10-03] LiveStreamChannel MockGCP and Alignment verification
+- **Context**: Aligning MockGCP logs with RealGCP output for `LiveStreamChannel` (`livestream.cnrm.cloud.google.com/v1alpha1`).
+- **Findings & Verification**:
+  1. Verified MockGCP implementation for `LiveStreamChannel` in `mockgcp/mocklivestream/channels.go` handling `CreateChannel`, `GetChannel`, `UpdateChannel`, `DeleteChannel`, and `ListChannels`.
+  2. Verified that server defaults (`inputConfig`, `logConfig`, `timecodeConfig`, `manifests`, `elementaryStreams` H264 & Audio settings) and project number canonicalization in `inputAttachments` and `staticOverlays` match Real GCP behavior.
+  3. Verified both `livestreamchannel-minimal` and `livestreamchannel-maximal` test fixtures pass `hack/compare-mock "fixtures/livestreamchannel"` and `TestGoldenLogAlignment` with 0 diffs.
+
