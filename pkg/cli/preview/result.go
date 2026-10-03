@@ -56,6 +56,7 @@ type GKNNReconciledResult struct {
 	ReconcileStatus ReconcileStatus
 	Diffs           *structuredreporting.Diff
 	GCPActions      []*gcpAction
+	ReconcileError  string `json:",omitempty"`
 }
 
 // FormatGKNNReconciledResult formats the GKNNReconciledResult into a string.
@@ -105,6 +106,9 @@ func (r *Recorder) GenerateRecorderReconciledResults() *RecorderReconciledResult
 			ReconcileStatus: ReconcileStatusHealthy,
 			GCPActions:      []*gcpAction{},
 		}
+		if objInfo.unhealthy {
+			result.ReconcileStatus = ReconcileStatusUnhealthy
+		}
 		for _, event := range r.objects[gknn].events {
 			switch event.eventType {
 			case EventTypeDiff:
@@ -113,6 +117,10 @@ func (r *Recorder) GenerateRecorderReconciledResults() *RecorderReconciledResult
 				result.ControllerType = event.reconcilerType
 			case EventTypeReconcileEnd:
 				result.ControllerType = event.reconcilerType
+				if event.reconcileErr != nil && !isBlockedError(event.reconcileErr) {
+					result.ReconcileStatus = ReconcileStatusUnhealthy
+					result.ReconcileError = event.reconcileErr.Error()
+				}
 			case EventTypeKubeAction:
 				// Ignore for now
 			case EventTypeGCPAction:

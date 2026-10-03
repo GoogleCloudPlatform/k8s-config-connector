@@ -78,6 +78,7 @@ func (r *Recorder) GetRemainResourcesCount() int {
 // objectInfo holds the activity from reconciling the objects
 type objectInfo struct {
 	currentStatus string
+	unhealthy     bool
 	events        []event
 }
 
@@ -92,6 +93,8 @@ type event struct {
 	gcpAction *gcpAction
 	// the type of reconciler that the manager is using
 	reconcilerType k8s.ReconcilerType
+	// reconcileErr is the error returned at the end of reconciliation (if any)
+	reconcileErr error
 }
 
 type EventType string
@@ -142,10 +145,39 @@ type structuredReportingListener struct {
 // OnError is called by the structured reporting subsystem when an error occurs.
 func (l *structuredReportingListener) OnError(ctx context.Context, err error, args ...any) {
 	blockedGCPError, ok := ExtractBlockedGCPError(err)
-	if !ok {
+	if ok {
+		l.recorder.recordGCPAction(ctx, blockedGCPError, args, ActionBlocked)
 		return
 	}
-	l.recorder.recordGCPAction(ctx, blockedGCPError, args, ActionBlocked)
+	if err != nil && !isBlockedError(err) {
+		l.recorder.recordError(ctx, err, args)
+	}
+}
+
+func (r *Recorder) recordError(ctx context.Context, err error, args []any) {
+	var gknn GKNN
+	for _, arg := range args {
+		switch arg := arg.(type) {
+		case *k8s.Resource:
+			group := strings.Split(arg.APIVersion, "/")[0]
+			gknn = GKNN{
+				Group:     group,
+				Kind:      arg.Kind,
+				Namespace: arg.Namespace,
+				Name:      arg.Name,
+			}
+		case *unstructured.Unstructured:
+			gknn = gknnFromUnstructured(arg)
+		}
+	}
+	if gknn == (GKNN{}) {
+		return
+	}
+	if done := r.GKNNDoneReconcile(gknn); done {
+		return
+	}
+	info := r.getObjectInfo(gknn)
+	info.unhealthy = true
 }
 
 // OnReconcileStart is called by the structured reporting subsystem when a reconcile starts.
@@ -223,14 +255,43 @@ func (r *Recorder) recordReconcileEnd(ctx context.Context, u *unstructured.Unstr
 	}
 
 	info := r.getObjectInfo(gknn)
+	if err != nil && !isBlockedError(err) {
+		info.unhealthy = true
+	}
 	info.events = append(info.events, event{
 		eventType:      EventTypeReconcileEnd,
 		reconcilerType: t,
+		reconcileErr:   err,
 	})
 	r.reconcileTrackerMutex.Lock()
 	defer r.reconcileTrackerMutex.Unlock()
 	r.ReconciledResources[gknn] = true
 	r.RemainResourcesCount--
+}
+
+func isBlockedError(err error) bool {
+	if err == nil {
+		return false
+	}
+	if multi, ok := err.(interface{ Unwrap() []error }); ok {
+		errs := multi.Unwrap()
+		if len(errs) == 0 {
+			return false
+		}
+		for _, subErr := range errs {
+			if !isBlockedError(subErr) {
+				return false
+			}
+		}
+		return true
+	}
+	if _, ok := ExtractBlockedGCPError(err); ok {
+		return true
+	}
+	if _, ok := ExtractBlockedKubeError(err); ok {
+		return true
+	}
+	return false
 }
 
 func (r *Recorder) GKNNDoneReconcile(gknn GKNN) bool {
@@ -560,7 +621,9 @@ func (i *objectInfo) DeepCopy() *objectInfo {
 		return nil
 	}
 	res := &objectInfo{
-		events: make([]event, len(i.events)),
+		currentStatus: i.currentStatus,
+		unhealthy:     i.unhealthy,
+		events:        make([]event, len(i.events)),
 	}
 	for idx, e := range i.events {
 		res.events[idx] = e.DeepCopy()
@@ -572,6 +635,7 @@ func (e event) DeepCopy() event {
 	res := event{
 		eventType:      e.eventType,
 		reconcilerType: e.reconcilerType,
+		reconcileErr:   e.reconcileErr,
 	}
 	if e.diff != nil {
 		res.diff = &structuredreporting.Diff{
