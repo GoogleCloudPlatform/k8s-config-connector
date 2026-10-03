@@ -1,0 +1,34 @@
+apiVersion: migrationcenter.cnrm.cloud.google.com/v1alpha1
+kind: MigrationCenterPreferenceSet
+metadata:
+  name: migrationcenterpreferenceset-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: Initial Maximal Preference Set
+  description: Initial maximal preference set description
+  virtualMachinePreferences:
+    targetProduct: COMPUTE_MIGRATION_TARGET_PRODUCT_COMPUTE_ENGINE
+    regionPreferences:
+      preferredRegions:
+        - us-central1
+    commitmentPlan: COMMITMENT_PLAN_THREE_YEARS
+    sizingOptimizationStrategy: SIZING_OPTIMIZATION_STRATEGY_MODERATE
+    computeEnginePreferences:
+      machinePreferences:
+        allowedMachineSeries:
+          - code: n1
+          - code: n2
+      licenseType: LICENSE_TYPE_DEFAULT
+    vmwareEnginePreferences:
+      cpuOvercommitRatio: 1.5
+      memoryOvercommitRatio: 1.25
+      storageDeduplicationCompressionRatio: 1.5
+      commitmentPlan: COMMITMENT_1_YEAR_MONTHLY_PAYMENTS
+    soleTenancyPreferences:
+      cpuOvercommitRatio: 1.2
+      hostMaintenancePolicy: HOST_MAINTENANCE_POLICY_DEFAULT
+      commitmentPlan: COMMITMENT_1_YEAR
+      nodeTypes:
+        - nodeName: c2-node-60-240
