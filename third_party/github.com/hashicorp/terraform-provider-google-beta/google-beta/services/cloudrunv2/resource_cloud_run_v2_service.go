@@ -767,6 +767,11 @@ For more information, see https://cloud.google.com/run/docs/configuring/custom-a
 				ValidateFunc: verify.ValidateEnum([]string{"INGRESS_TRAFFIC_ALL", "INGRESS_TRAFFIC_INTERNAL_ONLY", "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER", ""}),
 				Description:  `Provides the ingress settings for this Service. On output, returns the currently observed ingress settings, or INGRESS_TRAFFIC_UNSPECIFIED if no revision is active. Possible values: ["INGRESS_TRAFFIC_ALL", "INGRESS_TRAFFIC_INTERNAL_ONLY", "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER"]`,
 			},
+			"invoker_iam_disabled": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Description: `Disables IAM permission check for run.routes.invoke for callers of this service. For more information, visit https://cloud.google.com/run/docs/securing/managing-access#invoker_check.`,
+			},
 			"labels": {
 				Type:     schema.TypeMap,
 				Optional: true,
@@ -1121,6 +1126,12 @@ func resourceCloudRunV2ServiceCreate(d *schema.ResourceData, meta interface{}) e
 	} else if v, ok := d.GetOkExists("traffic"); !tpgresource.IsEmptyValue(reflect.ValueOf(trafficProp)) && (ok || !reflect.DeepEqual(v, trafficProp)) {
 		obj["traffic"] = trafficProp
 	}
+	invokerIamDisabledProp, err := expandCloudRunV2ServiceInvokerIamDisabled(d.Get("invoker_iam_disabled"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("invoker_iam_disabled"); !tpgresource.IsEmptyValue(reflect.ValueOf(invokerIamDisabledProp)) && (ok || !reflect.DeepEqual(v, invokerIamDisabledProp)) {
+		obj["invokerIamDisabled"] = invokerIamDisabledProp
+	}
 
 	url, err := tpgresource.ReplaceVars(d, config, "{{CloudRunV2BasePath}}projects/{{project}}/locations/{{location}}/services?serviceId={{name}}")
 	if err != nil {
@@ -1283,6 +1294,9 @@ func resourceCloudRunV2ServiceRead(d *schema.ResourceData, meta interface{}) err
 	if err := d.Set("traffic", flattenCloudRunV2ServiceTraffic(res["traffic"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Service: %s", err)
 	}
+	if err := d.Set("invoker_iam_disabled", flattenCloudRunV2ServiceInvokerIamDisabled(res["invokerIamDisabled"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Service: %s", err)
+	}
 	if err := d.Set("observed_generation", flattenCloudRunV2ServiceObservedGeneration(res["observedGeneration"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Service: %s", err)
 	}
@@ -1395,6 +1409,12 @@ func resourceCloudRunV2ServiceUpdate(d *schema.ResourceData, meta interface{}) e
 		return err
 	} else if v, ok := d.GetOkExists("traffic"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, trafficProp)) {
 		obj["traffic"] = trafficProp
+	}
+	invokerIamDisabledProp, err := expandCloudRunV2ServiceInvokerIamDisabled(d.Get("invoker_iam_disabled"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("invoker_iam_disabled"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, invokerIamDisabledProp)) {
+		obj["invokerIamDisabled"] = invokerIamDisabledProp
 	}
 
 	url, err := tpgresource.ReplaceVars(d, config, "{{CloudRunV2BasePath}}projects/{{project}}/locations/{{location}}/services/{{name}}")
@@ -1593,6 +1613,10 @@ func flattenCloudRunV2ServiceBinaryAuthorizationUseDefault(v interface{}, d *sch
 }
 
 func flattenCloudRunV2ServiceCustomAudiences(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenCloudRunV2ServiceInvokerIamDisabled(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
@@ -4229,5 +4253,9 @@ func expandCloudRunV2ServiceTrafficPercent(v interface{}, d tpgresource.Terrafor
 }
 
 func expandCloudRunV2ServiceTrafficTag(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudRunV2ServiceInvokerIamDisabled(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
