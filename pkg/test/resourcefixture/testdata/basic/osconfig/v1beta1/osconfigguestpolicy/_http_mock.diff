@@ -1,0 +1,350 @@
+1c1
+< GET https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?alt=json
+---
+> GET https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+3d2
+< User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+25c24
+< POST https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies?alt=json&guestPolicyId=osconfigguestpolicy-${uniqueId}
+---
+> POST https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies?%24alt=json%3Benum-encoding%3Dint&guestPolicyId=osconfigguestpolicy-${uniqueId}
+27d25
+< User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+66d63
+<   "name": "osconfigguestpolicy-${uniqueId}",
+70c67
+<         "archiveType": "DEB",
+---
+>         "archiveType": 1,
+93,94c90,91
+<       "desiredState": "INSTALLED",
+<       "manager": "APT",
+---
+>       "desiredState": 1,
+>       "manager": 2,
+98,99c95,96
+<       "desiredState": "REMOVED",
+<       "manager": "YUM",
+---
+>       "desiredState": 3,
+>       "manager": 3,
+103,104c100,101
+<       "desiredState": "UPDATED",
+<       "manager": "ANY",
+---
+>       "desiredState": 2,
+>       "manager": 1,
+119c116
+<       "desiredState": "INSTALLED",
+---
+>       "desiredState": 1,
+133c130
+<             "type": "TAR_GZIP"
+---
+>             "type": 2
+143d139
+<           "allowInsecure": false,
+146c142
+<             "generation": 1829485032948520,
+---
+>             "generation": "1829485032948520",
+152c148
+<       "desiredState": "UPDATED",
+---
+>       "desiredState": 2,
+158d153
+<             "overwrite": false,
+254c249
+<         "archiveType": "DEB",
+---
+>         "archiveType": 1,
+277,278c272,273
+<       "desiredState": "INSTALLED",
+<       "manager": "APT",
+---
+>       "desiredState": 1,
+>       "manager": 2,
+282,283c277,278
+<       "desiredState": "REMOVED",
+<       "manager": "YUM",
+---
+>       "desiredState": 3,
+>       "manager": 3,
+287,288c282,283
+<       "desiredState": "UPDATED",
+<       "manager": "ANY",
+---
+>       "desiredState": 2,
+>       "manager": 1,
+303c298
+<       "desiredState": "INSTALLED",
+---
+>       "desiredState": 1,
+317c312
+<             "type": "TAR_GZIP"
+---
+>             "type": 2
+335c330
+<       "desiredState": "UPDATED",
+---
+>       "desiredState": 2,
+386c381
+< GET https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?alt=json
+---
+> GET https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+388d382
+< User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+443c437
+<         "archiveType": "DEB",
+---
+>         "archiveType": 1,
+466,467c460,461
+<       "desiredState": "INSTALLED",
+<       "manager": "APT",
+---
+>       "desiredState": 1,
+>       "manager": 2,
+471,472c465,466
+<       "desiredState": "REMOVED",
+<       "manager": "YUM",
+---
+>       "desiredState": 3,
+>       "manager": 3,
+476,477c470,471
+<       "desiredState": "UPDATED",
+<       "manager": "ANY",
+---
+>       "desiredState": 2,
+>       "manager": 1,
+492c486
+<       "desiredState": "INSTALLED",
+---
+>       "desiredState": 1,
+506c500
+<             "type": "TAR_GZIP"
+---
+>             "type": 2
+524c518
+<       "desiredState": "UPDATED",
+---
+>       "desiredState": 2,
+575c569
+< PATCH https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?alt=json
+---
+> PATCH https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=assignment%2Crecipes
+577d570
+< User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+616c609
+<   "name": "osconfigguestpolicy-${uniqueId}",
+---
+>   "name": "projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}",
+620c613
+<         "archiveType": "DEB",
+---
+>         "archiveType": 1,
+643,644c636,637
+<       "desiredState": "INSTALLED",
+<       "manager": "APT",
+---
+>       "desiredState": 1,
+>       "manager": 2,
+648,649c641,642
+<       "desiredState": "REMOVED",
+<       "manager": "YUM",
+---
+>       "desiredState": 3,
+>       "manager": 3,
+653,654c646,647
+<       "desiredState": "UPDATED",
+<       "manager": "ANY",
+---
+>       "desiredState": 2,
+>       "manager": 1,
+669c662
+<       "desiredState": "INSTALLED",
+---
+>       "desiredState": 1,
+683c676
+<             "type": "TAR_GZIP"
+---
+>             "type": 2
+693d685
+<           "allowInsecure": false,
+696c688
+<             "generation": 1829485032948555,
+---
+>             "generation": "1829485032948555",
+702c694,714
+<       "desiredState": "UPDATED",
+---
+>       "desiredState": 2,
+>       "installSteps": [
+>         {
+>           "fileCopy": {
+>             "artifactId": "web-app",
+>             "destination": "/installbackups/prod",
+>             "permissions": "777"
+>           }
+>         },
+>         {
+>           "fileExec": {
+>             "allowedExitCodes": [
+>               0
+>             ],
+>             "args": [
+>               "prodcompile"
+>             ],
+>             "localPath": "/installbackups/prod"
+>           }
+>         }
+>       ],
+782c794
+<         "archiveType": "DEB",
+---
+>         "archiveType": 1,
+805,806c817,818
+<       "desiredState": "INSTALLED",
+<       "manager": "APT",
+---
+>       "desiredState": 1,
+>       "manager": 2,
+810,811c822,823
+<       "desiredState": "REMOVED",
+<       "manager": "YUM",
+---
+>       "desiredState": 3,
+>       "manager": 3,
+815,816c827,828
+<       "desiredState": "UPDATED",
+<       "manager": "ANY",
+---
+>       "desiredState": 2,
+>       "manager": 1,
+831c843
+<       "desiredState": "INSTALLED",
+---
+>       "desiredState": 1,
+845c857
+<             "type": "TAR_GZIP"
+---
+>             "type": 2
+863c875,895
+<       "desiredState": "UPDATED",
+---
+>       "desiredState": 2,
+>       "installSteps": [
+>         {
+>           "fileCopy": {
+>             "artifactId": "web-app",
+>             "destination": "/installbackups/prod",
+>             "permissions": "777"
+>           }
+>         },
+>         {
+>           "fileExec": {
+>             "allowedExitCodes": [
+>               0
+>             ],
+>             "args": [
+>               "prodcompile"
+>             ],
+>             "localPath": "/installbackups/prod"
+>           }
+>         }
+>       ],
+894c926
+< GET https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?alt=json
+---
+> GET https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+896d927
+< User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+950c981
+<         "archiveType": "DEB",
+---
+>         "archiveType": 1,
+973,974c1004,1005
+<       "desiredState": "INSTALLED",
+<       "manager": "APT",
+---
+>       "desiredState": 1,
+>       "manager": 2,
+978,979c1009,1010
+<       "desiredState": "REMOVED",
+<       "manager": "YUM",
+---
+>       "desiredState": 3,
+>       "manager": 3,
+983,984c1014,1015
+<       "desiredState": "UPDATED",
+<       "manager": "ANY",
+---
+>       "desiredState": 2,
+>       "manager": 1,
+999c1030
+<       "desiredState": "INSTALLED",
+---
+>       "desiredState": 1,
+1013c1044
+<             "type": "TAR_GZIP"
+---
+>             "type": 2
+1031c1062,1082
+<       "desiredState": "UPDATED",
+---
+>       "desiredState": 2,
+>       "installSteps": [
+>         {
+>           "fileCopy": {
+>             "artifactId": "web-app",
+>             "destination": "/installbackups/prod",
+>             "permissions": "777"
+>           }
+>         },
+>         {
+>           "fileExec": {
+>             "allowedExitCodes": [
+>               0
+>             ],
+>             "args": [
+>               "prodcompile"
+>             ],
+>             "localPath": "/installbackups/prod"
+>           }
+>         }
+>       ],
+1062c1113
+< DELETE https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?alt=json
+---
+> DELETE https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+1064d1114
+< User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+1076,1100c1126
+< {}
+< 
+< ---
+< 
+< GET https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?alt=json
+< Content-Type: application/json
+< User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "message": "Requested entity was not found.",
+<     "status": "NOT_FOUND"
+<   }
+< }
+\ No newline at end of file
+---
+> {}
+\ No newline at end of file
