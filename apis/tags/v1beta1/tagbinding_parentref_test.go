@@ -19,6 +19,7 @@ import (
 	"strings"
 	"testing"
 
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -92,6 +93,14 @@ func TestTagsTagBindingParentRef_Normalize(t *testing.T) {
 				External: "//storage.googleapis.com/projects/_/buckets/my-bucket",
 			},
 			expectedExternal: "//storage.googleapis.com/projects/_/buckets/my-bucket",
+		},
+		{
+			name: "External: //sqladmin.googleapis.com/projects/{project}/instances/{instance} with kind=SQLInstance",
+			initial: TagsTagBindingParentRef{
+				Kind:     "SQLInstance",
+				External: "//sqladmin.googleapis.com/projects/my-project/instances/my-instance",
+			},
+			expectedExternal: "//sqladmin.googleapis.com/projects/my-project/instances/my-instance",
 		},
 		{
 			name: "External: {project} (project ID) with kind=Project",
