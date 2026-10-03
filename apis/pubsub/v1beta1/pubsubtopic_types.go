@@ -15,20 +15,10 @@
 package v1beta1
 
 import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
-
-type KMSCryptoKeyRef struct {
-	// Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.
-	External string `json:"external,omitempty"`
-
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	Name string `json:"name,omitempty"`
-
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-	Namespace string `json:"namespace,omitempty"`
-}
 
 type MessageStoragePolicy struct {
 	// A list of IDs of GCP regions where messages that are published to
@@ -68,7 +58,7 @@ type PubSubTopicSpec struct {
 	// must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
 	// feature.
 	// +kcc:proto:field=google.pubsub.v1.Topic.kms_key_name
-	KmsKeyRef *KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 
 	// Indicates the minimum duration to retain a message after it is published
 	// to the topic. If this field is set, messages published to the topic in
