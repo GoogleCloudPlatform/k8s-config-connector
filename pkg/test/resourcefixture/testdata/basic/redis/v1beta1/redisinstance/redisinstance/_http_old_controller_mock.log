@@ -32,7 +32,7 @@ Content-Type: application/json
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "memorySizeGb": 16,
+  "memorySizeGb": 1,
   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
   "tier": "BASIC",
   "transitEncryptionMode": "DISABLED"
@@ -99,7 +99,7 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "locationId": "us-central1-a",
-    "memorySizeGb": 16,
+    "memorySizeGb": 1,
     "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "nodes": [
       {
@@ -149,7 +149,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "locationId": "us-central1-a",
-  "memorySizeGb": 16,
+  "memorySizeGb": 1,
   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
   "nodes": [
     {
@@ -183,7 +183,7 @@ Content-Type: application/json
     "managed-by-cnrm": "true",
     "newkey": "newval"
   },
-  "memorySizeGb": 20,
+  "memorySizeGb": 2,
   "persistenceConfig": {
     "persistenceMode": "DISABLED"
   },
@@ -252,7 +252,7 @@ X-Xss-Protection: 0
       "newkey": "newval"
     },
     "locationId": "us-central1-a",
-    "memorySizeGb": 20,
+    "memorySizeGb": 2,
     "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "nodes": [
       {
@@ -303,7 +303,7 @@ X-Xss-Protection: 0
     "newkey": "newval"
   },
   "locationId": "us-central1-a",
-  "memorySizeGb": 20,
+  "memorySizeGb": 2,
   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
   "nodes": [
     {
