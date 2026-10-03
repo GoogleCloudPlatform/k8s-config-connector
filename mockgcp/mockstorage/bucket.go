@@ -146,10 +146,18 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 	switch obj.GetLocation() {
 	case "ASIA1", "EUR4", "EUR5", "EUR7", "EUR8", "NAM4":
 		obj.LocationType = PtrTo("dual-region")
-		obj.Rpo = PtrTo("DEFAULT")
+		if obj.Rpo == nil {
+			obj.Rpo = PtrTo("DEFAULT")
+		}
 	case "EU", "US", "ASIA":
-		obj.LocationType = PtrTo("multi-region")
-		obj.Rpo = PtrTo("DEFAULT")
+		if obj.CustomPlacementConfig != nil {
+			obj.LocationType = PtrTo("dual-region")
+		} else {
+			obj.LocationType = PtrTo("multi-region")
+		}
+		if obj.Rpo == nil {
+			obj.Rpo = PtrTo("DEFAULT")
+		}
 	default:
 		obj.Location = PtrTo(strings.ToUpper(obj.GetLocation()))
 		obj.LocationType = PtrTo("region")
@@ -319,6 +327,9 @@ func (s *buckets) PatchBucket(ctx context.Context, req *pb.PatchBucketRequest) (
 		}
 		if patch.IpFilter != nil {
 			obj.IpFilter = patch.IpFilter
+		}
+		if patch.Rpo != nil {
+			obj.Rpo = patch.Rpo
 		}
 
 		if patch.SoftDeletePolicy != nil {
