@@ -69,6 +69,10 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
       "kalmConfig": {
         "enabled": false
       },
+      "lustreCsiDriverConfig": {
+        "enableLegacyLustrePort": false,
+        "enabled": false
+      },
       "networkPolicyConfig": {
         "disabled": true
       },
@@ -259,6 +263,7 @@ X-Xss-Protection: 0
     "kubernetesDashboard": {
       "disabled": true
     },
+    "lustreCsiDriverConfig": {},
     "networkPolicyConfig": {
       "disabled": true
     },
@@ -649,6 +654,7 @@ X-Xss-Protection: 0
     "kubernetesDashboard": {
       "disabled": true
     },
+    "lustreCsiDriverConfig": {},
     "networkPolicyConfig": {
       "disabled": true
     },
@@ -1039,6 +1045,7 @@ X-Xss-Protection: 0
     "kubernetesDashboard": {
       "disabled": true
     },
+    "lustreCsiDriverConfig": {},
     "networkPolicyConfig": {
       "disabled": true
     },
@@ -1379,6 +1386,10 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
       "kalmConfig": {
         "enabled": false
       },
+      "lustreCsiDriverConfig": {
+        "enableLegacyLustrePort": false,
+        "enabled": false
+      },
       "networkPolicyConfig": {
         "disabled": true
       },
@@ -1478,6 +1489,7 @@ X-Xss-Protection: 0
     "kubernetesDashboard": {
       "disabled": true
     },
+    "lustreCsiDriverConfig": {},
     "networkPolicyConfig": {
       "disabled": true
     },
@@ -1868,6 +1880,7 @@ X-Xss-Protection: 0
     "kubernetesDashboard": {
       "disabled": true
     },
+    "lustreCsiDriverConfig": {},
     "networkPolicyConfig": {
       "disabled": true
     },
@@ -2258,6 +2271,7 @@ X-Xss-Protection: 0
     "kubernetesDashboard": {
       "disabled": true
     },
+    "lustreCsiDriverConfig": {},
     "networkPolicyConfig": {
       "disabled": true
     },
@@ -2599,6 +2613,10 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
       "kalmConfig": {
         "enabled": true
       },
+      "lustreCsiDriverConfig": {
+        "enableLegacyLustrePort": true,
+        "enabled": true
+      },
       "networkPolicyConfig": {
         "disabled": false
       },
@@ -2703,6 +2721,10 @@ X-Xss-Protection: 0
     "kubernetesDashboard": {
       "disabled": true
     },
+    "lustreCsiDriverConfig": {
+      "enableLegacyLustrePort": true,
+      "enabled": true
+    },
     "networkPolicyConfig": {},
     "parallelstoreCsiDriverConfig": {
       "enabled": true
@@ -3098,6 +3120,10 @@ X-Xss-Protection: 0
     "kubernetesDashboard": {
       "disabled": true
     },
+    "lustreCsiDriverConfig": {
+      "enableLegacyLustrePort": true,
+      "enabled": true
+    },
     "networkPolicyConfig": {},
     "parallelstoreCsiDriverConfig": {
       "enabled": true
@@ -3492,6 +3518,10 @@ X-Xss-Protection: 0
     },
     "kubernetesDashboard": {
       "disabled": true
+    },
+    "lustreCsiDriverConfig": {
+      "enableLegacyLustrePort": true,
+      "enabled": true
     },
     "networkPolicyConfig": {},
     "parallelstoreCsiDriverConfig": {
