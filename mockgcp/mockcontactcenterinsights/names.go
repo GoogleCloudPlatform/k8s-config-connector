@@ -130,6 +130,37 @@ func (s *MockService) parseViewName(name string) (*viewName, error) {
 	}
 }
 
+type analysisRuleName struct {
+	Project      *projects.ProjectData
+	Location     string
+	AnalysisRule string
+}
+
+func (n *analysisRuleName) String() string {
+	return "projects/" + strconv.FormatInt(n.Project.Number, 10) + "/locations/" + n.Location + "/analysisRules/" + n.AnalysisRule
+}
+
+// parseAnalysisRuleName parses a string into an analysisRuleName.
+// The expected form is projects/<projectID>/locations/<location>/analysisRules/<analysisRule>
+func (s *MockService) parseAnalysisRuleName(name string) (*analysisRuleName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "analysisRules" {
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &analysisRuleName{
+			Project:      project,
+			Location:     tokens[3],
+			AnalysisRule: tokens[5],
+		}, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
 type conversationName struct {
 	Project      *projects.ProjectData
 	Location     string

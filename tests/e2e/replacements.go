@@ -193,6 +193,8 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 		return "${instanceGroupID}"
 	case "workloads":
 		return "${workloadID}"
+	case "analysisRules":
+		return "${analysisRuleId}"
 	default:
 		return ""
 	}
