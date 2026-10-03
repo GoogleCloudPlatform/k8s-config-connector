@@ -38,6 +38,7 @@ func BigQueryReservationReservationSpec_v1beta1_ToProto(mapCtx *direct.MapContex
 	// MISSING: ScalingMode
 	// MISSING: ReplicationStatus
 	out.SecondaryLocation = FailoverSpec_ToProto(mapCtx, in.FailOver)
+	out.SchedulingPolicy = SchedulingPolicySpec_ToProto(mapCtx, in.SchedulingPolicy)
 	return out
 }
 
@@ -148,6 +149,7 @@ func BigQueryReservationReservationSpec_v1beta1_FromProto(mapCtx *direct.MapCont
 	// MISSING: MaxSlots
 	// MISSING: ScalingMode
 	// MISSING: ReplicationStatus
+	out.SchedulingPolicy = SchedulingPolicySpec_FromProto(mapCtx, in.GetSchedulingPolicy())
 	return out
 }
 func FailoverSpec_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.FailoverSpec {
@@ -173,4 +175,24 @@ func BigQueryReservationReservationObservedState_ToProto(mapCtx *direct.MapConte
 
 func BigQueryReservationReservationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.BigQueryReservationReservationObservedState {
 	return BigQueryReservationReservationObservedState_v1beta1_FromProto(mapCtx, in)
+}
+
+func SchedulingPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.SchedulingPolicySpec) *pb.SchedulingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SchedulingPolicy{}
+	out.Concurrency = in.Concurrency
+	out.MaxSlots = in.MaxSlots
+	return out
+}
+
+func SchedulingPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.SchedulingPolicy) *krm.SchedulingPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SchedulingPolicySpec{}
+	out.Concurrency = in.Concurrency
+	out.MaxSlots = in.MaxSlots
+	return out
 }
