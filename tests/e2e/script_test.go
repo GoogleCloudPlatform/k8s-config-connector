@@ -16,8 +16,12 @@ package e2e
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
 	"io/fs"
+	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -102,6 +106,7 @@ func TestE2EScript(t *testing.T) {
 
 				h := create.NewHarness(ctx, t, harnessOptions...)
 				project := h.Project
+				targetGCP := os.Getenv("E2E_GCP_TARGET")
 				script := loadScript(t, filepath.Join(scenarioDir, scenarioPath), uniqueID, project)
 
 				create.SetupNamespacesAndApplyDefaults(h, script.Objects, project)
@@ -223,6 +228,73 @@ func TestE2EScript(t *testing.T) {
 						}
 
 						captureHTTPLogEvents(true, deferHTTPLog)
+						t.Logf("***/Step %d finished in %v", i, time.Since(stepStart))
+						continue
+					}
+
+					if obj.GroupVersionKind().Kind == "HTTPRequest" {
+						method, _, _ := unstructured.NestedString(obj.Object, "method")
+						if method == "" {
+							method = "GET"
+						}
+						urlStr, _, _ := unstructured.NestedString(obj.Object, "url")
+						bodyStr, _, _ := unstructured.NestedString(obj.Object, "body")
+						waitForOperation := true
+						if v, ok, _ := unstructured.NestedBool(obj.Object, "waitForOperation"); ok {
+							waitForOperation = v
+						}
+						waitTimeout := 5 * time.Minute
+						if d, ok, _ := unstructured.NestedString(obj.Object, "timeout"); ok {
+							if parsed, err := time.ParseDuration(d); err == nil {
+								waitTimeout = parsed
+							}
+						}
+
+						// Substitute ${projectId} and ${uniqueId}
+						urlStr = strings.ReplaceAll(urlStr, "${projectId}", project.ProjectID)
+						urlStr = strings.ReplaceAll(urlStr, "${uniqueId}", uniqueID)
+						bodyStr = strings.ReplaceAll(bodyStr, "${projectId}", project.ProjectID)
+						bodyStr = strings.ReplaceAll(bodyStr, "${uniqueId}", uniqueID)
+
+						var reqBody io.Reader
+						if bodyStr != "" {
+							reqBody = strings.NewReader(bodyStr)
+						}
+
+						req, err := http.NewRequestWithContext(ctx, method, urlStr, reqBody)
+						if err != nil {
+							h.Fatalf("failed to create http request: %v", err)
+						}
+						if bodyStr != "" {
+							req.Header.Set("Content-Type", "application/json")
+						}
+
+						httpClient := h.GCPHTTPClient()
+						resp, err := httpClient.Do(req)
+						if err != nil {
+							h.Fatalf("http request failed: %v", err)
+						}
+						defer resp.Body.Close()
+
+						respBytes, err := io.ReadAll(resp.Body)
+						if err != nil {
+							h.Fatalf("failed to read response body: %v", err)
+						}
+						if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+							h.Fatalf("http request returned non-2xx status %d: %s", resp.StatusCode, string(respBytes))
+						}
+
+						// Auto-detect and poll LRO to completion on real GCP
+						if waitForOperation {
+							var opMap map[string]any
+							if err := json.Unmarshal(respBytes, &opMap); err == nil {
+								if pollURL := getOperationPollURL(urlStr, opMap); pollURL != "" {
+									pollLROToCompletion(ctx, h, httpClient, pollURL, waitTimeout)
+								}
+							}
+						}
+
+						captureHTTPLogEvents(false, deferHTTPLog)
 						t.Logf("***/Step %d finished in %v", i, time.Since(stepStart))
 						continue
 					}
@@ -421,7 +493,11 @@ func TestE2EScript(t *testing.T) {
 								t.Errorf("failed to convert kube object to yaml: %v", err)
 							}
 
-							expectedPath := filepath.Join(script.SourceDir, fmt.Sprintf("_export%d.yaml", i))
+							goldenFileName := fmt.Sprintf("_export%d.yaml", i)
+							if targetGCP == "mock" {
+								goldenFileName = fmt.Sprintf("_export%d_mock.yaml", i)
+							}
+							expectedPath := filepath.Join(script.SourceDir, goldenFileName)
 							normalizers := []func(string) string{
 								IgnoreComments,
 							}
@@ -441,7 +517,11 @@ func TestE2EScript(t *testing.T) {
 							if err != nil {
 								t.Errorf("failed to convert kube object to yaml: %v", err)
 							}
-							expectedPath := filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d.yaml", i))
+							goldenFileName := fmt.Sprintf("_object%02d.yaml", i)
+							if targetGCP == "mock" {
+								goldenFileName = fmt.Sprintf("_object%02d_mock.yaml", i)
+							}
+							expectedPath := filepath.Join(script.SourceDir, goldenFileName)
 							normalizers := []func(string) string{
 								IgnoreComments,
 								IgnoreAnnotations(map[string]struct{}{
@@ -451,13 +531,17 @@ func TestE2EScript(t *testing.T) {
 							h.CompareGoldenFile(expectedPath, string(got), normalizers...)
 							// Compares the kube object spec read at the current
 							// step (which should be equivalent to the golden
-							// file, i.e. "_object%02d.yaml") and the kube
+							// file, i.e. "_object%02d.yaml" or "_object%02d_mock.yaml") and the kube
 							// object read at a different step.
 							// targetStepForReadAndCompare contains the step to
 							// compare with. The step number follows 1-based
 							// numbering.
 							if targetStepForReadAndCompare > 0 {
-								wantPath := filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d.yaml", targetStepForReadAndCompare-1))
+								wantFileName := fmt.Sprintf("_object%02d.yaml", targetStepForReadAndCompare-1)
+								if targetGCP == "mock" {
+									wantFileName = fmt.Sprintf("_object%02d_mock.yaml", targetStepForReadAndCompare-1)
+								}
+								wantPath := filepath.Join(script.SourceDir, wantFileName)
 								gotPath := expectedPath
 								wantObj, err := getKubeObjectInStringFromFile(wantPath)
 								if err != nil {
@@ -490,7 +574,11 @@ func TestE2EScript(t *testing.T) {
 						}
 
 						for i, stepEvents := range eventsByStep {
-							expectedPath := filepath.Join(script.SourceDir, fmt.Sprintf("_http%02d.log", i))
+							goldenFileName := fmt.Sprintf("_http%02d.log", i)
+							if targetGCP == "mock" {
+								goldenFileName = fmt.Sprintf("_http%02d_mock.log", i)
+							}
+							expectedPath := filepath.Join(script.SourceDir, goldenFileName)
 							NormalizeHTTPLog(t, stepEvents.Entries, h.RegisteredServices(), project, uniqueID, "", "")
 							got := x.Render(stepEvents.Entries)
 							if stepEvents.SkipCheck {
@@ -894,4 +982,75 @@ func extractOutSpecFromKubeObjectStrings(obj string) string {
 	specLines := lines[specLine:statusLine]
 	spec := strings.Join(specLines, "\n")
 	return spec
+}
+
+// getOperationPollURL extracts the polling GET URL if the response represents an active LRO.
+func getOperationPollURL(initialURL string, opMap map[string]any) string {
+	// 1. Cloud SQL / Compute style operations with selfLink
+	if selfLink, ok := opMap["selfLink"].(string); ok && selfLink != "" {
+		if status, _ := opMap["status"].(string); status == "DONE" {
+			return ""
+		}
+		return selfLink
+	}
+
+	// 2. Standard google.longrunning.Operation style with name
+	if name, ok := opMap["name"].(string); ok && name != "" {
+		if done, _ := opMap["done"].(bool); done {
+			return ""
+		}
+		u, err := url.Parse(initialURL)
+		if err == nil {
+			return fmt.Sprintf("%s://%s/v1/%s", u.Scheme, u.Host, name)
+		}
+	}
+
+	return ""
+}
+
+// pollLROToCompletion polls the GCP operation endpoint until completion using wait.PollUntilContextTimeout.
+func pollLROToCompletion(ctx context.Context, h *create.Harness, client *http.Client, pollURL string, timeout time.Duration) {
+	err := wait.PollUntilContextTimeout(ctx, 2*time.Second, timeout, true, func(ctx context.Context) (bool, error) {
+		req, err := http.NewRequestWithContext(ctx, "GET", pollURL, nil)
+		if err != nil {
+			return false, fmt.Errorf("creating poll request: %w", err)
+		}
+		resp, err := client.Do(req)
+		if err != nil {
+			return false, fmt.Errorf("executing poll request: %w", err)
+		}
+		defer resp.Body.Close()
+
+		bodyBytes, _ := io.ReadAll(resp.Body)
+		if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+			return false, fmt.Errorf("LRO poll HTTP %d: %s", resp.StatusCode, string(bodyBytes))
+		}
+
+		var op map[string]any
+		if err := json.Unmarshal(bodyBytes, &op); err != nil {
+			return false, fmt.Errorf("parsing LRO JSON: %w", err)
+		}
+
+		// Check Cloud SQL / Compute status: "DONE"
+		if status, ok := op["status"].(string); ok && status == "DONE" {
+			if errVal, hasErr := op["error"]; hasErr && errVal != nil {
+				return false, fmt.Errorf("LRO failed: %v", errVal)
+			}
+			return true, nil
+		}
+
+		// Check standard LRO: done == true
+		if done, ok := op["done"].(bool); ok && done {
+			if errVal, hasErr := op["error"]; hasErr && errVal != nil {
+				return false, fmt.Errorf("LRO failed: %v", errVal)
+			}
+			return true, nil
+		}
+
+		return false, nil
+	})
+
+	if err != nil {
+		h.Fatalf("failed waiting for LRO %s: %v", pollURL, err)
+	}
 }

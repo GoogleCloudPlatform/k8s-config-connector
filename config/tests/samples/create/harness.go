@@ -945,6 +945,9 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			if gvk.Group == "" && gvk.Kind == "SystemRun" {
 				continue
 			}
+			if gvk.Group == "" && gvk.Kind == "HTTPRequest" {
+				continue
+			}
 			if strings.Contains(testKey, "dclbasedresourceserviceaccountref") {
 				t.Skip()
 			}
@@ -1576,6 +1579,16 @@ func (h *Harness) NoExtraGoldenFiles(glob string) {
 	goldenFilesSet := sets.New(h.goldenFiles...)
 
 	for _, gotFile := range gotFiles {
+		if h.GCPTarget == GCPTargetModeMock {
+			if !strings.Contains(filepath.Base(gotFile), "_mock") {
+				continue
+			}
+		} else {
+			if strings.Contains(filepath.Base(gotFile), "_mock") {
+				continue
+			}
+		}
+
 		abs, err := filepath.Abs(gotFile)
 		if err != nil {
 			h.Fatalf("error getting absolute path for %q: %v", gotFile, err)

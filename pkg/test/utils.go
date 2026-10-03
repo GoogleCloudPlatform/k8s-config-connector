@@ -221,6 +221,14 @@ func CompareGoldenFile(t *testing.T, p, fullGot string, normalizers ...func(s st
 		t.Fatalf("FAIL: attempted to write/update %q while E2E_GCP_TARGET=%q. _http.log must only be recorded when running against real GCP (E2E_GCP_TARGET=real).", p, os.Getenv("E2E_GCP_TARGET"))
 	}
 
+	isScenario := strings.Contains(p, "tests/e2e/testdata/scenarios")
+	if writeGoldenOutput && isScenario && strings.HasPrefix(filepath.Base(p), "_http") && !strings.Contains(filepath.Base(p), "_mock") && os.Getenv("E2E_GCP_TARGET") != "real" {
+		t.Fatalf("FAIL: attempted to write/update %q while E2E_GCP_TARGET=%q. Real scenario logs must only be recorded when running against real GCP (E2E_GCP_TARGET=real).", p, os.Getenv("E2E_GCP_TARGET"))
+	}
+	if writeGoldenOutput && isScenario && (strings.HasPrefix(filepath.Base(p), "_object") || strings.HasPrefix(filepath.Base(p), "_export")) && !strings.Contains(filepath.Base(p), "_mock") && os.Getenv("E2E_GCP_TARGET") != "real" {
+		t.Fatalf("FAIL: attempted to write/update %q while E2E_GCP_TARGET=%q. Real scenario objects must only be recorded when running against real GCP (E2E_GCP_TARGET=real).", p, os.Getenv("E2E_GCP_TARGET"))
+	}
+
 	for _, normalizer := range normalizers {
 		fullGot = normalizer(fullGot)
 	}

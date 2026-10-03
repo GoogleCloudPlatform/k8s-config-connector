@@ -6,8 +6,9 @@ than some of our other yaml-driven tests.
 The `script.yaml` file contains a set of kube objects, which are applied
 in turn.  After each object is applied, we run some golden checks:
 
-* We export the GCP object and we golden-compare to _exportNN.yaml
-* We read the KRM object from the kubernetes cluster, and we golden-compare to _objectNN.yaml
+* We export the GCP object and we golden-compare to _exportNN.yaml (or _exportNN_mock.yaml when running against mock GCP)
+* We read the KRM object from the kubernetes cluster, and we golden-compare to _objectNN.yaml (or _objectNN_mock.yaml when running against mock GCP)
+* We golden-compare HTTP traffic to _httpNN.log (or _httpNN_mock.log when running against mock GCP)
 
 
 We also support a few "special actions", which are triggered by setting
@@ -59,3 +60,6 @@ a top-level field `TEST` on the object:
 We also support a few special kinds:
 
 * `kind: SystemRun` will wait for a specified `duration` (in seconds or as a duration string like "2s") to allow for background reconciliation. It will capture all HTTP traffic during the wait but mark it as skippable in the golden log comparison (useful for avoiding flaky background traffic in logs).
+
+* `kind: HTTPRequest` will execute an authenticated HTTP REST request against GCP APIs and optionally poll resulting Long Running Operations (LROs) to completion. Supports fields like `method` (defaults to GET), `url`, `body`, `waitForOperation` (defaults to true), and `timeout` (defaults to 5m). Variable substitutions `${projectId}` and `${uniqueId}` are supported in `url` and `body`.
+
