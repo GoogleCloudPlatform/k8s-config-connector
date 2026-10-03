@@ -1,0 +1,26 @@
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogMetric
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  name: logginglogmetric-${uniqueId}
+  namespace: ${projectId}
+spec:
+  filter: INVALID FILTER
+  projectRef:
+    external: projects/${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: 'Update call failed: error creating: logMetric logginglogmetric-${uniqueId}
+      creation failed: googleapi: Error 400: Field filter had an invalid value: "INVALID
+      FILTER"'
+    reason: UpdateFailed
+    status: "False"
+    type: Ready
+  observedGeneration: 1
