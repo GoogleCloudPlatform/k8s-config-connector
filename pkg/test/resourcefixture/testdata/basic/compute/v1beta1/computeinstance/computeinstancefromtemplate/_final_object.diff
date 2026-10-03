@@ -1,14 +1,15 @@
-7d6
+7,8d6
+<     cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
 <     cnrm.cloud.google.com/observed-secret-versions: (removed)
-9d7
+10d7
 <     cnrm.cloud.google.com/state-into-spec: absent
-13c11
+14c11
 <   generation: 3
 ---
 >   generation: 2
-23d20
+24d20
 <   resourceID: ${instanceID}
-35c32
+36c32
 <   observedGeneration: 3
 ---
 >   observedGeneration: 2
