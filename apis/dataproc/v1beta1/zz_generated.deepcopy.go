@@ -23,6 +23,7 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -404,7 +405,7 @@ func (in *ClusterEncryptionConfig) DeepCopyInto(out *ClusterEncryptionConfig) {
 	*out = *in
 	if in.GcePdKmsKeyRef != nil {
 		in, out := &in.GcePdKmsKeyRef, &out.GcePdKmsKeyRef
-		*out = new(refsv1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 }
@@ -804,7 +805,7 @@ func (in *ClusterKerberosConfig) DeepCopyInto(out *ClusterKerberosConfig) {
 	}
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(refsv1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 	if in.Realm != nil {
