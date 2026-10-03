@@ -28,6 +28,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -135,6 +137,7 @@ func (a *ReservationAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	desiredPb.Labels = label.GCPLabels(desired)
 
 	req := &pb.CreateReservationRequest{
 		Parent:        a.id.Parent().String(),
@@ -168,6 +171,7 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	desiredPb.Labels = label.GCPLabels(a.desired)
 
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 
@@ -184,6 +188,10 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if !reflect.DeepEqual(desiredPb.Concurrency, a.actual.Concurrency) {
 		report.AddField("concurrency", a.actual.Concurrency, desiredPb.Concurrency)
 		paths = append(paths, "concurrency")
+	}
+	if !reflect.DeepEqual(desiredPb.Labels, a.actual.Labels) {
+		report.AddField("labels", a.actual.Labels, desiredPb.Labels)
+		paths = append(paths, "labels")
 	}
 
 	// Handle secondaryLocation field which can be modified by API during failover
@@ -277,6 +285,7 @@ func (a *ReservationAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	u.SetGroupVersionKind(krm.BigQueryReservationReservationGVK)
 
 	u.Object = uObj
+	export.SetLabels(u, a.actual.Labels)
 	return u, nil
 }
 
