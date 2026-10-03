@@ -948,6 +948,9 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			if strings.Contains(testKey, "dclbasedresourceserviceaccountref") {
 				t.Skip()
 			}
+			if strings.Contains(testKey, "/livestreamasset/") {
+				t.Skip("skipping livestreamasset as standalone mock alignment is not yet completed")
+			}
 
 			switch gvk.Group {
 			case "core.cnrm.cloud.google.com":
@@ -1461,6 +1464,8 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "mapmanagement.cnrm.cloud.google.com", Kind: "MapManagementMapConfig"}:
 			case schema.GroupKind{Group: "mapmanagement.cnrm.cloud.google.com", Kind: "MapManagementStyleConfig"}:
 
+			case schema.GroupKind{Group: "livestream.cnrm.cloud.google.com", Kind: "LiveStreamAsset"}:
+			case schema.GroupKind{Group: "livestream.cnrm.cloud.google.com", Kind: "LiveStreamChannel"}:
 			case schema.GroupKind{Group: "livestream.cnrm.cloud.google.com", Kind: "LiveStreamInput"}:
 
 			default:

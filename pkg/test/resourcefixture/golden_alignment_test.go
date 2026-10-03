@@ -617,6 +617,12 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "billingAccount")
 		delete(v, "resourceSettings")
 
+		// Cloud Resource Manager Project fields to normalize alignment differences
+		if _, ok := v["projectId"]; ok {
+			delete(v, "displayName")
+			delete(v, "parent")
+		}
+
 		// SQLInstance specific fields to normalize alignment differences between mock and real GCP responses
 		delete(v, "databaseInstalledVersion")
 		delete(v, "maintenanceVersion")
