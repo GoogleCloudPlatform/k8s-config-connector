@@ -126,7 +126,23 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 
 // Helper to normalize GKE-generated Instance Group Manager names
 func normalizeGKEInstanceGroupNames(value string, replacements mockgcpregistry.NormalizingVisitor) {
-	igmRegex := regexp.MustCompile(`gke-[a-z0-9-]+-[a-f0-9]+-grp`)
+	// For default-pool: gke-<cluster>-default-pool-<8hex>-grp -> gke-containercluster-abcdef-default-pool-grp
+	defaultPoolRegex := regexp.MustCompile(`gke-[a-z0-9-${}]+-default-pool-[a-f0-9]{8}-grp`)
+	if defaultPoolRegex.MatchString(value) {
+		match := defaultPoolRegex.FindString(value)
+		replacements.ReplaceStringValue(match, "gke-containercluster-abcdef-default-pool-grp")
+		return
+	}
+
+	// For named nodepools: gke-<cluster>-<nodepool>-<8hex>-grp -> gke-containercluster-abcdef-<nodepool>-grp
+	namedPoolRegex := regexp.MustCompile(`gke-[a-z0-9-${}]+-((?:nodepool|containernodepool)[a-z0-9-${}]*)-[a-f0-9]{8}-grp`)
+	if namedPoolRegex.MatchString(value) {
+		matches := namedPoolRegex.FindStringSubmatch(value)
+		replacements.ReplaceStringValue(matches[0], "gke-containercluster-abcdef-"+matches[1]+"-grp")
+		return
+	}
+
+	igmRegex := regexp.MustCompile(`gke-[a-z0-9-${}]+-[a-f0-9]{8}-grp`)
 	if igmRegex.MatchString(value) {
 		match := igmRegex.FindString(value)
 		replacements.ReplaceStringValue(match, "gke-containercluster-abcdef-normalized-grp")

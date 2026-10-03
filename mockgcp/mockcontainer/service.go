@@ -18,7 +18,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"io"
 	"net/http"
 	"strings"
 
@@ -75,25 +74,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 			r = httpmux.RewriteRequest(r, &u2)
 		}
 
-		// Intercept Request Body: OS_2022 -> OS_VERSION_LTSC2022
-		if r.Body != nil {
-			bodyBytes, err := io.ReadAll(r.Body)
-			if err == nil {
-				// Replace short enum names with full proto enum names
-				bodyBytes = bytes.ReplaceAll(bodyBytes, []byte(`"OS_2022"`), []byte(`"OS_VERSION_LTSC2022"`))
-				bodyBytes = bytes.ReplaceAll(bodyBytes, []byte(`"OS_2019"`), []byte(`"OS_VERSION_LTSC2019"`))
-				r.Body = io.NopCloser(bytes.NewReader(bodyBytes))
-				r.ContentLength = int64(len(bodyBytes))
-			}
-		}
-
-		// Intercept Response Body: OS_VERSION_LTSC2022 -> OS_2022
 		rec := &responseWrapper{ResponseWriter: w, body: &bytes.Buffer{}}
 		mux.ServeHTTP(rec, r)
 
 		respBytes := rec.body.Bytes()
-		respBytes = bytes.ReplaceAll(respBytes, []byte(`"OS_VERSION_LTSC2022"`), []byte(`"OS_2022"`))
-		respBytes = bytes.ReplaceAll(respBytes, []byte(`"OS_VERSION_LTSC2019"`), []byte(`"OS_2019"`))
 
 		if rec.statusCode == http.StatusBadRequest && bytes.Contains(respBytes, []byte(`"must specify a field to update"`)) {
 			respBytes = []byte(`{
