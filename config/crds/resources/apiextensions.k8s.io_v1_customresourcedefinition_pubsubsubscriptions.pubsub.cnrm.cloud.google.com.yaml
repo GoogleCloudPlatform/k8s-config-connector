@@ -111,6 +111,10 @@ spec:
                         description: The namespace of a BigQueryTable resource.
                         type: string
                     type: object
+                  useTableSchema:
+                    description: When true, use the BigQuery table's schema as the
+                      columns to write to in BigQuery.
+                    type: boolean
                   useTopicSchema:
                     description: When true, use the topic's schema as the columns
                       to write to in BigQuery, if it exists.
