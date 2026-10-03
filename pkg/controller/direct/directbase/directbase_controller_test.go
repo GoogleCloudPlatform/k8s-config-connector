@@ -761,3 +761,131 @@ func TestReconcile_UnreadableButDeletable_NormalUpdateFailed(t *testing.T) {
 		t.Error("expected Adapter.Delete() NOT to be called during normal update (not deleting)")
 	}
 }
+
+func TestReconcile_PausedResource_NoActuationAndSetsPausedCondition(t *testing.T) {
+	ctx := context.TODO()
+	scheme := runtime.NewScheme()
+	_ = corev1.AddToScheme(scheme)
+	_ = operatorv1beta1.AddToScheme(scheme)
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(testGVK)
+	u.SetName("test-paused-resource")
+	u.SetNamespace("test-ns")
+	u.SetAnnotations(map[string]string{
+		k8s.ActuationModeAnnotation: "Paused",
+	})
+
+	adapter := &mockAdapter{
+		findFound: false,
+	}
+	model := &mockModel{
+		adapter: adapter,
+	}
+
+	k8sClient := fake.NewClientBuilder().
+		WithScheme(scheme).
+		WithStatusSubresource(u).
+		WithRuntimeObjects(u).
+		Build()
+
+	r := &DirectReconciler{
+		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
+			k8sClient,
+			record.NewFakeRecorder(100),
+		),
+		Client:          k8sClient,
+		scheme:          scheme,
+		gvk:             testGVK,
+		model:           model,
+		jitterGenerator: &mockJitterGenerator{},
+	}
+
+	req := reconcile.Request{
+		NamespacedName: types.NamespacedName{
+			Namespace: "test-ns",
+			Name:      "test-paused-resource",
+		},
+	}
+
+	res, err := r.Reconcile(ctx, req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if res.Requeue {
+		t.Errorf("expected Requeue to be false, got true")
+	}
+
+	// Adapter methods must NOT be called
+	if adapter.createCalled || adapter.updateCalled || adapter.deleteCalled {
+		t.Errorf("adapter actuation methods were called while paused: create=%v, update=%v, delete=%v",
+			adapter.createCalled, adapter.updateCalled, adapter.deleteCalled)
+	}
+
+	// Check updated object in k8s
+	got := &unstructured.Unstructured{}
+	got.SetGroupVersionKind(testGVK)
+	if err := k8sClient.Get(ctx, req.NamespacedName, got); err != nil {
+		t.Fatalf("failed to get object: %v", err)
+	}
+
+	// Finalizers must be ensured
+	if !k8s.HasFinalizer(got, k8s.ControllerFinalizerName) {
+		t.Errorf("expected finalizer %v to be present", k8s.ControllerFinalizerName)
+	}
+
+	// Condition must be Ready=False, Reason=Paused
+	k8sRes, err := k8s.NewResource(got)
+	if err != nil {
+		t.Fatalf("unexpected error converting to k8s resource: %v", err)
+	}
+	cond, found := k8s.GetReadyCondition(k8sRes)
+	if !found {
+		t.Fatalf("expected ready condition to be set")
+	}
+	if cond.Status != corev1.ConditionFalse {
+		t.Errorf("expected Ready=False, got %v", cond.Status)
+	}
+	if cond.Reason != k8s.Paused {
+		t.Errorf("expected reason %v, got %v", k8s.Paused, cond.Reason)
+	}
+	if cond.Message != k8s.PausedMessage {
+		t.Errorf("expected message %v, got %v", k8s.PausedMessage, cond.Message)
+	}
+
+	// Now flip annotation to "Reconciling" and reconcile again
+	got.SetAnnotations(map[string]string{
+		k8s.ActuationModeAnnotation: "Reconciling",
+	})
+	if err := k8sClient.Update(ctx, got); err != nil {
+		t.Fatalf("failed to update object annotation: %v", err)
+	}
+
+	_, err = r.Reconcile(ctx, req)
+	if err != nil {
+		t.Fatalf("unexpected error during reconcile after unpausing: %v", err)
+	}
+
+	if !adapter.createCalled {
+		t.Errorf("expected Adapter.Create() to be called after unpausing")
+	}
+
+	// Fetch updated object and verify condition is now UpToDate
+	if err := k8sClient.Get(ctx, req.NamespacedName, got); err != nil {
+		t.Fatalf("failed to get object: %v", err)
+	}
+	k8sRes, err = k8s.NewResource(got)
+	if err != nil {
+		t.Fatalf("unexpected error converting to k8s resource: %v", err)
+	}
+	cond, found = k8s.GetReadyCondition(k8sRes)
+	if !found {
+		t.Fatalf("expected ready condition to be set")
+	}
+	if cond.Status != corev1.ConditionTrue {
+		t.Errorf("expected Ready=True, got %v", cond.Status)
+	}
+	if cond.Reason != k8s.UpToDate {
+		t.Errorf("expected reason %v, got %v", k8s.UpToDate, cond.Reason)
+	}
+}
