@@ -44,6 +44,11 @@ func (in *BigQueryConfig) DeepCopyInto(out *BigQueryConfig) {
 		*out = new(bool)
 		**out = **in
 	}
+	if in.UseTableSchema != nil {
+		in, out := &in.UseTableSchema, &out.UseTableSchema
+		*out = new(bool)
+		**out = **in
+	}
 	if in.WriteMetadata != nil {
 		in, out := &in.WriteMetadata, &out.WriteMetadata
 		*out = new(bool)
