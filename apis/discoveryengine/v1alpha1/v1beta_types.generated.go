@@ -21,6 +21,7 @@
 // resource: DiscoveryEngineLicenseConfig:LicenseConfig
 // resource: DiscoveryEngineServingConfig:ServingConfig
 // resource: DiscoveryEngineUserStore:UserStore
+// resource: DiscoveryEngineACLConfig:AclConfig
 
 package v1alpha1
 
@@ -76,6 +77,25 @@ type EmbeddingConfig struct {
 	// Full field path in the schema mapped as embedding field.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.EmbeddingConfig.field_path
 	FieldPath *string `json:"fieldPath,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1beta.IdpConfig
+type IdpConfig struct {
+	// Identity provider type configured.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.IdpConfig.idp_type
+	IdpType *string `json:"idpType,omitempty"`
+
+	// External Identity provider config.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.IdpConfig.external_idp_config
+	ExternalIdpConfig *IdpConfig_ExternalIdpConfig `json:"externalIdpConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1beta.IdpConfig.ExternalIdpConfig
+type IdpConfig_ExternalIdpConfig struct {
+	// Workforce pool name.
+	//  Example: "locations/global/workforcePools/pool_id"
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.IdpConfig.ExternalIdpConfig.workforce_pool_name
+	WorkforcePoolName *string `json:"workforcePoolName,omitempty"`
 }
 
 // +kcc:proto=google.cloud.discoveryengine.v1beta.SearchRequest.ContentSearchSpec
