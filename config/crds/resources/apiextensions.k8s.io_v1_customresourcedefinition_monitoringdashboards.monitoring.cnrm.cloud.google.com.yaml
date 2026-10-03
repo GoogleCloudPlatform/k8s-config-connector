@@ -327,6 +327,17 @@ spec:
                                           description: Required. The query for the
                                             PieChart. See, `google.monitoring.dashboard.v1.TimeSeriesQuery`.
                                           properties:
+                                            opsAnalyticsQuery:
+                                              description: 'Preview: A query used
+                                                to fetch a time series, category series,
+                                                or numeric series with SQL.'
+                                              properties:
+                                                sql:
+                                                  description: A SQL query to fetch
+                                                    time series, category series,
+                                                    or numeric series data.
+                                                  type: string
+                                              type: object
                                             outputFullDuration:
                                               description: Optional. If set, Cloud
                                                 Monitoring will treat the full query
@@ -783,6 +794,17 @@ spec:
                                     description: Required. Fields for querying time
                                       series data from the Stackdriver metrics API.
                                     properties:
+                                      opsAnalyticsQuery:
+                                        description: 'Preview: A query used to fetch
+                                          a time series, category series, or numeric
+                                          series with SQL.'
+                                        properties:
+                                          sql:
+                                            description: A SQL query to fetch time
+                                              series, category series, or numeric
+                                              series data.
+                                            type: string
+                                        type: object
                                       outputFullDuration:
                                         description: Optional. If set, Cloud Monitoring
                                           will treat the full query duration as the
@@ -1227,6 +1249,17 @@ spec:
                                             time series data from the Stackdriver
                                             metrics API.
                                           properties:
+                                            opsAnalyticsQuery:
+                                              description: 'Preview: A query used
+                                                to fetch a time series, category series,
+                                                or numeric series with SQL.'
+                                              properties:
+                                                sql:
+                                                  description: A SQL query to fetch
+                                                    time series, category series,
+                                                    or numeric series data.
+                                                  type: string
+                                              type: object
                                             outputFullDuration:
                                               description: Optional. If set, Cloud
                                                 Monitoring will treat the full query
@@ -1640,6 +1673,17 @@ spec:
                                           description: Fields for querying time series
                                             data from the Stackdriver metrics API.
                                           properties:
+                                            opsAnalyticsQuery:
+                                              description: 'Preview: A query used
+                                                to fetch a time series, category series,
+                                                or numeric series with SQL.'
+                                              properties:
+                                                sql:
+                                                  description: A SQL query to fetch
+                                                    time series, category series,
+                                                    or numeric series data.
+                                                  type: string
+                                              type: object
                                             outputFullDuration:
                                               description: Optional. If set, Cloud
                                                 Monitoring will treat the full query
@@ -2370,6 +2414,17 @@ spec:
                                     description: Required. The query for the PieChart.
                                       See, `google.monitoring.dashboard.v1.TimeSeriesQuery`.
                                     properties:
+                                      opsAnalyticsQuery:
+                                        description: 'Preview: A query used to fetch
+                                          a time series, category series, or numeric
+                                          series with SQL.'
+                                        properties:
+                                          sql:
+                                            description: A SQL query to fetch time
+                                              series, category series, or numeric
+                                              series data.
+                                            type: string
+                                        type: object
                                       outputFullDuration:
                                         description: Optional. If set, Cloud Monitoring
                                           will treat the full query duration as the
@@ -2786,6 +2841,16 @@ spec:
                               description: Required. Fields for querying time series
                                 data from the Stackdriver metrics API.
                               properties:
+                                opsAnalyticsQuery:
+                                  description: 'Preview: A query used to fetch a time
+                                    series, category series, or numeric series with
+                                    SQL.'
+                                  properties:
+                                    sql:
+                                      description: A SQL query to fetch time series,
+                                        category series, or numeric series data.
+                                      type: string
+                                  type: object
                                 outputFullDuration:
                                   description: Optional. If set, Cloud Monitoring
                                     will treat the full query duration as the alignment
@@ -3187,6 +3252,17 @@ spec:
                                     description: Required. Fields for querying time
                                       series data from the Stackdriver metrics API.
                                     properties:
+                                      opsAnalyticsQuery:
+                                        description: 'Preview: A query used to fetch
+                                          a time series, category series, or numeric
+                                          series with SQL.'
+                                        properties:
+                                          sql:
+                                            description: A SQL query to fetch time
+                                              series, category series, or numeric
+                                              series data.
+                                            type: string
+                                        type: object
                                       outputFullDuration:
                                         description: Optional. If set, Cloud Monitoring
                                           will treat the full query duration as the
@@ -3562,6 +3638,17 @@ spec:
                                     description: Fields for querying time series data
                                       from the Stackdriver metrics API.
                                     properties:
+                                      opsAnalyticsQuery:
+                                        description: 'Preview: A query used to fetch
+                                          a time series, category series, or numeric
+                                          series with SQL.'
+                                        properties:
+                                          sql:
+                                            description: A SQL query to fetch time
+                                              series, category series, or numeric
+                                              series data.
+                                            type: string
+                                        type: object
                                       outputFullDuration:
                                         description: Optional. If set, Cloud Monitoring
                                           will treat the full query duration as the
@@ -4236,6 +4323,17 @@ spec:
                                         description: Required. The query for the PieChart.
                                           See, `google.monitoring.dashboard.v1.TimeSeriesQuery`.
                                         properties:
+                                          opsAnalyticsQuery:
+                                            description: 'Preview: A query used to
+                                              fetch a time series, category series,
+                                              or numeric series with SQL.'
+                                            properties:
+                                              sql:
+                                                description: A SQL query to fetch
+                                                  time series, category series, or
+                                                  numeric series data.
+                                                type: string
+                                            type: object
                                           outputFullDuration:
                                             description: Optional. If set, Cloud Monitoring
                                               will treat the full query duration as
@@ -4676,6 +4774,16 @@ spec:
                                   description: Required. Fields for querying time
                                     series data from the Stackdriver metrics API.
                                   properties:
+                                    opsAnalyticsQuery:
+                                      description: 'Preview: A query used to fetch
+                                        a time series, category series, or numeric
+                                        series with SQL.'
+                                      properties:
+                                        sql:
+                                          description: A SQL query to fetch time series,
+                                            category series, or numeric series data.
+                                          type: string
+                                      type: object
                                     outputFullDuration:
                                       description: Optional. If set, Cloud Monitoring
                                         will treat the full query duration as the
@@ -5100,6 +5208,17 @@ spec:
                                           time series data from the Stackdriver metrics
                                           API.
                                         properties:
+                                          opsAnalyticsQuery:
+                                            description: 'Preview: A query used to
+                                              fetch a time series, category series,
+                                              or numeric series with SQL.'
+                                            properties:
+                                              sql:
+                                                description: A SQL query to fetch
+                                                  time series, category series, or
+                                                  numeric series data.
+                                                type: string
+                                            type: object
                                           outputFullDuration:
                                             description: Optional. If set, Cloud Monitoring
                                               will treat the full query duration as
@@ -5497,6 +5616,17 @@ spec:
                                         description: Fields for querying time series
                                           data from the Stackdriver metrics API.
                                         properties:
+                                          opsAnalyticsQuery:
+                                            description: 'Preview: A query used to
+                                              fetch a time series, category series,
+                                              or numeric series with SQL.'
+                                            properties:
+                                              sql:
+                                                description: A SQL query to fetch
+                                                  time series, category series, or
+                                                  numeric series data.
+                                                type: string
+                                            type: object
                                           outputFullDuration:
                                             description: Optional. If set, Cloud Monitoring
                                               will treat the full query duration as
@@ -6246,6 +6376,17 @@ spec:
                                           description: Required. The query for the
                                             PieChart. See, `google.monitoring.dashboard.v1.TimeSeriesQuery`.
                                           properties:
+                                            opsAnalyticsQuery:
+                                              description: 'Preview: A query used
+                                                to fetch a time series, category series,
+                                                or numeric series with SQL.'
+                                              properties:
+                                                sql:
+                                                  description: A SQL query to fetch
+                                                    time series, category series,
+                                                    or numeric series data.
+                                                  type: string
+                                              type: object
                                             outputFullDuration:
                                               description: Optional. If set, Cloud
                                                 Monitoring will treat the full query
@@ -6702,6 +6843,17 @@ spec:
                                     description: Required. Fields for querying time
                                       series data from the Stackdriver metrics API.
                                     properties:
+                                      opsAnalyticsQuery:
+                                        description: 'Preview: A query used to fetch
+                                          a time series, category series, or numeric
+                                          series with SQL.'
+                                        properties:
+                                          sql:
+                                            description: A SQL query to fetch time
+                                              series, category series, or numeric
+                                              series data.
+                                            type: string
+                                        type: object
                                       outputFullDuration:
                                         description: Optional. If set, Cloud Monitoring
                                           will treat the full query duration as the
@@ -7146,6 +7298,17 @@ spec:
                                             time series data from the Stackdriver
                                             metrics API.
                                           properties:
+                                            opsAnalyticsQuery:
+                                              description: 'Preview: A query used
+                                                to fetch a time series, category series,
+                                                or numeric series with SQL.'
+                                              properties:
+                                                sql:
+                                                  description: A SQL query to fetch
+                                                    time series, category series,
+                                                    or numeric series data.
+                                                  type: string
+                                              type: object
                                             outputFullDuration:
                                               description: Optional. If set, Cloud
                                                 Monitoring will treat the full query
@@ -7559,6 +7722,17 @@ spec:
                                           description: Fields for querying time series
                                             data from the Stackdriver metrics API.
                                           properties:
+                                            opsAnalyticsQuery:
+                                              description: 'Preview: A query used
+                                                to fetch a time series, category series,
+                                                or numeric series with SQL.'
+                                              properties:
+                                                sql:
+                                                  description: A SQL query to fetch
+                                                    time series, category series,
+                                                    or numeric series data.
+                                                  type: string
+                                              type: object
                                             outputFullDuration:
                                               description: Optional. If set, Cloud
                                                 Monitoring will treat the full query

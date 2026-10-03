@@ -107,8 +107,7 @@ spec:
           - column: column2
             visible: false
           dataSets:
-          - minAlignmentPeriod: 0s
-            timeSeriesQuery:
+          - timeSeriesQuery:
               timeSeriesFilter:
                 aggregation:
                   alignmentPeriod: "60"
