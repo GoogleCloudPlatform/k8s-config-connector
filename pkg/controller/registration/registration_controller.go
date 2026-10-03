@@ -85,6 +85,7 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 	// (typically at startup). This means any changes to `ConfigConnector` or `ConfigConnectorContext`
 	// resources at runtime will not be reflected until the manager process is restarted.
 	var cccSettings *operatorv1beta1.ResourceSettings
+	var cccResourceKinds *operatorv1beta1.ResourceKinds
 	if scopedNamespace != "" {
 		ccc := &operatorv1beta1.ConfigConnectorContext{}
 		if err := c.Get(ctx, types.NamespacedName{Namespace: scopedNamespace, Name: operatorv1beta1.ConfigConnectorContextAllowedName}, ccc); err != nil {
@@ -92,22 +93,29 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 				return fmt.Errorf("error getting ConfigConnectorContext in %q: %w", scopedNamespace, err)
 			}
 			fmt.Printf("ConfigConnectorContext not found in %s\n", scopedNamespace)
-		} else if ccc.Spec.Experiments != nil {
-			cccSettings = ccc.Spec.Experiments.ResourceSettings
-			fmt.Printf("Found CCC Settings in %s: %v\n", scopedNamespace, cccSettings)
+		} else {
+			if ccc.Spec.Experiments != nil {
+				cccSettings = ccc.Spec.Experiments.ResourceSettings
+				fmt.Printf("Found CCC Settings in %s: %v\n", scopedNamespace, cccSettings)
+			}
+			cccResourceKinds = ccc.Spec.ResourceKinds
 		}
 	} else {
 		fmt.Println("scopedNamespace is empty")
 	}
 
 	var ccSettings *operatorv1beta1.ResourceSettings
+	var ccResourceKinds *operatorv1beta1.ResourceKinds
 	cc := &operatorv1beta1.ConfigConnector{}
 	if err := c.Get(ctx, types.NamespacedName{Name: operatorv1beta1.ConfigConnectorAllowedName}, cc); err != nil {
 		if !errors.IsNotFound(err) {
 			return fmt.Errorf("error getting ConfigConnector: %w", err)
 		}
-	} else if cc.Spec.Experiments != nil {
-		ccSettings = cc.Spec.Experiments.ResourceSettings
+	} else {
+		if cc.Spec.Experiments != nil {
+			ccSettings = cc.Spec.Experiments.ResourceSettings
+		}
+		ccResourceKinds = cc.Spec.ResourceKinds
 	}
 
 	if ccSettings != nil && cccSettings != nil {
@@ -123,7 +131,7 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 	}
 
 	if err := add(mgr, rd,
-		registerDefaultControllers(ctx, controllerConfig, scopedNamespace, cccSettings, ccSettings), opt); err != nil {
+		registerDefaultControllers(ctx, controllerConfig, scopedNamespace, cccSettings, ccSettings, cccResourceKinds, ccResourceKinds), opt); err != nil {
 		return fmt.Errorf("error adding default registration controller: %w", err)
 	}
 	return nil
@@ -303,20 +311,20 @@ func isServiceAccountKeyCRD(crd *apiextensions.CustomResourceDefinition) bool {
 	return crd.Spec.Group == serviceAccountKeyAPIGroup && crd.Spec.Names.Kind == serviceAccountKeyKind
 }
 
-func registerDefaultControllers(ctx context.Context, config *config.ControllerConfig, scopedNamespace string, cccSettings *operatorv1beta1.ResourceSettings, ccSettings *operatorv1beta1.ResourceSettings) registrationFunc { //nolint:revive
+func registerDefaultControllers(ctx context.Context, config *config.ControllerConfig, scopedNamespace string, cccSettings *operatorv1beta1.ResourceSettings, ccSettings *operatorv1beta1.ResourceSettings, cccResourceKinds *operatorv1beta1.ResourceKinds, ccResourceKinds *operatorv1beta1.ResourceKinds) registrationFunc { //nolint:revive
 	return func(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
-		return registerDefaultController(ctx, r, config, crd, gvk, scopedNamespace, cccSettings, ccSettings)
+		return registerDefaultController(ctx, r, config, crd, gvk, scopedNamespace, cccSettings, ccSettings, cccResourceKinds, ccResourceKinds)
 	}
 }
 
-func registerDefaultController(ctx context.Context, r *ReconcileRegistration, config *config.ControllerConfig, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind, scopedNamespace string, cccSettings *operatorv1beta1.ResourceSettings, ccSettings *operatorv1beta1.ResourceSettings) (k8s.SchemaReferenceUpdater, error) {
+func registerDefaultController(ctx context.Context, r *ReconcileRegistration, config *config.ControllerConfig, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind, scopedNamespace string, cccSettings *operatorv1beta1.ResourceSettings, ccSettings *operatorv1beta1.ResourceSettings, cccResourceKinds *operatorv1beta1.ResourceKinds, ccResourceKinds *operatorv1beta1.ResourceKinds) (k8s.SchemaReferenceUpdater, error) {
 	logger := log.FromContext(ctx)
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
 	}
 
 	// Check if the resource is disabled by configuration (ConfigConnector or ConfigConnectorContext).
-	if disabled := isResourceDisabled(ctx, gvk, scopedNamespace, cccSettings, ccSettings); disabled {
+	if disabled := isResourceDisabled(ctx, gvk, scopedNamespace, cccSettings, ccSettings, cccResourceKinds, ccResourceKinds); disabled {
 		logger.Info("Skipping controller registration because resource is disabled in ConfigConnector or ConfigConnectorContext", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
 		return nil, nil
 	}
@@ -443,7 +451,7 @@ func registerDeletionDefenderController(r *ReconcileRegistration, crd *apiextens
 	return nil, nil
 }
 
-func isResourceDisabled(ctx context.Context, gvk schema.GroupVersionKind, scopedNamespace string, cccSettings *operatorv1beta1.ResourceSettings, ccSettings *operatorv1beta1.ResourceSettings) bool {
+func isResourceDisabled(ctx context.Context, gvk schema.GroupVersionKind, scopedNamespace string, cccSettings *operatorv1beta1.ResourceSettings, ccSettings *operatorv1beta1.ResourceSettings, cccResourceKinds *operatorv1beta1.ResourceKinds, ccResourceKinds *operatorv1beta1.ResourceKinds) bool {
 	// Mode validation is already performed during controller startup,
 	// so ccSettings and cccSettings are guaranteed not to have conflicting modes at this point.
 	isInclusive := isInclusiveMode(ccSettings, cccSettings)
@@ -456,10 +464,56 @@ func isResourceDisabled(ctx context.Context, gvk schema.GroupVersionKind, scoped
 		found = checkFound(ccSettings, gvk)
 	}
 
+	disabled := false
 	if isInclusive {
-		return !found // Enabled if found
+		disabled = !found // Enabled if found
+	} else {
+		disabled = found // Disabled if found
 	}
-	return found // Disabled if found
+
+	if disabled {
+		return true
+	}
+
+	// If not disabled by ResourceSettings, check ResourceKinds
+	if scopedNamespace != "" && cccResourceKinds != nil {
+		if checkResourceKindsDisabled(cccResourceKinds, gvk) {
+			return true
+		}
+	}
+	if ccResourceKinds != nil {
+		if checkResourceKindsDisabled(ccResourceKinds, gvk) {
+			return true
+		}
+	}
+
+	return false
+}
+
+func checkResourceKindsDisabled(rk *operatorv1beta1.ResourceKinds, gvk schema.GroupVersionKind) bool {
+	if rk == nil {
+		return false
+	}
+	// Denylist takes precedence
+	for _, k := range rk.Denylist {
+		if k == gvk.Kind {
+			return true
+		}
+	}
+	// If Allowlist is non-empty, only allow kinds in the list
+	if len(rk.Allowlist) > 0 {
+		allowed := false
+		for _, k := range rk.Allowlist {
+			if k == gvk.Kind {
+				allowed = true
+				break
+			}
+		}
+		if !allowed {
+			return true
+		}
+	}
+	return false
 }
 
 func isInclusiveMode(ccSettings *operatorv1beta1.ResourceSettings, cccSettings *operatorv1beta1.ResourceSettings) bool {
