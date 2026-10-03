@@ -32,14 +32,30 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 # Generate the KCC type structs from the GCP proto definitions
+# The bulk generation flags below were added with StorageInsightsReportConfig.
+# Adding them did not change the types of StorageInsightsDatasetConfig.
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.storageinsights.v1 \
   --api-version storageinsights.cnrm.cloud.google.com/v1alpha1  \
-  --resource StorageInsightsDatasetConfig:DatasetConfig
+  --resource StorageInsightsDatasetConfig:DatasetConfig \
+  --resource StorageInsightsReportConfig:ReportConfig \
+  --prepopulate-spec \
+  --emit-required-from-proto \
+  --emit-plural-acronyms \
+  --emit-message-maps \
+  --place-server-set-fields \
+  --detect-output-only-in-comments \
+  --emit-parent-refs \
+  --emit-sibling-refs \
+  --emit-reference-hints \
+  --emit-source-links
 
+# Match the generate-types flags that change field names and map fields.
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.storageinsights.v1 \
-  --api-version storageinsights.cnrm.cloud.google.com/v1alpha1
+  --api-version storageinsights.cnrm.cloud.google.com/v1alpha1 \
+  --emit-plural-acronyms \
+  --emit-message-maps
 
 # Change back to the repo root
 cd ${REPO_ROOT}

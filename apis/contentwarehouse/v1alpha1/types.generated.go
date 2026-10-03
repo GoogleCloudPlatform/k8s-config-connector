@@ -20,6 +20,7 @@
 // resource: ContentWarehouseRuleSet:RuleSet
 // resource: ContentWarehouseDocument:Document
 // resource: ContentWarehouseSynonymSet:SynonymSet
+// resource: ContentWarehouseDocumentSchema:DocumentSchema
 
 package v1alpha1
 
@@ -125,6 +126,10 @@ type DateTimeArray struct {
 }
 */
 
+// +kcc:proto=google.cloud.contentwarehouse.v1.DateTimeTypeOptions
+type DateTimeTypeOptions struct {
+}
+
 /* found existing non-generated go type "DeleteDocumentAction", skipping
 
 // +kcc:proto=google.cloud.contentwarehouse.v1.DeleteDocumentAction
@@ -157,6 +162,7 @@ type Document struct {
 	//  document. This differs from the 'title' field as 'title' is optional and
 	//  stores the top heading in the document.
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.Document.display_name
+	// +required
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Title that describes the document.
@@ -231,6 +237,38 @@ type Document struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.contentwarehouse.v1.DocumentSchema", skipping
+
+// +kcc:proto=google.cloud.contentwarehouse.v1.DocumentSchema
+type DocumentSchema struct {
+	// The resource name of the document schema.
+	//  Format:
+	//  projects/{project_number}/locations/{location}/documentSchemas/{document_schema_id}.
+	//
+	//  The name is ignored when creating a document schema.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.DocumentSchema.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Name of the schema given by the user. Must be unique per project.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.DocumentSchema.display_name
+	// +required
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Document details.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.DocumentSchema.property_definitions
+	PropertyDefinitions []PropertyDefinition `json:"propertyDefinitions,omitempty"`
+
+	// Document Type, true refers the document is a folder, otherwise it is
+	//  a typical document.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.DocumentSchema.document_is_folder
+	DocumentIsFolder *bool `json:"documentIsFolder,omitempty"`
+
+	// Schema description.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.DocumentSchema.description
+	Description *string `json:"description,omitempty"`
+}
+*/
+
 /* unreachable type EnumArray
 // +kcc:proto=google.cloud.contentwarehouse.v1.EnumArray
 type EnumArray struct {
@@ -239,6 +277,20 @@ type EnumArray struct {
 	Values []string `json:"values,omitempty"`
 }
 */
+
+// +kcc:proto=google.cloud.contentwarehouse.v1.EnumTypeOptions
+type EnumTypeOptions struct {
+	// Required. List of possible enum values.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.EnumTypeOptions.possible_values
+	// +required
+	PossibleValues []string `json:"possibleValues,omitempty"`
+
+	// Make sure the Enum property value provided in the document is in the
+	//  possile value list during document creation. The validation check runs by
+	//  default.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.EnumTypeOptions.validation_check_disabled
+	ValidationCheckDisabled *bool `json:"validationCheckDisabled,omitempty"`
+}
 
 /* unreachable type EnumValue
 // +kcc:proto=google.cloud.contentwarehouse.v1.EnumValue
@@ -259,6 +311,10 @@ type FloatArray struct {
 }
 */
 
+// +kcc:proto=google.cloud.contentwarehouse.v1.FloatTypeOptions
+type FloatTypeOptions struct {
+}
+
 /* unreachable type IntegerArray
 // +kcc:proto=google.cloud.contentwarehouse.v1.IntegerArray
 type IntegerArray struct {
@@ -268,14 +324,22 @@ type IntegerArray struct {
 }
 */
 
+// +kcc:proto=google.cloud.contentwarehouse.v1.IntegerTypeOptions
+type IntegerTypeOptions struct {
+}
+
 /* unreachable type MapProperty
 // +kcc:proto=google.cloud.contentwarehouse.v1.MapProperty
 type MapProperty struct {
-
-	// TODO: unsupported map type with key string and value message
-
+	// Unordered map of dynamically typed values.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.MapProperty.fields
+	Fields map[string]Value `json:"fields,omitempty"`
 }
 */
+
+// +kcc:proto=google.cloud.contentwarehouse.v1.MapTypeOptions
+type MapTypeOptions struct {
+}
 
 /* unreachable type Property
 // +kcc:proto=google.cloud.contentwarehouse.v1.Property
@@ -283,6 +347,7 @@ type Property struct {
 	// Required. Must match the name of a PropertyDefinition in the
 	//  DocumentSchema.
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.Property.name
+	// +required
 	Name *string `json:"name,omitempty"`
 
 	// Integer property values.
@@ -327,6 +392,111 @@ type PropertyArray struct {
 	// List of property values.
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyArray.properties
 	Properties []Property `json:"properties,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.contentwarehouse.v1.PropertyDefinition
+type PropertyDefinition struct {
+	// Required. The name of the metadata property.
+	//  Must be unique within a document schema and is case insensitive.
+	//  Names must be non-blank, start with a letter, and can contain alphanumeric
+	//  characters and: /, :, -, _, and .
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.name
+	// +required
+	Name *string `json:"name,omitempty"`
+
+	// The display-name for the property, used for front-end.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Whether the property can have multiple values.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.is_repeatable
+	IsRepeatable *bool `json:"isRepeatable,omitempty"`
+
+	// Whether the property can be filtered. If this is a sub-property, all the
+	//  parent properties must be marked filterable.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.is_filterable
+	IsFilterable *bool `json:"isFilterable,omitempty"`
+
+	// Indicates that the property should be included in a global search.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.is_searchable
+	IsSearchable *bool `json:"isSearchable,omitempty"`
+
+	// Whether the property is user supplied metadata.
+	//  This out-of-the box placeholder setting can be used to tag derived
+	//  properties. Its value and interpretation logic should be implemented by API
+	//  user.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.is_metadata
+	IsMetadata *bool `json:"isMetadata,omitempty"`
+
+	// Whether the property is mandatory.
+	//  Default is 'false', i.e. populating property value can be skipped.
+	//  If 'true' then user must populate the value for this property.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.is_required
+	IsRequired *bool `json:"isRequired,omitempty"`
+
+	// The retrieval importance of the property during search.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.retrieval_importance
+	RetrievalImportance *string `json:"retrievalImportance,omitempty"`
+
+	// Integer property.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.integer_type_options
+	IntegerTypeOptions *IntegerTypeOptions `json:"integerTypeOptions,omitempty"`
+
+	// Float property.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.float_type_options
+	FloatTypeOptions *FloatTypeOptions `json:"floatTypeOptions,omitempty"`
+
+	// Text/string property.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.text_type_options
+	TextTypeOptions *TextTypeOptions `json:"textTypeOptions,omitempty"`
+
+	// Nested structured data property.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.property_type_options
+	PropertyTypeOptions *PropertyTypeOptions `json:"propertyTypeOptions,omitempty"`
+
+	// Enum/categorical property.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.enum_type_options
+	EnumTypeOptions *EnumTypeOptions `json:"enumTypeOptions,omitempty"`
+
+	// Date time property.
+	//  It is not supported by CMEK compliant deployment.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.date_time_type_options
+	DateTimeTypeOptions *DateTimeTypeOptions `json:"dateTimeTypeOptions,omitempty"`
+
+	// Map property.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.map_type_options
+	MapTypeOptions *MapTypeOptions `json:"mapTypeOptions,omitempty"`
+
+	// Timestamp property.
+	//  It is not supported by CMEK compliant deployment.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.timestamp_type_options
+	TimestampTypeOptions *TimestampTypeOptions `json:"timestampTypeOptions,omitempty"`
+
+	// The mapping information between this property to another schema source.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.schema_sources
+	SchemaSources []PropertyDefinition_SchemaSource `json:"schemaSources,omitempty"`
+}
+
+// +kcc:proto=google.cloud.contentwarehouse.v1.PropertyDefinition.SchemaSource
+type PropertyDefinition_SchemaSource struct {
+	// The schema name in the source.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.SchemaSource.name
+	Name *string `json:"name,omitempty"`
+
+	// The Doc AI processor type name.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.SchemaSource.processor_type
+	ProcessorType *string `json:"processorType,omitempty"`
+}
+
+/* found existing non-generated go type "PropertyTypeOptions", skipping
+
+// +kcc:proto=google.cloud.contentwarehouse.v1.PropertyTypeOptions
+type PropertyTypeOptions struct {
+	// Required. List of property definitions.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyTypeOptions.property_definitions
+	// +required
+	PropertyDefinitions []PropertyDefinition `json:"propertyDefinitions,omitempty"`
 }
 */
 
@@ -459,6 +629,10 @@ type TextArray struct {
 }
 */
 
+// +kcc:proto=google.cloud.contentwarehouse.v1.TextTypeOptions
+type TextTypeOptions struct {
+}
+
 /* unreachable type TimestampArray
 // +kcc:proto=google.cloud.contentwarehouse.v1.TimestampArray
 type TimestampArray struct {
@@ -467,6 +641,10 @@ type TimestampArray struct {
 	Values []TimestampValue `json:"values,omitempty"`
 }
 */
+
+// +kcc:proto=google.cloud.contentwarehouse.v1.TimestampTypeOptions
+type TimestampTypeOptions struct {
+}
 
 /* unreachable type TimestampValue
 // +kcc:proto=google.cloud.contentwarehouse.v1.TimestampValue
@@ -674,7 +852,7 @@ type Document_ChunkedDocument_Chunk struct {
 
 	// Unused.
 	// +kcc:proto:field=google.cloud.documentai.v1.Document.ChunkedDocument.Chunk.source_block_ids
-	SourceBlockIds []string `json:"sourceBlockIds,omitempty"`
+	SourceBlockIDs []string `json:"sourceBlockIDs,omitempty"`
 
 	// Text content of the chunk.
 	// +kcc:proto:field=google.cloud.documentai.v1.Document.ChunkedDocument.Chunk.content
@@ -883,6 +1061,7 @@ type Document_Entity struct {
 
 	// Required. Entity type from a schema e.g. `Address`.
 	// +kcc:proto:field=google.cloud.documentai.v1.Document.Entity.type
+	// +required
 	Type *string `json:"type,omitempty"`
 
 	// Optional. Text value of the entity e.g. `1600 Amphitheatre Pkwy`.
@@ -1567,6 +1746,7 @@ type Document_PageAnchor_PageRef struct {
 	//  This field is skipped when its value is the default `0`. See
 	//  https://developers.google.com/protocol-buffers/docs/proto3#json.
 	// +kcc:proto:field=google.cloud.documentai.v1.Document.PageAnchor.PageRef.page
+	// +required
 	Page *int64 `json:"page,omitempty"`
 
 	// Optional. The type of the layout element that is being referenced if
@@ -1661,7 +1841,7 @@ type Document_Revision struct {
 	//  that have anything to do with this revision - eg. there are
 	//  `provenance.parent.revision` fields that index into this field.
 	// +kcc:proto:field=google.cloud.documentai.v1.Document.Revision.parent_ids
-	ParentIds []string `json:"parentIds,omitempty"`
+	ParentIDs []string `json:"parentIDs,omitempty"`
 
 	// The time that the revision was created, internally generated by
 	//  doc proto storage at the time of create.
@@ -2316,5 +2496,19 @@ type DocumentObservedState struct {
 	// Output only. Indicates if the document has a legal hold on it.
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.Document.legal_hold
 	LegalHold *bool `json:"legalHold,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.contentwarehouse.v1.DocumentSchema", skipping
+
+// +kcc:observedstate:proto=google.cloud.contentwarehouse.v1.DocumentSchema
+type DocumentSchemaObservedState struct {
+	// Output only. The time when the document schema is last updated.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.DocumentSchema.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The time when the document schema is created.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.DocumentSchema.create_time
+	CreateTime *string `json:"createTime,omitempty"`
 }
 */

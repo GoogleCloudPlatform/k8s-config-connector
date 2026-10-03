@@ -16,6 +16,7 @@ package scaffold
 
 import (
 	"bytes"
+	"fmt"
 	"go/parser"
 	"go/token"
 	"os"
@@ -24,7 +25,9 @@ import (
 	"testing"
 	"text/template"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/sourcelinks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/template/apis"
 )
 
@@ -108,7 +111,7 @@ func TestAddTypeFileWritesPrepopulatedBodies(t *testing.T) {
 	}
 
 	// Act
-	if err := scaffolder.AddTypeFile(resource, prepopulated); err != nil {
+	if err := scaffolder.AddTypeFile(resource, prepopulated, ""); err != nil {
 		t.Fatalf("AddTypeFile: %v", err)
 	}
 
@@ -183,6 +186,64 @@ func TestPackageDeclaresGVK(t *testing.T) {
 			// Assert
 			if got != tc.want {
 				t.Errorf("packageDeclaresGVK() = %v, want %v", got, tc.want)
+			}
+		})
+	}
+}
+
+// TestAddTypeFileWritesSourceLinks checks that the source link block lands
+// between the license and the package clause, with a blank line on each side
+// so Go does not read it as the package doc, and that no block is written
+// without it.
+func TestAddTypeFileWritesSourceLinks(t *testing.T) {
+	block := sourcelinks.Render("NetworkServicesLBTrafficExtension", []sourcelinks.Link{
+		{Key: sourcelinks.KeyProto, URL: "https://github.com/googleapis/googleapis/blob/abc/google/cloud/networkservices/v1/dep.proto"},
+		{Key: sourcelinks.KeyServiceDocs, URL: "https://cloud.google.com/networking/"},
+		{Key: sourcelinks.KeyResourceDocs, URL: "https://docs.cloud.google.com/service-extensions/docs/reference/rest/v1/projects.locations.lbTrafficExtensions",
+			Guess: judgement.ReasonVerifyResourceDocsLink},
+	})
+	for _, withLinks := range []bool{true, false} {
+		t.Run(fmt.Sprintf("withLinks=%v", withLinks), func(t *testing.T) {
+			dir := t.TempDir()
+			scaffolder := &APIScaffolder{
+				BaseDir:         dir,
+				GoPackage:       "networkservices/v1alpha1",
+				Group:           "networkservices.cnrm.cloud.google.com",
+				Version:         "v1alpha1",
+				PackageProtoTag: "google.cloud.networkservices.v1",
+			}
+			resource := options.Resource{Kind: "NetworkServicesLBTrafficExtension", ProtoName: "LbTrafficExtension"}
+			links := ""
+			if withLinks {
+				links = block
+			}
+			if err := scaffolder.AddTypeFile(resource, nil, links); err != nil {
+				t.Fatalf("AddTypeFile: %v", err)
+			}
+			b, err := os.ReadFile(scaffolder.PathToTypeFile(resource))
+			if err != nil {
+				t.Fatal(err)
+			}
+			got := string(b)
+			f, err := parser.ParseFile(token.NewFileSet(), "types.go", b, parser.ParseComments)
+			if err != nil {
+				t.Fatalf("scaffolded file is not valid Go: %v", err)
+			}
+			if f.Doc != nil {
+				t.Errorf("the file has a package doc comment, so the block is attached to the package clause:\n%s", got)
+			}
+			h := sourcelinks.Parse(b)
+			if !withLinks {
+				if h.Kind != "" || len(h.Links) != 0 {
+					t.Errorf("source links were written without being asked for:\n%s", got)
+				}
+				return
+			}
+			if !strings.Contains(got, "limitations under the License.\n\n"+block+"\n\npackage v1alpha1\n") {
+				t.Errorf("the block is not between the license and the package clause:\n%s", got)
+			}
+			if h.Kind != resource.Kind || len(h.Links) != 3 {
+				t.Errorf("Parse = %+v", h)
 			}
 		})
 	}

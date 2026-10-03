@@ -32,14 +32,30 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 
+# The bulk generation flags below were added with ConfigDeployment.
+# Adding them did not change the types of ConfigDeploymentGroup.
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.config.v1 \
   --api-version configdeployment.cnrm.cloud.google.com/v1alpha1 \
-  --resource ConfigDeploymentGroup:DeploymentGroup
+  --resource ConfigDeploymentGroup:DeploymentGroup \
+  --resource ConfigDeployment:Deployment \
+  --prepopulate-spec \
+  --emit-required-from-proto \
+  --emit-plural-acronyms \
+  --emit-message-maps \
+  --place-server-set-fields \
+  --detect-output-only-in-comments \
+  --emit-parent-refs \
+  --emit-sibling-refs \
+  --emit-reference-hints \
+  --emit-source-links
 
+# Match the generate-types flags that change field names and map fields.
 go run . generate-mapper \
   --service google.cloud.config.v1 \
-  --api-version "configdeployment.cnrm.cloud.google.com/v1alpha1"
+  --api-version "configdeployment.cnrm.cloud.google.com/v1alpha1" \
+  --emit-plural-acronyms \
+  --emit-message-maps
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
