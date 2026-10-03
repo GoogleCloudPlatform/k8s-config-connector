@@ -161,6 +161,12 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 		}
 		opt.Create = append(opt.Create, primaryResource)
 		opt.PrimaryResource = primaryResource
+
+		if strings.Contains(fixture.Name, "computesubnetwork") || strings.Contains(fixture.Name, "computerouternat") {
+			opt.CreateInOrder = true
+			opt.DeleteInOrder = true
+		}
+
 		return primaryResource, opt
 	}
 
@@ -468,6 +474,20 @@ func formatDiffsRaw(t *testing.T, listener *migrationDiffListener) string {
 		}
 		rawDiffs = append(rawDiffs, rd)
 	}
+
+	// Sort rawDiffs by Resource and Controller to ensure deterministic output
+	sort.Slice(rawDiffs, func(i, j int) bool {
+		if rawDiffs[i].Resource != rawDiffs[j].Resource {
+			return rawDiffs[i].Resource < rawDiffs[j].Resource
+		}
+		if rawDiffs[i].Controller != rawDiffs[j].Controller {
+			return rawDiffs[i].Controller < rawDiffs[j].Controller
+		}
+		if rawDiffs[i].IsNewObject != rawDiffs[j].IsNewObject {
+			return rawDiffs[i].IsNewObject
+		}
+		return false
+	})
 
 	// Marshal to pretty JSON
 	bytes, err := json.MarshalIndent(rawDiffs, "", "  ")
