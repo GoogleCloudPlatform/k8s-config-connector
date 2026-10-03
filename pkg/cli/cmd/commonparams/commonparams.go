@@ -34,6 +34,7 @@ const (
 	OAuth2TokenParamName             = "oauth2-token"
 	OutputParamName                  = "output"
 	ResourceFormatParamName          = "resource-format"
+	DisableDirectExportParamName     = "disable-direct-export"
 
 	PartialPolicyFormatOption   = "partialpolicy"
 	PolicyIAMFormatOption       = "policy"
@@ -48,9 +49,11 @@ const (
 	OAuth2TokenDefault             = ""
 	OutputDefault                  = ""
 	ResourceFormatDefault          = KRMResourceFormatOption
+	DisableDirectExportDefault     = false
 
-	OAuth2TokenUsage = "an optional OAuth 2.0 access token to be used as the identity for communication with GCP services, can be obtained with 'gcloud auth print-access-token'"
-	OutputUsage      = "an optional output file path, disables standard output, when a file the result will contain all of the command output, when a directory, the directory will contain a new file for each resource in the output"
+	OAuth2TokenUsage             = "an optional OAuth 2.0 access token to be used as the identity for communication with GCP services, can be obtained with 'gcloud auth print-access-token'"
+	OutputUsage                  = "an optional output file path, disables standard output, when a file the result will contain all of the command output, when a directory, the directory will contain a new file for each resource in the output"
+	DisableDirectExportUsage     = "specify whether to disable direct-reconciliation exporters and fallback to legacy Terraform-based export"
 )
 
 var (
@@ -61,6 +64,10 @@ var (
 
 func AddOAuth2TokenParam(cmd *cobra.Command, value *string) {
 	cmd.Flags().StringVar(value, OAuth2TokenParamName, OAuth2TokenDefault, OAuth2TokenUsage)
+}
+
+func AddDisableDirectExportParam(cmd *cobra.Command, value *bool) {
+	cmd.Flags().BoolVar(value, DisableDirectExportParamName, DisableDirectExportDefault, DisableDirectExportUsage)
 }
 
 func AddIAMFormatParam(cmd *cobra.Command, value *string) {
