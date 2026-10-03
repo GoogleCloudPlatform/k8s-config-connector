@@ -623,6 +623,10 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "parent")
 		}
 
+		// Dataform specific fields to normalize alignment differences between mock and real GCP responses
+		delete(v, "dataEncryptionState")
+		delete(v, "kmsKeyName")
+
 		// SQLInstance specific fields to normalize alignment differences between mock and real GCP responses
 		delete(v, "databaseInstalledVersion")
 		delete(v, "maintenanceVersion")

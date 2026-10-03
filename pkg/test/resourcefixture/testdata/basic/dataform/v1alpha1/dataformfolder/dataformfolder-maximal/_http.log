@@ -56,11 +56,11 @@ X-Xss-Protection: 0
 PATCH https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: folder.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ffolders%2Fdffolder-max-${uniqueId}
+X-Goog-Request-Params: folder.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ffolders%2F${folderID}
 
 {
   "displayName": "Updated Maximal Folder ${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/folders/dffolder-max-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/folders/${folderID}"
 }
 
 200 OK
@@ -86,7 +86,7 @@ X-Xss-Protection: 0
 DELETE https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ffolders%2Fdffolder-max-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ffolders%2F${folderID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
