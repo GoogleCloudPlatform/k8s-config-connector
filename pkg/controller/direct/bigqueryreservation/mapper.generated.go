@@ -189,8 +189,6 @@ func BigQueryReservationReservationObservedState_v1beta1_FromProto(mapCtx *direc
 	// MISSING: PrimaryLocation
 	// MISSING: SecondaryLocation
 	// MISSING: OriginalPrimaryLocation
-	// MISSING: MaxSlots
-	// MISSING: ScalingMode
 	// MISSING: ReplicationStatus
 	return out
 }
@@ -210,8 +208,6 @@ func BigQueryReservationReservationObservedState_v1beta1_ToProto(mapCtx *direct.
 	// MISSING: PrimaryLocation
 	// MISSING: SecondaryLocation
 	// MISSING: OriginalPrimaryLocation
-	// MISSING: MaxSlots
-	// MISSING: ScalingMode
 	// MISSING: ReplicationStatus
 	return out
 }
@@ -235,8 +231,8 @@ func BigQueryReservationReservationSpec_v1beta1_FromProto(mapCtx *direct.MapCont
 	// MISSING: PrimaryLocation
 	// MISSING: SecondaryLocation
 	// MISSING: OriginalPrimaryLocation
-	// MISSING: MaxSlots
-	// MISSING: ScalingMode
+	out.MaxSlots = in.MaxSlots
+	out.ScalingMode = direct.Enum_FromProto(mapCtx, in.GetScalingMode())
 	// MISSING: ReplicationStatus
 	return out
 }
@@ -260,8 +256,8 @@ func BigQueryReservationReservationSpec_v1beta1_ToProto(mapCtx *direct.MapContex
 	// MISSING: PrimaryLocation
 	// MISSING: SecondaryLocation
 	// MISSING: OriginalPrimaryLocation
-	// MISSING: MaxSlots
-	// MISSING: ScalingMode
+	out.MaxSlots = in.MaxSlots
+	out.ScalingMode = direct.Enum_ToProto[pb.Reservation_ScalingMode](mapCtx, in.ScalingMode)
 	// MISSING: ReplicationStatus
 	return out
 }
