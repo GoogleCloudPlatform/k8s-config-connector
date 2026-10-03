@@ -26,16 +26,9 @@ import (
 
 var _ refs.Ref = &ConfigDeploymentRef{}
 
-var ConfigDeploymentGVK = schema.GroupVersionKind{
-	Group:   "configdeployment.cnrm.cloud.google.com",
-	Version: "v1alpha1",
-	Kind:    "ConfigDeployment",
-}
-
-// ConfigDeploymentRef is a reference to a ConfigDeployment.
+// ConfigDeploymentRef is a reference to a GCP ConfigDeployment.
 type ConfigDeploymentRef struct {
-	// A reference to an externally managed ConfigDeployment resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/deployments/{{deploymentID}}".
+	// A reference to an externally managed ConfigDeployment resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/deployments/{{deploymentID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a ConfigDeployment resource.
@@ -46,7 +39,7 @@ type ConfigDeploymentRef struct {
 }
 
 func init() {
-	refs.Register(&ConfigDeploymentRef{}, nil)
+	refs.Register(&ConfigDeploymentRef{}, &ConfigDeployment{})
 }
 
 func (r *ConfigDeploymentRef) GetGVK() schema.GroupVersionKind {
@@ -71,11 +64,19 @@ func (r *ConfigDeploymentRef) SetExternal(ref string) {
 }
 
 func (r *ConfigDeploymentRef) ValidateExternal(ref string) error {
+	id := &ConfigDeploymentIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
+	}
 	return nil
 }
 
 func (r *ConfigDeploymentRef) ParseExternalToIdentity() (identity.Identity, error) {
-	return nil, nil
+	id := &ConfigDeploymentIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
 }
 
 func (r *ConfigDeploymentRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {

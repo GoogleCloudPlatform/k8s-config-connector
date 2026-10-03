@@ -22,3 +22,146 @@
 // proto.service: google.cloud.config.v1
 
 package configdeployment
+
+import (
+	pb "cloud.google.com/go/config/apiv1/configpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/configdeployment/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+)
+
+func ApplyResults_FromProto(mapCtx *direct.MapContext, in *pb.ApplyResults) *krm.ApplyResults {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ApplyResults{}
+	out.Content = direct.LazyPtr(in.GetContent())
+	out.Artifacts = direct.LazyPtr(in.GetArtifacts())
+	// MISSING: Outputs
+	return out
+}
+func ApplyResults_ToProto(mapCtx *direct.MapContext, in *krm.ApplyResults) *pb.ApplyResults {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApplyResults{}
+	out.Content = direct.ValueOf(in.Content)
+	out.Artifacts = direct.ValueOf(in.Artifacts)
+	// MISSING: Outputs
+	return out
+}
+func ConfigDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Deployment) *krm.ConfigDeploymentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConfigDeploymentObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.LatestRevision = direct.LazyPtr(in.GetLatestRevision())
+	out.StateDetail = direct.LazyPtr(in.GetStateDetail())
+	out.ErrorCode = direct.Enum_FromProto(mapCtx, in.GetErrorCode())
+	out.DeleteResults = ApplyResults_FromProto(mapCtx, in.GetDeleteResults())
+	out.DeleteBuild = direct.LazyPtr(in.GetDeleteBuild())
+	out.DeleteLogs = direct.LazyPtr(in.GetDeleteLogs())
+	out.TfErrors = direct.Slice_FromProto(mapCtx, in.TfErrors, TerraformErrorObservedState_FromProto)
+	out.ErrorLogs = direct.LazyPtr(in.GetErrorLogs())
+	out.LockState = direct.Enum_FromProto(mapCtx, in.GetLockState())
+	out.TfVersion = direct.LazyPtr(in.GetTfVersion())
+	return out
+}
+func ConfigDeploymentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ConfigDeploymentObservedState) *pb.Deployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Deployment{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.Deployment_State](mapCtx, in.State)
+	out.LatestRevision = direct.ValueOf(in.LatestRevision)
+	out.StateDetail = direct.ValueOf(in.StateDetail)
+	out.ErrorCode = direct.Enum_ToProto[pb.Deployment_ErrorCode](mapCtx, in.ErrorCode)
+	out.DeleteResults = ApplyResults_ToProto(mapCtx, in.DeleteResults)
+	out.DeleteBuild = direct.ValueOf(in.DeleteBuild)
+	out.DeleteLogs = direct.ValueOf(in.DeleteLogs)
+	out.TfErrors = direct.Slice_ToProto(mapCtx, in.TfErrors, TerraformErrorObservedState_ToProto)
+	out.ErrorLogs = direct.ValueOf(in.ErrorLogs)
+	out.LockState = direct.Enum_ToProto[pb.Deployment_LockState](mapCtx, in.LockState)
+	out.TfVersion = direct.ValueOf(in.TfVersion)
+	return out
+}
+func GitSource_FromProto(mapCtx *direct.MapContext, in *pb.GitSource) *krm.GitSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GitSource{}
+	out.Repo = in.Repo
+	out.Directory = in.Directory
+	out.Ref = in.Ref
+	return out
+}
+func GitSource_ToProto(mapCtx *direct.MapContext, in *krm.GitSource) *pb.GitSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GitSource{}
+	out.Repo = in.Repo
+	out.Directory = in.Directory
+	out.Ref = in.Ref
+	return out
+}
+func TerraformBlueprint_FromProto(mapCtx *direct.MapContext, in *pb.TerraformBlueprint) *krm.TerraformBlueprint {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TerraformBlueprint{}
+	out.GCSSource = direct.LazyPtr(in.GetGcsSource())
+	out.GitSource = GitSource_FromProto(mapCtx, in.GetGitSource())
+	// MISSING: InputValues
+	// MISSING: ExternalValues
+	return out
+}
+func TerraformBlueprint_ToProto(mapCtx *direct.MapContext, in *krm.TerraformBlueprint) *pb.TerraformBlueprint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TerraformBlueprint{}
+	if oneof := TerraformBlueprint_GcsSource_ToProto(mapCtx, in.GCSSource); oneof != nil {
+		out.Source = oneof
+	}
+	if oneof := GitSource_ToProto(mapCtx, in.GitSource); oneof != nil {
+		out.Source = &pb.TerraformBlueprint_GitSource{GitSource: oneof}
+	}
+	// MISSING: InputValues
+	// MISSING: ExternalValues
+	return out
+}
+func TerraformBlueprint_GcsSource_ToProto(mapCtx *direct.MapContext, in *string) *pb.TerraformBlueprint_GcsSource {
+	if in == nil {
+		return nil
+	}
+	return &pb.TerraformBlueprint_GcsSource{GcsSource: *in}
+}
+func TerraformErrorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TerraformError) *krm.TerraformErrorObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TerraformErrorObservedState{}
+	out.ResourceAddress = direct.LazyPtr(in.GetResourceAddress())
+	out.HTTPResponseCode = direct.LazyPtr(in.GetHttpResponseCode())
+	out.ErrorDescription = direct.LazyPtr(in.GetErrorDescription())
+	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
+	return out
+}
+func TerraformErrorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TerraformErrorObservedState) *pb.TerraformError {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TerraformError{}
+	out.ResourceAddress = direct.ValueOf(in.ResourceAddress)
+	out.HttpResponseCode = direct.ValueOf(in.HTTPResponseCode)
+	out.ErrorDescription = direct.ValueOf(in.ErrorDescription)
+	out.Error = direct.Status_ToProto(mapCtx, in.Error)
+	return out
+}

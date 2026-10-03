@@ -18,5 +18,200 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.config.v1
 // resource: ConfigDeploymentGroup:DeploymentGroup
+// resource: ConfigDeployment:Deployment
 
 package v1alpha1
+
+import (
+	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+)
+
+// +kcc:proto=google.cloud.config.v1.ApplyResults
+type ApplyResults struct {
+	// Location of a blueprint copy and other manifests in Google Cloud Storage.
+	//  Format: `gs://{bucket}/{object}`
+	// +kcc:proto:field=google.cloud.config.v1.ApplyResults.content
+	Content *string `json:"content,omitempty"`
+
+	// Location of artifacts (e.g. logs) in Google Cloud Storage.
+	//  Format: `gs://{bucket}/{object}`
+	// +kcc:proto:field=google.cloud.config.v1.ApplyResults.artifacts
+	Artifacts *string `json:"artifacts,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+}
+
+/* unreachable type DeploymentSource
+// +kcc:proto=google.cloud.config.v1.DeploymentSource
+type DeploymentSource struct {
+	// Required. The resource name of the source Deployment to import the output
+	//  from. Format:
+	//  projects/{project}/locations/{location}/deployments/{deployment} The source
+	//  deployment must be in the same project and location.
+	// +kcc:proto:field=google.cloud.config.v1.DeploymentSource.deployment
+	Deployment *string `json:"deployment,omitempty"`
+
+	// Required. The name of the output variable in the source deployment's latest
+	//  successfully applied revision.
+	// +kcc:proto:field=google.cloud.config.v1.DeploymentSource.output_name
+	OutputName *string `json:"outputName,omitempty"`
+}
+*/
+
+/* unreachable type ExternalValueSource
+// +kcc:proto=google.cloud.config.v1.ExternalValueSource
+type ExternalValueSource struct {
+	// A source from a Deployment.
+	// +kcc:proto:field=google.cloud.config.v1.ExternalValueSource.deployment_source
+	DeploymentSource *DeploymentSource `json:"deploymentSource,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.config.v1.GitSource
+type GitSource struct {
+	// Optional. Repository URL.
+	//  Example: 'https://github.com/kubernetes/examples.git'
+	// +kcc:proto:field=google.cloud.config.v1.GitSource.repo
+	Repo *string `json:"repo,omitempty"`
+
+	// Optional. Subdirectory inside the repository.
+	//  Example: 'staging/my-package'
+	// +kcc:proto:field=google.cloud.config.v1.GitSource.directory
+	Directory *string `json:"directory,omitempty"`
+
+	// Optional. Git reference (e.g. branch or tag).
+	// +kcc:proto:field=google.cloud.config.v1.GitSource.ref
+	Ref *string `json:"ref,omitempty"`
+}
+
+// +kcc:proto=google.cloud.config.v1.ProviderConfig
+type ProviderConfig struct {
+	// Optional. ProviderSource specifies the source type of the provider.
+	// +kcc:proto:field=google.cloud.config.v1.ProviderConfig.source_type
+	SourceType *string `json:"sourceType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.config.v1.TerraformBlueprint
+type TerraformBlueprint struct {
+	// URI of an object in Google Cloud Storage.
+	//  Format: `gs://{bucket}/{object}`
+	//
+	//  URI may also specify an object version for zipped objects.
+	//  Format: `gs://{bucket}/{object}#{version}`
+	// +kcc:proto:field=google.cloud.config.v1.TerraformBlueprint.gcs_source
+	GCSSource *string `json:"gcsSource,omitempty"`
+
+	// URI of a public Git repo.
+	// +kcc:proto:field=google.cloud.config.v1.TerraformBlueprint.git_source
+	GitSource *GitSource `json:"gitSource,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+	// TODO: unsupported map type with key string and value message
+
+}
+
+/* unreachable type TerraformError
+// +kcc:proto=google.cloud.config.v1.TerraformError
+type TerraformError struct {
+	// Address of the resource associated with the error,
+	//  e.g. `google_compute_network.vpc_network`.
+	// +kcc:proto:field=google.cloud.config.v1.TerraformError.resource_address
+	ResourceAddress *string `json:"resourceAddress,omitempty"`
+
+	// HTTP response code returned from Google Cloud Platform APIs when Terraform
+	//  fails to provision the resource. If unset or 0, no HTTP response code was
+	//  returned by Terraform.
+	// +kcc:proto:field=google.cloud.config.v1.TerraformError.http_response_code
+	HTTPResponseCode *int32 `json:"httpResponseCode,omitempty"`
+
+	// A human-readable error description.
+	// +kcc:proto:field=google.cloud.config.v1.TerraformError.error_description
+	ErrorDescription *string `json:"errorDescription,omitempty"`
+}
+*/
+
+/* unreachable type TerraformOutput
+// +kcc:proto=google.cloud.config.v1.TerraformOutput
+type TerraformOutput struct {
+	// Identifies whether Terraform has set this output as a potential
+	//  sensitive value.
+	// +kcc:proto:field=google.cloud.config.v1.TerraformOutput.sensitive
+	Sensitive *bool `json:"sensitive,omitempty"`
+
+	// Value of output.
+	// +kcc:proto:field=google.cloud.config.v1.TerraformOutput.value
+	Value *Value `json:"value,omitempty"`
+}
+*/
+
+/* unreachable type TerraformVariable
+// +kcc:proto=google.cloud.config.v1.TerraformVariable
+type TerraformVariable struct {
+	// Optional. Input variable value.
+	// +kcc:proto:field=google.cloud.config.v1.TerraformVariable.input_value
+	InputValue *Value `json:"inputValue,omitempty"`
+}
+*/
+
+/* unreachable type ListValue
+// +kcc:proto=google.protobuf.ListValue
+type ListValue struct {
+	// Repeated field of dynamically typed values.
+	// +kcc:proto:field=google.protobuf.ListValue.values
+	Values []Value `json:"values,omitempty"`
+}
+*/
+
+/* unreachable type Value
+// +kcc:proto=google.protobuf.Value
+type Value struct {
+	// Represents a null value.
+	// +kcc:proto:field=google.protobuf.Value.null_value
+	NullValue *string `json:"nullValue,omitempty"`
+
+	// Represents a double value.
+	// +kcc:proto:field=google.protobuf.Value.number_value
+	NumberValue *float64 `json:"numberValue,omitempty"`
+
+	// Represents a string value.
+	// +kcc:proto:field=google.protobuf.Value.string_value
+	StringValue *string `json:"stringValue,omitempty"`
+
+	// Represents a boolean value.
+	// +kcc:proto:field=google.protobuf.Value.bool_value
+	BoolValue *bool `json:"boolValue,omitempty"`
+
+	// Represents a structured value.
+	// +kcc:proto:field=google.protobuf.Value.struct_value
+	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
+
+	// Represents a repeated `Value`.
+	// +kcc:proto:field=google.protobuf.Value.list_value
+	ListValue *ListValue `json:"listValue,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.config.v1.TerraformError
+type TerraformErrorObservedState struct {
+	// Address of the resource associated with the error,
+	//  e.g. `google_compute_network.vpc_network`.
+	// +kcc:proto:field=google.cloud.config.v1.TerraformError.resource_address
+	ResourceAddress *string `json:"resourceAddress,omitempty"`
+
+	// HTTP response code returned from Google Cloud Platform APIs when Terraform
+	//  fails to provision the resource. If unset or 0, no HTTP response code was
+	//  returned by Terraform.
+	// +kcc:proto:field=google.cloud.config.v1.TerraformError.http_response_code
+	HTTPResponseCode *int32 `json:"httpResponseCode,omitempty"`
+
+	// A human-readable error description.
+	// +kcc:proto:field=google.cloud.config.v1.TerraformError.error_description
+	ErrorDescription *string `json:"errorDescription,omitempty"`
+
+	// Output only. Original error response from underlying Google API, if
+	//  available.
+	// +kcc:proto:field=google.cloud.config.v1.TerraformError.error
+	Error *common.Status `json:"error,omitempty"`
+}
