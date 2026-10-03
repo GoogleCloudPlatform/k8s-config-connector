@@ -1,0 +1,11 @@
+apiVersion: contactcenterinsights.cnrm.cloud.google.com/v1alpha1
+kind: CCInsightsIssueModel
+metadata:
+  name: ccinsightsissuemodel-min-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "Minimal Issue Model Updated"
+  inputDataConfig:
+    medium: PHONE_CALL

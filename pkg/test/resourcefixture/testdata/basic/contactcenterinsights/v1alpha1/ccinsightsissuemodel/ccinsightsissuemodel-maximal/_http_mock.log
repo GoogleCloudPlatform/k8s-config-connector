@@ -1,0 +1,274 @@
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/issueModels/ccinsightsissuemodel-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FissueModels%2Fccinsightsissuemodel-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "No IssueModel found for ID: ccinsightsissuemodel-max-${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/issueModels?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "displayName": "Maximal Issue Model",
+  "inputDataConfig": {
+    "filter": "medium=\"PHONE_CALL\"",
+    "medium": 1
+  },
+  "languageCode": "en-US",
+  "name": "projects/${projectId}/locations/us-central1/issueModels/ccinsightsissuemodel-max-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.contactcenterinsights.v1.IssueModel",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Maximal Issue Model",
+    "inputDataConfig": {
+      "filter": "medium=\"PHONE_CALL\"",
+      "medium": "PHONE_CALL"
+    },
+    "languageCode": "en-US",
+    "name": "projects/${projectNumber}/locations/us-central1/issueModels/ccinsightsissuemodel-max-${uniqueId}",
+    "state": "DEPLOYED",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/issueModels/ccinsightsissuemodel-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FissueModels%2Fccinsightsissuemodel-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Maximal Issue Model",
+  "inputDataConfig": {
+    "filter": "medium=\"PHONE_CALL\"",
+    "medium": 1
+  },
+  "languageCode": "en-US",
+  "name": "projects/${projectNumber}/locations/us-central1/issueModels/ccinsightsissuemodel-max-${uniqueId}",
+  "state": 3,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/issueModels/ccinsightsissuemodel-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2FissueModels%2Fccinsightsissuemodel-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Maximal Issue Model",
+  "inputDataConfig": {
+    "filter": "medium=\"PHONE_CALL\"",
+    "medium": 1
+  },
+  "languageCode": "en-US",
+  "name": "projects/${projectNumber}/locations/us-central1/issueModels/ccinsightsissuemodel-max-${uniqueId}",
+  "state": 3,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://contactcenterinsights.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/issueModels/ccinsightsissuemodel-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: issue_model.name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2FissueModels%2Fccinsightsissuemodel-max-${uniqueId}
+
+{
+  "displayName": "Maximal Issue Model Updated",
+  "inputDataConfig": {
+    "filter": "medium=\"PHONE_CALL\"",
+    "medium": 1
+  },
+  "languageCode": "en-US",
+  "name": "projects/${projectNumber}/locations/us-central1/issueModels/ccinsightsissuemodel-max-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Maximal Issue Model Updated",
+  "inputDataConfig": {
+    "filter": "medium=\"PHONE_CALL\"",
+    "medium": 1
+  },
+  "languageCode": "en-US",
+  "name": "projects/${projectNumber}/locations/us-central1/issueModels/ccinsightsissuemodel-max-${uniqueId}",
+  "state": 3,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/issueModels/ccinsightsissuemodel-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2FissueModels%2Fccinsightsissuemodel-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Maximal Issue Model Updated",
+  "inputDataConfig": {
+    "filter": "medium=\"PHONE_CALL\"",
+    "medium": 1
+  },
+  "languageCode": "en-US",
+  "name": "projects/${projectNumber}/locations/us-central1/issueModels/ccinsightsissuemodel-max-${uniqueId}",
+  "state": 3,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://contactcenterinsights.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/issueModels/ccinsightsissuemodel-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2FissueModels%2Fccinsightsissuemodel-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.contactcenterinsights.v1.IssueModel",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Maximal Issue Model Updated",
+    "inputDataConfig": {
+      "filter": "medium=\"PHONE_CALL\"",
+      "medium": "PHONE_CALL"
+    },
+    "languageCode": "en-US",
+    "name": "projects/${projectNumber}/locations/us-central1/issueModels/ccinsightsissuemodel-max-${uniqueId}",
+    "state": "DEPLOYED",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}

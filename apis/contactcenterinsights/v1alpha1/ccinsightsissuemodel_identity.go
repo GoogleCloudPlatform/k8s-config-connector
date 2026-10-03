@@ -20,26 +20,96 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// CCInsightsIssueModelIdentity is the identity of a CCInsightsIssueModel.
+var (
+	_ identity.IdentityV2 = &CCInsightsIssueModelIdentity{}
+	_ identity.Resource   = &CCInsightsIssueModel{}
+)
+
+var CCInsightsIssueModelIdentityFormat = gcpurls.Template[CCInsightsIssueModelIdentity]("contactcenterinsights.googleapis.com", "projects/{project}/locations/{location}/issueModels/{issue_model}")
+
+// +k8s:deepcopy-gen=false
 type CCInsightsIssueModelIdentity struct {
-	parent *CCInsightsIssueModelParent
-	id     string
+	Project     string
+	Location    string
+	Issue_model string
 }
 
 func (i *CCInsightsIssueModelIdentity) String() string {
-	return i.parent.String() + "/issueModels/" + i.id
+	return CCInsightsIssueModelIdentityFormat.ToString(*i)
 }
 
-func (i *CCInsightsIssueModelIdentity) ID() string {
-	return i.id
+func (i *CCInsightsIssueModelIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
 }
 
-func (i *CCInsightsIssueModelIdentity) Parent() *CCInsightsIssueModelParent {
-	return i.parent
+func (i *CCInsightsIssueModelIdentity) FromExternal(ref string) error {
+	parsed, match, err := CCInsightsIssueModelIdentityFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of CCInsightsIssueModel external=%q was not known (use %s): %w", ref, CCInsightsIssueModelIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of CCInsightsIssueModel external=%q was not known (use %s)", ref, CCInsightsIssueModelIdentityFormat.CanonicalForm())
+	}
+
+	*i = *parsed
+	return nil
+}
+
+func (i *CCInsightsIssueModelIdentity) Host() string {
+	return CCInsightsIssueModelIdentityFormat.Host()
+}
+
+func getIdentityFromCCInsightsIssueModelSpec(ctx context.Context, reader client.Reader, obj *CCInsightsIssueModel) (*CCInsightsIssueModelIdentity, error) {
+	resourceID, err := refs.GetResourceID(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
+	}
+
+	location, err := refs.GetLocation(obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve location: %w", err)
+	}
+
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	}
+
+	identity := &CCInsightsIssueModelIdentity{
+		Project:     projectID,
+		Location:    location,
+		Issue_model: resourceID,
+	}
+	return identity, nil
+}
+
+func (obj *CCInsightsIssueModel) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromCCInsightsIssueModelSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		statusIdentity := &CCInsightsIssueModelIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+
+		if !isProjectMatch(statusIdentity.Project, specIdentity.Project) || statusIdentity.Location != specIdentity.Location {
+			return nil, fmt.Errorf("cannot change CCInsightsIssueModel identity parent (old=%q, new parent=%s/%s)", externalRef, specIdentity.Project, specIdentity.Location)
+		}
+		specIdentity.Project = statusIdentity.Project
+		specIdentity.Issue_model = statusIdentity.Issue_model
+	}
+
+	return specIdentity, nil
 }
 
 type CCInsightsIssueModelParent struct {
@@ -49,57 +119,6 @@ type CCInsightsIssueModelParent struct {
 
 func (p *CCInsightsIssueModelParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-// New builds a CCInsightsIssueModelIdentity from the Config Connector CCInsightsIssueModel object.
-func NewCCInsightsIssueModelIdentity(ctx context.Context, reader client.Reader, obj *CCInsightsIssueModel) (*CCInsightsIssueModelIdentity, error) {
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-	if err != nil {
-		return nil, err
-	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
-
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	// Use approved External
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
-	if externalRef != "" {
-		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseCCInsightsIssueModelExternal(externalRef)
-		if err != nil {
-			return nil, err
-		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
-		}
-	}
-	return &CCInsightsIssueModelIdentity{
-		parent: &CCInsightsIssueModelParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
-	}, nil
 }
 
 func ParseCCInsightsIssueModelExternal(external string) (parent *CCInsightsIssueModelParent, resourceID string, err error) {

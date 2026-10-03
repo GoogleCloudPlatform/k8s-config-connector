@@ -160,3 +160,32 @@ func (s *MockService) parseConversationName(name string) (*conversationName, err
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
 }
+
+type issueModelName struct {
+	Project    *projects.ProjectData
+	Location   string
+	IssueModel string
+}
+
+func (n *issueModelName) String() string {
+	return "projects/" + strconv.FormatInt(n.Project.Number, 10) + "/locations/" + n.Location + "/issueModels/" + n.IssueModel
+}
+
+func (s *MockService) parseIssueModelName(name string) (*issueModelName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "issueModels" {
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &issueModelName{
+			Project:    project,
+			Location:   tokens[3],
+			IssueModel: tokens[5],
+		}, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}

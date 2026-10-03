@@ -28,6 +28,7 @@ import (
 	pb "cloud.google.com/go/contactcenterinsights/apiv1/contactcenterinsightspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	pbhttp "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/contactcenterinsights/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -42,6 +43,8 @@ type MockService struct {
 	*common.MockEnvironment
 	storage storage.Storage
 
+	operations *operations.Operations
+
 	contactCenterInsightsServer *ContactCenterInsightsServer
 }
 
@@ -50,6 +53,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
+		operations:      operations.NewOperationsService(storage),
 	}
 	s.contactCenterInsightsServer = &ContactCenterInsightsServer{MockService: s}
 	return s
@@ -71,7 +75,8 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pbhttp.RegisterContactCenterInsightsHandler)
+		pbhttp.RegisterContactCenterInsightsHandler,
+		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err
 	}
