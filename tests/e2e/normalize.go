@@ -1132,6 +1132,13 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 					replacement.PathIDs[viewID] = "${viewId}"
 				}
 			}
+			if u.GetKind() == "CCInsightsAnalysisRule" {
+				parts := strings.Split(s, "/")
+				if len(parts) > 0 {
+					analysisRuleID := parts[len(parts)-1]
+					replacement.PathIDs[analysisRuleID] = "${analysisRuleId}"
+				}
+			}
 			if u.GetKind() == "CCInsightsPhraseMatcher" {
 				parts := strings.Split(s, "/")
 				if len(parts) > 0 {

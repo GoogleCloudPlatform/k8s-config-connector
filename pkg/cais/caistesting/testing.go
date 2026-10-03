@@ -148,6 +148,25 @@ func NormalizeDynamicIDs(s string) string {
 				lines[i] = "  caisURL: unknown"
 			}
 		}
+		// Normalize CCInsightsAnalysisRule IDs: locations/.../analysisRules/<analysisRuleId>
+		if idx := strings.Index(line, "/analysisRules/"); idx != -1 && strings.Contains(line, "contactcenterinsights") {
+			name := ""
+			for j := i + 1; j < len(lines); j++ {
+				if strings.HasPrefix(strings.TrimSpace(lines[j]), "- ") {
+					break
+				}
+				if strings.HasPrefix(strings.TrimSpace(lines[j]), "name: ") {
+					name = strings.TrimSpace(strings.TrimPrefix(strings.TrimSpace(lines[j]), "name: "))
+					break
+				}
+			}
+			if strings.Contains(name, "armax") || strings.Contains(name, "max") {
+				lines[i] = line[:idx+len("/analysisRules/")] + "armax${uniqueId}"
+			} else if strings.Contains(name, "armin") || strings.Contains(name, "min") {
+				lines[i] = line[:idx+len("/analysisRules/")] + "armin${uniqueId}"
+			}
+			lines[i] = strings.Replace(lines[i], "projects/${projectNumber}/locations/", "projects/${projectId}/locations/", 1)
+		}
 		// Normalize IAP Brand numeric IDs: projects/.../brands/<brandId>
 		if idx := strings.Index(line, "/brands/"); idx != -1 {
 			lines[i] = line[:idx+len("/brands/")]
