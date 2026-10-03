@@ -53,6 +53,7 @@ func StorageBucketFuzzer() fuzztesting.KRMFuzzer {
 	// - CustomPlacementConfig (*StorageBucketCustomPlacementConfig) -> Unmapped in KCC direct mapper (no corresponding field in google.storage.v1.Bucket proto)
 	// - PublicAccessPrevention (*string)                 -> f.Unimplemented_NotYetTriaged(".iam_configuration")
 	// - RequesterPays (*bool)                           -> f.Unimplemented_NotYetTriaged(".billing")
+	// - Rpo (*string)                                   -> Unmapped in direct mapper (no corresponding field in google.storage.v1.Bucket proto)
 	// - SoftDeletePolicy (*StorageBucketSoftDeletePolicy) -> Unmapped in direct mapper (no corresponding field in google.storage.v1.Bucket proto)
 	// - UniformBucketLevelAccess (*bool)                -> f.Unimplemented_NotYetTriaged(".iam_configuration")
 
