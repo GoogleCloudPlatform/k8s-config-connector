@@ -54,3 +54,15 @@
   3. Recorded and verified both minimal and maximal fixtures against real GCP.
 - **Impact**: Cleanly reconciles `AIPlatformReasoningEngine` with service-generated IDs, and enables reliable, reproducible E2E tests against real GCP.
 
+### 2026-10-03 Implementing AIPlatformSpecialistPool Greenfield Direct Controller, Fuzzer, and E2E Fixtures
+- **Context**: Implementing the direct controller, E2E fixtures, and fuzzer for `AIPlatformSpecialistPool` (Issue #13683).
+- **Implementation**:
+  1. Implemented direct controller `pkg/controller/direct/aiplatform/aiplatformspecialistpool_controller.go` adhering to the 4 rules for service-generated resource IDs.
+  2. Registered `AIPlatformSpecialistPool` with direct reconciler in `pkg/controller/resourceconfig/static_config.go`.
+  3. Configured KRM fuzzer with fluent syntax in `pkg/controller/direct/aiplatform/aiplatformspecialistpool_fuzzer.go`.
+  4. Scaffolded minimal and maximal E2E test fixtures under `pkg/test/resourcefixture/testdata/basic/aiplatform/v1alpha1/aiplatformspecialistpool/`.
+- **Finding & Real GCP Observation**:
+  During live execution against real GCP (`./hack/record-gcp`), the Vertex AI `CreateSpecialistPool` API returned `rpc error: code = FailedPrecondition desc = Data labeling service is shutdown` (audited via Cloud Audit Logs `SpecialistPoolService.CreateSpecialistPool`). Google Cloud deprecated and shut down the Vertex AI Data Labeling Service (and its associated human labeling SpecialistPool backend) on July 1, 2024.
+- **Impact**: Controller implementation and CRD structures are complete, idiomatic, and verified with unit tests and fuzzer roundtripping.
+
+
