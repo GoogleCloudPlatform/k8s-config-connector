@@ -85,16 +85,10 @@ func (m *modelLoggingLogBucket) AdapterForObject(ctx context.Context, op *direct
 		return nil, err
 	}
 
-	mapCtx := &direct.MapContext{}
-	desiredPb := LoggingLogBucketSpec_ToProto(mapCtx, &obj.Spec)
-	if mapCtx.Err() != nil {
-		return nil, mapCtx.Err()
-	}
-
 	return &LoggingLogBucketAdapter{
 		id:        id.(*krm.LogBucketIdentity),
 		gcpClient: gcpClient,
-		desired:   desiredPb,
+		desired:   obj,
 	}, nil
 }
 
@@ -119,7 +113,7 @@ func (m *modelLoggingLogBucket) AdapterForURL(ctx context.Context, url string) (
 type LoggingLogBucketAdapter struct {
 	id        *krm.LogBucketIdentity
 	gcpClient *gcp.ConfigClient
-	desired   *loggingpb.LogBucket
+	desired   *krm.LoggingLogBucket
 	actual    *loggingpb.LogBucket
 }
 
@@ -147,12 +141,18 @@ func (a *LoggingLogBucketAdapter) Create(ctx context.Context, createOp *directba
 	fqn := a.id.String()
 	log.V(2).Info("creating LoggingLogBucket", "id", fqn)
 
+	mapCtx := &direct.MapContext{}
+	desired := LoggingLogBucketSpec_ToProto(mapCtx, &a.desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
 	parent := a.id.ParentString()
 	resourceID := a.id.Bucket
 
 	req := &loggingpb.CreateBucketRequest{
 		Parent:   parent,
-		Bucket:   a.desired,
+		Bucket:   desired,
 		BucketId: resourceID,
 	}
 	created, err := a.gcpClient.CreateBucket(ctx, req)
@@ -168,7 +168,26 @@ func (a *LoggingLogBucketAdapter) Update(ctx context.Context, updateOp *directba
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating LoggingLogBucket", "name", a.id.String())
 
-	diffs, updateMask, err := compareBucket(ctx, a.actual, a.desired)
+	mapCtx := &direct.MapContext{}
+	desired := LoggingLogBucketSpec_ToProto(mapCtx, &a.desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	if a.desired.Spec.Description == nil {
+		desired.Description = a.actual.GetDescription()
+	}
+	if a.desired.Spec.EnableAnalytics == nil {
+		desired.AnalyticsEnabled = a.actual.GetAnalyticsEnabled()
+	}
+	if a.desired.Spec.Locked == nil {
+		desired.Locked = a.actual.GetLocked()
+	}
+	if a.desired.Spec.RetentionDays == nil || *a.desired.Spec.RetentionDays == 0 {
+		desired.RetentionDays = a.actual.GetRetentionDays()
+	}
+
+	diffs, updateMask, err := compareBucket(ctx, a.actual, desired)
 	if err != nil {
 		return err
 	}
@@ -178,17 +197,55 @@ func (a *LoggingLogBucketAdapter) Update(ctx context.Context, updateOp *directba
 		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
 
-		req := &loggingpb.UpdateBucketRequest{
-			Name:       a.id.String(),
-			Bucket:     a.desired,
-			UpdateMask: updateMask,
+		// Cloud Logging rejects UpdateBucket requests that update analytics_enabled
+		// at the same time as other bucket fields ("Buckets cannot be upgraded at the
+		// same time as making updates to other bucket fields"). Split into two calls
+		// when analytics_enabled is updated alongside other fields.
+		hasAnalyticsUpdate := false
+		var otherPaths []string
+		for _, p := range updateMask.GetPaths() {
+			if p == "analytics_enabled" {
+				hasAnalyticsUpdate = true
+			} else {
+				otherPaths = append(otherPaths, p)
+			}
 		}
 
-		updated, err := a.gcpClient.UpdateBucket(ctx, req)
-		if err != nil {
-			return fmt.Errorf("updating LoggingLogBucket %s: %w", a.id.String(), err)
+		if hasAnalyticsUpdate && len(otherPaths) > 0 {
+			analyticsReq := &loggingpb.UpdateBucketRequest{
+				Name:       a.id.String(),
+				Bucket:     desired,
+				UpdateMask: &fieldmaskpb.FieldMask{Paths: []string{"analytics_enabled"}},
+			}
+			updated, err := a.gcpClient.UpdateBucket(ctx, analyticsReq)
+			if err != nil {
+				return fmt.Errorf("updating LoggingLogBucket %s (analytics_enabled): %w", a.id.String(), err)
+			}
+			latest = updated
+
+			otherReq := &loggingpb.UpdateBucketRequest{
+				Name:       a.id.String(),
+				Bucket:     desired,
+				UpdateMask: &fieldmaskpb.FieldMask{Paths: otherPaths},
+			}
+			updated, err = a.gcpClient.UpdateBucket(ctx, otherReq)
+			if err != nil {
+				return fmt.Errorf("updating LoggingLogBucket %s: %w", a.id.String(), err)
+			}
+			latest = updated
+		} else {
+			req := &loggingpb.UpdateBucketRequest{
+				Name:       a.id.String(),
+				Bucket:     desired,
+				UpdateMask: updateMask,
+			}
+
+			updated, err := a.gcpClient.UpdateBucket(ctx, req)
+			if err != nil {
+				return fmt.Errorf("updating LoggingLogBucket %s: %w", a.id.String(), err)
+			}
+			latest = updated
 		}
-		latest = updated
 	}
 
 	return a.updateStatus(ctx, updateOp, latest)
@@ -231,6 +288,11 @@ func (a *LoggingLogBucketAdapter) Export(ctx context.Context) (*unstructured.Uns
 func (a *LoggingLogBucketAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting LogBucket", "name", a.id)
+
+	if a.id.Bucket == "_Default" || a.id.Bucket == "_Required" {
+		log.V(2).Info("skipping delete for default/required LogBucket", "name", a.id.String())
+		return true, nil
+	}
 
 	req := &loggingpb.DeleteBucketRequest{Name: a.id.String()}
 	err := a.gcpClient.DeleteBucket(ctx, req)

@@ -1,0 +1,39 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "Folder/folder-${uniqueId}",
+    "fields": [
+      {
+        "id": "create_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "display_name",
+        "old": "",
+        "new": "Bucket ${uniqueId}"
+      },
+      {
+        "id": "folder_id",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "lifecycle_state",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "parent_folder_id",
+        "old": "",
+        "new": "149171536167"
+      }
+    ]
+  }
+]

@@ -1,0 +1,44 @@
+124c124
+< GET https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?alt=json
+---
+> GET https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint
+139c139
+<   "lifecycleState": "ACTIVE",
+---
+>   "lifecycleState": 1,
+146c146
+< PATCH https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?alt=json&updateMask=retentionDays
+---
+> PATCH https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint&updateMask=retentionDays
+149a150
+>   "description": "Default bucket",
+165c166
+<   "lifecycleState": "ACTIVE",
+---
+>   "lifecycleState": 1,
+173c174
+< GET https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?alt=json
+---
+> GET https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint
+188c189
+<   "lifecycleState": "ACTIVE",
+---
+>   "lifecycleState": 1,
+196c197
+< PATCH https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?alt=json&updateMask=retentionDays
+---
+> PATCH https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint&updateMask=retentionDays
+199a201
+>   "description": "Default bucket",
+215c217
+<   "lifecycleState": "ACTIVE",
+---
+>   "lifecycleState": 1,
+223c225
+< GET https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?alt=json
+---
+> GET https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint
+238c240
+<   "lifecycleState": "ACTIVE",
+---
+>   "lifecycleState": 1,

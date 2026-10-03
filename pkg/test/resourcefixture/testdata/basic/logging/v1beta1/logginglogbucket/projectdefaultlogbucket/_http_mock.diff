@@ -1,0 +1,46 @@
+1c1
+< GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/_Default?alt=json
+---
+> GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint
+17c17
+<   "lifecycleState": "ACTIVE",
+---
+>   "lifecycleState": 1,
+24c24
+< PATCH https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/_Default?alt=json&updateMask=retentionDays
+---
+> PATCH https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint&updateMask=retentionDays
+27a28,29
+>   "analyticsEnabled": true,
+>   "description": "Default bucket",
+44c46
+<   "lifecycleState": "ACTIVE",
+---
+>   "lifecycleState": 1,
+52c54
+< GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/_Default?alt=json
+---
+> GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint
+68c70
+<   "lifecycleState": "ACTIVE",
+---
+>   "lifecycleState": 1,
+76c78
+< PATCH https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/_Default?alt=json&updateMask=retentionDays
+---
+> PATCH https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint&updateMask=retentionDays
+79a82,83
+>   "analyticsEnabled": true,
+>   "description": "Default bucket",
+96c100
+<   "lifecycleState": "ACTIVE",
+---
+>   "lifecycleState": 1,
+104c108
+< GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/_Default?alt=json
+---
+> GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint
+120c124
+<   "lifecycleState": "ACTIVE",
+---
+>   "lifecycleState": 1,
