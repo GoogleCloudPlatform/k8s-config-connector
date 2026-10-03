@@ -82,22 +82,11 @@ func (m *routeModel) AdapterForObject(ctx context.Context, op *directbase.Adapte
 		return nil, err
 	}
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
-
-	mapCtx := &direct.MapContext{}
-	desired := obj.DeepCopy()
-	resource := ComputeRouteSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return nil, mapCtx.Err()
-	}
-
 	return &RouteAdapter{
-		gcpClient: routesClient,
-		id:        id.(*krm.ComputeRouteIdentity),
-		desired:   resource,
-		reader:    reader,
+		gcpClient:  routesClient,
+		id:         id.(*krm.ComputeRouteIdentity),
+		desiredObj: obj.DeepCopy(),
+		reader:     reader,
 	}, nil
 }
 
@@ -124,14 +113,39 @@ func (m *routeModel) AdapterForURL(ctx context.Context, url string) (directbase.
 }
 
 type RouteAdapter struct {
-	gcpClient *compute.RoutesClient
-	id        *krm.ComputeRouteIdentity
-	desired   *computepb.Route
-	actual    *computepb.Route
-	reader    client.Reader
+	gcpClient  *compute.RoutesClient
+	id         *krm.ComputeRouteIdentity
+	desiredObj *krm.ComputeRoute
+	desired    *computepb.Route
+	actual     *computepb.Route
+	reader     client.Reader
 }
 
 var _ directbase.Adapter = &RouteAdapter{}
+
+func (a *RouteAdapter) normalizeReferences(ctx context.Context) error {
+	if a.desired != nil {
+		return nil
+	}
+	if a.desiredObj == nil {
+		return fmt.Errorf("desiredObj is nil")
+	}
+	desired := a.desiredObj.DeepCopy()
+	if err := common.NormalizeReferences(ctx, a.reader, desired, nil); err != nil {
+		return fmt.Errorf("normalizing references: %w", err)
+	}
+
+	mapCtx := &direct.MapContext{}
+	resource := ComputeRouteSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	if resource.GetNextHopGateway() == "default-internet-gateway" && a.id != nil && a.id.Project != "" {
+		resource.NextHopGateway = direct.PtrTo(fmt.Sprintf("projects/%s/global/gateways/default-internet-gateway", a.id.Project))
+	}
+	a.desired = resource
+	return nil
+}
 
 func (a *RouteAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
@@ -156,6 +170,10 @@ func (a *RouteAdapter) Find(ctx context.Context) (bool, error) {
 func (a *RouteAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating ComputeRoute", "name", a.id)
+
+	if err := a.normalizeReferences(ctx); err != nil {
+		return err
+	}
 
 	a.desired.Name = proto.String(a.id.Route)
 
@@ -185,6 +203,10 @@ func (a *RouteAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 func (a *RouteAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating ComputeRoute", "name", a.id)
+
+	if err := a.normalizeReferences(ctx); err != nil {
+		return err
+	}
 
 	diffs, _, err := compareComputeRoute(ctx, a.actual, a.desired, a.id)
 	if err != nil {
