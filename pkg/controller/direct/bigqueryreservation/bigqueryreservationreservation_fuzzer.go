@@ -55,6 +55,8 @@ func BigQueryReservationReservationFuzzer() fuzztesting.KRMFuzzer {
 
 	f.Unimplemented_LabelsAnnotations(".labels")
 	f.Unimplemented_NotYetTriaged(".reservation_group")
+	// Added in cloud.google.com/go/bigquery v1.84.0; tracked under b/562939853 / #13212 for ReservationGroup binding triage.
+	f.Unimplemented_NotYetTriaged(".reservation_group_path")
 	f.Unimplemented_NotYetTriaged(".scheduling_policy")
 
 	return f

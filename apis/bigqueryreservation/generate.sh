@@ -19,6 +19,7 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+PROTO_SHA="9b719a5c153f3ec7a14d5d45d4da720410c7b943"
 
 CONTROLLERBUILDER="${CONTROLLERBUILDER:-}"
 if [[ -z "${CONTROLLERBUILDER}" ]]; then
@@ -31,13 +32,14 @@ fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-./generate-proto.sh
+./generate-proto.sh "${PROTO_SHA}"
 
 ${CONTROLLERBUILDER} generate-types \
     --service google.cloud.bigquery.reservation.v1 \
     --api-version "bigqueryreservation.cnrm.cloud.google.com/v1alpha1" \
     --include-skipped-output \
-    --resource BigQueryReservationCapacityCommitment:CapacityCommitment
+    --resource BigQueryReservationCapacityCommitment:CapacityCommitment \
+    --resource BigQueryReservationReservationGroup:ReservationGroup
 
 ${CONTROLLERBUILDER} generate-types \
     --service google.cloud.bigquery.reservation.v1 \
