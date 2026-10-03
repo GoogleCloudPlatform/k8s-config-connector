@@ -36,7 +36,8 @@ ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.saasplatform.saasservicemgmt.v1beta1 \
   --api-version saasservicemgmt.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
-  --resource SaasServiceMgmtRelease:Release
+  --resource SaasServiceMgmtRelease:Release \
+  --resource SaaSServiceMgmtRollout:Rollout
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.saasplatform.saasservicemgmt.v1beta1 \
