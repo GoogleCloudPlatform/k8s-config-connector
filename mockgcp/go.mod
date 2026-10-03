@@ -22,7 +22,7 @@ require (
 	cloud.google.com/go/assuredworkloads v1.18.0
 	cloud.google.com/go/backupdr v1.6.0
 	cloud.google.com/go/batch v1.19.0
-	cloud.google.com/go/bigquery v1.77.0
+	cloud.google.com/go/bigquery v1.84.0
 	cloud.google.com/go/bigtable v1.58.0
 	cloud.google.com/go/billing v1.26.0
 	cloud.google.com/go/certificatemanager v1.14.0
@@ -32,6 +32,7 @@ require (
 	cloud.google.com/go/compute v1.63.0
 	cloud.google.com/go/configdelivery v0.1.1
 	cloud.google.com/go/contactcenterinsights v1.22.0
+	cloud.google.com/go/datacatalog v1.32.0
 	cloud.google.com/go/dataform v1.0.0
 	cloud.google.com/go/dataplex v1.36.0
 	cloud.google.com/go/dataproc/v2 v2.22.0
@@ -78,7 +79,8 @@ require (
 	cloud.google.com/go/securesourcemanager v1.4.1
 	cloud.google.com/go/securitycenter v1.44.0
 	cloud.google.com/go/speech v1.35.0
-	cloud.google.com/go/storage v1.62.0
+	cloud.google.com/go/storage v1.62.3
+	cloud.google.com/go/storageinsights v1.8.0
 	cloud.google.com/go/vectorsearch v1.3.0
 	cloud.google.com/go/video v1.32.0
 	cloud.google.com/go/vision/v2 v2.15.0
