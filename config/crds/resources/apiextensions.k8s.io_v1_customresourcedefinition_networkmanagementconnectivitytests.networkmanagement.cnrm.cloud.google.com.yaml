@@ -308,8 +308,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The SQLInstance selfLink, when not managed by
-                          Config Connector.
+                        description: The SQLInstance name, when not managed by Config
+                          Connector.
                         type: string
                       name:
                         description: The `name` field of a `SQLInstance` resource.
@@ -653,8 +653,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The SQLInstance selfLink, when not managed by
-                          Config Connector.
+                        description: The SQLInstance name, when not managed by Config
+                          Connector.
                         type: string
                       name:
                         description: The `name` field of a `SQLInstance` resource.

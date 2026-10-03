@@ -267,10 +267,12 @@ func resolveSourceSQLInstanceRef(ctx context.Context, kube client.Reader, obj *k
 	sqlInstanceRef := obj.Spec.CloneSource.SQLInstanceRef
 
 	if sqlInstanceRef.External != "" && sqlInstanceRef.Name != "" {
-		return fmt.Errorf("cannot specify both spec.settings.cloneSource.sqlInstanceRef.external and spec.settings.cloneSource.sqlInstanceRef.name")
+		return fmt.Errorf("cannot specify both spec.cloneSource.sqlInstanceRef.external and spec.cloneSource.sqlInstanceRef.name")
 	}
 
 	if sqlInstanceRef.External != "" {
+		tokens := strings.Split(strings.TrimSuffix(sqlInstanceRef.External, "/"), "/")
+		obj.Spec.CloneSource.SQLInstanceRef.External = tokens[len(tokens)-1]
 		return nil
 	} else if sqlInstanceRef.Name != "" {
 		if sqlInstanceRef.Namespace == "" {
@@ -300,7 +302,7 @@ func resolveSourceSQLInstanceRef(ctx context.Context, kube client.Reader, obj *k
 
 		return nil
 	} else {
-		return fmt.Errorf("must specify either spec.settings.cloneSource.sqlInstanceRef.external or spec.settings.cloneSource.sqlInstanceRef.name")
+		return fmt.Errorf("must specify either spec.cloneSource.sqlInstanceRef.external or spec.cloneSource.sqlInstanceRef.name")
 	}
 }
 
@@ -312,10 +314,12 @@ func resolveFailoverDRReplicaRef(ctx context.Context, kube client.Reader, obj *k
 	ref := obj.Spec.ReplicationCluster.FailoverDRReplicaRef
 
 	if ref.External != "" && ref.Name != "" {
-		return fmt.Errorf("cannot specify both spec.replicationCluster.failoverDrReplicaRef.external and spec.replicationCluster.failoverDrReplicaRef.name")
+		return fmt.Errorf("cannot specify both spec.replicationCluster.failoverDRReplicaRef.external and spec.replicationCluster.failoverDRReplicaRef.name")
 	}
 
 	if ref.External != "" {
+		tokens := strings.Split(strings.TrimSuffix(ref.External, "/"), "/")
+		obj.Spec.ReplicationCluster.FailoverDRReplicaRef.External = tokens[len(tokens)-1]
 		return nil
 	} else if ref.Name != "" {
 		if ref.Namespace == "" {
