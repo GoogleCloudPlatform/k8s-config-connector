@@ -18,6 +18,7 @@ metadata:
   name: runservice-${uniqueId}
 spec:
   ingress: "INGRESS_TRAFFIC_ALL"
+  invokerIamDisabled: true
   launchStage: "GA"
   location: "us-central1"
   projectRef:

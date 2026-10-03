@@ -738,6 +738,7 @@
 [acronyms] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.volumes[].cloudSqlInstance.instanceRefs[].external" should be ".spec.template.template.volumes[].cloudSQLInstance.instanceRefs[].external"
 [acronyms] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.volumes[].cloudSqlInstance.instanceRefs[].name" should be ".spec.template.template.volumes[].cloudSQLInstance.instanceRefs[].name"
 [acronyms] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.volumes[].cloudSqlInstance.instanceRefs[].namespace" should be ".spec.template.template.volumes[].cloudSQLInstance.instanceRefs[].namespace"
+[acronyms] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.invokerIamDisabled" should be ".spec.invokerIAMDisabled"
 [acronyms] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.containers[].resources.startupCpuBoost" should be ".spec.template.containers[].resources.startupCPUBoost"
 [acronyms] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.volumes[].cloudSqlInstance" should be ".spec.template.volumes[].cloudSQLInstance"
 [acronyms] crd=runservices.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.volumes[].cloudSqlInstance.instances" should be ".spec.template.volumes[].cloudSQLInstance.instances"
