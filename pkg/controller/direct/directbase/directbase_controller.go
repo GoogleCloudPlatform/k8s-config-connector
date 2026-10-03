@@ -359,6 +359,9 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 			if err := r.ensureFinalizers(ctx, u); err != nil {
 				return false, nil
 			}
+			if err := r.handlePaused(ctx, u); err != nil {
+				return false, err
+			}
 		}
 		return false, nil
 	}
@@ -547,6 +550,14 @@ func (r *reconcileContext) handleUpToDate(ctx context.Context, u *unstructured.U
 		return fmt.Errorf("error converting to k8s resource while handling %v event: %w", k8s.UpToDate, err)
 	}
 	return r.Reconciler.HandleUpToDate(ctx, resource)
+}
+
+func (r *reconcileContext) handlePaused(ctx context.Context, u *unstructured.Unstructured) error {
+	resource, err := toK8sResource(u)
+	if err != nil {
+		return fmt.Errorf("error converting to k8s resource while handling %v event: %w", k8s.Paused, err)
+	}
+	return r.Reconciler.HandlePaused(ctx, resource)
 }
 
 func (r *reconcileContext) handleUpdateFailed(ctx context.Context, policy *unstructured.Unstructured, origErr error) error {
