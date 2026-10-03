@@ -21,7 +21,6 @@ import (
 	"time"
 
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
-	opcorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
 	condition "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	kontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
@@ -242,22 +241,31 @@ func (r *reconcileContext) doReconcile(policyMember *iamv1beta1.IAMPolicyMember)
 		return true, err
 	}
 
-	am := resourceactuation.DecideActuationMode(cc, ccc)
-	switch am {
-	case opcorev1beta1.Reconciling:
-		logger.V(2).Info("Actuating a resource as actuation mode is \"Reconciling\"", "resource", r.NamespacedName)
-	case opcorev1beta1.Paused:
+	skipActuation, err := resourceactuation.ShouldSkipActuation(
+		policyMember.GetAnnotations(),
+		!policyMember.GetDeletionTimestamp().IsZero(),
+		cc, ccc,
+	)
+	if err != nil {
+		if !policyMember.GetDeletionTimestamp().IsZero() {
+			return false, r.handleDeleteFailed(policyMember, err)
+		}
+		return false, r.handleUpdateFailed(policyMember, err)
+	}
+	if skipActuation {
 		logger.Info("Skipping actuation of resource as actuation mode is \"Paused\"", "resource", r.NamespacedName)
 
 		// add finalizers for deletion defender to make sure we don't delete cloud provider resources when uninstalling
 		if policyMember.GetDeletionTimestamp().IsZero() {
 			k8s.EnsureFinalizers(policyMember, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName)
+			if err := r.handlePaused(policyMember); err != nil {
+				return false, err
+			}
 		}
 
 		return false, nil
-	default:
-		return false, fmt.Errorf("unknown actuation mode %v", am)
 	}
+	logger.V(2).Info("Actuating a resource as actuation mode is \"Reconciling\"", "resource", r.NamespacedName)
 
 	if !policyMember.DeletionTimestamp.IsZero() {
 		if !k8s.HasFinalizer(policyMember, k8s.ControllerFinalizerName) {
@@ -327,6 +335,14 @@ func (r *reconcileContext) handleUpToDate(policyMember *iamv1beta1.IAMPolicyMemb
 		return fmt.Errorf("error converting IAMPolicyMember to k8s resource while handling %v event: %w", k8s.UpToDate, err)
 	}
 	return r.Reconciler.HandleUpToDate(r.Ctx, resource)
+}
+
+func (r *reconcileContext) handlePaused(policyMember *iamv1beta1.IAMPolicyMember) error {
+	resource, err := ToK8sResource(policyMember)
+	if err != nil {
+		return fmt.Errorf("error converting IAMPolicyMember to k8s resource while handling %v event: %w", k8s.Paused, err)
+	}
+	return r.Reconciler.HandlePaused(r.Ctx, resource)
 }
 
 func (r *reconcileContext) handleUpdateFailed(policyMember *iamv1beta1.IAMPolicyMember, origErr error) error {

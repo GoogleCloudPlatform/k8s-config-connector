@@ -21,7 +21,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
@@ -229,11 +228,18 @@ func (r *Reconciler) DoReconcile(ctx context.Context, req reconcile.Request) (re
 		return reconcile.Result{}, err
 	}
 
-	am := resourceactuation.DecideActuationMode(cc, ccc)
-	switch am {
-	case v1beta1.Reconciling:
-		r.logger.V(2).Info("Actuating a resource as actuation mode is \"Reconciling\"", "resource", req.NamespacedName)
-	case v1beta1.Paused:
+	skipActuation, err := resourceactuation.ShouldSkipActuation(
+		resource.GetAnnotations(),
+		!resource.GetDeletionTimestamp().IsZero(),
+		cc, ccc,
+	)
+	if err != nil {
+		if !resource.GetDeletionTimestamp().IsZero() {
+			return reconcile.Result{}, r.HandleDeleteFailed(ctx, &resource.Resource, err)
+		}
+		return reconcile.Result{}, r.HandleUpdateFailed(ctx, &resource.Resource, err)
+	}
+	if skipActuation {
 		jitteredPeriod, err := r.jitterGenerator.JitteredReenqueue(r.schemaRef.GVK, u)
 		if err != nil {
 			return reconcile.Result{}, err
@@ -244,13 +250,15 @@ func (r *Reconciler) DoReconcile(ctx context.Context, req reconcile.Request) (re
 			if err := r.EnsureFinalizers(ctx, resource.Original, &resource.Resource, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName); err != nil {
 				return reconcile.Result{}, err
 			}
+			if err := r.HandlePaused(ctx, &resource.Resource); err != nil {
+				return reconcile.Result{}, err
+			}
 		}
 
 		r.logger.V(2).Info("Skipping actuation of resource as actuation mode is \"Paused\"", "resource", req.NamespacedName, "time to next reconciliation", jitteredPeriod)
 		return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
-	default:
-		return reconcile.Result{}, fmt.Errorf("unknown actuation mode %v", am)
 	}
+	r.logger.V(2).Info("Actuating a resource as actuation mode is \"Reconciling\"", "resource", req.NamespacedName)
 
 	// Apply pre-actuation transformation.
 	if err := resourceoverrides.Handler.PreActuationTransform(&resource.Resource); err != nil {
