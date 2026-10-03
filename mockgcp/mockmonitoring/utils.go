@@ -19,11 +19,21 @@ import (
 	"encoding/base64"
 	"fmt"
 
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/dashboard/v1"
 	"google.golang.org/protobuf/proto"
 )
 
+// computeEtag generates an MD5 checksum for a proto message.
+// For dashboards, Name and prior Etag are cleared on the clone so the Etag is
+// deterministically computed strictly from the dashboard specification,
+// independent of server-assigned random UUIDs or existing etag values.
 func computeEtag(obj proto.Message) string {
-	b, err := proto.Marshal(obj)
+	clone := proto.Clone(obj)
+	if dashboard, ok := clone.(*pb.Dashboard); ok {
+		dashboard.Name = ""
+		dashboard.Etag = ""
+	}
+	b, err := proto.Marshal(clone)
 	if err != nil {
 		panic(fmt.Sprintf("converting to proto: %v", err))
 	}
