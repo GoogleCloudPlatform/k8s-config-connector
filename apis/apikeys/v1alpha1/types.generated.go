@@ -21,6 +21,27 @@
 
 package v1alpha1
 
+// +kcc:proto=google.api.apikeys.v2.ApiTarget
+type APITarget struct {
+	// The service for this restriction. It should be the canonical
+	//  service name, for example: `translate.googleapis.com`.
+	//  You can use [`gcloud services list`](/sdk/gcloud/reference/services/list)
+	//  to get a list of services that are enabled in the project.
+	// +kcc:proto:field=google.api.apikeys.v2.ApiTarget.service
+	Service *string `json:"service,omitempty"`
+
+	// Optional. List of one or more methods that can be called.
+	//  If empty, all methods for the service are allowed. A wildcard
+	//  (*) can be used as the last symbol.
+	//  Valid examples:
+	//    `google.cloud.translate.v2.TranslateService.GetSupportedLanguage`
+	//    `TranslateText`
+	//    `Get*`
+	//    `translate.googleapis.com.Get*`
+	// +kcc:proto:field=google.api.apikeys.v2.ApiTarget.methods
+	Methods []string `json:"methods,omitempty"`
+}
+
 // +kcc:proto=google.api.apikeys.v2.AndroidApplication
 type AndroidApplication struct {
 	// The SHA1 fingerprint of the application. For example, both sha1 formats are
@@ -41,27 +62,6 @@ type AndroidKeyRestrictions struct {
 	//  this key.
 	// +kcc:proto:field=google.api.apikeys.v2.AndroidKeyRestrictions.allowed_applications
 	AllowedApplications []AndroidApplication `json:"allowedApplications,omitempty"`
-}
-
-// +kcc:proto=google.api.apikeys.v2.ApiTarget
-type APITarget struct {
-	// The service for this restriction. It should be the canonical
-	//  service name, for example: `translate.googleapis.com`.
-	//  You can use [`gcloud services list`](/sdk/gcloud/reference/services/list)
-	//  to get a list of services that are enabled in the project.
-	// +kcc:proto:field=google.api.apikeys.v2.ApiTarget.service
-	Service *string `json:"service,omitempty"`
-
-	// Optional. List of one or more methods that can be called.
-	//  If empty, all methods for the service are allowed. A wildcard
-	//  (*) can be used as the last symbol.
-	//  Valid examples:
-	//    `google.cloud.translate.v2.TranslateService.GetSupportedLanguage`
-	//    `TranslateText`
-	//    `Get*`
-	//    `translate.googleapis.com.Get*`
-	// +kcc:proto:field=google.api.apikeys.v2.ApiTarget.methods
-	Methods []string `json:"methods,omitempty"`
 }
 
 // +kcc:proto=google.api.apikeys.v2.BrowserKeyRestrictions

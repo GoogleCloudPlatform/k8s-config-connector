@@ -67,27 +67,6 @@
 
 package v1beta1
 
-/* unreachable type Awsv4Signature
-// +kcc:proto=google.cloud.compute.v1.AWSV4Signature
-type Awsv4Signature struct {
-	// The access key used for s3 bucket authentication. Required for updating or creating a backend that uses AWS v4 signature authentication, but will not be returned as part of the configuration when queried with a REST API GET request. @InputOnly
-	// +kcc:proto:field=google.cloud.compute.v1.AWSV4Signature.access_key
-	AccessKey *string `json:"accessKey,omitempty"`
-
-	// The identifier of an access key used for s3 bucket authentication.
-	// +kcc:proto:field=google.cloud.compute.v1.AWSV4Signature.access_key_id
-	AccessKeyID *string `json:"accessKeyID,omitempty"`
-
-	// The optional version identifier for the access key. You can use this to keep track of different iterations of your access key.
-	// +kcc:proto:field=google.cloud.compute.v1.AWSV4Signature.access_key_version
-	AccessKeyVersion *string `json:"accessKeyVersion,omitempty"`
-
-	// The name of the cloud region of your origin. This is a free-form field with the name of the region your cloud uses to host your origin. For example, "us-east-1" for AWS or "us-ashburn-1" for OCI.
-	// +kcc:proto:field=google.cloud.compute.v1.AWSV4Signature.origin_region
-	OriginRegion *string `json:"originRegion,omitempty"`
-}
-*/
-
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.AcceleratorConfig", skipping
 
 // +kcc:proto=google.cloud.compute.v1.AcceleratorConfig
@@ -542,6 +521,27 @@ type AttachedDiskInitializeParams struct {
 	// The storage pool in which the new disk is created. You can provide this as a partial or full URL to the resource. For example, the following are valid values: - https://www.googleapis.com/compute/v1/projects/project/zones/zone /storagePools/storagePool - projects/project/zones/zone/storagePools/storagePool - zones/zone/storagePools/storagePool
 	// +kcc:proto:field=google.cloud.compute.v1.AttachedDiskInitializeParams.storage_pool
 	StoragePool *string `json:"storagePool,omitempty"`
+}
+*/
+
+/* unreachable type Awsv4Signature
+// +kcc:proto=google.cloud.compute.v1.AWSV4Signature
+type Awsv4Signature struct {
+	// The access key used for s3 bucket authentication. Required for updating or creating a backend that uses AWS v4 signature authentication, but will not be returned as part of the configuration when queried with a REST API GET request. @InputOnly
+	// +kcc:proto:field=google.cloud.compute.v1.AWSV4Signature.access_key
+	AccessKey *string `json:"accessKey,omitempty"`
+
+	// The identifier of an access key used for s3 bucket authentication.
+	// +kcc:proto:field=google.cloud.compute.v1.AWSV4Signature.access_key_id
+	AccessKeyID *string `json:"accessKeyID,omitempty"`
+
+	// The optional version identifier for the access key. You can use this to keep track of different iterations of your access key.
+	// +kcc:proto:field=google.cloud.compute.v1.AWSV4Signature.access_key_version
+	AccessKeyVersion *string `json:"accessKeyVersion,omitempty"`
+
+	// The name of the cloud region of your origin. This is a free-form field with the name of the region your cloud uses to host your origin. For example, "us-east-1" for AWS or "us-ashburn-1" for OCI.
+	// +kcc:proto:field=google.cloud.compute.v1.AWSV4Signature.origin_region
+	OriginRegion *string `json:"originRegion,omitempty"`
 }
 */
 
@@ -1145,6 +1145,24 @@ type BackendServiceFailoverPolicy struct {
 	FailoverRatio *float32 `json:"failoverRatio,omitempty"`
 }
 
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.BackendServiceHttpCookie", skipping
+
+// +kcc:proto=google.cloud.compute.v1.BackendServiceHttpCookie
+type BackendServiceHTTPCookie struct {
+	// Name of the cookie.
+	// +kcc:proto:field=google.cloud.compute.v1.BackendServiceHttpCookie.name
+	Name *string `json:"name,omitempty"`
+
+	// Path to set for the cookie.
+	// +kcc:proto:field=google.cloud.compute.v1.BackendServiceHttpCookie.path
+	Path *string `json:"path,omitempty"`
+
+	// Lifetime of the cookie.
+	// +kcc:proto:field=google.cloud.compute.v1.BackendServiceHttpCookie.ttl
+	TTL *Duration `json:"ttl,omitempty"`
+}
+*/
+
 /* unreachable type BackendServiceHaPolicy
 // +kcc:proto=google.cloud.compute.v1.BackendServiceHAPolicy
 type BackendServiceHaPolicy struct {
@@ -1178,24 +1196,6 @@ type BackendServiceHaPolicyLeaderNetworkEndpoint struct {
 	// The name of the VM instance of the leader network endpoint. The instance must already be attached to the NEG specified in the haPolicy.leader.backendGroup. The name must be 1-63 characters long, and comply with RFC1035. Authorization requires the following IAM permission on the specified resource instance: compute.instances.use
 	// +kcc:proto:field=google.cloud.compute.v1.BackendServiceHAPolicyLeaderNetworkEndpoint.instance
 	Instance *string `json:"instance,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.compute.v1.BackendServiceHttpCookie", skipping
-
-// +kcc:proto=google.cloud.compute.v1.BackendServiceHttpCookie
-type BackendServiceHTTPCookie struct {
-	// Name of the cookie.
-	// +kcc:proto:field=google.cloud.compute.v1.BackendServiceHttpCookie.name
-	Name *string `json:"name,omitempty"`
-
-	// Path to set for the cookie.
-	// +kcc:proto:field=google.cloud.compute.v1.BackendServiceHttpCookie.path
-	Path *string `json:"path,omitempty"`
-
-	// Lifetime of the cookie.
-	// +kcc:proto:field=google.cloud.compute.v1.BackendServiceHttpCookie.ttl
-	TTL *Duration `json:"ttl,omitempty"`
 }
 */
 
@@ -2308,29 +2308,6 @@ type ForwardingRuleServiceDirectoryRegistration struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.compute.v1.GRPCHealthCheck", skipping
-
-// +kcc:proto=google.cloud.compute.v1.GRPCHealthCheck
-type GrpcHealthCheck struct {
-	// The gRPC service name for the health check. This field is optional. The value of grpc_service_name has the following meanings by convention: - Empty service_name means the overall status of all services at the backend. - Non-empty service_name means the health of that gRPC service, as defined by the owner of the service. The grpc_service_name can only be ASCII.
-	// +kcc:proto:field=google.cloud.compute.v1.GRPCHealthCheck.grpc_service_name
-	GrpcServiceName *string `json:"grpcServiceName,omitempty"`
-
-	// The TCP port number to which the health check prober sends packets. Valid values are 1 through 65535.
-	// +kcc:proto:field=google.cloud.compute.v1.GRPCHealthCheck.port
-	Port *int32 `json:"port,omitempty"`
-
-	// Not supported.
-	// +kcc:proto:field=google.cloud.compute.v1.GRPCHealthCheck.port_name
-	PortName *string `json:"portName,omitempty"`
-
-	// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for passthrough load balancers and backend services for proxy load balancers. Not supported by target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for passthrough load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
-	//  Check the PortSpecification enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1.GRPCHealthCheck.port_specification
-	PortSpecification *string `json:"portSpecification,omitempty"`
-}
-*/
-
 /* unreachable type GroupMaintenanceInfo
 // +kcc:proto=google.cloud.compute.v1.GroupMaintenanceInfo
 type GroupMaintenanceInfo struct {
@@ -2369,6 +2346,29 @@ type GroupMaintenanceInfo struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.GRPCHealthCheck", skipping
+
+// +kcc:proto=google.cloud.compute.v1.GRPCHealthCheck
+type GrpcHealthCheck struct {
+	// The gRPC service name for the health check. This field is optional. The value of grpc_service_name has the following meanings by convention: - Empty service_name means the overall status of all services at the backend. - Non-empty service_name means the health of that gRPC service, as defined by the owner of the service. The grpc_service_name can only be ASCII.
+	// +kcc:proto:field=google.cloud.compute.v1.GRPCHealthCheck.grpc_service_name
+	GrpcServiceName *string `json:"grpcServiceName,omitempty"`
+
+	// The TCP port number to which the health check prober sends packets. Valid values are 1 through 65535.
+	// +kcc:proto:field=google.cloud.compute.v1.GRPCHealthCheck.port
+	Port *int32 `json:"port,omitempty"`
+
+	// Not supported.
+	// +kcc:proto:field=google.cloud.compute.v1.GRPCHealthCheck.port_name
+	PortName *string `json:"portName,omitempty"`
+
+	// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for passthrough load balancers and backend services for proxy load balancers. Not supported by target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for passthrough load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
+	//  Check the PortSpecification enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.GRPCHealthCheck.port_specification
+	PortSpecification *string `json:"portSpecification,omitempty"`
+}
+*/
+
 /* unreachable type GuestOSFeature
 // +kcc:proto=google.cloud.compute.v1.GuestOsFeature
 type GuestOSFeature struct {
@@ -2376,223 +2376,6 @@ type GuestOSFeature struct {
 	//  Check the Type enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1.GuestOsFeature.type
 	Type *string `json:"type,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.compute.v1.HTTP2HealthCheck", skipping
-
-// +kcc:proto=google.cloud.compute.v1.HTTP2HealthCheck
-type Http2HealthCheck struct {
-	// The value of the host header in the HTTP/2 health check request. If left empty (default value), the host header is set to the destination IP address to which health check packets are sent. The destination IP address depends on the type of load balancer. For details, see: https://cloud.google.com/load-balancing/docs/health-check-concepts#hc-packet-dest
-	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.host
-	Host *string `json:"host,omitempty"`
-
-	// The TCP port number to which the health check prober sends packets. The default value is 443. Valid values are 1 through 65535.
-	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.port
-	Port *int32 `json:"port,omitempty"`
-
-	// Not supported.
-	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.port_name
-	PortName *string `json:"portName,omitempty"`
-
-	// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for passthrough load balancers and backend services for proxy load balancers. Not supported by target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for passthrough load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
-	//  Check the PortSpecification enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.port_specification
-	PortSpecification *string `json:"portSpecification,omitempty"`
-
-	// Specifies the type of proxy header to append before sending data to the backend, either NONE or PROXY_V1. The default is NONE.
-	//  Check the ProxyHeader enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.proxy_header
-	ProxyHeader *string `json:"proxyHeader,omitempty"`
-
-	// The request path of the HTTP/2 health check request. The default value is /. Must comply with RFC3986.
-	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.request_path
-	RequestPath *string `json:"requestPath,omitempty"`
-
-	// Creates a content-based HTTP/2 health check. In addition to the required HTTP 200 (OK) status code, you can configure the health check to pass only when the backend sends this specific ASCII response string within the first 1024 bytes of the HTTP response body. For details, see: https://cloud.google.com/load-balancing/docs/health-check-concepts#criteria-protocol-http
-	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.response
-	Response *string `json:"response,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.compute.v1.HTTPHealthCheck", skipping
-
-// +kcc:proto=google.cloud.compute.v1.HTTPHealthCheck
-type HTTPHealthCheck struct {
-	// The value of the host header in the HTTP health check request. If left empty (default value), the host header is set to the destination IP address to which health check packets are sent. The destination IP address depends on the type of load balancer. For details, see: https://cloud.google.com/load-balancing/docs/health-check-concepts#hc-packet-dest
-	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.host
-	Host *string `json:"host,omitempty"`
-
-	// The TCP port number to which the health check prober sends packets. The default value is 80. Valid values are 1 through 65535.
-	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.port
-	Port *int32 `json:"port,omitempty"`
-
-	// Not supported.
-	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.port_name
-	PortName *string `json:"portName,omitempty"`
-
-	// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for passthrough load balancers and backend services for proxy load balancers. Also supported in legacy HTTP health checks for target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for pass-through load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
-	//  Check the PortSpecification enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.port_specification
-	PortSpecification *string `json:"portSpecification,omitempty"`
-
-	// Specifies the type of proxy header to append before sending data to the backend, either NONE or PROXY_V1. The default is NONE.
-	//  Check the ProxyHeader enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.proxy_header
-	ProxyHeader *string `json:"proxyHeader,omitempty"`
-
-	// The request path of the HTTP health check request. The default value is /. Must comply with RFC3986.
-	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.request_path
-	RequestPath *string `json:"requestPath,omitempty"`
-
-	// Creates a content-based HTTP health check. In addition to the required HTTP 200 (OK) status code, you can configure the health check to pass only when the backend sends this specific ASCII response string within the first 1024 bytes of the HTTP response body. For details, see: https://cloud.google.com/load-balancing/docs/health-check-concepts#criteria-protocol-http
-	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.response
-	Response *string `json:"response,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.compute.v1.HTTPSHealthCheck", skipping
-
-// +kcc:proto=google.cloud.compute.v1.HTTPSHealthCheck
-type HTTPSHealthCheck struct {
-	// The value of the host header in the HTTPS health check request. If left empty (default value), the host header is set to the destination IP address to which health check packets are sent. The destination IP address depends on the type of load balancer. For details, see: https://cloud.google.com/load-balancing/docs/health-check-concepts#hc-packet-dest
-	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.host
-	Host *string `json:"host,omitempty"`
-
-	// The TCP port number to which the health check prober sends packets. The default value is 443. Valid values are 1 through 65535.
-	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.port
-	Port *int32 `json:"port,omitempty"`
-
-	// Not supported.
-	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.port_name
-	PortName *string `json:"portName,omitempty"`
-
-	// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for passthrough load balancers and backend services for proxy load balancers. Not supported by target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for passthrough load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
-	//  Check the PortSpecification enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.port_specification
-	PortSpecification *string `json:"portSpecification,omitempty"`
-
-	// Specifies the type of proxy header to append before sending data to the backend, either NONE or PROXY_V1. The default is NONE.
-	//  Check the ProxyHeader enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.proxy_header
-	ProxyHeader *string `json:"proxyHeader,omitempty"`
-
-	// The request path of the HTTPS health check request. The default value is /. Must comply with RFC3986.
-	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.request_path
-	RequestPath *string `json:"requestPath,omitempty"`
-
-	// Creates a content-based HTTPS health check. In addition to the required HTTP 200 (OK) status code, you can configure the health check to pass only when the backend sends this specific ASCII response string within the first 1024 bytes of the HTTP response body. For details, see: https://cloud.google.com/load-balancing/docs/health-check-concepts#criteria-protocol-http
-	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.response
-	Response *string `json:"response,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.compute.v1.HealthCheck", skipping
-
-// +kcc:proto=google.cloud.compute.v1.HealthCheck
-type HealthCheck struct {
-	// How often (in seconds) to send a health check. The default value is 5 seconds.
-	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.check_interval_sec
-	CheckIntervalSec *int32 `json:"checkIntervalSec,omitempty"`
-
-	// [Output Only] Creation timestamp in 3339 text format.
-	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.creation_timestamp
-	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
-
-	// An optional description of this resource. Provide this property when you create the resource.
-	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.description
-	Description *string `json:"description,omitempty"`
-
-	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.grpc_health_check
-	GrpcHealthCheck *GrpcHealthCheck `json:"grpcHealthCheck,omitempty"`
-
-	// A so-far unhealthy instance will be marked healthy after this many consecutive successes. The default value is 2.
-	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.healthy_threshold
-	HealthyThreshold *int32 `json:"healthyThreshold,omitempty"`
-
-	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.http2_health_check
-	Http2HealthCheck *Http2HealthCheck `json:"http2HealthCheck,omitempty"`
-
-	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.http_health_check
-	HTTPHealthCheck *HTTPHealthCheck `json:"httpHealthCheck,omitempty"`
-
-	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.https_health_check
-	HTTPSHealthCheck *HTTPSHealthCheck `json:"httpsHealthCheck,omitempty"`
-
-	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
-	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.id
-	ID *uint64 `json:"id,omitempty"`
-
-	// Type of the resource.
-	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.kind
-	Kind *string `json:"kind,omitempty"`
-
-	// Configure logging on this health check.
-	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.log_config
-	LogConfig *HealthCheckLogConfig `json:"logConfig,omitempty"`
-
-	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. For example, a name that is 1-63 characters long, matches the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?`, and otherwise complies with RFC1035. This regular expression describes a name where the first character is a lowercase letter, and all following characters are a dash, lowercase letter, or digit, except the last character, which isn't a dash.
-	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.name
-	Name *string `json:"name,omitempty"`
-
-	// [Output Only] Region where the health check resides. Not applicable to global health checks.
-	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.region
-	Region *string `json:"region,omitempty"`
-
-	// [Output Only] Server-defined URL for the resource.
-	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.self_link
-	SelfLink *string `json:"selfLink,omitempty"`
-
-	// The list of cloud regions from which health checks are performed. If any regions are specified, then exactly 3 regions should be specified. The region names must be valid names of Google Cloud regions. This can only be set for global health check. If this list is non-empty, then there are restrictions on what other health check fields are supported and what other resources can use this health check: - SSL, HTTP2, and GRPC protocols are not supported. - The TCP request field is not supported. - The proxyHeader field for HTTP, HTTPS, and TCP is not supported. - The checkIntervalSec field must be at least 30. - The health check cannot be used with BackendService nor with managed instance group auto-healing.
-	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.source_regions
-	SourceRegions []string `json:"sourceRegions,omitempty"`
-
-	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.ssl_health_check
-	SSLHealthCheck *SSLHealthCheck `json:"sslHealthCheck,omitempty"`
-
-	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.tcp_health_check
-	TCPHealthCheck *TCPHealthCheck `json:"tcpHealthCheck,omitempty"`
-
-	// How long (in seconds) to wait before claiming failure. The default value is 5 seconds. It is invalid for timeoutSec to have greater value than checkIntervalSec.
-	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.timeout_sec
-	TimeoutSec *int32 `json:"timeoutSec,omitempty"`
-
-	// Specifies the type of the healthCheck, either TCP, SSL, HTTP, HTTPS, HTTP2 or GRPC. Exactly one of the protocol-specific health check fields must be specified, which must match type field.
-	//  Check the Type enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.type
-	Type *string `json:"type,omitempty"`
-
-	// A so-far healthy instance will be marked unhealthy after this many consecutive failures. The default value is 2.
-	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.unhealthy_threshold
-	UnhealthyThreshold *int32 `json:"unhealthyThreshold,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "HealthCheckLogConfig", skipping
-
-// +kcc:proto=google.cloud.compute.v1.HealthCheckLogConfig
-type HealthCheckLogConfig struct {
-	// Indicates whether or not to export logs. This is false by default, which means no health check logging will be done.
-	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckLogConfig.enable
-	Enable *bool `json:"enable,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.compute.v1.HostRule", skipping
-
-// +kcc:proto=google.cloud.compute.v1.HostRule
-type HostRule struct {
-	// An optional description of this resource. Provide this property when you create the resource.
-	// +kcc:proto:field=google.cloud.compute.v1.HostRule.description
-	Description *string `json:"description,omitempty"`
-
-	// The list of host patterns to match. They must be valid hostnames with optional port numbers in the format host:port. * matches any string of ([a-z0-9-.]*). In that case, * must be the first character, and if followed by anything, the immediate following character must be either - or .. * based matching is not supported when the URL map is bound to a target gRPC proxy that has the validateForProxyless field set to true.
-	// +kcc:proto:field=google.cloud.compute.v1.HostRule.hosts
-	Hosts []string `json:"hosts,omitempty"`
-
-	// The name of the PathMatcher to use to match the path portion of the URL if the hostRule matches the URL's host portion.
-	// +kcc:proto:field=google.cloud.compute.v1.HostRule.path_matcher
-	PathMatcher *string `json:"pathMatcher,omitempty"`
 }
 */
 
@@ -2713,6 +2496,42 @@ type HTTPHeaderOption struct {
 	// If false, headerValue is appended to any values that already exist for the header. If true, headerValue is set for the header, discarding any values that were set for that header. The default value is true, unless a variable is present in headerValue, in which case the default value is false. .
 	// +kcc:proto:field=google.cloud.compute.v1.HttpHeaderOption.replace
 	Replace *bool `json:"replace,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.HTTPHealthCheck", skipping
+
+// +kcc:proto=google.cloud.compute.v1.HTTPHealthCheck
+type HTTPHealthCheck struct {
+	// The value of the host header in the HTTP health check request. If left empty (default value), the host header is set to the destination IP address to which health check packets are sent. The destination IP address depends on the type of load balancer. For details, see: https://cloud.google.com/load-balancing/docs/health-check-concepts#hc-packet-dest
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.host
+	Host *string `json:"host,omitempty"`
+
+	// The TCP port number to which the health check prober sends packets. The default value is 80. Valid values are 1 through 65535.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.port
+	Port *int32 `json:"port,omitempty"`
+
+	// Not supported.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.port_name
+	PortName *string `json:"portName,omitempty"`
+
+	// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for passthrough load balancers and backend services for proxy load balancers. Also supported in legacy HTTP health checks for target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for pass-through load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
+	//  Check the PortSpecification enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.port_specification
+	PortSpecification *string `json:"portSpecification,omitempty"`
+
+	// Specifies the type of proxy header to append before sending data to the backend, either NONE or PROXY_V1. The default is NONE.
+	//  Check the ProxyHeader enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.proxy_header
+	ProxyHeader *string `json:"proxyHeader,omitempty"`
+
+	// The request path of the HTTP health check request. The default value is /. Must comply with RFC3986.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.request_path
+	RequestPath *string `json:"requestPath,omitempty"`
+
+	// Creates a content-based HTTP health check. In addition to the required HTTP 200 (OK) status code, you can configure the health check to pass only when the backend sends this specific ASCII response string within the first 1024 bytes of the HTTP response body. For details, see: https://cloud.google.com/load-balancing/docs/health-check-concepts#criteria-protocol-http
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPHealthCheck.response
+	Response *string `json:"response,omitempty"`
 }
 */
 
@@ -2898,6 +2717,187 @@ type HTTPRouteRuleMatch struct {
 	// For satisfying the matchRule condition, the path of the request must satisfy the regular expression specified in regexMatch after removing any query parameters and anchor supplied with the original URL. For more information about regular expression syntax, see Syntax. Only one of prefixMatch, fullPathMatch or regexMatch must be specified. Regular expressions can only be used when the loadBalancingScheme is set to INTERNAL_SELF_MANAGED.
 	// +kcc:proto:field=google.cloud.compute.v1.HttpRouteRuleMatch.regex_match
 	RegexMatch *string `json:"regexMatch,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.HTTPSHealthCheck", skipping
+
+// +kcc:proto=google.cloud.compute.v1.HTTPSHealthCheck
+type HTTPSHealthCheck struct {
+	// The value of the host header in the HTTPS health check request. If left empty (default value), the host header is set to the destination IP address to which health check packets are sent. The destination IP address depends on the type of load balancer. For details, see: https://cloud.google.com/load-balancing/docs/health-check-concepts#hc-packet-dest
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.host
+	Host *string `json:"host,omitempty"`
+
+	// The TCP port number to which the health check prober sends packets. The default value is 443. Valid values are 1 through 65535.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.port
+	Port *int32 `json:"port,omitempty"`
+
+	// Not supported.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.port_name
+	PortName *string `json:"portName,omitempty"`
+
+	// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for passthrough load balancers and backend services for proxy load balancers. Not supported by target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for passthrough load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
+	//  Check the PortSpecification enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.port_specification
+	PortSpecification *string `json:"portSpecification,omitempty"`
+
+	// Specifies the type of proxy header to append before sending data to the backend, either NONE or PROXY_V1. The default is NONE.
+	//  Check the ProxyHeader enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.proxy_header
+	ProxyHeader *string `json:"proxyHeader,omitempty"`
+
+	// The request path of the HTTPS health check request. The default value is /. Must comply with RFC3986.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.request_path
+	RequestPath *string `json:"requestPath,omitempty"`
+
+	// Creates a content-based HTTPS health check. In addition to the required HTTP 200 (OK) status code, you can configure the health check to pass only when the backend sends this specific ASCII response string within the first 1024 bytes of the HTTP response body. For details, see: https://cloud.google.com/load-balancing/docs/health-check-concepts#criteria-protocol-http
+	// +kcc:proto:field=google.cloud.compute.v1.HTTPSHealthCheck.response
+	Response *string `json:"response,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.HealthCheck", skipping
+
+// +kcc:proto=google.cloud.compute.v1.HealthCheck
+type HealthCheck struct {
+	// How often (in seconds) to send a health check. The default value is 5 seconds.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.check_interval_sec
+	CheckIntervalSec *int32 `json:"checkIntervalSec,omitempty"`
+
+	// [Output Only] Creation timestamp in 3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.description
+	Description *string `json:"description,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.grpc_health_check
+	GrpcHealthCheck *GrpcHealthCheck `json:"grpcHealthCheck,omitempty"`
+
+	// A so-far unhealthy instance will be marked healthy after this many consecutive successes. The default value is 2.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.healthy_threshold
+	HealthyThreshold *int32 `json:"healthyThreshold,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.http2_health_check
+	Http2HealthCheck *Http2HealthCheck `json:"http2HealthCheck,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.http_health_check
+	HTTPHealthCheck *HTTPHealthCheck `json:"httpHealthCheck,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.https_health_check
+	HTTPSHealthCheck *HTTPSHealthCheck `json:"httpsHealthCheck,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// Type of the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Configure logging on this health check.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.log_config
+	LogConfig *HealthCheckLogConfig `json:"logConfig,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. For example, a name that is 1-63 characters long, matches the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?`, and otherwise complies with RFC1035. This regular expression describes a name where the first character is a lowercase letter, and all following characters are a dash, lowercase letter, or digit, except the last character, which isn't a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.name
+	Name *string `json:"name,omitempty"`
+
+	// [Output Only] Region where the health check resides. Not applicable to global health checks.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.region
+	Region *string `json:"region,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// The list of cloud regions from which health checks are performed. If any regions are specified, then exactly 3 regions should be specified. The region names must be valid names of Google Cloud regions. This can only be set for global health check. If this list is non-empty, then there are restrictions on what other health check fields are supported and what other resources can use this health check: - SSL, HTTP2, and GRPC protocols are not supported. - The TCP request field is not supported. - The proxyHeader field for HTTP, HTTPS, and TCP is not supported. - The checkIntervalSec field must be at least 30. - The health check cannot be used with BackendService nor with managed instance group auto-healing.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.source_regions
+	SourceRegions []string `json:"sourceRegions,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.ssl_health_check
+	SSLHealthCheck *SSLHealthCheck `json:"sslHealthCheck,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.tcp_health_check
+	TCPHealthCheck *TCPHealthCheck `json:"tcpHealthCheck,omitempty"`
+
+	// How long (in seconds) to wait before claiming failure. The default value is 5 seconds. It is invalid for timeoutSec to have greater value than checkIntervalSec.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.timeout_sec
+	TimeoutSec *int32 `json:"timeoutSec,omitempty"`
+
+	// Specifies the type of the healthCheck, either TCP, SSL, HTTP, HTTPS, HTTP2 or GRPC. Exactly one of the protocol-specific health check fields must be specified, which must match type field.
+	//  Check the Type enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.type
+	Type *string `json:"type,omitempty"`
+
+	// A so-far healthy instance will be marked unhealthy after this many consecutive failures. The default value is 2.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheck.unhealthy_threshold
+	UnhealthyThreshold *int32 `json:"unhealthyThreshold,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "HealthCheckLogConfig", skipping
+
+// +kcc:proto=google.cloud.compute.v1.HealthCheckLogConfig
+type HealthCheckLogConfig struct {
+	// Indicates whether or not to export logs. This is false by default, which means no health check logging will be done.
+	// +kcc:proto:field=google.cloud.compute.v1.HealthCheckLogConfig.enable
+	Enable *bool `json:"enable,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.HostRule", skipping
+
+// +kcc:proto=google.cloud.compute.v1.HostRule
+type HostRule struct {
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.HostRule.description
+	Description *string `json:"description,omitempty"`
+
+	// The list of host patterns to match. They must be valid hostnames with optional port numbers in the format host:port. * matches any string of ([a-z0-9-.]*). In that case, * must be the first character, and if followed by anything, the immediate following character must be either - or .. * based matching is not supported when the URL map is bound to a target gRPC proxy that has the validateForProxyless field set to true.
+	// +kcc:proto:field=google.cloud.compute.v1.HostRule.hosts
+	Hosts []string `json:"hosts,omitempty"`
+
+	// The name of the PathMatcher to use to match the path portion of the URL if the hostRule matches the URL's host portion.
+	// +kcc:proto:field=google.cloud.compute.v1.HostRule.path_matcher
+	PathMatcher *string `json:"pathMatcher,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.HTTP2HealthCheck", skipping
+
+// +kcc:proto=google.cloud.compute.v1.HTTP2HealthCheck
+type Http2HealthCheck struct {
+	// The value of the host header in the HTTP/2 health check request. If left empty (default value), the host header is set to the destination IP address to which health check packets are sent. The destination IP address depends on the type of load balancer. For details, see: https://cloud.google.com/load-balancing/docs/health-check-concepts#hc-packet-dest
+	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.host
+	Host *string `json:"host,omitempty"`
+
+	// The TCP port number to which the health check prober sends packets. The default value is 443. Valid values are 1 through 65535.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.port
+	Port *int32 `json:"port,omitempty"`
+
+	// Not supported.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.port_name
+	PortName *string `json:"portName,omitempty"`
+
+	// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for passthrough load balancers and backend services for proxy load balancers. Not supported by target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for passthrough load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
+	//  Check the PortSpecification enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.port_specification
+	PortSpecification *string `json:"portSpecification,omitempty"`
+
+	// Specifies the type of proxy header to append before sending data to the backend, either NONE or PROXY_V1. The default is NONE.
+	//  Check the ProxyHeader enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.proxy_header
+	ProxyHeader *string `json:"proxyHeader,omitempty"`
+
+	// The request path of the HTTP/2 health check request. The default value is /. Must comply with RFC3986.
+	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.request_path
+	RequestPath *string `json:"requestPath,omitempty"`
+
+	// Creates a content-based HTTP/2 health check. In addition to the required HTTP 200 (OK) status code, you can configure the health check to pass only when the backend sends this specific ASCII response string within the first 1024 bytes of the HTTP response body. For details, see: https://cloud.google.com/load-balancing/docs/health-check-concepts#criteria-protocol-http
+	// +kcc:proto:field=google.cloud.compute.v1.HTTP2HealthCheck.response
+	Response *string `json:"response,omitempty"`
 }
 */
 
@@ -6148,6 +6148,100 @@ type RouterNATSubnetworkToNat64 struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.SslCertificate", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SslCertificate
+type SSLCertificate struct {
+	// A value read into memory from a certificate file. The certificate file must be in PEM format. The certificate chain must be no greater than 5 certs long. The chain must include at least one intermediate cert.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.certificate
+	Certificate *string `json:"certificate,omitempty"`
+
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.description
+	Description *string `json:"description,omitempty"`
+
+	// [Output Only] Expire time of the certificate. RFC3339
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.expire_time
+	ExpireTime *string `json:"expireTime,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output Only] Type of the resource. Always compute#sslCertificate for SSL certificates.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// Configuration and status of a managed SSL certificate.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.managed
+	Managed *SSLCertificateManagedSSLCertificate `json:"managed,omitempty"`
+
+	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.name
+	Name *string `json:"name,omitempty"`
+
+	// A value read into memory from a write-only private key file. The private key file must be in PEM format. For security, only insert requests include this field.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.private_key
+	PrivateKey *string `json:"privateKey,omitempty"`
+
+	// [Output Only] URL of the region where the regional SSL Certificate resides. This field is not applicable to global SSL Certificate.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.region
+	Region *string `json:"region,omitempty"`
+
+	// [Output only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// Configuration and status of a self-managed SSL certificate.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.self_managed
+	SelfManaged *SSLCertificateSelfManagedSSLCertificate `json:"selfManaged,omitempty"`
+
+	// [Output Only] Domains associated with the certificate via Subject Alternative Name.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.subject_alternative_names
+	SubjectAlternativeNames []string `json:"subjectAlternativeNames,omitempty"`
+
+	// (Optional) Specifies the type of SSL certificate, either "SELF_MANAGED" or "MANAGED". If not specified, the certificate is self-managed and the fields certificate and private_key are used.
+	//  Check the Type enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.type
+	Type *string `json:"type,omitempty"`
+}
+*/
+
+/* unreachable type SSLCertificateManagedSSLCertificate
+// +kcc:proto=google.cloud.compute.v1.SslCertificateManagedSslCertificate
+type SSLCertificateManagedSSLCertificate struct {
+	// [Output only] Detailed statuses of the domains specified for managed certificate resource.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificateManagedSslCertificate.domain_status
+	DomainStatus map[string]string `json:"domainStatus,omitempty"`
+
+	// The domains for which a managed SSL certificate will be generated. Each Google-managed SSL certificate supports up to the [maximum number of domains per Google-managed SSL certificate](/load-balancing/docs/quotas#ssl_certificates).
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificateManagedSslCertificate.domains
+	Domains []string `json:"domains,omitempty"`
+
+	// [Output only] Status of the managed certificate resource.
+	//  Check the Status enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificateManagedSslCertificate.status
+	Status *string `json:"status,omitempty"`
+}
+*/
+
+/* unreachable type SSLCertificateSelfManagedSSLCertificate
+// +kcc:proto=google.cloud.compute.v1.SslCertificateSelfManagedSslCertificate
+type SSLCertificateSelfManagedSSLCertificate struct {
+	// A local certificate file. The certificate must be in PEM format. The certificate chain must be no greater than 5 certs long. The chain must include at least one intermediate cert.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificateSelfManagedSslCertificate.certificate
+	Certificate *string `json:"certificate,omitempty"`
+
+	// A write-only private key in PEM format. Only insert requests will include this field.
+	// +kcc:proto:field=google.cloud.compute.v1.SslCertificateSelfManagedSslCertificate.private_key
+	PrivateKey *string `json:"privateKey,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.SSLHealthCheck", skipping
 
 // +kcc:proto=google.cloud.compute.v1.SSLHealthCheck
@@ -6177,6 +6271,66 @@ type SSLHealthCheck struct {
 	// Creates a content-based SSL health check. In addition to establishing a TCP connection and the TLS handshake, you can configure the health check to pass only when the backend sends this exact response ASCII string, up to 1024 bytes in length. For details, see: https://cloud.google.com/load-balancing/docs/health-check-concepts#criteria-protocol-ssl-tcp
 	// +kcc:proto:field=google.cloud.compute.v1.SSLHealthCheck.response
 	Response *string `json:"response,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.SslPolicy", skipping
+
+// +kcc:proto=google.cloud.compute.v1.SslPolicy
+type SSLPolicy struct {
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.creation_timestamp
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
+	// A list of features enabled when the selected profile is CUSTOM. The method returns the set of features that can be specified in this list. This field must be empty if the profile is not CUSTOM.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.custom_features
+	CustomFeatures []string `json:"customFeatures,omitempty"`
+
+	// An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.description
+	Description *string `json:"description,omitempty"`
+
+	// [Output Only] The list of features enabled in the SSL policy.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.enabled_features
+	EnabledFeatures []string `json:"enabledFeatures,omitempty"`
+
+	// Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking. This field will be ignored when inserting a SslPolicy. An up-to-date fingerprint must be provided in order to update the SslPolicy, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve an SslPolicy.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.id
+	ID *uint64 `json:"id,omitempty"`
+
+	// [Output only] Type of the resource. Always compute#sslPolicyfor SSL policies.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// The minimum version of SSL protocol that can be used by the clients to establish a connection with the load balancer. This can be one of TLS_1_0, TLS_1_1, TLS_1_2.
+	//  Check the MinTlsVersion enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.min_tls_version
+	MinTLSVersion *string `json:"minTLSVersion,omitempty"`
+
+	// Name of the resource. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.name
+	Name *string `json:"name,omitempty"`
+
+	// Profile specifies the set of SSL features that can be used by the load balancer when negotiating SSL with clients. This can be one of COMPATIBLE, MODERN, RESTRICTED, or CUSTOM. If using CUSTOM, the set of SSL features to enable must be specified in the customFeatures field.
+	//  Check the Profile enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.profile
+	Profile *string `json:"profile,omitempty"`
+
+	// [Output Only] URL of the region where the regional SSL policy resides. This field is not applicable to global SSL policies.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.region
+	Region *string `json:"region,omitempty"`
+
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.self_link
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	// [Output Only] If potential misconfigurations are detected for this SSL policy, this field will be populated with warning messages.
+	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.warnings
+	Warnings []Warnings `json:"warnings,omitempty"`
 }
 */
 
@@ -7197,160 +7351,6 @@ type Snapshot struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.compute.v1.SslCertificate", skipping
-
-// +kcc:proto=google.cloud.compute.v1.SslCertificate
-type SSLCertificate struct {
-	// A value read into memory from a certificate file. The certificate file must be in PEM format. The certificate chain must be no greater than 5 certs long. The chain must include at least one intermediate cert.
-	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.certificate
-	Certificate *string `json:"certificate,omitempty"`
-
-	// [Output Only] Creation timestamp in RFC3339 text format.
-	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.creation_timestamp
-	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
-
-	// An optional description of this resource. Provide this property when you create the resource.
-	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.description
-	Description *string `json:"description,omitempty"`
-
-	// [Output Only] Expire time of the certificate. RFC3339
-	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.expire_time
-	ExpireTime *string `json:"expireTime,omitempty"`
-
-	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
-	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.id
-	ID *uint64 `json:"id,omitempty"`
-
-	// [Output Only] Type of the resource. Always compute#sslCertificate for SSL certificates.
-	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.kind
-	Kind *string `json:"kind,omitempty"`
-
-	// Configuration and status of a managed SSL certificate.
-	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.managed
-	Managed *SSLCertificateManagedSSLCertificate `json:"managed,omitempty"`
-
-	// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
-	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.name
-	Name *string `json:"name,omitempty"`
-
-	// A value read into memory from a write-only private key file. The private key file must be in PEM format. For security, only insert requests include this field.
-	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.private_key
-	PrivateKey *string `json:"privateKey,omitempty"`
-
-	// [Output Only] URL of the region where the regional SSL Certificate resides. This field is not applicable to global SSL Certificate.
-	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.region
-	Region *string `json:"region,omitempty"`
-
-	// [Output only] Server-defined URL for the resource.
-	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.self_link
-	SelfLink *string `json:"selfLink,omitempty"`
-
-	// Configuration and status of a self-managed SSL certificate.
-	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.self_managed
-	SelfManaged *SSLCertificateSelfManagedSSLCertificate `json:"selfManaged,omitempty"`
-
-	// [Output Only] Domains associated with the certificate via Subject Alternative Name.
-	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.subject_alternative_names
-	SubjectAlternativeNames []string `json:"subjectAlternativeNames,omitempty"`
-
-	// (Optional) Specifies the type of SSL certificate, either "SELF_MANAGED" or "MANAGED". If not specified, the certificate is self-managed and the fields certificate and private_key are used.
-	//  Check the Type enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1.SslCertificate.type
-	Type *string `json:"type,omitempty"`
-}
-*/
-
-/* unreachable type SSLCertificateManagedSSLCertificate
-// +kcc:proto=google.cloud.compute.v1.SslCertificateManagedSslCertificate
-type SSLCertificateManagedSSLCertificate struct {
-	// [Output only] Detailed statuses of the domains specified for managed certificate resource.
-	// +kcc:proto:field=google.cloud.compute.v1.SslCertificateManagedSslCertificate.domain_status
-	DomainStatus map[string]string `json:"domainStatus,omitempty"`
-
-	// The domains for which a managed SSL certificate will be generated. Each Google-managed SSL certificate supports up to the [maximum number of domains per Google-managed SSL certificate](/load-balancing/docs/quotas#ssl_certificates).
-	// +kcc:proto:field=google.cloud.compute.v1.SslCertificateManagedSslCertificate.domains
-	Domains []string `json:"domains,omitempty"`
-
-	// [Output only] Status of the managed certificate resource.
-	//  Check the Status enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1.SslCertificateManagedSslCertificate.status
-	Status *string `json:"status,omitempty"`
-}
-*/
-
-/* unreachable type SSLCertificateSelfManagedSSLCertificate
-// +kcc:proto=google.cloud.compute.v1.SslCertificateSelfManagedSslCertificate
-type SSLCertificateSelfManagedSSLCertificate struct {
-	// A local certificate file. The certificate must be in PEM format. The certificate chain must be no greater than 5 certs long. The chain must include at least one intermediate cert.
-	// +kcc:proto:field=google.cloud.compute.v1.SslCertificateSelfManagedSslCertificate.certificate
-	Certificate *string `json:"certificate,omitempty"`
-
-	// A write-only private key in PEM format. Only insert requests will include this field.
-	// +kcc:proto:field=google.cloud.compute.v1.SslCertificateSelfManagedSslCertificate.private_key
-	PrivateKey *string `json:"privateKey,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.compute.v1.SslPolicy", skipping
-
-// +kcc:proto=google.cloud.compute.v1.SslPolicy
-type SSLPolicy struct {
-	// [Output Only] Creation timestamp in RFC3339 text format.
-	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.creation_timestamp
-	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
-
-	// A list of features enabled when the selected profile is CUSTOM. The method returns the set of features that can be specified in this list. This field must be empty if the profile is not CUSTOM.
-	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.custom_features
-	CustomFeatures []string `json:"customFeatures,omitempty"`
-
-	// An optional description of this resource. Provide this property when you create the resource.
-	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.description
-	Description *string `json:"description,omitempty"`
-
-	// [Output Only] The list of features enabled in the SSL policy.
-	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.enabled_features
-	EnabledFeatures []string `json:"enabledFeatures,omitempty"`
-
-	// Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking. This field will be ignored when inserting a SslPolicy. An up-to-date fingerprint must be provided in order to update the SslPolicy, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve an SslPolicy.
-	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.fingerprint
-	Fingerprint *string `json:"fingerprint,omitempty"`
-
-	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
-	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.id
-	ID *uint64 `json:"id,omitempty"`
-
-	// [Output only] Type of the resource. Always compute#sslPolicyfor SSL policies.
-	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.kind
-	Kind *string `json:"kind,omitempty"`
-
-	// The minimum version of SSL protocol that can be used by the clients to establish a connection with the load balancer. This can be one of TLS_1_0, TLS_1_1, TLS_1_2.
-	//  Check the MinTlsVersion enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.min_tls_version
-	MinTLSVersion *string `json:"minTLSVersion,omitempty"`
-
-	// Name of the resource. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
-	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.name
-	Name *string `json:"name,omitempty"`
-
-	// Profile specifies the set of SSL features that can be used by the load balancer when negotiating SSL with clients. This can be one of COMPATIBLE, MODERN, RESTRICTED, or CUSTOM. If using CUSTOM, the set of SSL features to enable must be specified in the customFeatures field.
-	//  Check the Profile enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.profile
-	Profile *string `json:"profile,omitempty"`
-
-	// [Output Only] URL of the region where the regional SSL policy resides. This field is not applicable to global SSL policies.
-	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.region
-	Region *string `json:"region,omitempty"`
-
-	// [Output Only] Server-defined URL for the resource.
-	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.self_link
-	SelfLink *string `json:"selfLink,omitempty"`
-
-	// [Output Only] If potential misconfigurations are detected for this SSL policy, this field will be populated with warning messages.
-	// +kcc:proto:field=google.cloud.compute.v1.SslPolicy.warnings
-	Warnings []Warnings `json:"warnings,omitempty"`
-}
-*/
-
 /* unreachable type StatefulPolicy
 // +kcc:proto=google.cloud.compute.v1.StatefulPolicy
 type StatefulPolicy struct {
@@ -8081,57 +8081,6 @@ type TargetVPNGateway struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.compute.v1.Uint128", skipping
-
-// +kcc:proto=google.cloud.compute.v1.Uint128
-type Uint128 struct {
-	// +kcc:proto:field=google.cloud.compute.v1.Uint128.high
-	High *uint64 `json:"high,omitempty"`
-
-	// +kcc:proto:field=google.cloud.compute.v1.Uint128.low
-	Low *uint64 `json:"low,omitempty"`
-}
-*/
-
-/* unreachable type UpcomingMaintenance
-// +kcc:proto=google.cloud.compute.v1.UpcomingMaintenance
-type UpcomingMaintenance struct {
-	// Indicates if the maintenance can be customer triggered.
-	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.can_reschedule
-	CanReschedule *bool `json:"canReschedule,omitempty"`
-
-	// The latest time for the planned maintenance window to start. This timestamp value is in RFC3339 text format.
-	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.latest_window_start_time
-	LatestWindowStartTime *string `json:"latestWindowStartTime,omitempty"`
-
-	// Indicates whether the UpcomingMaintenance will be triggered on VM shutdown.
-	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.maintenance_on_shutdown
-	MaintenanceOnShutdown *bool `json:"maintenanceOnShutdown,omitempty"`
-
-	// The reasons for the maintenance. Only valid for vms.
-	//  Check the MaintenanceReasons enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.maintenance_reasons
-	MaintenanceReasons []string `json:"maintenanceReasons,omitempty"`
-
-	// Check the MaintenanceStatus enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.maintenance_status
-	MaintenanceStatus *string `json:"maintenanceStatus,omitempty"`
-
-	// Defines the type of maintenance.
-	//  Check the Type enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.type
-	Type *string `json:"type,omitempty"`
-
-	// The time by which the maintenance disruption will be completed. This timestamp value is in RFC3339 text format.
-	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.window_end_time
-	WindowEndTime *string `json:"windowEndTime,omitempty"`
-
-	// The current start time of the maintenance window. This timestamp value is in RFC3339 text format.
-	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.window_start_time
-	WindowStartTime *string `json:"windowStartTime,omitempty"`
-}
-*/
-
 /* found existing non-generated go type with proto tag "google.cloud.compute.v1.UrlMap", skipping
 
 // +kcc:proto=google.cloud.compute.v1.UrlMap
@@ -8264,6 +8213,57 @@ type URLRewrite struct {
 	// If specified, the pattern rewrites the URL path (based on the :path header) using the HTTP template syntax. A corresponding path_template_match must be specified. Any template variables must exist in the path_template_match field. - -At least one variable must be specified in the path_template_match field - You can omit variables from the rewritten URL - The * and ** operators cannot be matched unless they have a corresponding variable name - e.g. {format=*} or {var=**}. For example, a path_template_match of /static/{format=**} could be rewritten as /static/content/{format} to prefix /content to the URL. Variables can also be re-ordered in a rewrite, so that /{country}/{format}/{suffix=**} can be rewritten as /content/{format}/{country}/{suffix}. At least one non-empty routeRules[].matchRules[].path_template_match is required. Only one of path_prefix_rewrite or path_template_rewrite may be specified.
 	// +kcc:proto:field=google.cloud.compute.v1.UrlRewrite.path_template_rewrite
 	PathTemplateRewrite *string `json:"pathTemplateRewrite,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.Uint128", skipping
+
+// +kcc:proto=google.cloud.compute.v1.Uint128
+type Uint128 struct {
+	// +kcc:proto:field=google.cloud.compute.v1.Uint128.high
+	High *uint64 `json:"high,omitempty"`
+
+	// +kcc:proto:field=google.cloud.compute.v1.Uint128.low
+	Low *uint64 `json:"low,omitempty"`
+}
+*/
+
+/* unreachable type UpcomingMaintenance
+// +kcc:proto=google.cloud.compute.v1.UpcomingMaintenance
+type UpcomingMaintenance struct {
+	// Indicates if the maintenance can be customer triggered.
+	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.can_reschedule
+	CanReschedule *bool `json:"canReschedule,omitempty"`
+
+	// The latest time for the planned maintenance window to start. This timestamp value is in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.latest_window_start_time
+	LatestWindowStartTime *string `json:"latestWindowStartTime,omitempty"`
+
+	// Indicates whether the UpcomingMaintenance will be triggered on VM shutdown.
+	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.maintenance_on_shutdown
+	MaintenanceOnShutdown *bool `json:"maintenanceOnShutdown,omitempty"`
+
+	// The reasons for the maintenance. Only valid for vms.
+	//  Check the MaintenanceReasons enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.maintenance_reasons
+	MaintenanceReasons []string `json:"maintenanceReasons,omitempty"`
+
+	// Check the MaintenanceStatus enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.maintenance_status
+	MaintenanceStatus *string `json:"maintenanceStatus,omitempty"`
+
+	// Defines the type of maintenance.
+	//  Check the Type enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.type
+	Type *string `json:"type,omitempty"`
+
+	// The time by which the maintenance disruption will be completed. This timestamp value is in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.window_end_time
+	WindowEndTime *string `json:"windowEndTime,omitempty"`
+
+	// The current start time of the maintenance window. This timestamp value is in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.UpcomingMaintenance.window_start_time
+	WindowStartTime *string `json:"windowStartTime,omitempty"`
 }
 */
 

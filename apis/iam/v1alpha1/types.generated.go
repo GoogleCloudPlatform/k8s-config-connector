@@ -109,18 +109,6 @@ type DenyRule struct {
 	DenialCondition *Expr `json:"denialCondition,omitempty"`
 }
 
-// +kcc:proto=google.iam.v2.PolicyRule
-type PolicyRule struct {
-	// A rule for a deny policy.
-	// +kcc:proto:field=google.iam.v2.PolicyRule.deny_rule
-	DenyRule *DenyRule `json:"denyRule,omitempty"`
-
-	// A user-specified description of the rule. This value can be up to 256
-	//  characters.
-	// +kcc:proto:field=google.iam.v2.PolicyRule.description
-	Description *string `json:"description,omitempty"`
-}
-
 // +kcc:proto=google.type.Expr
 type Expr struct {
 	// Textual representation of an expression in Common Expression Language
@@ -143,4 +131,16 @@ type Expr struct {
 	//  reporting, e.g. a file name and a position in the file.
 	// +kcc:proto:field=google.type.Expr.location
 	Location *string `json:"location,omitempty"`
+}
+
+// +kcc:proto=google.iam.v2.PolicyRule
+type PolicyRule struct {
+	// A rule for a deny policy.
+	// +kcc:proto:field=google.iam.v2.PolicyRule.deny_rule
+	DenyRule *DenyRule `json:"denyRule,omitempty"`
+
+	// A user-specified description of the rule. This value can be up to 256
+	//  characters.
+	// +kcc:proto:field=google.iam.v2.PolicyRule.description
+	Description *string `json:"description,omitempty"`
 }
