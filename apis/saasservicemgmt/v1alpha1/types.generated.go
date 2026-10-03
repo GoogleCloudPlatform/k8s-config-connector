@@ -18,6 +18,7 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.saasplatform.saasservicemgmt.v1beta1
 // resource: SaasServiceMgmtRelease:Release
+// resource: SaaSServiceMgmtRolloutKind:RolloutKind
 
 package v1alpha1
 
@@ -27,6 +28,19 @@ type Blueprint struct {
 	//  unitKind or release is set).
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Blueprint.package
 	Package *string `json:"package,omitempty"`
+}
+
+// +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.ErrorBudget
+type ErrorBudget struct {
+	// Optional. The maximum number of failed units allowed in a location without
+	//  pausing the rollout.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.ErrorBudget.allowed_count
+	AllowedCount *int32 `json:"allowedCount,omitempty"`
+
+	// Optional. The maximum percentage of units allowed to fail (0, 100] within a
+	//  location without pausing the rollout.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.ErrorBudget.allowed_percentage
+	AllowedPercentage *int32 `json:"allowedPercentage,omitempty"`
 }
 
 /* found existing non-generated go type with proto tag "google.cloud.saasplatform.saasservicemgmt.v1beta1.Release", skipping
@@ -84,6 +98,71 @@ type Release_ReleaseRequirements struct {
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Release.ReleaseRequirements.upgradeable_from_releases
 	UpgradeableFromReleases []string `json:"upgradeableFromReleases,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutKind", skipping
+
+// +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutKind
+type RolloutKind struct {
+	// Identifier. The resource name (full URI of the resource) following the
+	//  standard naming scheme:
+	//
+	//    "projects/{project}/locations/{location}/rolloutKinds/{rollout_kind_id}"
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutKind.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Immutable. UnitKind that this rollout kind corresponds to.
+	//  Rollouts stemming from this rollout kind will target the units of this unit
+	//  kind. In other words, this defines the population of target units to be
+	//  upgraded by rollouts.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutKind.unit_kind
+	UnitKind *string `json:"unitKind,omitempty"`
+
+	// Optional. The strategy used for executing a Rollout. This is a required
+	//  field.
+	//
+	//  There are two supported values strategies which are used to control
+	//  - "Google.Cloud.Simple.AllAtOnce"
+	//  - "Google.Cloud.Simple.OneLocationAtATime"
+	//
+	//  A rollout with one of these simple strategies will rollout across
+	//  all locations defined in the associated UnitKind's Saas Locations.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutKind.rollout_orchestration_strategy
+	RolloutOrchestrationStrategy *string `json:"rolloutOrchestrationStrategy,omitempty"`
+
+	// Optional. CEL(https://github.com/google/cel-spec) formatted filter string
+	//  against Unit. The filter will be applied to determine the eligible unit
+	//  population. This filter can only reduce, but not expand the scope of the
+	//  rollout.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutKind.unit_filter
+	UnitFilter *string `json:"unitFilter,omitempty"`
+
+	// Optional. The config for updating the unit kind. By default, the unit kind
+	//  will be updated on the rollout start.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutKind.update_unit_kind_strategy
+	UpdateUnitKindStrategy *string `json:"updateUnitKindStrategy,omitempty"`
+
+	// Optional. The configuration for error budget. If the number of failed units
+	//  exceeds max(allowed_count, allowed_ratio * total_units), the rollout will
+	//  be paused. If not set, all units will be attempted to be updated regardless
+	//  of the number of failures encountered.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutKind.error_budget
+	ErrorBudget *ErrorBudget `json:"errorBudget,omitempty"`
+
+	// Optional. The labels on the resource, which can be used for categorization.
+	//  similar to Kubernetes resource labels.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutKind.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Annotations is an unstructured key-value map stored with a
+	//  resource that may be set by external tools to store and retrieve arbitrary
+	//  metadata. They are not queryable and should be preserved when modifying
+	//  objects.
+	//
+	//  More info: https://kubernetes.io/docs/user-guide/annotations
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutKind.annotations
+	Annotations map[string]string `json:"annotations,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitVariable
 type UnitVariable struct {
@@ -154,6 +233,36 @@ type ReleaseObservedState struct {
 	//  change to the resource made by users must refresh this value.
 	//  Changes to a resource made by the service should refresh this value.
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Release.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutKind", skipping
+
+// +kcc:observedstate:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutKind
+type RolloutKindObservedState struct {
+	// Output only. The unique identifier of the resource. UID is unique in the
+	//  time and space for this resource within the scope of the service. It is
+	//  typically generated by the server on successful creation of a resource
+	//  and must not be changed. UID is used to uniquely identify resources
+	//  with resource name reuses. This should be a UUID4.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutKind.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. An opaque value that uniquely identifies a version or
+	//  generation of a resource. It can be used to confirm that the client
+	//  and server agree on the ordering of a resource being written.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutKind.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Output only. The timestamp when the resource was created.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutKind.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when the resource was last updated. Any
+	//  change to the resource made by users must refresh this value.
+	//  Changes to a resource made by the service should refresh this value.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutKind.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
