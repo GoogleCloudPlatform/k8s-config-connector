@@ -1,0 +1,7 @@
+[
+  {
+    "controller": "dcl",
+    "isNewObject": true,
+    "resource": "ComputeFirewallPolicy/firewallpolicy-${uniqueId}"
+  }
+]
