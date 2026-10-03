@@ -179,6 +179,10 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 
 	obj.GceZone = obj.Settings.LocationPreference.Zone
 
+	if obj.DnsName == nil && obj.Settings.GetIpConfiguration().GetServerCaMode() != "" {
+		obj.DnsName = PtrTo(name.InstanceName + ".example." + obj.Region + ".sql.goog.")
+	}
+
 	obj.Settings.SettingsVersion = wrapperspb.Int64(1)
 
 	obj.Etag = fields.ComputeWeakEtag(obj)
@@ -970,6 +974,41 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 		if settings.Tier != "" {
 			obj.Settings.Tier = settings.Tier
 		}
+		if settings.IpConfiguration != nil {
+			if obj.Settings.IpConfiguration == nil {
+				obj.Settings.IpConfiguration = &pb.IpConfiguration{}
+			}
+			if settings.IpConfiguration.ServerCaMode != nil {
+				obj.Settings.IpConfiguration.ServerCaMode = settings.IpConfiguration.ServerCaMode
+			}
+			if settings.IpConfiguration.ServerCaPool != nil {
+				obj.Settings.IpConfiguration.ServerCaPool = settings.IpConfiguration.ServerCaPool
+			}
+			if settings.IpConfiguration.CustomSubjectAlternativeNames != nil {
+				obj.Settings.IpConfiguration.CustomSubjectAlternativeNames = settings.IpConfiguration.CustomSubjectAlternativeNames
+			}
+			if settings.IpConfiguration.Ipv4Enabled != nil {
+				obj.Settings.IpConfiguration.Ipv4Enabled = settings.IpConfiguration.Ipv4Enabled
+			}
+			if settings.IpConfiguration.RequireSsl != nil {
+				obj.Settings.IpConfiguration.RequireSsl = settings.IpConfiguration.RequireSsl
+			}
+			if settings.IpConfiguration.SslMode != pb.IpConfiguration_SSL_MODE_UNSPECIFIED {
+				obj.Settings.IpConfiguration.SslMode = settings.IpConfiguration.SslMode
+			}
+			if settings.IpConfiguration.AllocatedIpRange != "" {
+				obj.Settings.IpConfiguration.AllocatedIpRange = settings.IpConfiguration.AllocatedIpRange
+			}
+			if settings.IpConfiguration.PrivateNetwork != "" {
+				obj.Settings.IpConfiguration.PrivateNetwork = settings.IpConfiguration.PrivateNetwork
+			}
+			if settings.IpConfiguration.AuthorizedNetworks != nil {
+				obj.Settings.IpConfiguration.AuthorizedNetworks = settings.IpConfiguration.AuthorizedNetworks
+			}
+			if settings.IpConfiguration.EnablePrivatePathForGoogleCloudServices != nil {
+				obj.Settings.IpConfiguration.EnablePrivatePathForGoogleCloudServices = settings.IpConfiguration.EnablePrivatePathForGoogleCloudServices
+			}
+		}
 	}
 	if body := req.GetBody(); body != nil {
 		if body.DatabaseVersion != pb.SqlDatabaseVersion_SQL_DATABASE_VERSION_UNSPECIFIED {
@@ -1053,6 +1092,7 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 	obj.CreateTime = existing.CreateTime
 	obj.DatabaseInstalledVersion = existing.DatabaseInstalledVersion
 	obj.DatabaseVersion = existing.DatabaseVersion
+	obj.DnsName = existing.DnsName
 	obj.GceZone = existing.GceZone
 	obj.IpAddresses = existing.IpAddresses
 	obj.ServerCaCert = existing.ServerCaCert
