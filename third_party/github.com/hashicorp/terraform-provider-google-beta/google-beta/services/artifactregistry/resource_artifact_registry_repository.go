@@ -285,7 +285,7 @@ snapshot versions.`,
 									},
 								},
 							},
-							ExactlyOneOf: []string{"remote_repository_config.0.docker_repository", "remote_repository_config.0.maven_repository", "remote_repository_config.0.npm_repository", "remote_repository_config.0.python_repository"},
+							ExactlyOneOf: []string{"remote_repository_config.0.docker_repository", "remote_repository_config.0.maven_repository", "remote_repository_config.0.npm_repository", "remote_repository_config.0.python_repository", "remote_repository_config.0.common_repository"},
 						},
 						"maven_repository": {
 							Type:        schema.TypeList,
@@ -306,7 +306,7 @@ snapshot versions.`,
 									},
 								},
 							},
-							ExactlyOneOf: []string{"remote_repository_config.0.docker_repository", "remote_repository_config.0.maven_repository", "remote_repository_config.0.npm_repository", "remote_repository_config.0.python_repository"},
+							ExactlyOneOf: []string{"remote_repository_config.0.docker_repository", "remote_repository_config.0.maven_repository", "remote_repository_config.0.npm_repository", "remote_repository_config.0.python_repository", "remote_repository_config.0.common_repository"},
 						},
 						"npm_repository": {
 							Type:        schema.TypeList,
@@ -327,7 +327,7 @@ snapshot versions.`,
 									},
 								},
 							},
-							ExactlyOneOf: []string{"remote_repository_config.0.docker_repository", "remote_repository_config.0.maven_repository", "remote_repository_config.0.npm_repository", "remote_repository_config.0.python_repository"},
+							ExactlyOneOf: []string{"remote_repository_config.0.docker_repository", "remote_repository_config.0.maven_repository", "remote_repository_config.0.npm_repository", "remote_repository_config.0.python_repository", "remote_repository_config.0.common_repository"},
 						},
 						"python_repository": {
 							Type:        schema.TypeList,
@@ -348,7 +348,25 @@ snapshot versions.`,
 									},
 								},
 							},
-							ExactlyOneOf: []string{"remote_repository_config.0.docker_repository", "remote_repository_config.0.maven_repository", "remote_repository_config.0.npm_repository", "remote_repository_config.0.python_repository"},
+							ExactlyOneOf: []string{"remote_repository_config.0.docker_repository", "remote_repository_config.0.maven_repository", "remote_repository_config.0.npm_repository", "remote_repository_config.0.python_repository", "remote_repository_config.0.common_repository"},
+						},
+						"common_repository": {
+							Type:        schema.TypeList,
+							Optional:    true,
+							ForceNew:    true,
+							Description: `Common remote repository settings.`,
+							MaxItems:    1,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"uri": {
+										Type:        schema.TypeString,
+										Required:    true,
+										ForceNew:    true,
+										Description: `A common public repository base for upstream.`,
+									},
+								},
+							},
+							ExactlyOneOf: []string{"remote_repository_config.0.docker_repository", "remote_repository_config.0.maven_repository", "remote_repository_config.0.npm_repository", "remote_repository_config.0.python_repository", "remote_repository_config.0.common_repository"},
 						},
 					},
 				},
@@ -1113,6 +1131,8 @@ func flattenArtifactRegistryRepositoryRemoteRepositoryConfig(v interface{}, d *s
 		flattenArtifactRegistryRepositoryRemoteRepositoryConfigNpmRepository(original["npmRepository"], d, config)
 	transformed["python_repository"] =
 		flattenArtifactRegistryRepositoryRemoteRepositoryConfigPythonRepository(original["pythonRepository"], d, config)
+	transformed["common_repository"] =
+		flattenArtifactRegistryRepositoryRemoteRepositoryConfigCommonRepository(original["commonRepository"], d, config)
 	return []interface{}{transformed}
 }
 func flattenArtifactRegistryRepositoryRemoteRepositoryConfigDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
@@ -1184,6 +1204,23 @@ func flattenArtifactRegistryRepositoryRemoteRepositoryConfigPythonRepository(v i
 	return []interface{}{transformed}
 }
 func flattenArtifactRegistryRepositoryRemoteRepositoryConfigPythonRepositoryPublicRepository(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenArtifactRegistryRepositoryRemoteRepositoryConfigCommonRepository(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["uri"] =
+		flattenArtifactRegistryRepositoryRemoteRepositoryConfigCommonRepositoryUri(original["uri"], d, config)
+	return []interface{}{transformed}
+}
+func flattenArtifactRegistryRepositoryRemoteRepositoryConfigCommonRepositoryUri(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
@@ -1546,6 +1583,13 @@ func expandArtifactRegistryRepositoryRemoteRepositoryConfig(v interface{}, d tpg
 		transformed["pythonRepository"] = transformedPythonRepository
 	}
 
+	transformedCommonRepository, err := expandArtifactRegistryRepositoryRemoteRepositoryConfigCommonRepository(original["common_repository"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedCommonRepository); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["commonRepository"] = transformedCommonRepository
+	}
+
 	return transformed, nil
 }
 
@@ -1642,6 +1686,29 @@ func expandArtifactRegistryRepositoryRemoteRepositoryConfigPythonRepository(v in
 }
 
 func expandArtifactRegistryRepositoryRemoteRepositoryConfigPythonRepositoryPublicRepository(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandArtifactRegistryRepositoryRemoteRepositoryConfigCommonRepository(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedUri, err := expandArtifactRegistryRepositoryRemoteRepositoryConfigCommonRepositoryUri(original["uri"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedUri); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["uri"] = transformedUri
+	}
+
+	return transformed, nil
+}
+
+func expandArtifactRegistryRepositoryRemoteRepositoryConfigCommonRepositoryUri(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
