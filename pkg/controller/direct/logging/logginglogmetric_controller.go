@@ -17,6 +17,7 @@ package logging
 import (
 	"context"
 	"fmt"
+	"net/url"
 	"sort"
 	"strings"
 
@@ -308,8 +309,22 @@ func (a *logMetricAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 	return un, nil
 }
 
+// fullyQualifiedName returns the metric resource name for use in API request
+// paths.
+//
+// A log metric ID may contain "/": Cloud Logging accepts it and Google's own
+// documentation suggests namespaced IDs such as "myapp/my_metric". The
+// generated client expands this name into the RFC 6570 reserved template
+// "v2/{+metricName}", and reserved expansion does not percent-encode "/". An
+// unescaped ID therefore becomes an extra path segment, the API answers 404,
+// Find() reads that as "not found", and the caller creates instead of
+// acquiring -- which then fails with 409 ALREADY_EXISTS.
+//
+// Only the ID is escaped; the "projects/{project}/metrics/" prefix stays path
+// structure. Create() is unaffected because it carries the name in the request
+// body, not in the path.
 func (a *logMetricAdapter) fullyQualifiedName() string {
-	return a.id.String()
+	return fmt.Sprintf("projects/%s/metrics/%s", a.id.Project, url.PathEscape(a.id.Metric))
 }
 
 func compareLogMetric(ctx context.Context, actual, desired *api.LogMetric, u *unstructured.Unstructured) (*structuredreporting.Diff, error) {
