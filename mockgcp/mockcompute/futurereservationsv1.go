@@ -22,6 +22,7 @@ import (
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"k8s.io/klog/v2"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -134,10 +135,18 @@ func (s *FutureReservationsV1) Insert(ctx context.Context, req *pb.InsertFutureR
 			obj.SchedulingType = nil
 		}
 
-		obj.Status.ExistingMatchingUsageInfo = &pb.FutureReservationStatusExistingMatchingUsageInfo{
-			Count:     PtrTo(int64(0)),
-			Timestamp: PtrTo(s.nowString()),
-		}
+		// existingMatchingUsageInfo is updated asynchronously
+		go func() {
+			ctx = context.WithoutCancel(ctx)
+			log := klog.FromContext(ctx)
+
+			time.Sleep(1 * time.Second)
+
+			if err := s.updateExistingMatchingUsageInfo(ctx, fqn); err != nil {
+				log.Error(err, "failed to asynchronously update existingMatchingUsageInfo", "fqn", fqn)
+			}
+		}()
+
 		// handle endtime calculated by duration
 		if obj.TimeWindow != nil && obj.TimeWindow.Duration != nil {
 			end, err := parseDuration(obj.TimeWindow.StartTime, obj.TimeWindow.Duration)
@@ -162,6 +171,24 @@ func (s *FutureReservationsV1) Insert(ctx context.Context, req *pb.InsertFutureR
 		}
 		return obj, nil
 	})
+}
+
+// updateExistingMatchingUsageInfo populates ExistingMatchingUsageInfo with values,
+// unlike other fields this value is populated asynchornously.
+func (s *FutureReservationsV1) updateExistingMatchingUsageInfo(ctx context.Context, fqn string) error {
+	obj := &pb.FutureReservation{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return err
+	}
+
+	obj.Status.ExistingMatchingUsageInfo = &pb.FutureReservationStatusExistingMatchingUsageInfo{
+		Count:     new(int64(0)),
+		Timestamp: new(s.nowString()),
+	}
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *FutureReservationsV1) Update(ctx context.Context, req *pb.UpdateFutureReservationRequest) (*pb.Operation, error) {
