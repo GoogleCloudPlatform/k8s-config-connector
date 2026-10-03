@@ -44,6 +44,10 @@ func BigQueryReservationAssignmentFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".principal")
 
 	f.Unimplemented_NotYetTriaged(".scheduling_policy")
+	// Added in cloud.google.com/go/bigquery v1.84.0; tracked under #13212 for separate Assignment field triage.
+	f.Unimplemented_NotYetTriaged(".condition")
+	// Added in cloud.google.com/go/bigquery v1.84.0; tracked under #13212 for separate Assignment field triage.
+	f.Unimplemented_NotYetTriaged(".precedence")
 
 	return f
 }
