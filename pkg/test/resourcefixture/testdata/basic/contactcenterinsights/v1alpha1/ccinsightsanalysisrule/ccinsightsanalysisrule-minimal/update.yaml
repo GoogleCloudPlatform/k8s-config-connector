@@ -1,0 +1,11 @@
+apiVersion: contactcenterinsights.cnrm.cloud.google.com/v1alpha1
+kind: CCInsightsAnalysisRule
+metadata:
+  name: armin${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "Updated Analysis Rule Minimal ${uniqueId}"
+  annotatorSelector:
+    runInterruptionAnnotator: true
