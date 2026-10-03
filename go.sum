@@ -714,6 +714,8 @@ cloud.google.com/go/filestore v1.8.0/go.mod h1:S5JCxIbFjeBhWMTfIYH2Jx24J6Bqjwpkk
 cloud.google.com/go/filestore v1.8.1/go.mod h1:MbN9KcaM47DRTIuLfQhJEsjaocVebNtNQhSLhKCF5GM=
 cloud.google.com/go/filestore v1.15.0 h1:ZYFAnP4elMogIQAXFwPx4nKpcvY0dJOZV+zl2l50MGQ=
 cloud.google.com/go/filestore v1.15.0/go.mod h1:oD+PvCWu4HqfEdNv65yk2XaLIiP7h4AuAH9Ua5YBRTM=
+cloud.google.com/go/financialservices v1.2.0 h1:tGTgQMValhZHvSA71gU11jxZyfigVeRj3SWFzJZpyec=
+cloud.google.com/go/financialservices v1.2.0/go.mod h1:TKfAxHfpo1lQ1d+sQ0lKb/4lkduWgDT76psIdOT5kyQ=
 cloud.google.com/go/firestore v1.1.0/go.mod h1:ulACoGHTpvq5r8rxGJ4ddJZBZqakUQqClKRT5SZwBmk=
 cloud.google.com/go/firestore v1.9.0/go.mod h1:HMkjKHNTtRyZNiMzu7YAsLr9K3X2udY2AMwDaMEQiiE=
 cloud.google.com/go/firestore v1.11.0/go.mod h1:b38dKhgzlmNNGTNZZwe7ZRFEuRab1Hay3/DBsIGKKy4=
