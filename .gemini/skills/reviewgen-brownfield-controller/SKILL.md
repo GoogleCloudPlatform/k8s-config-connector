@@ -1,48 +1,143 @@
 ---
 name: reviewgen-brownfield-controller
-description: Provides provides clear review criteria for reviewing PRs that add controllers for KCC Brownfield resources.
+description: Review guide and architectural invariants for reviewing PRs that migrate legacy (Terraform/DCL) resources to KCC Direct Controllers.
 ---
 
-# Review guide for KCC Brownfield controller
-Please respect the following review criteria and invariants when reviewing PRs for Brownfield migrations (legacy to direct controller).
+# Review Guide for KCC Brownfield Direct Controller PRs
 
-## 1. Diff Analysis & Behavioral Alignment
-*   **Mandatory Diff Inspection:** PRs modifying brownfield controllers MUST generate and include `.diff` files if the legacy controller is still active. Reviewers must inspect `_http.diff`, `_http_mock.diff`, `_final_object.diff`, and `_exported_object.diff` for all fixtures.
-*   **Acceptable Diffs:** Check that any diffs are justified as acceptable improvements (e.g., adopting Identity v2, improved conditions, better error messages).
-*   **Regressions:** Reject PRs that introduce unacceptable diffs such as dropped fields in HTTP requests/responses, missing status attributes previously exposed by legacy, or spurious update requests during re-reconciliation.
+This skill outlines the mandatory validation invariants, review checks, and architectural patterns required when reviewing Pull Requests migrating existing (brownfield) Config Connector resources from legacy Terraform/DCL controllers to the **Direct Controller** pattern.
 
-## 2. Zero-Write Steady State (Ratcheting)
-*   **Ratcheting Exclusion Removed:** Verify that the resource has been removed from the exclusion list in `tests/e2e/ratcheting.go` (specifically in `ShouldTestRereconiliation`).
-*   **No Spurious Updates:** Verify that steady-state re-reconciliation does not produce any extra writes to the GCP API (no `PATCH`/`PUT` calls in `_http.log` during the `update` phase if nothing in the spec changed).
+---
 
-## 3. Proto Diffs and Field Masks
-*   Verify that `common.CompareBrownfieldSpec` or appropriate diffing logic is used to correctly identify differences between the desired KRM state and the actual GCP state, particularly handling default values returned by the server.
-*   Verify that the resulting diff paths are used to populate an `UpdateMask` (e.g. `&fieldmaskpb.FieldMask{Paths: sets.List(paths)}`) in the `Update` operation if required by the API.
+## 1. Ratcheting Exclusion Check (`tests/e2e/ratcheting.go`) — **MANDATORY**
 
-## 4. Structured Reporting
-*   Verify that `structuredreporting.ReportDiff(ctx, report)` is used in the `Update` method to report the exact diff to the user before submitting the update request to the GCP API.
+*   **Strict Invariant**: The target resource's `GroupKind` **must be removed** from the exemption list in `ShouldTestRereconiliation()` in `tests/e2e/ratcheting.go`.
+*   **Why it's critical**: Inclusion in `tests/e2e/ratcheting.go` causes `ShouldTestRereconiliation()` to return `false`, completely bypassing Server-Side Apply (SSA) creation validation and 0-write re-reconciliation testing in CI. Without removing this exclusion, steady-state drift bugs and spurious GCP update calls cannot be detected.
+*   **Review Action**: Fail the review if the resource's `GroupKind` case statement remains in `ShouldTestRereconiliation()` in `tests/e2e/ratcheting.go`.
 
-## 5. Wait for LROs
-*   **Strict Rule:** For operations that return a Long Running Operation (LRO) from the GCP client, the controller MUST wait for the LRO to finish before proceeding (e.g., calling `op.Wait(ctx)` after `Create` or `Update`).
+---
 
-## 6. General Controller Structure & Client Creation
-*   **Client Creation Preference**: Verify that the controller uses an official GAPIC Go client library REST constructor (e.g., `cloud.google.com/go/<service>/apivX` via `NewFooRESTClient`) instead of gRPC where possible.
-*   **Do Not Change Default Controller**: Verify that the PR does NOT switch the default controller to `direct` in `pkg/controller/resourceconfig/static_config.go` (or via the `cnrm.cloud.google.com/default-controller=direct` label comment in KRM type definitions). The legacy controller must remain the `DefaultController` for now, and the direct controller should only be added to `SupportedControllers` to allow side-by-side testing.
-*   The controller must implement the `directbase.Model` and `directbase.Adapter` interfaces.
+## 2. Adapter Architecture & Reference Resolution Timing
+
+*   **No Reference Normalization in `AdapterForObject()`**:
+    *   Do **NOT** invoke `common.NormalizeReferences(ctx, reader, obj, ...)` or blocking reference lookups inside `AdapterForObject()`.
+    *   `AdapterForObject()` is called on every reconciliation pass, including `Find()` and `Delete()`.
+    *   If a referenced dependency is still provisioning or has already been deleted, resolving references in `AdapterForObject()` will fail prematurely before the controller can read or delete the target GCP resource.
+*   **Resolve References Only in `Create()` and `Update()`**:
+    *   Defer `common.NormalizeReferences` to `buildDesired` or the start of `Create()` and `Update()`.
+*   **Export Handling**:
+    *   In `Export()`, construct reference fields directly from proto strings or URLs without querying the Kubernetes API reader (`client.Reader`).
+
+---
+
+## 3. Short Name & URL Equivalence (Compute Resources Only)
+
+*   **Scope**: Primarily applies to Compute Engine resources (and resources referencing compute networking, such as GKE clusters). Most modern GCP APIs do not exhibit this.
+*   **Discrepancy**: Compute APIs accept short names (e.g., `default`) or relative paths, but return fully qualified URLs (`https://www.googleapis.com/compute/v1/...`), triggering false diffs during comparison.
+*   **Normalization**: For compute network/subnetwork references, call `ref.CanonicalizeAndNormalize(...)` (or canonicalize URLs) directly after `common.NormalizeReferences()` to align URLs and prevent re-reconciliation drift.
+
+---
+
+## 4. `metadata.labels` Mapping & Handling
+
+*   **Verify Mapping Definition**:
+    *   Check `config/servicemappings/<service>.yaml` to confirm whether `metadataMapping.labels` is configured for the resource (e.g., mapping to `labels` or `user_labels`).
+*   **Verify `Create()` Logic**:
+    *   If mapped, verify the controller uses `label.GCPLabels(u)` (e.g. inside `buildDesired`) to compute and inject GCP labels into the creation request payload (`desired.Labels = label.GCPLabels(u)`).
+*   **Verify `Update()` Comparison**:
+    *   If mapped, verify desired labels are populated with `label.GCPLabels(u)`.
+    *   Verify the controller uses `common.CompareBrownfieldSpecAndLabels` (or compares labels explicitly using `maps.Equal(desired, actual)` rather than `reflect.DeepEqual`) so that label changes populate the `UpdateMask` and do not trigger false drift.
+*   **No Deprecated Helpers**: Reject usage of deprecated helpers like `label.NewGCPLabelsFromK8sLabels` or manual map copying.
+
+---
+
+## 5. Spec Field Comparison & Diff Output
+
+*   **Verify Comparison Helper Usage**:
+    *   In `Update()`, verify the controller uses `common.CompareBrownfieldSpec` / `common.CompareBrownfieldSpecAndLabels` (or a dedicated `CompareSpecFields(desired, actual)` helper) to compute diffs.
+    *   Flag and reject ad-hoc struct equality checks or manual field-by-field comparisons that risk ignoring unmanaged or server-defaulted fields.
+*   **Inspect Diff & Update Mask Generation**:
+    *   Ensure update requests and `UpdateMask` paths are generated strictly from the diff produced by the comparison helper.
+*   **Structured Reporting**:
+    *   Verify that `structuredreporting.ReportDiff(ctx, diff)` is invoked in `Update()` before sending the update request to the GCP API.
+
+---
+
+## 6. Parity with Legacy Terraform Special Handling
+
+*   **Inspect Legacy Provider Source**:
+    *   Review the legacy TF code (`third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/...`) for custom diff suppressions (`DiffSuppressFunc`), separated PATCH requests, or specialized endpoints.
+    *   Verify the direct controller replicates necessary diff suppressions or normalization behaviors to avoid regressions or spurious drift.
+*   **Specialized Endpoints (Primarily Container / GKE Resources)**:
+    *   Container resources frequently split modifications across multiple dedicated endpoints (e.g., `SetNodePoolSize`, `SetNodePoolManagement`) rather than a single generic `Patch`.
+    *   Verify all applicable specialized endpoints are invoked so mutable fields are not silently dropped.
+*   **Do NOT Preserve TF "Set to Zero/Empty on Unset" Behavior**:
+    *   Unlike TF, which often sets fields to 0/empty when unset in configuration, KCC direct controllers treat unset fields as unmanaged.
+    *   Verify the controller does NOT actively clear or zero out omitted fields.
+
+---
+
+## 7. Mappers & Backward Compatibility
+
+*   **Handwritten Mappers (`*_mapper.go` / `mappers.go`)**:
+    *   Ensure enum mappings support both short strings and proto enum constants.
+    *   Ensure flattened structures (e.g., `maxPodsPerNode` <-> `maxPodsConstraint`) map bidirectionally without data loss.
+*   **Completeness & Schema Parity**:
+    *   Verify that all mutable and immutable fields present in the existing CRD are mapped in `Spec_ToProto` and `Spec_FromProto`.
+    *   Verify that no fields are dropped or altered in type compared to the existing CRD.
+
+---
+
+## 8. Routing Configuration (`static_config.go`)
+
+*   **Verify Static Controller Routing**:
+    *   Check `pkg/controller/resourceconfig/static_config.go`.
+    *   Verify `DefaultController` remains `ReconcilerTypeTerraform` (or `ReconcilerTypeDCL`) so existing production users are unaffected.
+    *   Verify `ReconcilerTypeDirect` is added to `SupportedControllers` to allow opt-in execution and side-by-side golden testing.
+
+---
+
+## 9. Side-by-Side Golden & Diff Verification
+
+*   **Inspect `_final_object.diff`**:
+    *   Verify diffs between the legacy and direct controller outputs only contain expected schema improvements (e.g., `status.externalRef`, standard conditions).
+    *   Ensure no existing spec or status fields are inadvertently dropped.
+*   **Inspect `_http.diff` / `_http_mock.diff`**:
+    *   Verify traffic alignment against the legacy controller.
+    *   Confirm there are 0 unexpected PATCH or PUT calls during steady-state re-reconciliation.
+*   **Inspect `_exported_object.diff`**:
+    *   Confirm that exported KRM specifications match expected deployable formats without dropping spec fields.
+
+---
+
+## 10. General Controller Invariants
+
+*   **Client Creation Preference**:
+    *   Verify that the controller uses an official GAPIC Go client library REST constructor (e.g., `cloud.google.com/go/<service>/apivX` via `NewFooRESTClient`) instead of gRPC (`NewFooClient`) or raw `grpc.Dial` where REST is supported.
+*   **Wait for LROs**:
+    *   For operations that return a Long Running Operation (LRO) from the GCP client, the controller MUST wait for the LRO to complete before returning (e.g., calling `op.Wait(ctx)` after `Create` or `Update`).
+*   **Status Updates**:
+    *   The controller must update KRM status (`status.observedState`, `status.externalRef`, conditions) at the end of reconciliation.
+
+---
 
 # Review Comment Template
+
 When proposing changes or stating LGTM, format the review description as follows:
 
 ```markdown
 ### KCC Auto-Review Results
 * **Trigger criteria matched**: [Yes/No]
-* **Diff Analysis**: [Pass/Fail] - (List any unjustified or regression diffs in _http.diff, _final_object.diff, etc.)
-* **Zero-Write Steady State**: [Pass/Fail] - (List if ratcheting exclusion is not removed or spurious updates occur)
-* **Client Creation**: [Pass/Fail] - (List if raw pb/grpc.Dial is used instead of GAPIC go-client)
-* **Default Reconciler Kept**: [Pass/Fail] - (Verify that the default controller is NOT switched to direct in static_config.go)
-* **Proto Diffs & Update Mask**: [Pass/Fail] - (List any issues with diff calculation)
-* **Structured Reporting**: [Pass/Fail] - (List if structured reporting is missing)
-* **LRO Wait**: [Pass/Fail] - (List if LRO waits are missing)
+* **Ratcheting Exclusion Removed**: [Pass/Fail] - (Confirm removed from ShouldTestRereconiliation in tests/e2e/ratcheting.go)
+* **Adapter Architecture & Reference Timing**: [Pass/Fail] - (No reference lookups in AdapterForObject; resolved only in Create/Update)
+* **Short Name & URL Equivalence**: [Pass/Fail/N/A] - (Compute network/subnetwork URLs normalized if applicable)
+* **Metadata Labels Handling**: [Pass/Fail/N/A] - (Verify label.GCPLabels(u) usage in Create/Update and maps.Equal comparison)
+* **Spec Field Comparison & Structured Reporting**: [Pass/Fail] - (CompareBrownfieldSpec/CompareSpecFields and ReportDiff used in Update)
+* **Legacy TF Parity & Specialized Endpoints**: [Pass/Fail] - (TF diff suppressions replicated; specialized endpoints called; omitted fields unmanaged)
+* **Mappers & Backward Compatibility**: [Pass/Fail] - (Bidirectional mapping of all CRD fields; enums support strings/constants)
+* **Static Controller Routing**: [Pass/Fail] - (DefaultController kept as legacy; Direct added to SupportedControllers in static_config.go)
+* **Diff & Golden Log Verification**: [Pass/Fail] - (_http.diff, _final_object.diff, and _exported_object.diff verified with 0 steady-state writes)
+* **LRO Wait & Client Creation**: [Pass/Fail] - (GAPIC REST client constructor used; op.Wait(ctx) invoked)
 
 #### Detailed Findings / Actions Required:
 1. [Specify file, line number, and exact issue]
