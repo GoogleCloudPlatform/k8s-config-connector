@@ -45,6 +45,18 @@
   5. Implemented `DataProductIdentity` utilizing `gcpurls.Template` with standard Project and Location references.
 - **Impact**: Provides a robust template for implementing KRM types, hand-written map mappers, and custom GCP-to-KRM model mapping for complex direct resources.
 
+### [2026-09-26] Implement Greenfield DataplexMetadataFeed Direct Controller, Fixtures, and Fuzzer
+- **Context**: Implementing the Greenfield direct controller, E2E fixtures, and fuzzer for `DataplexMetadataFeed` under `v1alpha1`.
+- **Problem**:
+  1. In GCP, `MetadataFeed` strictly requires a Pub/Sub topic endpoint (`MetadataFeed must have a pubsub topic`).
+  2. Dataplex service agent (`service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com`) must have both `pubsub.topics.get` and `pubsub.topics.publish` on the topic (e.g. `roles/pubsub.admin`).
+  3. GCP normalizes project IDs in `scope.projects` to project numbers (`projects/{projectNumber}`) in GET responses. Without normalizing project numbers back to project IDs via `ProjectMapper.ReplaceProjectNumberWithIDInLink`, re-reconciliation sees a diff on `scope` and triggers unnecessary update calls.
+- **Solution**:
+  1. Included `PubSubTopic` and `IAMPolicyMember` (granting `roles/pubsub.admin` to Dataplex SA) in `dependencies.yaml` for both minimal and maximal fixtures.
+  2. Integrated `projectMapper.ReplaceProjectNumberWithIDInLink` inside `dataplexmetadatafeed_controller.go` to normalize relative resource and project references in both `desired` and `actual` states before comparison.
+  3. Implemented fuzzer and unit tests, and successfully recorded and verified golden traffic against real GCP (`cnrm-barni-4`).
+- **Impact**: Eliminates spurious diffs on re-reconciliation and ensures seamless interoperation between Dataplex metadata feeds and Pub/Sub.
+
 ### [2026-09-28] Implement Greenfield DataplexDataProduct Controller, Fixtures, and Fuzzer
 - **Context**: Implementing Greenfield direct controller, E2E fixtures, and fuzzer for `DataplexDataProduct` under `v1alpha1`.
 - **Problem**:
@@ -56,4 +68,3 @@
   3. Added `DataplexDataProduct` to `pkg/controller/resourceconfig/static_config.go`.
   4. Successfully recorded `dataplexdataproduct-minimal` and `dataplexdataproduct-maximal` against real GCP, achieving 100% field coverage in `alpha-missingfields.txt`.
 - **Impact**: Fully functional direct controller and verified real GCP golden logs for DataplexDataProduct.
-
