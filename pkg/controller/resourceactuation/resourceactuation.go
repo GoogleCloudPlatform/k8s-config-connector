@@ -50,7 +50,7 @@ func DecideActuationMode(cc opv1beta1.ConfigConnector, ccc opv1beta1.ConfigConne
 //
 // Rules:
 // 1. Resource annotation takes precedence:
-//   - "Paused": Skips Create/Update/Drift, but allows Deletion to proceed (returns false if isDeleting).
+//   - "Paused": Skips Create/Update/Drift and Deletion operations (returns true).
 //   - "Reconciling": Allows actuation to proceed (returns false).
 //   - Invalid value: Returns an error.
 //
@@ -64,10 +64,6 @@ func ShouldSkipActuation(annotations map[string]string, isDeleting bool, cc opv1
 			case opv1beta1.Reconciling:
 				return false, nil
 			case opv1beta1.Paused:
-				// Resource-level pause does NOT pause deletion
-				if isDeleting {
-					return false, nil
-				}
 				return true, nil
 			default:
 				return false, fmt.Errorf("invalid value %q for annotation %s; allowed values are %q and %q",
