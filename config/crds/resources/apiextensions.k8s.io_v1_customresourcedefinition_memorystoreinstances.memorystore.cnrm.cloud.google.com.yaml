@@ -298,6 +298,18 @@ spec:
               engineVersion:
                 description: Optional. Immutable. Engine version of the instance.
                 type: string
+              gcsSource:
+                description: Optional. Immutable. Backups that stored in Cloud Storage
+                  buckets. The Cloud Storage buckets need to be the same region as
+                  the instances. Read permission is required to import from the provided
+                  Cloud Storage Objects.
+                properties:
+                  uris:
+                    description: 'Optional. Example: gs://bucket1/object1, gs://bucket2/folder2/object2'
+                    items:
+                      type: string
+                    type: array
+                type: object
               kmsKeyRef:
                 description: Optional. The KMS key reference for the instance.
                 oneOf:
@@ -1051,6 +1063,18 @@ spec:
               engineVersion:
                 description: Optional. Immutable. Engine version of the instance.
                 type: string
+              gcsSource:
+                description: Optional. Immutable. Backups that stored in Cloud Storage
+                  buckets. The Cloud Storage buckets need to be the same region as
+                  the instances. Read permission is required to import from the provided
+                  Cloud Storage Objects.
+                properties:
+                  uris:
+                    description: 'Optional. Example: gs://bucket1/object1, gs://bucket2/folder2/object2'
+                    items:
+                      type: string
+                    type: array
+                type: object
               kmsKeyRef:
                 description: Optional. The KMS key reference for the instance.
                 oneOf:
