@@ -124,6 +124,13 @@ spec:
                 x-kubernetes-validations:
                 - message: Location field is immutable
                   rule: self == oldSelf
+              maxSlots:
+                description: Optional. Capping a reservation's idle slot usage is
+                  best effort and its usage may exceed the max_slots value. However,
+                  in terms of autoscale.current_slots (which accounts for the additional
+                  added slots), it will never exceed the max_slots - baseline.
+                format: int64
+                type: integer
               projectRef:
                 description: The Project that this resource belongs to.
                 oneOf:
@@ -165,6 +172,14 @@ spec:
                   ID. If not provided, a UUID will be generated and assigned as the
                   Reservation ID. For acquisition: This field must be provided to
                   identify the Reservation resource to acquire.'
+                type: string
+              scalingMode:
+                description: Optional. The scaling mode for the reservation. Valid
+                  values are AUTOSCALE_ONLY, IDLE_SLOTS_ONLY, ALL_SLOTS.
+                enum:
+                - AUTOSCALE_ONLY
+                - IDLE_SLOTS_ONLY
+                - ALL_SLOTS
                 type: string
               slotCapacity:
                 description: |-
@@ -367,6 +382,13 @@ spec:
                 x-kubernetes-validations:
                 - message: Location field is immutable
                   rule: self == oldSelf
+              maxSlots:
+                description: Optional. Capping a reservation's idle slot usage is
+                  best effort and its usage may exceed the max_slots value. However,
+                  in terms of autoscale.current_slots (which accounts for the additional
+                  added slots), it will never exceed the max_slots - baseline.
+                format: int64
+                type: integer
               projectRef:
                 description: The Project that this resource belongs to.
                 oneOf:
@@ -408,6 +430,14 @@ spec:
                   ID. If not provided, a UUID will be generated and assigned as the
                   Reservation ID. For acquisition: This field must be provided to
                   identify the Reservation resource to acquire.'
+                type: string
+              scalingMode:
+                description: Optional. The scaling mode for the reservation. Valid
+                  values are AUTOSCALE_ONLY, IDLE_SLOTS_ONLY, ALL_SLOTS.
+                enum:
+                - AUTOSCALE_ONLY
+                - IDLE_SLOTS_ONLY
+                - ALL_SLOTS
                 type: string
               slotCapacity:
                 description: |-
