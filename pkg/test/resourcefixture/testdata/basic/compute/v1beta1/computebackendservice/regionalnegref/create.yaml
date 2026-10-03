@@ -1,0 +1,15 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: backendservice-${uniqueId}
+spec:
+  location: us-central1
+  loadBalancingScheme: INTERNAL_MANAGED
+  backend:
+    - group:
+        regionNetworkEndpointGroupRef:
+          name: my-regional-neg-${uniqueId}
+  timeoutSec: 10
+  healthChecks:
+    - healthCheckRef:
+        name: computehealthcheck-${uniqueId}
