@@ -18,6 +18,7 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.saasplatform.saasservicemgmt.v1beta1
 // resource: SaasServiceMgmtRelease:Release
+// resource: SaaSServiceMgmtUnitKind:UnitKind
 
 package v1alpha1
 
@@ -28,6 +29,35 @@ type Blueprint struct {
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Blueprint.package
 	Package *string `json:"package,omitempty"`
 }
+
+/* found existing non-generated go type "Dependency", skipping
+
+// +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Dependency
+type Dependency struct {
+	// Required. Immutable. The unit kind of the dependency.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Dependency.unit_kind
+	UnitKind *string `json:"unitKind,omitempty"`
+
+	// Required. An alias for the dependency. Used for input variable mapping.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Dependency.alias
+	Alias *string `json:"alias,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "FromMapping", skipping
+
+// +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.FromMapping
+type FromMapping struct {
+	// Required. Alias of the dependency that the outputVariable will pass its
+	//  value to
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.FromMapping.dependency
+	Dependency *string `json:"dependency,omitempty"`
+
+	// Required. Name of the outputVariable on the dependency
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.FromMapping.output_variable
+	OutputVariable *string `json:"outputVariable,omitempty"`
+}
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.saasplatform.saasservicemgmt.v1beta1.Release", skipping
 
@@ -85,6 +115,84 @@ type Release_ReleaseRequirements struct {
 	UpgradeableFromReleases []string `json:"upgradeableFromReleases,omitempty"`
 }
 
+/* found existing non-generated go type "ToMapping", skipping
+
+// +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.ToMapping
+type ToMapping struct {
+	// Required. Alias of the dependency that the inputVariable will pass its
+	//  value to
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.ToMapping.dependency
+	Dependency *string `json:"dependency,omitempty"`
+
+	// Required. Name of the inputVariable on the dependency
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.ToMapping.input_variable
+	InputVariable *string `json:"inputVariable,omitempty"`
+
+	// Optional. Tells SaaS Runtime if this mapping should be used during lookup
+	//  or not
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.ToMapping.ignore_for_lookup
+	IgnoreForLookup *bool `json:"ignoreForLookup,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitKind", skipping
+
+// +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitKind
+type UnitKind struct {
+	// Identifier. The resource name (full URI of the resource) following the
+	//  standard naming scheme:
+	//
+	//    "projects/{project}/locations/{location}/unitKinds/{unitKind}"
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitKind.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. A reference to the Release object to use as default for creating
+	//  new units of this UnitKind (optional).
+	//
+	//  If not specified, a new unit must explicitly reference which release to use
+	//  for its creation.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitKind.default_release
+	DefaultRelease *string `json:"defaultRelease,omitempty"`
+
+	// Optional. Immutable. List of other unit kinds that this release will depend
+	//  on. Dependencies will be automatically provisioned if not found.
+	//  Maximum 10.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitKind.dependencies
+	Dependencies []Dependency `json:"dependencies,omitempty"`
+
+	// Optional. List of inputVariables for this release that will either be
+	//  retrieved from a dependency’s outputVariables, or will be passed on to a
+	//  dependency’s inputVariables. Maximum 100.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitKind.input_variable_mappings
+	InputVariableMappings []VariableMapping `json:"inputVariableMappings,omitempty"`
+
+	// Optional. List of outputVariables for this unit kind will be passed to this
+	//  unit's outputVariables. Maximum 100.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitKind.output_variable_mappings
+	OutputVariableMappings []VariableMapping `json:"outputVariableMappings,omitempty"`
+
+	// Required. Immutable. A reference to the Saas that defines the product
+	//  (managed service) that the producer wants to manage with SaaS Runtime. Part
+	//  of the SaaS Runtime common data model. Immutable once set.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitKind.saas
+	Saas *string `json:"saas,omitempty"`
+
+	// Optional. The labels on the resource, which can be used for categorization.
+	//  similar to Kubernetes resource labels.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitKind.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Annotations is an unstructured key-value map stored with a
+	//  resource that may be set by external tools to store and retrieve arbitrary
+	//  metadata. They are not queryable and should be preserved when modifying
+	//  objects.
+	//
+	//  More info: https://kubernetes.io/docs/user-guide/annotations
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitKind.annotations
+	Annotations map[string]string `json:"annotations,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitVariable
 type UnitVariable struct {
 	// Required. Immutable. Name of the variable from actuation configs.
@@ -100,6 +208,24 @@ type UnitVariable struct {
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitVariable.value
 	Value *string `json:"value,omitempty"`
 }
+
+/* found existing non-generated go type "VariableMapping", skipping
+
+// +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.VariableMapping
+type VariableMapping struct {
+	// Optional. Output variables which will get their values from dependencies
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.VariableMapping.from
+	From *FromMapping `json:"from,omitempty"`
+
+	// Optional. Input variables whose values will be passed on to dependencies.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.VariableMapping.to
+	To *ToMapping `json:"to,omitempty"`
+
+	// Required. name of the variable
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.VariableMapping.variable
+	Variable *string `json:"variable,omitempty"`
+}
+*/
 
 // +kcc:observedstate:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Blueprint
 type BlueprintObservedState struct {
@@ -154,6 +280,36 @@ type ReleaseObservedState struct {
 	//  change to the resource made by users must refresh this value.
 	//  Changes to a resource made by the service should refresh this value.
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Release.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitKind", skipping
+
+// +kcc:observedstate:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitKind
+type UnitKindObservedState struct {
+	// Output only. The unique identifier of the resource. UID is unique in the
+	//  time and space for this resource within the scope of the service. It is
+	//  typically generated by the server on successful creation of a resource
+	//  and must not be changed. UID is used to uniquely identify resources
+	//  with resource name reuses. This should be a UUID4.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitKind.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. An opaque value that uniquely identifies a version or
+	//  generation of a resource. It can be used to confirm that the client
+	//  and server agree on the ordering of a resource being written.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitKind.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Output only. The timestamp when the resource was created.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitKind.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when the resource was last updated. Any
+	//  change to the resource made by users must refresh this value.
+	//  Changes to a resource made by the service should refresh this value.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitKind.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
