@@ -1327,6 +1327,36 @@ func DiscoveryEngineSampleQuerySetSpec_v1alpha1_ToProto(mapCtx *direct.MapContex
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
+func DiscoveryEngineSchemaSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krmdiscoveryenginev1alpha1.DiscoveryEngineSchemaSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineSchemaSpec{}
+	out.StructSchema = direct.Struct_FromProto(mapCtx, in.GetStructSchema())
+	out.JsonSchema = direct.LazyPtr(in.GetJsonSchema())
+	// MISSING: Name
+	return out
+}
+func DiscoveryEngineSchemaSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineSchemaSpec) *pb.Schema {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Schema{}
+	if oneof := direct.Struct_ToProto(mapCtx, in.StructSchema); oneof != nil {
+		out.Schema = &pb.Schema_StructSchema{StructSchema: oneof}
+	}
+	if oneof := DiscoveryEngineSchemaSpec_JsonSchema_ToProto(mapCtx, in.JsonSchema); oneof != nil {
+		out.Schema = oneof
+	}
+	// MISSING: Name
+	return out
+}
+func DiscoveryEngineSchemaSpec_JsonSchema_ToProto(mapCtx *direct.MapContext, in *string) *pb.Schema_JsonSchema {
+	if in == nil {
+		return nil
+	}
+	return &pb.Schema_JsonSchema{JsonSchema: *in}
+}
 func DiscoveryEngineServingConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.ServingConfig) *krmdiscoveryenginev1alpha1.DiscoveryEngineServingConfigObservedState {
 	if in == nil {
 		return nil
