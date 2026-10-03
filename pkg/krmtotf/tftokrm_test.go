@@ -31,6 +31,17 @@ import (
 )
 
 func TestConvertTFObjToKCCObj(t *testing.T) {
+	kindDiscriminatedTypes := []corekccv1alpha1.TypeConfig{
+		{
+			GVK:           k8sschema.GroupVersionKind{Kind: "Project"},
+			ValueTemplate: "//cloudresourcemanager.googleapis.com/projects/{{value}}",
+		},
+		{
+			GVK:           k8sschema.GroupVersionKind{Kind: "SecretManagerSecret"},
+			ValueTemplate: "//secretmanager.googleapis.com/{{value}}",
+		},
+	}
+
 	tests := []struct {
 		name           string
 		rc             *corekccv1alpha1.ResourceConfig
@@ -266,6 +277,81 @@ func TestConvertTFObjToKCCObj(t *testing.T) {
 			expected: map[string]interface{}{
 				"referenceRef": map[string]interface{}{
 					"external": "ref-val",
+				},
+			},
+		},
+		{
+			name: "kind-discriminated reference selects matching type",
+			rc: &corekccv1alpha1.ResourceConfig{
+				ResourceReferences: []corekccv1alpha1.ReferenceConfig{
+					{
+						TypeConfig: corekccv1alpha1.TypeConfig{Key: "parentRef"},
+						TFField:    "reference_key",
+						Types:      kindDiscriminatedTypes,
+					},
+				},
+			},
+			state: map[string]interface{}{
+				"reference_key": "//secretmanager.googleapis.com/projects/my-project/secrets/my-secret",
+			},
+			prevSpec: map[string]interface{}{},
+			expected: map[string]interface{}{
+				"parentRef": map[string]interface{}{
+					"external": "//secretmanager.googleapis.com/projects/my-project/secrets/my-secret",
+					"kind":     "SecretManagerSecret",
+				},
+			},
+		},
+		{
+			name: "kind-discriminated reference selects default type",
+			rc: &corekccv1alpha1.ResourceConfig{
+				ResourceReferences: []corekccv1alpha1.ReferenceConfig{
+					{
+						TypeConfig: corekccv1alpha1.TypeConfig{Key: "parentRef"},
+						TFField:    "reference_key",
+						Types:      kindDiscriminatedTypes,
+					},
+				},
+			},
+			state: map[string]interface{}{
+				"reference_key": "unrecognized-reference",
+			},
+			prevSpec: map[string]interface{}{},
+			expected: map[string]interface{}{
+				"parentRef": map[string]interface{}{
+					"external": "unrecognized-reference",
+					"kind":     "Project",
+				},
+			},
+		},
+		{
+			name: "list of kind-discriminated references selects matching types",
+			rc: &corekccv1alpha1.ResourceConfig{
+				ResourceReferences: []corekccv1alpha1.ReferenceConfig{
+					{
+						TypeConfig: corekccv1alpha1.TypeConfig{Key: "parentRefs"},
+						TFField:    "list_of_references_key",
+						Types:      kindDiscriminatedTypes,
+					},
+				},
+			},
+			state: map[string]interface{}{
+				"list_of_references_key": []interface{}{
+					"//cloudresourcemanager.googleapis.com/projects/123456789",
+					"//secretmanager.googleapis.com/projects/my-project/secrets/my-secret",
+				},
+			},
+			prevSpec: map[string]interface{}{},
+			expected: map[string]interface{}{
+				"parentRefs": []interface{}{
+					map[string]interface{}{
+						"external": "//cloudresourcemanager.googleapis.com/projects/123456789",
+						"kind":     "Project",
+					},
+					map[string]interface{}{
+						"external": "//secretmanager.googleapis.com/projects/my-project/secrets/my-secret",
+						"kind":     "SecretManagerSecret",
+					},
 				},
 			},
 		},

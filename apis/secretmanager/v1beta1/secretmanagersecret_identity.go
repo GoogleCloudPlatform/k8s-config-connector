@@ -19,10 +19,13 @@ import (
 	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+var _ identity.IdentityV2 = &SecretIdentity{}
 
 type SecretIdentity struct {
 	id     string
@@ -31,6 +34,19 @@ type SecretIdentity struct {
 
 func (i *SecretIdentity) String() string {
 	return i.parent.String() + "/secrets/" + i.id
+}
+
+func (i *SecretIdentity) FromExternal(ref string) error {
+	parsed, err := ParseSecretExternal(ref)
+	if err != nil {
+		return err
+	}
+	*i = *parsed
+	return nil
+}
+
+func (i *SecretIdentity) Host() string {
+	return "secretmanager.googleapis.com"
 }
 
 func (r *SecretIdentity) Parent() *SecretParent {
