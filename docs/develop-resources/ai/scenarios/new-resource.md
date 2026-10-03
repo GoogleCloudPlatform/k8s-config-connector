@@ -58,7 +58,7 @@ This part of PR #1 requires significant developer expertise and highlights areas
 
 *   **Gemini Prompt:**
     ```bash
-    "Add the direct controller for <resource>, following the guide in @docs/ai/add-direct-controller.md"
+    "Add the direct controller for <resource>, following the guide in .gemini/skills/kcc-direct-controller-implementer/SKILL.md"
     ```
 *   **Human Verification:**
     1.  The generated code is compilable and structurally correct.
@@ -84,7 +84,7 @@ Some resources require special handling for common patterns like labels or resou
 
 *   **Gemini Prompt:**
     ```bash
-    "Fix the labels for <resource>, following the guide in docs/ai/handle-labels-for-direct-resource.md."
+    "Fix the labels for <resource>, following the guide in .gemini/skills/kcc-direct-brownfield-labels/SKILL.md."
     ```
 *   **Human Verification:**
     1.  Ensure no `labels` field exists in the `spec`.

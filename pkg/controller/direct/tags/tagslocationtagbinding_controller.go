@@ -208,7 +208,7 @@ func (a *TagsLocationTagBindingAdapter) acquireExistingTagBinding(ctx context.Co
 
 // setResourceIDAndStatus sets spec.resourceID and updates status from the given TagBinding.
 // For compatibility, we set spec.resourceID after creation because this is a server-generated-id resource that we are migrating from terraform/DCL.
-// More info in docs/ai/server-generated-id.md
+// More info in .gemini/skills/kcc-direct-service-generated-id/SKILL.md
 func (a *TagsLocationTagBindingAdapter) setResourceIDAndStatus(ctx context.Context, createOp *directbase.CreateOperation, tagBinding *pb.TagBinding) error {
 	resourceID := tagBinding.GetName()
 	if err := createOp.SetSpecResourceID(ctx, resourceID); err != nil {

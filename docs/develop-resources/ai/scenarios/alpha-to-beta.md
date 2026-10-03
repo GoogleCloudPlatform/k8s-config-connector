@@ -10,10 +10,10 @@ Use the following prompt to instruct Gemini to promote the resource.
 
 **Prompt:**
 ```
-Promote the `<Kind>` resource from `v1alpha1` to `v1beta1`, following guide @docs/ai/how-to-promote-resource.md
+Promote the `<Kind>` resource from `v1alpha1` to `v1beta1`, following skill .gemini/skills/promote-resource-to-beta/SKILL.md
 
 Example:
-Promote the `StorageBucketLock` resource from `v1alpha1` to `v1beta1`, following guide @docs/ai/how-to-promote-resource.md
+Promote the `StorageBucketLock` resource from `v1alpha1` to `v1beta1`, following skill .gemini/skills/promote-resource-to-beta/SKILL.md
 ```
 
 ---
