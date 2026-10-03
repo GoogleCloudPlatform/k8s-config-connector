@@ -1,0 +1,227 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: certificatemanagercertificates.certificatemanager.cnrm.cloud.google.com
+spec:
+  group: certificatemanager.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: CertificateManagerCertificate
+    listKind: CertificateManagerCertificateList
+    plural: certificatemanagercertificates
+    shortNames:
+    - gcpcertificatemanagercertificate
+    - gcpcertificatemanagercertificates
+    singular: certificatemanagercertificate
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: CertificateManagerCertificate is the Schema for the CertificateManagerCertificate
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: CertificateManagerCertificateSpec defines the desired state
+              of CertificateManagerCertificate
+            properties:
+              description:
+                description: One or more paragraphs of text description of a certificate.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Set of labels associated with a Certificate.
+                type: object
+              location:
+                description: The location of this resource.
+                type: string
+              managed:
+                description: If set, contains configuration and state of a managed
+                  certificate.
+                properties:
+                  dnsAuthorizations:
+                    description: Immutable. Authorizations that will be used for performing
+                      domain authorization.
+                    items:
+                      type: string
+                    type: array
+                  domains:
+                    description: Immutable. The domains for which a managed SSL certificate
+                      will be generated. Wildcard domains are only supported with
+                      DNS challenge resolution.
+                    items:
+                      type: string
+                    type: array
+                  issuanceConfig:
+                    description: Immutable. The resource name for a [CertificateIssuanceConfig][google.cloud.certificatemanager.v1.CertificateIssuanceConfig]
+                      used to configure private PKI certificates in the format `projects/*/locations/*/certificateIssuanceConfigs/*`.
+                      If this field is not set, the certificates will instead be publicly
+                      signed as documented at https://cloud.google.com/load-balancing/docs/ssl-certificates/google-managed-certs#caa.
+                    type: string
+                type: object
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The CertificateManagerCertificate name. If not given,
+                  the metadata.name will be used.
+                type: string
+              scope:
+                description: Immutable. The scope of the certificate.
+                type: string
+              selfManaged:
+                description: If set, defines data of a self-managed certificate.
+                properties:
+                  pemCertificate:
+                    description: Input only. The PEM-encoded certificate chain. Leaf
+                      certificate comes first, followed by intermediate ones if any.
+                    type: string
+                  pemPrivateKey:
+                    description: Input only. The PEM-encoded private key of the leaf
+                      certificate.
+                    type: string
+                type: object
+            required:
+            - location
+            type: object
+          status:
+            description: CertificateManagerCertificateStatus defines the config connector
+              machine state of CertificateManagerCertificate
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the CertificateManagerCertificate
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. The creation timestamp of a Certificate.
+                    type: string
+                  expireTime:
+                    description: Output only. The expiry timestamp of a Certificate.
+                    type: string
+                  pemCertificate:
+                    description: Output only. The PEM-encoded certificate chain.
+                    type: string
+                  sanDnsnames:
+                    description: Output only. The list of Subject Alternative Names
+                      of dnsName type defined in the certificate (see RFC 5280 4.2.1.6).
+                      Managed certificates that haven't been provisioned yet have
+                      this field populated with a value of the managed.domains field.
+                    items:
+                      type: string
+                    type: array
+                  updateTime:
+                    description: Output only. The last update timestamp of a Certificate.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

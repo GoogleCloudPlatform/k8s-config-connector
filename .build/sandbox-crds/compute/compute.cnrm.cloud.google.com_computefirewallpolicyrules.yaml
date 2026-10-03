@@ -1,0 +1,377 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: computefirewallpolicyrules.compute.cnrm.cloud.google.com
+spec:
+  group: compute.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ComputeFirewallPolicyRule
+    listKind: ComputeFirewallPolicyRuleList
+    plural: computefirewallpolicyrules
+    shortNames:
+    - gcpcomputefirewallpolicyrule
+    - gcpcomputefirewallpolicyrules
+    singular: computefirewallpolicyrule
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: ComputeFirewallPolicyRule is the Schema for the ComputeFirewallPolicyRule
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ComputeFirewallPolicyRuleSpec defines the desired state of
+              ComputeFirewallPolicyRule
+            properties:
+              action:
+                description: 'The Action to perform when the client connection triggers
+                  the rule. Valid actions for firewall rules are: "allow", "deny",
+                  "apply_security_profile_group" and "goto_next". Valid actions for
+                  packet mirroring rules are: "mirror", "do_not_mirror" and "goto_next".'
+                type: string
+              description:
+                description: An optional description for this resource.
+                type: string
+              direction:
+                description: |-
+                  The direction in which this rule applies.
+                   Check the Direction enum for the list of possible values.
+                type: string
+              disabled:
+                description: Denotes whether the firewall policy rule is disabled.
+                  When set to true, the firewall policy rule is not enforced and traffic
+                  behaves as if it did not exist. If this is unspecified, the firewall
+                  policy rule will be enabled.
+                type: boolean
+              enableLogging:
+                description: 'Denotes whether to enable logging for a particular rule.
+                  If logging is enabled, logs will be exported to the configured export
+                  destination in Stackdriver. Logs may be exported to BigQuery or
+                  Pub/Sub. Note: you cannot enable logging on "goto_next" rules.'
+                type: boolean
+              kind:
+                description: '[Output only] Type of the resource. Returns compute#firewallPolicyRule
+                  for firewall rules and compute#packetMirroringRule for packet mirroring
+                  rules.'
+                type: string
+              location:
+                description: The location of this resource.
+                type: string
+              match:
+                description: A match condition that incoming traffic is evaluated
+                  against. If it evaluates to true, the corresponding 'action' is
+                  enforced.
+                properties:
+                  destAddressGroups:
+                    description: Address groups which should be matched against the
+                      traffic destination. Maximum number of destination address groups
+                      is 10.
+                    items:
+                      type: string
+                    type: array
+                  destFqdns:
+                    description: Fully Qualified Domain Name (FQDN) which should be
+                      matched against traffic destination. Maximum number of destination
+                      fqdn allowed is 100.
+                    items:
+                      type: string
+                    type: array
+                  destIPRanges:
+                    description: CIDR IP address range. Maximum number of destination
+                      CIDR IP ranges allowed is 5000.
+                    items:
+                      type: string
+                    type: array
+                  destNetworkType:
+                    description: |-
+                      Network type of the traffic destination. Allowed values are: - UNSPECIFIED - INTERNET - NON_INTERNET
+                       Check the DestNetworkType enum for the list of possible values.
+                    type: string
+                  destRegionCodes:
+                    description: Region codes whose IP addresses will be used to match
+                      for destination of traffic. Should be specified as 2 letter
+                      country code defined as per ISO 3166 alpha-2 country codes.
+                      ex."US" Maximum number of dest region codes allowed is 5000.
+                    items:
+                      type: string
+                    type: array
+                  destThreatIntelligences:
+                    description: Names of Network Threat Intelligence lists. The IPs
+                      in these lists will be matched against traffic destination.
+                    items:
+                      type: string
+                    type: array
+                  layer4Configs:
+                    description: Pairs of IP protocols and ports that the rule should
+                      match.
+                    items:
+                      properties:
+                        ipProtocol:
+                          description: The IP protocol to which this rule applies.
+                            The protocol type is required when creating a firewall
+                            rule. This value can either be one of the following well
+                            known protocol strings (tcp, udp, icmp, esp, ah, ipip,
+                            sctp), or the IP protocol number.
+                          type: string
+                        ports:
+                          description: 'An optional list of ports to which this rule
+                            applies. This field is only applicable for UDP or TCP
+                            protocol. Each entry must be either an integer or a range.
+                            If not specified, this rule applies to connections through
+                            any port. Example inputs include: ["22"], ["80","443"],
+                            and ["12345-12349"].'
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
+                  srcAddressGroups:
+                    description: Address groups which should be matched against the
+                      traffic source. Maximum number of source address groups is 10.
+                    items:
+                      type: string
+                    type: array
+                  srcFqdns:
+                    description: Fully Qualified Domain Name (FQDN) which should be
+                      matched against traffic source. Maximum number of source fqdn
+                      allowed is 100.
+                    items:
+                      type: string
+                    type: array
+                  srcIPRanges:
+                    description: CIDR IP address range. Maximum number of source CIDR
+                      IP ranges allowed is 5000.
+                    items:
+                      type: string
+                    type: array
+                  srcNetworkType:
+                    description: |-
+                      Network type of the traffic source. Allowed values are: - UNSPECIFIED - INTERNET - INTRA_VPC - NON_INTERNET - VPC_NETWORKS
+                       Check the SrcNetworkType enum for the list of possible values.
+                    type: string
+                  srcNetworks:
+                    description: Networks of the traffic source. It can be either
+                      a full or partial url.
+                    items:
+                      type: string
+                    type: array
+                  srcRegionCodes:
+                    description: Region codes whose IP addresses will be used to match
+                      for source of traffic. Should be specified as 2 letter country
+                      code defined as per ISO 3166 alpha-2 country codes. ex."US"
+                      Maximum number of source region codes allowed is 5000.
+                    items:
+                      type: string
+                    type: array
+                  srcSecureTags:
+                    description: List of secure tag values, which should be matched
+                      at the source of the traffic. For INGRESS rule, if all the srcSecureTag
+                      are INEFFECTIVE, and there is no srcIpRange, this rule will
+                      be ignored. Maximum number of source tag values allowed is 256.
+                    items:
+                      properties:
+                        name:
+                          description: Name of the secure tag, created with TagManager's
+                            TagValue API.
+                          type: string
+                        state:
+                          description: |-
+                            [Output Only] State of the secure tag, either `EFFECTIVE` or `INEFFECTIVE`. A secure tag is `INEFFECTIVE` when it is deleted or its network is deleted.
+                             Check the State enum for the list of possible values.
+                          type: string
+                      type: object
+                    type: array
+                  srcThreatIntelligences:
+                    description: Names of Network Threat Intelligence lists. The IPs
+                      in these lists will be matched against traffic source.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              priority:
+                description: An integer indicating the priority of a rule in the list.
+                  The priority must be a positive value between 0 and 2147483647.
+                  Rules are evaluated from highest to lowest priority where 0 is the
+                  highest priority and 2147483647 is the lowest priority.
+                format: int32
+                type: integer
+              projectRef:
+                description: The project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The ComputeFirewallPolicyRule name. If not given, the
+                  metadata.name will be used.
+                type: string
+              ruleName:
+                description: An optional name for the rule. This field is not a unique
+                  identifier and can be updated.
+                type: string
+              ruleTupleCount:
+                description: '[Output Only] Calculation of the complexity of a single
+                  firewall policy rule.'
+                format: int32
+                type: integer
+              securityProfileGroup:
+                description: 'A fully-qualified URL of a SecurityProfile resource
+                  instance. Example: https://networksecurity.googleapis.com/v1/projects/{project}/locations/{location}/securityProfileGroups/my-security-profile-group
+                  Must be specified if action is one of ''apply_security_profile_group''
+                  or ''mirror''. Cannot be specified for other actions.'
+                type: string
+              targetResources:
+                description: A list of network resource URLs to which this rule applies.
+                  This field allows you to control which network's VMs get this rule.
+                  If this field is left blank, all VMs within the organization will
+                  receive the rule.
+                items:
+                  type: string
+                type: array
+              targetSecureTags:
+                description: A list of secure tags that controls which instances the
+                  firewall rule applies to. If targetSecureTag are specified, then
+                  the firewall rule applies only to instances in the VPC network that
+                  have one of those EFFECTIVE secure tags, if all the target_secure_tag
+                  are in INEFFECTIVE state, then this rule will be ignored. targetSecureTag
+                  may not be set at the same time as targetServiceAccounts. If neither
+                  targetServiceAccounts nor targetSecureTag are specified, the firewall
+                  rule applies to all instances on the specified network. Maximum
+                  number of target label tags allowed is 256.
+                items:
+                  properties:
+                    name:
+                      description: Name of the secure tag, created with TagManager's
+                        TagValue API.
+                      type: string
+                    state:
+                      description: |-
+                        [Output Only] State of the secure tag, either `EFFECTIVE` or `INEFFECTIVE`. A secure tag is `INEFFECTIVE` when it is deleted or its network is deleted.
+                         Check the State enum for the list of possible values.
+                      type: string
+                  type: object
+                type: array
+              targetServiceAccounts:
+                description: A list of service accounts indicating the sets of instances
+                  that are applied with this rule.
+                items:
+                  type: string
+                type: array
+              tlsInspect:
+                description: Boolean flag indicating if the traffic should be TLS
+                  decrypted. Can be set only if action = 'apply_security_profile_group'
+                  and cannot be set for other actions.
+                type: boolean
+            required:
+            - location
+            type: object
+          status:
+            description: ComputeFirewallPolicyRuleStatus defines the config connector
+              machine state of ComputeFirewallPolicyRule
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ComputeFirewallPolicyRule
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

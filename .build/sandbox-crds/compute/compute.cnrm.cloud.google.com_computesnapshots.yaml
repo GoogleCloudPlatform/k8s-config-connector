@@ -1,0 +1,463 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: computesnapshots.compute.cnrm.cloud.google.com
+spec:
+  group: compute.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ComputeSnapshot
+    listKind: ComputeSnapshotList
+    plural: computesnapshots
+    shortNames:
+    - gcpcomputesnapshot
+    - gcpcomputesnapshots
+    singular: computesnapshot
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: ComputeSnapshot is the Schema for the ComputeSnapshot API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ComputeSnapshotSpec defines the desired state of ComputeSnapshot
+            properties:
+              architecture:
+                description: |-
+                  [Output Only] The architecture of the snapshot. Valid values are ARM64 or X86_64.
+                   Check the Architecture enum for the list of possible values.
+                type: string
+              autoCreated:
+                description: '[Output Only] Set to true if snapshots are automatically
+                  created by applying resource policy on the target disk.'
+                type: boolean
+              chainName:
+                description: Creates the new snapshot in the snapshot chain labeled
+                  with the specified name. The chain name must be 1-63 characters
+                  long and comply with RFC1035. This is an uncommon option only for
+                  advanced service owners who needs to create separate snapshot chains,
+                  for example, for chargeback tracking. When you describe your snapshot
+                  resource, this field is visible only if it has a non-empty value.
+                type: string
+              creationSizeBytes:
+                description: '[Output Only] Size in bytes of the snapshot at creation
+                  time.'
+                format: int64
+                type: integer
+              creationTimestamp:
+                description: '[Output Only] Creation timestamp in RFC3339 text format.'
+                type: string
+              description:
+                description: An optional description of this resource. Provide this
+                  property when you create the resource.
+                type: string
+              diskSizeGB:
+                description: '[Output Only] Size of the source disk, specified in
+                  GB.'
+                format: int64
+                type: integer
+              downloadBytes:
+                description: '[Output Only] Number of bytes downloaded to restore
+                  a snapshot to a disk.'
+                format: int64
+                type: integer
+              enableConfidentialCompute:
+                description: 'Whether this snapshot is created from a confidential
+                  compute mode disk. [Output Only]: This field is not set by user,
+                  but from source disk.'
+                type: boolean
+              guestFlush:
+                description: '[Input Only] Whether to attempt an application consistent
+                  snapshot by informing the OS to prepare for the snapshot process.'
+                type: boolean
+              guestOSFeatures:
+                description: '[Output Only] A list of features to enable on the guest
+                  operating system. Applicable only for bootable images. Read Enabling
+                  guest operating system features to see a list of available options.'
+                items:
+                  properties:
+                    type:
+                      description: |-
+                        The ID of a supported feature. To add multiple values, use commas to separate values. Set to one or more of the following values: - VIRTIO_SCSI_MULTIQUEUE - WINDOWS - MULTI_IP_SUBNET - UEFI_COMPATIBLE - GVNIC - SEV_CAPABLE - SUSPEND_RESUME_COMPATIBLE - SEV_LIVE_MIGRATABLE_V2 - SEV_SNP_CAPABLE - TDX_CAPABLE - IDPF - SNP_SVSM_CAPABLE For more information, see Enabling guest operating system features.
+                         Check the Type enum for the list of possible values.
+                      type: string
+                  type: object
+                type: array
+              id:
+                description: '[Output Only] The unique identifier for the resource.
+                  This identifier is defined by the server.'
+                format: int64
+                type: integer
+              kind:
+                description: '[Output Only] Type of the resource. Always compute#snapshot
+                  for Snapshot resources.'
+                type: string
+              labelFingerprint:
+                description: A fingerprint for the labels being applied to this snapshot,
+                  which is essentially a hash of the labels set used for optimistic
+                  locking. The fingerprint is initially generated by Compute Engine
+                  and changes after every request to modify or update labels. You
+                  must always provide an up-to-date fingerprint hash in order to update
+                  or change labels, otherwise the request will fail with error 412
+                  conditionNotMet. To see the latest fingerprint, make a get() request
+                  to retrieve a snapshot.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Labels to apply to this snapshot. These can be later
+                  modified by the setLabels method. Label values may be empty.
+                type: object
+              licenseCodes:
+                description: '[Output Only] Integer license codes indicating which
+                  licenses are attached to this snapshot.'
+                items:
+                  format: int64
+                  type: integer
+                type: array
+              licenses:
+                description: '[Output Only] A list of public visible licenses that
+                  apply to this snapshot. This can be because the original image had
+                  licenses attached (such as a Windows image).'
+                items:
+                  type: string
+                type: array
+              location:
+                description: The location of this resource.
+                type: string
+              locationHint:
+                description: An opaque location hint used to place the snapshot close
+                  to other resources. This field is for use by internal tools that
+                  use the public API.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The ComputeSnapshot name. If not given, the metadata.name
+                  will be used.
+                type: string
+              satisfiesPzi:
+                description: Output only. Reserved for future use.
+                type: boolean
+              satisfiesPzs:
+                description: '[Output Only] Reserved for future use.'
+                type: boolean
+              selfLink:
+                description: '[Output Only] Server-defined URL for the resource.'
+                type: string
+              snapshotEncryptionKey:
+                description: Encrypts the snapshot using a customer-supplied encryption
+                  key. After you encrypt a snapshot using a customer-supplied key,
+                  you must provide the same key if you use the snapshot later. For
+                  example, you must provide the encryption key when you create a disk
+                  from the encrypted snapshot in a future request. Customer-supplied
+                  encryption keys do not protect access to metadata of the snapshot.
+                  If you do not provide an encryption key when creating the snapshot,
+                  then the snapshot will be encrypted using an automatically generated
+                  key and you do not need to provide a key to use the snapshot later.
+                properties:
+                  kmsKeyName:
+                    description: 'The name of the encryption key that is stored in
+                      Google Cloud KMS. For example: "kmsKeyName": "projects/kms_project_id/locations/region/keyRings/
+                      key_region/cryptoKeys/key The fully-qualifed key name may be
+                      returned for resource GET requests. For example: "kmsKeyName":
+                      "projects/kms_project_id/locations/region/keyRings/ key_region/cryptoKeys/key
+                      /cryptoKeyVersions/1'
+                    type: string
+                  kmsKeyServiceAccount:
+                    description: 'The service account being used for the encryption
+                      request for the given KMS key. If absent, the Compute Engine
+                      default service account is used. For example: "kmsKeyServiceAccount":
+                      "name@project_id.iam.gserviceaccount.com/'
+                    type: string
+                  rawKey:
+                    description: 'Specifies a 256-bit customer-supplied encryption
+                      key, encoded in RFC 4648 base64 to either encrypt or decrypt
+                      this resource. You can provide either the rawKey or the rsaEncryptedKey.
+                      For example: "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="'
+                    type: string
+                  rsaEncryptedKey:
+                    description: 'Specifies an RFC 4648 base64 encoded, RSA-wrapped
+                      2048-bit customer-supplied encryption key to either encrypt
+                      or decrypt this resource. You can provide either the rawKey
+                      or the rsaEncryptedKey. For example: "rsaEncryptedKey": "ieCx/NcW06PcT7Ep1X6LUTc/hLvUDYyzSZPPVCVPTVEohpeHASqC8uw5TzyO9U+Fka9JFH
+                      z0mBibXUInrC/jEk014kCK/NPjYgEMOyssZ4ZINPKxlUh2zn1bV+MCaTICrdmuSBTWlUUiFoD
+                      D6PYznLwh8ZNdaheCeZ8ewEXgFQ8V+sDroLaN3Xs3MDTXQEMMoNUXMCZEIpg9Vtp9x2oe=="
+                      The key must meet the following requirements before you can
+                      provide it to Compute Engine: 1. The key is wrapped using a
+                      RSA public key certificate provided by Google. 2. After being
+                      wrapped, the key must be encoded in RFC 4648 base64 encoding.
+                      Gets the RSA public key certificate provided by Google at: https://cloud-certs.storage.googleapis.com/google-cloud-csek-ingress.pem'
+                    type: string
+                  sha256:
+                    description: '[Output only] The RFC 4648 base64 encoded SHA-256
+                      hash of the customer-supplied encryption key that protects this
+                      resource.'
+                    type: string
+                type: object
+              snapshotType:
+                description: |-
+                  Indicates the type of the snapshot.
+                   Check the SnapshotType enum for the list of possible values.
+                type: string
+              sourceDisk:
+                description: The source disk used to create this snapshot.
+                type: string
+              sourceDiskEncryptionKey:
+                description: The customer-supplied encryption key of the source disk.
+                  Required if the source disk is protected by a customer-supplied
+                  encryption key.
+                properties:
+                  kmsKeyName:
+                    description: 'The name of the encryption key that is stored in
+                      Google Cloud KMS. For example: "kmsKeyName": "projects/kms_project_id/locations/region/keyRings/
+                      key_region/cryptoKeys/key The fully-qualifed key name may be
+                      returned for resource GET requests. For example: "kmsKeyName":
+                      "projects/kms_project_id/locations/region/keyRings/ key_region/cryptoKeys/key
+                      /cryptoKeyVersions/1'
+                    type: string
+                  kmsKeyServiceAccount:
+                    description: 'The service account being used for the encryption
+                      request for the given KMS key. If absent, the Compute Engine
+                      default service account is used. For example: "kmsKeyServiceAccount":
+                      "name@project_id.iam.gserviceaccount.com/'
+                    type: string
+                  rawKey:
+                    description: 'Specifies a 256-bit customer-supplied encryption
+                      key, encoded in RFC 4648 base64 to either encrypt or decrypt
+                      this resource. You can provide either the rawKey or the rsaEncryptedKey.
+                      For example: "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="'
+                    type: string
+                  rsaEncryptedKey:
+                    description: 'Specifies an RFC 4648 base64 encoded, RSA-wrapped
+                      2048-bit customer-supplied encryption key to either encrypt
+                      or decrypt this resource. You can provide either the rawKey
+                      or the rsaEncryptedKey. For example: "rsaEncryptedKey": "ieCx/NcW06PcT7Ep1X6LUTc/hLvUDYyzSZPPVCVPTVEohpeHASqC8uw5TzyO9U+Fka9JFH
+                      z0mBibXUInrC/jEk014kCK/NPjYgEMOyssZ4ZINPKxlUh2zn1bV+MCaTICrdmuSBTWlUUiFoD
+                      D6PYznLwh8ZNdaheCeZ8ewEXgFQ8V+sDroLaN3Xs3MDTXQEMMoNUXMCZEIpg9Vtp9x2oe=="
+                      The key must meet the following requirements before you can
+                      provide it to Compute Engine: 1. The key is wrapped using a
+                      RSA public key certificate provided by Google. 2. After being
+                      wrapped, the key must be encoded in RFC 4648 base64 encoding.
+                      Gets the RSA public key certificate provided by Google at: https://cloud-certs.storage.googleapis.com/google-cloud-csek-ingress.pem'
+                    type: string
+                  sha256:
+                    description: '[Output only] The RFC 4648 base64 encoded SHA-256
+                      hash of the customer-supplied encryption key that protects this
+                      resource.'
+                    type: string
+                type: object
+              sourceDiskForRecoveryCheckpoint:
+                description: The source disk whose recovery checkpoint will be used
+                  to create this snapshot.
+                type: string
+              sourceDiskID:
+                description: '[Output Only] The ID value of the disk used to create
+                  this snapshot. This value may be used to determine whether the snapshot
+                  was taken from the current or a previous instance of a given disk
+                  name.'
+                type: string
+              sourceInstantSnapshot:
+                description: 'The source instant snapshot used to create this snapshot.
+                  You can provide this as a partial or full URL to the resource. For
+                  example, the following are valid values: - https://www.googleapis.com/compute/v1/projects/project/zones/zone
+                  /instantSnapshots/instantSnapshot - projects/project/zones/zone/instantSnapshots/instantSnapshot
+                  - zones/zone/instantSnapshots/instantSnapshot'
+                type: string
+              sourceInstantSnapshotEncryptionKey:
+                description: Customer provided encryption key when creating Snapshot
+                  from Instant Snapshot.
+                properties:
+                  kmsKeyName:
+                    description: 'The name of the encryption key that is stored in
+                      Google Cloud KMS. For example: "kmsKeyName": "projects/kms_project_id/locations/region/keyRings/
+                      key_region/cryptoKeys/key The fully-qualifed key name may be
+                      returned for resource GET requests. For example: "kmsKeyName":
+                      "projects/kms_project_id/locations/region/keyRings/ key_region/cryptoKeys/key
+                      /cryptoKeyVersions/1'
+                    type: string
+                  kmsKeyServiceAccount:
+                    description: 'The service account being used for the encryption
+                      request for the given KMS key. If absent, the Compute Engine
+                      default service account is used. For example: "kmsKeyServiceAccount":
+                      "name@project_id.iam.gserviceaccount.com/'
+                    type: string
+                  rawKey:
+                    description: 'Specifies a 256-bit customer-supplied encryption
+                      key, encoded in RFC 4648 base64 to either encrypt or decrypt
+                      this resource. You can provide either the rawKey or the rsaEncryptedKey.
+                      For example: "rawKey": "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="'
+                    type: string
+                  rsaEncryptedKey:
+                    description: 'Specifies an RFC 4648 base64 encoded, RSA-wrapped
+                      2048-bit customer-supplied encryption key to either encrypt
+                      or decrypt this resource. You can provide either the rawKey
+                      or the rsaEncryptedKey. For example: "rsaEncryptedKey": "ieCx/NcW06PcT7Ep1X6LUTc/hLvUDYyzSZPPVCVPTVEohpeHASqC8uw5TzyO9U+Fka9JFH
+                      z0mBibXUInrC/jEk014kCK/NPjYgEMOyssZ4ZINPKxlUh2zn1bV+MCaTICrdmuSBTWlUUiFoD
+                      D6PYznLwh8ZNdaheCeZ8ewEXgFQ8V+sDroLaN3Xs3MDTXQEMMoNUXMCZEIpg9Vtp9x2oe=="
+                      The key must meet the following requirements before you can
+                      provide it to Compute Engine: 1. The key is wrapped using a
+                      RSA public key certificate provided by Google. 2. After being
+                      wrapped, the key must be encoded in RFC 4648 base64 encoding.
+                      Gets the RSA public key certificate provided by Google at: https://cloud-certs.storage.googleapis.com/google-cloud-csek-ingress.pem'
+                    type: string
+                  sha256:
+                    description: '[Output only] The RFC 4648 base64 encoded SHA-256
+                      hash of the customer-supplied encryption key that protects this
+                      resource.'
+                    type: string
+                type: object
+              sourceInstantSnapshotID:
+                description: '[Output Only] The unique ID of the instant snapshot
+                  used to create this snapshot. This value identifies the exact instant
+                  snapshot that was used to create this snapshot. For example, if
+                  you created the snapshot from an instant snapshot that was later
+                  deleted and recreated under the same name, the source instant snapshot
+                  ID would identify the exact instant snapshot that was used.'
+                type: string
+              sourceSnapshotSchedulePolicy:
+                description: '[Output Only] URL of the resource policy which created
+                  this scheduled snapshot.'
+                type: string
+              sourceSnapshotSchedulePolicyID:
+                description: '[Output Only] ID of the resource policy which created
+                  this scheduled snapshot.'
+                type: string
+              status:
+                description: |-
+                  [Output Only] The status of the snapshot. This can be CREATING, DELETING, FAILED, READY, or UPLOADING.
+                   Check the Status enum for the list of possible values.
+                type: string
+              storageBytes:
+                description: '[Output Only] A size of the storage used by the snapshot.
+                  As snapshots share storage, this number is expected to change with
+                  snapshot creation/deletion.'
+                format: int64
+                type: integer
+              storageBytesStatus:
+                description: |-
+                  [Output Only] An indicator whether storageBytes is in a stable state or it is being adjusted as a result of shared storage reallocation. This status can either be UPDATING, meaning the size of the snapshot is being updated, or UP_TO_DATE, meaning the size of the snapshot is up-to-date.
+                   Check the StorageBytesStatus enum for the list of possible values.
+                type: string
+              storageLocations:
+                description: Cloud Storage bucket storage location of the snapshot
+                  (regional or multi-regional).
+                items:
+                  type: string
+                type: array
+            required:
+            - location
+            type: object
+          status:
+            description: ComputeSnapshotStatus defines the config connector machine
+              state of ComputeSnapshot
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ComputeSnapshot resource in
+                  GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

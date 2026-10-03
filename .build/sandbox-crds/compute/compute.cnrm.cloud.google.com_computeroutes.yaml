@@ -1,0 +1,340 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: computeroutes.compute.cnrm.cloud.google.com
+spec:
+  group: compute.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ComputeRoute
+    listKind: ComputeRouteList
+    plural: computeroutes
+    shortNames:
+    - gcpcomputeroute
+    - gcpcomputeroutes
+    singular: computeroute
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: ComputeRoute is the Schema for the ComputeRoute API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ComputeRouteSpec defines the desired state of ComputeRoute
+            properties:
+              asPaths:
+                description: '[Output Only] AS path.'
+                items:
+                  properties:
+                    asLists:
+                      description: '[Output Only] The AS numbers of the AS Path.'
+                      items:
+                        format: int32
+                        type: integer
+                      type: array
+                    pathSegmentType:
+                      description: |-
+                        [Output Only] The type of the AS Path, which can be one of the following values: - 'AS_SET': unordered set of autonomous systems that the route in has traversed - 'AS_SEQUENCE': ordered set of autonomous systems that the route has traversed - 'AS_CONFED_SEQUENCE': ordered set of Member Autonomous Systems in the local confederation that the route has traversed - 'AS_CONFED_SET': unordered set of Member Autonomous Systems in the local confederation that the route has traversed
+                         Check the PathSegmentType enum for the list of possible values.
+                      type: string
+                  type: object
+                type: array
+              creationTimestamp:
+                description: '[Output Only] Creation timestamp in RFC3339 text format.'
+                type: string
+              description:
+                description: An optional description of this resource. Provide this
+                  field when you create the resource.
+                type: string
+              destRange:
+                description: The destination range of outgoing packets that this route
+                  applies to. Both IPv4 and IPv6 are supported. Must specify an IPv4
+                  range (e.g. 192.0.2.0/24) or an IPv6 range in RFC 4291 format (e.g.
+                  2001:db8::/32). IPv6 range will be displayed using RFC 5952 compressed
+                  format.
+                type: string
+              id:
+                description: '[Output Only] The unique identifier for the resource.
+                  This identifier is defined by the server.'
+                format: int64
+                type: integer
+              kind:
+                description: '[Output Only] Type of this resource. Always compute#routes
+                  for Route resources.'
+                type: string
+              location:
+                description: The location of this resource.
+                type: string
+              network:
+                description: Fully-qualified URL of the network that this route applies
+                  to.
+                type: string
+              nextHopGateway:
+                description: 'The URL to a gateway that should handle matching packets.
+                  You can only specify the internet gateway using a full or partial
+                  valid URL: projects/ project/global/gateways/default-internet-gateway'
+                type: string
+              nextHopHub:
+                description: '[Output Only] The full resource name of the Network
+                  Connectivity Center hub that will handle matching packets.'
+                type: string
+              nextHopIP:
+                description: The network IP address of an instance that should handle
+                  matching packets. Both IPv6 address and IPv4 addresses are supported.
+                  Must specify an IPv4 address in dot-decimal notation (e.g. 192.0.2.99)
+                  or an IPv6 address in RFC 4291 format (e.g. 2001:db8::2d9:51:0:0
+                  or 2001:db8:0:0:2d9:51:0:0). IPv6 addresses will be displayed using
+                  RFC 5952 compressed format (e.g. 2001:db8::2d9:51:0:0). Should never
+                  be an IPv4-mapped IPv6 address.
+                type: string
+              nextHopIlb:
+                description: 'The URL to a forwarding rule of type loadBalancingScheme=INTERNAL
+                  that should handle matching packets or the IP address of the forwarding
+                  Rule. For example, the following are all valid URLs: - https://www.googleapis.com/compute/v1/projects/project/regions/region
+                  /forwardingRules/forwardingRule - regions/region/forwardingRules/forwardingRule
+                  If an IP address is provided, must specify an IPv4 address in dot-decimal
+                  notation or an IPv6 address in RFC 4291 format. For example, the
+                  following are all valid IP addresses: - 10.128.0.56 - 2001:db8::2d9:51:0:0
+                  - 2001:db8:0:0:2d9:51:0:0 IPv6 addresses will be displayed using
+                  RFC 5952 compressed format (e.g. 2001:db8::2d9:51:0:0). Should never
+                  be an IPv4-mapped IPv6 address.'
+                type: string
+              nextHopInstance:
+                description: 'The URL to an instance that should handle matching packets.
+                  You can specify this as a full or partial URL. For example: https://www.googleapis.com/compute/v1/projects/project/zones/zone/instances/'
+                type: string
+              nextHopInterRegionCost:
+                description: '[Output only] Internal fixed region-to-region cost that
+                  Google Cloud calculates based on factors such as network performance,
+                  distance, and available bandwidth between regions.'
+                format: int32
+                type: integer
+              nextHopMed:
+                description: '[Output Only] Multi-Exit Discriminator, a BGP route
+                  metric that indicates the desirability of a particular route in
+                  a network.'
+                format: int32
+                type: integer
+              nextHopNetwork:
+                description: The URL of the local network if it should handle matching
+                  packets.
+                type: string
+              nextHopOrigin:
+                description: |-
+                  [Output Only] Indicates the origin of the route. Can be IGP (Interior Gateway Protocol), EGP (Exterior Gateway Protocol), or INCOMPLETE.
+                   Check the NextHopOrigin enum for the list of possible values.
+                type: string
+              nextHopPeering:
+                description: '[Output Only] The network peering name that should handle
+                  matching packets, which should conform to RFC1035.'
+                type: string
+              nextHopVPNTunnel:
+                description: The URL to a VpnTunnel that should handle matching packets.
+                type: string
+              params:
+                description: Input only. [Input Only] Additional params passed with
+                  the request, but not persisted as part of resource payload.
+                properties:
+                  resourceManagerTags:
+                    additionalProperties:
+                      type: string
+                    description: 'Tag keys/values directly bound to this resource.
+                      Tag keys and values have the same definition as resource manager
+                      tags. The field is allowed for INSERT only. The keys/values
+                      to set on the resource should be specified in either ID { :
+                      } or Namespaced format { : }. For example the following are
+                      valid inputs: * {"tagKeys/333" : "tagValues/444", "tagKeys/123"
+                      : "tagValues/456"} * {"123/environment" : "production", "345/abc"
+                      : "xyz"} Note: * Invalid combinations of ID & namespaced format
+                      is not supported. For instance: {"123/environment" : "tagValues/444"}
+                      is invalid.'
+                    type: object
+                type: object
+              priority:
+                description: The priority of this route. Priority is used to break
+                  ties in cases where there is more than one matching route of equal
+                  prefix length. In cases where multiple routes have equal prefix
+                  length, the one with the lowest-numbered priority value wins. The
+                  default value is `1000`. The priority value must be from `0` to
+                  `65535`, inclusive.
+                format: int32
+                type: integer
+              projectRef:
+                description: The project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The ComputeRoute name. If not given, the metadata.name
+                  will be used.
+                type: string
+              routeStatus:
+                description: |-
+                  [Output only] The status of the route.
+                   Check the RouteStatus enum for the list of possible values.
+                type: string
+              routeType:
+                description: |-
+                  [Output Only] The type of this route, which can be one of the following values: - 'TRANSIT' for a transit route that this router learned from another Cloud Router and will readvertise to one of its BGP peers - 'SUBNET' for a route from a subnet of the VPC - 'BGP' for a route learned from a BGP peer of this router - 'STATIC' for a static route
+                   Check the RouteType enum for the list of possible values.
+                type: string
+              selfLink:
+                description: '[Output Only] Server-defined fully-qualified URL for
+                  this resource.'
+                type: string
+              tags:
+                description: A list of instance tags to which this route applies.
+                items:
+                  type: string
+                type: array
+              warnings:
+                description: '[Output Only] If potential misconfigurations are detected
+                  for this route, this field will be populated with warning messages.'
+                items:
+                  properties:
+                    code:
+                      description: |-
+                        [Output Only] A warning code, if applicable. For example, Compute Engine returns NO_RESULTS_ON_PAGE if there are no results in the response.
+                         Check the Code enum for the list of possible values.
+                      type: string
+                    data:
+                      description: '[Output Only] Metadata about this warning in key:
+                        value format. For example: "data": [ { "key": "scope", "value":
+                        "zones/us-east1-d" }'
+                      items:
+                        properties:
+                          key:
+                            description: '[Output Only] A key that provides more detail
+                              on the warning being returned. For example, for warnings
+                              where there are no results in a list request for a particular
+                              zone, this key might be scope and the key value might
+                              be the zone name. Other examples might be a key indicating
+                              a deprecated resource and a suggested replacement, or
+                              a warning about invalid network settings (for example,
+                              if an instance attempts to perform IP forwarding but
+                              is not enabled for IP forwarding).'
+                            type: string
+                          value:
+                            description: '[Output Only] A warning data value corresponding
+                              to the key.'
+                            type: string
+                        type: object
+                      type: array
+                    message:
+                      description: '[Output Only] A human-readable description of
+                        the warning code.'
+                      type: string
+                  type: object
+                type: array
+            required:
+            - location
+            type: object
+          status:
+            description: ComputeRouteStatus defines the config connector machine state
+              of ComputeRoute
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ComputeRoute resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

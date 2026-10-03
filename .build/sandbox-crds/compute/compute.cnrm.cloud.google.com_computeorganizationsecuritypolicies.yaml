@@ -1,0 +1,823 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: computeorganizationsecuritypolicies.compute.cnrm.cloud.google.com
+spec:
+  group: compute.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ComputeOrganizationSecurityPolicy
+    listKind: ComputeOrganizationSecurityPolicyList
+    plural: computeorganizationsecuritypolicies
+    shortNames:
+    - gcpcomputeorganizationsecuritypolicy
+    - gcpcomputeorganizationsecuritypolicys
+    singular: computeorganizationsecuritypolicy
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ComputeOrganizationSecurityPolicy is the Schema for the ComputeOrganizationSecurityPolicy
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ComputeOrganizationSecurityPolicySpec defines the desired
+              state of ComputeOrganizationSecurityPolicy
+            properties:
+              adaptiveProtectionConfig:
+                properties:
+                  layer7DdosDefenseConfig:
+                    description: If set to true, enables Cloud Armor Machine Learning.
+                    properties:
+                      enable:
+                        description: If set to true, enables CAAP for L7 DDoS detection.
+                          This field is only supported in Global Security Policies
+                          of type CLOUD_ARMOR.
+                        type: boolean
+                      ruleVisibility:
+                        description: |-
+                          Rule visibility can be one of the following: STANDARD - opaque rules. (default) PREMIUM - transparent rules. This field is only supported in Global Security Policies of type CLOUD_ARMOR.
+                           Check the RuleVisibility enum for the list of possible values.
+                        type: string
+                      thresholdConfigs:
+                        description: Configuration options for layer7 adaptive protection
+                          for various customizable thresholds.
+                        items:
+                          properties:
+                            autoDeployConfidenceThreshold:
+                              type: number
+                            autoDeployExpirationSec:
+                              format: int32
+                              type: integer
+                            autoDeployImpactedBaselineThreshold:
+                              type: number
+                            autoDeployLoadThreshold:
+                              type: number
+                            detectionAbsoluteQps:
+                              type: number
+                            detectionLoadThreshold:
+                              type: number
+                            detectionRelativeToBaselineQps:
+                              type: number
+                            name:
+                              description: The name must be 1-63 characters long,
+                                and comply with RFC1035. The name must be unique within
+                                the security policy.
+                              type: string
+                            trafficGranularityConfigs:
+                              description: Configuration options for enabling Adaptive
+                                Protection to operate on specified granular traffic
+                                units.
+                              items:
+                                properties:
+                                  enableEachUniqueValue:
+                                    description: If enabled, traffic matching each
+                                      unique value for the specified type constitutes
+                                      a separate traffic unit. It can only be set
+                                      to true if `value` is empty.
+                                    type: boolean
+                                  type:
+                                    description: |-
+                                      Type of this configuration.
+                                       Check the Type enum for the list of possible values.
+                                    type: string
+                                  value:
+                                    description: Requests that match this value constitute
+                                      a granular traffic unit.
+                                    type: string
+                                type: object
+                              type: array
+                          type: object
+                        type: array
+                    type: object
+                type: object
+              advancedOptionsConfig:
+                properties:
+                  jsonCustomConfig:
+                    description: Custom configuration to apply the JSON parsing. Only
+                      applicable when json_parsing is set to STANDARD.
+                    properties:
+                      contentTypes:
+                        description: 'A list of custom Content-Type header values
+                          to apply the JSON parsing. As per RFC 1341, a Content-Type
+                          header value has the following format: Content-Type := type
+                          "/" subtype *[";" parameter] When configuring a custom Content-Type
+                          header value, only the type/subtype needs to be specified,
+                          and the parameters should be excluded.'
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  jsonParsing:
+                    description: Check the JsonParsing enum for the list of possible
+                      values.
+                    type: string
+                  logLevel:
+                    description: Check the LogLevel enum for the list of possible
+                      values.
+                    type: string
+                  userIPRequestHeaders:
+                    description: An optional list of case-insensitive request header
+                      names to use for resolving the callers client IP address.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              creationTimestamp:
+                description: '[Output Only] Creation timestamp in RFC3339 text format.'
+                type: string
+              ddosProtectionConfig:
+                properties:
+                  ddosProtection:
+                    description: Check the DdosProtection enum for the list of possible
+                      values.
+                    type: string
+                type: object
+              description:
+                description: An optional description of this resource. Provide this
+                  property when you create the resource.
+                type: string
+              fingerprint:
+                description: Specifies a fingerprint for this resource, which is essentially
+                  a hash of the metadata's contents and used for optimistic locking.
+                  The fingerprint is initially generated by Compute Engine and changes
+                  after every request to modify or update metadata. You must always
+                  provide an up-to-date fingerprint hash in order to update or change
+                  metadata, otherwise the request will fail with error 412 conditionNotMet.
+                  To see the latest fingerprint, make get() request to the security
+                  policy.
+                type: string
+              id:
+                description: '[Output Only] The unique identifier for the resource.
+                  This identifier is defined by the server.'
+                format: int64
+                type: integer
+              kind:
+                description: '[Output only] Type of the resource. Always compute#securityPolicyfor
+                  security policies'
+                type: string
+              labelFingerprint:
+                description: A fingerprint for the labels being applied to this security
+                  policy, which is essentially a hash of the labels set used for optimistic
+                  locking. The fingerprint is initially generated by Compute Engine
+                  and changes after every request to modify or update labels. You
+                  must always provide an up-to-date fingerprint hash in order to update
+                  or change labels. To see the latest fingerprint, make get() request
+                  to the security policy.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Labels for this resource. These can only be added or
+                  modified by the setLabels method. Each label key/value pair must
+                  comply with RFC1035. Label values may be empty.
+                type: object
+              location:
+                description: The location of this resource.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              recaptchaOptionsConfig:
+                properties:
+                  redirectSiteKey:
+                    description: An optional field to supply a reCAPTCHA site key
+                      to be used for all the rules using the redirect action with
+                      the type of GOOGLE_RECAPTCHA under the security policy. The
+                      specified site key needs to be created from the reCAPTCHA API.
+                      The user is responsible for the validity of the specified site
+                      key. If not specified, a Google-managed site key is used. This
+                      field is only supported in Global Security Policies of type
+                      CLOUD_ARMOR.
+                    type: string
+                type: object
+              region:
+                description: '[Output Only] URL of the region where the regional security
+                  policy resides. This field is not applicable to global security
+                  policies.'
+                type: string
+              resourceID:
+                description: The ComputeOrganizationSecurityPolicy name. If not given,
+                  the metadata.name will be used.
+                type: string
+              rules:
+                description: A list of rules that belong to this policy. There must
+                  always be a default rule which is a rule with priority 2147483647
+                  and match all condition (for the match condition this means match
+                  "*" for srcIpRanges and for the networkMatch condition every field
+                  must be either match "*" or not set). If no rules are provided when
+                  creating a security policy, a default rule with action "allow" will
+                  be added.
+                items:
+                  properties:
+                    action:
+                      description: 'The Action to perform when the rule is matched.
+                        The following are the valid actions: - allow: allow access
+                        to target. - deny(STATUS): deny access to target, returns
+                        the HTTP response code specified. Valid values for `STATUS`
+                        are 403, 404, and 502. - rate_based_ban: limit client traffic
+                        to the configured threshold and ban the client if the traffic
+                        exceeds the threshold. Configure parameters for this action
+                        in RateLimitOptions. Requires rate_limit_options to be set.
+                        - redirect: redirect to a different target. This can either
+                        be an internal reCAPTCHA redirect, or an external URL-based
+                        redirect via a 302 response. Parameters for this action can
+                        be configured via redirectOptions. This action is only supported
+                        in Global Security Policies of type CLOUD_ARMOR. - throttle:
+                        limit client traffic to the configured threshold. Configure
+                        parameters for this action in rateLimitOptions. Requires rate_limit_options
+                        to be set for this.'
+                      type: string
+                    description:
+                      description: An optional description of this resource. Provide
+                        this property when you create the resource.
+                      type: string
+                    headerAction:
+                      description: Optional, additional actions that are performed
+                        on headers. This field is only supported in Global Security
+                        Policies of type CLOUD_ARMOR.
+                      properties:
+                        requestHeadersToAdds:
+                          description: The list of request headers to add or overwrite
+                            if they're already present.
+                          items:
+                            properties:
+                              headerName:
+                                description: The name of the header to set.
+                                type: string
+                              headerValue:
+                                description: The value to set the named header to.
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    kind:
+                      description: '[Output only] Type of the resource. Always compute#securityPolicyRule
+                        for security policy rules'
+                      type: string
+                    match:
+                      description: A match condition that incoming traffic is evaluated
+                        against. If it evaluates to true, the corresponding 'action'
+                        is enforced.
+                      properties:
+                        config:
+                          description: The configuration options available when specifying
+                            versioned_expr. This field must be specified if versioned_expr
+                            is specified and cannot be specified if versioned_expr
+                            is not specified.
+                          properties:
+                            srcIPRanges:
+                              description: CIDR IP address range. Maximum number of
+                                src_ip_ranges allowed is 10.
+                              items:
+                                type: string
+                              type: array
+                          type: object
+                        expr:
+                          description: User defined CEVAL expression. A CEVAL expression
+                            is used to specify match criteria such as origin.ip, source.region_code
+                            and contents in the request header. Expressions containing
+                            `evaluateThreatIntelligence` require Cloud Armor Managed
+                            Protection Plus tier and are not supported in Edge Policies
+                            nor in Regional Policies. Expressions containing `evaluatePreconfiguredExpr('sourceiplist-*')`
+                            require Cloud Armor Managed Protection Plus tier and are
+                            only supported in Global Security Policies.
+                          properties:
+                            description:
+                              description: Optional. Description of the expression.
+                                This is a longer text which describes the expression,
+                                e.g. when hovered over it in a UI.
+                              type: string
+                            expression:
+                              description: Textual representation of an expression
+                                in Common Expression Language syntax.
+                              type: string
+                            location:
+                              description: Optional. String indicating the location
+                                of the expression for error reporting, e.g. a file
+                                name and a position in the file.
+                              type: string
+                            title:
+                              description: Optional. Title for the expression, i.e.
+                                a short string describing its purpose. This can be
+                                used e.g. in UIs which allow to enter the expression.
+                              type: string
+                          type: object
+                        exprOptions:
+                          description: The configuration options available when specifying
+                            a user defined CEVAL expression (i.e., 'expr').
+                          properties:
+                            recaptchaOptions:
+                              description: reCAPTCHA configuration options to be applied
+                                for the rule. If the rule does not evaluate reCAPTCHA
+                                tokens, this field has no effect.
+                              properties:
+                                actionTokenSiteKeys:
+                                  description: A list of site keys to be used during
+                                    the validation of reCAPTCHA action-tokens. The
+                                    provided site keys need to be created from reCAPTCHA
+                                    API under the same project where the security
+                                    policy is created.
+                                  items:
+                                    type: string
+                                  type: array
+                                sessionTokenSiteKeys:
+                                  description: A list of site keys to be used during
+                                    the validation of reCAPTCHA session-tokens. The
+                                    provided site keys need to be created from reCAPTCHA
+                                    API under the same project where the security
+                                    policy is created.
+                                  items:
+                                    type: string
+                                  type: array
+                              type: object
+                          type: object
+                        versionedExpr:
+                          description: |-
+                            Preconfigured versioned expression. If this field is specified, config must also be specified. Available preconfigured expressions along with their requirements are: SRC_IPS_V1 - must specify the corresponding src_ip_range field in config.
+                             Check the VersionedExpr enum for the list of possible values.
+                          type: string
+                      type: object
+                    networkMatch:
+                      description: 'A match condition that incoming packets are evaluated
+                        against for CLOUD_ARMOR_NETWORK security policies. If it matches,
+                        the corresponding ''action'' is enforced. The match criteria
+                        for a rule consists of built-in match fields (like ''srcIpRanges'')
+                        and potentially multiple user-defined match fields (''userDefinedFields'').
+                        Field values may be extracted directly from the packet or
+                        derived from it (e.g. ''srcRegionCodes''). Some fields may
+                        not be present in every packet (e.g. ''srcPorts''). A user-defined
+                        field is only present if the base header is found in the packet
+                        and the entire field is in bounds. Each match field may specify
+                        which values can match it, listing one or more ranges, prefixes,
+                        or exact values that are considered a match for the field.
+                        A field value must be present in order to match a specified
+                        match field. If no match values are specified for a match
+                        field, then any field value is considered to match it, and
+                        it''s not required to be present. For strings specifying ''*''
+                        is also equivalent to match all. For a packet to match a rule,
+                        all specified match fields must match the corresponding field
+                        values derived from the packet. Example: networkMatch: srcIpRanges:
+                        - "192.0.2.0/24" - "198.51.100.0/24" userDefinedFields: -
+                        name: "ipv4_fragment_offset" values: - "1-0x1fff" The above
+                        match condition matches packets with a source IP in 192.0.2.0/24
+                        or 198.51.100.0/24 and a user-defined field named "ipv4_fragment_offset"
+                        with a value between 1 and 0x1fff inclusive.'
+                      properties:
+                        destIPRanges:
+                          description: Destination IPv4/IPv6 addresses or CIDR prefixes,
+                            in standard text format.
+                          items:
+                            type: string
+                          type: array
+                        destPorts:
+                          description: Destination port numbers for TCP/UDP/SCTP.
+                            Each element can be a 16-bit unsigned decimal number (e.g.
+                            "80") or range (e.g. "0-1023").
+                          items:
+                            type: string
+                          type: array
+                        ipProtocols:
+                          description: 'IPv4 protocol / IPv6 next header (after extension
+                            headers). Each element can be an 8-bit unsigned decimal
+                            number (e.g. "6"), range (e.g. "253-254"), or one of the
+                            following protocol names: "tcp", "udp", "icmp", "esp",
+                            "ah", "ipip", or "sctp".'
+                          items:
+                            type: string
+                          type: array
+                        srcAsns:
+                          description: BGP Autonomous System Number associated with
+                            the source IP address.
+                          items:
+                            format: int32
+                            type: integer
+                          type: array
+                        srcIPRanges:
+                          description: Source IPv4/IPv6 addresses or CIDR prefixes,
+                            in standard text format.
+                          items:
+                            type: string
+                          type: array
+                        srcPorts:
+                          description: Source port numbers for TCP/UDP/SCTP. Each
+                            element can be a 16-bit unsigned decimal number (e.g.
+                            "80") or range (e.g. "0-1023").
+                          items:
+                            type: string
+                          type: array
+                        srcRegionCodes:
+                          description: Two-letter ISO 3166-1 alpha-2 country code
+                            associated with the source IP address.
+                          items:
+                            type: string
+                          type: array
+                        userDefinedFields:
+                          description: User-defined fields. Each element names a defined
+                            field and lists the matching values for that field.
+                          items:
+                            properties:
+                              name:
+                                description: Name of the user-defined field, as given
+                                  in the definition.
+                                type: string
+                              values:
+                                description: Matching values of the field. Each element
+                                  can be a 32-bit unsigned decimal or hexadecimal
+                                  (starting with "0x") number (e.g. "64") or range
+                                  (e.g. "0x400-0x7ff").
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                      type: object
+                    preconfiguredWafConfig:
+                      description: Preconfigured WAF configuration to be applied for
+                        the rule. If the rule does not evaluate preconfigured WAF
+                        rules, i.e., if evaluatePreconfiguredWaf() is not used, this
+                        field will have no effect.
+                      properties:
+                        exclusions:
+                          description: A list of exclusions to apply during preconfigured
+                            WAF evaluation.
+                          items:
+                            properties:
+                              requestCookiesToExclude:
+                                description: A list of request cookie names whose
+                                  value will be excluded from inspection during preconfigured
+                                  WAF evaluation.
+                                items:
+                                  properties:
+                                    op:
+                                      description: |-
+                                        The match operator for the field.
+                                         Check the Op enum for the list of possible values.
+                                      type: string
+                                    val:
+                                      description: The value of the field.
+                                      type: string
+                                  type: object
+                                type: array
+                              requestHeadersToExclude:
+                                description: A list of request header names whose
+                                  value will be excluded from inspection during preconfigured
+                                  WAF evaluation.
+                                items:
+                                  properties:
+                                    op:
+                                      description: |-
+                                        The match operator for the field.
+                                         Check the Op enum for the list of possible values.
+                                      type: string
+                                    val:
+                                      description: The value of the field.
+                                      type: string
+                                  type: object
+                                type: array
+                              requestQueryParamsToExclude:
+                                description: A list of request query parameter names
+                                  whose value will be excluded from inspection during
+                                  preconfigured WAF evaluation. Note that the parameter
+                                  can be in the query string or in the POST body.
+                                items:
+                                  properties:
+                                    op:
+                                      description: |-
+                                        The match operator for the field.
+                                         Check the Op enum for the list of possible values.
+                                      type: string
+                                    val:
+                                      description: The value of the field.
+                                      type: string
+                                  type: object
+                                type: array
+                              requestUrisToExclude:
+                                description: A list of request URIs from the request
+                                  line to be excluded from inspection during preconfigured
+                                  WAF evaluation. When specifying this field, the
+                                  query or fragment part should be excluded.
+                                items:
+                                  properties:
+                                    op:
+                                      description: |-
+                                        The match operator for the field.
+                                         Check the Op enum for the list of possible values.
+                                      type: string
+                                    val:
+                                      description: The value of the field.
+                                      type: string
+                                  type: object
+                                type: array
+                              targetRuleIds:
+                                description: A list of target rule IDs under the WAF
+                                  rule set to apply the preconfigured WAF exclusion.
+                                  If omitted, it refers to all the rule IDs under
+                                  the WAF rule set.
+                                items:
+                                  type: string
+                                type: array
+                              targetRuleSet:
+                                description: Target WAF rule set to apply the preconfigured
+                                  WAF exclusion.
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    preview:
+                      description: If set to true, the specified action is not enforced.
+                      type: boolean
+                    priority:
+                      description: An integer indicating the priority of a rule in
+                        the list. The priority must be a positive value between 0
+                        and 2147483647. Rules are evaluated from highest to lowest
+                        priority where 0 is the highest priority and 2147483647 is
+                        the lowest priority.
+                      format: int32
+                      type: integer
+                    rateLimitOptions:
+                      description: Must be specified if the action is "rate_based_ban"
+                        or "throttle". Cannot be specified for any other actions.
+                      properties:
+                        banDurationSec:
+                          description: Can only be specified if the action for the
+                            rule is "rate_based_ban". If specified, determines the
+                            time (in seconds) the traffic will continue to be banned
+                            by the rate limit after the rate falls below the threshold.
+                          format: int32
+                          type: integer
+                        banThreshold:
+                          description: Can only be specified if the action for the
+                            rule is "rate_based_ban". If specified, the key will be
+                            banned for the configured 'ban_duration_sec' when the
+                            number of requests that exceed the 'rate_limit_threshold'
+                            also exceed this 'ban_threshold'.
+                          properties:
+                            count:
+                              description: Number of HTTP(S) requests for calculating
+                                the threshold.
+                              format: int32
+                              type: integer
+                            intervalSec:
+                              description: Interval over which the threshold is computed.
+                              format: int32
+                              type: integer
+                          type: object
+                        conformAction:
+                          description: Action to take for requests that are under
+                            the configured rate limit threshold. Valid option is "allow"
+                            only.
+                          type: string
+                        enforceOnKey:
+                          description: |-
+                            Determines the key to enforce the rate_limit_threshold on. Possible values are: - ALL: A single rate limit threshold is applied to all the requests matching this rule. This is the default value if "enforceOnKey" is not configured. - IP: The source IP address of the request is the key. Each IP has this limit enforced separately. - HTTP_HEADER: The value of the HTTP header whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the header value. If no such header is present in the request, the key type defaults to ALL. - XFF_IP: The first IP address (i.e. the originating client IP address) specified in the list of IPs under X-Forwarded-For HTTP header. If no such header is present or the value is not a valid IP, the key defaults to the source IP address of the request i.e. key type IP. - HTTP_COOKIE: The value of the HTTP cookie whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the cookie value. If no such cookie is present in the request, the key type defaults to ALL. - HTTP_PATH: The URL path of the HTTP request. The key value is truncated to the first 128 bytes. - SNI: Server name indication in the TLS session of the HTTPS request. The key value is truncated to the first 128 bytes. The key type defaults to ALL on a HTTP session. - REGION_CODE: The country/region from which the request originates. - TLS_JA3_FINGERPRINT: JA3 TLS/SSL fingerprint if the client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key type defaults to ALL. - USER_IP: The IP address of the originating client, which is resolved based on "userIpRequestHeaders" configured with the security policy. If there is no "userIpRequestHeaders" configuration or an IP address cannot be resolved from it, the key type defaults to IP. - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key type defaults to ALL.
+                             Check the EnforceOnKey enum for the list of possible values.
+                          type: string
+                        enforceOnKeyConfigs:
+                          description: If specified, any combination of values of
+                            enforce_on_key_type/enforce_on_key_name is treated as
+                            the key on which ratelimit threshold/action is enforced.
+                            You can specify up to 3 enforce_on_key_configs. If enforce_on_key_configs
+                            is specified, enforce_on_key must not be specified.
+                          items:
+                            properties:
+                              enforceOnKeyName:
+                                description: 'Rate limit key name applicable only
+                                  for the following key types: HTTP_HEADER -- Name
+                                  of the HTTP header whose value is taken as the key
+                                  value. HTTP_COOKIE -- Name of the HTTP cookie whose
+                                  value is taken as the key value.'
+                                type: string
+                              enforceOnKeyType:
+                                description: |-
+                                  Determines the key to enforce the rate_limit_threshold on. Possible values are: - ALL: A single rate limit threshold is applied to all the requests matching this rule. This is the default value if "enforceOnKeyConfigs" is not configured. - IP: The source IP address of the request is the key. Each IP has this limit enforced separately. - HTTP_HEADER: The value of the HTTP header whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the header value. If no such header is present in the request, the key type defaults to ALL. - XFF_IP: The first IP address (i.e. the originating client IP address) specified in the list of IPs under X-Forwarded-For HTTP header. If no such header is present or the value is not a valid IP, the key defaults to the source IP address of the request i.e. key type IP. - HTTP_COOKIE: The value of the HTTP cookie whose name is configured under "enforceOnKeyName". The key value is truncated to the first 128 bytes of the cookie value. If no such cookie is present in the request, the key type defaults to ALL. - HTTP_PATH: The URL path of the HTTP request. The key value is truncated to the first 128 bytes. - SNI: Server name indication in the TLS session of the HTTPS request. The key value is truncated to the first 128 bytes. The key type defaults to ALL on a HTTP session. - REGION_CODE: The country/region from which the request originates. - TLS_JA3_FINGERPRINT: JA3 TLS/SSL fingerprint if the client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key type defaults to ALL. - USER_IP: The IP address of the originating client, which is resolved based on "userIpRequestHeaders" configured with the security policy. If there is no "userIpRequestHeaders" configuration or an IP address cannot be resolved from it, the key type defaults to IP. - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key type defaults to ALL.
+                                   Check the EnforceOnKeyType enum for the list of possible values.
+                                type: string
+                            type: object
+                          type: array
+                        enforceOnKeyName:
+                          description: 'Rate limit key name applicable only for the
+                            following key types: HTTP_HEADER -- Name of the HTTP header
+                            whose value is taken as the key value. HTTP_COOKIE --
+                            Name of the HTTP cookie whose value is taken as the key
+                            value.'
+                          type: string
+                        exceedAction:
+                          description: Action to take for requests that are above
+                            the configured rate limit threshold, to either deny with
+                            a specified HTTP response code, or redirect to a different
+                            endpoint. Valid options are `deny(STATUS)`, where valid
+                            values for `STATUS` are 403, 404, 429, and 502, and `redirect`,
+                            where the redirect parameters come from `exceedRedirectOptions`
+                            below. The `redirect` action is only supported in Global
+                            Security Policies of type CLOUD_ARMOR.
+                          type: string
+                        exceedRedirectOptions:
+                          description: Parameters defining the redirect action that
+                            is used as the exceed action. Cannot be specified if the
+                            exceed action is not redirect. This field is only supported
+                            in Global Security Policies of type CLOUD_ARMOR.
+                          properties:
+                            target:
+                              description: Target for the redirect action. This is
+                                required if the type is EXTERNAL_302 and cannot be
+                                specified for GOOGLE_RECAPTCHA.
+                              type: string
+                            type:
+                              description: |-
+                                Type of the redirect action. Possible values are: - GOOGLE_RECAPTCHA: redirect to reCAPTCHA for manual challenge assessment. - EXTERNAL_302: redirect to a different URL via a 302 response.
+                                 Check the Type enum for the list of possible values.
+                              type: string
+                          type: object
+                        rateLimitThreshold:
+                          description: Threshold at which to begin ratelimiting.
+                          properties:
+                            count:
+                              description: Number of HTTP(S) requests for calculating
+                                the threshold.
+                              format: int32
+                              type: integer
+                            intervalSec:
+                              description: Interval over which the threshold is computed.
+                              format: int32
+                              type: integer
+                          type: object
+                      type: object
+                    redirectOptions:
+                      description: Parameters defining the redirect action. Cannot
+                        be specified for any other actions. This field is only supported
+                        in Global Security Policies of type CLOUD_ARMOR.
+                      properties:
+                        target:
+                          description: Target for the redirect action. This is required
+                            if the type is EXTERNAL_302 and cannot be specified for
+                            GOOGLE_RECAPTCHA.
+                          type: string
+                        type:
+                          description: |-
+                            Type of the redirect action. Possible values are: - GOOGLE_RECAPTCHA: redirect to reCAPTCHA for manual challenge assessment. - EXTERNAL_302: redirect to a different URL via a 302 response.
+                             Check the Type enum for the list of possible values.
+                          type: string
+                      type: object
+                  type: object
+                type: array
+              selfLink:
+                description: '[Output Only] Server-defined URL for the resource.'
+                type: string
+              type:
+                description: |-
+                  The type indicates the intended use of the security policy. - CLOUD_ARMOR: Cloud Armor backend security policies can be configured to filter incoming HTTP requests targeting backend services. They filter requests before they hit the origin servers. - CLOUD_ARMOR_EDGE: Cloud Armor edge security policies can be configured to filter incoming HTTP requests targeting backend services (including Cloud CDN-enabled) as well as backend buckets (Cloud Storage). They filter requests before the request is served from Google's cache. - CLOUD_ARMOR_INTERNAL_SERVICE: Cloud Armor internal service policies can be configured to filter HTTP requests targeting services managed by Traffic Director in a service mesh. They filter requests before the request is served from the application. - CLOUD_ARMOR_NETWORK: Cloud Armor network policies can be configured to filter packets targeting network load balancing resources such as backend services, target pools, target instances, and instances with external IPs. They filter requests before the request is served from the application. This field can be set only at resource creation time.
+                   Check the Type enum for the list of possible values.
+                type: string
+              userDefinedFields:
+                description: 'Definitions of user-defined fields for CLOUD_ARMOR_NETWORK
+                  policies. A user-defined field consists of up to 4 bytes extracted
+                  from a fixed offset in the packet, relative to the IPv4, IPv6, TCP,
+                  or UDP header, with an optional mask to select certain bits. Rules
+                  may then specify matching values for these fields. Example: userDefinedFields:
+                  - name: "ipv4_fragment_offset" base: IPV4 offset: 6 size: 2 mask:
+                  "0x1fff"'
+                items:
+                  properties:
+                    base:
+                      description: |-
+                        The base relative to which 'offset' is measured. Possible values are: - IPV4: Points to the beginning of the IPv4 header. - IPV6: Points to the beginning of the IPv6 header. - TCP: Points to the beginning of the TCP header, skipping over any IPv4 options or IPv6 extension headers. Not present for non-first fragments. - UDP: Points to the beginning of the UDP header, skipping over any IPv4 options or IPv6 extension headers. Not present for non-first fragments. required
+                         Check the Base enum for the list of possible values.
+                      type: string
+                    mask:
+                      description: If specified, apply this mask (bitwise AND) to
+                        the field to ignore bits before matching. Encoded as a hexadecimal
+                        number (starting with "0x"). The last byte of the field (in
+                        network byte order) corresponds to the least significant byte
+                        of the mask.
+                      type: string
+                    name:
+                      description: The name of this field. Must be unique within the
+                        policy.
+                      type: string
+                    offset:
+                      description: Offset of the first byte of the field (in network
+                        byte order) relative to 'base'.
+                      format: int32
+                      type: integer
+                    size:
+                      description: 'Size of the field in bytes. Valid values: 1-4.'
+                      format: int32
+                      type: integer
+                  type: object
+                type: array
+            required:
+            - location
+            type: object
+          status:
+            description: ComputeOrganizationSecurityPolicyStatus defines the config
+              connector machine state of ComputeOrganizationSecurityPolicy
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ComputeOrganizationSecurityPolicy
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

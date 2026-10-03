@@ -1,0 +1,233 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: networksecurityauthzpolicies.networksecurity.cnrm.cloud.google.com
+spec:
+  group: networksecurity.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: NetworkSecurityAuthzPolicy
+    listKind: NetworkSecurityAuthzPolicyList
+    plural: networksecurityauthzpolicies
+    shortNames:
+    - gcpnetworksecurityauthzpolicy
+    - gcpnetworksecurityauthzpolicys
+    singular: networksecurityauthzpolicy
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: NetworkSecurityAuthzPolicy is the Schema for the NetworkSecurityAuthzPolicy
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: NetworkSecurityAuthzPolicySpec defines the desired state
+              of NetworkSecurityAuthzPolicy
+            properties:
+              action:
+                description: |-
+                  Required. Can be one of `ALLOW`, `DENY`, `CUSTOM`.
+
+                   When the action is `CUSTOM`, `customProvider` must be specified.
+
+                   When the action is `ALLOW`, only requests matching the policy will
+                   be allowed.
+
+                   When the action is `DENY`, only requests matching the policy will be
+                   denied.
+
+                   When a request arrives, the policies are evaluated in the following order:
+
+                   1. If there is a `CUSTOM` policy that matches the request, the `CUSTOM`
+                   policy is evaluated using the custom authorization providers and the
+                   request is denied if the provider rejects the request.
+
+                   2. If there are any `DENY` policies that match the request, the request
+                   is denied.
+
+                   3. If there are no `ALLOW` policies for the resource or if any of the
+                   `ALLOW` policies match the request, the request is allowed.
+
+                   4. Else the request is denied by default if none of the configured
+                   AuthzPolicies with `ALLOW` action match the request.
+                type: string
+              customProvider:
+                description: |-
+                  Optional. Required if the action is `CUSTOM`. Allows delegating
+                   authorization decisions to Cloud IAP or to Service Extensions. One of
+                   `cloudIap` or `authzExtension` must be specified.
+              description:
+                description: Optional. A human-readable description of the resource.
+                type: string
+              httpRules:
+                description: |-
+                  Optional. A list of authorization HTTP rules to match against the incoming
+                   request. A policy match occurs when at least one HTTP rule matches the
+                   request or when no HTTP rules are specified in the policy.
+                   At least one HTTP Rule is required for Allow or Deny Action. Limited
+                   to 5 rules.
+                items: {}
+                type: array
+              labels:
+                additionalProperties:
+                  type: string
+                description: |-
+                  Optional. Set of labels associated with the `AuthzPolicy` resource.
+
+                   The format must comply with [the following
+                   requirements](/compute/docs/labeling-resources#requirements).
+                type: object
+              location:
+                description: The location of this resource.
+                type: string
+              networkRules:
+                description: |-
+                  Optional. A list of authorization network rules to match against the
+                   incoming request. A policy match occurs when at least one network rule
+                   matches the request.
+                   At least one network rule is required for Allow or Deny Action if no HTTP
+                   rules are provided. Network rules are mutually exclusive with HTTP rules.
+                   Limited to 5 rules.
+                items: {}
+                type: array
+              policyProfile:
+                description: |-
+                  Optional. Immutable. Defines the type of authorization being performed.
+                   If not specified, `REQUEST_AUTHZ` is applied. This field cannot be changed
+                   once AuthzPolicy is created.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The NetworkSecurityAuthzPolicy name. If not given, the
+                  metadata.name will be used.
+                type: string
+              target:
+                description: |-
+                  Required. Specifies the set of resources to which this policy should be
+                   applied to.
+            required:
+            - location
+            type: object
+          status:
+            description: NetworkSecurityAuthzPolicyStatus defines the config connector
+              machine state of NetworkSecurityAuthzPolicy
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the NetworkSecurityAuthzPolicy
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. The timestamp when the resource was
+                      created.
+                    type: string
+                  updateTime:
+                    description: Output only. The timestamp when the resource was
+                      updated.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
