@@ -75,7 +75,7 @@ spec:
           valueTemplate: projects/{{project}}/locations/{{location}}/certificateIssuanceConfigs/{{name}}
     - name: google_certificate_manager_certificate_map
       kind: CertificateManagerCertificateMap
-      idTemplate: "projects/{{project}}/locations/global/certificateMaps/{{name}}"
+      idTemplate: "projects/{{project}}/locations/{{location}}/certificateMaps/{{name}}"
       idTemplateCanBeUsedToMatchResourceName: false
       resourceAvailableInAssetInventory: false
       v1alpha1ToV1beta1: true
@@ -99,7 +99,7 @@ spec:
             group: resourcemanager.cnrm.cloud.google.com
     - name: google_certificate_manager_certificate_map_entry
       kind: CertificateManagerCertificateMapEntry
-      idTemplate: "projects/{{project}}/locations/global/certificateMaps/{{map}}/certificateMapEntries/{{name}}"
+      idTemplate: "projects/{{project}}/locations/{{location}}/certificateMaps/{{map}}/certificateMapEntries/{{name}}"
       idTemplateCanBeUsedToMatchResourceName: false
       resourceAvailableInAssetInventory: false
       v1alpha1ToV1beta1: true

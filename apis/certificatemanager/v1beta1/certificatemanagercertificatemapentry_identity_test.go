@@ -36,6 +36,17 @@ func TestCertificateManagerCertificateMapEntryIdentity_FromExternal(t *testing.T
 			ref:  "projects/my-project/locations/global/certificateMaps/my-certmap/certificateMapEntries/my-entry",
 			want: &CertificateManagerCertificateMapEntryIdentity{
 				Project:             "my-project",
+				Location:            "global",
+				CertificateMap:      "my-certmap",
+				CertificateMapEntry: "my-entry",
+			},
+		},
+		{
+			name: "valid regional reference",
+			ref:  "projects/my-project/locations/u-region-1/certificateMaps/my-certmap/certificateMapEntries/my-entry",
+			want: &CertificateManagerCertificateMapEntryIdentity{
+				Project:             "my-project",
+				Location:            "u-region-1",
 				CertificateMap:      "my-certmap",
 				CertificateMapEntry: "my-entry",
 			},
@@ -50,6 +61,7 @@ func TestCertificateManagerCertificateMapEntryIdentity_FromExternal(t *testing.T
 			ref:  "https://certificatemanager.googleapis.com/projects/my-project/locations/global/certificateMaps/my-certmap/certificateMapEntries/my-entry",
 			want: &CertificateManagerCertificateMapEntryIdentity{
 				Project:             "my-project",
+				Location:            "global",
 				CertificateMap:      "my-certmap",
 				CertificateMapEntry: "my-entry",
 			},
@@ -59,6 +71,7 @@ func TestCertificateManagerCertificateMapEntryIdentity_FromExternal(t *testing.T
 			ref:  "//certificatemanager.googleapis.com/projects/my-project/locations/global/certificateMaps/my-certmap/certificateMapEntries/my-entry",
 			want: &CertificateManagerCertificateMapEntryIdentity{
 				Project:             "my-project",
+				Location:            "global",
 				CertificateMap:      "my-certmap",
 				CertificateMapEntry: "my-entry",
 			},
@@ -111,7 +124,33 @@ func TestCertificateManagerCertificateMapEntryRef_Normalize(t *testing.T) {
 		},
 	}
 
-	reader := fake.NewClientBuilder().WithScheme(s).WithObjects(certMap, certMapEntry).Build()
+	regionalCertMap := &unstructured.Unstructured{}
+	regionalCertMap.SetGroupVersionKind(CertificateManagerCertificateMapGVK)
+	regionalCertMap.SetName("regional-certmap")
+	regionalCertMap.SetNamespace("my-ns")
+	regionalCertMap.Object["spec"] = map[string]interface{}{
+		"resourceID": "regional-certmap-id",
+		"location":   "u-region-1",
+		"projectRef": map[string]interface{}{
+			"external": "my-project",
+		},
+	}
+
+	regionalCertMapEntry := &unstructured.Unstructured{}
+	regionalCertMapEntry.SetGroupVersionKind(CertificateManagerCertificateMapEntryGVK)
+	regionalCertMapEntry.SetName("regional-entry")
+	regionalCertMapEntry.SetNamespace("my-ns")
+	regionalCertMapEntry.Object["spec"] = map[string]interface{}{
+		"resourceID": "regional-entry-id",
+		"projectRef": map[string]interface{}{
+			"external": "my-project",
+		},
+		"mapRef": map[string]interface{}{
+			"name": "regional-certmap",
+		},
+	}
+
+	reader := fake.NewClientBuilder().WithScheme(s).WithObjects(certMap, certMapEntry, regionalCertMap, regionalCertMapEntry).Build()
 
 	tests := []struct {
 		name             string
@@ -128,12 +167,20 @@ func TestCertificateManagerCertificateMapEntryRef_Normalize(t *testing.T) {
 			want: "projects/my-project/locations/global/certificateMaps/my-certmap/certificateMapEntries/my-entry",
 		},
 		{
-			name: "internal reference",
+			name: "internal reference defaulting to global",
 			ref: &CertificateManagerCertificateMapEntryRef{
 				Name:      "my-entry",
 				Namespace: "my-ns",
 			},
 			want: "projects/my-project/locations/global/certificateMaps/my-certmap-id/certificateMapEntries/my-entry-id",
+		},
+		{
+			name: "internal reference inheriting regional location from mapRef",
+			ref: &CertificateManagerCertificateMapEntryRef{
+				Name:      "regional-entry",
+				Namespace: "my-ns",
+			},
+			want: "projects/my-project/locations/u-region-1/certificateMaps/regional-certmap-id/certificateMapEntries/regional-entry-id",
 		},
 		{
 			name: "internal reference with default namespace",
