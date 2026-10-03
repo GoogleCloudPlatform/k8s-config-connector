@@ -603,7 +603,8 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Finstances%2Fspannerinsta
 
 {
   "encryptionConfig": {
-    "encryptionType": 2
+    "encryptionType": 2,
+    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
   "fullBackupSpec": {},
   "retentionDuration": "1209600s",
@@ -625,7 +626,8 @@ X-Xss-Protection: 0
 
 {
   "encryptionConfig": {
-    "encryptionType": 2
+    "encryptionType": 2,
+    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
   "fullBackupSpec": {},
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules/spannerbackupschedule-${uniqueId}",
@@ -658,7 +660,8 @@ X-Xss-Protection: 0
 
 {
   "encryptionConfig": {
-    "encryptionType": 2
+    "encryptionType": 2,
+    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
   "fullBackupSpec": {},
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules/spannerbackupschedule-${uniqueId}",
@@ -682,7 +685,8 @@ X-Goog-Request-Params: backup_schedule.name=projects%2F${projectId}%2Finstances%
 
 {
   "encryptionConfig": {
-    "encryptionType": 2
+    "encryptionType": 2,
+    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
   "incrementalBackupSpec": {},
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules/spannerbackupschedule-${uniqueId}",
@@ -705,7 +709,8 @@ X-Xss-Protection: 0
 
 {
   "encryptionConfig": {
-    "encryptionType": 2
+    "encryptionType": 2,
+    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
   "fullBackupSpec": {},
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules/spannerbackupschedule-${uniqueId}",
@@ -738,7 +743,8 @@ X-Xss-Protection: 0
 
 {
   "encryptionConfig": {
-    "encryptionType": 2
+    "encryptionType": 2,
+    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
   "fullBackupSpec": {},
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules/spannerbackupschedule-${uniqueId}",
