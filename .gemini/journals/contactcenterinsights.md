@@ -66,5 +66,14 @@
   5. Recorded minimal and maximal fixtures against real GCP (`RECORD_AUDIT_PROBE=1 ./hack/record-gcp`), and verified re-reconciliation and audit log generation.
 - **Impact**: Fully functional direct controller and E2E test coverage for `CCInsightsAnalysisRule`.
 
+### [2026-10-04] CCInsightsAnalysisRule MockGCP and Alignment verification
+- **Context**: Aligning MockGCP logs with RealGCP output for `CCInsightsAnalysisRule` (`contactcenterinsights.cnrm.cloud.google.com/v1alpha1`).
+- **Findings & Verification**:
+  1. Verified MockGCP implementation for `CCInsightsAnalysisRule` in `mockgcp/mockcontactcenterinsights/ccinsightsanalysisrule.go` handling `CreateAnalysisRule`, `GetAnalysisRule`, `UpdateAnalysisRule`, `DeleteAnalysisRule`, and `ListAnalysisRules`.
+  2. Verified 404 error message formatting matching real GCP (`"No AnalysisRule found for project: \`%d\` and AnalysisRule Id: \`%s\`."`).
+  3. Verified ID generation, timestamp updates, field mask updates, and URL normalizations for `${analysisRuleId}` in `mockgcp/mockcontactcenterinsights/normalize.go`.
+  4. Verified both `ccinsightsanalysisrule-minimal` and `ccinsightsanalysisrule-maximal` test fixtures pass `hack/compare-mock "fixtures/ccinsightsanalysisrule"` and `TestGoldenLogAlignment` with 0 diffs.
+
+
 
 
