@@ -717,6 +717,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - financialservices.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - firebase.cnrm.cloud.google.com
   resources:
   - '*'
@@ -982,6 +990,14 @@ rules:
   - watch
 - apiGroups:
   - notebooks.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - oracledatabase.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
