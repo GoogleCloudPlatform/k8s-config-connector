@@ -71,6 +71,11 @@ func (UnderlyingResourceOutOfSyncPredicate) Update(e event.UpdateEvent) bool {
 		return true
 	}
 
+	// Changes to the terminal error mode annotation should trigger a reconcile
+	if e.ObjectOld.GetAnnotations()[k8s.TerminalErrorModeAnnotation] != e.ObjectNew.GetAnnotations()[k8s.TerminalErrorModeAnnotation] {
+		return true
+	}
+
 	// Changes to the reconcile interval annotation should trigger a reconcile
 	if oldValue, newValue := e.ObjectOld.GetAnnotations()[k8s.ReconcileIntervalInSecondsAnnotation], e.ObjectNew.GetAnnotations()[k8s.ReconcileIntervalInSecondsAnnotation]; oldValue != newValue {
 		newValueInt, err := strconv.ParseInt(newValue, 10, 32)

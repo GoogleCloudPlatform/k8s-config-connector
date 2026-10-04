@@ -320,6 +320,19 @@ func (r *LifecycleHandler) HandleUpdateFailed(ctx context.Context, resource *k8s
 	return fmt.Errorf("Update call failed: %w", err)
 }
 
+func (r *LifecycleHandler) HandleUpdateFailedTerminalError(ctx context.Context, resource *k8s.Resource, err error) error {
+	structuredreporting.ReportError(ctx, err, resource)
+	msg := fmt.Errorf("Update call failed: %w", err).Error()
+	setCondition(resource, corev1.ConditionFalse, k8s.UpdateFailedTerminalError, msg)
+	setObservedGeneration(resource, resource.GetGeneration())
+	if err := r.updateStatus(ctx, resource); err != nil {
+		return err
+	}
+
+	r.recordEvent(ctx, resource, corev1.EventTypeWarning, k8s.UpdateFailedTerminalError, msg)
+	return nil
+}
+
 func (r *LifecycleHandler) HandleDeleting(ctx context.Context, resource *k8s.Resource) error {
 	setCondition(resource, corev1.ConditionFalse, k8s.Deleting, k8s.DeletingMessage)
 	setObservedGeneration(resource, resource.GetGeneration())
