@@ -1,6 +1,6 @@
 # Terminal Error Mode
 
-> `Feature State`: `alpha` as of version v1.133+ (Direct Controllers)
+> `Feature State`: `alpha` as of version v1.159 (Direct Controllers)
 
 Config Connector direct controllers can be configured to halt infinite exponential-backoff retries when encountering permanent, deterministic client errors from Google Cloud APIs (such as malformed configurations, invalid arguments, or attempts to mutate immutable fields).
 
@@ -44,7 +44,7 @@ When `terminal-error-mode: "builtin"` is enabled, Config Connector evaluates err
 ### Qualified Terminal Errors
 The controller qualifies an error as terminal if it meets all of the following criteria:
 1. Returns HTTP `400 Bad Request` or gRPC `codes.InvalidArgument (3)`.
-2. Matches verified invalid argument payload details (e.g. `google.rpc.BadRequest` field violations, `google.rpc.ErrorInfo` with reasons like `INVALID_ARGUMENT`, `PARAMETER_VALUE_UNSPECIFIED`, `FIELD_VIOLATION`, or syntax errors).
+2. Matches verified invalid argument payload details (e.g. `google.rpc.BadRequest` field violations, `google.rpc.ErrorInfo` with reasons like `INVALID_ARGUMENT`, `FIELD_VIOLATION`, `IMMUTABLE_FIELD`, `MISSING_REQUIRED_FIELD`, or syntax errors).
 
 ### Transient Exception Exclusions
 Some GCP services return HTTP 400 for transient dependency states or concurrency locks. These are explicitly excluded from terminal error pausing and continue to retry normally:
