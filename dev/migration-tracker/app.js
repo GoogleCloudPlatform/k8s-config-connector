@@ -62,6 +62,9 @@ function toggleTheme() {
     if (document.getElementById('content-overview').classList.contains('active')) {
         renderCharts();
     }
+    if (document.getElementById('content-progress') && document.getElementById('content-progress').classList.contains('active')) {
+        renderProgressTab();
+    }
 }
 
 function switchTab(tabId) {
@@ -70,23 +73,50 @@ function switchTab(tabId) {
 
     const menuMap = {
         overview: { tab: 'menu-overview', title: 'Dashboard Overview' },
+        progress: { tab: 'menu-progress', title: 'Migration Progress & Projections' },
         matrix: { tab: 'menu-matrix', title: 'Resource Explorer' },
         explorer: { tab: 'menu-explorer', title: 'Dependency Topology' }
     };
 
-    document.getElementById(menuMap[tabId].tab).classList.add('active');
-    document.getElementById(`content-${tabId}`).classList.add('active');
-    document.getElementById('active-tab-title').textContent = menuMap[tabId].title;
+    if (menuMap[tabId]) {
+        document.getElementById(menuMap[tabId].tab).classList.add('active');
+        document.getElementById(`content-${tabId}`).classList.add('active');
+        document.getElementById('active-tab-title').textContent = menuMap[tabId].title;
+        window.location.hash = tabId;
+    }
 
     if (tabId === 'overview') {
         renderCharts();
+    } else if (tabId === 'progress') {
+        renderProgressTab();
+    }
+}
+
+let migrationHistory = [
+    { date: "2026-10-05", label: "Oct 05, '26", implemented: 80, flipped: 2 }
+];
+
+async function fetchMigrationHistory() {
+    try {
+        const response = await fetch('migration_history.json');
+        if (response.ok) {
+            const data = await response.json();
+            if (Array.isArray(data) && data.length > 0) {
+                migrationHistory = data;
+            }
+        }
+    } catch (e) {
+        console.warn('Using baseline migration history:', e);
     }
 }
 
 async function fetchData() {
     try {
-        const response = await fetch('data.json');
-        resourceData = await response.json();
+        const [resData] = await Promise.all([
+            fetch('data.json').then(r => r.json()),
+            fetchMigrationHistory()
+        ]);
+        resourceData = resData;
         
         buildDownstreamMap();
         populateFilters();
@@ -97,7 +127,7 @@ async function fetchData() {
         filterAndRenderTable();
 
         const hash = window.location.hash.substring(1);
-        if (['overview', 'matrix', 'explorer'].includes(hash)) {
+        if (['overview', 'progress', 'matrix', 'explorer'].includes(hash)) {
             switchTab(hash);
         }
     } catch (error) {
@@ -559,3 +589,297 @@ function loadDependencyTree() {
         });
     }
 }
+
+function renderProgressTab() {
+    const container = document.getElementById('progress-svg-wrapper');
+    if (!container) return;
+
+    const startDate = new Date('2026-10-05T00:00:00Z');
+    const targetDate = new Date('2027-03-31T00:00:00Z');
+    const totalDays = (targetDate - startDate) / (1000 * 60 * 60 * 24); // 177 days
+    const totalWeeks = totalDays / 7.0; // ~25.2857 weeks
+    const totalScope = 301;
+    const startImpl = 80;
+    const startFlip = 2;
+
+    // SVG geometry
+    const svgWidth = 1000;
+    const svgHeight = 320;
+    const padLeft = 40;
+    const padRight = 70; // 930px line end, leaves room for Y-axis numbers at 940px
+    const padTop = 30;
+    const padBottom = 45; // 275px bottom line
+
+    const plotWidth = (svgWidth - padRight) - padLeft; // 890px
+    const plotHeight = (svgHeight - padBottom) - padTop; // 245px
+
+    function getX(weekFrac) {
+        return padLeft + (weekFrac / totalWeeks) * plotWidth;
+    }
+
+    function getY(val) {
+        return (svgHeight - padBottom) - (val / totalScope) * plotHeight;
+    }
+
+    // Grid lines for Y (0, 50, 100, 150, 200, 250, 301)
+    const yTicks = [0, 50, 100, 150, 200, 250, 301];
+    let gridLinesHtml = '';
+    const isDark = activeTheme === 'dark';
+    const gridStroke = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.1)';
+    const textColor = isDark ? '#9aa0a6' : '#5f6368';
+    const textPrimary = isDark ? '#e8eaed' : '#202124';
+
+    yTicks.forEach(val => {
+        const y = getY(val).toFixed(1);
+        gridLinesHtml += `<line x1="${padLeft}" y1="${y}" x2="${svgWidth - padRight}" y2="${y}" stroke="${gridStroke}" stroke-width="1" />`;
+        gridLinesHtml += `<text x="${svgWidth - padRight + 10}" y="${(parseFloat(y) + 4).toFixed(1)}" fill="${textColor}" font-size="10" text-anchor="start">${val}</text>`;
+    });
+
+    // Time points & X-ticks
+    const numIntervals = 26;
+    const weekPoints = [];
+    for (let i = 0; i <= numIntervals; i++) {
+        const curDate = new Date(startDate.getTime() + i * 7 * 24 * 60 * 60 * 1000);
+        if (curDate > targetDate) break;
+        const weekFrac = (curDate - startDate) / (1000 * 60 * 60 * 24 * 7);
+        const linImpl = startImpl + (weekFrac / totalWeeks) * (totalScope - startImpl);
+        const expFlip = startFlip * Math.pow(totalScope / startFlip, weekFrac / totalWeeks);
+        const label = curDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: '2-digit' }).replace(',', " '");
+        weekPoints.push({
+            index: i,
+            weekFrac: weekFrac,
+            date: curDate,
+            label: label,
+            linImpl: linImpl,
+            expFlip: expFlip,
+            x: getX(weekFrac)
+        });
+    }
+
+    // Add target point
+    const lastPt = weekPoints[weekPoints.length - 1];
+    if (lastPt && lastPt.weekFrac < totalWeeks) {
+        weekPoints.push({
+            index: numIntervals + 1,
+            weekFrac: totalWeeks,
+            date: targetDate,
+            label: "Mar 31, '27",
+            linImpl: totalScope,
+            expFlip: totalScope,
+            x: getX(totalWeeks)
+        });
+    }
+
+    // X Axis ticks every 3 intervals
+    let xTicksHtml = '';
+    weekPoints.forEach((pt, idx) => {
+        if (idx % 3 === 0 || idx === weekPoints.length - 1) {
+            xTicksHtml += `<text x="${pt.x.toFixed(1)}" y="${(svgHeight - padBottom + 22).toFixed(1)}" fill="${textColor}" font-size="10" text-anchor="middle">${pt.label}</text>`;
+        }
+    });
+
+    // Projected Paths
+    const projImplPath = weekPoints.map((pt, idx) => `${idx === 0 ? 'M' : 'L'} ${pt.x.toFixed(1)} ${getY(pt.linImpl).toFixed(1)}`).join(' ');
+    const projFlipPath = weekPoints.map((pt, idx) => `${idx === 0 ? 'M' : 'L'} ${pt.x.toFixed(1)} ${getY(pt.expFlip).toFixed(1)}`).join(' ');
+
+    // Actual Data Points
+    const actualPoints = migrationHistory.map(item => {
+        const itemDate = new Date(item.date + 'T00:00:00Z');
+        const weekFrac = Math.max(0, (itemDate - startDate) / (1000 * 60 * 60 * 24 * 7));
+        const x = getX(weekFrac);
+        const yImpl = getY(item.implemented);
+        const yFlip = getY(item.flipped);
+
+        const projImpl = startImpl + (weekFrac / totalWeeks) * (totalScope - startImpl);
+        const projFlip = startFlip * Math.pow(totalScope / startFlip, weekFrac / totalWeeks);
+
+        return {
+            dateStr: item.date,
+            label: item.label,
+            weekFrac: weekFrac,
+            implemented: item.implemented,
+            flipped: item.flipped,
+            projImpl: projImpl,
+            projFlip: projFlip,
+            implDelta: item.implemented - projImpl,
+            flipDelta: item.flipped - projFlip,
+            x: x,
+            yImpl: yImpl,
+            yFlip: yFlip
+        };
+    });
+
+    const realImplPath = actualPoints.map((pt, idx) => `${idx === 0 ? 'M' : 'L'} ${pt.x.toFixed(1)} ${pt.yImpl.toFixed(1)}`).join(' ');
+    const realFlipPath = actualPoints.map((pt, idx) => `${idx === 0 ? 'M' : 'L'} ${pt.x.toFixed(1)} ${pt.yFlip.toFixed(1)}`).join(' ');
+
+    let realMarkersHtml = '';
+    actualPoints.forEach(pt => {
+        realMarkersHtml += `<circle cx="${pt.x.toFixed(1)}" cy="${pt.yImpl.toFixed(1)}" r="4.5" fill="#10b981" stroke="var(--bg-card)" stroke-width="2" />`;
+        realMarkersHtml += `<circle cx="${pt.x.toFixed(1)}" cy="${pt.yFlip.toFixed(1)}" r="4.5" fill="#06b6d4" stroke="var(--bg-card)" stroke-width="2" />`;
+    });
+
+    const latestActual = actualPoints[actualPoints.length - 1] || actualPoints[0];
+
+    // Update legend actual numbers
+    const legendRealImpl = document.getElementById('legend-real-impl');
+    const legendRealFlip = document.getElementById('legend-real-flip');
+    if (legendRealImpl) legendRealImpl.textContent = latestActual.implemented;
+    if (legendRealFlip) legendRealFlip.textContent = latestActual.flipped;
+
+    // Advisory cards evaluation
+    updateAdvisories(latestActual);
+
+    // Build SVG
+    const svgHtml = `
+    <svg id="svgProgressChart" viewBox="0 0 ${svgWidth} ${svgHeight}" width="100%" height="100%" style="overflow: visible; font-family: var(--font-family);">
+      <!-- Grid -->
+      ${gridLinesHtml}
+      ${xTicksHtml}
+
+      <!-- Right Axis Header Only -->
+      <text x="${svgWidth - padRight}" y="18" fill="${textPrimary}" font-size="11" font-weight="600" text-anchor="end">Controllers (0 &ndash; 301)</text>
+
+      <!-- Dotted Projected Lines -->
+      <path d="${projImplPath}" fill="none" stroke="#34d399" stroke-width="2.5" stroke-dasharray="4,3" opacity="0.9" />
+      <path d="${projFlipPath}" fill="none" stroke="#22d3ee" stroke-width="2.5" stroke-dasharray="4,3" opacity="0.9" />
+
+      <!-- Solid Real Progress Lines -->
+      <path d="${realImplPath}" fill="none" stroke="#10b981" stroke-width="3" />
+      <path d="${realFlipPath}" fill="none" stroke="#06b6d4" stroke-width="3" />
+
+      <!-- Real Markers -->
+      ${realMarkersHtml}
+
+      <!-- Vertical Guideline & Tooltip Indicator -->
+      <line id="prog-hover-line" x1="0" y1="${padTop}" x2="0" y2="${svgHeight - padBottom}" stroke="${textColor}" stroke-width="1.5" stroke-dasharray="2,2" style="display: none;" />
+      <circle id="prog-hover-impl" cx="0" cy="0" r="5" fill="#10b981" stroke="var(--bg-card)" stroke-width="2" style="display: none;" />
+      <circle id="prog-hover-flip" cx="0" cy="0" r="5" fill="#06b6d4" stroke="var(--bg-card)" stroke-width="2" style="display: none;" />
+    </svg>
+    <div id="prog-tooltip" style="display: none; position: absolute; background: rgba(15, 23, 42, 0.92); color: #f8fafc; padding: 10px 14px; border-radius: 6px; font-size: 11px; pointer-events: none; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 100; min-width: 170px;"></div>
+    `;
+
+    container.innerHTML = svgHtml;
+
+    // Attach mouse interaction
+    const svgElem = document.getElementById('svgProgressChart');
+    const hoverLine = document.getElementById('prog-hover-line');
+    const hoverImpl = document.getElementById('prog-hover-impl');
+    const hoverFlip = document.getElementById('prog-hover-flip');
+    const tooltip = document.getElementById('prog-tooltip');
+
+    svgElem.addEventListener('mousemove', (e) => {
+        const rect = svgElem.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const svgMouseX = (mouseX / rect.width) * svgWidth;
+
+        if (svgMouseX < padLeft || svgMouseX > (svgWidth - padRight)) {
+            hoverLine.style.display = 'none';
+            hoverImpl.style.display = 'none';
+            hoverFlip.style.display = 'none';
+            tooltip.style.display = 'none';
+            return;
+        }
+
+        const weekFrac = ((svgMouseX - padLeft) / plotWidth) * totalWeeks;
+        const curDate = new Date(startDate.getTime() + weekFrac * 7 * 24 * 60 * 60 * 1000);
+        const curLabel = curDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: '2-digit' }).replace(',', " '");
+
+        const curLinImpl = Math.min(totalScope, startImpl + (weekFrac / totalWeeks) * (totalScope - startImpl));
+        const curExpFlip = Math.min(totalScope, startFlip * Math.pow(totalScope / startFlip, weekFrac / totalWeeks));
+
+        // Find if actual point exists near this week
+        const matchActual = actualPoints.find(p => Math.abs(p.weekFrac - weekFrac) < 0.5);
+
+        const xPos = svgMouseX;
+        const yLin = getY(curLinImpl);
+        const yExp = getY(curExpFlip);
+
+        hoverLine.setAttribute('x1', xPos);
+        hoverLine.setAttribute('x2', xPos);
+        hoverLine.style.display = 'block';
+
+        hoverImpl.setAttribute('cx', xPos);
+        hoverImpl.setAttribute('cy', yLin);
+        hoverImpl.style.display = 'block';
+
+        hoverFlip.setAttribute('cx', xPos);
+        hoverFlip.setAttribute('cy', yExp);
+        hoverFlip.style.display = 'block';
+
+        let html = `<div style="font-weight: 600; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 4px;">${curLabel} (W${weekFrac.toFixed(1)})</div>`;
+        if (matchActual) {
+            html += `<div style="color: #10b981; font-weight: 600;">Real Impl: ${matchActual.implemented} <span style="font-size: 10px; color: ${matchActual.implDelta >= 0 ? '#34d399' : '#f87171'};">(${matchActual.implDelta >= 0 ? '+' : ''}${matchActual.implDelta.toFixed(1)})</span></div>`;
+            html += `<div style="color: #06b6d4; font-weight: 600;">Real Flip: ${matchActual.flipped} <span style="font-size: 10px; color: ${matchActual.flipDelta >= 0 ? '#22d3ee' : '#f87171'};">(${matchActual.flipDelta >= 0 ? '+' : ''}${matchActual.flipDelta.toFixed(1)})</span></div>`;
+        }
+        html += `<div style="color: #34d399; margin-top: 4px;">Target Impl: ${curLinImpl.toFixed(1)}</div>`;
+        html += `<div style="color: #22d3ee;">Target Flip: ${curExpFlip.toFixed(1)}</div>`;
+
+        tooltip.innerHTML = html;
+        tooltip.style.display = 'block';
+
+        let leftPx = mouseX + 15;
+        if (leftPx + 180 > rect.width) {
+            leftPx = mouseX - 190;
+        }
+        tooltip.style.left = `${leftPx}px`;
+        tooltip.style.top = `${Math.min(rect.height - 120, Math.max(10, (e.clientY - rect.top) - 40))}px`;
+    });
+
+    svgElem.addEventListener('mouseleave', () => {
+        hoverLine.style.display = 'none';
+        hoverImpl.style.display = 'none';
+        hoverFlip.style.display = 'none';
+        tooltip.style.display = 'none';
+    });
+}
+
+function updateAdvisories(latestActual) {
+    const implCard = document.getElementById('advisory-impl-card');
+    const implIcon = document.getElementById('advisory-impl-icon');
+    const implTitle = document.getElementById('advisory-impl-title');
+    const implDesc = document.getElementById('advisory-impl-desc');
+
+    const flipCard = document.getElementById('advisory-flip-card');
+    const flipIcon = document.getElementById('advisory-flip-icon');
+    const flipTitle = document.getElementById('advisory-flip-title');
+    const flipDesc = document.getElementById('advisory-flip-desc');
+
+    if (!implCard || !flipCard) return;
+
+    implCard.classList.remove('ahead', 'ontime', 'behind');
+    if (latestActual.implDelta > 0.5) {
+        implCard.classList.add('ahead');
+        implIcon.textContent = '🚀';
+        implTitle.textContent = `Implementation: Ahead of Schedule (+${latestActual.implDelta.toFixed(1)} controllers)`;
+        implDesc.textContent = `Actual: ${latestActual.implemented} vs Target: ${latestActual.projImpl.toFixed(1)}. Pacing ahead of required 8.7/week run rate!`;
+    } else if (latestActual.implDelta < -0.5) {
+        implCard.classList.add('behind');
+        implIcon.textContent = '⚠️';
+        implTitle.textContent = `Implementation: Behind Schedule (${latestActual.implDelta.toFixed(1)} controllers)`;
+        implDesc.textContent = `Actual: ${latestActual.implemented} vs Target: ${latestActual.projImpl.toFixed(1)}. Velocity must increase to meet March 31, 2027 target!`;
+    } else {
+        implCard.classList.add('ontime');
+        implIcon.textContent = '✅';
+        implTitle.textContent = `Implementation: On Track (Current: ${latestActual.implemented} / Target: ${latestActual.projImpl.toFixed(1)})`;
+        implDesc.textContent = `Tracking required linear delivery pace (8.7 controllers/week). 221 remaining to implement.`;
+    }
+
+    flipCard.classList.remove('ahead', 'ontime', 'behind');
+    if (latestActual.flipDelta > 0.5) {
+        flipCard.classList.add('ahead');
+        flipIcon.textContent = '🚀';
+        flipTitle.textContent = `Default Flip: Ahead of Schedule (+${latestActual.flipDelta.toFixed(1)} flips)`;
+        flipDesc.textContent = `Actual: ${latestActual.flipped} vs Target: ${latestActual.projFlip.toFixed(1)}. Early default flips exceeding exponential curve!`;
+    } else if (latestActual.flipDelta < -0.5) {
+        flipCard.classList.add('behind');
+        flipIcon.textContent = '⚠️';
+        flipTitle.textContent = `Default Flip: Behind Schedule (${latestActual.flipDelta.toFixed(1)} flips)`;
+        flipDesc.textContent = `Actual: ${latestActual.flipped} vs Target: ${latestActual.projFlip.toFixed(1)}. Qualification and default flipping cadence needs acceleration.`;
+    } else {
+        flipCard.classList.add('ontime');
+        flipIcon.textContent = '✅';
+        flipTitle.textContent = `Default Flip: On Track (Current: ${latestActual.flipped} / Target: ${latestActual.projFlip.toFixed(1)})`;
+        flipDesc.textContent = `Aligns with initial exponential adoption phase (target ramping to 11.8 flips/week). 299 flips needed.`;
+    }
+}
+

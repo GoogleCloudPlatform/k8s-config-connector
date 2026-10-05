@@ -513,6 +513,66 @@ def create_default_resource(kind, group="unknown"):
         "notes": ""
     }
 
+def update_migration_history(config_file_path):
+    pattern = re.compile(
+        r'\{\s*Group:\s*"([^"]+)",\s*Kind:\s*"([^"]+)"\s*\}:\s*\{\s*DefaultController:\s*k8s\.(\w+),\s*SupportedControllers:\s*\[\]k8s\.ReconcilerType\{([^}]+)\}\s*\}'
+    )
+    direct_ready = 0
+    direct_default = 0
+    total_legacy = 0
+    if not os.path.exists(config_file_path):
+        return
+    with open(config_file_path, "r", encoding="utf-8") as f:
+        for line in f:
+            m = pattern.search(line)
+            if not m:
+                continue
+            group, kind, default_ctrl, supported_raw = m.groups()
+            supported = [c.strip().replace("k8s.", "").replace("ReconcilerType", "").lower() for c in supported_raw.split(",")]
+            def_ctrl = default_ctrl.replace("ReconcilerType", "").lower()
+            is_migration = any(c in ("terraform", "dcl", "iampartialpolicy") for c in supported)
+            if not is_migration:
+                continue
+            total_legacy += 1
+            if "direct" in supported:
+                direct_ready += 1
+                if def_ctrl == "direct":
+                    direct_default += 1
+
+    import datetime
+    today_str = datetime.date.today().strftime("%Y-%m-%d")
+    today_label = datetime.date.today().strftime("%b %d, '%y")
+    history_file = os.path.join(SCRIPT_DIR, 'migration_history.json')
+    history = []
+    if os.path.exists(history_file):
+        try:
+            with open(history_file, 'r', encoding='utf-8') as f:
+                history = json.load(f)
+        except Exception:
+            history = []
+    found = False
+    for item in history:
+        if item.get("date") == today_str:
+            item["implemented"] = direct_ready
+            item["flipped"] = direct_default
+            item["label"] = today_label
+            found = True
+            break
+    if not found:
+        history.append({
+            "date": today_str,
+            "label": today_label,
+            "implemented": direct_ready,
+            "flipped": direct_default
+        })
+    history.sort(key=lambda x: x.get("date", ""))
+    try:
+        with open(history_file, 'w', encoding='utf-8') as f:
+            json.dump(history, f, indent=2)
+        print(f"Updated migration_history.json (Legacy Scope: {total_legacy}, Implemented: {direct_ready}, Flipped: {direct_default})")
+    except Exception as e:
+        print(f"Warning: Could not save migration_history.json: {e}", file=sys.stderr)
+
 if __name__ == "__main__":
     config_path = os.path.join(SCRIPT_DIR, '../../pkg/controller/resourceconfig/static_config.go')
     apis_dir = os.path.join(SCRIPT_DIR, '../../apis')
@@ -523,3 +583,5 @@ if __name__ == "__main__":
     with open(output_path, 'w') as f:
         json.dump(data, f, indent=2)
     print(f"Generated data.json at {output_path} with {len(data)} resources.")
+    update_migration_history(config_path)
+

@@ -25,6 +25,10 @@
                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v10a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2z"></path></svg>
                 Dashboard Overview
             </a>
+            <a href="#" class="menu-item" id="menu-progress" onclick="switchTab('progress')">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                Migration Progress
+            </a>
             <a href="#" class="menu-item" id="menu-matrix" onclick="switchTab('matrix')">
                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                 Resource Explorer
@@ -130,7 +134,159 @@
                 </div>
             </section>
 
-            <!-- Tab 2: Resource Explorer -->
+            <!-- Tab 2: Migration Progress & Projections -->
+            <section id="content-progress" class="tab-content">
+                <!-- Advisory Status Banner -->
+                <div class="advisory-row">
+                    <div class="advisory-card" id="advisory-impl-card">
+                        <div class="advisory-icon" id="advisory-impl-icon">⏱️</div>
+                        <div>
+                            <div class="advisory-title" id="advisory-impl-title">Implementation Progress: Evaluating...</div>
+                            <div class="advisory-detail" id="advisory-impl-desc">Comparing actual controller implementations against linear burnup target.</div>
+                        </div>
+                    </div>
+                    <div class="advisory-card" id="advisory-flip-card">
+                        <div class="advisory-icon" id="advisory-flip-icon">⏱️</div>
+                        <div>
+                            <div class="advisory-title" id="advisory-flip-title">Default Flip Progress: Evaluating...</div>
+                            <div class="advisory-detail" id="advisory-flip-desc">Comparing actual default flips against exponential adoption target.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KPI Metric Cards -->
+                <div class="kpi-row">
+                    <div class="card-kpi blue">
+                        <div>
+                            <div class="kpi-label">Total Legacy Scope</div>
+                            <div class="kpi-value" id="prog-kpi-total">301</div>
+                        </div>
+                        <div class="kpi-sub">Legacy TF &amp; DCL controllers migrating</div>
+                    </div>
+                    <div class="card-kpi green">
+                        <div>
+                            <div class="kpi-label">Direct Ready</div>
+                            <div class="kpi-value" id="prog-kpi-ready">80</div>
+                        </div>
+                        <div class="kpi-sub" id="prog-kpi-ready-sub">26.6% (2 Default + 78 Dual)</div>
+                    </div>
+                    <div class="card-kpi yellow">
+                        <div>
+                            <div class="kpi-label">Weeks to Target</div>
+                            <div class="kpi-value" id="prog-kpi-weeks">25.3</div>
+                        </div>
+                        <div class="kpi-sub">Target: March 31, 2027</div>
+                    </div>
+                    <div class="card-kpi red">
+                        <div>
+                            <div class="kpi-label">Total Milestones</div>
+                            <div class="kpi-value" id="prog-kpi-milestones">520</div>
+                        </div>
+                        <div class="kpi-sub">221 to code + 299 to flip (20.6 / wk)</div>
+                    </div>
+                </div>
+
+                <!-- Migration Progress Over Time Chart -->
+                <div class="progress-chart-card">
+                    <div class="chart-header-row">
+                        <div>
+                            <div class="chart-header-title">Migration Progress Over Time</div>
+                            <div class="chart-header-sub">Tracking Implementation (Linear) and Default Flip (Exponential) against actual deliverables through Mar 31, 2027</div>
+                        </div>
+                        <div class="chart-header-sub" style="font-weight: 600; color: var(--text-primary);">Right Y-Axis: Controllers (0 &ndash; 301)</div>
+                    </div>
+
+                    <div class="progress-legend">
+                        <div class="progress-legend-item">
+                            <svg width="26" height="12" style="vertical-align: middle;"><line x1="1" y1="6" x2="25" y2="6" stroke="#10b981" stroke-width="3" /><circle cx="13" cy="6" r="3.5" fill="#10b981" stroke="var(--bg-card)" stroke-width="1.5" /></svg>
+                            <span>Real Implementation (Actual: <strong id="legend-real-impl">80</strong>)</span>
+                        </div>
+                        <div class="progress-legend-item">
+                            <svg width="26" height="12" style="vertical-align: middle;"><line x1="1" y1="6" x2="25" y2="6" stroke="#34d399" stroke-width="2.5" stroke-dasharray="4,3" /></svg>
+                            <span>Projected Implementation (Linear: 80 &rarr; 301)</span>
+                        </div>
+                        <div class="progress-legend-item">
+                            <svg width="26" height="12" style="vertical-align: middle;"><line x1="1" y1="6" x2="25" y2="6" stroke="#06b6d4" stroke-width="3" /><circle cx="13" cy="6" r="3.5" fill="#06b6d4" stroke="var(--bg-card)" stroke-width="1.5" /></svg>
+                            <span>Real Flip to Direct (Actual: <strong id="legend-real-flip">2</strong>)</span>
+                        </div>
+                        <div class="progress-legend-item">
+                            <svg width="26" height="12" style="vertical-align: middle;"><line x1="1" y1="6" x2="25" y2="6" stroke="#22d3ee" stroke-width="2.5" stroke-dasharray="4,3" /></svg>
+                            <span>Projected Flip Default (Exponential: 2 &rarr; 301)</span>
+                        </div>
+                    </div>
+
+                    <div style="height: 340px; width: 100%; position: relative;" id="progress-svg-wrapper">
+                        <!-- Injected dynamically by JS -->
+                    </div>
+                </div>
+
+                <!-- Scope Categorization -->
+                <div class="section-header" style="font-size: 15px; font-weight: 600; margin-bottom: 16px;">Migration Scope Breakdown (301 Legacy Resources)</div>
+                <div class="scope-grid">
+                    <div class="scope-card tf">
+                        <div class="scope-card-title">Legacy Terraform Only</div>
+                        <div class="scope-card-count" style="color: var(--google-yellow);">171</div>
+                        <div class="scope-card-desc">Needs direct controller implementation &amp; tests</div>
+                    </div>
+                    <div class="scope-card dcl">
+                        <div class="scope-card-title">Legacy DCL Only</div>
+                        <div class="scope-card-count" style="color: var(--google-blue);">50</div>
+                        <div class="scope-card-desc">Needs direct controller implementation &amp; tests</div>
+                    </div>
+                    <div class="scope-card dual">
+                        <div class="scope-card-title">Dual (Pending Flip)</div>
+                        <div class="scope-card-count" style="color: #8b5cf6;">78</div>
+                        <div class="scope-card-desc">Direct implemented, awaiting qualification &amp; default flip</div>
+                    </div>
+                    <div class="scope-card direct">
+                        <div class="scope-card-title">Direct Default (Dual)</div>
+                        <div class="scope-card-count" style="color: var(--google-green);">2</div>
+                        <div class="scope-card-desc">Direct reconciler active by default</div>
+                    </div>
+                </div>
+
+                <!-- Timeline / Milestones Table -->
+                <div class="table-card" style="margin-top: 24px;">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Phase</th>
+                                    <th>Focus Milestone</th>
+                                    <th>Target Pace</th>
+                                    <th>Scope / Action</th>
+                                    <th>Completion Target</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Phase 1</strong></td>
+                                    <td>Direct Controller Implementation</td>
+                                    <td><span class="badge" style="background: var(--google-green-light); color: var(--google-green); padding: 4px 8px; border-radius: 4px; font-weight: 600;">8.7 / week</span></td>
+                                    <td>Implement 221 remaining controllers (171 TF + 50 DCL)</td>
+                                    <td>March 31, 2027</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Phase 2</strong></td>
+                                    <td>Mass Default Flipping</td>
+                                    <td><span class="badge" style="background: var(--google-blue-light); color: var(--google-blue); padding: 4px 8px; border-radius: 4px; font-weight: 600;">11.8 / week</span></td>
+                                    <td>Qualify &amp; flip 299 resources to Direct Default</td>
+                                    <td>March 31, 2027</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Overall</strong></td>
+                                    <td>Combined Delivery Capacity</td>
+                                    <td><span class="badge" style="background: var(--google-yellow-light); color: var(--google-yellow); padding: 4px 8px; border-radius: 4px; font-weight: 600;">20.6 / week</span></td>
+                                    <td>Total 520 engineering milestones completed</td>
+                                    <td>End of Q1 2027</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab 3: Resource Explorer -->
             <section id="content-matrix" class="tab-content">
                 <div class="filter-panel">
                     <div class="search-container">
