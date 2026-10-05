@@ -10,19 +10,19 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-  name: networksecurityinterceptendpointgroups.networksecurity.cnrm.cloud.google.com
+  name: networksecurityinterceptdeploymentgroups.networksecurity.cnrm.cloud.google.com
 spec:
   group: networksecurity.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: NetworkSecurityInterceptEndpointGroup
-    listKind: NetworkSecurityInterceptEndpointGroupList
-    plural: networksecurityinterceptendpointgroups
+    kind: NetworkSecurityInterceptDeploymentGroup
+    listKind: NetworkSecurityInterceptDeploymentGroupList
+    plural: networksecurityinterceptdeploymentgroups
     shortNames:
-    - gcpnetworksecurityinterceptendpointgroup
-    - gcpnetworksecurityinterceptendpointgroups
-    singular: networksecurityinterceptendpointgroup
+    - gcpnetworksecurityinterceptdeploymentgroup
+    - gcpnetworksecurityinterceptdeploymentgroups
+    singular: networksecurityinterceptdeploymentgroup
   preserveUnknownFields: false
   scope: Namespaced
   versions:
@@ -45,8 +45,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: NetworkSecurityInterceptEndpointGroup is the Schema for the NetworkSecurityInterceptEndpointGroup
-          API
+        description: NetworkSecurityInterceptDeploymentGroup is the Schema for the
+          NetworkSecurityInterceptDeploymentGroup API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -61,16 +61,25 @@ spec:
           metadata:
             type: object
           spec:
-            description: NetworkSecurityInterceptEndpointGroupSpec defines the desired
-              state of NetworkSecurityInterceptEndpointGroup
+            description: NetworkSecurityInterceptDeploymentGroupSpec defines the desired
+              state of NetworkSecurityInterceptDeploymentGroup
             properties:
               description:
-                description: Optional. User-provided description of the endpoint group.
-                  Used as additional context for the endpoint group.
+                description: Optional. User-provided description of the deployment
+                  group. Used as additional context for the deployment group.
                 type: string
-              interceptDeploymentGroupRef:
-                description: 'Required. Immutable. The deployment group that this
-                  endpoint group is connected to, for example: `projects/123456789/locations/global/interceptDeploymentGroups/my-dg`.'
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. Labels are key/value pairs that help to organize
+                  and filter resources.
+                type: object
+              location:
+                description: The location of this resource.
+                type: string
+              networkRef:
+                description: Required. Immutable. The network that will be used for
+                  all child deployments.
                 oneOf:
                 - not:
                     required:
@@ -87,27 +96,16 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed NetworkSecurityInterceptDeploymentGroup
-                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/interceptDeploymentGroups/{{intercept_deployment_group}}".
+                    description: A reference to an externally managed ComputeNetwork
+                      resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
                     type: string
                   name:
-                    description: The name of a NetworkSecurityInterceptDeploymentGroup
-                      resource.
+                    description: The name of a ComputeNetwork resource.
                     type: string
                   namespace:
-                    description: The namespace of a NetworkSecurityInterceptDeploymentGroup
-                      resource.
+                    description: The namespace of a ComputeNetwork resource.
                     type: string
                 type: object
-              labels:
-                additionalProperties:
-                  type: string
-                description: Optional. Labels are key/value pairs that help to organize
-                  and filter resources.
-                type: object
-              location:
-                description: The location of this resource.
-                type: string
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:
@@ -141,17 +139,17 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The NetworkSecurityInterceptEndpointGroup name. If not
-                  given, the metadata.name will be used.
+                description: The NetworkSecurityInterceptDeploymentGroup name. If
+                  not given, the metadata.name will be used.
                 type: string
             required:
-            - interceptDeploymentGroupRef
             - location
+            - networkRef
             - projectRef
             type: object
           status:
-            description: NetworkSecurityInterceptEndpointGroupStatus defines the config
-              connector machine state of NetworkSecurityInterceptEndpointGroup
+            description: NetworkSecurityInterceptDeploymentGroupStatus defines the
+              config connector machine state of NetworkSecurityInterceptDeploymentGroup
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -180,7 +178,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the NetworkSecurityInterceptEndpointGroup
+                description: A unique specifier for the NetworkSecurityInterceptDeploymentGroup
                   resource in GCP.
                 type: string
               observedGeneration:
@@ -195,68 +193,48 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
-                  associations:
-                    description: Output only. List of associations to this endpoint
-                      group.
+                  connectedEndpointGroups:
+                    description: Output only. The list of endpoint groups that are
+                      connected to this resource.
                     items:
                       properties:
                         name:
-                          description: 'Output only. The connected association''s
-                            resource name, for example: `projects/123456789/locations/global/interceptEndpointGroupAssociations/my-ega`.
-                            See https://google.aip.dev/124.'
-                          type: string
-                        network:
-                          description: 'Output only. The associated network, for example:
-                            projects/123456789/global/networks/my-network. See https://google.aip.dev/124.'
-                          type: string
-                        state:
-                          description: Output only. Most recent known state of the
-                            association.
+                          description: Output only. The connected endpoint group's
+                            resource name.
                           type: string
                       type: object
                     type: array
-                  connectedDeploymentGroup:
-                    description: Output only. Details about the connected deployment
-                      group to this endpoint group.
-                    properties:
-                      locations:
-                        description: Output only. The list of locations where the
-                          deployment group is present.
-                        items:
-                          properties:
-                            location:
-                              description: Output only. The cloud location, e.g. "us-central1-a"
-                                or "asia-south1".
-                              type: string
-                            state:
-                              description: Output only. The current state of the association
-                                in this location.
-                              type: string
-                          type: object
-                        type: array
-                      name:
-                        description: 'Output only. The connected deployment group''s
-                          resource name, for example: `projects/123456789/locations/global/interceptDeploymentGroups/my-dg`.
-                          See https://google.aip.dev/124.'
-                        type: string
-                    type: object
                   createTime:
                     description: Output only. The timestamp when the resource was
-                      created. See https://google.aip.dev/148#timestamps.
+                      created.
                     type: string
+                  locations:
+                    description: Output only. The list of locations where the deployment
+                      group is present.
+                    items:
+                      properties:
+                        location:
+                          description: Output only. The cloud location, e.g. "us-central1-a"
+                            or "asia-south1".
+                          type: string
+                        state:
+                          description: Output only. The current state of the association
+                            in this location.
+                          type: string
+                      type: object
+                    type: array
                   reconciling:
                     description: Output only. The current state of the resource does
                       not match the user's intended state, and the system is working
-                      to reconcile them. This is part of the normal operation (e.g.
-                      adding a new association to the group). See https://google.aip.dev/128.
+                      to reconcile them.
                     type: boolean
                   state:
-                    description: Output only. The current state of the endpoint group.
-                      See https://google.aip.dev/216.
+                    description: Output only. The current state of the deployment
+                      group.
                     type: string
                   updateTime:
                     description: Output only. The timestamp when the resource was
-                      most recently updated. See https://google.aip.dev/148#timestamps.
+                      most recently updated.
                     type: string
                 type: object
             type: object

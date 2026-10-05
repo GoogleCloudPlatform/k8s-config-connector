@@ -566,6 +566,22 @@ func GrpcEndpoint_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecur
 	out.TargetUri = direct.ValueOf(in.TargetURI)
 	return out
 }
+func InterceptDeploymentGroup_ConnectedEndpointGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterceptDeploymentGroup_ConnectedEndpointGroup) *krmnetworksecurityv1alpha1.InterceptDeploymentGroup_ConnectedEndpointGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.InterceptDeploymentGroup_ConnectedEndpointGroupObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	return out
+}
+func InterceptDeploymentGroup_ConnectedEndpointGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.InterceptDeploymentGroup_ConnectedEndpointGroupObservedState) *pb.InterceptDeploymentGroup_ConnectedEndpointGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterceptDeploymentGroup_ConnectedEndpointGroup{}
+	out.Name = direct.ValueOf(in.Name)
+	return out
+}
 func InterceptEndpointGroup_AssociationDetailsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterceptEndpointGroup_AssociationDetails) *krmnetworksecurityv1alpha1.InterceptEndpointGroup_AssociationDetailsObservedState {
 	if in == nil {
 		return nil
@@ -1180,6 +1196,64 @@ func NetworkSecurityGatewaySecurityPolicySpec_v1alpha1_ToProto(mapCtx *direct.Ma
 	if in.TLSInspectionPolicyRef != nil {
 		out.TlsInspectionPolicy = in.TLSInspectionPolicyRef.External
 	}
+	return out
+}
+func NetworkSecurityInterceptDeploymentGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterceptDeploymentGroup) *krmnetworksecurityv1alpha1.NetworkSecurityInterceptDeploymentGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityInterceptDeploymentGroupObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.ConnectedEndpointGroups = direct.Slice_FromProto(mapCtx, in.ConnectedEndpointGroups, InterceptDeploymentGroup_ConnectedEndpointGroupObservedState_v1alpha1_FromProto)
+	// MISSING: NestedDeployments
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	out.Locations = direct.Slice_FromProto(mapCtx, in.Locations, InterceptLocationObservedState_v1alpha1_FromProto)
+	return out
+}
+func NetworkSecurityInterceptDeploymentGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityInterceptDeploymentGroupObservedState) *pb.InterceptDeploymentGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterceptDeploymentGroup{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.ConnectedEndpointGroups = direct.Slice_ToProto(mapCtx, in.ConnectedEndpointGroups, InterceptDeploymentGroup_ConnectedEndpointGroupObservedState_v1alpha1_ToProto)
+	// MISSING: NestedDeployments
+	out.State = direct.Enum_ToProto[pb.InterceptDeploymentGroup_State](mapCtx, in.State)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	out.Locations = direct.Slice_ToProto(mapCtx, in.Locations, InterceptLocationObservedState_v1alpha1_ToProto)
+	return out
+}
+func NetworkSecurityInterceptDeploymentGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterceptDeploymentGroup) *krmnetworksecurityv1alpha1.NetworkSecurityInterceptDeploymentGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityInterceptDeploymentGroupSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	// MISSING: NestedDeployments
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func NetworkSecurityInterceptDeploymentGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityInterceptDeploymentGroupSpec) *pb.InterceptDeploymentGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InterceptDeploymentGroup{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	// MISSING: NestedDeployments
+	out.Description = direct.ValueOf(in.Description)
 	return out
 }
 func NetworkSecurityInterceptDeploymentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InterceptDeployment) *krmnetworksecurityv1alpha1.NetworkSecurityInterceptDeploymentObservedState {
