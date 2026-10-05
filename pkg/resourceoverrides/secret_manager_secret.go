@@ -15,6 +15,8 @@
 package resourceoverrides
 
 import (
+	"fmt"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
@@ -26,9 +28,16 @@ func GetSecretManagerSecretResourceOverrides() ResourceOverrides {
 		Kind: "SecretManagerSecret",
 		Overrides: []ResourceOverride{{
 			PostActuationTransform: func(original, reconciled *k8s.Resource, tfState *terraform.InstanceState, dclState *unstructured.Unstructured) error {
-				// observedFields already copies createTime into observedState.
-				// The legacy status mapping also emits a top-level copy, which is
-				// not part of the SecretManagerSecret status schema.
+				// createTime is output-only, so the legacy mapping places it in
+				// status rather than the configurable observedFields mechanism.
+				// Move it into the declared observedState schema before persisting.
+				createTime, found := reconciled.Status["createTime"]
+				if !found {
+					return nil
+				}
+				if err := unstructured.SetNestedField(reconciled.Status, createTime, "observedState", "createTime"); err != nil {
+					return fmt.Errorf("setting SecretManagerSecret observedState.createTime: %w", err)
+				}
 				delete(reconciled.Status, "createTime")
 				return nil
 			},

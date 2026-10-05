@@ -17,6 +17,7 @@ package resourceoverrides_test
 import (
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
@@ -70,4 +71,44 @@ func TestSecretManagerSecretCreateTimeStatus(t *testing.T) {
 	if resource.Status["name"] != name {
 		t.Fatalf("legacy status.name changed: got %v, want %q", resource.Status["name"], name)
 	}
+}
+
+func TestSecretManagerSecretCreateTimeTransform(t *testing.T) {
+	transform := resourceoverrides.GetSecretManagerSecretResourceOverrides().Overrides[0].PostActuationTransform
+	t.Run("preserve other observed fields", func(t *testing.T) {
+		resource := &k8s.Resource{Status: map[string]interface{}{
+			"createTime":    "2026-10-04T20:17:50Z",
+			"observedState": map[string]interface{}{"otherField": "unchanged"},
+		}}
+		if err := transform(nil, resource, nil, nil); err != nil {
+			t.Fatal(err)
+		}
+		got, _, err := unstructured.NestedString(resource.Status, "observedState", "otherField")
+		if err != nil || got != "unchanged" {
+			t.Fatalf("other observed field changed: %q, err=%v", got, err)
+		}
+	})
+	t.Run("missing source leaves status unchanged", func(t *testing.T) {
+		resource := &k8s.Resource{Status: map[string]interface{}{
+			"observedState": map[string]interface{}{"createTime": "existing"},
+		}}
+		if err := transform(nil, resource, nil, nil); err != nil {
+			t.Fatal(err)
+		}
+		got, _, err := unstructured.NestedString(resource.Status, "observedState", "createTime")
+		if err != nil || got != "existing" {
+			t.Fatalf("existing createTime changed: %q, err=%v", got, err)
+		}
+	})
+	t.Run("malformed observed state returns error without dropping source", func(t *testing.T) {
+		resource := &k8s.Resource{Status: map[string]interface{}{
+			"createTime": "2026-10-04T20:17:50Z", "observedState": "invalid",
+		}}
+		if err := transform(nil, resource, nil, nil); err == nil {
+			t.Fatal("expected malformed observedState error")
+		}
+		if resource.Status["createTime"] != "2026-10-04T20:17:50Z" {
+			t.Fatal("source createTime was removed despite failed transform")
+		}
+	})
 }
