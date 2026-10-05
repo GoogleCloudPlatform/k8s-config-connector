@@ -77,7 +77,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "apphub.cnrm.cloud.google.com", Kind: "AppHubApplication"}:
 	case schema.GroupKind{Group: "apphub.cnrm.cloud.google.com", Kind: "AppHubDiscoveredService"}:
 	case schema.GroupKind{Group: "apphub.cnrm.cloud.google.com", Kind: "AppHubDiscoveredWorkload"}:
-	case schema.GroupKind{Group: "artifactregistry.cnrm.cloud.google.com", Kind: "ArtifactRegistryRepository"}:
 	case schema.GroupKind{Group: "asset.cnrm.cloud.google.com", Kind: "AssetFeed"}:
 	case schema.GroupKind{Group: "asset.cnrm.cloud.google.com", Kind: "AssetSavedQuery"}:
 	case schema.GroupKind{Group: "backupdr.cnrm.cloud.google.com", Kind: "BackupDRBackupPlanAssociation"}:

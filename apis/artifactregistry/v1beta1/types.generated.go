@@ -164,7 +164,8 @@ type RemoteRepositoryConfig_AptRepository_PublicRepository struct {
 }
 */
 
-/* unreachable type RemoteRepositoryConfig_CommonRemoteRepository
+/* found existing non-generated go type with proto tag "google.devtools.artifactregistry.v1.RemoteRepositoryConfig.CommonRemoteRepository", skipping
+
 // +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.CommonRemoteRepository
 type RemoteRepositoryConfig_CommonRemoteRepository struct {
 	// Required. A common public repository base for remote repository.
