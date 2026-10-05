@@ -119,6 +119,8 @@ mavenConfig:
   versionPolicy: string
 mode: string
 remoteRepositoryConfig:
+  commonRepository:
+    uri: string
   description: string
   dockerRepository:
     publicRepository: string
@@ -474,6 +476,26 @@ virtualRepositoryConfig:
         <td>
             <p><code class="apitype">object</code></p>
             <p>Configuration specific for a Remote Repository.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>remoteRepositoryConfig.commonRepository</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Common remote repository settings.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>remoteRepositoryConfig.commonRepository.uri</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Required. A common public repository base for remote repository.</p>
         </td>
     </tr>
     <tr>

@@ -83,7 +83,6 @@ func ArtifactRegistryRepositoryFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".remote_repository_config.disable_upstream_validation")
 	f.Unimplemented_NotYetTriaged(".remote_repository_config.apt_repository")
 	f.Unimplemented_NotYetTriaged(".remote_repository_config.yum_repository")
-	f.Unimplemented_NotYetTriaged(".remote_repository_config.common_repository")
 	f.Unimplemented_NotYetTriaged(".remote_repository_config.docker_repository.custom_repository")
 	f.Unimplemented_NotYetTriaged(".remote_repository_config.maven_repository.custom_repository")
 	f.Unimplemented_NotYetTriaged(".remote_repository_config.npm_repository.custom_repository")

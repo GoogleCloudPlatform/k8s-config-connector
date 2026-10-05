@@ -31,6 +31,22 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func ArtifactRegistryRepositoryCommonRepository_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_CommonRemoteRepository) *krmartifactregistryv1beta1.ArtifactRegistryRepositoryCommonRepository {
+	if in == nil {
+		return nil
+	}
+	out := &krmartifactregistryv1beta1.ArtifactRegistryRepositoryCommonRepository{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	return out
+}
+func ArtifactRegistryRepositoryCommonRepository_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmartifactregistryv1beta1.ArtifactRegistryRepositoryCommonRepository) *pb.RemoteRepositoryConfig_CommonRemoteRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig_CommonRemoteRepository{}
+	out.Uri = direct.ValueOf(in.URI)
+	return out
+}
 func ArtifactRegistryRepositoryDockerRepository_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_DockerRepository) *krmartifactregistryv1beta1.ArtifactRegistryRepositoryDockerRepository {
 	if in == nil {
 		return nil
@@ -146,7 +162,7 @@ func ArtifactRegistryRepositoryRemoteRepositoryConfig_v1beta1_FromProto(mapCtx *
 	out.PythonRepository = ArtifactRegistryRepositoryPythonRepository_v1beta1_FromProto(mapCtx, in.GetPythonRepository())
 	// MISSING: AptRepository
 	// MISSING: YumRepository
-	// MISSING: CommonRepository
+	out.CommonRepository = ArtifactRegistryRepositoryCommonRepository_v1beta1_FromProto(mapCtx, in.GetCommonRepository())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	// MISSING: UpstreamCredentials
 	// MISSING: DisableUpstreamValidation
@@ -171,7 +187,9 @@ func ArtifactRegistryRepositoryRemoteRepositoryConfig_v1beta1_ToProto(mapCtx *di
 	}
 	// MISSING: AptRepository
 	// MISSING: YumRepository
-	// MISSING: CommonRepository
+	if oneof := ArtifactRegistryRepositoryCommonRepository_v1beta1_ToProto(mapCtx, in.CommonRepository); oneof != nil {
+		out.RemoteSource = &pb.RemoteRepositoryConfig_CommonRepository{CommonRepository: oneof}
+	}
 	out.Description = direct.ValueOf(in.Description)
 	// MISSING: UpstreamCredentials
 	// MISSING: DisableUpstreamValidation
