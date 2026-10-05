@@ -18,7 +18,6 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -26,8 +25,8 @@ import (
 	"google.golang.org/protobuf/types/known/durationpb"
 	"k8s.io/klog/v2"
 
-	pb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/dashboard/v1"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/google/uuid"
 )
@@ -173,7 +172,7 @@ func (d *dashboardDefaulter) visitWidget(obj *pb.Widget) {
 		d.visitPieChart(content.PieChart)
 
 	case *pb.Widget_TimeSeriesTable:
-		d.visitTimeSeriesTable(content.TimeSeriesTable)
+		// No defaults
 
 	case *pb.Widget_LogsPanel:
 		d.visitLogsPanel(content.LogsPanel)
@@ -232,14 +231,6 @@ func (d *dashboardDefaulter) visitLogsPanel(obj *pb.LogsPanel) {
 }
 
 func (d *dashboardDefaulter) visitPieChart(obj *pb.PieChart) {
-}
-
-func (d *dashboardDefaulter) visitTimeSeriesTable(obj *pb.TimeSeriesTable) {
-	for _, dataSet := range obj.DataSets {
-		if dataSet.MinAlignmentPeriod == nil {
-			dataSet.MinAlignmentPeriod = durationpb.New(time.Duration(0))
-		}
-	}
 }
 
 type dashboardValidator struct {

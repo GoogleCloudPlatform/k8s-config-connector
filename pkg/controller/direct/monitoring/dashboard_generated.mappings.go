@@ -15,7 +15,7 @@
 package monitoring
 
 import (
-	pb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/dashboard/v1"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"

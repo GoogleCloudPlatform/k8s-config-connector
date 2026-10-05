@@ -1388,9 +1388,20 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		})
 	}
 
+	visitor.objectTransforms = append(visitor.objectTransforms, func(path string, m map[string]any) {
+		if df, ok := m["dashboardFilters"].([]any); ok {
+			for _, item := range df {
+				if filterMap, ok := item.(map[string]any); ok {
+					delete(filterMap, "valueType")
+				}
+			}
+		}
+	})
+
 	// Common variables
 	visitor.replacePaths[".uid"] = "111111111111111111111"
 	visitor.replacePaths[".etag"] = "abcdef0123A="
+	visitor.replacePaths[".dashboard.etag"] = "abcdef0123A="
 	visitor.replacePaths[".response.etag"] = "abcdef0123A="
 	visitor.replacePaths[".serviceAccount.etag"] = "abcdef0123A="
 	visitor.replacePaths[".response.uniqueId"] = "12345678"
