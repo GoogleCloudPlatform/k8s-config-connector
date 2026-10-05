@@ -298,27 +298,30 @@ type ListValue struct {
 /* unreachable type Value
 // +kcc:proto=google.protobuf.Value
 type Value struct {
-	// Represents a null value.
+	// Represents a JSON `null`.
 	// +kcc:proto:field=google.protobuf.Value.null_value
 	NullValue *string `json:"nullValue,omitempty"`
 
-	// Represents a double value.
+	// Represents a JSON number. Must not be `NaN`, `Infinity` or
+	//  `-Infinity`, since those are not supported in JSON. This also cannot
+	//  represent large Int64 values, since JSON format generally does not
+	//  support them in its number type.
 	// +kcc:proto:field=google.protobuf.Value.number_value
 	NumberValue *float64 `json:"numberValue,omitempty"`
 
-	// Represents a string value.
+	// Represents a JSON string.
 	// +kcc:proto:field=google.protobuf.Value.string_value
 	StringValue *string `json:"stringValue,omitempty"`
 
-	// Represents a boolean value.
+	// Represents a JSON boolean (`true` or `false` literal in JSON).
 	// +kcc:proto:field=google.protobuf.Value.bool_value
 	BoolValue *bool `json:"boolValue,omitempty"`
 
-	// Represents a structured value.
+	// Represents a JSON object.
 	// +kcc:proto:field=google.protobuf.Value.struct_value
 	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
 
-	// Represents a repeated `Value`.
+	// Represents a JSON array.
 	// +kcc:proto:field=google.protobuf.Value.list_value
 	ListValue *ListValue `json:"listValue,omitempty"`
 }

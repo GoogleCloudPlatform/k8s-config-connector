@@ -752,37 +752,39 @@ type ServiceIdentity struct {
 /* unreachable type Any
 // +kcc:proto=google.protobuf.Any
 type Any struct {
-	// A URL/resource name that uniquely identifies the type of the serialized
-	//  protocol buffer message. This string must contain at least
-	//  one "/" character. The last segment of the URL's path must represent
-	//  the fully qualified name of the type (as in
-	//  `path/google.protobuf.Duration`). The name should be in a canonical form
-	//  (e.g., leading "." is not accepted).
+	// Identifies the type of the serialized Protobuf message with a URI reference
+	//  consisting of a prefix ending in a slash and the fully-qualified type name.
 	//
-	//  In practice, teams usually precompile into the binary all types that they
-	//  expect it to use in the context of Any. However, for URLs which use the
-	//  scheme `http`, `https`, or no scheme, one can optionally set up a type
-	//  server that maps type URLs to message definitions as follows:
+	//  Example: type.googleapis.com/google.protobuf.StringValue
 	//
-	//  * If no scheme is provided, `https` is assumed.
-	//  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-	//    value in binary format, or produce an error.
-	//  * Applications are allowed to cache lookup results based on the
-	//    URL, or have them precompiled into a binary to avoid any
-	//    lookup. Therefore, binary compatibility needs to be preserved
-	//    on changes to types. (Use versioned type names to manage
-	//    breaking changes.)
+	//  This string must contain at least one `/` character, and the content after
+	//  the last `/` must be the fully-qualified name of the type in canonical
+	//  form, without a leading dot. Do not write a scheme on these URI references
+	//  so that clients do not attempt to contact them.
 	//
-	//  Note: this functionality is not currently available in the official
-	//  protobuf release, and it is not used for type URLs beginning with
-	//  type.googleapis.com.
+	//  The prefix is arbitrary and Protobuf implementations are expected to
+	//  simply strip off everything up to and including the last `/` to identify
+	//  the type. `type.googleapis.com/` is a common default prefix that some
+	//  legacy implementations require. This prefix does not indicate the origin of
+	//  the type, and URIs containing it are not expected to respond to any
+	//  requests.
 	//
-	//  Schemes other than `http`, `https` (or the empty scheme) might be
-	//  used with implementation specific semantics.
+	//  All type URL strings must be legal URI references with the additional
+	//  restriction (for the text format) that the content of the reference
+	//  must consist only of alphanumeric characters, percent-encoded escapes, and
+	//  characters in the following set (not including the outer backticks):
+	//  `/-.~_!$&()*+,;=`. Despite our allowing percent encodings, implementations
+	//  should not unescape them to prevent confusion with existing parsers. For
+	//  example, `type.googleapis.com%2FFoo` should be rejected.
+	//
+	//  In the original design of `Any`, the possibility of launching a type
+	//  resolution service at these type URLs was considered but Protobuf never
+	//  implemented one and considers contacting these URLs to be problematic and
+	//  a potential security issue. Do not attempt to contact type URLs.
 	// +kcc:proto:field=google.protobuf.Any.type_url
 	TypeURL *string `json:"typeURL,omitempty"`
 
-	// Must be a valid serialized protocol buffer of the above specified type.
+	// Holds a Protobuf serialization of the type described by type_url.
 	// +kcc:proto:field=google.protobuf.Any.value
 	Value []byte `json:"value,omitempty"`
 }
@@ -838,6 +840,10 @@ type API struct {
 	// The source syntax of the service.
 	// +kcc:proto:field=google.protobuf.Api.syntax
 	Syntax *string `json:"syntax,omitempty"`
+
+	// The source edition string, only valid when syntax is SYNTAX_EDITIONS.
+	// +kcc:proto:field=google.protobuf.Api.edition
+	Edition *string `json:"edition,omitempty"`
 }
 */
 
@@ -869,8 +875,18 @@ type Method struct {
 	Options []Option `json:"options,omitempty"`
 
 	// The source syntax of this method.
+	//
+	//  This field should be ignored, instead the syntax should be inherited from
+	//  Api. This is similar to Field and EnumValue.
 	// +kcc:proto:field=google.protobuf.Method.syntax
 	Syntax *string `json:"syntax,omitempty"`
+
+	// The source edition string, only valid when syntax is SYNTAX_EDITIONS.
+	//
+	//  This field should be ignored, instead the edition should be inherited from
+	//  Api. This is similar to Field and EnumValue.
+	// +kcc:proto:field=google.protobuf.Method.edition
+	Edition *string `json:"edition,omitempty"`
 }
 */
 
