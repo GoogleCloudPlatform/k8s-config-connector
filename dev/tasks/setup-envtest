@@ -35,11 +35,21 @@ fi
 if [[ "$(uname -s)" == "Linux" ]] && command -v setpriv >/dev/null; then
   ENVTEST_WRAPPER_DIR="${REPO_ROOT}/.build/envtest-bin"
   mkdir -p "${ENVTEST_WRAPPER_DIR}"
+  # This script is sourced concurrently by parallel test runners (e.g. paralleltestrunner -> run-e2e).
+  # Never rewrite a wrapper in place: if another process is exec'ing it while we hold it open for
+  # writing, exec fails with ETXTBSY ("text file busy"). Instead, skip the write if the content is
+  # already correct, and otherwise write to a temp file and atomically rename it into place.
   for b in etcd kube-apiserver; do
-    printf '#!/bin/sh\nexec setpriv --pdeathsig KILL -- "%s/%s" "$@"\n' "${KUBEBUILDER_ASSETS}" "$b" > "${ENVTEST_WRAPPER_DIR}/$b"
-    chmod +x "${ENVTEST_WRAPPER_DIR}/$b"
+    wrapper_path="${ENVTEST_WRAPPER_DIR}/$b"
+    wrapper_content="$(printf '#!/bin/sh\nexec setpriv --pdeathsig KILL -- "%s/%s" "$@"' "${KUBEBUILDER_ASSETS}" "$b")"
+    if [[ ! -x "${wrapper_path}" ]] || [[ "$(cat "${wrapper_path}" 2>/dev/null)" != "${wrapper_content}" ]]; then
+      wrapper_tmp="$(mktemp "${wrapper_path}.XXXXXX")"
+      printf '%s\n' "${wrapper_content}" > "${wrapper_tmp}"
+      chmod +x "${wrapper_tmp}"
+      mv -f "${wrapper_tmp}" "${wrapper_path}"
+    fi
   done
   export TEST_ASSET_ETCD="${ENVTEST_WRAPPER_DIR}/etcd"
   export TEST_ASSET_KUBE_APISERVER="${ENVTEST_WRAPPER_DIR}/kube-apiserver"
-  unset ENVTEST_WRAPPER_DIR b
+  unset ENVTEST_WRAPPER_DIR b wrapper_path wrapper_content wrapper_tmp
 fi
