@@ -21,23 +21,9 @@
 < PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 ---
 > PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-172,174d168
-<   "datasetReference": {
-<     "datasetId": "bigquerydatasetsample${uniqueId}"
-<   },
-175a170
->   "isCaseInsensitive": false,
-180d174
-<   "location": "US",
-220a215
->   "isCaseInsensitive": false,
-274a270
->   "isCaseInsensitive": false,
-289,290c285,339
-< DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
-< Content-Type: application/json
----
-> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+153a151,164
+>   "friendlyName": "bigquerydataset-sample-updated"
+> }
 > 
 > 200 OK
 > Content-Type: application/json; charset=UTF-8
@@ -50,45 +36,39 @@
 > X-Xss-Protection: 0
 > 
 > {
->   "access": [
->     {
->       "role": "OWNER",
->       "specialGroup": "projectOwners"
->     },
->     {
->       "role": "OWNER",
->       "userByEmail": "user@google.com"
->     },
->     {
->       "role": "READER",
->       "specialGroup": "projectReaders"
->     },
->     {
->       "role": "WRITER",
->       "specialGroup": "projectWriters"
->     }
->   ],
+171a183
 >   "creationTime": "123456789",
->   "datasetReference": {
+173c185,186
+<     "datasetId": "bigquerydatasetsample${uniqueId}"
+---
 >     "datasetId": "bigquerydatasetsample${uniqueId}",
 >     "projectId": "${projectId}"
->   },
+174a188
 >   "etag": "abcdef0123A=",
->   "friendlyName": "bigquerydataset-sample-updated",
+175a190,191
 >   "id": "000000000000000000000",
->   "isCaseInsensitive": false,
 >   "kind": "bigquery#dataset",
->   "labels": {
->     "cnrm-test": "true",
->     "managed-by-cnrm": "true"
->   },
+179a196
 >   "lastModifiedTime": "123456789",
->   "location": "US",
+181c198,200
+<   "maxTimeTravelHours": "168"
+---
 >   "maxTimeTravelHours": "168",
 >   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
 >   "type": "DEFAULT"
-> }
-> 
+183a203,207
 > ---
 > 
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+> Content-Type: application/json
+> 
+235,236c259
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+289,290c312
+< DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
+< Content-Type: application/json
+---
 > DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false&prettyPrint=false
