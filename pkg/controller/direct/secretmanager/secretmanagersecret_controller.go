@@ -279,13 +279,9 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 	// the GCP service use *name* to identify the resource.
 	resource.Name = a.id.String()
 	resource.Etag = a.actual.Etag
-	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
+	paths, err := secretUpdatePaths(resource, a.actual)
 	if err != nil {
 		return err
-	}
-	if paths.Has("ttl") {
-		paths = paths.Delete("ttl")
-		resource.Expiration = a.actual.Expiration
 	}
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
@@ -319,6 +315,21 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 
 	status.Name = updated.Name
 	return op.UpdateStatus(ctx, status, nil)
+}
+
+func secretUpdatePaths(resource, actual *secretmanagerpb.Secret) (sets.Set[string], error) {
+	paths, err := common.CompareProtoMessage(resource, actual, common.BasicDiff)
+	if err != nil {
+		return nil, err
+	}
+	if paths.Has("ttl") {
+		// The API returns expireTime even when the secret was created with ttl.
+		// Recompute the mask after canonicalizing the expiration so a matching
+		// expireTime is not retained as an update.
+		resource.Expiration = actual.Expiration
+		return common.CompareProtoMessage(resource, actual, common.BasicDiff)
+	}
+	return paths, nil
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {

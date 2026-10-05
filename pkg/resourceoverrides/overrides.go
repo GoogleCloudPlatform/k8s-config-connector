@@ -223,6 +223,7 @@ func (h *ROHandler) Register(ro ResourceOverrides) {
 func init() {
 	Handler.Register(GetBigtableInstanceOverrides())
 	Handler.Register(GetStorageBucketResourceOverrides())
+	Handler.Register(GetSecretManagerSecretResourceOverrides())
 	Handler.Register(GetSQLInstanceResourceOverrides())
 	Handler.Register(GetContainerClusterResourceOverrides())
 	Handler.Register(GetLoggingLogSinkResourceOverrides())
