@@ -21,6 +21,7 @@ import (
 
 	pbv1 "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -59,6 +60,23 @@ func (s *AddressGroupServer) CreateAddressGroup(ctx context.Context, req *pbv1.C
 		metadata.EndTime = timestamppb.New(time.Now())
 		return obj, nil
 	})
+}
+
+func (s *AddressGroupServer) ListAddressGroups(ctx context.Context, req *pbv1.ListAddressGroupsRequest) (*pbv1.ListAddressGroupsResponse, error) {
+	response := &pbv1.ListAddressGroupsResponse{}
+
+	prefix := req.Parent + "/addressGroups/"
+
+	kind := (&pbv1.AddressGroup{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, kind, storage.ListOptions{Prefix: prefix}, func(obj proto.Message) error {
+		item := obj.(*pbv1.AddressGroup)
+		response.AddressGroups = append(response.AddressGroups, item)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return response, nil
 }
 
 func (s *AddressGroupServer) GetAddressGroup(ctx context.Context, req *pbv1.GetAddressGroupRequest) (*pbv1.AddressGroup, error) {
