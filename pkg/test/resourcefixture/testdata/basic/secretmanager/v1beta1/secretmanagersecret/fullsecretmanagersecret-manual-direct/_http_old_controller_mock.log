@@ -661,7 +661,7 @@ Content-Type: application/json
     }
   },
   "rotation": {
-    "nextRotationTime": "2025-10-02T15:01:23Z",
+    "nextRotationTime": "2035-10-02T15:01:23Z",
     "rotationPeriod": "3600s"
   },
   "topics": [
@@ -708,7 +708,7 @@ X-Xss-Protection: 0
     }
   },
   "rotation": {
-    "nextRotationTime": "2025-10-02T15:01:23Z",
+    "nextRotationTime": "2035-10-02T15:01:23Z",
     "rotationPeriod": "3600s"
   },
   "topics": [
@@ -759,7 +759,7 @@ X-Xss-Protection: 0
     }
   },
   "rotation": {
-    "nextRotationTime": "2025-10-02T15:01:23Z",
+    "nextRotationTime": "2035-10-02T15:01:23Z",
     "rotationPeriod": "3600s"
   },
   "topics": [
@@ -771,7 +771,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=annotations%2CexpireTime%2Clabels%2Crotation.nextRotationTime%2Crotation.rotationPeriod%2Ctopics
+PATCH https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=annotations%2Clabels%2Crotation.nextRotationTime%2Crotation.rotationPeriod%2Ctopics
 Content-Type: application/json
 
 {
@@ -801,7 +801,7 @@ Content-Type: application/json
     }
   },
   "rotation": {
-    "nextRotationTime": "2025-10-03T15:01:23Z",
+    "nextRotationTime": "2035-10-03T15:01:23Z",
     "rotationPeriod": "7200s"
   },
   "topics": [
@@ -849,7 +849,7 @@ X-Xss-Protection: 0
     }
   },
   "rotation": {
-    "nextRotationTime": "2025-10-03T15:01:23Z",
+    "nextRotationTime": "2035-10-03T15:01:23Z",
     "rotationPeriod": "7200s"
   },
   "topics": [
@@ -902,7 +902,7 @@ X-Xss-Protection: 0
     }
   },
   "rotation": {
-    "nextRotationTime": "2025-10-03T15:01:23Z",
+    "nextRotationTime": "2035-10-03T15:01:23Z",
     "rotationPeriod": "7200s"
   },
   "topics": [
@@ -955,7 +955,7 @@ X-Xss-Protection: 0
     }
   },
   "rotation": {
-    "nextRotationTime": "2025-10-03T15:01:23Z",
+    "nextRotationTime": "2035-10-03T15:01:23Z",
     "rotationPeriod": "7200s"
   },
   "topics": [
