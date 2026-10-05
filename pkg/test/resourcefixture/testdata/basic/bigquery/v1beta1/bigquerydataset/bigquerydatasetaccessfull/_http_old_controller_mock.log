@@ -726,6 +726,10 @@ Content-Type: application/json
       "specialGroup": "projectOwners"
     },
     {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
       "routine": {
         "datasetId": "bigquerydatasetsample${uniqueId}",
         "projectId": "${projectId}",
@@ -787,6 +791,10 @@ X-Xss-Protection: 0
     {
       "role": "OWNER",
       "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
     },
     {
       "routine": {
@@ -863,6 +871,10 @@ X-Xss-Protection: 0
     {
       "role": "OWNER",
       "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
     },
     {
       "routine": {
@@ -928,6 +940,10 @@ Content-Type: application/json
       "specialGroup": "projectOwners"
     },
     {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
       "routine": {
         "datasetId": "bigquerydatasetsample${uniqueId}",
         "projectId": "${projectId}",
@@ -986,6 +1002,10 @@ X-Xss-Protection: 0
     {
       "role": "OWNER",
       "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
     },
     {
       "routine": {
@@ -1059,6 +1079,10 @@ X-Xss-Protection: 0
     {
       "role": "OWNER",
       "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
     },
     {
       "routine": {
