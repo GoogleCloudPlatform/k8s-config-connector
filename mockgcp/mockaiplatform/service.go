@@ -70,6 +70,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDeploymentResourcePoolServiceServer(grpcServer, &deploymentResourcePoolService{MockService: s})
 	pb.RegisterPipelineServiceServer(grpcServer, &pipelineService{MockService: s})
 	pb.RegisterPersistentResourceServiceServer(grpcServer, &persistentResourceService{MockService: s})
+	pbv1.RegisterSpecialistPoolServiceServer(grpcServer, &specialistPoolService{MockService: s})
 	pbv1.RegisterReasoningEngineServiceServer(grpcServer, &reasoningEngineService{MockService: s})
 
 	// Also register under v1 name so that v1 gRPC clients can call it
@@ -109,6 +110,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.AddService(pb.NewDeploymentResourcePoolServiceClient(conn))
 	mux.AddService(pb.NewPipelineServiceClient(conn))
 	mux.AddService(pb.NewPersistentResourceServiceClient(conn))
+	mux.AddService(pbv1.NewSpecialistPoolServiceClient(conn))
 	mux.AddService(pbv1.NewReasoningEngineServiceClient(conn))
 
 	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
