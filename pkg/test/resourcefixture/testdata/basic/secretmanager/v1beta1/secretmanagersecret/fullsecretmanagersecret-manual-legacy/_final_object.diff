@@ -8,8 +8,7 @@
 <   resourceID: secretmanagersecret-${uniqueId}
 43a42
 >   externalRef: projects/${projectId}/secrets/secretmanagersecret-${uniqueId}
-45c44,45
+45c44
 <   observedGeneration: 3
 ---
 >   observedGeneration: 2
->   observedState: {}

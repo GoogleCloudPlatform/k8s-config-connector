@@ -20,7 +20,7 @@ spec:
           external: projects/${projectId}/locations/global/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}
   resourceID: secretmanagersecret-${uniqueId}
   rotation:
-    nextRotationTime: "2025-10-03T15:01:23Z"
+    nextRotationTime: "2035-10-03T15:01:23Z"
     rotationPeriod: 7200s
   topics:
   - topicRef:
