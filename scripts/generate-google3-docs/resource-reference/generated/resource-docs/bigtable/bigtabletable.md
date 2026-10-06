@@ -96,6 +96,7 @@ automatedBackupPolicy:
 changeStreamRetention: string
 columnFamily:
 - family: string
+  type: string
 deletionProtection: string
 instanceRef:
   external: string
@@ -201,6 +202,16 @@ splitKeys:
         <td>
             <p><code class="apitype">string</code></p>
             <p>The name of the column family.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnFamily[].type</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The type of the column family.</p>
         </td>
     </tr>
     <tr>

@@ -265,7 +265,19 @@ GRPC /google.bigtable.admin.v2.BigtableTableAdmin/CreateTable
   "table": {
     "columnFamilies": {
       "family1": {
-        "gcRule": {}
+        "gcRule": {},
+        "valueType": {
+          "aggregateType": {
+            "inputType": {
+              "int64Type": {
+                "encoding": {
+                  "bigEndianBytes": {}
+                }
+              }
+            },
+            "sum": {}
+          }
+        }
       },
       "family2": {
         "gcRule": {}
@@ -279,7 +291,20 @@ OK
 
 {
   "columnFamilies": {
-    "family1": {},
+    "family1": {
+      "valueType": {
+        "aggregateType": {
+          "inputType": {
+            "int64Type": {
+              "encoding": {
+                "bigEndianBytes": {}
+              }
+            }
+          },
+          "sum": {}
+        }
+      }
+    },
     "family2": {}
   },
   "granularity": "MILLIS",
@@ -299,7 +324,20 @@ OK
 
 {
   "columnFamilies": {
-    "family1": {},
+    "family1": {
+      "valueType": {
+        "aggregateType": {
+          "inputType": {
+            "int64Type": {
+              "encoding": {
+                "bigEndianBytes": {}
+              }
+            }
+          },
+          "sum": {}
+        }
+      }
+    },
     "family2": {}
   },
   "granularity": "MILLIS",
@@ -319,7 +357,20 @@ OK
 
 {
   "columnFamilies": {
-    "family1": {},
+    "family1": {
+      "valueType": {
+        "aggregateType": {
+          "inputType": {
+            "int64Type": {
+              "encoding": {
+                "bigEndianBytes": {}
+              }
+            }
+          },
+          "sum": {}
+        }
+      }
+    },
     "family2": {}
   },
   "granularity": "MILLIS",
@@ -339,7 +390,20 @@ OK
 
 {
   "columnFamilies": {
-    "family1": {},
+    "family1": {
+      "valueType": {
+        "aggregateType": {
+          "inputType": {
+            "int64Type": {
+              "encoding": {
+                "bigEndianBytes": {}
+              }
+            }
+          },
+          "sum": {}
+        }
+      }
+    },
     "family2": {}
   },
   "granularity": "MILLIS",
@@ -359,7 +423,20 @@ OK
 
 {
   "columnFamilies": {
-    "family1": {},
+    "family1": {
+      "valueType": {
+        "aggregateType": {
+          "inputType": {
+            "int64Type": {
+              "encoding": {
+                "bigEndianBytes": {}
+              }
+            }
+          },
+          "sum": {}
+        }
+      }
+    },
     "family2": {}
   },
   "granularity": "MILLIS",
@@ -373,7 +450,20 @@ GRPC /google.bigtable.admin.v2.BigtableTableAdmin/ModifyColumnFamilies
 {
   "modifications": [
     {
-      "create": {},
+      "create": {
+        "valueType": {
+          "aggregateType": {
+            "inputType": {
+              "int64Type": {
+                "encoding": {
+                  "bigEndianBytes": {}
+                }
+              }
+            },
+            "max": {}
+          }
+        }
+      },
       "id": "family3"
     }
   ],
@@ -384,9 +474,35 @@ OK
 
 {
   "columnFamilies": {
-    "family1": {},
+    "family1": {
+      "valueType": {
+        "aggregateType": {
+          "inputType": {
+            "int64Type": {
+              "encoding": {
+                "bigEndianBytes": {}
+              }
+            }
+          },
+          "sum": {}
+        }
+      }
+    },
     "family2": {},
-    "family3": {}
+    "family3": {
+      "valueType": {
+        "aggregateType": {
+          "inputType": {
+            "int64Type": {
+              "encoding": {
+                "bigEndianBytes": {}
+              }
+            }
+          },
+          "max": {}
+        }
+      }
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
@@ -411,7 +527,20 @@ OK
 {
   "columnFamilies": {
     "family2": {},
-    "family3": {}
+    "family3": {
+      "valueType": {
+        "aggregateType": {
+          "inputType": {
+            "int64Type": {
+              "encoding": {
+                "bigEndianBytes": {}
+              }
+            }
+          },
+          "max": {}
+        }
+      }
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
@@ -453,7 +582,20 @@ OK
       "family2": {
         "gcRule": {}
       },
-      "family3": {}
+      "family3": {
+        "valueType": {
+          "aggregateType": {
+            "inputType": {
+              "int64Type": {
+                "encoding": {
+                  "bigEndianBytes": {}
+                }
+              }
+            },
+            "max": {}
+          }
+        }
+      }
     },
     "granularity": "MILLIS",
     "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
@@ -478,11 +620,73 @@ OK
   },
   "columnFamilies": {
     "family2": {},
-    "family3": {}
+    "family3": {
+      "valueType": {
+        "aggregateType": {
+          "inputType": {
+            "int64Type": {
+              "encoding": {
+                "bigEndianBytes": {}
+              }
+            }
+          },
+          "max": {}
+        }
+      }
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
 }
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}",
+  "view": "SCHEMA_VIEW"
+}
+
+OK
+
+{
+  "automatedBackupPolicy": {
+    "frequency": "86400s",
+    "retentionPeriod": "259200s"
+  },
+  "columnFamilies": {
+    "family2": {},
+    "family3": {
+      "valueType": {
+        "aggregateType": {
+          "inputType": {
+            "int64Type": {
+              "encoding": {
+                "bigEndianBytes": {}
+              }
+            }
+          },
+          "max": {}
+        }
+      }
+    }
+  },
+  "granularity": "MILLIS",
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/DeleteTable
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
+}
+
+OK
+
+{}
 
 ---
 
@@ -541,46 +745,10 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
-
-{
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}",
-  "view": "SCHEMA_VIEW"
-}
-
-OK
-
-{
-  "automatedBackupPolicy": {
-    "frequency": "86400s",
-    "retentionPeriod": "259200s"
-  },
-  "columnFamilies": {
-    "family2": {},
-    "family3": {}
-  },
-  "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
-}
-
----
-
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/DeleteInstance
 
 {
   "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}"
-}
-
-OK
-
-{}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/DeleteTable
-
-{
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
 }
 
 OK
