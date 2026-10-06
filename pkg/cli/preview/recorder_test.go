@@ -268,3 +268,49 @@ func TestRecorder_RecordReconcileEnd_WithError(t *testing.T) {
 		t.Errorf("expected error %v, got %v", testErr, event.err)
 	}
 }
+
+func TestRecorder_OnError_BlockedErrors_Ignored(t *testing.T) {
+	ctx := context.Background()
+	recorder := NewRecorder()
+	listener := recorder.NewStructuredReportingListener()
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "spanner.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "SpannerInstance",
+	})
+	u.SetName("test-instance")
+	u.SetNamespace("test-ns")
+
+	gknn := GKNN{
+		Group:     "spanner.cnrm.cloud.google.com",
+		Kind:      "SpannerInstance",
+		Namespace: "test-ns",
+		Name:      "test-instance",
+	}
+
+	// 1. Blocked GCP error should record GCPAction, not EventTypeError
+	blockedGCP := BlockedGCPError{
+		Method: "POST",
+		URL:    "https://spanner.googleapis.com/v1/projects/p/instances",
+	}
+	listener.OnError(ctx, blockedGCP, u)
+
+	info := recorder.getObjectInfo(gknn)
+	if len(info.events) != 1 {
+		t.Fatalf("expected 1 event, got %d", len(info.events))
+	}
+	if info.events[0].eventType != EventTypeGCPAction {
+		t.Errorf("expected event type %v, got %v", EventTypeGCPAction, info.events[0].eventType)
+	}
+
+	// 2. Blocked Kube error should be ignored by OnError
+	blockedKubeErr := fmt.Errorf("\"update\" blocked in preview mode")
+	listener.OnError(ctx, blockedKubeErr, u)
+
+	// Events count should still be 1 (no EventTypeError added)
+	if len(info.events) != 1 {
+		t.Fatalf("expected 1 event after blocked kube error, got %d", len(info.events))
+	}
+}

@@ -400,13 +400,13 @@ func TestGenerateRecorderReconciledResults(t *testing.T) {
 		{eventType: EventTypeReconcileEnd, reconcilerType: k8s.ReconcilerTypeTerraform},
 	}
 
-	// 4. Blocked GCP action
+	// 4. Blocked GCP action with ReconcileEnd returning wrapped BlockedGCPError
 	info4 := recorder.getObjectInfo(gknnGCPWrite)
 	info4.currentStatus = "UpToDate"
 	info4.events = []event{
 		{eventType: EventTypeReconcileStart, reconcilerType: k8s.ReconcilerTypeDirect},
 		{eventType: EventTypeGCPAction, gcpAction: &gcpAction{Method: "POST", URL: "https://pubsub.googleapis.com/v1/projects/p/topics/t"}},
-		{eventType: EventTypeReconcileEnd, reconcilerType: k8s.ReconcilerTypeDirect},
+		{eventType: EventTypeReconcileEnd, reconcilerType: k8s.ReconcilerTypeDirect, err: fmt.Errorf("Update call failed: %w", BlockedGCPError{Method: "POST", URL: "https://pubsub.googleapis.com/v1/projects/p/topics/t"})},
 	}
 
 	// 5. Both GCP Action and multiple errors (including duplicate error)
@@ -419,10 +419,20 @@ func TestGenerateRecorderReconciledResults(t *testing.T) {
 		{eventType: EventTypeReconcileEnd, reconcilerType: k8s.ReconcilerTypeIAMPolicy, err: fmt.Errorf("iam member invalid")},
 	}
 
+	// 6. Blocked Kube action with ReconcileEnd returning blocked kube error
+	gknnKubeWrite := GKNN{Group: "pubsub.cnrm.cloud.google.com", Kind: "PubSubSubscription", Namespace: "default", Name: "kube-write-sub"}
+	info6 := recorder.getObjectInfo(gknnKubeWrite)
+	info6.currentStatus = "UpToDate"
+	info6.events = []event{
+		{eventType: EventTypeReconcileStart, reconcilerType: k8s.ReconcilerTypeDirect},
+		{eventType: EventTypeKubeAction, kubeAction: &kubeAction{method: "update", action: ActionBlocked}},
+		{eventType: EventTypeReconcileEnd, reconcilerType: k8s.ReconcilerTypeDirect, err: fmt.Errorf("\"update\" blocked in preview mode")},
+	}
+
 	results := recorder.GenerateRecorderReconciledResults()
 
-	if results.goodCount != 1 {
-		t.Errorf("expected goodCount=1, got %d", results.goodCount)
+	if results.goodCount != 2 {
+		t.Errorf("expected goodCount=2, got %d", results.goodCount)
 	}
 	if results.badCount != 4 {
 		t.Errorf("expected badCount=4, got %d", results.badCount)
@@ -487,6 +497,18 @@ func TestGenerateRecorderReconciledResults(t *testing.T) {
 	}
 	if len(res5.Errors) != 1 || res5.Errors[0] != "iam member invalid" {
 		t.Errorf("expected deduplicated single error 'iam member invalid', got %v", res5.Errors)
+	}
+
+	// Check Blocked Kube Write (should be healthy with no errors or reasons)
+	res6 := results.results[gknnKubeWrite]
+	if res6.ReconcileStatus != ReconcileStatusHealthy {
+		t.Errorf("expected healthy status for blocked kube write, got %v", res6.ReconcileStatus)
+	}
+	if len(res6.UnhealthyReasons) != 0 {
+		t.Errorf("expected no unhealthy reasons for blocked kube write, got %v", res6.UnhealthyReasons)
+	}
+	if len(res6.Errors) != 0 {
+		t.Errorf("expected no errors for blocked kube write, got %v", res6.Errors)
 	}
 }
 

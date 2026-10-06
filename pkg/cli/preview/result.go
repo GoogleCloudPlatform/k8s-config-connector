@@ -123,7 +123,7 @@ func (r *Recorder) GenerateRecorderReconciledResults() *RecorderReconciledResult
 				result.ControllerType = event.reconcilerType
 			case EventTypeReconcileEnd:
 				result.ControllerType = event.reconcilerType
-				if event.err != nil {
+				if event.err != nil && !IsBlockedError(event.err) {
 					result.ReconcileStatus = ReconcileStatusUnhealthy
 					addUnhealthyReason(result, UnhealthyReasonError)
 					addError(result, event.err)
@@ -139,7 +139,7 @@ func (r *Recorder) GenerateRecorderReconciledResults() *RecorderReconciledResult
 				result.ReconcileStatus = ReconcileStatusUnhealthy
 				addUnhealthyReason(result, UnhealthyReasonGCPWrite)
 			case EventTypeError:
-				if event.err != nil {
+				if event.err != nil && !IsBlockedError(event.err) {
 					result.ReconcileStatus = ReconcileStatusUnhealthy
 					addUnhealthyReason(result, UnhealthyReasonError)
 					addError(result, event.err)
@@ -172,12 +172,16 @@ func addUnhealthyReason(result *GKNNReconciledResult, reason UnhealthyReason) {
 }
 
 func addError(result *GKNNReconciledResult, err error) {
-	if err == nil {
+	if err == nil || IsBlockedError(err) {
 		return
 	}
 	msg := err.Error()
-	for _, e := range result.Errors {
-		if e == msg {
+	for i, e := range result.Errors {
+		if e == msg || strings.Contains(e, msg) {
+			return
+		}
+		if strings.Contains(msg, e) {
+			result.Errors[i] = msg
 			return
 		}
 	}

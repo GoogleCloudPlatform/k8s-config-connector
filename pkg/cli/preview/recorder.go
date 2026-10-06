@@ -148,6 +148,9 @@ func (l *structuredReportingListener) OnError(ctx context.Context, err error, ar
 		l.recorder.recordGCPAction(ctx, blockedGCPError, args, ActionBlocked)
 		return
 	}
+	if IsBlockedError(err) {
+		return
+	}
 	l.recorder.recordError(ctx, err, args)
 }
 
@@ -239,7 +242,7 @@ func (r *Recorder) recordReconcileEnd(ctx context.Context, u *unstructured.Unstr
 
 // recordError captures a non-blocked error into our recorder.
 func (r *Recorder) recordError(ctx context.Context, err error, args []any) {
-	if err == nil {
+	if err == nil || IsBlockedError(err) {
 		return
 	}
 	var gknn GKNN
@@ -379,6 +382,14 @@ func (r *Recorder) recordGCPAction(ctx context.Context, err *BlockedGCPError, ar
 				Kind:      arg.Kind,
 				Namespace: arg.Namespace,
 				Name:      arg.Name,
+			}
+		case *unstructured.Unstructured:
+			gvk := arg.GroupVersionKind()
+			gknn = GKNN{
+				Group:     gvk.Group,
+				Kind:      gvk.Kind,
+				Namespace: arg.GetNamespace(),
+				Name:      arg.GetName(),
 			}
 		default:
 			klog.Fatalf("unhandled arg type %T", arg)
