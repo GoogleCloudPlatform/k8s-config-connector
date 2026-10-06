@@ -18,6 +18,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/refs"
 
 	"google.golang.org/genproto/googleapis/api/annotations"
@@ -127,13 +128,13 @@ func referenceHint(path, desc string) (JudgementItem, bool) {
 		return JudgementItem{}, false
 	}
 	if verdict, _ := refs.Classify(path, desc); verdict == refs.IsReference {
-		return JudgementItem{FieldPath: path, Reason: "possible-reference-by-description"}, true
+		return JudgementItem{FieldPath: path, Reason: judgement.ReasonPossibleReferenceByDescription}, true
 	}
 	if refs.MatchDescriptionLoose(path, desc) {
-		return JudgementItem{FieldPath: path, Reason: "possible-reference-by-description-loose"}, true
+		return JudgementItem{FieldPath: path, Reason: judgement.ReasonPossibleReferenceByDescriptionLoose}, true
 	}
 	if target, ok := refs.MatchName(path); ok {
-		return JudgementItem{FieldPath: path, Reason: "possible-reference-by-name", Detail: target}, true
+		return JudgementItem{FieldPath: path, Reason: judgement.ReasonPossibleReferenceByName, Detail: target}, true
 	}
 	return JudgementItem{}, false
 }

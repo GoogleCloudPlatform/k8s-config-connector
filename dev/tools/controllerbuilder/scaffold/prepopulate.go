@@ -121,7 +121,7 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 		if target, ok := codegen.SiblingResource(field, opts); ok {
 			out.Judgement = append(out.Judgement, JudgementItem{
 				FieldPath: ".spec." + codegen.GetJSONForKRM(field, opts),
-				Reason:    "possible-reference-by-sibling",
+				Reason:    judgement.ReasonPossibleReferenceBySibling,
 				Detail: "the name matches " + target + ", a resource this service declares; " +
 					"confirm whether it should be a reference",
 			})
@@ -149,7 +149,8 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 
 	out.SpecFields = buf.String()
 
-	// Add root untriaged marker so the resource is reviewed before graduating.
+	// The root marker records that nobody has reviewed this resource yet. It
+	// does not suppress any check.
 	out.Judgement = append([]JudgementItem{{
 		Reason: "untriaged-bulk-generation",
 		Detail: "spec was generated from proto definition; verify refs, omissions, and KRM conventions",
@@ -225,7 +226,7 @@ func judgementFor(field protoreflect.FieldDescriptor, opts codegen.WriteOptions)
 
 	return JudgementItem{
 		FieldPath: ".spec." + codegen.GetJSONForKRM(field, opts),
-		Reason:    "possible-reference",
+		Reason:    judgement.ReasonPossibleReference,
 		Detail:    "target=" + target,
 	}, true
 }
