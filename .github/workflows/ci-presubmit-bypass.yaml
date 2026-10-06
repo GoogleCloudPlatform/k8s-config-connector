@@ -26,7 +26,7 @@ on:
       - 'experiments/**'
       - '**.md'
   merge_group:
-    types: [checks_requested]
+    types: [checks_requested, destroyed]
     branches: ["master", "release-*"]
     paths:
       - 'experiments/**'
@@ -35,6 +35,7 @@ on:
 jobs:
   presubmit-gatekeeper:
     runs-on: ubuntu-latest
+    if: ${{ github.event.action != 'destroyed' }}
     steps:
       - name: Bypass check
         run: echo "Bypassing presubmit checks for documentation or experiment-only changes."
