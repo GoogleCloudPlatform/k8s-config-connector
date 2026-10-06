@@ -44,7 +44,8 @@ ${CONTROLLERBUILDER} generate-types \
   --resource NetAppActiveDirectory:ActiveDirectory \
   --resource NetAppBackupPolicy:BackupPolicy \
   --resource NetAppBackupVault:BackupVault \
-  --resource NetAppHostGroup:HostGroup
+  --resource NetAppHostGroup:HostGroup \
+  --resource NetAppKMSConfig:KmsConfig
 
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \
