@@ -56,6 +56,12 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 		}
 	}
 
+	if serviceAttachmentRef, ok := v.(*refs.ComputeServiceAttachmentRef); ok {
+		if err := refs.ResolveComputeServiceAttachment(r.ctx, r.kube, r.src.GetNamespace(), serviceAttachmentRef); err != nil {
+			return err
+		}
+	}
+
 	if networkRef, ok := v.(*computerefs.ComputeNetworkRef); ok {
 		if err := networkRef.Normalize(r.ctx, r.kube, r.src.GetNamespace()); err != nil {
 			return err
