@@ -1,0 +1,223 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Step 00 (APPLY): Provision Primary with instanceType: CLOUD_SQL_INSTANCE, dataCacheEnabled: true, and replicationCluster.failoverDrReplicaRef declared up-front.
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-primary-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/sqlinstance-advanced-dr: "enabled"
+spec:
+  databaseVersion: MYSQL_8_0
+  region: us-west1
+  instanceType: CLOUD_SQL_INSTANCE
+  replicationCluster:
+    failoverDrReplicaRef:
+      name: sqlinstance-replica-${uniqueId}
+  settings:
+    dataCacheConfig:
+      dataCacheEnabled: true
+    locationPreference:
+      zone: us-west1-a
+    tier: db-perf-optimized-N-2
+    edition: ENTERPRISE_PLUS
+    backupConfiguration:
+      enabled: true
+      binaryLogEnabled: true
+      startTime: "12:00"
+      backupRetentionSettings:
+        retainedBackups: 15
+        retentionUnit: COUNT
+      transactionLogRetentionDays: 14
+---
+# Step 01 (APPLY): Provision DR Replica with instanceType: READ_REPLICA_INSTANCE, dataCacheEnabled: true, and masterInstanceRef pointing to Primary.
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-replica-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/sqlinstance-advanced-dr: "enabled"
+spec:
+  databaseVersion: MYSQL_8_0
+  instanceType: READ_REPLICA_INSTANCE
+  masterInstanceRef:
+    name: sqlinstance-primary-${uniqueId}
+  region: us-east1
+  settings:
+    dataCacheConfig:
+      dataCacheEnabled: true
+    backupConfiguration:
+      binaryLogEnabled: true
+      enabled: false
+    locationPreference:
+      zone: us-east1-c
+    tier: db-perf-optimized-N-2
+    edition: ENTERPRISE_PLUS
+---
+# Step 02 (APPLY): Update Primary with label dr-setup: "paired" to trigger re-reconciliation and establish the DR pairing on GCP.
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-primary-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/sqlinstance-advanced-dr: "enabled"
+  labels:
+    dr-setup: "paired"
+spec:
+  databaseVersion: MYSQL_8_0
+  region: us-west1
+  instanceType: CLOUD_SQL_INSTANCE
+  replicationCluster:
+    failoverDrReplicaRef:
+      name: sqlinstance-replica-${uniqueId}
+  settings:
+    dataCacheConfig:
+      dataCacheEnabled: true
+    locationPreference:
+      zone: us-west1-a
+    tier: db-perf-optimized-N-2
+    edition: ENTERPRISE_PLUS
+    backupConfiguration:
+      enabled: true
+      binaryLogEnabled: true
+      startTime: "12:00"
+      backupRetentionSettings:
+        retainedBackups: 15
+        retentionUnit: COUNT
+      transactionLogRetentionDays: 14
+---
+# Step 03 (SystemRun): Wait 10 minutes for GCP Cloud SQL to finish background pairing.
+kind: SystemRun
+duration: "10m"
+---
+# Step 04 (TEST: TOUCH): Force re-reconciliation on Replica to sync server-side pairing state.
+TEST: TOUCH
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-replica-${uniqueId}
+---
+# Step 05 (TEST: READ-OBJECT): Verify Primary status reflects failoverDRReplicaName and drReplica: false.
+TEST: READ-OBJECT
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-primary-${uniqueId}
+---
+# Step 06 (TEST: READ-OBJECT): Verify Replica status reflects drReplica: true.
+TEST: READ-OBJECT
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-replica-${uniqueId}
+---
+# Step 07 (HTTPRequest): Execute out-of-band switchover via REST API /switchover on Replica.
+kind: HTTPRequest
+method: POST
+url: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-replica-${uniqueId}/switchover
+timeout: 10m
+---
+# Step 08 (TEST: TOUCH): Trigger re-reconciliation on Primary in switched-over state.
+TEST: TOUCH
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-primary-${uniqueId}
+---
+# Step 09 (TEST: TOUCH): Trigger re-reconciliation on Replica in switched-over state.
+TEST: TOUCH
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-replica-${uniqueId}
+---
+# Step 10 (TEST: READ-OBJECT): Verify Primary status reflects instanceType: READ_REPLICA_INSTANCE, masterInstanceName, and drReplica: true.
+TEST: READ-OBJECT
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-primary-${uniqueId}
+---
+# Step 11 (TEST: READ-OBJECT): Verify Replica status reflects instanceType: CLOUD_SQL_INSTANCE and failoverDRReplicaName.
+TEST: READ-OBJECT
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-replica-${uniqueId}
+---
+# Step 12 (APPLY): Apply label updates to Primary, verifying KCC skips issuing any GCP PATCH/UPDATE requests while switched over.
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-primary-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/sqlinstance-advanced-dr: "enabled"
+  labels:
+    dr-setup: "paired"
+    switched-over: "primary-update"
+spec:
+  databaseVersion: MYSQL_8_0
+  region: us-west1
+  instanceType: CLOUD_SQL_INSTANCE
+  replicationCluster:
+    failoverDrReplicaRef:
+      name: sqlinstance-replica-${uniqueId}
+  settings:
+    dataCacheConfig:
+      dataCacheEnabled: true
+    locationPreference:
+      zone: us-west1-a
+    tier: db-perf-optimized-N-2
+    edition: ENTERPRISE_PLUS
+    backupConfiguration:
+      enabled: true
+      binaryLogEnabled: true
+      startTime: "12:00"
+      backupRetentionSettings:
+        retainedBackups: 15
+        retentionUnit: COUNT
+      transactionLogRetentionDays: 14
+---
+# Step 13 (APPLY): Apply label updates to Replica, verifying KCC skips issuing any GCP PATCH/UPDATE requests while switched over.
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-replica-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/sqlinstance-advanced-dr: "enabled"
+  labels:
+    switched-over: "replica-update"
+spec:
+  databaseVersion: MYSQL_8_0
+  instanceType: READ_REPLICA_INSTANCE
+  masterInstanceRef:
+    name: sqlinstance-primary-${uniqueId}
+  region: us-east1
+  settings:
+    dataCacheConfig:
+      dataCacheEnabled: true
+    backupConfiguration:
+      binaryLogEnabled: true
+      enabled: false
+    locationPreference:
+      zone: us-east1-c
+    tier: db-perf-optimized-N-2
+    edition: ENTERPRISE_PLUS
+---
+# Step 14 (HTTPRequest): Execute out-of-band switchback via REST API /switchover on Primary to restore original roles for a clean deletion/teardown.
+kind: HTTPRequest
+method: POST
+url: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-primary-${uniqueId}/switchover
+timeout: 10m
