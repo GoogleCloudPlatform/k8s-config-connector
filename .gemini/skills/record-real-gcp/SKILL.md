@@ -67,6 +67,10 @@ StorageBucket:
 
 ### Step 2: Execute Real GCP Recording
 
+> **Important:** Recording against real GCP (including compiling `./tests/e2e` on a cold cache) often takes 10–20+ minutes and will exceed the default shell tool timeout. Always pass a generous timeout (e.g., `timeout: 1800000` / 30 minutes) to `run_shell_command` when running `hack/record-gcp`. Note that `hack/record-gcp` sets `ONLY_WARN_ON_GOLDEN_DIFFS="*"` so golden file diffs are logged as warnings without failing the test run.
+
+> **Batch fixtures & avoid redundant recording passes:** Prefer passing a regex matching all target fixtures (e.g., `./hack/record-gcp "fixtures/<kind_lowercase>"` or `./hack/record-gcp "TestMigrationToDirect/fixtures/.*<kind_lowercase>.*"`) rather than invoking `hack/record-gcp` sequentially for each fixture. Because `hack/record-gcp` updates golden files without failing on golden diffs, do not re-run it a second time solely to verify the updated golden files.
+
 #### 1. Fast vs. Slow Execution Strategy
 *   **Fast resources (<10 min per test)**:
     - **If `all: true` (Whole-Kind change)**: You can record all tests for the Kind in a single command:
@@ -100,7 +104,7 @@ StorageBucket:
     hack/record-gcp "fixtures/^<testname>$"  # or: hack/record-gcp "fixtures/<kind_lowercase>"
 
     # 2. Migration in-place validation
-    RUN_TESTS="TestMigrationToDirect/fixtures/^<testname>$" hack/record-gcp  # or: RUN_TESTS="TestMigrationToDirect/fixtures/<kind_lowercase>" hack/record-gcp
+    hack/record-gcp "TestMigrationToDirect/fixtures/^<testname>$"  # or: hack/record-gcp "TestMigrationToDirect/fixtures/<kind_lowercase>"
     ```
 
 #### 3. Troubleshooting API / Permissions Issues

@@ -13,6 +13,8 @@ All presubmits run in GitHub Actions, generated from `dev/ci/presubmits/`. Each 
 
 If a specific CI presubmit fails, run the corresponding script locally to diagnose and fix the failure.
 
+**Prefer targeted tests during iteration:** Full presubmit scripts like `./dev/ci/presubmits/unit-tests` run tests across the entire repository and take several minutes. During iterative development and debugging, run targeted `go test` commands for the specific package or test (e.g., `go test ./pkg/controller/direct/<service>/...` or `go test -v ./pkg/test/resourcefixture -run TestGoldenLogAlignment`), and reserve full presubmit scripts for final pre-push validation.
+
 ### Common Presubmit Scripts
 
 - **`./dev/ci/presubmits/unit-tests`**: Runs unit tests and verifies golden log alignment across packages.
