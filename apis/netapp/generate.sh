@@ -36,6 +36,7 @@ ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.netapp.v1 \
   --api-version netapp.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
+  --resource NetAppActiveDirectory:ActiveDirectory \
   --resource NetAppBackupPolicy:BackupPolicy \
   --resource NetAppBackupVault:BackupVault
 
