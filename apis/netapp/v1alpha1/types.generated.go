@@ -20,6 +20,7 @@
 // resource: NetAppActiveDirectory:ActiveDirectory
 // resource: NetAppBackupPolicy:BackupPolicy
 // resource: NetAppBackupVault:BackupVault
+// resource: NetAppHostGroup:HostGroup
 
 package v1alpha1
 
@@ -183,9 +184,15 @@ type BackupVault struct {
 	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.backup_region
 	BackupRegion *string `json:"backupRegion,omitempty"`
 
-	// Optional. Backup retention policy defining the retenton of backups.
+	// Optional. Backup retention policy defining the retention of backups.
 	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.backup_retention_policy
 	BackupRetentionPolicy *BackupVault_BackupRetentionPolicy `json:"backupRetentionPolicy,omitempty"`
+
+	// Optional. Specifies the Key Management System (KMS) configuration to be
+	//  used for backup encryption. Format:
+	//  `projects/{project}/locations/{location}/kmsConfigs/{kms_config}`
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.kms_config
+	KMSConfig *string `json:"kmsConfig,omitempty"`
 }
 */
 
@@ -198,28 +205,63 @@ type BackupVault_BackupRetentionPolicy struct {
 	BackupMinimumEnforcedRetentionDays *int32 `json:"backupMinimumEnforcedRetentionDays,omitempty"`
 
 	// Optional. Indicates if the daily backups are immutable.
-	//  Atleast one of daily_backup_immutable, weekly_backup_immutable,
+	//  At least one of daily_backup_immutable, weekly_backup_immutable,
 	//  monthly_backup_immutable and manual_backup_immutable must be true.
 	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.BackupRetentionPolicy.daily_backup_immutable
 	DailyBackupImmutable *bool `json:"dailyBackupImmutable,omitempty"`
 
 	// Optional. Indicates if the weekly backups are immutable.
-	//  Atleast one of daily_backup_immutable, weekly_backup_immutable,
+	//  At least one of daily_backup_immutable, weekly_backup_immutable,
 	//  monthly_backup_immutable and manual_backup_immutable must be true.
 	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.BackupRetentionPolicy.weekly_backup_immutable
 	WeeklyBackupImmutable *bool `json:"weeklyBackupImmutable,omitempty"`
 
 	// Optional. Indicates if the monthly backups are immutable.
-	//  Atleast one of daily_backup_immutable, weekly_backup_immutable,
+	//  At least one of daily_backup_immutable, weekly_backup_immutable,
 	//  monthly_backup_immutable and manual_backup_immutable must be true.
 	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.BackupRetentionPolicy.monthly_backup_immutable
 	MonthlyBackupImmutable *bool `json:"monthlyBackupImmutable,omitempty"`
 
 	// Optional. Indicates if the manual backups are immutable.
-	//  Atleast one of daily_backup_immutable, weekly_backup_immutable,
+	//  At least one of daily_backup_immutable, weekly_backup_immutable,
 	//  monthly_backup_immutable and manual_backup_immutable must be true.
 	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.BackupRetentionPolicy.manual_backup_immutable
 	ManualBackupImmutable *bool `json:"manualBackupImmutable,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.netapp.v1.HostGroup", skipping
+
+// +kcc:proto=google.cloud.netapp.v1.HostGroup
+type HostGroup struct {
+	// Identifier. The resource name of the host group.
+	//  Format:
+	//  `projects/{project_number}/locations/{location_id}/hostGroups/{host_group_id}`.
+	// +kcc:proto:field=google.cloud.netapp.v1.HostGroup.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Type of the host group.
+	// +kcc:proto:field=google.cloud.netapp.v1.HostGroup.type
+	Type *string `json:"type,omitempty"`
+
+	// Required. The list of hosts associated with the host group.
+	// +kcc:proto:field=google.cloud.netapp.v1.HostGroup.hosts
+	Hosts []string `json:"hosts,omitempty"`
+
+	// Required. The OS type of the host group. It indicates the type of operating
+	//  system used by all of the hosts in the HostGroup. All hosts in a HostGroup
+	//  must be of the same OS type. This can be set only when creating a
+	//  HostGroup.
+	// +kcc:proto:field=google.cloud.netapp.v1.HostGroup.os_type
+	OSType *string `json:"osType,omitempty"`
+
+	// Optional. Description of the host group.
+	// +kcc:proto:field=google.cloud.netapp.v1.HostGroup.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Labels of the host group.
+	// +kcc:proto:field=google.cloud.netapp.v1.HostGroup.labels
+	Labels map[string]string `json:"labels,omitempty"`
 }
 */
 
@@ -287,5 +329,29 @@ type BackupVaultObservedState struct {
 	//  `projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}`
 	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.destination_backup_vault
 	DestinationBackupVault *string `json:"destinationBackupVault,omitempty"`
+
+	// Output only. Field indicating encryption state of CMEK backups.
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.encryption_state
+	EncryptionState *string `json:"encryptionState,omitempty"`
+
+	// Output only. The crypto key version used to encrypt the backup vault.
+	//  Format:
+	//  `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}`
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.backups_crypto_key_version
+	BackupsCryptoKeyVersion *string `json:"backupsCryptoKeyVersion,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.netapp.v1.HostGroup", skipping
+
+// +kcc:observedstate:proto=google.cloud.netapp.v1.HostGroup
+type HostGroupObservedState struct {
+	// Output only. State of the host group.
+	// +kcc:proto:field=google.cloud.netapp.v1.HostGroup.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Create time of the host group.
+	// +kcc:proto:field=google.cloud.netapp.v1.HostGroup.create_time
+	CreateTime *string `json:"createTime,omitempty"`
 }
 */

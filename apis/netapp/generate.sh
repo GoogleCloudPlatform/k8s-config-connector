@@ -29,18 +29,25 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
 
+# We must compile NetApp using a newer googleapis pin than the global default in apis/git.versions to include HostGroup.
+PROTO_SHA="e09e85d32ca349e1b205514a412817a7692595c6"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
 
 ${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.netapp.v1 \
   --api-version netapp.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --resource NetAppActiveDirectory:ActiveDirectory \
   --resource NetAppBackupPolicy:BackupPolicy \
-  --resource NetAppBackupVault:BackupVault
+  --resource NetAppBackupVault:BackupVault \
+  --resource NetAppHostGroup:HostGroup
 
 ${CONTROLLERBUILDER} generate-mapper \
+  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.netapp.v1 \
   --api-version netapp.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output

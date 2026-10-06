@@ -274,6 +274,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//modelarmor.googleapis.com/folders/{}/locations/{}/floorSetting":       true,
 		"//modelarmor.googleapis.com/organizations/{}/locations/{}/floorSetting": true,
 
+		// NetApp
+		"//netapp.googleapis.com/projects/{}/locations/{}/hostGroups/{}": true,
+
 		// Network Connectivity
 		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/regionalEndpoints/{}":             true,
 		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/multicloudDataTransferConfigs/{}": true,
