@@ -147,11 +147,13 @@ func (a *InstanceAdapter) Find(ctx context.Context) (bool, error) {
 
 	a.actual = instancepb
 
-	accessRules, err := a.getAccessRulesOptions(ctx)
-	if err != nil {
-		log.V(2).Info("could not fetch accessRulesOptions (will proceed without them)", "err", err)
-	} else {
-		a.actualAccessRules = accessRules
+	if a.desiredAccessRules != nil {
+		accessRules, err := a.getAccessRulesOptions(ctx)
+		if err != nil {
+			log.V(2).Info("could not fetch accessRulesOptions (will proceed without them)", "err", err)
+		} else {
+			a.actualAccessRules = accessRules
+		}
 	}
 
 	return true, nil
@@ -191,9 +193,12 @@ func (a *InstanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	if err != nil {
 		return fmt.Errorf("fetching Instance %s after creation: %w", a.id, err)
 	}
-	latestAccessRules, err := a.getAccessRulesOptions(ctx)
-	if err != nil {
-		log.V(2).Info("could not fetch accessRulesOptions after create", "err", err)
+	var latestAccessRules *krm.AccessRulesOptions
+	if a.desiredAccessRules != nil {
+		latestAccessRules, err = a.getAccessRulesOptions(ctx)
+		if err != nil {
+			log.V(2).Info("could not fetch accessRulesOptions after create", "err", err)
+		}
 	}
 
 	return a.updateStatus(ctx, createOp, latest, latestAccessRules)
@@ -261,9 +266,12 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	if err != nil {
 		return fmt.Errorf("fetching Instance %s after update: %w", a.id, err)
 	}
-	latestAccessRules, err := a.getAccessRulesOptions(ctx)
-	if err != nil {
-		log.V(2).Info("could not fetch accessRulesOptions after update", "err", err)
+	var latestAccessRules *krm.AccessRulesOptions
+	if a.desiredAccessRules != nil {
+		latestAccessRules, err = a.getAccessRulesOptions(ctx)
+		if err != nil {
+			log.V(2).Info("could not fetch accessRulesOptions after update", "err", err)
+		}
 	}
 
 	return a.updateStatus(ctx, updateOp, latest, latestAccessRules)
