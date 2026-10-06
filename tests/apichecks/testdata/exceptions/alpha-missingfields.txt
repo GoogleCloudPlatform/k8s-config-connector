@@ -2925,27 +2925,7 @@
 [missing_field] crd=modelarmorfloorsettings.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.filterConfig.sdpSettings.advancedConfig.inspectTemplateRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.filterConfig.sdpSettings.advancedConfig.deidentifyTemplateRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=modelarmortemplates.modelarmor.cnrm.cloud.google.com version=v1alpha1: field ".spec.filterConfig.sdpSettings.advancedConfig.inspectTemplateRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=netappactivedirectories.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.administrators[]" is not set in unstructured objects
-[missing_field] crd=netappactivedirectories.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.aesEncryption" is not set in unstructured objects
-[missing_field] crd=netappactivedirectories.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupOperators[]" is not set in unstructured objects
-[missing_field] crd=netappactivedirectories.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=netappactivedirectories.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.dns" is not set in unstructured objects
-[missing_field] crd=netappactivedirectories.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.domain" is not set in unstructured objects
-[missing_field] crd=netappactivedirectories.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptDcConnections" is not set in unstructured objects
-[missing_field] crd=netappactivedirectories.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.kdcHostname" is not set in unstructured objects
-[missing_field] crd=netappactivedirectories.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.kdcIP" is not set in unstructured objects
-[missing_field] crd=netappactivedirectories.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=netappactivedirectories.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.ldapSigning" is not set in unstructured objects
-[missing_field] crd=netappactivedirectories.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=netappactivedirectories.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.netBiosPrefix" is not set in unstructured objects
-[missing_field] crd=netappactivedirectories.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.nfsUsersWithLdap" is not set in unstructured objects
-[missing_field] crd=netappactivedirectories.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationalUnit" is not set in unstructured objects
-[missing_field] crd=netappactivedirectories.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.password.value" is not set in unstructured objects
 [missing_field] crd=netappactivedirectories.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.password.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=netappactivedirectories.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=netappactivedirectories.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.securityOperators[]" is not set in unstructured objects
-[missing_field] crd=netappactivedirectories.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.site" is not set in unstructured objects
-[missing_field] crd=netappactivedirectories.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.username" is not set in unstructured objects
 [missing_field] crd=netappbackuppolicies.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=netappbackuppolicies.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.enabled" is not set in unstructured objects
 [missing_field] crd=netappbackuppolicies.netapp.cnrm.cloud.google.com version=v1alpha1: field ".spec.monthlyBackupLimit" is not set in unstructured objects

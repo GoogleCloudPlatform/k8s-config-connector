@@ -29,7 +29,12 @@ func NetAppActiveDirectorySpec_Password_ToProto(mapCtx *direct.MapContext, in *r
 }
 
 func NetAppActiveDirectorySpec_Password_FromProto(mapCtx *direct.MapContext, in string) *refsv1beta1secret.Legacy {
-	return nil
+	if in == "" {
+		return nil
+	}
+	return &refsv1beta1secret.Legacy{
+		Value: direct.LazyPtr(in),
+	}
 }
 
 func NetAppActiveDirectorySpec_FromProto(mapCtx *direct.MapContext, in *pb.ActiveDirectory) *krm.NetAppActiveDirectorySpec {
