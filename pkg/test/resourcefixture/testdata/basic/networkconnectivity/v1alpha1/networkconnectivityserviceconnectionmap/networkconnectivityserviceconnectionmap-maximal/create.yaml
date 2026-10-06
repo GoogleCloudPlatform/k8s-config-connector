@@ -1,0 +1,34 @@
+apiVersion: networkconnectivity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkConnectivityServiceConnectionMap
+metadata:
+  name: scm-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1
+  description: "A maximal test ServiceConnectionMap"
+  labels:
+    env: test
+    tier: standard
+  token: "test-token-${uniqueId}"
+  producerPSCConfigs:
+  - serviceAttachmentRef:
+      external: projects/${projectId}/regions/us-central1/serviceAttachments/sa-mock-${uniqueId}
+    automatedDNSCreationSpec:
+      dnsSuffix: "example.com."
+      hostname: "myhost"
+      ttl: "300s"
+  consumerPSCConfigs:
+  - consumerInstanceProjectRef:
+      external: projects/${projectId}
+    projectRef:
+      external: projects/${projectId}
+    networkRef:
+      external: projects/${projectId}/global/networks/network-mock-${uniqueId}
+    disableGlobalAccess: false
+    ipVersion: "IPV4"
+    producerInstanceMetadata:
+      key1: "val1"
+    state: "VALID"
+    serviceAttachmentIPAddressMap:
+      projects/${projectId}/regions/us-central1/serviceAttachments/sa-mock-${uniqueId}: "10.0.0.10"
