@@ -1,0 +1,19 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1alpha1
+kind: NetworkServicesLBEdgeExtension
+metadata:
+  name: lbedgeextension-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: global
+  loadBalancingScheme: EXTERNAL_MANAGED
+  forwardingRuleRefs:
+    - name: fr-${uniqueId}
+  extensionChains:
+    - name: "chain1"
+      matchCondition:
+        celExpression: "request.host == 'example.com'"
+      extensions:
+        - name: "ext1"
+          backendServiceRef:
+            name: bs-callout-${uniqueId}

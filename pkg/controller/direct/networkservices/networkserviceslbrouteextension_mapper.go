@@ -131,10 +131,10 @@ func ExtensionChain_Extension_FromProto(mapCtx *direct.MapContext, in *pb.Extens
 
 	service := in.GetService()
 	if service != "" {
-		if strings.Contains(service, "/backendServices/") {
-			out.BackendServiceRef = &krmcomputev1beta1.ComputeBackendServiceRef{External: service}
-		} else if strings.Contains(service, "/wasmPlugins/") {
+		if strings.Contains(service, "/wasmPlugins/") {
 			out.WasmPluginRef = &krm.NetworkServicesWasmPluginRef{External: service}
+		} else {
+			out.BackendServiceRef = &krmcomputev1beta1.ComputeBackendServiceRef{External: service}
 		}
 	}
 
