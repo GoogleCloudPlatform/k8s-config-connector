@@ -49,3 +49,20 @@ var referenceReasons = map[string]bool{
 func IsReferenceReason(reason string) bool {
 	return referenceReasons[reason]
 }
+
+// Reasons for a source link in the header of <kind>_types.go that
+// generate-types could not verify. The link carries a
+// "+kcc:guess=source-link reason=<reason>" line until someone fixes it.
+const (
+	// ReasonVerifyResourceDocsLink: no candidate for the resource's REST
+	// reference page loaded as that page, or the check could not run.
+	ReasonVerifyResourceDocsLink = "verify-resource-docs-link"
+	// ReasonVerifyServiceDocsLink: the service docs link is missing, did not
+	// load, or is a generic landing page.
+	ReasonVerifyServiceDocsLink = "verify-service-docs-link"
+)
+
+// IsSourceLinkReason reports whether reason is about a source link.
+func IsSourceLinkReason(reason string) bool {
+	return reason == ReasonVerifyResourceDocsLink || reason == ReasonVerifyServiceDocsLink
+}
