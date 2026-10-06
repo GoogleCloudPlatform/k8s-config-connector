@@ -366,6 +366,67 @@ func TestFormatReconciledStatus(t *testing.T) {
 	}
 }
 
+func TestFormatGKNNReconciledResult(t *testing.T) {
+	tests := []struct {
+		name     string
+		result   *GKNNReconciledResult
+		expected string
+	}{
+		{
+			name: "healthy result without diffs or reasons",
+			result: &GKNNReconciledResult{
+				GKNN:            GKNN{Namespace: "default", Name: "my-topic", Group: "pubsub.cnrm.cloud.google.com", Kind: "PubSubTopic"},
+				CurrentStatus:   "UpToDate",
+				ControllerType:  k8s.ReconcilerTypeDirect,
+				ReconcileStatus: ReconcileStatusHealthy,
+			},
+			expected: `ns="default" name="my-topic" group="pubsub.cnrm.cloud.google.com" kind="PubSubTopic" current_status="UpToDate" controller_type="direct" diffs="" reconcile_status="RECONCILE_STATUS_HEALTHY" reason=""`,
+		},
+		{
+			name: "unhealthy result with RECONCILE_ERROR",
+			result: &GKNNReconciledResult{
+				GKNN:             GKNN{Namespace: "config-control", Name: "alloydb-instance-ut-use5-663-fcp-0001-rp", Group: "alloydb.cnrm.cloud.google.com", Kind: "AlloyDBInstance"},
+				CurrentStatus:    "DependencyNotFound",
+				ControllerType:   k8s.ReconcilerTypeDirect,
+				ReconcileStatus:  ReconcileStatusUnhealthy,
+				UnhealthyReasons: []UnhealthyReason{UnhealthyReasonError},
+			},
+			expected: `ns="config-control" name="alloydb-instance-ut-use5-663-fcp-0001-rp" group="alloydb.cnrm.cloud.google.com" kind="AlloyDBInstance" current_status="DependencyNotFound" controller_type="direct" diffs="" reconcile_status="RECONCILE_STATUS_UNHEALTHY" reason="RECONCILE_ERROR"`,
+		},
+		{
+			name: "unhealthy result with GCP_WRITE",
+			result: &GKNNReconciledResult{
+				GKNN:             GKNN{Namespace: "test-ns", Name: "my-bucket", Group: "storage.cnrm.cloud.google.com", Kind: "StorageBucket"},
+				CurrentStatus:    "UpToDate",
+				ControllerType:   k8s.ReconcilerTypeTerraform,
+				ReconcileStatus:  ReconcileStatusUnhealthy,
+				UnhealthyReasons: []UnhealthyReason{UnhealthyReasonGCPWrite},
+			},
+			expected: `ns="test-ns" name="my-bucket" group="storage.cnrm.cloud.google.com" kind="StorageBucket" current_status="UpToDate" controller_type="tf" diffs="" reconcile_status="RECONCILE_STATUS_UNHEALTHY" reason="GCP_WRITE"`,
+		},
+		{
+			name: "unhealthy result with multiple reasons",
+			result: &GKNNReconciledResult{
+				GKNN:             GKNN{Namespace: "test-ns", Name: "my-res", Group: "iam.cnrm.cloud.google.com", Kind: "IAMPolicy"},
+				CurrentStatus:    "UpdateFailed",
+				ControllerType:   k8s.ReconcilerTypeDirect,
+				ReconcileStatus:  ReconcileStatusUnhealthy,
+				UnhealthyReasons: []UnhealthyReason{UnhealthyReasonGCPWrite, UnhealthyReasonError},
+			},
+			expected: `ns="test-ns" name="my-res" group="iam.cnrm.cloud.google.com" kind="IAMPolicy" current_status="UpdateFailed" controller_type="direct" diffs="" reconcile_status="RECONCILE_STATUS_UNHEALTHY" reason="GCP_WRITE,RECONCILE_ERROR"`,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			actual := tc.result.FormatGKNNReconciledResult()
+			if actual != tc.expected {
+				t.Errorf("expected %q, got %q", tc.expected, actual)
+			}
+		})
+	}
+}
+
 func TestGenerateRecorderReconciledResults(t *testing.T) {
 	recorder := NewRecorder()
 

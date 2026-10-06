@@ -70,7 +70,17 @@ type GKNNReconciledResult struct {
 
 // FormatGKNNReconciledResult formats the GKNNReconciledResult into a string.
 func (r *GKNNReconciledResult) FormatGKNNReconciledResult() string {
-	return fmt.Sprintf("ns=\"%s\" name=\"%s\" group=\"%s\" kind=\"%s\" current_status=\"%s\" controller_type=\"%s\" diffs=\"%s\" reconcile_status=\"%s\"", r.GKNN.Namespace, r.GKNN.Name, r.GKNN.Group, r.GKNN.Kind, r.CurrentStatus, r.ControllerType, FormatFieldIDs(r.Diffs), r.ReconcileStatus.String())
+	return fmt.Sprintf("ns=\"%s\" name=\"%s\" group=\"%s\" kind=\"%s\" current_status=\"%s\" controller_type=\"%s\" diffs=\"%s\" reconcile_status=\"%s\" reason=\"%s\"", r.GKNN.Namespace, r.GKNN.Name, r.GKNN.Group, r.GKNN.Kind, r.CurrentStatus, r.ControllerType, FormatFieldIDs(r.Diffs), r.ReconcileStatus.String(), FormatUnhealthyReasons(r.UnhealthyReasons))
+}
+
+func FormatUnhealthyReasons(reasons []UnhealthyReason) string {
+	var formatted []string
+	for _, r := range reasons {
+		if r != "" {
+			formatted = append(formatted, string(r))
+		}
+	}
+	return strings.Join(formatted, ",")
 }
 
 func FormatFieldIDs(diffs *structuredreporting.Diff) string {
