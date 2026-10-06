@@ -19,7 +19,7 @@ entries:
     reason: ambiguous-proto-name
     detail: PersistentResource exists in 2 of the listed services (google.cloud.aiplatform.v1.PersistentResource, google.cloud.aiplatform.v1beta1.PersistentResource); generated from google.cloud.aiplatform.v1.PersistentResource. Put the full proto name in --resource to choose one
     status: open
-  - kind: VertexAISpecialistPool
+  - kind: AIPlatformSpecialistPool
     group: aiplatform.cnrm.cloud.google.com
     reason: ambiguous-proto-name
     detail: SpecialistPool exists in 2 of the listed services (google.cloud.aiplatform.v1.SpecialistPool, google.cloud.aiplatform.v1beta1.SpecialistPool); generated from google.cloud.aiplatform.v1.SpecialistPool. Put the full proto name in --resource to choose one
