@@ -23,6 +23,7 @@ import (
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"google.golang.org/api/googleapi"
 
@@ -149,6 +150,7 @@ func TestReconcile_FindGenericError_Reconcile(t *testing.T) {
 		gvk:             testGVK,
 		model:           model,
 		jitterGenerator: &mockJitterGenerator{},
+		rateLimiter:     ratelimiter.NewDynamicRateLimiter(),
 	}
 
 	req := reconcile.Request{
@@ -216,6 +218,7 @@ func TestReconcile_FindGenericError_Delete(t *testing.T) {
 		gvk:             testGVK,
 		model:           model,
 		jitterGenerator: &mockJitterGenerator{},
+		rateLimiter:     ratelimiter.NewDynamicRateLimiter(),
 	}
 
 	req := reconcile.Request{
@@ -293,6 +296,7 @@ func TestReconcile_FindUnresolvableDependency_Reconcile(t *testing.T) {
 		gvk:             testGVK,
 		model:           model,
 		jitterGenerator: &mockJitterGenerator{},
+		rateLimiter:     ratelimiter.NewDynamicRateLimiter(),
 	}
 
 	req := reconcile.Request{
@@ -381,6 +385,7 @@ func TestReconcile_FindUnresolvableDependency_Delete(t *testing.T) {
 		gvk:             testGVK,
 		model:           model,
 		jitterGenerator: &mockJitterGenerator{},
+		rateLimiter:     ratelimiter.NewDynamicRateLimiter(),
 	}
 
 	req := reconcile.Request{
@@ -488,6 +493,7 @@ func TestReconcile_UnreadableButDeletable_Delete(t *testing.T) {
 		gvk:             bqGVK,
 		model:           model,
 		jitterGenerator: &mockJitterGenerator{},
+		rateLimiter:     ratelimiter.NewDynamicRateLimiter(),
 	}
 
 	req := reconcile.Request{
@@ -570,6 +576,7 @@ func TestReconcile_NotUnreadableButDeletable_DeleteFailed(t *testing.T) {
 		gvk:             containerGVK,
 		model:           model,
 		jitterGenerator: &mockJitterGenerator{},
+		rateLimiter:     ratelimiter.NewDynamicRateLimiter(),
 	}
 
 	req := reconcile.Request{
@@ -658,6 +665,7 @@ func TestReconcile_UnreadableButDeletable_DeleteFailed(t *testing.T) {
 		gvk:             bqGVK,
 		model:           model,
 		jitterGenerator: &mockJitterGenerator{},
+		rateLimiter:     ratelimiter.NewDynamicRateLimiter(),
 	}
 
 	req := reconcile.Request{
@@ -743,6 +751,7 @@ func TestReconcile_UnreadableButDeletable_NormalUpdateFailed(t *testing.T) {
 		gvk:             bqGVK,
 		model:           model,
 		jitterGenerator: &mockJitterGenerator{},
+		rateLimiter:     ratelimiter.NewDynamicRateLimiter(),
 	}
 
 	req := reconcile.Request{
@@ -800,6 +809,7 @@ func TestReconcile_BackoffMaxDelay_Zero(t *testing.T) {
 		gvk:             testGVK,
 		model:           model,
 		jitterGenerator: &mockJitterGenerator{},
+		rateLimiter:     ratelimiter.NewDynamicRateLimiter(),
 	}
 
 	req := reconcile.Request{
@@ -871,6 +881,7 @@ func TestReconcile_BackoffMaxDelay_Positive(t *testing.T) {
 		gvk:             testGVK,
 		model:           model,
 		jitterGenerator: &mockJitterGenerator{},
+		rateLimiter:     ratelimiter.NewDynamicRateLimiter(),
 	}
 
 	req := reconcile.Request{
@@ -954,6 +965,7 @@ func TestReconcile_BackoffMaxDelay_Invalid(t *testing.T) {
 				gvk:             testGVK,
 				model:           model,
 				jitterGenerator: &mockJitterGenerator{},
+				rateLimiter:     ratelimiter.NewDynamicRateLimiter(),
 			}
 
 			req := reconcile.Request{
@@ -1013,6 +1025,7 @@ func TestReconcile_BackoffMaxDelay_SuccessReset(t *testing.T) {
 		gvk:             testGVK,
 		model:           model,
 		jitterGenerator: &mockJitterGenerator{},
+		rateLimiter:     ratelimiter.NewDynamicRateLimiter(),
 	}
 
 	req := reconcile.Request{
@@ -1091,6 +1104,7 @@ func TestReconcile_BackoffMaxDelay_DeletionBypass(t *testing.T) {
 		gvk:             testGVK,
 		model:           model,
 		jitterGenerator: &mockJitterGenerator{},
+		rateLimiter:     ratelimiter.NewDynamicRateLimiter(),
 	}
 
 	req := reconcile.Request{
@@ -1148,6 +1162,7 @@ func TestReconcile_BackoffMaxDelay_NotFoundClearsRateLimiter(t *testing.T) {
 		gvk:             testGVK,
 		model:           model,
 		jitterGenerator: &mockJitterGenerator{},
+		rateLimiter:     ratelimiter.NewDynamicRateLimiter(),
 	}
 
 	req := reconcile.Request{

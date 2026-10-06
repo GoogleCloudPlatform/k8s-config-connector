@@ -238,9 +238,7 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 	obj.SetGroupVersionKind(r.gvk)
 	if err := r.Get(ctx, request.NamespacedName, obj); err != nil {
 		if apierrors.IsNotFound(err) {
-			if r.rateLimiter != nil {
-				r.rateLimiter.Forget(request.NamespacedName)
-			}
+			r.rateLimiter.Forget(request.NamespacedName)
 			// Object not found, return.  Created objects are automatically garbage collected.
 			// For additional cleanup logic use finalizers.
 			return reconcile.Result{}, nil
@@ -296,9 +294,6 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 
 		// 3. Custom max delay ceiling: calculate exponential backoff up to maxDelay
 		if maxDelay != nil && *maxDelay > 0 {
-			if r.rateLimiter == nil {
-				r.rateLimiter = ratelimiter.NewDynamicRateLimiter()
-			}
 			nextDelay := r.rateLimiter.NextDelay(
 				request.NamespacedName,
 				k8s.DefaultBackoffBaseDelay,
@@ -316,9 +311,7 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 	}
 
 	// Reconcile succeeded: clear failure counter (standard controller-runtime Forget)
-	if r.rateLimiter != nil {
-		r.rateLimiter.Forget(request.NamespacedName)
-	}
+	r.rateLimiter.Forget(request.NamespacedName)
 
 	if requeue {
 		return reconcile.Result{Requeue: true}, nil
