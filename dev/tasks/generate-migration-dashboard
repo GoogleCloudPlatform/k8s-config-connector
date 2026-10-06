@@ -221,8 +221,8 @@ def calculate_metrics(resources, start_date, target_date, repo_root=None):
         cur_proj_impl = round(80.0 + (301.0 - 80.0) * progress_ratio, 1)
         projected_impl_series.append(cur_proj_impl)
 
-        # 2. Projected flipping to direct default effort (exponential from 2 to 301)
-        cur_proj_flip = round(2.0 * math.pow(301.0 / 2.0, progress_ratio), 1)
+        # 2. Projected flipping to direct default effort (linear from 2 to 301)
+        cur_proj_flip = round(2.0 + (301.0 - 2.0) * progress_ratio, 1)
         projected_flip_series.append(cur_proj_flip)
 
         # Direct count climbing from current direct_ready (80) to total (301)
@@ -1187,7 +1187,7 @@ def generate_html_dashboard(resources, metrics, start_date, target_date):
           <div class="legend-item"><svg width="26" height="12" style="vertical-align: middle;"><line x1="1" y1="6" x2="25" y2="6" stroke="#10b981" stroke-width="3" /><circle cx="13" cy="6" r="3.5" fill="#10b981" stroke="#0f172a" stroke-width="1.5" /></svg> Real Implementation (Actual: {metrics['timeline']['real_impl'][-1]})</div>
           <div class="legend-item"><svg width="26" height="12" style="vertical-align: middle;"><line x1="1" y1="6" x2="25" y2="6" stroke="#34d399" stroke-width="2.5" stroke-dasharray="4,3" /></svg> Projected Implementation (Linear: 80 &rarr; 301)</div>
           <div class="legend-item"><svg width="26" height="12" style="vertical-align: middle;"><line x1="1" y1="6" x2="25" y2="6" stroke="#06b6d4" stroke-width="3" /><circle cx="13" cy="6" r="3.5" fill="#06b6d4" stroke="#0f172a" stroke-width="1.5" /></svg> Real Flip to Direct (Actual: {metrics['timeline']['real_flip'][-1]})</div>
-          <div class="legend-item"><svg width="26" height="12" style="vertical-align: middle;"><line x1="1" y1="6" x2="25" y2="6" stroke="#22d3ee" stroke-width="2.5" stroke-dasharray="4,3" /></svg> Projected Flip Default (Exponential: 2 &rarr; 301)</div>
+          <div class="legend-item"><svg width="26" height="12" style="vertical-align: middle;"><line x1="1" y1="6" x2="25" y2="6" stroke="#22d3ee" stroke-width="2.5" stroke-dasharray="4,3" /></svg> Projected Flip Default (Linear: 2 &rarr; 301)</div>
         </div>
         <div style="height: 330px; width: 100%; position: relative;">
           {svg_chart1}
@@ -1338,7 +1338,7 @@ def generate_html_dashboard(resources, metrics, start_date, target_date):
         tooltip.innerHTML = `
           <div style="font-weight: 700; color: #f8fafc; margin-bottom: 4px; border-bottom: 1px solid #334155; padding-bottom: 3px;">${{label}}</div>
           <div style="color: #34d399;">Projected Impl (Linear): <strong>${{projImpl}} / ${{metricsData.total}}</strong></div>
-          <div style="color: #22d3ee;">Projected Flip (Exponential): <strong>${{projFlip}} / ${{metricsData.total}}</strong></div>
+          <div style="color: #22d3ee;">Projected Flip (Linear): <strong>${{projFlip}} / ${{metricsData.total}}</strong></div>
           ${{realSection}}
         `;
         const container = document.getElementById('chartContainer1');

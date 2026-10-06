@@ -643,7 +643,7 @@ function renderProgressTab() {
         if (curDate > targetDate) break;
         const weekFrac = (curDate - startDate) / (1000 * 60 * 60 * 24 * 7);
         const linImpl = startImpl + (weekFrac / totalWeeks) * (totalScope - startImpl);
-        const expFlip = startFlip * Math.pow(totalScope / startFlip, weekFrac / totalWeeks);
+        const linFlip = startFlip + (weekFrac / totalWeeks) * (totalScope - startFlip);
         const label = curDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: '2-digit' }).replace(',', " '");
         weekPoints.push({
             index: i,
@@ -651,7 +651,7 @@ function renderProgressTab() {
             date: curDate,
             label: label,
             linImpl: linImpl,
-            expFlip: expFlip,
+            linFlip: linFlip,
             x: getX(weekFrac)
         });
     }
@@ -665,7 +665,7 @@ function renderProgressTab() {
             date: targetDate,
             label: "Mar 31, '27",
             linImpl: totalScope,
-            expFlip: totalScope,
+            linFlip: totalScope,
             x: getX(totalWeeks)
         });
     }
@@ -680,7 +680,7 @@ function renderProgressTab() {
 
     // Projected Paths
     const projImplPath = weekPoints.map((pt, idx) => `${idx === 0 ? 'M' : 'L'} ${pt.x.toFixed(1)} ${getY(pt.linImpl).toFixed(1)}`).join(' ');
-    const projFlipPath = weekPoints.map((pt, idx) => `${idx === 0 ? 'M' : 'L'} ${pt.x.toFixed(1)} ${getY(pt.expFlip).toFixed(1)}`).join(' ');
+    const projFlipPath = weekPoints.map((pt, idx) => `${idx === 0 ? 'M' : 'L'} ${pt.x.toFixed(1)} ${getY(pt.linFlip).toFixed(1)}`).join(' ');
 
     // Actual Data Points
     const actualPoints = migrationHistory.map(item => {
@@ -691,7 +691,7 @@ function renderProgressTab() {
         const yFlip = getY(item.flipped);
 
         const projImpl = startImpl + (weekFrac / totalWeeks) * (totalScope - startImpl);
-        const projFlip = startFlip * Math.pow(totalScope / startFlip, weekFrac / totalWeeks);
+        const projFlip = startFlip + (weekFrac / totalWeeks) * (totalScope - startFlip);
 
         return {
             dateStr: item.date,
@@ -785,14 +785,14 @@ function renderProgressTab() {
         const curLabel = curDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: '2-digit' }).replace(',', " '");
 
         const curLinImpl = Math.min(totalScope, startImpl + (weekFrac / totalWeeks) * (totalScope - startImpl));
-        const curExpFlip = Math.min(totalScope, startFlip * Math.pow(totalScope / startFlip, weekFrac / totalWeeks));
+        const curLinFlip = Math.min(totalScope, startFlip + (weekFrac / totalWeeks) * (totalScope - startFlip));
 
         // Find if actual point exists near this week
         const matchActual = actualPoints.find(p => Math.abs(p.weekFrac - weekFrac) < 0.5);
 
         const xPos = svgMouseX;
         const yLin = getY(curLinImpl);
-        const yExp = getY(curExpFlip);
+        const yFlip = getY(curLinFlip);
 
         hoverLine.setAttribute('x1', xPos);
         hoverLine.setAttribute('x2', xPos);
@@ -803,7 +803,7 @@ function renderProgressTab() {
         hoverImpl.style.display = 'block';
 
         hoverFlip.setAttribute('cx', xPos);
-        hoverFlip.setAttribute('cy', yExp);
+        hoverFlip.setAttribute('cy', yFlip);
         hoverFlip.style.display = 'block';
 
         let html = `<div style="font-weight: 600; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 4px;">${curLabel} (W${weekFrac.toFixed(1)})</div>`;
@@ -812,7 +812,7 @@ function renderProgressTab() {
             html += `<div style="color: #06b6d4; font-weight: 600;">Real Flip: ${matchActual.flipped} <span style="font-size: 10px; color: ${matchActual.flipDelta >= 0 ? '#22d3ee' : '#f87171'};">(${matchActual.flipDelta >= 0 ? '+' : ''}${matchActual.flipDelta.toFixed(1)})</span></div>`;
         }
         html += `<div style="color: #34d399; margin-top: 4px;">Target Impl: ${curLinImpl.toFixed(1)}</div>`;
-        html += `<div style="color: #22d3ee;">Target Flip: ${curExpFlip.toFixed(1)}</div>`;
+        html += `<div style="color: #22d3ee;">Target Flip: ${curLinFlip.toFixed(1)}</div>`;
 
         tooltip.innerHTML = html;
         tooltip.style.display = 'block';
@@ -869,7 +869,7 @@ function updateAdvisories(latestActual) {
         flipCard.classList.add('ahead');
         flipIcon.textContent = '🚀';
         flipTitle.textContent = `Default Flip: Ahead of Schedule (+${latestActual.flipDelta.toFixed(1)} flips)`;
-        flipDesc.textContent = `Actual: ${latestActual.flipped} vs Target: ${latestActual.projFlip.toFixed(1)}. Early default flips exceeding exponential curve!`;
+        flipDesc.textContent = `Actual: ${latestActual.flipped} vs Target: ${latestActual.projFlip.toFixed(1)}. Pacing ahead of required 11.8/week run rate!`;
     } else if (latestActual.flipDelta < -0.5) {
         flipCard.classList.add('behind');
         flipIcon.textContent = '⚠️';
@@ -879,7 +879,7 @@ function updateAdvisories(latestActual) {
         flipCard.classList.add('ontime');
         flipIcon.textContent = '✅';
         flipTitle.textContent = `Default Flip: On Track (Current: ${latestActual.flipped} / Target: ${latestActual.projFlip.toFixed(1)})`;
-        flipDesc.textContent = `Aligns with initial exponential adoption phase (target ramping to 11.8 flips/week). 299 flips needed.`;
+        flipDesc.textContent = `Tracking required linear delivery pace (11.8 flips/week). 299 flips needed.`;
     }
 }
 
