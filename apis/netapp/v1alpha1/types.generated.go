@@ -20,6 +20,7 @@
 // resource: NetAppActiveDirectory:ActiveDirectory
 // resource: NetAppBackupPolicy:BackupPolicy
 // resource: NetAppBackupVault:BackupVault
+// resource: NetAppKMSConfig:KmsConfig
 
 package v1alpha1
 
@@ -223,6 +224,29 @@ type BackupVault_BackupRetentionPolicy struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.netapp.v1.KmsConfig", skipping
+
+// +kcc:proto=google.cloud.netapp.v1.KmsConfig
+type KMSConfig struct {
+	// Identifier. Name of the KmsConfig.
+	// +kcc:proto:field=google.cloud.netapp.v1.KmsConfig.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Customer managed crypto key resource full name. Format:
+	//  projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{key}.
+	// +kcc:proto:field=google.cloud.netapp.v1.KmsConfig.crypto_key_name
+	CryptoKeyName *string `json:"cryptoKeyName,omitempty"`
+
+	// Description of the KmsConfig.
+	// +kcc:proto:field=google.cloud.netapp.v1.KmsConfig.description
+	Description *string `json:"description,omitempty"`
+
+	// Labels as key value pairs
+	// +kcc:proto:field=google.cloud.netapp.v1.KmsConfig.labels
+	Labels map[string]string `json:"labels,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.netapp.v1.ActiveDirectory", skipping
 
 // +kcc:observedstate:proto=google.cloud.netapp.v1.ActiveDirectory
@@ -287,5 +311,33 @@ type BackupVaultObservedState struct {
 	//  `projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}`
 	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.destination_backup_vault
 	DestinationBackupVault *string `json:"destinationBackupVault,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.netapp.v1.KmsConfig", skipping
+
+// +kcc:observedstate:proto=google.cloud.netapp.v1.KmsConfig
+type KMSConfigObservedState struct {
+	// Output only. State of the KmsConfig.
+	// +kcc:proto:field=google.cloud.netapp.v1.KmsConfig.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. State details of the KmsConfig.
+	// +kcc:proto:field=google.cloud.netapp.v1.KmsConfig.state_details
+	StateDetails *string `json:"stateDetails,omitempty"`
+
+	// Output only. Create time of the KmsConfig.
+	// +kcc:proto:field=google.cloud.netapp.v1.KmsConfig.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Instructions to provide the access to the customer provided
+	//  encryption key.
+	// +kcc:proto:field=google.cloud.netapp.v1.KmsConfig.instructions
+	Instructions *string `json:"instructions,omitempty"`
+
+	// Output only. The Service account which will have access to the customer
+	//  provided encryption key.
+	// +kcc:proto:field=google.cloud.netapp.v1.KmsConfig.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
 }
 */

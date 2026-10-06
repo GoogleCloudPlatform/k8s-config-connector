@@ -38,7 +38,8 @@ ${CONTROLLERBUILDER} generate-types \
   --include-skipped-output \
   --resource NetAppActiveDirectory:ActiveDirectory \
   --resource NetAppBackupPolicy:BackupPolicy \
-  --resource NetAppBackupVault:BackupVault
+  --resource NetAppBackupVault:BackupVault \
+  --resource NetAppKMSConfig:KmsConfig
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.netapp.v1 \

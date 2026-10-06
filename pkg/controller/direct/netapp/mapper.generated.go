@@ -229,3 +229,55 @@ func NetAppBackupPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetAppBac
 	// MISSING: Labels
 	return out
 }
+func NetAppKMSConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.KmsConfig) *krm.NetAppKMSConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetAppKMSConfigObservedState{}
+	// MISSING: Name
+	// MISSING: CryptoKeyName
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StateDetails = direct.LazyPtr(in.GetStateDetails())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	// MISSING: Labels
+	out.Instructions = direct.LazyPtr(in.GetInstructions())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	return out
+}
+func NetAppKMSConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetAppKMSConfigObservedState) *pb.KmsConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KmsConfig{}
+	// MISSING: Name
+	// MISSING: CryptoKeyName
+	out.State = direct.Enum_ToProto[pb.KmsConfig_State](mapCtx, in.State)
+	out.StateDetails = direct.ValueOf(in.StateDetails)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	// MISSING: Labels
+	out.Instructions = direct.ValueOf(in.Instructions)
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	return out
+}
+func NetAppKMSConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.KmsConfig) *krm.NetAppKMSConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetAppKMSConfigSpec{}
+	// MISSING: Name
+	// MISSING: CryptoKeyName
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: Labels
+	return out
+}
+func NetAppKMSConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetAppKMSConfigSpec) *pb.KmsConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KmsConfig{}
+	// MISSING: Name
+	// MISSING: CryptoKeyName
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: Labels
+	return out
+}
