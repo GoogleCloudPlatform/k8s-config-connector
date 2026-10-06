@@ -1,0 +1,55 @@
+apiVersion: networkconnectivity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkConnectivityServiceConnectionMap
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: scm-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  consumerPSCConfigs:
+  - consumerInstanceProjectRef:
+      external: projects/${projectId}
+    disableGlobalAccess: true
+    ipVersion: IPV4
+    networkRef:
+      external: projects/${projectId}/global/networks/network-mock-${uniqueId}
+    producerInstanceMetadata:
+      key1: val2
+    projectRef:
+      external: projects/${projectId}
+    serviceAttachmentIPAddressMap:
+      projects/${projectId}/regions/us-central1/serviceAttachments/sa-mock-${uniqueId}: 10.0.0.20
+    state: VALID
+  description: An updated maximal test ServiceConnectionMap
+  labels:
+    env: staging
+    tier: standard
+  location: us-central1
+  producerPSCConfigs:
+  - automatedDNSCreationSpec:
+      dnsSuffix: example.com.
+      hostname: myhost
+      ttl: 600s
+    serviceAttachmentRef:
+      external: projects/${projectId}/regions/us-central1/serviceAttachments/sa-mock-${uniqueId}
+  projectRef:
+    external: projects/${projectId}
+  token: test-token-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/serviceConnectionMaps/scm-maximal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    etag: abcdef123456
+    infrastructure: PSC
+    updateTime: "1970-01-01T00:00:00Z"

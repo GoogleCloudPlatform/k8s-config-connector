@@ -22,3 +22,10 @@
   3. Normalized `generatedActivationKey` and `peeringNetwork` in `mockgcp/mocknetworkconnectivity/normalize.go` and `tests/e2e/normalize.go`.
 - **Impact**: When testing or updating transports, only mutable fields valid in `PENDING_KEY` state (`description`, `labels`) can be modified prior to provider activation. Defaulted fields like `stackType` must be aligned in `compareTransport`.
 
+### [2026-10-06] NetworkConnectivityServiceConnectionMap direct controller implementation
+- **Context**: Implementing `NetworkConnectivityServiceConnectionMap` greenfield direct controller, fuzzer, and E2E fixtures.
+- **Observations / Learnings**:
+  1. `ServiceConnectionMap` is a regional resource located in `projects/{project}/locations/{location}/serviceConnectionMaps/{mapId}` (such as `us-central1`).
+  2. The GCP API requires `producerPscConfigs` with a valid regional `ServiceAttachment` URI upon creation.
+  3. `ComputeServiceAttachmentRef` reference normalization was added to `pkg/controller/direct/common/refs.go` and `pkg/controller/direct/networkconnectivity/refs.go` so references to `ComputeServiceAttachment` dependencies are seamlessly resolved.
+

@@ -900,7 +900,17 @@ func (o *objectWalker) visitMap(m map[string]any, path string) error {
 		fn(path, m)
 	}
 
+	type entry struct {
+		k string
+		v any
+	}
+	var entries []entry
 	for k, v := range m {
+		entries = append(entries, entry{k: k, v: v})
+	}
+
+	for _, e := range entries {
+		k, v := e.k, e.v
 		childPath := path + "." + k
 		if o.removePaths.Has(childPath) {
 			delete(m, k)
@@ -918,8 +928,8 @@ func (o *objectWalker) visitMap(m map[string]any, path string) error {
 		if err != nil {
 			return err
 		}
+
 		m[k] = v2
-		v = v2
 	}
 
 	return nil
