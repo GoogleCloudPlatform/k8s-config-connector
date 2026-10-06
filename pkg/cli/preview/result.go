@@ -48,14 +48,24 @@ func (s ReconcileStatus) String() string {
 	return reconcileStatusMap[s]
 }
 
+type UnhealthyReason string
+
+const (
+	UnhealthyReasonNone     UnhealthyReason = ""
+	UnhealthyReasonGCPWrite UnhealthyReason = "GCP_WRITE"
+	UnhealthyReasonError    UnhealthyReason = "RECONCILE_ERROR"
+)
+
 // GKNNReconciledResult is the result of reconciling a GKNN object with a specific controller type.
 type GKNNReconciledResult struct {
-	GKNN            GKNN
-	CurrentStatus   string
-	ControllerType  k8s.ReconcilerType
-	ReconcileStatus ReconcileStatus
-	Diffs           *structuredreporting.Diff
-	GCPActions      []*gcpAction
+	GKNN             GKNN
+	CurrentStatus    string
+	ControllerType   k8s.ReconcilerType
+	ReconcileStatus  ReconcileStatus
+	UnhealthyReasons []UnhealthyReason
+	Errors           []string
+	Diffs            *structuredreporting.Diff
+	GCPActions       []*gcpAction
 }
 
 // FormatGKNNReconciledResult formats the GKNNReconciledResult into a string.
@@ -113,6 +123,11 @@ func (r *Recorder) GenerateRecorderReconciledResults() *RecorderReconciledResult
 				result.ControllerType = event.reconcilerType
 			case EventTypeReconcileEnd:
 				result.ControllerType = event.reconcilerType
+				if event.err != nil {
+					result.ReconcileStatus = ReconcileStatusUnhealthy
+					addUnhealthyReason(result, UnhealthyReasonError)
+					addError(result, event.err)
+				}
 			case EventTypeKubeAction:
 				// Ignore for now
 			case EventTypeGCPAction:
@@ -122,6 +137,13 @@ func (r *Recorder) GenerateRecorderReconciledResults() *RecorderReconciledResult
 				}
 				result.GCPActions = append(result.GCPActions, event.gcpAction)
 				result.ReconcileStatus = ReconcileStatusUnhealthy
+				addUnhealthyReason(result, UnhealthyReasonGCPWrite)
+			case EventTypeError:
+				if event.err != nil {
+					result.ReconcileStatus = ReconcileStatusUnhealthy
+					addUnhealthyReason(result, UnhealthyReasonError)
+					addError(result, event.err)
+				}
 			default:
 				// Ignore for now
 			}
@@ -135,6 +157,31 @@ func (r *Recorder) GenerateRecorderReconciledResults() *RecorderReconciledResult
 		}
 	}
 	return recorderReconciledResults
+}
+
+func addUnhealthyReason(result *GKNNReconciledResult, reason UnhealthyReason) {
+	if reason == "" {
+		return
+	}
+	for _, r := range result.UnhealthyReasons {
+		if r == reason {
+			return
+		}
+	}
+	result.UnhealthyReasons = append(result.UnhealthyReasons, reason)
+}
+
+func addError(result *GKNNReconciledResult, err error) {
+	if err == nil {
+		return
+	}
+	msg := err.Error()
+	for _, e := range result.Errors {
+		if e == msg {
+			return
+		}
+	}
+	result.Errors = append(result.Errors, msg)
 }
 
 func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, altResult *RecorderReconciledResults, altExpectedMap map[schema.GroupKind]k8s.ReconcilerType) error {
@@ -297,6 +344,17 @@ func formatReconciledStatus(result *GKNNReconciledResult) string {
 		return "N/A"
 	}
 	if result.ReconcileStatus == ReconcileStatusUnhealthy {
+		if len(result.UnhealthyReasons) > 0 {
+			var reasons []string
+			for _, r := range result.UnhealthyReasons {
+				if r != "" {
+					reasons = append(reasons, string(r))
+				}
+			}
+			if len(reasons) > 0 {
+				return fmt.Sprintf("UNHEALTHY (%s)", strings.Join(reasons, ", "))
+			}
+		}
 		return "UNHEALTHY"
 	}
 	return "HEALTHY"
@@ -336,13 +394,20 @@ func (r *Recorder) ExportDetailObjectsEvent(filename string) error {
 				fmt.Fprintf(f, "  reconcileStart type=%s\n", event.reconcilerType)
 
 			case EventTypeReconcileEnd:
-				fmt.Fprintf(f, "  reconcileEnd type=%s\n", event.reconcilerType)
+				if event.err != nil {
+					fmt.Fprintf(f, "  reconcileEnd type=%s err=%v\n", event.reconcilerType, event.err)
+				} else {
+					fmt.Fprintf(f, "  reconcileEnd type=%s\n", event.reconcilerType)
+				}
 
 			case EventTypeKubeAction:
 				fmt.Fprintf(f, "  kubeAction %+v\n", event.kubeAction)
 
 			case EventTypeGCPAction:
 				fmt.Fprintf(f, "  gcpAction %+v\n", event.gcpAction)
+
+			case EventTypeError:
+				fmt.Fprintf(f, "  error: %v\n", event.err)
 
 			default:
 				fmt.Fprintf(f, "  unknown event: %+v\n", event)

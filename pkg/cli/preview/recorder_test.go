@@ -15,11 +15,16 @@
 package preview
 
 import (
+	"context"
+	"fmt"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/google/go-cmp/cmp"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
 
 func TestToTrackedGVR(t *testing.T) {
@@ -148,5 +153,118 @@ func TestToTrackedGVR(t *testing.T) {
 				t.Errorf("toTrackedGVR() ok = %v, want %v", gotOk, tc.wantOk)
 			}
 		})
+	}
+}
+
+func TestRecorder_OnError_NonBlockedError(t *testing.T) {
+	ctx := context.Background()
+	recorder := NewRecorder()
+	listener := recorder.NewStructuredReportingListener()
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "spanner.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "SpannerInstance",
+	})
+	u.SetName("test-instance")
+	u.SetNamespace("test-ns")
+
+	testErr := fmt.Errorf("mapping error: invalid proto conversion")
+	listener.OnError(ctx, testErr, u)
+
+	gknn := GKNN{
+		Group:     "spanner.cnrm.cloud.google.com",
+		Kind:      "SpannerInstance",
+		Namespace: "test-ns",
+		Name:      "test-instance",
+	}
+
+	info := recorder.getObjectInfo(gknn)
+	if len(info.events) != 1 {
+		t.Fatalf("expected 1 event, got %d", len(info.events))
+	}
+	event := info.events[0]
+	if event.eventType != EventTypeError {
+		t.Errorf("expected event type %v, got %v", EventTypeError, event.eventType)
+	}
+	if event.err == nil || event.err.Error() != testErr.Error() {
+		t.Errorf("expected error %v, got %v", testErr, event.err)
+	}
+}
+
+func TestRecorder_OnError_ResourceArg(t *testing.T) {
+	ctx := context.Background()
+	recorder := NewRecorder()
+	listener := recorder.NewStructuredReportingListener()
+
+	resource := &k8s.Resource{
+		TypeMeta: metav1.TypeMeta{
+			APIVersion: "storage.cnrm.cloud.google.com/v1beta1",
+			Kind:       "StorageBucket",
+		},
+		ObjectMeta: metav1.ObjectMeta{
+			Namespace: "test-ns",
+			Name:      "test-bucket",
+		},
+	}
+
+	testErr := fmt.Errorf("update failed: reference not found")
+	listener.OnError(ctx, testErr, resource)
+
+	gknn := GKNN{
+		Group:     "storage.cnrm.cloud.google.com",
+		Kind:      "StorageBucket",
+		Namespace: "test-ns",
+		Name:      "test-bucket",
+	}
+
+	info := recorder.getObjectInfo(gknn)
+	if len(info.events) != 1 {
+		t.Fatalf("expected 1 event, got %d", len(info.events))
+	}
+	event := info.events[0]
+	if event.eventType != EventTypeError {
+		t.Errorf("expected event type %v, got %v", EventTypeError, event.eventType)
+	}
+	if event.err == nil || event.err.Error() != testErr.Error() {
+		t.Errorf("expected error %v, got %v", testErr, event.err)
+	}
+}
+
+func TestRecorder_RecordReconcileEnd_WithError(t *testing.T) {
+	ctx := context.Background()
+	recorder := NewRecorder()
+	listener := recorder.NewStructuredReportingListener()
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeInstance",
+	})
+	u.SetName("test-compute")
+	u.SetNamespace("test-ns")
+
+	testErr := fmt.Errorf("reconcile failed: early validation error")
+	listener.OnReconcileEnd(ctx, u, reconcile.Result{}, testErr, k8s.ReconcilerTypeDirect)
+
+	gknn := GKNN{
+		Group:     "compute.cnrm.cloud.google.com",
+		Kind:      "ComputeInstance",
+		Namespace: "test-ns",
+		Name:      "test-compute",
+	}
+
+	info := recorder.getObjectInfo(gknn)
+	if len(info.events) != 1 {
+		t.Fatalf("expected 1 event, got %d", len(info.events))
+	}
+	event := info.events[0]
+	if event.eventType != EventTypeReconcileEnd {
+		t.Errorf("expected event type %v, got %v", EventTypeReconcileEnd, event.eventType)
+	}
+	if event.err == nil || event.err.Error() != testErr.Error() {
+		t.Errorf("expected error %v, got %v", testErr, event.err)
 	}
 }

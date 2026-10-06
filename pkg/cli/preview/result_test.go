@@ -17,6 +17,7 @@ package preview
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"os"
 	"reflect"
 	"strings"
@@ -301,5 +302,235 @@ func TestCombinedSummaryReport(t *testing.T) {
 		if badResults[i].GKNN.Name != exp.name || badResults[i].ControllerType != exp.controllerType {
 			t.Errorf("entry %d: expected name=%q controller=%q, got name=%q controller=%q", i, exp.name, exp.controllerType, badResults[i].GKNN.Name, badResults[i].ControllerType)
 		}
+	}
+}
+
+func TestFormatReconciledStatus(t *testing.T) {
+	tests := []struct {
+		name     string
+		result   *GKNNReconciledResult
+		expected string
+	}{
+		{
+			name:     "nil result",
+			result:   nil,
+			expected: "N/A",
+		},
+		{
+			name: "healthy result",
+			result: &GKNNReconciledResult{
+				ReconcileStatus: ReconcileStatusHealthy,
+			},
+			expected: "HEALTHY",
+		},
+		{
+			name: "unhealthy result with no reasons",
+			result: &GKNNReconciledResult{
+				ReconcileStatus: ReconcileStatusUnhealthy,
+			},
+			expected: "UNHEALTHY",
+		},
+		{
+			name: "unhealthy result with RECONCILE_ERROR",
+			result: &GKNNReconciledResult{
+				ReconcileStatus:  ReconcileStatusUnhealthy,
+				UnhealthyReasons: []UnhealthyReason{UnhealthyReasonError},
+			},
+			expected: "UNHEALTHY (RECONCILE_ERROR)",
+		},
+		{
+			name: "unhealthy result with GCP_WRITE",
+			result: &GKNNReconciledResult{
+				ReconcileStatus:  ReconcileStatusUnhealthy,
+				UnhealthyReasons: []UnhealthyReason{UnhealthyReasonGCPWrite},
+			},
+			expected: "UNHEALTHY (GCP_WRITE)",
+		},
+		{
+			name: "unhealthy result with multiple reasons",
+			result: &GKNNReconciledResult{
+				ReconcileStatus:  ReconcileStatusUnhealthy,
+				UnhealthyReasons: []UnhealthyReason{UnhealthyReasonGCPWrite, UnhealthyReasonError},
+			},
+			expected: "UNHEALTHY (GCP_WRITE, RECONCILE_ERROR)",
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			actual := formatReconciledStatus(tc.result)
+			if actual != tc.expected {
+				t.Errorf("expected %q, got %q", tc.expected, actual)
+			}
+		})
+	}
+}
+
+func TestGenerateRecorderReconciledResults(t *testing.T) {
+	recorder := NewRecorder()
+
+	gknnHealthy := GKNN{Group: "storage.cnrm.cloud.google.com", Kind: "StorageBucket", Namespace: "default", Name: "healthy-bucket"}
+	gknnReconcileEndErr := GKNN{Group: "spanner.cnrm.cloud.google.com", Kind: "SpannerInstance", Namespace: "default", Name: "err-instance"}
+	gknnReportErr := GKNN{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeInstance", Namespace: "default", Name: "report-err-instance"}
+	gknnGCPWrite := GKNN{Group: "pubsub.cnrm.cloud.google.com", Kind: "PubSubTopic", Namespace: "default", Name: "gcp-write-topic"}
+	gknnMultiErr := GKNN{Group: "iam.cnrm.cloud.google.com", Kind: "IAMPolicy", Namespace: "default", Name: "multi-err-policy"}
+
+	// 1. Healthy object
+	info1 := recorder.getObjectInfo(gknnHealthy)
+	info1.currentStatus = "UpToDate"
+	info1.events = []event{
+		{eventType: EventTypeReconcileStart, reconcilerType: k8s.ReconcilerTypeDirect},
+		{eventType: EventTypeReconcileEnd, reconcilerType: k8s.ReconcilerTypeDirect},
+	}
+
+	// 2. Early reconcile failure via ReconcileEnd error
+	info2 := recorder.getObjectInfo(gknnReconcileEndErr)
+	info2.currentStatus = "UpdateFailed"
+	info2.events = []event{
+		{eventType: EventTypeReconcileStart, reconcilerType: k8s.ReconcilerTypeDirect},
+		{eventType: EventTypeReconcileEnd, reconcilerType: k8s.ReconcilerTypeDirect, err: fmt.Errorf("mapping error: proto conversion failed")},
+	}
+
+	// 3. Error reported via OnError (EventTypeError)
+	info3 := recorder.getObjectInfo(gknnReportErr)
+	info3.currentStatus = "UpdateFailed"
+	info3.events = []event{
+		{eventType: EventTypeReconcileStart, reconcilerType: k8s.ReconcilerTypeTerraform},
+		{eventType: EventTypeError, err: fmt.Errorf("reference resolution failed")},
+		{eventType: EventTypeReconcileEnd, reconcilerType: k8s.ReconcilerTypeTerraform},
+	}
+
+	// 4. Blocked GCP action
+	info4 := recorder.getObjectInfo(gknnGCPWrite)
+	info4.currentStatus = "UpToDate"
+	info4.events = []event{
+		{eventType: EventTypeReconcileStart, reconcilerType: k8s.ReconcilerTypeDirect},
+		{eventType: EventTypeGCPAction, gcpAction: &gcpAction{Method: "POST", URL: "https://pubsub.googleapis.com/v1/projects/p/topics/t"}},
+		{eventType: EventTypeReconcileEnd, reconcilerType: k8s.ReconcilerTypeDirect},
+	}
+
+	// 5. Both GCP Action and multiple errors (including duplicate error)
+	info5 := recorder.getObjectInfo(gknnMultiErr)
+	info5.currentStatus = "UpdateFailed"
+	info5.events = []event{
+		{eventType: EventTypeReconcileStart, reconcilerType: k8s.ReconcilerTypeIAMPolicy},
+		{eventType: EventTypeGCPAction, gcpAction: &gcpAction{Method: "PUT", URL: "https://cloudresourcemanager.googleapis.com/v1/projects/p:setIamPolicy"}},
+		{eventType: EventTypeError, err: fmt.Errorf("iam member invalid")},
+		{eventType: EventTypeReconcileEnd, reconcilerType: k8s.ReconcilerTypeIAMPolicy, err: fmt.Errorf("iam member invalid")},
+	}
+
+	results := recorder.GenerateRecorderReconciledResults()
+
+	if results.goodCount != 1 {
+		t.Errorf("expected goodCount=1, got %d", results.goodCount)
+	}
+	if results.badCount != 4 {
+		t.Errorf("expected badCount=4, got %d", results.badCount)
+	}
+
+	// Check healthy
+	res1 := results.results[gknnHealthy]
+	if res1.ReconcileStatus != ReconcileStatusHealthy {
+		t.Errorf("expected healthy status, got %v", res1.ReconcileStatus)
+	}
+	if len(res1.UnhealthyReasons) != 0 {
+		t.Errorf("expected no unhealthy reasons for healthy object, got %v", res1.UnhealthyReasons)
+	}
+	if len(res1.Errors) != 0 {
+		t.Errorf("expected no errors for healthy object, got %v", res1.Errors)
+	}
+
+	// Check ReconcileEnd error
+	res2 := results.results[gknnReconcileEndErr]
+	if res2.ReconcileStatus != ReconcileStatusUnhealthy {
+		t.Errorf("expected unhealthy status, got %v", res2.ReconcileStatus)
+	}
+	if !reflect.DeepEqual(res2.UnhealthyReasons, []UnhealthyReason{UnhealthyReasonError}) {
+		t.Errorf("expected UnhealthyReasons [%s], got %v", UnhealthyReasonError, res2.UnhealthyReasons)
+	}
+	if len(res2.Errors) != 1 || res2.Errors[0] != "mapping error: proto conversion failed" {
+		t.Errorf("expected error 'mapping error: proto conversion failed', got %v", res2.Errors)
+	}
+
+	// Check EventTypeError
+	res3 := results.results[gknnReportErr]
+	if res3.ReconcileStatus != ReconcileStatusUnhealthy {
+		t.Errorf("expected unhealthy status, got %v", res3.ReconcileStatus)
+	}
+	if !reflect.DeepEqual(res3.UnhealthyReasons, []UnhealthyReason{UnhealthyReasonError}) {
+		t.Errorf("expected UnhealthyReasons [%s], got %v", UnhealthyReasonError, res3.UnhealthyReasons)
+	}
+	if len(res3.Errors) != 1 || res3.Errors[0] != "reference resolution failed" {
+		t.Errorf("expected error 'reference resolution failed', got %v", res3.Errors)
+	}
+
+	// Check GCPAction
+	res4 := results.results[gknnGCPWrite]
+	if res4.ReconcileStatus != ReconcileStatusUnhealthy {
+		t.Errorf("expected unhealthy status, got %v", res4.ReconcileStatus)
+	}
+	if !reflect.DeepEqual(res4.UnhealthyReasons, []UnhealthyReason{UnhealthyReasonGCPWrite}) {
+		t.Errorf("expected UnhealthyReasons [%s], got %v", UnhealthyReasonGCPWrite, res4.UnhealthyReasons)
+	}
+	if len(res4.Errors) != 0 {
+		t.Errorf("expected no errors for gcp action object, got %v", res4.Errors)
+	}
+
+	// Check MultiErr (GCP Write + Error deduplicated)
+	res5 := results.results[gknnMultiErr]
+	if res5.ReconcileStatus != ReconcileStatusUnhealthy {
+		t.Errorf("expected unhealthy status, got %v", res5.ReconcileStatus)
+	}
+	expectedReasons := []UnhealthyReason{UnhealthyReasonGCPWrite, UnhealthyReasonError}
+	if !reflect.DeepEqual(res5.UnhealthyReasons, expectedReasons) {
+		t.Errorf("expected UnhealthyReasons %v, got %v", expectedReasons, res5.UnhealthyReasons)
+	}
+	if len(res5.Errors) != 1 || res5.Errors[0] != "iam member invalid" {
+		t.Errorf("expected deduplicated single error 'iam member invalid', got %v", res5.Errors)
+	}
+}
+
+func TestBadResultReport_DetailJSON(t *testing.T) {
+	tmpFile, err := os.CreateTemp("", "bad-detail-*.json")
+	if err != nil {
+		t.Fatalf("failed to create temp file: %v", err)
+	}
+	defer os.Remove(tmpFile.Name())
+	tmpFile.Close()
+
+	badResults := []*GKNNReconciledResult{
+		{
+			GKNN:             GKNN{Group: "spanner.cnrm.cloud.google.com", Kind: "SpannerInstance", Namespace: "default", Name: "instance-1"},
+			CurrentStatus:    "UpdateFailed",
+			ControllerType:   k8s.ReconcilerTypeDirect,
+			ReconcileStatus:  ReconcileStatusUnhealthy,
+			UnhealthyReasons: []UnhealthyReason{UnhealthyReasonError},
+			Errors:           []string{"mapping error occurred"},
+		},
+	}
+
+	r := &RecorderReconciledResults{}
+	if err := r.BadResultReport(tmpFile.Name(), badResults); err != nil {
+		t.Fatalf("BadResultReport failed: %v", err)
+	}
+
+	content, err := os.ReadFile(tmpFile.Name())
+	if err != nil {
+		t.Fatalf("failed to read detail file: %v", err)
+	}
+
+	var parsed []*GKNNReconciledResult
+	if err := json.Unmarshal(content, &parsed); err != nil {
+		t.Fatalf("failed to unmarshal JSON: %v", err)
+	}
+
+	if len(parsed) != 1 {
+		t.Fatalf("expected 1 result, got %d", len(parsed))
+	}
+	if !reflect.DeepEqual(parsed[0].UnhealthyReasons, []UnhealthyReason{UnhealthyReasonError}) {
+		t.Errorf("expected UnhealthyReasons [%s], got %v", UnhealthyReasonError, parsed[0].UnhealthyReasons)
+	}
+	if !reflect.DeepEqual(parsed[0].Errors, []string{"mapping error occurred"}) {
+		t.Errorf("expected Errors ['mapping error occurred'], got %v", parsed[0].Errors)
 	}
 }
