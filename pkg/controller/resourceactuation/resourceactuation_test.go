@@ -158,14 +158,14 @@ func TestShouldSkipActuation(t *testing.T) {
 			wantErr:    false,
 		},
 		{
-			name: "resource annotation is Paused, is deleting (do not skip - deletion unblocked at resource level)",
+			name: "resource annotation is Paused, is deleting (skip - deletion paused at resource level)",
 			annotations: map[string]string{
 				"cnrm.cloud.google.com/actuation-mode": "Paused",
 			},
 			isDeleting: true,
 			cc:         opv1beta1.ConfigConnector{},
 			ccc:        opv1beta1.ConfigConnectorContext{},
-			wantSkip:   false,
+			wantSkip:   true,
 			wantErr:    false,
 		},
 		{
