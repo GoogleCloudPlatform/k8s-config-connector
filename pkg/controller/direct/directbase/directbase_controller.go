@@ -293,7 +293,6 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 
 	skipActuation, err := resourceactuation.ShouldSkipActuation(
 		u.GetAnnotations(),
-		!u.GetDeletionTimestamp().IsZero(),
 		cc, ccc,
 	)
 	if err != nil {
