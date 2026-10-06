@@ -130,7 +130,7 @@ schemaSettings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.</p>
+            <p>A reference to an externally managed KMSCryptoKey resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}".</p>
         </td>
     </tr>
     <tr>
@@ -140,7 +140,7 @@ schemaSettings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a KMSCryptoKey resource.</p>
         </td>
     </tr>
     <tr>
@@ -150,7 +150,7 @@ schemaSettings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a KMSCryptoKey resource.</p>
         </td>
     </tr>
     <tr>
