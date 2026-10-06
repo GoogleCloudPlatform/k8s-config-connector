@@ -27,7 +27,7 @@ on:
     paths:
       - 'config/crds/resources/**'
   merge_group:
-    types: [checks_requested]
+    types: [checks_requested, destroyed]
     branches: ["master", "release-*"]
     paths:
       - 'config/crds/resources/**'
@@ -35,7 +35,7 @@ on:
 jobs:
   crd-equivalence-check:
     runs-on: ubuntu-latest
-    if: ${{ contains(github.event.pull_request.labels.*.name, 'direct-migration') }}
+    if: ${{ github.event.action != 'destroyed' && contains(github.event.pull_request.labels.*.name, 'direct-migration') }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2

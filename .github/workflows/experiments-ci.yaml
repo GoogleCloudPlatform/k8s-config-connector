@@ -29,7 +29,7 @@ on:
     paths:
       - 'experiments/**'
   merge_group:
-    types: [checks_requested]
+    types: [checks_requested, destroyed]
     branches: ["master", "release-*"]
     paths:
       - 'experiments/**'
@@ -37,6 +37,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    if: ${{ github.event.action != 'destroyed' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2

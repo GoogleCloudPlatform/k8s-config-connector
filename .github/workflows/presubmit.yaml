@@ -33,7 +33,7 @@ on:
       - '**'
       - '!experiments/**'
   merge_group:
-    types: [checks_requested]
+    types: [checks_requested, destroyed]
     branches: ["master", "release-*"]
     paths:
       - '**'
@@ -44,12 +44,14 @@ jobs:
   validations:
     name: "validations"
     runs-on: ubuntu-latest
+    if: ${{ github.event.action != 'destroyed' }}
     steps:
       - name: "No-op validation check for branch protection"
         run: echo "validations completed successfully"
 
   build-images:
     runs-on: ubuntu-22.04
+    if: ${{ github.event.action != 'destroyed' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2

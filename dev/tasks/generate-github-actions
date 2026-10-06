@@ -57,7 +57,7 @@ on:
       - '**'
       - '!experiments/**'
   merge_group:
-    types: [checks_requested]
+    types: [checks_requested, destroyed]
     branches: ["master", "release-*"]
     paths:
       - '**'
@@ -76,6 +76,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 
   prepare-test-matrix:
     runs-on: ubuntu-latest
+    if: \${{ github.event.action != 'destroyed' }}
     outputs:
       has_priority_tests: \${{ steps.split.outputs.has_priority_tests }}
       priority_fixtures_json: \${{ steps.split.outputs.priority_fixtures_json }}
@@ -125,7 +126,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     name: "tests-e2e-fixtures-\${{ matrix.service }}"
     runs-on: ubuntu-latest
     needs: prepare-test-matrix
-    if: needs.prepare-test-matrix.outputs.has_priority_tests == 'true'
+    if: \${{ github.event.action != 'destroyed' && needs.prepare-test-matrix.outputs.has_priority_tests == 'true' }}
     timeout-minutes: 60
     strategy:
       fail-fast: true
@@ -173,7 +174,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     name: "tests-e2e-fixtures-\${{ matrix.service }}"
     runs-on: ubuntu-latest
     needs: prepare-test-matrix
-    if: \${{ !cancelled() }}
+    if: \${{ !cancelled() && github.event.action != 'destroyed' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -228,7 +229,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     name: "tests-e2e-fixtures-${sharded_svc}"
     runs-on: ubuntu-latest
     needs: [prepare-test-matrix, priority-e2e-fixtures, tests-e2e-fixtures-matrix]
-    if: \${{ !cancelled() && !contains(needs.priority-e2e-fixtures.result, 'failure') && !contains(needs.tests-e2e-fixtures-matrix.result, 'failure') }}
+    if: \${{ !cancelled() && github.event.action != 'destroyed' && !contains(needs.priority-e2e-fixtures.result, 'failure') && !contains(needs.tests-e2e-fixtures-matrix.result, 'failure') }}
     steps:
       - name: "Verify ${sharded_svc} shards completion"
         run: echo "All ${sharded_svc} fixture shards completed successfully."
@@ -249,7 +250,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     name: "tests-e2e-samples-\${{ matrix.service }}"
     runs-on: ubuntu-latest
     needs: prepare-test-matrix
-    if: \${{ !cancelled() }}
+    if: \${{ !cancelled() && github.event.action != 'destroyed' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -299,7 +300,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     name: "tests-scenarios-\${{ matrix.suite }}"
     runs-on: ubuntu-latest
     needs: prepare-test-matrix
-    if: \${{ !cancelled() }}
+    if: \${{ !cancelled() && github.event.action != 'destroyed' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -345,7 +346,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
   tests-e2e-direct-iam:
     runs-on: ubuntu-latest
     needs: prepare-test-matrix
-    if: \${{ !cancelled() }}
+    if: \${{ !cancelled() && github.event.action != 'destroyed' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -385,6 +386,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
   unit-tests-matrix:
     name: "unit-tests-\${{ matrix.shard }}"
     runs-on: ubuntu-latest
+    if: \${{ github.event.action != 'destroyed' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -416,7 +418,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     name: "unit-tests"
     runs-on: ubuntu-latest
     needs: unit-tests-matrix
-    if: \${{ !cancelled() && !contains(needs.unit-tests-matrix.result, 'failure') }}
+    if: \${{ !cancelled() && github.event.action != 'destroyed' && !contains(needs.unit-tests-matrix.result, 'failure') }}
     steps:
       - name: "Verify unit-tests completion"
         run: echo "All unit-test matrix shards completed successfully."
@@ -431,6 +433,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
   fuzz-roundtrippers-matrix:
     name: "fuzz-roundtrippers-\${{ matrix.shard }}"
     runs-on: ubuntu-latest
+    if: \${{ github.event.action != 'destroyed' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -459,7 +462,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     name: "fuzz-roundtrippers"
     runs-on: ubuntu-latest
     needs: fuzz-roundtrippers-matrix
-    if: \${{ !cancelled() && !contains(needs.fuzz-roundtrippers-matrix.result, 'failure') }}
+    if: \${{ !cancelled() && github.event.action != 'destroyed' && !contains(needs.fuzz-roundtrippers-matrix.result, 'failure') }}
     steps:
       - name: "Verify fuzz-roundtrippers completion"
         run: echo "All fuzz-roundtrippers matrix shards completed successfully."
@@ -474,6 +477,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 
   ${name}:
     runs-on: ubuntu-latest
+    if: \${{ github.event.action != 'destroyed' }}
 EOF
 
     if [[ "${name}" == "golangci-lint" ]]; then
@@ -618,7 +622,7 @@ done
 
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     runs-on: ubuntu-latest
-    if: \${{ !cancelled() }} # Ensure this runs even if some dependencies fail, but not if the workflow is cancelled
+    if: \${{ !cancelled() && github.event.action != 'destroyed' }} # Ensure this runs even if some dependencies fail, but not if the workflow is cancelled or merge_group is destroyed
     steps:
       - name: Verify all checks succeeded
         run: |
@@ -675,7 +679,7 @@ on:
     paths:
       - 'config/crds/resources/**'
   merge_group:
-    types: [checks_requested]
+    types: [checks_requested, destroyed]
     branches: ["master", "release-*"]
     paths:
       - 'config/crds/resources/**'
@@ -683,7 +687,7 @@ on:
 jobs:
   crd-equivalence-check:
     runs-on: ubuntu-latest
-    if: \${{ contains(github.event.pull_request.labels.*.name, 'direct-migration') }}
+    if: \${{ github.event.action != 'destroyed' && contains(github.event.pull_request.labels.*.name, 'direct-migration') }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -740,7 +744,7 @@ on:
     paths:
       - 'experiments/**'
   merge_group:
-    types: [checks_requested]
+    types: [checks_requested, destroyed]
     branches: ["master", "release-*"]
     paths:
       - 'experiments/**'
@@ -748,6 +752,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    if: \${{ github.event.action != 'destroyed' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -794,7 +799,7 @@ on:
       - 'experiments/**'
       - '**.md'
   merge_group:
-    types: [checks_requested]
+    types: [checks_requested, destroyed]
     branches: ["master", "release-*"]
     paths:
       - 'experiments/**'
@@ -803,6 +808,7 @@ on:
 jobs:
   presubmit-gatekeeper:
     runs-on: ubuntu-latest
+    if: \${{ github.event.action != 'destroyed' }}
     steps:
       - name: Bypass check
         run: echo "Bypassing presubmit checks for documentation or experiment-only changes."
