@@ -59,6 +59,7 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterProjectsLocationsServiceConnectionPoliciesServerServer(grpcServer, &serviceConnectionPolicies{MockService: s})
+	pb.RegisterProjectsLocationsServiceConnectionMapsServerServer(grpcServer, &serviceConnectionMapsServer{MockService: s})
 	pb.RegisterProjectsLocationsInternalRangesServerServer(grpcServer, &internalRanges{MockService: s})
 	pb.RegisterProjectsLocationsRegionalEndpointsServerServer(grpcServer, &regionalEndpoints{MockService: s})
 	pb.RegisterProjectsLocationsGlobalHubsServerServer(grpcServer, &hubsServer{MockService: s})
@@ -69,6 +70,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterProjectsLocationsServiceConnectionPoliciesServerHandler,
+		pb.RegisterProjectsLocationsServiceConnectionMapsServerHandler,
 		pb.RegisterProjectsLocationsInternalRangesServerHandler,
 		pb.RegisterProjectsLocationsRegionalEndpointsServerHandler,
 		pb.RegisterProjectsLocationsGlobalHubsServerHandler,

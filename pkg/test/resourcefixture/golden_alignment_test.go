@@ -60,6 +60,9 @@ var realGCPSkipFixtures = map[string]bool{
 	// NetworkSecurity BackendAuthenticationConfig requires invitation-only early access allowlist.
 	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-maximal": true,
 	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-minimal": true,
+	// NetworkConnectivity ServiceConnectionMap requires producer-side internal allowlist/permissions in real GCP.
+	"networkconnectivity/v1alpha1/networkconnectivityserviceconnectionmap/networkconnectivityserviceconnectionmap-maximal": true,
+	"networkconnectivity/v1alpha1/networkconnectivityserviceconnectionmap/networkconnectivityserviceconnectionmap-minimal": true,
 }
 
 func TestGoldenLogAlignment(t *testing.T) {
