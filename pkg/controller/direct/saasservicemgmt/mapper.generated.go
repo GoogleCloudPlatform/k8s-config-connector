@@ -149,7 +149,7 @@ func SaaSServiceMgmtUnitSpec_FromProto(mapCtx *direct.MapContext, in *pb.Unit) *
 	if in.GetTenant() != "" {
 		out.TenantRef = &krm.SaaSServiceMgmtTenantRef{External: in.GetTenant()}
 	}
-	out.Maintenance = Unit_MaintenanceSettings_FromProto(mapCtx, in.GetMaintenance())
+	out.Maintenance = UnitMaintenanceSettings_FromProto(mapCtx, in.GetMaintenance())
 	out.ManagementMode = direct.Enum_FromProto(mapCtx, in.GetManagementMode())
 	// MISSING: Labels
 	// MISSING: Annotations
@@ -167,7 +167,7 @@ func SaaSServiceMgmtUnitSpec_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServ
 	if in.TenantRef != nil {
 		out.Tenant = in.TenantRef.External
 	}
-	out.Maintenance = Unit_MaintenanceSettings_ToProto(mapCtx, in.Maintenance)
+	out.Maintenance = UnitMaintenanceSettings_ToProto(mapCtx, in.Maintenance)
 	out.ManagementMode = direct.Enum_ToProto[pb.Unit_ManagementMode](mapCtx, in.ManagementMode)
 	// MISSING: Labels
 	// MISSING: Annotations
@@ -277,6 +277,22 @@ func UnitDependencyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Unit
 	out.Unit = direct.ValueOf(in.Unit)
 	return out
 }
+func UnitMaintenanceSettings_FromProto(mapCtx *direct.MapContext, in *pb.Unit_MaintenanceSettings) *krm.UnitMaintenanceSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UnitMaintenanceSettings{}
+	out.PinnedUntilTime = direct.StringTimestamp_FromProto(mapCtx, in.GetPinnedUntilTime())
+	return out
+}
+func UnitMaintenanceSettings_ToProto(mapCtx *direct.MapContext, in *krm.UnitMaintenanceSettings) *pb.Unit_MaintenanceSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Unit_MaintenanceSettings{}
+	out.PinnedUntilTime = direct.StringTimestamp_ToProto(mapCtx, in.PinnedUntilTime)
+	return out
+}
 func UnitVariable_FromProto(mapCtx *direct.MapContext, in *pb.UnitVariable) *krm.UnitVariable {
 	if in == nil {
 		return nil
@@ -295,21 +311,5 @@ func UnitVariable_ToProto(mapCtx *direct.MapContext, in *krm.UnitVariable) *pb.U
 	out.Variable = direct.ValueOf(in.Variable)
 	out.Type = direct.Enum_ToProto[pb.UnitVariable_Type](mapCtx, in.Type)
 	out.Value = direct.ValueOf(in.Value)
-	return out
-}
-func Unit_MaintenanceSettings_FromProto(mapCtx *direct.MapContext, in *pb.Unit_MaintenanceSettings) *krm.Unit_MaintenanceSettings {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Unit_MaintenanceSettings{}
-	out.PinnedUntilTime = direct.StringTimestamp_FromProto(mapCtx, in.GetPinnedUntilTime())
-	return out
-}
-func Unit_MaintenanceSettings_ToProto(mapCtx *direct.MapContext, in *krm.Unit_MaintenanceSettings) *pb.Unit_MaintenanceSettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Unit_MaintenanceSettings{}
-	out.PinnedUntilTime = direct.StringTimestamp_ToProto(mapCtx, in.PinnedUntilTime)
 	return out
 }

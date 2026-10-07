@@ -58,7 +58,7 @@ type SaaSServiceMgmtUnitSpec struct {
 	//  for postponing maintenance scheduled in future.
 	// +optional
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.maintenance
-	Maintenance *Unit_MaintenanceSettings `json:"maintenance,omitempty"`
+	Maintenance *UnitMaintenanceSettings `json:"maintenance,omitempty"`
 
 	// +kubebuilder:validation:Enum=MANAGEMENT_MODE_UNSPECIFIED;MANAGEMENT_MODE_USER;MANAGEMENT_MODE_SYSTEM
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ManagementMode field is immutable"
@@ -68,6 +68,16 @@ type SaaSServiceMgmtUnitSpec struct {
 	// +optional
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.management_mode
 	ManagementMode *string `json:"managementMode,omitempty"`
+}
+
+// +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.MaintenanceSettings
+type UnitMaintenanceSettings struct {
+	// Optional. If present, it fixes the release on the unit until the given
+	//  time; i.e. changes to the release field will be rejected. Rollouts should
+	//  and will also respect this by not requesting an upgrade in the first
+	//  place.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.MaintenanceSettings.pinned_until_time
+	PinnedUntilTime *string `json:"pinnedUntilTime,omitempty"`
 }
 
 // SaaSServiceMgmtUnitStatus defines the config connector machine state of SaaSServiceMgmtUnit

@@ -137,6 +137,8 @@ type Unit struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.MaintenanceSettings", skipping
+
 // +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.MaintenanceSettings
 type Unit_MaintenanceSettings struct {
 	// Optional. If present, it fixes the release on the unit until the given
@@ -146,6 +148,7 @@ type Unit_MaintenanceSettings struct {
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.MaintenanceSettings.pinned_until_time
 	PinnedUntilTime *string `json:"pinnedUntilTime,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitCondition
 type UnitCondition struct {
