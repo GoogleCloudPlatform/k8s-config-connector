@@ -57,7 +57,7 @@ func DecideActuationMode(cc opv1beta1.ConfigConnector, ccc opv1beta1.ConfigConne
 // 2. Fall back to CC/CCC actuation mode (via DecideActuationMode):
 //   - "Paused": Skips all operations including deletion (returns true).
 //   - "Reconciling": Allows actuation to proceed (returns false).
-func ShouldSkipActuation(annotations map[string]string, isDeleting bool, cc opv1beta1.ConfigConnector, ccc opv1beta1.ConfigConnectorContext) (bool, error) {
+func ShouldSkipActuation(annotations map[string]string, cc opv1beta1.ConfigConnector, ccc opv1beta1.ConfigConnectorContext) (bool, error) {
 	if annotations != nil {
 		if val, ok := annotations[k8s.ActuationModeAnnotation]; ok && val != "" {
 			switch opv1beta1.ActuationMode(val) {
