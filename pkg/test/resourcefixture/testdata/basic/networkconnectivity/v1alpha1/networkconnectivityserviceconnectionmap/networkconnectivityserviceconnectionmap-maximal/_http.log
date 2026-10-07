@@ -1211,7 +1211,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       },
       "project": "projects/${projectId}",
       "serviceAttachmentIpAddressMap": {
-        "projects/${projectId}/regions/us-central1/serviceAttachments/${serviceAttachmentID}": "10.0.0.10"
+        "projects/test-project/regions/us-central1/serviceAttachments/test-sa": "10.0.0.10"
       },
       "state": "VALID"
     }
@@ -1316,7 +1316,7 @@ X-Xss-Protection: 0
       },
       "project": "projects/${projectId}",
       "serviceAttachmentIpAddressMap": {
-        "projects/${projectId}/regions/us-central1/serviceAttachments/${serviceAttachmentID}": "10.0.0.10"
+        "projects/test-project/regions/us-central1/serviceAttachments/test-sa": "10.0.0.10"
       },
       "state": "VALID"
     }
@@ -1362,7 +1362,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       },
       "project": "projects/${projectId}",
       "serviceAttachmentIpAddressMap": {
-        "projects/${projectId}/regions/us-central1/serviceAttachments/${serviceAttachmentID}": "10.0.0.20"
+        "projects/test-project/regions/us-central1/serviceAttachments/test-sa": "10.0.0.20"
       },
       "state": "VALID"
     }
@@ -1469,7 +1469,7 @@ X-Xss-Protection: 0
       },
       "project": "projects/${projectId}",
       "serviceAttachmentIpAddressMap": {
-        "projects/${projectId}/regions/us-central1/serviceAttachments/${serviceAttachmentID}": "10.0.0.20"
+        "projects/test-project/regions/us-central1/serviceAttachments/test-sa": "10.0.0.20"
       },
       "state": "VALID"
     }
