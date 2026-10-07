@@ -17,7 +17,6 @@ package v1alpha1
 import (
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -46,12 +45,6 @@ type OracleDatabaseAutonomousDatabaseSpec struct {
 	//  does not have to be unique within your project.
 	// +kcc:proto:field=google.cloud.oracledatabase.v1.AutonomousDatabase.display_name
 	DisplayName *string `json:"displayName,omitempty"`
-
-	// Optional. Immutable. The password for the default ADMIN user.
-	//  Note: Only one of `admin_password_secret_version` or `admin_password` can
-	//  be populated.
-	// +kcc:proto:field=google.cloud.oracledatabase.v1.AutonomousDatabase.admin_password
-	AdminPassword *refsv1beta1secret.Legacy `json:"adminPassword,omitempty"`
 
 	// Optional. Immutable. The resource name of a secret version in Secret
 	//  Manager which contains the database admin user's password.

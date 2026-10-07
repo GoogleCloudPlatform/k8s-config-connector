@@ -711,6 +711,7 @@ func OracleDatabaseAutonomousDatabaseObservedState_FromProto(mapCtx *direct.MapC
 	out := &krm.OracleDatabaseAutonomousDatabaseObservedState{}
 	// MISSING: Name
 	out.EntitlementID = direct.LazyPtr(in.GetEntitlementId())
+	// MISSING: AdminPassword
 	out.Properties = AutonomousDatabasePropertiesObservedState_FromProto(mapCtx, in.GetProperties())
 	out.PeerAutonomousDatabases = in.PeerAutonomousDatabases
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -724,6 +725,7 @@ func OracleDatabaseAutonomousDatabaseObservedState_ToProto(mapCtx *direct.MapCon
 	out := &pb.AutonomousDatabase{}
 	// MISSING: Name
 	out.EntitlementId = direct.ValueOf(in.EntitlementID)
+	// MISSING: AdminPassword
 	out.Properties = AutonomousDatabasePropertiesObservedState_ToProto(mapCtx, in.Properties)
 	out.PeerAutonomousDatabases = in.PeerAutonomousDatabases
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
@@ -738,7 +740,7 @@ func OracleDatabaseAutonomousDatabaseSpec_FromProto(mapCtx *direct.MapContext, i
 	// MISSING: Name
 	out.Database = direct.LazyPtr(in.GetDatabase())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.AdminPassword = OracleDatabaseAutonomousDatabaseSpec_AdminPassword_FromProto(mapCtx, in.GetAdminPassword())
+	// MISSING: AdminPassword
 	if in.GetAdminPasswordSecretVersion() != "" {
 		out.AdminPasswordSecretVersionRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetAdminPasswordSecretVersion()}
 	}
@@ -765,7 +767,7 @@ func OracleDatabaseAutonomousDatabaseSpec_ToProto(mapCtx *direct.MapContext, in 
 	// MISSING: Name
 	out.Database = direct.ValueOf(in.Database)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.AdminPassword = OracleDatabaseAutonomousDatabaseSpec_AdminPassword_ToProto(mapCtx, in.AdminPassword)
+	// MISSING: AdminPassword
 	if in.AdminPasswordSecretVersionRef != nil {
 		out.AdminPasswordSecretVersion = in.AdminPasswordSecretVersionRef.External
 	}
