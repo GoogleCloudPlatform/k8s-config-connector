@@ -86,18 +86,10 @@ type RealtimeSyncConfig struct {
 // DiscoveryEngineDataConnectorSpec defines the desired state of DiscoveryEngineDataConnector
 // +kcc:spec:proto=google.cloud.discoveryengine.v1alpha.DataConnector
 type DiscoveryEngineDataConnectorSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refs.ProjectRef `json:"projectRef"`
-
-	// Immutable. The location of this resource.
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
+	// Immutable. The Collection this DataConnector belongs to.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="CollectionRef field is immutable"
 	// +required
-	Location *string `json:"location"`
-
-	// Immutable. The collection for the DataConnector.
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Collection field is immutable"
-	// +required
-	Collection *string `json:"collection"`
+	CollectionRef *DiscoveryEngineCollectionRef `json:"collectionRef"`
 
 	// The DiscoveryEngineDataConnector name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

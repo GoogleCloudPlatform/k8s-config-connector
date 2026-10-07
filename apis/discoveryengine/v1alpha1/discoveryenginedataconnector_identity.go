@@ -19,7 +19,6 @@ import (
 	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -64,31 +63,26 @@ func (i *DiscoveryEngineDataConnectorIdentity) ParentString() string {
 	return fmt.Sprintf("projects/%s/locations/%s/collections/%s", i.Project, i.Location, i.Collection)
 }
 
-func getIdentityFromDiscoveryEngineDataConnectorSpec(ctx context.Context, reader client.Reader, obj client.Object) (*DiscoveryEngineDataConnectorIdentity, error) {
-	connector, ok := obj.(*DiscoveryEngineDataConnector)
-	if !ok {
-		return nil, fmt.Errorf("object is not a DiscoveryEngineDataConnector")
+func getIdentityFromDiscoveryEngineDataConnectorSpec(ctx context.Context, reader client.Reader, obj *DiscoveryEngineDataConnector) (*DiscoveryEngineDataConnectorIdentity, error) {
+	if obj.Spec.CollectionRef == nil {
+		return nil, fmt.Errorf("spec.collectionRef is not set")
 	}
 
-	if connector.Spec.Location == nil || *connector.Spec.Location == "" {
-		return nil, fmt.Errorf("cannot resolve location: must be specified")
-	}
-	location := *connector.Spec.Location
-
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	collectionRef := *obj.Spec.CollectionRef
+	normalizedCollection, err := collectionRef.NormalizedExternal(ctx, reader, obj.Namespace)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project: %w", err)
+		return nil, fmt.Errorf("resolving spec.collectionRef: %w", err)
 	}
 
-	if connector.Spec.Collection == nil || *connector.Spec.Collection == "" {
-		return nil, fmt.Errorf("cannot resolve collection: must be specified")
+	collectionIdentity := &DiscoveryEngineCollectionIdentity{}
+	if err := collectionIdentity.FromExternal(normalizedCollection); err != nil {
+		return nil, fmt.Errorf("parsing spec.collectionRef external: %w", err)
 	}
-	collection := *connector.Spec.Collection
 
 	identity := &DiscoveryEngineDataConnectorIdentity{
-		Project:    projectID,
-		Location:   location,
-		Collection: collection,
+		Project:    collectionIdentity.Project,
+		Location:   collectionIdentity.Location,
+		Collection: collectionIdentity.Collection,
 	}
 	return identity, nil
 }
@@ -105,7 +99,7 @@ func (obj *DiscoveryEngineDataConnector) GetIdentity(ctx context.Context, reader
 			return nil, err
 		}
 
-		if statusIdentity.Location != specIdentity.Location || statusIdentity.Collection != specIdentity.Collection {
+		if statusIdentity.Project != specIdentity.Project || statusIdentity.Location != specIdentity.Location || statusIdentity.Collection != specIdentity.Collection {
 			return nil, fmt.Errorf("cannot change DiscoveryEngineDataConnector parent identity (old=%q, new parent=%s/%s/%s)", statusIdentity.String(), specIdentity.Project, specIdentity.Location, specIdentity.Collection)
 		}
 
@@ -113,4 +107,9 @@ func (obj *DiscoveryEngineDataConnector) GetIdentity(ctx context.Context, reader
 	}
 
 	return specIdentity, nil
+}
+
+// ExternalIdentifier implements the identity.ExternalIdentifier interface.
+func (obj *DiscoveryEngineDataConnector) ExternalIdentifier() *string {
+	return obj.Status.ExternalRef
 }

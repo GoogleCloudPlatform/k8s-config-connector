@@ -77,11 +77,37 @@ spec:
               autoRunDisabled:
                 description: Optional. If true, the connector will not run automatically.
                 type: boolean
-              collection:
-                description: Immutable. The collection for the DataConnector.
-                type: string
+              collectionRef:
+                description: Immutable. The Collection this DataConnector belongs
+                  to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed DiscoveryEngineCollection
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/collections/{{collectionID}}".
+                    type: string
+                  name:
+                    description: The name of a DiscoveryEngineCollection resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a DiscoveryEngineCollection resource.
+                    type: string
+                type: object
                 x-kubernetes-validations:
-                - message: Collection field is immutable
+                - message: CollectionRef field is immutable
                   rule: self == oldSelf
               connectorMetadata:
                 description: Optional. User-facing metadata.
@@ -152,48 +178,10 @@ spec:
                     description: The `namespace` of a `KMSCryptoKey` resource.
                     type: string
                 type: object
-              location:
-                description: Immutable. The location of this resource.
-                type: string
-                x-kubernetes-validations:
-                - message: Location field is immutable
-                  rule: self == oldSelf
               params:
                 description: Optional. Connector-specific parameters in structured
                   JSON format.
                 x-kubernetes-preserve-unknown-fields: true
-              projectRef:
-                description: The project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
-                  name:
-                    description: The `name` field of a `Project` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `Project` resource.
-                    type: string
-                type: object
               realtimeSyncConfig:
                 description: Optional. Configuration for real-time data synchronization.
                 properties:
@@ -212,10 +200,8 @@ spec:
                 description: Optional. The sync mode.
                 type: string
             required:
-            - collection
+            - collectionRef
             - dataSource
-            - location
-            - projectRef
             type: object
           status:
             description: DiscoveryEngineDataConnectorStatus defines the config connector

@@ -2296,7 +2296,7 @@
 [missing_field] crd=discoveryenginedataconnectors.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.actionConfig.createBapConnection" is not set in unstructured objects
 [missing_field] crd=discoveryenginedataconnectors.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.actionConfig.serviceName" is not set in unstructured objects
 [missing_field] crd=discoveryenginedataconnectors.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoRunDisabled" is not set in unstructured objects
-[missing_field] crd=discoveryenginedataconnectors.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.collection" is not set in unstructured objects
+[missing_field] crd=discoveryenginedataconnectors.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.collectionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=discoveryenginedataconnectors.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorMetadata.author" is not set in unstructured objects
 [missing_field] crd=discoveryenginedataconnectors.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorMetadata.description" is not set in unstructured objects
 [missing_field] crd=discoveryenginedataconnectors.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.connectorMetadata.note" is not set in unstructured objects
@@ -2309,9 +2309,7 @@
 [missing_field] crd=discoveryenginedataconnectors.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.incrementalRefreshInterval" is not set in unstructured objects
 [missing_field] crd=discoveryenginedataconnectors.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.incrementalSyncDisabled" is not set in unstructured objects
 [missing_field] crd=discoveryenginedataconnectors.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=discoveryenginedataconnectors.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=discoveryenginedataconnectors.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.params" is not set in unstructured objects
-[missing_field] crd=discoveryenginedataconnectors.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=discoveryenginedataconnectors.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.realtimeSyncConfig.streamingError" is not set in unstructured objects
 [missing_field] crd=discoveryenginedataconnectors.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.refreshInterval" is not set in unstructured objects
 [missing_field] crd=discoveryenginedataconnectors.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.syncMode" is not set in unstructured objects
