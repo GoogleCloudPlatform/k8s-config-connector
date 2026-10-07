@@ -68,3 +68,52 @@ func TestDiscoveryEngineDataConnectorIdentity_FromExternal(t *testing.T) {
 		})
 	}
 }
+
+func TestDiscoveryEngineCollectionIdentity_FromExternal(t *testing.T) {
+	tests := []struct {
+		name    string
+		ref     string
+		wantErr bool
+		want    *DiscoveryEngineCollectionIdentity
+	}{
+		{
+			name: "valid reference",
+			ref:  "projects/my-project/locations/global/collections/default_collection",
+			want: &DiscoveryEngineCollectionIdentity{
+				Project:    "my-project",
+				Location:   "global",
+				Collection: "default_collection",
+			},
+		},
+		{
+			name:    "invalid reference format",
+			ref:     "invalid/format",
+			wantErr: true,
+		},
+		{
+			name: "full url",
+			ref:  "https://discoveryengine.googleapis.com/projects/my-project/locations/global/collections/default_collection",
+			want: &DiscoveryEngineCollectionIdentity{
+				Project:    "my-project",
+				Location:   "global",
+				Collection: "default_collection",
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			i := &DiscoveryEngineCollectionIdentity{}
+			err := i.FromExternal(tt.ref)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !tt.wantErr {
+				if diff := cmp.Diff(tt.want, i); diff != "" {
+					t.Errorf("FromExternal() mismatch (-want +got):\n%s", diff)
+				}
+			}
+		})
+	}
+}

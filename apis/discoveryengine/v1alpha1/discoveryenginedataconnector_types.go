@@ -16,7 +16,6 @@ package v1alpha1
 
 import (
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -87,18 +86,10 @@ type RealtimeSyncConfig struct {
 // DiscoveryEngineDataConnectorSpec defines the desired state of DiscoveryEngineDataConnector
 // +kcc:spec:proto=google.cloud.discoveryengine.v1alpha.DataConnector
 type DiscoveryEngineDataConnectorSpec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refs.ProjectRef `json:"projectRef"`
-
-	// Immutable. The location of this resource.
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
+	// Immutable. The Collection this DataConnector belongs to.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="CollectionRef field is immutable"
 	// +required
-	Location *string `json:"location"`
-
-	// Immutable. The collection for the DataConnector.
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Collection field is immutable"
-	// +required
-	Collection *string `json:"collection"`
+	CollectionRef *DiscoveryEngineCollectionRef `json:"collectionRef"`
 
 	// The DiscoveryEngineDataConnector name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
