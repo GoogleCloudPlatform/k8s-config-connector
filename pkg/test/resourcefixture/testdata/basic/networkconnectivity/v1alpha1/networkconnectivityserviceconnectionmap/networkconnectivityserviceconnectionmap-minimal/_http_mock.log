@@ -84,8 +84,15 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.ServiceConnectionMap",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Initial description",
     "etag": "abcdef0123A=",
+    "infrastructure": "PSC",
     "name": "projects/${projectId}/locations/us-central1/serviceConnectionMaps/scm-minimal-${uniqueId}",
+    "producerPscConfigs": [
+      {
+        "serviceAttachmentUri": "projects/${projectId}/regions/us-central1/serviceAttachments/sa-mock-${uniqueId}"
+      }
+    ],
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -185,8 +192,15 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.ServiceConnectionMap",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Updated description",
     "etag": "abcdef0123A=",
+    "infrastructure": "PSC",
     "name": "projects/${projectId}/locations/us-central1/serviceConnectionMaps/scm-minimal-${uniqueId}",
+    "producerPscConfigs": [
+      {
+        "serviceAttachmentUri": "projects/${projectId}/regions/us-central1/serviceAttachments/sa-mock-${uniqueId}"
+      }
+    ],
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
