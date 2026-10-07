@@ -21,8 +21,12 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
 if [[ -z "${KUBEBUILDER_ASSETS:-}" ]] || [[ ! -d "${KUBEBUILDER_ASSETS}" ]]; then
-  echo "Downloading envtest assets..."
-  export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@release-0.22 use -p path)
+  if [[ -d "${REPO_ROOT}/bin/envtest" ]]; then
+    export KUBEBUILDER_ASSETS="${REPO_ROOT}/bin/envtest"
+  else
+    echo "Downloading envtest assets..."
+    export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@release-0.22 use -p path)
+  fi
 fi
 
 # Set up transparent wrappers that set PR_SET_PDEATHSIG via setpriv so test

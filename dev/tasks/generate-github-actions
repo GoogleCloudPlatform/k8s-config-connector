@@ -93,9 +93,11 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: ./dev/actions/cache-go
       - name: Prebuild test binaries
         run: |
-          mkdir -p bin
+          mkdir -p bin/envtest
           go test -c -ldflags="-s -w" -buildvcs=false -o bin/tests-e2e ./tests/e2e
           go build -ldflags="-s -w" -buildvcs=false -o bin/paralleltestrunner ./dev/tools/paralleltestrunner
+          KUBEBUILDER_ASSETS=\$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@release-0.22 use -p path)
+          cp -r "\${KUBEBUILDER_ASSETS}/." bin/envtest/
       - name: Upload prebuilt test binaries
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         with:
@@ -144,10 +146,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
-        run: chmod +x bin/* || true
-      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
-        with:
-          install_components: 'alpha,beta'
+        run: chmod -R +x bin/ || true
       - name: "Run priority E2E fixtures for \${{ matrix.service }}"
         run: |
           target="\${TARGET_SERVICE}"
@@ -192,10 +191,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
-        run: chmod +x bin/* || true
-      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
-        with:
-          install_components: 'alpha,beta'
+        run: chmod -R +x bin/ || true
       - name: "Run fixture test for \${{ matrix.service }}"
         run: |
           target="\${TARGET_SERVICE}"
@@ -268,10 +264,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
-        run: chmod +x bin/* || true
-      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
-        with:
-          install_components: 'alpha,beta'
+        run: chmod -R +x bin/ || true
       - name: "Run sample test for \${{ matrix.service }}"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-suite "\${TARGET_SERVICE}"
@@ -318,10 +311,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
-        run: chmod +x bin/* || true
-      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
-        with:
-          install_components: 'alpha,beta'
+        run: chmod -R +x bin/ || true
       - name: "Run scenario test for \${{ matrix.suite }}"
         run: |
           ./dev/ci/presubmits/tests-scenarios-suite "\${TARGET_SUITE}"
@@ -358,10 +348,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
-        run: chmod +x bin/* || true
-      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
-        with:
-          install_components: 'alpha,beta'
+        run: chmod -R +x bin/ || true
       - name: "Run direct IAM tests"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-suite iam
@@ -398,9 +385,6 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         run: dev/tasks/free-disk-space-on-github-actions-runner
 # zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
-      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
-        with:
-          install_components: 'alpha,beta'
       - name: "Run dev/ci/presubmits/unit-tests"
         run: |
           ./dev/ci/presubmits/unit-tests "\${{ matrix.shard }}"
@@ -562,15 +546,6 @@ EOF
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 # zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
-EOF
-    fi
-
-    # TODO: We should look at the script to see if it needs gcloud
-    if [[ "${name}" == "test-mockgcp" || "${name}" == "unit-tests" || "${name}" == "unit-tests-operator" ]]; then
-cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
-      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
-        with:
-          install_components: 'alpha,beta'
 EOF
     fi
 
