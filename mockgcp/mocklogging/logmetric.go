@@ -91,9 +91,6 @@ func (s *metricsServiceV2) CreateLogMetric(ctx context.Context, req *pb.CreateLo
 	if strings.Contains(obj.Filter, "severity =") {
 		return nil, status.Errorf(codes.InvalidArgument, "Unparseable filter: syntax error at line 1, token '<EOF>'")
 	}
-	if strings.Contains(obj.Filter, "INVALID") || strings.Contains(obj.Filter, "[[[") {
-		return nil, status.Errorf(codes.InvalidArgument, "Field filter had an invalid value: %q", obj.Filter)
-	}
 
 	s.populateDefaultsForLogMetric(name, obj)
 
@@ -151,9 +148,6 @@ func (s *metricsServiceV2) UpdateLogMetric(ctx context.Context, req *pb.UpdateLo
 
 	if strings.Contains(updated.Filter, "severity =") {
 		return nil, status.Errorf(codes.InvalidArgument, "Unparseable filter: syntax error at line 1, token '<EOF>'")
-	}
-	if strings.Contains(updated.Filter, "INVALID") || strings.Contains(updated.Filter, "[[[") {
-		return nil, status.Errorf(codes.InvalidArgument, "Field filter had an invalid value: %q", updated.Filter)
 	}
 
 	s.populateDefaultsForLogMetric(name, updated)
