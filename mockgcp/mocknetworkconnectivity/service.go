@@ -64,6 +64,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterProjectsLocationsGlobalHubsServerServer(grpcServer, &hubsServer{MockService: s})
 	pb.RegisterProjectsLocationsSpokesServerServer(grpcServer, &spokesServer{MockService: s})
 	pb.RegisterProjectsLocationsMulticloudDataTransferConfigsServerServer(grpcServer, &multicloudDataTransferConfigsServer{MockService: s})
+	pb.RegisterProjectsLocationsTransportsServerServer(grpcServer, &transportsServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -74,6 +75,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb.RegisterProjectsLocationsGlobalHubsServerHandler,
 		pb.RegisterProjectsLocationsSpokesServerHandler,
 		pb.RegisterProjectsLocationsMulticloudDataTransferConfigsServerHandler,
+		pb.RegisterProjectsLocationsTransportsServerHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
 	)
 	if err != nil {
