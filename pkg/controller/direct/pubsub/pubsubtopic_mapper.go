@@ -21,6 +21,7 @@ package pubsub
 
 import (
 	pb "cloud.google.com/go/pubsub/v2/apiv1/pubsubpb"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -32,7 +33,7 @@ func PubSubTopicSpec_FromProto(mapCtx *direct.MapContext, in *pb.Topic) *krm.Pub
 	out := &krm.PubSubTopicSpec{}
 
 	if in.GetKmsKeyName() != "" {
-		out.KmsKeyRef = &krm.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+		out.KmsKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
 	}
 	out.MessageRetentionDuration = direct.StringDuration_FromProto(mapCtx, in.GetMessageRetentionDuration())
 	out.MessageStoragePolicy = MessageStoragePolicy_FromProto(mapCtx, in.GetMessageStoragePolicy())
