@@ -168,6 +168,7 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 		}
 		opt.Create = append(opt.Create, primaryResource)
 		opt.PrimaryResource = primaryResource
+
 		return primaryResource, opt
 	}
 
