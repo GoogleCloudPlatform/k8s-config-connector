@@ -1628,7 +1628,7 @@ func MasterAuth_FromProto(mapCtx *direct.MapContext, in *pb.MasterAuth) *krm.Mas
 	}
 	out := &krm.MasterAuth{}
 	out.Username = direct.LazyPtr(in.GetUsername())
-	out.Password = MasterAuth_Password_FromProto(mapCtx, in.GetPassword())
+	out.Password = direct.LazyPtr(in.GetPassword())
 	// MISSING: ClientCertificateConfig
 	out.ClusterCACertificate = direct.LazyPtr(in.GetClusterCaCertificate())
 	out.ClientCertificate = direct.LazyPtr(in.GetClientCertificate())

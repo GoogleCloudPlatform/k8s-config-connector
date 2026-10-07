@@ -182,7 +182,7 @@ func Backend_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Backend) *krmco
 	// MISSING: CustomMetrics
 	out.Description = in.Description
 	out.Failover = in.Failover
-	out.Group = Backend_Group_FromProto(mapCtx, in.GetGroup())
+	out.Group = in.Group
 	out.MaxConnections = in.MaxConnections
 	out.MaxConnectionsPerEndpoint = in.MaxConnectionsPerEndpoint
 	out.MaxConnectionsPerInstance = in.MaxConnectionsPerInstance
@@ -964,7 +964,7 @@ func ComputeBackendServiceSignedURLKeySpec_v1alpha1_FromProto(mapCtx *direct.Map
 	}
 	out := &krmcomputev1alpha1.ComputeBackendServiceSignedURLKeySpec{}
 	// MISSING: KeyName
-	out.KeyValue = ComputeBackendServiceSignedURLKeySpec_KeyValue_FromProto(mapCtx, in.GetKeyValue())
+	out.KeyValue = in.KeyValue
 	return out
 }
 */
@@ -1868,7 +1868,7 @@ func ComputeForwardingRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 	if in.GetSubnetwork() != "" {
 		out.SubnetworkRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
 	}
-	out.Target = ComputeForwardingRuleSpec_Target_FromProto(mapCtx, in.GetTarget())
+	out.Target = in.Target
 	return out
 }
 */
@@ -4721,7 +4721,7 @@ func ComputeSSLCertificateSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &krmcomputev1beta1.ComputeSSLCertificateSpec{}
-	out.Certificate = ComputeSSLCertificateSpec_Certificate_FromProto(mapCtx, in.GetCertificate())
+	out.Certificate = in.Certificate
 	// MISSING: CreationTimestamp
 	out.Description = in.Description
 	// MISSING: ExpireTime
@@ -4729,7 +4729,7 @@ func ComputeSSLCertificateSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 	// MISSING: Kind
 	// MISSING: Managed
 	// MISSING: Name
-	out.PrivateKey = ComputeSSLCertificateSpec_PrivateKey_FromProto(mapCtx, in.GetPrivateKey())
+	out.PrivateKey = in.PrivateKey
 	// MISSING: Region
 	// MISSING: SelfLink
 	// MISSING: SelfManaged
@@ -6058,7 +6058,7 @@ func ComputeURLMapSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMa
 	// MISSING: CreationTimestamp
 	out.DefaultCustomErrorResponsePolicy = UrlmapDefaultCustomErrorResponsePolicy_v1beta1_FromProto(mapCtx, in.GetDefaultCustomErrorResponsePolicy())
 	out.DefaultRouteAction = UrlmapDefaultRouteAction_v1beta1_FromProto(mapCtx, in.GetDefaultRouteAction())
-	out.DefaultService = ComputeURLMapSpec_DefaultService_FromProto(mapCtx, in.GetDefaultService())
+	out.DefaultService = in.DefaultService
 	// MISSING: DefaultURLRedirect
 	// (near miss): "DefaultURLRedirect" vs "DefaultUrlRedirect"
 	out.Description = in.Description
@@ -6182,7 +6182,7 @@ func ComputeVPNTunnelSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Vp
 		out.RouterRef = &krmcomputev1beta1.ComputeRouterRef{External: in.GetRouter()}
 	}
 	// MISSING: SelfLink
-	out.SharedSecret = ComputeVPNTunnelSpec_SharedSecret_FromProto(mapCtx, in.GetSharedSecret())
+	out.SharedSecret = in.SharedSecret
 	// MISSING: SharedSecretHash
 	// MISSING: Status
 	if in.GetTargetVpnGateway() != "" {
@@ -8379,7 +8379,7 @@ func SnapshotSnapshotEncryptionKey_v1beta1_FromProto(mapCtx *direct.MapContext, 
 	out := &krmcomputev1beta1.SnapshotSnapshotEncryptionKey{}
 	// MISSING: KMSKeyName
 	// MISSING: KMSKeyServiceAccount
-	out.RawKey = SnapshotSnapshotEncryptionKey_RawKey_FromProto(mapCtx, in.GetRawKey())
+	out.RawKey = in.RawKey
 	// MISSING: RsaEncryptedKey
 	out.Sha256 = in.Sha256
 	return out
@@ -8409,7 +8409,7 @@ func SnapshotSourceDiskEncryptionKey_v1beta1_FromProto(mapCtx *direct.MapContext
 	out := &krmcomputev1beta1.SnapshotSourceDiskEncryptionKey{}
 	// MISSING: KMSKeyName
 	// MISSING: KMSKeyServiceAccount
-	out.RawKey = SnapshotSourceDiskEncryptionKey_RawKey_FromProto(mapCtx, in.GetRawKey())
+	out.RawKey = in.RawKey
 	// MISSING: RsaEncryptedKey
 	// MISSING: Sha256
 	return out
@@ -8889,7 +8889,7 @@ func UrlmapPathMatcher_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PathM
 	out := &krmcomputev1beta1.UrlmapPathMatcher{}
 	out.DefaultCustomErrorResponsePolicy = UrlmapDefaultCustomErrorResponsePolicy_v1beta1_FromProto(mapCtx, in.GetDefaultCustomErrorResponsePolicy())
 	out.DefaultRouteAction = UrlmapRouteActionPathMatcherDefaultRouteAction_v1beta1_FromProto(mapCtx, in.GetDefaultRouteAction())
-	out.DefaultService = UrlmapPathMatcher_DefaultService_FromProto(mapCtx, in.GetDefaultService())
+	out.DefaultService = in.DefaultService
 	// MISSING: DefaultURLRedirect
 	// (near miss): "DefaultURLRedirect" vs "DefaultUrlRedirect"
 	out.Description = in.Description
@@ -8930,7 +8930,7 @@ func UrlmapPathRule_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PathRule
 	// MISSING: CustomErrorResponsePolicy
 	out.Paths = in.Paths
 	out.RouteAction = UrlmapRouteActionPathRule_v1beta1_FromProto(mapCtx, in.GetRouteAction())
-	out.Service = UrlmapPathRule_Service_FromProto(mapCtx, in.GetService())
+	out.Service = in.Service
 	// MISSING: URLRedirect
 	// (near miss): "URLRedirect" vs "UrlRedirect"
 	return out
@@ -9213,7 +9213,7 @@ func UrlmapTest_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.UrlMapTest) 
 	// MISSING: Headers
 	out.Host = in.Host
 	out.Path = in.Path
-	out.Service = UrlmapTest_Service_FromProto(mapCtx, in.GetService())
+	out.Service = in.Service
 	return out
 }
 */
