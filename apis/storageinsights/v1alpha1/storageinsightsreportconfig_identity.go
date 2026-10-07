@@ -26,8 +26,8 @@ import (
 )
 
 var (
-	_ identity.IdentityV2 = &StorageInsightsReportConfigIdentity{}
-	_ identity.Resource   = &StorageInsightsReportConfig{}
+	_ identity.ServerGeneratedIdentity = &StorageInsightsReportConfigIdentity{}
+	_ identity.Resource                = &StorageInsightsReportConfig{}
 )
 
 var StorageInsightsReportConfigIdentityFormat = gcpurls.Template[StorageInsightsReportConfigIdentity]("storageinsights.googleapis.com", "projects/{project}/locations/{location}/reportConfigs/{reportConfig}")
@@ -38,6 +38,10 @@ type StorageInsightsReportConfigIdentity struct {
 	Project      string
 	Location     string
 	ReportConfig string
+}
+
+func (i *StorageInsightsReportConfigIdentity) HasIdentitySpecified() bool {
+	return i.ReportConfig != ""
 }
 
 func (i *StorageInsightsReportConfigIdentity) String() string {
