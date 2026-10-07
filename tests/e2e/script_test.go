@@ -319,6 +319,12 @@ func TestE2EScript(t *testing.T) {
 						applyObject(h, obj)
 						time.Sleep(10 * time.Second)
 
+					case "APPLY-10-SEC-NO-EXPORT":
+						applyObject(h, obj)
+						time.Sleep(10 * time.Second)
+						exportResource = nil
+						shouldGetKubeObject = true
+
 					case "WAIT-FOR-OBSERVED-GENERATION":
 						create.WaitForObservedGeneration(h, 5*time.Minute, obj)
 						appliedObjects = append(appliedObjects, obj)

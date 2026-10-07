@@ -165,3 +165,41 @@ func TestUnderlyingResourceOutOfSyncPredicate_Update(t *testing.T) {
 		})
 	}
 }
+
+func TestUnderlyingResourceOutOfSyncPredicate_BackoffMaxDelayAnnotation(t *testing.T) {
+	p := UnderlyingResourceOutOfSyncPredicate{}
+
+	oldObj := &unstructured.Unstructured{}
+	oldObj.SetName("test-resource")
+	oldObj.SetGeneration(1)
+
+	newObj := oldObj.DeepCopy()
+
+	// No change
+	if p.Update(event.UpdateEvent{ObjectOld: oldObj, ObjectNew: newObj}) {
+		t.Fatalf("expected Update to return false when objects are identical")
+	}
+
+	// Add backoff-max-delay-in-seconds annotation
+	newObj.SetAnnotations(map[string]string{
+		k8s.BackoffMaxDelayInSecondsAnnotation: "0",
+	})
+	if !p.Update(event.UpdateEvent{ObjectOld: oldObj, ObjectNew: newObj}) {
+		t.Fatalf("expected Update to return true when BackoffMaxDelayInSecondsAnnotation is added")
+	}
+
+	// Change backoff-max-delay-in-seconds annotation
+	oldWithAnnotation := newObj.DeepCopy()
+	newWithDifferentAnnotation := newObj.DeepCopy()
+	newWithDifferentAnnotation.SetAnnotations(map[string]string{
+		k8s.BackoffMaxDelayInSecondsAnnotation: "600",
+	})
+	if !p.Update(event.UpdateEvent{ObjectOld: oldWithAnnotation, ObjectNew: newWithDifferentAnnotation}) {
+		t.Fatalf("expected Update to return true when BackoffMaxDelayInSecondsAnnotation is modified")
+	}
+
+	// Remove backoff-max-delay-in-seconds annotation
+	if !p.Update(event.UpdateEvent{ObjectOld: oldWithAnnotation, ObjectNew: oldObj}) {
+		t.Fatalf("expected Update to return true when BackoffMaxDelayInSecondsAnnotation is removed")
+	}
+}

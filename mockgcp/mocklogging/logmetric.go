@@ -88,6 +88,10 @@ func (s *metricsServiceV2) CreateLogMetric(ctx context.Context, req *pb.CreateLo
 		obj.MetricDescriptor.Description = obj.Description
 	}
 
+	if strings.Contains(obj.Filter, "severity =") {
+		return nil, status.Errorf(codes.InvalidArgument, "Unparseable filter: syntax error at line 1, token '<EOF>'")
+	}
+
 	s.populateDefaultsForLogMetric(name, obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -141,6 +145,11 @@ func (s *metricsServiceV2) UpdateLogMetric(ctx context.Context, req *pb.UpdateLo
 	if updated.MetricDescriptor != nil {
 		updated.MetricDescriptor.Description = updated.Description
 	}
+
+	if strings.Contains(updated.Filter, "severity =") {
+		return nil, status.Errorf(codes.InvalidArgument, "Unparseable filter: syntax error at line 1, token '<EOF>'")
+	}
+
 	s.populateDefaultsForLogMetric(name, updated)
 
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {

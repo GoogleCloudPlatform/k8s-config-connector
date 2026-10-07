@@ -102,6 +102,7 @@ func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.Ge
 		defaulters:         deps.Defaulters,
 		iamDeps:            deps.IAMAdapterDeps,
 		SkipNameValidation: deps.SkipNameValidation,
+		rateLimiter:        ratelimiter.NewDynamicRateLimiter(),
 	}
 	return &r, nil
 }
@@ -197,6 +198,8 @@ type DirectReconciler struct {
 	reconcilePredicate predicate.Predicate
 
 	SkipNameValidation bool
+
+	rateLimiter *ratelimiter.DynamicRateLimiter
 }
 
 type reconcileContext struct {
@@ -228,17 +231,20 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 	defer cancel()
 	r.RecordReconcileWorkers(ctx, r.gvk)
 	defer r.AfterReconcile()
-	defer r.RecordReconcileMetrics(ctx, r.gvk, request.Namespace, request.Name, startTime, &err)
+	var reconcileErr error
+	defer r.RecordReconcileMetrics(ctx, r.gvk, request.Namespace, request.Name, startTime, &reconcileErr)
 
 	obj := &unstructured.Unstructured{}
 	obj.SetGroupVersionKind(r.gvk)
 	if err := r.Get(ctx, request.NamespacedName, obj); err != nil {
 		if apierrors.IsNotFound(err) {
+			r.rateLimiter.Forget(request.NamespacedName)
 			// Object not found, return.  Created objects are automatically garbage collected.
 			// For additional cleanup logic use finalizers.
 			return reconcile.Result{}, nil
 		}
 		// Error reading the object - requeue the request.
+		reconcileErr = err
 		return reconcile.Result{}, err
 	}
 
@@ -252,6 +258,7 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 
 	skip, err := resourceactuation.ShouldSkip(obj)
 	if err != nil {
+		reconcileErr = err
 		return reconcile.Result{}, err
 	}
 	if skip {
@@ -261,8 +268,51 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 
 	requeue, err := runCtx.doReconcile(ctx, obj)
 	if err != nil {
+		reconcileErr = err
+
+		// 1. Deletion error: do NOT apply custom ceiling or "0" halt.
+		// Return err so controller-runtime uses standard workqueue rate limiting to retry deletion.
+		if obj.GetDeletionTimestamp() != nil {
+			return reconcile.Result{}, err
+		}
+
+		maxDelay, parseErr := ratelimiter.ParseBackoffMaxDelay(obj.GetAnnotations())
+		if parseErr != nil {
+			logger.Error(parseErr, "invalid backoff-max-delay annotation", "resource", request.NamespacedName)
+			// Fall back to default rate limiting behavior
+			return reconcile.Result{}, err
+		}
+
+		// 2. Special value "0": Halt automated error retries
+		if maxDelay != nil && *maxDelay == 0 {
+			logger.Info("Halting automated error retries as backoff-max-delay-in-seconds is set to 0",
+				"resource", request.NamespacedName,
+				"error", err)
+			// Returning Result{}, nil stops workqueue requeueing and does not schedule jitteredPeriod
+			return reconcile.Result{}, nil
+		}
+
+		// 3. Custom max delay ceiling: calculate exponential backoff up to maxDelay
+		if maxDelay != nil && *maxDelay > 0 {
+			nextDelay := r.rateLimiter.NextDelay(
+				request.NamespacedName,
+				k8s.DefaultBackoffBaseDelay,
+				*maxDelay,
+			)
+			logger.Info("Scheduling error retry with custom max delay ceiling",
+				"resource", request.NamespacedName,
+				"retryAfter", nextDelay,
+				"maxDelay", *maxDelay)
+			return reconcile.Result{RequeueAfter: nextDelay}, nil
+		}
+
+		// 4. Default: delegate to controller-runtime workqueue rate limiter (120s ceiling)
 		return reconcile.Result{}, err
 	}
+
+	// Reconcile succeeded: clear failure counter (standard controller-runtime Forget)
+	r.rateLimiter.Forget(request.NamespacedName)
+
 	if requeue {
 		return reconcile.Result{Requeue: true}, nil
 	}
@@ -277,6 +327,7 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 
 	jitteredPeriod, err := r.jitterGenerator.JitteredReenqueue(r.gvk, obj)
 	if err != nil {
+		reconcileErr = err
 		return reconcile.Result{}, err
 	}
 	logger.V(2).Info("successfully finished reconcile", "resource", request.NamespacedName, "time to next reconciliation", jitteredPeriod)
