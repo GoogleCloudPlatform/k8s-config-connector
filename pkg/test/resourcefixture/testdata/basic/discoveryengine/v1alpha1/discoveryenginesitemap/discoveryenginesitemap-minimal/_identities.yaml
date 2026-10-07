@@ -4,7 +4,7 @@
   name: datastore-${uniqueId}
   namespace: ${uniqueId}
   version: v1alpha1
-- caisURL: //discoveryengine.googleapis.com/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/sitemaps/e8dddeb9ea4e26bb9c0654f4cc7a30e3
+- caisURL: unknown
   group: discoveryengine.cnrm.cloud.google.com
   kind: DiscoveryEngineSitemap
   name: sitemap-${uniqueId}
