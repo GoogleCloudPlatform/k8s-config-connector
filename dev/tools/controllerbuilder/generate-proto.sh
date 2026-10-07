@@ -108,6 +108,17 @@ cp ${REPO_ROOT}/mockgcp/apis/google/cloud/config/v1/config.proto google/cloud/co
 mkdir -p google/cloud/dataplex/v1
 cp ${REPO_ROOT}/mockgcp/apis/google/cloud/dataplex/v1/catalog.proto google/cloud/dataplex/v1/catalog.proto
 
+# Patch monitoring dashboard metrics.proto to include OpsAnalyticsQuery
+sed -i '/string prometheus_query = 6;/a \ \ \ \ // A query used to fetch time series with SQL.\n    OpsAnalyticsQuery ops_analytics_query = 8;' google/monitoring/dashboard/v1/metrics.proto
+cat >> google/monitoring/dashboard/v1/metrics.proto <<EOF
+
+// A query that produces an aggregated response and supporting data.
+message OpsAnalyticsQuery {
+  // A SQL query to fetch time series, category series, or numeric series data.
+  string sql = 2;
+}
+EOF
+
 
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"
