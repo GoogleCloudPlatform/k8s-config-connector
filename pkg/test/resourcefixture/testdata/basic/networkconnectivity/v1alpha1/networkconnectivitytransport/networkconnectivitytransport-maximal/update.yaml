@@ -1,0 +1,21 @@
+apiVersion: networkconnectivity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkConnectivityTransport
+metadata:
+  name: transport-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-east4
+  networkRef:
+    external: projects/${projectId}/global/networks/default
+  remoteProfileRef:
+    external: projects/${projectId}/locations/us-east4/remoteTransportProfiles/aws-us-east-1
+  bandwidth: BPS_1G
+  remoteAccountID: "123456789012"
+  description: "Updated transport description"
+  labels:
+    env: updated
+    foo: baz
+  advertisedRoutes:
+    - "10.0.0.0/16"
+  stackType: IPV4_ONLY

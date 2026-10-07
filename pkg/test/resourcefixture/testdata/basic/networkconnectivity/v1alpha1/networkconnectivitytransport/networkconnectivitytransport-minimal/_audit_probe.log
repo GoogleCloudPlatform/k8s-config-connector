@@ -1,0 +1,19 @@
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-east4/transports/transport-${uniqueId}?alt=json&prettyPrint=false
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "bandwidth": "BPS_1G",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "generatedActivationKey": "eyJ2ZXJzaW9uIjoxLCJkZXN0aW5hdGlvbkVudmlyb25tZW50VXJpIjoiaHR0cHM6Ly9wYXJ0bmVyLWludGVyY29ubmVjdC51cy1lYXN0LTEuYXBpLmF3cy9wcm92aWRlcnMvZ2NwL2Vudmlyb25tZW50cy9pYWQtcHVibGljIiwic2hhcmVkQ29ubmVjdGlvblV1aWQiOiJiZjBiYWM5NS0wYmYyLTQ1N2QtYmU0NS1iM2ZiY2I0NmY4ZjkiLCJjb25uZWN0aW9uU2l6ZU1icHMiOjEwMDAsImRlc3RpbmF0aW9uQWNjb3VudElkIjoiMTIzNDU2Nzg5MDEyIn0=",
+  "name": "projects/${projectId}/locations/us-east4/transports/transport-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/default",
+  "peeringNetwork": "projects/123456789012/global/networks/transport-1234567890abcdef-vpc",
+  "remoteAccountId": "123456789012",
+  "remoteProfile": "projects/${projectId}/locations/us-east4/remoteTransportProfiles/aws-us-east-1",
+  "stackType": "IPV4_ONLY",
+  "state": "PENDING_KEY",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
