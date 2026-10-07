@@ -1,0 +1,62 @@
+apiVersion: storageinsights.cnrm.cloud.google.com/v1alpha1
+kind: StorageInsightsReportConfig
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: storageinsightsreportconfig-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  csvOptions:
+    delimiter: ;
+    headerRequired: false
+    recordSeparator: |2+
+
+  displayName: Updated Storage Insights Report Config
+  frequencyOptions:
+    endDate:
+      day: 1
+      month: 3
+      year: 2050
+    frequency: WEEKLY
+    startDate:
+      day: 1
+      month: 1
+      year: 2050
+  labels:
+    env: test-updated
+    managed-by: kcc
+  location: us-central1
+  objectMetadataReportOptions:
+    metadataFields:
+    - bucket
+    - project
+    - name
+    - size
+    - updated
+    - storageClass
+    - crc32c
+    storageDestinationOptions:
+      bucketRef:
+        name: storageinsights-max-dep-${uniqueId}
+      destinationPath: updated-insights-reports
+    storageFilters:
+      bucketRef:
+        name: storageinsights-max-dep-${uniqueId}
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/reportConfigs/ef821d9c-0665-425b-a40e-a70fba6927f1
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"

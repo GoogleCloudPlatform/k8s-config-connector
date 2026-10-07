@@ -66,10 +66,8 @@ func (i *StorageInsightsReportConfigIdentity) ParentString() string {
 }
 
 func getIdentityFromStorageInsightsReportConfigSpec(ctx context.Context, reader client.Reader, obj *StorageInsightsReportConfig) (*StorageInsightsReportConfigIdentity, error) {
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
+	// StorageInsightsReportConfig only supports service-generated IDs (GCP assigns a UUID upon creation).
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
 	location, err := refs.GetLocation(obj)
 	if err != nil {
@@ -101,6 +99,13 @@ func (obj *StorageInsightsReportConfig) GetIdentity(ctx context.Context, reader 
 		statusIdentity := &StorageInsightsReportConfigIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
+		}
+
+		if specIdentity.ReportConfig == "" {
+			if statusIdentity.Project != specIdentity.Project || statusIdentity.Location != specIdentity.Location {
+				return nil, fmt.Errorf("cannot change StorageInsightsReportConfig parent (old parent=%s/%s, new parent=%s/%s)", statusIdentity.Project, statusIdentity.Location, specIdentity.Project, specIdentity.Location)
+			}
+			return statusIdentity, nil
 		}
 
 		if statusIdentity.String() != specIdentity.String() {

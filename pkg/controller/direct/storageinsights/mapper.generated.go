@@ -41,17 +41,6 @@ func CloudStorageDestinationOptions_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.DestinationPath = direct.LazyPtr(in.GetDestinationPath())
 	return out
 }
-func CloudStorageDestinationOptions_ToProto(mapCtx *direct.MapContext, in *krm.CloudStorageDestinationOptions) *pb.CloudStorageDestinationOptions {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CloudStorageDestinationOptions{}
-	if in.BucketRef != nil {
-		out.Bucket = in.BucketRef.External
-	}
-	out.DestinationPath = direct.ValueOf(in.DestinationPath)
-	return out
-}
 func CloudStorageFilters_FromProto(mapCtx *direct.MapContext, in *pb.CloudStorageFilters) *krm.CloudStorageFilters {
 	if in == nil {
 		return nil
@@ -59,16 +48,6 @@ func CloudStorageFilters_FromProto(mapCtx *direct.MapContext, in *pb.CloudStorag
 	out := &krm.CloudStorageFilters{}
 	if in.GetBucket() != "" {
 		out.BucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetBucket()}
-	}
-	return out
-}
-func CloudStorageFilters_ToProto(mapCtx *direct.MapContext, in *krm.CloudStorageFilters) *pb.CloudStorageFilters {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CloudStorageFilters{}
-	if in.BucketRef != nil {
-		out.Bucket = in.BucketRef.External
 	}
 	return out
 }
