@@ -17,7 +17,6 @@ package container
 import (
 	"context"
 	"fmt"
-	"reflect"
 	"strings"
 	"time"
 
@@ -29,11 +28,12 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
-	"google.golang.org/protobuf/proto"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -55,6 +55,7 @@ type nodePoolAdapter struct {
 	desiredKRM *krm.ContainerNodePool
 	actual     *pb.NodePool
 	client     *gcp.ClusterManagerClient
+	reader     client.Reader
 }
 
 var _ directbase.Adapter = &nodePoolAdapter{}
@@ -83,10 +84,6 @@ func (m *nodePoolModel) AdapterForObject(ctx context.Context, op *directbase.Ada
 	}
 	nodePoolID := id.(*krm.ContainerNodePoolIdentity)
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
-
 	client, err := m.client(ctx)
 	if err != nil {
 		return nil, err
@@ -96,6 +93,7 @@ func (m *nodePoolModel) AdapterForObject(ctx context.Context, op *directbase.Ada
 		id:         nodePoolID,
 		desiredKRM: obj,
 		client:     client,
+		reader:     reader,
 	}, nil
 }
 
@@ -189,6 +187,10 @@ func (a *nodePoolAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating ContainerNodePool", "name", a.fullyQualifiedName())
 
+	if err := common.NormalizeReferences(ctx, a.reader, a.desiredKRM, nil); err != nil {
+		return fmt.Errorf("normalizing references: %w", err)
+	}
+
 	mapCtx := &direct.MapContext{}
 	desired := ContainerNodePoolSpec_ToProto(mapCtx, &a.desiredKRM.Spec)
 	if mapCtx.Err() != nil {
@@ -222,13 +224,57 @@ func (a *nodePoolAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
-func hasFieldChange(paths []string, prefix string) bool {
-	for _, p := range paths {
-		if p == prefix || strings.HasPrefix(p, prefix+".") {
-			return true
+func (a *nodePoolAdapter) normalizeNodePool(ctx context.Context, pbNodePool *pb.NodePool) error {
+	if pbNodePool == nil {
+		return nil
+	}
+	// initial_node_count is INPUT_ONLY in GKE API and not returned on GET
+	pbNodePool.InitialNodeCount = 0
+
+	if netConfig := pbNodePool.GetNetworkConfig(); netConfig != nil {
+		for _, addNodeNet := range netConfig.GetAdditionalNodeNetworkConfigs() {
+			if addNodeNet.GetNetwork() != "" {
+				addNodeNet.Network = canonicalizeNetworkURL(a.id.Project, addNodeNet.GetNetwork())
+			}
+			if addNodeNet.GetSubnetwork() != "" {
+				addNodeNet.Subnetwork = canonicalizeSubnetworkURL(a.id.Project, a.location(), addNodeNet.GetSubnetwork())
+			}
+		}
+		for _, addPodNet := range netConfig.GetAdditionalPodNetworkConfigs() {
+			if addPodNet.GetSubnetwork() != "" {
+				addPodNet.Subnetwork = canonicalizeSubnetworkURL(a.id.Project, a.location(), addPodNet.GetSubnetwork())
+			}
 		}
 	}
-	return false
+	return nil
+}
+
+func canonicalizeSubnetworkURL(project, location, val string) string {
+	if val == "" {
+		return ""
+	}
+	val = strings.TrimPrefix(val, "https://www.googleapis.com/compute/v1/")
+	val = strings.TrimPrefix(val, "https://compute.googleapis.com/compute/v1/")
+	if strings.HasPrefix(val, "projects/") {
+		return val
+	}
+	region := location
+	if parts := strings.Split(location, "-"); len(parts) == 3 {
+		region = fmt.Sprintf("%s-%s", parts[0], parts[1])
+	}
+	return fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", project, region, val)
+}
+
+func canonicalizeNetworkURL(project, val string) string {
+	if val == "" {
+		return ""
+	}
+	val = strings.TrimPrefix(val, "https://www.googleapis.com/compute/v1/")
+	val = strings.TrimPrefix(val, "https://compute.googleapis.com/compute/v1/")
+	if strings.HasPrefix(val, "projects/") {
+		return val
+	}
+	return fmt.Sprintf("projects/%s/global/networks/%s", project, val)
 }
 
 func (a *nodePoolAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
@@ -239,33 +285,36 @@ func (a *nodePoolAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		return fmt.Errorf("actual is nil in Update")
 	}
 
-	_, fieldMask, err := common.CompareBrownfieldSpec(
+	if err := common.NormalizeReferences(ctx, a.reader, a.desiredKRM, nil); err != nil {
+		return fmt.Errorf("normalizing references: %w", err)
+	}
+
+	diffRes, err := common.CompareSpecifiedSpec(
 		ctx,
 		&a.desiredKRM.Spec,
 		a.actual,
 		ContainerNodePoolSpec_FromProto,
 		ContainerNodePoolSpec_ToProto,
-		nil,
+		a.normalizeNodePool,
+		true, // fineGrained
 	)
 	if err != nil {
 		return fmt.Errorf("comparing specs for ContainerNodePool %q: %w", a.fullyQualifiedName(), err)
 	}
 
-	if len(fieldMask.Paths) == 0 {
+	if diffRes.Empty() {
 		log.V(2).Info("no changes detected for ContainerNodePool", "name", a.fullyQualifiedName())
 		status := &krm.ContainerNodePoolStatus{}
 		a.populateStatus(status, a.actual)
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
-	mapCtx := &direct.MapContext{}
-	desired := ContainerNodePoolSpec_ToProto(mapCtx, &a.desiredKRM.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
+	structuredreporting.ReportDiff(ctx, diffRes.Diff)
+
+	desired := diffRes.MergedDesired
 
 	// 1. Update Autoscaling via UpdateCluster if changed
-	if hasFieldChange(fieldMask.Paths, "autoscaling") {
+	if diffRes.Has("autoscaling") {
 		op, err := a.client.UpdateCluster(ctx, &pb.UpdateClusterRequest{
 			Name: a.parentFQN(),
 			Update: &pb.ClusterUpdate{
@@ -282,7 +331,7 @@ func (a *nodePoolAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	}
 
 	// 2. Update Management if changed
-	if hasFieldChange(fieldMask.Paths, "management") {
+	if diffRes.Has("management") {
 		op, err := a.client.SetNodePoolManagement(ctx, &pb.SetNodePoolManagementRequest{
 			Name:       a.fullyQualifiedName(),
 			Management: desired.GetManagement(),
@@ -295,87 +344,111 @@ func (a *nodePoolAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		}
 	}
 
-	// 3. Update NodePool fields via UpdateNodePool
+	// 3. Update Node Pool Size if node count changed
+	if diffRes.Has("initial_node_count") || diffRes.Has("node_count") {
+		op, err := a.client.SetNodePoolSize(ctx, &pb.SetNodePoolSizeRequest{
+			Name:      a.fullyQualifiedName(),
+			NodeCount: desired.GetInitialNodeCount(),
+		})
+		if err != nil {
+			return fmt.Errorf("setting size for ContainerNodePool %q: %w", a.fullyQualifiedName(), err)
+		}
+		if err := a.waitForOperation(ctx, op); err != nil {
+			return fmt.Errorf("waiting for size update for ContainerNodePool %q: %w", a.fullyQualifiedName(), err)
+		}
+	}
+
+	// 4. Update NodePool fields via UpdateNodePool
 	updateReq := &pb.UpdateNodePoolRequest{
 		Name: a.fullyQualifiedName(),
 	}
 	hasUpdates := false
 
-	if hasFieldChange(fieldMask.Paths, "config") && desired.GetConfig() != nil {
-		if !reflect.DeepEqual(desired.GetConfig().GetTaints(), a.actual.GetConfig().GetTaints()) {
-			taints := desired.GetConfig().GetTaints()
-			if taints == nil {
-				taints = []*pb.NodeTaint{}
-			}
-			updateReq.Taints = &pb.NodeTaints{
-				Taints: taints,
-			}
-			hasUpdates = true
+	if diffRes.Has("config.taints") {
+		updateReq.Taints = &pb.NodeTaints{
+			Taints: desired.GetConfig().GetTaints(),
 		}
-		if !reflect.DeepEqual(desired.GetConfig().GetTags(), a.actual.GetConfig().GetTags()) {
-			updateReq.Tags = &pb.NetworkTags{
-				Tags: desired.GetConfig().GetTags(),
-			}
-			hasUpdates = true
-		}
-		if !reflect.DeepEqual(desired.GetConfig().GetLabels(), a.actual.GetConfig().GetLabels()) {
-			updateReq.Labels = &pb.NodeLabels{
-				Labels: desired.GetConfig().GetLabels(),
-			}
-			hasUpdates = true
-		}
-		if desired.GetConfig().GetLinuxNodeConfig() != nil && !proto.Equal(desired.GetConfig().GetLinuxNodeConfig(), a.actual.GetConfig().GetLinuxNodeConfig()) {
-			updateReq.LinuxNodeConfig = desired.GetConfig().GetLinuxNodeConfig()
-			hasUpdates = true
-		}
-		if desired.GetConfig().GetKubeletConfig() != nil && !proto.Equal(desired.GetConfig().GetKubeletConfig(), a.actual.GetConfig().GetKubeletConfig()) {
-			updateReq.KubeletConfig = desired.GetConfig().GetKubeletConfig()
-			hasUpdates = true
-		}
-		if desired.GetConfig().GetResourceManagerTags() != nil && !proto.Equal(desired.GetConfig().GetResourceManagerTags(), a.actual.GetConfig().GetResourceManagerTags()) {
-			updateReq.ResourceManagerTags = desired.GetConfig().GetResourceManagerTags()
-			hasUpdates = true
-		}
-		if desired.GetConfig().GetContainerdConfig() != nil && !proto.Equal(desired.GetConfig().GetContainerdConfig(), a.actual.GetConfig().GetContainerdConfig()) {
-			updateReq.ContainerdConfig = desired.GetConfig().GetContainerdConfig()
-			hasUpdates = true
-		}
-		if desired.GetConfig().GetWorkloadMetadataConfig() != nil && !proto.Equal(desired.GetConfig().GetWorkloadMetadataConfig(), a.actual.GetConfig().GetWorkloadMetadataConfig()) {
-			updateReq.WorkloadMetadataConfig = desired.GetConfig().GetWorkloadMetadataConfig()
-			hasUpdates = true
-		}
-		if desired.GetConfig().GetLoggingConfig() != nil && !proto.Equal(desired.GetConfig().GetLoggingConfig(), a.actual.GetConfig().GetLoggingConfig()) {
-			updateReq.LoggingConfig = desired.GetConfig().GetLoggingConfig()
-			hasUpdates = true
-		}
-		if desired.GetConfig().GetResourceLabels() != nil && !reflect.DeepEqual(desired.GetConfig().GetResourceLabels(), a.actual.GetConfig().GetResourceLabels()) {
-			updateReq.ResourceLabels = &pb.ResourceLabels{
-				Labels: desired.GetConfig().GetResourceLabels(),
-			}
-			hasUpdates = true
-		}
-		if desired.GetConfig().GetWindowsNodeConfig() != nil && !proto.Equal(desired.GetConfig().GetWindowsNodeConfig(), a.actual.GetConfig().GetWindowsNodeConfig()) {
-			updateReq.WindowsNodeConfig = desired.GetConfig().GetWindowsNodeConfig()
-			hasUpdates = true
-		}
-		if desired.GetConfig().GetImageType() != "" && desired.GetConfig().GetImageType() != a.actual.GetConfig().GetImageType() {
-			updateReq.ImageType = desired.GetConfig().GetImageType()
-			hasUpdates = true
-		}
+		hasUpdates = true
 	}
-	if hasFieldChange(fieldMask.Paths, "upgrade_settings") {
+	if diffRes.Has("config.tags") {
+		updateReq.Tags = &pb.NetworkTags{
+			Tags: desired.GetConfig().GetTags(),
+		}
+		hasUpdates = true
+	}
+	if diffRes.Has("config.labels") {
+		updateReq.Labels = &pb.NodeLabels{
+			Labels: desired.GetConfig().GetLabels(),
+		}
+		hasUpdates = true
+	}
+	if diffRes.Has("config.linux_node_config") {
+		updateReq.LinuxNodeConfig = desired.GetConfig().GetLinuxNodeConfig()
+		hasUpdates = true
+	}
+	if diffRes.Has("config.kubelet_config") {
+		updateReq.KubeletConfig = desired.GetConfig().GetKubeletConfig()
+		hasUpdates = true
+	}
+	if diffRes.Has("config.resource_manager_tags") {
+		updateReq.ResourceManagerTags = desired.GetConfig().GetResourceManagerTags()
+		hasUpdates = true
+	}
+	if diffRes.Has("config.containerd_config") {
+		updateReq.ContainerdConfig = desired.GetConfig().GetContainerdConfig()
+		hasUpdates = true
+	}
+	if diffRes.Has("config.workload_metadata_config") {
+		updateReq.WorkloadMetadataConfig = desired.GetConfig().GetWorkloadMetadataConfig()
+		hasUpdates = true
+	}
+	if diffRes.Has("config.logging_config") {
+		updateReq.LoggingConfig = desired.GetConfig().GetLoggingConfig()
+		hasUpdates = true
+	}
+	if diffRes.Has("config.resource_labels") {
+		updateReq.ResourceLabels = &pb.ResourceLabels{
+			Labels: desired.GetConfig().GetResourceLabels(),
+		}
+		hasUpdates = true
+	}
+	if diffRes.Has("config.windows_node_config") {
+		updateReq.WindowsNodeConfig = desired.GetConfig().GetWindowsNodeConfig()
+		hasUpdates = true
+	}
+	if diffRes.Has("config.image_type") {
+		updateReq.ImageType = desired.GetConfig().GetImageType()
+		hasUpdates = true
+	}
+	if diffRes.Has("config.fast_socket") {
+		updateReq.FastSocket = desired.GetConfig().GetFastSocket()
+		hasUpdates = true
+	}
+	if diffRes.Has("config.gvnic") || diffRes.Has("config.virtual_nic") {
+		updateReq.Gvnic = desired.GetConfig().GetGvnic()
+		hasUpdates = true
+	}
+	if diffRes.Has("config.confidential_nodes") {
+		updateReq.ConfidentialNodes = desired.GetConfig().GetConfidentialNodes()
+		hasUpdates = true
+	}
+	if diffRes.Has("network_config") {
+		updateReq.NodeNetworkConfig = desired.GetNetworkConfig()
+		hasUpdates = true
+	}
+	if diffRes.Has("upgrade_settings") {
 		updateReq.UpgradeSettings = desired.GetUpgradeSettings()
 		hasUpdates = true
 	}
-	if hasFieldChange(fieldMask.Paths, "locations") {
+	if diffRes.Has("locations") {
 		updateReq.Locations = desired.GetLocations()
 		hasUpdates = true
 	}
-	if hasFieldChange(fieldMask.Paths, "version") {
+	if diffRes.Has("version") {
 		updateReq.NodeVersion = desired.GetVersion()
 		hasUpdates = true
 	}
-	if hasFieldChange(fieldMask.Paths, "queued_provisioning") {
+	if diffRes.Has("queued_provisioning") {
 		updateReq.QueuedProvisioning = desired.GetQueuedProvisioning()
 		hasUpdates = true
 	}
