@@ -31,4 +31,4 @@ spec:
       key1: "val2"
     state: "VALID"
     serviceAttachmentIPAddressMap:
-      projects/${projectId}/regions/us-central1/serviceAttachments/sa-mock-${uniqueId}: "10.0.0.20"
+      projects/test-project/regions/us-central1/serviceAttachments/test-sa: "10.0.0.20"
