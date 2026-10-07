@@ -279,6 +279,8 @@ func (s *NetworkServicesServer) parseLbEdgeExtensionName(name string) (*lbEdgeEx
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
 
+// normalizeLbEdgeExtension normalizes referenced URLs (such as forwarding rules and backend services)
+// by replacing project IDs with project numbers to match GCP API server-side behavior.
 func (s *NetworkServicesServer) normalizeLbEdgeExtension(ctx context.Context, obj *pb.LbEdgeExtension) error {
 	for i, rule := range obj.ForwardingRules {
 		newRule, err := s.replaceProjectIDWithNumberInURL(ctx, rule)
