@@ -37,8 +37,8 @@ X-Xss-Protection: 0
         {
           "action": {
             "sourceNatActiveIps": [
-              "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/addresses/computeaddress-3-${uniqueId}",
-              "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/addresses/computeaddress-2-${uniqueId}"
+              "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/addresses/computeaddress-2-${uniqueId}",
+              "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/addresses/computeaddress-3-${uniqueId}"
             ]
           },
           "description": "nat rule examples",
