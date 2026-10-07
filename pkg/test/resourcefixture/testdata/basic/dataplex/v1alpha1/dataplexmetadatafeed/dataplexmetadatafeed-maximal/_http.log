@@ -487,6 +487,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
   },
   "labels": {
     "cnrm-test": "true",
+    "label-a": "value-a",
     "managed-by-cnrm": "true"
   },
   "pubsubTopic": "projects/${projectId}/topics/eventarc-channel-us-central1-eventarcchannel-minimal-${uniqueId}-123",
@@ -566,6 +567,7 @@ X-Xss-Protection: 0
     },
     "labels": {
       "cnrm-test": "true",
+      "label-a": "value-a",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-central1/metadataFeeds/metadatafeed-maximal-${uniqueId}",
@@ -613,6 +615,7 @@ X-Xss-Protection: 0
   },
   "labels": {
     "cnrm-test": "true",
+    "label-a": "value-a",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/metadataFeeds/metadatafeed-maximal-${uniqueId}",
@@ -660,7 +663,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://dataplex.googleapis.com/v1/projects/${projectId}/locations/us-central1/metadataFeeds/metadatafeed-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=filters
+PATCH https://dataplex.googleapis.com/v1/projects/${projectId}/locations/us-central1/metadataFeeds/metadatafeed-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=filters%2Clabels
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: metadata_feed.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FmetadataFeeds%2Fmetadatafeed-maximal-${uniqueId}
@@ -681,6 +684,7 @@ X-Goog-Request-Params: metadata_feed.name=projects%2F${projectId}%2Flocations%2F
   },
   "labels": {
     "cnrm-test": "true",
+    "label-a": "value-b",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/metadataFeeds/metadatafeed-maximal-${uniqueId}",
@@ -762,6 +766,7 @@ X-Xss-Protection: 0
     },
     "labels": {
       "cnrm-test": "true",
+      "label-a": "value-b",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-central1/metadataFeeds/metadatafeed-maximal-${uniqueId}",
@@ -810,6 +815,7 @@ X-Xss-Protection: 0
   },
   "labels": {
     "cnrm-test": "true",
+    "label-a": "value-b",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/metadataFeeds/metadatafeed-maximal-${uniqueId}",

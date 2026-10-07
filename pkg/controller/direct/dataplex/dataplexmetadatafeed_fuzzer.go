@@ -35,6 +35,7 @@ func dataplexMetadataFeedFuzzer() fuzztesting.KRMFuzzer {
 
 	f.SpecField(".scope")
 	f.SpecField(".filters")
+	f.SpecField(".labels")
 	f.SpecField(".pubsub_topic")
 
 	f.StatusField(".uid")
@@ -42,7 +43,6 @@ func dataplexMetadataFeedFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".update_time")
 
 	f.Unimplemented_Identity(".name")
-	f.Unimplemented_LabelsAnnotations(".labels")
 
 	return f
 }

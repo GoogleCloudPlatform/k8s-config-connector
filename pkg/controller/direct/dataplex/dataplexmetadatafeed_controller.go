@@ -76,7 +76,14 @@ func (m *metadataFeedModel) AdapterForObject(ctx context.Context, op *directbase
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
+	labels := label.GCPLabels(u)
+	if labels == nil {
+		labels = make(map[string]string)
+	}
+	for k, v := range desired.Labels {
+		labels[k] = v
+	}
+	desired.Labels = labels
 
 	idI, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
