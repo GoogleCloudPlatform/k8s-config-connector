@@ -70,12 +70,7 @@ func (s *transportsServer) CreateProjectsLocationsTransport(ctx context.Context,
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
-	if obj.StackType == "" {
-		obj.StackType = "IPV4_ONLY"
-	}
-	obj.State = "PENDING_KEY"
-	obj.GeneratedActivationKey = "dummy-activation-key"
-	obj.PeeringNetwork = fmt.Sprintf("projects/%s/global/networks/transport-%s-vpc", name.Project.ID, name.TransportID)
+	s.populateDefaultsForTransport(name, obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -98,6 +93,21 @@ func (s *transportsServer) CreateProjectsLocationsTransport(ctx context.Context,
 
 		return obj, nil
 	})
+}
+
+func (s *transportsServer) populateDefaultsForTransport(name *transportName, obj *pb.Transport) {
+	if obj.StackType == "" {
+		obj.StackType = "IPV4_ONLY"
+	}
+	if obj.State == "" {
+		obj.State = "PENDING_KEY"
+	}
+	if obj.GeneratedActivationKey == "" {
+		obj.GeneratedActivationKey = "dummy-activation-key"
+	}
+	if obj.PeeringNetwork == "" {
+		obj.PeeringNetwork = fmt.Sprintf("projects/%s/global/networks/transport-%s-vpc", name.Project.ID, name.TransportID)
+	}
 }
 
 func (s *transportsServer) DeleteProjectsLocationsTransport(ctx context.Context, req *pb.DeleteProjectsLocationsTransportRequest) (*longrunning.Operation, error) {
