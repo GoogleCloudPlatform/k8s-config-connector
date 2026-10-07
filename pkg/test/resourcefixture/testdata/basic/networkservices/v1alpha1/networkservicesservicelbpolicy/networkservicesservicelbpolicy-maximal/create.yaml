@@ -1,0 +1,16 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1alpha1
+kind: NetworkServicesServiceLBPolicy
+metadata:
+  name: servicelbpolicy-maximal-${uniqueId}
+  labels:
+    test-label: initial-value
+spec:
+  projectRef:
+    external: ${projectId}
+  location: global
+  description: Initial description for ServiceLBPolicy
+  loadBalancingAlgorithm: SPRAY_TO_REGION
+  autoCapacityDrain:
+    enable: true
+  failoverConfig:
+    failoverHealthThreshold: 70
