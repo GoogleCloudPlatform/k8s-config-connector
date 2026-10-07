@@ -108,9 +108,37 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.ServiceConnectionMap",
+    "consumerPscConfigs": [
+      {
+        "consumerInstanceProject": "projects/${projectId}",
+        "ipVersion": "IPV4",
+        "network": "projects/${projectId}/global/networks/network-mock-${uniqueId}",
+        "producerInstanceMetadata": {
+          "key1": "val1"
+        },
+        "project": "projects/${projectId}",
+        "serviceAttachmentIpAddressMap": {
+          "projects/${projectId}/regions/us-central1/serviceAttachments/sa-mock-${uniqueId}": "10.0.0.10"
+        },
+        "state": "VALID"
+      }
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "A maximal test ServiceConnectionMap",
     "etag": "abcdef0123A=",
+    "infrastructure": "PSC",
     "name": "projects/${projectId}/locations/us-central1/serviceConnectionMaps/scm-maximal-${uniqueId}",
+    "producerPscConfigs": [
+      {
+        "automatedDnsCreationSpec": {
+          "dnsSuffix": "example.com.",
+          "hostname": "myhost",
+          "ttl": "300s"
+        },
+        "serviceAttachmentUri": "projects/${projectId}/regions/us-central1/serviceAttachments/sa-mock-${uniqueId}"
+      }
+    ],
+    "token": "test-token-${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -260,9 +288,38 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.ServiceConnectionMap",
+    "consumerPscConfigs": [
+      {
+        "consumerInstanceProject": "projects/${projectId}",
+        "disableGlobalAccess": true,
+        "ipVersion": "IPV4",
+        "network": "projects/${projectId}/global/networks/network-mock-${uniqueId}",
+        "producerInstanceMetadata": {
+          "key1": "val2"
+        },
+        "project": "projects/${projectId}",
+        "serviceAttachmentIpAddressMap": {
+          "projects/${projectId}/regions/us-central1/serviceAttachments/sa-mock-${uniqueId}": "10.0.0.20"
+        },
+        "state": "VALID"
+      }
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "An updated maximal test ServiceConnectionMap",
     "etag": "abcdef0123A=",
+    "infrastructure": "PSC",
     "name": "projects/${projectId}/locations/us-central1/serviceConnectionMaps/scm-maximal-${uniqueId}",
+    "producerPscConfigs": [
+      {
+        "automatedDnsCreationSpec": {
+          "dnsSuffix": "example.com.",
+          "hostname": "myhost",
+          "ttl": "600s"
+        },
+        "serviceAttachmentUri": "projects/${projectId}/regions/us-central1/serviceAttachments/sa-mock-${uniqueId}"
+      }
+    ],
+    "token": "test-token-${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
