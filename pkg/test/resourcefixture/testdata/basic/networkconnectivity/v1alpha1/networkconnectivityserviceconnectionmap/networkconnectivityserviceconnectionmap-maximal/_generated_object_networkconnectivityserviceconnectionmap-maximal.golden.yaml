@@ -22,7 +22,7 @@ spec:
     projectRef:
       external: projects/${projectId}
     serviceAttachmentIPAddressMap:
-      projects/${projectId}/regions/us-central1/serviceAttachments/sa-mock-${uniqueId}: 10.0.0.20
+      projects/test-project/regions/us-central1/serviceAttachments/test-sa: 10.0.0.20
     state: VALID
   description: An updated maximal test ServiceConnectionMap
   labels:
