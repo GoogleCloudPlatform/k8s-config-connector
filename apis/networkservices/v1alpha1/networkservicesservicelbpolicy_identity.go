@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
@@ -64,7 +65,7 @@ func (i *NetworkServicesServiceLBPolicyIdentity) ParentString() string {
 	return "projects/" + i.Project + "/locations/" + i.Location
 }
 
-func getIdentityFromNetworkServicesServiceLBPolicySpec(ctx context.Context, reader client.Reader, obj client.Object) (*NetworkServicesServiceLBPolicyIdentity, error) {
+func getIdentityFromNetworkServicesServiceLBPolicySpec(ctx context.Context, reader client.Reader, obj *NetworkServicesServiceLBPolicy) (*NetworkServicesServiceLBPolicyIdentity, error) {
 	resourceID, err := refsv1beta1.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
@@ -94,9 +95,10 @@ func (obj *NetworkServicesServiceLBPolicy) GetIdentity(ctx context.Context, read
 		return nil, err
 	}
 
-	if obj.Status.ExternalRef != nil && *obj.Status.ExternalRef != "" {
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
 		statusIdentity := &NetworkServicesServiceLBPolicyIdentity{}
-		if err := statusIdentity.FromExternal(*obj.Status.ExternalRef); err != nil {
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
 
