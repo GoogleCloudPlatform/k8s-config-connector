@@ -1,0 +1,508 @@
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FpreferenceSets%2Fmigrationcenterpreferenceset-maximal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Resource \"projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}\" was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Resource \"projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}\" was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/preferenceSets?%24alt=json%3Benum-encoding%3Dint&preferenceSetId=migrationcenterpreferenceset-maximal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "description": "Initial maximal preference set description",
+  "displayName": "Initial Maximal Preference Set",
+  "virtualMachinePreferences": {
+    "commitmentPlan": 3,
+    "computeEnginePreferences": {
+      "licenseType": 1,
+      "machinePreferences": {
+        "allowedMachineSeries": [
+          {
+            "code": "n1"
+          },
+          {
+            "code": "n2"
+          }
+        ]
+      }
+    },
+    "regionPreferences": {
+      "preferredRegions": [
+        "us-central1"
+      ]
+    },
+    "sizingOptimizationStrategy": 2,
+    "soleTenancyPreferences": {
+      "commitmentPlan": 2,
+      "cpuOvercommitRatio": 1.2,
+      "hostMaintenancePolicy": 1,
+      "nodeTypes": [
+        {
+          "nodeName": "c2-node-60-240"
+        }
+      ]
+    },
+    "targetProduct": 1,
+    "vmwareEnginePreferences": {
+      "commitmentPlan": 2,
+      "cpuOvercommitRatio": 1.5,
+      "memoryOvercommitRatio": 1.25,
+      "storageDeduplicationCompressionRatio": 1.5
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.PreferenceSet",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Initial maximal preference set description",
+    "displayName": "Initial Maximal Preference Set",
+    "name": "projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "virtualMachinePreferences": {
+      "commitmentPlan": "COMMITMENT_PLAN_THREE_YEARS",
+      "computeEnginePreferences": {
+        "licenseType": "LICENSE_TYPE_DEFAULT",
+        "machinePreferences": {
+          "allowedMachineSeries": [
+            {
+              "code": "n1"
+            },
+            {
+              "code": "n2"
+            }
+          ]
+        }
+      },
+      "regionPreferences": {
+        "preferredRegions": [
+          "us-central1"
+        ]
+      },
+      "sizingOptimizationStrategy": "SIZING_OPTIMIZATION_STRATEGY_MODERATE",
+      "soleTenancyPreferences": {
+        "commitmentPlan": "COMMITMENT_1_YEAR",
+        "cpuOvercommitRatio": 1.2,
+        "hostMaintenancePolicy": "HOST_MAINTENANCE_POLICY_DEFAULT",
+        "nodeTypes": [
+          {
+            "nodeName": "c2-node-60-240"
+          }
+        ]
+      },
+      "targetProduct": "COMPUTE_MIGRATION_TARGET_PRODUCT_COMPUTE_ENGINE",
+      "vmwareEnginePreferences": {
+        "commitmentPlan": "COMMITMENT_1_YEAR_MONTHLY_PAYMENTS",
+        "cpuOvercommitRatio": 1.5,
+        "memoryOvercommitRatio": 1.25,
+        "storageDeduplicationCompressionRatio": 1.5
+      }
+    }
+  }
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FpreferenceSets%2Fmigrationcenterpreferenceset-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Initial maximal preference set description",
+  "displayName": "Initial Maximal Preference Set",
+  "name": "projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "virtualMachinePreferences": {
+    "commitmentPlan": 3,
+    "computeEnginePreferences": {
+      "licenseType": 1,
+      "machinePreferences": {
+        "allowedMachineSeries": [
+          {
+            "code": "n1"
+          },
+          {
+            "code": "n2"
+          }
+        ]
+      }
+    },
+    "regionPreferences": {
+      "preferredRegions": [
+        "us-central1"
+      ]
+    },
+    "sizingOptimizationStrategy": 2,
+    "soleTenancyPreferences": {
+      "commitmentPlan": 2,
+      "cpuOvercommitRatio": 1.2,
+      "hostMaintenancePolicy": 1,
+      "nodeTypes": [
+        {
+          "nodeName": "c2-node-60-240"
+        }
+      ]
+    },
+    "targetProduct": 1,
+    "vmwareEnginePreferences": {
+      "commitmentPlan": 2,
+      "cpuOvercommitRatio": 1.5,
+      "memoryOvercommitRatio": 1.25,
+      "storageDeduplicationCompressionRatio": 1.5
+    }
+  }
+}
+
+---
+
+PATCH https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName%2CvirtualMachinePreferences
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: preference_set.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FpreferenceSets%2Fmigrationcenterpreferenceset-maximal-${uniqueId}
+
+{
+  "description": "Updated maximal preference set description",
+  "displayName": "Updated Maximal Preference Set",
+  "name": "projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}",
+  "virtualMachinePreferences": {
+    "commitmentPlan": 2,
+    "computeEnginePreferences": {
+      "licenseType": 2,
+      "machinePreferences": {
+        "allowedMachineSeries": [
+          {
+            "code": "c2"
+          }
+        ]
+      }
+    },
+    "regionPreferences": {
+      "preferredRegions": [
+        "us-west1"
+      ]
+    },
+    "sizingOptimizationStrategy": 3,
+    "soleTenancyPreferences": {
+      "commitmentPlan": 3,
+      "cpuOvercommitRatio": 1.5,
+      "hostMaintenancePolicy": 2,
+      "nodeTypes": [
+        {
+          "nodeName": "n1-node-96-624"
+        }
+      ]
+    },
+    "targetProduct": 2,
+    "vmwareEnginePreferences": {
+      "commitmentPlan": 3,
+      "cpuOvercommitRatio": 2,
+      "memoryOvercommitRatio": 1.5,
+      "storageDeduplicationCompressionRatio": 2
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.PreferenceSet",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Updated maximal preference set description",
+    "displayName": "Updated Maximal Preference Set",
+    "name": "projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "virtualMachinePreferences": {
+      "commitmentPlan": "COMMITMENT_PLAN_ONE_YEAR",
+      "computeEnginePreferences": {
+        "licenseType": "LICENSE_TYPE_BRING_YOUR_OWN_LICENSE",
+        "machinePreferences": {
+          "allowedMachineSeries": [
+            {
+              "code": "c2"
+            }
+          ]
+        }
+      },
+      "regionPreferences": {
+        "preferredRegions": [
+          "us-west1"
+        ]
+      },
+      "sizingOptimizationStrategy": "SIZING_OPTIMIZATION_STRATEGY_AGGRESSIVE",
+      "soleTenancyPreferences": {
+        "commitmentPlan": "COMMITMENT_3_YEAR",
+        "cpuOvercommitRatio": 1.5,
+        "hostMaintenancePolicy": "HOST_MAINTENANCE_POLICY_RESTART_IN_PLACE",
+        "nodeTypes": [
+          {
+            "nodeName": "n1-node-96-624"
+          }
+        ]
+      },
+      "targetProduct": "COMPUTE_MIGRATION_TARGET_PRODUCT_VMWARE_ENGINE",
+      "vmwareEnginePreferences": {
+        "commitmentPlan": "COMMITMENT_3_YEAR_MONTHLY_PAYMENTS",
+        "cpuOvercommitRatio": 2,
+        "memoryOvercommitRatio": 1.5,
+        "storageDeduplicationCompressionRatio": 2
+      }
+    }
+  }
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FpreferenceSets%2Fmigrationcenterpreferenceset-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated maximal preference set description",
+  "displayName": "Updated Maximal Preference Set",
+  "name": "projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "virtualMachinePreferences": {
+    "commitmentPlan": 2,
+    "computeEnginePreferences": {
+      "licenseType": 2,
+      "machinePreferences": {
+        "allowedMachineSeries": [
+          {
+            "code": "c2"
+          }
+        ]
+      }
+    },
+    "regionPreferences": {
+      "preferredRegions": [
+        "us-west1"
+      ]
+    },
+    "sizingOptimizationStrategy": 3,
+    "soleTenancyPreferences": {
+      "commitmentPlan": 3,
+      "cpuOvercommitRatio": 1.5,
+      "hostMaintenancePolicy": 2,
+      "nodeTypes": [
+        {
+          "nodeName": "n1-node-96-624"
+        }
+      ]
+    },
+    "targetProduct": 2,
+    "vmwareEnginePreferences": {
+      "commitmentPlan": 3,
+      "cpuOvercommitRatio": 2,
+      "memoryOvercommitRatio": 1.5,
+      "storageDeduplicationCompressionRatio": 2
+    }
+  }
+}
+
+---
+
+DELETE https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FpreferenceSets%2Fmigrationcenterpreferenceset-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://migrationcenter.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.migrationcenter.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
