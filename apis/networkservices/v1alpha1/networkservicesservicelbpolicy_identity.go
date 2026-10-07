@@ -64,7 +64,7 @@ func (i *NetworkServicesServiceLBPolicyIdentity) ParentString() string {
 	return "projects/" + i.Project + "/locations/" + i.Location
 }
 
-func NewNetworkServicesServiceLBPolicyIdentity(ctx context.Context, reader client.Reader, obj *NetworkServicesServiceLBPolicy) (*NetworkServicesServiceLBPolicyIdentity, error) {
+func getIdentityFromNetworkServicesServiceLBPolicySpec(ctx context.Context, reader client.Reader, obj client.Object) (*NetworkServicesServiceLBPolicyIdentity, error) {
 	resourceID, err := refsv1beta1.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
@@ -89,7 +89,7 @@ func NewNetworkServicesServiceLBPolicyIdentity(ctx context.Context, reader clien
 }
 
 func (obj *NetworkServicesServiceLBPolicy) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	specIdentity, err := NewNetworkServicesServiceLBPolicyIdentity(ctx, reader, obj)
+	specIdentity, err := getIdentityFromNetworkServicesServiceLBPolicySpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -106,4 +106,20 @@ func (obj *NetworkServicesServiceLBPolicy) GetIdentity(ctx context.Context, read
 	}
 
 	return specIdentity, nil
+}
+
+// NewNetworkServicesServiceLBPolicyIdentity is a helper used by the direct controller.
+func NewNetworkServicesServiceLBPolicyIdentity(ctx context.Context, reader client.Reader, obj *NetworkServicesServiceLBPolicy) (*NetworkServicesServiceLBPolicyIdentity, error) {
+	identity, err := obj.GetIdentity(ctx, reader)
+	if err != nil {
+		return nil, err
+	}
+	return identity.(*NetworkServicesServiceLBPolicyIdentity), nil
+}
+
+func (obj *NetworkServicesServiceLBPolicy) ExternalIdentifier() *string {
+	if obj.Status.ExternalRef != nil {
+		return obj.Status.ExternalRef
+	}
+	return nil
 }
