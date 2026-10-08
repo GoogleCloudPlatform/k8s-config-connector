@@ -125,15 +125,13 @@ func oracleDatabaseAutonomousDatabaseFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".properties.maintenance_end_time")
 	f.StatusField(".properties.encryption_key_history_entries")
 	f.StatusField(".properties.service_agent_email")
-
-	// Unimplemented / near-miss fields in generated mappers
-	f.Unimplemented_NotYetTriaged(".properties.allowlisted_ips")
-	f.Unimplemented_NotYetTriaged(".properties.are_primary_allowlisted_ips_used")
-	f.Unimplemented_NotYetTriaged(".properties.connection_urls")
-	f.Unimplemented_NotYetTriaged(".properties.memory_table_gbs")
-	f.Unimplemented_NotYetTriaged(".properties.memory_per_oracle_compute_unit_gbs")
-	f.Unimplemented_NotYetTriaged(".properties.peer_db_ids")
-	f.Unimplemented_NotYetTriaged(".properties.total_auto_backup_storage_size_gbs")
+	f.SpecField(".properties.allowlisted_ips")
+	f.StatusField(".properties.are_primary_allowlisted_ips_used")
+	f.StatusField(".properties.connection_urls")
+	f.StatusField(".properties.memory_table_gbs")
+	f.StatusField(".properties.memory_per_oracle_compute_unit_gbs")
+	f.StatusField(".properties.peer_db_ids")
+	f.StatusField(".properties.total_auto_backup_storage_size_gbs")
 
 	// Subfields of .source_config - Spec
 	f.SpecField(".source_config.automatic_backups_replication_enabled")

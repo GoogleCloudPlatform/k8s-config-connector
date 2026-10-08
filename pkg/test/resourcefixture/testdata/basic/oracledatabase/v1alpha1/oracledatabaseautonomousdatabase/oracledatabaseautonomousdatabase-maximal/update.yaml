@@ -35,7 +35,7 @@ spec:
   properties:
     dbWorkload: OLTP
     licenseType: LICENSE_INCLUDED
-    computeCount: 2
+    computeCount: 4
     dataStorageSizeTb: 1
     dbVersion: "19c"
     characterSet: "AL32UTF8"
@@ -44,7 +44,7 @@ spec:
     isStorageAutoScalingEnabled: false
     maintenanceScheduleType: "REGULAR"
     mtlsConnectionRequired: false
-    backupRetentionPeriodDays: 7
+    backupRetentionPeriodDays: 14
     allowlistedIPs:
       - 10.0.0.0/16
     customerContacts:

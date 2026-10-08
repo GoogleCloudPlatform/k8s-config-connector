@@ -17,6 +17,7 @@ package oracledatabase
 import (
 	"context"
 	"fmt"
+	"slices"
 
 	oracledatabase "cloud.google.com/go/oracledatabase/apiv1"
 	pb "cloud.google.com/go/oracledatabase/apiv1/oracledatabasepb"
@@ -35,6 +36,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
@@ -88,14 +90,6 @@ func (m *modelAutonomousDatabase) AdapterForObject(ctx context.Context, op *dire
 	desired := OracleDatabaseAutonomousDatabaseSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
-	}
-
-	// Map near-miss fields if specified
-	if obj.Spec.Properties != nil && len(obj.Spec.Properties.AllowlistedIPs) > 0 {
-		if desired.Properties == nil {
-			desired.Properties = &pb.AutonomousDatabaseProperties{}
-		}
-		desired.Properties.AllowlistedIps = obj.Spec.Properties.AllowlistedIPs
 	}
 
 	gcpClient, err := m.client(ctx)
@@ -297,20 +291,29 @@ func (a *autonomousDatabaseAdapter) compareAutonomousDatabase(ctx context.Contex
 	if desired.AdminPassword != "" && maskedActual.AdminPassword == "" {
 		maskedActual.AdminPassword = desired.AdminPassword
 	}
-	if actual.GetProperties() != nil && len(actual.GetProperties().GetAllowlistedIps()) > 0 {
-		if maskedActual.Properties == nil {
-			maskedActual.Properties = &pb.AutonomousDatabaseProperties{}
-		}
-		maskedActual.Properties.AllowlistedIps = actual.GetProperties().GetAllowlistedIps()
-	}
 
 	clonedDesired := proto.Clone(desired).(*pb.AutonomousDatabase)
 
-	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+	diffPaths, err := common.CompareProtoMessage(clonedDesired, maskedActual, common.BasicDiff)
 	if err != nil {
 		return nil, nil, err
 	}
-	return diffs, updateMask, nil
+
+	// Filter out non-updatable identifier fields if present in diff
+	diffPaths.Delete("name")
+
+	diff := &structuredreporting.Diff{
+		Controller: k8s.ReconcilerTypeDirect,
+	}
+	for path := range diffPaths {
+		diff.AddField(path, nil, nil)
+	}
+
+	paths := diffPaths.UnsortedList()
+	slices.Sort(paths)
+	updateMask := &fieldmaskpb.FieldMask{Paths: paths}
+
+	return diff, updateMask, nil
 }
 
 func (a *autonomousDatabaseAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.AutonomousDatabase) error {
@@ -319,25 +322,6 @@ func (a *autonomousDatabaseAdapter) updateStatus(ctx context.Context, op directb
 	status.ObservedState = OracleDatabaseAutonomousDatabaseObservedState_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
-	}
-
-	if latest.GetProperties() != nil {
-		if status.ObservedState == nil {
-			status.ObservedState = &krm.OracleDatabaseAutonomousDatabaseObservedState{}
-		}
-		if status.ObservedState.Properties == nil {
-			status.ObservedState.Properties = &krm.AutonomousDatabasePropertiesObservedState{}
-		}
-		if latest.GetProperties().ArePrimaryAllowlistedIpsUsed != nil {
-			status.ObservedState.Properties.ArePrimaryAllowlistedIPsUsed = direct.LazyPtr(latest.GetProperties().GetArePrimaryAllowlistedIpsUsed())
-		}
-		status.ObservedState.Properties.MemoryTableGBs = direct.LazyPtr(latest.GetProperties().GetMemoryTableGbs())
-		status.ObservedState.Properties.MemoryPerOracleComputeUnitGBs = direct.LazyPtr(latest.GetProperties().GetMemoryPerOracleComputeUnitGbs())
-		status.ObservedState.Properties.PeerDbIDs = latest.GetProperties().GetPeerDbIds()
-		status.ObservedState.Properties.TotalAutoBackupStorageSizeGBs = direct.LazyPtr(latest.GetProperties().GetTotalAutoBackupStorageSizeGbs())
-		if latest.GetProperties().GetConnectionUrls() != nil {
-			status.ObservedState.Properties.ConnectionURLs = AutonomousDatabaseConnectionURLsObservedState_FromProto(mapCtx, latest.GetProperties().GetConnectionUrls())
-		}
 	}
 
 	status.ExternalRef = direct.LazyPtr(a.id.String())

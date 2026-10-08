@@ -27,9 +27,9 @@ spec:
   properties:
     allowlistedIPs:
     - 10.0.0.0/16
-    backupRetentionPeriodDays: 7
+    backupRetentionPeriodDays: 14
     characterSet: AL32UTF8
-    computeCount: 2
+    computeCount: 4
     customerContacts:
     - email: oracle-db-admin@example.com
     dataStorageSizeTb: 1
