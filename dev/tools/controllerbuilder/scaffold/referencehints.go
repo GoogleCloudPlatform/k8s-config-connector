@@ -29,7 +29,7 @@ import (
 // URI templates, loose descriptions) and proposes potential references for review.
 func ReferenceHints(msg protoreflect.MessageDescriptor, opts codegen.WriteOptions) []JudgementItem {
 	var out []JudgementItem
-	walkSpecFields(msg, ".spec", opts, true, map[protoreflect.FullName]bool{}, func(path, desc string) {
+	walkSpecFields(msg, ".spec", opts, true, map[protoreflect.FullName]bool{}, func(path, desc string, _ protoreflect.FieldDescriptor) {
 		if item, ok := referenceHint(path, desc); ok {
 			out = append(out, item)
 		}
@@ -50,7 +50,7 @@ func ReferenceHints(msg protoreflect.MessageDescriptor, opts codegen.WriteOption
 // onPath holds the messages between msg and the root. Proto messages can
 // contain themselves, and the generated struct breaks the cycle with a
 // pointer, so a message already on the path is not entered again.
-func walkSpecFields(msg protoreflect.MessageDescriptor, prefix string, opts codegen.WriteOptions, top bool, onPath map[protoreflect.FullName]bool, visit func(path, desc string)) {
+func walkSpecFields(msg protoreflect.MessageDescriptor, prefix string, opts codegen.WriteOptions, top bool, onPath map[protoreflect.FullName]bool, visit func(path, desc string, field protoreflect.FieldDescriptor)) {
 	if onPath[msg.FullName()] {
 		return
 	}
@@ -86,7 +86,7 @@ func walkSpecFields(msg protoreflect.MessageDescriptor, prefix string, opts code
 		}
 
 		path := prefix + "." + codegen.GetJSONForKRM(field, opts)
-		visit(path, fieldComment(field))
+		visit(path, fieldComment(field), field)
 
 		switch {
 		case field.IsMap():

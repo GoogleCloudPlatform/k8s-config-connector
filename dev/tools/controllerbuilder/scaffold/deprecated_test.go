@@ -80,6 +80,37 @@ func TestPrepopulateSpecLeavesOutDeprecatedFields(t *testing.T) {
 	}
 }
 
+// TestNestedDeprecatedFields pins the paths of the nested entries. The Spec
+// holds Config directly and in a list, so each deprecated field of Config is
+// reported under both paths. legacy_config is also a Config, but it is
+// deprecated at the top level and so not in the Spec. Nothing under it is
+// reported.
+func TestNestedDeprecatedFields(t *testing.T) {
+	// Arrange
+	msg := deprecatedMessage(t)
+
+	// Act
+	items := NestedDeprecatedFields(msg, codegen.WriteOptions{})
+
+	// Assert
+	var got []string
+	for _, it := range items {
+		got = append(got, it.FieldPath+" "+it.Reason)
+		if !strings.Contains(it.Detail, "shared with other Kinds") {
+			t.Errorf("%s: detail %q does not say why the field is kept", it.FieldPath, it.Detail)
+		}
+	}
+	want := []string{
+		".spec.config.topK deprecated-field",
+		".spec.config.legacyTarget deprecated-field",
+		".spec.peers[].topK deprecated-field",
+		".spec.peers[].legacyTarget deprecated-field",
+	}
+	if !slices.Equal(got, want) {
+		t.Errorf("NestedDeprecatedFields() =\n%q\nwant\n%q", got, want)
+	}
+}
+
 // A deprecated top-level field is not in the Spec, so the reference hints skip
 // it and everything under it. Otherwise network would get a name hint and
 // legacyConfig.target a description hint. A nested deprecated field stays in
