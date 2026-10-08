@@ -245,7 +245,6 @@ BLOCKED_KINDS=(
     "VMMigrationGroup"
     "VMwareEnginePrivateConnection"
     "WebSecurityScannerScanConfig"
-    "WorkloadManagerEvaluation"
 )
 
 declare -A BLOCKED_MAP

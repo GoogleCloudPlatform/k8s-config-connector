@@ -7,13 +7,13 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-  name: workloadmanagerevaluation-maximal-${uniqueId}
+  name: evaluation-maximal-${uniqueId}
   namespace: ${uniqueId}
 spec:
   description: Updated Maximal WorkloadManager Evaluation
   evaluationType: SQL_SERVER
   labels:
-    env: test-env-updated
+    env: test-env
   location: us-central1
   projectRef:
     external: projects/${projectId}
@@ -33,7 +33,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-central1/evaluations/workloadmanagerevaluation-maximal-${uniqueId}
+  externalRef: projects/${projectId}/locations/us-central1/evaluations/evaluation-maximal-${uniqueId}
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
