@@ -3279,8 +3279,6 @@
 [missing_field] crd=networkserviceslbtrafficextensions.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.extensionChains[].extensions[].wasmPluginRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=networkservicesservicebindings.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=networkservicesservicebindings.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=networkservicesservicelbpolicies.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.isolationConfig.isolationGranularity" is not set in unstructured objects
-[missing_field] crd=networkservicesservicelbpolicies.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.isolationConfig.isolationMode" is not set in unstructured objects
 [missing_field] crd=networkservicesservicelbpolicies.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=networkserviceswasmplugins.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.logConfig.enable" is not set in unstructured objects
 [missing_field] crd=networkserviceswasmplugins.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.logConfig.minLogLevel" is not set in unstructured objects

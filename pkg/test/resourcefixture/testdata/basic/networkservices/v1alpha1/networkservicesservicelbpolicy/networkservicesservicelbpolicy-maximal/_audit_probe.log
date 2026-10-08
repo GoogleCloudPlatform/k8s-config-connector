@@ -11,6 +11,10 @@ X-Gfe-Server: ESF
   "failoverConfig": {
     "failoverHealthThreshold": 80
   },
+  "isolationConfig": {
+    "isolationGranularity": 1,
+    "isolationMode": 2
+  },
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true",

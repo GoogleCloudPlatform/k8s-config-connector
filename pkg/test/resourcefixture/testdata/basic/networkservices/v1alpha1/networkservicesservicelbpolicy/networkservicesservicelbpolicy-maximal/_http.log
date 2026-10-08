@@ -36,6 +36,10 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
   "failoverConfig": {
     "failoverHealthThreshold": 70
   },
+  "isolationConfig": {
+    "isolationGranularity": 1,
+    "isolationMode": 1
+  },
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true",
@@ -104,6 +108,10 @@ X-Xss-Protection: 0
     "failoverConfig": {
       "failoverHealthThreshold": 70
     },
+    "isolationConfig": {
+      "isolationGranularity": "REGION",
+      "isolationMode": "NEAREST"
+    },
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true",
@@ -141,6 +149,10 @@ X-Xss-Protection: 0
   "failoverConfig": {
     "failoverHealthThreshold": 70
   },
+  "isolationConfig": {
+    "isolationGranularity": 1,
+    "isolationMode": 1
+  },
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true",
@@ -153,7 +165,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/serviceLbPolicies/servicelbpolicy-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=autoCapacityDrain%2Cdescription%2CfailoverConfig%2Clabels%2CloadBalancingAlgorithm
+PATCH https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/serviceLbPolicies/servicelbpolicy-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=autoCapacityDrain%2Cdescription%2CfailoverConfig%2CisolationConfig%2Clabels%2CloadBalancingAlgorithm
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: service_lb_policy.name=projects%2F${projectId}%2Flocations%2Fglobal%2FserviceLbPolicies%2Fservicelbpolicy-maximal-${uniqueId}
@@ -163,6 +175,10 @@ X-Goog-Request-Params: service_lb_policy.name=projects%2F${projectId}%2Flocation
   "description": "Updated description for ServiceLBPolicy",
   "failoverConfig": {
     "failoverHealthThreshold": 80
+  },
+  "isolationConfig": {
+    "isolationGranularity": 1,
+    "isolationMode": 2
   },
   "labels": {
     "cnrm-test": "true",
@@ -230,6 +246,10 @@ X-Xss-Protection: 0
     "failoverConfig": {
       "failoverHealthThreshold": 80
     },
+    "isolationConfig": {
+      "isolationGranularity": "REGION",
+      "isolationMode": "STRICT"
+    },
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true",
@@ -264,6 +284,10 @@ X-Xss-Protection: 0
   "description": "Updated description for ServiceLBPolicy",
   "failoverConfig": {
     "failoverHealthThreshold": 80
+  },
+  "isolationConfig": {
+    "isolationGranularity": 1,
+    "isolationMode": 2
   },
   "labels": {
     "cnrm-test": "true",

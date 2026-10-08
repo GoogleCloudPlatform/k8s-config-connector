@@ -16,6 +16,9 @@ spec:
   description: Updated description for ServiceLBPolicy
   failoverConfig:
     failoverHealthThreshold: 80
+  isolationConfig:
+    isolationGranularity: REGION
+    isolationMode: STRICT
   loadBalancingAlgorithm: WATERFALL_BY_ZONE
   location: global
   projectRef:

@@ -214,10 +214,10 @@ func (a *NetworkServicesServiceLBPolicyAdapter) Export(ctx context.Context) (*un
 		return nil, err
 	}
 
+	u.Object = uObj
 	u.SetName(a.id.ServiceLbPolicy)
 	u.SetGroupVersionKind(krm.NetworkServicesServiceLBPolicyGVK)
 
-	u.Object = uObj
 	return u, nil
 }
 

@@ -14,3 +14,6 @@ spec:
     enable: false
   failoverConfig:
     failoverHealthThreshold: 80
+  isolationConfig:
+    isolationGranularity: REGION
+    isolationMode: STRICT
