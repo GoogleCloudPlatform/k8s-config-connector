@@ -38,7 +38,6 @@ func oracleDatabaseAutonomousDatabaseFuzzer() fuzztesting.KRMFuzzer {
 	// Spec fields
 	f.SpecField(".database")
 	f.SpecField(".display_name")
-	f.SpecField(".properties")
 	f.SpecField(".labels")
 	f.SpecField(".network")
 	f.SpecField(".cidr")
@@ -48,7 +47,6 @@ func oracleDatabaseAutonomousDatabaseFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".admin_password_secret_version")
 
 	// Status fields
-	f.StatusField(".properties")
 	f.StatusField(".create_time")
 	f.StatusField(".entitlement_id")
 	f.StatusField(".gcp_oracle_zone")
@@ -57,6 +55,7 @@ func oracleDatabaseAutonomousDatabaseFuzzer() fuzztesting.KRMFuzzer {
 
 	// Unimplemented / write-only fields
 	f.Unimplemented_NotYetTriaged(".admin_password")
+	f.Unimplemented_NotYetTriaged(".properties.encryption_key.kms_key")
 
 	// Subfields of .properties - Spec
 	f.SpecField(".properties.compute_count")
@@ -81,7 +80,6 @@ func oracleDatabaseAutonomousDatabaseFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".properties.mtls_connection_required")
 	f.SpecField(".properties.backup_retention_period_days")
 	f.SpecField(".properties.encryption_key")
-	f.SpecField(".properties.encryption_key.kms_key")
 	f.SpecField(".properties.encryption_key.provider")
 	f.SpecField(".properties.local_data_guard_enabled")
 	f.SpecField(".properties.local_adg_auto_failover_max_data_loss_limit_duration")
