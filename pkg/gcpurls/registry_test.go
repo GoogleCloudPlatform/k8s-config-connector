@@ -229,6 +229,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Grafeas Note
 		"//containeranalysis.googleapis.com/projects/{}/notes/{}": true,
 
+		// Firebase Hosting
+		"//firebasehosting.googleapis.com/projects/{}/sites/{}": true,
+
 		// Firestore
 		"//firestore.googleapis.com/projects/{}/databases/{}/backupSchedules/{}":             true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":            true,
