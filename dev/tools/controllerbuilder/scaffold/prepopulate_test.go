@@ -579,6 +579,48 @@ func TestDetectOutputOnlySkipsServerSetFields(t *testing.T) {
 	}
 }
 
+// TestSpecFieldsMatchesPrepopulateSpec checks that SpecFields lists the fields
+// PrepopulateSpec writes, in the same order. generate-types plans the structs
+// a new Kind's Spec holds from SpecFields, before PrepopulateSpec runs.
+func TestSpecFieldsMatchesPrepopulateSpec(t *testing.T) {
+	for _, tc := range []struct {
+		name string
+		msg  protoreflect.MessageDescriptor
+		opts codegen.WriteOptions
+	}{
+		{name: "field_behavior annotations", msg: testMessage(t)},
+		{
+			name: "server-set fields placed in status",
+			msg:  namedCommentedMessage(t, [][2]string{{"etag", ""}, {"description", ""}, {"self_link", ""}}),
+			opts: codegen.WriteOptions{PlaceServerSetFields: true},
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			// Act
+			fields := SpecFields(tc.msg, tc.opts)
+			got, err := PrepopulateSpec(tc.msg, tc.opts)
+			if err != nil {
+				t.Fatalf("PrepopulateSpec: %v", err)
+			}
+
+			// Assert
+			var want []string
+			for _, line := range strings.Split(got.SpecFields, "\n") {
+				if v, ok := strings.CutPrefix(strings.TrimSpace(line), "// "+codegen.KCCProtoFieldAnnotation+"="); ok {
+					want = append(want, v)
+				}
+			}
+			var names []string
+			for _, f := range fields {
+				names = append(names, string(f.FullName()))
+			}
+			if !reflect.DeepEqual(names, want) {
+				t.Errorf("SpecFields() = %v, PrepopulateSpec wrote %v", names, want)
+			}
+		})
+	}
+}
+
 // commentedMessage builds a message whose fields carry leading comments, which
 // is what DetectOutputOnlyInComments reads. The fields are named field_0,
 // field_1 and so on.

@@ -61,6 +61,23 @@ type PrepopulateResult struct {
 	Judgement []JudgementItem
 }
 
+// SpecFields returns the fields of msg that PrepopulateSpec writes into the
+// Spec, in proto order. generate-types uses it to plan which structs those
+// fields hold before the Spec exists. A test checks that both agree.
+func SpecFields(msg protoreflect.MessageDescriptor, opts codegen.WriteOptions) []protoreflect.FieldDescriptor {
+	var out []protoreflect.FieldDescriptor
+	for i := 0; i < msg.Fields().Len(); i++ {
+		field := msg.Fields().Get(i)
+		if codegen.IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) ||
+			codegen.IsServerSetField(field, msg, opts) ||
+			identityFields[string(field.Name())] {
+			continue
+		}
+		out = append(out, field)
+	}
+	return out
+}
+
 // PrepopulateSpec renders the top-level Spec fields for a resource proto message.
 //
 // Fields requiring decisions (such as potential references) are emitted using
