@@ -51,10 +51,14 @@ entries:
     field: .spec.propertyDefinitions[].propertyTypeOptions.propertyDefinitions[].name
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change PropertyTypeOptions.PropertyDefinitions in contentwarehousedocumentschema_types.go from PropertyDefinition to PropertyDefinitionRequired and run generate.sh again. ContentWarehouseDocumentSchema is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: edited
+    note: Switched PropertyTypeOptions.PropertyDefinitions to PropertyDefinitionRequired.
   - kind: ContentWarehouseDocumentSchema
     group: contentwarehouse.cnrm.cloud.google.com
     field: .spec.propertyDefinitions[].propertyTypeOptions.propertyDefinitions[].enumTypeOptions.possibleValues
     reason: required-not-enforced
     detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change PropertyTypeOptions.PropertyDefinitions in contentwarehousedocumentschema_types.go from PropertyDefinition to PropertyDefinitionRequired and run generate.sh again. ContentWarehouseDocumentSchema is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
-    status: open
+    status: resolved
+    resolution: edited
+    note: Switched PropertyTypeOptions.PropertyDefinitions to PropertyDefinitionRequired.

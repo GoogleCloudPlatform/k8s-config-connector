@@ -131,5 +131,5 @@ type PropertyTypeOptions struct {
 	// +required
 	// +kubebuilder:validation:items:XPreserveUnknownFields
 	// +kubebuilder:validation:items:Type=object
-	PropertyDefinitions []PropertyDefinition `json:"propertyDefinitions,omitempty"`
+	PropertyDefinitions []PropertyDefinitionRequired `json:"propertyDefinitions,omitempty"`
 }

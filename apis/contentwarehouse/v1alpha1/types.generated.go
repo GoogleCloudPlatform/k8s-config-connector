@@ -280,19 +280,6 @@ type EnumArray struct {
 type EnumTypeOptions struct {
 	// Required. List of possible enum values.
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.EnumTypeOptions.possible_values
-	PossibleValues []string `json:"possibleValues,omitempty"`
-
-	// Make sure the Enum property value provided in the document is in the
-	//  possile value list during document creation. The validation check runs by
-	//  default.
-	// +kcc:proto:field=google.cloud.contentwarehouse.v1.EnumTypeOptions.validation_check_disabled
-	ValidationCheckDisabled *bool `json:"validationCheckDisabled,omitempty"`
-}
-
-// +kcc:proto=google.cloud.contentwarehouse.v1.EnumTypeOptions
-type EnumTypeOptionsRequired struct {
-	// Required. List of possible enum values.
-	// +kcc:proto:field=google.cloud.contentwarehouse.v1.EnumTypeOptions.possible_values
 	// +required
 	PossibleValues []string `json:"possibleValues,omitempty"`
 
@@ -405,6 +392,7 @@ type PropertyArray struct {
 }
 */
 
+/* unreachable type PropertyDefinition
 // +kcc:proto=google.cloud.contentwarehouse.v1.PropertyDefinition
 type PropertyDefinition struct {
 	// Required. The name of the metadata property.
@@ -486,6 +474,7 @@ type PropertyDefinition struct {
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.schema_sources
 	SchemaSources []PropertyDefinition_SchemaSource `json:"schemaSources,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.contentwarehouse.v1.PropertyDefinition
 type PropertyDefinitionRequired struct {
@@ -549,7 +538,7 @@ type PropertyDefinitionRequired struct {
 
 	// Enum/categorical property.
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.enum_type_options
-	EnumTypeOptions *EnumTypeOptionsRequired `json:"enumTypeOptions,omitempty"`
+	EnumTypeOptions *EnumTypeOptions `json:"enumTypeOptions,omitempty"`
 
 	// Date time property.
 	//  It is not supported by CMEK compliant deployment.
