@@ -609,6 +609,16 @@ type MosaicLayout_Tile struct {
 }
 */
 
+/* found existing non-generated go type "OpsAnalyticsQuery", skipping
+
+// +kcc:proto=google.monitoring.dashboard.v1.OpsAnalyticsQuery
+type OpsAnalyticsQuery struct {
+	// A SQL query to fetch time series, category series, or numeric series data.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.OpsAnalyticsQuery.sql
+	SQL *string `json:"sql,omitempty"`
+}
+*/
+
 /* found existing non-generated go type "PickTimeSeriesFilter", skipping
 
 // +kcc:proto=google.monitoring.dashboard.v1.PickTimeSeriesFilter
@@ -1032,6 +1042,10 @@ type TimeSeriesQuery struct {
 	// A query used to fetch time series with PromQL.
 	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesQuery.prometheus_query
 	PrometheusQuery *string `json:"prometheusQuery,omitempty"`
+
+	// A query used to fetch time series with SQL.
+	// +kcc:proto:field=google.monitoring.dashboard.v1.TimeSeriesQuery.ops_analytics_query
+	OpsAnalyticsQuery *OpsAnalyticsQuery `json:"opsAnalyticsQuery,omitempty"`
 
 	// The unit of data contained in fetched time series. If non-empty, this
 	//  unit will override any unit that accompanies fetched data. The format is
