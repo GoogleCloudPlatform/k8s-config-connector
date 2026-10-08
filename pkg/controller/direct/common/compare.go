@@ -253,14 +253,6 @@ func fieldHasChanged(ctx context.Context, fieldPath string, desired protoreflect
 	change.DesiredValue = desiredValue
 
 	if foundActual != foundDesired {
-		fd := actual.Descriptor().Fields().ByName(protoreflect.Name(fieldPath))
-		if fd != nil && fd.IsMap() {
-			actualMap := valToMap(actualValue)
-			desiredMap := valToMap(desiredValue)
-			if maps.Equal(actualMap, desiredMap) {
-				return nil
-			}
-		}
 		return change
 	}
 	if !foundActual && !foundDesired {
@@ -272,14 +264,6 @@ func fieldHasChanged(ctx context.Context, fieldPath string, desired protoreflect
 		return nil
 	}
 	fd := actual.Descriptor().Fields().ByName(protoreflect.Name(fieldPath))
-	if fd != nil && fd.IsMap() {
-		actualMap := valToMap(actualValue)
-		desiredMap := valToMap(desiredValue)
-		if maps.Equal(actualMap, desiredMap) {
-			return nil
-		}
-		return change
-	}
 	if fd != nil && fd.Kind() == protoreflect.MessageKind && !fd.IsMap() && !fd.IsList() {
 		if actualValue.IsValid() && desiredValue.IsValid() {
 			if proto.Equal(actualValue.Message().Interface(), desiredValue.Message().Interface()) {
@@ -652,9 +636,43 @@ func fieldHasChangedAt(ctx context.Context, fieldPath string, desired protorefle
 	foundDesired := desired.Has(fd)
 
 	if fd != nil && fd.IsMap() {
-		actualMap := valToMap(actualValue)
-		desiredMap := valToMap(desiredValue)
-		if maps.Equal(actualMap, desiredMap) {
+		aLen := 0
+		if actualValue.IsValid() {
+			aLen = actualValue.Map().Len()
+		}
+		dLen := 0
+		if desiredValue.IsValid() {
+			dLen = desiredValue.Map().Len()
+		}
+		if aLen == 0 && dLen == 0 {
+			return nil
+		}
+		if aLen != dLen {
+			return change
+		}
+		aMap := actualValue.Map()
+		dMap := desiredValue.Map()
+		equal := true
+		dMap.Range(func(k protoreflect.MapKey, dVal protoreflect.Value) bool {
+			if !aMap.Has(k) {
+				equal = false
+				return false
+			}
+			aVal := aMap.Get(k)
+			if fd.MapValue().Kind() == protoreflect.MessageKind {
+				if !proto.Equal(aVal.Message().Interface(), dVal.Message().Interface()) {
+					equal = false
+					return false
+				}
+			} else {
+				if !aVal.Equal(dVal) {
+					equal = false
+					return false
+				}
+			}
+			return true
+		})
+		if equal {
 			return nil
 		}
 		return change
