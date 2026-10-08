@@ -54,6 +54,7 @@ func requiredGapFixture(t *testing.T) *protoregistry.Files {
 		Package: sp("google.cloud.test.v1"),
 		MessageType: []*descriptorpb.DescriptorProto{
 			{Name: sp("Inner"), Field: []*descriptorpb.FieldDescriptorProto{str("a", 1, required), str("b", 2, nil)}},
+			{Name: sp("Wrapper"), Field: []*descriptorpb.FieldDescriptorProto{msg("inner", 1, "Inner", false)}},
 			{
 				Name: sp("Thing"),
 				NestedType: []*descriptorpb.DescriptorProto{{
@@ -69,6 +70,7 @@ func requiredGapFixture(t *testing.T) *protoregistry.Files {
 					msg("inner_by_key", 5, "Thing.InnerByKeyEntry", true),
 					str("network", 6, required),
 					str("done", 7, required),
+					msg("wrapper", 8, "Wrapper", false),
 				},
 			},
 		},
@@ -329,6 +331,101 @@ func TestKRMNamesFor(t *testing.T) {
 	} {
 		if got := krmNamesFor(j); !reflect.DeepEqual(got, want) {
 			t.Errorf("krmNamesFor(%q) = %v, want %v", j, got, want)
+		}
+	}
+}
+
+// A hand-written struct that another Kind or a status also uses must not
+// get +required for one Kind. The detail asks for a copy instead.
+func TestRequiredNotEnforcedSharedHandWritten(t *testing.T) {
+	// Arrange
+	// HandInner is in Thing's spec and status. Wrapper is in Thing's and
+	// Other's spec, and holds the generated Inner.
+	const handWritten = "package v1alpha1\n\n" +
+		"import metav1 \"k8s.io/apimachinery/pkg/apis/meta/v1\"\n\n" +
+		"// +kcc:spec:proto=google.cloud.test.v1.Thing\n" +
+		"// +kcc:required-from-proto\n" +
+		"type ThingSpec struct {\n" +
+		"\t// +kcc:proto:field=google.cloud.test.v1.Thing.inner\n" +
+		"\tInner *HandInner `json:\"inner,omitempty\"`\n\n" +
+		"\t// +kcc:proto:field=google.cloud.test.v1.Thing.wrapper\n" +
+		"\tWrapper *Wrapper `json:\"wrapper,omitempty\"`\n" +
+		"}\n\n" +
+		"type ThingStatus struct {\n\tInner *HandInner `json:\"inner,omitempty\"`\n}\n\n" +
+		"type Thing struct {\n" +
+		"\tmetav1.TypeMeta `json:\",inline\"`\n" +
+		"\tSpec   ThingSpec   `json:\"spec,omitempty\"`\n" +
+		"\tStatus ThingStatus `json:\"status,omitempty\"`\n" +
+		"}\n\n" +
+		"type OtherSpec struct {\n\tWrapper *Wrapper `json:\"wrapper,omitempty\"`\n}\n\n" +
+		"type Other struct {\n" +
+		"\tmetav1.TypeMeta `json:\",inline\"`\n" +
+		"\tSpec OtherSpec `json:\"spec,omitempty\"`\n" +
+		"}\n\n" +
+		"// +kcc:proto=google.cloud.test.v1.Inner\n" +
+		"type HandInner struct {\n" +
+		"\t// +kcc:proto:field=google.cloud.test.v1.Inner.a\n" +
+		"\tA *string `json:\"a,omitempty\"`\n" +
+		"}\n\n" +
+		"// +kcc:proto=google.cloud.test.v1.Wrapper\n" +
+		"type Wrapper struct {\n" +
+		"\t// +kcc:proto:field=google.cloud.test.v1.Wrapper.inner\n" +
+		"\tInner *Inner `json:\"inner,omitempty\"`\n" +
+		"}\n"
+	dir := t.TempDir()
+	for name, src := range map[string]string{
+		"test/v1alpha1/thing_types.go":     handWritten,
+		"test/v1alpha1/types.generated.go": generatedTypes("v1alpha1", true, true),
+	} {
+		p := filepath.Join(dir, name)
+		if err := os.MkdirAll(filepath.Dir(p), 0o755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(p, []byte(src), 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	// Act
+	entries, err := requiredNotEnforced(requiredGapFixture(t), dir, "test/v1alpha1", "test.cnrm.cloud.google.com",
+		[]string{"Thing"}, map[string]string{"Thing": "google.cloud.test.v1.Thing"})
+
+	// Assert
+	if err != nil {
+		t.Fatalf("requiredNotEnforced: %v", err)
+	}
+	got := map[string]string{}
+	for _, e := range entries {
+		got[e.Field] = e.Detail
+	}
+	want := map[string]string{
+		".spec.inner.a": "HandInner in thing_types.go is also used by the status of Thing, and +required on HandInner.A would apply there too. " +
+			"To enforce it for Thing only, give Thing its own copy of HandInner.",
+		".spec.wrapper.inner.a": "Wrapper in thing_types.go is also used by Other. " +
+			"To enforce it for Thing only, give Thing its own copy of Wrapper whose Inner field holds InnerRequired, and run generate.sh again.",
+	}
+	if gotPaths, wantPaths := sortedPaths(got), sortedPaths(want); !reflect.DeepEqual(gotPaths, wantPaths) {
+		t.Fatalf("paths = %v, want %v", gotPaths, wantPaths)
+	}
+	for path, w := range want {
+		if !strings.Contains(got[path], w) {
+			t.Errorf("detail for %s = %q, want it to contain %q", path, got[path], w)
+		}
+	}
+}
+
+func TestJoinUsers(t *testing.T) {
+	for _, tc := range []struct {
+		users []string
+		want  string
+	}{
+		{users: []string{"A"}, want: "A"},
+		{users: []string{"A", "B"}, want: "A and B"},
+		{users: []string{"A", "B", "C"}, want: "A, B and C"},
+		{users: []string{"A", "B", "C", "D", "E"}, want: "A, B, C and 2 more"},
+	} {
+		if got := joinUsers(tc.users); got != tc.want {
+			t.Errorf("joinUsers(%v) = %q, want %q", tc.users, got, tc.want)
 		}
 	}
 }
