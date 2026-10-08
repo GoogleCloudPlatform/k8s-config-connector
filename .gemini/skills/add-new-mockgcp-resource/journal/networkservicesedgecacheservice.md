@@ -17,4 +17,4 @@ During the implementation and matching process for `networkservices.EdgeCacheSer
 4. **LRO Operations**: Creation, patching, and deletion return long-running operations with metadata of type `type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata`.
 
 ## Ratcheting
-- `NetworkServicesEdgeCacheService` was removed from `tests/e2e/ratcheting.go` `SkipGoldenMatching`.
+- `NetworkServicesEdgeCacheService` was removed from `tests/e2e/ratcheting.go` `ShouldTestRereconiliation`, opting the resource into re-reconciliation testing.
