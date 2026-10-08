@@ -92,6 +92,8 @@ type event struct {
 	gcpAction *gcpAction
 	// the type of reconciler that the manager is using
 	reconcilerType k8s.ReconcilerType
+	// err is the error that was recorded
+	err error
 }
 
 type EventType string
@@ -102,6 +104,7 @@ const (
 	EventTypeDiff           EventType = "diff"
 	EventTypeKubeAction     EventType = "kubeAction"
 	EventTypeGCPAction      EventType = "gcpAction"
+	EventTypeError          EventType = "error"
 )
 
 // kubeAction holds a kubernetes action that was recorded
@@ -141,11 +144,14 @@ type structuredReportingListener struct {
 
 // OnError is called by the structured reporting subsystem when an error occurs.
 func (l *structuredReportingListener) OnError(ctx context.Context, err error, args ...any) {
-	blockedGCPError, ok := ExtractBlockedGCPError(err)
-	if !ok {
+	if blockedGCPError, ok := ExtractBlockedGCPError(err); ok {
+		l.recorder.recordGCPAction(ctx, blockedGCPError, args, ActionBlocked)
 		return
 	}
-	l.recorder.recordGCPAction(ctx, blockedGCPError, args, ActionBlocked)
+	if IsBlockedError(err) {
+		return
+	}
+	l.recorder.recordError(ctx, err, args)
 }
 
 // OnReconcileStart is called by the structured reporting subsystem when a reconcile starts.
@@ -226,11 +232,57 @@ func (r *Recorder) recordReconcileEnd(ctx context.Context, u *unstructured.Unstr
 	info.events = append(info.events, event{
 		eventType:      EventTypeReconcileEnd,
 		reconcilerType: t,
+		err:            err,
 	})
 	r.reconcileTrackerMutex.Lock()
 	defer r.reconcileTrackerMutex.Unlock()
 	r.ReconciledResources[gknn] = true
 	r.RemainResourcesCount--
+}
+
+// recordError captures a non-blocked error into our recorder.
+func (r *Recorder) recordError(ctx context.Context, err error, args []any) {
+	if err == nil || IsBlockedError(err) {
+		return
+	}
+	var gknn GKNN
+
+	for _, arg := range args {
+		switch arg := arg.(type) {
+		case *k8s.Resource:
+			group := strings.Split(arg.APIVersion, "/")[0]
+			gknn = GKNN{
+				Group:     group,
+				Kind:      arg.Kind,
+				Namespace: arg.Namespace,
+				Name:      arg.Name,
+			}
+		case *unstructured.Unstructured:
+			gvk := arg.GroupVersionKind()
+			gknn = GKNN{
+				Group:     gvk.Group,
+				Kind:      gvk.Kind,
+				Namespace: arg.GetNamespace(),
+				Name:      arg.GetName(),
+			}
+		default:
+			klog.V(2).Infof("unhandled arg type %T in recordError", arg)
+		}
+	}
+
+	if gknn == (GKNN{}) {
+		return
+	}
+
+	if done := r.GKNNDoneReconcile(gknn); done {
+		return
+	}
+
+	info := r.getObjectInfo(gknn)
+	info.events = append(info.events, event{
+		eventType: EventTypeError,
+		err:       err,
+	})
 }
 
 func (r *Recorder) GKNNDoneReconcile(gknn GKNN) bool {
@@ -330,6 +382,14 @@ func (r *Recorder) recordGCPAction(ctx context.Context, err *BlockedGCPError, ar
 				Kind:      arg.Kind,
 				Namespace: arg.Namespace,
 				Name:      arg.Name,
+			}
+		case *unstructured.Unstructured:
+			gvk := arg.GroupVersionKind()
+			gknn = GKNN{
+				Group:     gvk.Group,
+				Kind:      gvk.Kind,
+				Namespace: arg.GetNamespace(),
+				Name:      arg.GetName(),
 			}
 		default:
 			klog.Fatalf("unhandled arg type %T", arg)
@@ -572,6 +632,7 @@ func (e event) DeepCopy() event {
 	res := event{
 		eventType:      e.eventType,
 		reconcilerType: e.reconcilerType,
+		err:            e.err,
 	}
 	if e.diff != nil {
 		res.diff = &structuredreporting.Diff{

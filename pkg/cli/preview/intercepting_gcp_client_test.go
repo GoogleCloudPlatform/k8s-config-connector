@@ -15,6 +15,7 @@
 package preview
 
 import (
+	"fmt"
 	"net/http"
 	"net/url"
 	"testing"
@@ -87,6 +88,136 @@ func TestCheckGCPRequestIsAllowed(t *testing.T) {
 			got := client.checkGCPRequestIsAllowed(req)
 			if got != tc.allowed {
 				t.Errorf("checkGCPRequestIsAllowed(%s %s) = %v, want %v", tc.method, tc.path, got, tc.allowed)
+			}
+		})
+	}
+}
+
+func TestExtractBlockedGCPError(t *testing.T) {
+	origErr := BlockedGCPError{
+		Method: "POST",
+		URL:    "https://example.com/v1/resource",
+	}
+
+	tests := []struct {
+		name       string
+		err        error
+		wantOk     bool
+		wantMethod string
+	}{
+		{
+			name:   "nil error",
+			err:    nil,
+			wantOk: false,
+		},
+		{
+			name:       "direct value error",
+			err:        origErr,
+			wantOk:     true,
+			wantMethod: "POST",
+		},
+		{
+			name:       "direct pointer error",
+			err:        &origErr,
+			wantOk:     true,
+			wantMethod: "POST",
+		},
+		{
+			name:       "wrapped value error",
+			err:        fmt.Errorf("Update call failed: %w", origErr),
+			wantOk:     true,
+			wantMethod: "POST",
+		},
+		{
+			name:       "wrapped pointer error",
+			err:        fmt.Errorf("Update call failed: %w", &origErr),
+			wantOk:     true,
+			wantMethod: "POST",
+		},
+		{
+			name:       "string wrapped json format (terraform style)",
+			err:        fmt.Errorf("TF provider error: %s", origErr.Error()),
+			wantOk:     true,
+			wantMethod: "POST",
+		},
+		{
+			name:   "regular non-blocked error",
+			err:    fmt.Errorf("mapping error: invalid field"),
+			wantOk: false,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			got, ok := ExtractBlockedGCPError(tc.err)
+			if ok != tc.wantOk {
+				t.Errorf("ExtractBlockedGCPError() ok = %v, want %v", ok, tc.wantOk)
+			}
+			if ok && got.Method != tc.wantMethod {
+				t.Errorf("ExtractBlockedGCPError() Method = %v, want %v", got.Method, tc.wantMethod)
+			}
+		})
+	}
+}
+
+func TestIsBlockedError(t *testing.T) {
+	tests := []struct {
+		name string
+		err  error
+		want bool
+	}{
+		{
+			name: "nil error",
+			err:  nil,
+			want: false,
+		},
+		{
+			name: "direct BlockedGCPError",
+			err:  BlockedGCPError{Method: "PUT", URL: "https://foo"},
+			want: true,
+		},
+		{
+			name: "wrapped BlockedGCPError",
+			err:  fmt.Errorf("Update call failed: %w", BlockedGCPError{Method: "PUT", URL: "https://foo"}),
+			want: true,
+		},
+		{
+			name: "kube blocked error",
+			err:  fmt.Errorf("\"update\" blocked in preview mode"),
+			want: true,
+		},
+		{
+			name: "kube status blocked error wrapped",
+			err:  fmt.Errorf("error updating status: %w", fmt.Errorf("\"status.update\" blocked in preview mode")),
+			want: true,
+		},
+		{
+			name: "grpc blocked error",
+			err:  fmt.Errorf("GRPC method blocked by InterceptingGCPClient"),
+			want: true,
+		},
+		{
+			name: "call to GCP blocked string",
+			err:  fmt.Errorf("something failed: call to GCP blocked (method=POST, url=http://foo)"),
+			want: true,
+		},
+		{
+			name: "regular reconcile error",
+			err:  fmt.Errorf("mapping error: missing required field"),
+			want: false,
+		},
+		{
+			name: "reference resolution error",
+			err:  fmt.Errorf("reference not found: bucket foo"),
+			want: false,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			got := IsBlockedError(tc.err)
+			if got != tc.want {
+				t.Errorf("IsBlockedError(%v) = %v, want %v", tc.err, got, tc.want)
 			}
 		})
 	}
