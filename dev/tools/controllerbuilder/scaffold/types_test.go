@@ -17,6 +17,7 @@ package scaffold
 import (
 	"bytes"
 	"fmt"
+	"go/ast"
 	"go/parser"
 	"go/token"
 	"os"
@@ -25,6 +26,7 @@ import (
 	"testing"
 	"text/template"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/sourcelinks"
@@ -244,6 +246,71 @@ func TestAddTypeFileWritesSourceLinks(t *testing.T) {
 			}
 			if h.Kind != resource.Kind || len(h.Links) != 3 {
 				t.Errorf("Parse = %+v", h)
+			}
+		})
+	}
+}
+
+// TestAddTypeFileWritesRequiredFromProtoMarker checks that a Kind scaffolded
+// with RequiredFromProto carries the marker generate-types looks for, in the
+// Spec's doc comment, and that a Kind scaffolded without it does not.
+func TestAddTypeFileWritesRequiredFromProtoMarker(t *testing.T) {
+	for _, tc := range []struct {
+		name              string
+		requiredFromProto bool
+	}{
+		{name: "with the flag", requiredFromProto: true},
+		{name: "without the flag", requiredFromProto: false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			// Arrange
+			dir := t.TempDir()
+			scaffolder := &APIScaffolder{
+				BaseDir:           dir,
+				GoPackage:         "networkservices/v1alpha1",
+				Group:             "networkservices.cnrm.cloud.google.com",
+				Version:           "v1alpha1",
+				PackageProtoTag:   "google.cloud.networkservices.v1",
+				RequiredFromProto: tc.requiredFromProto,
+			}
+			resource := options.Resource{Kind: "NetworkServicesLBTrafficExtension", ProtoName: "LbTrafficExtension"}
+
+			// Act
+			if err := scaffolder.AddTypeFile(resource, nil, ""); err != nil {
+				t.Fatalf("AddTypeFile: %v", err)
+			}
+
+			// Assert
+			p := filepath.Join(dir, scaffolder.GoPackage, "networkserviceslbtrafficextension_types.go")
+			f, err := parser.ParseFile(token.NewFileSet(), p, nil, parser.ParseComments)
+			if err != nil {
+				t.Fatalf("parsing scaffolded file: %v", err)
+			}
+			marked := false
+			found := false
+			ast.Inspect(f, func(n ast.Node) bool {
+				gd, ok := n.(*ast.GenDecl)
+				if !ok || gd.Tok != token.TYPE {
+					return true
+				}
+				for _, spec := range gd.Specs {
+					if ts, ok := spec.(*ast.TypeSpec); ok && ts.Name.Name == resource.Kind+"Spec" {
+						found = true
+						if gd.Doc != nil {
+							for _, c := range gd.Doc.List {
+								marked = marked || codegen.IsRequiredFromProtoMarker(c.Text)
+							}
+						}
+					}
+				}
+				return false
+			})
+			if !found {
+				t.Fatalf("%sSpec is not declared in %s", resource.Kind, p)
+			}
+			if marked != tc.requiredFromProto {
+				b, _ := os.ReadFile(p)
+				t.Errorf("%sSpec has the %s marker = %v, want %v:\n%s", resource.Kind, codegen.RequiredFromProtoMarker, marked, tc.requiredFromProto, b)
 			}
 		})
 	}

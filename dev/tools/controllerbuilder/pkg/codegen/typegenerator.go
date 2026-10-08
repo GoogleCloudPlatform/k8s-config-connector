@@ -72,6 +72,10 @@ type TypeGenerator struct {
 	// rootMessageFQN is the full name of the message VisitProto is visiting.
 	// isServerSet uses it to tell that message from the nested ones below it.
 	rootMessageFQN string
+
+	// requiredPlan says which structs carry +required markers. It is nil
+	// unless PlanRequiredStructs ran.
+	requiredPlan *requiredPlan
 }
 
 type OutputMessageDetails struct {
@@ -89,7 +93,16 @@ type OutputMessageDetails struct {
 type WriteOptions struct {
 	// EmitRequired generates "// +required" markers for fields annotated with
 	// google.api.field_behavior = REQUIRED.
+	//
+	// generate-types sets it per service, then PlanRequiredStructs narrows it
+	// per Kind: only the structs that Kinds with RequiredFromProtoMarker reach
+	// get the markers.
 	EmitRequired bool
+	// RequiredStructs holds the messages written twice: a plain struct for
+	// Kinds without RequiredFromProtoMarker, and a <Name>Required struct for
+	// Kinds with it. A spec field of one of these types holds the Required
+	// struct. Only strict structs set it; see StrictWriteOptions.
+	RequiredStructs map[string]bool
 	// Prepopulating indicates whether --prepopulate-spec is enabled for this run.
 	//
 	// Generator enhancements that would otherwise cause churn across existing
@@ -403,6 +416,11 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 
 		out.fileAnnotation = g.generatedFileAnnotation
 
+		// The options for the plain struct, and whether a Required struct
+		// follows it. A skipped message is written as a comment with the same
+		// options.
+		opts, writeRequired := g.structOptions(string(msg.FullName()))
+
 		goTypeName := GoNameForProtoMessage(msg)
 		skipGenerated := true
 		goType, err := g.findTypeDeclaration(goTypeName, out.OutputDir(), skipGenerated)
@@ -412,7 +430,7 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 		if goType != nil {
 			klog.V(1).Infof("found existing non-generated go type %q, won't generate", goTypeName)
 			if g.includeSkippedOutput {
-				WriteMessageAsComment(&out.body, msg, fmt.Sprintf("found existing non-generated go type %q, skipping", goTypeName), g.writeOptions)
+				WriteMessageAsComment(&out.body, msg, fmt.Sprintf("found existing non-generated go type %q, skipping", goTypeName), opts)
 			}
 			continue
 		}
@@ -424,7 +442,7 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 		if goType != nil {
 			klog.V(1).Infof("found existing non-generated go type with proto tag %q, won't generate", msg.FullName())
 			if g.includeSkippedOutput {
-				WriteMessageAsComment(&out.body, msg, fmt.Sprintf("found existing non-generated go type with proto tag %q, skipping", msg.FullName()), g.writeOptions)
+				WriteMessageAsComment(&out.body, msg, fmt.Sprintf("found existing non-generated go type with proto tag %q, skipping", msg.FullName()), opts)
 			}
 			continue
 		}
@@ -432,14 +450,14 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 		if g.reservedTypeNames[goTypeName] {
 			klog.V(1).Infof("go type %q is a Kind the scaffolder will declare, won't generate", goTypeName)
 			if g.includeSkippedOutput {
-				WriteMessageAsComment(&out.body, msg, fmt.Sprintf("go type %q is a Kind the scaffolder will declare, skipping", goTypeName), g.writeOptions)
+				WriteMessageAsComment(&out.body, msg, fmt.Sprintf("go type %q is a Kind the scaffolder will declare, skipping", goTypeName), opts)
 			}
 			continue
 		}
 
 		// Render the message to a buffer to scan for markers emitted by WriteField.
 		var rendered bytes.Buffer
-		WriteMessage(&rendered, msg, g.writeOptions)
+		WriteMessage(&rendered, msg, opts)
 		g.unsupportedFields = append(g.unsupportedFields, scanUnsupported(string(msg.FullName()), rendered.String())...)
 		if g.writeOptions.EmitMessageMaps {
 			for i := 0; i < msg.Fields().Len(); i++ {
@@ -456,6 +474,12 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 		}
 		g.siblingGuesses = append(g.siblingGuesses, scanSiblingGuesses(string(msg.FullName()), rendered.String())...)
 		out.body.Write(rendered.Bytes())
+
+		// The Required struct has the same fields as the plain one, so the
+		// scans above cover it too.
+		if writeRequired {
+			writeMessageNamed(&out.body, msg, RequiredStructName(msg), g.StrictWriteOptions())
+		}
 	}
 	return errors.Join(g.errors...)
 }
@@ -566,8 +590,13 @@ func WriteObservedStateMessageAsComment(out io.Writer, msgDetails *OutputMessage
 }
 
 func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor, opts WriteOptions) {
-	goType := GoNameForProtoMessage(msg)
+	writeMessageNamed(out, msg, GoNameForProtoMessage(msg), opts)
+}
 
+// writeMessageNamed writes msg as a struct called goType. The Required struct
+// of a split message uses it with the strict options. Both structs carry the
+// same proto annotation, so generate-mapper writes converters for each.
+func writeMessageNamed(out io.Writer, msg protoreflect.MessageDescriptor, goType string, opts WriteOptions) {
 	fmt.Fprintf(out, "\n")
 	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotationMisc, msg.FullName())
 	fmt.Fprintf(out, "type %s struct {\n", goType)
@@ -603,9 +632,12 @@ func WriteObservedStateFields(out io.Writer, msgDetails *OutputMessageDetails, o
 	emitted := 0
 	var notes []ObservedStateFieldNote
 
-	// ObservedState structs describe status and must not emit +required markers.
+	// ObservedState structs describe status and must not emit +required
+	// markers. For the same reason a field holds a message's plain struct,
+	// never its Required struct.
 	observedOpts := opts
 	observedOpts.EmitRequired = false
+	observedOpts.RequiredStructs = nil
 
 	for _, field := range msgDetails.OutputFields {
 		if skip[string(field.Name())] {
@@ -700,7 +732,7 @@ func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool,
 			if goType, ok := protoMessagesNotMappedToGoStruct[valueName]; ok {
 				return "map[string]" + goType, nil
 			}
-			return "map[string]" + GoNameForProtoMessage(valueField.Message()), nil
+			return "map[string]" + specStructName(valueField.Message(), opts), nil
 		default:
 			return "", fmt.Errorf("unsupported map type with key %v and value %v", keyField.Kind(), valueField.Kind())
 		}
@@ -712,7 +744,7 @@ func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool,
 		if isTransitiveOutput {
 			goType = goNameForOutputProtoMessage(field.Message())
 		} else {
-			goType = GoNameForProtoMessage(field.Message())
+			goType = specStructName(field.Message(), opts)
 		}
 	case protoreflect.EnumKind:
 		goType = "string"
