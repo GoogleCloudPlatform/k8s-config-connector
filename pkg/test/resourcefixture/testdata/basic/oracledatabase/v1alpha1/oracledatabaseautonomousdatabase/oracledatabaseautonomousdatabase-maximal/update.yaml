@@ -1,0 +1,51 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: oracledatabase.cnrm.cloud.google.com/v1alpha1
+kind: OracleDatabaseAutonomousDatabase
+metadata:
+  labels:
+    env: prod
+    source: kcc-updated
+  name: oracledatabaseautonomousdatabase-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-east4
+  database: adbmax${uniqueId}
+  displayName: Max ADB Updated ${uniqueId}
+  adminPasswordSecretVersionRef:
+    name: secretmanagersecretversion-${uniqueId}
+  networkRef:
+    name: computenetwork-${uniqueId}
+  cidr: 10.6.0.0/24
+  labels:
+    test: max-updated
+  properties:
+    dbWorkload: OLTP
+    licenseType: LICENSE_INCLUDED
+    computeCount: 2
+    dataStorageSizeTb: 1
+    dbVersion: "19c"
+    characterSet: "AL32UTF8"
+    nCharacterSet: "AL16UTF16"
+    isAutoScalingEnabled: false
+    isStorageAutoScalingEnabled: false
+    maintenanceScheduleType: "REGULAR"
+    mtlsConnectionRequired: false
+    backupRetentionPeriodDays: 7
+    allowlistedIPs:
+      - 10.0.0.0/16
+    customerContacts:
+      - email: "oracle-db-admin@example.com"
