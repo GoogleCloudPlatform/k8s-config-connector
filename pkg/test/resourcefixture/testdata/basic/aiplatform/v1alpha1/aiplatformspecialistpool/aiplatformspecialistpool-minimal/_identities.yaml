@@ -1,0 +1,6 @@
+- caisURL: //aiplatform.googleapis.com/projects/${projectId}/locations/us-central1/specialistPools/${specialistPoolID}
+  group: aiplatform.cnrm.cloud.google.com
+  kind: AIPlatformSpecialistPool
+  name: aiplatformspecialistpool-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
