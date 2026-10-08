@@ -30,3 +30,15 @@ entries:
     reason: message-map-derived
     detail: derived as map[string]Value from proto google.cloud.contentwarehouse.v1.Value; verify Go type and mapping
     status: open
+  - kind: ContentWarehouseDocumentSchema
+    group: contentwarehouse.cnrm.cloud.google.com
+    field: .spec.propertyDefinitions[].name
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change ContentWarehouseDocumentSchemaSpec.PropertyDefinitions in contentwarehousedocumentschema_types.go from PropertyDefinition to PropertyDefinitionRequired and run generate.sh again. ContentWarehouseDocumentSchema is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: ContentWarehouseDocumentSchema
+    group: contentwarehouse.cnrm.cloud.google.com
+    field: .spec.propertyDefinitions[].enumTypeOptions.possibleValues
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change ContentWarehouseDocumentSchemaSpec.PropertyDefinitions in contentwarehousedocumentschema_types.go from PropertyDefinition to PropertyDefinitionRequired and run generate.sh again. ContentWarehouseDocumentSchema is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open

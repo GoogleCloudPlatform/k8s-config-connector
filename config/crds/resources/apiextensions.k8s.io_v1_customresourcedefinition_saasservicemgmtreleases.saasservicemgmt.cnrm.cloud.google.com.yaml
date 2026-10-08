@@ -88,8 +88,6 @@ spec:
                       description: Required. Immutable. Name of the variable from
                         actuation configs.
                       type: string
-                  required:
-                  - variable
                   type: object
                 type: array
               location:
@@ -245,8 +243,6 @@ spec:
                           description: Required. Immutable. Name of the variable from
                             actuation configs.
                           type: string
-                      required:
-                      - variable
                       type: object
                     type: array
                   outputVariables:
@@ -266,8 +262,6 @@ spec:
                           description: Required. Immutable. Name of the variable from
                             actuation configs.
                           type: string
-                      required:
-                      - variable
                       type: object
                     type: array
                   uid:

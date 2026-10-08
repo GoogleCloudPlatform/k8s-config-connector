@@ -162,7 +162,6 @@ type Document struct {
 	//  document. This differs from the 'title' field as 'title' is optional and
 	//  stores the top heading in the document.
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.Document.display_name
-	// +required
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Title that describes the document.
@@ -251,7 +250,6 @@ type DocumentSchema struct {
 
 	// Required. Name of the schema given by the user. Must be unique per project.
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.DocumentSchema.display_name
-	// +required
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Document details.
@@ -282,6 +280,20 @@ type EnumArray struct {
 type EnumTypeOptions struct {
 	// Required. List of possible enum values.
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.EnumTypeOptions.possible_values
+	PossibleValues []string `json:"possibleValues,omitempty"`
+
+	// Make sure the Enum property value provided in the document is in the
+	//  possile value list during document creation. The validation check runs by
+	//  default.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.EnumTypeOptions.validation_check_disabled
+	ValidationCheckDisabled *bool `json:"validationCheckDisabled,omitempty"`
+}
+
+/* unreachable type EnumTypeOptionsRequired
+// +kcc:proto=google.cloud.contentwarehouse.v1.EnumTypeOptions
+type EnumTypeOptionsRequired struct {
+	// Required. List of possible enum values.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.EnumTypeOptions.possible_values
 	// +required
 	PossibleValues []string `json:"possibleValues,omitempty"`
 
@@ -291,6 +303,7 @@ type EnumTypeOptions struct {
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.EnumTypeOptions.validation_check_disabled
 	ValidationCheckDisabled *bool `json:"validationCheckDisabled,omitempty"`
 }
+*/
 
 /* unreachable type EnumValue
 // +kcc:proto=google.cloud.contentwarehouse.v1.EnumValue
@@ -347,7 +360,6 @@ type Property struct {
 	// Required. Must match the name of a PropertyDefinition in the
 	//  DocumentSchema.
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.Property.name
-	// +required
 	Name *string `json:"name,omitempty"`
 
 	// Integer property values.
@@ -402,7 +414,6 @@ type PropertyDefinition struct {
 	//  Names must be non-blank, start with a letter, and can contain alphanumeric
 	//  characters and: /, :, -, _, and .
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.name
-	// +required
 	Name *string `json:"name,omitempty"`
 
 	// The display-name for the property, used for front-end.
@@ -478,6 +489,91 @@ type PropertyDefinition struct {
 	SchemaSources []PropertyDefinition_SchemaSource `json:"schemaSources,omitempty"`
 }
 
+/* unreachable type PropertyDefinitionRequired
+// +kcc:proto=google.cloud.contentwarehouse.v1.PropertyDefinition
+type PropertyDefinitionRequired struct {
+	// Required. The name of the metadata property.
+	//  Must be unique within a document schema and is case insensitive.
+	//  Names must be non-blank, start with a letter, and can contain alphanumeric
+	//  characters and: /, :, -, _, and .
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.name
+	// +required
+	Name *string `json:"name,omitempty"`
+
+	// The display-name for the property, used for front-end.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Whether the property can have multiple values.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.is_repeatable
+	IsRepeatable *bool `json:"isRepeatable,omitempty"`
+
+	// Whether the property can be filtered. If this is a sub-property, all the
+	//  parent properties must be marked filterable.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.is_filterable
+	IsFilterable *bool `json:"isFilterable,omitempty"`
+
+	// Indicates that the property should be included in a global search.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.is_searchable
+	IsSearchable *bool `json:"isSearchable,omitempty"`
+
+	// Whether the property is user supplied metadata.
+	//  This out-of-the box placeholder setting can be used to tag derived
+	//  properties. Its value and interpretation logic should be implemented by API
+	//  user.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.is_metadata
+	IsMetadata *bool `json:"isMetadata,omitempty"`
+
+	// Whether the property is mandatory.
+	//  Default is 'false', i.e. populating property value can be skipped.
+	//  If 'true' then user must populate the value for this property.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.is_required
+	IsRequired *bool `json:"isRequired,omitempty"`
+
+	// The retrieval importance of the property during search.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.retrieval_importance
+	RetrievalImportance *string `json:"retrievalImportance,omitempty"`
+
+	// Integer property.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.integer_type_options
+	IntegerTypeOptions *IntegerTypeOptions `json:"integerTypeOptions,omitempty"`
+
+	// Float property.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.float_type_options
+	FloatTypeOptions *FloatTypeOptions `json:"floatTypeOptions,omitempty"`
+
+	// Text/string property.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.text_type_options
+	TextTypeOptions *TextTypeOptions `json:"textTypeOptions,omitempty"`
+
+	// Nested structured data property.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.property_type_options
+	PropertyTypeOptions *PropertyTypeOptions `json:"propertyTypeOptions,omitempty"`
+
+	// Enum/categorical property.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.enum_type_options
+	EnumTypeOptions *EnumTypeOptionsRequired `json:"enumTypeOptions,omitempty"`
+
+	// Date time property.
+	//  It is not supported by CMEK compliant deployment.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.date_time_type_options
+	DateTimeTypeOptions *DateTimeTypeOptions `json:"dateTimeTypeOptions,omitempty"`
+
+	// Map property.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.map_type_options
+	MapTypeOptions *MapTypeOptions `json:"mapTypeOptions,omitempty"`
+
+	// Timestamp property.
+	//  It is not supported by CMEK compliant deployment.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.timestamp_type_options
+	TimestampTypeOptions *TimestampTypeOptions `json:"timestampTypeOptions,omitempty"`
+
+	// The mapping information between this property to another schema source.
+	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.schema_sources
+	SchemaSources []PropertyDefinition_SchemaSource `json:"schemaSources,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.contentwarehouse.v1.PropertyDefinition.SchemaSource
 type PropertyDefinition_SchemaSource struct {
 	// The schema name in the source.
@@ -495,7 +591,6 @@ type PropertyDefinition_SchemaSource struct {
 type PropertyTypeOptions struct {
 	// Required. List of property definitions.
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyTypeOptions.property_definitions
-	// +required
 	PropertyDefinitions []PropertyDefinition `json:"propertyDefinitions,omitempty"`
 }
 */
@@ -1061,7 +1156,6 @@ type Document_Entity struct {
 
 	// Required. Entity type from a schema e.g. `Address`.
 	// +kcc:proto:field=google.cloud.documentai.v1.Document.Entity.type
-	// +required
 	Type *string `json:"type,omitempty"`
 
 	// Optional. Text value of the entity e.g. `1600 Amphitheatre Pkwy`.
@@ -1746,7 +1840,6 @@ type Document_PageAnchor_PageRef struct {
 	//  This field is skipped when its value is the default `0`. See
 	//  https://developers.google.com/protocol-buffers/docs/proto3#json.
 	// +kcc:proto:field=google.cloud.documentai.v1.Document.PageAnchor.PageRef.page
-	// +required
 	Page *int64 `json:"page,omitempty"`
 
 	// Optional. The type of the layout element that is being referenced if
