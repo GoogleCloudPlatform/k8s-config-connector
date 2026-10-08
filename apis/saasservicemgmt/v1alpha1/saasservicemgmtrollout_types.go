@@ -29,6 +29,7 @@ var SaaSServiceMgmtRolloutGVK = GroupVersion.WithKind("SaaSServiceMgmtRollout")
 
 // SaaSServiceMgmtRolloutSpec defines the desired state of SaaSServiceMgmtRollout
 // +kcc:spec:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout
+// +kcc:required-from-proto
 type SaaSServiceMgmtRolloutSpec struct {
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`

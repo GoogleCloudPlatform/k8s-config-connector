@@ -29,6 +29,7 @@ var LustreInstanceGVK = GroupVersion.WithKind("LustreInstance")
 
 // LustreInstanceSpec defines the desired state of LustreInstance
 // +kcc:spec:proto=google.cloud.lustre.v1.Instance
+// +kcc:required-from-proto
 type LustreInstanceSpec struct {
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`

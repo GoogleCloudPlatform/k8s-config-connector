@@ -30,6 +30,7 @@ var WebSecurityScannerScanConfigGVK = GroupVersion.WithKind("WebSecurityScannerS
 
 // WebSecurityScannerScanConfigSpec defines the desired state of WebSecurityScannerScanConfig
 // +kcc:spec:proto=google.cloud.websecurityscanner.v1.ScanConfig
+// +kcc:required-from-proto
 type WebSecurityScannerScanConfigSpec struct {
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`

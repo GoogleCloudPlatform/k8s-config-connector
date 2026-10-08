@@ -29,6 +29,7 @@ var GKEBackupRestoreChannelGVK = GroupVersion.WithKind("GKEBackupRestoreChannel"
 
 // GKEBackupRestoreChannelSpec defines the desired state of GKEBackupRestoreChannel
 // +kcc:spec:proto=google.cloud.gkebackup.v1.RestoreChannel
+// +kcc:required-from-proto
 type GKEBackupRestoreChannelSpec struct {
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`

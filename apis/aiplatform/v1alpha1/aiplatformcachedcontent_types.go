@@ -30,6 +30,7 @@ var AIPlatformCachedContentGVK = GroupVersion.WithKind("AIPlatformCachedContent"
 
 // AIPlatformCachedContentSpec defines the desired state of AIPlatformCachedContent
 // +kcc:spec:proto=google.cloud.aiplatform.v1.CachedContent
+// +kcc:required-from-proto
 type AIPlatformCachedContentSpec struct {
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`

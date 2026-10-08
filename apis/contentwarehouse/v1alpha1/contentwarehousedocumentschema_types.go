@@ -29,6 +29,7 @@ var ContentWarehouseDocumentSchemaGVK = GroupVersion.WithKind("ContentWarehouseD
 
 // ContentWarehouseDocumentSchemaSpec defines the desired state of ContentWarehouseDocumentSchema
 // +kcc:spec:proto=google.cloud.contentwarehouse.v1.DocumentSchema
+// +kcc:required-from-proto
 type ContentWarehouseDocumentSchemaSpec struct {
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
