@@ -1,3 +1,12 @@
+### [2026-10-08] FinancialServicesInstance MockGCP and Alignment
+- **Context**: Implementing Greenfield MockGCP and Alignment for `FinancialServicesInstance` (#13837)
+- **Action**:
+  1. Generated grpc-gateway bindings for `google.cloud.financialservices.v1` service proto under `mockgcp/generated/google/cloud/financialservices/v1/`.
+  2. Implemented mock service `mockgcp/mockfinancialservices/` with CRUD and LRO operations for `Instance`.
+  3. Registered `mockfinancialservices` in `mockgcp/register.go` and allowed `FinancialServicesInstance` in `config/tests/samples/create/harness.go`.
+  4. Executed `hack/compare-mock` across both minimal and maximal fixtures to align mock logs and golden files.
+  5. Verified all e2e tests and unit tests pass.
+
 ### [2026-10-02] FinancialServicesInstance Direct Controller, Fixtures, and Fuzzer
 - **Context**: Implementing Greenfield direct controller, E2E fixtures, and fuzzer for `FinancialServicesInstance` (#13673)
 - **Action**:

@@ -195,11 +195,14 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
+	instance := proto.Clone(a.desired).(*pb.Instance)
+	instance.Name = a.id.String()
+	instance.KmsKey = "" // kmsKey is immutable and should not be sent on update
+
 	req := &pb.UpdateInstanceRequest{
-		Instance:   proto.Clone(a.desired).(*pb.Instance),
+		Instance:   instance,
 		UpdateMask: updateMask,
 	}
-	req.Instance.Name = a.id.String()
 
 	op, err := a.gcpClient.UpdateInstance(ctx, req)
 	if err != nil {
