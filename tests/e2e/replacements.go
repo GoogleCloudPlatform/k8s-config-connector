@@ -181,6 +181,10 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 		return "${processorVersionID}"
 	case "keyHandles":
 		return "${keyHandleID}"
+	case "tagKeys":
+		return "${tagKeyID}"
+	case "tagValues":
+		return "${tagValueID}"
 	case "instanceGroupManagers":
 		if strings.HasPrefix(name, "gke-") {
 			return ""
@@ -198,6 +202,22 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 	default:
 		return ""
 	}
+}
+
+var tagResourceIDPattern = regexp.MustCompile(`\b(?:tagKeys|tagValues)/[0-9]+\b`)
+
+// ReplaceTagResourceIDs normalizes generated TagKey and TagValue IDs in
+// arbitrary text, including nested JSON response bodies and migration diffs.
+func ReplaceTagResourceIDs(s string) string {
+	replacements := NewReplacements()
+	return tagResourceIDPattern.ReplaceAllStringFunc(s, func(resourceName string) string {
+		parts := strings.SplitN(resourceName, "/", 2)
+		placeholder := replacements.placeholderForGCPResource(parts[0], parts[1])
+		if placeholder == "" {
+			return resourceName
+		}
+		return parts[0] + "/" + placeholder
+	})
 }
 
 // ExtractIDsFromLinks parses the URL or partial URL, and extracts generated IDs from it.
