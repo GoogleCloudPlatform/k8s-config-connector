@@ -303,6 +303,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// OSConfig
 		"//osconfig.googleapis.com/projects/{}/guestPolicies/{}": true,
 
+		// OSLogin
+		"//oslogin.googleapis.com/users/{}/sshPublicKeys/{}": true,
+
 		// Privileged Access Manager
 		"//privilegedaccessmanager.googleapis.com/folders/{}/locations/{}/entitlements/{}":       true,
 		"//privilegedaccessmanager.googleapis.com/organizations/{}/locations/{}/entitlements/{}": true,
