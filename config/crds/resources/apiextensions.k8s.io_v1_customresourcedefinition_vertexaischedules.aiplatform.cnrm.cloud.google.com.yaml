@@ -128,8 +128,6 @@ spec:
                                     items:
                                       type: string
                                     type: array
-                                required:
-                                - reservationAffinityType
                                 type: object
                               tpuTopology:
                                 description: 'Immutable. The topology of the TPUs.

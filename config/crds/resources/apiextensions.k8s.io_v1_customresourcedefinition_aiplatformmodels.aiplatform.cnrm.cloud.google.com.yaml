@@ -77,8 +77,6 @@ spec:
                       baseModelURI:
                         description: Required. The public base model URI.
                         type: string
-                    required:
-                    - baseModelURI
                     type: object
                   modelGardenSource:
                     description: Source information of Model Garden models.
@@ -95,8 +93,6 @@ spec:
                         description: Optional. The model garden source model version
                           ID.
                         type: string
-                    required:
-                    - publicModelName
                     type: object
                 type: object
               containerSpec:
@@ -237,9 +233,6 @@ spec:
                             references will never be expanded, regardless of whether
                             the variable exists or not.'
                           type: string
-                      required:
-                      - name
-                      - value
                       type: object
                     type: array
                   grpcPorts:
@@ -790,8 +783,6 @@ spec:
                         format: int32
                         type: integer
                     type: object
-                required:
-                - imageURI
                 type: object
               dataStats:
                 description: |-
@@ -1239,8 +1230,6 @@ spec:
                                     items:
                                       type: string
                                     type: array
-                                required:
-                                - uris
                                 type: object
                             type: object
                           nearestNeighborSearchConfig:
@@ -1386,8 +1375,6 @@ spec:
                                Valid range of its value is [1, 100], inclusively.
                             format: int32
                             type: integer
-                        required:
-                        - stepCount
                         type: object
                       sampledShapleyAttribution:
                         description: 'An attribution method that approximates Shapley
@@ -1404,8 +1391,6 @@ spec:
                                Valid range of its value is [1, 50], inclusively.
                             format: int32
                             type: integer
-                        required:
-                        - pathCount
                         type: object
                       topK:
                         description: If populated, returns attributions for top K
@@ -1518,12 +1503,8 @@ spec:
                                Valid range of its value is [1, 100], inclusively.
                             format: int32
                             type: integer
-                        required:
-                        - stepCount
                         type: object
                     type: object
-                required:
-                - parameters
                 type: object
               labels:
                 additionalProperties:

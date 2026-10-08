@@ -65,3 +65,15 @@ entries:
     reason: possible-reference-by-sibling
     detail: the name matches SaasServiceMgmtRelease, a resource this service declares; confirm whether it should be a reference
     status: open
+  - kind: SaasServiceMgmtRelease
+    group: saasservicemgmt.cnrm.cloud.google.com
+    field: .spec.inputVariableDefaults[].variable
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to SaasServiceMgmtReleaseSpec and run generate.sh again. SaasServiceMgmtRelease is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: SaaSServiceMgmtTenant
+    group: saasservicemgmt.cnrm.cloud.google.com
+    field: .spec.saas
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to SaaSServiceMgmtTenantSpec.Saas in saasservicemgmttenant_types.go. SaaSServiceMgmtTenant is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open

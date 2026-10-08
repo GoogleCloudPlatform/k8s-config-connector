@@ -28,12 +28,10 @@ package v1alpha1
 type Aggregate struct {
 	// Required. Group by which to aggregate.
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Aggregate.group
-	// +required
 	Group *string `json:"group,omitempty"`
 
 	// Required. Number of records in the group.
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Aggregate.count
-	// +required
 	Count *int32 `json:"count,omitempty"`
 }
 */
@@ -60,7 +58,6 @@ type Release struct {
 	// Required. Immutable. Reference to the UnitKind this Release corresponds to
 	//  (required and immutable once created).
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Release.unit_kind
-	// +required
 	UnitKind *string `json:"unitKind,omitempty"`
 
 	// Optional. Blueprints are OCI Images that contain all of the artifacts
@@ -227,7 +224,6 @@ type Tenant struct {
 	//  (managed service) that the producer wants to manage with SaaS Runtime. Part
 	//  of the SaaS Runtime common data model.
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant.saas
-	// +required
 	Saas *string `json:"saas,omitempty"`
 
 	// Optional. The labels on the resource, which can be used for categorization.
@@ -250,7 +246,6 @@ type Tenant struct {
 type UnitVariable struct {
 	// Required. Immutable. Name of the variable from actuation configs.
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitVariable.variable
-	// +required
 	Variable *string `json:"variable,omitempty"`
 
 	// Optional. Immutable. Name of a supported variable type. Supported types are

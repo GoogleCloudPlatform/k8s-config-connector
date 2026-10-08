@@ -30,3 +30,21 @@ entries:
     reason: location-or-parent-ref
     detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
     status: open
+  - kind: GKEBackupBackupPlan
+    group: gkebackup.cnrm.cloud.google.com
+    field: .spec.backupSchedule.rpoConfig.targetRPOMinutes
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to RPOConfig.TargetRPOMinutes in gkebackupbackupplan_types.go. GKEBackupBackupPlan is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: GKEBackupRestore
+    group: gkebackup.cnrm.cloud.google.com
+    field: .spec.backupRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to GKEBackupRestoreSpec.BackupRef in gkebackuprestore_types.go. GKEBackupRestore is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: GKEBackupRestore
+    group: gkebackup.cnrm.cloud.google.com
+    field: .spec.volumeDataRestorePolicyOverrides[].policy
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to VolumeDataRestorePolicyOverride.Policy in gkebackuprestore_types.go. GKEBackupRestore is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open

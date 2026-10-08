@@ -191,9 +191,6 @@ spec:
                                 Escaped references will never be expanded, regardless
                                 of whether the variable exists or not.'
                               type: string
-                          required:
-                          - name
-                          - value
                           type: object
                         type: array
                       maxInstances:
@@ -420,9 +417,6 @@ spec:
                                       type: string
                                   type: object
                               type: object
-                          required:
-                          - name
-                          - secretRef
                           type: object
                         type: array
                     type: object
