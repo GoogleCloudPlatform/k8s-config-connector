@@ -34,6 +34,7 @@ import (
 	pb "cloud.google.com/go/netapp/apiv1/netapppb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 func (s *backupVaultsService) GetActiveDirectory(ctx context.Context, req *pb.GetActiveDirectoryRequest) (*pb.ActiveDirectory, error) {
@@ -52,7 +53,28 @@ func (s *backupVaultsService) GetActiveDirectory(ctx context.Context, req *pb.Ge
 		return nil, err
 	}
 
+	s.populateDefaultsForActiveDirectory(obj)
+
 	return obj, nil
+}
+
+func (s *backupVaultsService) ListActiveDirectories(ctx context.Context, req *pb.ListActiveDirectoriesRequest) (*pb.ListActiveDirectoriesResponse, error) {
+	parent := req.GetParent()
+	response := &pb.ListActiveDirectoriesResponse{}
+
+	findPrefix := fmt.Sprintf("%s/activeDirectories/", parent)
+
+	activeDirectoryKind := (&pb.ActiveDirectory{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, activeDirectoryKind, storage.ListOptions{Prefix: findPrefix}, func(obj proto.Message) error {
+		cloned := proto.Clone(obj).(*pb.ActiveDirectory)
+		s.populateDefaultsForActiveDirectory(cloned)
+		response.ActiveDirectories = append(response.ActiveDirectories, cloned)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return response, nil
 }
 
 func (s *backupVaultsService) CreateActiveDirectory(ctx context.Context, req *pb.CreateActiveDirectoryRequest) (*longrunningpb.Operation, error) {
