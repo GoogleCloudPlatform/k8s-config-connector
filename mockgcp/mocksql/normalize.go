@@ -16,6 +16,7 @@ package mocksql
 
 import (
 	"net/url"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"k8s.io/klog/v2"
@@ -24,12 +25,21 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "sqladmin.googleapis.com") {
+		return
+	}
+
 	// SQLUser
 	replacements.ReplacePath(".items[].passwordPolicy.status.passwordExpirationTime", "2025-06-19T01:02:03Z")
 
 	// replicaNames is not consistently returned by real GCP in the v1beta4 API under various circumstances, so we remove it.
 	replacements.RemovePath(".replicaNames")
 	replacements.RemovePath(".response.replicaNames")
+
+	// SQLInstance
+	replacements.ReplacePath(".serverCaCert.certSerialNumber", "0")
+	replacements.ReplacePath(".serverCaCerts[].certSerialNumber", "0")
+	replacements.ReplacePath(".items[].certSerialNumber", "0")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
@@ -38,12 +48,16 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 	}
 
 	var sqlInstance struct {
+		DNSName     string `json:"dnsName"`
 		IPAddresses []struct {
 			IPAddress string `json:"ipAddress"`
 			Type      string `json:"type"`
 		} `json:"ipAddresses"`
 	}
 	if ok := event.ParseResponseInto(&sqlInstance); ok {
+		if sqlInstance.DNSName != "" {
+			replacements.ReplaceStringValue(sqlInstance.DNSName, "${dnsName}")
+		}
 		for _, ipAddress := range sqlInstance.IPAddresses {
 			switch ipAddress.Type {
 			case "PRIVATE":
