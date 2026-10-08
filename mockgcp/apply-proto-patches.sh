@@ -340,6 +340,131 @@ fi
 
 # Dataform patches
 
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/dataform/v1beta1/dataform.proto --service "Dataform" --mode "append" <<EOF
+  // Fetches a single Folder.
+  rpc GetFolder(GetFolderRequest) returns (Folder) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=projects/*/locations/*/folders/*}"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Creates a new Folder in a given project and location.
+  rpc CreateFolder(CreateFolderRequest) returns (Folder) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=projects/*/locations/*}/folders"
+      body: "folder"
+    };
+    option (google.api.method_signature) = "parent,folder,folder_id";
+  }
+
+  // Updates a single Folder.
+  rpc UpdateFolder(UpdateFolderRequest) returns (Folder) {
+    option (google.api.http) = {
+      patch: "/v1beta1/{folder.name=projects/*/locations/*/folders/*}"
+      body: "folder"
+    };
+    option (google.api.method_signature) = "folder,update_mask";
+  }
+
+  // Deletes a single Folder.
+  rpc DeleteFolder(DeleteFolderRequest)
+      returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1beta1/{name=projects/*/locations/*/folders/*}"
+    };
+    option (google.api.method_signature) = "name";
+  }
+EOF
+
+cat >> ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/dataform/v1beta1/dataform.proto <<EOF
+
+// \`GetFolder\` request message.
+message GetFolderRequest {
+  // Required. The folder's name.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "dataform.googleapis.com/Folder"
+    }
+  ];
+}
+
+// \`CreateFolderRequest\` request message.
+message CreateFolderRequest {
+  // Required. The location in which to create the Folder. Must be in the
+  // format \`projects/*/locations/*\`.
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "locations.googleapis.com/Location"
+    }
+  ];
+
+  // Required. The Folder to create.
+  Folder folder = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // The ID to use for the Folder, which will become the final component of
+  // the Folder's resource name.
+  string folder_id = 3;
+}
+
+// \`UpdateFolder\` request message.
+message UpdateFolderRequest {
+  // Optional. Specifies the fields to be updated in the Folder. If left unset,
+  // all fields will be updated.
+  google.protobuf.FieldMask update_mask = 1
+      [(google.api.field_behavior) = OPTIONAL];
+
+  // Required. The updated Folder.
+  Folder folder = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+// \`DeleteFolder\` request message.
+message DeleteFolderRequest {
+  // Required. The folder's name.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "dataform.googleapis.com/Folder"
+    }
+  ];
+}
+
+// Represents a Dataform folder.
+message Folder {
+  option (google.api.resource) = {
+    type: "dataform.googleapis.com/Folder"
+    pattern: "projects/{project}/locations/{location}/folders/{folder}"
+  };
+
+  // Identifier. The Folder's name.
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
+
+  // Required. The Folder's user-friendly name.
+  string display_name = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // Optional. The containing Folder resource name.
+  optional string containing_folder = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // Output only. The resource name of the TeamFolder that this Folder is
+  // associated with.
+  optional string team_folder_name = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. The timestamp of when the Folder was created.
+  google.protobuf.Timestamp create_time = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. The timestamp of when the Folder was last updated.
+  google.protobuf.Timestamp update_time = 6 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. All the metadata information that is used internally to serve the resource.
+  optional string internal_metadata = 7 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. The IAM principal identifier of the creator of the Folder.
+  optional string creator_iam_principal = 8 [(google.api.field_behavior) = OUTPUT_ONLY];
+}
+EOF
+
 go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/dataform/v1/dataform.proto --service "Dataform" --mode "append" <<EOF
   // Fetches a single TeamFolder.
   rpc GetTeamFolder(GetTeamFolderRequest) returns (TeamFolder) {

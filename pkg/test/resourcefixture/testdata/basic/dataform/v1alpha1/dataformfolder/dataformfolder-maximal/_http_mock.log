@@ -1,31 +1,22 @@
 GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ffolders%2Fdffolder-max-${uniqueId}
 
 404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+Content-Type: application/json
 
 {
-  "error": {
-    "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1/folders/dffolder-max-${uniqueId}' was not found",
-    "status": "NOT_FOUND"
-  }
+  "code": 5,
+  "details": [],
+  "message": "Resource 'projects/${projectId}/locations/us-central1/folders/dffolder-max-${uniqueId}' was not found"
 }
 
 ---
 
 POST https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/folders?%24alt=json%3Benum-encoding%3Dint&folderId=dffolder-max-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
@@ -34,14 +25,8 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 }
 
 200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -55,18 +40,12 @@ X-Xss-Protection: 0
 
 GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ffolders%2F${folderID}
 
 200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -80,7 +59,7 @@ X-Xss-Protection: 0
 
 PATCH https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: folder.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ffolders%2F${folderID}
 
 {
@@ -89,14 +68,8 @@ X-Goog-Request-Params: folder.name=projects%2F${projectId}%2Flocations%2Fus-cent
 }
 
 200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -110,18 +83,12 @@ X-Xss-Protection: 0
 
 GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ffolders%2F${folderID}
 
 200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -135,17 +102,11 @@ X-Xss-Protection: 0
 
 DELETE https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ffolders%2F${folderID}
 
 200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
 
 {}
