@@ -1,0 +1,37 @@
+apiVersion: oracledatabase.cnrm.cloud.google.com/v1alpha1
+kind: OracleDatabaseAutonomousDatabase
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+    test: min-updated-${uniqueId}
+  name: oracledatabaseautonomousdatabase-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  adminPasswordSecretVersionRef:
+    name: secretmanagersecretversion-${uniqueId}
+  cidr: 10.5.0.0/24
+  database: adbmin${uniqueId}
+  displayName: Min ADB Updated ${uniqueId}
+  location: us-east4
+  networkRef:
+    name: ${networkID}
+  projectRef:
+    external: ${projectId}
+  properties:
+    dbWorkload: OLTP
+    licenseType: LICENSE_INCLUDED
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: |-
+      Update call failed: error creating: creating AutonomousDatabase projects/${projectId}/locations/us-east4/autonomousDatabases/oracledatabaseautonomousdatabase-minimal-${uniqueId}: googleapi: Error 400: The billing account doesn't have an associated marketplace order. Please confirm or complete a purchasing offer before provisioning the resource.
+      error details: name = ErrorInfo reason = ENTITLEMENT_NOT_FOUND domain = oracledatabase.googleapis.com metadata = map[]
+      error details: name = LocalizedMessage locale = en-US msg = The billing account doesn't have an associated marketplace order. Please confirm or complete a purchasing offer before provisioning the resource.
+    reason: UpdateFailed
+    status: "False"
+    type: Ready
+  observedGeneration: 2
