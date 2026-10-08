@@ -33,7 +33,7 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 
 	transformFunc := func(m map[string]any) {
 		name, _ := m["name"].(string)
-		if strings.Contains(name, "/operations/") {
+		if strings.Contains(name, "/operations/") || m["done"] == true {
 			if resp, ok := m["response"].(map[string]any); ok {
 				if len(resp) == 0 || (len(resp) == 1 && resp["@type"] == "type.googleapis.com/google.protobuf.Empty") {
 					delete(m, "response")

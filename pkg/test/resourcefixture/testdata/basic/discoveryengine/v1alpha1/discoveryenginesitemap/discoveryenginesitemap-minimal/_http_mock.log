@@ -225,10 +225,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": true,
-  "response": {
-    "@type": "type.googleapis.com/google.protobuf.Empty"
-  }
+  "done": true
 }
 
 ---
