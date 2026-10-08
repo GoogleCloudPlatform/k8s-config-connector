@@ -51,6 +51,9 @@ func (e BlockedGCPError) Error() string {
 // ExtractBlockedGCPError will unwrap a BlockedGCPError.
 // To tolerate terraform using string-wrapping of error messages, we also parse a json-encoded form.
 func ExtractBlockedGCPError(err error) (*BlockedGCPError, bool) {
+	if err == nil {
+		return nil, false
+	}
 	var e *BlockedGCPError
 	if errors.As(err, &e) {
 		return e, true

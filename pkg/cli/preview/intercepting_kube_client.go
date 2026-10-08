@@ -16,10 +16,12 @@ package preview
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"maps"
 	"net/http"
 	"slices"
+	"strings"
 	"sync"
 	"sync/atomic"
 
@@ -32,6 +34,33 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/apiutil"
 )
+
+// BlockedKubeError is an error that occurs when a Kubernetes API write call is blocked.
+type BlockedKubeError struct {
+	Method string
+}
+
+var _ error = &BlockedKubeError{}
+
+// Error implements the error interface.
+func (e BlockedKubeError) Error() string {
+	return fmt.Sprintf("%q blocked in preview mode", e.Method)
+}
+
+// ExtractBlockedKubeError will unwrap or detect a BlockedKubeError.
+func ExtractBlockedKubeError(err error) (*BlockedKubeError, bool) {
+	if err == nil {
+		return nil, false
+	}
+	var e *BlockedKubeError
+	if errors.As(err, &e) {
+		return e, true
+	}
+	if strings.Contains(err.Error(), "blocked in preview mode") {
+		return &BlockedKubeError{}, true
+	}
+	return nil, false
+}
 
 // interceptingKubeClient is a Kubernetes client that intercepts Kubernetes API calls.
 // It forwards read-only operations "upstream" to real Kubernetes.
@@ -142,7 +171,7 @@ type interceptingControllerRuntimeClient struct {
 // It returns an error, so that the write operation is not forwarded upstream.
 func (c *interceptingControllerRuntimeClient) blockedMethod(ctx context.Context, method string, args ...any) error {
 	c.parent.recorder.RecordBlockedKubeMethod(ctx, c.typeStore.scheme, method, args...)
-	return fmt.Errorf("%q blocked in preview mode", method)
+	return &BlockedKubeError{Method: method}
 }
 
 // ignoredMethod is called when a read operation is attempted.
