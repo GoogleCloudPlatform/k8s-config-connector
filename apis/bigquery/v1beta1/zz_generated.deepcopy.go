@@ -752,7 +752,7 @@ func (in *EncryptionConfiguration) DeepCopyInto(out *EncryptionConfiguration) {
 	*out = *in
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(refsv1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 }

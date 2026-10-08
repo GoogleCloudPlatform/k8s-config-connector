@@ -22,6 +22,7 @@ import (
 	"testing"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/fuzz"
@@ -91,7 +92,7 @@ func FuzzBigQueryDataSetSpec(f *testing.F) {
 			cmpopts.IgnoreFields(refs.ProjectRef{}, "External", "Name", "Namespace"),
 
 			// other ref
-			cmpopts.IgnoreFields(refs.KMSCryptoKeyRef{}, "External", "Name", "Namespace"),
+			cmpopts.IgnoreFields(kmsv1beta1.KMSCryptoKeyRef{}, "External", "Name", "Namespace"),
 
 			// unroundtrippable fields (for now)
 			cmpopts.IgnoreFields(krm.BigQueryDatasetSpec{}, "ResourceID"),
