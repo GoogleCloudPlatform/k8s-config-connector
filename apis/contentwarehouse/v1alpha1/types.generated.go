@@ -289,7 +289,6 @@ type EnumTypeOptions struct {
 	ValidationCheckDisabled *bool `json:"validationCheckDisabled,omitempty"`
 }
 
-/* unreachable type EnumTypeOptionsRequired
 // +kcc:proto=google.cloud.contentwarehouse.v1.EnumTypeOptions
 type EnumTypeOptionsRequired struct {
 	// Required. List of possible enum values.
@@ -303,7 +302,6 @@ type EnumTypeOptionsRequired struct {
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.EnumTypeOptions.validation_check_disabled
 	ValidationCheckDisabled *bool `json:"validationCheckDisabled,omitempty"`
 }
-*/
 
 /* unreachable type EnumValue
 // +kcc:proto=google.cloud.contentwarehouse.v1.EnumValue
@@ -489,7 +487,6 @@ type PropertyDefinition struct {
 	SchemaSources []PropertyDefinition_SchemaSource `json:"schemaSources,omitempty"`
 }
 
-/* unreachable type PropertyDefinitionRequired
 // +kcc:proto=google.cloud.contentwarehouse.v1.PropertyDefinition
 type PropertyDefinitionRequired struct {
 	// Required. The name of the metadata property.
@@ -572,7 +569,6 @@ type PropertyDefinitionRequired struct {
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.schema_sources
 	SchemaSources []PropertyDefinition_SchemaSource `json:"schemaSources,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.contentwarehouse.v1.PropertyDefinition.SchemaSource
 type PropertyDefinition_SchemaSource struct {
