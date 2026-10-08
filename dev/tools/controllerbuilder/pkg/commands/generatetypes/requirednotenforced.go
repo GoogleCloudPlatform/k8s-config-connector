@@ -40,19 +40,19 @@ type descriptorFinder interface {
 	FindDescriptorByName(protoreflect.FullName) (protoreflect.Descriptor, error)
 }
 
-// goStruct is a struct type of the package, as the Go source declares it.
+// goStruct is a struct declared in the package's Go source.
 type goStruct struct {
 	name string
 	// file is the base name of the file that declares the struct.
 	file string
-	// generated is true for a struct in a file whose name ends in
-	// generated.go, which generate-types writes.
+	// generated is true for a struct in a file ending in generated.go,
+	// which generate-types writes.
 	generated bool
-	// proto is the message named by the struct's +kcc:proto annotation, or
-	// one of its variants such as +kcc:spec:proto. It is "" if there is none.
+	// proto is the message in the struct's +kcc:proto annotation, or in a
+	// variant such as +kcc:spec:proto. It is "" if there is none.
 	proto string
-	// marked is true when the doc comment carries the
-	// +kcc:required-from-proto marker.
+	// marked is true if the doc comment has the +kcc:required-from-proto
+	// marker.
 	marked bool
 	fields []goField
 }
@@ -62,11 +62,11 @@ type goField struct {
 	goName string
 	// json is the name in the json tag, or the Go name when there is no tag.
 	json string
-	// inline is true for an embedded field with no json name, whose fields
+	// inline is true for an embedded field without a json name. Its fields
 	// sit at the parent's path.
 	inline bool
-	// typeName is the type the field holds, through pointers, slices and map
-	// values. It is "" for a type from another package.
+	// typeName is the type the field holds, looking through pointers, slices
+	// and map values. It is "" for a type from another package.
 	typeName string
 	// qualified is a type from another package, such as "metav1.TypeMeta",
 	// or "".
@@ -75,18 +75,18 @@ type goField struct {
 	isMap     bool
 	// protoField is the field named by +kcc:proto:field, or "".
 	protoField string
-	// required is true when the field carries +required or
+	// required is true if the field has +required or
 	// +kubebuilder:validation:Required.
 	required bool
 }
 
-// requiredNotEnforced returns a queue entry for each spec field, at any depth,
-// that the proto marks REQUIRED and the CRD leaves optional, for each Kind in
-// the run.
+// requiredNotEnforced returns a queue entry for each spec field, at any
+// depth, that the proto marks REQUIRED but the CRD leaves optional. It
+// checks each Kind in the run.
 //
-// It reads the Go source of the package, so it sees every field the CRD gets:
-// generated, hand-written, and fields of Kinds scaffolded before the flag
-// existed. Run it after WriteFiles and prune, so it reads what they wrote.
+// It reads the package's Go source, so it sees every field that ends up in
+// the CRD: generated fields, hand-written fields, and fields of Kinds
+// scaffolded before the marker existed. Run it after WriteFiles and prune.
 func requiredNotEnforced(files descriptorFinder, apisDir, goPackage, group string, kinds []string, protoFullNames map[string]string) ([]judgement.Entry, error) {
 	pkgDir := filepath.Join(apisDir, goPackage)
 	structs, err := loadStructs(pkgDir)
@@ -119,8 +119,8 @@ func requiredNotEnforced(files descriptorFinder, apisDir, goPackage, group strin
 	return out, nil
 }
 
-// loadStructs reads the struct types declared in the Go files of dir. Test
-// files and deepcopy are left out.
+// loadStructs reads the structs declared in the Go files of dir, skipping
+// tests and deepcopy.
 func loadStructs(dir string) (map[string]*goStruct, error) {
 	entries, err := os.ReadDir(dir)
 	if err != nil {
@@ -247,9 +247,9 @@ unwrap:
 	return out
 }
 
-// servedBeyondAlpha returns the version that makes kind beta or GA: the
-// package's own version when it is not alpha, or another version of the
-// service that also declares the Kind. It returns "" for an alpha-only Kind.
+// servedBeyondAlpha returns the beta or GA version kind is served at: the
+// package's own version if it isn't alpha, or another version of the service
+// that also declares the Kind. It returns "" for an alpha-only Kind.
 func servedBeyondAlpha(apisDir, goPackage, kind string) string {
 	version := path.Base(goPackage)
 	if !strings.Contains(version, "alpha") {
@@ -290,9 +290,9 @@ func declaresStruct(dir, name string) bool {
 	return false
 }
 
-// structUsers maps each struct of the package to what reaches it: a Kind's
-// name when the Kind's spec reaches it, and "the status of <Kind>" when its
-// status does. A Kind is a struct that embeds metav1.TypeMeta.
+// structUsers maps each struct in the package to what reaches it: the Kind's
+// name if a Kind's spec reaches it, and "the status of <Kind>" if its status
+// does. A Kind is a struct that embeds metav1.TypeMeta.
 func structUsers(structs map[string]*goStruct) map[string][]string {
 	seen := map[string]map[string]bool{}
 	var visit func(name, user string)
@@ -354,8 +354,8 @@ func joinUsers(users []string) string {
 	}
 }
 
-// requiredGapFinder walks the Spec of one Kind and records the fields the
-// proto marks REQUIRED that have no +required marker.
+// requiredGapFinder walks one Kind's Spec and records the fields the proto
+// marks REQUIRED that have no +required marker.
 type requiredGapFinder struct {
 	structs map[string]*goStruct
 	// users is what reaches each struct; see structUsers.
@@ -363,7 +363,7 @@ type requiredGapFinder struct {
 	files descriptorFinder
 	kind  string
 	group string
-	// marked is true when the Kind's Spec carries the marker.
+	// marked is true if the Kind's Spec has the marker.
 	marked bool
 	// servedAs is the beta or GA version the Kind is served at, or "" for an
 	// alpha Kind.
@@ -371,9 +371,9 @@ type requiredGapFinder struct {
 	entries  []judgement.Entry
 }
 
-// sharedWith returns what else reaches the struct name: other Kinds, and
-// the status of any Kind, this one's included. A +required marker in that
-// struct applies to all of them.
+// sharedWith returns what else reaches the named struct: other Kinds, and
+// the status of any Kind, including this one. A +required marker in that
+// struct would apply to all of them.
 func (w *requiredGapFinder) sharedWith(name string) []string {
 	var out []string
 	for _, u := range w.users[name] {
@@ -384,9 +384,9 @@ func (w *requiredGapFinder) sharedWith(name string) []string {
 	return out
 }
 
-// enteredStruct is where a walk went from a hand-written struct into a
-// generated one. For a Kind with the marker, the hand-written field is the
-// one to switch to the generated struct's Required copy.
+// enteredStruct is where the walk went from a hand-written struct into a
+// generated one. For an opted-in Kind, that hand-written field is the one
+// to switch to the generated struct's Required copy.
 type enteredStruct struct {
 	// parent is the hand-written struct, and field the Go name of its field.
 	parent *goStruct
@@ -434,7 +434,7 @@ func (w *requiredGapFinder) walk(s *goStruct, msg protoreflect.MessageDescriptor
 		if childMsg == nil && fd != nil {
 			childMsg = fieldMessage(fd)
 		}
-		// The same path shapes as the reference hints use.
+		// Same path format as the reference hints.
 		childPath := fieldPath
 		switch {
 		case f.isMap:
@@ -446,9 +446,9 @@ func (w *requiredGapFinder) walk(s *goStruct, msg protoreflect.MessageDescriptor
 	}
 }
 
-// enter returns what the walk below child records as entered. It is reset at
-// each hand-written struct, and set where a hand-written struct holds a
-// generated one.
+// enter returns the enteredStruct for the walk below child: nil when child
+// is hand-written, a new one when a hand-written parent holds a generated
+// child, and entered unchanged otherwise.
 func (w *requiredGapFinder) enter(parent *goStruct, f goField, child *goStruct, entered *enteredStruct) *enteredStruct {
 	switch {
 	case !child.generated:
@@ -472,9 +472,9 @@ func (w *requiredGapFinder) isGap(f goField, fd protoreflect.FieldDescriptor, to
 	return !(top && fd.Name() == "name")
 }
 
-// protoField finds the proto field a Go field maps to: the one its
-// +kcc:proto:field annotation names, or else the field of msg whose KRM name
-// matches, allowing for the Ref and Refs names of references.
+// protoField finds the proto field a Go field maps to: the one named in its
+// +kcc:proto:field annotation, or else the field of msg with a matching KRM
+// name, including the Ref and Refs names of references.
 func (w *requiredGapFinder) protoField(f goField, msg protoreflect.MessageDescriptor) protoreflect.FieldDescriptor {
 	if f.protoField != "" {
 		if d, err := w.files.FindDescriptorByName(protoreflect.FullName(f.protoField)); err == nil {
@@ -500,7 +500,7 @@ func (w *requiredGapFinder) protoField(f goField, msg protoreflect.MessageDescri
 }
 
 // krmNamesFor returns the KRM names a proto field with JSON name j can have:
-// j itself, or a reference to what it names.
+// j itself, or a Ref or Refs name if the field is a reference.
 func krmNamesFor(j string) []string {
 	names := []string{j, j + "Ref", j + "Refs", strings.TrimSuffix(j, "s") + "Refs"}
 	for _, suffix := range []string{"Name", "Id"} {
@@ -526,8 +526,8 @@ func (w *requiredGapFinder) message(fqn string) protoreflect.MessageDescriptor {
 	return msg
 }
 
-// fieldMessage returns the message a field holds: its own, or its map's
-// value message.
+// fieldMessage returns the message a field holds: its own message, or the
+// value message of a map.
 func fieldMessage(fd protoreflect.FieldDescriptor) protoreflect.MessageDescriptor {
 	if fd.IsMap() {
 		if v := fd.MapValue(); v.Kind() == protoreflect.MessageKind {
@@ -541,15 +541,15 @@ func fieldMessage(fd protoreflect.FieldDescriptor) protoreflect.MessageDescripto
 	return nil
 }
 
-// isRequiredCopy reports whether s is the Required copy generate-types writes
-// of a message.
+// isRequiredCopy reports whether s is a Required copy that generate-types
+// wrote.
 func (w *requiredGapFinder) isRequiredCopy(s *goStruct) bool {
 	msg := w.message(s.proto)
 	return s.generated && msg != nil && s.name == codegen.RequiredStructName(msg)
 }
 
-// requiredNameTaken reports whether another type has the name of s's
-// Required copy. generate-types then writes no copy, and s stays optional for
+// requiredNameTaken reports whether another type already has the name of s's
+// Required copy. Then generate-types writes no copy, and s stays optional for
 // every Kind.
 func (w *requiredGapFinder) requiredNameTaken(s *goStruct) bool {
 	other := w.structs[s.name+"Required"]
@@ -559,9 +559,9 @@ func (w *requiredGapFinder) requiredNameTaken(s *goStruct) bool {
 // detail says why the field is optional, how to enforce it, and whether that
 // is allowed for this Kind.
 //
-// The fix is always for this Kind only. When the hand-written struct to edit
-// is also used by another Kind or by a status, the detail asks for a copy of
-// it, since editing it in place would change the others too.
+// The fix only ever changes this Kind. If the hand-written struct to edit is
+// also used by another Kind or a status, the detail asks for a copy instead,
+// because editing it in place would change those too.
 func (w *requiredGapFinder) detail(s *goStruct, f goField, entered *enteredStruct) string {
 	const what = "The proto marks this field REQUIRED, but the CRD leaves it optional."
 	if w.servedAs != "" {
@@ -581,7 +581,7 @@ func (w *requiredGapFinder) detail(s *goStruct, f goField, entered *enteredStruc
 	case w.requiredNameTaken(s):
 		how = fmt.Sprintf("%s has no Required copy because another type is called %sRequired. To enforce it, rename that type and run generate.sh again.", s.name, s.name)
 	case entered != nil && !w.isRequiredCopy(entered.child):
-		// generate-types writes the copy once code names it.
+		// generate-types writes the copy once code uses it.
 		p := entered.parent
 		if others := w.sharedWith(p.name); len(others) > 0 {
 			how = fmt.Sprintf("%s in %s is also used by %s. To enforce it for %s only, give %s its own copy of %s whose %s field holds %sRequired, and run generate.sh again.",

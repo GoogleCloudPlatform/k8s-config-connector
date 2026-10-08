@@ -252,8 +252,8 @@ func TestAddTypeFileWritesSourceLinks(t *testing.T) {
 }
 
 // TestAddTypeFileWritesRequiredFromProtoMarker checks that a Kind scaffolded
-// with RequiredFromProto carries the marker generate-types looks for, in the
-// Spec's doc comment, and that a Kind scaffolded without it does not.
+// with RequiredFromProto has the marker in its Spec's doc comment, and that a
+// Kind scaffolded without it doesn't.
 func TestAddTypeFileWritesRequiredFromProtoMarker(t *testing.T) {
 	for _, tc := range []struct {
 		name              string

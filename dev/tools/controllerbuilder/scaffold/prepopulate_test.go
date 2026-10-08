@@ -496,8 +496,8 @@ func namedCommentedMessage(t *testing.T, named [][2]string) protoreflect.Message
 }
 
 // TestSpecFieldsMatchesPrepopulateSpec checks that SpecFields lists the fields
-// PrepopulateSpec writes, in the same order. generate-types plans the structs
-// a new Kind's Spec holds from SpecFields, before PrepopulateSpec runs.
+// PrepopulateSpec writes, in the same order. generate-types uses SpecFields to
+// plan a new Kind's structs before PrepopulateSpec runs.
 func TestSpecFieldsMatchesPrepopulateSpec(t *testing.T) {
 	for _, tc := range []struct {
 		name string

@@ -147,8 +147,8 @@ func TestRequiredNotEnforced(t *testing.T) {
 		alpha       = "Thing is alpha, so it may be enforced"
 		beta        = "Keep it optional: Thing is v1beta1"
 	)
-	// The marked Kind holds the plain Inner, with or without a copy on disk:
-	// generate-types writes the copy once code names it.
+	// The opted-in Kind holds the plain Inner, with or without a copy on
+	// disk: generate-types writes the copy once code uses it.
 	switchToCopy := map[string][]string{
 		".spec.saas":             {handWritten + "Saas in thing_types.go.", alpha},
 		".spec.inner.a":          {"To enforce it, change ThingSpec.Inner" + useCopy, alpha},
