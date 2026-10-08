@@ -27,6 +27,7 @@ import (
 
 // ConfigDeploymentSpec defines the desired state of ConfigDeployment
 // +kcc:spec:proto=google.cloud.config.v1.Deployment
+// +kcc:required-from-proto
 type ConfigDeploymentSpec struct {
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`

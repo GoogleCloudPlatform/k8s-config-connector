@@ -29,6 +29,7 @@ var SaaSServiceMgmtTenantGVK = GroupVersion.WithKind("SaaSServiceMgmtTenant")
 
 // SaaSServiceMgmtTenantSpec defines the desired state of SaaSServiceMgmtTenant
 // +kcc:spec:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant
+// +kcc:required-from-proto
 type SaaSServiceMgmtTenantSpec struct {
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`

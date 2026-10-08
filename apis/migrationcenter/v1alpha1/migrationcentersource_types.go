@@ -29,6 +29,7 @@ var MigrationCenterSourceGVK = GroupVersion.WithKind("MigrationCenterSource")
 
 // MigrationCenterSourceSpec defines the desired state of MigrationCenterSource
 // +kcc:spec:proto=google.cloud.migrationcenter.v1.Source
+// +kcc:required-from-proto
 type MigrationCenterSourceSpec struct {
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
