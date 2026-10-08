@@ -68,3 +68,13 @@
   3. Added `DataplexDataProduct` to `pkg/controller/resourceconfig/static_config.go`.
   4. Successfully recorded `dataplexdataproduct-minimal` and `dataplexdataproduct-maximal` against real GCP, achieving 100% field coverage in `alpha-missingfields.txt`.
 - **Impact**: Fully functional direct controller and verified real GCP golden logs for DataplexDataProduct.
+
+### [2026-10-08] Align MockGCP for DataplexMetadataFeed
+- **Context**: Aligning MockGCP logs with RealGCP output for `DataplexMetadataFeed` (Greenfield Phase 3/4).
+- **Problem**: In real GCP, `CatalogService` for `MetadataFeed` performs specific reference transformations and defaults:
+  1. `scope.projects` and `scope.entryGroups` convert project IDs to canonical numeric project numbers (`projects/{projectNumber}`), while `filters.aspectTypes` and `filters.entryTypes` retain project IDs (`projects/{projectId}`).
+  2. If `filters` is omitted, GCP initializes an empty `filters: {}` object.
+  3. LRO operations return `google.cloud.dataplex.v1.OperationMetadata` with `verb` (`create`, `update`, `delete`) and the target resource FQN.
+- **Solution**: Verified MockGCP implementation in `mockgcp/mockdataplex/metadatafeed.go` handles these transformations in `populateDefaultsForMetadataFeed` using `replaceProjectIDWithNumber` for `scope.projects` and `scope.entryGroups`, and correctly populates `OperationMetadata` for all CRUD operations. Verified both minimal and maximal fixtures pass `TestGoldenLogAlignment` with zero discrepancies.
+- **Impact**: Hermetic MockGCP execution behaves identically to real GCP for DataplexMetadataFeed, ensuring reliable CI runs and preventing drift.
+
