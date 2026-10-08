@@ -1093,6 +1093,8 @@ cloud.google.com/go/oslogin v1.12.1/go.mod h1:VfwTeFJGbnakxAY236eN8fsnglLiVXndlb
 cloud.google.com/go/oslogin v1.12.2/go.mod h1:CQ3V8Jvw4Qo4WRhNPF0o+HAM4DiLuE27Ul9CX9g2QdY=
 cloud.google.com/go/oslogin v1.13.0/go.mod h1:xPJqLwpTZ90LSE5IL1/svko+6c5avZLluiyylMb/sRA=
 cloud.google.com/go/oslogin v1.13.1/go.mod h1:vS8Sr/jR7QvPWpCjNqy6LYZr5Zs1e8ZGW/KPn9gmhws=
+cloud.google.com/go/oslogin v1.18.0 h1:OkccORMcY2XEHwN5+AP0XH/SCUNBl39GGjaQuSCVcIw=
+cloud.google.com/go/oslogin v1.18.0/go.mod h1:3Oa36T3781Mv+yCSVYlfasi7auHjfPFqvNOd1q92umc=
 cloud.google.com/go/parametermanager v0.3.1 h1:hmT52JUztk7pTLbTdAlXavZaiR6FfArH4CPTtmy635g=
 cloud.google.com/go/parametermanager v0.3.1/go.mod h1:uVdpZMPcSzEWaup+Bt0usxRYxyLzIbZffKXyQduX/2E=
 cloud.google.com/go/phishingprotection v0.5.0/go.mod h1:Y3HZknsK9bc9dMi+oE8Bim0lczMU6hrX0UpADuMefr0=
