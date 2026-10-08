@@ -24,6 +24,7 @@ import (
 	"path"
 	"path/filepath"
 	"reflect"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -67,8 +68,11 @@ type goField struct {
 	// typeName is the type the field holds, through pointers, slices and map
 	// values. It is "" for a type from another package.
 	typeName string
-	isList   bool
-	isMap    bool
+	// qualified is a type from another package, such as "metav1.TypeMeta",
+	// or "".
+	qualified string
+	isList    bool
+	isMap     bool
 	// protoField is the field named by +kcc:proto:field, or "".
 	protoField string
 	// required is true when the field carries +required or
@@ -89,6 +93,7 @@ func requiredNotEnforced(files descriptorFinder, apisDir, goPackage, group strin
 	if err != nil {
 		return nil, fmt.Errorf("reading %s: %w", pkgDir, err)
 	}
+	users := structUsers(structs)
 	var out []judgement.Entry
 	for _, kind := range kinds {
 		spec := structs[kind+"Spec"]
@@ -101,6 +106,7 @@ func requiredNotEnforced(files descriptorFinder, apisDir, goPackage, group strin
 		}
 		w := &requiredGapFinder{
 			structs:  structs,
+			users:    users,
 			files:    files,
 			kind:     kind,
 			group:    group,
@@ -202,8 +208,13 @@ unwrap:
 			break unwrap
 		}
 	}
-	if id, ok := t.(*ast.Ident); ok {
-		f.typeName = id.Name
+	switch tt := t.(type) {
+	case *ast.Ident:
+		f.typeName = tt.Name
+	case *ast.SelectorExpr:
+		if pkg, ok := tt.X.(*ast.Ident); ok {
+			f.qualified = pkg.Name + "." + tt.Sel.Name
+		}
 	}
 	for _, line := range commentLines(field.Doc) {
 		marker := strings.TrimSpace(strings.TrimPrefix(strings.TrimSpace(line), "//"))
@@ -279,19 +290,98 @@ func declaresStruct(dir, name string) bool {
 	return false
 }
 
+// structUsers maps each struct of the package to what reaches it: a Kind's
+// name when the Kind's spec reaches it, and "the status of <Kind>" when its
+// status does. A Kind is a struct that embeds metav1.TypeMeta.
+func structUsers(structs map[string]*goStruct) map[string][]string {
+	seen := map[string]map[string]bool{}
+	var visit func(name, user string)
+	visit = func(name, user string) {
+		s := structs[name]
+		if s == nil || seen[name][user] {
+			return
+		}
+		if seen[name] == nil {
+			seen[name] = map[string]bool{}
+		}
+		seen[name][user] = true
+		for _, f := range s.fields {
+			visit(f.typeName, user)
+		}
+	}
+	for _, s := range structs {
+		if !isKind(s) {
+			continue
+		}
+		for _, f := range s.fields {
+			switch f.json {
+			case "spec":
+				visit(f.typeName, s.name)
+			case "status":
+				visit(f.typeName, "the status of "+s.name)
+			}
+		}
+	}
+	out := map[string][]string{}
+	for name, users := range seen {
+		for u := range users {
+			out[name] = append(out[name], u)
+		}
+		sort.Strings(out[name])
+	}
+	return out
+}
+
+func isKind(s *goStruct) bool {
+	for _, f := range s.fields {
+		if f.inline && strings.HasSuffix(f.qualified, ".TypeMeta") {
+			return true
+		}
+	}
+	return false
+}
+
+// joinUsers lists up to three users, and says how many more there are.
+func joinUsers(users []string) string {
+	const shown = 3
+	switch {
+	case len(users) > shown:
+		return fmt.Sprintf("%s and %d more", strings.Join(users[:shown], ", "), len(users)-shown)
+	case len(users) == 1:
+		return users[0]
+	default:
+		return strings.Join(users[:len(users)-1], ", ") + " and " + users[len(users)-1]
+	}
+}
+
 // requiredGapFinder walks the Spec of one Kind and records the fields the
 // proto marks REQUIRED that have no +required marker.
 type requiredGapFinder struct {
 	structs map[string]*goStruct
-	files   descriptorFinder
-	kind    string
-	group   string
+	// users is what reaches each struct; see structUsers.
+	users map[string][]string
+	files descriptorFinder
+	kind  string
+	group string
 	// marked is true when the Kind's Spec carries the marker.
 	marked bool
 	// servedAs is the beta or GA version the Kind is served at, or "" for an
 	// alpha Kind.
 	servedAs string
 	entries  []judgement.Entry
+}
+
+// sharedWith returns what else reaches the struct name: other Kinds, and
+// the status of any Kind, this one's included. A +required marker in that
+// struct applies to all of them.
+func (w *requiredGapFinder) sharedWith(name string) []string {
+	var out []string
+	for _, u := range w.users[name] {
+		if u != w.kind {
+			out = append(out, u)
+		}
+	}
+	return out
 }
 
 // enteredStruct is where a walk went from a hand-written struct into a
@@ -468,6 +558,10 @@ func (w *requiredGapFinder) requiredNameTaken(s *goStruct) bool {
 
 // detail says why the field is optional, how to enforce it, and whether that
 // is allowed for this Kind.
+//
+// The fix is always for this Kind only. When the hand-written struct to edit
+// is also used by another Kind or by a status, the detail asks for a copy of
+// it, since editing it in place would change the others too.
 func (w *requiredGapFinder) detail(s *goStruct, f goField, entered *enteredStruct) string {
 	const what = "The proto marks this field REQUIRED, but the CRD leaves it optional."
 	if w.servedAs != "" {
@@ -476,15 +570,26 @@ func (w *requiredGapFinder) detail(s *goStruct, f goField, entered *enteredStruc
 	var how string
 	switch {
 	case !s.generated:
-		how = fmt.Sprintf("To enforce it, add +required to %s.%s in %s.", s.name, f.goName, s.file)
+		if others := w.sharedWith(s.name); len(others) > 0 {
+			how = fmt.Sprintf("%s in %s is also used by %s, and +required on %s.%s would apply there too. To enforce it for %s only, give %s its own copy of %s.",
+				s.name, s.file, joinUsers(others), s.name, f.goName, w.kind, w.kind, s.name)
+		} else {
+			how = fmt.Sprintf("To enforce it, add +required to %s.%s in %s.", s.name, f.goName, s.file)
+		}
 	case !w.marked:
 		how = fmt.Sprintf("To enforce it, add %s to %sSpec and run generate.sh again.", codegen.RequiredFromProtoMarker, w.kind)
 	case w.requiredNameTaken(s):
 		how = fmt.Sprintf("%s has no Required copy because another type is called %sRequired. To enforce it, rename that type and run generate.sh again.", s.name, s.name)
 	case entered != nil && !w.isRequiredCopy(entered.child):
 		// generate-types writes the copy once code names it.
-		how = fmt.Sprintf("To enforce it, change %s.%s in %s from %s to %sRequired and run generate.sh again.",
-			entered.parent.name, entered.field, entered.parent.file, entered.child.name, entered.child.name)
+		p := entered.parent
+		if others := w.sharedWith(p.name); len(others) > 0 {
+			how = fmt.Sprintf("%s in %s is also used by %s. To enforce it for %s only, give %s its own copy of %s whose %s field holds %sRequired, and run generate.sh again.",
+				p.name, p.file, joinUsers(others), w.kind, w.kind, p.name, entered.field, entered.child.name)
+		} else {
+			how = fmt.Sprintf("To enforce it, change %s.%s in %s from %s to %sRequired and run generate.sh again.",
+				p.name, entered.field, p.file, entered.child.name, entered.child.name)
+		}
 	default:
 		how = fmt.Sprintf("%s has no +required markers because something else also uses it: a Kind without the marker, a status struct, a hand-written type or another package.", s.name)
 	}
