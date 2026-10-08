@@ -17,6 +17,7 @@ package v1beta1
 import (
 	backupdrv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
 	compute "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -26,11 +27,12 @@ var BackupDRBackupPlanAssociationGVK = GroupVersion.WithKind("BackupDRBackupPlan
 
 const (
 	ResourceType_ComputeInstance = "compute.googleapis.com/Instance"
+	ResourceType_SQLInstance     = "sqladmin.googleapis.com/Instance"
 )
 
 type Resource struct {
 	ComputeInstanceRef *compute.InstanceRef `json:"computeInstanceRef,omitempty"`
-	// TODO: add other resource types
+	SQLInstanceRef     *refs.SQLInstanceRef `json:"sqlInstanceRef,omitempty"`
 }
 
 // BackupDRBackupPlanAssociationSpec defines the desired state of BackupDRBackupPlanAssociation

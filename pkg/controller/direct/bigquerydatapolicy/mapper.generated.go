@@ -23,28 +23,6 @@
 
 package bigquerydatapolicy
 
-/* found existing non-generated mapping function "BigQueryDataPolicyObservedState_FromProto", skipping
-func BigQueryDataPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataPolicy) *krm.BigQueryDataPolicyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BigQueryDataPolicyObservedState{}
-	// MISSING: Name
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "BigQueryDataPolicyObservedState_ToProto", skipping
-func BigQueryDataPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDataPolicyObservedState) *pb.DataPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataPolicy{}
-	// MISSING: Name
-	return out
-}
-*/
-
 /* found existing non-generated mapping function "BigQueryDataPolicySpec_FromProto", skipping
 func BigQueryDataPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.DataPolicy) *krm.BigQueryDataPolicySpec {
 	if in == nil {

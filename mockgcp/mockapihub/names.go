@@ -52,3 +52,127 @@ func (s *MockService) parseApiName(name string) (*apiName, error) {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
 }
+
+type attributeName struct {
+	Project       *projects.ProjectData
+	Location      string
+	AttributeName string
+}
+
+func (n *attributeName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/attributes/" + n.AttributeName
+}
+
+// parseAttributeName parses a string into an attributeName.
+// The expected form is projects/<projectID>/locations/<location>/attributes/<attributeName>
+func (s *MockService) parseAttributeName(name string) (*attributeName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "attributes" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &attributeName{
+			Project:       project,
+			Location:      tokens[3],
+			AttributeName: tokens[5],
+		}, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
+type deploymentName struct {
+	Project        *projects.ProjectData
+	Location       string
+	DeploymentName string
+}
+
+func (n *deploymentName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/deployments/" + n.DeploymentName
+}
+
+// parseDeploymentName parses a string into a deploymentName.
+// The expected form is projects/<projectID>/locations/<location>/deployments/<deploymentName>
+func (s *MockService) parseDeploymentName(name string) (*deploymentName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "deployments" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &deploymentName{
+			Project:        project,
+			Location:       tokens[3],
+			DeploymentName: tokens[5],
+		}, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
+type externalApiName struct {
+	Project         *projects.ProjectData
+	Location        string
+	ExternalApiName string
+}
+
+func (n *externalApiName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/externalApis/" + n.ExternalApiName
+}
+
+// parseExternalApiName parses a string into an externalApiName.
+// The expected form is projects/<projectID>/locations/<location>/externalApis/<externalApiName>
+func (s *MockService) parseExternalApiName(name string) (*externalApiName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "externalApis" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &externalApiName{
+			Project:         project,
+			Location:        tokens[3],
+			ExternalApiName: tokens[5],
+		}, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
+type dependencyName struct {
+	Project        *projects.ProjectData
+	Location       string
+	DependencyName string
+}
+
+func (n *dependencyName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/dependencies/" + n.DependencyName
+}
+
+// parseDependencyName parses a string into a dependencyName.
+// The expected form is projects/<projectID>/locations/<location>/dependencies/<dependencyName>
+func (s *MockService) parseDependencyName(name string) (*dependencyName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "dependencies" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &dependencyName{
+			Project:        project,
+			Location:       tokens[3],
+			DependencyName: tokens[5],
+		}, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}

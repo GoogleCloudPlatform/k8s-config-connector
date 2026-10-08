@@ -16,6 +16,7 @@ package e2e
 
 import (
 	"fmt"
+	"regexp"
 	"slices"
 	"sort"
 	"strings"
@@ -92,6 +93,14 @@ func (r *Replacements) ApplyReplacements(s string) string {
 	for _, normalizer := range normalizers {
 		s = normalizer(s)
 	}
+
+	// Normalize BackupDR vault service accounts to a standard placeholder
+	reBackupVaultSA := regexp.MustCompile(`(vault-\d+)-\d+(@gcp-sa-backupdr-pr\.iam\.gserviceaccount\.com)`)
+	s = reBackupVaultSA.ReplaceAllString(s, `${1}-12345${2}`)
+
+	reBackupVaultSA2 := regexp.MustCompile(`(vault-\$\{projectNumber\})-\d+(@gcp-sa-backupdr-pr\.iam\.gserviceaccount\.com)`)
+	s = reBackupVaultSA2.ReplaceAllString(s, `${1}-12345${2}`)
+
 	return s
 }
 
@@ -99,6 +108,9 @@ func (r *Replacements) ApplyReplacements(s string) string {
 func (r *Replacements) placeholderForGCPResource(resource string, name string) string {
 	switch resource {
 	case "addresses":
+		if strings.HasPrefix(name, "computeaddress-1a") || strings.HasPrefix(name, "computeaddress-1b") || strings.HasPrefix(name, "computeaddress-2a") || strings.HasPrefix(name, "computeaddress-2b") {
+			return ""
+		}
 		return "${addressID}"
 	case "urlMaps":
 		return "${urlMapID}"
@@ -127,6 +139,9 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 	case "exclusions":
 		return "${exclusionID}"
 	case "forwardingRules":
+		if strings.HasPrefix(name, "computeforwardingrule-1a") || strings.HasPrefix(name, "computeforwardingrule-1b") || strings.HasPrefix(name, "computeforwardingrule-2a") || strings.HasPrefix(name, "computeforwardingrule-2b") {
+			return ""
+		}
 		return "${forwardingRuleID}"
 	case "groups":
 		return "${groupID}"
@@ -176,6 +191,10 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 			return ""
 		}
 		return "${instanceGroupID}"
+	case "workloads":
+		return "${workloadID}"
+	case "analysisRules":
+		return "${analysisRuleId}"
 	default:
 		return ""
 	}

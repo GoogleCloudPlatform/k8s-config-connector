@@ -191,6 +191,7 @@ func (a *GCPolicyAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		return nil
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	err = a.gcpClient.SetGCPolicy(ctx, a.id.Table, a.id.ColumnFamily, desiredPolicy)

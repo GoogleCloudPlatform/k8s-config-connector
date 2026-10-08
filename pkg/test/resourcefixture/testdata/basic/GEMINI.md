@@ -55,8 +55,8 @@ RUN_E2E=1 E2E_GCP_TARGET=mock E2E_KUBE_TARGET=envtest go test -v ./tests/e2e -ru
 # Run all fixtures for a service (matches any fixture with "storage" in its name)
 RUN_E2E=1 E2E_GCP_TARGET=mock E2E_KUBE_TARGET=envtest go test -v ./tests/e2e -run TestAllInSeries/fixtures/storage
 
-# Record against real GCP manually (not recommended over hack/record-gcp)
-RUN_E2E=1 E2E_GCP_TARGET=real E2E_KUBE_TARGET=envtest WRITE_GOLDEN_OUTPUT=1 GOLDEN_OBJECT_CHECKS=1 GOLDEN_REQUEST_CHECKS=1 go test -v ./tests/e2e -run TestAllInSeries/fixtures/storagebucketbasic
+# Record against real GCP: always use hack/record-gcp (it also accepts a test name pattern)
+hack/record-gcp "fixtures/^storagebucketbasic$"
 ```
 
 ## Creating a New Test
@@ -70,5 +70,5 @@ RUN_E2E=1 E2E_GCP_TARGET=real E2E_KUBE_TARGET=envtest WRITE_GOLDEN_OUTPUT=1 GOLD
 ## Best Practices
 
 - **Uniqueness**: The test framework replaces `${uniqueId}` with a unique ID in your YAML files. It does *not* automatically append a suffix to resource names. You should explicitly use `${uniqueId}` in your resource names (e.g., `name: storagebucket-${uniqueId}`) to avoid collisions when running against real GCP.
-- **Normalization**: If tests are flaky due to volatile fields (e.g., server-generated IDs or timestamps), add normalization rules in the corresponding MockGCP service directory (e.g., `mockgcp/mockstorage/normalize.go`). Use `Previsit` or `ConfigureVisitor` to define replacement rules, ensuring they are scoped to the correct service URL.
+- **Normalization**: If tests are flaky due to volatile fields (e.g., server-generated IDs, timestamps, dynamic tokens, or varying LRO polling call counts), add normalization rules in the corresponding MockGCP service directory (e.g., `mockgcp/mockstorage/normalize.go`) or `tests/e2e/normalize.go`. Use `Previsit` or `ConfigureVisitor` to define replacement rules, ensuring they are scoped to the correct service URL. Run-to-run variations in HTTP logs must be addressed via normalizers and should never trigger repeated re-recordings against real GCP.
 - **Dependencies**: Keep `dependencies.yaml` minimal. Only include resources directly required by the primary resource. Resources in `dependencies.yaml` should follow the order of their dependencies.

@@ -1,0 +1,46 @@
+apiVersion: configdelivery.cnrm.cloud.google.com/v1alpha1
+kind: ConfigDeliveryFleetPackage
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: cdfpackage-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  deletionPropagationPolicy: FOREGROUND
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  resourceBundleSelector:
+    resourceBundle:
+      resourceBundleRef:
+        external: projects/${projectId}/locations/us-central1/resourceBundles/my-bundle
+      tag: v1.0.0
+  rolloutStrategy:
+    rolling:
+      maxConcurrent: 4
+  state: ACTIVE
+  target:
+    fleet:
+      projectRef:
+        external: ${projectId}
+      selector:
+        matchLabels:
+          env: prod
+  variantSelector:
+    variantNameTemplate: updated-maximal
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/fleetPackages/cdfpackage-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"

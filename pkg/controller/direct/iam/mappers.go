@@ -94,39 +94,39 @@ func IAMServiceAccountKeyObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	return out
 }
 
-func IAMDenyPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *krmv1alpha1.IAMDenyPolicyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.IAMDenyPolicyObservedState{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: Kind
-	// MISSING: Annotations
-	// MISSING: Etag
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ManagingAuthority
-	return out
-}
+// func IAMDenyPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *krmv1alpha1.IAMDenyPolicyObservedState {
+// 	if in == nil {
+// 		return nil
+// 	}
+// 	out := &krmv1alpha1.IAMDenyPolicyObservedState{}
+// 	// MISSING: Name
+// 	// MISSING: Uid
+// 	// MISSING: Kind
+// 	// MISSING: Annotations
+// 	// MISSING: Etag
+// 	// MISSING: CreateTime
+// 	// MISSING: UpdateTime
+// 	// MISSING: DeleteTime
+// 	// MISSING: ManagingAuthority
+// 	return out
+// }
 
-func IAMDenyPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.IAMDenyPolicyObservedState) *pb.Policy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Policy{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: Kind
-	// MISSING: Annotations
-	// MISSING: Etag
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ManagingAuthority
-	return out
-}
+// func IAMDenyPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.IAMDenyPolicyObservedState) *pb.Policy {
+// 	if in == nil {
+// 		return nil
+// 	}
+// 	out := &pb.Policy{}
+// 	// MISSING: Name
+// 	// MISSING: Uid
+// 	// MISSING: Kind
+// 	// MISSING: Annotations
+// 	// MISSING: Etag
+// 	// MISSING: CreateTime
+// 	// MISSING: UpdateTime
+// 	// MISSING: DeleteTime
+// 	// MISSING: ManagingAuthority
+// 	return out
+// }
 
 func IAMDenyPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *krmv1alpha1.IAMDenyPolicySpec {
 	if in == nil {

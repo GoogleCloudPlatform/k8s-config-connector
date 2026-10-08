@@ -77,7 +77,8 @@ func (r *Recorder) GetRemainResourcesCount() int {
 
 // objectInfo holds the activity from reconciling the objects
 type objectInfo struct {
-	events []event
+	currentStatus string
+	events        []event
 }
 
 type event struct {
@@ -91,6 +92,8 @@ type event struct {
 	gcpAction *gcpAction
 	// the type of reconciler that the manager is using
 	reconcilerType k8s.ReconcilerType
+	// err is the error that was recorded
+	err error
 }
 
 type EventType string
@@ -101,6 +104,7 @@ const (
 	EventTypeDiff           EventType = "diff"
 	EventTypeKubeAction     EventType = "kubeAction"
 	EventTypeGCPAction      EventType = "gcpAction"
+	EventTypeError          EventType = "error"
 )
 
 // kubeAction holds a kubernetes action that was recorded
@@ -140,11 +144,14 @@ type structuredReportingListener struct {
 
 // OnError is called by the structured reporting subsystem when an error occurs.
 func (l *structuredReportingListener) OnError(ctx context.Context, err error, args ...any) {
-	blockedGCPError, ok := ExtractBlockedGCPError(err)
-	if !ok {
+	if blockedGCPError, ok := ExtractBlockedGCPError(err); ok {
+		l.recorder.recordGCPAction(ctx, blockedGCPError, args, ActionBlocked)
 		return
 	}
-	l.recorder.recordGCPAction(ctx, blockedGCPError, args, ActionBlocked)
+	if IsBlockedError(err) {
+		return
+	}
+	l.recorder.recordError(ctx, err, args)
 }
 
 // OnReconcileStart is called by the structured reporting subsystem when a reconcile starts.
@@ -204,6 +211,9 @@ func (r *Recorder) recordReconcileStart(ctx context.Context, u *unstructured.Uns
 	}
 
 	info := r.getObjectInfo(gknn)
+	if info.currentStatus == "" || info.currentStatus == "N/A" {
+		info.currentStatus = extractCurrentStatus(u)
+	}
 	info.events = append(info.events, event{
 		eventType:      EventTypeReconcileStart,
 		reconcilerType: t,
@@ -222,11 +232,57 @@ func (r *Recorder) recordReconcileEnd(ctx context.Context, u *unstructured.Unstr
 	info.events = append(info.events, event{
 		eventType:      EventTypeReconcileEnd,
 		reconcilerType: t,
+		err:            err,
 	})
 	r.reconcileTrackerMutex.Lock()
 	defer r.reconcileTrackerMutex.Unlock()
 	r.ReconciledResources[gknn] = true
 	r.RemainResourcesCount--
+}
+
+// recordError captures a non-blocked error into our recorder.
+func (r *Recorder) recordError(ctx context.Context, err error, args []any) {
+	if err == nil || IsBlockedError(err) {
+		return
+	}
+	var gknn GKNN
+
+	for _, arg := range args {
+		switch arg := arg.(type) {
+		case *k8s.Resource:
+			group := strings.Split(arg.APIVersion, "/")[0]
+			gknn = GKNN{
+				Group:     group,
+				Kind:      arg.Kind,
+				Namespace: arg.Namespace,
+				Name:      arg.Name,
+			}
+		case *unstructured.Unstructured:
+			gvk := arg.GroupVersionKind()
+			gknn = GKNN{
+				Group:     gvk.Group,
+				Kind:      gvk.Kind,
+				Namespace: arg.GetNamespace(),
+				Name:      arg.GetName(),
+			}
+		default:
+			klog.V(2).Infof("unhandled arg type %T in recordError", arg)
+		}
+	}
+
+	if gknn == (GKNN{}) {
+		return
+	}
+
+	if done := r.GKNNDoneReconcile(gknn); done {
+		return
+	}
+
+	info := r.getObjectInfo(gknn)
+	info.events = append(info.events, event{
+		eventType: EventTypeError,
+		err:       err,
+	})
 }
 
 func (r *Recorder) GKNNDoneReconcile(gknn GKNN) bool {
@@ -327,6 +383,14 @@ func (r *Recorder) recordGCPAction(ctx context.Context, err *BlockedGCPError, ar
 				Namespace: arg.Namespace,
 				Name:      arg.Name,
 			}
+		case *unstructured.Unstructured:
+			gvk := arg.GroupVersionKind()
+			gknn = GKNN{
+				Group:     gvk.Group,
+				Kind:      gvk.Kind,
+				Namespace: arg.GetNamespace(),
+				Name:      arg.GetName(),
+			}
 		default:
 			klog.Fatalf("unhandled arg type %T", arg)
 		}
@@ -426,18 +490,58 @@ func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config, namespa
 				}
 			}
 			for _, resource := range resources.Items {
-				r.ReconciledResources[GKNN{
+				gknn := GKNN{
 					Group:     gvr.Group,
 					Kind:      resource.GetKind(),
 					Namespace: resource.GetNamespace(),
 					Name:      resource.GetName(),
-				}] = false
+				}
+				r.ReconciledResources[gknn] = false
+				status := extractCurrentStatus(&resource)
+				info := r.getObjectInfo(gknn)
+				info.currentStatus = status
 			}
 			r.RemainResourcesCount += len(resources.Items)
 		}
 	}
 	log.V(0).Info("Successfully preloaded the list of resources to reconcile", "count", r.RemainResourcesCount)
 	return nil
+}
+
+// extractCurrentStatus extracts the current status/reason from a resource's status.conditions.
+func extractCurrentStatus(u *unstructured.Unstructured) string {
+	if u == nil {
+		return "N/A"
+	}
+	conditions, found, err := unstructured.NestedSlice(u.Object, "status", "conditions")
+	if err != nil || !found || len(conditions) == 0 {
+		return "N/A"
+	}
+	for _, condRaw := range conditions {
+		condMap, ok := condRaw.(map[string]interface{})
+		if !ok {
+			continue
+		}
+		if condType, _ := condMap["type"].(string); condType == "Ready" {
+			if reason, ok := condMap["reason"].(string); ok && reason != "" {
+				return reason
+			}
+			if status, ok := condMap["status"].(string); ok && status != "" {
+				return status
+			}
+		}
+	}
+	if len(conditions) > 0 {
+		if condMap, ok := conditions[0].(map[string]interface{}); ok {
+			if reason, ok := condMap["reason"].(string); ok && reason != "" {
+				return reason
+			}
+			if status, ok := condMap["status"].(string); ok && status != "" {
+				return status
+			}
+		}
+	}
+	return "N/A"
 }
 
 func (recorder *Recorder) GetOrCreateReconciledResults() *RecorderReconciledResults {
@@ -528,6 +632,7 @@ func (e event) DeepCopy() event {
 	res := event{
 		eventType:      e.eventType,
 		reconcilerType: e.reconcilerType,
+		err:            e.err,
 	}
 	if e.diff != nil {
 		res.diff = &structuredreporting.Diff{

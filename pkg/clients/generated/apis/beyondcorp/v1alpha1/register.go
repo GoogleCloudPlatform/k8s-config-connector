@@ -77,11 +77,5 @@ var (
 		Kind:    reflect.TypeOf(BeyondCorpClientConnectorService{}).Name(),
 	}
 
-	BeyondCorpClientGatewayGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(BeyondCorpClientGateway{}).Name(),
-	}
-
 	beyondcorpAPIVersion = SchemeGroupVersion.String()
 )

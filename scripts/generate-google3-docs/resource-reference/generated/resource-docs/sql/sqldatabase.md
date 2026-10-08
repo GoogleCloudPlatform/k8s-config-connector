@@ -292,6 +292,11 @@ spec:
   databaseVersion: MYSQL_5_7
   settings:
     tier: db-n1-standard-1
+    ipConfiguration:
+      # Forces all connections to use SSL
+      requireSsl: true
+      # Optional: provides more granular SSL enforcement (e.g., ENCRYPTED_ONLY, TRUSTED_CLIENT_CERTIFICATE_REQUIRED)
+      # sslMode: ENCRYPTED_ONLY
 ```
 
 Note: If you have any trouble with instantiating the resource, refer to <a href="https://docs.cloud.google.com/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.

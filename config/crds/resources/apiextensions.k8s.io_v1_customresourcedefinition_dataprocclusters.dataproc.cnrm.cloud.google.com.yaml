@@ -679,6 +679,64 @@ spec:
                             description: The namespace of a ComputeImage resource.
                             type: string
                         type: object
+                      instanceFlexibilityPolicy:
+                        description: Optional. Instance flexibility Policy allowing
+                          a mixture of VM shapes and provisioning models.
+                        properties:
+                          instanceSelectionList:
+                            description: Optional. List of instance selection options
+                              that the group will use when creating new VMs.
+                            items:
+                              properties:
+                                machineTypes:
+                                  description: Optional. Full machine-type names,
+                                    e.g. "n1-standard-16".
+                                  items:
+                                    type: string
+                                  type: array
+                                rank:
+                                  description: Optional. Preference of this instance
+                                    selection. Lower number means higher preference.
+                                    Dataproc will first try to create a VM based on
+                                    the machine-type with priority rank and fallback
+                                    to next rank based on availability. Machine types
+                                    and instance selections with the same priority
+                                    have the same preference.
+                                  format: int32
+                                  type: integer
+                              type: object
+                            type: array
+                          provisioningModelMix:
+                            description: Optional. Defines how the Group selects the
+                              provisioning model to ensure required reliability.
+                            properties:
+                              standardCapacityBase:
+                                description: Optional. The base capacity that will
+                                  always use Standard VMs to avoid risk of more preemption
+                                  than the minimum capacity you need. Dataproc will
+                                  create only standard VMs until it reaches standard_capacity_base,
+                                  then it will start using standard_capacity_percent_above_base
+                                  to mix Spot with Standard VMs. eg. If 15 instances
+                                  are requested and standard_capacity_base is 5, Dataproc
+                                  will create 5 standard VMs and then start mixing
+                                  spot and standard VMs for remaining 10 instances.
+                                format: int32
+                                type: integer
+                              standardCapacityPercentAboveBase:
+                                description: Optional. The percentage of target capacity
+                                  that should use Standard VM. The remaining percentage
+                                  will use Spot VMs. The percentage applies only to
+                                  the capacity above standard_capacity_base. eg. If
+                                  15 instances are requested and standard_capacity_base
+                                  is 5 and standard_capacity_percent_above_base is
+                                  30, Dataproc will create 5 standard VMs and then
+                                  start mixing spot and standard VMs for remaining
+                                  10 instances. The mix will be 30% standard and 70%
+                                  spot.
+                                format: int32
+                                type: integer
+                            type: object
+                        type: object
                       machineType:
                         description: 'Immutable. Optional. The Compute Engine machine
                           type used for cluster instances. A full URL, partial URI,

@@ -1,0 +1,18 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityAddressGroup
+metadata:
+  name: addressgroup-max-${uniqueId}
+spec:
+  projectRef:
+    external: "projects/${projectId}"
+  location: global
+  type: IPV4
+  capacity: 150
+  description: "An updated maximal address group test"
+  labels:
+    foo: baz
+  items:
+    - "10.0.0.0/24"
+    - "10.0.1.0/24"
+  purpose:
+    - DEFAULT

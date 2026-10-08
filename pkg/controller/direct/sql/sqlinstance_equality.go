@@ -139,7 +139,9 @@ func DiffSettings(desired *api.Settings, actual *api.Settings) *structuredreport
 		diff.AddField(".settings.dataDiskType", actual.DataDiskType, desired.DataDiskType)
 	}
 	diff.AddDiff(DiffDatabaseFlagLists(desired.DatabaseFlags, actual.DatabaseFlags))
-	// Ignore DatabaseReplicationEnabled. It is not supported in KRM API.
+	if desired.DatabaseReplicationEnabled != actual.DatabaseReplicationEnabled {
+		diff.AddField(".settings.databaseReplicationEnabled", actual.DatabaseReplicationEnabled, desired.DatabaseReplicationEnabled)
+	}
 	if desired.DeletionProtectionEnabled != actual.DeletionProtectionEnabled {
 		diff.AddField(".settings.deletionProtectionEnabled", actual.DeletionProtectionEnabled, desired.DeletionProtectionEnabled)
 	}

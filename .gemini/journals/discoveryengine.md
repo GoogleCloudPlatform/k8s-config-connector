@@ -39,3 +39,44 @@
 - **Problem**: `DiscoveryEngineUserStore` has a `defaultLicenseConfig` field pointing to a `DiscoveryEngineLicenseConfig` resource. Since the DiscoveryEngine API returns project numbers instead of project IDs in FQN responses, the `compare` function detected a false diff between the desired state (using project ID) and actual state (using project number returned by GCP), which triggered unnecessary reconciliations (PATCH requests) during re-reconciliation, failing the E2E tests. Additionally, the test runner's service account lacked `discoveryengine.userStores.update` permission by default in `roles/editor`, causing a `403 Forbidden` error.
 - **Solution**: Added the `roles/discoveryengine.admin` role to the test runner's service account. Implemented a path normalization helper in the controller's `compare` function to map project numbers to the canonical project ID for `defaultLicenseConfig` paths before running the top-level field diff comparison. Added custom E2E JSON log normalization for `defaultLicenseConfig` to prevent dynamic ID diff failures.
 - **Impact**: Resolves project ID vs project number false diffs for license config references and ensures clean, repeatable E2E test runs with zero unexpected HTTP traffic.
+
+### [2026-08-13] DiscoveryEngineEngine Direct Controller and Field Immutability
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `DiscoveryEngineEngine`.
+- **Problem**:
+  1. The GCP REST Client returns `unsupported result type <nil>: <nil>` on `DeleteEngine` LRO's `op.Wait(ctx)` because the REST API returns an empty response body on delete, and the client's generated wait method expects a non-nil result.
+  2. The `disable_analytics` field is immutable according to the GCP API, and specifying it in `updateMask` during a `PATCH` request causes a `400 Bad Request` with `Field "updateMask" contains an immutable path "disable_analytics"`.
+- **Solution**:
+  1. Modified `Delete` in `discoveryengineengine_controller.go` to ignore the `unsupported result type <nil>: <nil>` error when waiting for deletion.
+  2. Kept `disableAnalytics: false` unchanged between `create.yaml` and `update.yaml` so that it doesn't trigger a diff and isn't included in the update mask.
+- **Impact**: Ensures that deletion is correctly reported as a success, and updates run successfully against real GCP without encountering immutable field update mask errors.
+
+### [2026-09-30] DiscoveryEngineControl Direct Controller, Collection Link, and Engine Dependency
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `DiscoveryEngineControl`.
+- **Problem**:
+  1. `DiscoveryEngineControlIdentityFormat` was missing `collections/{collection}` in its template format. GCP API rejected resource names without `collections/default_collection` with `400 Bad Request`.
+  2. GCP API requires that the parent `DiscoveryEngineDataStore` must be associated with an existing `DiscoveryEngineEngine` before any `Control` can be created under that dataStore.
+  3. Action fields (e.g. `synonyms_action`, `boost_action`) on Control are immutable in GCP; modifying them triggers `Field "updateMask" contains an immutable path`.
+  4. For synonyms controls, `conditions.queryTerms` cannot be specified; only `conditions.activeTimeRange` is permitted.
+- **Solution**:
+  1. Updated `DiscoveryEngineControlIdentityFormat` to include `collections/{collection}` and parse `Collection` from the parent DataStore link.
+  2. Added `DiscoveryEngineEngine` to `dependencies.yaml` for both minimal and maximal test fixtures.
+  3. Kept action fields unchanged in `update.yaml` and tested updates on mutable fields (`displayName` and `conditions.activeTimeRange`).
+- **Impact**: Enables proper direct reconciliation and successful E2E golden file recording against real GCP for `DiscoveryEngineControl`.
+
+### [2026-10-01] DiscoveryEngineControl MockGCP Alignment and Dynamic Engine Association
+- **Context**: Aligning MockGCP behavior with Real GCP logs for `DiscoveryEngineControl` (Issue #13608).
+- **Problem**: When a `Control` is created under a `dataStore` that is attached to an `Engine`, the real GCP DiscoveryEngine API returns the resource `name` in responses under the `engines/{engine}` hierarchy rather than `dataStores/{dataStore}`.
+- **Solution**: Implemented `buildControlResponseName` in `mockdiscoveryengine/control.go` to inspect whether the target `dataStore` is attached to an `Engine` and return the matching engine control URI. Verified log alignment across minimal and maximal test fixtures with zero drift.
+- **Impact**: Ensures accurate MockGCP simulation for DiscoveryEngine controls under both standalone and engine-associated datastores.
+
+### [2026-09-30] DiscoveryEngineSitemap Direct Controller Implementation
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `DiscoveryEngineSitemap` (Issue #13528).
+- **Problem**:
+  1. `CreateSitemap` requires Advanced Site Search to be enabled on the parent `DataStore` / `SiteSearchEngine`, otherwise returning `400 Bad Request: Only Advanced Site Search data stores are permitted to use the Sitemap API`.
+  2. The DiscoveryEngine API returns the project number instead of the project ID in resource names on create/fetch and strictly requires the canonical project number in the resource name for `DeleteSitemap`.
+  3. `DiscoveryEngineSitemap` has server-generated IDs and has no Update RPC in GCP API (it is immutable).
+- **Solution**:
+  1. In `Create`, if `CreateSitemap` reports that Advanced Site Search is required, call `EnableAdvancedSiteSearch` on the parent `siteSearchEngine` LRO and retry `CreateSitemap`.
+  2. During `Create`, only set `a.id.Sitemap` to preserve the user's project ID in `a.id.String()` for KRM status consistency, while in `Delete`, call `Find` first and use `a.actual.GetName()` (which carries the server-assigned project number) for `DeleteSitemap`.
+  3. Handled immutability in `Update` by performing spec diff comparison and no-oping if diffs are detected to avoid reconciliation loops.
+- **Impact**: Enables smooth creation, re-reconciliation, and deletion of `DiscoveryEngineSitemap` resources with automatic advanced site search provisioning.

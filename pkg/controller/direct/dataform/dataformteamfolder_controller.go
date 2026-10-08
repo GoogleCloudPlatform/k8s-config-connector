@@ -177,6 +177,9 @@ func (a *teamFolderAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
+	structuredreporting.ReportDiff(ctx, diffs)
+
 	desired := proto.Clone(a.desired).(*dataformpb.TeamFolder)
 	desired.Name = a.id.String()
 

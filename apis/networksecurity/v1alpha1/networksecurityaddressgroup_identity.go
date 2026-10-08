@@ -43,6 +43,10 @@ func (i *NetworkSecurityAddressGroupIdentity) String() string {
 	return NetworkSecurityAddressGroupIdentityFormat.ToString(*i)
 }
 
+func (i *NetworkSecurityAddressGroupIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *NetworkSecurityAddressGroupIdentity) FromExternal(ref string) error {
 	parsed, match, err := NetworkSecurityAddressGroupIdentityFormat.Parse(ref)
 	if err != nil {

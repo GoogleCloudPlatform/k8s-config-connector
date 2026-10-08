@@ -29,7 +29,7 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
+./generate-proto.sh HEAD
 
 # --- v1alpha1 ---
 ${CONTROLLERBUILDER} generate-types \
@@ -37,8 +37,11 @@ ${CONTROLLERBUILDER} generate-types \
     --api-version "networkservices.cnrm.cloud.google.com/v1alpha1" \
     --resource NetworkServicesServiceBinding:ServiceBinding \
     --resource NetworkServicesLBRouteExtension:LbRouteExtension \
+    --resource NetworkServicesLBEdgeExtension:LbEdgeExtension \
+    --resource NetworkServicesLBTrafficExtension:LbTrafficExtension \
     --resource NetworkServicesWasmPlugin:WasmPlugin \
-    --resource NetworkServicesAuthzExtension:AuthzExtension
+    --resource NetworkServicesAuthzExtension:AuthzExtension \
+    --resource NetworkServicesServiceLBPolicy:ServiceLbPolicy
 # Note: NetworkServicesEdgeCacheService is handcoded under apis/networkservices/v1alpha1/edgecacheservice_types.go
 # because its proto definition is not published in the public googleapis repository.
 

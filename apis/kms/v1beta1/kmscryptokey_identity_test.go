@@ -15,9 +15,15 @@
 package v1beta1
 
 import (
+	"context"
+	"errors"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/google/go-cmp/cmp"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
 func TestKMSCryptoKeyIdentity_FromExternal(t *testing.T) {
@@ -69,4 +75,50 @@ func TestKMSCryptoKeyIdentity_FromExternal(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestKMSCryptoKeyRef_Normalize(t *testing.T) {
+	ctx := context.Background()
+
+	readyKey := &unstructured.Unstructured{}
+	readyKey.SetGroupVersionKind(KMSCryptoKeyGVK)
+	readyKey.SetName("ready-key")
+	readyKey.SetNamespace("test-ns")
+	if err := unstructured.SetNestedField(readyKey.Object, "projects/my-project/locations/us-central1/keyRings/my-keyring/cryptoKeys/ready-key", "status", "selfLink"); err != nil {
+		t.Fatalf("failed to set status.selfLink: %v", err)
+	}
+
+	unreadyKey := &unstructured.Unstructured{}
+	unreadyKey.SetGroupVersionKind(KMSCryptoKeyGVK)
+	unreadyKey.SetName("unready-key")
+	unreadyKey.SetNamespace("test-ns")
+	if err := unstructured.SetNestedField(unreadyKey.Object, "unready-key", "spec", "resourceID"); err != nil {
+		t.Fatalf("failed to set spec.resourceID: %v", err)
+	}
+
+	scheme := runtime.NewScheme()
+	reader := fake.NewClientBuilder().WithScheme(scheme).WithObjects(readyKey, unreadyKey).Build()
+
+	t.Run("resolves status.selfLink when ready", func(t *testing.T) {
+		ref := &KMSCryptoKeyRef{Name: "ready-key"}
+		if err := ref.Normalize(ctx, reader, "test-ns"); err != nil {
+			t.Fatalf("Normalize() unexpected error: %v", err)
+		}
+		want := "projects/my-project/locations/us-central1/keyRings/my-keyring/cryptoKeys/ready-key"
+		if ref.External != want {
+			t.Errorf("Normalize() External = %q, want %q", ref.External, want)
+		}
+	})
+
+	t.Run("returns ReferenceNotReadyError when status.selfLink is empty", func(t *testing.T) {
+		ref := &KMSCryptoKeyRef{Name: "unready-key"}
+		err := ref.Normalize(ctx, reader, "test-ns")
+		if err == nil {
+			t.Fatalf("Normalize() expected ReferenceNotReadyError, got nil (External=%q)", ref.External)
+		}
+		var notReadyErr *k8s.ReferenceNotReadyError
+		if !errors.As(err, &notReadyErr) {
+			t.Errorf("Normalize() error = %T (%v), want *k8s.ReferenceNotReadyError", err, err)
+		}
+	})
 }

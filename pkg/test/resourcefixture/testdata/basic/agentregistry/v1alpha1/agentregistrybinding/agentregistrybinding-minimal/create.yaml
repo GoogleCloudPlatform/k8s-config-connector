@@ -1,0 +1,15 @@
+apiVersion: agentregistry.cnrm.cloud.google.com/v1alpha1
+kind: AgentRegistryBinding
+metadata:
+  name: agentregistrybinding-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  authProviderBinding:
+    authProviderRef:
+      external: projects/${projectId}/locations/us-central1/authProviders/dummy-provider
+  source:
+    identifier: urn:agent:google:system:testagent
+  target:
+    identifier: urn:agent:google:system:testagent2

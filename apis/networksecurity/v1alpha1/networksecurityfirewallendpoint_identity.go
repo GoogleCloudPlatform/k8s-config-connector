@@ -18,6 +18,8 @@ import (
 	"context"
 	"fmt"
 
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -41,7 +43,7 @@ type NetworkSecurityFirewallEndpointIdentity struct {
 	Project          string
 	Organization     string
 	Location         string
-	Firewallendpoint string
+	FirewallEndpoint string
 }
 
 func (i *NetworkSecurityFirewallEndpointIdentity) String() string {
@@ -88,18 +90,59 @@ func getIdentityFromNetworkSecurityFirewallEndpointSpec(ctx context.Context, rea
 
 	location, err := refs.GetLocation(obj)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve location")
+		return nil, fmt.Errorf("cannot resolve location: %w", err)
 	}
 
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project")
+	// Resolve Project or Organization
+	var projectID string
+	var organizationID string
+	if u, ok := obj.(*unstructured.Unstructured); ok {
+		if _, found, _ := unstructured.NestedMap(u.Object, "spec", "projectRef"); found {
+			projID, err := refs.ResolveProjectID(ctx, reader, u)
+			if err != nil {
+				return nil, fmt.Errorf("cannot resolve project: %w", err)
+			}
+			projectID = projID
+		} else if _, found, _ := unstructured.NestedMap(u.Object, "spec", "organizationRef"); found {
+			orgID, err := refs.ResolveOrganizationID(ctx, reader, u)
+			if err != nil {
+				return nil, fmt.Errorf("cannot resolve organization: %w", err)
+			}
+			organizationID = orgID
+		} else {
+			return nil, fmt.Errorf("exactly one parent field (projectRef or organizationRef) must be set")
+		}
+	} else if typed, ok := obj.(*NetworkSecurityFirewallEndpoint); ok {
+		if typed.Spec.ProjectRef != nil {
+			proj, err := refs.ResolveProject(ctx, reader, typed.GetNamespace(), typed.Spec.ProjectRef)
+			if err != nil {
+				return nil, fmt.Errorf("cannot resolve project: %w", err)
+			}
+			if proj != nil {
+				projectID = proj.ProjectID
+			}
+		} else if typed.Spec.OrganizationRef != nil {
+			org, err := refs.ResolveOrganization(ctx, reader, typed, typed.Spec.OrganizationRef)
+			if err != nil {
+				return nil, fmt.Errorf("cannot resolve organization: %w", err)
+			}
+			if org != nil {
+				organizationID = org.OrganizationID
+			}
+		} else {
+			return nil, fmt.Errorf("exactly one parent field (projectRef or organizationRef) must be set")
+		}
+	}
+
+	if projectID == "" && organizationID == "" {
+		return nil, fmt.Errorf("exactly one parent field (projectRef or organizationRef) must be set")
 	}
 
 	identity := &NetworkSecurityFirewallEndpointIdentity{
 		Project:          projectID,
+		Organization:     organizationID,
 		Location:         location,
-		Firewallendpoint: resourceID,
+		FirewallEndpoint: resourceID,
 	}
 	return identity, nil
 }

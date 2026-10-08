@@ -17,6 +17,7 @@ package networkconnectivity
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"strings"
 
 	"google.golang.org/protobuf/encoding/protojson"
@@ -43,21 +44,24 @@ func convertProtoToAPI(u protoreflect.ProtoMessage, v any) error {
 
 func convertAPIToProto[V protoreflect.ProtoMessage](u any, pV *V) error {
 	if u == nil {
-		// *pV = nil
 		return nil
 	}
 
 	j, err := json.Marshal(u)
 	if err != nil {
-		return fmt.Errorf("converting proto to json: %w", err)
+		return fmt.Errorf("converting api to json: %w", err)
 	}
 
 	var v V
-	if err := json.Unmarshal(j, &v); err != nil {
-		return fmt.Errorf("converting json to proto type: %w", err)
+	targetType := reflect.TypeOf(v)
+	if targetType.Kind() == reflect.Ptr {
+		target := reflect.New(targetType.Elem()).Interface().(protoreflect.ProtoMessage)
+		opts := protojson.UnmarshalOptions{DiscardUnknown: true}
+		if err := opts.Unmarshal(j, target); err != nil {
+			return fmt.Errorf("converting json to proto type: %w", err)
+		}
+		*pV = target.(V)
 	}
-	*pV = v
-	// *pV = &v
 	return nil
 }
 

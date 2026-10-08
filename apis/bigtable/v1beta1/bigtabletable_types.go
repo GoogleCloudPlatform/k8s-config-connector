@@ -77,6 +77,10 @@ type TableColumnFamily struct {
 	// The name of the column family.
 	FamilyID string `json:"family"`
 
+	// The type of the column family.
+	// +optional
+	Type *string `json:"type,omitempty"`
+
 	// NOTYET
 	// Garbage collection rule specified as a protobuf.
 	// Must serialize to at most 500 bytes.
@@ -85,19 +89,6 @@ type TableColumnFamily struct {
 	// so it's possible for reads to return a cell even if it matches the active
 	// GC expression for its family.
 	// GcRule *GcRule `json:"gcRule,omitempty"`
-
-	// NOTYET
-	// The type of data stored in each of this family's cell values, including its
-	// full encoding. If omitted, the family only serves raw untyped bytes.
-	//
-	// For now, only the `Aggregate` type is supported.
-	//
-	// `Aggregate` can only be set at family creation and is immutable afterwards.
-	//
-	//
-	// If `value_type` is `Aggregate`, written data must be compatible with:
-	//  * `value_type.input_type` for `AddInput` mutations
-	// ValueType *Type `json:"valueType,omitempty"`
 }
 
 // BigtableTableStatus defines the config connector machine state of BigtableTable

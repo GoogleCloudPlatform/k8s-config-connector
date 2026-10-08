@@ -35,10 +35,13 @@ ${CONTROLLERBUILDER} generate-types \
     --service google.cloud.contentwarehouse.v1 \
     --api-version "contentwarehouse.cnrm.cloud.google.com/v1alpha1" \
     --include-skipped-output \
-    --resource ContentWarehouseSchema:DocumentSchema \
     --resource ContentWarehouseRuleSet:RuleSet \
     --resource ContentWarehouseDocument:Document \
     --resource ContentWarehouseSynonymSet:SynonymSet
+
+${CONTROLLERBUILDER} generate-mapper \
+    --service google.cloud.contentwarehouse.v1 \
+    --api-version "contentwarehouse.cnrm.cloud.google.com/v1alpha1"
 
 cd "${REPO_ROOT}"
 dev/tasks/generate-crds

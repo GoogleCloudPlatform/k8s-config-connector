@@ -38,13 +38,6 @@ ${CONTROLLERBUILDER} generate-types \
 
 mv "${REPO_ROOT}/apis/beyondcorp/v1alpha1/types.generated.go" "${REPO_ROOT}/apis/beyondcorp/v1alpha1/clientconnectorservice_types.generated.go" || true
 
-${CONTROLLERBUILDER} generate-types \
-    --service google.cloud.beyondcorp.clientgateways.v1 \
-    --api-version beyondcorp.cnrm.cloud.google.com/v1alpha1 \
-    --resource BeyondCorpClientGateway:ClientGateway
-
-mv "${REPO_ROOT}/apis/beyondcorp/v1alpha1/types.generated.go" "${REPO_ROOT}/apis/beyondcorp/v1alpha1/clientgateway_types.generated.go" || true
-
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.beyondcorp.clientconnectorservices.v1 \
   --api-version beyondcorp.cnrm.cloud.google.com/v1alpha1 \
@@ -53,15 +46,6 @@ ${CONTROLLERBUILDER} generate-mapper \
 mv "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/beyondcorp/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/mapper.generated.go" || true
 rmdir "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/beyondcorp/" || true
 sed -i 's/package beyondcorp/package beyondcorpclientconnectorservice/g' "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientconnectorservice/mapper.generated.go"
-
-${CONTROLLERBUILDER} generate-mapper \
-    --service google.cloud.beyondcorp.clientgateways.v1 \
-    --api-version beyondcorp.cnrm.cloud.google.com/v1alpha1 \
-    --output-dir "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientgateway"
-
-mv "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientgateway/beyondcorp/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientgateway/mapper.generated.go" || true
-rmdir "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientgateway/beyondcorp/" || true
-sed -i 's/package beyondcorp/package beyondcorpclientgateway/g' "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientgateway/mapper.generated.go"
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

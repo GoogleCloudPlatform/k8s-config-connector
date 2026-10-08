@@ -1,0 +1,16 @@
+apiVersion: modelarmor.cnrm.cloud.google.com/v1alpha1
+kind: ModelArmorFloorSetting
+metadata:
+  name: modelarmorfloorsetting-folder-${uniqueId}
+spec:
+  folderRef:
+    external: folders/${TEST_FOLDER_ID}
+  location: global
+  enableFloorSettingEnforcement: false
+  floorSettingMetadata:
+    multiLanguageDetection:
+      enableMultiLanguageDetection: false
+  filterConfig:
+    piAndJailbreakFilterSettings:
+      filterEnforcement: ENABLED
+      confidenceLevel: MEDIUM_AND_ABOVE

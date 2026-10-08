@@ -1,0 +1,6 @@
+- caisURL: //modelarmor.googleapis.com/folders/${folderId}/locations/global/floorSetting
+  group: modelarmor.cnrm.cloud.google.com
+  kind: ModelArmorFloorSetting
+  name: modelarmorfloorsetting-folder-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

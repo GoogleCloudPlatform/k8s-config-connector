@@ -26,6 +26,10 @@ var _ mockgcpregistry.SupportsNormalization = &MockService{}
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
 	// SQLUser
 	replacements.ReplacePath(".items[].passwordPolicy.status.passwordExpirationTime", "2025-06-19T01:02:03Z")
+
+	// replicaNames is not consistently returned by real GCP in the v1beta4 API under various circumstances, so we remove it.
+	replacements.RemovePath(".replicaNames")
+	replacements.RemovePath(".response.replicaNames")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

@@ -29,6 +29,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - agentregistry.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - aiplatform.cnrm.cloud.google.com
   resources:
   - '*'
@@ -269,14 +277,6 @@ rules:
   - list
   - watch
 - apiGroups:
-  - blockchainnodeengine.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
   - certificatemanager.cnrm.cloud.google.com
   resources:
   - '*'
@@ -365,6 +365,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - cloudnumberregistry.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - cloudquota.cnrm.cloud.google.com
   resources:
   - '*'
@@ -382,6 +390,14 @@ rules:
   - watch
 - apiGroups:
   - cloudsecuritycompliance.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cloudsupport.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -701,6 +717,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - financialservices.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - firebase.cnrm.cloud.google.com
   resources:
   - '*'
@@ -973,6 +997,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - oracledatabase.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - orgpolicy.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1229,6 +1261,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - transcoder.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - translate.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1270,6 +1310,14 @@ rules:
   - watch
 - apiGroups:
   - visionai.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - vmmigration.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

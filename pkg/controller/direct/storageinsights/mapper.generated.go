@@ -25,10 +25,73 @@ package storageinsights
 
 import (
 	pb "cloud.google.com/go/storageinsights/apiv1/storageinsightspb"
+	krmstoragev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storageinsights/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func CloudStorageDestinationOptions_FromProto(mapCtx *direct.MapContext, in *pb.CloudStorageDestinationOptions) *krm.CloudStorageDestinationOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudStorageDestinationOptions{}
+	if in.GetBucket() != "" {
+		out.BucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetBucket()}
+	}
+	out.DestinationPath = direct.LazyPtr(in.GetDestinationPath())
+	return out
+}
+func CloudStorageDestinationOptions_ToProto(mapCtx *direct.MapContext, in *krm.CloudStorageDestinationOptions) *pb.CloudStorageDestinationOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudStorageDestinationOptions{}
+	if in.BucketRef != nil {
+		out.Bucket = in.BucketRef.External
+	}
+	out.DestinationPath = direct.ValueOf(in.DestinationPath)
+	return out
+}
+func CloudStorageFilters_FromProto(mapCtx *direct.MapContext, in *pb.CloudStorageFilters) *krm.CloudStorageFilters {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudStorageFilters{}
+	if in.GetBucket() != "" {
+		out.BucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetBucket()}
+	}
+	return out
+}
+func CloudStorageFilters_ToProto(mapCtx *direct.MapContext, in *krm.CloudStorageFilters) *pb.CloudStorageFilters {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudStorageFilters{}
+	if in.BucketRef != nil {
+		out.Bucket = in.BucketRef.External
+	}
+	return out
+}
+func CsvOptions_FromProto(mapCtx *direct.MapContext, in *pb.CSVOptions) *krm.CsvOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CsvOptions{}
+	out.RecordSeparator = direct.LazyPtr(in.GetRecordSeparator())
+	out.Delimiter = direct.LazyPtr(in.GetDelimiter())
+	out.HeaderRequired = direct.LazyPtr(in.GetHeaderRequired())
+	return out
+}
+func CsvOptions_ToProto(mapCtx *direct.MapContext, in *krm.CsvOptions) *pb.CSVOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CSVOptions{}
+	out.RecordSeparator = direct.ValueOf(in.RecordSeparator)
+	out.Delimiter = direct.ValueOf(in.Delimiter)
+	out.HeaderRequired = direct.ValueOf(in.HeaderRequired)
+	return out
+}
 func DatasetConfig_CloudStorageBuckets_FromProto(mapCtx *direct.MapContext, in *pb.DatasetConfig_CloudStorageBuckets) *krm.DatasetConfig_CloudStorageBuckets {
 	if in == nil {
 		return nil
@@ -117,6 +180,26 @@ func DatasetConfig_SourceProjects_ToProto(mapCtx *direct.MapContext, in *krm.Dat
 	out.ProjectNumbers = in.ProjectNumbers
 	return out
 }
+func FrequencyOptions_FromProto(mapCtx *direct.MapContext, in *pb.FrequencyOptions) *krm.FrequencyOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FrequencyOptions{}
+	out.Frequency = direct.Enum_FromProto(mapCtx, in.GetFrequency())
+	out.StartDate = Date_FromProto(mapCtx, in.GetStartDate())
+	out.EndDate = Date_FromProto(mapCtx, in.GetEndDate())
+	return out
+}
+func FrequencyOptions_ToProto(mapCtx *direct.MapContext, in *krm.FrequencyOptions) *pb.FrequencyOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FrequencyOptions{}
+	out.Frequency = direct.Enum_ToProto[pb.FrequencyOptions_Frequency](mapCtx, in.Frequency)
+	out.StartDate = Date_ToProto(mapCtx, in.StartDate)
+	out.EndDate = Date_ToProto(mapCtx, in.EndDate)
+	return out
+}
 func Identity_FromProto(mapCtx *direct.MapContext, in *pb.Identity) *krm.Identity {
 	if in == nil {
 		return nil
@@ -151,6 +234,44 @@ func IdentityObservedState_ToProto(mapCtx *direct.MapContext, in *krm.IdentityOb
 	out := &pb.Identity{}
 	out.Name = direct.ValueOf(in.Name)
 	// MISSING: Type
+	return out
+}
+func ObjectMetadataReportOptions_FromProto(mapCtx *direct.MapContext, in *pb.ObjectMetadataReportOptions) *krm.ObjectMetadataReportOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ObjectMetadataReportOptions{}
+	out.MetadataFields = in.MetadataFields
+	out.StorageFilters = CloudStorageFilters_FromProto(mapCtx, in.GetStorageFilters())
+	out.StorageDestinationOptions = CloudStorageDestinationOptions_FromProto(mapCtx, in.GetStorageDestinationOptions())
+	return out
+}
+func ObjectMetadataReportOptions_ToProto(mapCtx *direct.MapContext, in *krm.ObjectMetadataReportOptions) *pb.ObjectMetadataReportOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ObjectMetadataReportOptions{}
+	out.MetadataFields = in.MetadataFields
+	if oneof := CloudStorageFilters_ToProto(mapCtx, in.StorageFilters); oneof != nil {
+		out.Filter = &pb.ObjectMetadataReportOptions_StorageFilters{StorageFilters: oneof}
+	}
+	if oneof := CloudStorageDestinationOptions_ToProto(mapCtx, in.StorageDestinationOptions); oneof != nil {
+		out.DestinationOptions = &pb.ObjectMetadataReportOptions_StorageDestinationOptions{StorageDestinationOptions: oneof}
+	}
+	return out
+}
+func ParquetOptions_FromProto(mapCtx *direct.MapContext, in *pb.ParquetOptions) *krm.ParquetOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ParquetOptions{}
+	return out
+}
+func ParquetOptions_ToProto(mapCtx *direct.MapContext, in *krm.ParquetOptions) *pb.ParquetOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ParquetOptions{}
 	return out
 }
 func StorageInsightsDatasetConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DatasetConfig) *krm.StorageInsightsDatasetConfigObservedState {
@@ -190,4 +311,58 @@ func StorageInsightsDatasetConfigSpec_OrganizationScope_ToProto(mapCtx *direct.M
 		return nil
 	}
 	return &pb.DatasetConfig_OrganizationScope{OrganizationScope: *in}
+}
+func StorageInsightsReportConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ReportConfig) *krm.StorageInsightsReportConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageInsightsReportConfigObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func StorageInsightsReportConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StorageInsightsReportConfigObservedState) *pb.ReportConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReportConfig{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func StorageInsightsReportConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.ReportConfig) *krm.StorageInsightsReportConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageInsightsReportConfigSpec{}
+	// MISSING: Name
+	out.FrequencyOptions = FrequencyOptions_FromProto(mapCtx, in.GetFrequencyOptions())
+	out.CsvOptions = CsvOptions_FromProto(mapCtx, in.GetCsvOptions())
+	out.ParquetOptions = ParquetOptions_FromProto(mapCtx, in.GetParquetOptions())
+	out.ObjectMetadataReportOptions = ObjectMetadataReportOptions_FromProto(mapCtx, in.GetObjectMetadataReportOptions())
+	out.Labels = in.Labels
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	return out
+}
+func StorageInsightsReportConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.StorageInsightsReportConfigSpec) *pb.ReportConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReportConfig{}
+	// MISSING: Name
+	out.FrequencyOptions = FrequencyOptions_ToProto(mapCtx, in.FrequencyOptions)
+	if oneof := CsvOptions_ToProto(mapCtx, in.CsvOptions); oneof != nil {
+		out.ReportFormat = &pb.ReportConfig_CsvOptions{CsvOptions: oneof}
+	}
+	if oneof := ParquetOptions_ToProto(mapCtx, in.ParquetOptions); oneof != nil {
+		out.ReportFormat = &pb.ReportConfig_ParquetOptions{ParquetOptions: oneof}
+	}
+	if oneof := ObjectMetadataReportOptions_ToProto(mapCtx, in.ObjectMetadataReportOptions); oneof != nil {
+		out.ReportKind = &pb.ReportConfig_ObjectMetadataReportOptions{ObjectMetadataReportOptions: oneof}
+	}
+	out.Labels = in.Labels
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	return out
 }

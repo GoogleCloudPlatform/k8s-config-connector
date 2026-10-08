@@ -89,7 +89,8 @@ X-Xss-Protection: 0
       "environmentSize": "ENVIRONMENT_SIZE_SMALL",
       "nodeConfig": {
         "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-        "ipAllocationPolicy": {}
+        "ipAllocationPolicy": {},
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
       },
       "privateEnvironmentConfig": {
         "networkingConfig": {},
@@ -187,7 +188,8 @@ X-Xss-Protection: 0
     "environmentSize": "ENVIRONMENT_SIZE_SMALL",
     "nodeConfig": {
       "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-      "ipAllocationPolicy": {}
+      "ipAllocationPolicy": {},
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
     },
     "privateEnvironmentConfig": {
       "networkingConfig": {},
@@ -334,7 +336,8 @@ X-Xss-Protection: 0
       "environmentSize": "ENVIRONMENT_SIZE_SMALL",
       "nodeConfig": {
         "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-        "ipAllocationPolicy": {}
+        "ipAllocationPolicy": {},
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
       },
       "privateEnvironmentConfig": {
         "networkingConfig": {},

@@ -47,8 +47,10 @@ gen-proto-no-fixup:
 		--grpc-gateway_opt paths=source_relative \
 		--experimental_allow_proto3_optional \
 		./apis/google/apps/cloudidentity/v1beta1/*.proto \
+		./apis/mockgcp/cloud/agentregistry/v1/*.proto \
 		./apis/mockgcp/cloud/config/v1/*.proto \
 		./apis/google/cloud/dns/v1/*.proto \
+		./apis/google/cloud/numberregistry/v1alpha/*.proto \
 		./apis/mockgcp/cloud/apigee/v1/*.proto \
 		./apis/mockgcp/cloud/bigquery/v2/*.proto \
 		./apis/mockgcp/cloud/ids/v1/*.proto \
@@ -98,6 +100,8 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/gkebackup/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/run/v2/*.proto \
 		./third_party/googleapis/mockgcp/cloud/rapidmigrationassessment/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/contentwarehouse/v1/*.proto \
+		./third_party/googleapis/mockgcp/monitoring/dashboard/v1/*.proto \
 		./third_party/googleapis/mockgcp/devtools/sourcerepo/v1/*.proto
 
 
@@ -120,6 +124,7 @@ generate-grpc-for-google-protos:
 		--grpc-gateway_opt paths=source_relative \
 		--grpc-gateway_opt standalone=true \
 		./third_party/googleapis/google/cloud/aiplatform/v1/model_garden_service.proto \
+		./third_party/googleapis/google/cloud/assuredworkloads/v1/*.proto \
 		./third_party/googleapis/google/storage/control/v2/*.proto \
 		./third_party/googleapis/google/cloud/apigateway/v1/apigateway_service.proto \
 		./third_party/googleapis/google/cloud/networkservices/v1/*.proto \
@@ -132,7 +137,13 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/dataform/v1/*.proto \
 		./third_party/googleapis/google/cloud/licensemanager/v1/*.proto \
 		./third_party/googleapis/google/cloud/vision/v1/*.proto \
-		./third_party/googleapis/google/cloud/developerconnect/v1/*.proto
+		./third_party/googleapis/google/cloud/developerconnect/v1/*.proto \
+		./apis/google/cloud/vectorsearch/v1/*.proto \
+		./third_party/googleapis/google/cloud/contactcenterinsights/v1/*.proto \
+		./third_party/googleapis/google/cloud/configdelivery/v1/*.proto \
+		./third_party/googleapis/google/cloud/saasplatform/saasservicemgmt/v1beta1/*.proto \
+		./third_party/googleapis/google/cloud/devicestreaming/v1/*.proto \
+		./third_party/googleapis/google/cloud/datacatalog/lineage/v1/*.proto
 
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:

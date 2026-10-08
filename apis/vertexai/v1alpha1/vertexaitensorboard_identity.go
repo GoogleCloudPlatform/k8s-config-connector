@@ -115,7 +115,16 @@ func (obj *VertexAITensorboard) GetIdentity(ctx context.Context, reader client.R
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
+		// If resourceID is not set in spec, then specIdentity.Tensorboard was defaulted to obj.GetName()
+		// and the actual resource was created with a server-generated ID.
+		// In this case, we update specIdentity.Tensorboard to match the server-generated ID.
+		if obj.Spec.ResourceID == nil || *obj.Spec.ResourceID == "" {
+			specIdentity.Tensorboard = statusIdentity.Tensorboard
+		}
+
+		// Validate identity fields. We avoid direct string comparison of the full Identity because Project
+		// can be project ID string in specIdentity, but project number in statusIdentity.
+		if statusIdentity.Location != specIdentity.Location || statusIdentity.Tensorboard != specIdentity.Tensorboard {
 			return nil, fmt.Errorf("cannot change VertexAITensorboard identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}

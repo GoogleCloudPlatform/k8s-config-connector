@@ -1,0 +1,212 @@
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/generators/dialogflowgenerator-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fgenerators%2Fdialogflowgenerator-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Generator with ID dialogflowgenerator-max-${uniqueId} not found in projects/${projectId}.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/generators?%24alt=json%3Benum-encoding%3Dint&generatorId=dialogflowgenerator-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "description": "Maximal Dialogflow Generator ${uniqueId}",
+  "freeFormContext": {
+    "text": "Provide summary and follow up actions: ${uniqueId}"
+  },
+  "inferenceParameter": {
+    "maxOutputTokens": 200,
+    "temperature": 0.5,
+    "topK": 30,
+    "topP": 0.9
+  },
+  "publishedModel": "text-bison",
+  "triggerEvent": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal Dialogflow Generator ${uniqueId}",
+  "freeFormContext": {
+    "text": "Provide summary and follow up actions: ${uniqueId}"
+  },
+  "inferenceParameter": {
+    "maxOutputTokens": 200,
+    "temperature": 0.5,
+    "topK": 30,
+    "topP": 0.9
+  },
+  "name": "projects/${projectId}/locations/global/generators/dialogflowgenerator-max-${uniqueId}",
+  "publishedModel": "text-bison",
+  "triggerEvent": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/generators/dialogflowgenerator-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fgenerators%2Fdialogflowgenerator-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal Dialogflow Generator ${uniqueId}",
+  "freeFormContext": {
+    "text": "Provide summary and follow up actions: ${uniqueId}"
+  },
+  "inferenceParameter": {
+    "maxOutputTokens": 200,
+    "temperature": 0.5,
+    "topK": 30,
+    "topP": 0.9
+  },
+  "name": "projects/${projectId}/locations/global/generators/dialogflowgenerator-max-${uniqueId}",
+  "publishedModel": "text-bison",
+  "triggerEvent": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/generators/dialogflowgenerator-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CfreeFormContext%2CinferenceParameter%2CtriggerEvent
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: generator.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fgenerators%2Fdialogflowgenerator-max-${uniqueId}
+
+{
+  "description": "Updated Maximal Dialogflow Generator ${uniqueId}",
+  "freeFormContext": {
+    "text": "Create a detailed response: ${uniqueId}"
+  },
+  "inferenceParameter": {
+    "maxOutputTokens": 256,
+    "temperature": 0.7,
+    "topK": 20,
+    "topP": 0.8
+  },
+  "name": "projects/${projectId}/locations/global/generators/dialogflowgenerator-max-${uniqueId}",
+  "publishedModel": "text-bison",
+  "triggerEvent": 2
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated Maximal Dialogflow Generator ${uniqueId}",
+  "freeFormContext": {
+    "text": "Create a detailed response: ${uniqueId}"
+  },
+  "inferenceParameter": {
+    "maxOutputTokens": 256,
+    "temperature": 0.7,
+    "topK": 20,
+    "topP": 0.8
+  },
+  "name": "projects/${projectId}/locations/global/generators/dialogflowgenerator-max-${uniqueId}",
+  "publishedModel": "text-bison",
+  "triggerEvent": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/generators/dialogflowgenerator-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fgenerators%2Fdialogflowgenerator-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated Maximal Dialogflow Generator ${uniqueId}",
+  "freeFormContext": {
+    "text": "Create a detailed response: ${uniqueId}"
+  },
+  "inferenceParameter": {
+    "maxOutputTokens": 256,
+    "temperature": 0.7,
+    "topK": 20,
+    "topP": 0.8
+  },
+  "name": "projects/${projectId}/locations/global/generators/dialogflowgenerator-max-${uniqueId}",
+  "publishedModel": "text-bison",
+  "triggerEvent": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/generators/dialogflowgenerator-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fgenerators%2Fdialogflowgenerator-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

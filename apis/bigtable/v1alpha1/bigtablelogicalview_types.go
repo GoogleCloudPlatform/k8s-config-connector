@@ -60,12 +60,12 @@ type BigtableLogicalViewStatus struct {
 	Name *string `json:"name,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *BigtableLogicalViewObservedState `json:"observedState,omitempty"`
+	// ObservedState *BigtableLogicalViewObservedState `json:"observedState,omitempty"`
 }
 
 // BigtableLogicalViewObservedState is the state of the BigtableLogicalView resource as most recently observed in GCP.
-// +kcc:proto=google.bigtable.admin.v2.LogicalView
-type BigtableLogicalViewObservedState struct{}
+// // +kcc:proto=google.bigtable.admin.v2.LogicalView
+// type BigtableLogicalViewObservedState struct{}
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

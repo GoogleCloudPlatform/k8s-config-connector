@@ -203,6 +203,7 @@ func (a *userStoreAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &discoveryenginepb.UpdateUserStoreRequest{

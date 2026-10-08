@@ -42,10 +42,13 @@ type FirewallEndpointAssociationReference struct {
 // NetworkSecurityFirewallEndpointSpec defines the desired state of NetworkSecurityFirewallEndpoint
 // +kcc:spec:proto=google.cloud.networksecurity.v1.FirewallEndpoint
 type NetworkSecurityFirewallEndpointSpec struct {
-	// The project that this resource belongs to.
-	// +required
-	// +kubebuilder:validation:Required
-	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+	// The organization that this resource belongs to. Only one of organizationRef or projectRef may be specified.
+	// +optional
+	OrganizationRef *refsv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
+
+	// The project that this resource belongs to. Only one of organizationRef or projectRef may be specified.
+	// +optional
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
 
 	// The location of this resource.
 	// +required

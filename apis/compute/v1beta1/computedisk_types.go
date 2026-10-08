@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
@@ -35,7 +36,7 @@ type DiskDiskEncryptionKey struct {
 	feature. See
 	https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys */
 	// +optional
-	KmsKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 
 	/* The service account used for the encryption request for the given KMS key.
 	If absent, the Compute Engine Service Agent service account is used. */
@@ -72,7 +73,7 @@ type DiskSourceImageEncryptionKey struct {
 	feature. See
 	https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys */
 	// +optional
-	KmsKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 
 	/* The service account used for the encryption request for the given KMS key.
 	If absent, the Compute Engine Service Agent service account is used. */
@@ -98,7 +99,7 @@ type DiskSourceSnapshotEncryptionKey struct {
 	feature. See
 	https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys */
 	// +optional
-	KmsKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 
 	/* The service account used for the encryption request for the given KMS key.
 	If absent, the Compute Engine Service Agent service account is used. */

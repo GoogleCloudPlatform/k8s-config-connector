@@ -39,7 +39,9 @@ ${CONTROLLERBUILDER} generate-types \
   --resource NetworkConnectivityInternalRange:InternalRange \
   --resource NetworkConnectivityServiceConnectionPolicy:ServiceConnectionPolicy \
   --resource NetworkConnectivityRegionalEndpoint:RegionalEndpoint \
-  --resource NetworkConnectivityMulticloudDataTransferConfig:MulticloudDataTransferConfig
+  --resource NetworkConnectivityMulticloudDataTransferConfig:MulticloudDataTransferConfig \
+  --resource NetworkConnectivityTransport:Transport \
+  --resource NetworkConnectivityServiceConnectionMap:ServiceConnectionMap
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service mockgcp.cloud.networkconnectivity.v1 \

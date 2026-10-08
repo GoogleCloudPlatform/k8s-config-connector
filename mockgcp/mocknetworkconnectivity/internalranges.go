@@ -17,6 +17,7 @@ package mocknetworkconnectivity
 import (
 	"context"
 	"fmt"
+	"net"
 	"strings"
 	"time"
 
@@ -71,6 +72,27 @@ func (r *internalRanges) CreateProjectsLocationsInternalRange(ctx context.Contex
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
+	if len(obj.TargetCidrRange) > 0 {
+		if obj.Peering == "" {
+			obj.Peering = "FOR_SELF"
+		}
+		if obj.Usage == "" {
+			obj.Usage = "FOR_VPC"
+		}
+		if obj.IpCidrRange == "" {
+			ip, _, err := net.ParseCIDR(obj.TargetCidrRange[0])
+			if err == nil {
+				prefixLength := obj.PrefixLength
+				if prefixLength == 0 {
+					prefixLength = 24
+				}
+				obj.IpCidrRange = fmt.Sprintf("%s/%d", ip.String(), prefixLength)
+			}
+		}
+	}
+	if obj.Network != "" {
+		obj.Network = expandNetworkLink(obj.Network)
+	}
 	if err := r.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -130,7 +152,7 @@ func (r *internalRanges) PatchProjectsLocationsInternalRange(ctx context.Context
 			case "description":
 				obj.Description = patch.Description
 			case "network":
-				obj.Network = patch.Network
+				obj.Network = expandNetworkLink(patch.Network)
 			case "peering":
 				obj.Peering = patch.Peering
 			case "target_cidr_range":
@@ -139,6 +161,8 @@ func (r *internalRanges) PatchProjectsLocationsInternalRange(ctx context.Context
 				obj.Usage = patch.Usage
 			case "allocation_options", "allocationOptions":
 				obj.AllocationOptions = patch.AllocationOptions
+			case "overlaps":
+				obj.Overlaps = patch.Overlaps
 			default:
 				log.Info("unsupported update_mask", "req", req)
 				return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mock", path)
@@ -223,4 +247,20 @@ func (r *internalRanges) parseInternalRangeName(name string) (*internalRangeName
 	}
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
+func expandNetworkLink(network string) string {
+	if network == "" {
+		return ""
+	}
+	if strings.HasPrefix(network, "https://") {
+		return network
+	}
+	trimmed := strings.TrimPrefix(network, "networkconnectivity.googleapis.com/")
+	trimmed = strings.TrimPrefix(trimmed, "networkconnectivity.googleapis.com/v1/")
+	trimmed = strings.TrimPrefix(trimmed, "/")
+	if strings.HasPrefix(trimmed, "projects/") {
+		return "https://www.googleapis.com/compute/v1/" + trimmed
+	}
+	return network
 }

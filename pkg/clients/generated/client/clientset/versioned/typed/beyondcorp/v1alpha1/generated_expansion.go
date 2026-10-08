@@ -28,5 +28,3 @@ type BeyondCorpAppConnectorExpansion interface{}
 type BeyondCorpAppGatewayExpansion interface{}
 
 type BeyondCorpClientConnectorServiceExpansion interface{}
-
-type BeyondCorpClientGatewayExpansion interface{}

@@ -30,7 +30,7 @@ fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 # Pin a googleapis SHA that contains the google.bigtable.admin.v2 service definition
-PROTO_SHA="5993bc685e72fbda796378c146533f7ef6e95d8a"
+PROTO_SHA="0fad50179076be3c908551df3c7cd388e0928df1"
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 
 ./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
@@ -44,6 +44,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource BigtableCluster:Cluster \
   --resource BigtableLogicalView:LogicalView \
   --resource BigtableMaterializedView:MaterializedView \
+  --resource BigtableSchemaBundle:SchemaBundle \
   --proto-source-path ${PROTO_OUT}
 
 # --- v1beta1 ---

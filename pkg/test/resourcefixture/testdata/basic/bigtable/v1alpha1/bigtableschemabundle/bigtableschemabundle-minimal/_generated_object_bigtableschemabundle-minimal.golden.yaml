@@ -1,0 +1,25 @@
+apiVersion: bigtable.cnrm.cloud.google.com/v1alpha1
+kind: BigtableSchemaBundle
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: sb-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  protoSchema:
+    protoDescriptors: Ck0KD215X3NjaGVtYS5wcm90bxIKbXkucGFja2FnZSImCglNeU1lc3NhZ2USCgoCaWQYASABKAkSDQoFdmFsdWUYAiABKAViBnByb3RvMw==
+  tableRef:
+    name: table-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/instances/sbdep${uniqueId}/tables/table-${uniqueId}/schemaBundles/sb-${uniqueId}
+  observedGeneration: 2

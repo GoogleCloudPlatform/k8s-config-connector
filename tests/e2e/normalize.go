@@ -93,6 +93,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.uniqueId"] = "12345678"
 	visitor.replacePaths[".status.uid"] = "12345678"
 	visitor.replacePaths[".status.observedState.uid"] = "0123456789abcdef"
+	visitor.replacePaths[".status.observedState.gcpID"] = "000000000000000000000"
 	visitor.replacePaths[".status.managedZoneId"] = "1234567890"
 	visitor.replacePaths[".status.creationTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.createTime"] = mockgcpregistry.PlaceholderTime
@@ -109,6 +110,11 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.creationTimestamp"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.oauth2ClientID"] = "888888888888888888888"
 	visitor.replacePaths[".status.observedState.deleteLockExpireTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.resources[].resourceID"] = int64(12345678)
+
+	// NetworkConnectivity
+	visitor.replacePaths[".status.observedState.generatedActivationKey"] = "eyJ2ZXJzaW9uIjoxLCJkZXN0aW5hdGlvbkVudmlyb25tZW50VXJpIjoiaHR0cHM6Ly9wYXJ0bmVyLWludGVyY29ubmVjdC51cy1lYXN0LTEuYXBpLmF3cy9wcm92aWRlcnMvZ2NwL2Vudmlyb25tZW50cy9pYWQtcHVibGljIiwic2hhcmVkQ29ubmVjdGlvblV1aWQiOiJiZjBiYWM5NS0wYmYyLTQ1N2QtYmU0NS1iM2ZiY2I0NmY4ZjkiLCJjb25uZWN0aW9uU2l6ZU1icHMiOjEwMDAsImRlc3RpbmF0aW9uQWNjb3VudElkIjoiMTIzNDU2Nzg5MDEyIn0="
+	visitor.replacePaths[".status.observedState.peeringNetwork"] = "projects/123456789012/global/networks/transport-1234567890abcdef-vpc"
 
 	// LicenseManager
 	visitor.replacePaths[".status.observedState.currentBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
@@ -178,6 +184,8 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.serviceAccountEmailAddress"] = "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com"
 
 	// Specific to VertexAI
+	visitor.replacePaths[".status.observedState.versionCreateTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.versionUpdateTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.blobStoragePathPrefix"] = "cloud-ai-platform-00000000-1111-2222-3333-444444444444"
 	visitor.replacePaths[".status.state[].diskUtilizationBytes"] = "1"
 	visitor.replacePaths[".creator"] = "${creatorID}"
@@ -391,6 +399,10 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to WorflowsWorkflow
 	visitor.replacePaths[".status.observedState.revisionId"] = "revision-id-placeholder"
 	visitor.replacePaths[".status.observedState.revisionCreateTime"] = mockgcpregistry.PlaceholderTimestamp
+
+	// Specific to CCInsightsPhraseMatcher
+	visitor.replacePaths[".status.observedState.activationUpdateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.revisionID"] = "revision-id-placeholder"
 
 	// Specific to DocumentAIProcessor
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
@@ -645,6 +657,16 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 						return strings.ReplaceAll(s, uuid, "${keyHandleID}")
 					})
+				case "workloads":
+					workloadId := tokens[len(tokens)-1]
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, workloadId, "${workloadID}")
+					})
+				case "folders":
+					folderId := tokens[len(tokens)-1]
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, folderId, "${folderID}")
+					})
 				}
 			}
 		}
@@ -703,6 +725,12 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	if testgcp.TestOrgID.Get() != "" {
 		visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 			return strings.ReplaceAll(s, "organizations/"+testgcp.TestOrgID.Get(), "organizations/${organizationID}")
+		})
+	}
+
+	if billingAccountID := testgcp.TestBillingAccountID.Get(); billingAccountID != "" && billingAccountID != "123456-777777-000001" {
+		visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+			return strings.ReplaceAll(s, billingAccountID, "123456-777777-000001")
 		})
 	}
 
@@ -1100,6 +1128,42 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 			if u.GetKind() == "RecaptchaEnterpriseKey" {
 				replacement.PathIDs[s] = "${keyID}"
 			}
+		case ".status.externalRef":
+			if u.GetKind() == "CCInsightsView" {
+				parts := strings.Split(s, "/")
+				if len(parts) > 0 {
+					viewID := parts[len(parts)-1]
+					replacement.PathIDs[viewID] = "${viewId}"
+				}
+			}
+			if u.GetKind() == "CCInsightsAnalysisRule" {
+				parts := strings.Split(s, "/")
+				if len(parts) > 0 {
+					analysisRuleID := parts[len(parts)-1]
+					replacement.PathIDs[analysisRuleID] = "${analysisRuleId}"
+				}
+			}
+			if u.GetKind() == "CCInsightsPhraseMatcher" {
+				parts := strings.Split(s, "/")
+				if len(parts) > 0 {
+					phraseMatcherID := parts[len(parts)-1]
+					replacement.PathIDs[phraseMatcherID] = "${phraseMatcherID}"
+				}
+			}
+			if u.GetKind() == "AssuredWorkloadsWorkload" {
+				parts := strings.Split(s, "/")
+				if len(parts) > 0 {
+					workloadID := parts[len(parts)-1]
+					replacement.PathIDs[workloadID] = "${workloadID}"
+				}
+			}
+			if u.GetKind() == "MapManagementStyleConfig" {
+				parts := strings.Split(s, "/")
+				if len(parts) > 0 {
+					styleConfigID := parts[len(parts)-1]
+					replacement.PathIDs[styleConfigID] = "${styleConfigId}"
+				}
+			}
 		}
 		return s
 	})
@@ -1110,6 +1174,13 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 }
 
 func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregistry.Normalizer, project testgcp.GCPProject, uniqueID string, folderID string, organizationID string) {
+	// Clear response body for UpdateModel in GRPC to align with real empty response
+	for _, event := range events {
+		if event.Request.Method == "GRPC" && strings.HasSuffix(event.Request.URL, "/google.cloud.aiplatform.v1.ModelService/UpdateModel") {
+			event.Response.Body = ""
+		}
+	}
+
 	normalizer := NewNormalizer(uniqueID, project)
 
 	normalizer.Preprocess(events)
@@ -1122,6 +1193,9 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	}
 	if uniqueID != "" {
 		normalizer.Replacements.PathIDs[uniqueID] = "${uniqueId}"
+	}
+	if billingAccountID := testgcp.TestBillingAccountID.Get(); billingAccountID != "" {
+		normalizer.Replacements.PathIDs[billingAccountID] = "${billingAccountID}"
 	}
 
 	// Find any URLs
@@ -1143,6 +1217,74 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 				for _, match := range matches {
 					if len(match) > 1 {
 						normalizer.Replacements.PathIDs[match[1]] = "${keyID}"
+					}
+				}
+			}
+		}
+	}
+
+	// Find contactcenterinsights view IDs in URL or Body and add to PathIDs
+	viewIDRegex := regexp.MustCompile(`/views/(\d+)`)
+	for _, event := range events {
+		if !strings.Contains(event.Request.URL, "contactcenterinsights") {
+			continue
+		}
+		if matches := viewIDRegex.FindStringSubmatch(event.Request.URL); len(matches) > 1 {
+			normalizer.Replacements.PathIDs[matches[1]] = "${viewId}"
+		}
+		if event.Response.Body != "" {
+			if matches := viewIDRegex.FindAllStringSubmatch(event.Response.Body, -1); len(matches) > 0 {
+				for _, match := range matches {
+					if len(match) > 1 {
+						normalizer.Replacements.PathIDs[match[1]] = "${viewId}"
+					}
+				}
+			}
+		}
+	}
+
+	// Find AssuredWorkloads workload IDs in URL or Body and add to PathIDs
+	workloadIDRegex := regexp.MustCompile(`/workloads/([a-zA-Z0-9_-]+)`)
+	for _, event := range events {
+		if !strings.Contains(event.Request.URL, "assuredworkloads") {
+			continue
+		}
+		if matches := workloadIDRegex.FindStringSubmatch(event.Request.URL); len(matches) > 1 {
+			normalizer.Replacements.PathIDs[matches[1]] = "${workloadID}"
+		}
+		if event.Response.Body != "" {
+			if matches := workloadIDRegex.FindAllStringSubmatch(event.Response.Body, -1); len(matches) > 0 {
+				for _, match := range matches {
+					if len(match) > 1 {
+						normalizer.Replacements.PathIDs[match[1]] = "${workloadID}"
+					}
+				}
+			}
+			workloadResourceIDRegex := regexp.MustCompile(`"resourceId":\s*"?(\d+)"?`)
+			if matches := workloadResourceIDRegex.FindAllStringSubmatch(event.Response.Body, -1); len(matches) > 0 {
+				for _, match := range matches {
+					if len(match) > 1 {
+						normalizer.Replacements.PathIDs[match[1]] = "${folderID}"
+					}
+				}
+			}
+		}
+	}
+
+	// Find MapManagement styleConfig IDs in URL or Body and add to PathIDs
+	styleConfigIDRegex := regexp.MustCompile(`/styleConfigs/([a-zA-Z0-9_-]+)`)
+	for _, event := range events {
+		if !strings.Contains(event.Request.URL, "mapmanagement") {
+			continue
+		}
+		if matches := styleConfigIDRegex.FindStringSubmatch(event.Request.URL); len(matches) > 1 {
+			normalizer.Replacements.PathIDs[matches[1]] = "${styleConfigId}"
+		}
+		if event.Response.Body != "" {
+			if matches := styleConfigIDRegex.FindAllStringSubmatch(event.Response.Body, -1); len(matches) > 0 {
+				for _, match := range matches {
+					if len(match) > 1 {
+						normalizer.Replacements.PathIDs[match[1]] = "${styleConfigId}"
 					}
 				}
 			}
@@ -1219,6 +1361,8 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		s = re.ReplaceAllString(s, "debian-11-bullseye-v20231010")
 		re2 := regexp.MustCompile(`built on \d{8}`)
 		s = re2.ReplaceAllString(s, "built on 20231010")
+		reRollout := regexp.MustCompile(`rollouts/rollout-\d{8}-\d{6}`)
+		s = reRollout.ReplaceAllString(s, "rollouts/rollout-placeholder")
 		return s
 	})
 
@@ -1248,9 +1392,20 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		})
 	}
 
+	visitor.objectTransforms = append(visitor.objectTransforms, func(path string, m map[string]any) {
+		if df, ok := m["dashboardFilters"].([]any); ok {
+			for _, item := range df {
+				if filterMap, ok := item.(map[string]any); ok {
+					delete(filterMap, "valueType")
+				}
+			}
+		}
+	})
+
 	// Common variables
 	visitor.replacePaths[".uid"] = "111111111111111111111"
 	visitor.replacePaths[".etag"] = "abcdef0123A="
+	visitor.replacePaths[".dashboard.etag"] = "abcdef0123A="
 	visitor.replacePaths[".response.etag"] = "abcdef0123A="
 	visitor.replacePaths[".serviceAccount.etag"] = "abcdef0123A="
 	visitor.replacePaths[".response.uniqueId"] = "12345678"
@@ -1261,6 +1416,8 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	visitor.replacePaths[".items[].labelFingerprint"] = "abcdef0123A="
 	visitor.replacePaths[".gatewayAddress"] = "10.0.0.1"
 	visitor.replacePaths[".items[].gatewayAddress"] = "10.0.0.1"
+	visitor.replacePaths[".networkCookie"] = 12345678
+	visitor.replacePaths[".response.networkCookie"] = 12345678
 
 	// Misc Operations
 	visitor.replacePaths[".insertTime"] = mockgcpregistry.PlaceholderTimestamp
@@ -1292,6 +1449,11 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 		// Normalize etags in URLS
 		event.Request.URL = normalizeEtagsInURL(event.Request.URL)
+
+		// Normalize updateMask in assuredworkloads URLs
+		if strings.Contains(event.Request.URL, "assuredworkloads.googleapis.com") {
+			event.Request.URL = normalizeUpdateMaskInURL(event.Request.URL)
+		}
 	}
 
 	normalizeComputeSelfLink := func(u string) string {
@@ -1412,6 +1574,16 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		visitor.ReplacePath(".response.revisionId", "revision-id-placeholder")
 	}
 
+	// ContactCenterInsights
+	{
+		visitor.ReplacePath(".activationUpdateTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".response.activationUpdateTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".revisionCreateTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".response.revisionCreateTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".revisionId", "revision-id-placeholder")
+		visitor.ReplacePath(".response.revisionId", "revision-id-placeholder")
+	}
+
 	// DocumentAI
 	{
 		visitor.ReplacePath(".metadata.commonMetadata.createTime", "2025-01-01T12:34:56.123456Z")
@@ -1483,8 +1655,17 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	visitor.replacePaths[".metadata.progress.endTime"] = "2024-04-02T12:34:56.123456Z"
 	visitor.replacePaths[".metadata.instanceConfig.etag"] = "abcdef0123A"
 
+	// vertexai
+	visitor.replacePaths[".versionCreateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".versionUpdateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".response.versionCreateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".response.versionUpdateTime"] = mockgcpregistry.PlaceholderTimestamp
+
 	// Run visitors
 	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
+		if strings.Contains(requestURL, "/fleetPackages") {
+			removeKeysFromMap(obj, []string{"info"})
+		}
 		if strings.Contains(requestURL, "/backendServices") {
 			removeKeysFromMap(obj, []string{"routingConfig", "enableCDN", "subnetworks"})
 		}
@@ -1549,6 +1730,16 @@ func rewriteComputeURL(u string) string {
 func normalizeEtagsInURL(u string) string {
 	re := regexp.MustCompile(`etag=[a-zA-Z0-9%]+`)
 	return re.ReplaceAllString(u, "etag=abcdef0123A")
+}
+
+func normalizeUpdateMaskInURL(u string) string {
+	// Real GCP has updateMask=workload.displayName%2Cworkload.labels
+	// Mock GCP has updateMask=workload.displayName
+	// We normalize it to the real GCP's updateMask value so they match.
+	if strings.Contains(u, "updateMask=workload.displayName") && !strings.Contains(u, "workload.labels") {
+		return strings.ReplaceAll(u, "updateMask=workload.displayName", "updateMask=workload.displayName%2Cworkload.labels")
+	}
+	return u
 }
 
 // isGetOperation returns true if this is an operation poll request

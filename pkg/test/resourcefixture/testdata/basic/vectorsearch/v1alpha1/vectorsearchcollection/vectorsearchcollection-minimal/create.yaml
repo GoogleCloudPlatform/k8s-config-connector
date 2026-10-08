@@ -1,0 +1,13 @@
+apiVersion: vectorsearch.cnrm.cloud.google.com/v1alpha1
+kind: VectorSearchCollection
+metadata:
+  name: vsc-min-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "Minimal Vector Search Collection"
+  vectorSchema:
+    text_vector:
+      denseVector:
+        dimensions: 128

@@ -1,0 +1,24 @@
+apiVersion: contactcenterinsights.cnrm.cloud.google.com/v1alpha1
+kind: CCInsightsAnalysisRule
+metadata:
+  name: armax${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "Maximal Analysis Rule ${uniqueId}"
+  conversationFilter: 'agent_id="agent-1"'
+  analysisPercentage: 0.5
+  active: true
+  annotatorSelector:
+    runInterruptionAnnotator: true
+    runSilenceAnnotator: true
+    runPhraseMatcherAnnotator: false
+    runSentimentAnnotator: true
+    runEntityAnnotator: true
+    runIntentAnnotator: true
+    runIssueModelAnnotator: false
+    runSummarizationAnnotator: true
+    summarizationConfig:
+      summarizationModel: BASELINE_MODEL
+    runQaAnnotator: false

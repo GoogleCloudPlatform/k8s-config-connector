@@ -251,6 +251,7 @@ func (a *RouterInterfaceAdapter) Update(ctx context.Context, updateOp *directbas
 		log.V(2).Info("no field needs update", "name", a.id.String())
 		updated = a.actual
 	} else {
+		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
 
 		if a.router == nil {

@@ -17,6 +17,7 @@ package saasservicemgmt
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	gcp "cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1"
 	pb "cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1/saasservicemgmtpb"
@@ -95,7 +96,7 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	}
 
 	desired.Labels = label.NewGCPLabelsFromK8sLabels(obj.GetLabels())
-	desired.Annotations = obj.GetAnnotations()
+	desired.Annotations = filterSystemAnnotations(obj.GetAnnotations())
 
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -252,12 +253,26 @@ func compareRelease(ctx context.Context, actual, desired *pb.Release) (*structur
 		return nil, nil, err
 	}
 	maskedActual.Labels = actual.Labels
-	maskedActual.Annotations = actual.Annotations
+	maskedActual.Annotations = filterSystemAnnotations(actual.Annotations)
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
 	}
 	return diffs, updateMask, nil
+}
+
+func filterSystemAnnotations(annotations map[string]string) map[string]string {
+	if annotations == nil {
+		return nil
+	}
+	filtered := make(map[string]string)
+	for k, v := range annotations {
+		if strings.HasPrefix(k, "cnrm.cloud.google.com/") || strings.HasPrefix(k, "test.cnrm.cloud.google.com/") {
+			continue
+		}
+		filtered[k] = v
+	}
+	return filtered
 }
 
 func SaasServiceMgmtReleaseStatus_FromProto(mapCtx *direct.MapContext, in *pb.Release) *krm.SaasServiceMgmtReleaseStatus {

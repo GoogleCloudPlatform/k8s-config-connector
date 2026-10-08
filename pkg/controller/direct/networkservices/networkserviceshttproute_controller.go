@@ -173,6 +173,7 @@ func (a *NetworkServicesHTTPRouteAdapter) Update(ctx context.Context, updateOp *
 		log.V(2).Info("no changes detected for NetworkServicesHTTPRoute", "name", a.id)
 	} else {
 		// Report exact diffs
+		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
 
 		req := &pb.UpdateHttpRouteRequest{

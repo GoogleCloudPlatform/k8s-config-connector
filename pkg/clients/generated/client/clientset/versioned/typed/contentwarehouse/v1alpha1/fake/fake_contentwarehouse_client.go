@@ -39,10 +39,6 @@ func (c *FakeContentwarehouseV1alpha1) ContentWarehouseRuleSets(namespace string
 	return newFakeContentWarehouseRuleSets(c, namespace)
 }
 
-func (c *FakeContentwarehouseV1alpha1) ContentWarehouseSchemas(namespace string) v1alpha1.ContentWarehouseSchemaInterface {
-	return newFakeContentWarehouseSchemas(c, namespace)
-}
-
 func (c *FakeContentwarehouseV1alpha1) ContentWarehouseSynonymSets(namespace string) v1alpha1.ContentWarehouseSynonymSetInterface {
 	return newFakeContentWarehouseSynonymSets(c, namespace)
 }

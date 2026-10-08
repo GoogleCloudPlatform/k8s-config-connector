@@ -1,10 +1,20 @@
-# Follow `SAMPLE_XXX` format to write the content.Add commentMore actions
+# Follow `SAMPLE_XXX` format to write the content.
 
 # Delete `SAMPLE_` and its content before publishing the release note.
 
 # Delete the entire header if no updates.
 
 # Run [mdformat](go/mdformat) before publishing this release notes.  
+
+# Drafting Guidelines (CRITICAL):
+# 1. Do NOT include MockGCP changes, MockGCP alignment, or mock test logs.
+# 2. Do NOT include sample config updates or sample changes.
+# 3. Do NOT include internal implementation details or refactoring details.
+# 4. Do NOT include integration test or test runner modifications.
+# 5. Do NOT include GitHub Action or CI workflow changes.
+# 6. Do NOT include smoke test changes or SMOKETEST phase additions.
+# 7. If a resource is listed in "Reconciliation Improvements" (e.g. opt-in direct reconciler), it MUST NOT be mentioned in "New Alpha Resources".
+# 8. Only release note resources whose controllers have been merged.
 
 ** This version is not yet released; this document is gathering release notes
 for the future release **

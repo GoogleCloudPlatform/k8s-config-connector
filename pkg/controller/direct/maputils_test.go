@@ -19,6 +19,7 @@ import (
 	"testing"
 
 	"github.com/googleapis/gax-go/v2/apierror"
+	"google.golang.org/api/googleapi"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/durationpb"
@@ -158,6 +159,22 @@ func TestIsNotFound(t *testing.T) {
 			err:  fmt.Errorf("getting resource: %w", status.Error(codes.NotFound, "not found")),
 			want: true,
 		},
+		{
+			name: "googleapi.Error 404",
+			err: &googleapi.Error{
+				Code:    404,
+				Message: "Not Found",
+			},
+			want: true,
+		},
+		{
+			name: "googleapi.Error 400",
+			err: &googleapi.Error{
+				Code:    400,
+				Message: "Bad Request",
+			},
+			want: false,
+		},
 	}
 
 	for _, tc := range tests {
@@ -165,6 +182,58 @@ func TestIsNotFound(t *testing.T) {
 			got := IsNotFound(tc.err)
 			if got != tc.want {
 				t.Errorf("IsNotFound(%v) = %v, want %v", tc.err, got, tc.want)
+			}
+		})
+	}
+}
+
+func TestIsBadRequest(t *testing.T) {
+	tests := []struct {
+		name string
+		err  error
+		want bool
+	}{
+		{
+			name: "nil error",
+			err:  nil,
+			want: false,
+		},
+		{
+			name: "unrelated error",
+			err:  fmt.Errorf("something went wrong"),
+			want: false,
+		},
+		{
+			name: "googleapi.Error 400",
+			err: &googleapi.Error{
+				Code:    400,
+				Message: "Bad Request",
+			},
+			want: true,
+		},
+		{
+			name: "googleapi.Error 404",
+			err: &googleapi.Error{
+				Code:    404,
+				Message: "Not Found",
+			},
+			want: false,
+		},
+		{
+			name: "wrapped googleapi.Error 400",
+			err: fmt.Errorf("calling API: %w", &googleapi.Error{
+				Code:    400,
+				Message: "Bad Request",
+			}),
+			want: true,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			got := IsBadRequest(tc.err)
+			if got != tc.want {
+				t.Errorf("IsBadRequest(%v) = %v, want %v", tc.err, got, tc.want)
 			}
 		})
 	}

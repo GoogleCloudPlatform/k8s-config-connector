@@ -197,6 +197,7 @@ func (a *RouterAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 		log.V(2).Info("no field needs update", "name", a.id.String())
 		updated = a.actual
 	} else {
+		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
 
 		req := &computepb.PatchRouterRequest{

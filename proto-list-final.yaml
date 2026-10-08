@@ -1755,13 +1755,6 @@ kind: BeyondcorpClientConnectorService
 protopath: google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorService
 validated: null
 ---
-service: beyondcorp
-package: google.cloud.beyondcorp.clientgateways.v1
-proto: ClientGateway
-kind: BeyondcorpClientGateway
-protopath: google.cloud.beyondcorp.clientgateways.v1.ClientGateway
-validated: null
----
 service: bigquery
 package: google.cloud.bigquery.analyticshub.v1
 proto: DataExchange

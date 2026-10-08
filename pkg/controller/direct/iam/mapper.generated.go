@@ -63,38 +63,6 @@ found existing non-generated mapping function "DenyRule_v1alpha1_ToProto", skipp
 		return out
 	}
 */
-func IAMDenyPolicyObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *iampb.Policy) *krmiamv1alpha1.IAMDenyPolicyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmiamv1alpha1.IAMDenyPolicyObservedState{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: Kind
-	// MISSING: Annotations
-	// MISSING: Etag
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ManagingAuthority
-	return out
-}
-func IAMDenyPolicyObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmiamv1alpha1.IAMDenyPolicyObservedState) *iampb.Policy {
-	if in == nil {
-		return nil
-	}
-	out := &iampb.Policy{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: Kind
-	// MISSING: Annotations
-	// MISSING: Etag
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ManagingAuthority
-	return out
-}
 func IAMDenyPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *iampb.Policy) *krmiamv1alpha1.IAMDenyPolicySpec {
 	if in == nil {
 		return nil

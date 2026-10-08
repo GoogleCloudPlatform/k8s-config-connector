@@ -43,6 +43,14 @@ func (i *ManagedKafkaConnectClusterIdentity) String() string {
 	return ManagedKafkaConnectClusterIdentityFormat.ToString(*i)
 }
 
+func (i *ManagedKafkaConnectClusterIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
+}
+
+func (i *ManagedKafkaConnectClusterIdentity) ID() string {
+	return i.Connect_cluster
+}
+
 func (i *ManagedKafkaConnectClusterIdentity) FromExternal(ref string) error {
 	parsed, match, err := ManagedKafkaConnectClusterIdentityFormat.Parse(ref)
 	if err != nil {
@@ -105,4 +113,12 @@ func (obj *ManagedKafkaConnectCluster) GetIdentity(ctx context.Context, reader c
 	}
 
 	return specIdentity, nil
+}
+
+func NewConnectClusterIdentity(ctx context.Context, reader client.Reader, obj *ManagedKafkaConnectCluster) (*ManagedKafkaConnectClusterIdentity, error) {
+	id, err := obj.GetIdentity(ctx, reader)
+	if err != nil {
+		return nil, err
+	}
+	return id.(*ManagedKafkaConnectClusterIdentity), nil
 }

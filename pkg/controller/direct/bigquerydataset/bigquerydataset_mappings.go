@@ -29,7 +29,7 @@ import (
 
 	pb "cloud.google.com/go/bigquery"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -81,9 +81,8 @@ func BigQueryDatasetSpec_FromProto(mapCtx *direct.MapContext, in *pb.DatasetMeta
 	out.MaxTimeTravelHours = direct.LazyPtr(maxTimeInHours)
 	out.IsCaseInsensitive = direct.LazyPtr(in.IsCaseInsensitive)
 	out.StorageBillingModel = direct.LazyPtr(in.StorageBillingModel)
-	tokens := strings.Split(in.FullID, ":")
-	if len(tokens) == 2 {
-		out.ResourceID = direct.LazyPtr(tokens[1])
+	if _, datasetID, ok := parseDatasetFullID(in.FullID); ok {
+		out.ResourceID = direct.LazyPtr(datasetID)
 	}
 	return out
 }
@@ -96,9 +95,8 @@ func BigQueryDatasetStatus_FromProto(mapCtx *direct.MapContext, in *pb.DatasetMe
 	out.CreationTime = direct.LazyPtr(in.CreationTime.UnixMilli())
 	out.LastModifiedTime = direct.LazyPtr(in.LastModifiedTime.UnixMilli())
 	// The full dataset ID in the form projectID:datasetID
-	tokens := strings.Split(in.FullID, ":")
-	if len(tokens) == 2 {
-		out.SelfLink = direct.LazyPtr(fmt.Sprintf("https://bigquery.googleapis.com/bigquery/v2/projects/%s/datasets/%s", tokens[0], tokens[1]))
+	if projectID, datasetID, ok := parseDatasetFullID(in.FullID); ok {
+		out.SelfLink = direct.LazyPtr(fmt.Sprintf("https://bigquery.googleapis.com/bigquery/v2/projects/%s/datasets/%s", projectID, datasetID))
 	}
 	out.ObservedState = &krm.BigQueryDatasetObservedState{Location: direct.LazyPtr(in.Location)}
 	return out
@@ -113,7 +111,7 @@ func BigQueryDatasetStatus_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDa
 	out.LastModifiedTime = direct.UnixMillisToTime(direct.ValueOf(in.LastModifiedTime))
 	// The full dataset ID in the form projectID:datasetID
 	if in.SelfLink != nil {
-		selfLink := strings.Trim(direct.ValueOf(in.SelfLink), "https://bigquery.googleapis.com/bigquery/v2/")
+		selfLink := strings.TrimPrefix(direct.ValueOf(in.SelfLink), "https://bigquery.googleapis.com/bigquery/v2/")
 		tokens := strings.Split(selfLink, "/")
 		if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "datasets" {
 			out.FullID = fmt.Sprintf("%s:%s", tokens[1], tokens[3])
@@ -186,39 +184,48 @@ func BigQueryDataset_ToMetadataToUpdate(mapCtx *direct.MapContext, in *pb.Datase
 		return nil
 	}
 	out := &pb.DatasetMetadataToUpdate{}
-	acccessList := []*pb.AccessEntry{}
-	for _, access := range in.Access {
-		acccessList = append(acccessList, access)
+	if slices.Contains(updatePaths, "access") {
+		acccessList := []*pb.AccessEntry{}
+		for _, access := range in.Access {
+			acccessList = append(acccessList, access)
+		}
+		out.Access = acccessList
 	}
-	out.Access = acccessList
 	if in.DefaultEncryptionConfig != nil {
 		out.DefaultEncryptionConfig = &pb.EncryptionConfig{
 			KMSKeyName: in.DefaultEncryptionConfig.KMSKeyName,
 		}
 	}
-	// if the value to explicitly set to empty in the update request, we set the value.
+	// if the value is explicitly set to empty in the update request, we set the value.
 	// Otherwise, we drop the value.
-	if in.DefaultCollation != "" || slices.Contains(updatePaths, "default_collation") {
+	if slices.Contains(updatePaths, "default_collation") {
 		out.DefaultCollation = in.DefaultCollation
 	}
-	if in.DefaultPartitionExpiration != 0 || slices.Contains(updatePaths, "default_partition_expiration") {
+	if slices.Contains(updatePaths, "default_partition_expiration") {
 		out.DefaultPartitionExpiration = in.DefaultPartitionExpiration
 	}
-	if in.DefaultTableExpiration != 0 || slices.Contains(updatePaths, "default_table_expiration") {
+	if slices.Contains(updatePaths, "default_table_expiration") {
 		out.DefaultTableExpiration = in.DefaultTableExpiration
 	}
-	if in.Description != "" || slices.Contains(updatePaths, "description") {
+	if slices.Contains(updatePaths, "description") {
 		out.Description = in.Description
 	}
-	if in.MaxTimeTravel != 0 || slices.Contains(updatePaths, "max_time_travel") {
+	if slices.Contains(updatePaths, "max_time_travel") {
 		out.MaxTimeTravel = in.MaxTimeTravel
 	}
-	out.IsCaseInsensitive = in.IsCaseInsensitive
-	if in.Name != "" || slices.Contains(updatePaths, "friendly_name") {
+	if slices.Contains(updatePaths, "is_case_insensitive") {
+		out.IsCaseInsensitive = in.IsCaseInsensitive
+	}
+	if slices.Contains(updatePaths, "friendly_name") {
 		out.Name = in.Name
 	}
-	if in.StorageBillingModel != "" || slices.Contains(updatePaths, "storage_billing_model") {
+	if slices.Contains(updatePaths, "storage_billing_model") {
 		out.StorageBillingModel = in.StorageBillingModel
+	}
+	if slices.Contains(updatePaths, "labels") {
+		for k, v := range in.Labels {
+			out.SetLabel(k, v)
+		}
 	}
 	return out
 }
@@ -281,7 +288,7 @@ func EncryptionConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.Encrypt
 		return nil
 	}
 	out := &krm.EncryptionConfiguration{}
-	out.KmsKeyRef = &v1beta1.KMSCryptoKeyRef{
+	out.KmsKeyRef = &kmsv1beta1.KMSCryptoKeyRef{
 		External: in.KMSKeyName,
 	}
 	return out

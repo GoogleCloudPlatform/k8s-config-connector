@@ -223,6 +223,7 @@ func (a *AuthzExtensionAdapter) Update(ctx context.Context, updateOp *directbase
 		log.V(2).Info("no changes detected for AuthzExtension", "name", a.id)
 	} else {
 		// Report exact diffs
+		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
 
 		req := &pb.UpdateAuthzExtensionRequest{

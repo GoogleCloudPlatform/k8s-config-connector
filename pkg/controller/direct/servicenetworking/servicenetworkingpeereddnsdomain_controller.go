@@ -192,15 +192,7 @@ func (a *peeredDNSDomainAdapter) Create(ctx context.Context, createOp *directbas
 	}
 	log.V(2).Info("successfully created servicenetworking peeredDnsDomain in gcp", "name", a.id)
 
-	// There's no observed state, easier to just set it to the desired state
-	created := desired
-
 	status := &krm.ServiceNetworkingPeeredDNSDomainStatus{}
-	mapCtx := &direct.MapContext{}
-	status.ObservedState = ServiceNetworkingPeeredDNSDomainObservedState_FromProto(mapCtx, created)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
 	status.ExternalRef = direct.PtrTo(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }

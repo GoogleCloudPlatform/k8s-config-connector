@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: dataform.cnrm.cloud.google.com
+  kind: DataformFolder
+  name: dffolder-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

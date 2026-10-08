@@ -87,3 +87,71 @@ func Template_TemplateMetadata_MultiLanguageDetection_ToProto(mapCtx *direct.Map
 	}
 	return out
 }
+
+func FloorSetting_FloorSettingMetadata_FromProto(mapCtx *direct.MapContext, in *pb.FloorSetting_FloorSettingMetadata) *krm.FloorSetting_FloorSettingMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FloorSetting_FloorSettingMetadata{}
+	out.MultiLanguageDetection = FloorSetting_FloorSettingMetadata_MultiLanguageDetection_FromProto(mapCtx, in.GetMultiLanguageDetection())
+	return out
+}
+
+func FloorSetting_FloorSettingMetadata_ToProto(mapCtx *direct.MapContext, in *krm.FloorSetting_FloorSettingMetadata) *pb.FloorSetting_FloorSettingMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FloorSetting_FloorSettingMetadata{}
+	out.MultiLanguageDetection = FloorSetting_FloorSettingMetadata_MultiLanguageDetection_ToProto(mapCtx, in.MultiLanguageDetection)
+	return out
+}
+
+func FloorSetting_FloorSettingMetadata_MultiLanguageDetection_FromProto(mapCtx *direct.MapContext, in *pb.FloorSetting_FloorSettingMetadata_MultiLanguageDetection) *krm.FloorSetting_FloorSettingMetadata_MultiLanguageDetection {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FloorSetting_FloorSettingMetadata_MultiLanguageDetection{}
+	out.EnableMultiLanguageDetection = direct.LazyPtr(in.GetEnableMultiLanguageDetection())
+	return out
+}
+
+func FloorSetting_FloorSettingMetadata_MultiLanguageDetection_ToProto(mapCtx *direct.MapContext, in *krm.FloorSetting_FloorSettingMetadata_MultiLanguageDetection) *pb.FloorSetting_FloorSettingMetadata_MultiLanguageDetection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FloorSetting_FloorSettingMetadata_MultiLanguageDetection{}
+	if in.EnableMultiLanguageDetection != nil {
+		out.EnableMultiLanguageDetection = *in.EnableMultiLanguageDetection
+	}
+	return out
+}
+
+func AiPlatformFloorSetting_FromProto(mapCtx *direct.MapContext, in *pb.AiPlatformFloorSetting) *krm.AiPlatformFloorSetting {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiPlatformFloorSetting{}
+	switch oneof := in.EnforcementType.(type) {
+	case *pb.AiPlatformFloorSetting_InspectOnly:
+		out.InspectOnly = direct.PtrTo(oneof.InspectOnly)
+	case *pb.AiPlatformFloorSetting_InspectAndBlock:
+		out.InspectAndBlock = direct.PtrTo(oneof.InspectAndBlock)
+	}
+	out.EnableCloudLogging = direct.LazyPtr(in.GetEnableCloudLogging())
+	return out
+}
+
+func AiPlatformFloorSetting_ToProto(mapCtx *direct.MapContext, in *krm.AiPlatformFloorSetting) *pb.AiPlatformFloorSetting {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AiPlatformFloorSetting{}
+	if in.InspectOnly != nil {
+		out.EnforcementType = &pb.AiPlatformFloorSetting_InspectOnly{InspectOnly: *in.InspectOnly}
+	}
+	if in.InspectAndBlock != nil {
+		out.EnforcementType = &pb.AiPlatformFloorSetting_InspectAndBlock{InspectAndBlock: *in.InspectAndBlock}
+	}
+	out.EnableCloudLogging = direct.ValueOf(in.EnableCloudLogging)
+	return out
+}

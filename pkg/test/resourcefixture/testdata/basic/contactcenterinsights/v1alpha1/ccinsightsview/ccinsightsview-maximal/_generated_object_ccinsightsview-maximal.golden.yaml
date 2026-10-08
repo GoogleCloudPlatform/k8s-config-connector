@@ -1,0 +1,29 @@
+apiVersion: contactcenterinsights.cnrm.cloud.google.com/v1alpha1
+kind: CCInsightsView
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: ccinsightsview-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  displayName: My Updated CCInsights View
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  value: agent_id="updated-agent"
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectNumber}/locations/us-central1/views/${viewId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"

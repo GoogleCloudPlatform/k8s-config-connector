@@ -95,22 +95,10 @@ var (
 		Kind:    reflect.TypeOf(DiscoveryEngineLicenseConfig{}).Name(),
 	}
 
-	DiscoveryEngineSampleQueryGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DiscoveryEngineSampleQuery{}).Name(),
-	}
-
 	DiscoveryEngineSampleQuerySetGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
 		Kind:    reflect.TypeOf(DiscoveryEngineSampleQuerySet{}).Name(),
-	}
-
-	DiscoveryEngineSearchEngineGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DiscoveryEngineSearchEngine{}).Name(),
 	}
 
 	DiscoveryEngineServingConfigGVK = schema.GroupVersionKind{
@@ -123,6 +111,12 @@ var (
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
 		Kind:    reflect.TypeOf(DiscoveryEngineSession{}).Name(),
+	}
+
+	DiscoveryEngineUserStoreGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DiscoveryEngineUserStore{}).Name(),
 	}
 
 	discoveryengineAPIVersion = SchemeGroupVersion.String()

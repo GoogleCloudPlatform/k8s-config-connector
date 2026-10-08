@@ -187,69 +187,74 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 		return nil, err
 	}
 
+	obj.ReplicationCluster = nil
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	// TODO: Move to workflow
 	{
-		if isMysql(obj) {
-			if _, err := s.users.Insert(ctx, &pb.SqlUsersInsertRequest{
-				Instance: name.InstanceName,
-				Project:  name.Project.ID,
-				Body: &pb.User{
-					Name: "root",
-					Host: "%",
-				},
-			}); err != nil {
-				return nil, fmt.Errorf("creating root user: %w", err)
-			}
-		} else if isSqlServer(obj) {
-			users := []*pb.User{
-				{
-					Name: "##MS_PolicyEventProcessingLogin##",
-					UserDetails: &pb.User_SqlserverUserDetails{
-						SqlserverUserDetails: &pb.SqlServerUserDetails{
-							Disabled: true,
-						},
-					},
-				},
-				{
-					Name: "##MS_PolicyTsqlExecutionLogin##",
-					UserDetails: &pb.User_SqlserverUserDetails{
-						SqlserverUserDetails: &pb.SqlServerUserDetails{
-							Disabled: true,
-						},
-					},
-				},
-				{
-					Name: "sqlserver",
-					UserDetails: &pb.User_SqlserverUserDetails{
-						SqlserverUserDetails: &pb.SqlServerUserDetails{
-							ServerRoles: []string{"CustomerDbRootRole"},
-						},
-					},
-				},
-			}
-
-			for _, user := range users {
+		bypassUserCreation := obj.InstanceType == pb.SqlInstanceType_READ_REPLICA_INSTANCE && isMysql8OrAbove(obj)
+		if !bypassUserCreation {
+			if isMysql(obj) {
 				if _, err := s.users.Insert(ctx, &pb.SqlUsersInsertRequest{
 					Instance: name.InstanceName,
 					Project:  name.Project.ID,
-					Body:     user,
+					Body: &pb.User{
+						Name: "root",
+						Host: "%",
+					},
 				}); err != nil {
-					return nil, fmt.Errorf("creating initial user: %w", err)
+					return nil, fmt.Errorf("creating root user: %w", err)
 				}
-			}
-		} else if isPostgres(obj) {
-			if _, err := s.users.Insert(ctx, &pb.SqlUsersInsertRequest{
-				Instance: name.InstanceName,
-				Project:  name.Project.ID,
-				Body: &pb.User{
-					Name: "postgres",
-				},
-			}); err != nil {
-				return nil, fmt.Errorf("creating postgres user: %w", err)
+			} else if isSqlServer(obj) {
+				users := []*pb.User{
+					{
+						Name: "##MS_PolicyEventProcessingLogin##",
+						UserDetails: &pb.User_SqlserverUserDetails{
+							SqlserverUserDetails: &pb.SqlServerUserDetails{
+								Disabled: true,
+							},
+						},
+					},
+					{
+						Name: "##MS_PolicyTsqlExecutionLogin##",
+						UserDetails: &pb.User_SqlserverUserDetails{
+							SqlserverUserDetails: &pb.SqlServerUserDetails{
+								Disabled: true,
+							},
+						},
+					},
+					{
+						Name: "sqlserver",
+						UserDetails: &pb.User_SqlserverUserDetails{
+							SqlserverUserDetails: &pb.SqlServerUserDetails{
+								ServerRoles: []string{"CustomerDbRootRole"},
+							},
+						},
+					},
+				}
+
+				for _, user := range users {
+					if _, err := s.users.Insert(ctx, &pb.SqlUsersInsertRequest{
+						Instance: name.InstanceName,
+						Project:  name.Project.ID,
+						Body:     user,
+					}); err != nil {
+						return nil, fmt.Errorf("creating initial user: %w", err)
+					}
+				}
+			} else if isPostgres(obj) {
+				if _, err := s.users.Insert(ctx, &pb.SqlUsersInsertRequest{
+					Instance: name.InstanceName,
+					Project:  name.Project.ID,
+					Body: &pb.User{
+						Name: "postgres",
+					},
+				}); err != nil {
+					return nil, fmt.Errorf("creating postgres user: %w", err)
+				}
 			}
 		}
 
@@ -304,14 +309,14 @@ func (s *sqlInstancesService) ensureMasterReflectsReplica(ctx context.Context, n
 
 		shouldUpdate := false
 
+		replicaName := name.InstanceName
+		if name.Project.ID != masterName.Project.ID {
+			replicaName = name.Project.ID + ":" + name.InstanceName
+		}
+
 		// Add to replicaNames
 		{
 			found := false
-			replicaName := name.InstanceName
-			if name.Project.ID != masterName.Project.ID {
-				replicaName = name.Project.ID + ":" + name.InstanceName
-			}
-
 			for _, s := range master.ReplicaNames {
 				if s == replicaName {
 					found = true
@@ -661,6 +666,21 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 		}
 	}
 
+	if obj.InstanceType == pb.SqlInstanceType_READ_REPLICA_INSTANCE {
+		if obj.Settings == nil {
+			obj.Settings = &pb.Settings{}
+		}
+		if obj.Settings.DatabaseReplicationEnabled == nil {
+			obj.Settings.DatabaseReplicationEnabled = wrapperspb.Bool(true)
+		}
+		if isMysql8OrAbove(obj) && obj.ReplicaConfiguration == nil {
+			obj.ReplicaConfiguration = &pb.ReplicaConfiguration{
+				FailoverTarget: wrapperspb.Bool(false),
+				Kind:           "sql#replicaConfiguration",
+			}
+		}
+	}
+
 	if obj.GeminiConfig == nil {
 		if isMysql(obj) {
 			obj.GeminiConfig = &pb.GeminiInstanceConfig{
@@ -872,6 +892,13 @@ func isMysql(obj *pb.DatabaseInstance) bool {
 	return strings.HasPrefix(obj.GetDatabaseVersion().String(), "MYSQL_")
 }
 
+func isMysql8OrAbove(obj *pb.DatabaseInstance) bool {
+	if !isMysql(obj) {
+		return false
+	}
+	return !strings.HasPrefix(obj.GetDatabaseVersion().String(), "MYSQL_5_")
+}
+
 func isPostgres(obj *pb.DatabaseInstance) bool {
 	return strings.HasPrefix(obj.GetDatabaseVersion().String(), "POSTGRES_")
 }
@@ -891,7 +918,10 @@ func validateDatabaseInstance(obj *pb.DatabaseInstance) error {
 
 		if !obj.GetSettings().GetBackupConfiguration().GetEnabled().GetValue() {
 			if obj.GetSettings().GetBackupConfiguration().GetBinaryLogEnabled().GetValue() {
-				return status.Errorf(codes.InvalidArgument, "Binary log must be disabled when backup is disabled or the instance must be a replica instance with a MySQL 5.7 or above version.")
+				isReplica := obj.InstanceType == pb.SqlInstanceType_READ_REPLICA_INSTANCE || obj.MasterInstanceName != ""
+				if !isReplica || !isMysql(obj) {
+					return status.Errorf(codes.InvalidArgument, "Binary log must be disabled when backup is disabled or the instance must be a replica instance with a MySQL 5.7 or above version.")
+				}
 			}
 		}
 	}
@@ -964,11 +994,18 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 		if specifiedMaintenanceVersion != "" {
 			obj.MaintenanceVersion = specifiedMaintenanceVersion
 		}
+		if body.ReplicationCluster != nil {
+			obj.ReplicationCluster = proto.CloneOf(body.ReplicationCluster)
+		}
 	}
 
 	obj.Settings.SettingsVersion = wrapperspb.Int64(obj.GetSettings().GetSettingsVersion().GetValue() + 1)
 
 	populateDefaults(obj)
+
+	if err := s.handleDRPairing(ctx, *name, obj); err != nil {
+		return nil, err
+	}
 
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
@@ -988,6 +1025,41 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 	return s.operations.startLRO(ctx, op, obj, func() (proto.Message, error) {
 		return obj, nil
 	})
+}
+
+func (s *sqlInstancesService) handleDRPairing(ctx context.Context, name InstanceName, obj *pb.DatabaseInstance) error {
+	if obj.ReplicationCluster != nil && obj.ReplicationCluster.FailoverDrReplicaName != nil && *obj.ReplicationCluster.FailoverDrReplicaName != "" {
+		replicaInstanceName := *obj.ReplicationCluster.FailoverDrReplicaName
+		tokens := strings.Split(replicaInstanceName, ":")
+		replicaName := name
+		if len(tokens) >= 2 {
+			replicaName.Project = &projects.ProjectData{ID: tokens[0]}
+			replicaName.InstanceName = tokens[1]
+		} else {
+			replicaName.InstanceName = tokens[0]
+		}
+		replicaFQN := replicaName.String()
+		replica := &pb.DatabaseInstance{}
+		if err := s.storage.Get(ctx, replicaFQN, replica); err == nil {
+			primaryIdentifier := name.InstanceName
+			primaryWithProject := name.Project.ID + ":" + name.InstanceName
+			if replica.MasterInstanceName == primaryIdentifier || replica.MasterInstanceName == primaryWithProject {
+				formattedDrReplicaName := replicaName.Project.ID + ":" + replicaName.InstanceName
+				obj.ReplicationCluster.FailoverDrReplicaName = &formattedDrReplicaName
+				if replica.ReplicationCluster == nil {
+					replica.ReplicationCluster = &pb.ReplicationCluster{}
+				}
+				replica.ReplicationCluster.DrReplica = proto.Bool(true)
+				replica.Etag = fields.ComputeWeakEtag(replica)
+				if err := s.storage.Update(ctx, replicaFQN, replica); err != nil {
+					return err
+				}
+			}
+		}
+	} else if obj.ReplicationCluster != nil && (obj.ReplicationCluster.DrReplica == nil || !*obj.ReplicationCluster.DrReplica) {
+		obj.ReplicationCluster = nil
+	}
+	return nil
 }
 
 func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUpdateRequest) (*pb.Operation, error) {
@@ -1040,6 +1112,10 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 	populateDefaults(obj)
 
 	obj.Settings.SettingsVersion = wrapperspb.Int64(existing.GetSettings().GetSettingsVersion().GetValue() + 1)
+
+	if err := s.handleDRPairing(ctx, *name, obj); err != nil {
+		return nil, err
+	}
 
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
@@ -1110,10 +1186,6 @@ func (s *sqlInstancesService) Switchover(ctx context.Context, req *pb.SqlInstanc
 		obj.MasterInstanceName = ""
 		oldMaster.MasterInstanceName = name.Project.ID + ":" + name.InstanceName
 
-		// Swap ReplicationCluster
-		obj.ReplicationCluster = oldMaster.ReplicationCluster
-		oldMaster.ReplicationCluster = nil
-
 		// Set replica names
 		replicaName := oldMasterName.InstanceName
 		if oldMasterName.Project.ID != name.Project.ID {
@@ -1121,6 +1193,32 @@ func (s *sqlInstancesService) Switchover(ctx context.Context, req *pb.SqlInstanc
 		}
 		obj.ReplicaNames = []string{replicaName}
 		oldMaster.ReplicaNames = nil
+
+		// Update ReplicationCluster
+		drReplicaTargetName := oldMasterName.Project.ID + ":" + oldMasterName.InstanceName
+		obj.ReplicationCluster = &pb.ReplicationCluster{
+			FailoverDrReplicaName: &drReplicaTargetName,
+		}
+		oldMaster.ReplicationCluster = &pb.ReplicationCluster{
+			DrReplica: proto.Bool(true),
+		}
+
+		// Swap BackupConfiguration
+		if oldMaster.Settings != nil && obj.Settings != nil {
+			oldMasterBackup := oldMaster.Settings.BackupConfiguration
+			objBackup := obj.Settings.BackupConfiguration
+			if oldMasterBackup != nil {
+				obj.Settings.BackupConfiguration = proto.CloneOf(oldMasterBackup)
+			}
+			if objBackup != nil {
+				oldMaster.Settings.BackupConfiguration = proto.CloneOf(objBackup)
+			} else {
+				oldMaster.Settings.BackupConfiguration = &pb.BackupConfiguration{
+					Enabled:          wrapperspb.Bool(false),
+					BinaryLogEnabled: wrapperspb.Bool(true),
+				}
+			}
+		}
 
 		oldMaster.Etag = fields.ComputeWeakEtag(oldMaster)
 

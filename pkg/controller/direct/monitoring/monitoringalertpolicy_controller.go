@@ -224,6 +224,9 @@ func (a *alertPolicyAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	if diffs.HasDiff() {
+		diffs.Object = u
+		structuredreporting.ReportDiff(ctx, diffs)
+
 		log.V(2).Info("alert policy has diffs", "diffs", diffs)
 		req := &pb.UpdateAlertPolicyRequest{
 			AlertPolicy: a.desired,

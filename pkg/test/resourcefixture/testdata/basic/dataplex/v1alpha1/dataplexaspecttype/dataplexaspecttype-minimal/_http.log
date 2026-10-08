@@ -1,0 +1,365 @@
+GRPC /google.cloud.dataplex.v1.CatalogService/GetAspectType
+
+{
+  "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/CreateAspectType
+
+{
+  "aspectType": {
+    "description": "Minimal aspect type",
+    "metadataTemplate": {
+      "name": "minimal_template",
+      "recordFields": [
+        {
+          "index": 1,
+          "name": "minimal_field",
+          "type": "string"
+        }
+      ],
+      "type": "record"
+    }
+  },
+  "aspectTypeId": "aspecttype-minimal-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.AspectType",
+    "authorization": {},
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Minimal aspect type",
+    "etag": "abcdef0123A=",
+    "metadataTemplate": {
+      "name": "minimal_template",
+      "recordFields": [
+        {
+          "index": 1,
+          "name": "minimal_field",
+          "type": "string"
+        }
+      ],
+      "type": "record"
+    },
+    "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/GetAspectType
+
+{
+  "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "authorization": {},
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Minimal aspect type",
+  "etag": "abcdef0123A=",
+  "metadataTemplate": {
+    "name": "minimal_template",
+    "recordFields": [
+      {
+        "index": 1,
+        "name": "minimal_field",
+        "type": "string"
+      }
+    ],
+    "type": "record"
+  },
+  "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/GetAspectType
+
+{
+  "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "authorization": {},
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Minimal aspect type",
+  "etag": "abcdef0123A=",
+  "metadataTemplate": {
+    "name": "minimal_template",
+    "recordFields": [
+      {
+        "index": 1,
+        "name": "minimal_field",
+        "type": "string"
+      }
+    ],
+    "type": "record"
+  },
+  "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/UpdateAspectType
+
+{
+  "aspectType": {
+    "description": "Minimal aspect type updated",
+    "metadataTemplate": {
+      "name": "minimal_template",
+      "recordFields": [
+        {
+          "index": 1,
+          "name": "minimal_field",
+          "type": "string"
+        }
+      ],
+      "type": "record"
+    },
+    "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}"
+  },
+  "updateMask": "description"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.AspectType",
+    "authorization": {},
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Minimal aspect type updated",
+    "etag": "abcdef0123A=",
+    "metadataTemplate": {
+      "name": "minimal_template",
+      "recordFields": [
+        {
+          "index": 1,
+          "name": "minimal_field",
+          "type": "string"
+        }
+      ],
+      "type": "record"
+    },
+    "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/GetAspectType
+
+{
+  "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "authorization": {},
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Minimal aspect type updated",
+  "etag": "abcdef0123A=",
+  "metadataTemplate": {
+    "name": "minimal_template",
+    "recordFields": [
+      {
+        "index": 1,
+        "name": "minimal_field",
+        "type": "string"
+      }
+    ],
+    "type": "record"
+  },
+  "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/GetAspectType
+
+{
+  "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "authorization": {},
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Minimal aspect type updated",
+  "etag": "abcdef0123A=",
+  "metadataTemplate": {
+    "name": "minimal_template",
+    "recordFields": [
+      {
+        "index": 1,
+        "name": "minimal_field",
+        "type": "string"
+      }
+    ],
+    "type": "record"
+  },
+  "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/GetAspectType
+
+{
+  "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "authorization": {},
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Minimal aspect type updated",
+  "etag": "abcdef0123A=",
+  "metadataTemplate": {
+    "name": "minimal_template",
+    "recordFields": [
+      {
+        "index": 1,
+        "name": "minimal_field",
+        "type": "string"
+      }
+    ],
+    "type": "record"
+  },
+  "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/DeleteAspectType
+
+{
+  "name": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/aspectTypes/aspecttype-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

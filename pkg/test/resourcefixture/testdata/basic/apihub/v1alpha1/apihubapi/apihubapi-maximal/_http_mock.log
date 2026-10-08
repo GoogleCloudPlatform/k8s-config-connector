@@ -1,6 +1,6 @@
 GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/apis/api-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fapis%2Fapi-${uniqueId}
 
 404 Not Found
@@ -16,14 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "api \"projects/${projectId}/locations/us-central1/apis/api-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "api \"projects/${projectId}/locations/us-central1/apis/api-${uniqueId}\" not found",
+    "message": "Resource 'projects/${projectId}/locations/us-central1/apis/api-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
@@ -32,31 +25,10 @@ X-Xss-Protection: 0
 
 POST https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/apis?%24alt=json%3Benum-encoding%3Dint&apiId=api-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
-  "apiFunctionalRequirements": {
-    "stringValues": {
-      "values": [
-        "func-requirement-1"
-      ]
-    }
-  },
-  "apiRequirements": {
-    "stringValues": {
-      "values": [
-        "requirement-1"
-      ]
-    }
-  },
-  "apiTechnicalRequirements": {
-    "stringValues": {
-      "values": [
-        "tech-requirement-1"
-      ]
-    }
-  },
   "description": "A comprehensive APIHubAPI for E2E testing",
   "displayName": "Maximal APIHubAPI",
   "documentation": {
@@ -80,27 +52,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "apiFunctionalRequirements": {
-    "stringValues": {
-      "values": [
-        "func-requirement-1"
-      ]
-    }
-  },
-  "apiRequirements": {
-    "stringValues": {
-      "values": [
-        "requirement-1"
-      ]
-    }
-  },
-  "apiTechnicalRequirements": {
-    "stringValues": {
-      "values": [
-        "tech-requirement-1"
-      ]
-    }
-  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A comprehensive APIHubAPI for E2E testing",
   "displayName": "Maximal APIHubAPI",
@@ -119,7 +70,7 @@ X-Xss-Protection: 0
 
 GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/apis/api-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fapis%2Fapi-${uniqueId}
 
 200 OK
@@ -133,27 +84,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "apiFunctionalRequirements": {
-    "stringValues": {
-      "values": [
-        "func-requirement-1"
-      ]
-    }
-  },
-  "apiRequirements": {
-    "stringValues": {
-      "values": [
-        "requirement-1"
-      ]
-    }
-  },
-  "apiTechnicalRequirements": {
-    "stringValues": {
-      "values": [
-        "tech-requirement-1"
-      ]
-    }
-  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A comprehensive APIHubAPI for E2E testing",
   "displayName": "Maximal APIHubAPI",
@@ -170,33 +100,12 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/apis/api-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=apiFunctionalRequirements%2CapiRequirements%2CapiTechnicalRequirements%2Cdescription%2CdisplayName%2Cdocumentation%2Cowner
+PATCH https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/apis/api-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName%2Cdocumentation%2Cowner
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: api.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fapis%2Fapi-${uniqueId}
 
 {
-  "apiFunctionalRequirements": {
-    "stringValues": {
-      "values": [
-        "func-requirement-2"
-      ]
-    }
-  },
-  "apiRequirements": {
-    "stringValues": {
-      "values": [
-        "requirement-2"
-      ]
-    }
-  },
-  "apiTechnicalRequirements": {
-    "stringValues": {
-      "values": [
-        "tech-requirement-2"
-      ]
-    }
-  },
   "description": "A comprehensive APIHubAPI for E2E testing - Updated",
   "displayName": "Maximal APIHubAPI Updated",
   "documentation": {
@@ -220,27 +129,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "apiFunctionalRequirements": {
-    "stringValues": {
-      "values": [
-        "func-requirement-2"
-      ]
-    }
-  },
-  "apiRequirements": {
-    "stringValues": {
-      "values": [
-        "requirement-2"
-      ]
-    }
-  },
-  "apiTechnicalRequirements": {
-    "stringValues": {
-      "values": [
-        "tech-requirement-2"
-      ]
-    }
-  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A comprehensive APIHubAPI for E2E testing - Updated",
   "displayName": "Maximal APIHubAPI Updated",
@@ -259,7 +147,7 @@ X-Xss-Protection: 0
 
 GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/apis/api-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fapis%2Fapi-${uniqueId}
 
 200 OK
@@ -273,27 +161,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "apiFunctionalRequirements": {
-    "stringValues": {
-      "values": [
-        "func-requirement-2"
-      ]
-    }
-  },
-  "apiRequirements": {
-    "stringValues": {
-      "values": [
-        "requirement-2"
-      ]
-    }
-  },
-  "apiTechnicalRequirements": {
-    "stringValues": {
-      "values": [
-        "tech-requirement-2"
-      ]
-    }
-  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A comprehensive APIHubAPI for E2E testing - Updated",
   "displayName": "Maximal APIHubAPI Updated",
@@ -312,7 +179,7 @@ X-Xss-Protection: 0
 
 DELETE https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/apis/api-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fapis%2Fapi-${uniqueId}
 
 200 OK

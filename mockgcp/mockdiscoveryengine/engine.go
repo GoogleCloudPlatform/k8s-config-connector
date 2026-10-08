@@ -33,6 +33,7 @@ import (
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
 
@@ -55,6 +56,19 @@ func (s *engineService) CreateEngine(ctx context.Context, req *pb.CreateEngineRe
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 
+	if obj.SolutionType == pb.SolutionType_SOLUTION_TYPE_SEARCH {
+		config := obj.GetSearchEngineConfig()
+		if config == nil {
+			obj.EngineConfig = &pb.Engine_SearchEngineConfig_{
+				SearchEngineConfig: &pb.Engine_SearchEngineConfig{
+					SearchTier: pb.SearchTier_SEARCH_TIER_STANDARD,
+				},
+			}
+		} else if config.SearchTier == pb.SearchTier_SEARCH_TIER_UNSPECIFIED {
+			config.SearchTier = pb.SearchTier_SEARCH_TIER_STANDARD
+		}
+	}
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -73,7 +87,7 @@ func (s *engineService) GetEngine(ctx context.Context, req *pb.GetEngineRequest)
 	obj := &pb.Engine{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Engine with name %q does not exist.", req.GetName())
+			return nil, status.Errorf(codes.NotFound, "Engine with name %q does not exist.", fqn)
 		}
 		return nil, err
 	}
@@ -95,8 +109,28 @@ func (s *engineService) UpdateEngine(ctx context.Context, req *pb.UpdateEngineRe
 		return nil, err
 	}
 
-	// simple merge for now
-	proto.Merge(obj, req.GetEngine())
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		paths = []string{"display_name", "search_engine_config", "common_config", "data_store_ids"}
+	}
+
+	if err := fields.UpdateByFieldMask(obj, req.GetEngine(), paths); err != nil {
+		return nil, err
+	}
+
+	if obj.SolutionType == pb.SolutionType_SOLUTION_TYPE_SEARCH {
+		config := obj.GetSearchEngineConfig()
+		if config == nil {
+			obj.EngineConfig = &pb.Engine_SearchEngineConfig_{
+				SearchEngineConfig: &pb.Engine_SearchEngineConfig{
+					SearchTier: pb.SearchTier_SEARCH_TIER_STANDARD,
+				},
+			}
+		} else if config.SearchTier == pb.SearchTier_SEARCH_TIER_UNSPECIFIED {
+			config.SearchTier = pb.SearchTier_SEARCH_TIER_STANDARD
+		}
+	}
+
 	obj.Name = fqn
 	obj.UpdateTime = timestamppb.New(time.Now())
 

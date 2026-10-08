@@ -234,6 +234,7 @@ func (a *pubSubSubscriptionAdapter) Update(ctx context.Context, updateOp *direct
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &pb.UpdateSubscriptionRequest{

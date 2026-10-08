@@ -1,0 +1,2027 @@
+GET https://storage.googleapis.com/storage/v1/b/livestreamchannel-max-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a0fdb67e81
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": []
+  },
+  "location": "us-central1",
+  "name": "livestreamchannel-max-${uniqueId}",
+  "softDeletePolicy": {
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a0fdb6811c
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "livestreamchannel-max-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/livestreamchannel-max-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/livestreamchannel-max-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a0fdb68164
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "livestreamchannel-max-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/livestreamchannel-max-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finputs%2Flivestreamchannel-max-input1-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input1-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/inputs?%24alt=json%3Benum-encoding%3Dint&inputId=livestreamchannel-max-input1-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "type": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.video.livestream.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input1-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.video.livestream.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input1-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.video.livestream.v1.Input",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input1-${uniqueId}",
+    "tier": "HD",
+    "type": "RTMP_PUSH",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "uri": "rtmp://35.239.41.154/live/9fa80b77-5819-4ca3-aeba-ca41dffe4636"
+  }
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finputs%2Flivestreamchannel-max-input1-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input1-${uniqueId}",
+  "tier": 2,
+  "type": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uri": "rtmp://35.239.41.154/live/9fa80b77-5819-4ca3-aeba-ca41dffe4636"
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finputs%2Flivestreamchannel-max-input2-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input2-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/inputs?%24alt=json%3Benum-encoding%3Dint&inputId=livestreamchannel-max-input2-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "type": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.video.livestream.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input2-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.video.livestream.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input2-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.video.livestream.v1.Input",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input2-${uniqueId}",
+    "tier": "HD",
+    "type": "RTMP_PUSH",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "uri": "rtmp://35.239.41.154/live/9fa80b77-5819-4ca3-aeba-ca41dffe4636"
+  }
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finputs%2Flivestreamchannel-max-input2-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input2-${uniqueId}",
+  "tier": 2,
+  "type": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uri": "rtmp://35.239.41.154/live/9fa80b77-5819-4ca3-aeba-ca41dffe4636"
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/assets/livestreamchannel-max-asset-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fassets%2Flivestreamchannel-max-asset-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/assets/livestreamchannel-max-asset-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/assets?%24alt=json%3Benum-encoding%3Dint&assetId=livestreamchannel-max-asset-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "image": {
+    "uri": "gs://cloud-samples-data/vision/demo-img.jpg"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.video.livestream.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/assets/livestreamchannel-max-asset-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.video.livestream.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/assets/livestreamchannel-max-asset-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.video.livestream.v1.Asset",
+    "crc32c": "hq+43Q==",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "image": {
+      "uri": "gs://cloud-samples-data/vision/demo-img.jpg"
+    },
+    "name": "projects/${projectId}/locations/us-central1/assets/livestreamchannel-max-asset-${uniqueId}",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/assets/livestreamchannel-max-asset-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fassets%2Flivestreamchannel-max-asset-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "crc32c": "hq+43Q==",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "image": {
+    "uri": "gs://cloud-samples-data/vision/demo-img.jpg"
+  },
+  "name": "projects/${projectId}/locations/us-central1/assets/livestreamchannel-max-asset-${uniqueId}",
+  "state": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/channels/livestreamchannel-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fchannels%2Flivestreamchannel-maximal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/channels/livestreamchannel-maximal-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/channels?%24alt=json%3Benum-encoding%3Dint&channelId=livestreamchannel-maximal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "elementaryStreams": [
+    {
+      "key": "es-video",
+      "videoStream": {
+        "h264": {
+          "aqStrength": 1,
+          "bFrameCount": 3,
+          "bitrateBps": 2000000,
+          "entropyCoder": "cabac",
+          "frameRate": 30,
+          "gopDuration": "2s",
+          "heightPixels": 720,
+          "profile": "high",
+          "tune": "zerolatency",
+          "widthPixels": 1280
+        }
+      }
+    },
+    {
+      "audioStream": {
+        "bitrateBps": 128000,
+        "channelCount": 2,
+        "channelLayout": [
+          "fl",
+          "fr"
+        ],
+        "codec": "aac",
+        "mapping": [
+          {
+            "inputKey": "input-attachment-1"
+          }
+        ],
+        "sampleRateHertz": 48000
+      },
+      "key": "es-audio"
+    },
+    {
+      "key": "es-text",
+      "textStream": {
+        "codec": "cea608"
+      }
+    }
+  ],
+  "inputAttachments": [
+    {
+      "automaticFailover": {
+        "inputKeys": [
+          "input-attachment-2"
+        ]
+      },
+      "input": "projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input1-${uniqueId}",
+      "key": "input-attachment-1"
+    },
+    {
+      "input": "projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input2-${uniqueId}",
+      "key": "input-attachment-2"
+    }
+  ],
+  "inputConfig": {
+    "inputSwitchMode": 3
+  },
+  "labels": {
+    "app": "live",
+    "env": "test"
+  },
+  "logConfig": {
+    "logSeverity": 200
+  },
+  "manifests": [
+    {
+      "fileName": "manifest.m3u8",
+      "key": "manifest-hls",
+      "maxSegmentCount": 5,
+      "muxStreams": [
+        "mux-video",
+        "mux-audio"
+      ],
+      "segmentKeepDuration": "60s",
+      "type": 1
+    }
+  ],
+  "muxStreams": [
+    {
+      "container": "fmp4",
+      "elementaryStreams": [
+        "es-video"
+      ],
+      "key": "mux-video",
+      "segmentSettings": {
+        "segmentDuration": "2s"
+      }
+    },
+    {
+      "container": "fmp4",
+      "elementaryStreams": [
+        "es-audio"
+      ],
+      "key": "mux-audio",
+      "segmentSettings": {
+        "segmentDuration": "2s"
+      }
+    }
+  ],
+  "output": {
+    "uri": "gs://livestreamchannel-max-${uniqueId}/output/"
+  },
+  "retentionConfig": {
+    "retentionWindowDuration": "604800s"
+  },
+  "spriteSheets": [
+    {
+      "columnCount": 10,
+      "filePrefix": "sprite",
+      "format": "jpeg",
+      "interval": "10s",
+      "quality": 85,
+      "rowCount": 10,
+      "spriteHeightPixels": 36,
+      "spriteWidthPixels": 64
+    }
+  ],
+  "staticOverlays": [
+    {
+      "asset": "projects/${projectId}/locations/us-central1/assets/livestreamchannel-max-asset-${uniqueId}",
+      "opacity": 0.8,
+      "position": {
+        "x": 0.8,
+        "y": 0.8
+      },
+      "resolution": {
+        "h": 0.1,
+        "w": 0.1
+      }
+    }
+  ],
+  "timecodeConfig": {
+    "source": 1
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.video.livestream.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/channels/livestreamchannel-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.video.livestream.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/channels/livestreamchannel-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.video.livestream.v1.Channel",
+    "activeInput": "input-attachment-1",
+    "autoTranscriptionConfig": {
+      "displayTiming": "ASYNC",
+      "qualityPreset": "BALANCED_QUALITY"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "elementaryStreams": [
+      {
+        "key": "es-video",
+        "videoStream": {
+          "h264": {
+            "aqStrength": 1,
+            "bFrameCount": 3,
+            "bitrateBps": 2000000,
+            "entropyCoder": "cabac",
+            "frameRate": 30,
+            "gopDuration": "2s",
+            "heightPixels": 720,
+            "profile": "high",
+            "tune": "zerolatency",
+            "vbvFullnessBits": 1800000,
+            "vbvSizeBits": 2000000,
+            "widthPixels": 1280
+          }
+        }
+      },
+      {
+        "audioStream": {
+          "bitrateBps": 128000,
+          "channelCount": 2,
+          "channelLayout": [
+            "fl",
+            "fr"
+          ],
+          "codec": "aac",
+          "mapping": [
+            {
+              "inputKey": "input-attachment-1"
+            }
+          ],
+          "sampleRateHertz": 48000
+        },
+        "key": "es-audio"
+      },
+      {
+        "key": "es-text",
+        "textStream": {
+          "codec": "cea608"
+        }
+      }
+    ],
+    "inputAttachments": [
+      {
+        "automaticFailover": {
+          "inputKeys": [
+            "input-attachment-2"
+          ]
+        },
+        "input": "projects/${projectNumber}/locations/us-central1/inputs/livestreamchannel-max-input1-${uniqueId}",
+        "key": "input-attachment-1"
+      },
+      {
+        "input": "projects/${projectNumber}/locations/us-central1/inputs/livestreamchannel-max-input2-${uniqueId}",
+        "key": "input-attachment-2"
+      }
+    ],
+    "inputConfig": {
+      "inputSwitchMode": "MANUAL"
+    },
+    "logConfig": {
+      "logSeverity": "INFO"
+    },
+    "manifests": [
+      {
+        "fileName": "manifest.m3u8",
+        "key": "manifest-hls",
+        "maxSegmentCount": 5,
+        "muxStreams": [
+          "mux-video",
+          "mux-audio"
+        ],
+        "segmentKeepDuration": "60s",
+        "type": "HLS"
+      }
+    ],
+    "muxStreams": [
+      {
+        "container": "fmp4",
+        "elementaryStreams": [
+          "es-video"
+        ],
+        "key": "mux-video",
+        "segmentSettings": {
+          "segmentDuration": "2s"
+        }
+      },
+      {
+        "container": "fmp4",
+        "elementaryStreams": [
+          "es-audio"
+        ],
+        "key": "mux-audio",
+        "segmentSettings": {
+          "segmentDuration": "2s"
+        }
+      }
+    ],
+    "name": "projects/${projectId}/locations/us-central1/channels/livestreamchannel-maximal-${uniqueId}",
+    "output": {
+      "uri": "gs://livestreamchannel-max-${uniqueId}/output/"
+    },
+    "retentionConfig": {
+      "retentionWindowDuration": "604800s"
+    },
+    "spriteSheets": [
+      {
+        "columnCount": 10,
+        "filePrefix": "sprite",
+        "format": "jpeg",
+        "interval": "10s",
+        "quality": 85,
+        "rowCount": 10,
+        "spriteHeightPixels": 36,
+        "spriteWidthPixels": 64
+      }
+    ],
+    "staticOverlays": [
+      {
+        "asset": "projects/${projectNumber}/locations/us-central1/assets/livestreamchannel-max-asset-${uniqueId}",
+        "opacity": 0.8,
+        "position": {
+          "x": 0.8,
+          "y": 0.8
+        },
+        "resolution": {
+          "h": 0.1,
+          "w": 0.1
+        }
+      }
+    ],
+    "streamingState": "STOPPED",
+    "timecodeConfig": {
+      "source": "MEDIA_TIMESTAMP"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/channels/livestreamchannel-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fchannels%2Flivestreamchannel-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activeInput": "input-attachment-1",
+  "autoTranscriptionConfig": {
+    "displayTiming": 1,
+    "qualityPreset": 2
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "elementaryStreams": [
+    {
+      "key": "es-video",
+      "videoStream": {
+        "h264": {
+          "aqStrength": 1,
+          "bFrameCount": 3,
+          "bitrateBps": 2000000,
+          "entropyCoder": "cabac",
+          "frameRate": 30,
+          "gopDuration": "2s",
+          "heightPixels": 720,
+          "profile": "high",
+          "tune": "zerolatency",
+          "vbvFullnessBits": 1800000,
+          "vbvSizeBits": 2000000,
+          "widthPixels": 1280
+        }
+      }
+    },
+    {
+      "audioStream": {
+        "bitrateBps": 128000,
+        "channelCount": 2,
+        "channelLayout": [
+          "fl",
+          "fr"
+        ],
+        "codec": "aac",
+        "mapping": [
+          {
+            "inputKey": "input-attachment-1"
+          }
+        ],
+        "sampleRateHertz": 48000
+      },
+      "key": "es-audio"
+    },
+    {
+      "key": "es-text",
+      "textStream": {
+        "codec": "cea608"
+      }
+    }
+  ],
+  "inputAttachments": [
+    {
+      "automaticFailover": {
+        "inputKeys": [
+          "input-attachment-2"
+        ]
+      },
+      "input": "projects/${projectNumber}/locations/us-central1/inputs/livestreamchannel-max-input1-${uniqueId}",
+      "key": "input-attachment-1"
+    },
+    {
+      "input": "projects/${projectNumber}/locations/us-central1/inputs/livestreamchannel-max-input2-${uniqueId}",
+      "key": "input-attachment-2"
+    }
+  ],
+  "inputConfig": {
+    "inputSwitchMode": 3
+  },
+  "labels": {
+    "app": "live",
+    "env": "test"
+  },
+  "logConfig": {
+    "logSeverity": 200
+  },
+  "manifests": [
+    {
+      "fileName": "manifest.m3u8",
+      "key": "manifest-hls",
+      "maxSegmentCount": 5,
+      "muxStreams": [
+        "mux-video",
+        "mux-audio"
+      ],
+      "segmentKeepDuration": "60s",
+      "type": 1
+    }
+  ],
+  "muxStreams": [
+    {
+      "container": "fmp4",
+      "elementaryStreams": [
+        "es-video"
+      ],
+      "key": "mux-video",
+      "segmentSettings": {
+        "segmentDuration": "2s"
+      }
+    },
+    {
+      "container": "fmp4",
+      "elementaryStreams": [
+        "es-audio"
+      ],
+      "key": "mux-audio",
+      "segmentSettings": {
+        "segmentDuration": "2s"
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/us-central1/channels/livestreamchannel-maximal-${uniqueId}",
+  "output": {
+    "uri": "gs://livestreamchannel-max-${uniqueId}/output/"
+  },
+  "retentionConfig": {
+    "retentionWindowDuration": "604800s"
+  },
+  "spriteSheets": [
+    {
+      "columnCount": 10,
+      "filePrefix": "sprite",
+      "format": "jpeg",
+      "interval": "10s",
+      "quality": 85,
+      "rowCount": 10,
+      "spriteHeightPixels": 36,
+      "spriteWidthPixels": 64
+    }
+  ],
+  "staticOverlays": [
+    {
+      "asset": "projects/${projectNumber}/locations/us-central1/assets/livestreamchannel-max-asset-${uniqueId}",
+      "opacity": 0.8,
+      "position": {
+        "x": 0.8,
+        "y": 0.8
+      },
+      "resolution": {
+        "h": 0.1,
+        "w": 0.1
+      }
+    }
+  ],
+  "streamingState": 6,
+  "timecodeConfig": {
+    "source": 1
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectNumber}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "${projectId}",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}",
+  "parent": "organizations/${folderID}",
+  "projectId": "${projectId}",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/channels/livestreamchannel-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=elementaryStreams%2CinputConfig%2ClogConfig%2Cmanifests%2CspriteSheets
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: channel.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fchannels%2Flivestreamchannel-maximal-${uniqueId}
+
+{
+  "elementaryStreams": [
+    {
+      "key": "es-video",
+      "videoStream": {
+        "h264": {
+          "aqStrength": 1,
+          "bFrameCount": 3,
+          "bitrateBps": 2500000,
+          "entropyCoder": "cabac",
+          "frameRate": 30,
+          "gopDuration": "2s",
+          "heightPixels": 720,
+          "profile": "high",
+          "tune": "zerolatency",
+          "widthPixels": 1280
+        }
+      }
+    },
+    {
+      "audioStream": {
+        "bitrateBps": 160000,
+        "channelCount": 2,
+        "channelLayout": [
+          "fl",
+          "fr"
+        ],
+        "codec": "aac",
+        "mapping": [
+          {
+            "inputKey": "input-attachment-1"
+          }
+        ],
+        "sampleRateHertz": 48000
+      },
+      "key": "es-audio"
+    },
+    {
+      "key": "es-text",
+      "textStream": {
+        "codec": "cea608"
+      }
+    }
+  ],
+  "inputAttachments": [
+    {
+      "automaticFailover": {
+        "inputKeys": [
+          "input-attachment-2"
+        ]
+      },
+      "input": "projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input1-${uniqueId}",
+      "key": "input-attachment-1"
+    },
+    {
+      "input": "projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input2-${uniqueId}",
+      "key": "input-attachment-2"
+    }
+  ],
+  "inputConfig": {
+    "inputSwitchMode": 1
+  },
+  "labels": {
+    "app": "live",
+    "env": "test"
+  },
+  "logConfig": {
+    "logSeverity": 400
+  },
+  "manifests": [
+    {
+      "fileName": "manifest.m3u8",
+      "key": "manifest-hls",
+      "maxSegmentCount": 6,
+      "muxStreams": [
+        "mux-video",
+        "mux-audio"
+      ],
+      "segmentKeepDuration": "60s",
+      "type": 1
+    }
+  ],
+  "muxStreams": [
+    {
+      "container": "fmp4",
+      "elementaryStreams": [
+        "es-video"
+      ],
+      "key": "mux-video",
+      "segmentSettings": {
+        "segmentDuration": "2s"
+      }
+    },
+    {
+      "container": "fmp4",
+      "elementaryStreams": [
+        "es-audio"
+      ],
+      "key": "mux-audio",
+      "segmentSettings": {
+        "segmentDuration": "2s"
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/us-central1/channels/livestreamchannel-maximal-${uniqueId}",
+  "output": {
+    "uri": "gs://livestreamchannel-max-${uniqueId}/output/"
+  },
+  "retentionConfig": {
+    "retentionWindowDuration": "604800s"
+  },
+  "spriteSheets": [
+    {
+      "columnCount": 10,
+      "filePrefix": "sprite",
+      "format": "jpeg",
+      "interval": "10s",
+      "quality": 90,
+      "rowCount": 10,
+      "spriteHeightPixels": 36,
+      "spriteWidthPixels": 64
+    }
+  ],
+  "staticOverlays": [
+    {
+      "asset": "projects/${projectId}/locations/us-central1/assets/livestreamchannel-max-asset-${uniqueId}",
+      "opacity": 0.8,
+      "position": {
+        "x": 0.8,
+        "y": 0.8
+      },
+      "resolution": {
+        "h": 0.1,
+        "w": 0.1
+      }
+    }
+  ],
+  "timecodeConfig": {
+    "source": 1
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.video.livestream.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/channels/livestreamchannel-maximal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.video.livestream.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/channels/livestreamchannel-maximal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.video.livestream.v1.Channel",
+    "activeInput": "input-attachment-1",
+    "autoTranscriptionConfig": {
+      "displayTiming": "ASYNC",
+      "qualityPreset": "BALANCED_QUALITY"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "elementaryStreams": [
+      {
+        "key": "es-video",
+        "videoStream": {
+          "h264": {
+            "aqStrength": 1,
+            "bFrameCount": 3,
+            "bitrateBps": 2500000,
+            "entropyCoder": "cabac",
+            "frameRate": 30,
+            "gopDuration": "2s",
+            "heightPixels": 720,
+            "profile": "high",
+            "tune": "zerolatency",
+            "vbvFullnessBits": 2250000,
+            "vbvSizeBits": 2500000,
+            "widthPixels": 1280
+          }
+        }
+      },
+      {
+        "audioStream": {
+          "bitrateBps": 160000,
+          "channelCount": 2,
+          "channelLayout": [
+            "fl",
+            "fr"
+          ],
+          "codec": "aac",
+          "mapping": [
+            {
+              "inputKey": "input-attachment-1"
+            }
+          ],
+          "sampleRateHertz": 48000
+        },
+        "key": "es-audio"
+      },
+      {
+        "key": "es-text",
+        "textStream": {
+          "codec": "cea608"
+        }
+      }
+    ],
+    "inputAttachments": [
+      {
+        "automaticFailover": {
+          "inputKeys": [
+            "input-attachment-2"
+          ]
+        },
+        "input": "projects/${projectNumber}/locations/us-central1/inputs/livestreamchannel-max-input1-${uniqueId}",
+        "key": "input-attachment-1"
+      },
+      {
+        "input": "projects/${projectNumber}/locations/us-central1/inputs/livestreamchannel-max-input2-${uniqueId}",
+        "key": "input-attachment-2"
+      }
+    ],
+    "inputConfig": {
+      "inputSwitchMode": "FAILOVER_PREFER_PRIMARY"
+    },
+    "logConfig": {
+      "logSeverity": "WARNING"
+    },
+    "manifests": [
+      {
+        "fileName": "manifest.m3u8",
+        "key": "manifest-hls",
+        "maxSegmentCount": 6,
+        "muxStreams": [
+          "mux-video",
+          "mux-audio"
+        ],
+        "segmentKeepDuration": "60s",
+        "type": "HLS"
+      }
+    ],
+    "muxStreams": [
+      {
+        "container": "fmp4",
+        "elementaryStreams": [
+          "es-video"
+        ],
+        "key": "mux-video",
+        "segmentSettings": {
+          "segmentDuration": "2s"
+        }
+      },
+      {
+        "container": "fmp4",
+        "elementaryStreams": [
+          "es-audio"
+        ],
+        "key": "mux-audio",
+        "segmentSettings": {
+          "segmentDuration": "2s"
+        }
+      }
+    ],
+    "name": "projects/${projectId}/locations/us-central1/channels/livestreamchannel-maximal-${uniqueId}",
+    "output": {
+      "uri": "gs://livestreamchannel-max-${uniqueId}/output/"
+    },
+    "retentionConfig": {
+      "retentionWindowDuration": "604800s"
+    },
+    "spriteSheets": [
+      {
+        "columnCount": 10,
+        "filePrefix": "sprite",
+        "format": "jpeg",
+        "interval": "10s",
+        "quality": 90,
+        "rowCount": 10,
+        "spriteHeightPixels": 36,
+        "spriteWidthPixels": 64
+      }
+    ],
+    "staticOverlays": [
+      {
+        "asset": "projects/${projectNumber}/locations/us-central1/assets/livestreamchannel-max-asset-${uniqueId}",
+        "opacity": 0.8,
+        "position": {
+          "x": 0.8,
+          "y": 0.8
+        },
+        "resolution": {
+          "h": 0.1,
+          "w": 0.1
+        }
+      }
+    ],
+    "streamingState": "STOPPED",
+    "timecodeConfig": {
+      "source": "MEDIA_TIMESTAMP"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/channels/livestreamchannel-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fchannels%2Flivestreamchannel-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activeInput": "input-attachment-1",
+  "autoTranscriptionConfig": {
+    "displayTiming": 1,
+    "qualityPreset": 2
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "elementaryStreams": [
+    {
+      "key": "es-video",
+      "videoStream": {
+        "h264": {
+          "aqStrength": 1,
+          "bFrameCount": 3,
+          "bitrateBps": 2500000,
+          "entropyCoder": "cabac",
+          "frameRate": 30,
+          "gopDuration": "2s",
+          "heightPixels": 720,
+          "profile": "high",
+          "tune": "zerolatency",
+          "vbvFullnessBits": 2250000,
+          "vbvSizeBits": 2500000,
+          "widthPixels": 1280
+        }
+      }
+    },
+    {
+      "audioStream": {
+        "bitrateBps": 160000,
+        "channelCount": 2,
+        "channelLayout": [
+          "fl",
+          "fr"
+        ],
+        "codec": "aac",
+        "mapping": [
+          {
+            "inputKey": "input-attachment-1"
+          }
+        ],
+        "sampleRateHertz": 48000
+      },
+      "key": "es-audio"
+    },
+    {
+      "key": "es-text",
+      "textStream": {
+        "codec": "cea608"
+      }
+    }
+  ],
+  "inputAttachments": [
+    {
+      "automaticFailover": {
+        "inputKeys": [
+          "input-attachment-2"
+        ]
+      },
+      "input": "projects/${projectNumber}/locations/us-central1/inputs/livestreamchannel-max-input1-${uniqueId}",
+      "key": "input-attachment-1"
+    },
+    {
+      "input": "projects/${projectNumber}/locations/us-central1/inputs/livestreamchannel-max-input2-${uniqueId}",
+      "key": "input-attachment-2"
+    }
+  ],
+  "inputConfig": {
+    "inputSwitchMode": 1
+  },
+  "labels": {
+    "app": "live",
+    "env": "test"
+  },
+  "logConfig": {
+    "logSeverity": 400
+  },
+  "manifests": [
+    {
+      "fileName": "manifest.m3u8",
+      "key": "manifest-hls",
+      "maxSegmentCount": 6,
+      "muxStreams": [
+        "mux-video",
+        "mux-audio"
+      ],
+      "segmentKeepDuration": "60s",
+      "type": 1
+    }
+  ],
+  "muxStreams": [
+    {
+      "container": "fmp4",
+      "elementaryStreams": [
+        "es-video"
+      ],
+      "key": "mux-video",
+      "segmentSettings": {
+        "segmentDuration": "2s"
+      }
+    },
+    {
+      "container": "fmp4",
+      "elementaryStreams": [
+        "es-audio"
+      ],
+      "key": "mux-audio",
+      "segmentSettings": {
+        "segmentDuration": "2s"
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/us-central1/channels/livestreamchannel-maximal-${uniqueId}",
+  "output": {
+    "uri": "gs://livestreamchannel-max-${uniqueId}/output/"
+  },
+  "retentionConfig": {
+    "retentionWindowDuration": "604800s"
+  },
+  "spriteSheets": [
+    {
+      "columnCount": 10,
+      "filePrefix": "sprite",
+      "format": "jpeg",
+      "interval": "10s",
+      "quality": 90,
+      "rowCount": 10,
+      "spriteHeightPixels": 36,
+      "spriteWidthPixels": 64
+    }
+  ],
+  "staticOverlays": [
+    {
+      "asset": "projects/${projectNumber}/locations/us-central1/assets/livestreamchannel-max-asset-${uniqueId}",
+      "opacity": 0.8,
+      "position": {
+        "x": 0.8,
+        "y": 0.8
+      },
+      "resolution": {
+        "h": 0.1,
+        "w": 0.1
+      }
+    }
+  ],
+  "streamingState": 6,
+  "timecodeConfig": {
+    "source": 1
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/channels/livestreamchannel-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fchannels%2Flivestreamchannel-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.video.livestream.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/channels/livestreamchannel-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.video.livestream.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/channels/livestreamchannel-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/assets/livestreamchannel-max-asset-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fassets%2Flivestreamchannel-max-asset-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "crc32c": "hq+43Q==",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "image": {
+    "uri": "gs://cloud-samples-data/vision/demo-img.jpg"
+  },
+  "name": "projects/${projectId}/locations/us-central1/assets/livestreamchannel-max-asset-${uniqueId}",
+  "state": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/assets/livestreamchannel-max-asset-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fassets%2Flivestreamchannel-max-asset-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.video.livestream.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/assets/livestreamchannel-max-asset-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.video.livestream.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/assets/livestreamchannel-max-asset-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finputs%2Flivestreamchannel-max-input2-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input2-${uniqueId}",
+  "tier": 2,
+  "type": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uri": "rtmp://35.239.41.154/live/9fa80b77-5819-4ca3-aeba-ca41dffe4636"
+}
+
+---
+
+DELETE https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finputs%2Flivestreamchannel-max-input2-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.video.livestream.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input2-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.video.livestream.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input2-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finputs%2Flivestreamchannel-max-input1-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input1-${uniqueId}",
+  "tier": 2,
+  "type": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uri": "rtmp://35.239.41.154/live/9fa80b77-5819-4ca3-aeba-ca41dffe4636"
+}
+
+---
+
+DELETE https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finputs%2Flivestreamchannel-max-input1-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.video.livestream.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input1-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.video.livestream.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input1-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/livestreamchannel-max-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a0fdb6cca4
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "livestreamchannel-max-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/livestreamchannel-max-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/livestreamchannel-max-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a0fdb6ccd1
+
+{
+  "kind": "storage#objects"
+}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/livestreamchannel-max-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+204 No Content
+Content-Type: application/json
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+X-Goog-Gcs-Base-Ts: 1a0fdb6ce2b

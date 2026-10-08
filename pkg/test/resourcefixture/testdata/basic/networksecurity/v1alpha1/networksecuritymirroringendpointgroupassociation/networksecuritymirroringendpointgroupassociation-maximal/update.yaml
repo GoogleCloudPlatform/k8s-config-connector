@@ -1,0 +1,16 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityMirroringEndpointGroupAssociation
+metadata:
+  name: mirroringega-max-${uniqueId}
+spec:
+  resourceID: mirroringega-max-${uniqueId}
+  projectRef:
+    external: "projects/${projectId}"
+  location: global
+  labels:
+    env: staging
+    tier: premium
+  mirroringEndpointGroupRef:
+    name: mirroringeg-max-${uniqueId}
+  networkRef:
+    name: consumer-net-max-${uniqueId}

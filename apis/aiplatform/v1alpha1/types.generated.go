@@ -17,7 +17,8 @@
 // krm.group: aiplatform.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1
-// resource: VertexAISpecialistPool:SpecialistPool
+// resource: AIPlatformPersistentResource:PersistentResource
+// resource: AIPlatformSpecialistPool:SpecialistPool
 // resource: AIPlatformModel:Model
 // resource: VertexAIFeatureOnlineStore:FeatureOnlineStore
 // resource: VertexAIPipelineJob:PipelineJob
@@ -25,7 +26,7 @@
 // resource: VertexAIStudy:Study
 // resource: VertexAITrainingPipeline:TrainingPipeline
 // resource: VertexAISchedule:Schedule
-// resource: VertexAIExtension:Extension
+// resource: AIPlatformReasoningEngine:ReasoningEngine
 
 package v1alpha1
 
@@ -186,6 +187,19 @@ type DeployedModelRef struct {
 	// Immutable. An ID of a DeployedModel in the above Endpoint.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.DeployedModelRef.deployed_model_id
 	DeployedModelID *string `json:"deployedModelID,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.DiskSpec
+type DiskSpec struct {
+	// Type of the boot disk (default is "pd-ssd").
+	//  Valid values: "pd-ssd" (Persistent Disk Solid State Drive) or
+	//  "pd-standard" (Persistent Disk Hard Disk Drive).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.DiskSpec.boot_disk_type
+	BootDiskType *string `json:"bootDiskType,omitempty"`
+
+	// Size in GB of the boot disk (default is 100GB).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.DiskSpec.boot_disk_size_gb
+	BootDiskSizeGB *int32 `json:"bootDiskSizeGB,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.EnvVar
@@ -1501,6 +1515,59 @@ type Probe_TCPSocketAction struct {
 	Host *string `json:"host,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.RayLogsSpec
+type RayLogsSpec struct {
+	// Optional. Flag to disable the export of Ray OSS logs to Cloud Logging.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RayLogsSpec.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.RayMetricSpec
+type RayMetricSpec struct {
+	// Optional. Flag to disable the Ray metrics collection.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RayMetricSpec.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.RaySpec
+type RaySpec struct {
+	// Optional. Default image for user to choose a preferred ML framework
+	//  (for example, TensorFlow or Pytorch) by choosing from [Vertex prebuilt
+	//  images](https://cloud.google.com/vertex-ai/docs/training/pre-built-containers).
+	//  Either this or the resource_pool_images is required. Use this field if
+	//  you need all the resource pools to have the same Ray image. Otherwise, use
+	//  the {@code resource_pool_images} field.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RaySpec.image_uri
+	ImageURI *string `json:"imageURI,omitempty"`
+
+	// Optional. Required if image_uri isn't set. A map of resource_pool_id to
+	//  prebuild Ray image if user need to use different images for different
+	//  head/worker pools. This map needs to cover all the resource pool ids.
+	//  Example:
+	//  {
+	//    "ray_head_node_pool": "head image"
+	//    "ray_worker_node_pool1": "worker image"
+	//    "ray_worker_node_pool2": "another worker image"
+	//  }
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RaySpec.resource_pool_images
+	ResourcePoolImages map[string]string `json:"resourcePoolImages,omitempty"`
+
+	// Optional. This will be used to indicate which resource pool will serve as
+	//  the Ray head node(the first node within that pool). Will use the machine
+	//  from the first workerpool as the head node by default if this field isn't
+	//  set.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RaySpec.head_node_resource_pool_id
+	HeadNodeResourcePoolID *string `json:"headNodeResourcePoolID,omitempty"`
+
+	// Optional. Ray metrics configurations.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RaySpec.ray_metric_spec
+	RayMetricSpec *RayMetricSpec `json:"rayMetricSpec,omitempty"`
+
+	// Optional. OSS Ray logging configurations.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.RaySpec.ray_logs_spec
+	RayLogsSpec *RayLogsSpec `json:"rayLogsSpec,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.ReservationAffinity
 type ReservationAffinity struct {
 	// Required. Specifies the reservation affinity type.
@@ -1518,6 +1585,62 @@ type ReservationAffinity struct {
 	//  must be the full resource name of the reservation.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ReservationAffinity.values
 	Values []string `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.ResourcePool
+type ResourcePool struct {
+	// Immutable. The unique ID in a PersistentResource for referring to this
+	//  resource pool. User can specify it if necessary. Otherwise, it's generated
+	//  automatically.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourcePool.id
+	ID *string `json:"id,omitempty"`
+
+	// Required. Immutable. The specification of a single machine.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourcePool.machine_spec
+	MachineSpec *MachineSpec `json:"machineSpec,omitempty"`
+
+	// Optional. The total number of machines to use for this resource pool.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourcePool.replica_count
+	ReplicaCount *int64 `json:"replicaCount,omitempty"`
+
+	// Optional. Disk spec for the machine in this node pool.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourcePool.disk_spec
+	DiskSpec *DiskSpec `json:"diskSpec,omitempty"`
+
+	// Optional. Optional spec to configure GKE or Ray-on-Vertex autoscaling
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourcePool.autoscaling_spec
+	AutoscalingSpec *ResourcePool_AutoscalingSpec `json:"autoscalingSpec,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.ResourcePool.AutoscalingSpec
+type ResourcePool_AutoscalingSpec struct {
+	// Optional. min replicas in the node pool,
+	//  must be ≤ replica_count and < max_replica_count or will throw error.
+	//  For autoscaling enabled Ray-on-Vertex, we allow min_replica_count of a
+	//  resource_pool to be 0 to match the OSS Ray
+	//  behavior(https://docs.ray.io/en/latest/cluster/vms/user-guides/configuring-autoscaling.html#cluster-config-parameters).
+	//  As for Persistent Resource, the min_replica_count must be > 0, we added
+	//  a corresponding validation inside
+	//  CreatePersistentResourceRequestValidator.java.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourcePool.AutoscalingSpec.min_replica_count
+	MinReplicaCount *int64 `json:"minReplicaCount,omitempty"`
+
+	// Optional. max replicas in the node pool,
+	//  must be ≥ replica_count and > min_replica_count or will throw error
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourcePool.AutoscalingSpec.max_replica_count
+	MaxReplicaCount *int64 `json:"maxReplicaCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.ResourceRuntimeSpec
+type ResourceRuntimeSpec struct {
+	// Optional. Configure the use of workload identity on the PersistentResource
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourceRuntimeSpec.service_account_spec
+	ServiceAccountSpec *ServiceAccountSpec `json:"serviceAccountSpec,omitempty"`
+
+	// Optional. Ray cluster configuration.
+	//  Required when creating a dedicated RayCluster on the PersistentResource.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourceRuntimeSpec.ray_spec
+	RaySpec *RaySpec `json:"raySpec,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.SampledShapleyAttribution
@@ -1539,6 +1662,18 @@ type Schedule_RunResponse struct {
 	// The response of the scheduled run.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Schedule.RunResponse.run_response
 	RunResponse *string `json:"runResponse,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.SecretEnvVar
+type SecretEnvVar struct {
+	// Required. Name of the secret environment variable.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.SecretEnvVar.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Reference to a secret stored in the Cloud Secret Manager that
+	//  will provide the value for this environment variable.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.SecretEnvVar.secret_ref
+	SecretRef *SecretRef `json:"secretRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.SmoothGradConfig
@@ -2118,122 +2253,6 @@ type XraiAttribution struct {
 	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1beta1.AuthConfig
-type AuthConfig struct {
-	// Config for API key auth.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AuthConfig.api_key_config
-	APIKeyConfig *AuthConfig_APIKeyConfig `json:"apiKeyConfig,omitempty"`
-
-	// Config for HTTP Basic auth.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AuthConfig.http_basic_auth_config
-	HTTPBasicAuthConfig *AuthConfig_HTTPBasicAuthConfig `json:"httpBasicAuthConfig,omitempty"`
-
-	// Config for Google Service Account auth.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AuthConfig.google_service_account_config
-	GoogleServiceAccountConfig *AuthConfig_GoogleServiceAccountConfig `json:"googleServiceAccountConfig,omitempty"`
-
-	// Config for user oauth.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AuthConfig.oauth_config
-	OauthConfig *AuthConfig_OauthConfig `json:"oauthConfig,omitempty"`
-
-	// Config for user OIDC auth.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AuthConfig.oidc_config
-	OIDCConfig *AuthConfig_OIDCConfig `json:"oidcConfig,omitempty"`
-
-	// Type of auth scheme.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AuthConfig.auth_type
-	AuthType *string `json:"authType,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ExtensionManifest
-type ExtensionManifest struct {
-	// Required. Extension name shown to the LLM.
-	//  The name can be up to 128 characters long.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExtensionManifest.name
-	Name *string `json:"name,omitempty"`
-
-	// Required. The natural language description shown to the LLM.
-	//  It should describe the usage of the extension, and is essential for the LLM
-	//  to perform reasoning. e.g., if the extension is a data store, you can let
-	//  the LLM know what data it contains.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExtensionManifest.description
-	Description *string `json:"description,omitempty"`
-
-	// Required. Immutable. The API specification shown to the LLM.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExtensionManifest.api_spec
-	APISpec *ExtensionManifest_APISpec `json:"apiSpec,omitempty"`
-
-	// Required. Immutable. Type of auth supported by this extension.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExtensionManifest.auth_config
-	AuthConfig *AuthConfig `json:"authConfig,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ExtensionManifest.ApiSpec
-type ExtensionManifest_APISpec struct {
-	// The API spec in Open API standard and YAML format.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExtensionManifest.ApiSpec.open_api_yaml
-	OpenAPIYaml *string `json:"openAPIYaml,omitempty"`
-
-	// Cloud Storage URI pointing to the OpenAPI spec.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExtensionManifest.ApiSpec.open_api_gcs_uri
-	OpenAPIGCSURI *string `json:"openAPIGCSURI,omitempty"`
-}
-
-/* unreachable type ExtensionOperation
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ExtensionOperation
-type ExtensionOperation struct {
-	// Operation ID that uniquely identifies the operations among the extension.
-	//  See: "Operation Object" in https://swagger.io/specification/.
-	//
-	//  This field is parsed from the OpenAPI spec. For HTTP extensions, if it does
-	//  not exist in the spec, we will generate one from the HTTP method and path.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExtensionOperation.operation_id
-	OperationID *string `json:"operationID,omitempty"`
-}
-*/
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ToolUseExample
-type ToolUseExample struct {
-	// Extension operation to call.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ToolUseExample.extension_operation
-	ExtensionOperation *ToolUseExample_ExtensionOperation `json:"extensionOperation,omitempty"`
-
-	// Function name to call.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ToolUseExample.function_name
-	FunctionName *string `json:"functionName,omitempty"`
-
-	// Required. The display name for example.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ToolUseExample.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Required. Query that should be routed to this tool.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ToolUseExample.query
-	Query *string `json:"query,omitempty"`
-
-	// Request parameters used for executing this tool.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ToolUseExample.request_params
-	RequestParams apiextensionsv1.JSON `json:"requestParams,omitempty"`
-
-	// Response parameters generated by this tool.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ToolUseExample.response_params
-	ResponseParams apiextensionsv1.JSON `json:"responseParams,omitempty"`
-
-	// Summary of the tool response to the user query.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ToolUseExample.response_summary
-	ResponseSummary *string `json:"responseSummary,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ToolUseExample.ExtensionOperation
-type ToolUseExample_ExtensionOperation struct {
-	// Resource name of the extension.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ToolUseExample.ExtensionOperation.extension
-	Extension *string `json:"extension,omitempty"`
-
-	// Required. Operation ID of the extension.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ToolUseExample.ExtensionOperation.operation_id
-	OperationID *string `json:"operationID,omitempty"`
-}
-
 // +kcc:proto=google.protobuf.Int32Value
 type Int32Value struct {
 	// The int32 value.
@@ -2284,6 +2303,14 @@ type Model_OriginalModelInfoObservedState struct {
 	Model *string `json:"model,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.ResourcePool
+type ResourcePoolObservedState struct {
+	// Output only. The number of machines currently in use by training jobs for
+	//  this resource pool. Will replace idle_replica_count.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourcePool.used_replica_count
+	UsedReplicaCount *int64 `json:"usedReplicaCount,omitempty"`
+}
 
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.SupervisedTuningDataStats
 type SupervisedTuningDataStatsObservedState struct {
@@ -2418,20 +2445,4 @@ type TuningDataStatsObservedState struct {
 	// The SFT Tuning data stats.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.TuningDataStats.supervised_tuning_data_stats
 	SupervisedTuningDataStats *SupervisedTuningDataStatsObservedState `json:"supervisedTuningDataStats,omitempty"`
-}
-
-// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.ExtensionOperation
-type ExtensionOperationObservedState struct {
-	// Operation ID that uniquely identifies the operations among the extension.
-	//  See: "Operation Object" in https://swagger.io/specification/.
-	//
-	//  This field is parsed from the OpenAPI spec. For HTTP extensions, if it does
-	//  not exist in the spec, we will generate one from the HTTP method and path.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExtensionOperation.operation_id
-	OperationID *string `json:"operationID,omitempty"`
-
-	// Output only. Structured representation of a function declaration as defined
-	//  by the OpenAPI Spec.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExtensionOperation.function_declaration
-	FunctionDeclaration *FunctionDeclaration `json:"functionDeclaration,omitempty"`
 }

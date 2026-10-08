@@ -1,0 +1,12 @@
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal APIHubExternalAPI Updated",
+  "name": "projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

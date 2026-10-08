@@ -23,10 +23,39 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "discoveryengine.googleapis.com") {
+		return
+	}
 	replacements.ReplacePath(".startTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".endTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.RemovePath(".servingConfigDataStore")
 	replacements.RemovePath(".response.servingConfigDataStore")
+
+	transformFunc := func(m map[string]any) {
+		name, _ := m["name"].(string)
+		if strings.Contains(name, "/operations/") || m["done"] == true {
+			if resp, ok := m["response"].(map[string]any); ok {
+				if len(resp) == 0 || (len(resp) == 1 && resp["@type"] == "type.googleapis.com/google.protobuf.Empty") {
+					delete(m, "response")
+				}
+			}
+		} else if strings.Contains(name, "/engines/") {
+			// For Engines, the real log does not have createTime, updateTime, marketplaceAgentVisibility, observabilityConfig, sessionConfig
+			delete(m, "createTime")
+			delete(m, "updateTime")
+			delete(m, "marketplaceAgentVisibility")
+			delete(m, "observabilityConfig")
+			delete(m, "sessionConfig")
+		} else if strings.Contains(name, "/dataStores/") {
+			// For DataStores, the real log has createTime, naturalLanguageQueryUnderstandingConfig, solutionTypes
+			if m["createTime"] != nil {
+				m["createTime"] = mockgcpregistry.PlaceholderTimestamp
+			}
+		}
+	}
+
+	replacements.TransformObject("", transformFunc)
+	replacements.TransformObject(".response", transformFunc)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

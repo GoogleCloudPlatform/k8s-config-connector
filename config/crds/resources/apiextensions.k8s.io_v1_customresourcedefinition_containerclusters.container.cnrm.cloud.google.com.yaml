@@ -1522,8 +1522,11 @@ spec:
                     description: Node kubelet configs.
                     properties:
                       cpuCfsQuota:
-                        description: Enable CPU CFS quota enforcement for containers
-                          that specify CPU limits.
+                        description: 'Enable CPU CFS quota enforcement for containers
+                          that specify CPU limits. Note: If nodeConfig.kubeletConfig
+                          is specified, you must explicitly set cpuCfsQuota: true
+                          to maintain GKE''s default behavior; otherwise, omitting
+                          this field defaults to false which disabled CPU quota enforcement.'
                         type: boolean
                       cpuCfsQuotaPeriod:
                         description: Set the CPU CFS quota period value 'cpu.cfs_period_us'.
@@ -2060,6 +2063,17 @@ spec:
                   By default, no private IPv6 access to or from Google Services (all
                   access will be via IPv4).
                 type: string
+              privilegedAdmissionConfig:
+                description: Policy for privileged workloads admission.
+                properties:
+                  allowlistPaths:
+                    description: The customer allowlist Cloud Storage paths for the
+                      cluster. These paths are used with the `--autopilot-privileged-admission`
+                      flag to authorize privileged workloads in Autopilot clusters.
+                    items:
+                      type: string
+                    type: array
+                type: object
               protectConfig:
                 description: Enable/Disable Protect API features for the cluster.
                 properties:

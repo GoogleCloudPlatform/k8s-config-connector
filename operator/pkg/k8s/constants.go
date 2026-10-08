@@ -57,6 +57,8 @@ const (
 	ManagerNamespaceIsolationFlag      = "manager-namespace-isolation"
 	ManagerNamespaceIsolationShared    = "shared"
 	ManagerNamespaceIsolationDedicated = "dedicated"
+	CCConfigHashAnnotation             = "cnrm.cloud.google.com/cc-config-hash"
+	CCCConfigHashAnnotation            = "cnrm.cloud.google.com/ccc-config-hash"
 )
 
 var (

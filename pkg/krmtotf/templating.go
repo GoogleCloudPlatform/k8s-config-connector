@@ -235,6 +235,9 @@ func getValueFromReference(refConfig *corekccv1alpha1.ReferenceConfig, r *Resour
 	if err != nil {
 		return "", false, fmt.Errorf("error resolving reference field: %w", err)
 	}
+	if retRaw == nil {
+		return "", true, nil
+	}
 	ret, ok := retRaw.(string)
 	if !ok {
 		return "", false, fmt.Errorf("could not parse reference resolution value '%+v' as string", retRaw)

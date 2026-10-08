@@ -42,3 +42,38 @@
 - **Solution**: Set the full resource name (including the user-provided ID) on the `PhraseMatcher.Name` field in the `Create` request.
 - **Impact**: Other resources in `contactcenterinsights` (like `View`) likely follow this same pattern.
 
+### [2026-09-29] CCInsightsAnalysisRule Greenfield Types Scaffolding
+- **Context**: Greenfield implementation of CCInsightsAnalysisRule (Step 1: types, CRD, and IdentityV2) under `contactcenterinsights.cnrm.cloud.google.com/v1alpha1`.
+- **Solution**:
+  - Added `CCInsightsAnalysisRule:AnalysisRule` to `apis/contactcenterinsights/generate.sh`.
+  - Defined `CCInsightsAnalysisRuleSpec` and `CCInsightsAnalysisRuleObservedState` in `apis/contactcenterinsights/v1alpha1/ccinsightsanalysisrule_types.go`, using pointer fields for all primitives (including `Location *string`).
+  - Implemented `IdentityV2` in `ccinsightsanalysisrule_identity.go` with template `projects/{project}/locations/{location}/analysisRules/{analysisRule}` and added URL format exception to `pkg/gcpurls/registry_test.go`.
+  - Implemented `CCInsightsAnalysisRuleRef` in `ccinsightsanalysisrule_reference.go` delegating `Normalize` to `refs.Normalize`.
+  - Added comprehensive identity unit tests with `cmp.Diff`.
+- **Impact**: Provides valid direct KRM types, CRD, and IdentityV2 for CCInsightsAnalysisRule.
+
+### [2026-09-30] CCInsightsAnalysisRule Direct Controller and E2E Fixtures
+- **Context**: Implementing Greenfield direct controller, fuzzer, and recording/verifying E2E fixtures for `CCInsightsAnalysisRule`.
+- **Problem**:
+  1. `CreateAnalysisRuleRequest` takes parent and `AnalysisRule` proto with server-generated ID returned on `created.Name`.
+  2. GCP API requires `display_name` to be non-empty upon creation, and if `active: true`, at least one annotator must be enabled in `annotatorSelector`.
+  3. Server-assigned numeric ID required normalization in `tests/e2e/normalize.go`, `tests/e2e/replacements.go`, and `pkg/cais/caistesting/testing.go`.
+- **Solution**:
+  1. Implemented isolated controller under `pkg/controller/direct/contactcenterinsights/ccinsightsanalysisrule/` using official GAPIC REST client (`contactcenterinsights.NewRESTClient`).
+  2. Defaulted `DisplayName` to resource name in `AdapterForObject` if unspecified, and populated default in `compare`.
+  3. Implemented round-trip fuzzer registered via `fuzztesting.RegisterKRMFuzzer`.
+  4. Added `CCInsightsAnalysisRule` to `tests/e2e/normalize.go` (`${analysisRuleId}`), `replacements.go`, and `caistesting/testing.go`.
+  5. Recorded minimal and maximal fixtures against real GCP (`RECORD_AUDIT_PROBE=1 ./hack/record-gcp`), and verified re-reconciliation and audit log generation.
+- **Impact**: Fully functional direct controller and E2E test coverage for `CCInsightsAnalysisRule`.
+
+### [2026-10-04] CCInsightsAnalysisRule MockGCP and Alignment verification
+- **Context**: Aligning MockGCP logs with RealGCP output for `CCInsightsAnalysisRule` (`contactcenterinsights.cnrm.cloud.google.com/v1alpha1`).
+- **Findings & Verification**:
+  1. Verified MockGCP implementation for `CCInsightsAnalysisRule` in `mockgcp/mockcontactcenterinsights/ccinsightsanalysisrule.go` handling `CreateAnalysisRule`, `GetAnalysisRule`, `UpdateAnalysisRule`, `DeleteAnalysisRule`, and `ListAnalysisRules`.
+  2. Verified 404 error message formatting matching real GCP (`"No AnalysisRule found for project: \`%d\` and AnalysisRule Id: \`%s\`."`).
+  3. Verified ID generation, timestamp updates, field mask updates, and URL normalizations for `${analysisRuleId}` in `mockgcp/mockcontactcenterinsights/normalize.go`.
+  4. Verified both `ccinsightsanalysisrule-minimal` and `ccinsightsanalysisrule-maximal` test fixtures pass `hack/compare-mock "fixtures/ccinsightsanalysisrule"` and `TestGoldenLogAlignment` with 0 diffs.
+
+
+
+

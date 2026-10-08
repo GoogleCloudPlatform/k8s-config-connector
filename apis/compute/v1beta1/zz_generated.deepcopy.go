@@ -6504,6 +6504,11 @@ func (in *ComputeRouterNATSpec) DeepCopyInto(out *ComputeRouterNATSpec) {
 		*out = new(int64)
 		**out = **in
 	}
+	if in.NatIpAllocateOption != nil {
+		in, out := &in.NatIpAllocateOption, &out.NatIpAllocateOption
+		*out = new(string)
+		**out = **in
+	}
 	if in.NatIps != nil {
 		in, out := &in.NatIps, &out.NatIps
 		*out = make([]ComputeAddressRef, len(*in))
@@ -9730,7 +9735,7 @@ func (in *DiskDiskEncryptionKey) DeepCopyInto(out *DiskDiskEncryptionKey) {
 	*out = *in
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(refsv1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 	if in.KmsKeyServiceAccountRef != nil {
@@ -9785,7 +9790,7 @@ func (in *DiskSourceImageEncryptionKey) DeepCopyInto(out *DiskSourceImageEncrypt
 	*out = *in
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(refsv1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 	if in.KmsKeyServiceAccountRef != nil {
@@ -9820,7 +9825,7 @@ func (in *DiskSourceSnapshotEncryptionKey) DeepCopyInto(out *DiskSourceSnapshotE
 	*out = *in
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(refsv1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 	if in.KmsKeyServiceAccountRef != nil {

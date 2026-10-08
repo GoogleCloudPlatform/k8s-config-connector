@@ -1,3 +1,17 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package apis
 
 type APIArgs struct {
@@ -12,6 +26,51 @@ type APIArgs struct {
 	ProtoMessageName string
 	// ProtoMessageFullName is the fully qualified proto message name, e.g. google.cloud.v1.Foo
 	ProtoMessageFullName string
+
+	// Collection is the resource's collection segment as the API spells it, taken
+	// from google.api.resource, e.g. "lbTrafficExtensions". Empty when the proto
+	// declares no pattern, in which case templates fall back to guessing.
+	Collection string
+	// ParentStyle is the shape of the resource's parent: "project_location",
+	// "project", "organization", "folder", "other" or "unknown".
+	ParentStyle string
+	// ResourcePattern is the primary declared pattern, carried through verbatim so the
+	// generated file can show a human what the real name looks like.
+	ResourcePattern string
+	// ResourcePatterns holds all declared patterns from google.api.resource.
+	ResourcePatterns []string
+
+	// SpecFields contains pre-rendered Go struct fields for the Spec struct.
+	// When empty, the default stub is rendered.
+	SpecFields string
+	// ObservedStateFields contains pre-rendered Go struct fields for ObservedState.
+	// Empty when no proto fields are marked OUTPUT_ONLY.
+	ObservedStateFields string
+	// ExtraImports contains additional package imports needed by the rendered fields
+	// (e.g. `common "github.com/.../apis/common"`).
+	ExtraImports []string
+	// ParentRefField is pre-rendered Go source for one Spec field naming the
+	// resource's direct parent, such as a clusterRef on a ContainerNodePool.
+	// Empty unless --emit-parent-refs is on and a reference type for the parent
+	// already exists, which leaves every other resource rendering as before.
+	ParentRefField string
+	// RootRefField is pre-rendered Go source for the Spec field naming the root
+	// of the resource's name, projectRef for most resources. Empty when the name
+	// has nothing above the resource, as in folders/{folder}, which rootRef
+	// queues for review instead.
+	RootRefField string
+	// LocationField is pre-rendered Go source for the Spec field naming the
+	// resource's location, region or zone. Empty when the resource's name has
+	// none, as in projects/{project}/topics/{topic}, or when the location is the
+	// resource itself.
+	LocationField string
+	// SkipGVK leaves out the <Kind>GVK declaration because the package already
+	// has one, usually in a hand-written <kind>_reference.go.
+	SkipGVK bool
+	// SourceLinks is the pre-rendered "API sources" comment block, with the
+	// +kcc:source markers, written between the license and the package
+	// clause. Empty unless --emit-source-links is on.
+	SourceLinks string
 }
 
 const TypesTemplate = `
@@ -28,6 +87,10 @@ const TypesTemplate = `
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+{{- if .SourceLinks }}
+
+{{ .SourceLinks }}
+{{- end }}
 
 package {{ .Version }}
 
@@ -35,24 +98,35 @@ import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+{{- range .ExtraImports }}
+	{{ . }}
+{{- end }}
 )
+{{- if not .SkipGVK }}
 
 var {{ .Kind }}GVK = GroupVersion.WithKind("{{ .Kind }}")
+{{- end }}
 
 // {{ .Kind }}Spec defines the desired state of {{ .Kind }}
 {{- if .KindProtoTag }}
 // +kcc:spec:proto={{ .KindProtoTag }}
 {{- end }}
 type {{ .Kind }}Spec struct {
-	// The project that this resource belongs to.
-	ProjectRef *refsv1beta1.ProjectRef ` + "`" + `json:"projectRef"` + "`" + `
+{{- if .RootRefField }}
+{{ .RootRefField }}
+{{- end }}
+{{- if .LocationField }}
 
-	// The location of this resource.
-	Location string ` + "`" + `json:"location"` + "`" + `
+{{ .LocationField }}
+{{- end }}
+{{- if .ParentRefField }}
+
+{{ .ParentRefField }}
+{{- end }}
 
 	// The {{ .Kind }} name. If not given, the metadata.name will be used.
 	ResourceID *string ` + "`" + `json:"resourceID,omitempty"` + "`" + `
-}
+{{ .SpecFields }}}
 
 // {{ .Kind }}Status defines the config connector machine state of {{ .Kind }}
 type {{ .Kind }}Status struct {
@@ -75,7 +149,7 @@ type {{ .Kind }}Status struct {
 // +kcc:observedstate:proto={{ .KindProtoTag }}
 {{- end }}
 type {{ .Kind }}ObservedState struct {
-}
+{{ .ObservedStateFields }}}
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

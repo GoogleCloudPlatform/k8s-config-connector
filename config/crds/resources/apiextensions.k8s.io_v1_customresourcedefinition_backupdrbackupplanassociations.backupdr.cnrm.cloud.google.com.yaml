@@ -162,6 +162,33 @@ spec:
                         description: The namespace of a ComputeInstance resource.
                         type: string
                     type: object
+                  sqlInstanceRef:
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The SQLInstance selfLink, when not managed by
+                          Config Connector.
+                        type: string
+                      name:
+                        description: The `name` field of a `SQLInstance` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `SQLInstance` resource.
+                        type: string
+                    type: object
                 type: object
               resourceID:
                 description: The BackupDRBackupPlanAssociation name. If not given,
@@ -432,6 +459,33 @@ spec:
                         type: string
                       namespace:
                         description: The namespace of a ComputeInstance resource.
+                        type: string
+                    type: object
+                  sqlInstanceRef:
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The SQLInstance selfLink, when not managed by
+                          Config Connector.
+                        type: string
+                      name:
+                        description: The `name` field of a `SQLInstance` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `SQLInstance` resource.
                         type: string
                     type: object
                 type: object

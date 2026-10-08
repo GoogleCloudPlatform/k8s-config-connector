@@ -20,12 +20,15 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"text/template"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/template/apis"
 	"github.com/fatih/color"
+	"google.golang.org/protobuf/reflect/protoreflect"
 	"k8s.io/klog/v2"
 )
 
@@ -35,6 +38,38 @@ type APIScaffolder struct {
 	Group           string
 	Version         string
 	PackageProtoTag string
+
+	// Proto is optional. When set, the scaffolder reads google.api.resource to
+	// learn the resource's real collection segment and parent shape instead of
+	// guessing them. Without it the templates fall back to their old guesses,
+	// which are wrong for most resources: the collection segment disagrees with
+	// the declared pattern for 752 of 1417 annotated messages, and the assumed
+	// projects/locations parent holds for about a third.
+	Proto *protoapi.Proto
+
+	// EmitParentRefs adds one Spec field naming the resource's direct parent,
+	// where the pattern declares one below project and location and a reference
+	// type for it already exists. Off by default: it adds a field to the CRD of a
+	// resource people already use, so a service opts in one at a time.
+	EmitParentRefs bool
+}
+
+// resourceMetadata looks up what the proto states about a resource, or nil if we
+// have no proto loaded or the message is not an annotated resource.
+func (a *APIScaffolder) resourceMetadata(fullName string) *protoapi.ResourceMetadata {
+	if a.Proto == nil || fullName == "" {
+		return nil
+	}
+	d, err := a.Proto.Files().FindDescriptorByName(protoreflect.FullName(fullName))
+	if err != nil {
+		klog.V(2).Infof("no descriptor for %q, scaffolding will guess: %v", fullName, err)
+		return nil
+	}
+	msg, ok := d.(protoreflect.MessageDescriptor)
+	if !ok {
+		return nil
+	}
+	return protoapi.GetResourceMetadata(msg)
 }
 
 func fileExists(p string) bool {
@@ -74,8 +109,8 @@ func scaffoldIdentityFile(path string, cArgs *apis.APIArgs) error {
 	if err := tmpl.Execute(out, cArgs); err != nil {
 		return err
 	}
-	// Write the generated <kind>_types.go
-	if err := WriteToFile(path, out.Bytes()); err != nil {
+	// Format generated code and organize imports.
+	if err := FormatImports(path, out.Bytes()); err != nil {
 		return err
 	}
 	color.HiGreen("New identity file added %s\nPlease EDIT it!\n", path)
@@ -98,6 +133,10 @@ func (a *APIScaffolder) buildAPIArgs(resource *options.Resource) *apis.APIArgs {
 		Version:         a.Version,
 		PackageProtoTag: a.PackageProtoTag,
 	}
+	// Without a pattern to read, every resource gets projectRef and a required
+	// location. AddTypeFile replaces both from the pattern when prepopulating.
+	args.RootRefField, _ = a.rootRef("")
+	args.LocationField, _ = a.locationRef("")
 
 	if resource != nil {
 		args.Kind = resource.Kind
@@ -115,6 +154,20 @@ func (a *APIScaffolder) buildAPIArgs(resource *options.Resource) *apis.APIArgs {
 
 		args.ProtoMessageName = resource.ProtoMessageName()
 		args.ProtoMessageFullName = resource.ProtoMessageFullName(a.PackageProtoTag)
+
+		if md := a.resourceMetadata(args.ProtoMessageFullName); md != nil {
+			args.Collection = md.Collection
+			args.ParentStyle = string(md.ParentStyle)
+			args.ResourcePattern = md.Pattern
+			args.ResourcePatterns = md.Patterns
+		}
+		if args.Collection == "" {
+			// Fall back to lowercased message name + 's' if no resource pattern is declared.
+			args.Collection = strings.ToLower(args.ProtoMessageName) + "s"
+		}
+		if args.ParentStyle == "" {
+			args.ParentStyle = string(protoapi.ParentUnknown)
+		}
 	}
 
 	return args
@@ -153,10 +206,72 @@ func (a *APIScaffolder) PathToTypeFile(resource options.Resource) string {
 	return filepath.Join(a.BaseDir, a.GoPackage, fileName)
 }
 
-func (a *APIScaffolder) AddTypeFile(resource options.Resource) error {
+// AddTypeFile scaffolds <kind>_types.go.
+//
+// When prepopulated is non-nil, the Spec and ObservedState struct bodies are
+// generated from the proto message definitions along with any required package imports.
+//
+// sourceLinks is the comment block from sourcelinks.Render, written above the
+// package clause. Pass "" to leave it out.
+func (a *APIScaffolder) AddTypeFile(resource options.Resource, prepopulated *PrepopulateResult, sourceLinks string) error {
 	typeFilePath := a.PathToTypeFile(resource)
 	cArgs := a.buildAPIArgs(&resource)
+	cArgs.SourceLinks = sourceLinks
+	cArgs.SkipGVK = packageDeclaresGVK(filepath.Join(a.BaseDir, a.GoPackage), cArgs.Kind)
+	if prepopulated != nil {
+		cArgs.SpecFields = prepopulated.SpecFields
+		cArgs.ObservedStateFields = prepopulated.ObservedStateFields
+		cArgs.ExtraImports = prepopulated.ExtraImports
+		root, item := a.rootRef(cArgs.ResourcePattern)
+		cArgs.RootRefField = root
+		if item != nil {
+			prepopulated.Judgement = append(prepopulated.Judgement, *item)
+		}
+		location, item := a.locationRef(cArgs.ResourcePattern)
+		cArgs.LocationField = location
+		if item != nil {
+			prepopulated.Judgement = append(prepopulated.Judgement, *item)
+		}
+
+		// The parent field rides on prepopulated because that is the only way its
+		// queue entry reaches the caller. A field emitted without its entry would
+		// leave a +kcc:guess in the Spec that nothing flags.
+		if a.EmitParentRefs {
+			field, item := a.parentRef(cArgs.ResourcePattern)
+			cArgs.ParentRefField = field
+			if item != nil {
+				prepopulated.Judgement = append(prepopulated.Judgement, *item)
+			}
+		}
+	}
 	return scaffoldTypeFile(typeFilePath, cArgs)
+}
+
+// packageDeclaresGVK reports whether a Go file in dir, other than a
+// _types.go file, has a top-level "var <kind>GVK" line. It does not see a
+// GVK declared inside a grouped var block, as dataform and iam declare theirs.
+//
+// The types template declares the GVK, and so do most hand-written
+// <kind>_reference.go files in apis/. Without this check, scaffolding a
+// Kind's types next to its reference file declares the variable twice, and
+// the package does not compile.
+func packageDeclaresGVK(dir, kind string) bool {
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		return false
+	}
+	want := regexp.MustCompile(`(?m)^var ` + regexp.QuoteMeta(kind) + `GVK\b`)
+	for _, e := range entries {
+		if e.IsDir() || !strings.HasSuffix(e.Name(), ".go") ||
+			strings.HasSuffix(e.Name(), "_types.go") {
+			continue
+		}
+		body, err := os.ReadFile(filepath.Join(dir, e.Name()))
+		if err == nil && want.Match(body) {
+			return true
+		}
+	}
+	return false
 }
 
 func scaffoldTypeFile(path string, cArgs *apis.APIArgs) error {

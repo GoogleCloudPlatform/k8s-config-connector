@@ -1,0 +1,8 @@
+apiVersion: cloudnumberregistry.cnrm.cloud.google.com/v1alpha1
+kind: CloudNumberRegistryRegistryBook
+metadata:
+  name: cnr-rb-min-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: global

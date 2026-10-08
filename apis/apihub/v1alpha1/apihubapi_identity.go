@@ -44,6 +44,10 @@ func (i *APIHubAPIIdentity) String() string {
 	return APIHubAPIIdentityFormat.ToString(*i)
 }
 
+func (i *APIHubAPIIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *APIHubAPIIdentity) FromExternal(ref string) error {
 	parsed, match, err := APIHubAPIIdentityFormat.Parse(ref)
 	if err != nil {

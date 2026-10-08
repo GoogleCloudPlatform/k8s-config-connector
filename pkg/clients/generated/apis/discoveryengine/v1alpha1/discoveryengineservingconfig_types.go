@@ -186,6 +186,12 @@ type ServingconfigModelSpec struct {
 	Version *string `json:"version,omitempty"`
 }
 
+type ServingconfigMultimodalSpec struct {
+	/* Optional. Source of image returned in the answer. */
+	// +optional
+	ImageSource *string `json:"imageSource,omitempty"`
+}
+
 type ServingconfigPersonalizationSpec struct {
 	/* The personalization mode of the search request. Defaults to [Mode.AUTO][google.cloud.discoveryengine.v1beta.SearchRequest.PersonalizationSpec.Mode.AUTO]. */
 	// +optional
@@ -288,6 +294,10 @@ type ServingconfigSummarySpec struct {
 	/* If specified, the spec will be used to modify the model specification provided to the LLM. */
 	// +optional
 	ModelSpec *ServingconfigModelSpec `json:"modelSpec,omitempty"`
+
+	/* Optional. Multimodal specification. */
+	// +optional
+	MultimodalSpec *ServingconfigMultimodalSpec `json:"multimodalSpec,omitempty"`
 
 	/* The number of top results to generate the summary from. If the number
 	of results returned is less than `summaryResultCount`, the summary is

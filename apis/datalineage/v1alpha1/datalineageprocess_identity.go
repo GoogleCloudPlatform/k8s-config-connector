@@ -18,7 +18,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
@@ -32,6 +31,7 @@ var (
 
 var DataLineageProcessIdentityFormat = gcpurls.Template[DataLineageProcessIdentity]("datalineage.googleapis.com", "projects/{project}/locations/{location}/processes/{process}")
 
+// DataLineageProcessIdentity is the identity of a GCP DataLineageProcess resource.
 // +k8s:deepcopy-gen=false
 type DataLineageProcessIdentity struct {
 	Project  string
@@ -60,7 +60,11 @@ func (i *DataLineageProcessIdentity) Host() string {
 	return DataLineageProcessIdentityFormat.Host()
 }
 
-func getIdentityFromDataLineageProcessSpec(ctx context.Context, reader client.Reader, obj client.Object) (*DataLineageProcessIdentity, error) {
+func (i *DataLineageProcessIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
+}
+
+func getIdentityFromDataLineageProcessSpec(ctx context.Context, reader client.Reader, obj *DataLineageProcess) (*DataLineageProcessIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
@@ -85,23 +89,5 @@ func getIdentityFromDataLineageProcessSpec(ctx context.Context, reader client.Re
 }
 
 func (obj *DataLineageProcess) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	specIdentity, err := getIdentityFromDataLineageProcessSpec(ctx, reader, obj)
-	if err != nil {
-		return nil, err
-	}
-
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
-	if externalRef != "" {
-		// Validate desired with actual
-		statusIdentity := &DataLineageProcessIdentity{}
-		if err := statusIdentity.FromExternal(externalRef); err != nil {
-			return nil, err
-		}
-
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change DataLineageProcess identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
-		}
-	}
-
-	return specIdentity, nil
+	return getIdentityFromDataLineageProcessSpec(ctx, reader, obj)
 }

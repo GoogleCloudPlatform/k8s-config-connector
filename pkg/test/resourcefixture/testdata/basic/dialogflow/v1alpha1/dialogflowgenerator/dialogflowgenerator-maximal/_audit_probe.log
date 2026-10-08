@@ -1,0 +1,23 @@
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/generators/dialogflowgenerator-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated Maximal Dialogflow Generator ${uniqueId}",
+  "freeFormContext": {
+    "text": "Create a detailed response: ${uniqueId}"
+  },
+  "inferenceParameter": {
+    "maxOutputTokens": 256,
+    "temperature": 0.7,
+    "topK": 20,
+    "topP": 0.8
+  },
+  "name": "projects/${projectId}/locations/global/generators/dialogflowgenerator-max-${uniqueId}",
+  "publishedModel": "text-bison",
+  "triggerEvent": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

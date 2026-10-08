@@ -169,14 +169,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed KMSCryptoKey.
-                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    description: A reference to an externally managed KMSCryptoKey
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}".
                     type: string
                   name:
-                    description: The `name` of a `KMSCryptoKey` resource.
+                    description: The name of a KMSCryptoKey resource.
                     type: string
                   namespace:
-                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    description: The namespace of a KMSCryptoKey resource.
                     type: string
                 type: object
               location:
@@ -202,6 +202,14 @@ spec:
               remoteRepositoryConfig:
                 description: Configuration specific for a Remote Repository.
                 properties:
+                  commonRepository:
+                    description: Common remote repository settings.
+                    properties:
+                      uri:
+                        description: Required. A common public repository base for
+                          remote repository.
+                        type: string
+                    type: object
                   description:
                     description: The description of the remote source.
                     type: string

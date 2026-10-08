@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Notebooks v1",
+    "service": "notebooks.googleapis.com",
+    "kinds": [
+      "NotebooksEnvironment",
+      "NotebooksExecution",
+      "NotebooksRuntime",
+      "NotebooksSchedule"
+    ],
+    "evidence": "Managed notebooks are deprecated in favor of Vertex AI Workbench Instances. They were scheduled for retirement on January 16, 2024. [Vertex AI Release Notes (January 16, 2024)](https://cloud.google.com/vertex-ai/docs/release-notes#January_16_2024)"
+  },
+  {
+    "name": "Parallelstore",
+    "service": "parallelstore.googleapis.com",
+    "kinds": [
+      "ParallelstoreInstance"
+    ],
+    "evidence": "Parallelstore high-performance SSD scratch storage has been discontinued and removed from the active client libraries. [Google Cloud C++ Client Libraries Changelog](https://googleapis.github.io/google-cloud-cpp/CHANGELOG.html#removed-libraries)"
+  },
+  {
+    "name": "Blockchain Node Engine",
+    "service": "blockchainnodeengine.googleapis.com",
+    "kinds": [
+      "BlockchainNodeEngineBlockchainNode"
+    ],
+    "evidence": "Google Cloud retired the entire Blockchain Node Engine service on September 10, 2024. [Blockchain Node Engine Release Notes](https://cloud.google.com/blockchain-node-engine/docs/release-notes)"
+  },
+  {
+    "name": "Google Tables",
+    "service": "area120tables.googleapis.com",
+    "kinds": [
+      "Area120TablesRow",
+      "Area120TablesTable",
+      "Area120TablesWorkspace"
+    ],
+    "evidence": "Google Tables was officially closed and shut down as a standalone service. [Table Beta Updates & FAQ](https://support.google.com/area120-tables/answer/10831919)"
+  },
+  {
+    "name": "Data Labeling Service",
+    "service": "datalabeling.googleapis.com",
+    "kinds": [
+      "DataLabelingAnnotatedDataset",
+      "DataLabelingAnnotationSpecSet",
+      "DataLabelingDataItem",
+      "DataLabelingDataset",
+      "DataLabelingEvaluation",
+      "DataLabelingEvaluationJob",
+      "DataLabelingExample",
+      "DataLabelingInstruction"
+    ],
+    "evidence": "The standalone Data Labeling Service is deprecated. Users are directed to use the Vertex AI console to label datasets instead. [Data Labeling Service Deprecation](https://docs.cloud.google.com/vertex-ai/docs/deprecations)"
+  },
+  {
+    "name": "BeyondCorp Enterprise client connector",
+    "service": "beyondcorp.googleapis.com",
+    "kinds": [
+      "BeyondCorpClientConnectorService",
+      "BeyondCorpClientGateway"
+    ],
+    "evidence": "The BeyondCorp Enterprise client connector was deprecated on March 15, 2023, and was shut down on December 31, 2023. [BeyondCorpClientConnectorService](https://docs.cloud.google.com/beyondcorp/docs/reference/rest/v1/projects.locations.clientConnectorServices), [BeyondCorpClientGateway](https://docs.cloud.google.com/beyondcorp/docs/reference/rest/v1/projects.locations.clientGateways)"
+  },
+  {
+    "name": "Cloud IoT Core",
+    "service": "cloudiot.googleapis.com",
+    "kinds": [
+      "CloudIoTDevice",
+      "CloudIoTRegistry"
+    ],
+    "evidence": "Google Cloud IoT Core service was retired on August 16, 2023. [Cloud IoT Core Resource Hub](https://docs.cloud.google.com/eventarc/docs/event-types#triggers-events)"
+  }
+]

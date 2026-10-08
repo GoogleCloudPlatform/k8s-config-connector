@@ -176,6 +176,14 @@ config:
       external: string
       name: string
       namespace: string
+    instanceFlexibilityPolicy:
+      instanceSelectionList:
+      - machineTypes:
+        - string
+        rank: integer
+      provisioningModelMix:
+        standardCapacityBase: integer
+        standardCapacityPercentAboveBase: integer
     machineType: string
     minCpuPlatform: string
     numInstances: integer
@@ -1311,6 +1319,96 @@ virtualClusterConfig:
         <td>
             <p><code class="apitype">string</code></p>
             <p>The namespace of a ComputeImage resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.secondaryWorkerConfig.instanceFlexibilityPolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. Instance flexibility Policy allowing a mixture of VM shapes and provisioning models.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.secondaryWorkerConfig.instanceFlexibilityPolicy.instanceSelectionList</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>Optional. List of instance selection options that the group will use when creating new VMs.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.secondaryWorkerConfig.instanceFlexibilityPolicy.instanceSelectionList[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.secondaryWorkerConfig.instanceFlexibilityPolicy.instanceSelectionList[].machineTypes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>Optional. Full machine-type names, e.g. "n1-standard-16".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.secondaryWorkerConfig.instanceFlexibilityPolicy.instanceSelectionList[].machineTypes[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.secondaryWorkerConfig.instanceFlexibilityPolicy.instanceSelectionList[].rank</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Optional. Preference of this instance selection. Lower number means higher preference. Dataproc will first try to create a VM based on the machine-type with priority rank and fallback to next rank based on availability. Machine types and instance selections with the same priority have the same preference.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.secondaryWorkerConfig.instanceFlexibilityPolicy.provisioningModelMix</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. Defines how the Group selects the provisioning model to ensure required reliability.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.secondaryWorkerConfig.instanceFlexibilityPolicy.provisioningModelMix.standardCapacityBase</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Optional. The base capacity that will always use Standard VMs to avoid risk of more preemption than the minimum capacity you need. Dataproc will create only standard VMs until it reaches standard_capacity_base, then it will start using standard_capacity_percent_above_base to mix Spot with Standard VMs. eg. If 15 instances are requested and standard_capacity_base is 5, Dataproc will create 5 standard VMs and then start mixing spot and standard VMs for remaining 10 instances.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.secondaryWorkerConfig.instanceFlexibilityPolicy.provisioningModelMix.standardCapacityPercentAboveBase</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Optional. The percentage of target capacity that should use Standard VM. The remaining percentage will use Spot VMs. The percentage applies only to the capacity above standard_capacity_base. eg. If 15 instances are requested and standard_capacity_base is 5 and standard_capacity_percent_above_base is 30, Dataproc will create 5 standard VMs and then start mixing spot and standard VMs for remaining 10 instances. The mix will be 30% standard and 70% spot.</p>
         </td>
     </tr>
     <tr>

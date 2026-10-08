@@ -27,10 +27,26 @@ import (
 	pb "cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"
 	krmartifactregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1alpha1"
 	krmartifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krmkmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func ArtifactRegistryRepositoryCommonRepository_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_CommonRemoteRepository) *krmartifactregistryv1beta1.ArtifactRegistryRepositoryCommonRepository {
+	if in == nil {
+		return nil
+	}
+	out := &krmartifactregistryv1beta1.ArtifactRegistryRepositoryCommonRepository{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	return out
+}
+func ArtifactRegistryRepositoryCommonRepository_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmartifactregistryv1beta1.ArtifactRegistryRepositoryCommonRepository) *pb.RemoteRepositoryConfig_CommonRemoteRepository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoteRepositoryConfig_CommonRemoteRepository{}
+	out.Uri = direct.ValueOf(in.URI)
+	return out
+}
 func ArtifactRegistryRepositoryDockerRepository_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RemoteRepositoryConfig_DockerRepository) *krmartifactregistryv1beta1.ArtifactRegistryRepositoryDockerRepository {
 	if in == nil {
 		return nil
@@ -146,7 +162,7 @@ func ArtifactRegistryRepositoryRemoteRepositoryConfig_v1beta1_FromProto(mapCtx *
 	out.PythonRepository = ArtifactRegistryRepositoryPythonRepository_v1beta1_FromProto(mapCtx, in.GetPythonRepository())
 	// MISSING: AptRepository
 	// MISSING: YumRepository
-	// MISSING: CommonRepository
+	out.CommonRepository = ArtifactRegistryRepositoryCommonRepository_v1beta1_FromProto(mapCtx, in.GetCommonRepository())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	// MISSING: UpstreamCredentials
 	// MISSING: DisableUpstreamValidation
@@ -171,7 +187,9 @@ func ArtifactRegistryRepositoryRemoteRepositoryConfig_v1beta1_ToProto(mapCtx *di
 	}
 	// MISSING: AptRepository
 	// MISSING: YumRepository
-	// MISSING: CommonRepository
+	if oneof := ArtifactRegistryRepositoryCommonRepository_v1beta1_ToProto(mapCtx, in.CommonRepository); oneof != nil {
+		out.RemoteSource = &pb.RemoteRepositoryConfig_CommonRepository{CommonRepository: oneof}
+	}
 	out.Description = direct.ValueOf(in.Description)
 	// MISSING: UpstreamCredentials
 	// MISSING: DisableUpstreamValidation
@@ -193,7 +211,7 @@ func ArtifactRegistryRepositorySpec_v1beta1_FromProto(mapCtx *direct.MapContext,
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	if in.GetKmsKeyName() != "" {
-		out.KMSKeyNameRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+		out.KMSKeyNameRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
 	}
 	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
 	out.CleanupPolicies = CleanupPolicies_FromProto(mapCtx, in.CleanupPolicies)
@@ -335,22 +353,6 @@ func ArtifactRegistryRepositoryVirtualRepositoryConfig_v1beta1_ToProto(mapCtx *d
 	}
 	out := &pb.VirtualRepositoryConfig{}
 	out.UpstreamPolicies = direct.Slice_ToProto(mapCtx, in.UpstreamPolicies, ArtifactRegistryRepositoryUpstreamPolicy_v1beta1_ToProto)
-	return out
-}
-func ArtifactRegistryVPCSCConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VPCSCConfig) *krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigObservedState{}
-	// MISSING: Name
-	return out
-}
-func ArtifactRegistryVPCSCConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigObservedState) *pb.VPCSCConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.VPCSCConfig{}
-	// MISSING: Name
 	return out
 }
 func ArtifactRegistryVPCSCConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VPCSCConfig) *krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigSpec {

@@ -61,6 +61,8 @@ func (m *ServeMux) customErrorHandler(ctx context.Context, mux *runtime.ServeMux
 	}
 
 	switch s.Code() {
+	case codes.InvalidArgument:
+		wrapped.Error.Status = "INVALID_ARGUMENT"
 	case codes.PermissionDenied:
 		wrapped.Error.Status = "PERMISSION_DENIED"
 	case codes.AlreadyExists:

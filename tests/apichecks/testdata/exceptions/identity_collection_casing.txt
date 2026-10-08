@@ -1,0 +1,19 @@
+# Identity collection segments whose casing never appears in recorded GCP traffic.
+#
+# The segment an Identity builds goes into a GCP resource name: status.externalRef,
+# and the names handed to the API. It has to match the API byte for byte. This is
+# not KRM field naming, which is a separate namespace handled by GetJSONForKRM and
+# checked by TestCRDsAcronyms.
+#
+# Each entry below is a resource whose identity builds a name GCP has never seen.
+# KCC still reconciles them, because the API calls are built elsewhere and get the
+# casing right. What is wrong is the identity string, which is what users are given
+# in status.externalRef and what ParseXExternal accepts in spec...Ref.external.
+#
+# This file is a ratchet, so entries may be removed but never added. Fixing one
+# changes a published status.externalRef value, which is why they are recorded here
+# rather than fixed in place.
+[identity-casing] collection "backupvaults" is never used in recorded traffic (traffic uses backupVaults): netapp/v1alpha1/netappbackupvault_identity.go
+[identity-casing] collection "datastores" is never used in recorded traffic (traffic uses dataStores): discoveryengine/v1alpha1/discoveryenginedatastore_identity.go
+[identity-casing] collection "managedfolders" is never used in recorded traffic (traffic uses managedFolders): storagecontrol/v1alpha1/storagemanagedfolder_identity.go
+[identity-casing] collection "nodegroups" is never used in recorded traffic (traffic uses nodeGroups): dataproc/v1alpha1/dataprocnodegroup_identity.go

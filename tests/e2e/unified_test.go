@@ -305,6 +305,15 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					if strings.Contains(fixture.Name, "regionaltargethttpsproxy") {
 						opt.CreateInOrder = true
 					}
+					// ComputeSubnetwork and ComputeRouterNAT have strict dependencies on other resources (like ComputeNetwork or ComputeRouter).
+					// For ComputeRouterNAT, NAT gateway configuration is treated as an embedded configuration on a GCP Router.
+					// Therefore, GCP does not allow configuring NAT on a router that does not exist yet.
+					// Similarly, deleting a network or router will fail if active NAT/subnetwork configurations are still attached.
+					// Setting CreateInOrder and DeleteInOrder ensures dependencies are fully ready first during creation and cleaned up last during deletion.
+					if strings.Contains(fixture.Name, "computesubnetwork") || strings.Contains(fixture.Name, "computerouternat") {
+						opt.CreateInOrder = true
+						opt.DeleteInOrder = true
+					}
 
 					// We want to use SSA everywhere, but some of our tests are broken by SSA
 					switch group := primaryResource.GetObjectKind().GroupVersionKind().Group; group {
@@ -359,6 +368,10 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					// Acquisition tests are designed for the Direct controller and will fail with Terraform
 					if fixture.Name == "tagkeyacquire" || fixture.Name == "tagvalueacquire" {
 						t.Logf("skipping scenario with fallback to old controller for acquisition test %q", fixture.TestKey)
+						// The tests would fail with Terraform, and we've fixed it in direct controller,
+						// or tests including direct-only features.
+					} else if fixture.Name == "dataproccluster-flexiblevm" {
+						t.Logf("skipping scenario with fallback to old controller for test %q", fixture.TestKey)
 					} else {
 						t.Logf("also running scenario with fallback to old controller for fixture %q", fixture.TestKey)
 						scenarioOptionsWithFallback := scenarioOptions
@@ -830,6 +843,10 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 					}
 
 					h.Events.Resume()
+				}
+
+				if !t.Failed() && !options.TestPause && os.Getenv("E2E_GCP_TARGET") == "real" && os.Getenv("RECORD_AUDIT_PROBE") != "" {
+					runAutoRESTProbe(ctx, t, h, fixture, project, uniqueID, opt)
 				}
 
 				create.DeleteResources(h, opt)

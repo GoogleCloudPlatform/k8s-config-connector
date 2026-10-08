@@ -48,18 +48,39 @@ func (s ReconcileStatus) String() string {
 	return reconcileStatusMap[s]
 }
 
+type UnhealthyReason string
+
+const (
+	UnhealthyReasonNone     UnhealthyReason = ""
+	UnhealthyReasonGCPWrite UnhealthyReason = "GCP_WRITE"
+	UnhealthyReasonError    UnhealthyReason = "RECONCILE_ERROR"
+)
+
 // GKNNReconciledResult is the result of reconciling a GKNN object with a specific controller type.
 type GKNNReconciledResult struct {
-	GKNN            GKNN
-	ControllerType  k8s.ReconcilerType
-	ReconcileStatus ReconcileStatus
-	Diffs           *structuredreporting.Diff
-	GCPActions      []*gcpAction
+	GKNN             GKNN
+	CurrentStatus    string
+	ControllerType   k8s.ReconcilerType
+	ReconcileStatus  ReconcileStatus
+	UnhealthyReasons []UnhealthyReason
+	Errors           []string
+	Diffs            *structuredreporting.Diff
+	GCPActions       []*gcpAction
 }
 
 // FormatGKNNReconciledResult formats the GKNNReconciledResult into a string.
 func (r *GKNNReconciledResult) FormatGKNNReconciledResult() string {
-	return fmt.Sprintf("ns=\"%s\" name=\"%s\" group=\"%s\" kind=\"%s\" controller_type=\"%s\" diffs=\"%s\" reconcile_status=\"%s\"", r.GKNN.Namespace, r.GKNN.Name, r.GKNN.Group, r.GKNN.Kind, r.ControllerType, FormatFieldIDs(r.Diffs), r.ReconcileStatus.String())
+	return fmt.Sprintf("ns=\"%s\" name=\"%s\" group=\"%s\" kind=\"%s\" current_status=\"%s\" controller_type=\"%s\" diffs=\"%s\" reconcile_status=\"%s\" reason=\"%s\"", r.GKNN.Namespace, r.GKNN.Name, r.GKNN.Group, r.GKNN.Kind, r.CurrentStatus, r.ControllerType, FormatFieldIDs(r.Diffs), r.ReconcileStatus.String(), FormatUnhealthyReasons(r.UnhealthyReasons))
+}
+
+func FormatUnhealthyReasons(reasons []UnhealthyReason) string {
+	var formatted []string
+	for _, r := range reasons {
+		if r != "" {
+			formatted = append(formatted, string(r))
+		}
+	}
+	return strings.Join(formatted, ",")
 }
 
 func FormatFieldIDs(diffs *structuredreporting.Diff) string {
@@ -92,9 +113,14 @@ func (r *Recorder) GenerateRecorderReconciledResults() *RecorderReconciledResult
 		results: make(map[GKNN]*GKNNReconciledResult),
 	}
 
-	for gknn := range r.objects {
+	for gknn, objInfo := range r.objects {
+		currentStatus := objInfo.currentStatus
+		if currentStatus == "" {
+			currentStatus = "N/A"
+		}
 		result := &GKNNReconciledResult{
 			GKNN:            gknn,
+			CurrentStatus:   currentStatus,
 			Diffs:           &structuredreporting.Diff{},
 			ReconcileStatus: ReconcileStatusHealthy,
 			GCPActions:      []*gcpAction{},
@@ -107,6 +133,11 @@ func (r *Recorder) GenerateRecorderReconciledResults() *RecorderReconciledResult
 				result.ControllerType = event.reconcilerType
 			case EventTypeReconcileEnd:
 				result.ControllerType = event.reconcilerType
+				if event.err != nil && !IsBlockedError(event.err) {
+					result.ReconcileStatus = ReconcileStatusUnhealthy
+					addUnhealthyReason(result, UnhealthyReasonError)
+					addError(result, event.err)
+				}
 			case EventTypeKubeAction:
 				// Ignore for now
 			case EventTypeGCPAction:
@@ -116,6 +147,13 @@ func (r *Recorder) GenerateRecorderReconciledResults() *RecorderReconciledResult
 				}
 				result.GCPActions = append(result.GCPActions, event.gcpAction)
 				result.ReconcileStatus = ReconcileStatusUnhealthy
+				addUnhealthyReason(result, UnhealthyReasonGCPWrite)
+			case EventTypeError:
+				if event.err != nil && !IsBlockedError(event.err) {
+					result.ReconcileStatus = ReconcileStatusUnhealthy
+					addUnhealthyReason(result, UnhealthyReasonError)
+					addError(result, event.err)
+				}
 			default:
 				// Ignore for now
 			}
@@ -129,6 +167,35 @@ func (r *Recorder) GenerateRecorderReconciledResults() *RecorderReconciledResult
 		}
 	}
 	return recorderReconciledResults
+}
+
+func addUnhealthyReason(result *GKNNReconciledResult, reason UnhealthyReason) {
+	if reason == "" {
+		return
+	}
+	for _, r := range result.UnhealthyReasons {
+		if r == reason {
+			return
+		}
+	}
+	result.UnhealthyReasons = append(result.UnhealthyReasons, reason)
+}
+
+func addError(result *GKNNReconciledResult, err error) {
+	if err == nil || IsBlockedError(err) {
+		return
+	}
+	msg := err.Error()
+	for i, e := range result.Errors {
+		if e == msg || strings.Contains(e, msg) {
+			return
+		}
+		if strings.Contains(msg, e) {
+			result.Errors[i] = msg
+			return
+		}
+	}
+	result.Errors = append(result.Errors, msg)
 }
 
 func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, altResult *RecorderReconciledResults, altExpectedMap map[schema.GroupKind]k8s.ReconcilerType) error {
@@ -145,11 +212,12 @@ func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, al
 		fmt.Fprintf(f, "Detected %d good and %d bad objects in alternative run\n", altResult.goodCount, altResult.badCount)
 	}
 	w := tabwriter.NewWriter(f, 0, 0, 3, ' ', 0)
-	fmt.Fprintln(w, "GROUP\tKIND\tNAME\tDEFAULT-CONTROLLER\tDEFAULT-RESULT\tDEFAULT-DIFFS\tALTERNATIVE-CONTROLLER\tALTERNATIVE-RESULT\tALTERNATIVE-DIFFS")
+	fmt.Fprintln(w, "GROUP\tKIND\tNAMESPACE\tNAME\tCURRENT-STATUS\tDEFAULT-CONTROLLER\tDEFAULT-RESULT\tALTERNATIVE-CONTROLLER\tALTERNATIVE-RESULT\tDEFAULT-DIFFS\tALTERNATIVE-DIFFS")
 	type resultPair struct {
-		def  *GKNNReconciledResult
-		alt  *GKNNReconciledResult
-		gknn GKNN
+		def           *GKNNReconciledResult
+		alt           *GKNNReconciledResult
+		gknn          GKNN
+		currentStatus string
 	}
 
 	type combinedResult struct {
@@ -163,8 +231,11 @@ func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, al
 	addPair := func(gknn GKNN, result *GKNNReconciledResult, isAlt bool) {
 		pair, ok := combined.results[gknn]
 		if !ok {
-			pair = &resultPair{gknn: gknn}
+			pair = &resultPair{gknn: gknn, currentStatus: "N/A"}
 			combined.results[gknn] = pair
+		}
+		if result != nil && result.CurrentStatus != "" && result.CurrentStatus != "N/A" {
+			pair.currentStatus = result.CurrentStatus
 		}
 		if isAlt {
 			pair.alt = result
@@ -237,8 +308,8 @@ func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, al
 			altStatus = formatReconciledStatus(pair.alt)
 			altDiffs = FormatFieldIDs(pair.alt.Diffs)
 
-			// Only log alternative results if there is a difference from the default result
-			if pair.def == nil || altStatus != defStatus || altDiffs != defDiffs {
+			// Only log alternative results if there is a difference from the default result or if it uses a different controller
+			if pair.def == nil || altCtrl != defCtrl || altStatus != defStatus || altDiffs != defDiffs {
 				klog.V(0).Info("\"PreviewResult\" ", pair.alt.FormatGKNNReconciledResult())
 				if pair.alt.ReconcileStatus == ReconcileStatusUnhealthy {
 					combinedBadResult = append(combinedBadResult, pair.alt)
@@ -249,7 +320,11 @@ func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, al
 			altStatus = "Missing"
 		}
 
-		fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", pair.gknn.Group, pair.gknn.Kind, pair.gknn.Name, defCtrl, defStatus, defDiffs, altCtrl, altStatus, altDiffs)
+		currStatus := pair.currentStatus
+		if currStatus == "" {
+			currStatus = "N/A"
+		}
+		fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", pair.gknn.Group, pair.gknn.Kind, pair.gknn.Namespace, pair.gknn.Name, currStatus, defCtrl, defStatus, altCtrl, altStatus, defDiffs, altDiffs)
 	}
 
 	if err := w.Flush(); err != nil {
@@ -283,6 +358,17 @@ func formatReconciledStatus(result *GKNNReconciledResult) string {
 		return "N/A"
 	}
 	if result.ReconcileStatus == ReconcileStatusUnhealthy {
+		if len(result.UnhealthyReasons) > 0 {
+			var reasons []string
+			for _, r := range result.UnhealthyReasons {
+				if r != "" {
+					reasons = append(reasons, string(r))
+				}
+			}
+			if len(reasons) > 0 {
+				return fmt.Sprintf("UNHEALTHY (%s)", strings.Join(reasons, ", "))
+			}
+		}
 		return "UNHEALTHY"
 	}
 	return "HEALTHY"
@@ -322,13 +408,20 @@ func (r *Recorder) ExportDetailObjectsEvent(filename string) error {
 				fmt.Fprintf(f, "  reconcileStart type=%s\n", event.reconcilerType)
 
 			case EventTypeReconcileEnd:
-				fmt.Fprintf(f, "  reconcileEnd type=%s\n", event.reconcilerType)
+				if event.err != nil {
+					fmt.Fprintf(f, "  reconcileEnd type=%s err=%v\n", event.reconcilerType, event.err)
+				} else {
+					fmt.Fprintf(f, "  reconcileEnd type=%s\n", event.reconcilerType)
+				}
 
 			case EventTypeKubeAction:
 				fmt.Fprintf(f, "  kubeAction %+v\n", event.kubeAction)
 
 			case EventTypeGCPAction:
 				fmt.Fprintf(f, "  gcpAction %+v\n", event.gcpAction)
+
+			case EventTypeError:
+				fmt.Fprintf(f, "  error: %v\n", event.err)
 
 			default:
 				fmt.Fprintf(f, "  unknown event: %+v\n", event)

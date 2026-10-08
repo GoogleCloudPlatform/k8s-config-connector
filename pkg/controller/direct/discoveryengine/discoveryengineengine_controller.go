@@ -283,12 +283,7 @@ func compareEngine(ctx context.Context, actual, desired *pb.Engine) (*structured
 }
 
 func (a *engineAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.Engine) error {
-	mapCtx := &direct.MapContext{}
 	status := &krm.DiscoveryEngineEngineStatus{}
-	status.ObservedState = DiscoveryEngineEngineObservedState_v1alpha1_FromProto(mapCtx, latest)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
 	status.ExternalRef = direct.PtrTo(a.id.String())
 	return op.UpdateStatus(ctx, status, nil)
 }
@@ -314,7 +309,9 @@ func (a *engineAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteO
 
 	err = op.Wait(ctx)
 	if err != nil {
-		return false, fmt.Errorf("waiting for discoveryengine engine %s deletion: %w", fqn, err)
+		if err.Error() != "unsupported result type <nil>: <nil>" {
+			return false, fmt.Errorf("waiting for discoveryengine engine %s deletion: %w", fqn, err)
+		}
 	}
 	log.V(2).Info("successfully deleted discoveryengine engine", "name", fqn)
 

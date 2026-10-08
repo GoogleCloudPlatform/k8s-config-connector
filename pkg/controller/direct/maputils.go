@@ -25,6 +25,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/googleapis/gax-go/v2/apierror"
+	"google.golang.org/api/googleapi"
 	statuspb "google.golang.org/genproto/googleapis/rpc/status"
 	grpcCode "google.golang.org/grpc/codes"
 	grpcStatus "google.golang.org/grpc/status"
@@ -34,7 +35,6 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	"k8s.io/klog/v2"
 )
 
 type MapContext struct {
@@ -302,9 +302,14 @@ func IsAlreadyExists(err error) bool {
 
 // HasHTTPCode returns true if the given error is an HTTP response with the given code.
 func HasHTTPCode(err error, code int) bool {
-
 	if err == nil {
 		return false
+	}
+	var googleAPIErr *googleapi.Error
+	if errors.As(err, &googleAPIErr) {
+		if googleAPIErr.Code == code {
+			return true
+		}
 	}
 	apiError := &apierror.APIError{}
 	if errors.As(err, &apiError) {
@@ -312,19 +317,14 @@ func HasHTTPCode(err error, code int) bool {
 			return true
 		}
 		// Check for GRPC error code
-		if apiError.HTTPCode() == -1 {
-			if grpcStatus.Code(err) == grpcCode.NotFound {
-				return true
-			}
+		if apiError.HTTPCode() == -1 && grpcStatus.Code(err) == grpcCode.NotFound {
+			return true
 		}
-	} else {
-		if s, ok := grpcStatus.FromError(err); ok {
-			if s.Code() == grpcCode.NotFound && code == 404 {
-				return true
-			}
-			return false
+	} else if s, ok := grpcStatus.FromError(err); ok {
+		if s.Code() == grpcCode.NotFound && code == 404 {
+			return true
 		}
-		klog.Warningf("unexpected error type %T", err)
+		return false
 	}
 	return false
 }

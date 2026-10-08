@@ -8,5 +8,12 @@ spec:
   location: us-central1
   action: ALLOW
   target:
+    loadBalancingScheme: INTERNAL_MANAGED
     resources:
-      - external: projects/${projectId}/regions/us-central1/forwardingRules/non-existent-rule
+      - external: "projects/${projectId}/regions/us-central1/forwardingRules/fr-${uniqueId}"
+  httpRules:
+    - from:
+        sources:
+          - ipBlocks:
+              - prefix: "10.0.0.0"
+                length: 24

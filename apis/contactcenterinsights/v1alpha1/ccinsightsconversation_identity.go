@@ -44,6 +44,10 @@ func (i *CCInsightsConversationIdentity) String() string {
 	return CCInsightsConversationIdentityFormat.ToString(*i)
 }
 
+func (i *CCInsightsConversationIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
+}
+
 func (i *CCInsightsConversationIdentity) FromExternal(ref string) error {
 	parsed, match, err := CCInsightsConversationIdentityFormat.Parse(ref)
 	if err != nil {
@@ -69,7 +73,7 @@ func getIdentityFromCCInsightsConversationSpec(ctx context.Context, reader clien
 
 	location, err := refs.GetLocation(obj)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
+		return nil, fmt.Errorf("cannot resolve location")
 	}
 
 	projectID, err := refs.ResolveProjectID(ctx, reader, obj)

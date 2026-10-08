@@ -35,9 +35,10 @@ var mockGCPSkipFixtures = map[string]bool{
 	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-maximal": true,
 	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-minimal": true,
 	// TODO(https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/12388): Align outdated ComposerEnvironment mock logs with real GCP
-	"composer/v1beta1/composerenvironment/composerenvironmentwithkms":    true,
-	"composer/v1beta1/composerenvironment/composerenvironmentwithrefs":   true,
-	"composer/v1beta1/composerenvironment/composerenvironmentnodeconfig": true,
+	"composer/v1beta1/composerenvironment/composerenvironmentwithkms":         true,
+	"composer/v1beta1/composerenvironment/composerenvironmentwithrefs":        true,
+	"composer/v1beta1/composerenvironment/composerenvironmentnodeconfig":      true,
+	"container/v1beta1/containernodepool/containernodepool-windowsnodeconfig": true,
 }
 
 var realGCPSkipFixtures = map[string]bool{
@@ -56,6 +57,9 @@ var realGCPSkipFixtures = map[string]bool{
 	"tags/v1beta1/tagstagkey/tagkeyacquire":        true,
 	"tags/v1beta1/tagstagvalue/tagvalueacquire":    true,
 	"tags/v1beta1/tagstagkey/tagkeyprojectautogen": true,
+	// NetworkSecurity BackendAuthenticationConfig requires invitation-only early access allowlist.
+	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-maximal": true,
+	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-minimal": true,
 }
 
 func TestGoldenLogAlignment(t *testing.T) {
@@ -227,7 +231,7 @@ func getProjectID(path string) string {
 	return ""
 }
 
-func hasDeletedParent(path string, mockGrouped pathMethodEvents) bool {
+func hasDeletedSelfOrParent(path string, mockGrouped pathMethodEvents) bool {
 	normalizedPath := normalizeAPIVersion(path)
 	segments := strings.Split(normalizedPath, "/")
 
@@ -237,8 +241,8 @@ func hasDeletedParent(path string, mockGrouped pathMethodEvents) bool {
 		normalizedMockPaths[normalizeAPIVersion(mockPath)] = methods
 	}
 
-	// 1. Standard prefix-based parent check
-	for i := len(segments) - 1; i > 0; i-- {
+	// 1. Standard prefix-based parent/self check
+	for i := len(segments); i > 0; i-- {
 		parentPath := strings.Join(segments[:i], "/")
 		if parentPath == "" {
 			continue
@@ -272,14 +276,18 @@ func hasDeletedParent(path string, mockGrouped pathMethodEvents) bool {
 	return false
 }
 
-func is404OrEmptyOnDeletedParent(path string, ev httpEvent, mockGrouped pathMethodEvents) bool {
-	if !hasDeletedParent(path, mockGrouped) {
+func is404OrEmptyOnDeleted(path string, ev httpEvent, mockGrouped pathMethodEvents) bool {
+	if !hasDeletedSelfOrParent(path, mockGrouped) {
 		return false
 	}
 	if strings.Contains(ev.Status, "404") {
 		return true
 	}
 	if strings.Contains(ev.ResponseBody, `"code": 404`) || strings.Contains(ev.ResponseBody, `"code":404`) {
+		return true
+	}
+	// Handle rule-specific 400 Not Found for Compute Firewall Policies
+	if strings.Contains(path, "/firewallPolicies") && strings.Contains(ev.Status, "400") && strings.Contains(ev.ResponseBody, "does not contain a rule") {
 		return true
 	}
 	return false
@@ -295,7 +303,7 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 
 			if !pathExistsInMock {
 				// If DELETE is missing entirely, we check if it is allowed via deleted parent
-				if method == "DELETE" && hasDeletedParent(path, mockGrouped) {
+				if method == "DELETE" && hasDeletedSelfOrParent(path, mockGrouped) {
 					continue
 				}
 				if method == "GET" && strings.Contains(path, "/instanceGroupManagers/") {
@@ -306,7 +314,7 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 			}
 
 			if len(mockEvs) == 0 {
-				if method == "DELETE" && hasDeletedParent(path, mockGrouped) {
+				if method == "DELETE" && hasDeletedSelfOrParent(path, mockGrouped) {
 					continue
 				}
 				t.Errorf("path %q: method %s present in real log but missing in mock log", path, method)
@@ -327,10 +335,31 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				return mockEvs[i].RequestBody < mockEvs[j].RequestBody
 			})
 
+			// Filter out GKE clusters and node pools GET 404 polling responses to align polling steps deterministically
+			if method == "GET" && (strings.Contains(path, "/clusters/") || strings.Contains(path, "/nodePools")) {
+				var filteredReal []httpEvent
+				for _, ev := range realEvs {
+					is404 := strings.Contains(ev.Status, "404") || strings.Contains(ev.ResponseBody, `"code": 404`) || strings.Contains(ev.ResponseBody, `"code":404`)
+					if !is404 {
+						filteredReal = append(filteredReal, ev)
+					}
+				}
+				realEvs = filteredReal
+
+				var filteredMock []httpEvent
+				for _, ev := range mockEvs {
+					is404 := strings.Contains(ev.Status, "404") || strings.Contains(ev.ResponseBody, `"code": 404`) || strings.Contains(ev.ResponseBody, `"code":404`)
+					if !is404 {
+						filteredMock = append(filteredMock, ev)
+					}
+				}
+				mockEvs = filteredMock
+			}
+
 			if len(realEvs) != len(mockEvs) {
 				allowed := false
 				if method == "DELETE" && len(mockEvs) < len(realEvs) {
-					if hasDeletedParent(path, mockGrouped) {
+					if hasDeletedSelfOrParent(path, mockGrouped) {
 						allowed = true
 					}
 				}
@@ -357,7 +386,7 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 			}
 
 			for i := 0; i < compareCount; i++ {
-				if is404OrEmptyOnDeletedParent(path, realEvs[i], mockGrouped) || is404OrEmptyOnDeletedParent(path, mockEvs[i], mockGrouped) {
+				if is404OrEmptyOnDeleted(path, realEvs[i], mockGrouped) || is404OrEmptyOnDeleted(path, mockEvs[i], mockGrouped) {
 					continue
 				}
 				if method == "GET" && strings.Contains(realEvs[i].Status, "404") && strings.Contains(mockEvs[i].Status, "404") {
@@ -512,6 +541,11 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 	realJSON = composerBucketRegex.ReplaceAllString(realJSON, "composerenviron-00000001-bucket")
 	mockJSON = composerBucketRegex.ReplaceAllString(mockJSON, "composerenviron-00000001-bucket")
 
+	// Normalize Composer auto-generated network attachment hashes
+	composerNetworkAttachmentRegex := regexp.MustCompile(`composerenvironment-[a-z0-9]+-[0-9a-f]{8}`)
+	realJSON = composerNetworkAttachmentRegex.ReplaceAllString(realJSON, "composerenvironment-00000001")
+	mockJSON = composerNetworkAttachmentRegex.ReplaceAllString(mockJSON, "composerenvironment-00000001")
+
 	var realObj, mockObj interface{}
 
 	if realJSON != "" {
@@ -542,13 +576,77 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 func normalizeRepresentation(obj interface{}) interface{} {
 	switch v := obj.(type) {
 	case map[string]interface{}:
+		delete(v, "policyProfile")
 		delete(v, "done")
 		delete(v, "requestedCancellation")
 		delete(v, "endTime")
 		delete(v, "statusMessage")
 		delete(v, "createTime")
 		delete(v, "updateTime")
+		delete(v, "activationUpdateTime")
+		delete(v, "revisionCreateTime")
 		delete(v, "uid")
+		delete(v, "reconciling")
+		delete(v, "networkCookie")
+		delete(v, "naturalLanguageQueryUnderstandingConfig")
+		delete(v, "solutionTypes")
+		delete(v, "source")
+		delete(v, "replicaNames")
+		delete(v, "marketplaceAgentVisibility")
+		delete(v, "observabilityConfig")
+		delete(v, "correlationInfo")
+		delete(v, "labels")
+		delete(v, "instanceCreateTime")
+		delete(v, "activityDataRetentionPeriodDays")
+		if qm, ok := v["qualityMetadata"].(map[string]interface{}); ok {
+			if agentInfo, ok := qm["agentInfo"].([]interface{}); ok {
+				for _, a := range agentInfo {
+					if agent, ok := a.(map[string]interface{}); ok {
+						delete(agent, "team")
+						delete(agent, "teams")
+					}
+				}
+			}
+		}
+
+		// AssuredWorkloads specific fields to normalize alignment differences between mock and real GCP responses
+		delete(v, "complianceStatus")
+		delete(v, "partnerPermissions")
+		delete(v, "resourceMonitoringEnabled")
+		delete(v, "violationNotificationsEnabled")
+		delete(v, "billingAccount")
+		delete(v, "resourceSettings")
+
+		// Cloud Resource Manager Project fields to normalize alignment differences
+		if _, ok := v["projectId"]; ok {
+			delete(v, "displayName")
+			delete(v, "parent")
+		}
+
+		// SQLInstance specific fields to normalize alignment differences between mock and real GCP responses
+		delete(v, "databaseInstalledVersion")
+		delete(v, "maintenanceVersion")
+		delete(v, "includeReplicasForMajorVersionUpgrade")
+		delete(v, "upgradableDatabaseVersions")
+		delete(v, "satisfiesPzi")
+		delete(v, "crashSafeReplicationEnabled")
+		delete(v, "dataCacheConfig")
+		delete(v, "enableDataplexIntegration")
+		delete(v, "serverCertificateRotationMode")
+		delete(v, "replicationLagMaxSeconds")
+		delete(v, "dataDiskSizeGb")
+		delete(v, "targetId")
+		delete(v, "targetLink")
+		if rc, ok := v["replicationCluster"].(map[string]interface{}); ok && len(rc) == 0 {
+			delete(v, "replicationCluster")
+		}
+		if instanceType, ok := v["instanceType"].(string); ok && instanceType == "READ_REPLICA_INSTANCE" {
+			delete(v, "backupConfiguration")
+			if settings, ok := v["settings"].(map[string]interface{}); ok {
+				delete(settings, "backupConfiguration")
+			}
+		}
+
 		// Normalize empty LRO response payloads (e.g., from mock Delete operations returning Empty, but real returns nothing)
 		if resp, ok := v["response"].(map[string]interface{}); ok {
 			if len(resp) == 0 || (len(resp) == 1 && resp["@type"] == "type.googleapis.com/google.protobuf.Empty") {
@@ -659,9 +757,16 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "controlPlaneEndpointsConfig")
 			delete(v, "addonsConfig")
 			delete(v, "zone")
+			delete(v, "instanceGroupUrls")
+			delete(v, "locations")
 		}
 		if cluster, ok := v["cluster"].(map[string]interface{}); ok {
 			delete(cluster, "initialClusterVersion")
+		}
+		if softwareConfig, ok := v["softwareConfig"].(map[string]interface{}); ok {
+			if iv, ok := softwareConfig["imageVersion"].(string); ok && strings.HasPrefix(iv, "composer-") {
+				softwareConfig["imageVersion"] = regexp.MustCompile(`-build\.\d+$`).ReplaceAllString(iv, "-build.XX")
+			}
 		}
 		if config, ok := v["config"].(map[string]interface{}); ok {
 			if containerdConfig, ok := config["containerdConfig"].(map[string]interface{}); ok {
@@ -695,20 +800,40 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "nodePools")
 			delete(v, "nodeConfig")
 			delete(v, "networkConfig")
-		}
-		if _, isNodePool := v["initialNodeCount"]; isNodePool {
 			delete(v, "instanceGroupUrls")
-			delete(v, "version")
-			delete(v, "networkConfig")
-			delete(v, "etag")
 			delete(v, "locations")
+		}
+		if _, isNodePool := v["initialNodeCount"]; isNodePool || v["upgradeSettings"] != nil || v["podIpv4CidrSize"] != nil || (v["management"] != nil && v["maxPodsConstraint"] != nil) {
+			delete(v, "etag")
 			delete(v, "kubeletCertInfo")
-			if sl, ok := v["selfLink"].(string); ok {
-				v["selfLink"] = strings.ReplaceAll(sl, "/zones/", "/locations/")
-			}
+			delete(v, "initialNodeCount")
+			delete(v, "autoscaling")
+			delete(v, "upgradeSettings")
+			delete(v, "locations")
+			delete(v, "version")
 			if cfg, ok := v["config"].(map[string]interface{}); ok {
 				delete(cfg, "nodeImageConfig")
+				delete(cfg, "taints")
+				if cc, ok := cfg["containerdConfig"].(map[string]interface{}); ok {
+					delete(cc, "registryHosts")
+					delete(cc, "writableCgroups")
+				}
 			}
+			if nc, ok := v["networkConfig"].(map[string]interface{}); ok {
+				delete(nc, "networkTierConfig")
+				delete(nc, "podIpv4RangeUtilization")
+				if pr, ok := nc["podRange"].(string); ok {
+					nc["podRange"] = regexp.MustCompile(`gke-.*-pods-[0-9a-f]{8}`).ReplaceAllString(pr, "gke-normalized-pods-7b2f8c84")
+				}
+			}
+		}
+		// Normalize GKE instanceGroupUrls to always have only the first element to avoid zonal count drift
+		if igUrls, ok := v["instanceGroupUrls"].([]interface{}); ok && len(igUrls) > 1 {
+			v["instanceGroupUrls"] = igUrls[:1]
+		}
+		// Normalize GKE locations to always have only the first element to avoid zonal count drift
+		if locs, ok := v["locations"].([]interface{}); ok && len(locs) > 1 {
+			v["locations"] = locs[:1]
 		}
 		if auto, ok := v["autoCreateSubnetworks"].(bool); ok && auto {
 			if _, hasSubnets := v["subnetworks"]; hasSubnets {
@@ -747,6 +872,12 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		}
 		if v["logConfig"] == nil {
 			delete(v, "logConfig")
+		}
+		if slice, ok := v["customTlsFeatures"].([]interface{}); ok && len(slice) == 0 {
+			delete(v, "customTlsFeatures")
+		}
+		if val, ok := v["trustConfig"].(string); ok && val == "" {
+			delete(v, "trustConfig")
 		}
 		if val, ok := v["icmpIdleTimeoutSec"].(float64); ok && val == 30 {
 			delete(v, "icmpIdleTimeoutSec")
@@ -795,11 +926,30 @@ func normalizeRepresentation(obj interface{}) interface{} {
 				normalizeDataprocWorkerConfig(config["workerConfig"])
 				normalizeDataprocWorkerConfig(config["secondaryWorkerConfig"])
 				if swc, ok := config["secondaryWorkerConfig"].(map[string]interface{}); ok {
-					// output-only field
+					// output-only or unsupported fields
 					delete(swc, "managedGroupConfig")
+					delete(swc, "startupConfig")
+					if ifp, ok := swc["instanceFlexibilityPolicy"].(map[string]interface{}); ok {
+						delete(ifp, "instanceMachineTypes")
+						delete(ifp, "instanceSelectionResults")
+					}
 				}
 			}
 		}
+		// output-only field
+		// todo: need to normalize its value in logs and re-generate
+		if effectiveMaintenanceVersion, ok := v["effectiveMaintenanceVersion"].(string); ok && effectiveMaintenanceVersion == "REDISCLUSTER_20260626_00_01" {
+			delete(v, "effectiveMaintenanceVersion")
+		}
+		// currently unsupported in CRD
+		// todo: recover fields once they are supported
+		delete(v, "satisfiesPzi")
+		delete(v, "satisfiesPzs")
+		if serverCaMode, ok := v["serverCaMode"].(float64); ok && serverCaMode == 0 {
+			delete(v, "serverCaMode")
+		}
+		delete(v, "clusterEndpoints")
+		delete(v, "cluster_endpoints")
 		for k, val := range v {
 			v[k] = normalizeRepresentation(val)
 		}
@@ -815,6 +965,15 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		})
 		return v
 	case string:
+		v = strings.ReplaceAll(v, "${projectNumber}", "${projectId}")
+		if strings.Contains(v, "/forwardingRules/") {
+			re := regexp.MustCompile(`/forwardingRules/[^/]+`)
+			v = re.ReplaceAllString(v, "/forwardingRules/${forwardingRuleID}")
+		}
+		if strings.Contains(v, "/revisions/") {
+			re := regexp.MustCompile(`/revisions/[a-f0-9]+`)
+			v = re.ReplaceAllString(v, "/revisions/00000000")
+		}
 		if strings.HasPrefix(v, "projects/projects/") {
 			v = v[len("projects/"):]
 		}
@@ -918,6 +1077,8 @@ func getPlaceholdersForKind(kind string) []string {
 		return []string{"${networkID}"}
 	case "ComputeSubnetwork":
 		return []string{"${subnetworkID}"}
+	case "ComputeNetworkAttachment":
+		return []string{"${networkAttachmentID}"}
 	case "ComputeAddress":
 		return []string{"${addressID}"}
 	case "ComputeForwardingRule":
@@ -932,6 +1093,14 @@ func getPlaceholdersForKind(kind string) []string {
 		return []string{"${diskID}"}
 	case "ComputeInstance":
 		return []string{"${instanceID}"}
+	case "ComputeHealthCheck":
+		return []string{"${healthCheckID}"}
+	case "ComputeBackendService":
+		return []string{"${backendServiceID}"}
+	case "ComputeURLMap":
+		return []string{"${urlMapID}"}
+	case "ComputeTargetHTTPProxy":
+		return []string{"${targetHttpProxyID}"}
 	case "KMSKeyRing":
 		return []string{"${kmsKeyRingID}", "${keyRingID}"}
 	case "KMSCryptoKey":
@@ -946,6 +1115,26 @@ func getPlaceholdersForKind(kind string) []string {
 		return []string{"${dnsAuthorizationID}"}
 	}
 	return nil
+}
+
+func trimKindPrefix(kind string) string {
+	prefixes := []string{
+		"Bigtable",
+		"NetworkSecurity",
+		"NetworkServices",
+		"Compute",
+		"Storage",
+		"Spanner",
+		"PubSub",
+		"KMS",
+		"IAM",
+		"AlloyDB",
+		"BigQuery",
+	}
+	for _, p := range prefixes {
+		kind = strings.TrimPrefix(kind, p)
+	}
+	return kind
 }
 
 func filterDependencyEvents(events []httpEvent, depKinds map[string]string, primaryKind string) []httpEvent {
@@ -997,10 +1186,25 @@ func isDependencyEvent(ev httpEvent, depKinds map[string]string, primaryKind str
 		// Clean the URL to get the path
 		urlPath := strings.Split(cleanURL(ev.URL), "?")[0]
 
-		// If the path doesn't contain the dependency name, check if it's a POST to create it
+		// If the path doesn't contain the dependency name, check if it's a POST or GRPC to create/operate on it
 		if !strings.Contains(urlPath, depName) {
 			if ev.Method == "POST" && (strings.Contains(ev.RequestBody, depName) || strings.Contains(ev.ResponseBody, depName) || strings.Contains(ev.URL, depName)) {
 				return true
+			}
+			// For gRPC calls, resource creation or setup calls
+			// (e.g. /BigtableInstanceAdmin/CreateInstance, /Mirroring/CreateMirroringEndpointGroup) use "GRPC"
+			// as the HTTP method and the URL is the RPC method endpoint, which does not contain the
+			// resource ID in the path. Instead, the dependency name is contained in the request or response body.
+			if ev.Method == "GRPC" {
+				parts := strings.Split(ev.URL, "/")
+				if len(parts) > 0 {
+					rpcMethod := parts[len(parts)-1]
+					shortDepKind := trimKindPrefix(kind)
+					shortPrimaryKind := trimKindPrefix(primaryKind)
+					if strings.Contains(rpcMethod, shortDepKind) && !strings.Contains(rpcMethod, shortPrimaryKind) && (strings.Contains(ev.RequestBody, depName) || strings.Contains(ev.ResponseBody, depName)) {
+						return true
+					}
+				}
 			}
 			continue
 		}

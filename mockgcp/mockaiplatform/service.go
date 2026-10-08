@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
+	pbv1 "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
@@ -68,6 +69,9 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterFeatureOnlineStoreAdminServiceServer(grpcServer, &featureOnlineStoreAdminService{MockService: s})
 	pb.RegisterDeploymentResourcePoolServiceServer(grpcServer, &deploymentResourcePoolService{MockService: s})
 	pb.RegisterPipelineServiceServer(grpcServer, &pipelineService{MockService: s})
+	pb.RegisterPersistentResourceServiceServer(grpcServer, &persistentResourceService{MockService: s})
+	pbv1.RegisterSpecialistPoolServiceServer(grpcServer, &specialistPoolService{MockService: s})
+	pbv1.RegisterReasoningEngineServiceServer(grpcServer, &reasoningEngineService{MockService: s})
 
 	// Also register under v1 name so that v1 gRPC clients can call it
 	desc := pb.FeatureOnlineStoreAdminService_ServiceDesc
@@ -77,6 +81,14 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	descPipeline := pb.PipelineService_ServiceDesc
 	descPipeline.ServiceName = "google.cloud.aiplatform.v1.PipelineService"
 	grpcServer.RegisterService(&descPipeline, &pipelineService{MockService: s})
+
+	descModel := pb.ModelService_ServiceDesc
+	descModel.ServiceName = "google.cloud.aiplatform.v1.ModelService"
+	grpcServer.RegisterService(&descModel, &modelService{MockService: s})
+
+	descPersistentResource := pb.PersistentResourceService_ServiceDesc
+	descPersistentResource.ServiceName = "google.cloud.aiplatform.v1.PersistentResourceService"
+	grpcServer.RegisterService(&descPersistentResource, &persistentResourceService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -97,7 +109,11 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.AddService(pb.NewFeatureOnlineStoreAdminServiceClient(conn))
 	mux.AddService(pb.NewDeploymentResourcePoolServiceClient(conn))
 	mux.AddService(pb.NewPipelineServiceClient(conn))
+	mux.AddService(pb.NewPersistentResourceServiceClient(conn))
+	mux.AddService(pbv1.NewSpecialistPoolServiceClient(conn))
+	mux.AddService(pbv1.NewReasoningEngineServiceClient(conn))
 
+	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 	mux.AddOperationsPath("/v1beta1/{prefix=**}/operations/{name}", conn)
 	mux.AddOperationsPath("/ui/{prefix=**}/operations/{name}", conn)
 

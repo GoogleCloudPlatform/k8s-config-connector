@@ -85,7 +85,7 @@ for group in $(rgrep --no-filename '^[ ]*group:' config/crds | sort | uniq | awk
     continue
   fi
   short=$(echo ${group} | sed s@.cnrm.cloud.google.com@@g)
-  if [[ "${short}" == "blockchainnodeengine" || "${short}" == "videostitcher" ]]; then
+  if [[ "${short}" == "videostitcher" ]]; then
     continue
   fi
   all_fixture_services+=("${short}")

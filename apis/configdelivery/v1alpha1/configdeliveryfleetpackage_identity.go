@@ -32,6 +32,7 @@ var (
 
 var ConfigDeliveryFleetPackageIdentityFormat = gcpurls.Template[ConfigDeliveryFleetPackageIdentity]("configdelivery.googleapis.com", "projects/{project}/locations/{location}/fleetPackages/{fleetPackage}")
 
+// ConfigDeliveryFleetPackageIdentity is the identity of a GCP ConfigDeliveryFleetPackage resource.
 // +k8s:deepcopy-gen=false
 type ConfigDeliveryFleetPackageIdentity struct {
 	Project      string
@@ -64,7 +65,7 @@ func (i *ConfigDeliveryFleetPackageIdentity) Host() string {
 	return ConfigDeliveryFleetPackageIdentityFormat.Host()
 }
 
-func getIdentityFromConfigDeliveryFleetPackageSpec(ctx context.Context, reader client.Reader, obj client.Object) (*ConfigDeliveryFleetPackageIdentity, error) {
+func getIdentityFromConfigDeliveryFleetPackageSpec(ctx context.Context, reader client.Reader, obj *ConfigDeliveryFleetPackage) (*ConfigDeliveryFleetPackageIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")

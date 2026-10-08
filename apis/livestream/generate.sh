@@ -35,9 +35,11 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.video.livestream.v1 \
   --api-version livestream.cnrm.cloud.google.com/v1alpha1 \
-  --resource LiveStreamAsset:Asset
+  --resource LiveStreamAsset:Asset \
+  --resource LiveStreamChannel:Channel \
+  --resource LiveStreamInput:Input
 
-# Note: We do not run generate-mapper here as this PR is for types/CRD/Identity only.
+${CONTROLLERBUILDER} generate-mapper --service google.cloud.video.livestream.v1 --api-version livestream.cnrm.cloud.google.com/v1alpha1
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

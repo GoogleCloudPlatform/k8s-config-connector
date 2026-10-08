@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/securitycentermanagement/apiv1"
 
@@ -185,6 +186,9 @@ func (a *EventThreatDetectionCustomModuleAdapter) Update(ctx context.Context, up
 		log.V(2).Info("no field needs update", "name", a.id)
 	} else {
 		log.V(2).Info("fields need update", "name", a.id, "updateMask", updateMask)
+
+		diffs.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, diffs)
 
 		desiredPb.Name = a.id.String()
 		req := &securitycentermanagementpb.UpdateEventThreatDetectionCustomModuleRequest{

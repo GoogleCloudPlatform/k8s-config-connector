@@ -22,6 +22,7 @@ pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computemachineimage/mac
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computenetworkattachment/computenetworkattachment-minimal
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computenetworkedgesecurityservice/computenetworkedgesecurityservice-minimal
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computenetworkfirewallpolicyrule/computenetworkfirewallpolicyrulebasic
+pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computenetworkfirewallpolicyrule/computenetworkfirewallpolicyruleegress
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeorganizationsecuritypolicy/organizationsecuritypolicyautogen
 pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computeregiondiskresourcepolicyattachment/regiondiskresourcepolicyattachmentautogen
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeaddress/computeaddressipcollection
@@ -98,6 +99,7 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computepacketmirroring
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeprojectmetadata
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeregionnetworkendpointgroup/cloudfunctioncomputeregionnetworkendpointgroup
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeregionnetworkendpointgroup/cloudruncomputeregionnetworkendpointgroup
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeregionnetworkendpointgroup/portmapcomputeregionnetworkendpointgroup
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeregionnetworkendpointgroup/privateserviceconnectioncomputeregionnetworkendpointgroup
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computereservation/basicreservation
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computereservation/fullreservation
@@ -113,6 +115,7 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouterinterface
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouterinterface/computerouterinterface-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouternat/computerouternat
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouternat/computerouternat-direct
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouternat/computerouternat-shortname-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouternat/computerouternatbasic
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouternat/computerouternatbasic-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouternat/computerouternatprivate
@@ -129,7 +132,7 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesslcertificate/re
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesslpolicy
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesslpolicy/computesslpolicy-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesubnetwork/computesubnetwork
-pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesubnetwork/reservedinternalrange
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computesubnetwork/computesubnetwork-reservedinternalrange
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargetgrpcproxy
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpproxy/globaltargethttpproxy
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computetargethttpproxy/regionaltargethttpproxy

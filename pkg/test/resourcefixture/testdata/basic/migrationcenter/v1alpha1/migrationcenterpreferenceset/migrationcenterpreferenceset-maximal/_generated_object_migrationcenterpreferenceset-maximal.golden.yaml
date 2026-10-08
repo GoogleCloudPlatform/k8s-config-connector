@@ -1,0 +1,52 @@
+apiVersion: migrationcenter.cnrm.cloud.google.com/v1alpha1
+kind: MigrationCenterPreferenceSet
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: migrationcenterpreferenceset-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Updated maximal preference set description
+  displayName: Updated Maximal Preference Set
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  virtualMachinePreferences:
+    commitmentPlan: COMMITMENT_PLAN_ONE_YEAR
+    computeEnginePreferences:
+      licenseType: LICENSE_TYPE_BRING_YOUR_OWN_LICENSE
+      machinePreferences:
+        allowedMachineSeries:
+        - code: c2
+    regionPreferences:
+      preferredRegions:
+      - us-west1
+    sizingOptimizationStrategy: SIZING_OPTIMIZATION_STRATEGY_AGGRESSIVE
+    soleTenancyPreferences:
+      commitmentPlan: COMMITMENT_3_YEAR
+      cpuOvercommitRatio: 1.5
+      hostMaintenancePolicy: HOST_MAINTENANCE_POLICY_RESTART_IN_PLACE
+      nodeTypes:
+      - nodeName: n1-node-96-624
+    targetProduct: COMPUTE_MIGRATION_TARGET_PRODUCT_VMWARE_ENGINE
+    vmwareEnginePreferences:
+      commitmentPlan: COMMITMENT_3_YEAR_MONTHLY_PAYMENTS
+      cpuOvercommitRatio: 2
+      memoryOvercommitRatio: 1.5
+      storageDeduplicationCompressionRatio: 2
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-maximal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"

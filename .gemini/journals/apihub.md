@@ -17,3 +17,10 @@
 - **Problem**: Need to manually define KRM Spec/ObservedState fields in `plugin_types.go` that align with proto-defined `Plugin` structures.
 - **Solution**: Hand-coded `ApiHubPluginSpec` with `DisplayName` (Required, `*string`), `Type` (Required, `*AttributeValues`), and `Description` (Optional, `*string`). Implemented `ApiHubPluginIdentity` utilizing `gcpurls.Template` for the path pattern `projects/{project}/locations/{location}/plugins/{plugin}` and wrote unit tests for `FromExternal`.
 - **Impact**: Provides valid schema and identity parsing matching GCP's ApiHub Plugin resource specifications.
+
+### 2026-09-01 Greenfield Implementation of APIHubExternalAPI Controller
+- **Context**: Implement direct controller, E2E fixtures, and fuzzer for APIHubExternalAPI.
+- **Problem**: E2E harness requires static registration of GroupKind controller type in the resourceconfig static map, or it fails with unconfigured controller config errors.
+- **Solution**: Implemented `apihubexternalapi_controller.go` and `apihubexternalapi_fuzzer.go` under package `apihubexternalapi` and registered it in `register.go` and `static_config.go` maps.
+- **Impact**: Provides full lifecycle reconciliation, validation, round-trip fuzzing, and live GCP golden recording/verification for `APIHubExternalAPI`.
+

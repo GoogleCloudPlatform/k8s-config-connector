@@ -105,10 +105,12 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 					replacements.ReplaceStringValue(value, "${pscConnectionId}")
 				}
 				if strings.HasSuffix(path, ".ipAddress") {
-					if strings.HasSuffix(value, ".22") || strings.HasSuffix(value, ".2") {
-						replacements.ReplaceStringValue(value, "${ipAddress}-2")
-					} else {
-						replacements.ReplaceStringValue(value, "${ipAddress}")
+					if strings.Contains(value, ".") {
+						if strings.HasSuffix(value, ".22") || strings.HasSuffix(value, ".2") {
+							replacements.ReplaceStringValue(value, "${ipAddress}-2")
+						} else {
+							replacements.ReplaceStringValue(value, "${ipAddress}")
+						}
 					}
 				}
 			}

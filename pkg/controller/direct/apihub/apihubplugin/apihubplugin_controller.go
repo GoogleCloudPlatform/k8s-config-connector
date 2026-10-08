@@ -163,6 +163,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 
 	if diffs.HasDiff() {
+		diffs.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, diffs)
 		return fmt.Errorf("APIHubPlugin is immutable and cannot be updated. Detected changes: %v", diffs.Fields)
 	}
 

@@ -1,0 +1,22 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computenetwork-${uniqueId}
+spec:
+  autoCreateSubnetworks: false
+---
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityFirewallEndpoint
+metadata:
+  name: fwe-${uniqueId}
+spec:
+  projectRef:
+    external: "projects/${projectId}"
+  location: us-central1-a
+  description: "A project firewall endpoint for testing direct controller"
+  labels:
+    foo: bar
+  endpointSettings:
+    jumboFramesEnabled: true

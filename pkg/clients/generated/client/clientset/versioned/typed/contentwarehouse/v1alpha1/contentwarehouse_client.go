@@ -33,7 +33,6 @@ type ContentwarehouseV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	ContentWarehouseDocumentsGetter
 	ContentWarehouseRuleSetsGetter
-	ContentWarehouseSchemasGetter
 	ContentWarehouseSynonymSetsGetter
 }
 
@@ -48,10 +47,6 @@ func (c *ContentwarehouseV1alpha1Client) ContentWarehouseDocuments(namespace str
 
 func (c *ContentwarehouseV1alpha1Client) ContentWarehouseRuleSets(namespace string) ContentWarehouseRuleSetInterface {
 	return newContentWarehouseRuleSets(c, namespace)
-}
-
-func (c *ContentwarehouseV1alpha1Client) ContentWarehouseSchemas(namespace string) ContentWarehouseSchemaInterface {
-	return newContentWarehouseSchemas(c, namespace)
 }
 
 func (c *ContentwarehouseV1alpha1Client) ContentWarehouseSynonymSets(namespace string) ContentWarehouseSynonymSetInterface {

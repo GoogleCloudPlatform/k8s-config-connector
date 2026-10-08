@@ -204,6 +204,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	return fmt.Errorf("KMSKeyHandle is immutable and cannot be updated. Field(s) changed: %v", diffs.FieldIDs())

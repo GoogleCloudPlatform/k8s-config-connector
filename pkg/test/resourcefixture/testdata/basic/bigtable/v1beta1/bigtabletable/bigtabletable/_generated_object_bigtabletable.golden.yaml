@@ -19,6 +19,7 @@ spec:
     retentionPeriod: 72h
   columnFamily:
   - family: family3
+    type: intmax
   - family: family2
   instanceRef:
     name: bigtable-dep-${uniqueId}

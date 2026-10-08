@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -49,7 +50,7 @@ type Instance_Config struct {
 	// where the `location` must match InstanceConfig.location.
 	// +kcc:proto:field=google.cloud.apigeeregistry.v1.Instance.Config.cmek_key_name
 	// +required
-	CmekKeyNameRef *refsv1beta1.KMSCryptoKeyRef `json:"cmekKeyNameRef"`
+	CmekKeyNameRef *kmsv1beta1.KMSCryptoKeyRef `json:"cmekKeyNameRef"`
 }
 
 // +kcc:observedstate:proto=google.cloud.apigeeregistry.v1.Instance.Config

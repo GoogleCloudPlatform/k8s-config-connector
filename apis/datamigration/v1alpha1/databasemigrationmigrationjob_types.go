@@ -18,6 +18,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -115,7 +116,7 @@ type DatabaseMigrationMigrationJobSpec struct {
 	//  Each Cloud CMEK key has the following format:
 	//  projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]
 	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.cmek_key_name
-	CmekKeyNameRef *refsv1beta1.KMSCryptoKeyRef `json:"cmekKeyNameRef,omitempty"`
+	CmekKeyNameRef *kmsv1beta1.KMSCryptoKeyRef `json:"cmekKeyNameRef,omitempty"`
 
 	// Optional. Data dump parallelism settings used by the migration.
 	//  Currently applicable only for MySQL to Cloud SQL for MySQL migrations only.

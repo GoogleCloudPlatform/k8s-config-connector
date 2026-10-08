@@ -31,7 +31,6 @@ source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
-
 ${CONTROLLERBUILDER} generate-types \
     --service google.cloud.dataplex.v1 \
     --api-version "dataplex.cnrm.cloud.google.com/v1alpha1" \
@@ -43,13 +42,21 @@ ${CONTROLLERBUILDER} generate-types \
     --resource DataplexDataTaxonomy:DataTaxonomy \
     --resource DataplexAspectType:AspectType \
     --resource DataplexDataScan:DataScan \
-    --resource DataplexMetadataJob:MetadataJob
+    --resource DataplexMetadataJob:MetadataJob \
+    --resource DataplexMetadataFeed:MetadataFeed
 
 # Handled recursive self-referential fields by defining AspectType_MetadataTemplate manually in dataplexaspecttype_types.go
+# DataProduct types are defined manually in dataplexdataproduct_types.go to avoid schema drift in other resources
+
+# Pin a googleapis SHA that contains DataProduct for mapper generation
+PROTO_SHA="28ba5d15234eff44241492ca72b135e1171fc537"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
 
 ${CONTROLLERBUILDER} generate-mapper \
     --service google.cloud.dataplex.v1 \
-    --api-version "dataplex.cnrm.cloud.google.com/v1alpha1"
+    --api-version "dataplex.cnrm.cloud.google.com/v1alpha1" \
+    --proto-source-path ${PROTO_OUT}
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

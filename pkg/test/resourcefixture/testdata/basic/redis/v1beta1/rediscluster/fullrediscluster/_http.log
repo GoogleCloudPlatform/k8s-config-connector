@@ -946,14 +946,16 @@ X-Xss-Protection: 0
         "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
-        "pscConnectionId": "${pscConnectionID}"
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
       },
       {
         "address": "10.11.12.13",
         "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
-        "pscConnectionId": "${pscConnectionID}"
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
       }
     ],
     "pscServiceAttachments": [
@@ -1054,14 +1056,16 @@ X-Xss-Protection: 0
       "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
       "network": "projects/${projectId}/global/networks/${networkID}",
       "projectId": "${projectId}",
-      "pscConnectionId": "${pscConnectionID}"
+      "pscConnectionId": "${pscConnectionID}",
+      "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
     },
     {
       "address": "10.11.12.13",
       "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
       "network": "projects/${projectId}/global/networks/${networkID}",
       "projectId": "${projectId}",
-      "pscConnectionId": "${pscConnectionID}"
+      "pscConnectionId": "${pscConnectionID}",
+      "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
     }
   ],
   "pscServiceAttachments": [
@@ -1251,14 +1255,16 @@ X-Xss-Protection: 0
         "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
-        "pscConnectionId": "${pscConnectionID}"
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
       },
       {
         "address": "10.11.12.13",
         "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
-        "pscConnectionId": "${pscConnectionID}"
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
       }
     ],
     "pscServiceAttachments": [
@@ -1449,14 +1455,16 @@ X-Xss-Protection: 0
         "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
-        "pscConnectionId": "${pscConnectionID}"
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
       },
       {
         "address": "10.11.12.13",
         "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
-        "pscConnectionId": "${pscConnectionID}"
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
       }
     ],
     "pscServiceAttachments": [
@@ -1647,14 +1655,16 @@ X-Xss-Protection: 0
         "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
-        "pscConnectionId": "${pscConnectionID}"
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
       },
       {
         "address": "10.11.12.13",
         "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
-        "pscConnectionId": "${pscConnectionID}"
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
       }
     ],
     "pscServiceAttachments": [
@@ -1846,14 +1856,16 @@ X-Xss-Protection: 0
         "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
-        "pscConnectionId": "${pscConnectionID}"
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
       },
       {
         "address": "10.11.12.13",
         "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
-        "pscConnectionId": "${pscConnectionID}"
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
       }
     ],
     "pscServiceAttachments": [
@@ -2045,14 +2057,16 @@ X-Xss-Protection: 0
         "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
-        "pscConnectionId": "${pscConnectionID}"
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
       },
       {
         "address": "10.11.12.13",
         "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
-        "pscConnectionId": "${pscConnectionID}"
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
       }
     ],
     "pscServiceAttachments": [
@@ -2245,14 +2259,16 @@ X-Xss-Protection: 0
         "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
-        "pscConnectionId": "${pscConnectionID}"
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
       },
       {
         "address": "10.11.12.13",
         "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
-        "pscConnectionId": "${pscConnectionID}"
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
       }
     ],
     "pscServiceAttachments": [
@@ -2355,14 +2371,16 @@ X-Xss-Protection: 0
       "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
       "network": "projects/${projectId}/global/networks/${networkID}",
       "projectId": "${projectId}",
-      "pscConnectionId": "${pscConnectionID}"
+      "pscConnectionId": "${pscConnectionID}",
+      "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
     },
     {
       "address": "10.11.12.13",
       "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
       "network": "projects/${projectId}/global/networks/${networkID}",
       "projectId": "${projectId}",
-      "pscConnectionId": "${pscConnectionID}"
+      "pscConnectionId": "${pscConnectionID}",
+      "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
     }
   ],
   "pscServiceAttachments": [

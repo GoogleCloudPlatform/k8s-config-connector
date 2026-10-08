@@ -54,7 +54,10 @@ X-Xss-Protection: 0
     "defaultSchemaId": "default_schema",
     "displayName": "My DataStore for Conversations Maximal",
     "industryVertical": 1,
-    "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
+    "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
+    "naturalLanguageQueryUnderstandingConfig": {
+      "mode": 2
+    }
   }
 }
 
@@ -79,7 +82,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Engine with name \"projects/${projectId}/locations/global/collections/default_collection/engines/engine-${uniqueId}\" does not exist.",
+    "message": "Engine with name \"projects/${projectNumber}/locations/global/collections/default_collection/engines/engine-${uniqueId}\" does not exist.",
     "status": "NOT_FOUND"
   }
 }
@@ -123,7 +126,6 @@ X-Xss-Protection: 0
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.Engine",
-    "createTime": "2024-04-01T12:34:56.123456Z",
     "dataStoreIds": [
       "datastore-${uniqueId}"
     ],
@@ -136,8 +138,7 @@ X-Xss-Protection: 0
       ],
       "searchTier": 2
     },
-    "solutionType": 2,
-    "updateTime": "2024-04-01T12:34:56.123456Z"
+    "solutionType": 2
   }
 }
 
@@ -360,7 +361,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "dataStoreIds": [
     "datastore-${uniqueId}"
   ],
@@ -373,8 +373,7 @@ X-Xss-Protection: 0
     ],
     "searchTier": 2
   },
-  "solutionType": 2,
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "solutionType": 2
 }
 
 ---
@@ -397,10 +396,7 @@ X-Xss-Protection: 0
 
 {
   "done": true,
-  "name": "projects/${projectNumber}/locations/global/collections/default_collection/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.protobuf.Empty"
-  }
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/operations/${operationID}"
 }
 
 ---
@@ -426,7 +422,13 @@ X-Xss-Protection: 0
   "defaultSchemaId": "default_schema",
   "displayName": "My DataStore for Conversations Maximal",
   "industryVertical": 1,
-  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
+  "naturalLanguageQueryUnderstandingConfig": {
+    "mode": 2
+  },
+  "solutionTypes": [
+    2
+  ]
 }
 
 ---
@@ -449,8 +451,5 @@ X-Xss-Protection: 0
 
 {
   "done": true,
-  "name": "projects/${projectNumber}/locations/global/collections/default_collection/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.protobuf.Empty"
-  }
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/operations/${operationID}"
 }

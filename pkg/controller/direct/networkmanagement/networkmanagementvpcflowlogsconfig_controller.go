@@ -181,6 +181,7 @@ func (a *vpcFlowLogsConfigAdapter) Update(ctx context.Context, updateOp *directb
 		log.V(2).Info("no field needs update", "name", a.id)
 		latest = a.actual
 	} else {
+		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
 		log.V(2).Info("updating fields", "name", a.id, "paths", updateMask.Paths)
 

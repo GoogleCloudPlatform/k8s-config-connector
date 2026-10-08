@@ -1,0 +1,275 @@
+GET https://storage.googleapis.com/storage/v1/b/livestreamchannel-max-${uniqueId}?alt=json&prettyPrint=false
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: UploadServer
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "livestreamchannel-max-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/livestreamchannel-max-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input1-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input1-${uniqueId}",
+  "tier": 2,
+  "type": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uri": "rtmp://35.239.41.154/live/9fa80b77-5819-4ca3-aeba-ca41dffe4636"
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/inputs/livestreamchannel-max-input2-${uniqueId}",
+  "tier": 2,
+  "type": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uri": "rtmp://35.239.41.154/live/9fa80b77-5819-4ca3-aeba-ca41dffe4636"
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/assets/livestreamchannel-max-asset-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "crc32c": "hq+43Q==",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "image": {
+    "uri": "gs://cloud-samples-data/vision/demo-img.jpg"
+  },
+  "name": "projects/${projectId}/locations/us-central1/assets/livestreamchannel-max-asset-${uniqueId}",
+  "state": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://livestream.googleapis.com/v1/projects/${projectId}/locations/us-central1/channels/livestreamchannel-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "activeInput": "input-attachment-1",
+  "autoTranscriptionConfig": {
+    "displayTiming": 1,
+    "qualityPreset": 2
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "elementaryStreams": [
+    {
+      "key": "es-video",
+      "videoStream": {
+        "h264": {
+          "aqStrength": 1,
+          "bFrameCount": 3,
+          "bitrateBps": 2500000,
+          "entropyCoder": "cabac",
+          "frameRate": 30,
+          "gopDuration": "2s",
+          "heightPixels": 720,
+          "profile": "high",
+          "tune": "zerolatency",
+          "vbvFullnessBits": 2250000,
+          "vbvSizeBits": 2500000,
+          "widthPixels": 1280
+        }
+      }
+    },
+    {
+      "audioStream": {
+        "bitrateBps": 160000,
+        "channelCount": 2,
+        "channelLayout": [
+          "fl",
+          "fr"
+        ],
+        "codec": "aac",
+        "mapping": [
+          {
+            "inputKey": "input-attachment-1"
+          }
+        ],
+        "sampleRateHertz": 48000
+      },
+      "key": "es-audio"
+    },
+    {
+      "key": "es-text",
+      "textStream": {
+        "codec": "cea608"
+      }
+    }
+  ],
+  "inputAttachments": [
+    {
+      "automaticFailover": {
+        "inputKeys": [
+          "input-attachment-2"
+        ]
+      },
+      "input": "projects/${projectNumber}/locations/us-central1/inputs/livestreamchannel-max-input1-${uniqueId}",
+      "key": "input-attachment-1"
+    },
+    {
+      "input": "projects/${projectNumber}/locations/us-central1/inputs/livestreamchannel-max-input2-${uniqueId}",
+      "key": "input-attachment-2"
+    }
+  ],
+  "inputConfig": {
+    "inputSwitchMode": 1
+  },
+  "labels": {
+    "app": "live",
+    "env": "test"
+  },
+  "logConfig": {
+    "logSeverity": 400
+  },
+  "manifests": [
+    {
+      "fileName": "manifest.m3u8",
+      "key": "manifest-hls",
+      "maxSegmentCount": 6,
+      "muxStreams": [
+        "mux-video",
+        "mux-audio"
+      ],
+      "segmentKeepDuration": "60s",
+      "type": 1
+    }
+  ],
+  "muxStreams": [
+    {
+      "container": "fmp4",
+      "elementaryStreams": [
+        "es-video"
+      ],
+      "key": "mux-video",
+      "segmentSettings": {
+        "segmentDuration": "2s"
+      }
+    },
+    {
+      "container": "fmp4",
+      "elementaryStreams": [
+        "es-audio"
+      ],
+      "key": "mux-audio",
+      "segmentSettings": {
+        "segmentDuration": "2s"
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/us-central1/channels/livestreamchannel-maximal-${uniqueId}",
+  "output": {
+    "uri": "gs://livestreamchannel-max-${uniqueId}/output/"
+  },
+  "retentionConfig": {
+    "retentionWindowDuration": "604800s"
+  },
+  "spriteSheets": [
+    {
+      "columnCount": 10,
+      "filePrefix": "sprite",
+      "format": "jpeg",
+      "interval": "10s",
+      "quality": 90,
+      "rowCount": 10,
+      "spriteHeightPixels": 36,
+      "spriteWidthPixels": 64
+    }
+  ],
+  "staticOverlays": [
+    {
+      "asset": "projects/${projectNumber}/locations/us-central1/assets/livestreamchannel-max-asset-${uniqueId}",
+      "opacity": 0.8,
+      "position": {
+        "x": 0.8,
+        "y": 0.8
+      },
+      "resolution": {
+        "h": 0.1,
+        "w": 0.1
+      }
+    }
+  ],
+  "streamingState": 6,
+  "timecodeConfig": {
+    "source": 1
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectNumber}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "${projectId}",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}",
+  "parent": "organizations/${folderID}",
+  "projectId": "${projectId}",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

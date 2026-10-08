@@ -22,7 +22,12 @@ cd ${REPO_ROOT}/
 
 . ${REPO_ROOT}/dev/tasks/setup-envtest
 
-rm -rf $(pwd)/artifactz/realgcp
+# Allow overriding the ARTIFACTS directory (e.g., for parallel test executions).
+# Exported so that the downstream script (dev/tasks/run-e2e) uses this path for test logs and outputs.
+ARTIFACTS="${ARTIFACTS:-$(pwd)/artifactz/realgcp}"
+export ARTIFACTS
+# Clear existing artifacts
+rm -rf "${ARTIFACTS}"
 
 # Run the tests specified on the command line
 if [[ $1 =~ TestE2EScript.* ]]; then
@@ -46,12 +51,17 @@ export RUN_TESTS
 if [[ -z "${GCP_PROJECT_ID:-}" ]]; then
   GCP_PROJECT_ID=$(gcloud config get-value project)
 fi
+export GCP_PROJECT_ID
 echo "Using project: ${GCP_PROJECT_ID}"
 
-TEST_FOLDER_ID=$(gcloud projects describe ${GCP_PROJECT_ID} --format='value(parent.id)')
+if [[ -z "${TEST_FOLDER_ID:-}" ]]; then
+  TEST_FOLDER_ID=$(gcloud projects describe ${GCP_PROJECT_ID} --format='value(parent.id)')
+fi
 export TEST_FOLDER_ID
 
-TEST_ORG_ID=$(gcloud projects get-ancestors ${GCP_PROJECT_ID} | grep organization | cut -f1 -d ' ')
+if [[ -z "${TEST_ORG_ID:-}" ]]; then
+  TEST_ORG_ID=$(gcloud projects get-ancestors ${GCP_PROJECT_ID} | grep organization | cut -f1 -d ' ')
+fi
 export TEST_ORG_ID
 
 if [[ -z "${TEST_BILLING_ACCOUNT_ID:-}" ]]; then
@@ -69,11 +79,12 @@ echo "Using test timeout: ${E2E_TEST_TIMEOUT}"
 
 
 # Run e2e tests against real gcp, capturing output
-ARTIFACTS=$(pwd)/artifactz/realgcp \
+ARTIFACTS="${ARTIFACTS}" \
 E2E_KUBE_TARGET=envtest \
 E2E_GCP_TARGET=real \
 GOLDEN_REQUEST_CHECKS=1 \
 GOLDEN_OBJECT_CHECKS=1 \
 WRITE_GOLDEN_OUTPUT=1 \
+ONLY_WARN_ON_GOLDEN_DIFFS="*" \
 RUN_E2E=1 \
  go test ./tests/e2e -timeout ${E2E_TEST_TIMEOUT} -v -run $RUN_TESTS

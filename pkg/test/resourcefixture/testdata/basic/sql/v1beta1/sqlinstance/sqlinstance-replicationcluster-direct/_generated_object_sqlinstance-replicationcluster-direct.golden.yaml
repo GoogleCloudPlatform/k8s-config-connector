@@ -43,7 +43,9 @@ status:
   ipAddress: 10.1.2.3
   observedGeneration: 2
   observedState:
-    replicationCluster: {}
+    replicationCluster:
+      drReplica: false
+      failoverDRReplicaName: sqlinstance-replica-direct-${uniqueId}
   publicIpAddress: 10.1.2.3
   selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-primary-direct-${uniqueId}
   serverCaCert:

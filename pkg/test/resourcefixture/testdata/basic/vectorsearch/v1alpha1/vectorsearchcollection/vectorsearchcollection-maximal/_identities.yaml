@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: vectorsearch.cnrm.cloud.google.com
+  kind: VectorSearchCollection
+  name: vsc-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

@@ -6,13 +6,8 @@ spec:
   projectRef:
     external: ${projectId}
   location: us-central1
-  unitKind: "my-unit-kind-${uniqueId}"
-  blueprint:
-    package: "us-docker.pkg.dev/my-project/my-repo/my-blueprint:v2"
-  releaseRequirements:
-    upgradeableFromReleases:
-      - "projects/${projectId}/locations/us-central1/releases/old-release-v2"
+  unitKind: "projects/${projectId}/locations/us-central1/unitKinds/kcc-test-unit-kind"
   inputVariableDefaults:
     - variable: "my-var"
-      type: "string"
+      type: "STRING"
       value: "updated-val"

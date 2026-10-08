@@ -23,6 +23,7 @@ import (
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/preflight"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cluster"
 
 	"github.com/pkg/errors"
@@ -237,7 +238,10 @@ func handleControllerManagerStatefulSet(ctx context.Context, c client.Client, cc
 		return nil, fmt.Errorf("error deleting stale StatefulSet for watched namespace %v: %w", ccc.Namespace, err)
 	}
 
-	if err := applyConfigConnectorExperiments(ctx, c, u); err != nil {
+	if err := applyConfigConnectorExperiments(ctx, c, ccc, u); err != nil {
+		return nil, err
+	}
+	if err := applyConfigConnectorContextExperiments(ccc, u); err != nil {
 		return nil, err
 	}
 
@@ -253,26 +257,43 @@ func handleControllerManagerStatefulSetPerNamespace(ctx context.Context, c clien
 		return nil, fmt.Errorf("error deleting stale StatefulSet for watched namespace %v: %w", ccc.Namespace, err)
 	}
 
-	if err := applyConfigConnectorExperiments(ctx, c, u); err != nil {
+	if err := applyConfigConnectorExperiments(ctx, c, ccc, u); err != nil {
+		return nil, err
+	}
+	if err := applyConfigConnectorContextExperiments(ccc, u); err != nil {
 		return nil, err
 	}
 
 	return manifest.NewObject(u)
 }
 
-func applyConfigConnectorExperiments(ctx context.Context, c client.Client, u *unstructured.Unstructured) error {
+func applyConfigConnectorContextExperiments(ccc *corev1beta1.ConfigConnectorContext, u *unstructured.Unstructured) error {
+	if err := controllers.SetPodTemplateAnnotation(u, k8s.CCCConfigHashAnnotation, controllers.ComputeCCCConfigHash(ccc)); err != nil {
+		return fmt.Errorf("failed to set %s pod template annotation: %w", k8s.CCCConfigHashAnnotation, err)
+	}
+	return nil
+}
+
+func applyConfigConnectorExperiments(ctx context.Context, c client.Client, ccc *corev1beta1.ConfigConnectorContext, u *unstructured.Unstructured) error {
 	cc, err := controllers.GetConfigConnector(ctx, c, controllers.ValidConfigConnectorNamespacedName)
 	if err != nil {
 		if !apierrors.IsNotFound(err) {
 			return fmt.Errorf("error getting the ConfigConnector object %v: %w", controllers.ValidConfigConnectorNamespacedName, err)
 		}
-		// If CC is not found (e.g. during deletion tests), just skip applying experiments.
-		return nil
+		// If CC is not found (e.g. during deletion tests), remove any stale cc-config-hash annotation.
+		return controllers.SetPodTemplateAnnotation(u, k8s.CCConfigHashAnnotation, "")
+	}
+	if err := preflight.ValidateResourceSettingsMode(cc, ccc); err != nil {
+		return err
 	}
 	return applyExperimentsToManagerContainer(u, cc)
 }
 
 func applyExperimentsToManagerContainer(u *unstructured.Unstructured, cc *corev1beta1.ConfigConnector) error {
+	if err := controllers.SetPodTemplateAnnotation(u, k8s.CCConfigHashAnnotation, controllers.ComputeCCConfigHash(cc)); err != nil {
+		return fmt.Errorf("failed to set %s pod template annotation: %w", k8s.CCConfigHashAnnotation, err)
+	}
+
 	if cc.Spec.Experiments == nil {
 		return nil
 	}

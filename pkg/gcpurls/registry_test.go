@@ -75,7 +75,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/metadataStores/{}/contexts/{}":  true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/studies/{}":                     true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/schedules/{}":                   true,
-		"//aiplatform.googleapis.com/projects/{}/locations/{}/extensions/{}":                  true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/persistentResources/{}":         true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/tensorboards/{}/experiments/{}": true,
 
 		// AlloyDB
@@ -88,6 +88,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 		// APIHub
 		"//apihub.googleapis.com/projects/{}/locations/{}/apis/{}":                      true,
+		"//apihub.googleapis.com/projects/{}/locations/{}/attributes/{}":                true,
+		"//apihub.googleapis.com/projects/{}/locations/{}/dependencies/{}":              true,
+		"//apihub.googleapis.com/projects/{}/locations/{}/curations/{}":                 true,
 		"//apihub.googleapis.com/projects/{}/locations/{}/deployments/{}":               true,
 		"//apihub.googleapis.com/projects/{}/locations/{}/externalApis/{}":              true,
 		"//apihub.googleapis.com/projects/{}/locations/{}/plugins/{}":                   true,
@@ -95,6 +98,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 		// Artifact Registry
 		"//artifactregistry.googleapis.com/projects/{}/locations/{}/vpcscConfig": true,
+
+		// Assured Workloads
+		"//assuredworkloads.googleapis.com/organizations/{}/locations/{}/workloads/{}": true,
 
 		// AutoML
 		"//automl.googleapis.com/projects/{}/locations/{}/datasets/{}": true,
@@ -117,6 +123,13 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Cloud KMS
 		"//cloudkms.googleapis.com/projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}/ciphertext/{}": true,
 
+		// Cloud Support
+		"//cloudsupport.googleapis.com/organizations/{}/supportEventSubscriptions/{}": true,
+
+		// Cloud Number Registry
+		"//cloudnumberregistry.googleapis.com/projects/{}/locations/{}/registryBooks/{}":   true,
+		"//cloudnumberregistry.googleapis.com/projects/{}/locations/{}/ipamAdminScopes/{}": true,
+
 		// Cloud Security Compliance
 		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/cloudControls/{}":      true,
 		"//cloudsecuritycompliance.googleapis.com/organizations/{}/locations/{}/cloudControlGroups/{}": true,
@@ -137,7 +150,8 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//compute.googleapis.com/projects/{}/zones/{}/networkEndpointGroups/{}//{}/{}":   true,
 
 		// Config Delivery
-		"//configdelivery.googleapis.com/projects/{}/locations/{}/fleetPackages/{}": true,
+		"//configdelivery.googleapis.com/projects/{}/locations/{}/fleetPackages/{}":   true,
+		"//configdelivery.googleapis.com/projects/{}/locations/{}/resourceBundles/{}": true,
 
 		// Config Deployment
 		"//config.googleapis.com/projects/{}/locations/{}/deploymentGroups/{}": true,
@@ -146,12 +160,15 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}": true,
 
 		// Contact Center Insights
+		"//contactcenterinsights.googleapis.com/projects/{}/locations/{}/analysisRules/{}": true,
 		"//contactcenterinsights.googleapis.com/projects/{}/locations/{}/conversations/{}": true,
 		"//contactcenterinsights.googleapis.com/projects/{}/locations/{}/qaScorecards/{}":  true,
 
 		// Content Warehouse
 		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/documentSchemas/{}": true,
+		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/documents/{}":       true,
 		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/ruleSets/{}":        true,
+		"//contentwarehouse.googleapis.com/projects/{}/locations/{}/synonymSets/{}":     true,
 
 		// Data Labeling
 		"//datalabeling.googleapis.com/projects/{}/annotationSpecSets/{}": true,
@@ -162,10 +179,11 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Dataplex
 		"//dataplex.googleapis.com/projects/{}/locations/{}/aspectTypes/{}":           true,
 		"//dataplex.googleapis.com/projects/{}/locations/{}/dataAttributeBindings/{}": true,
+		"//dataplex.googleapis.com/projects/{}/locations/{}/dataProducts/{}":          true,
 		"//dataplex.googleapis.com/projects/{}/locations/{}/dataTaxonomies/{}":        true,
 		"//dataplex.googleapis.com/projects/{}/locations/{}/entryGroups/{}":           true,
 		"//dataplex.googleapis.com/projects/{}/locations/{}/entryTypes/{}":            true,
-
+		"//dataplex.googleapis.com/projects/{}/locations/{}/metadataFeeds/{}":         true,
 		// Dataproc
 		"//dataproc.googleapis.com/projects/{}/locations/{}/sessionTemplates/{}": true,
 		"//dataproc.googleapis.com/v1/projects/{}/regions/{}/clusters/{}":        true,
@@ -186,17 +204,19 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//developerconnect.googleapis.com/projects/{}/locations/{}/insightsConfigs/{}":   true,
 
 		// Discovery Engine
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/collections/{}/engines/{}/servingConfigs/{}":   true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/collections/{}/dataStores/{}/conversations/{}": true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/controls/{}":                     true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/conversations/{}":                true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/sessions/{}":                     true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/identityMappingStores/{}":                      true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/licenseConfigs/{}/":                            true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/licenseConfigs/{}":                             true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/sampleQuerySets/{}/sampleQueries/{}":           true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/collections/{}/dataStores/{}/siteSearchEngine": true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/userStores/{}":                                 true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/collections/{}/engines/{}/servingConfigs/{}":               true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/collections/{}/dataStores/{}/conversations/{}":             true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/collections/{}/dataStores/{}/controls/{}":                  true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/conversations/{}":                            true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/sessions/{}":                                 true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/identityMappingStores/{}":                                  true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/licenseConfigs/{}/":                                        true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/licenseConfigs/{}":                                         true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/collections/{}/dataStores/{}/siteSearchEngine":             true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/collections/{}/dataStores/{}/siteSearchEngine/sitemaps/{}": true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/userStores/{}":                                             true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/sampleQuerySets/{}":                                        true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/schemas/{}":                                  true,
 
 		// DLP
 		"//dlp.googleapis.com/projects/{}/locations/{}/connections/{}": true,
@@ -242,14 +262,25 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//monitoring.googleapis.com/projects/{}/services/{}":                       true,
 
 		// Migration Center
-		"//migrationcenter.googleapis.com/projects/{}/locations/{}/groups/{}": true,
+		"//migrationcenter.googleapis.com/projects/{}/locations/{}/groups/{}":         true,
+		"//migrationcenter.googleapis.com/projects/{}/locations/{}/preferenceSets/{}": true,
+
+		// Map Management
+		"//mapmanagement.googleapis.com/projects/{}/mapConfigs/{}":   true,
+		"//mapmanagement.googleapis.com/projects/{}/styleConfigs/{}": true,
 
 		// Model Armor
-		"//modelarmor.googleapis.com/projects/{}/locations/{}/templates/{}": true,
+		"//modelarmor.googleapis.com/projects/{}/locations/{}/templates/{}":      true,
+		"//modelarmor.googleapis.com/projects/{}/locations/{}/floorSetting":      true,
+		"//modelarmor.googleapis.com/folders/{}/locations/{}/floorSetting":       true,
+		"//modelarmor.googleapis.com/organizations/{}/locations/{}/floorSetting": true,
 
 		// Network Connectivity
 		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/regionalEndpoints/{}":             true,
 		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/multicloudDataTransferConfigs/{}": true,
+		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/remoteTransportProfiles/{}":       true,
+		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/transports/{}":                    true,
+		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/serviceConnectionMaps/{}":         true,
 
 		// Network Security
 		"//networksecurity.googleapis.com/projects/{}/locations/{}/backendAuthenticationConfigs/{}": true,
@@ -259,11 +290,15 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 		// Network Services
 		"//networkservices.googleapis.com/projects/{}/locations/global/edgeCacheServices/{}": true,
+		"//networkservices.googleapis.com/projects/{}/locations/{}/lbEdgeExtensions/{}":      true,
 
 		// Notebooks
 		"//notebooks.googleapis.com/projects/{}/locations/{}/environments/{}": true,
 		"//notebooks.googleapis.com/projects/{}/locations/{}/executions/{}":   true,
 		"//notebooks.googleapis.com/projects/{}/locations/{}/schedules/{}":    true,
+
+		// Oracle Database
+		"//oracledatabase.googleapis.com/projects/{}/locations/{}/exadbVmClusters/{}": true,
 
 		// OSConfig
 		"//osconfig.googleapis.com/projects/{}/guestPolicies/{}": true,
@@ -279,6 +314,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Service Usage
 		"//serviceusage.googleapis.com/projects/{}/services/{}/identity": true,
 
+		// Redis
+		"//redis.googleapis.com/projects/{}/locations/{}/backupCollections/{}/backups/{}": true,
+
 		// Storage
 		"//storage.googleapis.com/projects/{}/buckets/{}":            true,
 		"//storage.googleapis.com/projects/{}/buckets/{}/objects/{}": true,
@@ -288,6 +326,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 		// Vision
 		"//vision.googleapis.com/projects/{}/locations/{}/products/{}": true,
+
+		// Vector Search
+		"//vectorsearch.googleapis.com/projects/{}/locations/{}/collections/{}": true,
 
 		// Workflow Executions
 		"//workflowexecutions.googleapis.com/projects/{}/locations/{}/workflows/{}/executions/{}": true,

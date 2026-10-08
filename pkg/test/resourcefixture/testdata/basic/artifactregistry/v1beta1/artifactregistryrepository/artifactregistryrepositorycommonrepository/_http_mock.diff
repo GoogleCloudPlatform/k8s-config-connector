@@ -1,0 +1,89 @@
+1c1
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+24c24
+< POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories?alt=json&repository_id=arrepository-${uniqueId}
+---
+> POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories?%24alt=json%3Benum-encoding%3Dint&repositoryId=arrepository-${uniqueId}
+29c29
+<   "format": "DOCKER",
+---
+>   "format": 1,
+35c35
+<   "mode": "REMOTE_REPOSITORY",
+---
+>   "mode": 3,
+63c63
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+110c110
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+126c126
+<   "format": "DOCKER",
+---
+>   "format": 1,
+132c132
+<   "mode": "REMOTE_REPOSITORY",
+---
+>   "mode": 3,
+144c144
+<     "enablementState": "SCANNING_DISABLED",
+---
+>     "enablementState": 2,
+152c152
+< PATCH https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json&updateMask=description%2Clabels
+---
+> PATCH https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels
+156d155
+<   "cleanupPolicies": {},
+157a157
+>   "format": 1,
+162a163,170
+>   },
+>   "mode": 3,
+>   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
+>   "remoteRepositoryConfig": {
+>     "commonRepository": {
+>       "uri": "https://docker.io"
+>     },
+>     "description": "test remote repository"
+179c187
+<   "format": "DOCKER",
+---
+>   "format": 1,
+186c194
+<   "mode": "REMOTE_REPOSITORY",
+---
+>   "mode": 3,
+197c205
+<     "enablementState": "SCANNING_DISABLED",
+---
+>     "enablementState": 2,
+205c213
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+221c229
+<   "format": "DOCKER",
+---
+>   "format": 1,
+228c236
+<   "mode": "REMOTE_REPOSITORY",
+---
+>   "mode": 3,
+240c248
+<     "enablementState": "SCANNING_DISABLED",
+---
+>     "enablementState": 2,
+248c256
+< DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
+---
+> DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+270c278
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}

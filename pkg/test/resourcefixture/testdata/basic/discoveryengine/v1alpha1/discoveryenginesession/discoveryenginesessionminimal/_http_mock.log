@@ -54,7 +54,10 @@ X-Xss-Protection: 0
     "defaultSchemaId": "default_schema",
     "displayName": "My DataStore for Sessions",
     "industryVertical": 1,
-    "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
+    "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
+    "naturalLanguageQueryUnderstandingConfig": {
+      "mode": 2
+    }
   }
 }
 
@@ -245,7 +248,13 @@ X-Xss-Protection: 0
   "defaultSchemaId": "default_schema",
   "displayName": "My DataStore for Sessions",
   "industryVertical": 1,
-  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
+  "naturalLanguageQueryUnderstandingConfig": {
+    "mode": 2
+  },
+  "solutionTypes": [
+    2
+  ]
 }
 
 ---
@@ -268,8 +277,5 @@ X-Xss-Protection: 0
 
 {
   "done": true,
-  "name": "projects/${projectNumber}/locations/global/collections/default_collection/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.protobuf.Empty"
-  }
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/operations/${operationID}"
 }

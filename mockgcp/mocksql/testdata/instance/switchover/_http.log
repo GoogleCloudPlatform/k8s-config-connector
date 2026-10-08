@@ -297,6 +297,10 @@ X-Xss-Protection: 0
   "name": "east-${uniqueId}",
   "project": "${projectId}",
   "region": "us-east1",
+  "replicaConfiguration": {
+    "failoverTarget": false,
+    "kind": "sql#replicaConfiguration"
+  },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/east-${uniqueId}",
   "serverCaCert": {
@@ -329,6 +333,7 @@ X-Xss-Protection: 0
     "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
+    "databaseReplicationEnabled": true,
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE_PLUS",
     "ipConfiguration": {
@@ -395,9 +400,6 @@ X-Xss-Protection: 0
   "name": "west-${uniqueId}",
   "project": "${projectId}",
   "region": "us-west1",
-  "replicaNames": [
-    "east-${uniqueId}"
-  ],
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/west-${uniqueId}",
   "serverCaCert": {
@@ -497,6 +499,10 @@ X-Xss-Protection: 0
   "name": "east-${uniqueId}",
   "project": "${projectId}",
   "region": "us-east1",
+  "replicaConfiguration": {
+    "failoverTarget": false,
+    "kind": "sql#replicaConfiguration"
+  },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/east-${uniqueId}",
   "serverCaCert": {
@@ -529,6 +535,7 @@ X-Xss-Protection: 0
     "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
+    "databaseReplicationEnabled": true,
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE_PLUS",
     "ipConfiguration": {
@@ -595,9 +602,6 @@ X-Xss-Protection: 0
   "name": "west-${uniqueId}",
   "project": "${projectId}",
   "region": "us-west1",
-  "replicaNames": [
-    "east-${uniqueId}"
-  ],
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/west-${uniqueId}",
   "serverCaCert": {
@@ -771,9 +775,9 @@ X-Xss-Protection: 0
   "name": "west-${uniqueId}",
   "project": "${projectId}",
   "region": "us-west1",
-  "replicaNames": [
-    "east-${uniqueId}"
-  ],
+  "replicationCluster": {
+    "failoverDrReplicaName": "${projectId}:east-${uniqueId}"
+  },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/west-${uniqueId}",
   "serverCaCert": {
@@ -873,6 +877,13 @@ X-Xss-Protection: 0
   "name": "east-${uniqueId}",
   "project": "${projectId}",
   "region": "us-east1",
+  "replicaConfiguration": {
+    "failoverTarget": false,
+    "kind": "sql#replicaConfiguration"
+  },
+  "replicationCluster": {
+    "drReplica": true
+  },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/east-${uniqueId}",
   "serverCaCert": {
@@ -905,6 +916,7 @@ X-Xss-Protection: 0
     "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
+    "databaseReplicationEnabled": true,
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE_PLUS",
     "ipConfiguration": {
@@ -1034,6 +1046,9 @@ X-Xss-Protection: 0
   "name": "west-${uniqueId}",
   "project": "${projectId}",
   "region": "us-west1",
+  "replicationCluster": {
+    "drReplica": true
+  },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/west-${uniqueId}",
   "serverCaCert": {
@@ -1132,9 +1147,13 @@ X-Xss-Protection: 0
   "name": "east-${uniqueId}",
   "project": "${projectId}",
   "region": "us-east1",
-  "replicaNames": [
-    "west-${uniqueId}"
-  ],
+  "replicaConfiguration": {
+    "failoverTarget": false,
+    "kind": "sql#replicaConfiguration"
+  },
+  "replicationCluster": {
+    "failoverDrReplicaName": "${projectId}:west-${uniqueId}"
+  },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/east-${uniqueId}",
   "serverCaCert": {
@@ -1167,6 +1186,7 @@ X-Xss-Protection: 0
     "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
+    "databaseReplicationEnabled": true,
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE_PLUS",
     "ipConfiguration": {
@@ -1295,9 +1315,9 @@ X-Xss-Protection: 0
   "name": "west-${uniqueId}",
   "project": "${projectId}",
   "region": "us-west1",
-  "replicaNames": [
-    "east-${uniqueId}"
-  ],
+  "replicationCluster": {
+    "failoverDrReplicaName": "${projectId}:east-${uniqueId}"
+  },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/west-${uniqueId}",
   "serverCaCert": {
@@ -1397,6 +1417,13 @@ X-Xss-Protection: 0
   "name": "east-${uniqueId}",
   "project": "${projectId}",
   "region": "us-east1",
+  "replicaConfiguration": {
+    "failoverTarget": false,
+    "kind": "sql#replicaConfiguration"
+  },
+  "replicationCluster": {
+    "drReplica": true
+  },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/east-${uniqueId}",
   "serverCaCert": {
@@ -1429,6 +1456,7 @@ X-Xss-Protection: 0
     "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
+    "databaseReplicationEnabled": true,
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE_PLUS",
     "ipConfiguration": {
@@ -1557,6 +1585,9 @@ X-Xss-Protection: 0
   "name": "west-${uniqueId}",
   "project": "${projectId}",
   "region": "us-west1",
+  "replicationCluster": {
+    "failoverDrReplicaName": "${projectId}:east-${uniqueId}"
+  },
   "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/west-${uniqueId}",
   "serverCaCert": {

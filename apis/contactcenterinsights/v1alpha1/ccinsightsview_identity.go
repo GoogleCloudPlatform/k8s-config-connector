@@ -44,6 +44,10 @@ func (i *CCInsightsViewIdentity) String() string {
 	return CCInsightsViewIdentityFormat.ToString(*i)
 }
 
+func (i *CCInsightsViewIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *CCInsightsViewIdentity) FromExternal(ref string) error {
 	parsed, match, err := CCInsightsViewIdentityFormat.Parse(ref)
 	if err != nil {
@@ -61,7 +65,7 @@ func (i *CCInsightsViewIdentity) Host() string {
 	return CCInsightsViewIdentityFormat.Host()
 }
 
-func getIdentityFromCCInsightsViewSpec(ctx context.Context, reader client.Reader, obj client.Object) (*CCInsightsViewIdentity, error) {
+func getIdentityFromCCInsightsViewSpec(ctx context.Context, reader client.Reader, obj *CCInsightsView) (*CCInsightsViewIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
@@ -100,10 +104,33 @@ func (obj *CCInsightsView) GetIdentity(ctx context.Context, reader client.Reader
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change CCInsightsView identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		if !isProjectMatch(statusIdentity.Project, specIdentity.Project) || statusIdentity.Location != specIdentity.Location {
+			return nil, fmt.Errorf("cannot change CCInsightsView identity parent (old=%q, new parent=%s/%s)", externalRef, specIdentity.Project, specIdentity.Location)
 		}
+		specIdentity.Project = statusIdentity.Project
+		specIdentity.View = statusIdentity.View
 	}
 
 	return specIdentity, nil
+}
+
+func isProjectMatch(a, b string) bool {
+	if a == b {
+		return true
+	}
+	// If one of them is a project number (digits only), we can be lenient and allow it
+	// since GCP APIs often return project numbers in names while spec uses project IDs.
+	if isDigits(a) || isDigits(b) {
+		return true
+	}
+	return false
+}
+
+func isDigits(s string) bool {
+	for _, c := range s {
+		if c < '0' || c > '9' {
+			return false
+		}
+	}
+	return len(s) > 0
 }

@@ -24,13 +24,12 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(BigtableMaterializedViewFuzzer())
+	fuzztesting.RegisterKRMSpecFuzzer(BigtableMaterializedViewFuzzer())
 }
 
 func BigtableMaterializedViewFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedFuzzer(&pb.MaterializedView{},
+	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.MaterializedView{},
 		BigtableMaterializedViewSpec_v1alpha1_FromProto, BigtableMaterializedViewSpec_v1alpha1_ToProto,
-		BigtableMaterializedViewObservedState_v1alpha1_FromProto, BigtableMaterializedViewObservedState_v1alpha1_ToProto,
 	)
 
 	f.SpecFields.Insert(".query")

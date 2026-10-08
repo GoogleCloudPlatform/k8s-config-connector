@@ -1,0 +1,41 @@
+apiVersion: apihub.cnrm.cloud.google.com/v1alpha1
+kind: APIHubDeployment
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: depl-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  deploymentTypeRef:
+    external: apigee
+  description: A comprehensive APIHubDeployment for E2E testing - Updated
+  displayName: Maximal APIHubDeployment Updated
+  documentation:
+    externalURI: https://example.com/docs/v2
+  endpoints:
+  - https://api.example.com
+  - https://api.example.com/v2
+  environmentRef:
+    external: prod
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  resourceURI: organizations/test-org/environments/test-env/apis/test-api-v2
+  sloRef:
+    external: 99-99
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/deployments/depl-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"

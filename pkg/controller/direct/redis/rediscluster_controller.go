@@ -106,6 +106,17 @@ func (m *redisClusterModel) AdapterForObject(ctx context.Context, op *directbase
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
+	// Normalized value is "projects/project-id", API only takes "project-id"
+	for i, endpoint := range obj.Spec.ClusterEndpoints {
+		for j, conn := range endpoint.Connections {
+			if conn.PSCAutoConnection != nil && conn.PSCAutoConnection.ProjectRef != nil {
+				conn.PSCAutoConnection.ProjectRef.External = strings.TrimPrefix(conn.PSCAutoConnection.ProjectRef.External, "projects/")
+				endpoint.Connections[j] = conn
+			}
+		}
+		obj.Spec.ClusterEndpoints[i] = endpoint
+	}
+
 	if obj.Spec.KMSKeyRef != nil {
 		resolvedKMSKey, err := refs.ResolveKMSCryptoKeyRef(ctx, kube, obj, obj.Spec.KMSKeyRef)
 		if err != nil {
@@ -397,9 +408,13 @@ func populateDefaults(cluster *pb.Cluster) *pb.Cluster {
 		cluster.AutomatedBackupConfig = &pb.AutomatedBackupConfig{AutomatedBackupMode: pb.AutomatedBackupConfig_DISABLED}
 	}
 
-	// clear pscConfig as it's not included in the response
+	// clear pscConfig and ImportSources as they are not included in the response
 	if cluster.PscConfigs != nil {
 		cluster.PscConfigs = nil
+	}
+
+	if cluster.GetManagedBackupSource() != nil {
+		cluster.ImportSources = nil
 	}
 
 	return cluster

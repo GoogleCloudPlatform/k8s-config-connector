@@ -79,6 +79,19 @@ Your task is to perform a version bump for version `{{version}}`.
 You are a release manager for the Config Connector (KCC) project.
 Your task is to draft the official release notes for version `{{VERSION}}`.
 
+# Drafting Guidelines (CRITICAL)
+When compiling and writing the release notes, you MUST strictly adhere to the following rules:
+1.  **No MockGCP changes**: Do NOT cover MockGCP changes, alignment, or test logs in the release notes.
+2.  **No Sample changes**: Do NOT cover sample config updates or sample changes in the release notes.
+3.  **No Internal Implementation details**: Do NOT cover internal refactoring or implementation details (such as standardizing references, internal package imports, etc.) in the release notes.
+4.  **No Integration Test changes**: Do NOT cover integration test runner modifications or validation improvements in the release notes.
+5.  **No GitHub Action changes**: Do NOT cover CI workflows, GitHub Actions, or validation workflow changes in the release notes.
+6.  **No Smoke Test changes**: Do NOT cover smoke test framework changes or SMOKETEST phase additions in the release notes.
+7.  **Resource Categorization Precedence**: If a resource is listed in the "Reconciliation Improvements" section (e.g., promoting a resource or adding opt-in direct reconciliation), it MUST NOT be listed in the "New Alpha Resources" or "New Beta Resources" section.
+8.  **Merged Reconcilers Only**: Only release note resources whose controllers have already been merged.
+9.  **No Reverted Changes**: Do NOT cover reverted changes in the release notes.
+10. **Do NOT Commit Gathered Data**: The gathered release notes data and any temporary files must NOT be committed to git. Only commit `docs/releasenotes/release-{{MAJOR_MINOR}}.md`.
+
 # Task
 1.  **Identify Version Range**:
     - Fetch latest tags: `git fetch --tags --force`.
@@ -88,13 +101,31 @@ Your task is to draft the official release notes for version `{{VERSION}}`.
     - Ensure the `v{{VERSION}}` tag exists (wait if necessary as it is created by a background workflow triggered by the merge of the version bump PR): `git tag -l v{{VERSION}}`.
 3.  **Draft PR**:
     - Create a temporary branch: `git checkout -b draft-notes-{{VERSION}}`.
-    - Draft the markdown file at `docs/releasenotes/release-{{MAJOR_MINOR}}.md` using `docs/releasenotes/template.md` as a base.
-    - **Generate Content**: Find contributors and identify changes (new resources, fields, fixes) between these tags:
+    - **Gather Release Notes Data**: Run `./dev/tasks/gather-release-notes` to collect all merged PRs and their release notes into a temporary file outside the working tree (e.g. in `/tmp`):
       ```bash
-      git log {{PREVIOUS_TAG}}..{{CURRENT_TAG}} --merges --pretty=format:"%s" | grep -o "#[0-9]*" | tr -d "#" | xargs -I {} gh pr view {} --json author,reviews --jq '.author.login, .reviews[].author.login' | sort | uniq | grep -v "kcc-release-bot"
+      ./dev/tasks/gather-release-notes {{PREVIOUS_TAG}} {{CURRENT_TAG}} -o /tmp/gathered-release-notes-{{VERSION}}.md
       ```
+    - **Draft Release Notes**: Use the gathered data in `/tmp/gathered-release-notes-{{VERSION}}.md` and `docs/releasenotes/template.md` as a base to draft `docs/releasenotes/release-{{MAJOR_MINOR}}.md`.
+      - Filter and categorize changes following the Drafting Guidelines (rules 1–10).
+      - Extract contributors from the gathered PRs for the shout-outs section.
     - **Commit & Push**:
-        - `git add docs/releasenotes/release-{{MAJOR_MINOR}}.md && git commit -m "Add release notes for {{VERSION}}"`
-        - `git push origin draft-notes-{{VERSION}}`
-        - `gh pr create --title "Release Notes {{VERSION}}" --body "Automated draft of release notes for version {{VERSION}} comparing {{PREVIOUS_TAG}} to {{CURRENT_TAG}}.<br><br>Triggered by chore: \`.agents/kcc-release.md\`" --head draft-notes-{{VERSION}} --label "overseer,area/release,priority/medium"`
-VERSION}}`
+      - Ensure only `docs/releasenotes/release-{{MAJOR_MINOR}}.md` is committed (the gathered data file must NOT be included in the commit):
+        ```bash
+        git add docs/releasenotes/release-{{MAJOR_MINOR}}.md
+        git commit -m "Add release notes for {{VERSION}}"
+        git push origin draft-notes-{{VERSION}}
+        ```
+    - **Create Pull Request**: Create the PR with the gathered data included in the description:
+      ```bash
+      cat << 'EOF' > /tmp/pr-body.md
+      Automated draft of release notes for version {{VERSION}} comparing {{PREVIOUS_TAG}} to {{CURRENT_TAG}}.
+
+      Triggered by chore: `.agents/kcc-release.md`
+
+      ## Gathered Release Data
+
+      EOF
+      cat /tmp/gathered-release-notes-{{VERSION}}.md >> /tmp/pr-body.md
+      gh pr create --title "Release Notes {{VERSION}}" --body-file /tmp/pr-body.md --head draft-notes-{{VERSION}} --label "overseer,area/release,priority/medium"
+      rm -f /tmp/gathered-release-notes-{{VERSION}}.md /tmp/pr-body.md
+      ```

@@ -72,3 +72,50 @@ func (m *gcpClient) catalogClient(ctx context.Context) (*api.CatalogClient, erro
 
 	return grpcClient, err
 }
+
+func (m *gcpClient) catalogRESTClient(ctx context.Context) (*api.CatalogClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+
+	restClient, err := api.NewCatalogRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building dataplex catalog client: %w", err)
+	}
+
+	return restClient, nil
+}
+
+func (m *gcpClient) dataTaxonomyClient(ctx context.Context, location string) (*api.DataTaxonomyClient, error) {
+	opts, err := m.options()
+	if err != nil {
+		return nil, err
+	}
+
+	if location != "" {
+		endpoint := fmt.Sprintf("dataplex.%s.rep.googleapis.com:443", location)
+		opts = append(opts, option.WithEndpoint(endpoint))
+	}
+
+	grpcClient, err := api.NewDataTaxonomyClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building dataplex data taxonomy client: %w", err)
+	}
+
+	return grpcClient, err
+}
+
+func (m *gcpClient) dataProductClient(ctx context.Context) (*api.DataProductClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+
+	restClient, err := api.NewDataProductRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building dataplex data product client: %w", err)
+	}
+
+	return restClient, nil
+}

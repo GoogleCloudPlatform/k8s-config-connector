@@ -1,0 +1,13 @@
+apiVersion: cloudnumberregistry.cnrm.cloud.google.com/v1alpha1
+kind: CloudNumberRegistryRegistryBook
+metadata:
+  name: cnr-rb-max-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: global
+  resourceID: registrybook-max-${uniqueId}
+  labels:
+    foo: bar
+  claimedScopeRefs:
+  - external: projects/${projectId}

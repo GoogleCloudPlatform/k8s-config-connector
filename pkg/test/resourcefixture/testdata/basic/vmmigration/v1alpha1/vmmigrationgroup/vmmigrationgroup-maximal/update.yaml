@@ -1,0 +1,11 @@
+apiVersion: vmmigration.cnrm.cloud.google.com/v1alpha1
+kind: VMMigrationGroup
+metadata:
+  name: vmmg-max-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  resourceID: vmmg-max-${uniqueId}
+  description: "Updated description for VMMigrationGroup"
+  displayName: "Updated Display Name"

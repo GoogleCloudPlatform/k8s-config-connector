@@ -2204,6 +2204,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - agentregistry.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - aiplatform.cnrm.cloud.google.com
   resources:
   - '*'
@@ -2564,18 +2576,6 @@ rules:
   - patch
   - delete
 - apiGroups:
-  - blockchainnodeengine.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-  - create
-  - update
-  - patch
-  - delete
-- apiGroups:
   - certificatemanager.cnrm.cloud.google.com
   resources:
   - '*'
@@ -2708,6 +2708,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - cloudnumberregistry.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - cloudquota.cnrm.cloud.google.com
   resources:
   - '*'
@@ -2733,6 +2745,18 @@ rules:
   - delete
 - apiGroups:
   - cloudsecuritycompliance.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - cloudsupport.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -3212,6 +3236,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - financialservices.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - firebase.cnrm.cloud.google.com
   resources:
   - '*'
@@ -3609,6 +3645,18 @@ rules:
   - delete
 - apiGroups:
   - notebooks.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - oracledatabase.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -4077,6 +4125,18 @@ rules:
   - delete
 - apiGroups:
   - visionai.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - vmmigration.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -4386,6 +4446,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - agentregistry.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - aiplatform.cnrm.cloud.google.com
   resources:
   - '*'
@@ -4626,14 +4694,6 @@ rules:
   - list
   - watch
 - apiGroups:
-  - blockchainnodeengine.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
   - certificatemanager.cnrm.cloud.google.com
   resources:
   - '*'
@@ -4722,6 +4782,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - cloudnumberregistry.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - cloudquota.cnrm.cloud.google.com
   resources:
   - '*'
@@ -4739,6 +4807,14 @@ rules:
   - watch
 - apiGroups:
   - cloudsecuritycompliance.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cloudsupport.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -5058,6 +5134,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - financialservices.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - firebase.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5323,6 +5407,14 @@ rules:
   - watch
 - apiGroups:
   - notebooks.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - oracledatabase.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -5635,6 +5727,14 @@ rules:
   - watch
 - apiGroups:
   - visionai.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - vmmigration.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

@@ -160,6 +160,10 @@ func NewHTTPRecorder(inner http.RoundTripper, eventSinks ...EventSink) *HTTPReco
 	return rt
 }
 
+func (r *HTTPRecorder) Inner() http.RoundTripper {
+	return r.inner
+}
+
 func (r *HTTPRecorder) RoundTrip(req *http.Request) (*http.Response, error) {
 	var entry LogEntry
 	entry.Timestamp = time.Now()

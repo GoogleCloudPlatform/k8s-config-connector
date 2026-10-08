@@ -119,7 +119,16 @@ func (s *datasetsServer) InsertDataset(ctx context.Context, req *pb.InsertDatase
 		return nil, status.Errorf(codes.Internal, "error creating dataset: %v", err)
 	}
 
-	return obj, nil
+	return withSatisfiesPzs(obj), nil
+}
+
+func withSatisfiesPzs(obj *pb.Dataset) *pb.Dataset {
+	if obj.GetLocation() != "" && !strings.EqualFold(obj.GetLocation(), "US") && !strings.EqualFold(obj.GetLocation(), "EU") {
+		resp := proto.CloneOf(obj)
+		resp.SatisfiesPzs = PtrTo(false)
+		return resp
+	}
+	return obj
 }
 
 func sortAccess(obj *pb.Dataset) {
@@ -195,6 +204,9 @@ func (s *datasetsServer) UpdateDataset(ctx context.Context, req *pb.UpdateDatase
 	updated.Id = PtrTo(existing.GetDatasetReference().GetProjectId() + ":" + existing.GetDatasetReference().GetDatasetId())
 	updated.Kind = PtrTo("bigquery#dataset")
 	updated.Location = existing.Location
+	if updated.IsCaseInsensitive == nil {
+		updated.IsCaseInsensitive = existing.IsCaseInsensitive
+	}
 	updated.Type = existing.Type
 	updated.SelfLink = PtrTo("https://bigquery.googleapis.com/bigquery/v2/" + name.String())
 
@@ -206,7 +218,7 @@ func (s *datasetsServer) UpdateDataset(ctx context.Context, req *pb.UpdateDatase
 		return nil, err
 	}
 
-	return updated, err
+	return withSatisfiesPzs(updated), err
 }
 
 func (s *datasetsServer) PatchDataset(ctx context.Context, req *pb.PatchDatasetRequest) (*pb.Dataset, error) {
@@ -232,8 +244,45 @@ func (s *datasetsServer) PatchDataset(ctx context.Context, req *pb.PatchDatasetR
 	updated.Id = PtrTo(existing.GetDatasetReference().GetProjectId() + ":" + existing.GetDatasetReference().GetDatasetId())
 	updated.Kind = PtrTo("bigquery#dataset")
 	updated.Location = existing.Location
-	updated.Type = existing.Type
+	if updated.FriendlyName == nil {
+		updated.FriendlyName = existing.FriendlyName
+	}
+	if updated.DefaultCollation == nil {
+		updated.DefaultCollation = existing.DefaultCollation
+	}
+	if updated.DefaultPartitionExpirationMs == nil {
+		updated.DefaultPartitionExpirationMs = existing.DefaultPartitionExpirationMs
+	}
+	if updated.DefaultTableExpirationMs == nil {
+		updated.DefaultTableExpirationMs = existing.DefaultTableExpirationMs
+	}
+	if updated.Description == nil {
+		updated.Description = existing.Description
+	}
+	if updated.MaxTimeTravelHours == nil {
+		if existing.MaxTimeTravelHours != nil {
+			updated.MaxTimeTravelHours = existing.MaxTimeTravelHours
+		} else {
+			updated.MaxTimeTravelHours = &defaultMaxTimeTravelHours
+		}
+	}
+	if updated.IsCaseInsensitive == nil {
+		updated.IsCaseInsensitive = existing.IsCaseInsensitive
+	}
+	if updated.StorageBillingModel == nil {
+		updated.StorageBillingModel = existing.StorageBillingModel
+	}
+	if updated.Labels == nil {
+		updated.Labels = existing.Labels
+	}
+	if updated.Type == nil {
+		updated.Type = existing.Type
+	}
 	updated.SelfLink = PtrTo("https://bigquery.googleapis.com/bigquery/v2/" + name.String())
+
+	if len(updated.Access) == 0 {
+		updated.Access = existing.Access
+	}
 
 	sortAccess(updated)
 
@@ -243,7 +292,7 @@ func (s *datasetsServer) PatchDataset(ctx context.Context, req *pb.PatchDatasetR
 		return nil, err
 	}
 
-	return updated, err
+	return withSatisfiesPzs(updated), err
 }
 
 func (s *datasetsServer) DeleteDataset(ctx context.Context, req *pb.DeleteDatasetRequest) (*empty.Empty, error) {

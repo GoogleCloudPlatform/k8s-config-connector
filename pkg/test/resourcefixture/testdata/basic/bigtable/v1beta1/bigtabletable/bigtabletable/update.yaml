@@ -19,6 +19,7 @@ metadata:
 spec:
   columnFamily:
   - family: family3
+    type: intmax
   - family: family2
   instanceRef:
     name: bigtable-dep-${uniqueId}

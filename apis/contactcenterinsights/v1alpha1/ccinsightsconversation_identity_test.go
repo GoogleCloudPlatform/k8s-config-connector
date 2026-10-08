@@ -72,3 +72,15 @@ func TestCCInsightsConversationIdentity_FromExternal(t *testing.T) {
 		})
 	}
 }
+
+func TestCCInsightsConversationIdentity_ParentString(t *testing.T) {
+	id := &CCInsightsConversationIdentity{
+		Project:      "my-project",
+		Location:     "us-central1",
+		Conversation: "my-conversation",
+	}
+	expected := "projects/my-project/locations/us-central1"
+	if actual := id.ParentString(); actual != expected {
+		t.Fatalf("expected %q, got %q", expected, actual)
+	}
+}

@@ -34,7 +34,7 @@ func TestNetworkSecurityFirewallEndpointIdentity(t *testing.T) {
 			want: &NetworkSecurityFirewallEndpointIdentity{
 				Project:          "my-project",
 				Location:         "us-central1",
-				Firewallendpoint: "my-firewallendpoint",
+				FirewallEndpoint: "my-firewallendpoint",
 			},
 		},
 		{
@@ -43,7 +43,7 @@ func TestNetworkSecurityFirewallEndpointIdentity(t *testing.T) {
 			want: &NetworkSecurityFirewallEndpointIdentity{
 				Organization:     "123456789",
 				Location:         "us-central1",
-				Firewallendpoint: "my-firewallendpoint",
+				FirewallEndpoint: "my-firewallendpoint",
 			},
 		},
 		{

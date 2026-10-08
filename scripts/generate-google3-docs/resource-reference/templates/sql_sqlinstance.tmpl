@@ -11,6 +11,13 @@ the fields that can cause the instance to restart, see the <a
 href="/sql/docs/postgres/admin-api/v1beta4/instances">REST Resource: instances
 documentation</a>.
 
+Note: The <code>cnrm.cloud.google.com/sqlinstance-advanced-dr: "enabled"</code>
+annotation is not used to trigger failover or switchover operations within
+{{"{{product_name_short}}"}}; rather, it is used to declaratively manage
+Disaster Recovery (DR) pairs in {{"{{product_name_short}}"}}. Failover and
+switchover must be performed outside of {{"{{product_name_short}}"}}, and the DR
+pairs will skip drift correction when a failover or switchover occurs.
+
 <table>
 <thead>
 <tr>

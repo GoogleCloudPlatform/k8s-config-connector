@@ -1,0 +1,51 @@
+apiVersion: netapp.cnrm.cloud.google.com/v1alpha1
+kind: NetAppActiveDirectory
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: netappactivedirectory-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  administrators:
+  - admin_user_updated
+  aesEncryption: false
+  backupOperators:
+  - backup_user_updated
+  description: Updated Active Directory description
+  dns: 10.0.0.2
+  domain: admax${uniqueId}.example.com
+  encryptDcConnections: false
+  kdcHostname: kdc2.admax${uniqueId}.example.com
+  kdcIP: 10.0.0.4
+  labels:
+    label-one: value-one-updated
+  ldapSigning: false
+  location: us-west2
+  netBiosPrefix: maxnetbios
+  nfsUsersWithLdap: false
+  organizationalUnit: CN=Computers
+  password:
+    value: UpdatedPassword123!
+  projectRef:
+    external: ${projectId}
+  securityOperators:
+  - security_user_updated
+  site: Default-First-Site-Name
+  username: adadmin
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-west2/activeDirectories/netappactivedirectory-maximal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    state: READY
+    stateDetails: Credentials saved and available for use

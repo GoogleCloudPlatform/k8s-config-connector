@@ -27,20 +27,29 @@ This skill guides you through implementing Phase 3 (MockGCP and Alignment) for a
   - Implement the mock service entrypoint in `mockgcp/mock<service_name>/service.go` and register it in `mockgcp/register.go`.
 - If the mock service already exists, implement the necessary CRUD (Create, Read, Update, Delete) methods for `<ResourceKind>` in `mockgcp/mock<service_name>/<kind_lowercase>.go`.
 
+### 2b. Remove from Ratcheting Exclusions (MANDATORY)
+Before running the test cases against real or mock GCP, you **MUST** ensure the target resource is removed from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. This enables the re-reconciliation test step, which is a fundamental use case KCC resources must support.
+1. Open `tests/e2e/ratcheting.go`.
+2. Locate the function `ShouldTestRereconiliation`.
+3. Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
+4. If there is a `case` block for your target resource's `GroupKind`, remove that `case` line from the switch statement.
+
 ### 3. Incremental Mock Alignment
-- Run `hack/compare-mock "fixtures/^<testname>$"` to execute the tests against the mock implementation.
-- Use the `fix-diffs-mockgcp` skill (`mockgcp/.gemini/skills/fix-diffs-mockgcp/SKILL.md`) to align the mock logs with the real GCP output:
-  - **Output-Only Fields/IDs**: If real GCP produces dynamic values that mockgcp lacks, implement a `populate<ResourceKind>Defaults` function in `mockgcp/mock<service_name>/<kind_lowercase>.go` called on `Insert` and `Get` to match the required format.
-  - **Volatile/Random Values**: For values like timestamps or etags that are functionally identical but structurally unpredictable, update `normalize.go` for the service.
-  - **Critical Rule**: Always scope the `Previsit` normalization in `normalize.go` to ensure it only applies to your service URL (e.g. `strings.Contains(event.URL(), "<service_name>.googleapis.com")`) to prevent log corruption in unrelated services.
-- Iterate on running `hack/compare-mock "fixtures/^<testname>$"` and making incremental code updates until the HTTP logs match real GCP perfectly with clean, minimal diffs.
-- Once the logs align, run the comparison with `WRITE_GOLDEN_OUTPUT=1` against mock GCP to generate the `_http_mock.log` file:
-  ```bash
-  WRITE_GOLDEN_OUTPUT=1 RUN_E2E=1 E2E_GCP_TARGET=mock E2E_KUBE_TARGET=envtest go test -v ./tests/e2e -run "TestAllInSeries/fixtures/<testname>"
-  ```
-  Make sure both `_http.log` and `_http_mock.log` are present in the fixture directory.
+
+  > [!WARNING]
+  > **WHENEVER A TEST CASE IS UPDATED, WE MUST RECORD REAL GCP LOGS AGAIN.**
+  > If you make any modifications to a test case configuration or manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or modify the controller's GCP request structures, you **MUST** run the test case against real GCP (`hack/record-gcp` or with `E2E_GCP_TARGET=real`) to regenerate the authentic `_http.log` baseline before comparing or committing any mock log changes. Do not attempt to manually edit the logs or bypass recording live traffic.
+  >
+  > **Do NOT re-run real GCP during MockGCP alignment**: When updating MockGCP implementations or normalizers, do NOT re-run `hack/record-gcp`. Mock alignment is performed exclusively using `hack/compare-mock`.
+
+Use the `match-mockgcp-with-realgcp` skill at .gemini/skills/match-mockgcp-with-realgcp/SKILL.md) to align MockGCP behavior with real GCP golden logs for all fixtures under `pkg/test/resourcefixture/testdata/basic/<group>/<api_version>/<kind_lowercase>/`.
+  
+Ensure all mock tests pass and both `_http.log` and `_http_mock.log` are present in all fixture directories with zero discrepancies.
 
 ### 4. Verify and Run Presubmits
 - Run local validation: `scripts/validate-prereqs.sh`.
 - Run the e2e fixtures presubmit: `./dev/ci/presubmits/tests-e2e-fixtures-<kind_lowercase>`.
-- Make sure to stage and commit both `_http.log` and `_http_mock.log` files in your Pull Request.
+- **Multi-Fixture Verification Requirement (MANDATORY)**:
+  - You **MUST** verify and ensure that all test directories associated with your target resource are completely verified.
+  1. Ensure that all discovered test subdirectories under `pkg/test/resourcefixture/testdata/basic/<group>/<api_version>/<kind_lowercase>/` have their golden files (`_generated_object_*.golden.yaml`) and mock HTTP logs (`_http_mock.log`) successfully generated. Note that a 0-diff in `git status` is perfectly valid if the resource doesn't contain any service-generated, randomized values in the responses or our normalizers have overwritten those values.
+  2. Commit and push all regenerated and matched log/golden files for every discovered fixture in your Pull Request.

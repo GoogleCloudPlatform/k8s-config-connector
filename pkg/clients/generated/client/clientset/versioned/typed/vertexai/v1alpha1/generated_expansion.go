@@ -40,3 +40,5 @@ type VertexAIFeaturestoreEntityTypeFeatureExpansion interface{}
 type VertexAIIndexEndpointExpansion interface{}
 
 type VertexAITensorboardExpansion interface{}
+
+type VertexAITensorboardExperimentExpansion interface{}

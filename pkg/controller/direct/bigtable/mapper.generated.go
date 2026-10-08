@@ -183,24 +183,6 @@ func BigtableAppProfileObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, 
 	// MISSING: Priority
 	return out
 }
-func BigtableAuthorizedViewObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedView) *krmbigtablev1alpha1.BigtableAuthorizedViewObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmbigtablev1alpha1.BigtableAuthorizedViewObservedState{}
-	// MISSING: Name
-	// MISSING: Etag
-	return out
-}
-func BigtableAuthorizedViewObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1alpha1.BigtableAuthorizedViewObservedState) *pb.AuthorizedView {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AuthorizedView{}
-	// MISSING: Name
-	// MISSING: Etag
-	return out
-}
 func BigtableAuthorizedViewSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedView) *krmbigtablev1alpha1.BigtableAuthorizedViewSpec {
 	if in == nil {
 		return nil
@@ -361,24 +343,6 @@ func BigtableInstanceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigt
 	// MISSING: Tags
 	return out
 }
-func BigtableLogicalViewObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.LogicalView) *krmbigtablev1alpha1.BigtableLogicalViewObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmbigtablev1alpha1.BigtableLogicalViewObservedState{}
-	// MISSING: Name
-	// MISSING: Etag
-	return out
-}
-func BigtableLogicalViewObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1alpha1.BigtableLogicalViewObservedState) *pb.LogicalView {
-	if in == nil {
-		return nil
-	}
-	out := &pb.LogicalView{}
-	// MISSING: Name
-	// MISSING: Etag
-	return out
-}
 func BigtableLogicalViewSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.LogicalView) *krmbigtablev1alpha1.BigtableLogicalViewSpec {
 	if in == nil {
 		return nil
@@ -401,24 +365,6 @@ func BigtableLogicalViewSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	out.DeletionProtection = direct.ValueOf(in.DeletionProtection)
 	return out
 }
-func BigtableMaterializedViewObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MaterializedView) *krmbigtablev1alpha1.BigtableMaterializedViewObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmbigtablev1alpha1.BigtableMaterializedViewObservedState{}
-	// MISSING: Name
-	// MISSING: Etag
-	return out
-}
-func BigtableMaterializedViewObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1alpha1.BigtableMaterializedViewObservedState) *pb.MaterializedView {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MaterializedView{}
-	// MISSING: Name
-	// MISSING: Etag
-	return out
-}
 func BigtableMaterializedViewSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MaterializedView) *krmbigtablev1alpha1.BigtableMaterializedViewSpec {
 	if in == nil {
 		return nil
@@ -439,6 +385,28 @@ func BigtableMaterializedViewSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 	out.Query = direct.ValueOf(in.Query)
 	// MISSING: Etag
 	out.DeletionProtection = direct.ValueOf(in.DeletionProtection)
+	return out
+}
+func BigtableSchemaBundleSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SchemaBundle) *krmbigtablev1alpha1.BigtableSchemaBundleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigtablev1alpha1.BigtableSchemaBundleSpec{}
+	// MISSING: Name
+	out.ProtoSchema = ProtoSchema_v1alpha1_FromProto(mapCtx, in.GetProtoSchema())
+	// MISSING: Etag
+	return out
+}
+func BigtableSchemaBundleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1alpha1.BigtableSchemaBundleSpec) *pb.SchemaBundle {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SchemaBundle{}
+	// MISSING: Name
+	if oneof := ProtoSchema_v1alpha1_ToProto(mapCtx, in.ProtoSchema); oneof != nil {
+		out.Type = &pb.SchemaBundle_ProtoSchema{ProtoSchema: oneof}
+	}
+	// MISSING: Etag
 	return out
 }
 func ChangeStreamConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ChangeStreamConfig) *krmbigtablev1beta1.ChangeStreamConfig {
@@ -531,6 +499,22 @@ func EncryptionInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1
 	// MISSING: EncryptionStatus
 	// MISSING: KMSKeyVersion
 	// (near miss): "KMSKeyVersion" vs "KmsKeyVersion"
+	return out
+}
+func ProtoSchema_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ProtoSchema) *krmbigtablev1alpha1.ProtoSchema {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigtablev1alpha1.ProtoSchema{}
+	out.ProtoDescriptors = in.GetProtoDescriptors()
+	return out
+}
+func ProtoSchema_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1alpha1.ProtoSchema) *pb.ProtoSchema {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ProtoSchema{}
+	out.ProtoDescriptors = in.ProtoDescriptors
 	return out
 }
 func RestoreInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RestoreInfo) *krmbigtablev1beta1.RestoreInfo {

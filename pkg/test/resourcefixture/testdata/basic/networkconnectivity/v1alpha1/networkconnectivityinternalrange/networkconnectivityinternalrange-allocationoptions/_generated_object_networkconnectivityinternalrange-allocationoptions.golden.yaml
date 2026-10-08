@@ -29,4 +29,6 @@ status:
     type: Ready
   externalRef: projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-allocationoptions-${uniqueId}
   observedGeneration: 2
-  observedState: {}
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"

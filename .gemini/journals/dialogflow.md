@@ -39,3 +39,19 @@
   - Moved the generated output `types.generated.go` to `siptrunk_types.generated.go` and restored `types.generated.go` for the other Dialogflow v2 resources.
   - Implemented the identity and external ref logic in `dialogflowsiptrunk_identity.go` with unit tests in `dialogflowsiptrunk_identity_test.go`.
 - **Impact**: Provides a correct scaffolding, CRD, identity, and reference setup for DialogflowSipTrunk, preparing the codebase for the subsequent adapter and reconciliation controller implementation steps.
+
+### [2026-10-01] DialogflowConversationDataset Direct Controller Implementation (Phase 2)
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `DialogflowConversationDataset` (Issue #13603).
+- **Problem**:
+  1. Dialogflow ConversationDataset is completely immutable in GCP (no update RPC exists in Dialogflow v2 API).
+  2. Dataset IDs are service-generated (format `projects/{project}/locations/{location}/conversationDatasets/{conversationDataset}`).
+  3. `DeleteConversationDatasetOperation.Wait(ctx)` in GAPIC REST client returns `unsupported result type <nil>: <nil>` on successful completion due to empty LRO response body handling.
+  4. Golden HTTP logs and object outputs require dataset ID normalization (`${conversationDatasetID}`).
+- **Solution**:
+  1. Implemented direct controller adapter with immutable update logic (rejecting updates with descriptive field diffs), service-generated ID semantics (following 4 rules in `kcc-direct-service-generated-id`), and handled empty LRO result error in `Delete`.
+  2. Added `${conversationDatasetID}` normalization in `mockgcp/mockdialogflow/normalize.go`.
+  3. Generated mappers and fuzzer under `pkg/controller/direct/dialogflow/conversationdataset/`.
+  4. Recorded `dialogflowconversationdataset-minimal` and `dialogflowconversationdataset-maximal` fixtures against real GCP.
+- **Impact**: Fully enables management and reconciliation of `DialogflowConversationDataset` resources via direct controller.
+
+

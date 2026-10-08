@@ -163,10 +163,11 @@ Once definitions are updated, the agent must verify correctness of the field usi
    - **Solution**: Enable Server-Side Apply for the resource by removing it from the exempted list in [ratcheting.go](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/tests/e2e/ratcheting.go). This ensures both creation and updates use SSA, and unreferenced fields under a `oneOf` choice are correctly cleaned up.
 
 4. **Local CI/CD Presubmit Verification (CRITICAL)**:
-   - To ensure that generated PRs do not fail CI/CD validation pipelines (`validate-generated-files` and `validations`), you **MUST** run the resource docs generation and the local presubmit verifications before submitting:
+   - To ensure that generated PRs do not fail CI/CD validation pipelines (`validate-generated-files`, `validations`, and field coverage), you **MUST** run the resource docs generation and the local presubmit verifications before submitting:
      ```bash
      make resource-docs
      dev/ci/presubmits/validate-generated-files
+     dev/ci/presubmits/validate-untested-fields
      scripts/validate-prereqs.sh
      ```
    - If these scripts or commands generate any updates to auto-generated mappers, CRDs, static configs, documentation, or GitHub Actions workflows, verify with `git status` and stage and commit them:

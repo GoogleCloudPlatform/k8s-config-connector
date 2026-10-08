@@ -21,15 +21,18 @@ package mockdialogflow
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"google.golang.org/grpc"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	grpcpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/dialogflow/v2beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 
+	pb_v2 "cloud.google.com/go/dialogflow/apiv2/dialogflowpb"
 	pb "cloud.google.com/go/dialogflow/apiv2beta1/dialogflowpb"
 )
 
@@ -40,7 +43,8 @@ func init() {
 // MockService represents a mocked dialogflow service.
 type MockService struct {
 	*common.MockEnvironment
-	storage storage.Storage
+	storage    storage.Storage
+	operations *operations.Operations
 }
 
 // New creates a MockService.
@@ -48,6 +52,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
+		operations:      operations.NewOperationsService(storage),
 	}
 	return s
 }
@@ -58,15 +63,33 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterSipTrunksServer(grpcServer, &sipTrunksServer{MockService: s})
+	pb.RegisterGeneratorsServer(grpcServer, &generatorsServer{MockService: s})
+	pb.RegisterKnowledgeBasesServer(grpcServer, &knowledgeBasesServer{MockService: s})
+	pb_v2.RegisterConversationDatasetsServer(grpcServer, &conversationDatasetsServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
+	grpcMux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		grpcpb.RegisterSipTrunksHandler,
+		grpcpb.RegisterGeneratorsHandler,
+		grpcpb.RegisterKnowledgeBasesHandler,
+		RegisterConversationDatasetsHandler,
+		s.operations.RegisterOperationsPath("/v2/{prefix=**}/operations/{name}"),
+		s.operations.RegisterOperationsPath("/v2beta1/{prefix=**}/operations/{name}"),
+		s.operations.RegisterOperationsPath("/v2/operations/{name}"),
+		s.operations.RegisterOperationsPath("/v2beta1/operations/{name}"),
 	)
 	if err != nil {
 		return nil, err
 	}
+
+	mux := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Rewrite /v2/ to /v2beta1/ for dialogflow
+		if strings.HasPrefix(r.URL.Path, "/v2/") {
+			r.URL.Path = "/v2beta1/" + strings.TrimPrefix(r.URL.Path, "/v2/")
+		}
+		grpcMux.ServeHTTP(w, r)
+	})
 
 	return mux, nil
 }

@@ -1,0 +1,21 @@
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
+kind: ArtifactRegistryRepository
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  labels:
+    cnrm-test: "true"
+    label-one: value-one
+    label-two: value-two
+    managed-by-cnrm: "true"
+  name: arrepository-${uniqueId}
+spec:
+  description: test remote repository description 2
+  format: DOCKER
+  location: us-west1
+  mode: REMOTE_REPOSITORY
+  remoteRepositoryConfig:
+    commonRepository:
+      uri: https://docker.io
+    description: test remote repository
+  resourceID: arrepository-${uniqueId}

@@ -35,7 +35,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ${CONTROLLERBUILDER} generate-types \
     --service google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1 \
     --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
-    --resource VertexAISpecialistPool:SpecialistPool \
+    --resource AIPlatformPersistentResource:PersistentResource \
+    --resource AIPlatformSpecialistPool:SpecialistPool \
     --resource AIPlatformModel:Model \
     --resource VertexAIFeatureOnlineStore:FeatureOnlineStore \
     --resource VertexAIPipelineJob:PipelineJob \
@@ -43,7 +44,7 @@ ${CONTROLLERBUILDER} generate-types \
     --resource VertexAIStudy:Study \
     --resource VertexAITrainingPipeline:TrainingPipeline \
     --resource VertexAISchedule:Schedule \
-    --resource VertexAIExtension:Extension
+    --resource AIPlatformReasoningEngine:ReasoningEngine
 
 # Handled recursive self-referential fields by defining ListValue, Value, and ExplanationParameters manually in recursive_types.go
 

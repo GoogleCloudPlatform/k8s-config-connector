@@ -13,6 +13,14 @@
       "reason": "Locations are read-only metadata containers."
     },
     {
+      "pattern": "^.*/.*Zone$",
+      "reason": "Zones are read-only metadata containers."
+    },
+    {
+      "pattern": "^.*/.*Region$",
+      "reason": "Regions are read-only metadata containers."
+    },
+    {
       "pattern": ".*cloudasset.*/Feed$",
       "reason": "Already implemented as hierarchical variants (ProjectFeed, FolderFeed, etc.)."
     },
@@ -31,6 +39,14 @@
     {
       "pattern": "^bigquerystorage\\.googleapis\\.com/WriteStream$",
       "reason": "The BigQueryWrite service in v1beta2 is marked as deprecated."
+    },
+    {
+      "pattern": "^storage\\.googleapis\\.com/Object",
+      "reason": "Dataplane resource."
+    },
+    {
+      "pattern": "^discoveryengine\\.googleapis\\.com/DiscoveryEngineSampleQuery",
+      "reason": "Dataplane resource."
     }
   ]
 }

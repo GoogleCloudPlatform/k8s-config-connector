@@ -1163,6 +1163,8 @@ type GeminiInstanceConfigObservedState struct {
 	FlagRecommenderEnabled *bool `json:"flagRecommenderEnabled,omitempty"`
 }
 
+/* found existing non-generated go type "ReplicationClusterObservedState", skipping
+
 // +kcc:observedstate:proto=google.cloud.sql.v1beta4.ReplicationCluster
 type ReplicationClusterObservedState struct {
 	// Output only. If set, it indicates this instance has a private service
@@ -1180,6 +1182,7 @@ type ReplicationClusterObservedState struct {
 	// +kcc:proto:field=google.cloud.sql.v1beta4.ReplicationCluster.dr_replica
 	DrReplica *bool `json:"drReplica,omitempty"`
 }
+*/
 
 // +kcc:observedstate:proto=google.cloud.sql.v1beta4.Settings
 type SettingsObservedState struct {

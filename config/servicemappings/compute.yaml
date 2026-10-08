@@ -2450,7 +2450,7 @@ spec:
             version: v1alpha1
             group: networkconnectivity.cnrm.cloud.google.com
           targetField: externalRef
-        - key: secondaryIpRange.reservedInternalRangeRef
+        - key: reservedInternalRangeRef
           tfField: secondary_ip_range.reserved_internal_range
           gvk:
             kind: NetworkConnectivityInternalRange

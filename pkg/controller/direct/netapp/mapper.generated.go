@@ -95,6 +95,88 @@ func BackupVaultSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupVaultSpec)
 	// MISSING: BackupRetentionPolicy
 	return out
 }
+func NetAppActiveDirectoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ActiveDirectory) *krm.NetAppActiveDirectoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetAppActiveDirectoryObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StateDetails = direct.LazyPtr(in.GetStateDetails())
+	return out
+}
+func NetAppActiveDirectoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetAppActiveDirectoryObservedState) *pb.ActiveDirectory {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ActiveDirectory{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.State = direct.Enum_ToProto[pb.ActiveDirectory_State](mapCtx, in.State)
+	out.StateDetails = direct.ValueOf(in.StateDetails)
+	return out
+}
+
+/* found existing non-generated mapping function "NetAppActiveDirectorySpec_FromProto", skipping
+func NetAppActiveDirectorySpec_FromProto(mapCtx *direct.MapContext, in *pb.ActiveDirectory) *krm.NetAppActiveDirectorySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetAppActiveDirectorySpec{}
+	// MISSING: Name
+	out.Domain = direct.LazyPtr(in.GetDomain())
+	out.Site = direct.LazyPtr(in.GetSite())
+	out.DNS = direct.LazyPtr(in.GetDns())
+	out.NetBiosPrefix = direct.LazyPtr(in.GetNetBiosPrefix())
+	out.OrganizationalUnit = direct.LazyPtr(in.GetOrganizationalUnit())
+	out.AesEncryption = direct.LazyPtr(in.GetAesEncryption())
+	out.Username = direct.LazyPtr(in.GetUsername())
+	out.Password = direct.LazyPtr(in.GetPassword())
+	out.BackupOperators = in.BackupOperators
+	out.Administrators = in.Administrators
+	out.SecurityOperators = in.SecurityOperators
+	out.KdcHostname = direct.LazyPtr(in.GetKdcHostname())
+	out.KdcIP = direct.LazyPtr(in.GetKdcIp())
+	out.NfsUsersWithLdap = direct.LazyPtr(in.GetNfsUsersWithLdap())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.LdapSigning = direct.LazyPtr(in.GetLdapSigning())
+	out.EncryptDcConnections = direct.LazyPtr(in.GetEncryptDcConnections())
+	out.Labels = in.Labels
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "NetAppActiveDirectorySpec_ToProto", skipping
+
+	func NetAppActiveDirectorySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetAppActiveDirectorySpec) *pb.ActiveDirectory {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ActiveDirectory{}
+		// MISSING: Name
+		out.Domain = direct.ValueOf(in.Domain)
+		out.Site = direct.ValueOf(in.Site)
+		out.Dns = direct.ValueOf(in.DNS)
+		out.NetBiosPrefix = direct.ValueOf(in.NetBiosPrefix)
+		out.OrganizationalUnit = direct.ValueOf(in.OrganizationalUnit)
+		out.AesEncryption = direct.ValueOf(in.AesEncryption)
+		out.Username = direct.ValueOf(in.Username)
+		out.Password = NetAppActiveDirectorySpec_Password_ToProto(mapCtx, in.Password)
+		out.BackupOperators = in.BackupOperators
+		out.Administrators = in.Administrators
+		out.SecurityOperators = in.SecurityOperators
+		out.KdcHostname = direct.ValueOf(in.KdcHostname)
+		out.KdcIp = direct.ValueOf(in.KdcIP)
+		out.NfsUsersWithLdap = direct.ValueOf(in.NfsUsersWithLdap)
+		out.Description = direct.ValueOf(in.Description)
+		out.LdapSigning = direct.ValueOf(in.LdapSigning)
+		out.EncryptDcConnections = direct.ValueOf(in.EncryptDcConnections)
+		out.Labels = in.Labels
+		return out
+	}
+*/
 func NetAppBackupPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupPolicy) *krm.NetAppBackupPolicyObservedState {
 	if in == nil {
 		return nil

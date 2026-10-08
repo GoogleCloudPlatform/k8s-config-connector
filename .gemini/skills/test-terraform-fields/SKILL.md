@@ -32,12 +32,28 @@ A complete test fixture directory contains:
 
 ---
 
+## Remove from Ratcheting Exclusions (MANDATORY)
+
+Before running the test cases against real or mock GCP, you **MUST** remove the target resource from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. This ensures that re-reconciliation testing (which touches the primary object after E2E creation to verify zero-write operations) is enabled and validated, which is a fundamental use case KCC resources must support.
+
+1. Open `tests/e2e/ratcheting.go`.
+2. Locate the function `ShouldTestRereconiliation`.
+3. Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
+4. If there is a `case` block for your target resource's `GroupKind` (e.g., `schema.GroupKind{Group: "dns.cnrm.cloud.google.com", Kind: "DNSRecordSet"}`), remove that `case` line from the switch statement.
+
+---
+
 ## 3. Recording Ground Truth against Real GCP (CRITICAL MANDATORY STEP)
 
 > [!IMPORTANT]
 > **YOU MUST NEVER SKIP OR BYPASS THIS STEP.** 
 > Generating mock-only golden logs via `compare-mock` or `go test` without first recording live traffic against real GCP is strictly prohibited.
 > If the environment does not have a pre-configured GCP project ID, or if running `hack/record-gcp` fails due to authentication/project ID errors, you **MUST STOP IMMEDIATELY** and ask the user to provide a valid GCP Project ID. Do not try to bypass this requirement.
+>
+> **WHENEVER A TEST CASE IS UPDATED, WE MUST RECORD REAL GCP LOGS AGAIN.**
+> If you make any modifications to a test case configuration or manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or modify the controller's GCP request structures, you **MUST** run the test case against real GCP (`hack/record-gcp`) to regenerate the authentic `_http.log` baseline before comparing or committing any mock log changes. Do not attempt to manually edit the logs or bypass recording live traffic.
+>
+> **Do NOT re-run real GCP for log normalization or mock alignment**: Run-to-run variations in HTTP logs (such as LRO polling counts, dynamic timestamps, tokens, or cookies) should be normalized in normalizers (`tests/e2e/normalize.go`, `mockgcp/mock<service>/normalize.go`) rather than re-recording against real GCP. Mock alignment is performed exclusively using `hack/compare-mock`.
 
 > [!WARNING]
 > **Do not run `go test` directly**: When running or recording E2E tests, always prefer using `./dev/tasks/run-e2e` (or scripts like `hack/record-gcp` and `hack/compare-mock` that wrap it) instead of running `go test` directly in the shell or IDE. Running `go test` directly may bypass `KUBEBUILDER_ASSETS` configuration and fall back to an older global version of `kube-apiserver` (such as a legacy `/usr/local/kubebuilder/bin/` copy), leading to incorrect fields like `metadata.selfLink` being generated in the golden files.
@@ -69,26 +85,41 @@ Configure the following environment variables to control project routing, billin
 > KCC tests dynamically substitute namespace project references with the actual target GCP project specified by these variables during execution.
 
 ### C. Running E2E Fixture Test Recordings
-For standard E2E fixture tests under `pkg/test/resourcefixture/testdata/basic/`, use the `hack/record-gcp` script:
-1. Run the script passing either the test name suffix or the package path:
-   - **Using test name suffix**:
-     ```bash
-     hack/record-gcp <test_name>
-     ```
-   - **Using full test package path**:
-     ```bash
-     hack/record-gcp pkg/test/resourcefixture/testdata/basic/dns/v1beta1/<test_name>
-     ```
-     - **Example: Using test name suffix**:
-     ```bash
-     hack/record-gcp fixtures/dnsrecordsetbasic
-     ```
-   - **Example: Using full test package path**:
-     ```bash
-     hack/record-gcp pkg/test/resourcefixture/testdata/basic/dns/v1beta1/dnsrecordset
-     ```
-2. The script executes the tests with `E2E_GCP_TARGET=real`, `WRITE_GOLDEN_OUTPUT=1`, and records the traffic to `_http.log`.
-3. **If the script fails** (e.g. due to permissions or an invalid/missing default project ID), you **MUST NOT** skip this step. Ask the user for a valid GCP project ID to test against, and then run:
+For standard E2E fixture tests under `pkg/test/resourcefixture/testdata/basic/`, use the `hack/record-gcp` script.
+
+1.  **Discover All Test Fixtures for Resource**:
+    Before running any recordings, locate all test subdirectories under `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/` (e.g., `containernodepool`, `containernodepool-update`, `containernodepoolremovetaint`, etc.).
+
+2.  **Fast vs. Slow Resource Execution Strategy**:
+    Determine whether your target resource is fast or slow to reconcile against real GCP. Resources like `ContainerNodePool`, `ContainerCluster`, `SQLInstance`, and `ComposerEnvironment` are slow resources (>10 minutes per test), whereas most others are fast (<10 min per test).
+    - **Fast resources (<10 min per test)**:
+      - Run and record all fixtures for the resource in a single command:
+        ```bash
+        hack/record-gcp "fixtures/<kind_lowercase>"
+        ```
+    - **Slow resources (>10 min per test)**:
+      - Do NOT run all test fixtures sequentially in a single command.
+      - Execute each individual test fixture in parallel (e.g., triggering parallel background processes or subagents with `hack/record-gcp "fixtures/^<testname>$"`).
+      - **Parallel Directory Collisions**: `hack/record-gcp` cleans and writes to `artifactz/realgcp` by default. When running multiple invocations in parallel, you **MUST** provide a unique `ARTIFACTS` path for each invocation (e.g., `ARTIFACTS=artifactz/realgcp-<testname> hack/record-gcp "fixtures/^<testname>$"`) to prevent folder collision/cleanup issues.
+
+    - **Alternative Using Package Path (Fast resources)**:
+      ```bash
+      hack/record-gcp pkg/test/resourcefixture/testdata/basic/dns/v1beta1/<kind_lowercase>
+      ```
+
+3.  **Verification Criteria for Real GCP Recording (MANDATORY)**:
+    Checking `git status` or top-level `PASS`/`FAIL` exit codes can be misleading (e.g. 0-diff is valid for unaffected fixtures, unmatched regex gives a false `PASS`).
+    Instead, verify that each discovered fixture completed its full lifecycle by checking stdout for:
+    1. `=== RUN   TestAllInSeries/fixtures/<testname>` (confirms the subtest matched and started).
+    2. Resource reached `Ready` (`status.condition.status: True`) for create (and update, if present).
+    3. Deletion completed (`Done waiting for resource to delete`).
+    4. `wrote updated golden output to .../_http.log` was logged (or `_http.log` was updated/written on disk).
+    5. No fatal errors (`t.Fatalf` / timeout / permission errors) aborted the test before cleanup.
+
+    > **Note**: Once these 5 criteria are verified, recording is complete. Any remaining diffs or run-to-run variations in subsequent test passes should be resolved via normalizers (`tests/e2e/normalize.go`, etc.), NOT by re-running `hack/record-gcp`.
+
+4. The script executes the tests with `E2E_GCP_TARGET=real`, `WRITE_GOLDEN_OUTPUT=1`, and records the traffic to `_http.log`.
+5. **If the script fails** (e.g. due to permissions or an invalid/missing default project ID), you **MUST** not skip this step. Ask the user for a valid GCP project ID to test against, and then run:
    ```bash
    GCP_PROJECT_ID=<project-id> hack/record-gcp <test_name>
    ```
@@ -123,18 +154,24 @@ To verify the mock implementation matches real GCP behavior:
 > [!IMPORTANT]
 > **Prerequisite**: You must have committed the real GCP baseline (from Section 3.E) before starting this section. Running against MockGCP without committing the real GCP baseline first can mix up different modifications in the `_http.log` files and make diff analysis impossible.
 
-1. **Run Mock Test**:
-   - Run `hack/compare-mock <testname>`. 
-     - **Example:** `hack/compare-mock tests-e2e-sql`
-   - The test will execute using the MockGCP control plane.
+1. **Run Mock Test with `compare-mock`**:
+   - Run the mock comparison tests for all fixtures of the resource in a single command (MockGCP runs in-memory and completes in seconds, so no parallel execution split or Fast/Slow execution strategy is needed for mock tests):
+     ```bash
+     hack/compare-mock "fixtures/<kind_lowercase>"
+     ```
+     Specifically, re-run `hack/compare-mock "fixtures/<kind_lowercase>"` (or `hack/compare-mock "fixtures/^<testname>$"`) to update `_http_mock.log` and the golden object files (`_generated_object_*.golden.yaml`), and verify log alignment against `_http.log`. Repeat until all discrepancies are resolved and the tests pass.
 2. **Check for Differences**:
-   - Check if the command fails or if `git status` shows modifications to the golden files.
-   - Run `git diff pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/`.
-3. **Commit the Baseline Updates**:
+   - Check if the command fails or if `git diff` shows modifications to the golden files.
+   - Run `git diff pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/`.
+3. **Multi-Fixture Verification Requirement (MANDATORY)**:
+   - You **MUST** verify and ensure that all test directories associated with your target resource are completely verified.
+   1. Ensure that all discovered test subdirectories under `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/` have their golden files (`_generated_object_*.golden.yaml`) and mock HTTP logs (`_http_mock.log`) successfully generated. Note that a 0-diff in `git status` is perfectly valid if the resource doesn't contain any service-generated, randomized values in the responses or our normalizers have overwritten those values.
+   2. Commit and push all regenerated and matched log/golden files for every discovered fixture in your Pull Request.
+4. **Commit the Baseline Updates**:
    - If there are any differences (such as `selfLink` removal or minor formatting alignment), stage and commit these updates:
      ```bash
-     git add pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/
-     git commit -m "Update golden logs for <testname> after mock comparison"
+     git add pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/
+     git commit -m "Update golden logs for <kind_lowercase> after mock comparison"
      ```
 
 ---
@@ -235,7 +272,7 @@ Before finishing the task or proposing a PR, the agent must run formatting, gene
 7. **Run CI/CD Group Presubmit Tests Locally (MANDATORY)**:
    - > [!WARNING]
      > Modifying a resource type (e.g., adding fields to a CRD, or registering new fields under `observedFields` in mapping configs) will implicitly affect **ALL** existing test cases for that resource type. The controller will begin populating the new fields in the status or `observedState` of all existing instances, causing their golden object manifests (`_generated_object_*.golden.yaml`) to change.
-   - To prevent PR/CI pipeline failures, you **MUST** run the full group presubmit test script under `dev/ci/presubmits/` (e.g. `dev/ci/presubmits/tests-e2e-fixtures-container` for `container.cnrm.cloud.google.com` resources) to ensure you capture and update the golden files of all related tests.
+   - To prevent PR/CI pipeline failures, you **MUST** run the full group presubmit test script under `dev/ci/presubmits/` (e.g. `dev/ci/presubmits/tests-e2e-fixtures-container` for `container.cnrm.cloud.google.com` resources) to ensure you capture and update the golden files of all related tests. Ensure that ALL test folders discovered for the kind under `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/` have been run, updated, and validated successfully.
    - After the run, check `git status` for any modified golden files, verify they are correct, and commit them:
      ```bash
      dev/ci/presubmits/tests-e2e-fixtures-<service_name>

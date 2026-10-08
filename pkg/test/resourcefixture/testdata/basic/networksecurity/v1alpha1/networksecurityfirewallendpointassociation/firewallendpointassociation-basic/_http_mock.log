@@ -1,5 +1,6 @@
-GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/firewallEndpointAssociations/fwea-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -14,25 +15,153 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1/firewallEndpointAssociations/fwea-${uniqueId}' was not found",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "autoCreateSubnetworks": false,
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FfirewallEndpoints%2Ffwe-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/firewallEndpointAssociations?alt=json&firewallEndpointAssociationId=fwea-${uniqueId}&prettyPrint=false
+POST https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/firewallEndpoints?%24alt=json%3Benum-encoding%3Dint&firewallEndpointId=fwe-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1-a
 
 {
-  "disabled": false,
-  "firewallEndpoint": "projects/${projectId}/locations/us-central1/firewallEndpoints/endpoint-${uniqueId}",
+  "description": "A project firewall endpoint for testing direct controller",
+  "endpointSettings": {
+    "jumboFramesEnabled": true
+  },
   "labels": {
     "foo": "bar"
   },
-  "name": "projects/${projectId}/locations/us-central1/firewallEndpointAssociations/fwea-${uniqueId}",
-  "network": "projects/${projectId}/global/networks/network-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}"
 }
 
 200 OK
@@ -50,16 +179,18 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/firewallEndpointAssociations/fwea-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
 }
 
 ---
 
-GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -78,19 +209,21 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/firewallEndpointAssociations/fwea-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.FirewallEndpointAssociation",
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.FirewallEndpoint",
+    "billingProjectId": "${projectId}",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "firewallEndpoint": "projects/${projectId}/locations/us-central1/firewallEndpoints/endpoint-${uniqueId}",
+    "endpointSettings": {
+      "jumboFramesEnabled": true
+    },
     "labels": {
       "foo": "bar"
     },
-    "name": "projects/${projectId}/locations/us-central1/firewallEndpointAssociations/fwea-${uniqueId}",
-    "network": "projects/${projectId}/global/networks/network-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -98,10 +231,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/firewallEndpointAssociations/fwea-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/firewallEndpointAssociations/fwea-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
-200 OK
+404 Not Found
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -112,31 +245,27 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "firewallEndpoint": "projects/${projectId}/locations/us-central1/firewallEndpoints/endpoint-${uniqueId}",
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1-a/firewallEndpointAssociations/fwea-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/firewallEndpointAssociations?alt=json&firewallEndpointAssociationId=fwea-${uniqueId}&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "disabled": false,
+  "firewallEndpoint": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
   "labels": {
     "foo": "bar"
   },
-  "name": "projects/${projectId}/locations/us-central1/firewallEndpointAssociations/fwea-${uniqueId}",
-  "network": "projects/${projectId}/global/networks/network-${uniqueId}",
-  "state": "ACTIVE",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-PATCH https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/firewallEndpointAssociations/fwea-${uniqueId}?alt=json&prettyPrint=false&updateMask=disabled%2Clabels
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "disabled": true,
-  "firewallEndpoint": "projects/${projectId}/locations/us-central1/firewallEndpoints/endpoint-${uniqueId}",
-  "labels": {
-    "foo": "baz"
-  },
-  "name": "projects/${projectId}/locations/us-central1/firewallEndpointAssociations/fwea-${uniqueId}",
-  "network": "projects/${projectId}/global/networks/network-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1-a/firewallEndpointAssociations/fwea-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/${networkID}"
 }
 
 200 OK
@@ -154,16 +283,16 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/firewallEndpointAssociations/fwea-${uniqueId}",
-    "verb": "update"
+    "target": "projects/${projectId}/locations/us-central1-a/firewallEndpointAssociations/fwea-${uniqueId}",
+    "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
 }
 
 ---
 
-GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -182,20 +311,19 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/firewallEndpointAssociations/fwea-${uniqueId}",
-    "verb": "update"
+    "target": "projects/${projectId}/locations/us-central1-a/firewallEndpointAssociations/fwea-${uniqueId}",
+    "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.FirewallEndpointAssociation",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "disabled": true,
-    "firewallEndpoint": "projects/${projectId}/locations/us-central1/firewallEndpoints/endpoint-${uniqueId}",
+    "firewallEndpoint": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
     "labels": {
-      "foo": "baz"
+      "foo": "bar"
     },
-    "name": "projects/${projectId}/locations/us-central1/firewallEndpointAssociations/fwea-${uniqueId}",
-    "network": "projects/${projectId}/global/networks/network-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-central1-a/firewallEndpointAssociations/fwea-${uniqueId}",
+    "network": "projects/${projectId}/global/networks/${networkID}",
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -203,8 +331,110 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/firewallEndpointAssociations/fwea-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/firewallEndpointAssociations/fwea-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "firewallEndpoint": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
+  "labels": {
+    "foo": "bar"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/firewallEndpointAssociations/fwea-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/firewallEndpointAssociations/fwea-${uniqueId}?alt=json&prettyPrint=false&updateMask=disabled%2Clabels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "disabled": true,
+  "firewallEndpoint": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
+  "labels": {
+    "foo": "baz"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/firewallEndpointAssociations/fwea-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/${networkID}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1-a/firewallEndpointAssociations/fwea-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1-a/firewallEndpointAssociations/fwea-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.FirewallEndpointAssociation",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "disabled": true,
+    "firewallEndpoint": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-central1-a/firewallEndpointAssociations/fwea-${uniqueId}",
+    "network": "projects/${projectId}/global/networks/${networkID}",
+    "state": "INACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/firewallEndpointAssociations/fwea-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -219,20 +449,20 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "disabled": true,
-  "firewallEndpoint": "projects/${projectId}/locations/us-central1/firewallEndpoints/endpoint-${uniqueId}",
+  "firewallEndpoint": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
   "labels": {
     "foo": "baz"
   },
-  "name": "projects/${projectId}/locations/us-central1/firewallEndpointAssociations/fwea-${uniqueId}",
-  "network": "projects/${projectId}/global/networks/network-${uniqueId}",
-  "state": "ACTIVE",
+  "name": "projects/${projectId}/locations/us-central1-a/firewallEndpointAssociations/fwea-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "state": "INACTIVE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/firewallEndpointAssociations/fwea-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+DELETE https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/firewallEndpointAssociations/fwea-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -249,16 +479,16 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/firewallEndpointAssociations/fwea-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/firewallEndpointAssociations/fwea-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
 }
 
 ---
 
-GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -277,21 +507,201 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/firewallEndpointAssociations/fwea-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/firewallEndpointAssociations/fwea-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.FirewallEndpointAssociation",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "disabled": true,
-    "firewallEndpoint": "projects/${projectId}/locations/us-central1/firewallEndpoints/endpoint-${uniqueId}",
-    "labels": {
-      "foo": "baz"
-    },
-    "name": "projects/${projectId}/locations/us-central1/firewallEndpointAssociations/fwea-${uniqueId}",
-    "network": "projects/${projectId}/global/networks/network-${uniqueId}",
-    "state": "ACTIVE",
-    "updateTime": "2024-04-01T12:34:56.123456Z"
+    "@type": "type.googleapis.com/google.protobuf.Empty"
   }
+}
+
+---
+
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FfirewallEndpoints%2Ffwe-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "associatedNetworks": [
+    "projects/${projectId}/global/networks/${networkID}"
+  ],
+  "associations": [
+    {
+      "name": "projects/${projectId}/locations/us-central1-a/firewallEndpointAssociations/fwea-${uniqueId}",
+      "network": "projects/${projectId}/global/networks/${networkID}"
+    }
+  ],
+  "billingProjectId": "${projectId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "endpointSettings": {
+    "jumboFramesEnabled": true
+  },
+  "labels": {
+    "foo": "bar"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
+  "state": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FfirewallEndpoints%2Ffwe-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
 }

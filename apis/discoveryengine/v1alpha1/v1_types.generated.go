@@ -24,7 +24,8 @@
 // resource: DiscoveryEngineDataStoreTargetSite:TargetSite
 // resource: DiscoveryEngineConversation:Conversation
 // resource: DiscoveryEngineSession:Session
-// resource: DiscoveryEngineSearchEngine:SiteSearchEngine
+// resource: DiscoveryEngineSitemap:Sitemap
+// resource: DiscoveryEngineSchema:Schema
 
 package v1alpha1
 
@@ -1188,27 +1189,6 @@ type Reply struct {
 /* unreachable type SafetyRating
 // +kcc:proto=google.cloud.discoveryengine.v1.SafetyRating
 type SafetyRating struct {
-}
-*/
-
-/* unreachable type Schema
-// +kcc:proto=google.cloud.discoveryengine.v1.Schema
-type Schema struct {
-	// The structured representation of the schema.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Schema.struct_schema
-	StructSchema apiextensionsv1.JSON `json:"structSchema,omitempty"`
-
-	// The JSON representation of the schema.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Schema.json_schema
-	JsonSchema *string `json:"jsonSchema,omitempty"`
-
-	// Immutable. The full resource name of the schema, in the format of
-	//  `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/schemas/{schema}`.
-	//
-	//  This field must be a UTF-8 encoded string with a length limit of 1024
-	//  characters.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Schema.name
-	Name *string `json:"name,omitempty"`
 }
 */
 

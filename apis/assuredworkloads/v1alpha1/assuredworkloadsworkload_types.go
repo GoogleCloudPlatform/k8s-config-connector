@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -36,6 +37,12 @@ type AssuredWorkloadsWorkloadSpec struct {
 	//  Example: My Workload
 	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.display_name
 	DisplayName *string `json:"displayName,omitempty"`
+
+	// Required. The organization that the workload belongs to.
+	OrganizationRef *refs.OrganizationRef `json:"organizationRef,omitempty"`
+
+	// Required. Immutable. The location that the workload belongs to.
+	Location string `json:"location,omitempty"`
 
 	// Required. Immutable. Compliance Regime associated with this workload.
 	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.compliance_regime

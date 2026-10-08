@@ -192,5 +192,19 @@ func parseDiscoveryEngineEngineExternal(external string) (*DiscoveryEngineEngine
 			Engine:         tokens[7],
 		}, nil
 	}
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "engines" {
+		projectAndLocation := &ProjectAndLocation{
+			ProjectID: tokens[1],
+			Location:  tokens[3],
+		}
+		collection := &CollectionLink{
+			ProjectAndLocation: projectAndLocation,
+			Collection:         "default_collection",
+		}
+		return &DiscoveryEngineEngineID{
+			CollectionLink: collection,
+			Engine:         tokens[5],
+		}, nil
+	}
 	return nil, fmt.Errorf("format of DiscoveryEngineEngine external=%q was not known (use projects/{{projectId}}/locations/{{location}}/collections/{{collectionID}}/engines/{{engineID}})", external)
 }

@@ -2343,7 +2343,16 @@ func (in *NetworkSecurityFirewallEndpointSpec) DeepCopyInto(out *NetworkSecurity
 			(*out)[key] = val
 		}
 	}
-	out.ProjectRef = in.ProjectRef
+	if in.OrganizationRef != nil {
+		in, out := &in.OrganizationRef, &out.OrganizationRef
+		*out = new(k8sv1alpha1.ResourceRef)
+		**out = **in
+	}
+	if in.ProjectRef != nil {
+		in, out := &in.ProjectRef, &out.ProjectRef
+		*out = new(k8sv1alpha1.ResourceRef)
+		**out = **in
+	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)

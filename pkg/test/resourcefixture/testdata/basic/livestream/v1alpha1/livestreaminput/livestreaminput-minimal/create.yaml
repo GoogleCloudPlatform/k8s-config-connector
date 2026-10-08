@@ -1,0 +1,9 @@
+apiVersion: livestream.cnrm.cloud.google.com/v1alpha1
+kind: LiveStreamInput
+metadata:
+  name: livestreaminput-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  type: RTMP_PUSH

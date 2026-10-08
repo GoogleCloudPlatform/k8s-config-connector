@@ -622,6 +622,40 @@ func InterceptLocationObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, 
 	out.State = direct.Enum_ToProto[pb.InterceptLocation_State](mapCtx, in.State)
 	return out
 }
+func MirroringDeploymentGroup_ConnectedEndpointGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MirroringDeploymentGroup_ConnectedEndpointGroup) *krmnetworksecurityv1alpha1.MirroringDeploymentGroup_ConnectedEndpointGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.MirroringDeploymentGroup_ConnectedEndpointGroupObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	return out
+}
+func MirroringDeploymentGroup_ConnectedEndpointGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.MirroringDeploymentGroup_ConnectedEndpointGroupObservedState) *pb.MirroringDeploymentGroup_ConnectedEndpointGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MirroringDeploymentGroup_ConnectedEndpointGroup{}
+	out.Name = direct.ValueOf(in.Name)
+	return out
+}
+func MirroringEndpointGroupAssociation_LocationDetailsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MirroringEndpointGroupAssociation_LocationDetails) *krmnetworksecurityv1alpha1.MirroringEndpointGroupAssociation_LocationDetailsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.MirroringEndpointGroupAssociation_LocationDetailsObservedState{}
+	out.Location = direct.LazyPtr(in.GetLocation())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func MirroringEndpointGroupAssociation_LocationDetailsObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.MirroringEndpointGroupAssociation_LocationDetailsObservedState) *pb.MirroringEndpointGroupAssociation_LocationDetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MirroringEndpointGroupAssociation_LocationDetails{}
+	out.Location = direct.ValueOf(in.Location)
+	out.State = direct.Enum_ToProto[pb.MirroringEndpointGroupAssociation_LocationDetails_State](mapCtx, in.State)
+	return out
+}
 func MirroringEndpointGroup_AssociationDetailsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MirroringEndpointGroup_AssociationDetails) *krmnetworksecurityv1alpha1.MirroringEndpointGroup_AssociationDetailsObservedState {
 	if in == nil {
 		return nil
@@ -1014,13 +1048,13 @@ func NetworkSecurityFirewallEndpointAssociationSpec_v1alpha1_FromProto(mapCtx *d
 	// MISSING: Name
 	out.Labels = in.Labels
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krmnetworksecurityv1alpha1.NetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	if in.GetFirewallEndpoint() != "" {
 		out.FirewallEndpointRef = &krmnetworksecurityv1alpha1.FirewallEndpointRef{External: in.GetFirewallEndpoint()}
 	}
 	if in.GetTlsInspectionPolicy() != "" {
-		out.TLSInspectionPolicyRef = &krmnetworksecurityv1alpha1.TLSInspectionPolicyRef{External: in.GetTlsInspectionPolicy()}
+		out.TLSInspectionPolicyRef = &krmnetworksecurityv1alpha1.NetworkSecurityTLSInspectionPolicyRef{External: in.GetTlsInspectionPolicy()}
 	}
 	out.Disabled = direct.LazyPtr(in.GetDisabled())
 	return out
@@ -1132,7 +1166,7 @@ func NetworkSecurityGatewaySecurityPolicySpec_v1alpha1_FromProto(mapCtx *direct.
 	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
 	if in.GetTlsInspectionPolicy() != "" {
-		out.TLSInspectionPolicyRef = &krmnetworksecurityv1alpha1.TLSInspectionPolicyRef{External: in.GetTlsInspectionPolicy()}
+		out.TLSInspectionPolicyRef = &krmnetworksecurityv1alpha1.NetworkSecurityTLSInspectionPolicyRef{External: in.GetTlsInspectionPolicy()}
 	}
 	return out
 }
@@ -1258,6 +1292,64 @@ func NetworkSecurityInterceptEndpointGroupSpec_v1alpha1_ToProto(mapCtx *direct.M
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
+func NetworkSecurityMirroringDeploymentGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MirroringDeploymentGroup) *krmnetworksecurityv1alpha1.NetworkSecurityMirroringDeploymentGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityMirroringDeploymentGroupObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.ConnectedEndpointGroups = direct.Slice_FromProto(mapCtx, in.ConnectedEndpointGroups, MirroringDeploymentGroup_ConnectedEndpointGroupObservedState_v1alpha1_FromProto)
+	// MISSING: NestedDeployments
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	out.Locations = direct.Slice_FromProto(mapCtx, in.Locations, MirroringLocationObservedState_v1alpha1_FromProto)
+	return out
+}
+func NetworkSecurityMirroringDeploymentGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityMirroringDeploymentGroupObservedState) *pb.MirroringDeploymentGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MirroringDeploymentGroup{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.ConnectedEndpointGroups = direct.Slice_ToProto(mapCtx, in.ConnectedEndpointGroups, MirroringDeploymentGroup_ConnectedEndpointGroupObservedState_v1alpha1_ToProto)
+	// MISSING: NestedDeployments
+	out.State = direct.Enum_ToProto[pb.MirroringDeploymentGroup_State](mapCtx, in.State)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	out.Locations = direct.Slice_ToProto(mapCtx, in.Locations, MirroringLocationObservedState_v1alpha1_ToProto)
+	return out
+}
+func NetworkSecurityMirroringDeploymentGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MirroringDeploymentGroup) *krmnetworksecurityv1alpha1.NetworkSecurityMirroringDeploymentGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityMirroringDeploymentGroupSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	// MISSING: NestedDeployments
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func NetworkSecurityMirroringDeploymentGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityMirroringDeploymentGroupSpec) *pb.MirroringDeploymentGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MirroringDeploymentGroup{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	// MISSING: NestedDeployments
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
 func NetworkSecurityMirroringDeploymentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MirroringDeployment) *krmnetworksecurityv1alpha1.NetworkSecurityMirroringDeploymentObservedState {
 	if in == nil {
 		return nil
@@ -1312,6 +1404,64 @@ func NetworkSecurityMirroringDeploymentSpec_v1alpha1_ToProto(mapCtx *direct.MapC
 		out.MirroringDeploymentGroup = in.MirroringDeploymentGroupRef.External
 	}
 	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+func NetworkSecurityMirroringEndpointGroupAssociationObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MirroringEndpointGroupAssociation) *krmnetworksecurityv1alpha1.NetworkSecurityMirroringEndpointGroupAssociationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityMirroringEndpointGroupAssociationObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.LocationsDetails = direct.Slice_FromProto(mapCtx, in.LocationsDetails, MirroringEndpointGroupAssociation_LocationDetailsObservedState_v1alpha1_FromProto)
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	out.Locations = direct.Slice_FromProto(mapCtx, in.Locations, MirroringLocationObservedState_v1alpha1_FromProto)
+	return out
+}
+func NetworkSecurityMirroringEndpointGroupAssociationObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityMirroringEndpointGroupAssociationObservedState) *pb.MirroringEndpointGroupAssociation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MirroringEndpointGroupAssociation{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.LocationsDetails = direct.Slice_ToProto(mapCtx, in.LocationsDetails, MirroringEndpointGroupAssociation_LocationDetailsObservedState_v1alpha1_ToProto)
+	out.State = direct.Enum_ToProto[pb.MirroringEndpointGroupAssociation_State](mapCtx, in.State)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	out.Locations = direct.Slice_ToProto(mapCtx, in.Locations, MirroringLocationObservedState_v1alpha1_ToProto)
+	return out
+}
+func NetworkSecurityMirroringEndpointGroupAssociationSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MirroringEndpointGroupAssociation) *krmnetworksecurityv1alpha1.NetworkSecurityMirroringEndpointGroupAssociationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityMirroringEndpointGroupAssociationSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	if in.GetMirroringEndpointGroup() != "" {
+		out.MirroringEndpointGroupRef = &krmnetworksecurityv1alpha1.NetworkSecurityMirroringEndpointGroupRef{External: in.GetMirroringEndpointGroup()}
+	}
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	return out
+}
+func NetworkSecurityMirroringEndpointGroupAssociationSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityMirroringEndpointGroupAssociationSpec) *pb.MirroringEndpointGroupAssociation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MirroringEndpointGroupAssociation{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	if in.MirroringEndpointGroupRef != nil {
+		out.MirroringEndpointGroup = in.MirroringEndpointGroupRef.External
+	}
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
 	return out
 }
 func NetworkSecurityMirroringEndpointGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MirroringEndpointGroup) *krmnetworksecurityv1alpha1.NetworkSecurityMirroringEndpointGroupObservedState {
@@ -1522,40 +1672,6 @@ func NetworkSecurityTLSInspectionPolicyObservedState_v1alpha1_ToProto(mapCtx *di
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: CAPool
-	return out
-}
-func NetworkSecurityTLSInspectionPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TlsInspectionPolicy) *krmnetworksecurityv1alpha1.NetworkSecurityTLSInspectionPolicySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmnetworksecurityv1alpha1.NetworkSecurityTLSInspectionPolicySpec{}
-	// MISSING: Name
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: CAPool
-	if in.GetTrustConfig() != "" {
-		out.TrustConfigRef = &krmcertificatemanagerv1alpha1.CertificateManagerTrustConfigRef{External: in.GetTrustConfig()}
-	}
-	out.ExcludePublicCASet = in.ExcludePublicCaSet
-	out.MinTLSVersion = direct.Enum_FromProto(mapCtx, in.GetMinTlsVersion())
-	out.TLSFeatureProfile = direct.Enum_FromProto(mapCtx, in.GetTlsFeatureProfile())
-	out.CustomTLSFeatures = in.CustomTlsFeatures
-	return out
-}
-func NetworkSecurityTLSInspectionPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityTLSInspectionPolicySpec) *pb.TlsInspectionPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TlsInspectionPolicy{}
-	// MISSING: Name
-	out.Description = direct.ValueOf(in.Description)
-	// MISSING: CAPool
-	if in.TrustConfigRef != nil {
-		out.TrustConfig = in.TrustConfigRef.External
-	}
-	out.ExcludePublicCaSet = in.ExcludePublicCASet
-	out.MinTlsVersion = direct.Enum_ToProto[pb.TlsInspectionPolicy_TlsVersion](mapCtx, in.MinTLSVersion)
-	out.TlsFeatureProfile = direct.Enum_ToProto[pb.TlsInspectionPolicy_Profile](mapCtx, in.TLSFeatureProfile)
-	out.CustomTlsFeatures = in.CustomTLSFeatures
 	return out
 }
 func NetworkSecurityURLListObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.UrlList) *krmnetworksecurityv1alpha1.NetworkSecurityURLListObservedState {

@@ -1,5 +1,5 @@
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -30,7 +30,7 @@ X-Xss-Protection: 0
 
 POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "accountId": "df-sa1-${uniqueId}",
@@ -62,7 +62,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -87,7 +87,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -118,7 +118,7 @@ X-Xss-Protection: 0
 
 POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "accountId": "df-sa2-${uniqueId}",
@@ -150,7 +150,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -176,7 +176,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/df-secret-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -200,7 +200,7 @@ X-Xss-Protection: 0
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets?alt=json&secretId=df-secret-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "labels": {
@@ -239,7 +239,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/df-secret-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -268,7 +268,7 @@ X-Xss-Protection: 0
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}:addVersion?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "payload": {
@@ -300,7 +300,7 @@ X-Xss-Protection: 0
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1:enable?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -326,7 +326,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -352,7 +352,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1:access?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -376,7 +376,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -402,7 +402,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1:access?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -426,7 +426,7 @@ X-Xss-Protection: 0
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}:addVersion?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "payload": {
@@ -458,7 +458,7 @@ X-Xss-Protection: 0
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2:enable?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -484,7 +484,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -510,7 +510,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2:access?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -534,7 +534,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -560,7 +560,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2:access?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -584,7 +584,7 @@ X-Xss-Protection: 0
 
 GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdf-full-${uniqueId}
 
 404 Not Found
@@ -600,7 +600,7 @@ Content-Type: application/json
 
 POST https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories?%24alt=json%3Benum-encoding%3Dint&repositoryId=df-full-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2
 
 {
@@ -622,6 +622,8 @@ Content-Type: application/json
 Grpc-Metadata-Content-Type: application/grpc
 
 {
+  "createTime": null,
+  "dataEncryptionState": null,
   "displayName": "Initial Display Name",
   "gitRemoteSettings": {
     "authenticationTokenSecretVersion": "",
@@ -630,6 +632,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "tokenStatus": "TOKEN_STATUS_UNSPECIFIED",
     "url": "https://github.com/GoogleCloudPlatform/k8s-config-connector"
   },
+  "kmsKeyName": "",
   "labels": {},
   "name": "projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}",
   "npmrcEnvironmentVariablesSecretVersion": "",
@@ -646,7 +649,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdf-full-${uniqueId}
 
 200 OK
@@ -654,6 +657,8 @@ Content-Type: application/json
 Grpc-Metadata-Content-Type: application/grpc
 
 {
+  "createTime": null,
+  "dataEncryptionState": null,
   "displayName": "Initial Display Name",
   "gitRemoteSettings": {
     "authenticationTokenSecretVersion": "",
@@ -662,6 +667,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "tokenStatus": "TOKEN_STATUS_UNSPECIFIED",
     "url": "https://github.com/GoogleCloudPlatform/k8s-config-connector"
   },
+  "kmsKeyName": "",
   "labels": {},
   "name": "projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}",
   "npmrcEnvironmentVariablesSecretVersion": "",
@@ -678,7 +684,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 PATCH https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=gitRemoteSettings%2CworkspaceCompilationOverrides%2CsetAuthenticatedUserAdmin%2CdisplayName%2CserviceAccount
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: repository.name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdf-full-${uniqueId}
 
 {
@@ -702,6 +708,8 @@ Content-Type: application/json
 Grpc-Metadata-Content-Type: application/grpc
 
 {
+  "createTime": null,
+  "dataEncryptionState": null,
   "displayName": "Updated Display Name",
   "gitRemoteSettings": {
     "authenticationTokenSecretVersion": "",
@@ -710,6 +718,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "tokenStatus": "TOKEN_STATUS_UNSPECIFIED",
     "url": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
   },
+  "kmsKeyName": "",
   "labels": {},
   "name": "projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}",
   "npmrcEnvironmentVariablesSecretVersion": "",
@@ -726,7 +735,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 GET https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdf-full-${uniqueId}
 
 200 OK
@@ -734,6 +743,8 @@ Content-Type: application/json
 Grpc-Metadata-Content-Type: application/grpc
 
 {
+  "createTime": null,
+  "dataEncryptionState": null,
   "displayName": "Updated Display Name",
   "gitRemoteSettings": {
     "authenticationTokenSecretVersion": "",
@@ -742,6 +753,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "tokenStatus": "TOKEN_STATUS_UNSPECIFIED",
     "url": "https://github.com/GoogleCloudPlatform/k8s-config-connector.git"
   },
+  "kmsKeyName": "",
   "labels": {},
   "name": "projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}",
   "npmrcEnvironmentVariablesSecretVersion": "",
@@ -758,7 +770,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 DELETE https://dataform.googleapis.com/v1beta1/projects/${projectId}/locations/us-west2/repositories/df-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Frepositories%2Fdf-full-${uniqueId}
 
 200 OK
@@ -772,7 +784,7 @@ Grpc-Metadata-X-Http-Code: 204
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -798,7 +810,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2:access?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -822,7 +834,7 @@ X-Xss-Protection: 0
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/2:destroy?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -849,7 +861,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -875,7 +887,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1:access?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -899,7 +911,7 @@ X-Xss-Protection: 0
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/df-secret-${uniqueId}/versions/1:destroy?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -926,7 +938,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/df-secret-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -955,7 +967,7 @@ X-Xss-Protection: 0
 
 DELETE https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/df-secret-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -972,7 +984,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -997,7 +1009,7 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1014,7 +1026,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1039,7 +1051,7 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/df-sa1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8

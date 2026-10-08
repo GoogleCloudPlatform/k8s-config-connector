@@ -74,8 +74,11 @@ else
     VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
 fi
 
-if [[ "${SKIP_GENERATE_PROTOS:-0}" == "1" ]] && [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
+if [[ "${FORCE_GENERATE}" != "1" ]] && [[ "${SKIP_GENERATE_PROTOS:-0}" == "1" ]] && [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
     echo "Skipping generate-proto.sh as requested by SKIP_GENERATE_PROTOS=1 and output file exists: ${VERSIONED_OUTPUT_PATH}"
+    if [ "${VERSIONED_OUTPUT_PATH}" != "${OUTPUT_PATH}" ]; then
+        cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
+    fi
     exit 0
 fi
 
@@ -101,6 +104,21 @@ git reset --hard ${GOOGLEAPI_VERSION}
 mkdir -p google/cloud/config/v1
 cp ${REPO_ROOT}/mockgcp/apis/google/cloud/config/v1/config.proto google/cloud/config/v1/config.proto
 
+# Overwrite catalog.proto with the updated version that has MetadataFeed
+mkdir -p google/cloud/dataplex/v1
+cp ${REPO_ROOT}/mockgcp/apis/google/cloud/dataplex/v1/catalog.proto google/cloud/dataplex/v1/catalog.proto
+
+# Patch monitoring dashboard metrics.proto to include OpsAnalyticsQuery
+sed -i '/string prometheus_query = 6;/a \ \ \ \ // A query used to fetch time series with SQL.\n    OpsAnalyticsQuery ops_analytics_query = 8;' google/monitoring/dashboard/v1/metrics.proto
+cat >> google/monitoring/dashboard/v1/metrics.proto <<EOF
+
+// A query that produces an aggregated response and supporting data.
+message OpsAnalyticsQuery {
+  // A SQL query to fetch time series, category series, or numeric series data.
+  string sql = 2;
+}
+EOF
+
 
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"
@@ -117,7 +135,7 @@ else
 fi
 
 
-if [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
+if [[ "${FORCE_GENERATE}" != "1" ]] && [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
     echo "Using cached googleapis pb file at ${VERSIONED_OUTPUT_PATH}"
     if [ "${VERSIONED_OUTPUT_PATH}" != "${OUTPUT_PATH}" ]; then
         cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"

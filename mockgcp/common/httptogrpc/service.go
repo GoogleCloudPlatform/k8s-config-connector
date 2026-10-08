@@ -237,6 +237,14 @@ func newGRPCService(grpcClient any, service protoreflect.ServiceDescriptor, opti
 				errs = append(errs, fmt.Errorf("unhandled annotation string %q", fd.JSONName()))
 			}
 
+		case protoreflect.BoolKind:
+			switch fd.JSONName() {
+			case "deprecated":
+				// ignore
+			default:
+				errs = append(errs, fmt.Errorf("unhandled annotation bool %q", fd.JSONName()))
+			}
+
 		default:
 			errs = append(errs, fmt.Errorf("unhandled option kind in %v", fd))
 		}

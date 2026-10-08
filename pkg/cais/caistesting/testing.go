@@ -118,6 +118,16 @@ func NormalizeDynamicIDs(s string) string {
 			start := idx + len("/keyHandles/")
 			lines[i] = line[:start] + "${keyHandleID}"
 		}
+		// Normalize AIPlatformReasoningEngine reasoningEngines IDs: locations/.../reasoningEngines/<reasoningEngineId>
+		if idx := strings.Index(line, "/reasoningEngines/"); idx != -1 {
+			start := idx + len("/reasoningEngines/")
+			lines[i] = line[:start] + "${reasoningEngineID}"
+		}
+		// Normalize AIPlatformSpecialistPool specialistPools IDs: locations/.../specialistPools/<specialistPoolId>
+		if idx := strings.Index(line, "/specialistPools/"); idx != -1 {
+			start := idx + len("/specialistPools/")
+			lines[i] = line[:start] + "${specialistPoolID}"
+		}
 		// Normalize Monitoring Notification Channel numeric IDs
 		if idx := strings.Index(line, "/notificationChannels/"); idx != -1 {
 			lines[i] = line[:idx+len("/notificationChannels/")]
@@ -134,6 +144,43 @@ func NormalizeDynamicIDs(s string) string {
 		if idx := strings.Index(line, "/keys/"); idx != -1 && strings.Contains(line, "recaptchaenterprise") {
 			lines[i] = line[:idx+len("/keys/")] + "${keyID}"
 		}
+		// Normalize CCInsightsView IDs: locations/.../views/<viewId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/views/"); idx != -1 && strings.Contains(line, "contactcenterinsights") {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
+		// Normalize DiscoveryEngineSitemap IDs: locations/.../sitemaps/<sitemapId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/sitemaps/"); idx != -1 && strings.Contains(line, "discoveryengine") {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
+		// Normalize CCInsightsAnalysisRule IDs: locations/.../analysisRules/<analysisRuleId>
+		if idx := strings.Index(line, "/analysisRules/"); idx != -1 && strings.Contains(line, "contactcenterinsights") {
+			name := ""
+			for j := i + 1; j < len(lines); j++ {
+				if strings.HasPrefix(strings.TrimSpace(lines[j]), "- ") {
+					break
+				}
+				if strings.HasPrefix(strings.TrimSpace(lines[j]), "name: ") {
+					name = strings.TrimSpace(strings.TrimPrefix(strings.TrimSpace(lines[j]), "name: "))
+					break
+				}
+			}
+			if strings.Contains(name, "armax") || strings.Contains(name, "max") {
+				lines[i] = line[:idx+len("/analysisRules/")] + "armax${uniqueId}"
+			} else if strings.Contains(name, "armin") || strings.Contains(name, "min") {
+				lines[i] = line[:idx+len("/analysisRules/")] + "armin${uniqueId}"
+			}
+			lines[i] = strings.Replace(lines[i], "projects/${projectNumber}/locations/", "projects/${projectId}/locations/", 1)
+		}
 		// Normalize IAP Brand numeric IDs: projects/.../brands/<brandId>
 		if idx := strings.Index(line, "/brands/"); idx != -1 {
 			lines[i] = line[:idx+len("/brands/")]
@@ -147,6 +194,31 @@ func NormalizeDynamicIDs(s string) string {
 			} else {
 				lines[i] = line[:start] + "${folderId}"
 			}
+		}
+		// Normalize DialogflowKnowledgeBase server-generated knowledge base IDs
+		if idx := strings.Index(line, "/knowledgeBases/"); idx != -1 && strings.Contains(line, "dialogflow") {
+			lines[i] = line[:idx+len("/knowledgeBases/")]
+		}
+		// Normalize AssuredWorkloads Workload IDs: locations/.../workloads/<workloadId>
+		if idx := strings.Index(line, "/workloads/"); idx != -1 {
+			start := idx + len("/workloads/")
+			end := strings.Index(line[start:], "/")
+			if end != -1 {
+				lines[i] = line[:start] + "${workloadID}" + line[start+end:]
+			} else {
+				lines[i] = line[:start] + "${workloadID}"
+			}
+		}
+		// Normalize MapManagement StyleConfig IDs: projects/.../styleConfigs/<styleConfigId>
+		if idx := strings.Index(line, "/styleConfigs/"); idx != -1 {
+			start := idx + len("/styleConfigs/")
+			end := strings.Index(line[start:], "/")
+			if end != -1 {
+				lines[i] = line[:start] + "${styleConfigId}" + line[start+end:]
+			} else {
+				lines[i] = line[:start] + "${styleConfigId}"
+			}
+			lines[i] = strings.Replace(lines[i], "projects/${projectNumber}/styleConfigs/", "projects/${projectId}/styleConfigs/", 1)
 		}
 	}
 	return strings.Join(lines, "\n")

@@ -1,0 +1,174 @@
+GET https://devicestreaming.googleapis.com/v1/projects/${projectId}/deviceSessions/dss-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2FdeviceSessions%2Fdss-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/deviceSessions/dss-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://devicestreaming.googleapis.com/v1/projects/${projectId}/deviceSessions?%24alt=json%3Benum-encoding%3Dint&deviceSessionId=dss-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}
+
+{
+  "androidDevice": {
+    "androidModelId": "Pixel8",
+    "androidVersionId": "34"
+  },
+  "ttl": "900s"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "androidDevice": {
+    "androidModelId": "Pixel8",
+    "androidVersionId": "34"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/deviceSessions/dss-${uniqueId}",
+  "state": 3,
+  "ttl": "900s"
+}
+
+---
+
+GET https://devicestreaming.googleapis.com/v1/projects/${projectId}/deviceSessions/dss-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2FdeviceSessions%2Fdss-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "androidDevice": {
+    "androidModelId": "Pixel8",
+    "androidVersionId": "34"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/deviceSessions/dss-${uniqueId}",
+  "state": 3,
+  "ttl": "900s"
+}
+
+---
+
+PATCH https://devicestreaming.googleapis.com/v1/projects/${projectId}/deviceSessions/dss-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=ttl
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: device_session.name=projects%2F${projectId}%2FdeviceSessions%2Fdss-${uniqueId}
+
+{
+  "androidDevice": {
+    "androidModelId": "Pixel8",
+    "androidVersionId": "34"
+  },
+  "name": "projects/${projectId}/deviceSessions/dss-${uniqueId}",
+  "ttl": "1200s"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "androidDevice": {
+    "androidModelId": "Pixel8",
+    "androidVersionId": "34"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/deviceSessions/dss-${uniqueId}",
+  "state": 3,
+  "ttl": "1200s"
+}
+
+---
+
+GET https://devicestreaming.googleapis.com/v1/projects/${projectId}/deviceSessions/dss-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2FdeviceSessions%2Fdss-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "androidDevice": {
+    "androidModelId": "Pixel8",
+    "androidVersionId": "34"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/deviceSessions/dss-${uniqueId}",
+  "state": 3,
+  "ttl": "1200s"
+}
+
+---
+
+POST https://devicestreaming.googleapis.com/v1/projects/${projectId}/deviceSessions/dss-${uniqueId}:cancel?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2FdeviceSessions%2Fdss-${uniqueId}
+
+{
+  "name": "projects/${projectId}/deviceSessions/dss-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

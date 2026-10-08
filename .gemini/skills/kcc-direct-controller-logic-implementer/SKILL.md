@@ -31,21 +31,27 @@ This skill guides the implementation of the `Adapter` interface and the creation
     - Add `update.yaml`: Update all **mutable** fields.
     - Add `dependencies.yaml` if the resource requires other KCC resources to exist first.
 
+3.5. **Remove from Ratcheting Exclusions (MANDATORY)**:
+    Before running the test cases against real or mock GCP, you **MUST** ensure the target resource is removed from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. This enables the re-reconciliation test step, which is a fundamental use case KCC resources must support.
+    1. Open `tests/e2e/ratcheting.go`.
+    2. Locate the function `ShouldTestRereconiliation`.
+    3. Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
+    4. If there is a `case` block for your target resource's `GroupKind`, remove that `case` line from the switch statement.
+
 4.  **Record Golden Files (Real GCP)**:
     Run the tests against real GCP to record the traffic and object state. Ensure you use a sufficient timeout (e.g., 30-60 minutes) as GCP resource creation can be slow:
+
+    > [!WARNING]
+    > **WHENEVER A TEST CASE IS UPDATED, WE MUST RECORD REAL GCP LOGS AGAIN.**
+    > If you make any modifications to a test case configuration or manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or modify the controller's GCP request structures, you **MUST** run the test case against real GCP (`hack/record-gcp` or with `E2E_GCP_TARGET=real`) to regenerate the authentic `_http.log` baseline before comparing or committing any mock log changes. Do not attempt to manually edit the logs or bypass recording live traffic.
+    >
+    > **Do NOT re-run real GCP for log normalization or mock alignment**: Run-to-run variations in HTTP logs (such as LRO polling counts, dynamic timestamps, tokens, or cookies) should be normalized in `tests/e2e/normalize.go` or MockGCP normalizers without re-recording against live GCP. Mock alignment is done exclusively with `hack/compare-mock`.
+
     ```bash
-    # Run from the repository root
-    RUN_E2E=1 \
-    E2E_GCP_TARGET=real \
-    E2E_KUBE_TARGET=envtest \
-    GOLDEN_REQUEST_CHECKS=1 \
-    GOLDEN_OBJECT_CHECKS=1 \
-    WRITE_GOLDEN_OUTPUT=1 \
-    go test -v ./tests/e2e \
-      -timeout 60m \
-      -run TestAllInSeries/fixtures/<resource_lower>-minimal
+    # Run from the repository root; records both the -minimal and -maximal fixtures in one run
+    hack/record-gcp "fixtures/^<resource_lower>-(minimal|maximal)$"
     ```
-    Repeat for the `-maximal` fixture. Commit the resulting `_http.log` and `_generated_object_*.golden.yaml` files.
+    Commit the resulting `_http.log` and `_generated_object_*.golden.yaml` files.
 
 5.  **Verify Field Coverage**:
     Run the API check tests:

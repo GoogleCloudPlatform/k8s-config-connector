@@ -196,6 +196,7 @@ func (a *NetworkAttachmentAdapter) Update(ctx context.Context, updateOp *directb
 		// even though there is no update, we still want to update KRM status
 		updated = a.actual
 	} else {
+		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
 
 		// An up-to-date fingerprint must be provided in order to patch

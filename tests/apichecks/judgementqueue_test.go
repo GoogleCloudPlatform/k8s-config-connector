@@ -1,0 +1,282 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package lint
+
+import (
+	"fmt"
+	"os"
+	"path/filepath"
+	"sort"
+	"strings"
+	"testing"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
+	"k8s.io/apimachinery/pkg/util/sets"
+)
+
+// judgementQueueGlob finds the per-service work queues written by the bulk
+// generator. The files are per service, not global, so that generating two
+// services in parallel never produces a conflicting diff in the same file.
+const judgementQueueGlob = "../../apis/*/" + judgement.FileName
+
+// judgementQueue holds every entry from every per-service queue file.
+type judgementQueue struct {
+	entries []judgement.Entry
+	// openRefFields holds refFieldKey(kind, group, field) for each open entry
+	// with a reference reason.
+	openRefFields sets.String
+}
+
+func refFieldKey(kind, group, field string) string {
+	return kind + "." + group + "|" + field
+}
+
+// SuppressesRef reports whether an open queue entry already says this field
+// may need to be a reference. TestMissingRefs skips such a finding: the
+// generator has flagged it, and a person still has to decide.
+//
+// Only reference reasons count. An open entry about something else, such as
+// a field placed in status or the untriaged-bulk-generation marker, does not
+// hide a [refs] finding.
+func (q *judgementQueue) SuppressesRef(kind, group, fieldPath string) bool {
+	if q == nil {
+		return false
+	}
+	return q.openRefFields.Has(refFieldKey(kind, group, fieldPath))
+}
+
+// loadJudgementQueue reads and validates every queue file matching glob.
+// A file that does not validate is an error, so a typo cannot quietly change
+// what is suppressed.
+func loadJudgementQueue(glob string) (*judgementQueue, error) {
+	paths, err := filepath.Glob(glob)
+	if err != nil {
+		return nil, err
+	}
+	out := &judgementQueue{openRefFields: sets.NewString()}
+	for _, path := range paths {
+		q, err := judgement.Read(path)
+		if err != nil {
+			return nil, err
+		}
+		for _, e := range q.Entries {
+			out.entries = append(out.entries, e)
+			if e.IsOpen() && e.Kind != "" && e.Field != "" && judgement.IsReferenceReason(e.Reason) {
+				out.openRefFields.Insert(refFieldKey(e.Kind, e.Group, e.Field))
+			}
+		}
+	}
+	return out, nil
+}
+
+// summary counts entries by reason, split into open and each resolution.
+// It shows which guesses people keep and which they rewrite, which is what
+// tells us where the generator needs work.
+func (q *judgementQueue) summary() string {
+	counts := map[string]map[string]int{}
+	for _, e := range q.entries {
+		state := string(e.Status)
+		if e.Status == judgement.StatusResolved {
+			state = string(e.Resolution)
+		}
+		if counts[e.Reason] == nil {
+			counts[e.Reason] = map[string]int{}
+		}
+		counts[e.Reason][state]++
+	}
+	reasons := make([]string, 0, len(counts))
+	for r := range counts {
+		reasons = append(reasons, r)
+	}
+	sort.Strings(reasons)
+	var b strings.Builder
+	for _, r := range reasons {
+		b.WriteString(r)
+		for _, state := range []string{"open", "accepted", "edited", "deferred", "not-applicable"} {
+			if n := counts[r][state]; n > 0 {
+				fmt.Fprintf(&b, " %s=%d", state, n)
+			}
+		}
+		b.WriteString("\n")
+	}
+	return b.String()
+}
+
+// carryForwardSuppressed returns the baseline entries that match a suppressed
+// finding, so that suppressing a finding does not read as having fixed it.
+func carryForwardSuppressed(baselinePath string, suppressed sets.String) ([]string, error) {
+	data, err := os.ReadFile(baselinePath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	var out []string
+	for _, line := range strings.Split(string(data), "\n") {
+		line = strings.TrimSpace(line)
+		if line == "" || strings.HasPrefix(line, "#") {
+			continue
+		}
+		if suppressed.Has(line) {
+			out = append(out, line)
+		}
+	}
+	return out, nil
+}
+
+func TestCarryForwardSuppressed(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "missingrefs.txt")
+	a := `[refs] crd=queued.example.com version=v1alpha1: field ".spec.a" should be a reference`
+	b := `[refs] crd=other.example.com version=v1beta1: field ".spec.b" should be a reference`
+	c := `[refs] crd=queued.example.com version=v1alpha1: field ".spec.c" should be a reference`
+	if err := os.WriteFile(path, []byte("# baseline\n"+a+"\n"+b+"\n"+c+"\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	// Only .spec.a is suppressed. .spec.c belongs to the same CRD but has no
+	// queue entry, so it is checked as usual and not carried.
+	got, err := carryForwardSuppressed(path, sets.NewString(a))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(got) != 1 || got[0] != a {
+		t.Fatalf("carried %v, want only %q", got, a)
+	}
+
+	// Nothing suppressed means nothing carried, so the normal path is untouched.
+	none, err := carryForwardSuppressed(path, sets.NewString())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(none) != 0 {
+		t.Errorf("expected no carried entries, got %v", none)
+	}
+}
+
+func writeQueueFile(t *testing.T, dir, service, content string) {
+	t.Helper()
+	d := filepath.Join(dir, service)
+	if err := os.MkdirAll(d, 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(d, judgement.FileName), []byte(content), 0644); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestLoadJudgementQueue(t *testing.T) {
+	const (
+		lb      = "NetworkServicesLBTrafficExtension"
+		lbGroup = "networkservices.cnrm.cloud.google.com"
+	)
+	dir := t.TempDir()
+	writeQueueFile(t, dir, "networkservices", `entries:
+- kind: NetworkServicesLBTrafficExtension
+  group: networkservices.cnrm.cloud.google.com
+  reason: untriaged-bulk-generation
+  status: open
+- kind: NetworkServicesLBTrafficExtension
+  group: networkservices.cnrm.cloud.google.com
+  field: .spec.forwardingRules
+  reason: possible-reference-by-description
+  status: open
+- kind: NetworkServicesLBTrafficExtension
+  group: networkservices.cnrm.cloud.google.com
+  field: .spec.labels
+  reason: deliberate-omission
+  status: open
+- protoMessage: google.cloud.networkservices.v1.ExtensionChain
+  field: name
+  reason: possible-reference-by-sibling
+  status: open
+`)
+	writeQueueFile(t, dir, "dataproc", `entries:
+- kind: DataprocBatch
+  group: dataproc.cnrm.cloud.google.com
+  field: .spec.serviceAccount
+  reason: possible-reference
+  status: resolved
+  resolution: edited
+  note: changed to serviceAccountRef
+`)
+
+	q, err := loadJudgementQueue(filepath.Join(dir, "*", judgement.FileName))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if len(q.entries) != 5 {
+		t.Errorf("entries = %d, want 5", len(q.entries))
+	}
+	for _, tc := range []struct {
+		name         string
+		kind, group  string
+		field        string
+		wantSuppress bool
+	}{
+		{"open reference entry", lb, lbGroup, ".spec.forwardingRules", true},
+		{"same resource, field with no entry", lb, lbGroup, ".spec.network", false},
+		{"open entry with a non-reference reason", lb, lbGroup, ".spec.labels", false},
+		{"resolved reference entry", "DataprocBatch", "dataproc.cnrm.cloud.google.com", ".spec.serviceAccount", false},
+		{"unrelated resource", "StorageBucket", "storage.cnrm.cloud.google.com", ".spec.forwardingRules", false},
+	} {
+		if got := q.SuppressesRef(tc.kind, tc.group, tc.field); got != tc.wantSuppress {
+			t.Errorf("%s: SuppressesRef(%s, %s) = %v, want %v", tc.name, tc.kind, tc.field, got, tc.wantSuppress)
+		}
+	}
+	// The untriaged marker and the message entry name no field of a Kind, so
+	// only the one reference entry counts.
+	if got := q.openRefFields.Len(); got != 1 {
+		t.Errorf("open reference fields = %d, want 1", got)
+	}
+}
+
+func TestLoadJudgementQueueNoFiles(t *testing.T) {
+	// No service has been bulk-generated, so nothing is suppressed and
+	// TestMissingRefs behaves exactly as before.
+	q, err := loadJudgementQueue(filepath.Join(t.TempDir(), "*", judgement.FileName))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(q.entries) != 0 || q.openRefFields.Len() != 0 {
+		t.Errorf("expected an empty queue, got %d entries and %d suppressed fields", len(q.entries), q.openRefFields.Len())
+	}
+}
+
+func TestLoadJudgementQueueRejectsBadEntry(t *testing.T) {
+	dir := t.TempDir()
+	writeQueueFile(t, dir, "svc", "entries:\n- kind: Foo\n  group: example.com\n  field: .spec.bar\n  status: open\n")
+
+	_, err := loadJudgementQueue(filepath.Join(dir, "*", judgement.FileName))
+	if err == nil {
+		t.Fatal("expected an error for an entry with no reason")
+	}
+	if !strings.Contains(err.Error(), filepath.Join("svc", judgement.FileName)) {
+		t.Errorf("error should name the file, got: %v", err)
+	}
+}
+
+// TestJudgementQueueIsWellFormed validates the real files in the repo, so a
+// malformed entry fails here rather than silently changing what is
+// suppressed. Run it with -v to see the counts by reason.
+func TestJudgementQueueIsWellFormed(t *testing.T) {
+	q, err := loadJudgementQueue(judgementQueueGlob)
+	if err != nil {
+		t.Fatalf("error loading judgement queues: %v", err)
+	}
+	t.Logf("%d entries, %d open reference fields\n%s", len(q.entries), q.openRefFields.Len(), q.summary())
+}

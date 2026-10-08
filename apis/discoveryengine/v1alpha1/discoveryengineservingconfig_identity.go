@@ -46,6 +46,10 @@ func (i *DiscoveryEngineServingConfigIdentity) String() string {
 	return DiscoveryEngineServingConfigIdentityFormat.ToString(*i)
 }
 
+func (i *DiscoveryEngineServingConfigIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s/collections/%s/engines/%s", i.Project, i.Location, i.Collection, i.Engine)
+}
+
 func (i *DiscoveryEngineServingConfigIdentity) FromExternal(ref string) error {
 	parsed, match, err := DiscoveryEngineServingConfigIdentityFormat.Parse(ref)
 	if err != nil {

@@ -42,6 +42,11 @@ ${CONTROLLERBUILDER} generate-types \
     --resource VectorSearchCollection:Collection \
     --proto-source-path ${PROTO_OUT}
 
+${CONTROLLERBUILDER} generate-mapper \
+    --service google.cloud.vectorsearch.v1 \
+    --api-version "vectorsearch.cnrm.cloud.google.com/v1alpha1" \
+    --proto-source-path ${PROTO_OUT}
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

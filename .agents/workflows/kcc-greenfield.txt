@@ -4,6 +4,95 @@ name: checklist-for-kind
 schedule: never
 mode: workflow
 cooldown: 2h
+preconditionScript: |
+  #!/bin/bash
+  # Precondition script to check if all related PRs and Issues are closed.
+
+  set -e
+  set -o pipefail
+
+  # List of issues to exclude from checks
+  EXCLUDED_ISSUES="10588"
+
+  echo "Checking precondition for KCC migration..."
+  echo "RELATED_ISSUES: ${RELATED_ISSUES:-(none)}"
+
+  if [ -z "${RELATED_ISSUES}" ]; then
+    echo "No related issues to check."
+    exit 0
+  fi
+
+  # Convert comma-separated list into an array
+  has_open_issue=false
+  IFS=',' read -ra ADDR <<< "${RELATED_ISSUES}"
+  for issue in "${ADDR[@]}"; do
+    # Trim whitespace
+    issue=$(echo "${issue}" | tr -d '[:space:]')
+    if [ -z "${issue}" ]; then
+      continue
+    fi
+
+    # Check if the issue is in the excluded list
+    is_excluded=false
+    for excl in ${EXCLUDED_ISSUES}; do
+      if [ "${issue}" = "${excl}" ]; then
+        is_excluded=true
+        break
+      fi
+    done
+
+    if [ "${is_excluded}" = "true" ]; then
+      echo "Excluding issue ${issue} from checks."
+      continue
+    fi
+
+    echo "Checking status of issue/PR #${issue}..."
+    state=$(gh issue view "${issue}" --json state --jq .state 2>/dev/null || echo "UNKNOWN")
+    echo "State of #${issue} is: ${state}"
+
+    if [ "${state}" != "CLOSED" ] && [ "${state}" != "MERGED" ]; then
+      has_open_issue=true
+
+      # Check if this open child issue has an open linked PR that isn't recorded yet
+      open_pr=$(gh api graphql -f query='
+        query($issue: Int!) {
+          repository(owner: "GoogleCloudPlatform", name: "k8s-config-connector") {
+            issue(number: $issue) {
+              timelineItems(itemTypes: [CROSS_REFERENCED_EVENT, CONNECTED_EVENT], last: 20) {
+                nodes {
+                  ... on CrossReferencedEvent { source { ... on PullRequest { number state } } }
+                  ... on ConnectedEvent { subject { ... on PullRequest { number state } } }
+                }
+              }
+            }
+          }
+        }' -F issue="${issue}" 2>/dev/null | jq -r '[.data.repository.issue.timelineItems.nodes[]? | (.source // .subject) | select(. != null and .state == "OPEN") | .number] | last // empty' 2>/dev/null || true)
+
+      if [ -n "${open_pr}" ]; then
+        parent_issue="${SESSION_ID#issue-}"
+        is_recorded=false
+        if [[ ",${RELATED_ISSUES// /}," == *",${open_pr},"* ]]; then
+          is_recorded=true
+        elif [ -n "${parent_issue}" ] && gh issue view "${parent_issue}" --json body,comments --jq '[.body, .comments[].body] | join("\n")' 2>/dev/null | grep -qE "#${open_pr}\b|pull/${open_pr}\b"; then
+          is_recorded=true
+        fi
+
+        if [ "${is_recorded}" = "false" ]; then
+          echo "New unrecorded PR #${open_pr} found for open issue #${issue}. Waking agent once to update table."
+          exit 0
+        fi
+        echo "Open PR #${open_pr} for issue #${issue} is already recorded in parent issue."
+      fi
+    fi
+  done
+
+  if [ "${has_open_issue}" = "true" ]; then
+    echo "Precondition failed: One or more related issues/PRs are not closed."
+    exit 1
+  fi
+
+  echo "All related issues/PRs are closed."
+  exit 0
 ---
 
 # Checklist for KCC Greenfield Resource Migration
@@ -14,20 +103,26 @@ Compare to Brownfield resources which are already implemented in KCC.
 
 Instead of doing the coding yourself under this skill, you will coordinate and orchestrate:
 1. Planning the migration steps.
-2. Opening GitHub issues for each step, labeling them with `overseer`, and leaving them unassigned (or assigning them to the current bot user).
+2. Opening GitHub issues for each step, labeling them with `overseer`, and inheriting assignees from the parent workflow issue (`${SESSION_ID#issue-}`).
 3. Monitoring progress of the Pull Requests.
 4. Opening subsequent issues once the prior steps are successfully completed.
 
 > [!IMPORTANT]
 > **Safety Guardrails (Strict Enforcement)**:
-> - **Do NOT write code or create PRs directly**: You must **never** checkout code, write code, run builds/tests, commit changes, or run `gh pr create` to send/push PRs. Your role under this skill is strictly limited to planning, progress tracking, and orchestration. All code implementation, CI fixing, and triage work must be delegated to coder and reviewer bots by creating child issues or assigning PRs back to their author bots.
-> - **Do NOT comment on child Pull Requests**: You must **never** comment directly on the child Pull Requests. The watch daemon will automatically monitor and handle PR review feedback and CI check failures. If you need to request action or re-trigger a run, do so only by assigning the PR to the PR author bot (using `gh pr edit <pr> --add-assignee <author>` or assigning via `gh` CLI). However, if the PR has the `overseer/giving-up` label, you MUST NOT assign the PR back to the bot, as this indicates the retry limit was reached and human OWNER intervention is required.
+> - **Do NOT write code or create PRs directly**: You must **never** checkout code, write code, run builds/tests, commit changes, or run `gh pr create` to send/push PRs. Your role under this skill is strictly limited to planning, progress tracking, and orchestration. All code implementation, CI fixing, and triage work must be delegated to coder and reviewer bots by creating child issues.
+> - **Do NOT comment on child Pull Requests**: You must **never** comment directly on the child Pull Requests. The watch daemon will automatically monitor and handle PR review feedback and CI check failures.
+> - **Do NOT assign to PRs directly**: You must **never** directly assign PRs to bots or humans. The watch daemon will automatically handle bot and task assignment.
 > - **Do NOT approve, LGTM, or label PRs**: You must **never** approve, LGTM, or add approval/merging labels (such as `lgtm`, `approved`, or `automerge`) to any Pull Requests. These actions require human OWNER review and approval.
 > - **Do NOT work on closed Pull Requests**: If a PR is closed but not merged, dont assign bots to the PR.
-> - **Idempotent Issue Creation & Journal Recording**:
+> - **Idempotent Issue Creation, Assignee Inheritance & Journal Recording**:
+>   - **Fetch parent workflow issue assignees**: Before creating or adopting a child issue, look up the assignees on the parent workflow issue (`${SESSION_ID#issue-}`):
+>     `gh issue view ${SESSION_ID#issue-} --repo GoogleCloudPlatform/k8s-config-connector --json assignees --jq '[.assignees[].login] | join(",")'`
 >   - **Before creating any child issue**, you MUST search GitHub first for an existing open issue for that step:
->     `gh issue list --repo GoogleCloudPlatform/k8s-config-connector --search "<step-title-keywords> {kind}" --json number,title,state`
->   - If an open issue with that title already exists, **DO NOT run `gh issue create`**. Reuse the existing issue number in your progress table and journal file!
+>     `gh issue list --repo GoogleCloudPlatform/k8s-config-connector --search "<step-title-keywords> {kind}" --json number,title,state,labels,assignees`
+>   - **When creating a new child issue**, if the parent workflow issue has assignees, inherit them by passing `--assignee "<parent-assignees-comma-separated>"` to `gh issue create`.
+>   - If an open issue with that title already exists, **DO NOT run `gh issue create`**. Reuse (adopt) the existing issue number in your progress table and journal file!
+>   - **When reusing (adopting) an existing issue**, verify that it has all the required labels for that step (such as `overseer`, `greenfield`, the step-specific `step/*` label, and `overseer/review` if applicable) AND all assignees from the parent workflow issue (`${SESSION_ID#issue-}`). If any required labels or parent assignees are missing, add them immediately:
+>     `gh issue edit <issue-number> --repo GoogleCloudPlatform/k8s-config-connector --add-label "<required-labels-comma-separated>" --add-assignee "<parent-assignees-comma-separated>"`
 >   - **Whenever you create an issue or update a step**, immediately write the issue/PR numbers to the local journal file (`.agents/workflows/greenfield-checklist-for-kind/journal/{kind}.md`) and save it so `git status` registers the journal update.
 
 ## Journaling and Progress Tracking
@@ -43,7 +138,7 @@ The journal should contain:
    * Status (e.g. `Open`, `PR Created`, `Merged`, `Completed`)
    * Date Started and Date Completed
 
-Only proceed to the next step once the PR for the current step is merged successfully.
+If the current step's child issue is still `OPEN` and has an open Pull Request linked to it (including when a previously recorded PR was closed without merging and replaced by a new open PR), update the table's `GitHub Pull Request` column with the latest open PR link/number (replacing any closed PR) and set `Status` to `PR Created` in both the local journal file and the parent issue description/comment, then stop. Only proceed to the next step once the PR for the current step is merged successfully.
 
 3. In addition to the local journal file, **update the parent issue description** (using the issue ID/number extracted from `${SESSION_ID#issue-}`) or fall back to updating a comment:
    * **Formatting the GitHub Description/Comment**: To keep the parent GitHub issue clean and avoid excessively chatty updates, the body posted to GitHub (description or comment) must **only** include the current step, the progress tracking table, and **at most the 3 most recent status update notes**. Do not include the entire historical list of check logs or updates under the table in the GitHub description/comment; all older history must remain in the local journal file on the branch only.
@@ -52,14 +147,17 @@ Only proceed to the next step once the PR for the current step is merged success
      gh issue edit ${SESSION_ID#issue-} --body "<updated_body>"
      ```
      If editing the issue description fails (due to write permissions on public repositories), **fall back to updating a comment**:
-     * Search the comments on the issue for an existing comment posted by yourself (check for author match with your GITHUB_USER_ID) that contains the text `Migration Progress`.
-     * If such a comment exists, edit it with the updated progress using:
+     * Search the comments on the issue for any existing comment containing the text `Migration Progress` or `Migration Progress: {kind}`:
        ```bash
-       gh issue comment edit <comment-id> --body "<updated_comment_body>"
+       gh api repos/{owner}/{repo}/issues/${SESSION_ID#issue-}/comments --jq '.[] | select(.body | contains("Migration Progress")) | .id' | tail -n 1
+       ```
+     * If such a comment exists (e.g., `<comment-id>`), edit it with the updated progress using `gh api`:
+       ```bash
+       gh api --method PATCH repos/{owner}/{repo}/issues/comments/<comment-id> -f body="<updated_comment_body>"
        ```
      * If no such comment exists, create a new comment:
        ```bash
-       gh issue comment create ${SESSION_ID#issue-} --body "<updated_comment_body>"
+       gh issue comment ${SESSION_ID#issue-} --body "<updated_comment_body>"
        ```
 4. Once all steps of the migration for the resource kind are successfully completed and verified merged, update the parent issue description to show completion, and close the parent issue:
    ```bash
@@ -86,10 +184,10 @@ Open a GitHub issue to coordinate the implementation of direct KRM types, identi
 
 **GitHub Issue Details for Greenfield Resource:**
 *   **Title:** `Greenfield: Implement direct KRM types, identity, and generate.sh for {kind}`
-*   **Assignee:** (leave unassigned or assign to the current bot)
+*   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
 *   **Labels:** `overseer`, `greenfield`,`step/gen-types`, `overseer/review`
 *   **Body:**
-    ```
+    ````
     Please follow the skill `.gemini/skills/kcc-direct-greenfield-types-implementer/SKILL.md` for generating types for {kind}.
     Please follow the skill `.gemini/skills/kcc-identity-reference/SKILL.md` for generating identity for {kind}.
 
@@ -99,9 +197,14 @@ Open a GitHub issue to coordinate the implementation of direct KRM types, identi
 
     If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/kcc-direct-greenfield-types-implementer/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
 
+    When creating the PR, include the release note block set to NONE:
+    ```release-note
+    NONE
+    ```
+
     ## Review Instructions
     Use .gemini/skills/reviewgen-greenfield-new-types/SKILL.md to conduct the review.
-    ```
+    ````
 
 ### Step 2: Direct Controller, E2E fixtures and Fuzzer
 
@@ -109,17 +212,22 @@ Open a GitHub issue to coordinate the implementation of the direct controller an
 
 **GitHub Issue Details:**
 *   **Title:** `Greenfield: Implement direct controller, E2E fixtures, and fuzzer for {kind}`
-*   **Assignee:** (leave unassigned or assign to the current bot)
-*   **Labels:** `overseer`, `greenfield`, `step/controller` `overseer/review`
+*   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
+*   **Labels:** `overseer`, `greenfield`, `step/controller`, `overseer/review`
 *   **Body:**
-    ```
+    ````
     Please follow the skill `.gemini/skills/kcc-direct-controller-logic-greenfield-implementer/SKILL.md` to implement the direct controller and record/verify E2E fixtures for {kind}.
 
     If you find any shortcomings in this skill (that likely apply to other resources), you may update it. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under its respective journal/ folder, named after the kind or a similarly unique name.
 
+    When creating the PR, include the release note block set to NONE:
+    ```release-note
+    NONE
+    ```
+
     ## Review Instructions
     Use .gemini/skills/reviewgen-greenfield-controller/SKILL.md to conduct the review.
-    ```
+    ````
 
 ### Step 3: mockGCP generation
 
@@ -127,12 +235,17 @@ Open a GitHub issue to coordinate the implementation of the mockGCP for a specif
 
 **GitHub Issue Details for Greenfield Resource:**
 *   **Title:** `Greenfield: Implement MockGCP and Alignment for {kind}`
-*   **Assignee:** (leave unassigned or assign to the current bot)
+*   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
 *   **Labels:** `overseer`, `greenfield`,`step/mockgcp`
 *   **Body:**
-    ```
+    ````
     Please follow the skill `.gemini/skills/kcc-direct-mockgcp-implementer/SKILL.md` to implement Phase 3 (MockGCP and Alignment) for {kind} to verify behavioral correctness against the simulated GCP services.
+
+    When creating the PR, include the release note block for adding new alpha resources:
+    ```release-note
+    New Alpha Resources (Direct Reconciler): `{kind}`
     ```
+    ````
 
 ### Step 4: MockGCP Alignment with RealGCP
 
@@ -140,9 +253,15 @@ Open a GitHub issue to coordinate the alignment of MockGCP logs with RealGCP out
 
 **GitHub Issue Details:**
 *   **Title:** `Greenfield: Align MockGCP logs with RealGCP for {kind}`
-*   **Assignee:** (leave unassigned or assign to the current bot)
+*   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
 *   **Labels:** `overseer`, `greenfield`, `step/mockgcp-alignment`
 *   **Body:**
-    ```
+    ````
     Please follow the skill `.gemini/skills/match-mockgcp-with-realgcp/SKILL.md` to align the MockGCP logs with the RealGCP output for {kind}.
+
+    When creating the PR, include the release note block set to NONE:
+    ```release-note
+    NONE
     ```
+    ````
+

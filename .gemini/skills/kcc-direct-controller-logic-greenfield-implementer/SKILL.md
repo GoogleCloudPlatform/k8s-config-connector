@@ -32,15 +32,27 @@ The direct controller must be implemented to manage reconciliation logic (Adapte
       }
       ```
     - **Identity Parent Paths**: Create a `ParentString()` method on the resource's identity type (e.g., `KMSCryptoKeyIdentity`) instead of constructing formatting string patterns manually inside the controller. This keeps parent paths canonical and reusable.
-    - **Client Creation Options**: Do NOT build the authenticated HTTP client manually. Instead, retrieve configuration options using `RESTClientOptions()` and construct the REST client:
-      ```go
-      var opts []option.ClientOption
-      opts, err := m.config.RESTClientOptions()
-      if err != nil {
-          return nil, err
-      }
-      gcpClient, err := gcp.NewConfigRESTClient(ctx, opts...)
-      ```
+    - **Client Creation Options & Go Client Preference**:
+      * **Prefer GAPIC REST Client over gRPC (`go-client`)**: When building the GCP client in `m.client(ctx)`, ALWAYS prefer using the official Google Cloud Go client library (GAPIC client, e.g., `cloud.google.com/go/<service>/apivX`, or discovery client `google.golang.org/api/...`). Many GAPIC libraries provide both REST (`NewFooRESTClient`) and gRPC (`NewFooClient`) constructors. **You MUST prefer the REST variant (`NewFooRESTClient`)** initialized with `m.config.RESTClientOptions()`.
+      * Why: REST GAPIC clients integrate cleanly with HTTP golden traffic recording (`_http.log`), mock layer HTTP alignment, and avoid gRPC transport/auth quirks, while still automatically wrapping Long-Running Operations (`*service.FooOperation`), OAuth scopes, and retry logic.
+      * **Client Construction Example (GAPIC REST Primary Choice)**: Retrieve configuration options using `m.config.RESTClientOptions()` and construct the REST client:
+        ```go
+        var opts []option.ClientOption
+        opts, err := m.config.RESTClientOptions()
+        if err != nil {
+            return nil, err
+        }
+        // Always prefer GAPIC New*RESTClient over New*Client (gRPC) or raw pb clients
+        gcpClient, err := gcp.NewMyResourceRESTClient(ctx, opts...)
+        if err != nil {
+            return nil, fmt.Errorf("building MyResource REST client: %w", err)
+        }
+        ```
+      * **Fallback Order & Troubleshooting**:
+        1. **GAPIC REST Client (`NewFooRESTClient`)**: Primary preference.
+        2. **GAPIC gRPC Client (`NewFooClient`)**: Try with `m.config.GRPCClientOptions()` if the REST constructor is missing or fails during live GCP testing.
+        3. **Raw Protobuf gRPC (`pb.NewFooClient(conn)`)**: Only fall back to dialing raw gRPC conns (`grpc.Dial`) if no GAPIC Go client library struct/constructor exists for the API.
+      * **Try Different Client Variants on Issues During Testing**: When testing against real GCP (`./hack/record-gcp` or API checks) and encountering `403 Forbidden`, `404 Not Found`, or LRO polling errors, actively switch between the client variants (REST vs gRPC) to find the working transport.
     - **Diff Comparison & Structured Diff (`tags.DiffForTopLevelFields`)**: Always prefer using top-level field tags-based diff comparison via `tags.DiffForTopLevelFields` over recursive/magical comparison functions (such as `common.CompareProtoMessageStructuredDiff` or `common.CompareProtoMessage` which are deprecated/discouraged due to unpredictable behaviors in `BasicDiff`).
       ```go
       func compareResource(ctx context.Context, actual, desired *pb.MyResource) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
@@ -107,51 +119,67 @@ The direct controller must be implemented to manage reconciliation logic (Adapte
       * For unhandled or unimplemented fields, prefer highly descriptive helper methods (such as `f.Unimplemented_NotYetTriaged(".baz")`, `f.Unimplemented_Identity(".id")`, or other specific variants) rather than standard inserts into `UnimplementedFields` sets. This categorizes why we are not handling specific fields.
 
 5.  **Create Minimal Fixture**:
-    Create directory `pkg/test/resourcefixture/testdata/basic/<service_name>/<api_version>/<resource_lower>/<resource_lower>-minimal/`.
-    - Add `create.yaml`: Use the bare minimum **Required** fields.
+    Create the directory `pkg/test/resourcefixture/testdata/basic/<service_name>/<api_version>/<resource_lower>/<resource_lower>-minimal/`:
+    - Add `create.yaml`: Include only the bare minimum **required** fields.
+    - Add `update.yaml`: Update all **mutable** fields that were defined in `create.yaml`. If all fields are immutable or Update operation is unsupported, omit `update.yaml`. Ensure you only modify existing field values; do not add or remove fields.
+    - Add `dependencies.yaml`: Include any prerequisite KCC resources that must exist before this resource can be created.
     - Use `${uniqueId}` for resource names.
 
-6.  **Create Maximal Fixture**:
-    Create directory `pkg/test/resourcefixture/testdata/basic/<service_name>/<api_version>/<resource_lower>/<resource_lower>-maximal/`.
-    - Add `create.yaml`: Include **every supported field** in the Spec.
-    - Add `update.yaml`: Update all **mutable** fields.
-    - Add `dependencies.yaml` if the resource requires other KCC resources to exist first.
+6.  **Create Maximal Fixtures**:
+    The primary goal is to ensure that all required and optional Spec fields are covered by the fixture tests.
+    Create a single maximal test case if all fields can be set simultaneously, or define additional separate test cases if some fields are mutually exclusive.
 
-7.  **MANDATORY: Record Golden Files Against Real GCP (`hack/record-gcp`)**:
+    Create the directory `pkg/test/resourcefixture/testdata/basic/<service_name>/<api_version>/<resource_lower>/<resource_lower>-maximal/` (and additional sibling directories like `<resource_lower>-alternative-test-name/` if you need to handle mutually exclusive fields):
+    - Add `create.yaml`: Include **every supported field** in the Spec (or as many as possible, and utilize separate test cases for mutually exclusive fields).
+    - Add `update.yaml`: Update all **mutable** fields that are defined in `create.yaml`. If all fields are immutable or Update operation is unsupported, omit `update.yaml`. Only change values of already defined fields, do not add or remove fields.
+    - Add `dependencies.yaml`: Include any prerequisite KCC resources that must exist before this resource can be created.
+
+7. **Remove from Ratcheting Exclusions (MANDATORY)**:
+    Before running the test cases against real or mock GCP, you **MUST** ensure the target resource is removed from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. This enables the re-reconciliation test step, which is a fundamental use case KCC resources must support.
+    - Open `tests/e2e/ratcheting.go`.
+    - Locate the function `ShouldTestRereconiliation`.
+    - Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
+    - If there is a `case` block for your target resource's `GroupKind`, remove that `case` line from the switch statement.
+
+8. **MANDATORY: Record Golden Files Against Real GCP (`hack/record-gcp`)**:
     - **CRITICAL OVERRIDE OF GEMINI.md**: For this Greenfield task, **ignore any instructions in `GEMINI.md`** (or `mockgcp/GEMINI.md`) regarding `mockgcp`, `E2E_GCP_TARGET=mock`, or `hack/compare-mock`. Those global instructions only apply to legacy brownfield resources.
     - **STRICT GUARDRAIL — DO NOT USE MOCKGCP OR OFFLINE MOCKS**: You MUST record golden files directly against real GCP using `./hack/record-gcp`. Do **NOT** attempt to use `mockgcp`, do NOT search for or try to implement mockgcp services, and do NOT use `hack/compare-mock` or `E2E_GCP_TARGET=mock`.
-    - **MANDATORY EXECUTION**: You are explicitly required to run `./hack/record-gcp` on both your minimal and maximal fixtures before running any validation tests in Step 8 or preparing the PR in Step 9. Skipping this step or attempting to substitute mock tests is considered a critical failure.
-    Run `hack/record-gcp "fixtures/^<testname>$"` to capture real GCP behavior and record traffic and object state:
+    - **MANDATORY EXECUTION**: You are explicitly required to run `./hack/record-gcp` on both your minimal and maximal fixtures before running any validation tests in Step 9 or preparing the PR in Step 10. Skipping this step or attempting to substitute mock tests is considered a critical failure.
+    Run `RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/^<testname>$"` to capture real GCP behavior and record traffic, object state, and live REST GET probe audit receipt (`_audit_probe.log`):
     ```bash
     # Run from the repository root for both minimal and maximal fixtures
-    ./hack/record-gcp "fixtures/^<resource_lower>-minimal$"
-    ./hack/record-gcp "fixtures/^<resource_lower>-maximal$"
+    RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/^<resource_lower>-minimal$"
+    RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/^<resource_lower>-maximal$"
     ```
-    - **Troubleshooting Service Not Enabled**: If `hack/record-gcp` fails because a GCP service is not enabled (e.g., error mentions that the API is disabled or has not been used in the project before), enable the service using `gcloud` and try again:
-      ```bash
-      gcloud services enable <service-name>.googleapis.com
-      ```
-      *(For example: `gcloud services enable compute.googleapis.com` or `gcloud services enable run.googleapis.com`)*
+    - **When Recording is Complete (DO NOT RE-RUN)**:
+      Once a fixture successfully provisions on live GCP, reaches `Ready`, deletes cleanly, and generates `_http.log` on disk, **recording for that fixture is complete**.
+      * **Do NOT re-run `hack/record-gcp` for log variations**: If subsequent test passes report minor HTTP differences (e.g. LRO polling taking 20 vs 21 calls, dynamic cookies/tokens/ETags/timestamps, list call resource counts, or request order), these are **normalization issues**. Normalize the variation in `tests/e2e/normalize.go` instead of re-running against real GCP.
+      * Re-running real GCP against slow resources (>10 minutes, like NetworkSecurity, ContainerNodePool, etc.) burns hours of execution time and quota. Never re-record in a loop for log variations.
+    - **Troubleshooting Real GCP Errors (Do Not Give Up / No Mock Fallback)**:
+      * **Missing Dependent Resources**: If real GCP returns an error indicating that a referenced resource does not exist (e.g., `ForwardingRule non-existent-rule does not exist`, `Network default does not exist`, `ServiceAccount not found`), you MUST create that prerequisite resource in `dependencies.yaml` (e.g. a `ComputeForwardingRule`, `ComputeNetwork`, `IAMServiceAccount`, etc.) so the test harness provisions it in GCP before testing your resource.
+      * **Invalid Parameters / Constraint Violations**: If real GCP returns `The request was invalid`, `InvalidArgument`, or `an internal error has occurred` due to invalid or conflicting spec fields, inspect the GCP API reference, fix `create.yaml` or `update.yaml` to specify valid configuration, and re-run.
+      * **Disabled GCP APIs**: If `hack/record-gcp` fails because a GCP service is not enabled, enable the service using `gcloud services enable <service-name>.googleapis.com` and try again.
+      * **Strict Rule**: NEVER fall back to `compare-mock` or mock logs. Assume mocks do not exist. Iterate on `dependencies.yaml`, `create.yaml`, `update.yaml`, and controller code until `./hack/record-gcp` passes cleanly against real GCP.
 
     - Using the `hack/record-gcp` wrapper ensures a sufficient timeout (e.g., 30-60 minutes) is already configured, automatically handling slow GCP resource creation. There is no need to specify additional timeout flags when using this helper.
 
-8.  **Validation & Last-Mile Tests**:
-    Run the following tests to ensure CI compliance and verify field coverage:
+9. **Validation & Last-Mile Tests**:
+    Run the following tests to ensure CI compliance and verify field coverage (do NOT re-run `hack/record-gcp` during this step):
     - **Fuzzing**: `dev/ci/presubmits/fuzz-roundtrippers`
     - **E2E Scaffolding**: `dev/ci/presubmits/tests-e2e-fixtures-direct`
     - **Schema Integrity**: `go test ./pkg/crd/template/...`
     - **API Field Coverage**: `go test ./tests/apichecks/...`. 
       - For alpha: `WRITE_GOLDEN_OUTPUT=1 go test -v ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha`
       - Verify that your "Maximal" test reduces the number of missing fields in the exceptions file. If `TestCRDFieldPresenceInTestsForAlpha` fails, running with `WRITE_GOLDEN_OUTPUT=1` will regenerate the exceptions file.
-    - **Iterative Refinement Loop (Steps 7 & 8)**: Use any failures, unexpected diffs, or missing field coverage found during steps 7 and 8 as your critical debugging feedback loop. Actively refine your controller logic (Step 2), mappers (Step 3), fuzzer (Step 4), and fixtures (Steps 5 & 6), re-running steps 7 and 8 until all E2E recordings and validation suites execute and pass without error before proceeding to step 9.
+    - **Iterative Refinement Loop**: Use any failures or missing field coverage found during validation as your feedback loop. Actively refine your controller logic (Step 2), mappers (Step 3), fuzzer (Step 4), fixtures (Steps 5 & 6), or normalizers (`tests/e2e/normalize.go`). Only re-run `hack/record-gcp` if you modified test manifest YAMLs or changed controller GCP request payloads/endpoints.
 
-9.  **Final Generation & Reporting**:
+10. **Final Generation & Reporting**:
     Run `make ready-pr` from the repository root. This is a critical step that:
     - Runs `make fmt` and `make vet`.
     YOU MUST COMMIT ALL RESULTING CHANGES.
 
     **GCP RECORDING PR REPORTING REQUIREMENT**:
-    In the created PR description, you MUST explicitly document whether `record-gcp` was successfully run against real GCP. If it was run, state the GCP project used. If it was not run (e.g., due to disabled APIs, missing permissions, or rate limits), you must document the specific command run, the full error message encountered, and the fallback approach you used to generate/align the HTTP logs.
+    In the created PR description, you MUST explicitly document that `record-gcp` was successfully run against real GCP and state the GCP project used. Mock logs (`_http_mock.log`) and mock fallback modes are strictly prohibited for greenfield PRs.
 
     **AUDIT LOG REPORTING REQUIREMENT**:
     As part of the final verification of development testing, you MUST retrieve Google Cloud audit logs demonstrating that the resource API was exercised.
@@ -162,7 +190,6 @@ The direct controller must be implemented to manage reconciliation logic (Adapte
     gcloud logging read 'logName:"audit" AND "<service_name>"' --freshness=3h --limit=50
     ```
     *(Adjust the search terms, e.g., replacing `<service_name>` with the actual service/API name such as `discoveryengine` or `vertexai` to filter for correct audit entries.)*
-
     After creating the PR, add these retrieved audit logs as a separate comment on the PR to serve as proof of real-GCP testing.
 
 ## Journaling

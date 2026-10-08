@@ -47,7 +47,7 @@ type NetworkSecurityGatewaySecurityPolicySpec struct {
 	//  inspection will be performed for any rule(s) which enables it.
 	// +optional
 	// +kcc:proto:field=google.cloud.networksecurity.v1.GatewaySecurityPolicy.tls_inspection_policy
-	TLSInspectionPolicyRef *TLSInspectionPolicyRef `json:"tlsInspectionPolicyRef,omitempty"`
+	TLSInspectionPolicyRef *NetworkSecurityTLSInspectionPolicyRef `json:"tlsInspectionPolicyRef,omitempty"`
 }
 
 // NetworkSecurityGatewaySecurityPolicyStatus defines the config connector machine state of NetworkSecurityGatewaySecurityPolicy

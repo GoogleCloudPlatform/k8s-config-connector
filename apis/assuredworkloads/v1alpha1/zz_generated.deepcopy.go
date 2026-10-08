@@ -20,6 +20,7 @@ package v1alpha1
 
 import (
 	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"k8s.io/apimachinery/pkg/runtime"
 )
@@ -151,6 +152,11 @@ func (in *AssuredWorkloadsWorkloadSpec) DeepCopyInto(out *AssuredWorkloadsWorklo
 	if in.DisplayName != nil {
 		in, out := &in.DisplayName, &out.DisplayName
 		*out = new(string)
+		**out = **in
+	}
+	if in.OrganizationRef != nil {
+		in, out := &in.OrganizationRef, &out.OrganizationRef
+		*out = new(v1beta1.OrganizationRef)
 		**out = **in
 	}
 	if in.ComplianceRegime != nil {

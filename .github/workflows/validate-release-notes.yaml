@@ -1,0 +1,67 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: validate-release-notes
+
+permissions:
+  contents: read
+  pull-requests: read
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  validate-release-notes:
+    name: Validate PR Release Note
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate Release Note Block
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const sender = context.payload.sender?.login || '';
+
+            // 1. Bypass validation for automated bots
+            if (sender.endsWith('[bot]') || ['k8s-infra-cherrypick-robot', 'google-cla'].includes(sender)) {
+              console.log(`Bypassing release note check for automated bot: ${sender}`);
+              return;
+            }
+
+            const body = pr.body || '';
+
+            // 2. Extract ```release-note ... ``` block
+            const match = body.match(/```release-note\s*([\s\S]*?)\s*```/i);
+            if (!match) {
+              core.setFailed(
+                'Pull Request description is missing a ```release-note code block.\n' +
+                'Please fill in the release note block or specify "NONE" in the PR description.'
+              );
+              return;
+            }
+
+            // 3. Strip HTML comments (which are instruction comments from the template)
+            const content = match[1].replace(/<!--[\s\S]*?-->/g, '').trim();
+
+            // 4. Validate non-empty content
+            if (content.length === 0) {
+              core.setFailed(
+                'The ```release-note code block is empty.\n' +
+                'Please provide a release note describing your changes, or specify "NONE" (or "None") if no release note is needed.'
+              );
+              return;
+            }
+
+            console.log(`Release note validation succeeded:\n${content}`);

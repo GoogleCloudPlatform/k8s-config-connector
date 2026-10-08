@@ -1,13 +1,18 @@
 module github.com/GoogleCloudPlatform/k8s-config-connector
 
-go 1.26
+go 1.26.0
 
 toolchain go1.26.4
 
 replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
+// The generator module is resolved from the working tree, as mockgcp is, so
+// tests/apichecks runs the same reference rules that generate-types applies.
+replace github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder => ./dev/tools/controllerbuilder
+
 require (
 	cloud.google.com/go/accesscontextmanager v1.14.0
+	cloud.google.com/go/agentregistry v0.2.0
 	cloud.google.com/go/aiplatform v1.125.0
 	cloud.google.com/go/alloydb v1.26.0
 	cloud.google.com/go/analytics v0.35.0
@@ -40,7 +45,7 @@ require (
 	cloud.google.com/go/dataflow v0.16.0
 	cloud.google.com/go/dataform v1.0.0
 	cloud.google.com/go/datalabeling v0.14.0
-	cloud.google.com/go/dataplex v1.34.0
+	cloud.google.com/go/dataplex v1.36.0
 	cloud.google.com/go/dataproc/v2 v2.22.0
 	cloud.google.com/go/datastream v1.20.0
 	cloud.google.com/go/deploy v1.32.0
@@ -53,6 +58,7 @@ require (
 	cloud.google.com/go/essentialcontacts v1.12.0
 	cloud.google.com/go/eventarc v1.23.0
 	cloud.google.com/go/filestore v1.15.0
+	cloud.google.com/go/financialservices v1.2.0
 	cloud.google.com/go/firestore v1.22.0
 	cloud.google.com/go/geminidataanalytics v1.3.0
 	cloud.google.com/go/gkebackup v1.13.0
@@ -65,6 +71,7 @@ require (
 	cloud.google.com/go/licensemanager v1.1.0
 	cloud.google.com/go/logging v1.18.0
 	cloud.google.com/go/managedkafka v0.8.1
+	cloud.google.com/go/maps v1.39.0
 	cloud.google.com/go/memorystore v0.9.0
 	cloud.google.com/go/metastore v1.19.0
 	cloud.google.com/go/migrationcenter v1.6.0
@@ -75,16 +82,18 @@ require (
 	cloud.google.com/go/networksecurity v0.17.0
 	cloud.google.com/go/networkservices v0.6.0
 	cloud.google.com/go/notebooks v1.17.0
+	cloud.google.com/go/oracledatabase v1.5.0
 	cloud.google.com/go/orchestration v1.16.0
 	cloud.google.com/go/orgpolicy v1.20.0
 	cloud.google.com/go/osconfig v1.21.0
+	cloud.google.com/go/oslogin v1.18.0
 	cloud.google.com/go/parametermanager v0.3.1
 	cloud.google.com/go/privilegedaccessmanager v0.3.1
 	cloud.google.com/go/profiler v0.4.3
 	cloud.google.com/go/pubsub/v2 v2.5.1
 	cloud.google.com/go/rapidmigrationassessment v1.7.0
 	cloud.google.com/go/recaptchaenterprise/v2 v2.26.0
-	cloud.google.com/go/redis v1.23.0
+	cloud.google.com/go/redis v1.25.0
 	cloud.google.com/go/resourcemanager v1.15.0
 	cloud.google.com/go/run v1.21.0
 	cloud.google.com/go/saasplatform v0.9.0
@@ -98,10 +107,13 @@ require (
 	cloud.google.com/go/speech v1.35.0
 	cloud.google.com/go/storage v1.62.0
 	cloud.google.com/go/storageinsights v1.8.0
+	cloud.google.com/go/support v1.14.0
 	cloud.google.com/go/talent v1.13.0
 	cloud.google.com/go/translate v1.17.0
+	cloud.google.com/go/vectorsearch v1.3.0
 	cloud.google.com/go/video v1.32.0
 	cloud.google.com/go/vision/v2 v2.15.0
+	cloud.google.com/go/vmmigration v1.15.0
 	cloud.google.com/go/vmwareengine v1.8.0
 	cloud.google.com/go/workflows v1.19.0
 	cloud.google.com/go/workloadmanager v1.1.0
@@ -145,14 +157,14 @@ require (
 	go.uber.org/mock v0.5.2
 	go.uber.org/zap v1.27.0
 	golang.org/x/oauth2 v0.36.0
-	golang.org/x/sync v0.21.0
+	golang.org/x/sync v0.22.0
 	golang.org/x/time v0.15.0
 	google.golang.org/api v0.287.1
 	google.golang.org/genproto v0.0.0-20260519071638-aa98bba5eb94
 	google.golang.org/genproto/googleapis/api v0.0.0-20260630182238-925bb5da69e7
 	google.golang.org/genproto/googleapis/api/serviceusage v0.0.0-20250519155744-55703ea1f237
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260630182238-925bb5da69e7
-	google.golang.org/grpc v1.82.1
+	google.golang.org/grpc v1.83.2
 	google.golang.org/protobuf v1.36.11
 	gopkg.in/dnaeon/go-vcr.v3 v3.2.0
 	gopkg.in/yaml.v2 v2.4.0
@@ -177,7 +189,7 @@ require (
 	cloud.google.com/go/pubsub v1.50.2 // indirect
 	cloud.google.com/go/pubsublite v1.8.2 // indirect
 	cloud.google.com/go/vpcaccess v1.13.0 // indirect
-	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.32.0 // indirect
+	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.33.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.57.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.57.0 // indirect
 	github.com/antlr4-go/antlr/v4 v4.13.0 // indirect
@@ -192,12 +204,12 @@ require (
 	github.com/mxk/go-flowrate v0.0.0-20140419014527-cca7078d478f // indirect
 	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
-	github.com/spiffe/go-spiffe/v2 v2.6.0 // indirect
+	github.com/spiffe/go-spiffe/v2 v2.7.0 // indirect
 	github.com/stoewer/go-strcase v1.3.0 // indirect
 	github.com/vmihailenco/msgpack v4.0.4+incompatible // indirect
 	github.com/x448/float16 v0.8.4 // indirect
-	go.opentelemetry.io/contrib/detectors/gcp v1.43.0 // indirect
-	golang.org/x/telemetry v0.0.0-20260625142307-59b4966ccb57 // indirect
+	go.opentelemetry.io/contrib/detectors/gcp v1.44.0 // indirect
+	golang.org/x/telemetry v0.0.0-20260708182218-49f421fb7959 // indirect
 	golang.org/x/tools/godoc v0.1.0-deprecated // indirect
 	gopkg.in/evanphx/json-patch.v4 v4.12.0 // indirect
 	k8s.io/apiserver v0.33.10 // indirect
@@ -207,11 +219,11 @@ require (
 
 require (
 	bitbucket.org/creachadair/stringset v0.0.8 // indirect
-	cel.dev/expr v0.25.1 // indirect
+	cel.dev/expr v0.25.2 // indirect
 	cloud.google.com/go v0.123.0 // indirect
 	cloud.google.com/go/auth v0.20.0 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
-	cloud.google.com/go/bigtable v1.50.0
+	cloud.google.com/go/bigtable v1.58.0
 	cloud.google.com/go/compute/metadata v0.9.0 // indirect
 	cloud.google.com/go/longrunning v1.2.0
 	dario.cat/mergo v1.0.0 // indirect
@@ -332,14 +344,14 @@ require (
 	go.opentelemetry.io/otel/sdk/metric v1.44.0 // indirect
 	go.opentelemetry.io/otel/trace v1.44.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/crypto v0.53.0 // indirect
+	golang.org/x/crypto v0.55.0 // indirect
 	golang.org/x/exp v0.0.0-20260410095643-746e56fc9e2f // indirect
-	golang.org/x/mod v0.37.0 // indirect
-	golang.org/x/net v0.56.0 // indirect
-	golang.org/x/sys v0.46.0 // indirect
-	golang.org/x/term v0.44.0 // indirect
-	golang.org/x/text v0.39.0 // indirect
-	golang.org/x/tools v0.47.0
+	golang.org/x/mod v0.38.0 // indirect
+	golang.org/x/net v0.58.0 // indirect
+	golang.org/x/sys v0.47.0 // indirect
+	golang.org/x/term v0.45.0 // indirect
+	golang.org/x/text v0.41.0 // indirect
+	golang.org/x/tools v0.48.0
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	gomodules.xyz/jsonpatch/v2 v2.4.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect

@@ -40,7 +40,8 @@ type MockService struct {
 
 	operations *operations.Operations
 
-	v1 *managedKafka
+	v1        *managedKafka
+	connectv1 *managedKafkaConnect
 }
 
 // New creates a MockService.
@@ -51,6 +52,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 		operations:      operations.NewOperationsService(storage),
 	}
 	s.v1 = &managedKafka{MockService: s}
+	s.connectv1 = &managedKafkaConnect{MockService: s}
 	return s
 }
 
@@ -60,6 +62,7 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterManagedKafkaServer(grpcServer, s.v1)
+	pb.RegisterManagedKafkaConnectServer(grpcServer, s.connectv1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -69,6 +72,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	grpcMux.AddService(pb.NewManagedKafkaClient(conn))
+	grpcMux.AddService(pb.NewManagedKafkaConnectClient(conn))
 
 	grpcMux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 

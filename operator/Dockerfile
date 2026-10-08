@@ -16,7 +16,7 @@
 ARG GKE_DISTROLESS_IMG=gcr.io/gke-release/gke-distroless/static:gke_distroless_20260207.00_p0
 
 # Build the manager binary
-FROM golang:1.26.5 AS builder
+FROM golang:1.27.1 AS builder
 
 # Copy in the Go source code
 WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
@@ -25,6 +25,9 @@ COPY go.mod go.mod
 COPY go.sum go.sum
 COPY third_party/ third_party/
 COPY mockgcp/ mockgcp/
+# go.mod replaces the generator module with this directory, so its go.mod
+# is needed to load the module graph.
+COPY dev/tools/controllerbuilder/go.mod dev/tools/controllerbuilder/go.mod
 RUN --mount=type=cache,target=/go/pkg/mod go mod download
 
 COPY operator/pkg/      operator/pkg/

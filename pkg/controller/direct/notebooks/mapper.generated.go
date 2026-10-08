@@ -207,6 +207,8 @@ func InstanceAcceleratorConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *k
 	out.CoreCount = direct.ValueOf(in.CoreCount)
 	return out
 }
+
+/* found existing non-generated mapping function "InstanceBootDisk_v1alpha1_FromProto", skipping
 func InstanceBootDisk_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebookspb.BootDisk) *krmnotebooksv1alpha1.InstanceBootDisk {
 	if in == nil {
 		return nil
@@ -218,17 +220,23 @@ func InstanceBootDisk_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebook
 	// MISSING: KMSKey
 	return out
 }
-func InstanceBootDisk_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.InstanceBootDisk) *notebookspb.BootDisk {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "InstanceBootDisk_v1alpha1_ToProto", skipping
+
+	func InstanceBootDisk_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.InstanceBootDisk) *notebookspb.BootDisk {
+		if in == nil {
+			return nil
+		}
+		out := &notebookspb.BootDisk{}
+		out.DiskSizeGb = direct.ValueOf(in.DiskSizeGB)
+		out.DiskType = direct.Enum_ToProto[notebookspb.DiskType](mapCtx, in.DiskType)
+		out.DiskEncryption = direct.Enum_ToProto[notebookspb.DiskEncryption](mapCtx, in.DiskEncryption)
+		// MISSING: KMSKey
+		return out
 	}
-	out := &notebookspb.BootDisk{}
-	out.DiskSizeGb = direct.ValueOf(in.DiskSizeGB)
-	out.DiskType = direct.Enum_ToProto[notebookspb.DiskType](mapCtx, in.DiskType)
-	out.DiskEncryption = direct.Enum_ToProto[notebookspb.DiskEncryption](mapCtx, in.DiskEncryption)
-	// MISSING: KMSKey
-	return out
-}
+*/
 func InstanceContainerImage_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebookspb.ContainerImage) *krmnotebooksv1alpha1.InstanceContainerImage {
 	if in == nil {
 		return nil
@@ -799,6 +807,8 @@ func NotebookInstanceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnote
 	out.CanIpForward = direct.ValueOf(in.CanIPForward)
 	return out
 }
+
+/* found existing non-generated mapping function "NotebookInstanceV2ObservedState_v1alpha1_FromProto", skipping
 func NotebookInstanceV2ObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebookspb.Instance) *krmnotebooksv1alpha1.NotebookInstanceV2ObservedState {
 	if in == nil {
 		return nil
@@ -817,26 +827,32 @@ func NotebookInstanceV2ObservedState_v1alpha1_FromProto(mapCtx *direct.MapContex
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
-func NotebookInstanceV2ObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.NotebookInstanceV2ObservedState) *notebookspb.Instance {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "NotebookInstanceV2ObservedState_v1alpha1_ToProto", skipping
+
+	func NotebookInstanceV2ObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.NotebookInstanceV2ObservedState) *notebookspb.Instance {
+		if in == nil {
+			return nil
+		}
+		out := &notebookspb.Instance{}
+		// MISSING: Name
+		if oneof := InstanceGCESetupObservedState_v1alpha1_ToProto(mapCtx, in.GCESetup); oneof != nil {
+			out.Infrastructure = &notebookspb.Instance_GceSetup{GceSetup: oneof}
+		}
+		out.ProxyUri = direct.ValueOf(in.ProxyURI)
+		out.Creator = direct.ValueOf(in.Creator)
+		out.State = direct.Enum_ToProto[notebookspb.State](mapCtx, in.State)
+		out.UpgradeHistory = direct.Slice_ToProto(mapCtx, in.UpgradeHistory, InstanceUpgradeHistoryEntryObservedState_v1alpha1_ToProto)
+		// MISSING: ID
+		out.HealthState = direct.Enum_ToProto[notebookspb.HealthState](mapCtx, in.HealthState)
+		out.HealthInfo = in.HealthInfo
+		out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+		out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+		return out
 	}
-	out := &notebookspb.Instance{}
-	// MISSING: Name
-	if oneof := InstanceGCESetupObservedState_v1alpha1_ToProto(mapCtx, in.GCESetup); oneof != nil {
-		out.Infrastructure = &notebookspb.Instance_GceSetup{GceSetup: oneof}
-	}
-	out.ProxyUri = direct.ValueOf(in.ProxyURI)
-	out.Creator = direct.ValueOf(in.Creator)
-	out.State = direct.Enum_ToProto[notebookspb.State](mapCtx, in.State)
-	out.UpgradeHistory = direct.Slice_ToProto(mapCtx, in.UpgradeHistory, InstanceUpgradeHistoryEntryObservedState_v1alpha1_ToProto)
-	// MISSING: ID
-	out.HealthState = direct.Enum_ToProto[notebookspb.HealthState](mapCtx, in.HealthState)
-	out.HealthInfo = in.HealthInfo
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	return out
-}
+*/
 func NotebookInstanceV2Spec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebookspb.Instance) *krmnotebooksv1alpha1.NotebookInstanceV2Spec {
 	if in == nil {
 		return nil

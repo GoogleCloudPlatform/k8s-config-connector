@@ -68,7 +68,7 @@ func (s *instanceAdminServer) ListClusters(ctx context.Context, req *pb.ListClus
 	return response, nil
 }
 
-func (s *instanceAdminServer) listClustersForInstance(ctx context.Context, instanceName *instanceName) ([]*pb.Cluster, error) {
+func (s *MockService) listClustersForInstance(ctx context.Context, instanceName *instanceName) ([]*pb.Cluster, error) {
 	if instanceName.InstanceName == "-" {
 		return nil, fmt.Errorf("mock does not implement ListClusters for wildcard instances")
 	}

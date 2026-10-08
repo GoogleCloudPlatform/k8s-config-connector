@@ -1,0 +1,6 @@
+- caisURL: //livestream.googleapis.com/projects/${projectId}/locations/us-central1/inputs/livestreaminput-minimal-${uniqueId}
+  group: livestream.cnrm.cloud.google.com
+  kind: LiveStreamInput
+  name: livestreaminput-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

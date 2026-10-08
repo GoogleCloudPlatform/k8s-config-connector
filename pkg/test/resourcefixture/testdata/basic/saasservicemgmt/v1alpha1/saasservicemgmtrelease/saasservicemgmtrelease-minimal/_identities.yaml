@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: saasservicemgmt.cnrm.cloud.google.com
+  kind: SaasServiceMgmtRelease
+  name: saasservicemgmtrelease-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

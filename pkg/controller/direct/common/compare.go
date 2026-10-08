@@ -18,12 +18,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"maps"
 	"reflect"
 	"slices"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -32,6 +34,7 @@ import (
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 )
@@ -355,7 +358,14 @@ func SortRepeatedFields(msg protoreflect.Message) {
 
 func sortProtoReflectList(list protoreflect.List) {
 	n := list.Len()
-	if n <= 1 {
+	if n == 0 {
+		return
+	}
+	if n == 1 {
+		val := list.Get(0)
+		if msgVal, ok := val.Interface().(protoreflect.Message); ok {
+			SortRepeatedFields(msgVal)
+		}
 		return
 	}
 
@@ -394,7 +404,26 @@ func sortProtoReflectList(list protoreflect.List) {
 	}
 }
 
-// CompareBrownfieldSpec executes the 5-step brownfield spec comparison pipeline.
+// CompareBrownfieldSpec executes the 5-step brownfield spec comparison pipeline:
+//  1. actualProto -> actualKRM (specFromProto)
+//  2. MergeUnsetFields(clonedDesiredKRM, actualKRM) - adopts actual values for top-level/nested fields unspecified in KRM
+//  3. Specs -> Protos (specToProto for desired & actual)
+//  4. Normalization & Slice Sorting (normalize callback & SortRepeatedFields)
+//  5. DiffForTopLevelFields (generates structured Diff and FieldMask)
+//
+// The 'normalize' callback is optional (can be nil). Use it for custom, idempotent proto canonicalization
+// before computing diffs.
+//
+// Common Use Cases for 'normalize':
+//   - Reference & Link Canonicalization: Standardizing short resource names vs. fully-qualified GCP URLs/selfLinks
+//     (e.g., "my-net" vs. "projects/my-proj/global/networks/my-net") or Project Number vs. Project ID in parent paths.
+//   - Filtering System/Server Labels & Annotations: Stripping GCP server-added or internal system labels from 'actual'
+//     (e.g., system labels injected by GKE, Dataproc, etc.) so they don't trigger false diffs.
+//   - Value & Unit Formatting: Standardizing string casing, duration formats (e.g., "10s" vs. "10.0s"), or equivalent defaults.
+//   - Custom Slice Sorting/Deduplication: Custom ordering of list elements when default JSON-based sorting isn't sufficient.
+//
+// DO NOT:
+//   - Do NOT backfill or merge unspecified properties inside list elements. KCC manages list fields atomically once configured.
 func CompareBrownfieldSpec[SpecType any, ProtoT interface {
 	proto.Message
 }](
@@ -453,4 +482,60 @@ func CompareBrownfieldSpec[SpecType any, ProtoT interface {
 
 	// Step 5: Top-Level Diff & FieldMask Generation (DiffForTopLevelFields)
 	return DiffForTopLevelFields(ctx, proto.Message(desiredProtoMasked).ProtoReflect(), proto.Message(actualProtoMasked).ProtoReflect())
+}
+
+// CompareBrownfieldSpecAndLabels executes CompareBrownfieldSpec and compares metadata.labels against actualProto labels using the specified labels field name in the proto message.
+func CompareBrownfieldSpecAndLabels[SpecType any, ProtoT interface {
+	proto.Message
+}](
+	ctx context.Context,
+	u *unstructured.Unstructured,
+	desiredKRM *SpecType,
+	actualProto ProtoT,
+	labelsFieldName string,
+	specFromProto func(mapCtx *direct.MapContext, in ProtoT) *SpecType,
+	specToProto func(mapCtx *direct.MapContext, in *SpecType) ProtoT,
+	normalize func(ctx context.Context, pb ProtoT) error,
+) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	diff, updateMask, err := CompareBrownfieldSpec(ctx, desiredKRM, actualProto, specFromProto, specToProto, normalize)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	desiredLabels := label.GCPLabels(u)
+	actualLabels := extractProtoLabels(actualProto, labelsFieldName)
+
+	if !maps.Equal(actualLabels, desiredLabels) {
+		if updateMask == nil {
+			updateMask = &fieldmaskpb.FieldMask{}
+		}
+		updateMask.Paths = append(updateMask.Paths, labelsFieldName)
+		if diff == nil {
+			diff = &structuredreporting.Diff{}
+		}
+		diff.AddField(labelsFieldName, actualLabels, desiredLabels)
+	}
+
+	return diff, updateMask, nil
+}
+
+func extractProtoLabels(msg proto.Message, labelsFieldName string) map[string]string {
+	if msg == nil {
+		return nil
+	}
+	valOf := reflect.ValueOf(msg)
+	if valOf.Kind() == reflect.Ptr && valOf.IsNil() {
+		return nil
+	}
+	fd := msg.ProtoReflect().Descriptor().Fields().ByName(protoreflect.Name(labelsFieldName))
+	if fd == nil || !fd.IsMap() {
+		return nil
+	}
+	val := msg.ProtoReflect().Get(fd).Map()
+	labels := make(map[string]string, val.Len())
+	val.Range(func(k protoreflect.MapKey, v protoreflect.Value) bool {
+		labels[k.String()] = v.String()
+		return true
+	})
+	return labels
 }

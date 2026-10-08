@@ -213,15 +213,6 @@ type APIHubVersionRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-type APIHubAttributeRef struct {
-	/* The `id` of a `APIHubAttribute` resource, when not managed by Config Connector. */
-	External string `json:"external,omitempty"`
-	/* The `name` field of a `APIHubAttribute` resource. */
-	Name string `json:"name,omitempty"`
-	/* The `namespace` field of a `APIHubAttribute` resource. */
-	Namespace string `json:"namespace,omitempty"`
-}
-
 type APIHubAPIAttribute struct {
 	// Reference to the attribute.
 	// +kubebuilder:validation:Required

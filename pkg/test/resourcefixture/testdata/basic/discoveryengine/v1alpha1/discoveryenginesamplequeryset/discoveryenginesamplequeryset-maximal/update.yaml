@@ -1,0 +1,11 @@
+apiVersion: discoveryengine.cnrm.cloud.google.com/v1alpha1
+kind: DiscoveryEngineSampleQuerySet
+metadata:
+  name: discoveryenginesamplequeryset-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: global
+  resourceID: sqs-${uniqueId}
+  displayName: Maximal Sample Query Set Updated
+  description: Maximal Sample Query Set Description

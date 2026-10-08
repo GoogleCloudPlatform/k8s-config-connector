@@ -496,6 +496,12 @@ type EdgecacheserviceRouteAction struct {
 	// +optional
 	CdnPolicy *EdgecacheserviceCdnPolicy `json:"cdnPolicy,omitempty"`
 
+	/* Setting the compression mode to automatic enables dynamic compression for every eligible response.
+
+	When dynamic compression is enabled, it is recommended to also set a cache policy to maximize efficiency. Possible values: ["DISABLED", "AUTOMATIC"] */
+	// +optional
+	CompressionMode *string `json:"compressionMode,omitempty"`
+
 	/* CORSPolicy defines Cross-Origin-Resource-Sharing configuration, including which CORS response headers will be set. */
 	// +optional
 	CorsPolicy *EdgecacheserviceCorsPolicy `json:"corsPolicy,omitempty"`
@@ -503,6 +509,14 @@ type EdgecacheserviceRouteAction struct {
 	/* The URL rewrite configuration for requests that match this route. */
 	// +optional
 	UrlRewrite *EdgecacheserviceUrlRewrite `json:"urlRewrite,omitempty"`
+}
+
+type EdgecacheserviceRouteMethods struct {
+	/* The non-empty set of HTTP methods that are allowed for this route.
+
+	Any combination of "GET", "HEAD", "OPTIONS", "PUT", "POST", "DELETE", and "PATCH". */
+	// +optional
+	AllowedMethods []string `json:"allowedMethods,omitempty"`
 }
 
 type EdgecacheserviceRouteRule struct {
@@ -534,6 +548,10 @@ type EdgecacheserviceRouteRule struct {
 	/* In response to a matching path, the routeAction performs advanced routing actions like URL rewrites, header transformations, etc. prior to forwarding the request to the selected origin. */
 	// +optional
 	RouteAction *EdgecacheserviceRouteAction `json:"routeAction,omitempty"`
+
+	/* Allow overriding the set of methods that are allowed for this route. When not set, Media CDN allows only "GET", "HEAD", and "OPTIONS". */
+	// +optional
+	RouteMethods *EdgecacheserviceRouteMethods `json:"routeMethods,omitempty"`
 
 	/* The URL redirect configuration for requests that match this route. */
 	// +optional

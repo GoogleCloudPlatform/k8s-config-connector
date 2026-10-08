@@ -23,10 +23,41 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "dialogflow.googleapis.com") {
+		return
+	}
+
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
+
+	replacements.TransformObject(".error", func(m map[string]any) {
+		delete(m, "errors")
+	})
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
 	if !strings.Contains(event.URL(), "dialogflow.googleapis.com") {
 		return
 	}
+
+	event.VisitResponseStringValues(func(path string, value string) {
+		if path == ".name" && strings.Contains(value, "/knowledgeBases/") {
+			tokens := strings.Split(value, "/")
+			for i := 0; i < len(tokens)-1; i++ {
+				if tokens[i] == "knowledgeBases" {
+					kbID := tokens[i+1]
+					replacements.ReplaceStringValue(kbID, "${knowledgeBaseID}")
+				}
+			}
+		}
+		if strings.Contains(value, "/conversationDatasets/") {
+			tokens := strings.Split(value, "/")
+			for i := 0; i < len(tokens)-1; i++ {
+				if tokens[i] == "conversationDatasets" {
+					datasetID := tokens[i+1]
+					replacements.ReplaceStringValue(datasetID, "${conversationDatasetID}")
+				}
+			}
+		}
+	})
 }

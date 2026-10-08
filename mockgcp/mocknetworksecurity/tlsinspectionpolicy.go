@@ -16,7 +16,13 @@ package mocknetworksecurity
 
 import (
 	"context"
+	"fmt"
+	"strings"
 	"time"
+
+	"google.golang.org/protobuf/types/known/emptypb"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 
 	pbv1 "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 	"google.golang.org/genproto/googleapis/longrunning"
@@ -32,9 +38,12 @@ type NetworkSecurityV1Server struct {
 }
 
 func (s *NetworkSecurityV1Server) CreateTlsInspectionPolicy(ctx context.Context, req *pbv1.CreateTlsInspectionPolicyRequest) (*longrunning.Operation, error) {
-	name := req.Parent + "/tlsInspectionPolicies/" + req.TlsInspectionPolicyId
+	name, err := s.parseTlsInspectionPolicyName(req.Parent + "/tlsInspectionPolicies/" + req.TlsInspectionPolicyId)
+	if err != nil {
+		return nil, err
+	}
 
-	fqn := name
+	fqn := name.String()
 
 	obj := proto.Clone(req.TlsInspectionPolicy).(*pbv1.TlsInspectionPolicy)
 	obj.Name = fqn
@@ -46,18 +55,25 @@ func (s *NetworkSecurityV1Server) CreateTlsInspectionPolicy(ctx context.Context,
 	}
 
 	metadata := &pbv1.OperationMetadata{
+		ApiVersion: "v1",
 		CreateTime: obj.CreateTime,
 		Target:     fqn,
 		Verb:       "create",
 	}
 
-	return s.operations.StartLRO(ctx, fqn, metadata, func() (proto.Message, error) {
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	return s.operations.StartLRO(ctx, lroPrefix, metadata, func() (proto.Message, error) {
 		return obj, nil
 	})
 }
 
 func (s *NetworkSecurityV1Server) GetTlsInspectionPolicy(ctx context.Context, req *pbv1.GetTlsInspectionPolicyRequest) (*pbv1.TlsInspectionPolicy, error) {
-	fqn := req.Name
+	name, err := s.parseTlsInspectionPolicyName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
 
 	obj := &pbv1.TlsInspectionPolicy{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
@@ -71,7 +87,12 @@ func (s *NetworkSecurityV1Server) GetTlsInspectionPolicy(ctx context.Context, re
 }
 
 func (s *NetworkSecurityV1Server) UpdateTlsInspectionPolicy(ctx context.Context, req *pbv1.UpdateTlsInspectionPolicyRequest) (*longrunning.Operation, error) {
-	fqn := req.TlsInspectionPolicy.GetName()
+	name, err := s.parseTlsInspectionPolicyName(req.TlsInspectionPolicy.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
 
 	actual := &pbv1.TlsInspectionPolicy{}
 	if err := s.storage.Get(ctx, fqn, actual); err != nil {
@@ -87,18 +108,25 @@ func (s *NetworkSecurityV1Server) UpdateTlsInspectionPolicy(ctx context.Context,
 	}
 
 	metadata := &pbv1.OperationMetadata{
+		ApiVersion: "v1",
 		CreateTime: updated.CreateTime,
 		Target:     fqn,
 		Verb:       "update",
 	}
 
-	return s.operations.StartLRO(ctx, fqn, metadata, func() (proto.Message, error) {
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	return s.operations.StartLRO(ctx, lroPrefix, metadata, func() (proto.Message, error) {
 		return updated, nil
 	})
 }
 
 func (s *NetworkSecurityV1Server) DeleteTlsInspectionPolicy(ctx context.Context, req *pbv1.DeleteTlsInspectionPolicyRequest) (*longrunning.Operation, error) {
-	fqn := req.Name
+	name, err := s.parseTlsInspectionPolicyName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
 
 	actual := &pbv1.TlsInspectionPolicy{}
 	if err := s.storage.Get(ctx, fqn, actual); err != nil {
@@ -111,12 +139,42 @@ func (s *NetworkSecurityV1Server) DeleteTlsInspectionPolicy(ctx context.Context,
 	}
 
 	metadata := &pbv1.OperationMetadata{
+		ApiVersion: "v1",
 		CreateTime: actual.CreateTime,
 		Target:     fqn,
 		Verb:       "delete",
 	}
 
-	return s.operations.StartLRO(ctx, fqn, metadata, func() (proto.Message, error) {
-		return deleted, nil
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	return s.operations.StartLRO(ctx, lroPrefix, metadata, func() (proto.Message, error) {
+		return &emptypb.Empty{}, nil
 	})
+}
+
+type TlsInspectionPolicyName struct {
+	Project             *projects.ProjectData
+	Location            string
+	TlsInspectionPolicy string
+}
+
+func (n *TlsInspectionPolicyName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/tlsInspectionPolicies/" + n.TlsInspectionPolicy
+}
+
+func (s *NetworkSecurityV1Server) parseTlsInspectionPolicyName(name string) (*TlsInspectionPolicyName, error) {
+	tokens := strings.Split(name, "/")
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "tlsInspectionPolicies" {
+		project, err := s.Projects.GetProject(&projects.ProjectName{ProjectID: tokens[1]})
+		if err != nil {
+			return nil, err
+		}
+		name := &TlsInspectionPolicyName{
+			Project:             project,
+			Location:            tokens[3],
+			TlsInspectionPolicy: tokens[5],
+		}
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
 }

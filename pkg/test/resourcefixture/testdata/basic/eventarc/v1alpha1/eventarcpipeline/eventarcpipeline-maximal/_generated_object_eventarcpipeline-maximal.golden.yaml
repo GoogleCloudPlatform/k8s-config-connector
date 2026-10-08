@@ -1,0 +1,50 @@
+apiVersion: eventarc.cnrm.cloud.google.com/v1alpha1
+kind: EventarcPipeline
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: eventarcpipeline-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  annotations:
+    kcc-test: updated
+  destinations:
+  - httpEndpoint:
+      messageBindingTemplate: '{"updated_data": message.data}'
+      uri: https://example.com/updated-events
+    outputPayloadFormat:
+      json: {}
+  displayName: Eventarc Pipeline Maximal Updated
+  inputPayloadFormat:
+    json: {}
+  labels:
+    foo: baz
+  location: us-central1
+  loggingConfig:
+    logSeverity: DEBUG
+  mediations:
+  - transformation:
+      transformationTemplate: '{"updated_data": message.data}'
+  projectRef:
+    external: ${projectId}
+  retryPolicy:
+    maxAttempts: 5
+    maxRetryDelay: 120s
+    minRetryDelay: 2s
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/pipelines/eventarcpipeline-maximal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"

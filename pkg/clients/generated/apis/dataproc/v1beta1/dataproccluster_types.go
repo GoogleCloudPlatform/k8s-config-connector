@@ -237,6 +237,26 @@ type ClusterInitializationActions struct {
 	ExecutionTimeout *string `json:"executionTimeout,omitempty"`
 }
 
+type ClusterInstanceFlexibilityPolicy struct {
+	/* Optional. List of instance selection options that the group will use when creating new VMs. */
+	// +optional
+	InstanceSelectionList []ClusterInstanceSelectionList `json:"instanceSelectionList,omitempty"`
+
+	/* Optional. Defines how the Group selects the provisioning model to ensure required reliability. */
+	// +optional
+	ProvisioningModelMix *ClusterProvisioningModelMix `json:"provisioningModelMix,omitempty"`
+}
+
+type ClusterInstanceSelectionList struct {
+	/* Optional. Full machine-type names, e.g. "n1-standard-16". */
+	// +optional
+	MachineTypes []string `json:"machineTypes,omitempty"`
+
+	/* Optional. Preference of this instance selection. Lower number means higher preference. Dataproc will first try to create a VM based on the machine-type with priority rank and fallback to next rank based on availability. Machine types and instance selections with the same priority have the same preference. */
+	// +optional
+	Rank *int32 `json:"rank,omitempty"`
+}
+
 type ClusterKerberosConfig struct {
 	/* Immutable. Optional. The admin server (IP or hostname) for the remote trusted realm in a cross realm trust relationship. */
 	// +optional
@@ -411,6 +431,16 @@ type ClusterNodePoolTarget struct {
 	Roles []string `json:"roles"`
 }
 
+type ClusterProvisioningModelMix struct {
+	/* Optional. The base capacity that will always use Standard VMs to avoid risk of more preemption than the minimum capacity you need. Dataproc will create only standard VMs until it reaches standard_capacity_base, then it will start using standard_capacity_percent_above_base to mix Spot with Standard VMs. eg. If 15 instances are requested and standard_capacity_base is 5, Dataproc will create 5 standard VMs and then start mixing spot and standard VMs for remaining 10 instances. */
+	// +optional
+	StandardCapacityBase *int32 `json:"standardCapacityBase,omitempty"`
+
+	/* Optional. The percentage of target capacity that should use Standard VM. The remaining percentage will use Spot VMs. The percentage applies only to the capacity above standard_capacity_base. eg. If 15 instances are requested and standard_capacity_base is 5 and standard_capacity_percent_above_base is 30, Dataproc will create 5 standard VMs and then start mixing spot and standard VMs for remaining 10 instances. The mix will be 30% standard and 70% spot. */
+	// +optional
+	StandardCapacityPercentAboveBase *int32 `json:"standardCapacityPercentAboveBase,omitempty"`
+}
+
 type ClusterReservationAffinity struct {
 	/* Immutable. Optional. Type of reservation to consume Possible values: TYPE_UNSPECIFIED, NO_RESERVATION, ANY_RESERVATION, SPECIFIC_RESERVATION */
 	// +optional
@@ -437,6 +467,10 @@ type ClusterSecondaryWorkerConfig struct {
 	/* Immutable. */
 	// +optional
 	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
+
+	/* Optional. Instance flexibility Policy allowing a mixture of VM shapes and provisioning models. */
+	// +optional
+	InstanceFlexibilityPolicy *ClusterInstanceFlexibilityPolicy `json:"instanceFlexibilityPolicy,omitempty"`
 
 	/* Immutable. Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`. */
 	// +optional

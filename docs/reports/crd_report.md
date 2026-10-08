@@ -32,6 +32,8 @@
 | apigeeregistry.cnrm.cloud.google.com           | ApigeeRegistryInstance                                   | True         | False       | False  | Direct     | True        |
 | apigee.cnrm.cloud.google.com                   | ApigeeSyncAuthorization                                  | True         | False       | False  | Terraform  | False       |
 | apihub.cnrm.cloud.google.com                   | APIHubAPI                                                | True         | False       | False  | Direct     | True        |
+| apihub.cnrm.cloud.google.com                   | APIHubAttribute                                          | True         | False       | False  | Direct     | True        |
+| apihub.cnrm.cloud.google.com                   | APIHubDependency                                         | True         | False       | False  | Direct     | True        |
 | apihub.cnrm.cloud.google.com                   | APIHubDeployment                                         | True         | False       | False  | Direct     | True        |
 | apihub.cnrm.cloud.google.com                   | APIHubExternalAPI                                        | True         | False       | False  | Direct     | True        |
 | apihub.cnrm.cloud.google.com                   | APIHubInstance                                           | True         | False       | False  | Direct     | True        |
@@ -66,7 +68,6 @@
 | beyondcorp.cnrm.cloud.google.com               | BeyondCorpAppConnector                                   | True         | False       | False  | Terraform  | False       |
 | beyondcorp.cnrm.cloud.google.com               | BeyondCorpAppGateway                                     | True         | False       | False  | Terraform  | False       |
 | beyondcorp.cnrm.cloud.google.com               | BeyondCorpClientConnectorService                         | True         | False       | False  | Direct     | True        |
-| beyondcorp.cnrm.cloud.google.com               | BeyondCorpClientGateway                                  | True         | False       | False  | Direct     | True        |
 | bigquerybiglake.cnrm.cloud.google.com          | BigLakeCatalog                                           | True         | False       | False  | Direct     | True        |
 | bigquerybiglake.cnrm.cloud.google.com          | BigLakeDatabase                                          | True         | False       | False  | Direct     | True        |
 | bigquerybiglake.cnrm.cloud.google.com          | BigLakeTable                                             | True         | True        | False  | Direct     | True        |
@@ -99,7 +100,6 @@
 | binaryauthorization.cnrm.cloud.google.com      | BinaryAuthorizationAttestor                              | False        | True        | False  | DCL        | False       |
 | binaryauthorization.cnrm.cloud.google.com      | BinaryAuthorizationPlatformPolicy                        | True         | False       | False  | Direct     | True        |
 | binaryauthorization.cnrm.cloud.google.com      | BinaryAuthorizationPolicy                                | False        | True        | False  | DCL        | False       |
-| blockchainnodeengine.cnrm.cloud.google.com     | BlockchainNodeEngineBlockchainNode                       | True         | False       | False  | Direct     | True        |
 | contactcenterinsights.cnrm.cloud.google.com    | CCInsightsConversation                                   | True         | False       | False  | Direct     | True        |
 | contactcenterinsights.cnrm.cloud.google.com    | CCInsightsIssueModel                                     | True         | False       | False  | Direct     | True        |
 | contactcenterinsights.cnrm.cloud.google.com    | CCInsightsPhraseMatcher                                  | True         | False       | False  | Direct     | True        |
@@ -137,7 +137,6 @@
 | cloudscheduler.cnrm.cloud.google.com           | CloudSchedulerJob                                        | False        | True        | False  | DCL        | False       |
 | cloudsecuritycompliance.cnrm.cloud.google.com  | CloudSecurityComplianceCloudControl                      | True         | False       | False  | Direct     | True        |
 | cloudsecuritycompliance.cnrm.cloud.google.com  | CloudSecurityComplianceFramework                         | True         | False       | False  | Direct     | True        |
-| cloudsecuritycompliance.cnrm.cloud.google.com  | CloudSecurityFramework                                   | True         | False       | False  | Direct     | True        |
 | cloudtalentsolution.cnrm.cloud.google.com      | CloudTalentSolutionCompany                               | True         | False       | False  | Direct     | True        |
 | colab.cnrm.cloud.google.com                    | ColabRuntime                                             | True         | False       | False  | Direct     | True        |
 | colab.cnrm.cloud.google.com                    | ColabRuntimeTemplate                                     | True         | False       | False  | Direct     | True        |
@@ -233,7 +232,6 @@
 | container.cnrm.cloud.google.com                | ContainerNodePool                                        | False        | True        | False  | Terraform  | True        |
 | contentwarehouse.cnrm.cloud.google.com         | ContentWarehouseDocument                                 | True         | False       | False  | Direct     | True        |
 | contentwarehouse.cnrm.cloud.google.com         | ContentWarehouseRuleSet                                  | True         | False       | False  | Direct     | True        |
-| contentwarehouse.cnrm.cloud.google.com         | ContentWarehouseSchema                                   | True         | False       | False  | Direct     | True        |
 | contentwarehouse.cnrm.cloud.google.com         | ContentWarehouseSynonymSet                               | True         | False       | False  | Direct     | True        |
 | datamigration.cnrm.cloud.google.com            | DatabaseMigrationConversionWorkspace                     | True         | False       | False  | Direct     | True        |
 | datamigration.cnrm.cloud.google.com            | DatabaseMigrationMigrationJob                            | True         | False       | False  | Direct     | True        |
@@ -306,11 +304,10 @@
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineEngine                                    | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineIdentityMappingStore                      | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineLicenseConfig                             | True         | False       | False  | Direct     | True        |
-| discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineSampleQuery                               | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineSampleQuerySet                            | True         | False       | False  | Direct     | True        |
-| discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineSearchEngine                              | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineServingConfig                             | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineSession                                   | True         | False       | False  | Direct     | True        |
+| discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineUserStore                                 | True         | False       | False  | Direct     | True        |
 | dlp.cnrm.cloud.google.com                      | DLPConnection                                            | True         | False       | False  | Direct     | True        |
 | dlp.cnrm.cloud.google.com                      | DLPDeidentifyTemplate                                    | False        | True        | False  | DCL        | False       |
 | dlp.cnrm.cloud.google.com                      | DLPDiscoveryConfig                                       | True         | False       | False  | Direct     | True        |
@@ -581,7 +578,6 @@
 | vertexai.cnrm.cloud.google.com                 | VertexAIDeploymentResourcePool                           | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                 | VertexAIEndpoint                                         | True         | True        | False  | Terraform  | False       |
 | vertexai.cnrm.cloud.google.com                 | VertexAIExampleStore                                     | True         | False       | False  | Direct     | True        |
-| aiplatform.cnrm.cloud.google.com               | VertexAIExtension                                        | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                 | VertexAIFeatureGroup                                     | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAIFeatureOnlineStore                               | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                 | VertexAIFeaturestoreEntityTypeFeature                    | True         | False       | False  | Terraform  | False       |
@@ -594,12 +590,14 @@
 | aiplatform.cnrm.cloud.google.com               | VertexAISchedule                                         | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAISpecialistPool                                   | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAIStudy                                            | True         | False       | False  | Direct     | True        |
+| vertexai.cnrm.cloud.google.com                 | VertexAITensorboardExperiment                            | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                 | VertexAITensorboard                                      | True         | False       | False  | Terraform  | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAITrainingPipeline                                 | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAITuningJob                                        | True         | False       | False  | Direct     | True        |
 | videostitcher.cnrm.cloud.google.com            | VideoStitcherCDNKey                                      | True         | False       | False  | Direct     | True        |
 | visionai.cnrm.cloud.google.com                 | VisionAIApplication                                      | True         | False       | False  | Direct     | True        |
 | vision.cnrm.cloud.google.com                   | VisionProduct                                            | True         | False       | False  | Direct     | True        |
+| vmmigration.cnrm.cloud.google.com              | VMMigrationGroup                                         | True         | False       | False  | Direct     | True        |
 | vmwareengine.cnrm.cloud.google.com             | VMwareEngineExternalAccessRule                           | True         | False       | False  | Direct     | True        |
 | vmwareengine.cnrm.cloud.google.com             | VMwareEngineExternalAddress                              | True         | True        | False  | Direct     | True        |
 | vmwareengine.cnrm.cloud.google.com             | VMwareEngineNetworkPeering                               | True         | False       | False  | Direct     | True        |

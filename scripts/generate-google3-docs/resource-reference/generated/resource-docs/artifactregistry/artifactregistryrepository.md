@@ -119,6 +119,8 @@ mavenConfig:
   versionPolicy: string
 mode: string
 remoteRepositoryConfig:
+  commonRepository:
+    uri: string
   description: string
   dockerRepository:
     publicRepository: string
@@ -393,7 +395,7 @@ virtualRepositoryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.</p>
+            <p>A reference to an externally managed KMSCryptoKey resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/keyRings/{{keyring}}/cryptoKeys/{{cryptokey}}".</p>
         </td>
     </tr>
     <tr>
@@ -403,7 +405,7 @@ virtualRepositoryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `name` of a `KMSCryptoKey` resource.</p>
+            <p>The name of a KMSCryptoKey resource.</p>
         </td>
     </tr>
     <tr>
@@ -413,7 +415,7 @@ virtualRepositoryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The `namespace` of a `KMSCryptoKey` resource.</p>
+            <p>The namespace of a KMSCryptoKey resource.</p>
         </td>
     </tr>
     <tr>
@@ -474,6 +476,26 @@ virtualRepositoryConfig:
         <td>
             <p><code class="apitype">object</code></p>
             <p>Configuration specific for a Remote Repository.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>remoteRepositoryConfig.commonRepository</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Common remote repository settings.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>remoteRepositoryConfig.commonRepository.uri</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Required. A common public repository base for remote repository.</p>
         </td>
     </tr>
     <tr>

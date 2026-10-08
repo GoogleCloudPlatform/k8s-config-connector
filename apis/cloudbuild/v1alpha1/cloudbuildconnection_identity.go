@@ -60,6 +60,10 @@ func (i *CloudBuildConnectionIdentity) Host() string {
 	return CloudBuildConnectionIdentityFormat.Host()
 }
 
+func (i *CloudBuildConnectionIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func getIdentityFromCloudBuildConnectionSpec(ctx context.Context, reader client.Reader, obj client.Object) (*CloudBuildConnectionIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {

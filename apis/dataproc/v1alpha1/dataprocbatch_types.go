@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -321,7 +322,7 @@ type ExecutionConfig struct {
 
 	// Optional. The Cloud KMS key to use for encryption.
 	// +kcc:proto:field=google.cloud.dataproc.v1.ExecutionConfig.kms_key
-	KMSKeyRef *v1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KMSKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 
 	// Optional. Applies to sessions only. The duration to keep the session alive
 	//  while it's idling. Exceeding this threshold causes the session to

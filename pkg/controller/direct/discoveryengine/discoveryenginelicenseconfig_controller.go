@@ -212,6 +212,7 @@ func (a *licenseConfigAdapter) Update(ctx context.Context, updateOp *directbase.
 		return nil
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &discoveryenginepb.UpdateLicenseConfigRequest{

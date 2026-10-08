@@ -201,7 +201,7 @@ func (a *TagsTagValueAdapter) acquireExistingTagValue(ctx context.Context, creat
 
 // setResourceIDAndStatus sets spec.resourceID and updates status from the given TagValue.
 // For compatibility, we set spec.resourceID after creation because this is a server-generated-id resource that we are migrating from terraform/DCL.
-// More info in docs/ai/server-generated-id.md
+// More info in .gemini/skills/kcc-direct-service-generated-id/SKILL.md
 func (a *TagsTagValueAdapter) setResourceIDAndStatus(ctx context.Context, createOp *directbase.CreateOperation, tagValue *pb.TagValue) error {
 	resourceID := strings.TrimPrefix(tagValue.GetName(), "tagValues/")
 	if err := createOp.SetSpecResourceID(ctx, resourceID); err != nil {
@@ -245,6 +245,9 @@ func (a *TagsTagValueAdapter) Update(ctx context.Context, updateOp *directbase.U
 	}
 	req.UpdateMask = updateMask
 
+	if diff != nil {
+		diff.Object = updateOp.GetUnstructured()
+	}
 	structuredreporting.ReportDiff(ctx, diff)
 
 	latest := a.actual

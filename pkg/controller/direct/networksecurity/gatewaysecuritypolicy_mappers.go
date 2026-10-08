@@ -27,7 +27,7 @@ func NetworkSecurityGatewaySecurityPolicySpec_FromProto(mapCtx *direct.MapContex
 	out := &krm.NetworkSecurityGatewaySecurityPolicySpec{}
 	out.Description = direct.LazyPtr(in.GetDescription())
 	if in.GetTlsInspectionPolicy() != "" {
-		out.TLSInspectionPolicyRef = &krm.TLSInspectionPolicyRef{
+		out.TLSInspectionPolicyRef = &krm.NetworkSecurityTLSInspectionPolicyRef{
 			External: in.GetTlsInspectionPolicy(),
 		}
 	}

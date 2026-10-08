@@ -301,3 +301,43 @@ func APIHubExternalAPISpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubExte
 	out.Attributes = Attributes_ToProto(mapCtx, in.AttributeRefs)
 	return out
 }
+
+func APIHubDependencySpec_FromProto(mapCtx *direct.MapContext, in *pb.Dependency) *krm.APIHubDependencySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubDependencySpec{}
+	out.Consumer = DependencyEntityReference_FromProto(mapCtx, in.GetConsumer())
+	out.Supplier = DependencyEntityReference_FromProto(mapCtx, in.GetSupplier())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	if in.Attributes != nil {
+		out.Attributes = make(map[string]krm.AttributeValues)
+		for k, v := range in.Attributes {
+			val := AttributeValues_FromProto(mapCtx, v)
+			if val != nil {
+				out.Attributes[k] = *val
+			}
+		}
+	}
+	return out
+}
+
+func APIHubDependencySpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubDependencySpec) *pb.Dependency {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Dependency{}
+	out.Consumer = DependencyEntityReference_ToProto(mapCtx, in.Consumer)
+	out.Supplier = DependencyEntityReference_ToProto(mapCtx, in.Supplier)
+	out.Description = direct.ValueOf(in.Description)
+	if in.Attributes != nil {
+		out.Attributes = make(map[string]*pb.AttributeValues)
+		for k, v := range in.Attributes {
+			val := AttributeValues_ToProto(mapCtx, &v)
+			if val != nil {
+				out.Attributes[k] = val
+			}
+		}
+	}
+	return out
+}

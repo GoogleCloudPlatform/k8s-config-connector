@@ -165,8 +165,10 @@ func (a *DeviceStreamingSessionAdapter) Update(ctx context.Context, updateOp *di
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	maskedActual.Name = a.id.String()
 
 	clonedDesired := proto.Clone(desired).(*pb.DeviceSession)
+	clonedDesired.Name = a.id.String()
 
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
@@ -178,6 +180,7 @@ func (a *DeviceStreamingSessionAdapter) Update(ctx context.Context, updateOp *di
 		return nil
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &pb.UpdateDeviceSessionRequest{

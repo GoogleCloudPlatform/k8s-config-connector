@@ -190,6 +190,7 @@ func (a *ExecutionAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	return fmt.Errorf("NotebooksExecution resource is immutable and cannot be updated")

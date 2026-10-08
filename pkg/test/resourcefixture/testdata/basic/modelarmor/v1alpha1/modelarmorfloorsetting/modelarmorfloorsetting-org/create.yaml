@@ -1,0 +1,16 @@
+apiVersion: modelarmor.cnrm.cloud.google.com/v1alpha1
+kind: ModelArmorFloorSetting
+metadata:
+  name: modelarmorfloorsetting-org-${uniqueId}
+spec:
+  organizationRef:
+    external: organizations/${TEST_ORG_ID}
+  location: global
+  enableFloorSettingEnforcement: true
+  floorSettingMetadata:
+    multiLanguageDetection:
+      enableMultiLanguageDetection: true
+  filterConfig:
+    piAndJailbreakFilterSettings:
+      filterEnforcement: ENABLED
+      confidenceLevel: LOW_AND_ABOVE

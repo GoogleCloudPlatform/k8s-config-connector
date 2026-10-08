@@ -1,0 +1,15 @@
+apiVersion: discoveryengine.cnrm.cloud.google.com/v1alpha1
+kind: DiscoveryEngineServingConfig
+metadata:
+  name: servingconfig-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: global
+  engineRef:
+    name: engine-${uniqueId}
+  displayName: "Maximal Serving Config"
+  solutionType: SOLUTION_TYPE_SEARCH
+  rankingExpression: "1.5 * relevance_score"
+  personalizationSpec:
+    mode: "AUTO"

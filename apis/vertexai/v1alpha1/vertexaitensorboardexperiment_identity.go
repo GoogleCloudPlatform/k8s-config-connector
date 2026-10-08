@@ -89,7 +89,7 @@ func getIdentityFromVertexAITensorboardExperimentSpec(ctx context.Context, reade
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve project: %w", err)
 	}
-	if projectID != tensorboardIdentity.Project {
+	if projectID != tensorboardIdentity.Project && !isNumeric(tensorboardIdentity.Project) {
 		return nil, fmt.Errorf("spec.projectRef (%s) does not match parent's project (%s)", projectID, tensorboardIdentity.Project)
 	}
 
@@ -129,4 +129,16 @@ func (obj *VertexAITensorboardExperiment) GetIdentity(ctx context.Context, reade
 	}
 
 	return specIdentity, nil
+}
+
+func isNumeric(s string) bool {
+	if len(s) == 0 {
+		return false
+	}
+	for _, c := range s {
+		if c < '0' || c > '9' {
+			return false
+		}
+	}
+	return true
 }

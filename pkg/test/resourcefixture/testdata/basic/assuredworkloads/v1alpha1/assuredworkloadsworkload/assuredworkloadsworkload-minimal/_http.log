@@ -1,0 +1,284 @@
+POST https://us-central1-assuredworkloads.googleapis.com:443/v1/organizations/${organizationID}/locations/us-central1/workloads?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=organizations%2F${organizationID}%2Flocations%2Fus-central1
+X-Goog-User-Project: ${projectId}
+
+{
+  "billingAccount": "billingAccounts/${billingAccountID}",
+  "complianceRegime": 3,
+  "displayName": "Workload ${uniqueId}",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.assuredworkloads.v1.CreateWorkloadOperationMetadata",
+    "complianceRegime": 3,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Workload ${uniqueId}",
+    "parent": "organizations/${organizationID}/locations/us-central1"
+  },
+  "name": "organizations/${organizationID}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://us-central1-assuredworkloads.googleapis.com:443/v1/organizations/${organizationID}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.assuredworkloads.v1.CreateWorkloadOperationMetadata",
+    "complianceRegime": "FEDRAMP_HIGH",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Workload ${uniqueId}",
+    "parent": "organizations/${organizationID}/locations/us-central1"
+  },
+  "name": "organizations/${organizationID}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.assuredworkloads.v1.Workload",
+    "complianceRegime": "FEDRAMP_HIGH",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Workload ${uniqueId}",
+    "etag": "abcdef0123A=",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "organizations/${organizationID}/locations/us-central1/workloads/${workloadID}",
+    "partnerPermissions": {},
+    "resources": [
+      {
+        "resourceId": "${folderID}",
+        "resourceType": "CONSUMER_FOLDER"
+      }
+    ],
+    "violationNotificationsEnabled": true
+  }
+}
+
+---
+
+GET https://us-central1-assuredworkloads.googleapis.com:443/v1/organizations/${organizationID}/locations/us-central1/workloads/${workloadID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fus-central1%2Fworkloads%2F${workloadID}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "complianceRegime": 3,
+  "complianceStatus": {
+    "acknowledgedResourceViolationCount": 0,
+    "acknowledgedViolationCount": 0,
+    "activeResourceViolationCount": 0,
+    "activeViolationCount": 0
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Workload ${uniqueId}",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "organizations/${organizationID}/locations/us-central1/workloads/${workloadID}",
+  "partnerPermissions": {},
+  "resourceMonitoringEnabled": true,
+  "resources": [
+    {
+      "resourceId": "${folderID}",
+      "resourceType": 4
+    }
+  ],
+  "violationNotificationsEnabled": true
+}
+
+---
+
+PATCH https://us-central1-assuredworkloads.googleapis.com:443/v1/organizations/${organizationID}/locations/us-central1/workloads/${workloadID}?%24alt=json%3Benum-encoding%3Dint&updateMask=workload.displayName%2Cworkload.labels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: workload.name=organizations%2F${organizationID}%2Flocations%2Fus-central1%2Fworkloads%2F${workloadID}
+X-Goog-User-Project: ${projectId}
+
+{
+  "complianceRegime": 3,
+  "displayName": "Upd ${uniqueId}",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "organizations/${organizationID}/locations/us-central1/workloads/${workloadID}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "complianceRegime": 3,
+  "complianceStatus": {
+    "acknowledgedResourceViolationCount": 0,
+    "acknowledgedViolationCount": 0,
+    "activeResourceViolationCount": 0,
+    "activeViolationCount": 0
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Upd ${uniqueId}",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "organizations/${organizationID}/locations/us-central1/workloads/${workloadID}",
+  "partnerPermissions": {},
+  "resourceMonitoringEnabled": true,
+  "resources": [
+    {
+      "resourceId": "${folderID}",
+      "resourceType": 4
+    }
+  ],
+  "violationNotificationsEnabled": true
+}
+
+---
+
+GET https://us-central1-assuredworkloads.googleapis.com:443/v1/organizations/${organizationID}/locations/us-central1/workloads/${workloadID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fus-central1%2Fworkloads%2F${workloadID}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "complianceRegime": 3,
+  "complianceStatus": {
+    "acknowledgedResourceViolationCount": 0,
+    "acknowledgedViolationCount": 0,
+    "activeResourceViolationCount": 0,
+    "activeViolationCount": 0
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Upd ${uniqueId}",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "organizations/${organizationID}/locations/us-central1/workloads/${workloadID}",
+  "partnerPermissions": {},
+  "resourceMonitoringEnabled": true,
+  "resources": [
+    {
+      "resourceId": "${folderID}",
+      "resourceType": 4
+    }
+  ],
+  "violationNotificationsEnabled": true
+}
+
+---
+
+DELETE https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=folders%2F${folderID}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Folder",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Workload ${uniqueId}",
+    "etag": "abcdef0123A=",
+    "name": "folders/${folderID}",
+    "parent": "organizations/${organizationID}",
+    "state": 2,
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+DELETE https://us-central1-assuredworkloads.googleapis.com:443/v1/organizations/${organizationID}/locations/us-central1/workloads/${workloadID}?%24alt=json%3Benum-encoding%3Dint&etag=abcdef0123A
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fus-central1%2Fworkloads%2F${workloadID}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

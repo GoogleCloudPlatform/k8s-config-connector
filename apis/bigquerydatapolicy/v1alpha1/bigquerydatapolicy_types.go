@@ -81,13 +81,13 @@ type BigQueryDataPolicyStatus struct {
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *BigQueryDataPolicyObservedState `json:"observedState,omitempty"`
+	// ObservedState *BigQueryDataPolicyObservedState `json:"observedState,omitempty"`
 }
 
 // BigQueryDataPolicyObservedState is the state of the BigQueryDataPolicy resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.bigquery.datapolicies.v1beta1.DataPolicy
-type BigQueryDataPolicyObservedState struct {
-}
+// // +kcc:observedstate:proto=google.cloud.bigquery.datapolicies.v1beta1.DataPolicy
+// type BigQueryDataPolicyObservedState struct {
+// }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

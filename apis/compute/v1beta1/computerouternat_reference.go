@@ -90,6 +90,10 @@ func (r *ComputeRouterNATRef) Normalize(ctx context.Context, reader client.Reade
 	}
 
 	fallback := func(u *unstructured.Unstructured) string {
+		ready, err := isResourceReady(u)
+		if err != nil || !ready {
+			return ""
+		}
 		obj, err := common.ToStructuredType[*ComputeRouterNAT](u)
 		if err != nil {
 			return ""
@@ -101,4 +105,32 @@ func (r *ComputeRouterNATRef) Normalize(ctx context.Context, reader client.Reade
 		return identity.String()
 	}
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+}
+
+func isResourceReady(u *unstructured.Unstructured) (bool, error) {
+	conditions, found, err := unstructured.NestedSlice(u.Object, "status", "conditions")
+	if err != nil {
+		return false, err
+	}
+	if !found {
+		return false, nil
+	}
+	for _, c := range conditions {
+		condition, ok := c.(map[string]interface{})
+		if !ok {
+			continue
+		}
+		t, ok := condition["type"].(string)
+		if !ok {
+			continue
+		}
+		status, ok := condition["status"].(string)
+		if !ok {
+			continue
+		}
+		if t == "Ready" && status == "True" {
+			return true, nil
+		}
+	}
+	return false, nil
 }

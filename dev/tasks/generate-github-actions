@@ -57,7 +57,7 @@ on:
       - '**'
       - '!experiments/**'
   merge_group:
-    types: [checks_requested]
+    types: [checks_requested, destroyed]
     branches: ["master", "release-*"]
     paths:
       - '**'
@@ -76,6 +76,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 
   prepare-test-matrix:
     runs-on: ubuntu-latest
+    if: \${{ github.event.action != 'destroyed' }}
     outputs:
       has_priority_tests: \${{ steps.split.outputs.has_priority_tests }}
       priority_fixtures_json: \${{ steps.split.outputs.priority_fixtures_json }}
@@ -92,9 +93,11 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: ./dev/actions/cache-go
       - name: Prebuild test binaries
         run: |
-          mkdir -p bin
+          mkdir -p bin/envtest
           go test -c -ldflags="-s -w" -buildvcs=false -o bin/tests-e2e ./tests/e2e
           go build -ldflags="-s -w" -buildvcs=false -o bin/paralleltestrunner ./dev/tools/paralleltestrunner
+          KUBEBUILDER_ASSETS=\$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@release-0.22 use -p path)
+          cp -r "\${KUBEBUILDER_ASSETS}/." bin/envtest/
       - name: Upload prebuilt test binaries
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         with:
@@ -125,7 +128,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     name: "tests-e2e-fixtures-\${{ matrix.service }}"
     runs-on: ubuntu-latest
     needs: prepare-test-matrix
-    if: needs.prepare-test-matrix.outputs.has_priority_tests == 'true'
+    if: \${{ github.event.action != 'destroyed' && needs.prepare-test-matrix.outputs.has_priority_tests == 'true' }}
     timeout-minutes: 60
     strategy:
       fail-fast: true
@@ -143,10 +146,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
-        run: chmod +x bin/* || true
-      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
-        with:
-          install_components: 'alpha,beta'
+        run: chmod -R +x bin/ || true
       - name: "Run priority E2E fixtures for \${{ matrix.service }}"
         run: |
           target="\${TARGET_SERVICE}"
@@ -173,7 +173,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     name: "tests-e2e-fixtures-\${{ matrix.service }}"
     runs-on: ubuntu-latest
     needs: prepare-test-matrix
-    if: \${{ !cancelled() }}
+    if: \${{ !cancelled() && github.event.action != 'destroyed' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -191,10 +191,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
-        run: chmod +x bin/* || true
-      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
-        with:
-          install_components: 'alpha,beta'
+        run: chmod -R +x bin/ || true
       - name: "Run fixture test for \${{ matrix.service }}"
         run: |
           target="\${TARGET_SERVICE}"
@@ -228,7 +225,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     name: "tests-e2e-fixtures-${sharded_svc}"
     runs-on: ubuntu-latest
     needs: [prepare-test-matrix, priority-e2e-fixtures, tests-e2e-fixtures-matrix]
-    if: \${{ !cancelled() && !contains(needs.priority-e2e-fixtures.result, 'failure') && !contains(needs.tests-e2e-fixtures-matrix.result, 'failure') }}
+    if: \${{ !cancelled() && github.event.action != 'destroyed' && !contains(needs.priority-e2e-fixtures.result, 'failure') && !contains(needs.tests-e2e-fixtures-matrix.result, 'failure') }}
     steps:
       - name: "Verify ${sharded_svc} shards completion"
         run: echo "All ${sharded_svc} fixture shards completed successfully."
@@ -249,7 +246,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     name: "tests-e2e-samples-\${{ matrix.service }}"
     runs-on: ubuntu-latest
     needs: prepare-test-matrix
-    if: \${{ !cancelled() }}
+    if: \${{ !cancelled() && github.event.action != 'destroyed' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -267,10 +264,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
-        run: chmod +x bin/* || true
-      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
-        with:
-          install_components: 'alpha,beta'
+        run: chmod -R +x bin/ || true
       - name: "Run sample test for \${{ matrix.service }}"
         run: |
           ./dev/ci/presubmits/tests-e2e-samples-suite "\${TARGET_SERVICE}"
@@ -299,7 +293,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     name: "tests-scenarios-\${{ matrix.suite }}"
     runs-on: ubuntu-latest
     needs: prepare-test-matrix
-    if: \${{ !cancelled() }}
+    if: \${{ !cancelled() && github.event.action != 'destroyed' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -317,10 +311,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
-        run: chmod +x bin/* || true
-      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
-        with:
-          install_components: 'alpha,beta'
+        run: chmod -R +x bin/ || true
       - name: "Run scenario test for \${{ matrix.suite }}"
         run: |
           ./dev/ci/presubmits/tests-scenarios-suite "\${TARGET_SUITE}"
@@ -345,7 +336,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
   tests-e2e-direct-iam:
     runs-on: ubuntu-latest
     needs: prepare-test-matrix
-    if: \${{ !cancelled() }}
+    if: \${{ !cancelled() && github.event.action != 'destroyed' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -357,10 +348,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
-        run: chmod +x bin/* || true
-      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
-        with:
-          install_components: 'alpha,beta'
+        run: chmod -R +x bin/ || true
       - name: "Run direct IAM tests"
         run: |
           ./dev/ci/presubmits/tests-e2e-fixtures-suite iam
@@ -385,6 +373,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
   unit-tests-matrix:
     name: "unit-tests-\${{ matrix.shard }}"
     runs-on: ubuntu-latest
+    if: \${{ github.event.action != 'destroyed' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -396,9 +385,6 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         run: dev/tasks/free-disk-space-on-github-actions-runner
 # zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
-      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
-        with:
-          install_components: 'alpha,beta'
       - name: "Run dev/ci/presubmits/unit-tests"
         run: |
           ./dev/ci/presubmits/unit-tests "\${{ matrix.shard }}"
@@ -416,7 +402,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     name: "unit-tests"
     runs-on: ubuntu-latest
     needs: unit-tests-matrix
-    if: \${{ !cancelled() && !contains(needs.unit-tests-matrix.result, 'failure') }}
+    if: \${{ !cancelled() && github.event.action != 'destroyed' && !contains(needs.unit-tests-matrix.result, 'failure') }}
     steps:
       - name: "Verify unit-tests completion"
         run: echo "All unit-test matrix shards completed successfully."
@@ -431,6 +417,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
   fuzz-roundtrippers-matrix:
     name: "fuzz-roundtrippers-\${{ matrix.shard }}"
     runs-on: ubuntu-latest
+    if: \${{ github.event.action != 'destroyed' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -459,7 +446,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     name: "fuzz-roundtrippers"
     runs-on: ubuntu-latest
     needs: fuzz-roundtrippers-matrix
-    if: \${{ !cancelled() && !contains(needs.fuzz-roundtrippers-matrix.result, 'failure') }}
+    if: \${{ !cancelled() && github.event.action != 'destroyed' && !contains(needs.fuzz-roundtrippers-matrix.result, 'failure') }}
     steps:
       - name: "Verify fuzz-roundtrippers completion"
         run: echo "All fuzz-roundtrippers matrix shards completed successfully."
@@ -474,6 +461,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 
   ${name}:
     runs-on: ubuntu-latest
+    if: \${{ github.event.action != 'destroyed' }}
 EOF
 
     if [[ "${name}" == "golangci-lint" ]]; then
@@ -561,15 +549,6 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 EOF
     fi
 
-    # TODO: We should look at the script to see if it needs gcloud
-    if [[ "${name}" == "test-mockgcp" || "${name}" == "unit-tests" || "${name}" == "unit-tests-operator" ]]; then
-cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
-      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
-        with:
-          install_components: 'alpha,beta'
-EOF
-    fi
-
     if [[ "${name}" == "validate-untested-fields" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - name: "Run ${f}"
@@ -618,7 +597,7 @@ done
 
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     runs-on: ubuntu-latest
-    if: \${{ !cancelled() }} # Ensure this runs even if some dependencies fail, but not if the workflow is cancelled
+    if: \${{ !cancelled() && github.event.action != 'destroyed' }} # Ensure this runs even if some dependencies fail, but not if the workflow is cancelled or merge_group is destroyed
     steps:
       - name: Verify all checks succeeded
         run: |
@@ -675,7 +654,7 @@ on:
     paths:
       - 'config/crds/resources/**'
   merge_group:
-    types: [checks_requested]
+    types: [checks_requested, destroyed]
     branches: ["master", "release-*"]
     paths:
       - 'config/crds/resources/**'
@@ -683,7 +662,7 @@ on:
 jobs:
   crd-equivalence-check:
     runs-on: ubuntu-latest
-    if: \${{ contains(github.event.pull_request.labels.*.name, 'direct-migration') }}
+    if: \${{ github.event.action != 'destroyed' && contains(github.event.pull_request.labels.*.name, 'direct-migration') }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -740,7 +719,7 @@ on:
     paths:
       - 'experiments/**'
   merge_group:
-    types: [checks_requested]
+    types: [checks_requested, destroyed]
     branches: ["master", "release-*"]
     paths:
       - 'experiments/**'
@@ -748,6 +727,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    if: \${{ github.event.action != 'destroyed' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -794,7 +774,7 @@ on:
       - 'experiments/**'
       - '**.md'
   merge_group:
-    types: [checks_requested]
+    types: [checks_requested, destroyed]
     branches: ["master", "release-*"]
     paths:
       - 'experiments/**'
@@ -803,6 +783,7 @@ on:
 jobs:
   presubmit-gatekeeper:
     runs-on: ubuntu-latest
+    if: \${{ github.event.action != 'destroyed' }}
     steps:
       - name: Bypass check
         run: echo "Bypassing presubmit checks for documentation or experiment-only changes."

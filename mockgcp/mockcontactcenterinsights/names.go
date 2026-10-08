@@ -1,0 +1,193 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package mockcontactcenterinsights
+
+import (
+	"strconv"
+	"strings"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+)
+
+type qaScorecardName struct {
+	Project     *projects.ProjectData
+	Location    string
+	QaScorecard string
+}
+
+func (n *qaScorecardName) String() string {
+	return "projects/" + strconv.FormatInt(n.Project.Number, 10) + "/locations/" + n.Location + "/qaScorecards/" + n.QaScorecard
+}
+
+// parseQaScorecardName parses a string into a qaScorecardName.
+// The expected form is projects/<projectID>/locations/<location>/qaScorecards/<qaScorecard>
+func (s *MockService) parseQaScorecardName(name string) (*qaScorecardName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "qaScorecards" {
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &qaScorecardName{
+			Project:     project,
+			Location:    tokens[3],
+			QaScorecard: tokens[5],
+		}, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
+type phraseMatcherName struct {
+	Project       *projects.ProjectData
+	Location      string
+	PhraseMatcher string
+}
+
+func (n *phraseMatcherName) String() string {
+	return "projects/" + strconv.FormatInt(n.Project.Number, 10) + "/locations/" + n.Location + "/phraseMatchers/" + n.PhraseMatcher
+}
+
+// parsePhraseMatcherName parses a string into a phraseMatcherName.
+// The expected form is projects/<projectID>/locations/<location>/phraseMatchers/<phraseMatcher>
+func (s *MockService) parsePhraseMatcherName(name string) (*phraseMatcherName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "phraseMatchers" {
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		phraseMatcherID := tokens[5]
+		if !isNumeric(phraseMatcherID) {
+			return nil, status.Errorf(codes.InvalidArgument, "Invalid phrase matcher ID: %s", phraseMatcherID)
+		}
+
+		return &phraseMatcherName{
+			Project:       project,
+			Location:      tokens[3],
+			PhraseMatcher: phraseMatcherID,
+		}, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
+func isNumeric(s string) bool {
+	for _, c := range s {
+		if c < '0' || c > '9' {
+			return false
+		}
+	}
+	return len(s) > 0
+}
+
+type viewName struct {
+	Project  *projects.ProjectData
+	Location string
+	View     string
+}
+
+func (n *viewName) String() string {
+	return "projects/" + strconv.FormatInt(n.Project.Number, 10) + "/locations/" + n.Location + "/views/" + n.View
+}
+
+// parseViewName parses a string into a viewName.
+// The expected form is projects/<projectID>/locations/<location>/views/<view>
+func (s *MockService) parseViewName(name string) (*viewName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "views" {
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &viewName{
+			Project:  project,
+			Location: tokens[3],
+			View:     tokens[5],
+		}, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
+type analysisRuleName struct {
+	Project      *projects.ProjectData
+	Location     string
+	AnalysisRule string
+}
+
+func (n *analysisRuleName) String() string {
+	return "projects/" + strconv.FormatInt(n.Project.Number, 10) + "/locations/" + n.Location + "/analysisRules/" + n.AnalysisRule
+}
+
+// parseAnalysisRuleName parses a string into an analysisRuleName.
+// The expected form is projects/<projectID>/locations/<location>/analysisRules/<analysisRule>
+func (s *MockService) parseAnalysisRuleName(name string) (*analysisRuleName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "analysisRules" {
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &analysisRuleName{
+			Project:      project,
+			Location:     tokens[3],
+			AnalysisRule: tokens[5],
+		}, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
+type conversationName struct {
+	Project      *projects.ProjectData
+	Location     string
+	Conversation string
+}
+
+func (n *conversationName) String() string {
+	return "projects/" + strconv.FormatInt(n.Project.Number, 10) + "/locations/" + n.Location + "/conversations/" + n.Conversation
+}
+
+// parseConversationName parses a string into a conversationName.
+// The expected form is projects/<projectID>/locations/<location>/conversations/<conversation>
+func (s *MockService) parseConversationName(name string) (*conversationName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "conversations" {
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &conversationName{
+			Project:      project,
+			Location:     tokens[3],
+			Conversation: tokens[5],
+		}, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}

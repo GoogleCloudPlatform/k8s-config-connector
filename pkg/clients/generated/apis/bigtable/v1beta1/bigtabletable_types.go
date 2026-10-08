@@ -38,12 +38,30 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
+type TableAutomatedBackupPolicy struct {
+	/* How frequently automated backups should occur. The only supported value at this time is 24 hours. An undefined frequency is treated as 24 hours. */
+	// +optional
+	Frequency *string `json:"frequency,omitempty"`
+
+	/* Optional. A list of Cloud Bigtable zones where automated backups are allowed to be created. If empty, automated backups will be created in all zones of the instance. Locations are in the format `projects/{project}/locations/{zone}`. This field can only set for tables in Enterprise Plus instances. */
+	// +optional
+	Locations []string `json:"locations,omitempty"`
+
+	/* Required. How long the automated backups should be retained. Values must be at least 3 days and at most 90 days. */
+	// +optional
+	RetentionPeriod *string `json:"retentionPeriod,omitempty"`
+}
+
 type TableColumnFamily struct {
 	/* The name of the column family. */
 	Family string `json:"family"`
 }
 
 type BigtableTableSpec struct {
+	/* If specified, automated backups are enabled for this table. Otherwise, automated backups are disabled. */
+	// +optional
+	AutomatedBackupPolicy *TableAutomatedBackupPolicy `json:"automatedBackupPolicy,omitempty"`
+
 	/* Duration to retain change stream data for the table. Set to 0 to disable. Must be between 1 and 7 days.. */
 	// +optional
 	ChangeStreamRetention *string `json:"changeStreamRetention,omitempty"`

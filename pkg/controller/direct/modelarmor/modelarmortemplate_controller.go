@@ -171,11 +171,12 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return err
 	}
 
-	if !diffs.HasDiff() {
+	if diffs == nil || !diffs.HasDiff() {
 		log.V(2).Info("no field needs update", "name", a.id.String())
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &pb.UpdateTemplateRequest{

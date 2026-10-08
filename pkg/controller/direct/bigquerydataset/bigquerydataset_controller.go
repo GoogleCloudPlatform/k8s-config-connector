@@ -17,15 +17,17 @@ package bigquerydataset
 import (
 	"context"
 	"fmt"
+	"maps"
 	"reflect"
-	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	bigquery "cloud.google.com/go/bigquery"
@@ -76,6 +78,11 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	obj := &krm.BigQueryDataset{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
+	}
+
+	// Always call common.NormalizeReferences to resolve references
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	identity, err := obj.GetIdentity(ctx, reader)
@@ -140,20 +147,8 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	mapCtx := &direct.MapContext{}
 
 	desiredDataset := BigQueryDatasetSpec_ToProto(mapCtx, &a.desired.Spec)
-	desiredDataset.Labels = make(map[string]string)
-	for k, v := range a.desired.GetObjectMeta().GetLabels() {
-		desiredDataset.Labels[k] = v
-	}
-	desiredDataset.Labels["managed-by-cnrm"] = "true"
+	desiredDataset.Labels = label.GCPLabels(a.desired)
 
-	// Resolve KMS key reference
-	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
-		kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, a.desired, a.desired.Spec.DefaultEncryptionConfiguration.KmsKeyRef)
-		if err != nil {
-			return err
-		}
-		desiredDataset.DefaultEncryptionConfig.KMSKeyName = kmsRef.External
-	}
 	dsHandler := a.gcpService.DatasetInProject(a.id.Project, a.id.Dataset)
 
 	if err := dsHandler.Create(ctx, desiredDataset); err != nil {
@@ -180,14 +175,12 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		return err
 	}
 	// Write resourceID into spec.
-	tokens := strings.Split(createdMetadata.FullID, ":")
-	if len(tokens) == 2 {
-		resourceID := tokens[1]
-		if err := unstructured.SetNestedField(createOp.GetUnstructured().Object, resourceID, "spec", "resourceID"); err != nil {
-			return fmt.Errorf("error setting spec.resourceID: %w", err)
-		}
-	} else {
+	_, resourceID, ok := parseDatasetFullID(createdMetadata.FullID)
+	if !ok {
 		return fmt.Errorf("Error getting resourceID: %s. The full ID of the created BigQueryDataset is expected to be in the format of projectID:datasetID", createdMetadata.FullID)
+	}
+	if err := unstructured.SetNestedField(createOp.GetUnstructured().Object, resourceID, "spec", "resourceID"); err != nil {
+		return fmt.Errorf("error setting spec.resourceID: %w", err)
 	}
 
 	return nil
@@ -206,17 +199,11 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-
-	// Resolve KMS key reference
-	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
-		kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, a.desired, a.desired.Spec.DefaultEncryptionConfiguration.KmsKeyRef)
-		if err != nil {
-			return err
-		}
-		desired.DefaultEncryptionConfig.KMSKeyName = kmsRef.External
-	}
+	desired.Labels = label.GCPLabels(a.desired)
+	ApplyBigQueryDatasetGCPDefaults(mapCtx, &desiredKRM.Spec, desired, a.actual)
 
 	resource := cloneBigQueryDatasetMetadate(a.actual)
+
 	// Check for immutable fields
 	if desiredKRM.Spec.Location != nil && !reflect.DeepEqual(desired.Location, resource.Location) {
 		return fmt.Errorf("BigQueryDataset %s/%s location cannot be changed, actual: %s, desired: %s", u.GetNamespace(), u.GetName(), resource.Location, desired.Location)
@@ -257,7 +244,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if desiredKRM.Spec.IsCaseInsensitive != nil && !reflect.DeepEqual(desired.IsCaseInsensitive, resource.IsCaseInsensitive) {
 		report.AddField("is_case_sensitive", resource.IsCaseInsensitive, desired.IsCaseInsensitive)
 		resource.IsCaseInsensitive = desired.IsCaseInsensitive
-		updateMask.Paths = append(updateMask.Paths, "is_case_sensitive")
+		updateMask.Paths = append(updateMask.Paths, "is_case_insensitive")
 	}
 	if desired.StorageBillingModel != "" && !reflect.DeepEqual(desired.StorageBillingModel, resource.StorageBillingModel) {
 		report.AddField("storage_billing_model", resource.StorageBillingModel, desired.StorageBillingModel)
@@ -272,36 +259,54 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		resource.MaxTimeTravel = desired.MaxTimeTravel
 		updateMask.Paths = append(updateMask.Paths, "max_time_travel")
 	}
-	if desired.Access != nil && resource.Access != nil && len(desired.Access) > 0 && !reflect.DeepEqual(desired.Access, resource.Access) {
+	if desired.Access != nil && foundDiffDatasetAccessEntry(desired.Access, resource.Access) {
 		report.AddField("access", resource.Access, desired.Access)
-		for _, access := range desired.Access {
-			resource.Access = append(resource.Access, access)
+		resource.Access = desired.Access
+		updateMask.Paths = append(updateMask.Paths, "access")
+	}
+	if desired.Labels != nil && !maps.Equal(desired.Labels, resource.Labels) {
+		report.AddField("labels", resource.Labels, desired.Labels)
+		// We always send the full map of labels to GCP, so we do not need to specify each label key in the update mask.
+		resource.Labels = desired.Labels
+		updateMask.Paths = append(updateMask.Paths, "labels")
+	}
+	updated := a.actual
+	if len(updateMask.Paths) > 0 {
+		structuredreporting.ReportDiff(ctx, report)
+
+		// Compute the dataset metadate for update request
+		datasetMetadataToUpdate := BigQueryDataset_ToMetadataToUpdate(mapCtx, resource, updateMask.Paths)
+		// BigQuery's datasets.patch API merges labels rather than replacing the whole map,
+		// and DatasetMetadataToUpdate only sets keys via SetLabel. To remove labels that
+		// were deleted from metadata.labels, we must explicitly call DeleteLabel(k) so
+		// the client serializes {"labels": {"<key>": null}} in the PATCH request.
+		if !maps.Equal(desired.Labels, a.actual.Labels) {
+			for k := range a.actual.Labels {
+				if _, ok := desired.Labels[k]; !ok {
+					datasetMetadataToUpdate.DeleteLabel(k)
+				}
+			}
 		}
-	}
-	if len(updateMask.Paths) == 0 {
-		return nil
-	}
 
-	structuredreporting.ReportDiff(ctx, report)
-
-	// Compute the dataset metadate for update request
-	datasetMetadataToUpdate := BigQueryDataset_ToMetadataToUpdate(mapCtx, resource, updateMask.Paths)
-	for k, v := range a.desired.GetObjectMeta().GetLabels() {
-		datasetMetadataToUpdate.SetLabel(k, v)
+		// Call update
+		dsHandler := a.gcpService.DatasetInProject(a.id.Project, a.id.Dataset)
+		var err error
+		updated, err = dsHandler.Update(ctx, *datasetMetadataToUpdate, "")
+		if err != nil {
+			return fmt.Errorf("updating Dataset %s: %w", a.id.String(), err)
+		}
+		log.V(2).Info("successfully updated Dataset", "name", a.id.String())
+	} else {
+		log.V(2).Info("no diff found, skipping update call", "name", a.id.String())
 	}
-	datasetMetadataToUpdate.SetLabel("managed-by-cnrm", "true")
-	// Call update
-	dsHandler := a.gcpService.DatasetInProject(a.id.Project, a.id.Dataset)
-	updated, err := dsHandler.Update(ctx, *datasetMetadataToUpdate, "")
-	if err != nil {
-		return fmt.Errorf("updating Dataset %s: %w", a.id.String(), err)
-	}
-	log.V(2).Info("successfully updated Dataset", "name", a.id.String())
 
 	status := &krm.BigQueryDatasetStatus{}
 	status = BigQueryDatasetStatus_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
+	}
+	if status.ExternalRef == nil {
+		status.ExternalRef = direct.LazyPtr(a.id.String())
 	}
 	return updateOp.UpdateStatus(ctx, status, nil)
 }

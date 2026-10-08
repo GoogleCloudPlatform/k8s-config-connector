@@ -1,0 +1,153 @@
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/views/ccinsightsview-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fviews%2Fccinsightsview-maximal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "No view found for project: `${projectNumber}` and view Id: `ccinsightsview-maximal-${uniqueId}`.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/views?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "displayName": "My CCInsights View",
+  "name": "projects/${projectId}/locations/us-central1/views/ccinsightsview-maximal-${uniqueId}",
+  "value": "agent_id=\"my-agent\""
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "My CCInsights View",
+  "name": "projects/${projectNumber}/locations/us-central1/views/${viewId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "value": "agent_id=\"my-agent\""
+}
+
+---
+
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/views/${viewId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2Fviews%2F${viewId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "My CCInsights View",
+  "name": "projects/${projectNumber}/locations/us-central1/views/${viewId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "value": "agent_id=\"my-agent\""
+}
+
+---
+
+PATCH https://contactcenterinsights.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/views/${viewId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2Cvalue
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: view.name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2Fviews%2F${viewId}
+
+{
+  "displayName": "My Updated CCInsights View",
+  "name": "projects/${projectNumber}/locations/us-central1/views/${viewId}",
+  "value": "agent_id=\"updated-agent\""
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "My Updated CCInsights View",
+  "name": "projects/${projectNumber}/locations/us-central1/views/${viewId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "value": "agent_id=\"updated-agent\""
+}
+
+---
+
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/views/${viewId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2Fviews%2F${viewId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "My Updated CCInsights View",
+  "name": "projects/${projectNumber}/locations/us-central1/views/${viewId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "value": "agent_id=\"updated-agent\""
+}
+
+---
+
+DELETE https://contactcenterinsights.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/views/${viewId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2Fviews%2F${viewId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

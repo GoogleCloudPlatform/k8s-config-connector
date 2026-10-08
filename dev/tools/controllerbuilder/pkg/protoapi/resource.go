@@ -1,0 +1,257 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package protoapi
+
+import (
+	"strings"
+
+	"google.golang.org/genproto/googleapis/api/annotations"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
+)
+
+// ParentStyle names the shape of a resource's parent, as declared by the
+// google.api.resource pattern.
+type ParentStyle string
+
+const (
+	// ParentProjectLocation is "projects/*/locations/*" - the most common shape,
+	// and the one the identity template assumes unconditionally today.
+	ParentProjectLocation ParentStyle = "project_location"
+	// ParentProject is "projects/*".
+	ParentProject ParentStyle = "project"
+	// ParentOrganization is "organizations/*".
+	ParentOrganization ParentStyle = "organization"
+	// ParentFolder is "folders/*".
+	ParentFolder ParentStyle = "folder"
+	// ParentMulti indicates a resource that supports multiple parent hierarchies (e.g. project, folder, or organization).
+	ParentMulti ParentStyle = "multi"
+	// ParentOther is anything else: deeper nesting, or a parent we do not model.
+	// ParentOther indicates non-standard parent hierarchy patterns requiring custom handling.
+	ParentOther ParentStyle = "other"
+	// ParentUnknown means the proto declared no pattern for us to read.
+	ParentUnknown ParentStyle = "unknown"
+)
+
+// ResourceMetadata holds resource naming and hierarchy information extracted
+// from google.api.resource proto annotations.
+type ResourceMetadata struct {
+	// Patterns holds all declared resource name patterns from the descriptor.
+	Patterns []string
+	// Pattern is the primary declared resource name pattern, e.g.
+	// "projects/{project}/locations/{location}/lbTrafficExtensions/{extension}".
+	Pattern string
+	// Plural is the declared plural, when set. Only about a quarter of annotated
+	// messages set it, so Collection is usually the more reliable source.
+	Plural string
+	// Collection is the segment naming this resource's collection, taken from the
+	// pattern, e.g. "lbTrafficExtensions". This is the value that belongs in a
+	// resource name, preserving the API's own casing.
+	Collection string
+	// ParentPath is the parent's literal collection segments, joined, e.g.
+	// "projects/locations". ParentStyle collapses the uncommon shapes into
+	// "other", so this is what tells a human triaging one what it actually is.
+	ParentPath string
+	// ParentStyle classifies ParentPath into a shape the templates can render.
+	ParentStyle ParentStyle
+}
+
+// GetResourceMetadata extracts google.api.resource metadata from a message descriptor.
+// It returns nil if the message does not carry a resource descriptor with a pattern.
+func GetResourceMetadata(msg protoreflect.MessageDescriptor) *ResourceMetadata {
+	if msg == nil {
+		return nil
+	}
+	v := proto.GetExtension(msg.Options(), annotations.E_Resource)
+	rd, _ := v.(*annotations.ResourceDescriptor)
+	if rd == nil {
+		return nil
+	}
+	patterns := rd.GetPattern()
+	if len(patterns) == 0 {
+		return nil
+	}
+
+	md := &ResourceMetadata{
+		Patterns: patterns,
+		Pattern:  patterns[0],
+		Plural:   rd.GetPlural(),
+	}
+	md.Collection, md.ParentPath = splitPattern(md.Pattern)
+	if md.Collection == "" && md.Plural != "" {
+		md.Collection = md.Plural
+	}
+	md.ParentStyle = classifyParent(md.ParentPath)
+	if len(patterns) > 1 {
+		for _, p := range patterns[1:] {
+			_, pPath := splitPattern(p)
+			if classifyParent(pPath) != md.ParentStyle {
+				md.ParentStyle = ParentMulti
+				break
+			}
+		}
+	}
+	return md
+}
+
+// splitPattern separates a resource name pattern into the resource's own
+// collection segment and its parent's collection segments, joined back into a
+// path.
+//
+// "projects/{project}/locations/{location}/foos/{foo}"
+//
+//	-> collection "foos", parent "projects/locations"
+func splitPattern(pattern string) (collection string, parentPath string) {
+	segs := strings.Split(pattern, "/")
+
+	// Literal segments alternate with {placeholders}. Anything that is not a
+	// placeholder is a collection name.
+	var literals []string
+	for _, s := range segs {
+		if s == "" {
+			continue
+		}
+		if strings.HasPrefix(s, "{") {
+			continue
+		}
+		literals = append(literals, s)
+	}
+	if len(literals) == 0 {
+		return "", ""
+	}
+
+	// A pattern may end in a literal with no trailing placeholder (e.g.
+	// "projects/{project}/locations"); in that case there is no distinct
+	// collection for the resource itself.
+	last := segs[len(segs)-1]
+	if !strings.HasPrefix(last, "{") {
+		return "", strings.Join(literals, "/")
+	}
+	return literals[len(literals)-1], strings.Join(literals[:len(literals)-1], "/")
+}
+
+// ParentPair extracts the collection segment and placeholder naming a resource's
+// direct parent from its resource name pattern. It returns empty strings if
+// the pattern declares no distinct parent.
+func ParentPair(pattern string) (collection string, placeholder string) {
+	segs := strings.Split(pattern, "/")
+
+	type pair struct{ collection, placeholder string }
+	var pairs []pair
+	for i := 0; i+1 < len(segs); i++ {
+		if !strings.HasPrefix(segs[i], "{") && strings.HasPrefix(segs[i+1], "{") {
+			pairs = append(pairs, pair{segs[i], strings.Trim(segs[i+1], "{}")})
+		}
+	}
+	// One pair is the resource itself, no parent can be detected here.
+	if len(pairs) < 2 {
+		return "", ""
+	}
+
+	if strings.HasPrefix(segs[len(segs)-1], "{") {
+		if strings.HasPrefix(segs[len(segs)-2], "{") {
+			return "", ""
+		}
+		parent := pairs[len(pairs)-2]
+		return parent.collection, parent.placeholder
+	}
+	last := pairs[len(pairs)-1]
+	return last.collection, last.placeholder
+}
+
+func classifyParent(parentPath string) ParentStyle {
+	switch parentPath {
+	case "":
+		return ParentUnknown
+	case "projects/locations":
+		return ParentProjectLocation
+	case "projects":
+		return ParentProject
+	case "organizations":
+		return ParentOrganization
+	case "folders":
+		return ParentFolder
+	default:
+		return ParentOther
+	}
+}
+
+// ParentPattern returns the resource name pattern truncated to include only
+// the direct parent segments. It returns an empty string if no distinct parent exists.
+func ParentPattern(pattern string) string {
+	collection, placeholder := ParentPair(pattern)
+	if collection == "" {
+		return ""
+	}
+	segs := strings.Split(pattern, "/")
+	for i := 0; i+1 < len(segs); i++ {
+		if segs[i] == collection && segs[i+1] == "{"+placeholder+"}" {
+			return strings.Join(segs[:i+2], "/")
+		}
+	}
+	return pattern
+}
+
+// TargetForPath finds the google.api.resource or google.api.resource_definition target
+// (e.g. "chronicle.googleapis.com/Watchlist") for path in the proto.
+func (p *Proto) TargetForPath(path string) string {
+	if p == nil || path == "" {
+		return ""
+	}
+	for _, f := range p.SortedFiles() {
+		// Check file-level resource_definition annotations
+		if v := proto.GetExtension(f.Options(), annotations.E_ResourceDefinition); v != nil {
+			if rds, ok := v.([]*annotations.ResourceDescriptor); ok {
+				for _, rd := range rds {
+					if rd != nil {
+						for _, pattern := range rd.GetPattern() {
+							if pattern == path {
+								return rd.GetType()
+							}
+						}
+					}
+				}
+			}
+		}
+		// Check message-level resource annotations
+		for i := 0; i < f.Messages().Len(); i++ {
+			msg := f.Messages().Get(i)
+			if v := proto.GetExtension(msg.Options(), annotations.E_Resource); v != nil {
+				if rd, ok := v.(*annotations.ResourceDescriptor); ok && rd != nil {
+					for _, pattern := range rd.GetPattern() {
+						if pattern == path {
+							return rd.GetType()
+						}
+					}
+				}
+			}
+		}
+	}
+	return ""
+}
+
+// ParseResourceTarget parses a resource type (e.g. "chronicle.googleapis.com/Watchlist")
+// into its service and kind components (e.g. "chronicle", "Watchlist").
+func ParseResourceTarget(target string) (service, kind string) {
+	parts := strings.Split(target, "/")
+	if len(parts) == 0 {
+		return "", ""
+	}
+	kind = parts[len(parts)-1]
+	domain := parts[0]
+	service = strings.TrimSuffix(domain, ".googleapis.com")
+	return service, kind
+}
+

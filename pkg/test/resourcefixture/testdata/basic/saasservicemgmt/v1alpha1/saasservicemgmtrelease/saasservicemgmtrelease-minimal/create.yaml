@@ -6,4 +6,4 @@ spec:
   projectRef:
     external: ${projectId}
   location: us-central1
-  unitKind: "my-unit-kind-${uniqueId}"
+  unitKind: "projects/${projectId}/locations/us-central1/unitKinds/kcc-test-unit-kind"

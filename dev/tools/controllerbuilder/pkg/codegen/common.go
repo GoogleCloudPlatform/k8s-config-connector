@@ -14,7 +14,11 @@
 
 package codegen
 
-import "strings"
+import (
+	"strings"
+
+	"google.golang.org/protobuf/reflect/protoreflect"
+)
 
 const (
 	// KCCProtoMessageAnnotationMisc is used for go structs that map to proto messages, but are not top-level Spec structs
@@ -36,6 +40,18 @@ const (
 
 // GetProtoMessageFromAnnotation will extract a proto message annotation, including the spec and observedstate "subclasses"
 func GetProtoMessageFromAnnotation(commentLine string) (string, bool) {
+	protoMessage, _, ok := GetProtoMessageAndKindFromAnnotation(commentLine)
+	return protoMessage, ok
+}
+
+// GetProtoMessageAndKindFromAnnotation extracts a proto message annotation from a comment line,
+// returning both the proto message full name and the specific annotation kind that matched
+// (e.g. "+kcc:proto" or "+kcc:observedstate:proto").
+//
+// Identifying the matched annotation enables callers to determine whether the annotated Go type
+// represents a spec struct (e.g. "Foo") or an ObservedState struct (e.g. "FooObservedState")
+// when both refer to the same underlying protobuf message.
+func GetProtoMessageAndKindFromAnnotation(commentLine string) (protoMessage string, annotationKind string, ok bool) {
 	trimmed := strings.TrimPrefix(commentLine, "//")
 	trimmed = strings.TrimSpace(trimmed)
 	for _, annotation := range []string{
@@ -45,10 +61,10 @@ func GetProtoMessageFromAnnotation(commentLine string) (string, bool) {
 		KCCProtoMessageAnnotationStatus,
 	} {
 		if strings.HasPrefix(trimmed, annotation+"=") {
-			return strings.TrimSpace(strings.TrimPrefix(trimmed, annotation+"=")), true
+			return strings.TrimSpace(strings.TrimPrefix(trimmed, annotation+"=")), annotation, true
 		}
 	}
-	return "", false
+	return "", "", false
 }
 
 // special-case proto messages that are currently not mapped to KRM Go structs
@@ -61,6 +77,23 @@ var protoMessagesNotMappedToGoStruct = map[string]string{
 	"google.protobuf.Struct":            "apiextensionsv1.JSON",
 	"google.rpc.Status":                 "common.Status",
 	"google.cloud.connectors.v1.Secret": "secretmanagerv1beta1.SecretRef",
+}
+
+// MapsToGoStruct reports whether the generator writes msg as a struct of its
+// own, and false for the messages protoMessagesNotMappedToGoStruct maps to a
+// scalar or a shared type instead.
+func MapsToGoStruct(msg protoreflect.MessageDescriptor) bool {
+	_, special := protoMessagesNotMappedToGoStruct[string(msg.FullName())]
+	return !special
+}
+
+// QualifierImports maps the package qualifier of each Go type in
+// protoMessagesNotMappedToGoStruct to its import path. If an entry in that map
+// uses an external package, declare its import path here.
+var QualifierImports = map[string]string{
+	"apiextensionsv1":      "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1",
+	"common":               "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common",
+	"secretmanagerv1beta1": "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1",
 }
 
 // This acronym list contains both acronym (including initialism) and abbreviation.
@@ -98,4 +131,33 @@ func IsAcronym(s string) bool {
 		}
 	}
 	return false
+}
+
+// AcronymCasing returns the correctly-cased form of a name token, and whether
+// it was an acronym at all.
+//
+// With plurals set it also matches a plural acronym, which IsAcronym does not:
+// EqualFold("Uris", "URI") is false, so the generator has always written
+// RelatedUris and KbArticleIds. TestCRDsAcronyms reads the same Acronyms list
+// but strips a trailing "s" before matching, so it asks for RelatedURIs and
+// KbArticleIDs and records the difference in acronyms.txt. Singular has always
+// worked; the same struct has SupportURL from support_url.
+//
+// Off by default because switching it on renames 83 fields across 23 packages,
+// 34 of them in v1beta1, and renaming a served field is a worse break than
+// moving one.
+func AcronymCasing(token string, plurals bool) (string, bool) {
+	if IsAcronym(token) {
+		return strings.ToUpper(token), true
+	}
+	if !plurals || len(token) < 2 {
+		return "", false
+	}
+	if last := token[len(token)-1]; last != 's' && last != 'S' {
+		return "", false
+	}
+	if stem := token[:len(token)-1]; IsAcronym(stem) {
+		return strings.ToUpper(stem) + "s", true
+	}
+	return "", false
 }

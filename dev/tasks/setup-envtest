@@ -21,6 +21,39 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
 if [[ -z "${KUBEBUILDER_ASSETS:-}" ]] || [[ ! -d "${KUBEBUILDER_ASSETS}" ]]; then
-  echo "Downloading envtest assets..."
-  export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@release-0.22 use -p path)
+  if [[ -d "${REPO_ROOT}/bin/envtest" ]]; then
+    export KUBEBUILDER_ASSETS="${REPO_ROOT}/bin/envtest"
+  else
+    echo "Downloading envtest assets..."
+    export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@release-0.22 use -p path)
+  fi
+fi
+
+# Set up transparent wrappers that set PR_SET_PDEATHSIG via setpriv so test
+# control-plane processes (kube-apiserver, etcd) automatically terminate when their parent
+# test process terminates, avoiding orphaned processes on test interruptions/timeouts.
+#
+# Note: Linux PR_SET_PDEATHSIG is tied to the thread that spawned the child (Go issue #27505).
+# In Go runtime, OS threads are kept alive unless LockOSThread is exited, which makes this
+# reliable for test runners.
+if [[ "$(uname -s)" == "Linux" ]] && command -v setpriv >/dev/null; then
+  ENVTEST_WRAPPER_DIR="${REPO_ROOT}/.build/envtest-bin"
+  mkdir -p "${ENVTEST_WRAPPER_DIR}"
+  # This script is sourced concurrently by parallel test runners (e.g. paralleltestrunner -> run-e2e).
+  # Never rewrite a wrapper in place: if another process is exec'ing it while we hold it open for
+  # writing, exec fails with ETXTBSY ("text file busy"). Instead, skip the write if the content is
+  # already correct, and otherwise write to a temp file and atomically rename it into place.
+  for b in etcd kube-apiserver; do
+    wrapper_path="${ENVTEST_WRAPPER_DIR}/$b"
+    wrapper_content="$(printf '#!/bin/sh\nexec setpriv --pdeathsig KILL -- "%s/%s" "$@"' "${KUBEBUILDER_ASSETS}" "$b")"
+    if [[ ! -x "${wrapper_path}" ]] || [[ "$(cat "${wrapper_path}" 2>/dev/null)" != "${wrapper_content}" ]]; then
+      wrapper_tmp="$(mktemp "${wrapper_path}.XXXXXX")"
+      printf '%s\n' "${wrapper_content}" > "${wrapper_tmp}"
+      chmod +x "${wrapper_tmp}"
+      mv -f "${wrapper_tmp}" "${wrapper_path}"
+    fi
+  done
+  export TEST_ASSET_ETCD="${ENVTEST_WRAPPER_DIR}/etcd"
+  export TEST_ASSET_KUBE_APISERVER="${ENVTEST_WRAPPER_DIR}/kube-apiserver"
+  unset ENVTEST_WRAPPER_DIR b wrapper_path wrapper_content wrapper_tmp
 fi

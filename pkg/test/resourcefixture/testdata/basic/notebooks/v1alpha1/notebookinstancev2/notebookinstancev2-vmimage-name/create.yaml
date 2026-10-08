@@ -23,5 +23,5 @@ spec:
   gceSetup:
     machineType: n1-standard-1
     vmImage:
-      name: common-cpu-m116
-      project: deeplearning-platform-release
+      name: workbench-instances-v20230404-debian-11-py310
+      project: cloud-notebooks-managed

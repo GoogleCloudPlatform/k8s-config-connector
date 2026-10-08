@@ -898,6 +898,25 @@ func ResourceContainerCluster() *schema.Resource {
 				// ConflictsWith: many fields, see https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-overview#comparison. The conflict is only set one-way, on other fields w/ this field.
 			},
 
+			"privileged_admission_config": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				MaxItems:    1,
+				Description: `Policy for privileged workloads admission.`,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"allowlist_paths": {
+							Type:        schema.TypeList,
+							Optional:    true,
+							Description: `The customer allowlist Cloud Storage paths for the cluster. These paths are used with the --autopilot-privileged-admission flag to authorize privileged workloads in Autopilot clusters.`,
+							Elem: &schema.Schema{
+								Type: schema.TypeString,
+							},
+						},
+					},
+				},
+			},
+
 			"allow_net_admin": {
 				Type:        schema.TypeBool,
 				Optional:    true,
@@ -2233,6 +2252,11 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		}
 	}
 
+	var privilegedAdmissionConfig *container.PrivilegedAdmissionConfig
+	if v, ok := d.GetOk("privileged_admission_config"); ok {
+		privilegedAdmissionConfig = expandPrivilegedAdmissionConfig(v)
+	}
+
 	cluster := &container.Cluster{
 		Name:                        clusterName,
 		InitialNodeCount:            int64(d.Get("initial_node_count").(int)),
@@ -2255,9 +2279,10 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		Autoscaling:             expandClusterAutoscaling(d.Get("cluster_autoscaling"), d),
 		BinaryAuthorization:     expandBinaryAuthorization(d.Get("binary_authorization"), d.Get("enable_binary_authorization").(bool)),
 		Autopilot: &container.Autopilot{
-			Enabled:              d.Get("enable_autopilot").(bool),
-			WorkloadPolicyConfig: workloadPolicyConfig,
-			ForceSendFields:      []string{"Enabled"},
+			Enabled:                   d.Get("enable_autopilot").(bool),
+			WorkloadPolicyConfig:      workloadPolicyConfig,
+			PrivilegedAdmissionConfig: privilegedAdmissionConfig,
+			ForceSendFields:           []string{"Enabled"},
 		},
 		ReleaseChannel:   expandReleaseChannel(d.Get("release_channel")),
 		ClusterTelemetry: expandClusterTelemetry(d.Get("cluster_telemetry")),
@@ -2776,6 +2801,11 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 				return fmt.Errorf("Error setting allow_net_admin: %s", err)
 			}
 		}
+		if autopilot.PrivilegedAdmissionConfig != nil {
+			if err := d.Set("privileged_admission_config", flattenPrivilegedAdmissionConfig(autopilot.PrivilegedAdmissionConfig)); err != nil {
+				return fmt.Errorf("Error setting privileged_admission_config: %s", err)
+			}
+		}
 	}
 	if cluster.ShieldedNodes != nil {
 		if err := d.Set("enable_shielded_nodes", cluster.ShieldedNodes.Enabled); err != nil {
@@ -3080,6 +3110,22 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		log.Printf("[INFO] GKE cluster %s's autopilot workload policy config allow_net_admin has been set to %v", d.Id(), allowed)
+	}
+
+	if d.HasChange("privileged_admission_config") {
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredPrivilegedAdmissionConfig: expandPrivilegedAdmissionConfig(d.Get("privileged_admission_config")),
+			},
+		}
+
+		updateF := updateFunc(req, "updating GKE autopilot privileged admission config")
+		// Call update serially.
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s's autopilot privileged admission config has been updated to %#v", d.Id(), req.Update.DesiredPrivilegedAdmissionConfig)
 	}
 
 	if d.HasChange("enable_binary_authorization") {
@@ -5101,6 +5147,38 @@ func flattenProtectConfigWorkloadConfig(wc *container.WorkloadConfig) []map[stri
 	result["audit_mode"] = wc.AuditMode
 
 	return []map[string]interface{}{result}
+}
+
+func expandPrivilegedAdmissionConfig(configured interface{}) *container.PrivilegedAdmissionConfig {
+	l := configured.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil
+	}
+
+	pac := &container.PrivilegedAdmissionConfig{}
+	cfg := l[0].(map[string]interface{})
+	if v, ok := cfg["allowlist_paths"]; ok && v != nil {
+		rawList := v.([]interface{})
+		paths := make([]string, 0, len(rawList))
+		for _, item := range rawList {
+			if item != nil {
+				paths = append(paths, item.(string))
+			}
+		}
+		pac.AllowlistPaths = paths
+	}
+	return pac
+}
+
+func flattenPrivilegedAdmissionConfig(pac *container.PrivilegedAdmissionConfig) []map[string]interface{} {
+	if pac == nil {
+		return nil
+	}
+	return []map[string]interface{}{
+		{
+			"allowlist_paths": pac.AllowlistPaths,
+		},
+	}
 }
 
 func expandSecurityPostureConfig(configured interface{}) *container.SecurityPostureConfig {

@@ -190,6 +190,7 @@ func (a *TrainingPipelineAdapter) Update(ctx context.Context, updateOp *directba
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	return fmt.Errorf("VertexAITrainingPipeline is immutable and cannot be updated. Field(s) changed: %v", diffs.FieldIDs())

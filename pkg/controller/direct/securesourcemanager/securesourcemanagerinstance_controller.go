@@ -199,6 +199,7 @@ func (a *secureSourceManagerInstanceAdapter) Update(ctx context.Context, updateO
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	return fmt.Errorf("SecureSourceManagerInstance resource is immutable and cannot be updated. Field(s) changed: %v", diffs.FieldIDs())

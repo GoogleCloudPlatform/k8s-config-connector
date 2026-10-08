@@ -61,6 +61,10 @@ func (i *DialogflowGeneratorIdentity) Host() string {
 	return DialogflowGeneratorIdentityFormat.Host()
 }
 
+func (i *DialogflowGeneratorIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func getIdentityFromDialogflowGeneratorSpec(ctx context.Context, reader client.Reader, obj *DialogflowGenerator) (*DialogflowGeneratorIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {

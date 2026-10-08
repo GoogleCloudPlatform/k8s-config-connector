@@ -27,15 +27,3 @@ spec:
   owner:
     displayName: "API Owner"
     email: "owner@example.com"
-  apiRequirements:
-    stringValues:
-      values:
-        - "requirement-1"
-  apiFunctionalRequirements:
-    stringValues:
-      values:
-        - "func-requirement-1"
-  apiTechnicalRequirements:
-    stringValues:
-      values:
-        - "tech-requirement-1"

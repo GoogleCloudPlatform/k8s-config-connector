@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: vmmigration.cnrm.cloud.google.com
+  kind: VMMigrationGroup
+  name: vmmg-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

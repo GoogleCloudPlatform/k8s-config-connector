@@ -933,24 +933,6 @@ func DataStore_BillingEstimation_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	out.WebsiteDataUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.WebsiteDataUpdateTime)
 	return out
 }
-func DiscoveryEngineControlObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Control) *krmdiscoveryenginev1alpha1.DiscoveryEngineControlObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineControlObservedState{}
-	// MISSING: Name
-	// MISSING: AssociatedServingConfigIds
-	return out
-}
-func DiscoveryEngineControlObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineControlObservedState) *pb.Control {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Control{}
-	// MISSING: Name
-	// MISSING: AssociatedServingConfigIds
-	return out
-}
 func DiscoveryEngineControlSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Control) *krmdiscoveryenginev1alpha1.DiscoveryEngineControlSpec {
 	if in == nil {
 		return nil
@@ -1173,32 +1155,6 @@ func DiscoveryEngineDataStoreTargetSiteSpec_v1alpha1_ToProto(mapCtx *direct.MapC
 	out.ExactMatch = direct.ValueOf(in.ExactMatch)
 	return out
 }
-func DiscoveryEngineEngineObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Engine) *krmdiscoveryenginev1alpha1.DiscoveryEngineEngineObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineEngineObservedState{}
-	// MISSING: MediaRecommendationEngineConfig
-	// MISSING: ChatEngineMetadata
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DataStoreIds
-	return out
-}
-func DiscoveryEngineEngineObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineEngineObservedState) *pb.Engine {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Engine{}
-	// MISSING: MediaRecommendationEngineConfig
-	// MISSING: ChatEngineMetadata
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DataStoreIds
-	return out
-}
 func DiscoveryEngineEngineSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Engine) *krmdiscoveryenginev1alpha1.DiscoveryEngineEngineSpec {
 	if in == nil {
 		return nil
@@ -1333,24 +1289,6 @@ func DiscoveryEngineLicenseConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext
 	out.FreeTrial = direct.ValueOf(in.FreeTrial)
 	return out
 }
-func DiscoveryEngineSampleQueryObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SampleQuery) *krmdiscoveryenginev1alpha1.DiscoveryEngineSampleQueryObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineSampleQueryObservedState{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	return out
-}
-func DiscoveryEngineSampleQueryObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineSampleQueryObservedState) *discoveryenginepb.SampleQuery {
-	if in == nil {
-		return nil
-	}
-	out := &discoveryenginepb.SampleQuery{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	return out
-}
 func DiscoveryEngineSampleQuerySetObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SampleQuerySet) *krmdiscoveryenginev1alpha1.DiscoveryEngineSampleQuerySetObservedState {
 	if in == nil {
 		return nil
@@ -1389,57 +1327,33 @@ func DiscoveryEngineSampleQuerySetSpec_v1alpha1_ToProto(mapCtx *direct.MapContex
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
-func DiscoveryEngineSampleQuerySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SampleQuery) *krmdiscoveryenginev1alpha1.DiscoveryEngineSampleQuerySpec {
+func DiscoveryEngineSchemaSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krmdiscoveryenginev1alpha1.DiscoveryEngineSchemaSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineSampleQuerySpec{}
-	out.QueryEntry = SampleQuery_QueryEntry_v1alpha1_FromProto(mapCtx, in.GetQueryEntry())
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineSchemaSpec{}
+	// MISSING: StructSchema
+	out.JsonSchema = direct.LazyPtr(in.GetJsonSchema())
 	// MISSING: Name
 	return out
 }
-func DiscoveryEngineSampleQuerySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineSampleQuerySpec) *discoveryenginepb.SampleQuery {
+func DiscoveryEngineSchemaSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineSchemaSpec) *pb.Schema {
 	if in == nil {
 		return nil
 	}
-	out := &discoveryenginepb.SampleQuery{}
-	if oneof := SampleQuery_QueryEntry_v1alpha1_ToProto(mapCtx, in.QueryEntry); oneof != nil {
-		out.Content = &discoveryenginepb.SampleQuery_QueryEntry_{QueryEntry: oneof}
+	out := &pb.Schema{}
+	// MISSING: StructSchema
+	if oneof := DiscoveryEngineSchemaSpec_JsonSchema_ToProto(mapCtx, in.JsonSchema); oneof != nil {
+		out.Schema = oneof
 	}
 	// MISSING: Name
 	return out
 }
-func DiscoveryEngineSearchEngineObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SiteSearchEngine) *krmdiscoveryenginev1alpha1.DiscoveryEngineSearchEngineObservedState {
+func DiscoveryEngineSchemaSpec_JsonSchema_ToProto(mapCtx *direct.MapContext, in *string) *pb.Schema_JsonSchema {
 	if in == nil {
 		return nil
 	}
-	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineSearchEngineObservedState{}
-	// MISSING: Name
-	return out
-}
-func DiscoveryEngineSearchEngineObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineSearchEngineObservedState) *pb.SiteSearchEngine {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SiteSearchEngine{}
-	// MISSING: Name
-	return out
-}
-func DiscoveryEngineSearchEngineSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SiteSearchEngine) *krmdiscoveryenginev1alpha1.DiscoveryEngineSearchEngineSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineSearchEngineSpec{}
-	// MISSING: Name
-	return out
-}
-func DiscoveryEngineSearchEngineSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineSearchEngineSpec) *pb.SiteSearchEngine {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SiteSearchEngine{}
-	// MISSING: Name
-	return out
+	return &pb.Schema_JsonSchema{JsonSchema: *in}
 }
 func DiscoveryEngineServingConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.ServingConfig) *krmdiscoveryenginev1alpha1.DiscoveryEngineServingConfigObservedState {
 	if in == nil {
@@ -1532,6 +1446,50 @@ func DiscoveryEngineSessionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: Labels
 	out.IsPinned = direct.ValueOf(in.IsPinned)
 	return out
+}
+func DiscoveryEngineSitemapObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Sitemap) *krmdiscoveryenginev1alpha1.DiscoveryEngineSitemapObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineSitemapObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	return out
+}
+func DiscoveryEngineSitemapObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineSitemapObservedState) *pb.Sitemap {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Sitemap{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	return out
+}
+func DiscoveryEngineSitemapSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Sitemap) *krmdiscoveryenginev1alpha1.DiscoveryEngineSitemapSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineSitemapSpec{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	// MISSING: Name
+	return out
+}
+func DiscoveryEngineSitemapSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineSitemapSpec) *pb.Sitemap {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Sitemap{}
+	if oneof := DiscoveryEngineSitemapSpec_Uri_ToProto(mapCtx, in.URI); oneof != nil {
+		out.Feed = oneof
+	}
+	// MISSING: Name
+	return out
+}
+func DiscoveryEngineSitemapSpec_Uri_ToProto(mapCtx *direct.MapContext, in *string) *pb.Sitemap_Uri {
+	if in == nil {
+		return nil
+	}
+	return &pb.Sitemap_Uri{Uri: *in}
 }
 func DiscoveryEngineUserStoreObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.UserStore) *krmdiscoveryenginev1alpha1.DiscoveryEngineUserStoreObservedState {
 	if in == nil {
@@ -1753,44 +1711,6 @@ func SafetyRatingObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *k
 	out.Severity = direct.Enum_ToProto[pb.SafetyRating_HarmSeverity](mapCtx, in.Severity)
 	out.SeverityScore = direct.ValueOf(in.SeverityScore)
 	out.Blocked = direct.ValueOf(in.Blocked)
-	return out
-}
-func SampleQuery_QueryEntry_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SampleQuery_QueryEntry) *krmdiscoveryenginev1alpha1.SampleQuery_QueryEntry {
-	if in == nil {
-		return nil
-	}
-	out := &krmdiscoveryenginev1alpha1.SampleQuery_QueryEntry{}
-	out.Query = direct.LazyPtr(in.GetQuery())
-	out.Targets = direct.Slice_FromProto(mapCtx, in.Targets, SampleQuery_QueryEntry_Target_v1alpha1_FromProto)
-	return out
-}
-func SampleQuery_QueryEntry_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SampleQuery_QueryEntry) *discoveryenginepb.SampleQuery_QueryEntry {
-	if in == nil {
-		return nil
-	}
-	out := &discoveryenginepb.SampleQuery_QueryEntry{}
-	out.Query = direct.ValueOf(in.Query)
-	out.Targets = direct.Slice_ToProto(mapCtx, in.Targets, SampleQuery_QueryEntry_Target_v1alpha1_ToProto)
-	return out
-}
-func SampleQuery_QueryEntry_Target_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SampleQuery_QueryEntry_Target) *krmdiscoveryenginev1alpha1.SampleQuery_QueryEntry_Target {
-	if in == nil {
-		return nil
-	}
-	out := &krmdiscoveryenginev1alpha1.SampleQuery_QueryEntry_Target{}
-	out.URI = direct.LazyPtr(in.GetUri())
-	out.PageNumbers = in.PageNumbers
-	out.Score = in.Score
-	return out
-}
-func SampleQuery_QueryEntry_Target_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SampleQuery_QueryEntry_Target) *discoveryenginepb.SampleQuery_QueryEntry_Target {
-	if in == nil {
-		return nil
-	}
-	out := &discoveryenginepb.SampleQuery_QueryEntry_Target{}
-	out.Uri = direct.ValueOf(in.URI)
-	out.PageNumbers = in.PageNumbers
-	out.Score = in.Score
 	return out
 }
 func SearchLinkPromotion_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SearchLinkPromotion) *krmdiscoveryenginev1alpha1.SearchLinkPromotion {

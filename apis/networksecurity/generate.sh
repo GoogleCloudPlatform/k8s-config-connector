@@ -48,7 +48,9 @@ ${CONTROLLERBUILDER} generate-types \
   --resource NetworkSecurityAddressGroup:AddressGroup \
   --resource NetworkSecurityInterceptEndpointGroup:InterceptEndpointGroup \
   --resource NetworkSecurityMirroringDeployment:MirroringDeployment \
+  --resource NetworkSecurityMirroringDeploymentGroup:MirroringDeploymentGroup \
   --resource NetworkSecurityMirroringEndpointGroup:MirroringEndpointGroup \
+  --resource NetworkSecurityMirroringEndpointGroupAssociation:MirroringEndpointGroupAssociation \
   --resource NetworkSecuritySACRealm:SACRealm \
   --resource NetworkSecuritySecurityProfile:SecurityProfile \
   --resource NetworkSecuritySecurityProfileGroup:SecurityProfileGroup \

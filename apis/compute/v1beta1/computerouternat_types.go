@@ -135,7 +135,8 @@ type ComputeRouterNATSpec struct {
 	/* How external IPs should be allocated for this NAT. Valid values are
 	'AUTO_ONLY' for only allowing NAT IPs allocated by Google Cloud
 	Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible values: ["MANUAL_ONLY", "AUTO_ONLY"]. */
-	NatIpAllocateOption string `json:"natIpAllocateOption"`
+	// +optional
+	NatIpAllocateOption *string `json:"natIpAllocateOption,omitempty"`
 
 	/* NAT IPs. Only valid if natIpAllocateOption is set to MANUAL_ONLY. */
 	// +optional

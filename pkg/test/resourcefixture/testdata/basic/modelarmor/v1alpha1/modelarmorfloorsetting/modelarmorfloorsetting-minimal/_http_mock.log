@@ -1,0 +1,112 @@
+GET https://modelarmor.googleapis.com/v1/projects/${projectId}/locations/global/floorSetting?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FfloorSetting
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "enableFloorSettingEnforcement": true,
+  "filterConfig": {
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": 1,
+      "filterEnforcement": 1
+    }
+  },
+  "floorSettingMetadata": {
+    "multiLanguageDetection": {
+      "enableMultiLanguageDetection": true
+    }
+  },
+  "name": "projects/${projectId}/locations/global/floorSetting",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://modelarmor.googleapis.com/v1/projects/${projectId}/locations/global/floorSetting?%24alt=json%3Benum-encoding%3Dint&updateMask=enableFloorSettingEnforcement%2CfilterConfig%2CfloorSettingMetadata
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: floor_setting.name=projects%2F${projectId}%2Flocations%2Fglobal%2FfloorSetting
+
+{
+  "enableFloorSettingEnforcement": false,
+  "filterConfig": {
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": 2,
+      "filterEnforcement": 1
+    }
+  },
+  "floorSettingMetadata": {
+    "multiLanguageDetection": {}
+  },
+  "name": "projects/${projectId}/locations/global/floorSetting"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "enableFloorSettingEnforcement": false,
+  "filterConfig": {
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": 2,
+      "filterEnforcement": 1
+    }
+  },
+  "floorSettingMetadata": {
+    "multiLanguageDetection": {}
+  },
+  "name": "projects/${projectId}/locations/global/floorSetting",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://modelarmor.googleapis.com/v1/projects/${projectId}/locations/global/floorSetting?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FfloorSetting
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "enableFloorSettingEnforcement": false,
+  "filterConfig": {
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": 2,
+      "filterEnforcement": 1
+    }
+  },
+  "floorSettingMetadata": {
+    "multiLanguageDetection": {}
+  },
+  "name": "projects/${projectId}/locations/global/floorSetting",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

@@ -149,6 +149,15 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 		out.Settings.SettingsVersion = actual.Settings.SettingsVersion
 	}
 
+	// WARNING: spec.settings.databaseReplicationEnabled is being UNMANAGED when is unspecified in the KRM object.
+	if in.Spec.Settings.DatabaseReplicationEnabled == nil && actual != nil && actual.Settings != nil {
+		// Backwards compatibility: because the controller cannot distinguish between pre-existing
+		// SQLInstances (created before this field was supported) and newly created ones during
+		// re-reconciliation, we preserve the live GCP state when unset in KRM. This is the least
+		// destructive approach, preventing unintended drift, disruptive read replica restarts (if blindly defaulted to true), or infinite loops (if blindly set to false).
+		out.Settings.DatabaseReplicationEnabled = actual.Settings.DatabaseReplicationEnabled
+	}
+
 	// Stage 2: Preserve any fields that are unmanaged by the user.
 	// This generic loop will overwrite any defaults set in Stage 1.
 	if actual == nil {

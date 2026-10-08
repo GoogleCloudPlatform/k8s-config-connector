@@ -15,7 +15,7 @@
 package v1beta1
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -59,7 +59,7 @@ type ArtifactRegistryRepositorySpec struct {
 	//  `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`.
 	//  This value may not be changed after the Repository has been created.
 	// +kcc:proto:field=google.devtools.artifactregistry.v1.Repository.kms_key_name
-	KMSKeyNameRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KMSKeyNameRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 
 	// Maven repository config contains repository level configuration
 	//  for the repositories of maven type.
@@ -144,9 +144,20 @@ type ArtifactRegistryRepositoryRemoteRepositoryConfig struct {
 	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.python_repository
 	PythonRepository *ArtifactRegistryRepositoryPythonRepository `json:"pythonRepository,omitempty"`
 
+	// Common remote repository settings.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.common_repository
+	CommonRepository *ArtifactRegistryRepositoryCommonRepository `json:"commonRepository,omitempty"`
+
 	// The description of the remote source.
 	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.description
 	Description *string `json:"description,omitempty"`
+}
+
+// +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.CommonRemoteRepository
+type ArtifactRegistryRepositoryCommonRepository struct {
+	// Required. A common public repository base for remote repository.
+	// +kcc:proto:field=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.CommonRemoteRepository.uri
+	URI *string `json:"uri,omitempty"`
 }
 
 // +kcc:proto=google.devtools.artifactregistry.v1.RemoteRepositoryConfig.DockerRepository

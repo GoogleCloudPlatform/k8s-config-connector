@@ -23,6 +23,7 @@ spec:
   defaultTableExpirationMs: 3800000
   description: Fully Configured BigQuery Dataset updated
   friendlyName: bigquerydataset-fullyconfigured-updated
+  isCaseInsensitive: true
   location: US
   maxTimeTravelHours: "96"
   projectRef:

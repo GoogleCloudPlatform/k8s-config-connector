@@ -267,6 +267,28 @@ go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/container/v1b
       [(google.api.field_behavior) = OUTPUT_ONLY];
 EOF
 
+# Append PrivilegedAdmissionConfig message and update Autopilot & ClusterUpdate
+cat <<EOF >> ${REPO_ROOT}/mockgcp/third_party/googleapis/google/container/v1beta1/cluster_service.proto
+
+// PrivilegedAdmissionConfig stores the list of authorized allowlist paths for the cluster.
+message PrivilegedAdmissionConfig {
+  // The customer allowlist Cloud Storage paths for the cluster.
+  repeated string allowlist_paths = 1;
+}
+EOF
+
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/container/v1beta1/cluster_service.proto --message Autopilot --mode append <<EOF
+
+  // PrivilegedAdmissionConfig is the configuration related to privileged admission control.
+  PrivilegedAdmissionConfig privileged_admission_config = 4;
+EOF
+
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/container/v1beta1/cluster_service.proto --message ClusterUpdate --mode append <<EOF
+
+  // DesiredPrivilegedAdmissionConfig is the desired privileged admission control.
+  optional PrivilegedAdmissionConfig desired_privileged_admission_config = 157;
+EOF
+
 
 
 # ResourceManager v1 patches - temporarily switching to proto3 because patch-proto has issues with proto2
@@ -317,6 +339,131 @@ EOF
 fi
 
 # Dataform patches
+
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/dataform/v1beta1/dataform.proto --service "Dataform" --mode "append" <<EOF
+  // Fetches a single Folder.
+  rpc GetFolder(GetFolderRequest) returns (Folder) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=projects/*/locations/*/folders/*}"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Creates a new Folder in a given project and location.
+  rpc CreateFolder(CreateFolderRequest) returns (Folder) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=projects/*/locations/*}/folders"
+      body: "folder"
+    };
+    option (google.api.method_signature) = "parent,folder,folder_id";
+  }
+
+  // Updates a single Folder.
+  rpc UpdateFolder(UpdateFolderRequest) returns (Folder) {
+    option (google.api.http) = {
+      patch: "/v1beta1/{folder.name=projects/*/locations/*/folders/*}"
+      body: "folder"
+    };
+    option (google.api.method_signature) = "folder,update_mask";
+  }
+
+  // Deletes a single Folder.
+  rpc DeleteFolder(DeleteFolderRequest)
+      returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1beta1/{name=projects/*/locations/*/folders/*}"
+    };
+    option (google.api.method_signature) = "name";
+  }
+EOF
+
+cat >> ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/dataform/v1beta1/dataform.proto <<EOF
+
+// \`GetFolder\` request message.
+message GetFolderRequest {
+  // Required. The folder's name.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "dataform.googleapis.com/Folder"
+    }
+  ];
+}
+
+// \`CreateFolderRequest\` request message.
+message CreateFolderRequest {
+  // Required. The location in which to create the Folder. Must be in the
+  // format \`projects/*/locations/*\`.
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "locations.googleapis.com/Location"
+    }
+  ];
+
+  // Required. The Folder to create.
+  Folder folder = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // The ID to use for the Folder, which will become the final component of
+  // the Folder's resource name.
+  string folder_id = 3;
+}
+
+// \`UpdateFolder\` request message.
+message UpdateFolderRequest {
+  // Optional. Specifies the fields to be updated in the Folder. If left unset,
+  // all fields will be updated.
+  google.protobuf.FieldMask update_mask = 1
+      [(google.api.field_behavior) = OPTIONAL];
+
+  // Required. The updated Folder.
+  Folder folder = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+// \`DeleteFolder\` request message.
+message DeleteFolderRequest {
+  // Required. The folder's name.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "dataform.googleapis.com/Folder"
+    }
+  ];
+}
+
+// Represents a Dataform folder.
+message Folder {
+  option (google.api.resource) = {
+    type: "dataform.googleapis.com/Folder"
+    pattern: "projects/{project}/locations/{location}/folders/{folder}"
+  };
+
+  // Identifier. The Folder's name.
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
+
+  // Required. The Folder's user-friendly name.
+  string display_name = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // Optional. The containing Folder resource name.
+  optional string containing_folder = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // Output only. The resource name of the TeamFolder that this Folder is
+  // associated with.
+  optional string team_folder_name = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. The timestamp of when the Folder was created.
+  google.protobuf.Timestamp create_time = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. The timestamp of when the Folder was last updated.
+  google.protobuf.Timestamp update_time = 6 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. All the metadata information that is used internally to serve the resource.
+  optional string internal_metadata = 7 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. The IAM principal identifier of the creator of the Folder.
+  optional string creator_iam_principal = 8 [(google.api.field_behavior) = OUTPUT_ONLY];
+}
+EOF
 
 go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/dataform/v1/dataform.proto --service "Dataform" --mode "append" <<EOF
   // Fetches a single TeamFolder.
@@ -471,4 +618,16 @@ go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/orchest
   NetworkingType networking_type = 12 [(google.api.field_behavior) = OPTIONAL];
 
 EOF
+
+# Cloud Monitoring Dashboard patches
+sed -i '/string prometheus_query = 6;/a \ \ \ \ // A query used to fetch time series with SQL.\n    OpsAnalyticsQuery ops_analytics_query = 8;' ${REPO_ROOT}/mockgcp/third_party/googleapis/google/monitoring/dashboard/v1/metrics.proto
+cat >> ${REPO_ROOT}/mockgcp/third_party/googleapis/google/monitoring/dashboard/v1/metrics.proto <<EOF
+
+// A query that produces an aggregated response and supporting data.
+message OpsAnalyticsQuery {
+  // A SQL query to fetch time series, category series, or numeric series data.
+  string sql = 2;
+}
+EOF
+
 

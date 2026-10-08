@@ -26,7 +26,6 @@ package aiplatform
 
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
-	aiplatformpb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
@@ -154,199 +153,169 @@ found existing non-generated mapping function "AIPlatformModelSpec_ToProto", ski
 		return out
 	}
 */
-func AuthConfig_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.AuthConfig) *krm.AuthConfig {
+func AIPlatformPersistentResourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PersistentResource) *krm.AIPlatformPersistentResourceObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AuthConfig{}
-	out.APIKeyConfig = AuthConfig_APIKeyConfig_FromProto(mapCtx, in.GetApiKeyConfig())
-	out.HTTPBasicAuthConfig = AuthConfig_HTTPBasicAuthConfig_FromProto(mapCtx, in.GetHttpBasicAuthConfig())
-	out.GoogleServiceAccountConfig = AuthConfig_GoogleServiceAccountConfig_FromProto(mapCtx, in.GetGoogleServiceAccountConfig())
-	out.OauthConfig = AuthConfig_OauthConfig_FromProto(mapCtx, in.GetOauthConfig())
-	out.OIDCConfig = AuthConfig_OIDCConfig_FromProto(mapCtx, in.GetOidcConfig())
-	out.AuthType = direct.Enum_FromProto(mapCtx, in.GetAuthType())
+	out := &krm.AIPlatformPersistentResourceObservedState{}
+	// MISSING: Name
+	out.ResourcePools = direct.Slice_FromProto(mapCtx, in.ResourcePools, ResourcePoolObservedState_FromProto)
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.ResourceRuntime = ResourceRuntimeObservedState_FromProto(mapCtx, in.GetResourceRuntime())
 	return out
 }
-func AuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.AuthConfig) *aiplatformpb.AuthConfig {
+func AIPlatformPersistentResourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformPersistentResourceObservedState) *pb.PersistentResource {
 	if in == nil {
 		return nil
 	}
-	out := &aiplatformpb.AuthConfig{}
-	if oneof := AuthConfig_APIKeyConfig_ToProto(mapCtx, in.APIKeyConfig); oneof != nil {
-		out.AuthConfig = &aiplatformpb.AuthConfig_ApiKeyConfig_{ApiKeyConfig: oneof}
+	out := &pb.PersistentResource{}
+	// MISSING: Name
+	out.ResourcePools = direct.Slice_ToProto(mapCtx, in.ResourcePools, ResourcePoolObservedState_ToProto)
+	out.State = direct.Enum_ToProto[pb.PersistentResource_State](mapCtx, in.State)
+	out.Error = direct.Status_ToProto(mapCtx, in.Error)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.ResourceRuntime = ResourceRuntimeObservedState_ToProto(mapCtx, in.ResourceRuntime)
+	return out
+}
+func AIPlatformPersistentResourceSpec_FromProto(mapCtx *direct.MapContext, in *pb.PersistentResource) *krm.AIPlatformPersistentResourceSpec {
+	if in == nil {
+		return nil
 	}
-	if oneof := AuthConfig_HTTPBasicAuthConfig_ToProto(mapCtx, in.HTTPBasicAuthConfig); oneof != nil {
-		out.AuthConfig = &aiplatformpb.AuthConfig_HttpBasicAuthConfig_{HttpBasicAuthConfig: oneof}
+	out := &krm.AIPlatformPersistentResourceSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.ResourcePools = direct.Slice_FromProto(mapCtx, in.ResourcePools, ResourcePool_FromProto)
+	out.Labels = in.Labels
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
-	if oneof := AuthConfig_GoogleServiceAccountConfig_ToProto(mapCtx, in.GoogleServiceAccountConfig); oneof != nil {
-		out.AuthConfig = &aiplatformpb.AuthConfig_GoogleServiceAccountConfig_{GoogleServiceAccountConfig: oneof}
+	out.PSCInterfaceConfig = PSCInterfaceConfig_FromProto(mapCtx, in.GetPscInterfaceConfig())
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	out.ResourceRuntimeSpec = ResourceRuntimeSpec_FromProto(mapCtx, in.GetResourceRuntimeSpec())
+	out.ReservedIPRanges = in.ReservedIpRanges
+	return out
+}
+func AIPlatformPersistentResourceSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformPersistentResourceSpec) *pb.PersistentResource {
+	if in == nil {
+		return nil
 	}
-	if oneof := AuthConfig_OauthConfig_ToProto(mapCtx, in.OauthConfig); oneof != nil {
-		out.AuthConfig = &aiplatformpb.AuthConfig_OauthConfig_{OauthConfig: oneof}
+	out := &pb.PersistentResource{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.ResourcePools = direct.Slice_ToProto(mapCtx, in.ResourcePools, ResourcePool_ToProto)
+	out.Labels = in.Labels
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
 	}
-	if oneof := AuthConfig_OIDCConfig_ToProto(mapCtx, in.OIDCConfig); oneof != nil {
-		out.AuthConfig = &aiplatformpb.AuthConfig_OidcConfig_{OidcConfig: oneof}
+	out.PscInterfaceConfig = PSCInterfaceConfig_ToProto(mapCtx, in.PSCInterfaceConfig)
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	out.ResourceRuntimeSpec = ResourceRuntimeSpec_ToProto(mapCtx, in.ResourceRuntimeSpec)
+	out.ReservedIpRanges = in.ReservedIPRanges
+	return out
+}
+func AIPlatformReasoningEngineObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ReasoningEngine) *krm.AIPlatformReasoningEngineObservedState {
+	if in == nil {
+		return nil
 	}
-	out.AuthType = direct.Enum_ToProto[aiplatformpb.AuthType](mapCtx, in.AuthType)
+	out := &krm.AIPlatformReasoningEngineObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Etag
+	return out
+}
+func AIPlatformReasoningEngineObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformReasoningEngineObservedState) *pb.ReasoningEngine {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReasoningEngine{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Etag
 	return out
 }
 
-/* found existing non-generated mapping function "AuthConfig_APIKeyConfig_FromProto", skipping
-func AuthConfig_APIKeyConfig_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.AuthConfig_ApiKeyConfig) *krm.AuthConfig_APIKeyConfig {
+/* found existing non-generated mapping function "AIPlatformReasoningEngineSpec_FromProto", skipping
+func AIPlatformReasoningEngineSpec_FromProto(mapCtx *direct.MapContext, in *pb.ReasoningEngine) *krm.AIPlatformReasoningEngineSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AuthConfig_APIKeyConfig{}
-	out.Name = direct.LazyPtr(in.GetName())
-	if in.GetApiKeySecret() != "" {
-		out.APIKeySecretRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetApiKeySecret()}
-	}
-	out.HTTPElementLocation = direct.Enum_FromProto(mapCtx, in.GetHttpElementLocation())
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "AuthConfig_APIKeyConfig_ToProto", skipping
-func AuthConfig_APIKeyConfig_ToProto(mapCtx *direct.MapContext, in *krm.AuthConfig_APIKeyConfig) *aiplatformpb.AuthConfig_ApiKeyConfig {
-	if in == nil {
-		return nil
-	}
-	out := &aiplatformpb.AuthConfig_ApiKeyConfig{}
-	out.Name = direct.ValueOf(in.Name)
-	if in.APIKeySecretRef != nil {
-		out.ApiKeySecret = in.APIKeySecretRef.External
-	}
-	out.HttpElementLocation = direct.Enum_ToProto[aiplatformpb.HttpElementLocation](mapCtx, in.HTTPElementLocation)
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "AuthConfig_GoogleServiceAccountConfig_FromProto", skipping
-func AuthConfig_GoogleServiceAccountConfig_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.AuthConfig_GoogleServiceAccountConfig) *krm.AuthConfig_GoogleServiceAccountConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AuthConfig_GoogleServiceAccountConfig{}
-	if in.GetServiceAccount() != "" {
-		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
-	}
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "AuthConfig_GoogleServiceAccountConfig_ToProto", skipping
-func AuthConfig_GoogleServiceAccountConfig_ToProto(mapCtx *direct.MapContext, in *krm.AuthConfig_GoogleServiceAccountConfig) *aiplatformpb.AuthConfig_GoogleServiceAccountConfig {
-	if in == nil {
-		return nil
-	}
-	out := &aiplatformpb.AuthConfig_GoogleServiceAccountConfig{}
-	if in.ServiceAccountRef != nil {
-		out.ServiceAccount = in.ServiceAccountRef.External
-	}
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "AuthConfig_HTTPBasicAuthConfig_FromProto", skipping
-func AuthConfig_HTTPBasicAuthConfig_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.AuthConfig_HttpBasicAuthConfig) *krm.AuthConfig_HTTPBasicAuthConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AuthConfig_HTTPBasicAuthConfig{}
-	if in.GetCredentialSecret() != "" {
-		out.CredentialSecretRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetCredentialSecret()}
-	}
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "AuthConfig_HTTPBasicAuthConfig_ToProto", skipping
-func AuthConfig_HTTPBasicAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.AuthConfig_HTTPBasicAuthConfig) *aiplatformpb.AuthConfig_HttpBasicAuthConfig {
-	if in == nil {
-		return nil
-	}
-	out := &aiplatformpb.AuthConfig_HttpBasicAuthConfig{}
-	if in.CredentialSecretRef != nil {
-		out.CredentialSecret = in.CredentialSecretRef.External
-	}
-	return out
-}
-*/
-
-/* found existing non-generated mapping function "AuthConfig_OIDCConfig_FromProto", skipping
-func AuthConfig_OIDCConfig_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.AuthConfig_OidcConfig) *krm.AuthConfig_OIDCConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AuthConfig_OIDCConfig{}
-	out.IDToken = direct.LazyPtr(in.GetIdToken())
-	if in.GetServiceAccount() != "" {
-		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
-	}
+	out := &krm.AIPlatformReasoningEngineSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Spec = ReasoningEngineSpec_FromProto(mapCtx, in.GetSpec())
+	// MISSING: Etag
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
 	return out
 }
 */
 
 /*
-found existing non-generated mapping function "AuthConfig_OIDCConfig_ToProto", skipping
+found existing non-generated mapping function "AIPlatformReasoningEngineSpec_ToProto", skipping
 
-	func AuthConfig_OIDCConfig_ToProto(mapCtx *direct.MapContext, in *krm.AuthConfig_OIDCConfig) *aiplatformpb.AuthConfig_OidcConfig {
+	func AIPlatformReasoningEngineSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformReasoningEngineSpec) *pb.ReasoningEngine {
 		if in == nil {
 			return nil
 		}
-		out := &aiplatformpb.AuthConfig_OidcConfig{}
-		if oneof := AuthConfig_OIDCConfig_IdToken_ToProto(mapCtx, in.IDToken); oneof != nil {
-			out.OidcConfig = oneof
-		}
-		if in.ServiceAccountRef != nil {
-			out.ServiceAccount = in.ServiceAccountRef.External
-		}
+		out := &pb.ReasoningEngine{}
+		// MISSING: Name
+		out.DisplayName = direct.ValueOf(in.DisplayName)
+		out.Description = direct.ValueOf(in.Description)
+		out.Spec = ReasoningEngineSpec_ToProto(mapCtx, in.Spec)
+		// MISSING: Etag
+		out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
 		return out
 	}
 */
-func AuthConfig_OIDCConfig_IdToken_ToProto(mapCtx *direct.MapContext, in *string) *aiplatformpb.AuthConfig_OidcConfig_IdToken {
+func AIPlatformSpecialistPoolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SpecialistPool) *krm.AIPlatformSpecialistPoolObservedState {
 	if in == nil {
 		return nil
 	}
-	return &aiplatformpb.AuthConfig_OidcConfig_IdToken{IdToken: *in}
-}
-
-/* found existing non-generated mapping function "AuthConfig_OauthConfig_FromProto", skipping
-func AuthConfig_OauthConfig_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.AuthConfig_OauthConfig) *krm.AuthConfig_OauthConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AuthConfig_OauthConfig{}
-	out.AccessToken = direct.LazyPtr(in.GetAccessToken())
-	if in.GetServiceAccount() != "" {
-		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
-	}
+	out := &krm.AIPlatformSpecialistPoolObservedState{}
+	// MISSING: Name
+	out.SpecialistManagersCount = direct.LazyPtr(in.GetSpecialistManagersCount())
+	out.PendingDataLabelingJobs = in.PendingDataLabelingJobs
 	return out
 }
-*/
-
-/*
-found existing non-generated mapping function "AuthConfig_OauthConfig_ToProto", skipping
-
-	func AuthConfig_OauthConfig_ToProto(mapCtx *direct.MapContext, in *krm.AuthConfig_OauthConfig) *aiplatformpb.AuthConfig_OauthConfig {
-		if in == nil {
-			return nil
-		}
-		out := &aiplatformpb.AuthConfig_OauthConfig{}
-		if oneof := AuthConfig_OauthConfig_AccessToken_ToProto(mapCtx, in.AccessToken); oneof != nil {
-			out.OauthConfig = oneof
-		}
-		if in.ServiceAccountRef != nil {
-			out.ServiceAccount = in.ServiceAccountRef.External
-		}
-		return out
-	}
-*/
-func AuthConfig_OauthConfig_AccessToken_ToProto(mapCtx *direct.MapContext, in *string) *aiplatformpb.AuthConfig_OauthConfig_AccessToken {
+func AIPlatformSpecialistPoolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformSpecialistPoolObservedState) *pb.SpecialistPool {
 	if in == nil {
 		return nil
 	}
-	return &aiplatformpb.AuthConfig_OauthConfig_AccessToken{AccessToken: *in}
+	out := &pb.SpecialistPool{}
+	// MISSING: Name
+	out.SpecialistManagersCount = direct.ValueOf(in.SpecialistManagersCount)
+	out.PendingDataLabelingJobs = in.PendingDataLabelingJobs
+	return out
+}
+func AIPlatformSpecialistPoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.SpecialistPool) *krm.AIPlatformSpecialistPoolSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformSpecialistPoolSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.SpecialistManagerEmails = in.SpecialistManagerEmails
+	out.SpecialistWorkerEmails = in.SpecialistWorkerEmails
+	return out
+}
+func AIPlatformSpecialistPoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformSpecialistPoolSpec) *pb.SpecialistPool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SpecialistPool{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.SpecialistManagerEmails = in.SpecialistManagerEmails
+	out.SpecialistWorkerEmails = in.SpecialistWorkerEmails
+	return out
 }
 func BigQueryDestination_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDestination) *krm.BigQueryDestination {
 	if in == nil {
@@ -484,7 +453,9 @@ func DNSPeeringConfig_FromProto(mapCtx *direct.MapContext, in *pb.DnsPeeringConf
 	}
 	out := &krm.DNSPeeringConfig{}
 	out.Domain = direct.LazyPtr(in.GetDomain())
-	out.TargetProject = direct.LazyPtr(in.GetTargetProject())
+	if in.GetTargetProject() != "" {
+		out.TargetProjectRef = &refsv1beta1.ProjectRef{External: in.GetTargetProject()}
+	}
 	if in.GetTargetNetwork() != "" {
 		out.TargetNetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetTargetNetwork()}
 	}
@@ -496,7 +467,9 @@ func DNSPeeringConfig_ToProto(mapCtx *direct.MapContext, in *krm.DNSPeeringConfi
 	}
 	out := &pb.DnsPeeringConfig{}
 	out.Domain = direct.ValueOf(in.Domain)
-	out.TargetProject = direct.ValueOf(in.TargetProject)
+	if in.TargetProjectRef != nil {
+		out.TargetProject = in.TargetProjectRef.External
+	}
 	if in.TargetNetworkRef != nil {
 		out.TargetNetwork = in.TargetNetworkRef.External
 	}
@@ -518,6 +491,24 @@ func DeployedModelRef_ToProto(mapCtx *direct.MapContext, in *krm.DeployedModelRe
 	out := &pb.DeployedModelRef{}
 	out.Endpoint = direct.ValueOf(in.Endpoint)
 	out.DeployedModelId = direct.ValueOf(in.DeployedModelID)
+	return out
+}
+func DiskSpec_FromProto(mapCtx *direct.MapContext, in *pb.DiskSpec) *krm.DiskSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiskSpec{}
+	out.BootDiskType = direct.LazyPtr(in.GetBootDiskType())
+	out.BootDiskSizeGB = direct.LazyPtr(in.GetBootDiskSizeGb())
+	return out
+}
+func DiskSpec_ToProto(mapCtx *direct.MapContext, in *krm.DiskSpec) *pb.DiskSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DiskSpec{}
+	out.BootDiskType = direct.ValueOf(in.BootDiskType)
+	out.BootDiskSizeGb = direct.ValueOf(in.BootDiskSizeGB)
 	return out
 }
 
@@ -722,108 +713,6 @@ func ExplanationSpec_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationSpec)
 	out.Metadata = ExplanationMetadata_ToProto(mapCtx, in.Metadata)
 	return out
 }
-func ExtensionManifest_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ExtensionManifest) *krm.ExtensionManifest {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ExtensionManifest{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.APISpec = ExtensionManifest_APISpec_FromProto(mapCtx, in.GetApiSpec())
-	out.AuthConfig = AuthConfig_FromProto(mapCtx, in.GetAuthConfig())
-	return out
-}
-func ExtensionManifest_ToProto(mapCtx *direct.MapContext, in *krm.ExtensionManifest) *aiplatformpb.ExtensionManifest {
-	if in == nil {
-		return nil
-	}
-	out := &aiplatformpb.ExtensionManifest{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Description = direct.ValueOf(in.Description)
-	out.ApiSpec = ExtensionManifest_APISpec_ToProto(mapCtx, in.APISpec)
-	out.AuthConfig = AuthConfig_ToProto(mapCtx, in.AuthConfig)
-	return out
-}
-func ExtensionManifest_APISpec_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ExtensionManifest_ApiSpec) *krm.ExtensionManifest_APISpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ExtensionManifest_APISpec{}
-	out.OpenAPIYaml = direct.LazyPtr(in.GetOpenApiYaml())
-	out.OpenAPIGCSURI = direct.LazyPtr(in.GetOpenApiGcsUri())
-	return out
-}
-func ExtensionManifest_APISpec_ToProto(mapCtx *direct.MapContext, in *krm.ExtensionManifest_APISpec) *aiplatformpb.ExtensionManifest_ApiSpec {
-	if in == nil {
-		return nil
-	}
-	out := &aiplatformpb.ExtensionManifest_ApiSpec{}
-	if oneof := ExtensionManifest_APISpec_OpenApiYaml_ToProto(mapCtx, in.OpenAPIYaml); oneof != nil {
-		out.ApiSpec = oneof
-	}
-	if oneof := ExtensionManifest_APISpec_OpenApiGcsUri_ToProto(mapCtx, in.OpenAPIGCSURI); oneof != nil {
-		out.ApiSpec = oneof
-	}
-	return out
-}
-func ExtensionManifest_APISpec_OpenApiYaml_ToProto(mapCtx *direct.MapContext, in *string) *aiplatformpb.ExtensionManifest_ApiSpec_OpenApiYaml {
-	if in == nil {
-		return nil
-	}
-	return &aiplatformpb.ExtensionManifest_ApiSpec_OpenApiYaml{OpenApiYaml: *in}
-}
-func ExtensionManifest_APISpec_OpenApiGcsUri_ToProto(mapCtx *direct.MapContext, in *string) *aiplatformpb.ExtensionManifest_ApiSpec_OpenApiGcsUri {
-	if in == nil {
-		return nil
-	}
-	return &aiplatformpb.ExtensionManifest_ApiSpec_OpenApiGcsUri{OpenApiGcsUri: *in}
-}
-func ExtensionOperationObservedState_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ExtensionOperation) *krm.ExtensionOperationObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ExtensionOperationObservedState{}
-	out.OperationID = direct.LazyPtr(in.GetOperationId())
-	out.FunctionDeclaration = FunctionDeclaration_FromProto(mapCtx, in.GetFunctionDeclaration())
-	return out
-}
-func ExtensionOperationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ExtensionOperationObservedState) *aiplatformpb.ExtensionOperation {
-	if in == nil {
-		return nil
-	}
-	out := &aiplatformpb.ExtensionOperation{}
-	out.OperationId = direct.ValueOf(in.OperationID)
-	out.FunctionDeclaration = FunctionDeclaration_ToProto(mapCtx, in.FunctionDeclaration)
-	return out
-}
-
-/* found existing non-generated mapping function "ExtensionPrivateServiceConnectConfig_FromProto", skipping
-func ExtensionPrivateServiceConnectConfig_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ExtensionPrivateServiceConnectConfig) *krm.ExtensionPrivateServiceConnectConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ExtensionPrivateServiceConnectConfig{}
-	if in.GetServiceDirectory() != "" {
-		out.ServiceDirectoryRef = &krmservicedirectoryv1beta1.ServiceDirectoryServiceRef{External: in.GetServiceDirectory()}
-	}
-	return out
-}
-*/
-
-/*
-found existing non-generated mapping function "ExtensionPrivateServiceConnectConfig_ToProto", skipping
-
-	func ExtensionPrivateServiceConnectConfig_ToProto(mapCtx *direct.MapContext, in *krm.ExtensionPrivateServiceConnectConfig) *aiplatformpb.ExtensionPrivateServiceConnectConfig {
-		if in == nil {
-			return nil
-		}
-		out := &aiplatformpb.ExtensionPrivateServiceConnectConfig{}
-		if in.ServiceDirectoryRef != nil {
-			out.ServiceDirectory = in.ServiceDirectoryRef.External
-		}
-		return out
-	}
-*/
 func FeatureNoiseSigma_FromProto(mapCtx *direct.MapContext, in *pb.FeatureNoiseSigma) *krm.FeatureNoiseSigma {
 	if in == nil {
 		return nil
@@ -1001,45 +890,17 @@ func FunctionCall_FromProto(mapCtx *direct.MapContext, in *pb.FunctionCall) *krm
 }
 */
 
-/*
-found existing non-generated mapping function "FunctionCall_ToProto", skipping
-
-	func FunctionCall_ToProto(mapCtx *direct.MapContext, in *krm.FunctionCall) *pb.FunctionCall {
-		if in == nil {
-			return nil
-		}
-		out := &pb.FunctionCall{}
-		out.Name = direct.ValueOf(in.Name)
-		out.Args = direct.Struct_ToProto(mapCtx, &in.Args)
-		return out
-	}
-*/
-func FunctionDeclaration_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.FunctionDeclaration) *krm.FunctionDeclaration {
+/* found existing non-generated mapping function "FunctionCall_ToProto", skipping
+func FunctionCall_ToProto(mapCtx *direct.MapContext, in *krm.FunctionCall) *pb.FunctionCall {
 	if in == nil {
 		return nil
 	}
-	out := &krm.FunctionDeclaration{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: Parameters
-	// MISSING: ParametersJsonSchema
-	// MISSING: Response
-	// MISSING: ResponseJsonSchema
-	return out
-}
-func FunctionDeclaration_ToProto(mapCtx *direct.MapContext, in *krm.FunctionDeclaration) *aiplatformpb.FunctionDeclaration {
-	if in == nil {
-		return nil
-	}
-	out := &aiplatformpb.FunctionDeclaration{}
+	out := &pb.FunctionCall{}
 	out.Name = direct.ValueOf(in.Name)
-	out.Description = direct.ValueOf(in.Description)
-	// MISSING: Parameters
-	// MISSING: ParametersJsonSchema
-	// MISSING: Response
-	// MISSING: ResponseJsonSchema
+	out.Args = direct.Struct_ToProto(mapCtx, &in.Args)
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "FunctionResponse_FromProto", skipping
 func FunctionResponse_FromProto(mapCtx *direct.MapContext, in *pb.FunctionResponse) *krm.FunctionResponse {
@@ -2174,6 +2035,148 @@ func Probe_TCPSocketAction_ToProto(mapCtx *direct.MapContext, in *krm.Probe_TCPS
 	out.Host = direct.ValueOf(in.Host)
 	return out
 }
+func RayLogsSpec_FromProto(mapCtx *direct.MapContext, in *pb.RayLogsSpec) *krm.RayLogsSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RayLogsSpec{}
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	return out
+}
+func RayLogsSpec_ToProto(mapCtx *direct.MapContext, in *krm.RayLogsSpec) *pb.RayLogsSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RayLogsSpec{}
+	out.Disabled = direct.ValueOf(in.Disabled)
+	return out
+}
+func RayMetricSpec_FromProto(mapCtx *direct.MapContext, in *pb.RayMetricSpec) *krm.RayMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RayMetricSpec{}
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	return out
+}
+func RayMetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.RayMetricSpec) *pb.RayMetricSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RayMetricSpec{}
+	out.Disabled = direct.ValueOf(in.Disabled)
+	return out
+}
+func RaySpec_FromProto(mapCtx *direct.MapContext, in *pb.RaySpec) *krm.RaySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RaySpec{}
+	out.ImageURI = direct.LazyPtr(in.GetImageUri())
+	out.ResourcePoolImages = in.ResourcePoolImages
+	out.HeadNodeResourcePoolID = direct.LazyPtr(in.GetHeadNodeResourcePoolId())
+	out.RayMetricSpec = RayMetricSpec_FromProto(mapCtx, in.GetRayMetricSpec())
+	out.RayLogsSpec = RayLogsSpec_FromProto(mapCtx, in.GetRayLogsSpec())
+	return out
+}
+func RaySpec_ToProto(mapCtx *direct.MapContext, in *krm.RaySpec) *pb.RaySpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RaySpec{}
+	out.ImageUri = direct.ValueOf(in.ImageURI)
+	out.ResourcePoolImages = in.ResourcePoolImages
+	out.HeadNodeResourcePoolId = direct.ValueOf(in.HeadNodeResourcePoolID)
+	out.RayMetricSpec = RayMetricSpec_ToProto(mapCtx, in.RayMetricSpec)
+	out.RayLogsSpec = RayLogsSpec_ToProto(mapCtx, in.RayLogsSpec)
+	return out
+}
+
+/* found existing non-generated mapping function "ReasoningEngineSpec_FromProto", skipping
+func ReasoningEngineSpec_FromProto(mapCtx *direct.MapContext, in *pb.ReasoningEngineSpec) *krm.ReasoningEngineSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReasoningEngineSpec{}
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	out.PackageSpec = ReasoningEngineSpec_PackageSpec_FromProto(mapCtx, in.GetPackageSpec())
+	out.DeploymentSpec = ReasoningEngineSpec_DeploymentSpec_FromProto(mapCtx, in.GetDeploymentSpec())
+	// MISSING: ClassMethods
+	out.AgentFramework = direct.LazyPtr(in.GetAgentFramework())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "ReasoningEngineSpec_ToProto", skipping
+
+	func ReasoningEngineSpec_ToProto(mapCtx *direct.MapContext, in *krm.ReasoningEngineSpec) *pb.ReasoningEngineSpec {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ReasoningEngineSpec{}
+		if in.ServiceAccountRef != nil {
+			out.ServiceAccount = in.ServiceAccountRef.External
+		}
+		out.PackageSpec = ReasoningEngineSpec_PackageSpec_ToProto(mapCtx, in.PackageSpec)
+		out.DeploymentSpec = ReasoningEngineSpec_DeploymentSpec_ToProto(mapCtx, in.DeploymentSpec)
+		// MISSING: ClassMethods
+		out.AgentFramework = direct.ValueOf(in.AgentFramework)
+		return out
+	}
+*/
+func ReasoningEngineSpec_DeploymentSpec_FromProto(mapCtx *direct.MapContext, in *pb.ReasoningEngineSpec_DeploymentSpec) *krm.ReasoningEngineSpec_DeploymentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReasoningEngineSpec_DeploymentSpec{}
+	out.Env = direct.Slice_FromProto(mapCtx, in.Env, EnvVar_FromProto)
+	out.SecretEnv = direct.Slice_FromProto(mapCtx, in.SecretEnv, SecretEnvVar_FromProto)
+	out.PSCInterfaceConfig = PSCInterfaceConfig_FromProto(mapCtx, in.GetPscInterfaceConfig())
+	out.MinInstances = in.MinInstances
+	out.MaxInstances = in.MaxInstances
+	out.ResourceLimits = in.ResourceLimits
+	out.ContainerConcurrency = in.ContainerConcurrency
+	return out
+}
+func ReasoningEngineSpec_DeploymentSpec_ToProto(mapCtx *direct.MapContext, in *krm.ReasoningEngineSpec_DeploymentSpec) *pb.ReasoningEngineSpec_DeploymentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReasoningEngineSpec_DeploymentSpec{}
+	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVar_ToProto)
+	out.SecretEnv = direct.Slice_ToProto(mapCtx, in.SecretEnv, SecretEnvVar_ToProto)
+	out.PscInterfaceConfig = PSCInterfaceConfig_ToProto(mapCtx, in.PSCInterfaceConfig)
+	out.MinInstances = in.MinInstances
+	out.MaxInstances = in.MaxInstances
+	out.ResourceLimits = in.ResourceLimits
+	out.ContainerConcurrency = in.ContainerConcurrency
+	return out
+}
+func ReasoningEngineSpec_PackageSpec_FromProto(mapCtx *direct.MapContext, in *pb.ReasoningEngineSpec_PackageSpec) *krm.ReasoningEngineSpec_PackageSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReasoningEngineSpec_PackageSpec{}
+	out.PickleObjectGCSURI = direct.LazyPtr(in.GetPickleObjectGcsUri())
+	out.DependencyFilesGCSURI = direct.LazyPtr(in.GetDependencyFilesGcsUri())
+	out.RequirementsGCSURI = direct.LazyPtr(in.GetRequirementsGcsUri())
+	out.PythonVersion = direct.LazyPtr(in.GetPythonVersion())
+	return out
+}
+func ReasoningEngineSpec_PackageSpec_ToProto(mapCtx *direct.MapContext, in *krm.ReasoningEngineSpec_PackageSpec) *pb.ReasoningEngineSpec_PackageSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReasoningEngineSpec_PackageSpec{}
+	out.PickleObjectGcsUri = direct.ValueOf(in.PickleObjectGCSURI)
+	out.DependencyFilesGcsUri = direct.ValueOf(in.DependencyFilesGCSURI)
+	out.RequirementsGcsUri = direct.ValueOf(in.RequirementsGCSURI)
+	out.PythonVersion = direct.ValueOf(in.PythonVersion)
+	return out
+}
 func ReservationAffinity_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krm.ReservationAffinity {
 	if in == nil {
 		return nil
@@ -2194,96 +2197,112 @@ func ReservationAffinity_ToProto(mapCtx *direct.MapContext, in *krm.ReservationA
 	out.Values = in.Values
 	return out
 }
-
-/* found existing non-generated mapping function "RuntimeConfig_FromProto", skipping
-func RuntimeConfig_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.RuntimeConfig) *krm.RuntimeConfig {
+func ResourcePool_FromProto(mapCtx *direct.MapContext, in *pb.ResourcePool) *krm.ResourcePool {
 	if in == nil {
 		return nil
 	}
-	out := &krm.RuntimeConfig{}
-	out.CodeInterpreterRuntimeConfig = RuntimeConfig_CodeInterpreterRuntimeConfig_FromProto(mapCtx, in.GetCodeInterpreterRuntimeConfig())
-	// MISSING: VertexAiSearchRuntimeConfig
-	// (near miss): "VertexAiSearchRuntimeConfig" vs "VertexAISearchRuntimeConfig"
-	if v := direct.Struct_FromProto(mapCtx, in.GetDefaultParams()); v != nil {
-		out.DefaultParams = *v
-	}
+	out := &krm.ResourcePool{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.MachineSpec = MachineSpec_FromProto(mapCtx, in.GetMachineSpec())
+	out.ReplicaCount = in.ReplicaCount
+	out.DiskSpec = DiskSpec_FromProto(mapCtx, in.GetDiskSpec())
+	// MISSING: UsedReplicaCount
+	out.AutoscalingSpec = ResourcePool_AutoscalingSpec_FromProto(mapCtx, in.GetAutoscalingSpec())
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "RuntimeConfig_ToProto", skipping
-func RuntimeConfig_ToProto(mapCtx *direct.MapContext, in *krm.RuntimeConfig) *aiplatformpb.RuntimeConfig {
+func ResourcePool_ToProto(mapCtx *direct.MapContext, in *krm.ResourcePool) *pb.ResourcePool {
 	if in == nil {
 		return nil
 	}
-	out := &aiplatformpb.RuntimeConfig{}
-	if oneof := RuntimeConfig_CodeInterpreterRuntimeConfig_ToProto(mapCtx, in.CodeInterpreterRuntimeConfig); oneof != nil {
-		out.GoogleFirstPartyExtensionConfig = &aiplatformpb.RuntimeConfig_CodeInterpreterRuntimeConfig_{CodeInterpreterRuntimeConfig: oneof}
-	}
-	// MISSING: VertexAiSearchRuntimeConfig
-	// (near miss): "VertexAiSearchRuntimeConfig" vs "VertexAISearchRuntimeConfig"
-	out.DefaultParams = direct.Struct_ToProto(mapCtx, &in.DefaultParams)
+	out := &pb.ResourcePool{}
+	out.Id = direct.ValueOf(in.ID)
+	out.MachineSpec = MachineSpec_ToProto(mapCtx, in.MachineSpec)
+	out.ReplicaCount = in.ReplicaCount
+	out.DiskSpec = DiskSpec_ToProto(mapCtx, in.DiskSpec)
+	// MISSING: UsedReplicaCount
+	out.AutoscalingSpec = ResourcePool_AutoscalingSpec_ToProto(mapCtx, in.AutoscalingSpec)
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "RuntimeConfig_CodeInterpreterRuntimeConfig_FromProto", skipping
-func RuntimeConfig_CodeInterpreterRuntimeConfig_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.RuntimeConfig_CodeInterpreterRuntimeConfig) *krm.RuntimeConfig_CodeInterpreterRuntimeConfig {
+func ResourcePoolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResourcePool) *krm.ResourcePoolObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.RuntimeConfig_CodeInterpreterRuntimeConfig{}
-	if in.GetFileInputGcsBucket() != "" {
-		out.FileInputGCSBucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetFileInputGcsBucket()}
-	}
-	if in.GetFileOutputGcsBucket() != "" {
-		out.FileOutputGCSBucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetFileOutputGcsBucket()}
-	}
+	out := &krm.ResourcePoolObservedState{}
+	// MISSING: ID
+	// MISSING: MachineSpec
+	// MISSING: ReplicaCount
+	// MISSING: DiskSpec
+	out.UsedReplicaCount = direct.LazyPtr(in.GetUsedReplicaCount())
+	// MISSING: AutoscalingSpec
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "RuntimeConfig_CodeInterpreterRuntimeConfig_ToProto", skipping
-func RuntimeConfig_CodeInterpreterRuntimeConfig_ToProto(mapCtx *direct.MapContext, in *krm.RuntimeConfig_CodeInterpreterRuntimeConfig) *aiplatformpb.RuntimeConfig_CodeInterpreterRuntimeConfig {
+func ResourcePoolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResourcePoolObservedState) *pb.ResourcePool {
 	if in == nil {
 		return nil
 	}
-	out := &aiplatformpb.RuntimeConfig_CodeInterpreterRuntimeConfig{}
-	if in.FileInputGCSBucketRef != nil {
-		out.FileInputGcsBucket = in.FileInputGCSBucketRef.External
-	}
-	if in.FileOutputGCSBucketRef != nil {
-		out.FileOutputGcsBucket = in.FileOutputGCSBucketRef.External
-	}
+	out := &pb.ResourcePool{}
+	// MISSING: ID
+	// MISSING: MachineSpec
+	// MISSING: ReplicaCount
+	// MISSING: DiskSpec
+	out.UsedReplicaCount = direct.ValueOf(in.UsedReplicaCount)
+	// MISSING: AutoscalingSpec
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "RuntimeConfig_VertexAISearchRuntimeConfig_FromProto", skipping
-func RuntimeConfig_VertexAISearchRuntimeConfig_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.RuntimeConfig_VertexAISearchRuntimeConfig) *krm.RuntimeConfig_VertexAISearchRuntimeConfig {
+func ResourcePool_AutoscalingSpec_FromProto(mapCtx *direct.MapContext, in *pb.ResourcePool_AutoscalingSpec) *krm.ResourcePool_AutoscalingSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.RuntimeConfig_VertexAISearchRuntimeConfig{}
-	// MISSING: ServingConfigName
-	// MISSING: EngineID
+	out := &krm.ResourcePool_AutoscalingSpec{}
+	out.MinReplicaCount = in.MinReplicaCount
+	out.MaxReplicaCount = in.MaxReplicaCount
 	return out
 }
-*/
-
-/*
-found existing non-generated mapping function "RuntimeConfig_VertexAISearchRuntimeConfig_ToProto", skipping
-
-	func RuntimeConfig_VertexAISearchRuntimeConfig_ToProto(mapCtx *direct.MapContext, in *krm.RuntimeConfig_VertexAISearchRuntimeConfig) *aiplatformpb.RuntimeConfig_VertexAISearchRuntimeConfig {
-		if in == nil {
-			return nil
-		}
-		out := &aiplatformpb.RuntimeConfig_VertexAISearchRuntimeConfig{}
-		// MISSING: ServingConfigName
-		// MISSING: EngineID
-		return out
+func ResourcePool_AutoscalingSpec_ToProto(mapCtx *direct.MapContext, in *krm.ResourcePool_AutoscalingSpec) *pb.ResourcePool_AutoscalingSpec {
+	if in == nil {
+		return nil
 	}
-*/
+	out := &pb.ResourcePool_AutoscalingSpec{}
+	out.MinReplicaCount = in.MinReplicaCount
+	out.MaxReplicaCount = in.MaxReplicaCount
+	return out
+}
+func ResourceRuntimeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResourceRuntime) *krm.ResourceRuntimeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourceRuntimeObservedState{}
+	// MISSING: AccessUris
+	// (near miss): "AccessUris" vs "AccessURIs"
+	return out
+}
+func ResourceRuntimeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResourceRuntimeObservedState) *pb.ResourceRuntime {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourceRuntime{}
+	// MISSING: AccessUris
+	// (near miss): "AccessUris" vs "AccessURIs"
+	return out
+}
+func ResourceRuntimeSpec_FromProto(mapCtx *direct.MapContext, in *pb.ResourceRuntimeSpec) *krm.ResourceRuntimeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourceRuntimeSpec{}
+	out.ServiceAccountSpec = ServiceAccountSpec_FromProto(mapCtx, in.GetServiceAccountSpec())
+	out.RaySpec = RaySpec_FromProto(mapCtx, in.GetRaySpec())
+	return out
+}
+func ResourceRuntimeSpec_ToProto(mapCtx *direct.MapContext, in *krm.ResourceRuntimeSpec) *pb.ResourceRuntimeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourceRuntimeSpec{}
+	out.ServiceAccountSpec = ServiceAccountSpec_ToProto(mapCtx, in.ServiceAccountSpec)
+	out.RaySpec = RaySpec_ToProto(mapCtx, in.RaySpec)
+	return out
+}
 func SampledShapleyAttribution_FromProto(mapCtx *direct.MapContext, in *pb.SampledShapleyAttribution) *krm.SampledShapleyAttribution {
 	if in == nil {
 		return nil
@@ -2372,6 +2391,80 @@ found existing non-generated mapping function "Schema_ToProto", skipping
 		return out
 	}
 */
+func SecretEnvVar_FromProto(mapCtx *direct.MapContext, in *pb.SecretEnvVar) *krm.SecretEnvVar {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecretEnvVar{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.SecretRef = SecretRef_FromProto(mapCtx, in.GetSecretRef())
+	return out
+}
+func SecretEnvVar_ToProto(mapCtx *direct.MapContext, in *krm.SecretEnvVar) *pb.SecretEnvVar {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecretEnvVar{}
+	out.Name = direct.ValueOf(in.Name)
+	out.SecretRef = SecretRef_ToProto(mapCtx, in.SecretRef)
+	return out
+}
+
+/* found existing non-generated mapping function "SecretRef_FromProto", skipping
+func SecretRef_FromProto(mapCtx *direct.MapContext, in *pb.SecretRef) *krm.SecretRef {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecretRef{}
+	if in.GetSecret() != "" {
+		out.SecretRef = &refsv1beta1.SecretManagerSecretRef{External: in.GetSecret()}
+	}
+	if in.GetVersion() != "" {
+		out.VersionRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetVersion()}
+	}
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "SecretRef_ToProto", skipping
+
+	func SecretRef_ToProto(mapCtx *direct.MapContext, in *krm.SecretRef) *pb.SecretRef {
+		if in == nil {
+			return nil
+		}
+		out := &pb.SecretRef{}
+		if in.SecretRef != nil {
+			out.Secret = in.SecretRef.External
+		}
+		if in.VersionRef != nil {
+			out.Version = in.VersionRef.External
+		}
+		return out
+	}
+*/
+func ServiceAccountSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceAccountSpec) *krm.ServiceAccountSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceAccountSpec{}
+	out.EnableCustomServiceAccount = direct.LazyPtr(in.GetEnableCustomServiceAccount())
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	return out
+}
+func ServiceAccountSpec_ToProto(mapCtx *direct.MapContext, in *krm.ServiceAccountSpec) *pb.ServiceAccountSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceAccountSpec{}
+	out.EnableCustomServiceAccount = direct.ValueOf(in.EnableCustomServiceAccount)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
+	return out
+}
 func SmoothGradConfig_FromProto(mapCtx *direct.MapContext, in *pb.SmoothGradConfig) *krm.SmoothGradConfig {
 	if in == nil {
 		return nil
@@ -2955,66 +3048,6 @@ func TimestampSplit_ToProto(mapCtx *direct.MapContext, in *krm.TimestampSplit) *
 	out.Key = direct.ValueOf(in.Key)
 	return out
 }
-func ToolUseExample_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ToolUseExample) *krm.ToolUseExample {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ToolUseExample{}
-	out.ExtensionOperation = ToolUseExample_ExtensionOperation_FromProto(mapCtx, in.GetExtensionOperation())
-	out.FunctionName = direct.LazyPtr(in.GetFunctionName())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Query = direct.LazyPtr(in.GetQuery())
-	if v := direct.Struct_FromProto(mapCtx, in.GetRequestParams()); v != nil {
-		out.RequestParams = *v
-	}
-	if v := direct.Struct_FromProto(mapCtx, in.GetResponseParams()); v != nil {
-		out.ResponseParams = *v
-	}
-	out.ResponseSummary = direct.LazyPtr(in.GetResponseSummary())
-	return out
-}
-func ToolUseExample_ToProto(mapCtx *direct.MapContext, in *krm.ToolUseExample) *aiplatformpb.ToolUseExample {
-	if in == nil {
-		return nil
-	}
-	out := &aiplatformpb.ToolUseExample{}
-	if oneof := ToolUseExample_ExtensionOperation_ToProto(mapCtx, in.ExtensionOperation); oneof != nil {
-		out.Target = &aiplatformpb.ToolUseExample_ExtensionOperation_{ExtensionOperation: oneof}
-	}
-	if oneof := ToolUseExample_FunctionName_ToProto(mapCtx, in.FunctionName); oneof != nil {
-		out.Target = oneof
-	}
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Query = direct.ValueOf(in.Query)
-	out.RequestParams = direct.Struct_ToProto(mapCtx, &in.RequestParams)
-	out.ResponseParams = direct.Struct_ToProto(mapCtx, &in.ResponseParams)
-	out.ResponseSummary = direct.ValueOf(in.ResponseSummary)
-	return out
-}
-func ToolUseExample_FunctionName_ToProto(mapCtx *direct.MapContext, in *string) *aiplatformpb.ToolUseExample_FunctionName {
-	if in == nil {
-		return nil
-	}
-	return &aiplatformpb.ToolUseExample_FunctionName{FunctionName: *in}
-}
-func ToolUseExample_ExtensionOperation_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ToolUseExample_ExtensionOperation) *krm.ToolUseExample_ExtensionOperation {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ToolUseExample_ExtensionOperation{}
-	out.Extension = direct.LazyPtr(in.GetExtension())
-	out.OperationID = direct.LazyPtr(in.GetOperationId())
-	return out
-}
-func ToolUseExample_ExtensionOperation_ToProto(mapCtx *direct.MapContext, in *krm.ToolUseExample_ExtensionOperation) *aiplatformpb.ToolUseExample_ExtensionOperation {
-	if in == nil {
-		return nil
-	}
-	out := &aiplatformpb.ToolUseExample_ExtensionOperation{}
-	out.Extension = direct.ValueOf(in.Extension)
-	out.OperationId = direct.ValueOf(in.OperationID)
-	return out
-}
 func TunedModelCheckpoint_FromProto(mapCtx *direct.MapContext, in *pb.TunedModelCheckpoint) *krm.TunedModelCheckpoint {
 	if in == nil {
 		return nil
@@ -3073,58 +3106,6 @@ func TuningDataStatsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Tun
 	if oneof := SupervisedTuningDataStatsObservedState_ToProto(mapCtx, in.SupervisedTuningDataStats); oneof != nil {
 		out.TuningDataStats = &pb.TuningDataStats_SupervisedTuningDataStats{SupervisedTuningDataStats: oneof}
 	}
-	return out
-}
-func VertexAIExtensionObservedState_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.Extension) *krm.VertexAIExtensionObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VertexAIExtensionObservedState{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.ExtensionOperations = direct.Slice_FromProto(mapCtx, in.ExtensionOperations, ExtensionOperationObservedState_FromProto)
-	return out
-}
-func VertexAIExtensionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIExtensionObservedState) *aiplatformpb.Extension {
-	if in == nil {
-		return nil
-	}
-	out := &aiplatformpb.Extension{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.Etag = direct.ValueOf(in.Etag)
-	out.ExtensionOperations = direct.Slice_ToProto(mapCtx, in.ExtensionOperations, ExtensionOperationObservedState_ToProto)
-	return out
-}
-func VertexAIExtensionSpec_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.Extension) *krm.VertexAIExtensionSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VertexAIExtensionSpec{}
-	// MISSING: Name
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Manifest = ExtensionManifest_FromProto(mapCtx, in.GetManifest())
-	out.RuntimeConfig = RuntimeConfig_FromProto(mapCtx, in.GetRuntimeConfig())
-	out.ToolUseExamples = direct.Slice_FromProto(mapCtx, in.ToolUseExamples, ToolUseExample_FromProto)
-	out.PrivateServiceConnectConfig = ExtensionPrivateServiceConnectConfig_FromProto(mapCtx, in.GetPrivateServiceConnectConfig())
-	return out
-}
-func VertexAIExtensionSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIExtensionSpec) *aiplatformpb.Extension {
-	if in == nil {
-		return nil
-	}
-	out := &aiplatformpb.Extension{}
-	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.Manifest = ExtensionManifest_ToProto(mapCtx, in.Manifest)
-	out.RuntimeConfig = RuntimeConfig_ToProto(mapCtx, in.RuntimeConfig)
-	out.ToolUseExamples = direct.Slice_ToProto(mapCtx, in.ToolUseExamples, ToolUseExample_ToProto)
-	out.PrivateServiceConnectConfig = ExtensionPrivateServiceConnectConfig_ToProto(mapCtx, in.PrivateServiceConnectConfig)
 	return out
 }
 func VertexAIFeatureOnlineStoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FeatureOnlineStore) *krm.VertexAIFeatureOnlineStoreObservedState {
@@ -3348,48 +3329,6 @@ func VertexAIScheduleSpec_Cron_ToProto(mapCtx *direct.MapContext, in *string) *p
 		return nil
 	}
 	return &pb.Schedule_Cron{Cron: *in}
-}
-func VertexAISpecialistPoolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SpecialistPool) *krm.VertexAISpecialistPoolObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VertexAISpecialistPoolObservedState{}
-	// MISSING: Name
-	out.SpecialistManagersCount = direct.LazyPtr(in.GetSpecialistManagersCount())
-	out.PendingDataLabelingJobs = in.PendingDataLabelingJobs
-	return out
-}
-func VertexAISpecialistPoolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAISpecialistPoolObservedState) *pb.SpecialistPool {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SpecialistPool{}
-	// MISSING: Name
-	out.SpecialistManagersCount = direct.ValueOf(in.SpecialistManagersCount)
-	out.PendingDataLabelingJobs = in.PendingDataLabelingJobs
-	return out
-}
-func VertexAISpecialistPoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.SpecialistPool) *krm.VertexAISpecialistPoolSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VertexAISpecialistPoolSpec{}
-	// MISSING: Name
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.SpecialistManagerEmails = in.SpecialistManagerEmails
-	out.SpecialistWorkerEmails = in.SpecialistWorkerEmails
-	return out
-}
-func VertexAISpecialistPoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAISpecialistPoolSpec) *pb.SpecialistPool {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SpecialistPool{}
-	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.SpecialistManagerEmails = in.SpecialistManagerEmails
-	out.SpecialistWorkerEmails = in.SpecialistWorkerEmails
-	return out
 }
 func VertexAIStudyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Study) *krm.VertexAIStudyObservedState {
 	if in == nil {

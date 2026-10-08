@@ -7,6 +7,13 @@ the fields that can cause the instance to restart, see the <a
 href="https://docs.cloud.google.com/sql/docs/postgres/admin-api/v1beta4/instances">REST Resource: instances
 documentation</a>.
 
+Note: The <code>cnrm.cloud.google.com/sqlinstance-advanced-dr: "enabled"</code>
+annotation is not used to trigger failover or switchover operations within
+Config Connector; rather, it is used to declaratively manage
+Disaster Recovery (DR) pairs in Config Connector. Failover and
+switchover must be performed outside of Config Connector, and the DR
+pairs will skip drift correction when a failover or switchover occurs.
+
 <table>
 <thead>
 <tr>
@@ -68,6 +75,9 @@ documentation</a>.
 <tbody>
     <tr>
         <td><code>cnrm.cloud.google.com/project-id</code></td>
+    </tr>
+    <tr>
+        <td><code>cnrm.cloud.google.com/sqlinstance-advanced-dr</code></td>
     </tr>
 </tbody>
 </table>
@@ -154,6 +164,7 @@ settings:
   databaseFlags:
   - name: string
     value: string
+  databaseReplicationEnabled: boolean
   deletionProtectionEnabled: boolean
   denyMaintenancePeriod:
     endDate: string
@@ -1025,6 +1036,16 @@ settings:
     </tr>
     <tr>
         <td>
+            <p><code>settings.databaseReplicationEnabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Configuration specific to read replica instances. Indicates whether replication is enabled or not. WARNING: Changing this field restarts the read replica instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>settings.deletionProtectionEnabled</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1669,8 +1690,10 @@ ipAddress:
   type: string
 observedGeneration: integer
 observedState:
+  masterInstanceName: string
   replicationCluster:
     drReplica: boolean
+    failoverDRReplicaName: string
     psaWriteEndpoint: string
 privateIpAddress: string
 pscServiceAttachmentLink: string
@@ -1833,24 +1856,38 @@ serviceAccountEmailAddress: string
         </td>
     </tr>
     <tr>
+        <td><code>observedState.masterInstanceName</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of the master instance if this instance is currently acting as a replica.</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedState.replicationCluster</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The configuration for the replication cluster.</p>
+            <p>The configuration and live state of the replication cluster.</p>
         </td>
     </tr>
     <tr>
         <td><code>observedState.replicationCluster.drReplica</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>Output only. Read-only field that indicates whether the replica is a DR replica. This field is not set if the instance is a primary instance.</p>
+            <p>Output only. Read-only field that indicates whether the replica is a DR replica.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicationCluster.failoverDRReplicaName</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Output only. The name of the failover DR replica if this instance is acting as the primary.</p>
         </td>
     </tr>
     <tr>
         <td><code>observedState.replicationCluster.psaWriteEndpoint</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Output only. If set, it indicates this instance has a private service access (PSA) dns endpoint that is pointing to the primary instance of the cluster. If this instance is the primary, the dns should be pointing to this instance. After Switchover or Replica failover, this DNS endpoint points to the promoted instance. This is a read-only field, returned to the user as information. This field can exist even if a standalone instance does not yet have a replica, or had a DR replica that was deleted.</p>
+            <p>Output only. If set, this field indicates this instance has a private service access (PSA) DNS endpoint that is pointing to the primary instance of the cluster. If this instance is the primary, then the DNS endpoint points to this instance. After a switchover or replica failover operation, this DNS endpoint points to the promoted instance. This is a read-only field, returned to the user as information. This field can exist even if a standalone instance doesn't have a DR replica yet or the DR replica is deleted.</p>
         </td>
     </tr>
     <tr>

@@ -22,4 +22,3 @@ status:
     type: Ready
   externalRef: services/servicenetworking.googleapis.com/projects/${projectNumber}/global/networks/computenetwork-${uniqueId}/peeredDnsDomains/peerdomain-${uniqueId}
   observedGeneration: 1
-  observedState: {}

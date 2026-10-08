@@ -39,10 +39,6 @@ func (c *FakeCloudsecuritycomplianceV1alpha1) CloudSecurityComplianceFrameworks(
 	return newFakeCloudSecurityComplianceFrameworks(c, namespace)
 }
 
-func (c *FakeCloudsecuritycomplianceV1alpha1) CloudSecurityFrameworks(namespace string) v1alpha1.CloudSecurityFrameworkInterface {
-	return newFakeCloudSecurityFrameworks(c, namespace)
-}
-
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeCloudsecuritycomplianceV1alpha1) RESTClient() rest.Interface {

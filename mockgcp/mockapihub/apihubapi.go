@@ -18,6 +18,8 @@ import (
 	"context"
 
 	pb "cloud.google.com/go/apihub/apiv1/apihubpb"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -26,6 +28,18 @@ import (
 type ApiHubServer struct {
 	*MockService
 	pb.UnimplementedApiHubServer
+	pb.UnimplementedApiHubDependenciesServer
+}
+
+func populateApiAttributes(obj *pb.Api) {
+	if obj == nil {
+		return
+	}
+	for k, v := range obj.Attributes {
+		if v != nil {
+			v.Attribute = k
+		}
+	}
 }
 
 func (s *ApiHubServer) GetApi(ctx context.Context, req *pb.GetApiRequest) (*pb.Api, error) {
@@ -38,9 +52,13 @@ func (s *ApiHubServer) GetApi(ctx context.Context, req *pb.GetApiRequest) (*pb.A
 
 	obj := &pb.Api{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
+	populateApiAttributes(obj)
 	return obj, nil
 }
 
@@ -59,6 +77,8 @@ func (s *ApiHubServer) CreateApi(ctx context.Context, req *pb.CreateApiRequest) 
 	now := timestamppb.Now()
 	obj.CreateTime = now
 	obj.UpdateTime = now
+
+	populateApiAttributes(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -79,6 +99,9 @@ func (s *ApiHubServer) UpdateApi(ctx context.Context, req *pb.UpdateApiRequest) 
 
 	obj := &pb.Api{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -123,6 +146,8 @@ func (s *ApiHubServer) UpdateApi(ctx context.Context, req *pb.UpdateApiRequest) 
 
 	obj.UpdateTime = timestamppb.Now()
 
+	populateApiAttributes(obj)
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -140,6 +165,9 @@ func (s *ApiHubServer) DeleteApi(ctx context.Context, req *pb.DeleteApiRequest) 
 
 	obj := &pb.Api{}
 	if err := s.storage.Delete(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 

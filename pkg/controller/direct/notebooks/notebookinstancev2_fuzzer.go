@@ -34,7 +34,6 @@ func notebookInstanceV2Fuzzer() fuzztesting.KRMFuzzer {
 	)
 
 	f.Unimplemented_Identity(".name") // special field
-	f.Unimplemented_NotYetTriaged(".id")
 
 	f.SpecField(".gce_setup")
 	f.SpecField(".instance_owners")
@@ -50,6 +49,7 @@ func notebookInstanceV2Fuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".health_info")
 	f.StatusField(".create_time")
 	f.StatusField(".update_time")
+	f.StatusField(".id")
 
 	return f
 }

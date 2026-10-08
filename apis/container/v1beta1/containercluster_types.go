@@ -633,7 +633,7 @@ type KalmConfig struct {
 
 // +kcc:proto=google.container.v1.NodeKubeletConfig
 type KubeletConfig struct {
-	/* Enable CPU CFS quota enforcement for containers that specify CPU limits. */
+	/* Enable CPU CFS quota enforcement for containers that specify CPU limits. Note: If nodeConfig.kubeletConfig is specified, you must explicitly set cpuCfsQuota: true to maintain GKE's default behavior; otherwise, omitting this field defaults to false which disabled CPU quota enforcement. */
 	// +kcc:proto:field=google.container.v1.NodeKubeletConfig.cpu_cfs_quota
 	CPUCfsQuota *bool `json:"cpuCfsQuota,omitempty"`
 
@@ -1412,6 +1412,14 @@ type NodeConfig_WorkloadMetadataConfig struct {
 	NodeMetadata *string `json:"nodeMetadata,omitempty"`
 }
 
+// +kcc:proto=google.container.v1.PrivilegedAdmissionConfig
+type PrivilegedAdmissionConfig struct {
+	/* The customer allowlist Cloud Storage paths for the cluster. These paths are used with the `--autopilot-privileged-admission` flag to authorize privileged workloads in Autopilot clusters. */
+	// +kcc:proto:field=google.container.v1.PrivilegedAdmissionConfig.allowlist_paths
+	// +optional
+	AllowlistPaths []string `json:"allowlistPaths,omitempty"`
+}
+
 // +kcc:spec:proto=google.container.v1.Cluster
 type ContainerClusterSpec struct {
 	/* The configuration for addons supported by GKE. */
@@ -1485,6 +1493,10 @@ type ContainerClusterSpec struct {
 	/* Immutable. Enable Autopilot for this cluster. */
 	// +kcc:proto:field=google.container.v1.Cluster.autopilot.enabled
 	EnableAutopilot *bool `json:"enableAutopilot,omitempty"`
+
+	/* Policy for privileged workloads admission. */
+	// +kcc:proto:field=google.container.v1.Cluster.autopilot.privileged_admission_config
+	PrivilegedAdmissionConfig *PrivilegedAdmissionConfig `json:"privilegedAdmissionConfig,omitempty"`
 
 	/* DEPRECATED. Deprecated in favor of binary_authorization. Enable Binary Authorization for this cluster. If enabled, all container images will be validated by Google Binary Authorization. */
 	// +kcc:proto:field=google.container.v1.Cluster.enable_binary_authorization

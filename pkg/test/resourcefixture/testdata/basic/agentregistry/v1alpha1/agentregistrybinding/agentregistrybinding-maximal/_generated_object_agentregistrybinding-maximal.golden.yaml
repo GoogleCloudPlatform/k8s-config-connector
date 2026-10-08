@@ -1,0 +1,41 @@
+apiVersion: agentregistry.cnrm.cloud.google.com/v1alpha1
+kind: AgentRegistryBinding
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: agentregistrybinding-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  authProviderBinding:
+    authProviderRef:
+      external: projects/${projectId}/locations/us-central1/authProviders/dummy-provider
+    continueURI: https://example.com/callback-updated
+    scopes:
+    - openid
+    - email
+    - profile
+  description: Updated Description
+  displayName: Updated Display Name
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  source:
+    identifier: urn:agent:google:system:testagent
+  target:
+    identifier: urn:agent:google:system:testagent2
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/bindings/agentregistrybinding-maximal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"

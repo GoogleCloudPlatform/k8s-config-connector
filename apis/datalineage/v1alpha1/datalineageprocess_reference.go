@@ -19,7 +19,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -27,11 +26,9 @@ import (
 
 var _ refs.Ref = &DataLineageProcessRef{}
 
-// DataLineageProcessRef defines the resource reference to DataLineageProcess, which "External" field
-// holds the GCP identifier for the KRM object.
+// DataLineageProcessRef is a reference to a GCP DataLineageProcess.
 type DataLineageProcessRef struct {
-	// A reference to an externally managed DataLineageProcess resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/processes/{{process}}".
+	// A reference to an externally managed DataLineageProcess resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/processes/{{process}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a DataLineageProcess resource.
@@ -81,12 +78,5 @@ func (r *DataLineageProcessRef) ParseExternalToIdentity() (identity.Identity, er
 }
 
 func (r *DataLineageProcessRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	fallback := func(u *unstructured.Unstructured) string {
-		identity, err := getIdentityFromDataLineageProcessSpec(ctx, reader, u)
-		if err != nil {
-			return ""
-		}
-		return identity.String()
-	}
-	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+	return refs.Normalize(ctx, reader, r, defaultNamespace)
 }

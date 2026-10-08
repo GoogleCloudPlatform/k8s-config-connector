@@ -19,7 +19,6 @@
 // proto.service: google.cloud.datalabeling.v1beta1
 // resource: DataLabelingInstruction:Instruction
 // resource: DataLabelingAnnotationSpecSet:AnnotationSpecSet
-// resource: DataLabelingDataset:Dataset
 // resource: DataLabelingEvaluationJob:EvaluationJob
 
 package v1alpha1
@@ -138,45 +137,6 @@ type CsvInstruction struct {
 	// +kcc:proto:field=google.cloud.datalabeling.v1beta1.CsvInstruction.gcs_file_uri
 	GCSFileURI *string `json:"gcsFileURI,omitempty"`
 }
-
-/* found existing non-generated go type with proto tag "google.cloud.datalabeling.v1beta1.Dataset", skipping
-
-// +kcc:proto=google.cloud.datalabeling.v1beta1.Dataset
-type Dataset struct {
-	// Output only. Dataset resource name, format is:
-	//  projects/{project_id}/datasets/{dataset_id}
-	// +kcc:proto:field=google.cloud.datalabeling.v1beta1.Dataset.name
-	Name *string `json:"name,omitempty"`
-
-	// Required. The display name of the dataset. Maximum of 64 characters.
-	// +kcc:proto:field=google.cloud.datalabeling.v1beta1.Dataset.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Optional. User-provided description of the annotation specification set.
-	//  The description can be up to 10000 characters long.
-	// +kcc:proto:field=google.cloud.datalabeling.v1beta1.Dataset.description
-	Description *string `json:"description,omitempty"`
-
-	// Output only. Time the dataset is created.
-	// +kcc:proto:field=google.cloud.datalabeling.v1beta1.Dataset.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. This is populated with the original input configs
-	//  where ImportData is called. It is available only after the clients
-	//  import data to this dataset.
-	// +kcc:proto:field=google.cloud.datalabeling.v1beta1.Dataset.input_configs
-	InputConfigs []InputConfig `json:"inputConfigs,omitempty"`
-
-	// Output only. The names of any related resources that are blocking changes
-	//  to the dataset.
-	// +kcc:proto:field=google.cloud.datalabeling.v1beta1.Dataset.blocking_resources
-	BlockingResources []string `json:"blockingResources,omitempty"`
-
-	// Output only. The number of data items in the dataset.
-	// +kcc:proto:field=google.cloud.datalabeling.v1beta1.Dataset.data_item_count
-	DataItemCount *int64 `json:"dataItemCount,omitempty"`
-}
-*/
 
 // +kcc:proto=google.cloud.datalabeling.v1beta1.EvaluationConfig
 type EvaluationConfig struct {

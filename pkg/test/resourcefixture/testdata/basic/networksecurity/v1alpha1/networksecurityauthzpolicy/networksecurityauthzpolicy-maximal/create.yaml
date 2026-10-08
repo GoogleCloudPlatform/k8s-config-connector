@@ -13,7 +13,7 @@ spec:
   target:
     loadBalancingScheme: INTERNAL_MANAGED
     resources:
-      - external: projects/${projectId}/regions/us-central1/forwardingRules/non-existent-rule
+      - external: projects/${projectId}/regions/us-central1/forwardingRules/fr-${uniqueId}
   httpRules:
     - from:
         sources:
@@ -34,5 +34,5 @@ spec:
             methods:
               - GET
               - POST
-      when: "request.time < timestamp('2026-12-31T23:59:59Z')"
+      when: "request.path.startsWith('/api')"
   policyProfile: REQUEST_AUTHZ

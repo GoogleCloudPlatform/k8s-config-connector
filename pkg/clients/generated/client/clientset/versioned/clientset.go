@@ -67,7 +67,6 @@ import (
 	billingbudgetsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/billingbudgets/v1beta1"
 	binaryauthorizationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1alpha1"
 	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1beta1"
-	blockchainnodeenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/blockchainnodeengine/v1alpha1"
 	certificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/certificatemanager/v1alpha1"
 	certificatemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/certificatemanager/v1beta1"
 	cesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/ces/v1alpha1"
@@ -232,6 +231,7 @@ import (
 	videostitcherv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/videostitcher/v1alpha1"
 	visionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vision/v1alpha1"
 	visionaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/visionai/v1alpha1"
+	vmmigrationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmmigration/v1alpha1"
 	vmwareenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1alpha1"
 	vmwareenginev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vmwareengine/v1beta1"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vpcaccess/v1beta1"
@@ -288,7 +288,6 @@ type Interface interface {
 	BillingbudgetsV1beta1() billingbudgetsv1beta1.BillingbudgetsV1beta1Interface
 	BinaryauthorizationV1alpha1() binaryauthorizationv1alpha1.BinaryauthorizationV1alpha1Interface
 	BinaryauthorizationV1beta1() binaryauthorizationv1beta1.BinaryauthorizationV1beta1Interface
-	BlockchainnodeengineV1alpha1() blockchainnodeenginev1alpha1.BlockchainnodeengineV1alpha1Interface
 	CertificatemanagerV1alpha1() certificatemanagerv1alpha1.CertificatemanagerV1alpha1Interface
 	CertificatemanagerV1beta1() certificatemanagerv1beta1.CertificatemanagerV1beta1Interface
 	CesV1alpha1() cesv1alpha1.CesV1alpha1Interface
@@ -453,6 +452,7 @@ type Interface interface {
 	VideostitcherV1alpha1() videostitcherv1alpha1.VideostitcherV1alpha1Interface
 	VisionV1alpha1() visionv1alpha1.VisionV1alpha1Interface
 	VisionaiV1alpha1() visionaiv1alpha1.VisionaiV1alpha1Interface
+	VmmigrationV1alpha1() vmmigrationv1alpha1.VmmigrationV1alpha1Interface
 	VmwareengineV1alpha1() vmwareenginev1alpha1.VmwareengineV1alpha1Interface
 	VmwareengineV1beta1() vmwareenginev1beta1.VmwareengineV1beta1Interface
 	VpcaccessV1beta1() vpcaccessv1beta1.VpcaccessV1beta1Interface
@@ -507,7 +507,6 @@ type Clientset struct {
 	billingbudgetsV1beta1            *billingbudgetsv1beta1.BillingbudgetsV1beta1Client
 	binaryauthorizationV1alpha1      *binaryauthorizationv1alpha1.BinaryauthorizationV1alpha1Client
 	binaryauthorizationV1beta1       *binaryauthorizationv1beta1.BinaryauthorizationV1beta1Client
-	blockchainnodeengineV1alpha1     *blockchainnodeenginev1alpha1.BlockchainnodeengineV1alpha1Client
 	certificatemanagerV1alpha1       *certificatemanagerv1alpha1.CertificatemanagerV1alpha1Client
 	certificatemanagerV1beta1        *certificatemanagerv1beta1.CertificatemanagerV1beta1Client
 	cesV1alpha1                      *cesv1alpha1.CesV1alpha1Client
@@ -672,6 +671,7 @@ type Clientset struct {
 	videostitcherV1alpha1            *videostitcherv1alpha1.VideostitcherV1alpha1Client
 	visionV1alpha1                   *visionv1alpha1.VisionV1alpha1Client
 	visionaiV1alpha1                 *visionaiv1alpha1.VisionaiV1alpha1Client
+	vmmigrationV1alpha1              *vmmigrationv1alpha1.VmmigrationV1alpha1Client
 	vmwareengineV1alpha1             *vmwareenginev1alpha1.VmwareengineV1alpha1Client
 	vmwareengineV1beta1              *vmwareenginev1beta1.VmwareengineV1beta1Client
 	vpcaccessV1beta1                 *vpcaccessv1beta1.VpcaccessV1beta1Client
@@ -889,11 +889,6 @@ func (c *Clientset) BinaryauthorizationV1alpha1() binaryauthorizationv1alpha1.Bi
 // BinaryauthorizationV1beta1 retrieves the BinaryauthorizationV1beta1Client
 func (c *Clientset) BinaryauthorizationV1beta1() binaryauthorizationv1beta1.BinaryauthorizationV1beta1Interface {
 	return c.binaryauthorizationV1beta1
-}
-
-// BlockchainnodeengineV1alpha1 retrieves the BlockchainnodeengineV1alpha1Client
-func (c *Clientset) BlockchainnodeengineV1alpha1() blockchainnodeenginev1alpha1.BlockchainnodeengineV1alpha1Interface {
-	return c.blockchainnodeengineV1alpha1
 }
 
 // CertificatemanagerV1alpha1 retrieves the CertificatemanagerV1alpha1Client
@@ -1716,6 +1711,11 @@ func (c *Clientset) VisionaiV1alpha1() visionaiv1alpha1.VisionaiV1alpha1Interfac
 	return c.visionaiV1alpha1
 }
 
+// VmmigrationV1alpha1 retrieves the VmmigrationV1alpha1Client
+func (c *Clientset) VmmigrationV1alpha1() vmmigrationv1alpha1.VmmigrationV1alpha1Interface {
+	return c.vmmigrationV1alpha1
+}
+
 // VmwareengineV1alpha1 retrieves the VmwareengineV1alpha1Client
 func (c *Clientset) VmwareengineV1alpha1() vmwareenginev1alpha1.VmwareengineV1alpha1Interface {
 	return c.vmwareengineV1alpha1
@@ -1960,10 +1960,6 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.binaryauthorizationV1beta1, err = binaryauthorizationv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
-	if err != nil {
-		return nil, err
-	}
-	cs.blockchainnodeengineV1alpha1, err = blockchainnodeenginev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -2623,6 +2619,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.vmmigrationV1alpha1, err = vmmigrationv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.vmwareengineV1alpha1, err = vmwareenginev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2714,7 +2714,6 @@ func New(c rest.Interface) *Clientset {
 	cs.billingbudgetsV1beta1 = billingbudgetsv1beta1.New(c)
 	cs.binaryauthorizationV1alpha1 = binaryauthorizationv1alpha1.New(c)
 	cs.binaryauthorizationV1beta1 = binaryauthorizationv1beta1.New(c)
-	cs.blockchainnodeengineV1alpha1 = blockchainnodeenginev1alpha1.New(c)
 	cs.certificatemanagerV1alpha1 = certificatemanagerv1alpha1.New(c)
 	cs.certificatemanagerV1beta1 = certificatemanagerv1beta1.New(c)
 	cs.cesV1alpha1 = cesv1alpha1.New(c)
@@ -2879,6 +2878,7 @@ func New(c rest.Interface) *Clientset {
 	cs.videostitcherV1alpha1 = videostitcherv1alpha1.New(c)
 	cs.visionV1alpha1 = visionv1alpha1.New(c)
 	cs.visionaiV1alpha1 = visionaiv1alpha1.New(c)
+	cs.vmmigrationV1alpha1 = vmmigrationv1alpha1.New(c)
 	cs.vmwareengineV1alpha1 = vmwareenginev1alpha1.New(c)
 	cs.vmwareengineV1beta1 = vmwareenginev1beta1.New(c)
 	cs.vpcaccessV1beta1 = vpcaccessv1beta1.New(c)

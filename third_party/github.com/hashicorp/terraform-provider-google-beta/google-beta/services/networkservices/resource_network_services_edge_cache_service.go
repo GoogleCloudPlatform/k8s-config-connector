@@ -243,6 +243,30 @@ captures in total.`,
 														},
 													},
 												},
+												"route_methods": {
+													Type:     schema.TypeList,
+													Optional: true,
+													Description: `Allow overriding the set of methods that are allowed for this route.
+When not set, Media CDN allows only "GET", "HEAD", and "OPTIONS".`,
+													MaxItems: 1,
+													Elem: &schema.Resource{
+														Schema: map[string]*schema.Schema{
+															"allowed_methods": {
+																Type:     schema.TypeList,
+																Optional: true,
+																Description: `The non-empty set of HTTP methods that are allowed for this route.
+
+Any combination of "GET", "HEAD", "OPTIONS", "PUT", "POST", "DELETE", and "PATCH".`,
+																MinItems: 1,
+																MaxItems: 7,
+																Elem: &schema.Schema{
+																	Type:         schema.TypeString,
+																	ValidateFunc: verify.ValidateRegexp(`^(?:GET|HEAD|OPTIONS|PUT|POST|DELETE|PATCH)$`),
+																},
+															},
+														},
+													},
+												},
 												"priority": {
 													Type:     schema.TypeString,
 													Required: true,
@@ -706,6 +730,14 @@ Defaults to 'edge-cache-token'.`,
 																		},
 																	},
 																},
+															},
+															"compression_mode": {
+																Type:         schema.TypeString,
+																Optional:     true,
+																ValidateFunc: verify.ValidateEnum([]string{"DISABLED", "AUTOMATIC", ""}),
+																Description: `Setting the compression mode to automatic enables dynamic compression for every eligible response.
+
+When dynamic compression is enabled, it is recommended to also set a cache policy to maximize efficiency. Possible values: ["DISABLED", "AUTOMATIC"]`,
 															},
 															"cors_policy": {
 																Type:        schema.TypeList,
@@ -1567,6 +1599,7 @@ func flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRule(v interfa
 			"priority":      flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRulePriority(original["priority"], d, config),
 			"description":   flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleDescription(original["description"], d, config),
 			"match_rule":    flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleMatchRule(original["matchRules"], d, config),
+			"route_methods": flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteMethods(original["routeMethods"], d, config),
 			"header_action": flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleHeaderAction(original["headerAction"], d, config),
 			"route_action":  flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteAction(original["routeAction"], d, config),
 			"origin":        flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleOrigin(original["origin"], d, config),
@@ -1580,6 +1613,23 @@ func flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRulePriority(v
 }
 
 func flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteMethods(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["allowed_methods"] =
+		flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteMethodsAllowedMethods(original["allowedMethods"], d, config)
+	return []interface{}{transformed}
+}
+func flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteMethodsAllowedMethods(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
@@ -1843,7 +1893,12 @@ func flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActio
 		flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionUrlRewrite(original["urlRewrite"], d, config)
 	transformed["cors_policy"] =
 		flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionCorsPolicy(original["corsPolicy"], d, config)
+	transformed["compression_mode"] =
+		flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionCompressionMode(original["compressionMode"], d, config)
 	return []interface{}{transformed}
+}
+func flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionCompressionMode(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
 }
 func flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionCdnPolicy(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
@@ -2377,6 +2432,13 @@ func expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRule(v interfac
 			transformed["matchRules"] = transformedMatchRule
 		}
 
+		transformedRouteMethods, err := expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteMethods(original["route_methods"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedRouteMethods); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+			transformed["routeMethods"] = transformedRouteMethods
+		}
+
 		transformedHeaderAction, err := expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleHeaderAction(original["header_action"], d, config)
 		if err != nil {
 			return nil, err
@@ -2620,6 +2682,32 @@ func expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleMatchRuleFu
 	return v, nil
 }
 
+func expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteMethods(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	if v == nil {
+		return nil, nil
+	}
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedAllowedMethods, err := expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteMethodsAllowedMethods(original["allowed_methods"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedAllowedMethods); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["allowedMethods"] = transformedAllowedMethods
+	}
+
+	return transformed, nil
+}
+
+func expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteMethodsAllowedMethods(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
 func expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleHeaderAction(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
@@ -2838,7 +2926,18 @@ func expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteAction
 		transformed["corsPolicy"] = transformedCorsPolicy
 	}
 
+	transformedCompressionMode, err := expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionCompressionMode(original["compression_mode"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedCompressionMode); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["compressionMode"] = transformedCompressionMode
+	}
+
 	return transformed, nil
+}
+
+func expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionCompressionMode(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
 }
 
 func expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionCdnPolicy(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {

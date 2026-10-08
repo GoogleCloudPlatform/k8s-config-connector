@@ -240,6 +240,7 @@ func (a *ComputeInstanceGroupAdapter) Update(ctx context.Context, updateOp *dire
 	}
 
 	if diffs.HasDiff() {
+		diffs.Object = updateOp.GetUnstructured()
 		// Check for immutable field updates
 		for _, path := range updateMask.Paths {
 			if path != "named_ports" {

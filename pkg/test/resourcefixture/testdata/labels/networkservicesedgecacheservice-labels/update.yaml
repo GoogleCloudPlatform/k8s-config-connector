@@ -1,0 +1,41 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1alpha1
+kind: NetworkServicesEdgeCacheService
+metadata:
+  labels:
+    label-one: two
+    label-three: three
+  name: networkservicesedgecacheservice-${uniqueId}
+spec:
+  description: An edge cache service test
+  projectRef:
+    external: ${projectId}
+  resourceID: networkservicesedgecacheservice${uniqueId}
+  routing:
+    hostRule:
+    - description: host rule description
+      hosts:
+      - sslcert.tf-test.club
+      pathMatcher: routes
+    pathMatcher:
+    - description: a path matcher
+      name: routes
+      routeRule:
+      - description: a route rule to match against
+        headerAction:
+          responseHeaderToAdd:
+          - headerName: x-cache-status
+            headerValue: '{cdn_cache_status}'
+        matchRule:
+        - prefixMatch: /
+        origin: networkservicesedgecacheorigin${uniqueId}
+        priority: "1"
+        routeAction:
+          cdnPolicy:
+            cacheMode: CACHE_ALL_STATIC
+            defaultTtl: 3600s
+          compressionMode: DISABLED
+        routeMethods:
+          allowedMethods:
+          - GET
+          - HEAD
+          - OPTIONS

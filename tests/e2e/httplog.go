@@ -47,9 +47,6 @@ func RemoveExtraEvents(events test.LogEntries) test.LogEntries {
 	// Remove repeated GET requests (after normalization)
 	var previous *test.LogEntry
 	events = events.KeepIf(func(e *test.LogEntry) bool {
-		lastComponent := func(s string) string {
-			return s[strings.LastIndex(s, "/")+1:]
-		}
 
 		// isGet checks if this is a GET request, or a GRPC equivalent
 		isGet := func(r test.Request) bool {
@@ -57,9 +54,9 @@ func RemoveExtraEvents(events test.LogEntries) test.LogEntries {
 				return true
 			}
 			if r.Method == "GRPC" {
-				methodName := lastComponent(r.URL)
-				switch methodName {
-				case "GetAppProfile":
+				url := r.URL
+				switch url {
+				case "/google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile", "/google.cloud.notebooks.v2.NotebookService/GetInstance", "/google.longrunning.Operations/GetOperation":
 					return true
 				}
 			}
@@ -118,6 +115,16 @@ func RemoveExtraEvents(events test.LogEntries) test.LogEntries {
 		switch currentStateEnum {
 		case 9 /* JOB_STATE_PENDING */, 11 /* JOB_STATE_QUEUED */ :
 			return false
+		}
+		return true
+	})
+
+	// Remove retried DeleteWorkload requests while child resources are being deleted
+	events = events.KeepIf(func(e *test.LogEntry) bool {
+		if e.Request.Method == "DELETE" && strings.Contains(e.Request.URL, "assuredworkloads.googleapis.com") {
+			if e.Response.StatusCode == 400 && strings.Contains(e.Response.Body, "contains projects or other resources that are not deleted") {
+				return false
+			}
 		}
 		return true
 	})
@@ -221,6 +228,14 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	// Specific to vertexai
 	addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
 	addReplacement("response.blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
+	addReplacement("versionCreateTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("versionUpdateTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("response.versionCreateTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("response.versionUpdateTime", "2024-04-01T12:34:56.123456Z")
+	addSetStringReplacement(".versionCreateTime", "2024-04-01T12:34:56.123456Z")
+	addSetStringReplacement(".versionUpdateTime", "2024-04-01T12:34:56.123456Z")
+	addSetStringReplacement(".response.versionCreateTime", "2024-04-01T12:34:56.123456Z")
+	addSetStringReplacement(".response.versionUpdateTime", "2024-04-01T12:34:56.123456Z")
 
 	// Specific to Sql
 	addReplacement("serverCaCert.cert", "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n")

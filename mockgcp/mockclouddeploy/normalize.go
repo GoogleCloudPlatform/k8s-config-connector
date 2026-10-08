@@ -50,6 +50,12 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".automations[].updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".automations[].etag", PlaceholderEtag)
 
+	// Array normalization for ListCustomTargetTypes
+	replacements.ReplacePath(".customTargetTypes[].uid", PlaceholderUID)
+	replacements.ReplacePath(".customTargetTypes[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".customTargetTypes[].updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".customTargetTypes[].etag", PlaceholderEtag)
+
 	replacements.ReplacePath(".rules[].promoteReleaseRule.condition", map[string]interface{}{
 		"targetsPresentCondition": make(map[string]interface{}),
 	})
@@ -68,6 +74,11 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".response.automations[].updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".response.automations[].etag", PlaceholderEtag)
 
+	replacements.ReplacePath(".response.customTargetTypes[].uid", PlaceholderUID)
+	replacements.ReplacePath(".response.customTargetTypes[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.customTargetTypes[].updateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".response.customTargetTypes[].etag", PlaceholderEtag)
+
 	replacements.ReplacePath(".response.rules[].promoteReleaseRule.condition", map[string]interface{}{
 		"targetsPresentCondition": make(map[string]interface{}),
 	})
@@ -76,9 +87,21 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".metadata.createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".metadata.endTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".metadata.requestedCancellation", false)
+	replacements.TransformObject(".metadata", func(m map[string]any) {
+		if target, ok := m["target"].(string); ok && strings.Contains(target, "customTargetTypes") {
+			m["requestedCancellation"] = false
+		}
+	})
 
 	// LRO root
 	replacements.ReplacePath(".done", true)
+	replacements.TransformObject("", func(m map[string]any) {
+		if metadata, ok := m["metadata"].(map[string]any); ok {
+			if target, ok := metadata["target"].(string); ok && strings.Contains(target, "customTargetTypes") {
+				m["done"] = true
+			}
+		}
+	})
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

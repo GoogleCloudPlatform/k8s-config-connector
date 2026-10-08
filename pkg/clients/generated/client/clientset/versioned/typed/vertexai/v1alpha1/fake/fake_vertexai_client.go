@@ -71,6 +71,10 @@ func (c *FakeVertexaiV1alpha1) VertexAITensorboards(namespace string) v1alpha1.V
 	return newFakeVertexAITensorboards(c, namespace)
 }
 
+func (c *FakeVertexaiV1alpha1) VertexAITensorboardExperiments(namespace string) v1alpha1.VertexAITensorboardExperimentInterface {
+	return newFakeVertexAITensorboardExperiments(c, namespace)
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeVertexaiV1alpha1) RESTClient() rest.Interface {

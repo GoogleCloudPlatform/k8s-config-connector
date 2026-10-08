@@ -1,3 +1,8 @@
+---
+name: add-new-mockgcp-resource
+description: Provides a structured workflow for adding a new mock service to mockgcp.
+---
+
 # Skill: Add New MockGCP Resource
 
 This skill provides a structured workflow for adding a new mock service to `mockgcp`.
@@ -132,6 +137,15 @@ Add the service to `mockgcp/mockserviceusage/knownservices.go`.
 ### 9. Enable Tests
 
 If the resource has KRM tests, add it to `config/tests/samples/create/harness.go`.
+
+### 9b. Remove from Ratcheting Exclusions (MANDATORY)
+
+Before running the test cases against real or mock GCP, you **MUST** ensure the target resource is removed from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. This enables the re-reconciliation test step, which is a fundamental use case KCC resources must support.
+
+1. Open `tests/e2e/ratcheting.go`.
+2. Locate the function `ShouldTestRereconiliation`.
+3. Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
+4. If there is a `case` block for your target resource's `GroupKind`, remove that `case` line from the switch statement.
 
 ### 10. Verify and Align Logs
 

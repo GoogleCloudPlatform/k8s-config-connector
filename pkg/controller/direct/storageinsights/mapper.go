@@ -22,7 +22,30 @@ import (
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storageinsights/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"google.golang.org/genproto/googleapis/type/date"
 )
+
+func Date_FromProto(mapCtx *direct.MapContext, in *date.Date) *krm.Date {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Date{}
+	out.Year = direct.LazyPtr(in.GetYear())
+	out.Month = direct.LazyPtr(in.GetMonth())
+	out.Day = direct.LazyPtr(in.GetDay())
+	return out
+}
+
+func Date_ToProto(mapCtx *direct.MapContext, in *krm.Date) *date.Date {
+	if in == nil {
+		return nil
+	}
+	out := &date.Date{}
+	out.Year = direct.ValueOf(in.Year)
+	out.Month = direct.ValueOf(in.Month)
+	out.Day = direct.ValueOf(in.Day)
+	return out
+}
 
 func parseBucketName(external string) string {
 	if strings.Contains(external, "/buckets/") {

@@ -25,7 +25,11 @@ package eventarc
 
 import (
 	pb "cloud.google.com/go/eventarc/apiv1/eventarcpb"
+	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/eventarc/v1alpha1"
+	krmpubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krmworkflowsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -319,14 +323,142 @@ func EventarcGoogleChannelConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb
 }
 */
 
-/* found existing non-generated mapping function "EventarcGoogleChannelConfigSpec_ToProto", skipping
-func EventarcGoogleChannelConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcGoogleChannelConfigSpec) *pb.GoogleChannelConfig {
+/*
+found existing non-generated mapping function "EventarcGoogleChannelConfigSpec_ToProto", skipping
+
+	func EventarcGoogleChannelConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcGoogleChannelConfigSpec) *pb.GoogleChannelConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.GoogleChannelConfig{}
+		// MISSING: Name
+		// MISSING: CryptoKeyName
+		return out
+	}
+*/
+func EventarcMessageBusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MessageBus) *krm.EventarcMessageBusObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.GoogleChannelConfig{}
+	out := &krm.EventarcMessageBusObservedState{}
 	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: CryptoKeyName
+	return out
+}
+func EventarcMessageBusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EventarcMessageBusObservedState) *pb.MessageBus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MessageBus{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: CryptoKeyName
+	return out
+}
+
+/* found existing non-generated mapping function "EventarcMessageBusSpec_FromProto", skipping
+func EventarcMessageBusSpec_FromProto(mapCtx *direct.MapContext, in *pb.MessageBus) *krm.EventarcMessageBusSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EventarcMessageBusSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: CryptoKeyName
+	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "EventarcMessageBusSpec_ToProto", skipping
+
+	func EventarcMessageBusSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcMessageBusSpec) *pb.MessageBus {
+		if in == nil {
+			return nil
+		}
+		out := &pb.MessageBus{}
+		// MISSING: Name
+		out.Labels = in.Labels
+		out.Annotations = in.Annotations
+		out.DisplayName = direct.ValueOf(in.DisplayName)
+		// MISSING: CryptoKeyName
+		out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
+		return out
+	}
+*/
+func EventarcPipelineObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Pipeline) *krm.EventarcPipelineObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EventarcPipelineObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	// MISSING: CryptoKeyName
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+func EventarcPipelineObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EventarcPipelineObservedState) *pb.Pipeline {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Pipeline{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Uid = direct.ValueOf(in.Uid)
+	// MISSING: CryptoKeyName
+	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
+
+/* found existing non-generated mapping function "EventarcPipelineSpec_FromProto", skipping
+func EventarcPipelineSpec_FromProto(mapCtx *direct.MapContext, in *pb.Pipeline) *krm.EventarcPipelineSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EventarcPipelineSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Destinations = direct.Slice_FromProto(mapCtx, in.Destinations, Pipeline_Destination_FromProto)
+	out.Mediations = direct.Slice_FromProto(mapCtx, in.Mediations, Pipeline_Mediation_FromProto)
+	// MISSING: CryptoKeyName
+	out.InputPayloadFormat = Pipeline_MessagePayloadFormat_FromProto(mapCtx, in.GetInputPayloadFormat())
+	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
+	out.RetryPolicy = Pipeline_RetryPolicy_FromProto(mapCtx, in.GetRetryPolicy())
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "EventarcPipelineSpec_ToProto", skipping
+func EventarcPipelineSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcPipelineSpec) *pb.Pipeline {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Pipeline{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Destinations = direct.Slice_ToProto(mapCtx, in.Destinations, Pipeline_Destination_ToProto)
+	out.Mediations = direct.Slice_ToProto(mapCtx, in.Mediations, Pipeline_Mediation_ToProto)
+	// MISSING: CryptoKeyName
+	out.InputPayloadFormat = Pipeline_MessagePayloadFormat_ToProto(mapCtx, in.InputPayloadFormat)
+	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
+	out.RetryPolicy = Pipeline_RetryPolicy_ToProto(mapCtx, in.RetryPolicy)
 	return out
 }
 */
@@ -342,13 +474,292 @@ func LoggingConfig_FromProto(mapCtx *direct.MapContext, in *pb.LoggingConfig) *k
 }
 */
 
-/* found existing non-generated mapping function "LoggingConfig_ToProto", skipping
-func LoggingConfig_ToProto(mapCtx *direct.MapContext, in *krm.LoggingConfig) *pb.LoggingConfig {
+/*
+found existing non-generated mapping function "LoggingConfig_ToProto", skipping
+
+	func LoggingConfig_ToProto(mapCtx *direct.MapContext, in *krm.LoggingConfig) *pb.LoggingConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.LoggingConfig{}
+		out.LogSeverity = direct.Enum_ToProto[pb.LoggingConfig_LogSeverity](mapCtx, in.LogSeverity)
+		return out
+	}
+*/
+func Pipeline_Destination_FromProto(mapCtx *direct.MapContext, in *pb.Pipeline_Destination) *krm.Pipeline_Destination {
 	if in == nil {
 		return nil
 	}
-	out := &pb.LoggingConfig{}
-	out.LogSeverity = direct.Enum_ToProto[pb.LoggingConfig_LogSeverity](mapCtx, in.LogSeverity)
+	out := &krm.Pipeline_Destination{}
+	out.NetworkConfig = Pipeline_Destination_NetworkConfig_FromProto(mapCtx, in.GetNetworkConfig())
+	out.HTTPEndpoint = Pipeline_Destination_HTTPEndpoint_FromProto(mapCtx, in.GetHttpEndpoint())
+	if in.GetWorkflow() != "" {
+		out.WorkflowRef = &krmworkflowsv1alpha1.WorkflowsWorkflowRef{External: in.GetWorkflow()}
+	}
+	if in.GetMessageBus() != "" {
+		out.MessageBusRef = &krm.EventarcMessageBusRef{External: in.GetMessageBus()}
+	}
+	if in.GetTopic() != "" {
+		out.TopicRef = &krmpubsubv1beta1.PubSubTopicRef{External: in.GetTopic()}
+	}
+	out.AuthenticationConfig = Pipeline_Destination_AuthenticationConfig_FromProto(mapCtx, in.GetAuthenticationConfig())
+	out.OutputPayloadFormat = Pipeline_MessagePayloadFormat_FromProto(mapCtx, in.GetOutputPayloadFormat())
 	return out
 }
+
+/*
+found existing non-generated mapping function "Pipeline_Destination_ToProto", skipping
+
+	func Pipeline_Destination_ToProto(mapCtx *direct.MapContext, in *krm.Pipeline_Destination) *pb.Pipeline_Destination {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Pipeline_Destination{}
+		out.NetworkConfig = Pipeline_Destination_NetworkConfig_ToProto(mapCtx, in.NetworkConfig)
+		if oneof := Pipeline_Destination_HTTPEndpoint_ToProto(mapCtx, in.HTTPEndpoint); oneof != nil {
+			out.DestinationDescriptor = &pb.Pipeline_Destination_HttpEndpoint_{HttpEndpoint: oneof}
+		}
+		if in.WorkflowRef != nil {
+			out.Workflow = in.WorkflowRef.External
+		}
+		if in.MessageBusRef != nil {
+			out.MessageBus = in.MessageBusRef.External
+		}
+		if in.TopicRef != nil {
+			out.Topic = in.TopicRef.External
+		}
+		out.AuthenticationConfig = Pipeline_Destination_AuthenticationConfig_ToProto(mapCtx, in.AuthenticationConfig)
+		out.OutputPayloadFormat = Pipeline_MessagePayloadFormat_ToProto(mapCtx, in.OutputPayloadFormat)
+		return out
+	}
 */
+func Pipeline_Destination_AuthenticationConfig_FromProto(mapCtx *direct.MapContext, in *pb.Pipeline_Destination_AuthenticationConfig) *krm.Pipeline_Destination_AuthenticationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Pipeline_Destination_AuthenticationConfig{}
+	out.GoogleOIDC = Pipeline_Destination_AuthenticationConfig_OIDCToken_FromProto(mapCtx, in.GetGoogleOidc())
+	out.OauthToken = Pipeline_Destination_AuthenticationConfig_OAuthToken_FromProto(mapCtx, in.GetOauthToken())
+	return out
+}
+func Pipeline_Destination_AuthenticationConfig_ToProto(mapCtx *direct.MapContext, in *krm.Pipeline_Destination_AuthenticationConfig) *pb.Pipeline_Destination_AuthenticationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Pipeline_Destination_AuthenticationConfig{}
+	if oneof := Pipeline_Destination_AuthenticationConfig_OIDCToken_ToProto(mapCtx, in.GoogleOIDC); oneof != nil {
+		out.AuthenticationMethodDescriptor = &pb.Pipeline_Destination_AuthenticationConfig_GoogleOidc{GoogleOidc: oneof}
+	}
+	if oneof := Pipeline_Destination_AuthenticationConfig_OAuthToken_ToProto(mapCtx, in.OauthToken); oneof != nil {
+		out.AuthenticationMethodDescriptor = &pb.Pipeline_Destination_AuthenticationConfig_OauthToken{OauthToken: oneof}
+	}
+	return out
+}
+func Pipeline_Destination_AuthenticationConfig_OAuthToken_FromProto(mapCtx *direct.MapContext, in *pb.Pipeline_Destination_AuthenticationConfig_OAuthToken) *krm.Pipeline_Destination_AuthenticationConfig_OAuthToken {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Pipeline_Destination_AuthenticationConfig_OAuthToken{}
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	out.Scope = direct.LazyPtr(in.GetScope())
+	return out
+}
+func Pipeline_Destination_AuthenticationConfig_OAuthToken_ToProto(mapCtx *direct.MapContext, in *krm.Pipeline_Destination_AuthenticationConfig_OAuthToken) *pb.Pipeline_Destination_AuthenticationConfig_OAuthToken {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Pipeline_Destination_AuthenticationConfig_OAuthToken{}
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
+	out.Scope = direct.ValueOf(in.Scope)
+	return out
+}
+func Pipeline_Destination_AuthenticationConfig_OIDCToken_FromProto(mapCtx *direct.MapContext, in *pb.Pipeline_Destination_AuthenticationConfig_OidcToken) *krm.Pipeline_Destination_AuthenticationConfig_OIDCToken {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Pipeline_Destination_AuthenticationConfig_OIDCToken{}
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	out.Audience = direct.LazyPtr(in.GetAudience())
+	return out
+}
+func Pipeline_Destination_AuthenticationConfig_OIDCToken_ToProto(mapCtx *direct.MapContext, in *krm.Pipeline_Destination_AuthenticationConfig_OIDCToken) *pb.Pipeline_Destination_AuthenticationConfig_OidcToken {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Pipeline_Destination_AuthenticationConfig_OidcToken{}
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
+	out.Audience = direct.ValueOf(in.Audience)
+	return out
+}
+func Pipeline_Destination_HTTPEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.Pipeline_Destination_HttpEndpoint) *krm.Pipeline_Destination_HTTPEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Pipeline_Destination_HTTPEndpoint{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.MessageBindingTemplate = direct.LazyPtr(in.GetMessageBindingTemplate())
+	return out
+}
+func Pipeline_Destination_HTTPEndpoint_ToProto(mapCtx *direct.MapContext, in *krm.Pipeline_Destination_HTTPEndpoint) *pb.Pipeline_Destination_HttpEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Pipeline_Destination_HttpEndpoint{}
+	out.Uri = direct.ValueOf(in.URI)
+	out.MessageBindingTemplate = direct.ValueOf(in.MessageBindingTemplate)
+	return out
+}
+func Pipeline_Destination_NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.Pipeline_Destination_NetworkConfig) *krm.Pipeline_Destination_NetworkConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Pipeline_Destination_NetworkConfig{}
+	if in.GetNetworkAttachment() != "" {
+		out.NetworkAttachmentRef = &krmcomputev1alpha1.ComputeNetworkAttachmentRef{External: in.GetNetworkAttachment()}
+	}
+	return out
+}
+func Pipeline_Destination_NetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.Pipeline_Destination_NetworkConfig) *pb.Pipeline_Destination_NetworkConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Pipeline_Destination_NetworkConfig{}
+	if in.NetworkAttachmentRef != nil {
+		out.NetworkAttachment = in.NetworkAttachmentRef.External
+	}
+	return out
+}
+func Pipeline_Mediation_FromProto(mapCtx *direct.MapContext, in *pb.Pipeline_Mediation) *krm.Pipeline_Mediation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Pipeline_Mediation{}
+	out.Transformation = Pipeline_Mediation_Transformation_FromProto(mapCtx, in.GetTransformation())
+	return out
+}
+func Pipeline_Mediation_ToProto(mapCtx *direct.MapContext, in *krm.Pipeline_Mediation) *pb.Pipeline_Mediation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Pipeline_Mediation{}
+	if oneof := Pipeline_Mediation_Transformation_ToProto(mapCtx, in.Transformation); oneof != nil {
+		out.MediationDescriptor = &pb.Pipeline_Mediation_Transformation_{Transformation: oneof}
+	}
+	return out
+}
+func Pipeline_Mediation_Transformation_FromProto(mapCtx *direct.MapContext, in *pb.Pipeline_Mediation_Transformation) *krm.Pipeline_Mediation_Transformation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Pipeline_Mediation_Transformation{}
+	out.TransformationTemplate = direct.LazyPtr(in.GetTransformationTemplate())
+	return out
+}
+func Pipeline_Mediation_Transformation_ToProto(mapCtx *direct.MapContext, in *krm.Pipeline_Mediation_Transformation) *pb.Pipeline_Mediation_Transformation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Pipeline_Mediation_Transformation{}
+	out.TransformationTemplate = direct.ValueOf(in.TransformationTemplate)
+	return out
+}
+func Pipeline_MessagePayloadFormat_FromProto(mapCtx *direct.MapContext, in *pb.Pipeline_MessagePayloadFormat) *krm.Pipeline_MessagePayloadFormat {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Pipeline_MessagePayloadFormat{}
+	out.Protobuf = Pipeline_MessagePayloadFormat_ProtobufFormat_FromProto(mapCtx, in.GetProtobuf())
+	out.Avro = Pipeline_MessagePayloadFormat_AvroFormat_FromProto(mapCtx, in.GetAvro())
+	out.Json = Pipeline_MessagePayloadFormat_JsonFormat_FromProto(mapCtx, in.GetJson())
+	return out
+}
+func Pipeline_MessagePayloadFormat_ToProto(mapCtx *direct.MapContext, in *krm.Pipeline_MessagePayloadFormat) *pb.Pipeline_MessagePayloadFormat {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Pipeline_MessagePayloadFormat{}
+	if oneof := Pipeline_MessagePayloadFormat_ProtobufFormat_ToProto(mapCtx, in.Protobuf); oneof != nil {
+		out.Kind = &pb.Pipeline_MessagePayloadFormat_Protobuf{Protobuf: oneof}
+	}
+	if oneof := Pipeline_MessagePayloadFormat_AvroFormat_ToProto(mapCtx, in.Avro); oneof != nil {
+		out.Kind = &pb.Pipeline_MessagePayloadFormat_Avro{Avro: oneof}
+	}
+	if oneof := Pipeline_MessagePayloadFormat_JsonFormat_ToProto(mapCtx, in.Json); oneof != nil {
+		out.Kind = &pb.Pipeline_MessagePayloadFormat_Json{Json: oneof}
+	}
+	return out
+}
+func Pipeline_MessagePayloadFormat_AvroFormat_FromProto(mapCtx *direct.MapContext, in *pb.Pipeline_MessagePayloadFormat_AvroFormat) *krm.Pipeline_MessagePayloadFormat_AvroFormat {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Pipeline_MessagePayloadFormat_AvroFormat{}
+	out.SchemaDefinition = direct.LazyPtr(in.GetSchemaDefinition())
+	return out
+}
+func Pipeline_MessagePayloadFormat_AvroFormat_ToProto(mapCtx *direct.MapContext, in *krm.Pipeline_MessagePayloadFormat_AvroFormat) *pb.Pipeline_MessagePayloadFormat_AvroFormat {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Pipeline_MessagePayloadFormat_AvroFormat{}
+	out.SchemaDefinition = direct.ValueOf(in.SchemaDefinition)
+	return out
+}
+func Pipeline_MessagePayloadFormat_JsonFormat_FromProto(mapCtx *direct.MapContext, in *pb.Pipeline_MessagePayloadFormat_JsonFormat) *krm.Pipeline_MessagePayloadFormat_JsonFormat {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Pipeline_MessagePayloadFormat_JsonFormat{}
+	return out
+}
+func Pipeline_MessagePayloadFormat_JsonFormat_ToProto(mapCtx *direct.MapContext, in *krm.Pipeline_MessagePayloadFormat_JsonFormat) *pb.Pipeline_MessagePayloadFormat_JsonFormat {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Pipeline_MessagePayloadFormat_JsonFormat{}
+	return out
+}
+func Pipeline_MessagePayloadFormat_ProtobufFormat_FromProto(mapCtx *direct.MapContext, in *pb.Pipeline_MessagePayloadFormat_ProtobufFormat) *krm.Pipeline_MessagePayloadFormat_ProtobufFormat {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Pipeline_MessagePayloadFormat_ProtobufFormat{}
+	out.SchemaDefinition = direct.LazyPtr(in.GetSchemaDefinition())
+	return out
+}
+func Pipeline_MessagePayloadFormat_ProtobufFormat_ToProto(mapCtx *direct.MapContext, in *krm.Pipeline_MessagePayloadFormat_ProtobufFormat) *pb.Pipeline_MessagePayloadFormat_ProtobufFormat {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Pipeline_MessagePayloadFormat_ProtobufFormat{}
+	out.SchemaDefinition = direct.ValueOf(in.SchemaDefinition)
+	return out
+}
+func Pipeline_RetryPolicy_FromProto(mapCtx *direct.MapContext, in *pb.Pipeline_RetryPolicy) *krm.Pipeline_RetryPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Pipeline_RetryPolicy{}
+	out.MaxAttempts = direct.LazyPtr(in.GetMaxAttempts())
+	out.MinRetryDelay = direct.StringDuration_FromProto(mapCtx, in.GetMinRetryDelay())
+	out.MaxRetryDelay = direct.StringDuration_FromProto(mapCtx, in.GetMaxRetryDelay())
+	return out
+}
+func Pipeline_RetryPolicy_ToProto(mapCtx *direct.MapContext, in *krm.Pipeline_RetryPolicy) *pb.Pipeline_RetryPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Pipeline_RetryPolicy{}
+	out.MaxAttempts = direct.ValueOf(in.MaxAttempts)
+	out.MinRetryDelay = direct.StringDuration_ToProto(mapCtx, in.MinRetryDelay)
+	out.MaxRetryDelay = direct.StringDuration_ToProto(mapCtx, in.MaxRetryDelay)
+	return out
+}

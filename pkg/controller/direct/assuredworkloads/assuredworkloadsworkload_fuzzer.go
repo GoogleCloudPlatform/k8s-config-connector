@@ -33,8 +33,12 @@ func assuredWorkloadsWorkloadFuzzer() fuzztesting.KRMFuzzer {
 		AssuredWorkloadsWorkloadObservedState_FromProto, AssuredWorkloadsWorkloadObservedState_ToProto,
 	)
 
+	f.SpecField(".display_name")
+	f.SpecField(".compliance_regime")
 	f.SpecField(".billing_account")
 	f.SpecField(".resource_settings")
+	f.SpecField(".enable_sovereign_controls")
+	f.SpecField(".partner")
 
 	f.StatusField(".create_time")
 	f.StatusField(".resources")

@@ -47,6 +47,9 @@ spec:
         - deletion_policy
     - name: google_sql_database_instance
       kind: SQLInstance
+      # Adding this directive is a workaround to include the cnrm.cloud.google.com/sqlinstance-advanced-dr annotation in the reference doc.
+      directives:
+        - sqlinstance_advanced_dr
       metadataMapping:
         name: name
         labels: settings.user_labels

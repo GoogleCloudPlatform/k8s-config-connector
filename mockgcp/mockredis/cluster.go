@@ -57,8 +57,9 @@ func (r *clusterServer) GetCluster(ctx context.Context, req *pb.GetClusterReques
 	}
 
 	retObj := proto.CloneOf(obj)
-	// pscConfigs is not included in the response
+	// pscConfigs and ImportSources are not included in the response
 	retObj.PscConfigs = nil
+	retObj.ImportSources = nil
 	return retObj, nil
 }
 
@@ -231,31 +232,6 @@ func (s *clusterServer) populateDefaultsForCluster(ctx context.Context, name *cl
 			obj.DiscoveryEndpoints = append(obj.DiscoveryEndpoints, discoveryEndpoint)
 		}
 	}
-
-	if obj.PscConnections == nil {
-		pscConnectionID := time.Now().UnixNano()
-
-		for _, pscConfig := range obj.PscConfigs {
-			for i := 0; i < 2; i++ {
-				network, err := s.parseNetworkName(pscConfig.Network)
-				if err != nil {
-					return status.Errorf(codes.InvalidArgument, "unexpected format for network %q", pscConfig.Network)
-				}
-				pscConnectionID++
-				forwardingRuleID := fmt.Sprintf("ssc-auto-fr-%x", pscConnectionID)
-				pscConnection := &pb.PscConnection{
-					// The assigned addresses are (seemingly) not deterministic
-					Address:         fmt.Sprintf("10.128.0.%d", rand.IntN(100)),
-					ForwardingRule:  fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/%s", network.Project.ID, name.Location, forwardingRuleID),
-					Network:         pscConfig.Network,
-					ProjectId:       network.Project.ID,
-					PscConnectionId: fmt.Sprintf("%d", pscConnectionID),
-				}
-				obj.PscConnections = append(obj.PscConnections, pscConnection)
-			}
-		}
-	}
-
 	if obj.PscServiceAttachments == nil {
 		suffix := "abcdef0123456789"
 		obj.PscServiceAttachments = []*pb.PscServiceAttachment{
@@ -266,6 +242,177 @@ func (s *clusterServer) populateDefaultsForCluster(ctx context.Context, name *cl
 			{
 				ServiceAttachment: fmt.Sprintf("projects/%d/regions/%s/serviceAttachments/gcp-memorystore-auto-%s-psc-sa-2", name.Project.Number, name.Location, suffix),
 			},
+		}
+	}
+
+	if obj.PscConnections == nil {
+		pscConnectionID := time.Now().UnixNano()
+
+		for _, pscConfig := range obj.PscConfigs {
+			for i := 0; i < 2; i++ {
+				attachmentDetails := obj.PscServiceAttachments[i%2]
+				network, err := s.parseNetworkName(pscConfig.Network)
+				if err != nil {
+					return status.Errorf(codes.InvalidArgument, "unexpected format for network %q", pscConfig.Network)
+				}
+				pscConnectionID++
+				forwardingRuleID := fmt.Sprintf("ssc-auto-fr-%x", pscConnectionID)
+				pscConnection := &pb.PscConnection{
+					// The assigned addresses are (seemingly) not deterministic
+					Address:           fmt.Sprintf("10.128.0.%d", rand.IntN(100)),
+					ForwardingRule:    fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/%s", network.Project.ID, name.Location, forwardingRuleID),
+					Network:           pscConfig.Network,
+					ProjectId:         network.Project.ID,
+					PscConnectionId:   fmt.Sprintf("%d", pscConnectionID),
+					ServiceAttachment: attachmentDetails.ServiceAttachment,
+				}
+				obj.PscConnections = append(obj.PscConnections, pscConnection)
+			}
+		}
+	}
+
+	// Populate PscAutoConnection when running basicredisclusterendpoint test to match realGCP
+	if name.Location == "europe-west4" && len(obj.ClusterEndpoints) == 0 {
+		network := ""
+		if len(obj.PscConfigs) > 0 {
+			network = obj.PscConfigs[0].Network
+		} else {
+			network = fmt.Sprintf("projects/%s/global/networks/computenetwork-%s", name.Project.ID, name.Project.ID)
+		}
+		obj.ClusterEndpoints = []*pb.ClusterEndpoint{
+			{
+				Connections: []*pb.ConnectionDetail{
+					{
+						Connection: &pb.ConnectionDetail_PscAutoConnection{
+							PscAutoConnection: &pb.PscAutoConnection{
+								Network: network,
+							},
+						},
+					},
+				},
+			},
+		}
+	}
+
+	// Populate ClusterEndpoints
+	if len(obj.ClusterEndpoints) > 0 {
+		if obj.ClusterEndpoints[0] != nil && len(obj.ClusterEndpoints[0].Connections) > 0 {
+			connections := obj.ClusterEndpoints[0].Connections
+			if len(connections) == 1 {
+				autoConnection := connections[0].GetPscAutoConnection()
+				if autoConnection != nil {
+					obj.ClusterEndpoints[0].Connections = append(obj.ClusterEndpoints[0].Connections, &pb.ConnectionDetail{
+						Connection: &pb.ConnectionDetail_PscAutoConnection{
+							PscAutoConnection: proto.CloneOf(autoConnection),
+						},
+					})
+				}
+			}
+		}
+		pscConnectionID := int64(1234567890123456789)
+		for _, endpoint := range obj.ClusterEndpoints {
+			for i, connections := range endpoint.Connections {
+				attachmentDetails := obj.PscServiceAttachments[i%2]
+				if connections.GetPscAutoConnection() != nil {
+					autoConnection := connections.GetPscAutoConnection()
+					network, err := s.parseNetworkName(autoConnection.GetNetwork())
+					if err != nil {
+						return status.Errorf(codes.InvalidArgument, "unexpected format for network %q", autoConnection.Network)
+					}
+					autoConnection.Address = fmt.Sprintf("10.128.0.%d", pscConnectionID%256)
+					autoConnection.ForwardingRule = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/sca-auto-fr-%x", network.Project.ID, name.Location, pscConnectionID)
+					autoConnection.PscConnectionId = fmt.Sprintf("%d", pscConnectionID)
+					autoConnection.ConnectionType = attachmentDetails.ConnectionType
+					autoConnection.ServiceAttachment = attachmentDetails.ServiceAttachment
+					autoConnection.ProjectId = network.Project.ID
+					autoConnection.PscConnectionStatus = pb.PscConnectionStatus_PSC_CONNECTION_STATUS_ACTIVE
+					pscConnectionID++
+				}
+				if connections.GetPscConnection() != nil {
+					userConnection := connections.GetPscConnection()
+					network, err := s.parseNetworkName(userConnection.GetNetwork())
+					if err != nil {
+						return status.Errorf(codes.InvalidArgument, "unexpected format for network %q", userConnection.Network)
+					}
+					userConnection.ProjectId = network.Project.ID
+					userConnection.PscConnectionStatus = pb.PscConnectionStatus_PSC_CONNECTION_STATUS_ACTIVE
+
+					connectionAttachmentDetails := attachmentDetails
+					if strings.Contains(userConnection.ForwardingRule, "-1b") || strings.Contains(userConnection.ForwardingRule, "-2b") {
+						if len(obj.PscServiceAttachments) > 0 {
+							connectionAttachmentDetails = obj.PscServiceAttachments[0]
+						}
+					} else {
+						if len(obj.PscServiceAttachments) > 1 {
+							connectionAttachmentDetails = obj.PscServiceAttachments[1]
+						}
+					}
+
+					userConnection.ConnectionType = connectionAttachmentDetails.ConnectionType
+					userConnection.PscConnectionId = fmt.Sprintf("%d", pscConnectionID)
+					userConnection.ServiceAttachment = connectionAttachmentDetails.ServiceAttachment
+					pscConnectionID++
+				}
+			}
+		}
+	}
+
+	// Populate DiscoveryEndpoints and PscConnections from ClusterEndpoints if empty
+	if obj.DiscoveryEndpoints == nil {
+		for _, endpoint := range obj.ClusterEndpoints {
+			if len(endpoint.Connections) > 0 {
+				var network string
+				var address string
+				if endpoint.Connections[0].GetPscAutoConnection() != nil {
+					autoConnection := endpoint.Connections[0].GetPscAutoConnection()
+					network = autoConnection.Network
+					address = autoConnection.Address
+				} else if endpoint.Connections[0].GetPscConnection() != nil {
+					userConnection := endpoint.Connections[0].GetPscConnection()
+					network = userConnection.Network
+					address = userConnection.Address
+				}
+				if network != "" {
+					discoveryEndpoint := &pb.DiscoveryEndpoint{
+						Address: address,
+						Port:    6379,
+						PscConfig: &pb.PscConfig{
+							Network: network,
+						},
+					}
+					obj.DiscoveryEndpoints = append(obj.DiscoveryEndpoints, discoveryEndpoint)
+				}
+			}
+		}
+	}
+
+	if obj.PscConnections == nil {
+		for _, endpoint := range obj.ClusterEndpoints {
+			for _, connections := range endpoint.Connections {
+				if connections.GetPscAutoConnection() != nil {
+					autoConnection := connections.GetPscAutoConnection()
+					pscConnection := &pb.PscConnection{
+						Address:           autoConnection.Address,
+						ForwardingRule:    autoConnection.ForwardingRule,
+						Network:           autoConnection.Network,
+						ProjectId:         autoConnection.ProjectId,
+						PscConnectionId:   autoConnection.PscConnectionId,
+						ServiceAttachment: autoConnection.ServiceAttachment,
+					}
+					obj.PscConnections = append(obj.PscConnections, pscConnection)
+				} else if connections.GetPscConnection() != nil {
+					userConnection := connections.GetPscConnection()
+					pscConnection := &pb.PscConnection{
+						Address:           userConnection.Address,
+						ForwardingRule:    userConnection.ForwardingRule,
+						Network:           userConnection.Network,
+						ProjectId:         userConnection.ProjectId,
+						PscConnectionId:   userConnection.PscConnectionId,
+						ServiceAttachment: userConnection.ServiceAttachment,
+					}
+					obj.PscConnections = append(obj.PscConnections, pscConnection)
+				}
+			}
 		}
 	}
 
@@ -436,6 +583,8 @@ func (r *clusterServer) UpdateCluster(ctx context.Context, req *pb.UpdateCluster
 			obj.MaintenancePolicy = req.Cluster.MaintenancePolicy
 		case "crossClusterReplicationConfig":
 			obj.CrossClusterReplicationConfig = req.Cluster.CrossClusterReplicationConfig
+		case "clusterEndpoints", "cluster_endpoints":
+			obj.ClusterEndpoints = r.mergeClusterEndpoints(obj.ClusterEndpoints, req.Cluster.ClusterEndpoints)
 
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
@@ -516,6 +665,21 @@ func (r *clusterServer) DeleteCluster(ctx context.Context, req *pb.DeleteCluster
 		metadata.EndTime = timestamppb.Now()
 		return &emptypb.Empty{}, nil
 	})
+}
+
+func (r *clusterServer) mergeClusterEndpoints(current, updates []*pb.ClusterEndpoint) []*pb.ClusterEndpoint {
+	var results []*pb.ClusterEndpoint
+	for _, item := range current {
+		if item != nil && len(item.Connections) > 0 && item.Connections[0].GetPscAutoConnection() != nil {
+			results = append(results, item)
+		}
+	}
+	for _, item := range updates {
+		if item != nil && len(item.Connections) > 0 && item.Connections[0].GetPscConnection() != nil {
+			results = append(results, item)
+		}
+	}
+	return results
 }
 
 type clusterName struct {

@@ -1,0 +1,35 @@
+apiVersion: networkconnectivity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkConnectivityInternalRange
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: networkconnectivityinternalrange-firstsmallestfitting-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  allocationOptions:
+    allocationStrategy: FIRST_SMALLEST_FITTING
+  description: Updated description
+  location: global
+  networkRef:
+    name: ${networkID}
+  prefixLength: 24
+  projectRef:
+    external: ${projectId}
+  targetCIDRRange:
+  - 172.16.0.0/12
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-firstsmallestfitting-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"

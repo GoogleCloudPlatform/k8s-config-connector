@@ -1,0 +1,22 @@
+apiVersion: agentregistry.cnrm.cloud.google.com/v1alpha1
+kind: AgentRegistryBinding
+metadata:
+  name: agentregistrybinding-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: Updated Display Name
+  description: Updated Description
+  authProviderBinding:
+    authProviderRef:
+      external: projects/${projectId}/locations/us-central1/authProviders/dummy-provider
+    scopes:
+      - "openid"
+      - "email"
+      - "profile"
+    continueURI: "https://example.com/callback-updated"
+  source:
+    identifier: urn:agent:google:system:testagent
+  target:
+    identifier: urn:agent:google:system:testagent2

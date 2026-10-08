@@ -235,6 +235,7 @@ func ClusterSecondaryWorkerConfig_v1beta1_FromProto(mapCtx *direct.MapContext, i
 	out.MinCpuPlatform = direct.LazyPtr(in.GetMinCpuPlatform())
 	out.NumInstances = direct.LazyPtr(int64(in.GetNumInstances()))
 	out.Preemptibility = direct.LazyPtr(in.GetPreemptibility().String())
+	out.InstanceFlexibilityPolicy = InstanceFlexibilityPolicy_v1beta1_FromProto(mapCtx, in.GetInstanceFlexibilityPolicy())
 	return out
 }
 
@@ -256,6 +257,7 @@ func ClusterSecondaryWorkerConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 			out.Preemptibility = pb.InstanceGroupConfig_Preemptibility(val)
 		}
 	}
+	out.InstanceFlexibilityPolicy = InstanceFlexibilityPolicy_v1beta1_ToProto(mapCtx, in.InstanceFlexibilityPolicy)
 	return out
 }
 

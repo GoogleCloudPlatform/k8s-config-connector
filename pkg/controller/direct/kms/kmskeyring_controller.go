@@ -177,6 +177,8 @@ func (a *keyRingAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	}
 
 	if diffs.HasDiff() {
+		diffs.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, diffs)
 		return fmt.Errorf("KMSKeyRing is immutable and cannot be updated. Detected changes: %v", diffs.Fields)
 	}
 

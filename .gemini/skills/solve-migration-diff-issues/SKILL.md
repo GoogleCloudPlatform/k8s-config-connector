@@ -1,3 +1,8 @@
+---
+name: solve-migration-diff-issues
+description: Guides diagnosing, explaining, and fixing takeover diff issues when migrating a controller in KCC from Terraform/DCL to the Direct approach.
+---
+
 # Skill: Solve Migration Diff Issues for Direct Takeover
 
 This skill guides an automated agent through diagnosing, explaining, and fixing "takeover diff" issues when migrating a Kubernetes controller in KCC from Terraform/DCL to the Direct approach.
@@ -10,6 +15,8 @@ You MUST run the **4-Step Development Sequence** in exact sequential order (Step
 
 * **NEVER skip Step 1.** You must always run the migration test against real GCP first. This is required to exercise the actual GCP APIs, generate GCP project audit logs, and produce a baseline `_migration_diffs.json` from real GCP behavior. **Note that the automated agent has full access to a real GCP project in its environment (pre-configured inside the runtime container/sandbox via Application Default Credentials or environment variables) and is fully expected and required to run `./hack/record-gcp` against live GCP.**
 * **NEVER jump straight to Step 3 or Step 4.** Writing code or testing solely against MockGCP without first diagnosing on real GCP violates this workflow.
+* **WHENEVER A TEST CASE IS UPDATED, WE MUST RECORD REAL GCP LOGS AGAIN.** If you make any modifications to a test case configuration or manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or modify the controller's GCP request structures, you **MUST** run the test case against real GCP (`hack/record-gcp` or with `E2E_GCP_TARGET=real`) to regenerate the authentic logs baseline before comparing or committing any mock log changes. Do not attempt to manually edit the logs or bypass recording live traffic.
+* **Do NOT Re-Run Real GCP for Normalization or Iterative Adapter Logic Fixes**: Once the Step 1 baseline is recorded against real GCP, do not repeatedly re-record against live GCP while adjusting comparison logic, defaults, or normalizers. Run-to-run variations in HTTP calls should be handled via normalizers.
 
 ---
 
@@ -24,6 +31,21 @@ The migration test (`TestMigrationToDirect` in `tests/e2e/migration_test.go`) ex
 ---
 
 ## The 4-Step Development Sequence (How to Fix Issues)
+
+### Step 0: Remove from Ratcheting Exclusions (MANDATORY Make-up)
+The primary focus of this skill is diagnosing and fixing takeover diffs in `TestMigrationToDirect`.
+
+Removing the target resource from the ratcheting exclusion list in `tests/e2e/ratcheting.go` is ideally handled during the direct controller logic phase (Step 1.5 in the brownfield logic skill). If the resource has not yet been removed from `tests/e2e/ratcheting.go`, performing the removal here in Step 0 acts as a **make-up for a previous miss** from the controller logic phase.
+
+If you perform this make-up removal here, you **MUST** ensure that:
+1. The standard fixtures (`TestAllInSeries`) are validated and re-recorded against real GCP (using `./hack/record-gcp` to verify 0-write re-reconciliation), and
+2. The migration diff tests (`TestMigrationToDirect`) are successfully validated.
+
+To remove the resource from the exclusions:
+1. Open `tests/e2e/ratcheting.go`.
+2. Locate the function `ShouldTestRereconiliation`.
+3. Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
+4. If there is a `case` block for your target resource's `GroupKind`, remove that `case` line from the switch statement.
 
 ### Step 1: Diagnose the Takeover Diff (MANDATORY - RUN ON REAL GCP FIRST)
 Before writing any code or making any changes, you must diagnose the behavior against real GCP and document it in a separate commit.

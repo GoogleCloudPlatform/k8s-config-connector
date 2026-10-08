@@ -19,6 +19,16 @@ Because both global and local settings use the same mode, they combine **additiv
 * **In Exclusive Mode**: A resource is excluded (ignored) if it is listed in the `ConfigConnector` **OR** the `ConfigConnectorContext`.
 * **In Inclusive Mode**: A resource is included (reconciled) if it is listed in the `ConfigConnector` **OR** the `ConfigConnectorContext`.
 
+### Applying Changes (Automatic Rolling Restart)
+
+Selective controller registration and initialization take place when the controller manager pod starts up. Whenever `resourceSettings` is modified, the Config Connector Operator automatically computes configuration hashes (`cnrm.cloud.google.com/cc-config-hash` and `cnrm.cloud.google.com/ccc-config-hash`) and triggers a graceful `RollingUpdate` of the affected controller manager `StatefulSet`s:
+
+* **Global changes (`ConfigConnector` object)**:
+  * In **cluster mode**: Automatically rolls out the central `cnrm-controller-manager` `StatefulSet` in the `cnrm-system` namespace.
+  * In **namespaced mode**: Automatically updates `cnrm.cloud.google.com/cc-config-hash` and rolls out **all** per-namespace `cnrm-controller-manager` `StatefulSet`s across all active namespaces.
+* **Namespace changes (`ConfigConnectorContext` object)**:
+  * Automatically updates `cnrm.cloud.google.com/ccc-config-hash` and rolls out **only** the `cnrm-controller-manager` `StatefulSet` managing that specific namespace.
+
 ## Configuration Options
 
 To configure this feature, manipulate the `ResourceSettings` block in your `ConfigConnector` and `ConfigConnectorContext` definitions.
