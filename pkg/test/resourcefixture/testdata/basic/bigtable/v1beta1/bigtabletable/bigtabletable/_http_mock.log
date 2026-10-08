@@ -292,9 +292,59 @@ OK
 {
   "columnFamilies": {
     "family1": {
+      "gcRule": {},
       "valueType": {
         "aggregateType": {
           "inputType": {
+            "int64Type": {
+              "encoding": {
+                "bigEndianBytes": {}
+              }
+            }
+          },
+          "stateType": {
+            "int64Type": {
+              "encoding": {
+                "bigEndianBytes": {}
+              }
+            }
+          },
+          "sum": {}
+        }
+      }
+    },
+    "family2": {
+      "gcRule": {}
+    }
+  },
+  "granularity": "MILLIS",
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}",
+  "view": "SCHEMA_VIEW"
+}
+
+OK
+
+{
+  "columnFamilies": {
+    "family1": {
+      "valueType": {
+        "aggregateType": {
+          "inputType": {
+            "int64Type": {
+              "encoding": {
+                "bigEndianBytes": {}
+              }
+            }
+          },
+          "stateType": {
             "int64Type": {
               "encoding": {
                 "bigEndianBytes": {}
@@ -334,33 +384,7 @@ OK
               }
             }
           },
-          "sum": {}
-        }
-      }
-    },
-    "family2": {}
-  },
-  "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
-
-{
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}",
-  "view": "SCHEMA_VIEW"
-}
-
-OK
-
-{
-  "columnFamilies": {
-    "family1": {
-      "valueType": {
-        "aggregateType": {
-          "inputType": {
+          "stateType": {
             "int64Type": {
               "encoding": {
                 "bigEndianBytes": {}
@@ -400,6 +424,13 @@ OK
               }
             }
           },
+          "stateType": {
+            "int64Type": {
+              "encoding": {
+                "bigEndianBytes": {}
+              }
+            }
+          },
           "sum": {}
         }
       }
@@ -427,6 +458,13 @@ OK
       "valueType": {
         "aggregateType": {
           "inputType": {
+            "int64Type": {
+              "encoding": {
+                "bigEndianBytes": {}
+              }
+            }
+          },
+          "stateType": {
             "int64Type": {
               "encoding": {
                 "bigEndianBytes": {}
@@ -484,6 +522,13 @@ OK
               }
             }
           },
+          "stateType": {
+            "int64Type": {
+              "encoding": {
+                "bigEndianBytes": {}
+              }
+            }
+          },
           "sum": {}
         }
       }
@@ -499,7 +544,14 @@ OK
               }
             }
           },
-          "max": {}
+          "max": {},
+          "stateType": {
+            "int64Type": {
+              "encoding": {
+                "bigEndianBytes": {}
+              }
+            }
+          }
         }
       }
     }
@@ -537,7 +589,14 @@ OK
               }
             }
           },
-          "max": {}
+          "max": {},
+          "stateType": {
+            "int64Type": {
+              "encoding": {
+                "bigEndianBytes": {}
+              }
+            }
+          }
         }
       }
     }
@@ -564,6 +623,25 @@ GRPC /google.bigtable.admin.v2.BigtableTableAdmin/UpdateTable
 OK
 
 {
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateTableMetadata",
+    "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}",
+    "startTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}/locations/us-west1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}/locations/us-west1-a/operations/${operationID}"
+}
+
+OK
+
+{
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateTableMetadata",
@@ -571,7 +649,7 @@ OK
     "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}",
     "startTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}/locations/us-east1-c/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}/locations/us-west1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Table",
     "automatedBackupPolicy": {
@@ -579,9 +657,7 @@ OK
       "retentionPeriod": "259200s"
     },
     "columnFamilies": {
-      "family2": {
-        "gcRule": {}
-      },
+      "family2": {},
       "family3": {
         "valueType": {
           "aggregateType": {
@@ -592,7 +668,14 @@ OK
                 }
               }
             },
-            "max": {}
+            "max": {},
+            "stateType": {
+              "int64Type": {
+                "encoding": {
+                  "bigEndianBytes": {}
+                }
+              }
+            }
           }
         }
       }
@@ -630,7 +713,14 @@ OK
               }
             }
           },
-          "max": {}
+          "max": {},
+          "stateType": {
+            "int64Type": {
+              "encoding": {
+                "bigEndianBytes": {}
+              }
+            }
+          }
         }
       }
     }
@@ -667,7 +757,14 @@ OK
               }
             }
           },
-          "max": {}
+          "max": {},
+          "stateType": {
+            "int64Type": {
+              "encoding": {
+                "bigEndianBytes": {}
+              }
+            }
+          }
         }
       }
     }
