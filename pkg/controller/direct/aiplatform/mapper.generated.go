@@ -412,6 +412,24 @@ func Blob_ToProto(mapCtx *direct.MapContext, in *krm.Blob) *pb.Blob {
 	out.Data = in.Data
 	return out
 }
+func BlobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Blob) *krm.BlobObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BlobObservedState{}
+	out.MimeType = direct.LazyPtr(in.GetMimeType())
+	out.Data = in.GetData()
+	return out
+}
+func BlobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BlobObservedState) *pb.Blob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Blob{}
+	out.MimeType = direct.ValueOf(in.MimeType)
+	out.Data = in.Data
+	return out
+}
 func BlurBaselineConfig_FromProto(mapCtx *direct.MapContext, in *pb.BlurBaselineConfig) *krm.BlurBaselineConfig {
 	if in == nil {
 		return nil
@@ -446,6 +464,24 @@ func CodeExecutionResult_ToProto(mapCtx *direct.MapContext, in *krm.CodeExecutio
 	out.Output = direct.ValueOf(in.Output)
 	return out
 }
+func CodeExecutionResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CodeExecutionResult) *krm.CodeExecutionResultObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CodeExecutionResultObservedState{}
+	out.Outcome = direct.Enum_FromProto(mapCtx, in.GetOutcome())
+	out.Output = direct.LazyPtr(in.GetOutput())
+	return out
+}
+func CodeExecutionResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CodeExecutionResultObservedState) *pb.CodeExecutionResult {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CodeExecutionResult{}
+	out.Outcome = direct.Enum_ToProto[pb.CodeExecutionResult_Outcome](mapCtx, in.Outcome)
+	out.Output = direct.ValueOf(in.Output)
+	return out
+}
 func Content_FromProto(mapCtx *direct.MapContext, in *pb.Content) *krm.Content {
 	if in == nil {
 		return nil
@@ -462,6 +498,24 @@ func Content_ToProto(mapCtx *direct.MapContext, in *krm.Content) *pb.Content {
 	out := &pb.Content{}
 	out.Role = direct.ValueOf(in.Role)
 	out.Parts = direct.Slice_ToProto(mapCtx, in.Parts, Part_ToProto)
+	return out
+}
+func ContentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Content) *krm.ContentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContentObservedState{}
+	out.Role = direct.LazyPtr(in.GetRole())
+	out.Parts = direct.Slice_FromProto(mapCtx, in.Parts, PartObservedState_FromProto)
+	return out
+}
+func ContentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ContentObservedState) *pb.Content {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Content{}
+	out.Role = direct.ValueOf(in.Role)
+	out.Parts = direct.Slice_ToProto(mapCtx, in.Parts, PartObservedState_ToProto)
 	return out
 }
 
@@ -712,6 +766,24 @@ func ExecutableCode_ToProto(mapCtx *direct.MapContext, in *krm.ExecutableCode) *
 	out.Code = direct.ValueOf(in.Code)
 	return out
 }
+func ExecutableCodeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExecutableCode) *krm.ExecutableCodeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExecutableCodeObservedState{}
+	out.Language = direct.Enum_FromProto(mapCtx, in.GetLanguage())
+	out.Code = direct.LazyPtr(in.GetCode())
+	return out
+}
+func ExecutableCodeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ExecutableCodeObservedState) *pb.ExecutableCode {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExecutableCode{}
+	out.Language = direct.Enum_ToProto[pb.ExecutableCode_Language](mapCtx, in.Language)
+	out.Code = direct.ValueOf(in.Code)
+	return out
+}
 
 /* found existing non-generated mapping function "ExecutionObservedState_FromProto", skipping
 func ExecutionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Execution) *krm.ExecutionObservedState {
@@ -930,6 +1002,24 @@ func FileData_ToProto(mapCtx *direct.MapContext, in *krm.FileData) *pb.FileData 
 	out.FileUri = direct.ValueOf(in.FileURI)
 	return out
 }
+func FileDataObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FileData) *krm.FileDataObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FileDataObservedState{}
+	out.MimeType = direct.LazyPtr(in.GetMimeType())
+	out.FileURI = direct.LazyPtr(in.GetFileUri())
+	return out
+}
+func FileDataObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FileDataObservedState) *pb.FileData {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FileData{}
+	out.MimeType = direct.ValueOf(in.MimeType)
+	out.FileUri = direct.ValueOf(in.FileURI)
+	return out
+}
 func FilterSplit_FromProto(mapCtx *direct.MapContext, in *pb.FilterSplit) *krm.FilterSplit {
 	if in == nil {
 		return nil
@@ -998,6 +1088,26 @@ found existing non-generated mapping function "FunctionCall_ToProto", skipping
 		return out
 	}
 */
+func FunctionCallObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FunctionCall) *krm.FunctionCallObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FunctionCallObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	if v := direct.Struct_FromProto(mapCtx, in.GetArgs()); v != nil {
+		out.Args = *v
+	}
+	return out
+}
+func FunctionCallObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FunctionCallObservedState) *pb.FunctionCall {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FunctionCall{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Args = direct.Struct_ToProto(mapCtx, &in.Args)
+	return out
+}
 func FunctionCallingConfig_FromProto(mapCtx *direct.MapContext, in *pb.FunctionCallingConfig) *krm.FunctionCallingConfig {
 	if in == nil {
 		return nil
@@ -1070,6 +1180,26 @@ found existing non-generated mapping function "FunctionResponse_ToProto", skippi
 		return out
 	}
 */
+func FunctionResponseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FunctionResponse) *krm.FunctionResponseObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FunctionResponseObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	if v := direct.Struct_FromProto(mapCtx, in.GetResponse()); v != nil {
+		out.Response = *v
+	}
+	return out
+}
+func FunctionResponseObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FunctionResponseObservedState) *pb.FunctionResponse {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FunctionResponse{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Response = direct.Struct_ToProto(mapCtx, &in.Response)
+	return out
+}
 func GCSDestination_FromProto(mapCtx *direct.MapContext, in *pb.GcsDestination) *krm.GCSDestination {
 	if in == nil {
 		return nil
@@ -1091,7 +1221,7 @@ func GCSSource_FromProto(mapCtx *direct.MapContext, in *pb.GcsSource) *krm.GCSSo
 		return nil
 	}
 	out := &krm.GCSSource{}
-	out.Uris = in.Uris
+	out.URIs = in.Uris
 	return out
 }
 func GCSSource_ToProto(mapCtx *direct.MapContext, in *krm.GCSSource) *pb.GcsSource {
@@ -1099,7 +1229,7 @@ func GCSSource_ToProto(mapCtx *direct.MapContext, in *krm.GCSSource) *pb.GcsSour
 		return nil
 	}
 	out := &pb.GcsSource{}
-	out.Uris = in.Uris
+	out.Uris = in.URIs
 	return out
 }
 func GenieSource_FromProto(mapCtx *direct.MapContext, in *pb.GenieSource) *krm.GenieSource {
@@ -1787,6 +1917,62 @@ func Part_ToProto(mapCtx *direct.MapContext, in *krm.Part) *pb.Part {
 	return out
 }
 func Part_Text_ToProto(mapCtx *direct.MapContext, in *string) *pb.Part_Text {
+	if in == nil {
+		return nil
+	}
+	return &pb.Part_Text{Text: *in}
+}
+func PartObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Part) *krm.PartObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PartObservedState{}
+	out.Text = direct.LazyPtr(in.GetText())
+	out.InlineData = BlobObservedState_FromProto(mapCtx, in.GetInlineData())
+	out.FileData = FileDataObservedState_FromProto(mapCtx, in.GetFileData())
+	out.FunctionCall = FunctionCallObservedState_FromProto(mapCtx, in.GetFunctionCall())
+	out.FunctionResponse = FunctionResponseObservedState_FromProto(mapCtx, in.GetFunctionResponse())
+	out.ExecutableCode = ExecutableCodeObservedState_FromProto(mapCtx, in.GetExecutableCode())
+	out.CodeExecutionResult = CodeExecutionResultObservedState_FromProto(mapCtx, in.GetCodeExecutionResult())
+	out.Thought = direct.LazyPtr(in.GetThought())
+	out.ThoughtSignature = in.GetThoughtSignature()
+	out.VideoMetadata = VideoMetadata_FromProto(mapCtx, in.GetVideoMetadata())
+	return out
+}
+func PartObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PartObservedState) *pb.Part {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Part{}
+	if oneof := PartObservedState_Text_ToProto(mapCtx, in.Text); oneof != nil {
+		out.Data = oneof
+	}
+	if oneof := BlobObservedState_ToProto(mapCtx, in.InlineData); oneof != nil {
+		out.Data = &pb.Part_InlineData{InlineData: oneof}
+	}
+	if oneof := FileDataObservedState_ToProto(mapCtx, in.FileData); oneof != nil {
+		out.Data = &pb.Part_FileData{FileData: oneof}
+	}
+	if oneof := FunctionCallObservedState_ToProto(mapCtx, in.FunctionCall); oneof != nil {
+		out.Data = &pb.Part_FunctionCall{FunctionCall: oneof}
+	}
+	if oneof := FunctionResponseObservedState_ToProto(mapCtx, in.FunctionResponse); oneof != nil {
+		out.Data = &pb.Part_FunctionResponse{FunctionResponse: oneof}
+	}
+	if oneof := ExecutableCodeObservedState_ToProto(mapCtx, in.ExecutableCode); oneof != nil {
+		out.Data = &pb.Part_ExecutableCode{ExecutableCode: oneof}
+	}
+	if oneof := CodeExecutionResultObservedState_ToProto(mapCtx, in.CodeExecutionResult); oneof != nil {
+		out.Data = &pb.Part_CodeExecutionResult{CodeExecutionResult: oneof}
+	}
+	out.Thought = direct.ValueOf(in.Thought)
+	out.ThoughtSignature = in.ThoughtSignature
+	if oneof := VideoMetadata_ToProto(mapCtx, in.VideoMetadata); oneof != nil {
+		out.Metadata = &pb.Part_VideoMetadata{VideoMetadata: oneof}
+	}
+	return out
+}
+func PartObservedState_Text_ToProto(mapCtx *direct.MapContext, in *string) *pb.Part_Text {
 	if in == nil {
 		return nil
 	}
@@ -2553,8 +2739,7 @@ func ResourceRuntimeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Re
 		return nil
 	}
 	out := &krm.ResourceRuntimeObservedState{}
-	// MISSING: AccessUris
-	// (near miss): "AccessUris" vs "AccessURIs"
+	out.AccessURIs = in.AccessUris
 	return out
 }
 func ResourceRuntimeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResourceRuntimeObservedState) *pb.ResourceRuntime {
@@ -2562,8 +2747,7 @@ func ResourceRuntimeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Res
 		return nil
 	}
 	out := &pb.ResourceRuntime{}
-	// MISSING: AccessUris
-	// (near miss): "AccessUris" vs "AccessURIs"
+	out.AccessUris = in.AccessURIs
 	return out
 }
 func ResourceRuntimeSpec_FromProto(mapCtx *direct.MapContext, in *pb.ResourceRuntimeSpec) *krm.ResourceRuntimeSpec {
@@ -3250,7 +3434,7 @@ func SupervisedTuningDataStatsObservedState_FromProto(mapCtx *direct.MapContext,
 	out.UserInputTokenDistribution = SupervisedTuningDatasetDistributionObservedState_FromProto(mapCtx, in.GetUserInputTokenDistribution())
 	out.UserOutputTokenDistribution = SupervisedTuningDatasetDistributionObservedState_FromProto(mapCtx, in.GetUserOutputTokenDistribution())
 	out.UserMessagePerExampleDistribution = SupervisedTuningDatasetDistributionObservedState_FromProto(mapCtx, in.GetUserMessagePerExampleDistribution())
-	out.UserDatasetExamples = direct.Slice_FromProto(mapCtx, in.UserDatasetExamples, Content_FromProto)
+	out.UserDatasetExamples = direct.Slice_FromProto(mapCtx, in.UserDatasetExamples, ContentObservedState_FromProto)
 	out.TotalTruncatedExampleCount = direct.LazyPtr(in.GetTotalTruncatedExampleCount())
 	out.TruncatedExampleIndices = in.TruncatedExampleIndices
 	out.DroppedExampleReasons = in.DroppedExampleReasons
@@ -3269,7 +3453,7 @@ func SupervisedTuningDataStatsObservedState_ToProto(mapCtx *direct.MapContext, i
 	out.UserInputTokenDistribution = SupervisedTuningDatasetDistributionObservedState_ToProto(mapCtx, in.UserInputTokenDistribution)
 	out.UserOutputTokenDistribution = SupervisedTuningDatasetDistributionObservedState_ToProto(mapCtx, in.UserOutputTokenDistribution)
 	out.UserMessagePerExampleDistribution = SupervisedTuningDatasetDistributionObservedState_ToProto(mapCtx, in.UserMessagePerExampleDistribution)
-	out.UserDatasetExamples = direct.Slice_ToProto(mapCtx, in.UserDatasetExamples, Content_ToProto)
+	out.UserDatasetExamples = direct.Slice_ToProto(mapCtx, in.UserDatasetExamples, ContentObservedState_ToProto)
 	out.TotalTruncatedExampleCount = direct.ValueOf(in.TotalTruncatedExampleCount)
 	out.TruncatedExampleIndices = in.TruncatedExampleIndices
 	out.DroppedExampleReasons = in.DroppedExampleReasons
@@ -4025,7 +4209,7 @@ func VertexRagStore_RagResource_FromProto(mapCtx *direct.MapContext, in *pb.Vert
 	}
 	out := &krm.VertexRagStore_RagResource{}
 	out.RagCorpus = direct.LazyPtr(in.GetRagCorpus())
-	out.RagFileIds = in.RagFileIds
+	out.RagFileIDs = in.RagFileIds
 	return out
 }
 func VertexRagStore_RagResource_ToProto(mapCtx *direct.MapContext, in *krm.VertexRagStore_RagResource) *pb.VertexRagStore_RagResource {
@@ -4034,7 +4218,7 @@ func VertexRagStore_RagResource_ToProto(mapCtx *direct.MapContext, in *krm.Verte
 	}
 	out := &pb.VertexRagStore_RagResource{}
 	out.RagCorpus = direct.ValueOf(in.RagCorpus)
-	out.RagFileIds = in.RagFileIds
+	out.RagFileIds = in.RagFileIDs
 	return out
 }
 func VideoMetadata_FromProto(mapCtx *direct.MapContext, in *pb.VideoMetadata) *krm.VideoMetadata {

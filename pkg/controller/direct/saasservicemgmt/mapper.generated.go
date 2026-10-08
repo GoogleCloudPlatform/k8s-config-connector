@@ -29,16 +29,16 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func Aggregate_FromProto(mapCtx *direct.MapContext, in *pb.Aggregate) *krm.Aggregate {
+func AggregateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Aggregate) *krm.AggregateObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Aggregate{}
+	out := &krm.AggregateObservedState{}
 	out.Group = direct.LazyPtr(in.GetGroup())
 	out.Count = direct.LazyPtr(in.GetCount())
 	return out
 }
-func Aggregate_ToProto(mapCtx *direct.MapContext, in *krm.Aggregate) *pb.Aggregate {
+func AggregateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AggregateObservedState) *pb.Aggregate {
 	if in == nil {
 		return nil
 	}
@@ -144,7 +144,7 @@ func RolloutStatsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Rollo
 		return nil
 	}
 	out := &krm.RolloutStatsObservedState{}
-	out.OperationsByState = direct.Slice_FromProto(mapCtx, in.OperationsByState, Aggregate_FromProto)
+	out.OperationsByState = direct.Slice_FromProto(mapCtx, in.OperationsByState, AggregateObservedState_FromProto)
 	return out
 }
 func RolloutStatsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RolloutStatsObservedState) *pb.RolloutStats {
@@ -152,7 +152,7 @@ func RolloutStatsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Rollou
 		return nil
 	}
 	out := &pb.RolloutStats{}
-	out.OperationsByState = direct.Slice_ToProto(mapCtx, in.OperationsByState, Aggregate_ToProto)
+	out.OperationsByState = direct.Slice_ToProto(mapCtx, in.OperationsByState, AggregateObservedState_ToProto)
 	return out
 }
 func SaaSServiceMgmtRolloutObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Rollout) *krm.SaaSServiceMgmtRolloutObservedState {
@@ -271,6 +271,94 @@ func SaaSServiceMgmtTenantSpec_ToProto(mapCtx *direct.MapContext, in *krm.SaaSSe
 	out.Saas = direct.ValueOf(in.Saas)
 	out.Labels = in.Labels
 	out.Annotations = in.Annotations
+	return out
+}
+func SaaSServiceMgmtUnitObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Unit) *krm.SaaSServiceMgmtUnitObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SaaSServiceMgmtUnitObservedState{}
+	// MISSING: Name
+	out.Release = direct.LazyPtr(in.GetRelease())
+	out.OngoingOperations = in.OngoingOperations
+	out.PendingOperations = in.PendingOperations
+	out.ScheduledOperations = in.ScheduledOperations
+	out.Dependents = direct.Slice_FromProto(mapCtx, in.Dependents, UnitDependencyObservedState_FromProto)
+	out.Dependencies = direct.Slice_FromProto(mapCtx, in.Dependencies, UnitDependencyObservedState_FromProto)
+	out.InputVariables = direct.Slice_FromProto(mapCtx, in.InputVariables, UnitVariable_FromProto)
+	out.OutputVariables = direct.Slice_FromProto(mapCtx, in.OutputVariables, UnitVariable_FromProto)
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Conditions = direct.Slice_FromProto(mapCtx, in.Conditions, UnitCondition_FromProto)
+	out.SystemManagedState = direct.Enum_FromProto(mapCtx, in.GetSystemManagedState())
+	out.SystemCleanupAt = direct.StringTimestamp_FromProto(mapCtx, in.GetSystemCleanupAt())
+	// MISSING: Labels
+	// MISSING: Annotations
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func SaaSServiceMgmtUnitObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtUnitObservedState) *pb.Unit {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Unit{}
+	// MISSING: Name
+	out.Release = direct.ValueOf(in.Release)
+	out.OngoingOperations = in.OngoingOperations
+	out.PendingOperations = in.PendingOperations
+	out.ScheduledOperations = in.ScheduledOperations
+	out.Dependents = direct.Slice_ToProto(mapCtx, in.Dependents, UnitDependencyObservedState_ToProto)
+	out.Dependencies = direct.Slice_ToProto(mapCtx, in.Dependencies, UnitDependencyObservedState_ToProto)
+	out.InputVariables = direct.Slice_ToProto(mapCtx, in.InputVariables, UnitVariable_ToProto)
+	out.OutputVariables = direct.Slice_ToProto(mapCtx, in.OutputVariables, UnitVariable_ToProto)
+	out.State = direct.Enum_ToProto[pb.Unit_UnitState](mapCtx, in.State)
+	out.Conditions = direct.Slice_ToProto(mapCtx, in.Conditions, UnitCondition_ToProto)
+	out.SystemManagedState = direct.Enum_ToProto[pb.Unit_SystemManagedState](mapCtx, in.SystemManagedState)
+	out.SystemCleanupAt = direct.StringTimestamp_ToProto(mapCtx, in.SystemCleanupAt)
+	// MISSING: Labels
+	// MISSING: Annotations
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func SaaSServiceMgmtUnitSpec_FromProto(mapCtx *direct.MapContext, in *pb.Unit) *krm.SaaSServiceMgmtUnitSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SaaSServiceMgmtUnitSpec{}
+	// MISSING: Name
+	if in.GetUnitKind() != "" {
+		out.UnitKindRef = &krm.SaaSServiceMgmtUnitKindRef{External: in.GetUnitKind()}
+	}
+	if in.GetTenant() != "" {
+		out.TenantRef = &krm.SaaSServiceMgmtTenantRef{External: in.GetTenant()}
+	}
+	out.Maintenance = UnitMaintenanceSettings_FromProto(mapCtx, in.GetMaintenance())
+	out.ManagementMode = direct.Enum_FromProto(mapCtx, in.GetManagementMode())
+	// MISSING: Labels
+	// MISSING: Annotations
+	return out
+}
+func SaaSServiceMgmtUnitSpec_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtUnitSpec) *pb.Unit {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Unit{}
+	// MISSING: Name
+	if in.UnitKindRef != nil {
+		out.UnitKind = in.UnitKindRef.External
+	}
+	if in.TenantRef != nil {
+		out.Tenant = in.TenantRef.External
+	}
+	out.Maintenance = UnitMaintenanceSettings_ToProto(mapCtx, in.Maintenance)
+	out.ManagementMode = direct.Enum_ToProto[pb.Unit_ManagementMode](mapCtx, in.ManagementMode)
+	// MISSING: Labels
+	// MISSING: Annotations
 	return out
 }
 func SaasServiceMgmtReleaseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Release) *krm.SaasServiceMgmtReleaseObservedState {

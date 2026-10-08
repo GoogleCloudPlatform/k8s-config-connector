@@ -224,6 +224,9 @@ spec:
                                 unset, a default value of 0 will be used.
                               type: number
                           type: object
+                      required:
+                      - goal
+                      - metricID
                       type: object
                     type: array
                   observationNoise:
@@ -252,6 +255,8 @@ spec:
                               items:
                                 type: string
                               type: array
+                          required:
+                          - values
                           type: object
                         conditionalParameterSpecs:
                           description: |-
@@ -274,6 +279,8 @@ spec:
                                     items:
                                       type: string
                                     type: array
+                                required:
+                                - values
                                 type: object
                               parentDiscreteValues:
                                 description: The spec for matching values from a parent
@@ -288,6 +295,8 @@ spec:
                                     items:
                                       type: number
                                     type: array
+                                required:
+                                - values
                                 type: object
                               parentIntValues:
                                 description: The spec for matching values from a parent
@@ -301,6 +310,8 @@ spec:
                                       format: int64
                                       type: integer
                                     type: array
+                                required:
+                                - values
                                 type: object
                             type: object
                           type: array
@@ -326,6 +337,8 @@ spec:
                               items:
                                 type: number
                               type: array
+                          required:
+                          - values
                           type: object
                         doubleValueSpec:
                           description: The value spec for a 'DOUBLE' parameter.
@@ -347,6 +360,9 @@ spec:
                               description: Required. Inclusive minimum value of the
                                 parameter.
                               type: number
+                          required:
+                          - maxValue
+                          - minValue
                           type: object
                         integerValueSpec:
                           description: The value spec for an 'INTEGER' parameter.
@@ -371,6 +387,9 @@ spec:
                                 parameter.
                               format: int64
                               type: integer
+                          required:
+                          - maxValue
+                          - minValue
                           type: object
                         parameterID:
                           description: Required. The ID of the parameter. Must not
@@ -380,6 +399,8 @@ spec:
                           description: How the parameter should be scaled. Leave unset
                             for `CATEGORICAL` parameters.
                           type: string
+                      required:
+                      - parameterID
                       type: object
                     type: array
                   studyStoppingConfig:
@@ -479,6 +500,9 @@ spec:
                            (Please see Study.State documentation for the source of truth).
                         type: boolean
                     type: object
+                required:
+                - metrics
+                - parameters
                 type: object
             required:
             - displayName

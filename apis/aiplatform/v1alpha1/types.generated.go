@@ -113,6 +113,7 @@ type BigQueryDestination struct {
 	//  `bq://projectId` or `bq://projectId.bqDatasetId` or
 	//  `bq://projectId.bqDatasetId.bqTableId`.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.BigQueryDestination.output_uri
+	// +required
 	OutputURI *string `json:"outputURI,omitempty"`
 }
 
@@ -120,10 +121,12 @@ type BigQueryDestination struct {
 type Blob struct {
 	// Required. The IANA standard MIME type of the source data.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Blob.mime_type
+	// +required
 	MimeType *string `json:"mimeType,omitempty"`
 
 	// Required. Raw bytes.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Blob.data
+	// +required
 	Data []byte `json:"data,omitempty"`
 }
 
@@ -181,6 +184,7 @@ type Checkpoint struct {
 type CodeExecutionResult struct {
 	// Required. Outcome of the code execution.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.CodeExecutionResult.outcome
+	// +required
 	Outcome *string `json:"outcome,omitempty"`
 
 	// Optional. Contains stdout when code execution is successful, stderr or
@@ -201,6 +205,7 @@ type Content struct {
 	// Required. Ordered `Parts` that constitute a single message. Parts may have
 	//  different IANA MIME types.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Content.parts
+	// +required
 	Parts []Part `json:"parts,omitempty"`
 }
 
@@ -252,6 +257,7 @@ type EnterpriseWebSearch struct {
 type EnvVar struct {
 	// Required. Name of the environment variable. Must be a valid C identifier.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.EnvVar.name
+	// +required
 	Name *string `json:"name,omitempty"`
 
 	// Required. Variables that reference a $(VAR_NAME) are expanded
@@ -262,6 +268,7 @@ type EnvVar struct {
 	//  references will never be expanded, regardless of whether the variable
 	//  exists or not.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.EnvVar.value
+	// +required
 	Value *string `json:"value,omitempty"`
 }
 
@@ -304,10 +311,12 @@ type Examples_ExampleGCSSource struct {
 type ExecutableCode struct {
 	// Required. Programming language of the `code`.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ExecutableCode.language
+	// +required
 	Language *string `json:"language,omitempty"`
 
 	// Required. The code to be executed.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ExecutableCode.code
+	// +required
 	Code *string `json:"code,omitempty"`
 }
 
@@ -522,6 +531,7 @@ type ExplanationMetadata_OutputMetadata struct {
 type ExplanationSpec struct {
 	// Required. Parameters that configure explaining of the Model's predictions.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ExplanationSpec.parameters
+	// +required
 	Parameters *ExplanationParameters `json:"parameters,omitempty"`
 
 	// Optional. Metadata describing the Model's input and output for explanation.
@@ -557,10 +567,12 @@ type FeatureNoiseSigma_NoiseSigmaForFeature struct {
 type FileData struct {
 	// Required. The IANA standard MIME type of the source data.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FileData.mime_type
+	// +required
 	MimeType *string `json:"mimeType,omitempty"`
 
 	// Required. URI.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FileData.file_uri
+	// +required
 	FileURI *string `json:"fileURI,omitempty"`
 }
 
@@ -574,6 +586,7 @@ type FilterSplit struct {
 	//  FilterSplit filters, then it is assigned to the first set that applies to
 	//  it in the training, validation, test order.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FilterSplit.training_filter
+	// +required
 	TrainingFilter *string `json:"trainingFilter,omitempty"`
 
 	// Required. A filter on DataItems of the Dataset. DataItems that match
@@ -584,6 +597,7 @@ type FilterSplit struct {
 	//  FilterSplit filters, then it is assigned to the first set that applies to
 	//  it in the training, validation, test order.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FilterSplit.validation_filter
+	// +required
 	ValidationFilter *string `json:"validationFilter,omitempty"`
 
 	// Required. A filter on DataItems of the Dataset. DataItems that match
@@ -594,6 +608,7 @@ type FilterSplit struct {
 	//  FilterSplit filters, then it is assigned to the first set that applies to
 	//  it in the training, validation, test order.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FilterSplit.test_filter
+	// +required
 	TestFilter *string `json:"testFilter,omitempty"`
 }
 
@@ -617,6 +632,7 @@ type FunctionCall struct {
 	// Required. The name of the function to call.
 	//  Matches [FunctionDeclaration.name].
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionCall.name
+	// +required
 	Name *string `json:"name,omitempty"`
 
 	// Optional. Required. The function parameters and values in JSON object
@@ -645,6 +661,7 @@ type FunctionDeclaration struct {
 	//  Must be a-z, A-Z, 0-9, or contain underscores, dots and dashes, with a
 	//  maximum length of 64.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionDeclaration.name
+	// +required
 	Name *string `json:"name,omitempty"`
 
 	// Optional. Description and purpose of the function.
@@ -709,6 +726,7 @@ type FunctionResponse struct {
 	// Required. The name of the function to call.
 	//  Matches [FunctionDeclaration.name] and [FunctionCall.name].
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionResponse.name
+	// +required
 	Name *string `json:"name,omitempty"`
 
 	// Required. The function response in JSON object format.
@@ -716,6 +734,7 @@ type FunctionResponse struct {
 	//  error details (if any). If "output" and "error" keys are not specified,
 	//  then whole "response" is treated as function output.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionResponse.response
+	// +required
 	Response apiextensionsv1.JSON `json:"response,omitempty"`
 }
 
@@ -726,6 +745,7 @@ type GCSDestination struct {
 	//  '/', a '/' will be automatically appended. The directory is created if it
 	//  doesn't exist.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.GcsDestination.output_uri_prefix
+	// +required
 	OutputURIPrefix *string `json:"outputURIPrefix,omitempty"`
 }
 
@@ -735,13 +755,15 @@ type GCSSource struct {
 	//  wildcards. For more information on wildcards, see
 	//  https://cloud.google.com/storage/docs/wildcards.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.GcsSource.uris
-	Uris []string `json:"uris,omitempty"`
+	// +required
+	URIs []string `json:"uris,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.GenieSource
 type GenieSource struct {
 	// Required. The public base model URI.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.GenieSource.base_model_uri
+	// +required
 	BaseModelURI *string `json:"baseModelURI,omitempty"`
 }
 
@@ -837,6 +859,7 @@ type InputDataConfig struct {
 	//  For tabular Datasets, all their data is exported to training, to pick
 	//  and choose from.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.InputDataConfig.dataset_id
+	// +required
 	DatasetID *string `json:"datasetID,omitempty"`
 
 	// Applicable only to Datasets that have DataItems and Annotations.
@@ -913,6 +936,7 @@ type IntegratedGradientsAttribution struct {
 	//
 	//  Valid range of its value is [1, 100], inclusively.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.IntegratedGradientsAttribution.step_count
+	// +required
 	StepCount *int32 `json:"stepCount,omitempty"`
 
 	// Config for SmoothGrad approximation of gradients.
@@ -1048,6 +1072,7 @@ type ModelContainerSpec struct {
 	//  prediction](https://cloud.google.com/vertex-ai/docs/predictions/pre-built-containers)
 	//  in this field.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ModelContainerSpec.image_uri
+	// +required
 	ImageURI *string `json:"imageURI,omitempty"`
 
 	// Immutable. Specifies the command that runs when the container starts. This
@@ -1297,6 +1322,7 @@ type ModelContainerSpec struct {
 type ModelGardenSource struct {
 	// Required. The model garden source model resource name.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ModelGardenSource.public_model_name
+	// +required
 	PublicModelName *string `json:"publicModelName,omitempty"`
 
 	// Optional. The model garden source model version ID.
@@ -1448,6 +1474,7 @@ type PredefinedSplit struct {
 	//  is not present or has an invalid value, that piece is ignored by the
 	//  pipeline.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.PredefinedSplit.key
+	// +required
 	Key *string `json:"key,omitempty"`
 }
 
@@ -1767,6 +1794,7 @@ type RaySpec struct {
 type ReservationAffinity struct {
 	// Required. Specifies the reservation affinity type.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ReservationAffinity.reservation_affinity_type
+	// +required
 	ReservationAffinityType *string `json:"reservationAffinityType,omitempty"`
 
 	// Optional. Corresponds to the label key of a reservation resource. To target
@@ -1792,6 +1820,7 @@ type ResourcePool struct {
 
 	// Required. Immutable. The specification of a single machine.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.ResourcePool.machine_spec
+	// +required
 	MachineSpec *MachineSpec `json:"machineSpec,omitempty"`
 
 	// Optional. The total number of machines to use for this resource pool.
@@ -1872,6 +1901,7 @@ type SampledShapleyAttribution struct {
 	//
 	//  Valid range of its value is [1, 50], inclusively.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.SampledShapleyAttribution.path_count
+	// +required
 	PathCount *int32 `json:"pathCount,omitempty"`
 }
 
@@ -1890,11 +1920,13 @@ type Schedule_RunResponse struct {
 type SecretEnvVar struct {
 	// Required. Name of the secret environment variable.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.SecretEnvVar.name
+	// +required
 	Name *string `json:"name,omitempty"`
 
 	// Required. Reference to a secret stored in the Cloud Secret Manager that
 	//  will provide the value for this environment variable.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.SecretEnvVar.secret_ref
+	// +required
 	SecretRef *SecretRef `json:"secretRef,omitempty"`
 }
 
@@ -1952,6 +1984,7 @@ type StratifiedSplit struct {
 	// Required. The key is a name of one of the Dataset's data columns.
 	//  The key provided must be for a categorical column.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.StratifiedSplit.key
+	// +required
 	Key *string `json:"key,omitempty"`
 }
 
@@ -1971,10 +2004,12 @@ type StudySpec struct {
 
 	// Required. Metric specs for the Study.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.metrics
+	// +required
 	Metrics []StudySpec_MetricSpec `json:"metrics,omitempty"`
 
 	// Required. The set of parameters to tune.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.parameters
+	// +required
 	Parameters []StudySpec_ParameterSpec `json:"parameters,omitempty"`
 
 	// The search algorithm specified for the Study.
@@ -2078,10 +2113,12 @@ type StudySpec_MetricSpec struct {
 	// Required. The ID of the metric. Must not contain whitespaces and must be
 	//  unique amongst all MetricSpecs.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.MetricSpec.metric_id
+	// +required
 	MetricID *string `json:"metricID,omitempty"`
 
 	// Required. The optimization goal of the metric.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.MetricSpec.goal
+	// +required
 	Goal *string `json:"goal,omitempty"`
 
 	// Used for safe search. In the case, the metric will be a safety
@@ -2128,6 +2165,7 @@ type StudySpec_ParameterSpec struct {
 	// Required. The ID of the parameter. Must not contain whitespaces and must
 	//  be unique amongst all ParameterSpecs.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.parameter_id
+	// +required
 	ParameterID *string `json:"parameterID,omitempty"`
 
 	// How the parameter should be scaled.
@@ -2148,6 +2186,7 @@ type StudySpec_ParameterSpec struct {
 type StudySpec_ParameterSpec_CategoricalValueSpec struct {
 	// Required. The list of possible categories.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.CategoricalValueSpec.values
+	// +required
 	Values []string `json:"values,omitempty"`
 
 	// A default value for a `CATEGORICAL` parameter that is assumed to be a
@@ -2166,6 +2205,7 @@ type StudySpec_ParameterSpec_ConditionalParameterSpec_CategoricalValueCondition 
 	//  type. All values must exist in `categorical_value_spec` of parent
 	//  parameter.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.ConditionalParameterSpec.CategoricalValueCondition.values
+	// +required
 	Values []string `json:"values,omitempty"`
 }
 
@@ -2176,6 +2216,7 @@ type StudySpec_ParameterSpec_ConditionalParameterSpec_DiscreteValueCondition str
 	//
 	//  The Epsilon of the value matching is 1e-10.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.ConditionalParameterSpec.DiscreteValueCondition.values
+	// +required
 	Values []float64 `json:"values,omitempty"`
 }
 
@@ -2184,6 +2225,7 @@ type StudySpec_ParameterSpec_ConditionalParameterSpec_IntValueCondition struct {
 	// Required. Matches values of the parent parameter of 'INTEGER' type.
 	//  All values must lie in `integer_value_spec` of parent parameter.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.ConditionalParameterSpec.IntValueCondition.values
+	// +required
 	Values []int64 `json:"values,omitempty"`
 }
 
@@ -2194,6 +2236,7 @@ type StudySpec_ParameterSpec_DiscreteValueSpec struct {
 	//  For instance, this parameter might have possible settings of 1.5, 2.5,
 	//  and 4.0. This list should not contain more than 1,000 values.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.DiscreteValueSpec.values
+	// +required
 	Values []float64 `json:"values,omitempty"`
 
 	// A default value for a `DISCRETE` parameter that is assumed to be a
@@ -2211,10 +2254,12 @@ type StudySpec_ParameterSpec_DiscreteValueSpec struct {
 type StudySpec_ParameterSpec_DoubleValueSpec struct {
 	// Required. Inclusive minimum value of the parameter.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.DoubleValueSpec.min_value
+	// +required
 	MinValue *float64 `json:"minValue,omitempty"`
 
 	// Required. Inclusive maximum value of the parameter.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.DoubleValueSpec.max_value
+	// +required
 	MaxValue *float64 `json:"maxValue,omitempty"`
 
 	// A default value for a `DOUBLE` parameter that is assumed to be a
@@ -2231,10 +2276,12 @@ type StudySpec_ParameterSpec_DoubleValueSpec struct {
 type StudySpec_ParameterSpec_IntegerValueSpec struct {
 	// Required. Inclusive minimum value of the parameter.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.IntegerValueSpec.min_value
+	// +required
 	MinValue *int64 `json:"minValue,omitempty"`
 
 	// Required. Inclusive maximum value of the parameter.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.StudySpec.ParameterSpec.IntegerValueSpec.max_value
+	// +required
 	MaxValue *int64 `json:"maxValue,omitempty"`
 
 	// A default value for an `INTEGER` parameter that is assumed to be a
@@ -2359,6 +2406,7 @@ type SupervisedTuningSpec struct {
 	// Required. Cloud Storage path to file containing training dataset for
 	//  tuning. The dataset must be formatted as a JSONL file.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.SupervisedTuningSpec.training_dataset_uri
+	// +required
 	TrainingDatasetURI *string `json:"trainingDatasetURI,omitempty"`
 
 	// Optional. Cloud Storage path to file containing validation dataset for
@@ -2397,6 +2445,7 @@ type TimestampSplit struct {
 	//  (e.g. 1985-04-12T23:20:50.52Z). If for a piece of data the key is not
 	//  present or has an invalid value, that piece is ignored by the pipeline.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.TimestampSplit.key
+	// +required
 	Key *string `json:"key,omitempty"`
 }
 
@@ -2465,6 +2514,7 @@ type Tool_CodeExecution struct {
 type Tool_ComputerUse struct {
 	// Required. The environment being operated.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.ComputerUse.environment
+	// +required
 	Environment *string `json:"environment,omitempty"`
 }
 
@@ -2608,7 +2658,7 @@ type VertexRagStore_RagResource struct {
 	// Optional. rag_file_id. The files should be in the same rag_corpus set in
 	//  rag_corpus field.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexRagStore.RagResource.rag_file_ids
-	RagFileIds []string `json:"ragFileIds,omitempty"`
+	RagFileIDs []string `json:"ragFileIDs,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.VideoMetadata
@@ -2630,6 +2680,7 @@ type XraiAttribution struct {
 	//
 	//  Valid range of its value is [1, 100], inclusively.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.XraiAttribution.step_count
+	// +required
 	StepCount *int32 `json:"stepCount,omitempty"`
 
 	// Config for SmoothGrad approximation of gradients.
@@ -2667,6 +2718,94 @@ type LatLng struct {
 	// The longitude in degrees. It must be in the range [-180.0, +180.0].
 	// +kcc:proto:field=google.type.LatLng.longitude
 	Longitude *float64 `json:"longitude,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.Blob
+type BlobObservedState struct {
+	// Required. The IANA standard MIME type of the source data.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Blob.mime_type
+	MimeType *string `json:"mimeType,omitempty"`
+
+	// Required. Raw bytes.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Blob.data
+	Data []byte `json:"data,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.CodeExecutionResult
+type CodeExecutionResultObservedState struct {
+	// Required. Outcome of the code execution.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CodeExecutionResult.outcome
+	Outcome *string `json:"outcome,omitempty"`
+
+	// Optional. Contains stdout when code execution is successful, stderr or
+	//  other description otherwise.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.CodeExecutionResult.output
+	Output *string `json:"output,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.Content
+type ContentObservedState struct {
+	// Optional. The producer of the content. Must be either 'user' or 'model'.
+	//
+	//  Useful to set for multi-turn conversations, otherwise can be left blank
+	//  or unset.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Content.role
+	Role *string `json:"role,omitempty"`
+
+	// Required. Ordered `Parts` that constitute a single message. Parts may have
+	//  different IANA MIME types.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Content.parts
+	Parts []PartObservedState `json:"parts,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.ExecutableCode
+type ExecutableCodeObservedState struct {
+	// Required. Programming language of the `code`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ExecutableCode.language
+	Language *string `json:"language,omitempty"`
+
+	// Required. The code to be executed.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ExecutableCode.code
+	Code *string `json:"code,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.FileData
+type FileDataObservedState struct {
+	// Required. The IANA standard MIME type of the source data.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FileData.mime_type
+	MimeType *string `json:"mimeType,omitempty"`
+
+	// Required. URI.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FileData.file_uri
+	FileURI *string `json:"fileURI,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.FunctionCall
+type FunctionCallObservedState struct {
+	// Required. The name of the function to call.
+	//  Matches [FunctionDeclaration.name].
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionCall.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Required. The function parameters and values in JSON object
+	//  format. See [FunctionDeclaration.parameters] for parameter details.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionCall.args
+	Args apiextensionsv1.JSON `json:"args,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.FunctionResponse
+type FunctionResponseObservedState struct {
+	// Required. The name of the function to call.
+	//  Matches [FunctionDeclaration.name] and [FunctionCall.name].
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionResponse.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The function response in JSON object format.
+	//  Use "output" key to specify function output and "error" key to specify
+	//  error details (if any). If "output" and "error" keys are not specified,
+	//  then whole "response" is treated as function output.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.FunctionResponse.response
+	Response apiextensionsv1.JSON `json:"response,omitempty"`
 }
 
 /* unreachable type Model_ExportFormatObservedState
@@ -2708,10 +2847,61 @@ type Model_OriginalModelInfoObservedState struct {
 	// Output only. The resource name of the Model this Model is a copy of,
 	//  including the revision. Format:
 	//  `projects/{project}/locations/{location}/models/{model_id}@{version_id}`
+	// +kcc:guess=possible-reference target=AIPlatformModel
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.OriginalModelInfo.model
 	Model *string `json:"model,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.Part
+type PartObservedState struct {
+	// Optional. Text part (can be code).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Part.text
+	Text *string `json:"text,omitempty"`
+
+	// Optional. Inlined bytes data.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Part.inline_data
+	InlineData *BlobObservedState `json:"inlineData,omitempty"`
+
+	// Optional. URI based data.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Part.file_data
+	FileData *FileDataObservedState `json:"fileData,omitempty"`
+
+	// Optional. A predicted [FunctionCall] returned from the model that
+	//  contains a string representing the [FunctionDeclaration.name] with the
+	//  parameters and their values.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Part.function_call
+	FunctionCall *FunctionCallObservedState `json:"functionCall,omitempty"`
+
+	// Optional. The result output of a [FunctionCall] that contains a string
+	//  representing the [FunctionDeclaration.name] and a structured JSON object
+	//  containing any output from the function call. It is used as context to
+	//  the model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Part.function_response
+	FunctionResponse *FunctionResponseObservedState `json:"functionResponse,omitempty"`
+
+	// Optional. Code generated by the model that is meant to be executed.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Part.executable_code
+	ExecutableCode *ExecutableCodeObservedState `json:"executableCode,omitempty"`
+
+	// Optional. Result of executing the [ExecutableCode].
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Part.code_execution_result
+	CodeExecutionResult *CodeExecutionResultObservedState `json:"codeExecutionResult,omitempty"`
+
+	// Indicates if the part is thought from the model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Part.thought
+	Thought *bool `json:"thought,omitempty"`
+
+	// An opaque signature for the thought so it can be reused in subsequent
+	//  requests.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Part.thought_signature
+	ThoughtSignature []byte `json:"thoughtSignature,omitempty"`
+
+	// Optional. Video metadata. The metadata should only be specified while the
+	//  video data is presented in inline_data or file_data.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Part.video_metadata
+	VideoMetadata *VideoMetadata `json:"videoMetadata,omitempty"`
+}
 
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1.ResourcePool
 type ResourcePoolObservedState struct {
@@ -2757,7 +2947,7 @@ type SupervisedTuningDataStatsObservedState struct {
 
 	// Output only. Sample user messages in the training dataset uri.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.SupervisedTuningDataStats.user_dataset_examples
-	UserDatasetExamples []Content `json:"userDatasetExamples,omitempty"`
+	UserDatasetExamples []ContentObservedState `json:"userDatasetExamples,omitempty"`
 
 	// Output only. The number of examples in the dataset that have been dropped.
 	//  An example can be dropped for reasons including: too many tokens, contains
@@ -2834,6 +3024,7 @@ type SupervisedTuningDatasetDistribution_DatasetBucketObservedState struct {
 type TunedModelObservedState struct {
 	// Output only. The resource name of the TunedModel. Format:
 	//  `projects/{project}/locations/{location}/models/{model}`.
+	// +kcc:guess=possible-reference target=AIPlatformModel
 	// +kcc:proto:field=google.cloud.aiplatform.v1.TunedModel.model
 	Model *string `json:"model,omitempty"`
 

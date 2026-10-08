@@ -97,7 +97,11 @@ spec:
                           state of the Rollout is PAUSED and the requested action
                           is RUN.
                         type: boolean
+                    required:
+                    - retryFailedOperations
                     type: object
+                required:
+                - action
                 type: object
               labels:
                 additionalProperties:

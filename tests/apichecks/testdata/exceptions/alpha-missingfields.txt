@@ -150,7 +150,7 @@
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexAiSearch.filter" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexAiSearch.maxResults" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexRagStore.ragResources[].ragCorpus" is not set in unstructured objects
-[missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexRagStore.ragResources[].ragFileIds[]" is not set in unstructured objects
+[missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexRagStore.ragResources[].ragFileIDs[]" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexRagStore.ragRetrievalConfig.filter.metadataFilter" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexRagStore.ragRetrievalConfig.filter.vectorDistanceThreshold" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexRagStore.ragRetrievalConfig.filter.vectorSimilarityThreshold" is not set in unstructured objects
