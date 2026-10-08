@@ -88,7 +88,7 @@ func (o *GenerateCRDOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().BoolVar(&o.EmitMessageMaps, "emit-message-maps", false, "generate map<string, Message> fields as a map of the value's Go type instead of leaving them out. Opt in one service at a time: it adds fields to the CRD of a resource people already use, and generate-mapper needs the same flag")
 	cmd.Flags().BoolVar(&o.DetectOutputOnly, "detect-output-only-in-comments", false, "record a spec field, at any depth, whose proto comment says it is output only but that carries no field_behavior annotation, in apis/<service>/judgement_queue.yaml. A comment that starts with \"Output only.\" or \"[Output Only]\" is recorded as well-known-output-only-pattern-in-comment. Any other mention of \"output only\" is recorded as possible-output-only-pattern-in-comment, a weaker signal. Requires --prepopulate-spec. Reports only: moving the field is a hand edit")
 	cmd.Flags().BoolVar(&o.PlaceServerSetFields, "place-server-set-fields", false, "put a small allowlist of server-computed fields (createTime, uid, selfLink, etag and a few more) into ObservedState when the proto carries no field_behavior anywhere, instead of leaving them in the Spec for a user to set. Requires --prepopulate-spec. Each one is also recorded in apis/<service>/judgement_queue.yaml. Opt in one service at a time: it moves fields between spec and status, which is a breaking change for a resource people already use")
-	cmd.Flags().BoolVar(&o.EmitRequiredFromProto, "emit-required-from-proto", false, "emit // +required markers for fields marked REQUIRED in proto, for the Kinds whose Spec carries +kcc:required-from-proto. A <kind>_types.go scaffolded with this flag gets the marker; an existing Kind keeps its optional fields, because making a field required breaks objects that leave it out. A struct that something else also uses, such as a Kind without the marker or a status struct, stays optional, and the marked Kinds get a <Name>Required copy of it. Each REQUIRED spec field that stays optional is recorded in apis/<service>/judgement_queue.yaml")
+	cmd.Flags().BoolVar(&o.EmitRequiredFromProto, "emit-required-from-proto", false, "emit // +required markers for fields marked REQUIRED in proto, only for Kinds whose Spec has +kcc:required-from-proto. New <kind>_types.go files get the marker. Existing Kinds keep their optional fields, because making a field required breaks objects that leave it out. If something else also uses a struct, such as a Kind without the marker or a status, the struct stays optional and opted-in Kinds get a <Name>Required copy. Each REQUIRED spec field that stays optional is recorded in apis/<service>/judgement_queue.yaml")
 	cmd.Flags().BoolVar(&o.EmitParentRefs, "emit-parent-refs", false, "emit one spec field referencing the resource's direct parent, where google.api.resource declares a parent below project and location and a reference type for it already exists. Requires --prepopulate-spec. Each field is marked +kcc:guess and recorded in apis/<service>/judgement_queue.yaml, and a parent with no reference type is recorded there rather than guessed. Opt in one service at a time: it adds a field to the CRD of a resource people already use")
 	cmd.Flags().BoolVar(&o.EmitSiblingRefs, "emit-sibling-refs", false, "mark a string field whose name matches a resource this service declares as a probable reference to it, with a +kcc:guess comment and an entry in apis/<service>/judgement_queue.yaml. The field stays a string: this reports a candidate rather than generating a reference. Opt in one service at a time, though controller-gen strips the comment, so this cannot change a CRD")
 	cmd.Flags().BoolVar(&o.EmitSourceLinks, "emit-source-links", false, "write links to the resource's proto, its service docs and its REST reference page as +kcc:source markers at the top of a new <kind>_types.go. The docs links are guessed and checked online in the same run; a link that does not check out is still written, marked +kcc:guess and recorded in apis/<service>/judgement_queue.yaml. Only a newly scaffolded types file gets links, so existing resources do not change")
@@ -240,12 +240,12 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		resourceAnnotations = append(resourceAnnotations, fmt.Sprintf("%s:%s", resource.Kind, resource.ProtoName))
 	}
 
-	// With --emit-required-from-proto, +required goes only to the structs
-	// that a Kind with the +kcc:required-from-proto marker reaches. A struct
-	// that something else also uses is written twice: the plain struct stays
-	// optional, and a <Name>Required copy enforces the proto's REQUIRED
+	// With --emit-required-from-proto, +required only goes on structs that
+	// opted-in Kinds reach, the ones with +kcc:required-from-proto. If
+	// something else also uses a struct, it is written twice: the plain struct
+	// stays optional, and a <Name>Required copy enforces the proto's REQUIRED
 	// fields. The Kinds scaffolded below get the marker, so their Spec fields
-	// count as marked uses, and their Spec uses the strict options.
+	// count as opted-in uses and their Spec gets the strict options.
 	specOptions := writeOptions
 	if o.EmitRequiredFromProto {
 		uses, err := codegen.ScanRequiredUses(filepath.Join(o.OutputAPIDirectory, goPackage), o.OutputAPIDirectory, apisImportPrefix+goPackage)
@@ -422,10 +422,10 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	}
 
 	// A field the proto marks REQUIRED can still be optional in the CRD: its
-	// Kind has no +kcc:required-from-proto marker, a hand-written field has no
-	// +required, or something else also uses its struct. Each one goes into
-	// the queue for a person to decide. The check reads the Go files, so it
-	// runs after WriteFiles and prune, and the queue is written after it.
+	// Kind hasn't opted in, a hand-written field has no +required, or
+	// something else also uses its struct. Each such field goes to the queue
+	// for a person to decide. The check reads the Go files, so it runs after
+	// WriteFiles and prune, and the queue is written after it.
 	if o.EmitRequiredFromProto {
 		kinds := make([]string, 0, len(o.Resources))
 		for _, resource := range o.Resources {

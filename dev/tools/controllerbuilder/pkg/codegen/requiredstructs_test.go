@@ -210,16 +210,16 @@ func checkStructs(t *testing.T, body string, wants []structWant) {
 	}
 }
 
-// splitWants is what every case below expects: the structs that something
-// other than a marked Kind uses keep their name and stay optional, and the
-// marked Kind gets Required copies.
+// splitWants is what every case below expects: structs that something other
+// than the opted-in Kind uses keep their name and stay optional, and the
+// opted-in Kind gets Required copies.
 var splitWants = []structWant{
 	{name: "Shared", want: []string{"Key *string"}, notWant: []string{"+required"}},
 	{name: "SharedRequired", want: []string{"// +kcc:proto=google.cloud.test.v1.Shared\n", "// +required\n\tKey *string"}},
 	{name: "Holder", want: []string{"Shared *Shared `"}, notWant: []string{"+required", "SharedRequired"}},
 	{name: "HolderRequired", want: []string{"// +kcc:proto=google.cloud.test.v1.Holder\n", "Shared *SharedRequired `"}},
-	// Only the marked Kind uses OnlyNew, so it keeps its name and gets the
-	// marker, with no copy.
+	// Only the opted-in Kind uses OnlyNew, so it keeps its name and gets
+	// +required, with no copy.
 	{name: "OnlyNew", want: []string{"// +required\n\tToken *string"}},
 	// The status map holds the plain Zone, so it has to stay optional.
 	{name: "Zone", want: []string{"ZoneName *string"}, notWant: []string{"+required"}},
@@ -286,8 +286,8 @@ func TestPlanRequiredStructs(t *testing.T) {
 	}
 }
 
-// A marked Spec that is already on disk counts the same as one scaffolded in
-// this run, and naming a Required copy asks for it.
+// An opted-in Spec already on disk counts the same as one scaffolded in this
+// run, and using a Required copy makes generate-types write it.
 func TestPlanRequiredStructsMarkedSpec(t *testing.T) {
 	files := map[string]string{
 		"test/oldkind_types.go": "package test\n\n" +
@@ -311,8 +311,8 @@ func TestPlanRequiredStructsMarkedSpec(t *testing.T) {
 	checkStructs(t, body, splitWants)
 }
 
-// Without a marked Kind, the flag changes nothing: no struct gets +required
-// and none is copied.
+// Without an opted-in Kind, the flag changes nothing: no struct gets
+// +required and none is copied.
 func TestPlanRequiredStructsLeavesUnmarkedKindsAlone(t *testing.T) {
 	files := map[string]string{
 		"test/oldkind_types.go": "package test\n\n" +
@@ -338,9 +338,9 @@ func TestPlanRequiredStructsLeavesUnmarkedKindsAlone(t *testing.T) {
 	}
 }
 
-// When the package already declares <Name>Required by hand, the message is
-// not split. Its struct stays optional for every Kind, so nothing breaks, and
-// the judgement queue reports the fields.
+// If the package already declares <Name>Required by hand, the message is not
+// split. Its struct stays optional for every Kind, so nothing breaks, and the
+// judgement queue reports the fields.
 func TestPlanRequiredStructsNameTaken(t *testing.T) {
 	files := map[string]string{
 		"test/oldkind_types.go": "package test\n\n" +
@@ -365,9 +365,9 @@ func TestPlanRequiredStructsNameTaken(t *testing.T) {
 	}
 }
 
-// Code that names a Required copy gets it, even when nothing else uses the
-// message. Without it, that code would not compile. This is how a Kind that
-// gets the marker by hand switches a field to the copy.
+// Code that uses a Required copy gets it, even if nothing else uses the
+// message, or that code wouldn't compile. This is how a Kind that opts in by
+// hand switches a field to the copy.
 func TestPlanRequiredStructsNamedCopy(t *testing.T) {
 	files := map[string]string{
 		"test/newkind_types.go": "package test\n\n" +

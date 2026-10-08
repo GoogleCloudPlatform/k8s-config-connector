@@ -73,7 +73,7 @@ type TypeGenerator struct {
 	// isServerSet uses it to tell that message from the nested ones below it.
 	rootMessageFQN string
 
-	// requiredPlan says which structs carry +required markers. It is nil
+	// requiredPlan says which structs get +required markers. It is nil
 	// unless PlanRequiredStructs ran.
 	requiredPlan *requiredPlan
 }
@@ -94,14 +94,13 @@ type WriteOptions struct {
 	// EmitRequired generates "// +required" markers for fields annotated with
 	// google.api.field_behavior = REQUIRED.
 	//
-	// generate-types sets it per service, then PlanRequiredStructs narrows it
-	// per Kind: only the structs that Kinds with RequiredFromProtoMarker reach
-	// get the markers.
+	// generate-types sets it for the whole service, and PlanRequiredStructs
+	// narrows it down: only structs that opted-in Kinds reach get the markers.
 	EmitRequired bool
 	// RequiredStructs holds the messages written twice: a plain struct for
-	// Kinds without RequiredFromProtoMarker, and a <Name>Required struct for
-	// Kinds with it. A spec field of one of these types holds the Required
-	// struct. Only strict structs set it; see StrictWriteOptions.
+	// everything else, and a <Name>Required copy for opted-in Kinds. A field
+	// of one of these types holds the copy. Only the strict options set it;
+	// see StrictWriteOptions.
 	RequiredStructs map[string]bool
 	// Prepopulating indicates whether --prepopulate-spec is enabled for this run.
 	//
@@ -416,9 +415,8 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 
 		out.fileAnnotation = g.generatedFileAnnotation
 
-		// The options for the plain struct, and whether a Required struct
-		// follows it. A skipped message is written as a comment with the same
-		// options.
+		// Options for the plain struct, and whether a Required copy follows it.
+		// A skipped message is written as a comment with the same options.
 		opts, writeRequired := g.structOptions(string(msg.FullName()))
 
 		goTypeName := GoNameForProtoMessage(msg)
@@ -475,7 +473,7 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 		g.siblingGuesses = append(g.siblingGuesses, scanSiblingGuesses(string(msg.FullName()), rendered.String())...)
 		out.body.Write(rendered.Bytes())
 
-		// The Required struct has the same fields as the plain one, so the
+		// The Required copy has the same fields as the plain struct, so the
 		// scans above cover it too.
 		if writeRequired {
 			writeMessageNamed(&out.body, msg, RequiredStructName(msg), g.StrictWriteOptions())
@@ -593,9 +591,10 @@ func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor, opts WriteO
 	writeMessageNamed(out, msg, GoNameForProtoMessage(msg), opts)
 }
 
-// writeMessageNamed writes msg as a struct called goType. The Required struct
-// of a split message uses it with the strict options. Both structs carry the
-// same proto annotation, so generate-mapper writes converters for each.
+// writeMessageNamed writes msg as a struct named goType. The Required copy of
+// a split message is written this way, with the strict options. Both structs
+// have the same proto annotation, so generate-mapper writes converters for
+// each.
 func writeMessageNamed(out io.Writer, msg protoreflect.MessageDescriptor, goType string, opts WriteOptions) {
 	fmt.Fprintf(out, "\n")
 	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotationMisc, msg.FullName())
@@ -632,9 +631,9 @@ func WriteObservedStateFields(out io.Writer, msgDetails *OutputMessageDetails, o
 	emitted := 0
 	var notes []ObservedStateFieldNote
 
-	// ObservedState structs describe status and must not emit +required
-	// markers. For the same reason a field holds a message's plain struct,
-	// never its Required struct.
+	// ObservedState structs describe status, so they never get +required.
+	// For the same reason, their fields hold a message's plain struct, never
+	// its Required copy.
 	observedOpts := opts
 	observedOpts.EmitRequired = false
 	observedOpts.RequiredStructs = nil
