@@ -148,6 +148,15 @@ func NormalizeDynamicIDs(s string) string {
 				lines[i] = "  caisURL: unknown"
 			}
 		}
+		// Normalize DiscoveryEngineSitemap IDs: locations/.../sitemaps/<sitemapId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/sitemaps/"); idx != -1 && strings.Contains(line, "discoveryengine") {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
 		// Normalize CCInsightsAnalysisRule IDs: locations/.../analysisRules/<analysisRuleId>
 		if idx := strings.Index(line, "/analysisRules/"); idx != -1 && strings.Contains(line, "contactcenterinsights") {
 			name := ""
