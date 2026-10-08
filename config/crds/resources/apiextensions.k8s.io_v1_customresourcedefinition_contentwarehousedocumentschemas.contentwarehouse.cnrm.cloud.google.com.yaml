@@ -133,6 +133,8 @@ spec:
                             in the document is in the possile value list during document
                             creation. The validation check runs by default.
                           type: boolean
+                      required:
+                      - possibleValues
                       type: object
                     floatTypeOptions:
                       description: Float property.
@@ -177,6 +179,98 @@ spec:
                         propertyDefinitions:
                           description: Required. List of property definitions.
                           items:
+                            properties:
+                              dateTimeTypeOptions:
+                                description: Date time property. It is not supported
+                                  by CMEK compliant deployment.
+                                type: object
+                              displayName:
+                                description: The display-name for the property, used
+                                  for front-end.
+                                type: string
+                              enumTypeOptions:
+                                description: Enum/categorical property.
+                                properties:
+                                  possibleValues:
+                                    description: Required. List of possible enum values.
+                                    items:
+                                      type: string
+                                    type: array
+                                  validationCheckDisabled:
+                                    description: Make sure the Enum property value
+                                      provided in the document is in the possile value
+                                      list during document creation. The validation
+                                      check runs by default.
+                                    type: boolean
+                                type: object
+                              floatTypeOptions:
+                                description: Float property.
+                                type: object
+                              integerTypeOptions:
+                                description: Integer property.
+                                type: object
+                              isFilterable:
+                                description: Whether the property can be filtered.
+                                  If this is a sub-property, all the parent properties
+                                  must be marked filterable.
+                                type: boolean
+                              isMetadata:
+                                description: Whether the property is user supplied
+                                  metadata. This out-of-the box placeholder setting
+                                  can be used to tag derived properties. Its value
+                                  and interpretation logic should be implemented by
+                                  API user.
+                                type: boolean
+                              isRepeatable:
+                                description: Whether the property can have multiple
+                                  values.
+                                type: boolean
+                              isRequired:
+                                description: Whether the property is mandatory. Default
+                                  is 'false', i.e. populating property value can be
+                                  skipped. If 'true' then user must populate the value
+                                  for this property.
+                                type: boolean
+                              isSearchable:
+                                description: Indicates that the property should be
+                                  included in a global search.
+                                type: boolean
+                              mapTypeOptions:
+                                description: Map property.
+                                type: object
+                              name:
+                                description: 'Required. The name of the metadata property.
+                                  Must be unique within a document schema and is case
+                                  insensitive. Names must be non-blank, start with
+                                  a letter, and can contain alphanumeric characters
+                                  and: /, :, -, _, and .'
+                                type: string
+                              propertyTypeOptions:
+                                description: Nested structured data property.
+                              retrievalImportance:
+                                description: The retrieval importance of the property
+                                  during search.
+                                type: string
+                              schemaSources:
+                                description: The mapping information between this
+                                  property to another schema source.
+                                items:
+                                  properties:
+                                    name:
+                                      description: The schema name in the source.
+                                      type: string
+                                    processorType:
+                                      description: The Doc AI processor type name.
+                                      type: string
+                                  type: object
+                                type: array
+                              textTypeOptions:
+                                description: Text/string property.
+                                type: object
+                              timestampTypeOptions:
+                                description: Timestamp property. It is not supported
+                                  by CMEK compliant deployment.
+                                type: object
                             type: object
                             x-kubernetes-preserve-unknown-fields: true
                           type: array
@@ -207,6 +301,8 @@ spec:
                       description: Timestamp property. It is not supported by CMEK
                         compliant deployment.
                       type: object
+                  required:
+                  - name
                   type: object
                 type: array
               resourceID:

@@ -46,7 +46,7 @@ type ContentWarehouseDocumentSchemaSpec struct {
 
 	// Document details.
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.DocumentSchema.property_definitions
-	PropertyDefinitions []PropertyDefinition `json:"propertyDefinitions,omitempty"`
+	PropertyDefinitions []PropertyDefinitionRequired `json:"propertyDefinitions,omitempty"`
 
 	// Document Type, true refers the document is a folder, otherwise it is
 	//  a typical document.
