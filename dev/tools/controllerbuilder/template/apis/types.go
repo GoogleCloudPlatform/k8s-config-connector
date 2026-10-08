@@ -71,10 +71,10 @@ type APIArgs struct {
 	// +kcc:source markers, written between the license and the package
 	// clause. Empty unless --emit-source-links is on.
 	SourceLinks string
-	// RequiredFromProto writes the +kcc:required-from-proto marker on the
-	// Spec, so generate-types puts +required on the fields the proto marks
-	// REQUIRED for this Kind. Set by --emit-required-from-proto. The marker
-	// text must match codegen.RequiredFromProtoMarker; a scaffold test checks.
+	// RequiredFromProto adds the +kcc:required-from-proto marker to the Spec,
+	// so generate-types puts +required on the fields the proto marks REQUIRED
+	// for this Kind. Set by --emit-required-from-proto. The text must match
+	// codegen.RequiredFromProtoMarker; a scaffold test checks it.
 	RequiredFromProto bool
 }
 

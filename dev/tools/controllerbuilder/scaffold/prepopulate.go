@@ -62,8 +62,8 @@ type PrepopulateResult struct {
 }
 
 // SpecFields returns the fields of msg that PrepopulateSpec writes into the
-// Spec, in proto order. generate-types uses it to plan which structs those
-// fields hold before the Spec exists. A test checks that both agree.
+// Spec, in proto order. generate-types uses it to plan the structs before
+// the Spec exists. A test checks that the two agree.
 func SpecFields(msg protoreflect.MessageDescriptor, opts codegen.WriteOptions) []protoreflect.FieldDescriptor {
 	var out []protoreflect.FieldDescriptor
 	for i := 0; i < msg.Fields().Len(); i++ {
