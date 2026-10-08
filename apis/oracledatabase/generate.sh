@@ -40,6 +40,7 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version oracledatabase.cnrm.cloud.google.com/v1alpha1 \
   --resource OracleDatabaseExadbVMCluster:ExadbVmCluster \
   --resource OracleDatabaseAutonomousDatabase:AutonomousDatabase \
+  --emit-plural-acronyms \
   --proto-source-path ${PROTO_OUT}
 
 ${CONTROLLERBUILDER} generate-types \
@@ -60,6 +61,7 @@ ${CONTROLLERBUILDER} generate-identity \
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.oracledatabase.v1 \
   --api-version oracledatabase.cnrm.cloud.google.com/v1alpha1 \
+  --emit-plural-acronyms \
   --proto-source-path ${PROTO_OUT} \
   --prepopulate-resource
 
