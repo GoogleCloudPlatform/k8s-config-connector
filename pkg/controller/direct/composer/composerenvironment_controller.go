@@ -80,6 +80,10 @@ func (m *modelEnvironment) AdapterForObject(ctx context.Context, op *directbase.
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	idRaw, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err

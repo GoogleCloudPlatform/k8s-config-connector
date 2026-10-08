@@ -85,6 +85,10 @@ func (m *runtimeTemplateModel) AdapterForObject(ctx context.Context, op *directb
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	id, err := krm.NewNotebookRuntimeTemplateIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
@@ -169,13 +173,6 @@ func (a *runtimeTemplateAdapter) normalizeReferences(ctx context.Context) error 
 		if err := obj.Spec.ServiceAccountRef.Resolve(ctx, a.reader, obj); err != nil {
 			return err
 		}
-	}
-	if obj.Spec.EncryptionSpec != nil && obj.Spec.EncryptionSpec.KMSKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.EncryptionSpec.KMSKeyRef)
-		if err != nil {
-			return err
-		}
-		obj.Spec.EncryptionSpec.KMSKeyRef = kmsKeyRef
 	}
 	return nil
 }
