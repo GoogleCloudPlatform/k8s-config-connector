@@ -97,6 +97,16 @@ func Classify(fieldPath, desc string) (Verdict, string) {
 	}
 
 	if !isRef {
+		// A gs:// URI names a Cloud Storage object or prefix, which is not a
+		// GCP resource name, so no KCC reference can hold it. config's
+		// terraformBlueprint.gcsSource reads "Format: gs://{bucket}/{object}".
+		// The Cloud Storage rules in notRepresentableReason only look at uri
+		// and url fields, so this catches the rest. It runs after every rule
+		// above, so a field one of them matched, such as a pattern field or a
+		// bucket field, keeps its verdict.
+		if strings.Contains(desc, "gs://") {
+			return NotRepresentable, "gcs-scheme-not-a-gcp-resource-name"
+		}
 		return NotAReference, ""
 	}
 

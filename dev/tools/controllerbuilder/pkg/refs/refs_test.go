@@ -143,6 +143,51 @@ func TestClassify(t *testing.T) {
 			wantVerdict: NotRepresentable,
 			wantReason:  "gcs-object-path-string-for-now-decomposable-as-bucketref-plus-path",
 		},
+		{
+			name:        "a gs:// path in a field not named uri is not a resource name",
+			fieldPath:   ".spec.terraformBlueprint.gcsSource",
+			desc:        "URI of an object in Google Cloud Storage. Format: gs://{bucket}/{object}",
+			wantVerdict: NotRepresentable,
+			wantReason:  "gcs-scheme-not-a-gcp-resource-name",
+		},
+		{
+			name:        "a gs:// list in a field not named uris is not a resource name either",
+			fieldPath:   ".spec.spark.infrastructureSpec.containerImage.javaJars",
+			desc:        "Optional. A list of Java JARS to add to the classpath. For example, gs://bucket-name/my/path/to/file.jar",
+			wantVerdict: NotRepresentable,
+			wantReason:  "gcs-scheme-not-a-gcp-resource-name",
+		},
+		{
+			name:        "a bucket field that mentions gs:// stays a reference",
+			fieldPath:   ".spec.loggingSettings.audioRecordingConfig.gcsBucket",
+			desc:        "Optional. The Cloud Storage bucket to store the session audio recordings. The URI must start with \"gs://\".",
+			wantVerdict: IsReference,
+		},
+		{
+			name:        "a resource-name template wins over gs://",
+			fieldPath:   ".spec.source",
+			desc:        "Either projects/{project}/locations/{location}/datasets/{dataset} or a gs:// path.",
+			wantVerdict: IsReference,
+		},
+		{
+			name:        "a service account that mentions gs:// stays a reference",
+			fieldPath:   ".spec.serviceAccount",
+			desc:        "The service account that reads gs://my-bucket.",
+			wantVerdict: IsReference,
+		},
+		{
+			name:        "a gs:// pattern still matches a set of objects",
+			fieldPath:   ".spec.gcsFilesetSpec.filePatterns",
+			desc:        "Patterns to identify a set of files in Google Cloud Storage. See Wildcard Names. Example: gs://bucket_name/*",
+			wantVerdict: NotAReference,
+		},
+		{
+			name:        "bq:// comes before gs://",
+			fieldPath:   ".spec.inputSource",
+			desc:        "A gs:// path or a bq:// table.",
+			wantVerdict: NotRepresentable,
+			wantReason:  "bq-scheme-not-a-gcp-resource-name",
+		},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			// Act
