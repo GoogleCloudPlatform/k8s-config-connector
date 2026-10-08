@@ -1,0 +1,111 @@
+POST https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/conversationDatasets?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "description": "Test Conversation Dataset ${uniqueId}",
+  "displayName": "ds-max-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dialogflow.v2.CreateConversationDatasetOperationMetadata",
+    "conversationDataset": "projects/${projectId}/locations/global/conversationDatasets/${conversationDatasetID}"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dialogflow.v2.CreateConversationDatasetOperationMetadata",
+    "conversationDataset": "projects/${projectId}/locations/global/conversationDatasets/${conversationDatasetID}"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dialogflow.v2.ConversationDataset",
+    "conversationInfo": {},
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Test Conversation Dataset ${uniqueId}",
+    "displayName": "ds-max-${uniqueId}",
+    "name": "projects/${projectId}/locations/global/conversationDatasets/${conversationDatasetID}",
+    "satisfiesPzi": false,
+    "satisfiesPzs": false
+  }
+}
+
+---
+
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/conversationDatasets/${conversationDatasetID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FconversationDatasets%2F${conversationDatasetID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "conversationInfo": {},
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Test Conversation Dataset ${uniqueId}",
+  "displayName": "ds-max-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/conversationDatasets/${conversationDatasetID}",
+  "satisfiesPzi": false,
+  "satisfiesPzs": false
+}
+
+---
+
+DELETE https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/conversationDatasets/${conversationDatasetID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FconversationDatasets%2F${conversationDatasetID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true
+}
