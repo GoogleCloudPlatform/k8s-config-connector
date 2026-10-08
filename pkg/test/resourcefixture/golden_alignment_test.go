@@ -402,6 +402,11 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 	for path, mockMethods := range mockGrouped {
 		realMethods, pathExistsInReal := realGrouped[path]
 		if !pathExistsInReal {
+			// Mock reconciliation can issue additional dependency reads. As above,
+			// allow extra GETs while continuing to reject unmatched writes.
+			if len(mockMethods) == 1 && len(mockMethods["GET"]) > 0 {
+				continue
+			}
 			t.Errorf("path %q present in mock log but missing in real log", path)
 			continue
 		}
