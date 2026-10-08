@@ -7,8 +7,6 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-    env: updated
-    managed-by: cnrm-updated
   name: financialservicesinstance-${uniqueId}
   namespace: ${uniqueId}
 spec:

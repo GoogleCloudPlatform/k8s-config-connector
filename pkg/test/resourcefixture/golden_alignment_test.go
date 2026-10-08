@@ -1237,6 +1237,9 @@ func isDependencyEvent(ev httpEvent, depKinds map[string]string, primaryKind str
 		// it is a child resource of the dependency, so it belongs to the primary resource under test.
 		trimmedSuffix := strings.TrimPrefix(suffix, "/")
 		if strings.Contains(trimmedSuffix, "/") {
+			if kind == "KMSCryptoKey" && strings.HasPrefix(trimmedSuffix, "cryptoKeyVersions/") && primaryKind != "KMSCryptoKeyVersion" {
+				return true
+			}
 			continue
 		}
 
