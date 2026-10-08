@@ -279,6 +279,8 @@ func (a *autonomousDatabaseAdapter) Export(ctx context.Context) (*unstructured.U
 }
 
 func (a *autonomousDatabaseAdapter) compareAutonomousDatabase(ctx context.Context, actual, desired *pb.AutonomousDatabase) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	desired.Name = a.id.String()
+
 	maskedActual, err := mappers.OnlySpecFields(actual, OracleDatabaseAutonomousDatabaseSpec_FromProto, OracleDatabaseAutonomousDatabaseSpec_ToProto)
 	if err != nil {
 		return nil, nil, err
