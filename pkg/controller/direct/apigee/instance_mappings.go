@@ -16,7 +16,7 @@ package apigee
 
 import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	api "google.golang.org/api/apigee/v1"
 )
@@ -105,16 +105,16 @@ func ApigeeInstanceSpec_ToAPI(mapCtx *direct.MapContext, in *krm.ApigeeInstanceS
 	return out
 }
 
-func ApigeeInstanceSpec_DiskEncryptionKMSCryptoKeyRef_FromAPI(mapCtx *direct.MapContext, in string) *refs.KMSCryptoKeyRef {
+func ApigeeInstanceSpec_DiskEncryptionKMSCryptoKeyRef_FromAPI(mapCtx *direct.MapContext, in string) *kmsv1beta1.KMSCryptoKeyRef {
 	if in == "" {
 		return nil
 	}
-	out := &refs.KMSCryptoKeyRef{}
+	out := &kmsv1beta1.KMSCryptoKeyRef{}
 	out.External = in
 	return out
 }
 
-func ApigeeInstanceSpec_DiskEncryptionKMSCryptoKeyRef_ToAPI(mapCtx *direct.MapContext, in *refs.KMSCryptoKeyRef) string {
+func ApigeeInstanceSpec_DiskEncryptionKMSCryptoKeyRef_ToAPI(mapCtx *direct.MapContext, in *kmsv1beta1.KMSCryptoKeyRef) string {
 	if in == nil {
 		return ""
 	}
