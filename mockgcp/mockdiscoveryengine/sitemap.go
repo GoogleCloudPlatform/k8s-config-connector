@@ -224,14 +224,7 @@ func (s *siteSearchEngineService) DeleteSitemap(ctx context.Context, req *pb.Del
 		return nil, err
 	}
 
-	anyResp, err := anypb.New(&emptypb.Empty{})
-	if err != nil {
-		return nil, err
-	}
 	return &longrunningpb.Operation{
 		Done: true,
-		Result: &longrunningpb.Operation_Response{
-			Response: anyResp,
-		},
 	}, nil
 }
