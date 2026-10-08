@@ -34,8 +34,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 # The bulk generation flags below were added with SaaSServiceMgmtTenant.
 # SaaSServiceMgmtRollout was added later with the same flags.
-# --emit-required-from-proto is left out: it would mark UnitVariable.variable
-# as required, which changes the SaasServiceMgmtRelease CRD.
+# All of them are on, including --emit-required-from-proto, which marks
+# UnitVariable.variable as required and so changes the SaasServiceMgmtRelease CRD.
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.saasplatform.saasservicemgmt.v1beta1 \
   --api-version saasservicemgmt.cnrm.cloud.google.com/v1alpha1 \
@@ -44,6 +44,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource SaaSServiceMgmtTenant:Tenant \
   --resource SaaSServiceMgmtRollout:Rollout \
   --prepopulate-spec \
+  --emit-required-from-proto \
   --emit-plural-acronyms \
   --emit-message-maps \
   --place-server-set-fields \

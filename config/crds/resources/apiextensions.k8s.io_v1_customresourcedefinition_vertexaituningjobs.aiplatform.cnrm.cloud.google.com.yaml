@@ -228,6 +228,8 @@ spec:
                       dataset for tuning. The dataset must be formatted as a JSONL
                       file.
                     type: string
+                required:
+                - trainingDatasetURI
                 type: object
               tunedModelDisplayName:
                 description: Optional. The display name of the [TunedModel][google.cloud.aiplatform.v1.Model].

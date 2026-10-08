@@ -29,16 +29,16 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func Aggregate_FromProto(mapCtx *direct.MapContext, in *pb.Aggregate) *krm.Aggregate {
+func AggregateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Aggregate) *krm.AggregateObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Aggregate{}
+	out := &krm.AggregateObservedState{}
 	out.Group = direct.LazyPtr(in.GetGroup())
 	out.Count = direct.LazyPtr(in.GetCount())
 	return out
 }
-func Aggregate_ToProto(mapCtx *direct.MapContext, in *krm.Aggregate) *pb.Aggregate {
+func AggregateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AggregateObservedState) *pb.Aggregate {
 	if in == nil {
 		return nil
 	}
@@ -144,7 +144,7 @@ func RolloutStatsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Rollo
 		return nil
 	}
 	out := &krm.RolloutStatsObservedState{}
-	out.OperationsByState = direct.Slice_FromProto(mapCtx, in.OperationsByState, Aggregate_FromProto)
+	out.OperationsByState = direct.Slice_FromProto(mapCtx, in.OperationsByState, AggregateObservedState_FromProto)
 	return out
 }
 func RolloutStatsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RolloutStatsObservedState) *pb.RolloutStats {
@@ -152,7 +152,7 @@ func RolloutStatsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Rollou
 		return nil
 	}
 	out := &pb.RolloutStats{}
-	out.OperationsByState = direct.Slice_ToProto(mapCtx, in.OperationsByState, Aggregate_ToProto)
+	out.OperationsByState = direct.Slice_ToProto(mapCtx, in.OperationsByState, AggregateObservedState_ToProto)
 	return out
 }
 func SaaSServiceMgmtRolloutObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Rollout) *krm.SaaSServiceMgmtRolloutObservedState {
