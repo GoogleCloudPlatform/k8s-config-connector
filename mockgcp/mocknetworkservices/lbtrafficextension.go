@@ -128,6 +128,9 @@ func (s *NetworkServicesServer) UpdateLbTrafficExtension(ctx context.Context, re
 	fqn := name.String()
 	obj := &pb.LbTrafficExtension{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -199,6 +202,9 @@ func (s *NetworkServicesServer) DeleteLbTrafficExtension(ctx context.Context, re
 
 	deleted := &pb.LbTrafficExtension{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
