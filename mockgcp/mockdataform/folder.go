@@ -95,11 +95,16 @@ func (r *RepositoryV1Beta1) UpdateFolder(ctx context.Context, request *pb.Update
 	updateMask := request.GetUpdateMask()
 	if updateMask == nil || len(updateMask.Paths) == 0 {
 		obj.DisplayName = request.GetFolder().GetDisplayName()
+		if request.GetFolder().ContainingFolder != nil {
+			obj.ContainingFolder = request.GetFolder().ContainingFolder
+		}
 	} else {
 		for _, path := range updateMask.Paths {
 			switch path {
 			case "display_name", "displayName":
 				obj.DisplayName = request.GetFolder().GetDisplayName()
+			case "containing_folder", "containingFolder":
+				obj.ContainingFolder = request.GetFolder().ContainingFolder
 			default:
 				return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled in mock", path)
 			}
