@@ -18,7 +18,6 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -78,6 +77,31 @@ func returnView(obj *pb.Table, view pb.Table_View) *pb.Table {
 	return ret
 }
 
+func populateColumnFamilyDefaults(cf *pb.ColumnFamily) {
+	if cf == nil {
+		return
+	}
+	if agg := cf.GetValueType().GetAggregateType(); agg != nil {
+		int64BigEndianType := &pb.Type{
+			Kind: &pb.Type_Int64Type{
+				Int64Type: &pb.Type_Int64{
+					Encoding: &pb.Type_Int64_Encoding{
+						Encoding: &pb.Type_Int64_Encoding_BigEndianBytes_{
+							BigEndianBytes: &pb.Type_Int64_Encoding_BigEndianBytes{},
+						},
+					},
+				},
+			},
+		}
+		if agg.InputType == nil {
+			agg.InputType = proto.Clone(int64BigEndianType).(*pb.Type)
+		}
+		if agg.StateType == nil {
+			agg.StateType = proto.Clone(int64BigEndianType).(*pb.Type)
+		}
+	}
+}
+
 func (s *tableAdminServer) ListTables(ctx context.Context, req *pb.ListTablesRequest) (*pb.ListTablesResponse, error) {
 	instanceName, err := s.parseInstanceName(req.Parent)
 	if err != nil {
@@ -115,10 +139,21 @@ func (s *tableAdminServer) CreateTable(ctx context.Context, req *pb.CreateTableR
 		obj.Granularity = pb.Table_MILLIS
 	}
 
+	hasValueType := false
+	for _, columnFamily := range obj.GetColumnFamilies() {
+		populateColumnFamilyDefaults(columnFamily)
+		if columnFamily.GetValueType() != nil {
+			hasValueType = true
+		}
+	}
+
 	if err := s.storage.Create(ctx, tableFQN, obj); err != nil {
 		return nil, err
 	}
 
+	if hasValueType {
+		return proto.CloneOf(obj), nil
+	}
 	return returnView(obj, pb.Table_VIEW_UNSPECIFIED), nil
 }
 
@@ -172,10 +207,12 @@ func (s *tableAdminServer) UpdateTable(ctx context.Context, req *pb.UpdateTableR
 	metadata := &pb.UpdateTableMetadata{
 		Name:      tableFQN,
 		StartTime: timestamppb.Now(),
-		EndTime:   timestamppb.New(time.Now().Add(5 * time.Minute)),
 	}
-	prefix := fmt.Sprintf("operations/%s/locations/%s", tableName.String(), "us-east1-c")
-	return s.operations.DoneLRO(ctx, prefix, metadata, obj)
+	prefix := fmt.Sprintf("operations/%s/locations/%s", tableName.String(), "us-west1-a")
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.Now()
+		return returnView(obj, pb.Table_VIEW_UNSPECIFIED), nil
+	})
 }
 
 func (s *tableAdminServer) ModifyColumnFamilies(ctx context.Context, req *pb.ModifyColumnFamiliesRequest) (*pb.Table, error) {
@@ -203,6 +240,7 @@ func (s *tableAdminServer) ModifyColumnFamilies(ctx context.Context, req *pb.Mod
 			if exists {
 				return nil, status.Errorf(codes.AlreadyExists, "column family %q already exists", id)
 			}
+			populateColumnFamilyDefaults(mod.Create)
 			obj.ColumnFamilies[id] = mod.Create
 		case *pb.ModifyColumnFamiliesRequest_Modification_Drop:
 			// Fail if already exists
@@ -217,6 +255,7 @@ func (s *tableAdminServer) ModifyColumnFamilies(ctx context.Context, req *pb.Mod
 			if !exists {
 				return nil, status.Errorf(codes.NotFound, "column family %q not found", id)
 			}
+			populateColumnFamilyDefaults(mod.Update)
 			obj.ColumnFamilies[id] = mod.Update
 		default:
 			return nil, fmt.Errorf("modified type %T not implemented by mock", mod)
