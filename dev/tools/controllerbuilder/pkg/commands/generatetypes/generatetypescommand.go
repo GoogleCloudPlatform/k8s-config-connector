@@ -37,6 +37,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// apisImportPrefix is the import path of the packages under apis/.
+const apisImportPrefix = "github.com/GoogleCloudPlatform/k8s-config-connector/apis/"
+
 type GenerateCRDOptions struct {
 	*options.GenerateOptions
 
@@ -85,7 +88,7 @@ func (o *GenerateCRDOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().BoolVar(&o.EmitMessageMaps, "emit-message-maps", false, "generate map<string, Message> fields as a map of the value's Go type instead of leaving them out. Opt in one service at a time: it adds fields to the CRD of a resource people already use, and generate-mapper needs the same flag")
 	cmd.Flags().BoolVar(&o.DetectOutputOnly, "detect-output-only-in-comments", false, "record a spec field, at any depth, whose proto comment says it is output only but that carries no field_behavior annotation, in apis/<service>/judgement_queue.yaml. A comment that starts with \"Output only.\" or \"[Output Only]\" is recorded as well-known-output-only-pattern-in-comment. Any other mention of \"output only\" is recorded as possible-output-only-pattern-in-comment, a weaker signal. Requires --prepopulate-spec. Reports only: moving the field is a hand edit")
 	cmd.Flags().BoolVar(&o.PlaceServerSetFields, "place-server-set-fields", false, "put a small allowlist of server-computed fields (createTime, uid, selfLink, etag and a few more) into ObservedState when the proto carries no field_behavior anywhere, instead of leaving them in the Spec for a user to set. Requires --prepopulate-spec. Each one is also recorded in apis/<service>/judgement_queue.yaml. Opt in one service at a time: it moves fields between spec and status, which is a breaking change for a resource people already use")
-	cmd.Flags().BoolVar(&o.EmitRequiredFromProto, "emit-required-from-proto", false, "emit // +required markers for fields marked REQUIRED in proto. Opt-in per service to avoid breaking CRD schema changes on existing resources")
+	cmd.Flags().BoolVar(&o.EmitRequiredFromProto, "emit-required-from-proto", false, "emit // +required markers for fields marked REQUIRED in proto, for the Kinds whose Spec carries +kcc:required-from-proto. A <kind>_types.go scaffolded with this flag gets the marker; an existing Kind keeps its optional fields, because making a field required breaks objects that leave it out. A struct that something else also uses, such as a Kind without the marker or a status struct, stays optional, and the marked Kinds get a <Name>Required copy of it")
 	cmd.Flags().BoolVar(&o.EmitParentRefs, "emit-parent-refs", false, "emit one spec field referencing the resource's direct parent, where google.api.resource declares a parent below project and location and a reference type for it already exists. Requires --prepopulate-spec. Each field is marked +kcc:guess and recorded in apis/<service>/judgement_queue.yaml, and a parent with no reference type is recorded there rather than guessed. Opt in one service at a time: it adds a field to the CRD of a resource people already use")
 	cmd.Flags().BoolVar(&o.EmitSiblingRefs, "emit-sibling-refs", false, "mark a string field whose name matches a resource this service declares as a probable reference to it, with a +kcc:guess comment and an entry in apis/<service>/judgement_queue.yaml. The field stays a string: this reports a candidate rather than generating a reference. Opt in one service at a time, though controller-gen strips the comment, so this cannot change a CRD")
 	cmd.Flags().BoolVar(&o.EmitSourceLinks, "emit-source-links", false, "write links to the resource's proto, its service docs and its REST reference page as +kcc:source markers at the top of a new <kind>_types.go. The docs links are guessed and checked online in the same run; a link that does not check out is still written, marked +kcc:guess and recorded in apis/<service>/judgement_queue.yaml. Only a newly scaffolded types file gets links, so existing resources do not change")
@@ -148,8 +151,9 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		PackageProtoTag: o.ServiceName,
 		// Without the proto the scaffolder has no google.api.resource to read, so
 		// ResourcePattern is empty and there is no parent to name.
-		Proto:          api,
-		EmitParentRefs: o.EmitParentRefs,
+		Proto:             api,
+		EmitParentRefs:    o.EmitParentRefs,
+		RequiredFromProto: o.EmitRequiredFromProto,
 	}
 	if scaffolder.DocFileNotExist() {
 		if err := scaffolder.AddDocFile(); err != nil {
@@ -236,6 +240,35 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		resourceAnnotations = append(resourceAnnotations, fmt.Sprintf("%s:%s", resource.Kind, resource.ProtoName))
 	}
 
+	// With --emit-required-from-proto, +required goes only to the structs
+	// that a Kind with the +kcc:required-from-proto marker reaches. A struct
+	// that something else also uses is written twice: the plain struct stays
+	// optional, and a <Name>Required copy enforces the proto's REQUIRED
+	// fields. The Kinds scaffolded below get the marker, so their Spec fields
+	// count as marked uses, and their Spec uses the strict options.
+	specOptions := writeOptions
+	if o.EmitRequiredFromProto {
+		uses, err := codegen.ScanRequiredUses(filepath.Join(o.OutputAPIDirectory, goPackage), o.OutputAPIDirectory, apisImportPrefix+goPackage)
+		if err != nil {
+			return fmt.Errorf("finding the uses of generated types: %w", err)
+		}
+		var newSpecFields []protoreflect.FieldDescriptor
+		if o.PrepopulateSpec {
+			for _, resource := range o.Resources {
+				if o.SkipScaffoldFiles || resource.SkipScaffoldFiles || scaffolder.TypeFileExists(resource) {
+					continue
+				}
+				msg, err := resourceMessage(api, protoFullNames[resource.Kind])
+				if err != nil {
+					return err
+				}
+				newSpecFields = append(newSpecFields, scaffold.SpecFields(msg, writeOptions)...)
+			}
+		}
+		typeGenerator.PlanRequiredStructs(uses, newSpecFields)
+		specOptions = typeGenerator.StrictWriteOptions()
+	}
+
 	generatedFileAnnotation := &annotations.FileAnnotation{
 		Key: "+generated:types",
 		Attributes: map[string][]string{
@@ -269,7 +302,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 					if err != nil {
 						return err
 					}
-					prepopulated, err = scaffold.PrepopulateSpec(msg, writeOptions)
+					prepopulated, err = scaffold.PrepopulateSpec(msg, specOptions)
 					if err != nil {
 						return fmt.Errorf("prepopulating spec for %s: %w", resource.Kind, err)
 					}
