@@ -106,3 +106,8 @@ func IsIdentityReason(reason string) bool {
 // objects that omit it, so a person decides: an alpha Kind may take the break,
 // and a beta or stable Kind keeps the field optional.
 const ReasonRequiredNotEnforced = "required-not-enforced"
+
+// ReasonUntriagedBulkGeneration marks a Kind that nobody has reviewed yet.
+// PrepopulateSpec queues it for each new Kind. While it is open,
+// generate-types runs the per-Kind checks again for that Kind.
+const ReasonUntriagedBulkGeneration = "untriaged-bulk-generation"
