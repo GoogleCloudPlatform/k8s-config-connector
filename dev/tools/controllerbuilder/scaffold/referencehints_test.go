@@ -92,12 +92,12 @@ func TestReferenceHintsQueuesNotRepresentableFields(t *testing.T) {
 		{
 			FieldPath: ".spec.outputURI",
 			Reason:    "reference-not-representable",
-			Detail:    "gcs-object-path-string-for-now-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string",
+			Detail:    "gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string",
 		},
 		{
 			FieldPath: ".spec.gcsSource",
 			Reason:    "reference-not-representable",
-			Detail:    "gcs-scheme-not-a-gcp-resource-name: names another resource, but KCC cannot express it as a reference today, so it stays a string",
+			Detail:    "gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string",
 		},
 	}
 
