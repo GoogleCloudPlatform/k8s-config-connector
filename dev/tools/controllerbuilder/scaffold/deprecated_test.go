@@ -15,15 +15,12 @@
 package scaffold
 
 import (
-	"go/parser"
-	"go/token"
-	"slices"
-	"strings"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
 
+	"github.com/google/go-cmp/cmp"
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protodesc"
@@ -31,14 +28,36 @@ import (
 	"google.golang.org/protobuf/types/descriptorpb"
 )
 
-// TestPrepopulateSpecLeavesOutDeprecatedFields pins that a deprecated top-level
-// field is left out of the Spec with exactly one queue entry. network also has
-// a resource_reference, so without the skip it would get a possible-reference
-// entry for a field the Spec does not have. create_time is OUTPUT_ONLY, so it
-// goes to ObservedState as before and gets no entry here.
+// A deprecated top-level field is left out of the Spec and gets one queue
+// entry. network also has a resource_reference, so without the check it would
+// also get a possible-reference entry for a field the Spec does not have.
+// create_time is OUTPUT_ONLY, so it goes to ObservedState as before and gets no
+// entry here.
 func TestPrepopulateSpecLeavesOutDeprecatedFields(t *testing.T) {
 	// Arrange
 	msg := deprecatedMessage(t)
+	const detail = "the proto marks this field deprecated, so new Kinds leave it out of the Spec. " +
+		"If this Spec still has it, remove it by hand; add it back only if users still need it"
+	want := &PrepopulateResult{
+		SpecFields: "\t// +kcc:proto:field=google.cloud.test.v1.Widget.display_name\n" +
+			"\tDisplayName *string `json:\"displayName,omitempty\"`\n" +
+			"\n" +
+			"\t// +kcc:proto:field=google.cloud.test.v1.Widget.config\n" +
+			"\tConfig *Config `json:\"config,omitempty\"`\n" +
+			"\n" +
+			"\t// +kcc:proto:field=google.cloud.test.v1.Widget.peers\n" +
+			"\tPeers []Config `json:\"peers,omitempty\"`\n" +
+			"\n" +
+			"\t// Output only. The state of the widget.\n" +
+			"\t// +kcc:proto:field=google.cloud.test.v1.Widget.server_state\n" +
+			"\tServerState *string `json:\"serverState,omitempty\"`\n",
+		Judgement: []JudgementItem{
+			{Reason: "untriaged-bulk-generation", Detail: "spec was generated from proto definition; verify refs, omissions, and KRM conventions"},
+			{FieldPath: ".spec.network", Reason: "deprecated-field", Detail: detail},
+			{FieldPath: ".spec.legacyConfig", Reason: "deprecated-field", Detail: detail},
+			{FieldPath: ".spec.serverNote", Reason: "deprecated-field", Detail: detail},
+		},
+	}
 
 	// Act
 	got, err := PrepopulateSpec(msg, codegen.WriteOptions{})
@@ -47,68 +66,33 @@ func TestPrepopulateSpecLeavesOutDeprecatedFields(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	src := "package p\ntype S struct {\n" + got.SpecFields + "}\n"
-	if _, err := parser.ParseFile(token.NewFileSet(), "s.go", src, parser.AllErrors); err != nil {
-		t.Fatalf("rendered spec is not valid Go: %v\n\n%s", err, src)
-	}
-	for _, name := range []string{"display_name", "config", "peers", "server_state"} {
-		if !strings.Contains(got.SpecFields, "+kcc:proto:field=google.cloud.test.v1.Widget."+name+"\n") {
-			t.Errorf("Spec is missing %s:\n%s", name, got.SpecFields)
-		}
-	}
-	for _, name := range []string{"network", "legacy_config", "create_time", "server_note"} {
-		if strings.Contains(got.SpecFields, "+kcc:proto:field=google.cloud.test.v1.Widget."+name+"\n") {
-			t.Errorf("Spec has %s:\n%s", name, got.SpecFields)
-		}
-	}
-	var items []string
-	for _, it := range got.Judgement {
-		if it.Reason == "untriaged-bulk-generation" {
-			continue
-		}
-		items = append(items, it.FieldPath+" "+it.Reason)
-		if !strings.Contains(it.Detail, "If this Spec still has it, remove it by hand") {
-			t.Errorf("%s: detail %q does not cover a Spec that still has the field", it.FieldPath, it.Detail)
-		}
-	}
-	want := []string{
-		".spec.network deprecated-field",
-		".spec.legacyConfig deprecated-field",
-		".spec.serverNote deprecated-field",
-	}
-	if !slices.Equal(items, want) {
-		t.Errorf("queue items =\n%q\nwant\n%q", items, want)
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("PrepopulateSpec() mismatch (-want +got):\n%s", diff)
 	}
 }
 
-// TestNestedDeprecatedFields pins the paths of the nested entries. The Spec
-// holds Config directly and in a list, so each deprecated field of Config is
-// reported under both paths. legacy_config is also a Config, but it is
-// deprecated at the top level and so not in the Spec. Nothing under it is
+// The Spec holds Config directly and in a list, so each deprecated field of
+// Config is reported under both paths. legacy_config is also a Config, but it
+// is deprecated at the top level and so not in the Spec. Nothing under it is
 // reported.
 func TestNestedDeprecatedFields(t *testing.T) {
 	// Arrange
 	msg := deprecatedMessage(t)
+	const detail = "the proto marks this field deprecated. It is kept because generated structs " +
+		"can be shared with other Kinds. Remove it by hand if no existing Kind uses it"
+	want := []JudgementItem{
+		{FieldPath: ".spec.config.topK", Reason: "deprecated-field", Detail: detail},
+		{FieldPath: ".spec.config.legacyTarget", Reason: "deprecated-field", Detail: detail},
+		{FieldPath: ".spec.peers[].topK", Reason: "deprecated-field", Detail: detail},
+		{FieldPath: ".spec.peers[].legacyTarget", Reason: "deprecated-field", Detail: detail},
+	}
 
 	// Act
-	items := NestedDeprecatedFields(msg, codegen.WriteOptions{})
+	got := NestedDeprecatedFields(msg, codegen.WriteOptions{})
 
 	// Assert
-	var got []string
-	for _, it := range items {
-		got = append(got, it.FieldPath+" "+it.Reason)
-		if !strings.Contains(it.Detail, "shared with other Kinds") {
-			t.Errorf("%s: detail %q does not say why the field is kept", it.FieldPath, it.Detail)
-		}
-	}
-	want := []string{
-		".spec.config.topK deprecated-field",
-		".spec.config.legacyTarget deprecated-field",
-		".spec.peers[].topK deprecated-field",
-		".spec.peers[].legacyTarget deprecated-field",
-	}
-	if !slices.Equal(got, want) {
-		t.Errorf("NestedDeprecatedFields() =\n%q\nwant\n%q", got, want)
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("NestedDeprecatedFields() mismatch (-want +got):\n%s", diff)
 	}
 }
 
@@ -142,23 +126,19 @@ func TestDeprecatedEntriesHaveDistinctKeys(t *testing.T) {
 func TestReferenceHintsSkipsDeprecatedTopLevelFields(t *testing.T) {
 	// Arrange
 	msg := deprecatedMessage(t)
+	want := []JudgementItem{
+		{FieldPath: ".spec.config.target", Reason: "possible-reference-by-description"},
+		{FieldPath: ".spec.config.legacyTarget", Reason: "possible-reference-by-description"},
+		{FieldPath: ".spec.peers[].target", Reason: "possible-reference-by-description"},
+		{FieldPath: ".spec.peers[].legacyTarget", Reason: "possible-reference-by-description"},
+	}
 
 	// Act
-	items := ReferenceHints(msg, codegen.WriteOptions{})
+	got := ReferenceHints(msg, codegen.WriteOptions{})
 
 	// Assert
-	var got []string
-	for _, it := range items {
-		got = append(got, it.FieldPath+" "+it.Reason)
-	}
-	want := []string{
-		".spec.config.target possible-reference-by-description",
-		".spec.config.legacyTarget possible-reference-by-description",
-		".spec.peers[].target possible-reference-by-description",
-		".spec.peers[].legacyTarget possible-reference-by-description",
-	}
-	if !slices.Equal(got, want) {
-		t.Errorf("ReferenceHints() =\n%q\nwant\n%q", got, want)
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("ReferenceHints() mismatch (-want +got):\n%s", diff)
 	}
 }
 
@@ -168,17 +148,16 @@ func TestReferenceHintsSkipsDeprecatedTopLevelFields(t *testing.T) {
 func TestDetectOutputOnlySkipsDeprecatedFields(t *testing.T) {
 	// Arrange
 	msg := deprecatedMessage(t)
+	want := []OutputOnlyCandidate{
+		{FieldPath: ".spec.serverState", Comment: "Output only. The state of the widget."},
+	}
 
 	// Act
 	got := DetectOutputOnlyInComments(msg, codegen.WriteOptions{})
 
 	// Assert
-	var paths []string
-	for _, c := range got {
-		paths = append(paths, c.FieldPath)
-	}
-	if want := []string{".spec.serverState"}; !slices.Equal(paths, want) {
-		t.Errorf("got %v, want %v", paths, want)
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("DetectOutputOnlyInComments() mismatch (-want +got):\n%s", diff)
 	}
 }
 
