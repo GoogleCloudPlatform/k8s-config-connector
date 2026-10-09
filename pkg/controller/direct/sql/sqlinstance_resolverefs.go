@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
@@ -34,9 +33,6 @@ import (
 )
 
 func ResolveSQLInstanceRefs(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
-	if err := resolveCryptoKeyRef(ctx, kube, obj); err != nil {
-		return err
-	}
 	if err := resolveMasterInstanceRef(ctx, kube, obj); err != nil {
 		return err
 	}
@@ -62,51 +58,6 @@ func ResolveSQLInstanceRefs(ctx context.Context, kube client.Reader, obj *krm.SQ
 		return err
 	}
 	return nil
-}
-
-func resolveCryptoKeyRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
-	if obj.Spec.EncryptionKMSCryptoKeyRef == nil {
-		return nil
-	}
-
-	keyRef := obj.Spec.EncryptionKMSCryptoKeyRef
-
-	if keyRef.External != "" && keyRef.Name != "" {
-		return fmt.Errorf("cannot specify both spec.encryptionKMSCryptoKeyRef.external and spec.encryptionKMSCryptoKeyRef.name")
-	}
-
-	if keyRef.External != "" {
-		return nil
-	} else if keyRef.Name != "" {
-		if keyRef.Namespace == "" {
-			keyRef.Namespace = obj.Namespace
-		}
-
-		key := types.NamespacedName{
-			Namespace: keyRef.Namespace,
-			Name:      keyRef.Name,
-		}
-
-		cryptoKey := &unstructured.Unstructured{}
-		cryptoKey.SetGroupVersionKind(kmsv1beta1.KMSCryptoKeyGVK)
-		if err := kube.Get(ctx, key, cryptoKey); err != nil {
-			if apierrors.IsNotFound(err) {
-				return k8s.NewReferenceNotFoundError(kmsv1beta1.KMSCryptoKeyGVK, key)
-			}
-			return fmt.Errorf("error reading referenced KMSCryptoKey %v: %w", cryptoKey, err)
-		}
-
-		keyLink, _, err := unstructured.NestedString(cryptoKey.Object, "status", "selfLink")
-		if err != nil || keyLink == "" {
-			return fmt.Errorf("reading status.selfLink from %v %v/%v: %w", cryptoKey.GroupVersionKind().Kind, cryptoKey.GetNamespace(), cryptoKey.GetName(), err)
-		}
-
-		obj.Spec.EncryptionKMSCryptoKeyRef.External = keyLink
-
-		return nil
-	} else {
-		return fmt.Errorf("must specify either spec.encryptionKMSCryptoKeyRef.external or spec.encryptionKMSCryptoKeyRef.name")
-	}
 }
 
 func resolveMasterInstanceRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {

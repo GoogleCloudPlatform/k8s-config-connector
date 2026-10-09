@@ -76,17 +76,13 @@ func (m *secureSourceManagerInstanceModel) AdapterForObject(ctx context.Context,
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
-	}
-
-	if obj.Spec.KMSKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, u, obj.Spec.KMSKeyRef)
-		if err != nil {
-			return nil, err
-		}
-		obj.Spec.KMSKeyRef = kmsKeyRef
 	}
 
 	if obj.Spec.PrivateConfig != nil && obj.Spec.PrivateConfig.CAPoolRef != nil {
