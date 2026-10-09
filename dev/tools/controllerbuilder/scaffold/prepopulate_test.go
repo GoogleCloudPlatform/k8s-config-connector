@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
 
+	"github.com/google/go-cmp/cmp"
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protodesc"
@@ -350,27 +351,18 @@ func TestDetectOutputOnlyInComments(t *testing.T) {
 		"The display name of the widget.",                   // field_2, no signal
 		"Set by the user. Output only in some other sense.", // field_3, marker not at the front, so the weaker reason
 	)
-	want := []string{
-		".spec.field0 output-only-in-comment-only",
-		".spec.field1 output-only-in-comment-only",
-		".spec.field3 output-only-mentioned-in-comment",
+	want := []OutputOnlyCandidate{
+		{FieldPath: ".spec.field0", Reason: "output-only-in-comment-only", Comment: "Output only. Set by the server."},
+		{FieldPath: ".spec.field1", Reason: "output-only-in-comment-only", Comment: "[Output Only] IP address on the Google side."},
+		{FieldPath: ".spec.field3", Reason: "output-only-mentioned-in-comment", Comment: "Set by the user. Output only in some other sense."},
 	}
 
 	// Act
 	got := DetectOutputOnlyInComments(msg, codegen.WriteOptions{})
 
 	// Assert
-	var entries []string
-	for _, c := range got {
-		entries = append(entries, c.FieldPath+" "+c.Reason)
-	}
-	if len(entries) != len(want) {
-		t.Fatalf("got %v, want %v", entries, want)
-	}
-	for i := range want {
-		if entries[i] != want[i] {
-			t.Errorf("got %v, want %v", entries, want)
-		}
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("DetectOutputOnlyInComments() mismatch (-want +got):\n%s", diff)
 	}
 }
 
@@ -386,93 +378,55 @@ func TestDetectOutputOnlyMentionedInComment(t *testing.T) {
 		"Required. [Output Only] Set by the server.",                                // field_2, a marker further on
 		"The job output. Only the last run is kept.",                                // field_3, a sentence break
 	)
-	want := []string{
-		".spec.field0 output-only-mentioned-in-comment",
-		".spec.field1 output-only-mentioned-in-comment",
-		".spec.field2 output-only-mentioned-in-comment",
+	want := []OutputOnlyCandidate{
+		{FieldPath: ".spec.field0", Reason: "output-only-mentioned-in-comment", Comment: "Whether the scan config is managed by Web Security Scanner, output only."},
+		{FieldPath: ".spec.field1", Reason: "output-only-mentioned-in-comment", Comment: "When the version was created. Output-only field, populated by the system."},
+		{FieldPath: ".spec.field2", Reason: "output-only-mentioned-in-comment", Comment: "Required. [Output Only] Set by the server."},
 	}
 
 	// Act
 	got := DetectOutputOnlyInComments(msg, codegen.WriteOptions{})
 
 	// Assert
-	var entries []string
-	for _, c := range got {
-		entries = append(entries, c.FieldPath+" "+c.Reason)
-	}
-	if strings.Join(entries, ",") != strings.Join(want, ",") {
-		t.Errorf("got %v, want %v", entries, want)
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("DetectOutputOnlyInComments() mismatch (-want +got):\n%s", diff)
 	}
 }
 
 // TestDetectOutputOnlyWalksNestedFields pins that both checks reach the fields
-// of nested Spec structs, in a list too, and that each entry names the field's
-// place under ObservedState with the rest of its path kept.
+// of nested Spec structs, in a list too. TestOutputOnlyCandidateItem pins the
+// path the queue entry gives a nested field.
 func TestDetectOutputOnlyWalksNestedFields(t *testing.T) {
 	// Arrange
-	str := fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)
-	msgType := fieldType(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE)
-	comment := func(path []int32, text string) *descriptorpb.SourceCodeInfo_Location {
-		return &descriptorpb.SourceCodeInfo_Location{Path: path, Span: []int32{0, 0, 1}, LeadingComments: strPtr(" " + text + "\n")}
-	}
-	fd, err := protodesc.NewFile(&descriptorpb.FileDescriptorProto{
-		Name:    strPtr("nested.proto"),
-		Package: strPtr("google.cloud.test.v1"),
-		MessageType: []*descriptorpb.DescriptorProto{
-			{
-				Name: strPtr("Widget"),
-				Field: []*descriptorpb.FieldDescriptorProto{
-					{Name: strPtr("config"), Number: i32Ptr(1), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.Config")},
-					{Name: strPtr("peers"), Number: i32Ptr(2), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.Config"), Label: descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()},
-				},
-			},
-			{
-				Name: strPtr("Config"),
-				Field: []*descriptorpb.FieldDescriptorProto{
-					{Name: strPtr("state"), Number: i32Ptr(1), Type: str},
-					{Name: strPtr("managed"), Number: i32Ptr(2), Type: str},
-					{Name: strPtr("target"), Number: i32Ptr(3), Type: str},
-				},
-			},
-		},
-		SourceCodeInfo: &descriptorpb.SourceCodeInfo{Location: []*descriptorpb.SourceCodeInfo_Location{
-			comment([]int32{4, 1, 2, 0}, "Output only. The state of the config."),
-			comment([]int32{4, 1, 2, 1}, "Whether the config is managed by the service, output only."),
-			comment([]int32{4, 1, 2, 2}, "The target the config points at."),
-		}},
-	}, nil)
-	if err != nil {
-		t.Fatalf("building file descriptor: %v", err)
-	}
-	want := []string{
-		".status.observedState.config.state output-only-in-comment-only",
-		".status.observedState.config.managed output-only-mentioned-in-comment",
-		".status.observedState.peers[].state output-only-in-comment-only",
-		".status.observedState.peers[].managed output-only-mentioned-in-comment",
+	msg := nestedConfigMessage(t)
+	want := []OutputOnlyCandidate{
+		{FieldPath: ".spec.config.state", Reason: "output-only-in-comment-only", Comment: "Output only. The state of the config."},
+		{FieldPath: ".spec.config.managed", Reason: "output-only-mentioned-in-comment", Comment: "Whether the config is managed by the service, output only."},
+		{FieldPath: ".spec.peers[].state", Reason: "output-only-in-comment-only", Comment: "Output only. The state of the config."},
+		{FieldPath: ".spec.peers[].managed", Reason: "output-only-mentioned-in-comment", Comment: "Whether the config is managed by the service, output only."},
 	}
 
 	// Act
-	cands := DetectOutputOnlyInComments(fd.Messages().ByName("Widget"), codegen.WriteOptions{})
+	got := DetectOutputOnlyInComments(msg, codegen.WriteOptions{})
 
 	// Assert
-	var got []string
-	for _, c := range cands {
-		it := c.Item()
-		got = append(got, it.FieldPath+" "+it.Reason)
-	}
-	if strings.Join(got, "\n") != strings.Join(want, "\n") {
-		t.Errorf("got\n%s\nwant\n%s", strings.Join(got, "\n"), strings.Join(want, "\n"))
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("DetectOutputOnlyInComments() mismatch (-want +got):\n%s", diff)
 	}
 }
 
-// TestOutputOnlyCandidateItem pins the entry for each reason. The detail ends
-// with the comment, so a reviewer can decide without opening the proto.
+// TestOutputOnlyCandidateItem pins the entry for each reason. The entry names
+// the field's place under ObservedState, with the rest of a nested path kept.
+// The detail ends with the comment, so a reviewer can decide without opening
+// the proto.
 func TestOutputOnlyCandidateItem(t *testing.T) {
 	for _, tc := range []struct {
+		name string
 		cand OutputOnlyCandidate
 		want JudgementItem
 	}{
 		{
+			name: "comment starts with the marker",
 			cand: OutputOnlyCandidate{FieldPath: ".spec.createTime", Reason: "output-only-in-comment-only", Comment: "Output only. When it was created."},
 			want: JudgementItem{
 				FieldPath: ".status.observedState.createTime",
@@ -481,6 +435,7 @@ func TestOutputOnlyCandidateItem(t *testing.T) {
 			},
 		},
 		{
+			name: "comment mentions the words in a nested field",
 			cand: OutputOnlyCandidate{FieldPath: ".spec.config.managedScan", Reason: "output-only-mentioned-in-comment", Comment: "Whether the scan config is managed by Web Security Scanner, output only."},
 			want: JudgementItem{
 				FieldPath: ".status.observedState.config.managedScan",
@@ -490,13 +445,13 @@ func TestOutputOnlyCandidateItem(t *testing.T) {
 			},
 		},
 	} {
-		t.Run(tc.cand.Reason, func(t *testing.T) {
+		t.Run(tc.name, func(t *testing.T) {
 			// Act
 			got := tc.cand.Item()
 
 			// Assert
-			if got != tc.want {
-				t.Errorf("Item() =\n%+v\nwant\n%+v", got, tc.want)
+			if diff := cmp.Diff(tc.want, got); diff != "" {
+				t.Errorf("Item() mismatch (-want +got):\n%s", diff)
 			}
 		})
 	}
@@ -621,6 +576,48 @@ func namedCommentedMessage(t *testing.T, named [][2]string) protoreflect.Message
 		SourceCodeInfo: &descriptorpb.SourceCodeInfo{Location: locs},
 	}
 	fd, err := protodesc.NewFile(fdp, nil)
+	if err != nil {
+		t.Fatalf("building file descriptor: %v", err)
+	}
+	return fd.Messages().ByName("Widget")
+}
+
+// nestedConfigMessage builds a Widget that holds a Config directly and in a
+// list. Config's state comment starts with "Output only.", managed's says it
+// further on, and target's says nothing about it.
+func nestedConfigMessage(t *testing.T) protoreflect.MessageDescriptor {
+	t.Helper()
+	str := fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)
+	msgType := fieldType(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE)
+	comment := func(path []int32, text string) *descriptorpb.SourceCodeInfo_Location {
+		return &descriptorpb.SourceCodeInfo_Location{Path: path, Span: []int32{0, 0, 1}, LeadingComments: strPtr(" " + text + "\n")}
+	}
+	fd, err := protodesc.NewFile(&descriptorpb.FileDescriptorProto{
+		Name:    strPtr("nested.proto"),
+		Package: strPtr("google.cloud.test.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name: strPtr("Widget"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("config"), Number: i32Ptr(1), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.Config")},
+					{Name: strPtr("peers"), Number: i32Ptr(2), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.Config"), Label: descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()},
+				},
+			},
+			{
+				Name: strPtr("Config"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("state"), Number: i32Ptr(1), Type: str},
+					{Name: strPtr("managed"), Number: i32Ptr(2), Type: str},
+					{Name: strPtr("target"), Number: i32Ptr(3), Type: str},
+				},
+			},
+		},
+		SourceCodeInfo: &descriptorpb.SourceCodeInfo{Location: []*descriptorpb.SourceCodeInfo_Location{
+			comment([]int32{4, 1, 2, 0}, "Output only. The state of the config."),
+			comment([]int32{4, 1, 2, 1}, "Whether the config is managed by the service, output only."),
+			comment([]int32{4, 1, 2, 2}, "The target the config points at."),
+		}},
+	}, nil)
 	if err != nil {
 		t.Fatalf("building file descriptor: %v", err)
 	}

@@ -267,6 +267,12 @@ func ExtraImportsFor(bodies ...string) []string {
 	return out
 }
 
+// Reasons for an OutputOnlyCandidate.
+const (
+	reasonOutputOnlyInComment = "output-only-in-comment-only"
+	reasonOutputOnlyMentioned = "output-only-mentioned-in-comment"
+)
+
 // OutputOnlyCandidate is a field the proto documents as output-only in prose
 // while carrying no google.api.field_behavior annotation to say so.
 type OutputOnlyCandidate struct {
@@ -281,12 +287,6 @@ type OutputOnlyCandidate struct {
 	// opening the proto.
 	Comment string
 }
-
-// Reasons for an OutputOnlyCandidate.
-const (
-	reasonOutputOnlyInComment = "output-only-in-comment-only"
-	reasonOutputOnlyMentioned = "output-only-mentioned-in-comment"
-)
 
 // Item returns the queue entry for c.
 //
