@@ -23,6 +23,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -73,13 +74,6 @@ func (a *WorkflowsWorkflowAdapter) normalizeReference(ctx context.Context) error
 			return err
 		}
 	}
-	if obj.Spec.KMSCryptoKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.KMSCryptoKeyRef)
-		if err != nil {
-			return err
-		}
-		obj.Spec.KMSCryptoKeyRef = kmsKeyRef
-	}
 	return nil
 }
 
@@ -93,6 +87,10 @@ func (m *modelWorkflowsWorkflow) AdapterForObject(ctx context.Context, op *direc
 
 	id, err := krm.NewWorkflowsWorkflowIdentity(ctx, reader, obj)
 	if err != nil {
+		return nil, err
+	}
+
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
 		return nil, err
 	}
 
