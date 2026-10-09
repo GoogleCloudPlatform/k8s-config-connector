@@ -22,6 +22,7 @@ import (
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
 
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/proto"
@@ -66,14 +67,14 @@ func TestPrepopulateSpecLeavesOutDeprecatedFields(t *testing.T) {
 			continue
 		}
 		items = append(items, it.FieldPath+" "+it.Reason)
-		if !strings.Contains(it.Detail, "left out of the Spec") {
-			t.Errorf("%s: detail %q does not say the field was left out", it.FieldPath, it.Detail)
+		if !strings.Contains(it.Detail, "If this Spec still has it, remove it by hand") {
+			t.Errorf("%s: detail %q does not cover a Spec that still has the field", it.FieldPath, it.Detail)
 		}
 	}
 	want := []string{
-		".spec.network deprecated-field-omitted",
-		".spec.legacyConfig deprecated-field-omitted",
-		".spec.serverNote deprecated-field-omitted",
+		".spec.network deprecated-field",
+		".spec.legacyConfig deprecated-field",
+		".spec.serverNote deprecated-field",
 	}
 	if !slices.Equal(items, want) {
 		t.Errorf("queue items =\n%q\nwant\n%q", items, want)
@@ -108,6 +109,29 @@ func TestNestedDeprecatedFields(t *testing.T) {
 	}
 	if !slices.Equal(got, want) {
 		t.Errorf("NestedDeprecatedFields() =\n%q\nwant\n%q", got, want)
+	}
+}
+
+// Top-level and nested entries share the reason deprecated-field, so they must
+// never share a path. If they did, the queue would keep one entry, with the
+// detail of whichever came last. walkSpecFields skips deprecated top-level
+// fields, which keeps the paths apart.
+func TestDeprecatedEntriesHaveDistinctKeys(t *testing.T) {
+	// Arrange
+	msg := deprecatedMessage(t)
+	spec, err := PrepopulateSpec(msg, codegen.WriteOptions{})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	items := append(spec.Judgement, NestedDeprecatedFields(msg, codegen.WriteOptions{})...)
+
+	// Act
+	q := &judgement.Queue{Entries: JudgementEntries("ExampleWidget", "example.cnrm.cloud.google.com", items)}
+	err = q.Validate()
+
+	// Assert
+	if err != nil {
+		t.Errorf("queue does not validate: %v", err)
 	}
 }
 

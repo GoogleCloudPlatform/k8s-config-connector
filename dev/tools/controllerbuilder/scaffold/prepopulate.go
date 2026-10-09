@@ -110,12 +110,15 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 		// Leave out a field the proto marks deprecated, so a new Kind does not
 		// start with it. walkSpecFields and DetectOutputOnlyInComments skip it
 		// too, or their entries would name a path the CRD does not have.
+		//
+		// A types file scaffolded before this check can still have the field,
+		// so the detail says what to do in both cases.
 		if isDeprecated(field) {
 			out.Judgement = append(out.Judgement, JudgementItem{
 				FieldPath: ".spec." + codegen.GetJSONForKRM(field, opts),
-				Reason:    "deprecated-field-omitted",
-				Detail: "the proto marks this field deprecated, so it was left out of the Spec. " +
-					"Add it back by hand if users still need it",
+				Reason:    "deprecated-field",
+				Detail: "the proto marks this field deprecated, so new Kinds leave it out of the Spec. " +
+					"If this Spec still has it, remove it by hand; add it back only if users still need it",
 			})
 			continue
 		}

@@ -35,6 +35,9 @@ func isDeprecated(field protoreflect.FieldDescriptor) bool {
 // field stays in its struct. The struct is written to types.generated.go, where
 // existing Kinds can use it too, and dropping the field there would change
 // their CRDs.
+//
+// The items use the same reason as the top-level ones from PrepopulateSpec.
+// Their paths differ, so their queue keys do not collide.
 func NestedDeprecatedFields(msg protoreflect.MessageDescriptor, opts codegen.WriteOptions) []JudgementItem {
 	var out []JudgementItem
 	walkSpecFields(msg, ".spec", opts, true, map[protoreflect.FullName]bool{}, func(path, _ string, field protoreflect.FieldDescriptor) {
