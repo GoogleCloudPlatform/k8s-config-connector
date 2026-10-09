@@ -144,7 +144,7 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 				})
 			}
 		}
-		if item, ok := judgementFor(field, opts); ok {
+		if item, ok := judgementFor(field, ".spec."+codegen.GetJSONForKRM(field, opts)); ok {
 			out.Judgement = append(out.Judgement, item)
 		}
 	}
@@ -209,7 +209,9 @@ func PrepopulateObservedState(details *codegen.OutputMessageDetails, observedSta
 
 // judgementFor checks whether a proto field carries a google.api.resource_reference
 // annotation and returns a JudgementItem proposing it as a reference candidate.
-func judgementFor(field protoreflect.FieldDescriptor, opts codegen.WriteOptions) (JudgementItem, bool) {
+// path is the field's KRM path. PrepopulateSpec calls it for top-level fields,
+// and ReferenceHints for nested ones.
+func judgementFor(field protoreflect.FieldDescriptor, path string) (JudgementItem, bool) {
 	if field.Options() == nil {
 		return JudgementItem{}, false
 	}
@@ -218,18 +220,22 @@ func judgementFor(field protoreflect.FieldDescriptor, opts codegen.WriteOptions)
 	if rr == nil {
 		return JudgementItem{}, false
 	}
-	target := rr.GetType()
-	if target == "" {
-		target = rr.GetChildType()
-	}
-	if target == "" {
+	var detail string
+	switch {
+	case rr.GetType() != "":
+		detail = "the proto marks this field as a reference to " + rr.GetType() +
+			" (google.api.resource_reference); confirm whether it should be a KCC reference"
+	case rr.GetChildType() != "":
+		detail = "the proto marks this field as the parent of a " + rr.GetChildType() +
+			" (google.api.resource_reference child_type); confirm whether it should be a KCC reference"
+	default:
 		return JudgementItem{}, false
 	}
 
 	return JudgementItem{
-		FieldPath: ".spec." + codegen.GetJSONForKRM(field, opts),
+		FieldPath: path,
 		Reason:    judgement.ReasonPossibleReference,
-		Detail:    "target=" + target,
+		Detail:    detail,
 	}, true
 }
 
@@ -333,7 +339,7 @@ func DetectOutputOnlyInComments(msg protoreflect.MessageDescriptor, opts codegen
 	// ObservedState with its own queue entry. It also skips fields the
 	// generator cannot type, which never reach the CRD, and fields it writes
 	// as references.
-	walkSpecFields(msg, ".spec", opts, true, map[protoreflect.FullName]bool{}, func(path, comment string) {
+	walkSpecFields(msg, ".spec", opts, true, map[protoreflect.FullName]bool{}, func(path, comment string, _ protoreflect.FieldDescriptor) {
 		if reason, ok := outputOnlyReason(comment); ok {
 			out = append(out, OutputOnlyCandidate{FieldPath: path, Reason: reason, Comment: comment})
 		}

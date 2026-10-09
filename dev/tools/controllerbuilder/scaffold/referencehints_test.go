@@ -22,59 +22,57 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/genproto/googleapis/api/annotations"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protodesc"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/descriptorpb"
 )
 
-// TestReferenceHints pins the paths and reasons the walk files. A person finds
-// each path in the CRD, so a path must use the CRD's spelling at every depth,
-// and a field the Spec does not contain must not be reported.
+// TestReferenceHints pins the paths, reasons and details the walk files. A
+// person finds each path in the CRD, so a path must use the CRD's spelling at
+// every depth, and a field the Spec does not contain must not be reported.
 func TestReferenceHints(t *testing.T) {
 	// Arrange
 	msg := referenceHintsMessage(t)
+	const templateRule = `the description has the resource-name template "projects/{project}/topics/{topic}"`
 
 	for _, tc := range []struct {
 		name string
 		opts codegen.WriteOptions
-		want []string
+		want []JudgementItem
 	}{
 		{
 			name: "message maps off leaves the map out of the Spec",
 			opts: codegen.WriteOptions{},
-			want: []string{
-				".spec.network possible-reference-by-name ComputeNetworkRef",
-				".spec.config.target possible-reference-by-description ",
-				".spec.config.profile possible-reference-by-description-loose ",
-				".spec.peers[].target possible-reference-by-description ",
-				".spec.peers[].profile possible-reference-by-description-loose ",
+			want: []JudgementItem{
+				{FieldPath: ".spec.network", Reason: "possible-reference-by-name", Detail: "ComputeNetworkRef"},
+				{FieldPath: ".spec.config.target", Reason: "possible-reference-by-description", Detail: templateRule},
+				{FieldPath: ".spec.config.profile", Reason: "possible-reference-by-description-loose"},
+				{FieldPath: ".spec.peers[].target", Reason: "possible-reference-by-description", Detail: templateRule},
+				{FieldPath: ".spec.peers[].profile", Reason: "possible-reference-by-description-loose"},
 			},
 		},
 		{
 			name: "message maps on puts the map's fields under KEY",
 			opts: codegen.WriteOptions{EmitMessageMaps: true},
-			want: []string{
-				".spec.network possible-reference-by-name ComputeNetworkRef",
-				".spec.config.target possible-reference-by-description ",
-				".spec.config.profile possible-reference-by-description-loose ",
-				".spec.peers[].target possible-reference-by-description ",
-				".spec.peers[].profile possible-reference-by-description-loose ",
-				".spec.byKey.KEY.target possible-reference-by-description ",
-				".spec.byKey.KEY.profile possible-reference-by-description-loose ",
+			want: []JudgementItem{
+				{FieldPath: ".spec.network", Reason: "possible-reference-by-name", Detail: "ComputeNetworkRef"},
+				{FieldPath: ".spec.config.target", Reason: "possible-reference-by-description", Detail: templateRule},
+				{FieldPath: ".spec.config.profile", Reason: "possible-reference-by-description-loose"},
+				{FieldPath: ".spec.peers[].target", Reason: "possible-reference-by-description", Detail: templateRule},
+				{FieldPath: ".spec.peers[].profile", Reason: "possible-reference-by-description-loose"},
+				{FieldPath: ".spec.byKey.KEY.target", Reason: "possible-reference-by-description", Detail: templateRule},
+				{FieldPath: ".spec.byKey.KEY.profile", Reason: "possible-reference-by-description-loose"},
 			},
 		},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			// Act
-			items := ReferenceHints(msg, tc.opts)
+			got := ReferenceHints(msg, tc.opts)
 
 			// Assert
-			var got []string
-			for _, it := range items {
-				got = append(got, it.FieldPath+" "+it.Reason+" "+it.Detail)
-			}
-			if !slices.Equal(got, tc.want) {
-				t.Errorf("ReferenceHints() =\n%q\nwant\n%q", got, tc.want)
+			if diff := cmp.Diff(tc.want, got); diff != "" {
+				t.Errorf("ReferenceHints() mismatch (-want +got):\n%s", diff)
 			}
 		})
 	}
@@ -123,6 +121,42 @@ func TestReferenceHintsQueuesSensitiveFields(t *testing.T) {
 		{FieldPath: ".spec.authentication.googleAccount.password", Reason: "sensitive-field", Detail: detail},
 		{FieldPath: ".spec.authentication.customAccount.password", Reason: "sensitive-field", Detail: detail},
 		{FieldPath: ".spec.rootPassword", Reason: "sensitive-field", Detail: detail},
+	}
+
+	// Act
+	got := ReferenceHints(msg, codegen.WriteOptions{})
+
+	// Assert
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("ReferenceHints() mismatch (-want +got):\n%s", diff)
+	}
+}
+
+// TestReferenceHintsQueuesNestedResourceReferences pins the possible-reference
+// entry for a nested field that carries google.api.resource_reference, with
+// the detail PrepopulateSpec gives a top-level one. ragCorpus's description
+// matches Classify as well, and both entries stay: they are separate signals.
+// The top-level corpus and parent fields get no entry here, because
+// PrepopulateSpec queues them; see TestPrepopulateSpecQueuesResourceReferences.
+func TestReferenceHintsQueuesNestedResourceReferences(t *testing.T) {
+	// Arrange
+	msg := ragStoreMessage(t)
+	want := []JudgementItem{
+		{
+			FieldPath: ".spec.ragResources[].ragCorpus",
+			Reason:    "possible-reference",
+			Detail:    "the proto marks this field as a reference to aiplatform.googleapis.com/RagCorpus (google.api.resource_reference); confirm whether it should be a KCC reference",
+		},
+		{
+			FieldPath: ".spec.ragResources[].ragCorpus",
+			Reason:    "possible-reference-by-description",
+			Detail:    `the description has the resource-name template "projects/{project}/locations/{location}/ragCorpora/{rag_corpus}"`,
+		},
+		{
+			FieldPath: ".spec.ragResources[].parent",
+			Reason:    "possible-reference",
+			Detail:    "the proto marks this field as the parent of a aiplatform.googleapis.com/RagFile (google.api.resource_reference child_type); confirm whether it should be a KCC reference",
+		},
 	}
 
 	// Act
@@ -291,4 +325,56 @@ func scanConfigMessage(t *testing.T) protoreflect.MessageDescriptor {
 		t.Fatalf("building file descriptor: %v", err)
 	}
 	return fd.Messages().ByName("ScanConfig")
+}
+
+// ragStoreMessage builds a cut-down aiplatform VertexRagStore. It has a field
+// with each form of google.api.resource_reference at the top level, corpus
+// with type and parent with child_type, and the same two in the nested
+// RagResource. ragCorpus also has its real comment, which spells out a
+// resource-name template.
+func ragStoreMessage(t *testing.T) protoreflect.MessageDescriptor {
+	t.Helper()
+	str := fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)
+	reference := func(rr *annotations.ResourceReference) *descriptorpb.FieldOptions {
+		o := &descriptorpb.FieldOptions{}
+		proto.SetExtension(o, annotations.E_ResourceReference, rr)
+		return o
+	}
+	toCorpus := &annotations.ResourceReference{Type: "aiplatform.googleapis.com/RagCorpus"}
+	parentOfFile := &annotations.ResourceReference{ChildType: "aiplatform.googleapis.com/RagFile"}
+	fd, err := protodesc.NewFile(&descriptorpb.FileDescriptorProto{
+		Name:    strPtr("vertex_rag_store.proto"),
+		Package: strPtr("google.cloud.aiplatform.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{{
+			Name: strPtr("VertexRagStore"),
+			NestedType: []*descriptorpb.DescriptorProto{{
+				Name: strPtr("RagResource"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("rag_corpus"), Number: i32Ptr(1), Type: str, Options: reference(toCorpus)},
+					{Name: strPtr("parent"), Number: i32Ptr(2), Type: str, Options: reference(parentOfFile)},
+				},
+			}},
+			Field: []*descriptorpb.FieldDescriptorProto{
+				{Name: strPtr("corpus"), Number: i32Ptr(1), Type: str, Options: reference(toCorpus)},
+				{Name: strPtr("parent"), Number: i32Ptr(2), Type: str, Options: reference(parentOfFile)},
+				{
+					Name:     strPtr("rag_resources"),
+					Number:   i32Ptr(3),
+					Type:     fieldType(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE),
+					TypeName: strPtr(".google.cloud.aiplatform.v1.VertexRagStore.RagResource"),
+					Label:    descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum(),
+				},
+			},
+		}},
+		SourceCodeInfo: &descriptorpb.SourceCodeInfo{Location: []*descriptorpb.SourceCodeInfo_Location{{
+			// [4=message_type 0, 3=nested_type 0, 2=field 0] is RagResource.rag_corpus.
+			Path:            []int32{4, 0, 3, 0, 2, 0},
+			Span:            []int32{0, 0, 1},
+			LeadingComments: strPtr(" Optional. RagCorpora resource name.\n Format:\n `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}`\n"),
+		}}},
+	}, nil)
+	if err != nil {
+		t.Fatalf("building file descriptor: %v", err)
+	}
+	return fd.Messages().ByName("VertexRagStore")
 }

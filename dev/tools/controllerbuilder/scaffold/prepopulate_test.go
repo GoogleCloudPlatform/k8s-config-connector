@@ -210,6 +210,42 @@ func TestPrepopulateSpecQueuesTheEmittedName(t *testing.T) {
 	}
 }
 
+// TestPrepopulateSpecQueuesResourceReferences pins the possible-reference entry
+// for a top-level field that carries google.api.resource_reference, with type
+// and with child_type. ReferenceHints queues the nested ones; see
+// TestReferenceHintsQueuesNestedResourceReferences.
+func TestPrepopulateSpecQueuesResourceReferences(t *testing.T) {
+	// Arrange
+	msg := ragStoreMessage(t)
+	want := []JudgementItem{
+		{
+			Reason: "untriaged-bulk-generation",
+			Detail: "spec was generated from proto definition; verify refs, omissions, and KRM conventions",
+		},
+		{
+			FieldPath: ".spec.corpus",
+			Reason:    "possible-reference",
+			Detail:    "the proto marks this field as a reference to aiplatform.googleapis.com/RagCorpus (google.api.resource_reference); confirm whether it should be a KCC reference",
+		},
+		{
+			FieldPath: ".spec.parent",
+			Reason:    "possible-reference",
+			Detail:    "the proto marks this field as the parent of a aiplatform.googleapis.com/RagFile (google.api.resource_reference child_type); confirm whether it should be a KCC reference",
+		},
+	}
+
+	// Act
+	got, err := PrepopulateSpec(msg, codegen.WriteOptions{})
+
+	// Assert
+	if err != nil {
+		t.Fatalf("PrepopulateSpec() error: %v", err)
+	}
+	if diff := cmp.Diff(want, got.Judgement); diff != "" {
+		t.Errorf("PrepopulateSpec() Judgement mismatch (-want +got):\n%s", diff)
+	}
+}
+
 func TestPrepopulateSpecRequiresAMessage(t *testing.T) {
 	if _, err := PrepopulateSpec(nil, codegen.WriteOptions{}); err == nil {
 		t.Fatal("expected an error for a nil message")

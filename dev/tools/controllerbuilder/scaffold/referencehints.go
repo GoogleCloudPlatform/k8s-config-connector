@@ -30,9 +30,19 @@ import (
 // A field the rules say names another resource in a way KCC cannot express as
 // a reference gets an entry too, so a reviewer sees why it stays a string.
 // So does a field whose name says it holds a password.
+//
+// It also queues a nested field that carries a google.api.resource_reference
+// annotation, with the reason and detail PrepopulateSpec gives a top-level one.
 func ReferenceHints(msg protoreflect.MessageDescriptor, opts codegen.WriteOptions) []JudgementItem {
 	var out []JudgementItem
-	walkSpecFields(msg, ".spec", opts, true, map[protoreflect.FullName]bool{}, func(path, desc string) {
+	walkSpecFields(msg, ".spec", opts, true, map[protoreflect.FullName]bool{}, func(path, desc string, field protoreflect.FieldDescriptor) {
+		// PrepopulateSpec checks the annotation on top-level fields. The walk
+		// never enters msg again, so a field of msg is a top-level one.
+		if field.ContainingMessage().FullName() != msg.FullName() {
+			if item, ok := judgementFor(field, path); ok {
+				out = append(out, item)
+			}
+		}
 		if item, ok := referenceHint(path, desc); ok {
 			out = append(out, item)
 		}
@@ -56,7 +66,7 @@ func ReferenceHints(msg protoreflect.MessageDescriptor, opts codegen.WriteOption
 // onPath holds the messages between msg and the root. Proto messages can
 // contain themselves, and the generated struct breaks the cycle with a
 // pointer, so a message already on the path is not entered again.
-func walkSpecFields(msg protoreflect.MessageDescriptor, prefix string, opts codegen.WriteOptions, top bool, onPath map[protoreflect.FullName]bool, visit func(path, desc string)) {
+func walkSpecFields(msg protoreflect.MessageDescriptor, prefix string, opts codegen.WriteOptions, top bool, onPath map[protoreflect.FullName]bool, visit func(path, desc string, field protoreflect.FieldDescriptor)) {
 	if onPath[msg.FullName()] {
 		return
 	}
@@ -88,7 +98,7 @@ func walkSpecFields(msg protoreflect.MessageDescriptor, prefix string, opts code
 		}
 
 		path := prefix + "." + codegen.GetJSONForKRM(field, opts)
-		visit(path, fieldComment(field))
+		visit(path, fieldComment(field), field)
 
 		switch {
 		case field.IsMap():
@@ -127,16 +137,20 @@ func fieldComment(field protoreflect.FieldDescriptor) string {
 
 // referenceHint returns the queue entry the rules give a field, trying the
 // strict description rule, then the loose one, then the name rules. A verdict
-// from the strict rule ends the search. A field Classify calls
-// NotRepresentable gets an entry that says so, rather than a looser hint that
-// would contradict it.
+// from the strict rule ends the search. Its entry says which of Classify's
+// rules matched. A field Classify calls NotRepresentable gets an entry that
+// says so, rather than a looser hint that would contradict it.
 func referenceHint(path, desc string) (JudgementItem, bool) {
 	if refs.IsReferenceFieldPath(path) {
 		return JudgementItem{}, false
 	}
 	switch verdict, reason := refs.Classify(path, desc); verdict {
 	case refs.IsReference:
-		return JudgementItem{FieldPath: path, Reason: judgement.ReasonPossibleReferenceByDescription}, true
+		return JudgementItem{
+			FieldPath: path,
+			Reason:    judgement.ReasonPossibleReferenceByDescription,
+			Detail:    strings.Join(refs.ReferenceRules(path, desc), "; "),
+		}, true
 	case refs.NotRepresentable:
 		return JudgementItem{
 			FieldPath: path,
