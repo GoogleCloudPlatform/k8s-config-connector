@@ -207,7 +207,7 @@ const header = `# Judgement queue for this service, written by controllerbuilder
 #
 # While a possible-reference entry is open, TestMissingRefs does not fail on
 # that field. Once it is resolved, the field is checked like any other. A field
-# can have several such entries, one per signal. Give them all the same
+# can have several of these entries, one per signal. Give them all the same
 # status, or tests/apichecks fails.
 `
 

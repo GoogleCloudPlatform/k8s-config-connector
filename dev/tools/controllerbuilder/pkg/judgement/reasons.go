@@ -47,9 +47,9 @@ var referenceReasons = map[string]bool{
 
 // ReasonReferenceNotRepresentable: refs.Classify says the field names another
 // resource, but KCC cannot express it as a reference today, so it stays a
-// string. It is not a reference reason. TestMissingRefs lists such a field in
-// refs_not_representable.txt and never fails on it, so an open entry must not
-// hide anything.
+// string. This is not a reference reason. TestMissingRefs lists such a field
+// in refs_not_representable.txt and never fails on it, so an open entry has
+// nothing to hide.
 const ReasonReferenceNotRepresentable = "reference-not-representable"
 
 // IsReferenceReason reports whether reason says a field may need to be a

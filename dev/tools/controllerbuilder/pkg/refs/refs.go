@@ -73,17 +73,17 @@ func Classify(fieldPath, desc string) (Verdict, string) {
 	// Proto-level resource references (google.api.resource_reference) are resolved
 	// in the proto generator where the proto field descriptors are available.
 	// In Classify, which operates on KRM field paths and doc strings without direct
-	// proto context, heuristics are used instead. ReferenceRules applies them.
+	// proto context, heuristics are used instead. They live in ReferenceRules.
 	isRef := len(ReferenceRules(fieldPath, desc)) > 0
 
 	if !isRef {
-		// A gs:// URI names a Cloud Storage object or prefix, which is not a
-		// GCP resource name, so no KCC reference can hold it. config's
-		// terraformBlueprint.gcsSource reads "Format: gs://{bucket}/{object}".
-		// The Cloud Storage rules in notRepresentableReason only look at uri
-		// and url fields, so this catches the rest. It runs after every rule
-		// above, so a field one of them matched, such as a pattern field or a
-		// bucket field, keeps its verdict.
+		// A gs:// URI names a Cloud Storage object or prefix. That is not a
+		// GCP resource name, so a KCC reference cannot hold it. For example,
+		// config's terraformBlueprint.gcsSource says
+		// "Format: gs://{bucket}/{object}". notRepresentableReason only
+		// checks uri and url fields for Cloud Storage, so this catches the
+		// rest. It only runs when no earlier rule matched, so a field that one
+		// did, such as a pattern or bucket field, keeps its verdict.
 		if strings.Contains(desc, "gs://") {
 			return NotRepresentable, "gcs-scheme-not-a-gcp-resource-name"
 		}
@@ -106,10 +106,11 @@ func Classify(fieldPath, desc string) (Verdict, string) {
 }
 
 // ReferenceRules returns the rules that say a field names another resource,
-// each as a short phrase a person can check against the field. Classify calls
-// a field IsReference when one of them matches, unless one of its other checks
-// decides first, so the result only means something for a field Classify
-// calls IsReference.
+// each as a short phrase a reviewer can check against the field.
+//
+// Classify calls a field IsReference when any rule matches, unless one of its
+// other checks decides first. So the result only means something for a field
+// that Classify calls IsReference.
 func ReferenceRules(fieldPath, desc string) []string {
 	var rules []string
 
@@ -128,7 +129,8 @@ func ReferenceRules(fieldPath, desc string) []string {
 	// A Cloud Storage bucket reference is expressible today:
 	// StorageBucketIdentity.FromExternal accepts the bare "gs://<bucket>"
 	// form (apis/storage/v1beta1/storagebucket_identity.go).
-	// Classify runs notRepresentableReason first, which handles object paths.
+	// Classify handles object paths before it calls this, in
+	// notRepresentableReason.
 	if hasToken(fieldPath, "bucket") && mentionsCloudStorage(desc) {
 		rules = append(rules, "the field name has bucket and the description mentions Cloud Storage")
 	}
@@ -169,11 +171,11 @@ func resourceNameTemplate(desc string) string {
 	return ""
 }
 
-// wordAt returns the word of desc that contains index i. A word ends at white
-// space, a quote or a backtick. An opening parenthesis before the word and
-// punctuation after it are dropped, so "(projects/{project})." gives
-// "projects/{project}". None of those is a letter, so the word is never empty
-// when a collection segment starts at i.
+// wordAt returns the word in desc that contains index i. Words are split at
+// white space, quotes and backticks. A leading "(" and trailing punctuation
+// are trimmed, so "(projects/{project})." gives "projects/{project}". Since
+// the trimmed characters are never letters, the result is not empty when a
+// collection segment such as "projects/" starts at i.
 func wordAt(desc string, i int) string {
 	const stops = " \t\r\n`'\""
 	start := strings.LastIndexAny(desc[:i], stops) + 1

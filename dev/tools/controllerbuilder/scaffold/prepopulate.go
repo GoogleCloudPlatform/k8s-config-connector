@@ -207,8 +207,8 @@ func PrepopulateObservedState(details *codegen.OutputMessageDetails, observedSta
 
 // judgementFor checks whether a proto field carries a google.api.resource_reference
 // annotation and returns a JudgementItem proposing it as a reference candidate.
-// path is the field's KRM path. PrepopulateSpec calls it for top-level fields,
-// and ReferenceHints for nested ones.
+// path is the field's KRM path. PrepopulateSpec calls this for top-level
+// fields and ReferenceHints for nested ones.
 func judgementFor(field protoreflect.FieldDescriptor, path string) (JudgementItem, bool) {
 	if field.Options() == nil {
 		return JudgementItem{}, false

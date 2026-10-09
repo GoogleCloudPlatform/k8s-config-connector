@@ -27,17 +27,17 @@ import (
 
 // ReferenceHints inspects spec fields using heuristic rules (name matching,
 // URI templates, loose descriptions) and proposes potential references for review.
-// A field the rules say names another resource in a way KCC cannot express as
-// a reference gets an entry too, so a reviewer sees why it stays a string.
-// So does a field whose name says it holds a password.
 //
-// It also queues a nested field that carries a google.api.resource_reference
-// annotation, with the reason and detail PrepopulateSpec gives a top-level one.
+// It also queues a field that names another resource in a way KCC cannot
+// express as a reference, so a reviewer sees why it stays a string, and a
+// field whose name says it holds a password. A nested field with a
+// google.api.resource_reference annotation gets the same entry that
+// PrepopulateSpec gives a top-level one.
 func ReferenceHints(msg protoreflect.MessageDescriptor, opts codegen.WriteOptions) []JudgementItem {
 	var out []JudgementItem
 	walkSpecFields(msg, ".spec", opts, true, map[protoreflect.FullName]bool{}, func(path, desc string, field protoreflect.FieldDescriptor) {
-		// PrepopulateSpec checks the annotation on top-level fields. The walk
-		// never enters msg again, so a field of msg is a top-level one.
+		// PrepopulateSpec already checks the annotation on top-level fields.
+		// The walk never re-enters msg, so any field of msg is top-level.
 		if field.ContainingMessage().FullName() != msg.FullName() {
 			if item, ok := judgementFor(field, path); ok {
 				out = append(out, item)
@@ -137,9 +137,9 @@ func fieldComment(field protoreflect.FieldDescriptor) string {
 
 // referenceHint returns the queue entry the rules give a field, trying the
 // strict description rule, then the loose one, then the name rules. A verdict
-// from the strict rule ends the search. Its entry says which of Classify's
-// rules matched. A field Classify calls NotRepresentable gets an entry that
-// says so, rather than a looser hint that would contradict it.
+// from the strict rule ends the search. For IsReference, the entry says which
+// of Classify's rules matched. For NotRepresentable, the entry says the field
+// cannot be a reference, instead of a looser hint that would contradict that.
 func referenceHint(path, desc string) (JudgementItem, bool) {
 	if refs.IsReferenceFieldPath(path) {
 		return JudgementItem{}, false
@@ -168,10 +168,10 @@ func referenceHint(path, desc string) (JudgementItem, bool) {
 }
 
 // sensitiveField returns a queue entry for a field whose name says it holds a
-// password. The rule is TestNoSensitiveField's in tests/apichecks: the KRM
-// path, lowercased, ends in "password". The generator writes such a field as a
-// plain value. How a new Kind should take a secret is not settled yet, so the
-// entry only flags the field.
+// password. It uses the rule from TestNoSensitiveField in tests/apichecks: the
+// KRM path, lowercased, ends in "password". The generator still writes the
+// field as a plain value. We haven't settled how a new Kind should take a
+// secret, so the entry only flags the field.
 func sensitiveField(path string) (JudgementItem, bool) {
 	if !strings.HasSuffix(strings.ToLower(path), "password") {
 		return JudgementItem{}, false

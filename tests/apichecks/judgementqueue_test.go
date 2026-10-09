@@ -60,8 +60,8 @@ func (q *judgementQueue) SuppressesRef(kind, group, fieldPath string) bool {
 
 // loadJudgementQueue reads and validates every queue file matching glob.
 // A file that does not validate is an error, so a typo cannot quietly change
-// what is suppressed. So is a field whose reference entries do not all have
-// the same status; see checkRefStatuses.
+// what is suppressed. So is a field whose reference entries disagree on
+// status; see checkRefStatuses.
 func loadJudgementQueue(glob string) (*judgementQueue, error) {
 	paths, err := filepath.Glob(glob)
 	if err != nil {
@@ -86,11 +86,11 @@ func loadJudgementQueue(glob string) (*judgementQueue, error) {
 	return out, nil
 }
 
-// checkRefStatuses returns an error naming each field whose reference entries
-// do not all have the same status. The generator files one entry per signal
-// that a field may be a reference, and keeps them all because the signals are
-// independent. SuppressesRef hides the field while any of them is open, so
-// resolving one and forgetting another would keep the field hidden.
+// checkRefStatuses returns an error that names each field whose reference
+// entries do not all have the same status. The generator files one entry for
+// each signal that a field may be a reference, and keeps them all because the
+// signals are independent. SuppressesRef hides the field while any of them is
+// open, so resolving one and forgetting the others would keep it hidden.
 func checkRefStatuses(entries []judgement.Entry) error {
 	var fields []string
 	byField := map[string][]judgement.Entry{}
@@ -313,10 +313,10 @@ func TestLoadJudgementQueueRejectsBadEntry(t *testing.T) {
 	}
 }
 
-// TestLoadJudgementQueueRejectsMixedReferenceStatuses pins the error for a
-// field whose reference entries have different statuses. It names each such
-// field with all of its reference entries. network's entries agree, so it is
-// not named.
+// TestLoadJudgementQueueRejectsMixedReferenceStatuses checks the error for
+// fields whose reference entries have different statuses. The error lists
+// each such field with all of its reference entries. network's entries agree,
+// so it is not listed.
 func TestLoadJudgementQueueRejectsMixedReferenceStatuses(t *testing.T) {
 	// Arrange
 	dir := t.TempDir()
@@ -378,10 +378,10 @@ func TestLoadJudgementQueueRejectsMixedReferenceStatuses(t *testing.T) {
 	}
 }
 
-// TestLoadJudgementQueueAcceptsMatchingReferenceStatuses pins what the status
-// check allows: reference entries that are all open or all resolved, and an
-// entry with another reason next to them, whatever its status. A field is
-// suppressed when its reference entries are open.
+// TestLoadJudgementQueueAcceptsMatchingReferenceStatuses checks what the
+// status check allows: reference entries that are all open or all resolved,
+// next to an entry with another reason in any status. A field is suppressed
+// while its reference entries are open.
 func TestLoadJudgementQueueAcceptsMatchingReferenceStatuses(t *testing.T) {
 	// Arrange
 	dir := t.TempDir()

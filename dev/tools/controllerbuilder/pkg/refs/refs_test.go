@@ -206,11 +206,11 @@ func TestClassify(t *testing.T) {
 	}
 }
 
-// TestReferenceRules pins the phrases the generator puts in a
-// possible-reference-by-description entry's detail. The template phrase quotes
-// the whole word the template sits in, without the backticks, quotes,
-// parentheses or punctuation around it. When several rules match, all are
-// listed.
+// TestReferenceRules checks the phrases the generator puts in the detail of a
+// possible-reference-by-description entry. The template phrase quotes the
+// whole word that holds the template, without the backticks, quotes,
+// parentheses or punctuation around it. When several rules match, all of
+// them are listed.
 func TestReferenceRules(t *testing.T) {
 	for _, tc := range []struct {
 		name      string

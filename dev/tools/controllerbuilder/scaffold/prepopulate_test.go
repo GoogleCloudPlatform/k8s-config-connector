@@ -210,9 +210,9 @@ func TestPrepopulateSpecQueuesTheEmittedName(t *testing.T) {
 	}
 }
 
-// TestPrepopulateSpecQueuesResourceReferences pins the possible-reference entry
-// for a top-level field that carries google.api.resource_reference, with type
-// and with child_type. ReferenceHints queues the nested ones; see
+// TestPrepopulateSpecQueuesResourceReferences checks the possible-reference
+// entry for a top-level field with google.api.resource_reference, once with
+// type and once with child_type. ReferenceHints queues the nested ones; see
 // TestReferenceHintsQueuesNestedResourceReferences.
 func TestPrepopulateSpecQueuesResourceReferences(t *testing.T) {
 	// Arrange
