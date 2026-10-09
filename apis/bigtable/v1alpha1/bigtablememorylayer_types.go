@@ -29,9 +29,6 @@ type BigtableMemoryLayerParent struct {
 // BigtableMemoryLayerSpec defines the desired state of BigtableMemoryLayer
 // +kcc:spec:proto=google.bigtable.admin.v2.MemoryLayer
 type BigtableMemoryLayerSpec struct {
-	// The BigtableMemoryLayer name. If not given, the metadata.name will be used.
-	ResourceID *string `json:"resourceID,omitempty"`
-
 	BigtableMemoryLayerParent `json:",inline"`
 }
 
@@ -40,7 +37,6 @@ type BigtableMemoryLayerStatus struct {
 	Conditions         []v1alpha1.Condition `json:"conditions,omitempty"`
 	ObservedGeneration *int64               `json:"observedGeneration,omitempty"`
 	ExternalRef        *string              `json:"externalRef,omitempty"`
-	Name               *string              `json:"name,omitempty"`
 }
 
 // +genclient

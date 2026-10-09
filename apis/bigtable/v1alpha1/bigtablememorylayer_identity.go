@@ -121,9 +121,6 @@ func (obj *BigtableMemoryLayer) GetIdentity(ctx context.Context, reader client.R
 		if statusIdentity.Cluster != specIdentity.Cluster {
 			return nil, fmt.Errorf("spec.clusterRef ClusterID changed, expect %s, got %s", statusIdentity.Cluster, specIdentity.Cluster)
 		}
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change BigtableMemoryLayer identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
-		}
 	}
 
 	return specIdentity, nil
