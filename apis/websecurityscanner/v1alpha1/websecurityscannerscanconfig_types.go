@@ -81,11 +81,6 @@ type WebSecurityScannerScanConfigSpec struct {
 	// +kcc:proto:field=google.cloud.websecurityscanner.v1.ScanConfig.risk_level
 	RiskLevel *string `json:"riskLevel,omitempty"`
 
-	// Whether the scan config is managed by Web Security Scanner, output
-	//  only.
-	// +kcc:proto:field=google.cloud.websecurityscanner.v1.ScanConfig.managed_scan
-	ManagedScan *bool `json:"managedScan,omitempty"`
-
 	// Whether the scan configuration has enabled static IP address scan feature.
 	//  If enabled, the scanner will access applications from static IP addresses.
 	// +kcc:proto:field=google.cloud.websecurityscanner.v1.ScanConfig.static_ip_scan
@@ -115,6 +110,10 @@ type WebSecurityScannerScanConfigStatus struct {
 // WebSecurityScannerScanConfigObservedState is the state of the WebSecurityScannerScanConfig resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.websecurityscanner.v1.ScanConfig
 type WebSecurityScannerScanConfigObservedState struct {
+	// Whether the scan config is managed by Web Security Scanner, output
+	//  only.
+	// +kcc:proto:field=google.cloud.websecurityscanner.v1.ScanConfig.managed_scan
+	ManagedScan *bool `json:"managedScan,omitempty"`
 }
 
 // +genclient

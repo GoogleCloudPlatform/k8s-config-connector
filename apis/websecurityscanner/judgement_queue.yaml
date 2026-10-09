@@ -28,7 +28,9 @@ entries:
     group: websecurityscanner.cnrm.cloud.google.com
     reason: empty-observedstate
     detail: nothing was generated into status.observedState; the proto probably marks no field OUTPUT_ONLY, so output fields landed in the Spec. Decide what belongs in status
-    status: open
+    status: resolved
+    resolution: edited
+    note: moved managedScan into ObservedState because its comment says output only
   - kind: WebSecurityScannerScanConfig
     group: websecurityscanner.cnrm.cloud.google.com
     field: .spec.location
