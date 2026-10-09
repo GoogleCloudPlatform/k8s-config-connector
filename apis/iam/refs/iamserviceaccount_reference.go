@@ -19,7 +19,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -77,19 +76,8 @@ func (r *IAMServiceAccountRef) SetExternal(ref string) {
 }
 
 func (r *IAMServiceAccountRef) ValidateExternal(ref string) error {
-	_, _, err := parseIAMServiceAccountEmail(ref)
+	_, _, err := ParseIAMServiceAccountEmail(ref)
 	return err
-}
-
-func (r *IAMServiceAccountRef) ParseExternalToIdentity() (identity.Identity, error) {
-	account, project, err := parseIAMServiceAccountEmail(r.External)
-	if err != nil {
-		return nil, err
-	}
-	return &IAMServiceAccountIdentity{
-		Project: project,
-		Account: account,
-	}, nil
 }
 
 func (r *IAMServiceAccountRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
@@ -121,7 +109,7 @@ func (r *IAMServiceAccountRef) Normalize(ctx context.Context, reader client.Read
 	return r.ValidateExternal(r.GetExternal())
 }
 
-func parseIAMServiceAccountEmail(email string) (account, project string, err error) {
+func ParseIAMServiceAccountEmail(email string) (account, project string, err error) {
 	parts := strings.Split(email, "@")
 	if len(parts) != 2 {
 		return "", "", fmt.Errorf("format of IAMServiceAccount reference external=%q was not known (use email address, i.e. {{serviceAccountID}}@{{projectID}}.iam.gserviceaccount.com)", email)

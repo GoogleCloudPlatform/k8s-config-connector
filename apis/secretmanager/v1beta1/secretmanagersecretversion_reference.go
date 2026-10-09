@@ -34,6 +34,7 @@ var _ refsv1beta1.ExternalRef = &SecretVersionRef{}
 var _ refsv1beta1.ExternalNormalizer = &SecretVersionRef{}
 
 // SecretVersionRef is a reference to a SecretManagerSecretVersion.
+// +k8s:deepcopy-gen=true
 type SecretVersionRef struct {
 	// A reference to an externally managed SecretManagerSecretVersion resource.
 	// Should be in the format "projects/{{projectID}}/secrets/{{secretID}}/versions/{{versionID}}".
@@ -45,9 +46,6 @@ type SecretVersionRef struct {
 	// The namespace of a SecretManagerSecretVersion resource.
 	Namespace string `json:"namespace,omitempty"`
 }
-
-// +k8s:deepcopy-gen=false
-type SecretManagerSecretVersionRef = SecretVersionRef
 
 func init() {
 	refsv1beta1.Register(&SecretVersionRef{}, &SecretManagerSecretVersion{})
