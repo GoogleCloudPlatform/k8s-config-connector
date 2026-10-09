@@ -286,8 +286,8 @@ func ExtraImportsFor(bodies ...string) []string {
 
 // Reasons for an OutputOnlyCandidate.
 const (
-	reasonOutputOnlyInComment = "output-only-in-comment-only"
-	reasonOutputOnlyMentioned = "output-only-mentioned-in-comment"
+	reasonWellKnownOutputOnlyPattern = "well-known-output-only-pattern-in-comment"
+	reasonPossibleOutputOnlyPattern  = "possible-output-only-pattern-in-comment"
 )
 
 // OutputOnlyCandidate is a field the proto documents as output-only in prose
@@ -296,9 +296,9 @@ type OutputOnlyCandidate struct {
 	// FieldPath is the KRM path the field was emitted at, e.g. ".spec.createTime"
 	// or, for a nested field, ".spec.config.state".
 	FieldPath string
-	// Reason is reasonOutputOnlyInComment when the comment starts with one of
-	// outputOnlyPrefixes. It is reasonOutputOnlyMentioned, a weaker signal,
-	// when the comment says "output only" any other way.
+	// Reason is reasonWellKnownOutputOnlyPattern when the comment starts with
+	// one of outputOnlyPrefixes. It is reasonPossibleOutputOnlyPattern, a
+	// weaker signal, when the comment says "output only" any other way.
 	Reason string
 	// Comment is the proto's leading comment, so a reviewer can decide without
 	// opening the proto.
@@ -313,7 +313,7 @@ type OutputOnlyCandidate struct {
 // .spec.config.state becomes .status.observedState.config.state.
 func (c OutputOnlyCandidate) Item() JudgementItem {
 	detail := "proto comment says output only but no field_behavior annotation, so it was generated into the Spec instead. Move it if the comment is right: "
-	if c.Reason == reasonOutputOnlyMentioned {
+	if c.Reason == reasonPossibleOutputOnlyPattern {
 		detail = "proto comment mentions output only but doesn't start with \"Output only.\" or \"[Output Only]\", and there is no field_behavior annotation, so it was generated into the Spec. " +
 			"The comment may be a typo, apply only some of the time, or mean something else. Move the field if it is output only: "
 	}
@@ -363,22 +363,22 @@ func DetectOutputOnlyInComments(msg protoreflect.MessageDescriptor, opts codegen
 // says the field is output only, and how strongly.
 //
 // A comment that starts with one of outputOnlyPrefixes gets
-// reasonOutputOnlyInComment. Any other mention of "output only" gets
-// reasonOutputOnlyMentioned. That covers the words after other text, as in
-// websecurityscanner's managed_scan: "Whether the scan config is managed by
-// Web Security Scanner, output only." It also covers a comment that starts
-// with the words but not with a prefix. That is usually a typo, as in
-// automl's "Output only . The", or a condition, as in spanner's Backup.name,
-// which is output only for the CreateBackup operation and required for
-// UpdateBackup.
+// reasonWellKnownOutputOnlyPattern. Any other mention of "output only" gets
+// reasonPossibleOutputOnlyPattern. That covers the words after other text,
+// as in websecurityscanner's managed_scan: "Whether the scan config is
+// managed by Web Security Scanner, output only." It also covers a comment
+// that starts with the words but not with a prefix. That is usually a typo,
+// as in automl's "Output only . The", or a condition, as in spanner's
+// Backup.name, which is output only for the CreateBackup operation and
+// required for UpdateBackup.
 func outputOnlyReason(comment string) (string, bool) {
 	for _, prefix := range outputOnlyPrefixes {
 		if len(comment) >= len(prefix) && strings.EqualFold(comment[:len(prefix)], prefix) {
-			return reasonOutputOnlyInComment, true
+			return reasonWellKnownOutputOnlyPattern, true
 		}
 	}
 	if outputOnlyMention.MatchString(comment) {
-		return reasonOutputOnlyMentioned, true
+		return reasonPossibleOutputOnlyPattern, true
 	}
 	return "", false
 }

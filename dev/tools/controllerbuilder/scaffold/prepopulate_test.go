@@ -352,9 +352,9 @@ func TestDetectOutputOnlyInComments(t *testing.T) {
 		"Set by the user. Output only in some other sense.", // field_3, marker not at the front, so the weaker reason
 	)
 	want := []OutputOnlyCandidate{
-		{FieldPath: ".spec.field0", Reason: "output-only-in-comment-only", Comment: "Output only. Set by the server."},
-		{FieldPath: ".spec.field1", Reason: "output-only-in-comment-only", Comment: "[Output Only] IP address on the Google side."},
-		{FieldPath: ".spec.field3", Reason: "output-only-mentioned-in-comment", Comment: "Set by the user. Output only in some other sense."},
+		{FieldPath: ".spec.field0", Reason: "well-known-output-only-pattern-in-comment", Comment: "Output only. Set by the server."},
+		{FieldPath: ".spec.field1", Reason: "well-known-output-only-pattern-in-comment", Comment: "[Output Only] IP address on the Google side."},
+		{FieldPath: ".spec.field3", Reason: "possible-output-only-pattern-in-comment", Comment: "Set by the user. Output only in some other sense."},
 	}
 
 	// Act
@@ -384,13 +384,13 @@ func TestDetectOutputOnlyMentionedInComment(t *testing.T) {
 		"Output only for the create operation. Required for update.",                    // field_7, spanner-style, conditional
 	)
 	want := []OutputOnlyCandidate{
-		{FieldPath: ".spec.field0", Reason: "output-only-mentioned-in-comment", Comment: "Whether the scan config is managed by Web Security Scanner, output only."},
-		{FieldPath: ".spec.field1", Reason: "output-only-mentioned-in-comment", Comment: "When the version was created. Output-only field, populated by the system."},
-		{FieldPath: ".spec.field2", Reason: "output-only-mentioned-in-comment", Comment: "Required. [Output Only] Set by the server."},
-		{FieldPath: ".spec.field4", Reason: "output-only-mentioned-in-comment", Comment: "Output only . The translated content."},
-		{FieldPath: ".spec.field5", Reason: "output-only-mentioned-in-comment", Comment: "Output only When true, the index configuration is being reverted."},
-		{FieldPath: ".spec.field6", Reason: "output-only-mentioned-in-comment", Comment: "[Output only for type PARTNER. Input only for PARTNER_PROVIDER.] Pairing key."},
-		{FieldPath: ".spec.field7", Reason: "output-only-mentioned-in-comment", Comment: "Output only for the create operation. Required for update."},
+		{FieldPath: ".spec.field0", Reason: "possible-output-only-pattern-in-comment", Comment: "Whether the scan config is managed by Web Security Scanner, output only."},
+		{FieldPath: ".spec.field1", Reason: "possible-output-only-pattern-in-comment", Comment: "When the version was created. Output-only field, populated by the system."},
+		{FieldPath: ".spec.field2", Reason: "possible-output-only-pattern-in-comment", Comment: "Required. [Output Only] Set by the server."},
+		{FieldPath: ".spec.field4", Reason: "possible-output-only-pattern-in-comment", Comment: "Output only . The translated content."},
+		{FieldPath: ".spec.field5", Reason: "possible-output-only-pattern-in-comment", Comment: "Output only When true, the index configuration is being reverted."},
+		{FieldPath: ".spec.field6", Reason: "possible-output-only-pattern-in-comment", Comment: "[Output only for type PARTNER. Input only for PARTNER_PROVIDER.] Pairing key."},
+		{FieldPath: ".spec.field7", Reason: "possible-output-only-pattern-in-comment", Comment: "Output only for the create operation. Required for update."},
 	}
 
 	// Act
@@ -409,10 +409,10 @@ func TestDetectOutputOnlyWalksNestedFields(t *testing.T) {
 	// Arrange
 	msg := nestedConfigMessage(t)
 	want := []OutputOnlyCandidate{
-		{FieldPath: ".spec.config.state", Reason: "output-only-in-comment-only", Comment: "Output only. The state of the config."},
-		{FieldPath: ".spec.config.managed", Reason: "output-only-mentioned-in-comment", Comment: "Whether the config is managed by the service, output only."},
-		{FieldPath: ".spec.peers[].state", Reason: "output-only-in-comment-only", Comment: "Output only. The state of the config."},
-		{FieldPath: ".spec.peers[].managed", Reason: "output-only-mentioned-in-comment", Comment: "Whether the config is managed by the service, output only."},
+		{FieldPath: ".spec.config.state", Reason: "well-known-output-only-pattern-in-comment", Comment: "Output only. The state of the config."},
+		{FieldPath: ".spec.config.managed", Reason: "possible-output-only-pattern-in-comment", Comment: "Whether the config is managed by the service, output only."},
+		{FieldPath: ".spec.peers[].state", Reason: "well-known-output-only-pattern-in-comment", Comment: "Output only. The state of the config."},
+		{FieldPath: ".spec.peers[].managed", Reason: "possible-output-only-pattern-in-comment", Comment: "Whether the config is managed by the service, output only."},
 	}
 
 	// Act
@@ -436,19 +436,19 @@ func TestOutputOnlyCandidateItem(t *testing.T) {
 	}{
 		{
 			name: "comment starts with the marker",
-			cand: OutputOnlyCandidate{FieldPath: ".spec.createTime", Reason: "output-only-in-comment-only", Comment: "Output only. When it was created."},
+			cand: OutputOnlyCandidate{FieldPath: ".spec.createTime", Reason: "well-known-output-only-pattern-in-comment", Comment: "Output only. When it was created."},
 			want: JudgementItem{
 				FieldPath: ".status.observedState.createTime",
-				Reason:    "output-only-in-comment-only",
+				Reason:    "well-known-output-only-pattern-in-comment",
 				Detail:    "proto comment says output only but no field_behavior annotation, so it was generated into the Spec instead. Move it if the comment is right: Output only. When it was created.",
 			},
 		},
 		{
 			name: "comment mentions the words in a nested field",
-			cand: OutputOnlyCandidate{FieldPath: ".spec.config.managedScan", Reason: "output-only-mentioned-in-comment", Comment: "Whether the scan config is managed by Web Security Scanner, output only."},
+			cand: OutputOnlyCandidate{FieldPath: ".spec.config.managedScan", Reason: "possible-output-only-pattern-in-comment", Comment: "Whether the scan config is managed by Web Security Scanner, output only."},
 			want: JudgementItem{
 				FieldPath: ".status.observedState.config.managedScan",
-				Reason:    "output-only-mentioned-in-comment",
+				Reason:    "possible-output-only-pattern-in-comment",
 				Detail: "proto comment mentions output only but doesn't start with \"Output only.\" or \"[Output Only]\", and there is no field_behavior annotation, so it was generated into the Spec. " +
 					"The comment may be a typo, apply only some of the time, or mean something else. Move the field if it is output only: Whether the scan config is managed by Web Security Scanner, output only.",
 			},
@@ -475,8 +475,8 @@ func TestDetectOutputOnlyIgnoresCase(t *testing.T) {
 		"Output Only. The overall outcome of the test.",           // field_1, devtools.testing
 	)
 	want := []OutputOnlyCandidate{
-		{FieldPath: ".spec.field0", Reason: "output-only-in-comment-only", Comment: "[Output only] Number of network endpoints in the group."},
-		{FieldPath: ".spec.field1", Reason: "output-only-in-comment-only", Comment: "Output Only. The overall outcome of the test."},
+		{FieldPath: ".spec.field0", Reason: "well-known-output-only-pattern-in-comment", Comment: "[Output only] Number of network endpoints in the group."},
+		{FieldPath: ".spec.field1", Reason: "well-known-output-only-pattern-in-comment", Comment: "Output Only. The overall outcome of the test."},
 	}
 
 	// Act
