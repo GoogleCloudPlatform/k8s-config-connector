@@ -4483,7 +4483,6 @@
 [missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.exportToSecurityCommandCenter" is not set in unstructured objects
 [missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.ignoreHTTPStatusErrors" is not set in unstructured objects
 [missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.managedScan" is not set in unstructured objects
 [missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.maxQps" is not set in unstructured objects
 [missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.riskLevel" is not set in unstructured objects

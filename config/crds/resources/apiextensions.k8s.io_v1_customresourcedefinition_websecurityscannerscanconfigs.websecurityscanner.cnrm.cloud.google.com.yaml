@@ -130,10 +130,6 @@ spec:
               location:
                 description: The location of this resource.
                 type: string
-              managedScan:
-                description: Whether the scan config is managed by Web Security Scanner,
-                  output only.
-                type: boolean
               maxQps:
                 description: The maximum QPS during scanning. A valid value ranges
                   from 5 to 20 inclusively. If the field is unspecified or its value
@@ -258,6 +254,11 @@ spec:
               observedState:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
+                properties:
+                  managedScan:
+                    description: Whether the scan config is managed by Web Security
+                      Scanner, output only.
+                    type: boolean
                 type: object
             type: object
         required:
