@@ -1,0 +1,30 @@
+apiVersion: saasservicemgmt.cnrm.cloud.google.com/v1alpha1
+kind: SaaSServiceMgmtUnit
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: saasservicemgmtunit-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  location: us-central1
+  maintenance:
+    pinnedUntilTime: "2027-02-01T00:00:00Z"
+  managementMode: MANAGEMENT_MODE_USER
+  projectRef:
+    external: ${projectId}
+  unitKindRef:
+    external: projects/${projectId}/locations/us-central1/unitKinds/kcc-test-unit-kind
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/units/saasservicemgmtunit-${uniqueId}
+  observedGeneration: 2
+  observedState: {}
