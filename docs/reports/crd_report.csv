@@ -338,7 +338,7 @@ filestore.cnrm.cloud.google.com,FilestoreSnapshot,True,False,False,Terraform,Fal
 firebase.cnrm.cloud.google.com,FirebaseAndroidApp,True,False,False,Terraform,False
 firebasedatabase.cnrm.cloud.google.com,FirebaseDatabaseInstance,True,False,False,Terraform,False
 firebasehosting.cnrm.cloud.google.com,FirebaseHostingChannel,True,False,False,Terraform,False
-firebasehosting.cnrm.cloud.google.com,FirebaseHostingSite,True,False,False,Terraform,False
+firebasehosting.cnrm.cloud.google.com,FirebaseHostingSite,True,False,False,Terraform,True
 firebase.cnrm.cloud.google.com,FirebaseProject,True,False,False,Terraform,False
 firebasestorage.cnrm.cloud.google.com,FirebaseStorageBucket,True,False,False,Terraform,False
 firebase.cnrm.cloud.google.com,FirebaseWebApp,True,False,False,Terraform,False

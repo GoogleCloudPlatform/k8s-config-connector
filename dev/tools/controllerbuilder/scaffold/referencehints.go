@@ -58,7 +58,7 @@ func ReferenceHints(msg protoreflect.MessageDescriptor, opts codegen.WriteOption
 // message fields the same way.
 //
 // It skips what the generator leaves out of the Spec: OUTPUT_ONLY fields at any
-// depth, and at the top level the identity fields and server-set fields that
+// depth, and at the top level the identity, server-set and deprecated fields
 // PrepopulateSpec drops. A field the generator cannot type is absent from the
 // CRD too, so it is skipped with its subtree. So is a field the generator
 // already writes as a reference, which needs no hint.
@@ -87,6 +87,10 @@ func walkSpecFields(msg protoreflect.MessageDescriptor, prefix string, opts code
 			continue
 		}
 		if top && codegen.IsServerSetField(field, msg, opts) {
+			continue
+		}
+		// PrepopulateSpec drops deprecated top-level fields too.
+		if top && isDeprecated(field) {
 			continue
 		}
 		goType, err := codegen.GoTypeForField(field, false, opts)

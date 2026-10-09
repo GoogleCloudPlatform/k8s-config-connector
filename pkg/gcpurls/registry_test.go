@@ -229,6 +229,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Grafeas Note
 		"//containeranalysis.googleapis.com/projects/{}/notes/{}": true,
 
+		// Firebase Hosting
+		"//firebasehosting.googleapis.com/projects/{}/sites/{}": true,
+
 		// Firestore
 		"//firestore.googleapis.com/projects/{}/databases/{}/backupSchedules/{}":             true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":            true,
@@ -302,6 +305,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 		// OSConfig
 		"//osconfig.googleapis.com/projects/{}/guestPolicies/{}": true,
+
+		// OSLogin
+		"//oslogin.googleapis.com/users/{}/sshPublicKeys/{}": true,
 
 		// Privileged Access Manager
 		"//privilegedaccessmanager.googleapis.com/folders/{}/locations/{}/entitlements/{}":       true,

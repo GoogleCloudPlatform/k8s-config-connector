@@ -74,6 +74,10 @@ func (m *modelCluster) AdapterForObject(ctx context.Context, op *directbase.Adap
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	id, err := krm.NewClusterIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
@@ -291,15 +295,6 @@ func (a *ClusterAdapter) normalizeReference(ctx context.Context) error {
 				}
 			}
 		}
-	}
-
-	// Normalize the kmsKeyRef in the gcpConfig
-	if obj.Spec.GcpConfig != nil && obj.Spec.GcpConfig.KMSKeyRef != nil {
-		kmsKey, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.GcpConfig.KMSKeyRef)
-		if err != nil {
-			return err
-		}
-		obj.Spec.GcpConfig.KMSKeyRef = kmsKey
 	}
 
 	return nil

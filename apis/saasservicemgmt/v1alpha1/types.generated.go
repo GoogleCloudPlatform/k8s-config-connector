@@ -18,6 +18,7 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.saasplatform.saasservicemgmt.v1beta1
 // resource: SaasServiceMgmtRelease:Release
+// resource: SaaSServiceMgmtUnit:Unit
 
 package v1alpha1
 
@@ -84,6 +85,100 @@ type Release_ReleaseRequirements struct {
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Release.ReleaseRequirements.upgradeable_from_releases
 	UpgradeableFromReleases []string `json:"upgradeableFromReleases,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit", skipping
+
+// +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit
+type Unit struct {
+	// Identifier. The resource name (full URI of the resource) following the
+	//  standard naming scheme:
+	//
+	//    "projects/{project}/locations/{location}/units/{unit}"
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Reference to the UnitKind this Unit belongs to. Immutable once
+	//  set.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.unit_kind
+	UnitKind *string `json:"unitKind,omitempty"`
+
+	// Optional. Reference to the Saas Tenant resource this unit belongs to. This
+	//  for example informs the maintenance policies to use for scheduling future
+	//  updates on a unit. (optional and immutable once created)
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.tenant
+	Tenant *string `json:"tenant,omitempty"`
+
+	// Optional. Captures requested directives for performing future maintenance
+	//  on the unit. This includes a request for the unit to skip maintenance for a
+	//  period of time and remain pinned to its current release as well as controls
+	//  for postponing maintenance scheduled in future.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.maintenance
+	Maintenance *Unit_MaintenanceSettings `json:"maintenance,omitempty"`
+
+	// Optional. Immutable. Indicates whether the Unit life cycle is controlled
+	//  by the user or by the system.
+	//  Immutable once created.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.management_mode
+	ManagementMode *string `json:"managementMode,omitempty"`
+
+	// Optional. The labels on the resource, which can be used for categorization.
+	//  similar to Kubernetes resource labels.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Annotations is an unstructured key-value map stored with a
+	//  resource that may be set by external tools to store and retrieve arbitrary
+	//  metadata. They are not queryable and should be preserved when modifying
+	//  objects.
+	//
+	//  More info: https://kubernetes.io/docs/user-guide/annotations
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.annotations
+	Annotations map[string]string `json:"annotations,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.MaintenanceSettings", skipping
+
+// +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.MaintenanceSettings
+type Unit_MaintenanceSettings struct {
+	// Optional. If present, it fixes the release on the unit until the given
+	//  time; i.e. changes to the release field will be rejected. Rollouts should
+	//  and will also respect this by not requesting an upgrade in the first
+	//  place.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.MaintenanceSettings.pinned_until_time
+	PinnedUntilTime *string `json:"pinnedUntilTime,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitCondition
+type UnitCondition struct {
+	// Required. Status of the condition.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitCondition.status
+	Status *string `json:"status,omitempty"`
+
+	// Required. Type of the condition.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitCondition.type
+	Type *string `json:"type,omitempty"`
+
+	// Required. Last time the condition transited from one status to another.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitCondition.last_transition_time
+	LastTransitionTime *string `json:"lastTransitionTime,omitempty"`
+
+	// Required. Human readable message indicating details about the last
+	//  transition.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitCondition.message
+	Message *string `json:"message,omitempty"`
+
+	// Required. Brief reason for the condition's last transition.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitCondition.reason
+	Reason *string `json:"reason,omitempty"`
+}
+
+/* unreachable type UnitDependency
+// +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitDependency
+type UnitDependency struct {
+}
+*/
 
 // +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitVariable
 type UnitVariable struct {
@@ -157,3 +252,102 @@ type ReleaseObservedState struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
+
+/* found existing non-generated go type with proto tag "google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit", skipping
+
+// +kcc:observedstate:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit
+type UnitObservedState struct {
+	// Optional. Output only. The current Release object for this Unit.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.release
+	Release *string `json:"release,omitempty"`
+
+	// Optional. Output only. List of concurrent UnitOperations that are operating
+	//  on this Unit.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.ongoing_operations
+	OngoingOperations []string `json:"ongoingOperations,omitempty"`
+
+	// Optional. Output only. List of pending (wait to be executed) UnitOperations
+	//  for this unit.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.pending_operations
+	PendingOperations []string `json:"pendingOperations,omitempty"`
+
+	// Optional. Output only. List of scheduled UnitOperations for this unit.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.scheduled_operations
+	ScheduledOperations []string `json:"scheduledOperations,omitempty"`
+
+	// Optional. Output only. List of Units that depend on this unit. Unit can
+	//  only be deprovisioned if this list is empty. Maximum 1000.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.dependents
+	Dependents []UnitDependencyObservedState `json:"dependents,omitempty"`
+
+	// Optional. Output only. Set of dependencies for this unit. Maximum 10.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.dependencies
+	Dependencies []UnitDependencyObservedState `json:"dependencies,omitempty"`
+
+	// Optional. Output only. Indicates the current input variables deployed by
+	//  the unit
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.input_variables
+	InputVariables []UnitVariable `json:"inputVariables,omitempty"`
+
+	// Optional. Output only. Set of key/value pairs corresponding to output
+	//  variables from execution of actuation templates. The variables are declared
+	//  in actuation configs (e.g in helm chart or terraform) and the values are
+	//  fetched and returned by the actuation engine upon completion of execution.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.output_variables
+	OutputVariables []UnitVariable `json:"outputVariables,omitempty"`
+
+	// Optional. Output only. Current lifecycle state of the resource (e.g. if
+	//  it's being created or ready to use).
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.state
+	State *string `json:"state,omitempty"`
+
+	// Optional. Output only. A set of conditions which indicate the various
+	//  conditions this resource can have.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.conditions
+	Conditions []UnitCondition `json:"conditions,omitempty"`
+
+	// Optional. Output only. Indicates the system managed state of the unit.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.system_managed_state
+	SystemManagedState *string `json:"systemManagedState,omitempty"`
+
+	// Optional. Output only. If set, indicates the time when the system will
+	//  start removing the unit.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.system_cleanup_at
+	SystemCleanupAt *string `json:"systemCleanupAt,omitempty"`
+
+	// Output only. The unique identifier of the resource. UID is unique in the
+	//  time and space for this resource within the scope of the service. It is
+	//  typically generated by the server on successful creation of a resource
+	//  and must not be changed. UID is used to uniquely identify resources
+	//  with resource name reuses. This should be a UUID4.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. An opaque value that uniquely identifies a version or
+	//  generation of a resource. It can be used to confirm that the client
+	//  and server agree on the ordering of a resource being written.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Output only. The timestamp when the resource was created.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when the resource was last updated. Any
+	//  change to the resource made by users must refresh this value.
+	//  Changes to a resource made by the service should refresh this value.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitDependency
+type UnitDependencyObservedState struct {
+	// Output only. Alias for the name of the dependency.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitDependency.alias
+	Alias *string `json:"alias,omitempty"`
+
+	// Output only. A reference to the Unit object.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitDependency.unit
+	Unit *string `json:"unit,omitempty"`
+}

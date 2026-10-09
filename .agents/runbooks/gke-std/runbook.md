@@ -129,19 +129,20 @@ gcloud iam service-accounts add-iam-policy-binding "${GSA_EMAIL}" \
 ---
 
 ### Step 5: Build Container Images from Source using Cloud Build
-Submit a Cloud Build job to build all Config Connector component binaries and container images from source (with BuildKit enabled for cache mounts), and push them to the Artifact Registry repository.
+Submit a Cloud Build job to build all Config Connector component binaries and container images from source (with BuildKit enabled for cache mounts), and push them to the Artifact Registry repository. Pass `--ignore-file="${RUN_DIR}/.gcloudignore"` to avoid gitignore collisions where broad log ignore rules exclude `pkg/cli/log`.
 
 ```bash
 if ! gcloud artifacts docker images list "${IMAGE_PREFIX%/}" --include-tags --filter="TAGS:${IMAGE_TAG}" --format="value(TAGS)" 2>/dev/null | grep -q "${IMAGE_TAG}"; then
     gcloud builds submit \
         --project="${PROJECT}" \
+        --ignore-file="${RUN_DIR}/.gcloudignore" \
         --config="${RUN_DIR}/cloudbuild.yaml" \
         --substitutions="_IMAGE_PREFIX=${IMAGE_PREFIX},_IMAGE_TAG=${IMAGE_TAG}" \
         .
 fi
 ```
 
-*Why:* Because a local Docker daemon is not running in this environment, Cloud Build provides a hermetic build environment. The build requires `DOCKER_BUILDKIT=1` because `build/builder/Dockerfile` leverages BuildKit `--mount=type=cache` options. Re-runs skip the build when images are already present.
+*Why:* Because a local Docker daemon is not running in this environment, Cloud Build provides a hermetic build environment. The build requires `DOCKER_BUILDKIT=1` because `build/builder/Dockerfile` leverages BuildKit `--mount=type=cache` options. Specifying `--ignore-file="${RUN_DIR}/.gcloudignore"` ensures essential packages such as `pkg/cli/log` are not inadvertently excluded from the source upload by generic `log` ignore rules in `.gitignore`. Re-runs skip the build when images are already present.
 
 ---
 
