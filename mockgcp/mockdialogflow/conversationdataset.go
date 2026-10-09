@@ -193,6 +193,9 @@ func (s *conversationDatasetsServer) DeleteConversationDataset(ctx context.Conte
 
 	deletedObj := &pb_v2.ConversationDataset{}
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "ConversationDataset %s not found in projects/%s/locations/%s.", name.ConversationDataset, name.Project.ID, name.Location)
+		}
 		return nil, err
 	}
 
