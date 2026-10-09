@@ -3290,7 +3290,6 @@
 [missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.encryptionKey.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.encryptionKey.provider" is not set in unstructured objects
 [missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.localAdgAutoFailoverMaxDataLossLimitDuration" is not set in unstructured objects
-[missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.localDataGuardEnabled" is not set in unstructured objects
 [missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.privateEndpointIP" is not set in unstructured objects
 [missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.privateEndpointLabel" is not set in unstructured objects
 [missing_field] crd=oracledatabaseautonomousdatabases.oracledatabase.cnrm.cloud.google.com version=v1alpha1: field ".spec.properties.refreshableClone" is not set in unstructured objects

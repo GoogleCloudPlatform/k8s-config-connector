@@ -299,9 +299,6 @@ func (a *autonomousDatabaseAdapter) compareAutonomousDatabase(ctx context.Contex
 	if desired.AdminPasswordSecretVersion != "" && maskedActual.AdminPasswordSecretVersion == "" {
 		maskedActual.AdminPasswordSecretVersion = desired.AdminPasswordSecretVersion
 	}
-	if desired.AdminPassword != "" && maskedActual.AdminPassword == "" {
-		maskedActual.AdminPassword = desired.AdminPassword
-	}
 
 	clonedDesired := proto.Clone(desired).(*pb.AutonomousDatabase)
 
