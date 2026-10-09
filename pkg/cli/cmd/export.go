@@ -71,6 +71,7 @@ func init() {
 	commonparams.AddFilterDeletedIAMMembersParam(exportCmd, &exportParams.FilterDeletedIAMMembers)
 	commonparams.AddOutputParam(exportCmd, &exportParams.Output)
 	commonparams.AddResourceFormatParam(exportCmd, &exportParams.ResourceFormat)
+	commonparams.AddDisableDirectExportParam(exportCmd, &exportParams.DisableDirectExport)
 }
 
 func fillRootFlagsOnExportParams(params *parameters.Parameters) {
