@@ -52,6 +52,13 @@ type APIScaffolder struct {
 	// type for it already exists. Off by default: it adds a field to the CRD of a
 	// resource people already use, so a service opts in one at a time.
 	EmitParentRefs bool
+
+	// RequiredFromProto adds the +kcc:required-from-proto marker to the Spec
+	// of each <kind>_types.go it scaffolds. generate-types then puts +required
+	// on the fields the proto marks REQUIRED, for that Kind only. Kinds
+	// scaffolded earlier keep their optional fields, because making a field
+	// required breaks objects that leave it out.
+	RequiredFromProto bool
 }
 
 // resourceMetadata looks up what the proto states about a resource, or nil if we
@@ -218,6 +225,7 @@ func (a *APIScaffolder) AddTypeFile(resource options.Resource, prepopulated *Pre
 	cArgs := a.buildAPIArgs(&resource)
 	cArgs.SourceLinks = sourceLinks
 	cArgs.SkipGVK = packageDeclaresGVK(filepath.Join(a.BaseDir, a.GoPackage), cArgs.Kind)
+	cArgs.RequiredFromProto = a.RequiredFromProto
 	if prepopulated != nil {
 		cArgs.SpecFields = prepopulated.SpecFields
 		cArgs.ObservedStateFields = prepopulated.ObservedStateFields

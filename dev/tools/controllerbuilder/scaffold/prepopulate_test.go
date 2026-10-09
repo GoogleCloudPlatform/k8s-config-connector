@@ -494,3 +494,45 @@ func namedCommentedMessage(t *testing.T, named [][2]string) protoreflect.Message
 	}
 	return fd.Messages().ByName("Widget")
 }
+
+// TestSpecFieldsMatchesPrepopulateSpec checks that SpecFields lists the fields
+// PrepopulateSpec writes, in the same order. generate-types uses SpecFields to
+// plan a new Kind's structs before PrepopulateSpec runs.
+func TestSpecFieldsMatchesPrepopulateSpec(t *testing.T) {
+	for _, tc := range []struct {
+		name string
+		msg  protoreflect.MessageDescriptor
+		opts codegen.WriteOptions
+	}{
+		{name: "field_behavior annotations", msg: testMessage(t)},
+		{
+			name: "server-set fields placed in status",
+			msg:  namedCommentedMessage(t, [][2]string{{"etag", ""}, {"description", ""}, {"self_link", ""}}),
+			opts: codegen.WriteOptions{PlaceServerSetFields: true},
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			// Act
+			fields := SpecFields(tc.msg, tc.opts)
+			got, err := PrepopulateSpec(tc.msg, tc.opts)
+			if err != nil {
+				t.Fatalf("PrepopulateSpec: %v", err)
+			}
+
+			// Assert
+			var want []string
+			for _, line := range strings.Split(got.SpecFields, "\n") {
+				if v, ok := strings.CutPrefix(strings.TrimSpace(line), "// "+codegen.KCCProtoFieldAnnotation+"="); ok {
+					want = append(want, v)
+				}
+			}
+			var names []string
+			for _, f := range fields {
+				names = append(names, string(f.FullName()))
+			}
+			if !reflect.DeepEqual(names, want) {
+				t.Errorf("SpecFields() = %v, PrepopulateSpec wrote %v", names, want)
+			}
+		})
+	}
+}

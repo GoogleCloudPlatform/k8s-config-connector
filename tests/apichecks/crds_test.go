@@ -1139,6 +1139,7 @@ func TestCRDObjectTypes(t *testing.T) {
 	knownInvalidCRDs := map[string]bool{
 		"billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com":                    true, // spec.amount.lastPeriodAmount is an empty object
 		"accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com":   true, // status.observedState is an empty object
+		"aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com":                     true, // spec.tools[].codeExecution, googleMaps, and urlContext are empty objects
 		"aiplatformmodels.aiplatform.cnrm.cloud.google.com":                             true, // status.observedState.supportedExportFormats[] is an empty object
 		"apigeeenvironments.apigee.cnrm.cloud.google.com":                               true, // status.observedState is an empty object
 		"apigeeorganizations.apigee.cnrm.cloud.google.com":                              true, // status.observedState is an empty object
@@ -1148,6 +1149,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"bigquerytables.bigquery.cnrm.cloud.google.com":                                 true, // status.observedState is an empty object
 		"clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com":                          true, // spec.staticIPConnectivity and status.observedState are empty objects
 		"configdeliveryfleetpackages.configdelivery.cnrm.cloud.google.com":              true, // spec.rolloutStrategy.allAtOnce is an empty object
+		"contentwarehousedocumentschemas.contentwarehouse.cnrm.cloud.google.com":        true, // spec.propertyDefinitions[].dateTimeTypeOptions, textTypeOptions, and four other *TypeOptions are empty objects
 		"datacatalogentries.datacatalog.cnrm.cloud.google.com":                          true, // spec.featureOnlineStoreSpec and status.observedState.databaseTableSpec.dataplexTable.dataplexSpec.dataFormat.csv are empty objects
 		"datacatalogpolicytags.datacatalog.cnrm.cloud.google.com":                       true, // status.observedState is an empty object
 		"dataformrepositories.dataform.cnrm.cloud.google.com":                           true, // status.observedState is an empty object
@@ -1164,6 +1166,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com":                    true, // status.observedState.modelToUpload.originalModelInfo is an empty object
 		"vertexaischedules.aiplatform.cnrm.cloud.google.com":                            true, // spec.createNotebookExecutionJobRequest.notebookExecutionJob.workbenchRuntime is an empty object
 		"transcoderjobs.transcoder.cnrm.cloud.google.com":                               true, // spec.config.elementaryStreams[].videoStream.vp9.sdr is an empty object
+		"websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com":        true, // status.observedState is an empty object
 
 	}
 

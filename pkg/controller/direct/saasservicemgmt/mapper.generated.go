@@ -29,6 +29,24 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AggregateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Aggregate) *krm.AggregateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AggregateObservedState{}
+	out.Group = direct.LazyPtr(in.GetGroup())
+	out.Count = direct.LazyPtr(in.GetCount())
+	return out
+}
+func AggregateObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AggregateObservedState) *pb.Aggregate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Aggregate{}
+	out.Group = direct.ValueOf(in.Group)
+	out.Count = direct.ValueOf(in.Count)
+	return out
+}
 func Blueprint_FromProto(mapCtx *direct.MapContext, in *pb.Blueprint) *krm.Blueprint {
 	if in == nil {
 		return nil
@@ -83,6 +101,176 @@ func Release_ReleaseRequirements_ToProto(mapCtx *direct.MapContext, in *krm.Rele
 	}
 	out := &pb.Release_ReleaseRequirements{}
 	out.UpgradeableFromReleases = in.UpgradeableFromReleases
+	return out
+}
+func RolloutControl_FromProto(mapCtx *direct.MapContext, in *pb.RolloutControl) *krm.RolloutControl {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RolloutControl{}
+	out.RunParams = RolloutControl_RunRolloutActionParams_FromProto(mapCtx, in.GetRunParams())
+	out.Action = direct.Enum_FromProto(mapCtx, in.GetAction())
+	return out
+}
+func RolloutControl_ToProto(mapCtx *direct.MapContext, in *krm.RolloutControl) *pb.RolloutControl {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutControl{}
+	if oneof := RolloutControl_RunRolloutActionParams_ToProto(mapCtx, in.RunParams); oneof != nil {
+		out.ActionParams = &pb.RolloutControl_RunParams{RunParams: oneof}
+	}
+	out.Action = direct.Enum_ToProto[pb.RolloutAction](mapCtx, in.Action)
+	return out
+}
+func RolloutControl_RunRolloutActionParams_FromProto(mapCtx *direct.MapContext, in *pb.RolloutControl_RunRolloutActionParams) *krm.RolloutControl_RunRolloutActionParams {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RolloutControl_RunRolloutActionParams{}
+	out.RetryFailedOperations = direct.LazyPtr(in.GetRetryFailedOperations())
+	return out
+}
+func RolloutControl_RunRolloutActionParams_ToProto(mapCtx *direct.MapContext, in *krm.RolloutControl_RunRolloutActionParams) *pb.RolloutControl_RunRolloutActionParams {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutControl_RunRolloutActionParams{}
+	out.RetryFailedOperations = direct.ValueOf(in.RetryFailedOperations)
+	return out
+}
+func RolloutStatsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RolloutStats) *krm.RolloutStatsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RolloutStatsObservedState{}
+	out.OperationsByState = direct.Slice_FromProto(mapCtx, in.OperationsByState, AggregateObservedState_FromProto)
+	return out
+}
+func RolloutStatsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RolloutStatsObservedState) *pb.RolloutStats {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutStats{}
+	out.OperationsByState = direct.Slice_ToProto(mapCtx, in.OperationsByState, AggregateObservedState_ToProto)
+	return out
+}
+func SaaSServiceMgmtRolloutObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Rollout) *krm.SaaSServiceMgmtRolloutObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SaaSServiceMgmtRolloutObservedState{}
+	// MISSING: Name
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StateMessage = direct.LazyPtr(in.GetStateMessage())
+	out.StateTransitionTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStateTransitionTime())
+	out.RootRollout = direct.LazyPtr(in.GetRootRollout())
+	out.ParentRollout = direct.LazyPtr(in.GetParentRollout())
+	out.Stats = RolloutStatsObservedState_FromProto(mapCtx, in.GetStats())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func SaaSServiceMgmtRolloutObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtRolloutObservedState) *pb.Rollout {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Rollout{}
+	// MISSING: Name
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.State = direct.Enum_ToProto[pb.Rollout_RolloutState](mapCtx, in.State)
+	out.StateMessage = direct.ValueOf(in.StateMessage)
+	out.StateTransitionTime = direct.StringTimestamp_ToProto(mapCtx, in.StateTransitionTime)
+	out.RootRollout = direct.ValueOf(in.RootRollout)
+	out.ParentRollout = direct.ValueOf(in.ParentRollout)
+	out.Stats = RolloutStatsObservedState_ToProto(mapCtx, in.Stats)
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func SaaSServiceMgmtRolloutSpec_FromProto(mapCtx *direct.MapContext, in *pb.Rollout) *krm.SaaSServiceMgmtRolloutSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SaaSServiceMgmtRolloutSpec{}
+	// MISSING: Name
+	out.Release = direct.LazyPtr(in.GetRelease())
+	out.RolloutOrchestrationStrategy = direct.LazyPtr(in.GetRolloutOrchestrationStrategy())
+	out.UnitFilter = direct.LazyPtr(in.GetUnitFilter())
+	out.RolloutKind = direct.LazyPtr(in.GetRolloutKind())
+	out.Control = RolloutControl_FromProto(mapCtx, in.GetControl())
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	return out
+}
+func SaaSServiceMgmtRolloutSpec_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtRolloutSpec) *pb.Rollout {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Rollout{}
+	// MISSING: Name
+	out.Release = direct.ValueOf(in.Release)
+	out.RolloutOrchestrationStrategy = direct.ValueOf(in.RolloutOrchestrationStrategy)
+	out.UnitFilter = direct.ValueOf(in.UnitFilter)
+	out.RolloutKind = direct.ValueOf(in.RolloutKind)
+	out.Control = RolloutControl_ToProto(mapCtx, in.Control)
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	return out
+}
+func SaaSServiceMgmtTenantObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Tenant) *krm.SaaSServiceMgmtTenantObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SaaSServiceMgmtTenantObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func SaaSServiceMgmtTenantObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtTenantObservedState) *pb.Tenant {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tenant{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func SaaSServiceMgmtTenantSpec_FromProto(mapCtx *direct.MapContext, in *pb.Tenant) *krm.SaaSServiceMgmtTenantSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SaaSServiceMgmtTenantSpec{}
+	// MISSING: Name
+	out.ConsumerResource = direct.LazyPtr(in.GetConsumerResource())
+	out.Saas = direct.LazyPtr(in.GetSaas())
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	return out
+}
+func SaaSServiceMgmtTenantSpec_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtTenantSpec) *pb.Tenant {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tenant{}
+	// MISSING: Name
+	out.ConsumerResource = direct.ValueOf(in.ConsumerResource)
+	out.Saas = direct.ValueOf(in.Saas)
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
 	return out
 }
 func SaasServiceMgmtReleaseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Release) *krm.SaasServiceMgmtReleaseObservedState {

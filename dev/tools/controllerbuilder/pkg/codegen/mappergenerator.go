@@ -1215,7 +1215,15 @@ func mapValueConverters(protoField protoreflect.FieldDescriptor, krmFieldType, v
 	// CommonUsageStats_v1alpha1_FromProto, and the non-map path appends it the
 	// same way. The special-cased converters live in the direct package and
 	// have no suffix.
+	//
+	// The name comes from the KRM field's value type when that type is in the
+	// same package, as for slices and single messages. A strict struct holds
+	// map[string]FooRequired for message Foo, and its values need
+	// FooRequired's converters.
 	name := GoNameForProtoMessage(valueMsg)
+	if elem := strings.TrimPrefix(strings.TrimPrefix(krmFieldType, "map[string]"), "*"); elem != "" && !strings.Contains(elem, ".") && types.Universe.Lookup(elem) == nil {
+		name = elem
+	}
 	return name + versionSpecifier + "_FromProto", name + versionSpecifier + "_ToProto", name, true
 }
 
