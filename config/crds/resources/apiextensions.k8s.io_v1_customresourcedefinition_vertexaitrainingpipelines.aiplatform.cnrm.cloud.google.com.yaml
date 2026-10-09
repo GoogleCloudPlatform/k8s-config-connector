@@ -183,6 +183,8 @@ spec:
                            `bq://projectId` or `bq://projectId.bqDatasetId` or
                            `bq://projectId.bqDatasetId.bqTableId`.
                         type: string
+                    required:
+                    - outputURI
                     type: object
                   datasetID:
                     description: Required. The ID of the Dataset in the same Project
@@ -223,6 +225,10 @@ spec:
                           first set that applies to it in the training, validation,
                           test order.
                         type: string
+                    required:
+                    - testFilter
+                    - trainingFilter
+                    - validationFilter
                     type: object
                   fractionSplit:
                     description: Split based on fractions defining the size of each
@@ -270,6 +276,8 @@ spec:
                           automatically appended. The directory is created if it doesn't
                           exist.
                         type: string
+                    required:
+                    - outputURIPrefix
                     type: object
                   persistMlUseAssignment:
                     description: Whether to persist the ML use assignment to data
@@ -290,6 +298,8 @@ spec:
                           present or has an invalid value, that piece is ignored by
                           the pipeline.
                         type: string
+                    required:
+                    - key
                     type: object
                   savedQueryID:
                     description: |-
@@ -336,6 +346,8 @@ spec:
                         description: The fraction of the input data that is to be
                           used to validate the Model.
                         type: number
+                    required:
+                    - key
                     type: object
                   timestampSplit:
                     description: |-
@@ -363,7 +375,11 @@ spec:
                         description: The fraction of the input data that is to be
                           used to validate the Model.
                         type: number
+                    required:
+                    - key
                     type: object
+                required:
+                - datasetID
                 type: object
               labels:
                 additionalProperties:
@@ -426,6 +442,8 @@ spec:
                           baseModelURI:
                             description: Required. The public base model URI.
                             type: string
+                        required:
+                        - baseModelURI
                         type: object
                       modelGardenSource:
                         description: Source information of Model Garden models.
@@ -442,6 +460,8 @@ spec:
                             description: Optional. The model garden source model version
                               ID.
                             type: string
+                        required:
+                        - publicModelName
                         type: object
                     type: object
                   containerSpec:
@@ -582,6 +602,9 @@ spec:
                                 Escaped references will never be expanded, regardless
                                 of whether the variable exists or not.'
                               type: string
+                          required:
+                          - name
+                          - value
                           type: object
                         type: array
                       grpcPorts:
@@ -1136,6 +1159,8 @@ spec:
                             format: int32
                             type: integer
                         type: object
+                    required:
+                    - imageURI
                     type: object
                   dataStats:
                     description: |-
@@ -1590,6 +1615,8 @@ spec:
                                         items:
                                           type: string
                                         type: array
+                                    required:
+                                    - uris
                                     type: object
                                 type: object
                               nearestNeighborSearchConfig:
@@ -1737,6 +1764,8 @@ spec:
                                    Valid range of its value is [1, 100], inclusively.
                                 format: int32
                                 type: integer
+                            required:
+                            - stepCount
                             type: object
                           sampledShapleyAttribution:
                             description: 'An attribution method that approximates
@@ -1753,6 +1782,8 @@ spec:
                                    Valid range of its value is [1, 50], inclusively.
                                 format: int32
                                 type: integer
+                            required:
+                            - pathCount
                             type: object
                           topK:
                             description: If populated, returns attributions for top
@@ -1867,8 +1898,12 @@ spec:
                                    Valid range of its value is [1, 100], inclusively.
                                 format: int32
                                 type: integer
+                            required:
+                            - stepCount
                             type: object
                         type: object
+                    required:
+                    - parameters
                     type: object
                   labels:
                     additionalProperties:

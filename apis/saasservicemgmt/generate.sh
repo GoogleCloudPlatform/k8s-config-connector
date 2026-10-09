@@ -32,16 +32,35 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 
+# The bulk generation flags below were added with SaaSServiceMgmtTenant.
+# SaaSServiceMgmtRollout was added later with the same flags.
+# All of them are on, including --emit-required-from-proto, which marks
+# UnitVariable.variable as required and so changes the SaasServiceMgmtRelease CRD.
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.saasplatform.saasservicemgmt.v1beta1 \
   --api-version saasservicemgmt.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
-  --resource SaasServiceMgmtRelease:Release
+  --resource SaasServiceMgmtRelease:Release \
+  --resource SaaSServiceMgmtTenant:Tenant \
+  --resource SaaSServiceMgmtRollout:Rollout \
+  --prepopulate-spec \
+  --emit-required-from-proto \
+  --emit-plural-acronyms \
+  --emit-message-maps \
+  --place-server-set-fields \
+  --detect-output-only-in-comments \
+  --emit-parent-refs \
+  --emit-sibling-refs \
+  --emit-reference-hints \
+  --emit-source-links
 
+# Match the generate-types flags that change field names and map fields.
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.saasplatform.saasservicemgmt.v1beta1 \
   --api-version saasservicemgmt.cnrm.cloud.google.com/v1alpha1 \
-  --include-skipped-output
+  --include-skipped-output \
+  --emit-plural-acronyms \
+  --emit-message-maps
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

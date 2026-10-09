@@ -32,6 +32,10 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 
+# The bulk generation flags below were added with AIPlatformCachedContent.
+# All of them are on, including the three that change the types of existing
+# kinds: --emit-required-from-proto, --emit-plural-acronyms and
+# --emit-sibling-refs.
 ${CONTROLLERBUILDER} generate-types \
     --service google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1 \
     --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
@@ -44,14 +48,28 @@ ${CONTROLLERBUILDER} generate-types \
     --resource VertexAIStudy:Study \
     --resource VertexAITrainingPipeline:TrainingPipeline \
     --resource VertexAISchedule:Schedule \
-    --resource AIPlatformReasoningEngine:ReasoningEngine
+    --resource AIPlatformReasoningEngine:ReasoningEngine \
+    --resource AIPlatformCachedContent:CachedContent \
+    --prepopulate-spec \
+    --emit-required-from-proto \
+    --emit-plural-acronyms \
+    --emit-message-maps \
+    --place-server-set-fields \
+    --detect-output-only-in-comments \
+    --emit-parent-refs \
+    --emit-sibling-refs \
+    --emit-reference-hints \
+    --emit-source-links
 
 # Handled recursive self-referential fields by defining ListValue, Value, and ExplanationParameters manually in recursive_types.go
 
+# Match the generate-types flags that change field names and map fields.
 ${CONTROLLERBUILDER} generate-mapper \
     --service google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1 \
     --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
-    --include-skipped-output
+    --include-skipped-output \
+    --emit-plural-acronyms \
+    --emit-message-maps
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

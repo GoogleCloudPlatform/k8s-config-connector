@@ -1,0 +1,37 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other.
+
+entries:
+  - kind: WebSecurityScannerScanConfig
+    group: websecurityscanner.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
+    status: open
+  - kind: WebSecurityScannerScanConfig
+    group: websecurityscanner.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: WebSecurityScannerScanConfig
+    group: websecurityscanner.cnrm.cloud.google.com
+    reason: empty-observedstate
+    detail: nothing was generated into status.observedState; the proto probably marks no field OUTPUT_ONLY, so output fields landed in the Spec. Decide what belongs in status
+    status: open
+  - kind: WebSecurityScannerScanConfig
+    group: websecurityscanner.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-parent-unknown
+    detail: the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional
+    status: open

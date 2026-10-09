@@ -18,8 +18,25 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.saasplatform.saasservicemgmt.v1beta1
 // resource: SaasServiceMgmtRelease:Release
+// resource: SaaSServiceMgmtTenant:Tenant
+// resource: SaaSServiceMgmtRollout:Rollout
 
 package v1alpha1
+
+/* unreachable type Aggregate
+// +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Aggregate
+type Aggregate struct {
+	// Required. Group by which to aggregate.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Aggregate.group
+	// +required
+	Group *string `json:"group,omitempty"`
+
+	// Required. Number of records in the group.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Aggregate.count
+	// +required
+	Count *int32 `json:"count,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Blueprint
 type Blueprint struct {
@@ -43,6 +60,7 @@ type Release struct {
 	// Required. Immutable. Reference to the UnitKind this Release corresponds to
 	//  (required and immutable once created).
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Release.unit_kind
+	// +required
 	UnitKind *string `json:"unitKind,omitempty"`
 
 	// Optional. Blueprints are OCI Images that contain all of the artifacts
@@ -85,10 +103,154 @@ type Release_ReleaseRequirements struct {
 	UpgradeableFromReleases []string `json:"upgradeableFromReleases,omitempty"`
 }
 
+/* found existing non-generated go type with proto tag "google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout", skipping
+
+// +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout
+type Rollout struct {
+	// Identifier. The resource name (full URI of the resource) following the
+	//  standard naming scheme:
+	//
+	//    "projects/{project}/locations/{location}/rollout/{rollout_id}"
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Immutable. Name of the Release that gets rolled out to target
+	//  Units. Required if no other type of release is specified.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.release
+	Release *string `json:"release,omitempty"`
+
+	// Optional. The strategy used for executing this Rollout.
+	//  This strategy will override whatever strategy is specified in the
+	//  RolloutType. If not specified on creation, the
+	//  strategy from RolloutType will be used.
+	//
+	//  There are two supported values strategies which are used to control
+	//  - "Google.Cloud.Simple.AllAtOnce"
+	//  - "Google.Cloud.Simple.OneLocationAtATime"
+	//
+	//  A rollout with one of these simple strategies will rollout across
+	//  all locations defined in the targeted UnitKind's Saas Locations.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.rollout_orchestration_strategy
+	RolloutOrchestrationStrategy *string `json:"rolloutOrchestrationStrategy,omitempty"`
+
+	// Optional. CEL(https://github.com/google/cel-spec) formatted filter string
+	//  against Unit. The filter will be applied to determine the eligible unit
+	//  population. This filter can only reduce, but not expand the scope of the
+	//  rollout. If not provided, the unit_filter from the RolloutType will be
+	//  used.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.unit_filter
+	UnitFilter *string `json:"unitFilter,omitempty"`
+
+	// Optional. Immutable. Name of the RolloutKind this rollout is stemming from
+	//  and adhering to.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.rollout_kind
+	RolloutKind *string `json:"rolloutKind,omitempty"`
+
+	// Optional. Requested change to the execution of this rollout.
+	//  Default RolloutControl.action is ROLLOUT_ACTION_RUN meaning
+	//  the rollout will be executed to completion while progressing through
+	//  all natural Rollout States (such as RUNNING -> SUCCEEDED or RUNNING ->
+	//  FAILED). Requests can only be made when the Rollout is in a non-terminal
+	//  state.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.control
+	Control *RolloutControl `json:"control,omitempty"`
+
+	// Optional. The labels on the resource, which can be used for categorization.
+	//  similar to Kubernetes resource labels.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Annotations is an unstructured key-value map stored with a
+	//  resource that may be set by external tools to store and retrieve arbitrary
+	//  metadata. They are not queryable and should be preserved when modifying
+	//  objects.
+	//
+	//  More info: https://kubernetes.io/docs/user-guide/annotations
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.annotations
+	Annotations map[string]string `json:"annotations,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutControl
+type RolloutControl struct {
+	// Optional. Parameters for the RUN action. It is an error to specify this
+	//  if the RolloutAction is not set to RUN. By default, the rollout will
+	//  retry failed operations when resumed.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutControl.run_params
+	RunParams *RolloutControl_RunRolloutActionParams `json:"runParams,omitempty"`
+
+	// Required. Action to be performed on the Rollout.
+	//  The default behavior is to run the rollout until it naturally reaches a
+	//  terminal state.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutControl.action
+	// +required
+	Action *string `json:"action,omitempty"`
+}
+
+// +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutControl.RunRolloutActionParams
+type RolloutControl_RunRolloutActionParams struct {
+	// Required. If true, the rollout will retry failed operations when resumed.
+	//  This is applicable only the current state of the Rollout is PAUSED and
+	//  the requested action is RUN.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutControl.RunRolloutActionParams.retry_failed_operations
+	// +required
+	RetryFailedOperations *bool `json:"retryFailedOperations,omitempty"`
+}
+
+/* unreachable type RolloutStats
+// +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutStats
+type RolloutStats struct {
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant", skipping
+
+// +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant
+type Tenant struct {
+	// Identifier. The resource name (full URI of the resource) following the
+	//  standard naming scheme:
+	//
+	//    "projects/{project}/locations/{location}/tenants/{tenant}"
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Immutable. A reference to the consumer resource this SaaS Tenant
+	//  is representing.
+	//
+	//  The relationship with a consumer resource can be used by SaaS Runtime for
+	//  retrieving consumer-defined settings and policies such as maintenance
+	//  policies (using Unified Maintenance Policy API).
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant.consumer_resource
+	ConsumerResource *string `json:"consumerResource,omitempty"`
+
+	// Required. Immutable. A reference to the Saas that defines the product
+	//  (managed service) that the producer wants to manage with SaaS Runtime. Part
+	//  of the SaaS Runtime common data model.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant.saas
+	// +required
+	Saas *string `json:"saas,omitempty"`
+
+	// Optional. The labels on the resource, which can be used for categorization.
+	//  similar to Kubernetes resource labels.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Annotations is an unstructured key-value map stored with a
+	//  resource that may be set by external tools to store and retrieve arbitrary
+	//  metadata. They are not queryable and should be preserved when modifying
+	//  objects.
+	//
+	//  More info: https://kubernetes.io/docs/user-guide/annotations
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant.annotations
+	Annotations map[string]string `json:"annotations,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitVariable
 type UnitVariable struct {
 	// Required. Immutable. Name of the variable from actuation configs.
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitVariable.variable
+	// +required
 	Variable *string `json:"variable,omitempty"`
 
 	// Optional. Immutable. Name of a supported variable type. Supported types are
@@ -99,6 +261,17 @@ type UnitVariable struct {
 	// Optional. String encoded value for the variable.
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitVariable.value
 	Value *string `json:"value,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Aggregate
+type AggregateObservedState struct {
+	// Required. Group by which to aggregate.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Aggregate.group
+	Group *string `json:"group,omitempty"`
+
+	// Required. Number of records in the group.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Aggregate.count
+	Count *int32 `json:"count,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Blueprint
@@ -125,12 +298,12 @@ type ReleaseObservedState struct {
 	// Optional. Output only. List of input variables declared on the blueprint
 	//  and can be present with their values on the unit spec
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Release.input_variables
-	InputVariables []UnitVariable `json:"inputVariables,omitempty"`
+	InputVariables []UnitVariableObservedState `json:"inputVariables,omitempty"`
 
 	// Optional. Output only. List of output variables declared on the blueprint
 	//  and can be present with their values on the unit status
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Release.output_variables
-	OutputVariables []UnitVariable `json:"outputVariables,omitempty"`
+	OutputVariables []UnitVariableObservedState `json:"outputVariables,omitempty"`
 
 	// Output only. The unique identifier of the resource. UID is unique in the
 	//  time and space for this resource within the scope of the service. It is
@@ -155,5 +328,148 @@ type ReleaseObservedState struct {
 	//  Changes to a resource made by the service should refresh this value.
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Release.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout", skipping
+
+// +kcc:observedstate:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout
+type RolloutObservedState struct {
+	// Optional. Output only. The time when the rollout started executing. Will be
+	//  empty if the rollout hasn't started yet.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Optional. Output only. The time when the rollout finished execution
+	//  (regardless of  success, failure, or cancellation). Will be empty if the
+	//  rollout hasn't finished yet. Once set, the rollout is in terminal state and
+	//  all the results are final.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.end_time
+	EndTime *string `json:"endTime,omitempty"`
+
+	// Output only. Current state of the rollout.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Human readable message indicating details about the last state
+	//  transition.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.state_message
+	StateMessage *string `json:"stateMessage,omitempty"`
+
+	// Optional. Output only. The time when the rollout transitioned into its
+	//  current state.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.state_transition_time
+	StateTransitionTime *string `json:"stateTransitionTime,omitempty"`
+
+	// Optional. Output only. The root rollout that this rollout is stemming from.
+	//  The resource name (full URI of the resource) following the standard naming
+	//  scheme:
+	//
+	//    "projects/{project}/locations/{location}/rollouts/{rollout_id}"
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.root_rollout
+	RootRollout *string `json:"rootRollout,omitempty"`
+
+	// Optional. Output only. The direct parent rollout that this rollout is
+	//  stemming from. The resource name (full URI of the resource) following the
+	//  standard naming scheme:
+	//
+	//    "projects/{project}/locations/{location}/rollouts/{rollout_id}"
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.parent_rollout
+	ParentRollout *string `json:"parentRollout,omitempty"`
+
+	// Optional. Output only. Details about the progress of the rollout.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.stats
+	Stats *RolloutStatsObservedState `json:"stats,omitempty"`
+
+	// Output only. The unique identifier of the resource. UID is unique in the
+	//  time and space for this resource within the scope of the service. It is
+	//  typically generated by the server on successful creation of a resource
+	//  and must not be changed. UID is used to uniquely identify resources
+	//  with resource name reuses. This should be a UUID4.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. An opaque value that uniquely identifies a version or
+	//  generation of a resource. It can be used to confirm that the client
+	//  and server agree on the ordering of a resource being written.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Output only. The timestamp when the resource was created.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when the resource was last updated. Any
+	//  change to the resource made by users must refresh this value.
+	//  Changes to a resource made by the service should refresh this value.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutStats
+type RolloutStatsObservedState struct {
+	// Output only. A breakdown of the progress of operations triggered by the
+	//  rollout. Provides a count of Operations by their state. This can be used to
+	//  determine the number of units which have been updated, or are scheduled to
+	//  be updated.
+	//
+	//  There will be at most one entry per group.
+	//  Possible values for operation groups are:
+	//  - "SCHEDULED"
+	//  - "PENDING"
+	//  - "RUNNING"
+	//  - "SUCCEEDED"
+	//  - "FAILED"
+	//  - "CANCELLED"
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutStats.operations_by_state
+	OperationsByState []AggregateObservedState `json:"operationsByState,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant", skipping
+
+// +kcc:observedstate:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant
+type TenantObservedState struct {
+	// Output only. The unique identifier of the resource. UID is unique in the
+	//  time and space for this resource within the scope of the service. It is
+	//  typically generated by the server on successful creation of a resource
+	//  and must not be changed. UID is used to uniquely identify resources
+	//  with resource name reuses. This should be a UUID4.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. An opaque value that uniquely identifies a version or
+	//  generation of a resource. It can be used to confirm that the client
+	//  and server agree on the ordering of a resource being written.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Output only. The timestamp when the resource was created.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when the resource was last updated. Any
+	//  change to the resource made by users must refresh this value.
+	//  Changes to a resource made by the service should refresh this value.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+/* unreachable type UnitVariableObservedState
+// +kcc:observedstate:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitVariable
+type UnitVariableObservedState struct {
+	// Required. Immutable. Name of the variable from actuation configs.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitVariable.variable
+	Variable *string `json:"variable,omitempty"`
+
+	// Optional. Immutable. Name of a supported variable type. Supported types are
+	//  string, int, bool.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitVariable.type
+	Type *string `json:"type,omitempty"`
+
+	// Optional. String encoded value for the variable.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitVariable.value
+	Value *string `json:"value,omitempty"`
 }
 */

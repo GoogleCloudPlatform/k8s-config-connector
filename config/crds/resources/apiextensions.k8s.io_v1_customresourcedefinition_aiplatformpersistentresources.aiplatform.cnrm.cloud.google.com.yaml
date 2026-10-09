@@ -388,6 +388,8 @@ spec:
                               items:
                                 type: string
                               type: array
+                          required:
+                          - reservationAffinityType
                           type: object
                         tpuTopology:
                           description: 'Immutable. The topology of the TPUs. Corresponds
@@ -400,6 +402,8 @@ spec:
                         this resource pool.
                       format: int64
                       type: integer
+                  required:
+                  - machineSpec
                   type: object
                 type: array
               resourceRuntimeSpec:

@@ -22,6 +22,7 @@
 // resource: GKEBackupBackup:Backup
 // resource: GKEBackupRestore:Restore
 // resource: GKEBackupBackupChannel:BackupChannel
+// resource: GKEBackupRestoreChannel:RestoreChannel
 
 package v1alpha1
 

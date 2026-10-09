@@ -1,0 +1,118 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other.
+
+entries:
+  - kind: AIPlatformPersistentResource
+    group: aiplatform.cnrm.cloud.google.com
+    reason: ambiguous-proto-name
+    detail: PersistentResource exists in 2 of the listed services (google.cloud.aiplatform.v1.PersistentResource, google.cloud.aiplatform.v1beta1.PersistentResource); generated from google.cloud.aiplatform.v1.PersistentResource. Put the full proto name in --resource to choose one
+    status: open
+  - kind: AIPlatformSpecialistPool
+    group: aiplatform.cnrm.cloud.google.com
+    reason: ambiguous-proto-name
+    detail: SpecialistPool exists in 2 of the listed services (google.cloud.aiplatform.v1.SpecialistPool, google.cloud.aiplatform.v1beta1.SpecialistPool); generated from google.cloud.aiplatform.v1.SpecialistPool. Put the full proto name in --resource to choose one
+    status: open
+  - kind: AIPlatformModel
+    group: aiplatform.cnrm.cloud.google.com
+    reason: ambiguous-proto-name
+    detail: Model exists in 2 of the listed services (google.cloud.aiplatform.v1.Model, google.cloud.aiplatform.v1beta1.Model); generated from google.cloud.aiplatform.v1.Model. Put the full proto name in --resource to choose one
+    status: open
+  - kind: VertexAIFeatureOnlineStore
+    group: aiplatform.cnrm.cloud.google.com
+    reason: ambiguous-proto-name
+    detail: FeatureOnlineStore exists in 2 of the listed services (google.cloud.aiplatform.v1.FeatureOnlineStore, google.cloud.aiplatform.v1beta1.FeatureOnlineStore); generated from google.cloud.aiplatform.v1.FeatureOnlineStore. Put the full proto name in --resource to choose one
+    status: open
+  - kind: VertexAIPipelineJob
+    group: aiplatform.cnrm.cloud.google.com
+    reason: ambiguous-proto-name
+    detail: PipelineJob exists in 2 of the listed services (google.cloud.aiplatform.v1.PipelineJob, google.cloud.aiplatform.v1beta1.PipelineJob); generated from google.cloud.aiplatform.v1.PipelineJob. Put the full proto name in --resource to choose one
+    status: open
+  - kind: VertexAITuningJob
+    group: aiplatform.cnrm.cloud.google.com
+    reason: ambiguous-proto-name
+    detail: TuningJob exists in 2 of the listed services (google.cloud.aiplatform.v1.TuningJob, google.cloud.aiplatform.v1beta1.TuningJob); generated from google.cloud.aiplatform.v1.TuningJob. Put the full proto name in --resource to choose one
+    status: open
+  - kind: VertexAIStudy
+    group: aiplatform.cnrm.cloud.google.com
+    reason: ambiguous-proto-name
+    detail: Study exists in 2 of the listed services (google.cloud.aiplatform.v1.Study, google.cloud.aiplatform.v1beta1.Study); generated from google.cloud.aiplatform.v1.Study. Put the full proto name in --resource to choose one
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    reason: ambiguous-proto-name
+    detail: TrainingPipeline exists in 2 of the listed services (google.cloud.aiplatform.v1.TrainingPipeline, google.cloud.aiplatform.v1beta1.TrainingPipeline); generated from google.cloud.aiplatform.v1.TrainingPipeline. Put the full proto name in --resource to choose one
+    status: open
+  - kind: VertexAISchedule
+    group: aiplatform.cnrm.cloud.google.com
+    reason: ambiguous-proto-name
+    detail: Schedule exists in 2 of the listed services (google.cloud.aiplatform.v1.Schedule, google.cloud.aiplatform.v1beta1.Schedule); generated from google.cloud.aiplatform.v1.Schedule. Put the full proto name in --resource to choose one
+    status: open
+  - kind: AIPlatformReasoningEngine
+    group: aiplatform.cnrm.cloud.google.com
+    reason: ambiguous-proto-name
+    detail: ReasoningEngine exists in 2 of the listed services (google.cloud.aiplatform.v1.ReasoningEngine, google.cloud.aiplatform.v1beta1.ReasoningEngine); generated from google.cloud.aiplatform.v1.ReasoningEngine. Put the full proto name in --resource to choose one
+    status: open
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    reason: ambiguous-proto-name
+    detail: CachedContent exists in 2 of the listed services (google.cloud.aiplatform.v1.CachedContent, google.cloud.aiplatform.v1beta1.CachedContent); generated from google.cloud.aiplatform.v1.CachedContent. Put the full proto name in --resource to choose one
+    status: open
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.cachedContents: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.cachedContents, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.cachedContents'
+    status: open
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.model
+    reason: possible-reference-by-description
+    status: open
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].retrieval.vertexAiSearch.datastore
+    reason: possible-reference-by-description
+    status: open
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].retrieval.vertexAiSearch.engine
+    reason: possible-reference-by-description
+    status: open
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].retrieval.vertexAiSearch.dataStoreSpecs[].dataStore
+    reason: possible-reference-by-description
+    status: open
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].retrieval.vertexRagStore.ragResources[].ragCorpus
+    reason: possible-reference-by-description
+    status: open
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyName
+    reason: possible-reference-by-name
+    detail: KMSCryptoKeyRef
+    status: open
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: open
