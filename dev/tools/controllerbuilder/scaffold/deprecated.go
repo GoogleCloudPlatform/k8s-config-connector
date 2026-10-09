@@ -21,12 +21,6 @@ import (
 	"google.golang.org/protobuf/types/descriptorpb"
 )
 
-// isDeprecated reports whether the proto marks field [deprecated = true].
-func isDeprecated(field protoreflect.FieldDescriptor) bool {
-	opts, ok := field.Options().(*descriptorpb.FieldOptions)
-	return ok && opts.GetDeprecated()
-}
-
 // NestedDeprecatedFields returns a queue item for each field of a nested Spec
 // struct that the proto marks deprecated.
 //
@@ -52,4 +46,10 @@ func NestedDeprecatedFields(msg protoreflect.MessageDescriptor, opts codegen.Wri
 		})
 	})
 	return out
+}
+
+// isDeprecated reports whether the proto marks field [deprecated = true].
+func isDeprecated(field protoreflect.FieldDescriptor) bool {
+	opts, ok := field.Options().(*descriptorpb.FieldOptions)
+	return ok && opts.GetDeprecated()
 }
