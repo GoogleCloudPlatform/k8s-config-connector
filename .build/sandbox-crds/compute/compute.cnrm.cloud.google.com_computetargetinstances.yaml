@@ -1,0 +1,197 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: computetargetinstances.compute.cnrm.cloud.google.com
+spec:
+  group: compute.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ComputeTargetInstance
+    listKind: ComputeTargetInstanceList
+    plural: computetargetinstances
+    shortNames:
+    - gcpcomputetargetinstance
+    - gcpcomputetargetinstances
+    singular: computetargetinstance
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: ComputeTargetInstance is the Schema for the ComputeTargetInstance
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ComputeTargetInstanceSpec defines the desired state of ComputeTargetInstance
+            properties:
+              creationTimestamp:
+                description: '[Output Only] Creation timestamp in RFC3339 text format.'
+                type: string
+              description:
+                description: An optional description of this resource. Provide this
+                  property when you create the resource.
+                type: string
+              id:
+                description: '[Output Only] The unique identifier for the resource.
+                  This identifier is defined by the server.'
+                format: int64
+                type: integer
+              instance:
+                description: 'A URL to the virtual machine instance that handles traffic
+                  for this target instance. When creating a target instance, you can
+                  provide the fully-qualified URL or a valid partial URL to the desired
+                  virtual machine. For example, the following are all valid URLs:
+                  - https://www.googleapis.com/compute/v1/projects/project/zones/zone
+                  /instances/instance - projects/project/zones/zone/instances/instance
+                  - zones/zone/instances/instance'
+                type: string
+              kind:
+                description: '[Output Only] The type of the resource. Always compute#targetInstance
+                  for target instances.'
+                type: string
+              location:
+                description: The location of this resource.
+                type: string
+              natPolicy:
+                description: |-
+                  Must have a value of NO_NAT. Protocol forwarding delivers packets while preserving the destination IP address of the forwarding rule referencing the target instance.
+                   Check the NatPolicy enum for the list of possible values.
+                type: string
+              network:
+                description: The URL of the network this target instance uses to forward
+                  traffic. If not specified, the traffic will be forwarded to the
+                  network that the default network interface belongs to.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The ComputeTargetInstance name. If not given, the metadata.name
+                  will be used.
+                type: string
+              securityPolicy:
+                description: '[Output Only] The resource URL for the security policy
+                  associated with this target instance.'
+                type: string
+              selfLink:
+                description: '[Output Only] Server-defined URL for the resource.'
+                type: string
+              zone:
+                description: '[Output Only] URL of the zone where the target instance
+                  resides. You must specify this field as part of the HTTP request
+                  URL. It is not settable as a field in the request body.'
+                type: string
+            required:
+            - location
+            type: object
+          status:
+            description: ComputeTargetInstanceStatus defines the config connector
+              machine state of ComputeTargetInstance
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ComputeTargetInstance resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
