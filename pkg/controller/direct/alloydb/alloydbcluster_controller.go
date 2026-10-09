@@ -17,24 +17,26 @@ package alloydb
 import (
 	"context"
 	"fmt"
+	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	gcp "cloud.google.com/go/alloydb/apiv1beta"
 	alloydbpb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"
-	"github.com/golang/protobuf/ptypes/duration"
 	"google.golang.org/api/option"
-	"google.golang.org/genproto/googleapis/type/dayofweek"
-	"google.golang.org/genproto/googleapis/type/timeofday"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -121,10 +123,11 @@ func (m *modelCluster) AdapterForObject(ctx context.Context, op *directbase.Adap
 		return nil, err
 	}
 	return &ClusterAdapter{
-		id:        id,
-		gcpClient: gcpClient,
-		desired:   obj,
-		reader:    reader,
+		id:            id,
+		gcpClient:     gcpClient,
+		desired:       obj,
+		reader:        reader,
+		projectMapper: m.config.ProjectMapper,
 	}, nil
 }
 
@@ -133,12 +136,17 @@ func (m *modelCluster) AdapterForURL(ctx context.Context, url string) (directbas
 	return nil, nil
 }
 
+var mutableButUnreadablePaths = [][]string{
+	{"initialUser"},
+}
+
 type ClusterAdapter struct {
-	id        *krm.AlloyDBClusterIdentity
-	gcpClient *gcp.AlloyDBAdminClient
-	desired   *krm.AlloyDBCluster
-	actual    *alloydbpb.Cluster
-	reader    client.Reader
+	id            *krm.AlloyDBClusterIdentity
+	gcpClient     *gcp.AlloyDBAdminClient
+	desired       *krm.AlloyDBCluster
+	actual        *alloydbpb.Cluster
+	reader        client.Reader
+	projectMapper *projects.ProjectMapper
 }
 
 var _ directbase.Adapter = &ClusterAdapter{}
@@ -276,7 +284,7 @@ func (a *ClusterAdapter) resolveInitialUserPasswordField(ctx context.Context) er
 	return nil
 }
 
-func (a *ClusterAdapter) buildDesired(ctx context.Context, u *unstructured.Unstructured) (*alloydbpb.Cluster, error) {
+func (a *ClusterAdapter) buildDesiredForCreate(ctx context.Context, u *unstructured.Unstructured) (*alloydbpb.Cluster, error) {
 	// 1. Resolve reference fields.
 	if err := a.normalizeReferences(ctx); err != nil {
 		return nil, fmt.Errorf("normalizing reference: %w", err)
@@ -302,7 +310,40 @@ func (a *ClusterAdapter) buildDesired(ctx context.Context, u *unstructured.Unstr
 		return nil, mapCtx.Err()
 	}
 
-	// 5. Populate desired GCP labels for both Create and Update payloads
+	// 5. Populate desired GCP labels
+	desired.Labels = label.GCPLabels(u)
+
+	return desired, nil
+}
+
+func (a *ClusterAdapter) buildDesiredForUpdate(ctx context.Context, u *unstructured.Unstructured) (*alloydbpb.Cluster, error) {
+	// 1. Resolve reference fields.
+	if err := a.normalizeReferences(ctx); err != nil {
+		return nil, fmt.Errorf("normalizing reference: %w", err)
+	}
+	// 2. Validate mutually-exclusive fields.
+	if a.desired.Spec.RestoreBackupSource != nil && a.desired.Spec.RestoreContinuousBackupSource != nil {
+		return nil, fmt.Errorf("only one of 'spec.restoreBackupSource' " +
+			"and 'spec.restoreContinuousBackupSource' can be configured: " +
+			"both are configured")
+	}
+
+	// 3. Adopt actual values for unset fields instead of setting defaults.
+	mapCtx := &direct.MapContext{}
+	actualKRM := AlloyDBClusterSpec_FromProto(mapCtx, a.actual)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	specCopy := a.desired.DeepCopy().Spec
+	common.MergeUnsetFields(reflect.ValueOf(&specCopy), reflect.ValueOf(actualKRM))
+
+	desired := AlloyDBClusterSpec_ToProto(mapCtx, &specCopy)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	// 4. Populate desired GCP labels
 	desired.Labels = label.GCPLabels(u)
 
 	return desired, nil
@@ -315,7 +356,7 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 	log.V(2).Info("creating Cluster", "name", a.id)
 
 	u := createOp.GetUnstructured()
-	resource, err := a.buildDesired(ctx, u)
+	resource, err := a.buildDesiredForCreate(ctx, u)
 	if err != nil {
 		return err
 	}
@@ -433,74 +474,13 @@ func (a *ClusterAdapter) updateStatus(ctx context.Context, mapCtx *direct.MapCon
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
-func (a *ClusterAdapter) resolveGCPDefaults(desired *alloydbpb.Cluster, actual *alloydbpb.Cluster) {
-	if desired.AutomatedBackupPolicy == nil {
-		desired.AutomatedBackupPolicy = &alloydbpb.AutomatedBackupPolicy{}
-	}
-	if desired.AutomatedBackupPolicy.BackupWindow == nil {
-		desired.AutomatedBackupPolicy.BackupWindow = direct.PtrTo(duration.Duration{Seconds: 3600})
-	}
-	if desired.AutomatedBackupPolicy.Enabled == nil {
-		desired.AutomatedBackupPolicy.Enabled = direct.PtrTo(false)
-	}
-	if desired.AutomatedBackupPolicy.Location == "" {
-		desired.AutomatedBackupPolicy.Location = a.id.Location
-	}
-	if desired.AutomatedBackupPolicy.Retention == nil {
-		desired.AutomatedBackupPolicy.Retention = &alloydbpb.AutomatedBackupPolicy_TimeBasedRetention_{
-			TimeBasedRetention: &alloydbpb.AutomatedBackupPolicy_TimeBasedRetention{
-				RetentionPeriod: direct.PtrTo((duration.Duration{Seconds: 1209600})),
-			},
-		}
-	}
-	if desired.AutomatedBackupPolicy.Schedule == nil {
-		desired.AutomatedBackupPolicy.Schedule = &alloydbpb.AutomatedBackupPolicy_WeeklySchedule_{
-			WeeklySchedule: &alloydbpb.AutomatedBackupPolicy_WeeklySchedule{
-				DaysOfWeek: []dayofweek.DayOfWeek{
-					dayofweek.DayOfWeek_MONDAY,
-					dayofweek.DayOfWeek_TUESDAY,
-					dayofweek.DayOfWeek_WEDNESDAY,
-					dayofweek.DayOfWeek_THURSDAY,
-					dayofweek.DayOfWeek_FRIDAY,
-					dayofweek.DayOfWeek_SATURDAY,
-					dayofweek.DayOfWeek_SUNDAY,
-				},
-				StartTimes: []*timeofday.TimeOfDay{
-					{Hours: 23},
-				},
-			},
-		}
-	}
-
-	if desired.ContinuousBackupConfig == nil {
-		desired.ContinuousBackupConfig = &alloydbpb.ContinuousBackupConfig{}
-	}
-	if desired.ContinuousBackupConfig.Enabled == nil {
-		desired.ContinuousBackupConfig.Enabled = direct.PtrTo(true)
-	}
-	if desired.ContinuousBackupConfig.RecoveryWindowDays == 0 {
-		desired.ContinuousBackupConfig.RecoveryWindowDays = 14
-	}
-
-	// GeminiConfig deprecated in v1beta and removed in v1
-	if desired.GeminiConfig == nil {
-		desired.GeminiConfig = &alloydbpb.GeminiClusterConfig{}
-	}
-	if desired.SubscriptionType == alloydbpb.SubscriptionType_SUBSCRIPTION_TYPE_UNSPECIFIED {
-		desired.SubscriptionType = alloydbpb.SubscriptionType_STANDARD
-	}
-	desired.DatabaseVersion = actual.DatabaseVersion
-
-	desired.Source = actual.Source
-}
-
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Cluster", "name", a.id)
 
 	u := updateOp.GetUnstructured()
-	desiredPb, err := a.buildDesired(ctx, u)
+	desiredPb, err := a.buildDesiredForUpdate(ctx, u)
 	if err != nil {
 		return err
 	}
@@ -511,18 +491,41 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		return fmt.Errorf("field 'spec.databaseVersion' is immutable and cannot be updated from %q to %q", a.actual.DatabaseVersion, *a.desired.Spec.DatabaseVersion)
 	}
 
+	// Diff mutable-but-unreadable fields (initialUser) using the annotation
+	k8sResource, err := k8s.NewResource(u)
+	if err != nil {
+		return err
+	}
+	savedMBUR, err := k8s.GetMutableButUnreadableFieldsFromAnnotations(k8sResource, mutableButUnreadablePaths)
+	if err != nil {
+		return err
+	}
+	currentMBUR, err := k8s.GenerateMutableButUnreadableFieldsState(k8sResource, mutableButUnreadablePaths)
+	if err != nil {
+		return err
+	}
+
+	initialUserChanged := false
+	if len(currentMBUR) > 0 || len(savedMBUR) > 0 {
+		if !reflect.DeepEqual(currentMBUR, savedMBUR) {
+			initialUserChanged = true
+		}
+	}
+	if initialUserChanged {
+		if err := a.resolveInitialUserPasswordField(ctx); err != nil {
+			return err
+		}
+	}
+
 	normalize := func(ctx context.Context, pbObj *alloydbpb.Cluster) error {
 		// initial_user is input-only / create-only and unreadable from GCP API.
 		pbObj.InitialUser = nil
 
-		if a.actual != nil {
-			// Normalize network fields to actual format to avoid false diffs.
-			if a.actual.NetworkConfig != nil && pbObj.NetworkConfig != nil {
-				pbObj.NetworkConfig.Network = a.actual.NetworkConfig.Network
-			}
-			if a.actual.Network != "" {
-				pbObj.Network = a.actual.Network
-			}
+		if netConfig := pbObj.GetNetworkConfig(); netConfig != nil && netConfig.GetNetwork() != "" {
+			netConfig.Network = computerefs.CanonicalizeNetworkValue(ctx, netConfig.GetNetwork(), a.id.Project, a.projectMapper)
+		}
+		if pbObj.GetNetwork() != "" {
+			pbObj.Network = computerefs.CanonicalizeNetworkValue(ctx, pbObj.GetNetwork(), a.id.Project, a.projectMapper)
 		}
 		return nil
 	}
@@ -539,6 +542,17 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	)
 	if err != nil {
 		return fmt.Errorf("comparing %s: %w", a.id.String(), err)
+	}
+
+	if initialUserChanged {
+		if diff == nil {
+			diff = &structuredreporting.Diff{Object: u}
+		}
+		diff.AddField("initial_user", savedMBUR["spec"], currentMBUR["spec"])
+		if updateMask == nil {
+			updateMask = &fieldmaskpb.FieldMask{}
+		}
+		updateMask.Paths = append(updateMask.Paths, "initialUser")
 	}
 
 	mapCtx := &direct.MapContext{}
@@ -564,10 +578,12 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 
 	mergedDesiredPb := proto.Clone(desiredPb).(*alloydbpb.Cluster)
 	mergedDesiredPb.Name = a.id.String()
-	if mergedDesiredPb.Network == "" && mergedDesiredPb.GetNetworkConfig().GetNetwork() != "" {
-		mergedDesiredPb.Network = mergedDesiredPb.GetNetworkConfig().GetNetwork()
+	if initialUserChanged && a.desired.Spec.InitialUser != nil {
+		mergedDesiredPb.InitialUser = &alloydbpb.UserPassword{
+			User:     direct.ValueOf(a.desired.Spec.InitialUser.User),
+			Password: direct.ValueOf(a.desired.Spec.InitialUser.Password.Value),
+		}
 	}
-	a.resolveGCPDefaults(mergedDesiredPb, a.actual)
 
 	updateOp.RecordUpdatingEvent()
 	req := &alloydbpb.UpdateClusterRequest{
@@ -585,6 +601,12 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		return fmt.Errorf("Cluster %s waiting update: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully updated Cluster", "name", a.id)
+
+	if initialUserChanged {
+		if newAnnotationVal, err := k8s.GenerateMutableButUnreadableFieldsAnnotation(k8sResource, mutableButUnreadablePaths); err == nil {
+			k8s.SetAnnotation(k8s.MutableButUnreadableFieldsAnnotation, newAnnotationVal, u)
+		}
+	}
 
 	status := AlloyDBClusterStatus_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
