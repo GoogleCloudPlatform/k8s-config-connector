@@ -29,6 +29,7 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -62,6 +63,10 @@ func (m *MetastoreServiceModel) AdapterForObject(ctx context.Context, op *direct
 	obj := &krm.MetastoreService{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
+	}
+
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	id, err := krm.NewServiceIdentity(ctx, reader, obj)
@@ -129,14 +134,6 @@ func (a *MetastoreServiceAdapter) resolveReferences(ctx context.Context) error {
 		if err := obj.Spec.NetworkRef.Normalize(ctx, a.reader, obj.GetNamespace()); err != nil {
 			return fmt.Errorf("normalizing networkRef: %w", err)
 		}
-	}
-
-	if obj.Spec.EncryptionConfig != nil && obj.Spec.EncryptionConfig.KMSKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.EncryptionConfig.KMSKeyRef)
-		if err != nil {
-			return fmt.Errorf("resolving kmsKeyRef: %w", err)
-		}
-		obj.Spec.EncryptionConfig.KMSKeyRef = kmsKeyRef
 	}
 
 	if obj.Spec.NetworkConfig != nil {
