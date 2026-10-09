@@ -198,6 +198,7 @@ func (a *autonomousDatabaseAdapter) Update(ctx context.Context, updateOp *direct
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &pb.UpdateAutonomousDatabaseRequest{
@@ -296,20 +297,22 @@ func (a *autonomousDatabaseAdapter) compareAutonomousDatabase(ctx context.Contex
 
 	clonedDesired := proto.Clone(desired).(*pb.AutonomousDatabase)
 
-	diffPaths, err := common.CompareProtoMessage(clonedDesired, maskedActual, common.BasicDiff)
+	diffPaths, diff, err := common.CompareProtoMessageStructuredDiff(clonedDesired, maskedActual, common.BasicDiff)
 	if err != nil {
 		return nil, nil, err
 	}
 
+	diff.Controller = k8s.ReconcilerTypeDirect
+
 	// Filter out non-updatable identifier fields if present in diff
 	diffPaths.Delete("name")
-
-	diff := &structuredreporting.Diff{
-		Controller: k8s.ReconcilerTypeDirect,
+	var filteredFields []structuredreporting.DiffField
+	for _, f := range diff.Fields {
+		if f.ID != "name" {
+			filteredFields = append(filteredFields, f)
+		}
 	}
-	for path := range diffPaths {
-		diff.AddField(path, nil, nil)
-	}
+	diff.Fields = filteredFields
 
 	paths := diffPaths.UnsortedList()
 	slices.Sort(paths)
