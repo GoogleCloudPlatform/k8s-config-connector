@@ -24,6 +24,7 @@ import (
 	api "google.golang.org/api/sqladmin/v1beta4"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
@@ -63,7 +64,7 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, actual *api.DatabaseInstance, fiel
 	return out, nil
 }
 
-func InstanceEncryptionKMSCryptoKeyRefKRMToGCP(in *refs.KMSCryptoKeyRef) *api.DiskEncryptionConfiguration {
+func InstanceEncryptionKMSCryptoKeyRefKRMToGCP(in *kmsv1beta1.KMSCryptoKeyRef) *api.DiskEncryptionConfiguration {
 	if in == nil {
 		return nil
 	}
@@ -674,12 +675,12 @@ func SQLInstanceGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstance, error) {
 	return out, nil
 }
 
-func InstanceEncryptionKMSCryptoKeyRefGCPToKRM(in *api.DiskEncryptionConfiguration) *refs.KMSCryptoKeyRef {
+func InstanceEncryptionKMSCryptoKeyRefGCPToKRM(in *api.DiskEncryptionConfiguration) *kmsv1beta1.KMSCryptoKeyRef {
 	if in == nil {
 		return nil
 	}
 
-	out := &refs.KMSCryptoKeyRef{
+	out := &kmsv1beta1.KMSCryptoKeyRef{
 		External: in.KmsKeyName,
 	}
 
