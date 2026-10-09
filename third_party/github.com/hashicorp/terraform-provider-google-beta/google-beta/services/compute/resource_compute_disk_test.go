@@ -32,6 +32,17 @@ func TestDiskImageDiffSuppress(t *testing.T) {
 			New:                "projects/debian-cloud/global/images/debian-8-jessie-v20171213",
 			ExpectDiffSuppress: true,
 		},
+		"matching sovereign custom universe endpoint": {
+			Old:                "https://compute.custom.universe.goog/compute/beta/projects/partition-system:debian-cloud/global/images/debian-12-sample",
+			New:                "projects/partition-system:debian-cloud/global/images/debian-12-sample",
+			ExpectDiffSuppress: true,
+		},
+		"matching sovereign custom universe endpoint with api version": {
+			Old:                "https://compute.custom.universe.goog/compute/beta/projects/partition-system:debian-cloud/global/images/debian-12-sample",
+			New:                "https://compute.custom.universe.goog/compute/v1/projects/partition-system:debian-cloud/global/images/debian-12-sample",
+			ExpectDiffSuppress: true,
+		},
+
 		"matching image partial no project self_link": {
 			Old:                "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-8-jessie-v20171213",
 			New:                "global/images/debian-8-jessie-v20171213",
