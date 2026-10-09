@@ -50,6 +50,13 @@ func IsReferenceReason(reason string) bool {
 	return referenceReasons[reason]
 }
 
+// ReasonReferenceNotRepresentable: refs.Classify says the field names another
+// resource, but KCC cannot express it as a reference today, so it stays a
+// string. It is not a reference reason. TestMissingRefs lists such a field in
+// refs_not_representable.txt and never fails on it, so an open entry must not
+// hide anything.
+const ReasonReferenceNotRepresentable = "reference-not-representable"
+
 // Reasons for a source link in the header of <kind>_types.go that
 // generate-types could not verify. The link carries a
 // "+kcc:guess=source-link reason=<reason>" line until someone fixes it.

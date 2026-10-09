@@ -147,6 +147,35 @@ func referenceHintsMessage(t *testing.T) protoreflect.MessageDescriptor {
 	return fd.Messages().ByName("Widget")
 }
 
+// TestReferenceHintsQueuesNotRepresentableFields pins the entry for a field
+// Classify calls NotRepresentable. outputURI's comment also matches the loose
+// rule, and a loose hint would contradict the entry, so the field gets only
+// the one entry. gcsSource matches no other rule.
+func TestReferenceHintsQueuesNotRepresentableFields(t *testing.T) {
+	// Arrange
+	msg := namedCommentedMessage(t, [][2]string{
+		{"output_uri", "The resource name of the Cloud Storage object to write, such as gs://bucket/object."},
+		{"gcs_source", "URI of an object in Google Cloud Storage. Format: gs://{bucket}/{object}"},
+	})
+	const why = ": names another resource, but KCC cannot express it as a reference today, so it stays a string"
+	want := []string{
+		".spec.outputURI reference-not-representable gcs-object-path-string-for-now-decomposable-as-bucketref-plus-path" + why,
+		".spec.gcsSource reference-not-representable gcs-scheme-not-a-gcp-resource-name" + why,
+	}
+
+	// Act
+	items := ReferenceHints(msg, codegen.WriteOptions{})
+
+	// Assert
+	var got []string
+	for _, it := range items {
+		got = append(got, it.FieldPath+" "+it.Reason+" "+it.Detail)
+	}
+	if !slices.Equal(got, want) {
+		t.Errorf("ReferenceHints() =\n%q\nwant\n%q", got, want)
+	}
+}
+
 // TestReferenceHintsSkipsGeneratedReferences pins which fields the walk skips
 // because the generator writes them as references. connectors' Secret becomes
 // a SecretRef, so clientSecret gets no hint. A proto message that is merely

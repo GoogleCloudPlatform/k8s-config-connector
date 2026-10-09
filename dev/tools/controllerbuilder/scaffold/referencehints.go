@@ -27,6 +27,8 @@ import (
 
 // ReferenceHints inspects spec fields using heuristic rules (name matching,
 // URI templates, loose descriptions) and proposes potential references for review.
+// A field the rules say names another resource in a way KCC cannot express as
+// a reference gets an entry too, so a reviewer sees why it stays a string.
 func ReferenceHints(msg protoreflect.MessageDescriptor, opts codegen.WriteOptions) []JudgementItem {
 	var out []JudgementItem
 	walkSpecFields(msg, ".spec", opts, true, map[protoreflect.FullName]bool{}, func(path, desc string) {
@@ -120,15 +122,23 @@ func fieldComment(field protoreflect.FieldDescriptor) string {
 }
 
 // referenceHint returns the queue entry the rules give a field, trying the
-// strict description rule, then the loose one, then the name rules. Only an
-// IsReference verdict ends the search, so a field Classify calls
-// NotRepresentable can still match a later rule.
+// strict description rule, then the loose one, then the name rules. A verdict
+// from the strict rule ends the search. A field Classify calls
+// NotRepresentable gets an entry that says so, rather than a looser hint that
+// would contradict it.
 func referenceHint(path, desc string) (JudgementItem, bool) {
 	if refs.IsReferenceFieldPath(path) {
 		return JudgementItem{}, false
 	}
-	if verdict, _ := refs.Classify(path, desc); verdict == refs.IsReference {
+	switch verdict, reason := refs.Classify(path, desc); verdict {
+	case refs.IsReference:
 		return JudgementItem{FieldPath: path, Reason: judgement.ReasonPossibleReferenceByDescription}, true
+	case refs.NotRepresentable:
+		return JudgementItem{
+			FieldPath: path,
+			Reason:    judgement.ReasonReferenceNotRepresentable,
+			Detail:    reason + ": names another resource, but KCC cannot express it as a reference today, so it stays a string",
+		}, true
 	}
 	if refs.MatchDescriptionLoose(path, desc) {
 		return JudgementItem{FieldPath: path, Reason: judgement.ReasonPossibleReferenceByDescriptionLoose}, true
