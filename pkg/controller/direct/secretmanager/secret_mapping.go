@@ -18,7 +18,7 @@ import (
 	"strconv"
 
 	pb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -38,7 +38,7 @@ func CustomerManagedEncryption_FromProto(mapCtx *direct.MapContext, in *pb.Custo
 	}
 	out := &krm.CustomerManagedEncryption{}
 	if in.KmsKeyName != "" {
-		out.KmsKeyRef = &refs.KMSCryptoKeyRef{
+		out.KmsKeyRef = &kmsv1beta1.KMSCryptoKeyRef{
 			External: in.KmsKeyName,
 		}
 	}
