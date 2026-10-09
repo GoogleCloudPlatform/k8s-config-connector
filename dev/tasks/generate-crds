@@ -93,3 +93,8 @@ go run ./scripts/generate-cnrm-cluster-roles/main.go
 # controller-gen sometimes leaves empty imports in the api files.
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w apis
+
+# controller-gen omits package alias when multiple /refs packages collide, causing goimports to add a duplicate aliased import.
+if [[ -f "${REPO_ROOT}/apis/container/v1beta1/zz_generated.deepcopy.go" ]]; then
+  sed -i '/\t"github.com\/GoogleCloudPlatform\/k8s-config-connector\/apis\/iam\/refs"/d' "${REPO_ROOT}/apis/container/v1beta1/zz_generated.deepcopy.go"
+fi

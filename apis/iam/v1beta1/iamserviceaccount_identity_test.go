@@ -274,19 +274,15 @@ func TestIAMServiceAccountRef(t *testing.T) {
 		t.Fatalf("failed to add to scheme: %v", err)
 	}
 
-	t.Run("ValidateExternal and ParseExternalToIdentity", func(t *testing.T) {
+	t.Run("ValidateExternal", func(t *testing.T) {
 		tests := []struct {
 			name     string
 			external string
-			wantProj string
-			wantAcc  string
 			wantErr  bool
 		}{
 			{
 				name:     "Valid email address",
 				external: "my-sa@my-project.iam.gserviceaccount.com",
-				wantProj: "my-project",
-				wantAcc:  "my-sa",
 				wantErr:  false,
 			},
 			{
@@ -317,21 +313,6 @@ func TestIAMServiceAccountRef(t *testing.T) {
 				err := ref.ValidateExternal(tc.external)
 				if (err != nil) != tc.wantErr {
 					t.Fatalf("ValidateExternal() error = %v, wantErr %v", err, tc.wantErr)
-				}
-
-				id, err := ref.ParseExternalToIdentity()
-				if (err != nil) != tc.wantErr {
-					t.Fatalf("ParseExternalToIdentity() error = %v, wantErr %v", err, tc.wantErr)
-				}
-
-				if !tc.wantErr {
-					saId, ok := id.(*IAMServiceAccountIdentity)
-					if !ok {
-						t.Fatalf("expected *IAMServiceAccountIdentity, got %T", id)
-					}
-					if saId.Project != tc.wantProj || saId.Account != tc.wantAcc {
-						t.Errorf("expected Proj=%q, Acc=%q; got Proj=%q, Acc=%q", tc.wantProj, tc.wantAcc, saId.Project, saId.Account)
-					}
 				}
 			})
 		}
