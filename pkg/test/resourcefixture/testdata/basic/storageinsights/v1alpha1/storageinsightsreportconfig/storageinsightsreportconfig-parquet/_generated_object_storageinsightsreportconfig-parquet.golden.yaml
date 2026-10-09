@@ -42,14 +42,11 @@ spec:
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: 'Update call failed: error updating: updating StorageInsightsReportConfig
-      projects/${projectId}/locations/us-central1/reportConfigs/e16f7021-7608-4664-a576-367999520110:
-      googleapi: Error 400: Invalid field_mask found. ''object_metadata_report_options.storage_filters.bucket''
-      field is not editable.'
-    reason: UpdateFailed
-    status: "False"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-central1/reportConfigs/e16f7021-7608-4664-a576-367999520110
+  externalRef: projects/${projectId}/locations/us-central1/reportConfigs/6fc29bd4-2301-48c7-be25-861c75b9bc6a
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
