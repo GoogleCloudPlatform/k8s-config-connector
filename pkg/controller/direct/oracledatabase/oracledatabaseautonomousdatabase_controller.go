@@ -27,7 +27,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/oracledatabase/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -109,7 +108,6 @@ func (m *modelAutonomousDatabase) AdapterForObject(ctx context.Context, op *dire
 		id:        id,
 		gcpClient: gcpClient,
 		desired:   desired,
-		reader:    reader,
 	}, nil
 }
 
@@ -135,7 +133,6 @@ type autonomousDatabaseAdapter struct {
 	gcpClient *oracledatabase.Client
 	desired   *pb.AutonomousDatabase
 	actual    *pb.AutonomousDatabase
-	reader    client.Reader
 }
 
 var _ directbase.Adapter = &autonomousDatabaseAdapter{}
