@@ -31,6 +31,7 @@ import (
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -703,7 +704,7 @@ func TestValidateUpdatableFields(t *testing.T) {
 			Spec: krm.ComposerEnvironmentSpec{
 				Config: &krm.EnvironmentConfig{
 					EncryptionConfig: &krm.EncryptionConfig{
-						KMSKeyRef: &refs.KMSCryptoKeyRef{
+						KMSKeyRef: &kmsv1beta1.KMSCryptoKeyRef{
 							External: "projects/p1/locations/l1/keyRings/r1/cryptoKeys/k2",
 						},
 					},
@@ -959,7 +960,7 @@ func TestMaximumComposerEnvironment(t *testing.T) {
 				EnvironmentSize: direct.LazyPtr("ENVIRONMENT_SIZE_MEDIUM"),
 				ResilienceMode:  direct.LazyPtr("HIGH_RESILIENCE"),
 				EncryptionConfig: &krm.EncryptionConfig{
-					KMSKeyRef: &refs.KMSCryptoKeyRef{
+					KMSKeyRef: &kmsv1beta1.KMSCryptoKeyRef{
 						External: "projects/p1/locations/us-central1/keyRings/r1/cryptoKeys/k1",
 					},
 				},
