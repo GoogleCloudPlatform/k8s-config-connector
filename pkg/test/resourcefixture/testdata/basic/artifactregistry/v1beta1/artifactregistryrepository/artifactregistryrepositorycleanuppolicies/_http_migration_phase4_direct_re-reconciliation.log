@@ -22,7 +22,7 @@ X-Xss-Protection: 0
         "tagPrefixes": [
           "alpha"
         ],
-        "tagState": 0
+        "tagState": 3
       },
       "id": "delete-prerelease"
     },

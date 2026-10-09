@@ -41,3 +41,18 @@
 - **Root Cause**:
   1. In the Terraform provider schema, `tag_state` has `Default: "ANY"`. When `tagState` is omitted from KRM, Terraform provisions the policy with `tagState: ANY` (enum value 3) on GCP. The direct controller does not default `tagState` to `ANY`, so upon takeover it detects a mismatch between GCP (`ANY`) and desired KRM (unset/nil), triggering an unnecessary `PATCH` call.
   2. For `cleanup_policy_dry_run`, `cleanupPolicyDryRun` is optional in KRM. In direct controller `ToProto`, `direct.ValueOf(in.CleanupPolicyDryRun)` forces `false` if `nil`, which can differ if omitted or not explicitly managed.
+
+### Run 4: Verification of Controller Fix on Real GCP
+- **Start Time (PDT)**: Fri Oct 9 10:58:02 PDT 2026
+- **Finish Time (PDT)**: Fri Oct 9 11:00:12 PDT 2026
+- **Target**: `TestMigrationToDirect/fixtures/artifactregistryrepositorycleanuppolicies`
+- **Changes Applied**:
+  1. Updated `compareRepository` in `pkg/controller/direct/artifactregistry/artifactregistryrepository_controller.go`:
+     - Added defaulting for `tagState` in `populateDefaults`: if `TagState` is unspecified/nil in a condition, default it to `pb.CleanupPolicyCondition_ANY`, aligning with Terraform schema default behavior.
+     - Added handling for omitted optional fields: when `desiredKRM.Spec.CleanupPolicyDryRun == nil`, keep `desired.CleanupPolicyDryRun` equal to `actual.CleanupPolicyDryRun`.
+     - When `desiredKRM.Spec.CleanupPolicies == nil`, keep `desired.CleanupPolicies` equal to `maskedActual.CleanupPolicies`.
+  2. Wired `desiredKRM` through `ArtifactRegistryRepositoryAdapter` into `compareRepository`.
+- **Results**:
+  - `TestMigrationToDirect/fixtures/artifactregistryrepositorycleanuppolicies`: **PASS** (41.33s).
+  - `_migration_diffs.json`: The diff entry with `"controller": "direct", "isNewObject": false` is completely gone. 0 direct migration diffs.
+  - `_http_migration_phase3_direct_takeover.log`: 1 GET call only, 0 write calls (`PATCH` completely removed). Clean 0-write no-op takeover confirmed.
