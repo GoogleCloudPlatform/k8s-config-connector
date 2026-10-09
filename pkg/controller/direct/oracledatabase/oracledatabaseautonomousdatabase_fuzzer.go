@@ -20,6 +20,8 @@ package oracledatabase
 
 import (
 	pb "cloud.google.com/go/oracledatabase/apiv1/oracledatabasepb"
+	"google.golang.org/protobuf/reflect/protoreflect"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
@@ -43,7 +45,6 @@ func oracleDatabaseAutonomousDatabaseFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".cidr")
 	f.SpecField(".odb_network")
 	f.SpecField(".odb_subnet")
-	f.SpecField(".source_config")
 	f.SpecField(".admin_password_secret_version")
 
 	// Status fields
@@ -138,11 +139,36 @@ func oracleDatabaseAutonomousDatabaseFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".source_config.backup_time")
 	f.SpecField(".source_config.clone_type")
 	f.SpecField(".source_config.refreshable_mode")
-	f.SpecField(".source_config.type")
+	f.SpecField(".source_config.source_type")
 	f.SpecField(".source_config.use_latest_available_backup")
 	f.SpecField(".source_config.auto_refresh_frequency_seconds")
 	f.SpecField(".source_config.auto_refresh_point_lag_seconds")
 	f.SpecField(".source_config.auto_refresh_start_time")
 
+	f.FilterStatus = func(in *pb.AutonomousDatabase) {
+		cleanEmptyMessages(in.ProtoReflect())
+	}
+
 	return f
+}
+
+func cleanEmptyMessages(m protoreflect.Message) {
+	m.Range(func(fd protoreflect.FieldDescriptor, v protoreflect.Value) bool {
+		if fd.Kind() == protoreflect.MessageKind {
+			if fd.IsList() || fd.IsMap() {
+				return true
+			}
+			sub := v.Message()
+			cleanEmptyMessages(sub)
+			hasFields := false
+			sub.Range(func(fd2 protoreflect.FieldDescriptor, v2 protoreflect.Value) bool {
+				hasFields = true
+				return false
+			})
+			if !hasFields {
+				m.Clear(fd)
+			}
+		}
+		return true
+	})
 }
