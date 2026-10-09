@@ -29,7 +29,7 @@ import (
 // URI templates, loose descriptions) and proposes potential references for review.
 func ReferenceHints(msg protoreflect.MessageDescriptor, opts codegen.WriteOptions) []JudgementItem {
 	var out []JudgementItem
-	walkSpecFields(msg, ".spec", opts, true, map[protoreflect.FullName]bool{}, func(path, desc string) {
+	walkSpecFields(msg, ".spec", opts, true, map[protoreflect.FullName]bool{}, func(path, desc string, _ protoreflect.FieldDescriptor) {
 		if item, ok := referenceHint(path, desc); ok {
 			out = append(out, item)
 		}
@@ -42,7 +42,7 @@ func ReferenceHints(msg protoreflect.MessageDescriptor, opts codegen.WriteOption
 // message fields the same way.
 //
 // It skips what the generator leaves out of the Spec: OUTPUT_ONLY fields at any
-// depth, and at the top level the identity fields and server-set fields that
+// depth, and at the top level the identity, server-set and deprecated fields
 // PrepopulateSpec drops. A field the generator cannot type is absent from the
 // CRD too, so it is skipped with its subtree. So is a field the generator
 // already writes as a reference, which needs no hint.
@@ -50,7 +50,7 @@ func ReferenceHints(msg protoreflect.MessageDescriptor, opts codegen.WriteOption
 // onPath holds the messages between msg and the root. Proto messages can
 // contain themselves, and the generated struct breaks the cycle with a
 // pointer, so a message already on the path is not entered again.
-func walkSpecFields(msg protoreflect.MessageDescriptor, prefix string, opts codegen.WriteOptions, top bool, onPath map[protoreflect.FullName]bool, visit func(path, desc string)) {
+func walkSpecFields(msg protoreflect.MessageDescriptor, prefix string, opts codegen.WriteOptions, top bool, onPath map[protoreflect.FullName]bool, visit func(path, desc string, field protoreflect.FieldDescriptor)) {
 	if onPath[msg.FullName()] {
 		return
 	}
@@ -73,6 +73,10 @@ func walkSpecFields(msg protoreflect.MessageDescriptor, prefix string, opts code
 		if top && codegen.IsServerSetField(field, msg, opts) {
 			continue
 		}
+		// PrepopulateSpec drops deprecated top-level fields too.
+		if top && isDeprecated(field) {
+			continue
+		}
 		goType, err := codegen.GoTypeForField(field, false, opts)
 		if err != nil {
 			continue
@@ -82,7 +86,7 @@ func walkSpecFields(msg protoreflect.MessageDescriptor, prefix string, opts code
 		}
 
 		path := prefix + "." + codegen.GetJSONForKRM(field, opts)
-		visit(path, fieldComment(field))
+		visit(path, fieldComment(field), field)
 
 		switch {
 		case field.IsMap():

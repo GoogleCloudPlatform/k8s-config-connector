@@ -66,6 +66,9 @@ type PrepopulateResult struct {
 // their proto-derived types and queued in Judgement for review, ensuring no
 // fields are silently dropped during scaffolding.
 //
+// A field the proto marks deprecated is left out and queued, so a new Kind does
+// not start with it.
+//
 // ObservedState is generated separately by PrepopulateObservedState using output
 // fields discovered during proto traversal.
 func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptions) (*PrepopulateResult, error) {
@@ -102,6 +105,21 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 		if identityFields[string(field.Name())] {
 			// Identity fields (e.g. "name") are managed via status.externalRef rather
 			// than directly in spec fields.
+			continue
+		}
+		// Leave out a field the proto marks deprecated, so a new Kind does not
+		// start with it. walkSpecFields and DetectOutputOnlyInComments skip it
+		// too, or their entries would name a path the CRD does not have.
+		//
+		// A types file scaffolded before this check can still have the field,
+		// so the detail says what to do in both cases.
+		if isDeprecated(field) {
+			out.Judgement = append(out.Judgement, JudgementItem{
+				FieldPath: ".spec." + codegen.GetJSONForKRM(field, opts),
+				Reason:    "deprecated-field",
+				Detail: "the proto marks this field deprecated, so new Kinds leave it out of the Spec. " +
+					"If this Spec still has it, remove it by hand; add it back only if users still need it",
+			})
 			continue
 		}
 
@@ -296,6 +314,10 @@ func DetectOutputOnlyInComments(msg protoreflect.MessageDescriptor, opts codegen
 		// --place-server-set-fields is enabled. A server-set field is already
 		// in ObservedState with its own queue entry.
 		if codegen.IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) || identityFields[string(field.Name())] || codegen.IsServerSetField(field, msg, opts) {
+			continue
+		}
+		// PrepopulateSpec leaves deprecated fields out of the Spec too.
+		if isDeprecated(field) {
 			continue
 		}
 		comment, ok := outputOnlyComment(field)
