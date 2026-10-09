@@ -44,6 +44,9 @@ func (s *EssentialContactsV1) GetContact(ctx context.Context, req *pb.GetContact
 
 	obj := &pb.Contact{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Requested entity was not found.")
+		}
 		return nil, err
 	}
 
@@ -66,7 +69,7 @@ func (s *EssentialContactsV1) CreateContact(ctx context.Context, req *pb.CreateC
 	}, func(obj proto.Message) error {
 		existing := obj.(*pb.Contact)
 		if strings.EqualFold(existing.GetEmail(), req.GetContact().GetEmail()) {
-			st := status.New(codes.AlreadyExists, fmt.Sprintf("There is already a contact with the given email address [%s]. To add new category subscriptions, please use UpdateContact instead.", req.GetContact().GetEmail()))
+			st := status.New(codes.AlreadyExists, fmt.Sprintf("There is already a contact with the given email address %s. To add new category subscriptions, please use UpdateContact instead.", req.GetContact().GetEmail()))
 			st, err := st.WithDetails(&errdetails.ErrorInfo{
 				Reason: "CONTACT_ALREADY_EXISTS",
 				Domain: "essentialcontacts.googleapis.com",
@@ -122,6 +125,9 @@ func (s *EssentialContactsV1) UpdateContact(ctx context.Context, req *pb.UpdateC
 	fqn := name.String()
 	obj := &pb.Contact{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Requested entity was not found.")
+		}
 		return nil, err
 	}
 
@@ -159,6 +165,9 @@ func (s *EssentialContactsV1) DeleteContact(ctx context.Context, req *pb.DeleteC
 
 	deletedObj := &pb.Contact{}
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Requested entity was not found.")
+		}
 		return nil, err
 	}
 	return &emptypb.Empty{}, nil
