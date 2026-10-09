@@ -1073,7 +1073,7 @@ func GCSSource_FromProto(mapCtx *direct.MapContext, in *pb.GcsSource) *krm.GCSSo
 		return nil
 	}
 	out := &krm.GCSSource{}
-	out.Uris = in.Uris
+	out.URIs = in.Uris
 	return out
 }
 func GCSSource_ToProto(mapCtx *direct.MapContext, in *krm.GCSSource) *pb.GcsSource {
@@ -1081,7 +1081,7 @@ func GCSSource_ToProto(mapCtx *direct.MapContext, in *krm.GCSSource) *pb.GcsSour
 		return nil
 	}
 	out := &pb.GcsSource{}
-	out.Uris = in.Uris
+	out.Uris = in.URIs
 	return out
 }
 func GenieSource_FromProto(mapCtx *direct.MapContext, in *pb.GenieSource) *krm.GenieSource {
@@ -2519,8 +2519,7 @@ func ResourceRuntimeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Re
 		return nil
 	}
 	out := &krm.ResourceRuntimeObservedState{}
-	// MISSING: AccessUris
-	// (near miss): "AccessUris" vs "AccessURIs"
+	out.AccessURIs = in.AccessUris
 	return out
 }
 func ResourceRuntimeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ResourceRuntimeObservedState) *pb.ResourceRuntime {
@@ -2528,8 +2527,7 @@ func ResourceRuntimeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Res
 		return nil
 	}
 	out := &pb.ResourceRuntime{}
-	// MISSING: AccessUris
-	// (near miss): "AccessUris" vs "AccessURIs"
+	out.AccessUris = in.AccessURIs
 	return out
 }
 func ResourceRuntimeSpec_FromProto(mapCtx *direct.MapContext, in *pb.ResourceRuntimeSpec) *krm.ResourceRuntimeSpec {
@@ -3991,7 +3989,7 @@ func VertexRagStore_RagResource_FromProto(mapCtx *direct.MapContext, in *pb.Vert
 	}
 	out := &krm.VertexRagStore_RagResource{}
 	out.RagCorpus = direct.LazyPtr(in.GetRagCorpus())
-	out.RagFileIds = in.RagFileIds
+	out.RagFileIDs = in.RagFileIds
 	return out
 }
 func VertexRagStore_RagResource_ToProto(mapCtx *direct.MapContext, in *krm.VertexRagStore_RagResource) *pb.VertexRagStore_RagResource {
@@ -4000,7 +3998,7 @@ func VertexRagStore_RagResource_ToProto(mapCtx *direct.MapContext, in *krm.Verte
 	}
 	out := &pb.VertexRagStore_RagResource{}
 	out.RagCorpus = direct.ValueOf(in.RagCorpus)
-	out.RagFileIds = in.RagFileIds
+	out.RagFileIds = in.RagFileIDs
 	return out
 }
 func VideoMetadata_FromProto(mapCtx *direct.MapContext, in *pb.VideoMetadata) *krm.VideoMetadata {

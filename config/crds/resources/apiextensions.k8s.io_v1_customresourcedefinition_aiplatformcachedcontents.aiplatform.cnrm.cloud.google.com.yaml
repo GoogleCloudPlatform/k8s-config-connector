@@ -1008,7 +1008,7 @@ spec:
                                     description: 'Optional. RagCorpora resource name.
                                       Format: `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}`'
                                     type: string
-                                  ragFileIds:
+                                  ragFileIDs:
                                     description: Optional. rag_file_id. The files
                                       should be in the same rag_corpus set in rag_corpus
                                       field.
