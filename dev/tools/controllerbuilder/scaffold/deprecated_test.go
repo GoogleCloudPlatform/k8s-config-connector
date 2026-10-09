@@ -149,7 +149,7 @@ func TestDetectOutputOnlySkipsDeprecatedFields(t *testing.T) {
 	// Arrange
 	msg := deprecatedMessage(t)
 	want := []OutputOnlyCandidate{
-		{FieldPath: ".spec.serverState", Comment: "Output only. The state of the widget."},
+		{FieldPath: ".spec.serverState", Reason: "output-only-in-comment-only", Comment: "Output only. The state of the widget."},
 	}
 
 	// Act

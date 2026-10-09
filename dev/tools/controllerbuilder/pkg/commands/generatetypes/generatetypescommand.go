@@ -83,7 +83,7 @@ func (o *GenerateCRDOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().BoolVar(&o.PrepopulateSpec, "prepopulate-spec", false, "fill the scaffolded Spec and ObservedState from the proto message instead of emitting a three-field stub, and record what still needs a human in apis/<service>/judgement_queue.yaml. A top-level field the proto marks deprecated is left out of the Spec. A deprecated field in a nested struct is kept, since other Kinds can share the struct. Both are recorded in the queue with the reason deprecated-field. Opt in one service at a time")
 	cmd.Flags().BoolVar(&o.EmitPluralAcronyms, "emit-plural-acronyms", false, "case plural acronyms as KRM conventions want, so related_uris becomes relatedURIs rather than relatedUris. Opt in one service at a time: it renames fields, which is a breaking change for a resource people already use")
 	cmd.Flags().BoolVar(&o.EmitMessageMaps, "emit-message-maps", false, "generate map<string, Message> fields as a map of the value's Go type instead of leaving them out. Opt in one service at a time: it adds fields to the CRD of a resource people already use, and generate-mapper needs the same flag")
-	cmd.Flags().BoolVar(&o.DetectOutputOnly, "detect-output-only-in-comments", false, "record a spec field whose proto comment says \"Output only.\" or \"[Output Only]\" but that carries no field_behavior annotation, in apis/<service>/judgement_queue.yaml. Requires --prepopulate-spec. Reports only: moving the field is a hand edit")
+	cmd.Flags().BoolVar(&o.DetectOutputOnly, "detect-output-only-in-comments", false, "record a spec field, at any depth, whose proto comment says it is output only but that carries no field_behavior annotation, in apis/<service>/judgement_queue.yaml. A comment that starts with \"Output only.\" or \"[Output Only]\" is recorded as output-only-in-comment-only. One that says \"output only\" further on is recorded as output-only-mentioned-in-comment, a weaker signal. Requires --prepopulate-spec. Reports only: moving the field is a hand edit")
 	cmd.Flags().BoolVar(&o.PlaceServerSetFields, "place-server-set-fields", false, "put a small allowlist of server-computed fields (createTime, uid, selfLink, etag and a few more) into ObservedState when the proto carries no field_behavior anywhere, instead of leaving them in the Spec for a user to set. Requires --prepopulate-spec. Each one is also recorded in apis/<service>/judgement_queue.yaml. Opt in one service at a time: it moves fields between spec and status, which is a breaking change for a resource people already use")
 	cmd.Flags().BoolVar(&o.EmitRequiredFromProto, "emit-required-from-proto", false, "emit // +required markers for fields marked REQUIRED in proto. Opt-in per service to avoid breaking CRD schema changes on existing resources")
 	cmd.Flags().BoolVar(&o.EmitParentRefs, "emit-parent-refs", false, "emit one spec field referencing the resource's direct parent, where google.api.resource declares a parent below project and location and a reference type for it already exists. Requires --prepopulate-spec. Each field is marked +kcc:guess and recorded in apis/<service>/judgement_queue.yaml, and a parent with no reference type is recorded there rather than guessed. Opt in one service at a time: it adds a field to the CRD of a resource people already use")
@@ -312,15 +312,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 						// Spec and looks like any other generated field, so without
 						// an entry nobody would notice it.
 						for _, cand := range scaffold.DetectOutputOnlyInComments(msg, writeOptions) {
-							// The entry names where the field belongs, not where
-							// it currently sits. It accounts for a field absent
-							// from ObservedState, so a path under .spec would
-							// never line up with what is missing.
-							prepopulated.Judgement = append(prepopulated.Judgement, scaffold.JudgementItem{
-								FieldPath: ".status.observedState." + strings.TrimPrefix(cand.FieldPath, ".spec."),
-								Reason:    "output-only-in-comment-only",
-								Detail:    "proto comment says output only but no field_behavior annotation, so it was generated into the Spec instead. Move it if the comment is right: " + cand.Comment,
-							})
+							prepopulated.Judgement = append(prepopulated.Judgement, cand.Item())
 						}
 					}
 					prepopulated.ExtraImports = scaffold.ExtraImportsFor(prepopulated.SpecFields, prepopulated.ObservedStateFields)

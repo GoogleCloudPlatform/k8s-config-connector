@@ -348,25 +348,157 @@ func TestDetectOutputOnlyInComments(t *testing.T) {
 		"Output only. Set by the server.",                   // field_0, the long-standing spelling
 		"[Output Only] IP address on the Google side.",      // field_1, how Compute writes it
 		"The display name of the widget.",                   // field_2, no signal
-		"Set by the user. Output only in some other sense.", // field_3, marker not at the front
+		"Set by the user. Output only in some other sense.", // field_3, marker not at the front, so the weaker reason
 	)
-	want := []string{".spec.field0", ".spec.field1"}
+	want := []string{
+		".spec.field0 output-only-in-comment-only",
+		".spec.field1 output-only-in-comment-only",
+		".spec.field3 output-only-mentioned-in-comment",
+	}
 
 	// Act
 	got := DetectOutputOnlyInComments(msg, codegen.WriteOptions{})
 
 	// Assert
-	var paths []string
+	var entries []string
 	for _, c := range got {
-		paths = append(paths, c.FieldPath)
+		entries = append(entries, c.FieldPath+" "+c.Reason)
 	}
-	if len(paths) != len(want) {
-		t.Fatalf("got %v, want %v", paths, want)
+	if len(entries) != len(want) {
+		t.Fatalf("got %v, want %v", entries, want)
 	}
 	for i := range want {
-		if paths[i] != want[i] {
-			t.Errorf("got %v, want %v", paths, want)
+		if entries[i] != want[i] {
+			t.Errorf("got %v, want %v", entries, want)
 		}
+	}
+}
+
+// A comment that says "output only" after other words gets the weaker reason,
+// in any case, with brackets or with a hyphen. websecurityscanner's
+// managed_scan slipped through before this rule. A sentence break between the
+// words is not a match.
+func TestDetectOutputOnlyMentionedInComment(t *testing.T) {
+	// Arrange
+	msg := commentedMessage(t,
+		"Whether the scan config is managed by Web Security Scanner, output only.",  // field_0, websecurityscanner
+		"When the version was created. Output-only field, populated by the system.", // field_1, dlp's hyphen
+		"Required. [Output Only] Set by the server.",                                // field_2, a marker further on
+		"The job output. Only the last run is kept.",                                // field_3, a sentence break
+	)
+	want := []string{
+		".spec.field0 output-only-mentioned-in-comment",
+		".spec.field1 output-only-mentioned-in-comment",
+		".spec.field2 output-only-mentioned-in-comment",
+	}
+
+	// Act
+	got := DetectOutputOnlyInComments(msg, codegen.WriteOptions{})
+
+	// Assert
+	var entries []string
+	for _, c := range got {
+		entries = append(entries, c.FieldPath+" "+c.Reason)
+	}
+	if strings.Join(entries, ",") != strings.Join(want, ",") {
+		t.Errorf("got %v, want %v", entries, want)
+	}
+}
+
+// TestDetectOutputOnlyWalksNestedFields pins that both checks reach the fields
+// of nested Spec structs, in a list too, and that each entry names the field's
+// place under ObservedState with the rest of its path kept.
+func TestDetectOutputOnlyWalksNestedFields(t *testing.T) {
+	// Arrange
+	str := fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)
+	msgType := fieldType(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE)
+	comment := func(path []int32, text string) *descriptorpb.SourceCodeInfo_Location {
+		return &descriptorpb.SourceCodeInfo_Location{Path: path, Span: []int32{0, 0, 1}, LeadingComments: strPtr(" " + text + "\n")}
+	}
+	fd, err := protodesc.NewFile(&descriptorpb.FileDescriptorProto{
+		Name:    strPtr("nested.proto"),
+		Package: strPtr("google.cloud.test.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name: strPtr("Widget"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("config"), Number: i32Ptr(1), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.Config")},
+					{Name: strPtr("peers"), Number: i32Ptr(2), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.Config"), Label: descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()},
+				},
+			},
+			{
+				Name: strPtr("Config"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("state"), Number: i32Ptr(1), Type: str},
+					{Name: strPtr("managed"), Number: i32Ptr(2), Type: str},
+					{Name: strPtr("target"), Number: i32Ptr(3), Type: str},
+				},
+			},
+		},
+		SourceCodeInfo: &descriptorpb.SourceCodeInfo{Location: []*descriptorpb.SourceCodeInfo_Location{
+			comment([]int32{4, 1, 2, 0}, "Output only. The state of the config."),
+			comment([]int32{4, 1, 2, 1}, "Whether the config is managed by the service, output only."),
+			comment([]int32{4, 1, 2, 2}, "The target the config points at."),
+		}},
+	}, nil)
+	if err != nil {
+		t.Fatalf("building file descriptor: %v", err)
+	}
+	want := []string{
+		".status.observedState.config.state output-only-in-comment-only",
+		".status.observedState.config.managed output-only-mentioned-in-comment",
+		".status.observedState.peers[].state output-only-in-comment-only",
+		".status.observedState.peers[].managed output-only-mentioned-in-comment",
+	}
+
+	// Act
+	cands := DetectOutputOnlyInComments(fd.Messages().ByName("Widget"), codegen.WriteOptions{})
+
+	// Assert
+	var got []string
+	for _, c := range cands {
+		it := c.Item()
+		got = append(got, it.FieldPath+" "+it.Reason)
+	}
+	if strings.Join(got, "\n") != strings.Join(want, "\n") {
+		t.Errorf("got\n%s\nwant\n%s", strings.Join(got, "\n"), strings.Join(want, "\n"))
+	}
+}
+
+// TestOutputOnlyCandidateItem pins the entry for each reason. The detail ends
+// with the comment, so a reviewer can decide without opening the proto.
+func TestOutputOnlyCandidateItem(t *testing.T) {
+	for _, tc := range []struct {
+		cand OutputOnlyCandidate
+		want JudgementItem
+	}{
+		{
+			cand: OutputOnlyCandidate{FieldPath: ".spec.createTime", Reason: "output-only-in-comment-only", Comment: "Output only. When it was created."},
+			want: JudgementItem{
+				FieldPath: ".status.observedState.createTime",
+				Reason:    "output-only-in-comment-only",
+				Detail:    "proto comment says output only but no field_behavior annotation, so it was generated into the Spec instead. Move it if the comment is right: Output only. When it was created.",
+			},
+		},
+		{
+			cand: OutputOnlyCandidate{FieldPath: ".spec.config.managedScan", Reason: "output-only-mentioned-in-comment", Comment: "Whether the scan config is managed by Web Security Scanner, output only."},
+			want: JudgementItem{
+				FieldPath: ".status.observedState.config.managedScan",
+				Reason:    "output-only-mentioned-in-comment",
+				Detail: "proto comment says output only, but not at the start, and there is no field_behavior annotation, so it was generated into the Spec. " +
+					"The comment may mean something else. Move the field if it is output only: Whether the scan config is managed by Web Security Scanner, output only.",
+			},
+		},
+	} {
+		t.Run(tc.cand.Reason, func(t *testing.T) {
+			// Act
+			got := tc.cand.Item()
+
+			// Assert
+			if got != tc.want {
+				t.Errorf("Item() =\n%+v\nwant\n%+v", got, tc.want)
+			}
+		})
 	}
 }
 
