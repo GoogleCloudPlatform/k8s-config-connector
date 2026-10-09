@@ -23,6 +23,7 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
@@ -35,7 +36,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -72,19 +72,6 @@ func (m *modelParameter) client(ctx context.Context, location string) (*gcp.Clie
 	return gcpClient, err
 }
 
-func (a *ParameterAdapter) normalizeKMSKeyRef(ctx context.Context) error {
-	obj := a.desired
-	if obj.Spec.KMSKeyRef != nil {
-		kmsKeyRef := obj.Spec.KMSKeyRef
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, kmsKeyRef)
-		if err != nil {
-			return err
-		}
-		obj.Spec.KMSKeyRef = kmsKeyRef
-	}
-	return nil
-}
-
 func (m *modelParameter) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
 	reader := op.Reader
@@ -97,6 +84,11 @@ func (m *modelParameter) AdapterForObject(ctx context.Context, op *directbase.Ad
 	if err != nil {
 		return nil, err
 	}
+
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	location := obj.Spec.ProjectAndLocationRef.Location
 
 	// Get parmetermanager GCP client
@@ -108,7 +100,6 @@ func (m *modelParameter) AdapterForObject(ctx context.Context, op *directbase.Ad
 		id:        id.(*krm.ParameterIdentity),
 		gcpClient: gcpClient,
 		desired:   obj,
-		reader:    reader,
 	}, nil
 }
 
@@ -120,7 +111,6 @@ func (m *modelParameter) AdapterForURL(ctx context.Context, url string) (directb
 type ParameterAdapter struct {
 	id        *krm.ParameterIdentity
 	gcpClient *gcp.Client
-	reader    client.Reader
 	desired   *krm.ParameterManagerParameter
 	actual    *parametermanagerpb.Parameter
 }
@@ -154,10 +144,6 @@ func (a *ParameterAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	log.V(2).Info("creating Parameter", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	if err := a.normalizeKMSKeyRef(ctx); err != nil {
-		return fmt.Errorf("error in normalizing kmskey references: %w", err)
-	}
-
 	desired := a.desired.DeepCopy()
 	resource := ParameterManagerParameterSpec_ToProto(mapCtx, &desired.Spec)
 	resource.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
@@ -190,10 +176,6 @@ func (a *ParameterAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating instance", "name", a.id)
 	mapCtx := &direct.MapContext{}
-
-	if err := a.normalizeKMSKeyRef(ctx); err != nil {
-		return fmt.Errorf("error in normalizing kmskey references: %w", err)
-	}
 
 	desired := a.desired.DeepCopy()
 	resource := ParameterManagerParameterSpec_ToProto(mapCtx, &desired.Spec)
