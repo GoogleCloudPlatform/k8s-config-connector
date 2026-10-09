@@ -47,6 +47,9 @@ type SecretRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
+// +k8s:deepcopy-gen=false
+type SecretManagerSecretRef = SecretRef
+
 func init() {
 	refsv1beta1.Register(&SecretRef{}, &SecretManagerSecret{})
 }
