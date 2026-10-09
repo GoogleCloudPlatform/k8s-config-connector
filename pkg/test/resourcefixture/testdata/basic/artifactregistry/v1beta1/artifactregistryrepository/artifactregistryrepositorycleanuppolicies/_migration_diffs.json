@@ -1,0 +1,228 @@
+[
+  {
+    "controller": "direct",
+    "isNewObject": false,
+    "resource": "ArtifactRegistryRepository/arrepository-${uniqueId}",
+    "fields": [
+      {
+        "id": "cleanup_policies",
+        "old": {
+          "delete-prerelease": {
+            "action": 1,
+            "condition": {
+              "older_than": {
+                "seconds": 2592000
+              },
+              "tag_prefixes": [
+                "alpha"
+              ],
+              "tag_state": 3
+            },
+            "id": "delete-prerelease"
+          },
+          "keep-minimum-versions": {
+            "action": 2,
+            "id": "keep-minimum-versions",
+            "most_recent_versions": {
+              "keep_count": 5,
+              "package_name_prefixes": [
+                "pkg"
+              ]
+            }
+          }
+        },
+        "new": {
+          "delete-prerelease": {
+            "action": 1,
+            "condition": {
+              "older_than": {
+                "seconds": 2592000
+              },
+              "tag_prefixes": [
+                "alpha"
+              ]
+            },
+            "id": "delete-prerelease"
+          },
+          "keep-minimum-versions": {
+            "action": 2,
+            "id": "keep-minimum-versions",
+            "most_recent_versions": {
+              "keep_count": 5,
+              "package_name_prefixes": [
+                "pkg"
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ArtifactRegistryRepository/arrepository-${uniqueId}",
+    "fields": [
+      {
+        "id": "cleanup_policies.#",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "cleanup_policies.687711313.action",
+        "old": "",
+        "new": "DELETE"
+      },
+      {
+        "id": "cleanup_policies.687711313.condition.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "cleanup_policies.687711313.condition.0.newer_than",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "cleanup_policies.687711313.condition.0.older_than",
+        "old": "",
+        "new": "2592000s"
+      },
+      {
+        "id": "cleanup_policies.687711313.condition.0.package_name_prefixes.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "cleanup_policies.687711313.condition.0.tag_prefixes.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "cleanup_policies.687711313.condition.0.tag_prefixes.0",
+        "old": "",
+        "new": "alpha"
+      },
+      {
+        "id": "cleanup_policies.687711313.condition.0.tag_state",
+        "old": "",
+        "new": "ANY"
+      },
+      {
+        "id": "cleanup_policies.687711313.condition.0.version_name_prefixes.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "cleanup_policies.687711313.id",
+        "old": "",
+        "new": "delete-prerelease"
+      },
+      {
+        "id": "cleanup_policies.687711313.most_recent_versions.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "cleanup_policies.95583784.action",
+        "old": "",
+        "new": "KEEP"
+      },
+      {
+        "id": "cleanup_policies.95583784.condition.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "cleanup_policies.95583784.id",
+        "old": "",
+        "new": "keep-minimum-versions"
+      },
+      {
+        "id": "cleanup_policies.95583784.most_recent_versions.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "cleanup_policies.95583784.most_recent_versions.0.keep_count",
+        "old": "",
+        "new": "5"
+      },
+      {
+        "id": "cleanup_policies.95583784.most_recent_versions.0.package_name_prefixes.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "cleanup_policies.95583784.most_recent_versions.0.package_name_prefixes.0",
+        "old": "",
+        "new": "pkg"
+      },
+      {
+        "id": "create_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "test repository description"
+      },
+      {
+        "id": "format",
+        "old": "",
+        "new": "DOCKER"
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "3"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.label-one",
+        "old": "",
+        "new": "value-one"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "location",
+        "old": "",
+        "new": "us-west1"
+      },
+      {
+        "id": "mode",
+        "old": "",
+        "new": "STANDARD_REPOSITORY"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "repository_id",
+        "old": "",
+        "new": "arrepository-${uniqueId}"
+      },
+      {
+        "id": "update_time",
+        "old": "",
+        "new": ""
+      }
+    ]
+  }
+]
