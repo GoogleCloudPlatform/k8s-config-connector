@@ -140,9 +140,6 @@
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].functionDeclarations[].responseJsonSchema.structValue" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].googleMaps" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].googleSearch.excludeDomains[]" is not set in unstructured objects
-[missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].googleSearchRetrieval.dynamicRetrievalConfig.dynamicThreshold" is not set in unstructured objects
-[missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].googleSearchRetrieval.dynamicRetrievalConfig.mode" is not set in unstructured objects
-[missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.disableAttribution" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexAiSearch.dataStoreSpecs[].dataStore" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexAiSearch.dataStoreSpecs[].filter" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexAiSearch.datastore" is not set in unstructured objects
@@ -157,8 +154,6 @@
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexRagStore.ragRetrievalConfig.ranking.llmRanker.modelName" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexRagStore.ragRetrievalConfig.ranking.rankService.modelName" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexRagStore.ragRetrievalConfig.topK" is not set in unstructured objects
-[missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexRagStore.similarityTopK" is not set in unstructured objects
-[missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexRagStore.vectorDistanceThreshold" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].urlContext" is not set in unstructured objects
 [missing_field] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.ttl" is not set in unstructured objects
 [missing_field] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifactURI" is not set in unstructured objects

@@ -152,3 +152,89 @@ type AIPlatformCachedContentList struct {
 func init() {
 	SchemeBuilder.Register(&AIPlatformCachedContent{}, &AIPlatformCachedContentList{})
 }
+
+// Tool, Retrieval and VertexRagStore are written by hand to leave out
+// deprecated fields. generate-types skips types that a hand-written file in
+// this package defines.
+// Tool.google_search_retrieval is deprecated in the API docs.
+// Retrieval.disable_attribution, VertexRagStore.similarity_top_k and
+// VertexRagStore.vector_distance_threshold are [deprecated = true] in the
+// proto.
+
+// +kcc:proto=google.cloud.aiplatform.v1.Tool
+type Tool struct {
+	// Optional. Function tool type.
+	//  One or more function declarations to be passed to the model along with the
+	//  current user query. Model may decide to call a subset of these functions
+	//  by populating [FunctionCall][google.cloud.aiplatform.v1.Part.function_call]
+	//  in the response. User should provide a
+	//  [FunctionResponse][google.cloud.aiplatform.v1.Part.function_response] for
+	//  each function call in the next turn. Based on the function responses, Model
+	//  will generate the final response back to the user. Maximum 128 function
+	//  declarations can be provided.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.function_declarations
+	FunctionDeclarations []FunctionDeclaration `json:"functionDeclarations,omitempty"`
+
+	// Optional. Retrieval tool type.
+	//  System will always execute the provided retrieval tool(s) to get external
+	//  knowledge to answer the prompt. Retrieval results are presented to the
+	//  model for generation.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.retrieval
+	Retrieval *Retrieval `json:"retrieval,omitempty"`
+
+	// Optional. GoogleSearch tool type.
+	//  Tool to support Google Search in Model. Powered by Google.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.google_search
+	GoogleSearch *Tool_GoogleSearch `json:"googleSearch,omitempty"`
+
+	// Optional. GoogleMaps tool type.
+	//  Tool to support Google Maps in Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.google_maps
+	GoogleMaps *GoogleMaps `json:"googleMaps,omitempty"`
+
+	// Optional. Tool to support searching public web data, powered by Vertex AI
+	//  Search and Sec4 compliance.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.enterprise_web_search
+	EnterpriseWebSearch *EnterpriseWebSearch `json:"enterpriseWebSearch,omitempty"`
+
+	// Optional. CodeExecution tool type.
+	//  Enables the model to execute code as part of generation.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.code_execution
+	CodeExecution *Tool_CodeExecution `json:"codeExecution,omitempty"`
+
+	// Optional. Tool to support URL context retrieval.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.url_context
+	URLContext *URLContext `json:"urlContext,omitempty"`
+
+	// Optional. Tool to support the model interacting directly with the computer.
+	//  If enabled, it automatically populates computer-use specific Function
+	//  Declarations.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.computer_use
+	ComputerUse *Tool_ComputerUse `json:"computerUse,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.Retrieval
+type Retrieval struct {
+	// Set to use data source powered by Vertex AI Search.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Retrieval.vertex_ai_search
+	VertexAiSearch *VertexAiSearch `json:"vertexAiSearch,omitempty"`
+
+	// Set to use data source powered by Vertex RAG store.
+	//  User data is uploaded via the VertexRagDataService.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Retrieval.vertex_rag_store
+	VertexRagStore *VertexRagStore `json:"vertexRagStore,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.VertexRagStore
+type VertexRagStore struct {
+	// Optional. The representation of the rag source. It can be used to specify
+	//  corpus only or ragfiles. Currently only support one corpus or multiple
+	//  files from one corpus. In the future we may open up multiple corpora
+	//  support.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexRagStore.rag_resources
+	RagResources []VertexRagStore_RagResource `json:"ragResources,omitempty"`
+
+	// Optional. The retrieval config for the Rag query.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexRagStore.rag_retrieval_config
+	RagRetrievalConfig *RagRetrievalConfig `json:"ragRetrievalConfig,omitempty"`
+}

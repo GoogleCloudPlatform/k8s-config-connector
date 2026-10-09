@@ -228,6 +228,7 @@ type DiskSpec struct {
 	BootDiskSizeGB *int32 `json:"bootDiskSizeGB,omitempty"`
 }
 
+/* unreachable type DynamicRetrievalConfig
 // +kcc:proto=google.cloud.aiplatform.v1.DynamicRetrievalConfig
 type DynamicRetrievalConfig struct {
 	// The mode of the predictor to be used in dynamic retrieval.
@@ -239,6 +240,7 @@ type DynamicRetrievalConfig struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.DynamicRetrievalConfig.dynamic_threshold
 	DynamicThreshold *float32 `json:"dynamicThreshold,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.EnterpriseWebSearch
 type EnterpriseWebSearch struct {
@@ -749,12 +751,14 @@ type GenieSource struct {
 type GoogleMaps struct {
 }
 
+/* unreachable type GoogleSearchRetrieval
 // +kcc:proto=google.cloud.aiplatform.v1.GoogleSearchRetrieval
 type GoogleSearchRetrieval struct {
 	// Specifies the dynamic retrieval configuration for the given source.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.GoogleSearchRetrieval.dynamic_retrieval_config
 	DynamicRetrievalConfig *DynamicRetrievalConfig `json:"dynamicRetrievalConfig,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.aiplatform.v1.InputDataConfig
 type InputDataConfig struct {
@@ -1838,22 +1842,6 @@ type ResourceRuntimeSpec struct {
 	RaySpec *RaySpec `json:"raySpec,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.Retrieval
-type Retrieval struct {
-	// Set to use data source powered by Vertex AI Search.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Retrieval.vertex_ai_search
-	VertexAiSearch *VertexAiSearch `json:"vertexAiSearch,omitempty"`
-
-	// Set to use data source powered by Vertex RAG store.
-	//  User data is uploaded via the VertexRagDataService.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Retrieval.vertex_rag_store
-	VertexRagStore *VertexRagStore `json:"vertexRagStore,omitempty"`
-
-	// Optional. Deprecated. This option is no longer supported.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Retrieval.disable_attribution
-	DisableAttribution *bool `json:"disableAttribution,omitempty"`
-}
-
 // +kcc:proto=google.cloud.aiplatform.v1.RetrievalConfig
 type RetrievalConfig struct {
 	// The location of the user.
@@ -2400,63 +2388,6 @@ type TimestampSplit struct {
 	Key *string `json:"key,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1.Tool
-type Tool struct {
-	// Optional. Function tool type.
-	//  One or more function declarations to be passed to the model along with the
-	//  current user query. Model may decide to call a subset of these functions
-	//  by populating [FunctionCall][google.cloud.aiplatform.v1.Part.function_call]
-	//  in the response. User should provide a
-	//  [FunctionResponse][google.cloud.aiplatform.v1.Part.function_response] for
-	//  each function call in the next turn. Based on the function responses, Model
-	//  will generate the final response back to the user. Maximum 128 function
-	//  declarations can be provided.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.function_declarations
-	FunctionDeclarations []FunctionDeclaration `json:"functionDeclarations,omitempty"`
-
-	// Optional. Retrieval tool type.
-	//  System will always execute the provided retrieval tool(s) to get external
-	//  knowledge to answer the prompt. Retrieval results are presented to the
-	//  model for generation.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.retrieval
-	Retrieval *Retrieval `json:"retrieval,omitempty"`
-
-	// Optional. GoogleSearch tool type.
-	//  Tool to support Google Search in Model. Powered by Google.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.google_search
-	GoogleSearch *Tool_GoogleSearch `json:"googleSearch,omitempty"`
-
-	// Optional. GoogleSearchRetrieval tool type.
-	//  Specialized retrieval tool that is powered by Google search.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.google_search_retrieval
-	GoogleSearchRetrieval *GoogleSearchRetrieval `json:"googleSearchRetrieval,omitempty"`
-
-	// Optional. GoogleMaps tool type.
-	//  Tool to support Google Maps in Model.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.google_maps
-	GoogleMaps *GoogleMaps `json:"googleMaps,omitempty"`
-
-	// Optional. Tool to support searching public web data, powered by Vertex AI
-	//  Search and Sec4 compliance.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.enterprise_web_search
-	EnterpriseWebSearch *EnterpriseWebSearch `json:"enterpriseWebSearch,omitempty"`
-
-	// Optional. CodeExecution tool type.
-	//  Enables the model to execute code as part of generation.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.code_execution
-	CodeExecution *Tool_CodeExecution `json:"codeExecution,omitempty"`
-
-	// Optional. Tool to support URL context retrieval.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.url_context
-	URLContext *URLContext `json:"urlContext,omitempty"`
-
-	// Optional. Tool to support the model interacting directly with the computer.
-	//  If enabled, it automatically populates computer-use specific Function
-	//  Declarations.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.Tool.computer_use
-	ComputerUse *Tool_ComputerUse `json:"computerUse,omitempty"`
-}
-
 // +kcc:proto=google.cloud.aiplatform.v1.Tool.CodeExecution
 type Tool_CodeExecution struct {
 }
@@ -2572,29 +2503,6 @@ type VertexAiSearch_DataStoreSpec struct {
 	//  [Filtering](https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata)
 	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexAISearch.DataStoreSpec.filter
 	Filter *string `json:"filter,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1.VertexRagStore
-type VertexRagStore struct {
-	// Optional. The representation of the rag source. It can be used to specify
-	//  corpus only or ragfiles. Currently only support one corpus or multiple
-	//  files from one corpus. In the future we may open up multiple corpora
-	//  support.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexRagStore.rag_resources
-	RagResources []VertexRagStore_RagResource `json:"ragResources,omitempty"`
-
-	// Optional. Number of top k results to return from the selected corpora.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexRagStore.similarity_top_k
-	SimilarityTopK *int32 `json:"similarityTopK,omitempty"`
-
-	// Optional. Only return results with vector distance smaller than the
-	//  threshold.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexRagStore.vector_distance_threshold
-	VectorDistanceThreshold *float64 `json:"vectorDistanceThreshold,omitempty"`
-
-	// Optional. The retrieval config for the Rag query.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexRagStore.rag_retrieval_config
-	RagRetrievalConfig *RagRetrievalConfig `json:"ragRetrievalConfig,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.VertexRagStore.RagResource
