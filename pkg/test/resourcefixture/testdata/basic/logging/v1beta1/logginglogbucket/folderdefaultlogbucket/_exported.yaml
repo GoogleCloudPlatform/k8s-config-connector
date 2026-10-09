@@ -5,4 +5,4 @@ metadata:
 spec:
   description: Default bucket
   location: global
-  retentionDays: 10
+  retentionDays: 20
