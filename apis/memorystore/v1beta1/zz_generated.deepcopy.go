@@ -20,6 +20,7 @@ package v1beta1
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	apisrefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1beta1"
@@ -733,7 +734,7 @@ func (in *MemorystoreInstanceSpec) DeepCopyInto(out *MemorystoreInstanceSpec) {
 	}
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(refsv1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 }
