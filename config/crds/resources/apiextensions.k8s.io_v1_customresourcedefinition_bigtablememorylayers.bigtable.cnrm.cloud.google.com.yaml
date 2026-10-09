@@ -91,6 +91,10 @@ spec:
                     description: The namespace of a BigtableCluster resource.
                     type: string
                 type: object
+              resourceID:
+                description: The BigtableMemoryLayer name. If not given, the metadata.name
+                  will be used.
+                type: string
             required:
             - clusterRef
             type: object
