@@ -359,7 +359,7 @@ func (in *EventarcChannelSpec) DeepCopyInto(out *EventarcChannelSpec) {
 	}
 	if in.KmsKeyRef != nil {
 		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(v1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 }
@@ -880,7 +880,7 @@ func (in *EventarcGoogleChannelConfigSpec) DeepCopyInto(out *EventarcGoogleChann
 	in.Parent.DeepCopyInto(&out.Parent)
 	if in.CryptoKeyRef != nil {
 		in, out := &in.CryptoKeyRef, &out.CryptoKeyRef
-		*out = new(v1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {

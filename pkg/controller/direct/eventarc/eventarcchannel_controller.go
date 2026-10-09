@@ -70,6 +70,10 @@ func (m *channelModel) AdapterForObject(ctx context.Context, op *directbase.Adap
 		return nil, err
 	}
 
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	// Get eventarc GCP client
 	gcpClient, err := newGCPClient(ctx, &m.config)
 	if err != nil {
@@ -291,13 +295,6 @@ func (a *channelAdapter) normalizeReferenceFields(ctx context.Context) error {
 			return err
 		}
 		obj.Spec.ProviderRef.External = providerRef
-	}
-	if obj.Spec.KmsKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.KmsKeyRef)
-		if err != nil {
-			return err
-		}
-		obj.Spec.KmsKeyRef = kmsKeyRef
 	}
 	return nil
 }
