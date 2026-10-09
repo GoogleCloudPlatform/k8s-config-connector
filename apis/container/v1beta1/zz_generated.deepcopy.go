@@ -21,9 +21,12 @@ package v1beta1
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	iamrefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/refs"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
+	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -1743,7 +1746,7 @@ func (in *GCPSecretManagerCertificateConfig) DeepCopyInto(out *GCPSecretManagerC
 	*out = *in
 	if in.SecretRef != nil {
 		in, out := &in.SecretRef, &out.SecretRef
-		*out = new(refsv1beta1.SecretManagerSecretVersionRef)
+		*out = new(secretmanagerv1beta1.SecretVersionRef)
 		**out = **in
 	}
 }
@@ -3284,7 +3287,7 @@ func (in *NodePoolNodeConfig) DeepCopyInto(out *NodePoolNodeConfig) {
 	}
 	if in.BootDiskKMSCryptoKeyRef != nil {
 		in, out := &in.BootDiskKMSCryptoKeyRef, &out.BootDiskKMSCryptoKeyRef
-		*out = new(refsv1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 	if in.ConfidentialNodes != nil {
@@ -3439,7 +3442,7 @@ func (in *NodePoolNodeConfig) DeepCopyInto(out *NodePoolNodeConfig) {
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(refsv1beta1.IAMServiceAccountRef)
+		*out = new(iamrefs.IAMServiceAccountRef)
 		**out = **in
 	}
 	if in.ShieldedInstanceConfig != nil {
@@ -4070,7 +4073,7 @@ func (in *RegistryCA) DeepCopyInto(out *RegistryCA) {
 	*out = *in
 	if in.SecretRef != nil {
 		in, out := &in.SecretRef, &out.SecretRef
-		*out = new(refsv1beta1.SecretManagerSecretVersionRef)
+		*out = new(secretmanagerv1beta1.SecretVersionRef)
 		**out = **in
 	}
 }
@@ -4115,7 +4118,7 @@ func (in *RegistryClientCert) DeepCopyInto(out *RegistryClientCert) {
 	*out = *in
 	if in.SecretRef != nil {
 		in, out := &in.SecretRef, &out.SecretRef
-		*out = new(refsv1beta1.SecretManagerSecretVersionRef)
+		*out = new(secretmanagerv1beta1.SecretVersionRef)
 		**out = **in
 	}
 }
@@ -4135,7 +4138,7 @@ func (in *RegistryClientKey) DeepCopyInto(out *RegistryClientKey) {
 	*out = *in
 	if in.SecretRef != nil {
 		in, out := &in.SecretRef, &out.SecretRef
-		*out = new(refsv1beta1.SecretManagerSecretVersionRef)
+		*out = new(secretmanagerv1beta1.SecretVersionRef)
 		**out = **in
 	}
 }

@@ -12,17 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1beta1
+// +k8s:deepcopy-gen=package
+// +groupName=iam.cnrm.cloud.google.com
 
-import (
-	iamrefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/refs"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-)
-
-// IAMServiceAccountRef is a reference to a GCP IAMServiceAccount.
-// +k8s:deepcopy-gen=false
-type IAMServiceAccountRef = iamrefs.IAMServiceAccountRef
-
-func init() {
-	refs.Register(&IAMServiceAccountRef{}, &IAMServiceAccount{})
-}
+package iamrefs
