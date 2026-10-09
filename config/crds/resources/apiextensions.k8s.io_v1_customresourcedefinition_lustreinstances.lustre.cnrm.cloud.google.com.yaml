@@ -76,11 +76,6 @@ spec:
                   the instance. Must be eight characters or less and can only contain
                   letters and numbers.
                 type: string
-              gkeSupportEnabled:
-                description: Optional. Indicates whether you want to enable support
-                  for GKE clients. By default, GKE clients are not supported. Deprecated.
-                  No longer required for GKE instance creation.
-                type: boolean
               labels:
                 additionalProperties:
                   type: string
