@@ -78,10 +78,10 @@ func TestReferenceHints(t *testing.T) {
 	}
 }
 
-// TestReferenceHintsQueuesNotRepresentableFields pins the entry for a field
-// Classify calls NotRepresentable. outputURI's comment also matches the loose
-// rule, and a loose hint would contradict the entry, so the field gets only
-// the one entry. gcsSource matches no other rule.
+// TestReferenceHintsQueuesNotRepresentableFields checks the entry for a field
+// that Classify calls NotRepresentable. outputURI's comment also matches the
+// loose rule, but a loose hint would contradict the entry, so the field gets
+// just the one entry. gcsSource matches no other rule.
 func TestReferenceHintsQueuesNotRepresentableFields(t *testing.T) {
 	// Arrange
 	msg := namedCommentedMessage(t, [][2]string{
@@ -110,9 +110,9 @@ func TestReferenceHintsQueuesNotRepresentableFields(t *testing.T) {
 	}
 }
 
-// TestReferenceHintsQueuesSensitiveFields pins the sensitive-field entry. The
-// rule is TestNoSensitiveField's, so it matches at any depth and in any case,
-// but only at the end of the path: passwordPolicy gets no entry.
+// TestReferenceHintsQueuesSensitiveFields checks the sensitive-field entry.
+// The rule comes from TestNoSensitiveField, so it matches at any depth and in
+// any case, but only at the end of the path: passwordPolicy gets no entry.
 func TestReferenceHintsQueuesSensitiveFields(t *testing.T) {
 	// Arrange
 	msg := scanConfigMessage(t)
@@ -132,12 +132,13 @@ func TestReferenceHintsQueuesSensitiveFields(t *testing.T) {
 	}
 }
 
-// TestReferenceHintsQueuesNestedResourceReferences pins the possible-reference
-// entry for a nested field that carries google.api.resource_reference, with
-// the detail PrepopulateSpec gives a top-level one. ragCorpus's description
-// matches Classify as well, and both entries stay: they are separate signals.
-// The top-level corpus and parent fields get no entry here, because
-// PrepopulateSpec queues them; see TestPrepopulateSpecQueuesResourceReferences.
+// TestReferenceHintsQueuesNestedResourceReferences checks the entry for a
+// nested field with google.api.resource_reference. It gets the same
+// possible-reference detail PrepopulateSpec gives a top-level field.
+// ragCorpus's description also matches Classify, and both entries stay
+// because they are separate signals. The top-level corpus and parent fields
+// get no entry here, since PrepopulateSpec queues them; see
+// TestPrepopulateSpecQueuesResourceReferences.
 func TestReferenceHintsQueuesNestedResourceReferences(t *testing.T) {
 	// Arrange
 	msg := ragStoreMessage(t)
@@ -283,10 +284,10 @@ func referenceHintsMessage(t *testing.T) protoreflect.MessageDescriptor {
 	return fd.Messages().ByName("Widget")
 }
 
-// scanConfigMessage builds a cut-down websecurityscanner ScanConfig. Its two
-// account messages each have a password, which is INPUT_ONLY and so stays in
-// the Spec. Two top-level fields have password in their names, one at the end
-// and one at the start.
+// scanConfigMessage builds a cut-down websecurityscanner ScanConfig. Each of
+// its two account messages has a password, which is INPUT_ONLY and so stays
+// in the Spec. Two top-level fields have password in their names, one at the
+// end and one at the start.
 func scanConfigMessage(t *testing.T) protoreflect.MessageDescriptor {
 	t.Helper()
 	str := fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)
@@ -327,11 +328,11 @@ func scanConfigMessage(t *testing.T) protoreflect.MessageDescriptor {
 	return fd.Messages().ByName("ScanConfig")
 }
 
-// ragStoreMessage builds a cut-down aiplatform VertexRagStore. It has a field
-// with each form of google.api.resource_reference at the top level, corpus
-// with type and parent with child_type, and the same two in the nested
-// RagResource. ragCorpus also has its real comment, which spells out a
-// resource-name template.
+// ragStoreMessage builds a cut-down aiplatform VertexRagStore. At the top
+// level it has one field for each form of google.api.resource_reference:
+// corpus with type and parent with child_type. The nested RagResource has
+// one of each as well. ragCorpus also keeps its real comment, which spells
+// out a resource-name template.
 func ragStoreMessage(t *testing.T) protoreflect.MessageDescriptor {
 	t.Helper()
 	str := fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)

@@ -16,9 +16,9 @@ package judgement
 
 import "testing"
 
-// TestIsReferenceReason pins which reasons hide a TestMissingRefs finding
-// while their entry is open. reference-not-representable is not one of them:
-// TestMissingRefs never fails on such a field, so there is nothing to hide.
+// TestIsReferenceReason checks which reasons hide a TestMissingRefs finding
+// while their entry is open. reference-not-representable is not one of them,
+// because TestMissingRefs never fails on such a field.
 func TestIsReferenceReason(t *testing.T) {
 	for _, tc := range []struct {
 		reason string

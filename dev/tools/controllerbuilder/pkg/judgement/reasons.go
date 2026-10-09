@@ -47,9 +47,9 @@ var referenceReasons = map[string]bool{
 
 // ReasonReferenceNotRepresentable: refs.Classify says the field names another
 // resource, but KCC cannot express it as a reference today, so it stays a
-// string. It is not a reference reason. TestMissingRefs lists such a field in
-// refs_not_representable.txt and never fails on it, so an open entry must not
-// hide anything.
+// string. This is not a reference reason. TestMissingRefs lists such a field
+// in refs_not_representable.txt and never fails on it, so an open entry has
+// nothing to hide.
 const ReasonReferenceNotRepresentable = "reference-not-representable"
 
 // IsReferenceReason reports whether reason says a field may need to be a
@@ -76,6 +76,6 @@ func IsSourceLinkReason(reason string) bool {
 }
 
 // ReasonUntriagedBulkGeneration marks a Kind that nobody has reviewed yet.
-// PrepopulateSpec queues it for each new Kind. While it is open,
-// generate-types runs the per-Kind checks again for that Kind.
+// PrepopulateSpec queues one for each new Kind. While the entry is open, each
+// generate-types run with --prepopulate-spec checks the Kind again.
 const ReasonUntriagedBulkGeneration = "untriaged-bulk-generation"
