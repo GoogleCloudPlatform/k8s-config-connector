@@ -20,7 +20,6 @@ import (
 	"regexp"
 	"sort"
 	"strings"
-	"unicode"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
@@ -299,7 +298,7 @@ type OutputOnlyCandidate struct {
 	FieldPath string
 	// Reason is reasonOutputOnlyInComment when the comment starts with one of
 	// outputOnlyPrefixes. It is reasonOutputOnlyMentioned, a weaker signal,
-	// when the comment says "output only" later on.
+	// when the comment says "output only" any other way.
 	Reason string
 	// Comment is the proto's leading comment, so a reviewer can decide without
 	// opening the proto.
@@ -315,8 +314,8 @@ type OutputOnlyCandidate struct {
 func (c OutputOnlyCandidate) Item() JudgementItem {
 	detail := "proto comment says output only but no field_behavior annotation, so it was generated into the Spec instead. Move it if the comment is right: "
 	if c.Reason == reasonOutputOnlyMentioned {
-		detail = "proto comment says output only, but not at the start, and there is no field_behavior annotation, so it was generated into the Spec. " +
-			"The comment may mean something else. Move the field if it is output only: "
+		detail = "proto comment mentions output only but doesn't start with \"Output only.\" or \"[Output Only]\", and there is no field_behavior annotation, so it was generated into the Spec. " +
+			"The comment may be a typo, apply only some of the time, or mean something else. Move the field if it is output only: "
 	}
 	return JudgementItem{
 		FieldPath: ".status.observedState." + strings.TrimPrefix(c.FieldPath, ".spec."),
@@ -364,27 +363,22 @@ func DetectOutputOnlyInComments(msg protoreflect.MessageDescriptor, opts codegen
 // says the field is output only, and how strongly.
 //
 // A comment that starts with one of outputOnlyPrefixes gets
-// reasonOutputOnlyInComment. A comment that says "output only" after other
-// words gets reasonOutputOnlyMentioned. websecurityscanner's managed_scan is
-// an example: "Whether the scan config is managed by Web Security Scanner,
-// output only." Brackets and punctuation before the words don't count as
-// other words.
-//
-// A comment that starts with the words but not with a prefix gets neither
-// reason, unless it says them again later. Such a comment usually goes on to
-// a condition, as in "Output only for the create operation", so the field
-// is output only some of the time.
+// reasonOutputOnlyInComment. Any other mention of "output only" gets
+// reasonOutputOnlyMentioned. That covers the words after other text, as in
+// websecurityscanner's managed_scan: "Whether the scan config is managed by
+// Web Security Scanner, output only." It also covers a comment that starts
+// with the words but not with a prefix. That is usually a typo, as in
+// automl's "Output only . The", or a condition, as in spanner's Backup.name,
+// which is output only for the CreateBackup operation and required for
+// UpdateBackup.
 func outputOnlyReason(comment string) (string, bool) {
 	for _, prefix := range outputOnlyPrefixes {
 		if len(comment) >= len(prefix) && strings.EqualFold(comment[:len(prefix)], prefix) {
 			return reasonOutputOnlyInComment, true
 		}
 	}
-	isWordChar := func(r rune) bool { return unicode.IsLetter(r) || unicode.IsDigit(r) }
-	for _, m := range outputOnlyMention.FindAllStringIndex(comment, -1) {
-		if strings.IndexFunc(comment[:m[0]], isWordChar) >= 0 {
-			return reasonOutputOnlyMentioned, true
-		}
+	if outputOnlyMention.MatchString(comment) {
+		return reasonOutputOnlyMentioned, true
 	}
 	return "", false
 }

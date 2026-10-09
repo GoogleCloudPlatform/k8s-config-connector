@@ -366,22 +366,31 @@ func TestDetectOutputOnlyInComments(t *testing.T) {
 	}
 }
 
-// A comment that says "output only" after other words gets the weaker reason,
-// in any case, in brackets or with a hyphen. websecurityscanner's managed_scan
-// slipped through before this rule. A sentence break between the words is not
-// a match.
+// Any other mention of "output only" gets the weaker reason, in any case, in
+// brackets or with a hyphen. That covers the words after other text, as in
+// websecurityscanner's managed_scan, and a comment that starts with the words
+// but not with a marker: a typo, or a condition. A sentence break between the
+// words is not a match.
 func TestDetectOutputOnlyMentionedInComment(t *testing.T) {
 	// Arrange
 	msg := commentedMessage(t,
-		"Whether the scan config is managed by Web Security Scanner, output only.",  // field_0, websecurityscanner
-		"When the version was created. Output-only field, populated by the system.", // field_1, dlp's hyphen
-		"Required. [Output Only] Set by the server.",                                // field_2, a marker further on
-		"The job output. Only the last run is kept.",                                // field_3, a sentence break
+		"Whether the scan config is managed by Web Security Scanner, output only.",      // field_0, websecurityscanner
+		"When the version was created. Output-only field, populated by the system.",     // field_1, dlp's hyphen
+		"Required. [Output Only] Set by the server.",                                    // field_2, a marker further on
+		"The job output. Only the last run is kept.",                                    // field_3, a sentence break
+		"Output only . The translated content.",                                         // field_4, automl's typo
+		"Output only\n When true, the index configuration is being reverted.",           // field_5, firestore, the words on their own line
+		"[Output only for type PARTNER. Input only for PARTNER_PROVIDER.] Pairing key.", // field_6, compute, conditional
+		"Output only for the create operation. Required for update.",                    // field_7, spanner-style, conditional
 	)
 	want := []OutputOnlyCandidate{
 		{FieldPath: ".spec.field0", Reason: "output-only-mentioned-in-comment", Comment: "Whether the scan config is managed by Web Security Scanner, output only."},
 		{FieldPath: ".spec.field1", Reason: "output-only-mentioned-in-comment", Comment: "When the version was created. Output-only field, populated by the system."},
 		{FieldPath: ".spec.field2", Reason: "output-only-mentioned-in-comment", Comment: "Required. [Output Only] Set by the server."},
+		{FieldPath: ".spec.field4", Reason: "output-only-mentioned-in-comment", Comment: "Output only . The translated content."},
+		{FieldPath: ".spec.field5", Reason: "output-only-mentioned-in-comment", Comment: "Output only When true, the index configuration is being reverted."},
+		{FieldPath: ".spec.field6", Reason: "output-only-mentioned-in-comment", Comment: "[Output only for type PARTNER. Input only for PARTNER_PROVIDER.] Pairing key."},
+		{FieldPath: ".spec.field7", Reason: "output-only-mentioned-in-comment", Comment: "Output only for the create operation. Required for update."},
 	}
 
 	// Act
@@ -440,8 +449,8 @@ func TestOutputOnlyCandidateItem(t *testing.T) {
 			want: JudgementItem{
 				FieldPath: ".status.observedState.config.managedScan",
 				Reason:    "output-only-mentioned-in-comment",
-				Detail: "proto comment says output only, but not at the start, and there is no field_behavior annotation, so it was generated into the Spec. " +
-					"The comment may mean something else. Move the field if it is output only: Whether the scan config is managed by Web Security Scanner, output only.",
+				Detail: "proto comment mentions output only but doesn't start with \"Output only.\" or \"[Output Only]\", and there is no field_behavior annotation, so it was generated into the Spec. " +
+					"The comment may be a typo, apply only some of the time, or mean something else. Move the field if it is output only: Whether the scan config is managed by Web Security Scanner, output only.",
 			},
 		},
 	} {
@@ -458,28 +467,24 @@ func TestOutputOnlyCandidateItem(t *testing.T) {
 }
 
 // Compute writes both "[Output Only]" and "[Output only]", so the prefixes
-// match in any case. A comment where the words run on into a condition does not
-// match, because the field is only output some of the time.
+// match in any case.
 func TestDetectOutputOnlyIgnoresCase(t *testing.T) {
 	// Arrange
 	msg := commentedMessage(t,
-		"[Output only] Number of network endpoints in the group.",                       // field_0, compute's other spelling
-		"Output Only. The overall outcome of the test.",                                 // field_1, devtools.testing
-		"[Output only for type PARTNER. Input only for PARTNER_PROVIDER.] Pairing key.", // field_2, compute, conditional
-		"Output only for the create operation. Required for update.",                    // field_3, spanner-style, conditional
+		"[Output only] Number of network endpoints in the group.", // field_0, compute's other spelling
+		"Output Only. The overall outcome of the test.",           // field_1, devtools.testing
 	)
-	want := []string{".spec.field0", ".spec.field1"}
+	want := []OutputOnlyCandidate{
+		{FieldPath: ".spec.field0", Reason: "output-only-in-comment-only", Comment: "[Output only] Number of network endpoints in the group."},
+		{FieldPath: ".spec.field1", Reason: "output-only-in-comment-only", Comment: "Output Only. The overall outcome of the test."},
+	}
 
 	// Act
 	got := DetectOutputOnlyInComments(msg, codegen.WriteOptions{})
 
 	// Assert
-	var paths []string
-	for _, c := range got {
-		paths = append(paths, c.FieldPath)
-	}
-	if strings.Join(paths, ",") != strings.Join(want, ",") {
-		t.Errorf("got %v, want %v", paths, want)
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("DetectOutputOnlyInComments() mismatch (-want +got):\n%s", diff)
 	}
 }
 
