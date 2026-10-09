@@ -20,6 +20,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 
+	"github.com/google/go-cmp/cmp"
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/reflect/protodesc"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -76,6 +77,107 @@ func TestReferenceHints(t *testing.T) {
 				t.Errorf("ReferenceHints() =\n%q\nwant\n%q", got, tc.want)
 			}
 		})
+	}
+}
+
+// TestReferenceHintsQueuesNotRepresentableFields pins the entry for a field
+// Classify calls NotRepresentable. outputURI's comment also matches the loose
+// rule, and a loose hint would contradict the entry, so the field gets only
+// the one entry. gcsSource matches no other rule.
+func TestReferenceHintsQueuesNotRepresentableFields(t *testing.T) {
+	// Arrange
+	msg := namedCommentedMessage(t, [][2]string{
+		{"output_uri", "The resource name of the Cloud Storage object to write, such as gs://bucket/object."},
+		{"gcs_source", "URI of an object in Google Cloud Storage. Format: gs://{bucket}/{object}"},
+	})
+	want := []JudgementItem{
+		{
+			FieldPath: ".spec.outputURI",
+			Reason:    "reference-not-representable",
+			Detail:    "gcs-object-path-string-for-now-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string",
+		},
+		{
+			FieldPath: ".spec.gcsSource",
+			Reason:    "reference-not-representable",
+			Detail:    "gcs-scheme-not-a-gcp-resource-name: names another resource, but KCC cannot express it as a reference today, so it stays a string",
+		},
+	}
+
+	// Act
+	got := ReferenceHints(msg, codegen.WriteOptions{})
+
+	// Assert
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("ReferenceHints() mismatch (-want +got):\n%s", diff)
+	}
+}
+
+// TestReferenceHintsQueuesSensitiveFields pins the sensitive-field entry. The
+// rule is TestNoSensitiveField's, so it matches at any depth and in any case,
+// but only at the end of the path: passwordPolicy gets no entry.
+func TestReferenceHintsQueuesSensitiveFields(t *testing.T) {
+	// Arrange
+	msg := scanConfigMessage(t)
+	const detail = "the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets"
+	want := []JudgementItem{
+		{FieldPath: ".spec.authentication.googleAccount.password", Reason: "sensitive-field", Detail: detail},
+		{FieldPath: ".spec.authentication.customAccount.password", Reason: "sensitive-field", Detail: detail},
+		{FieldPath: ".spec.rootPassword", Reason: "sensitive-field", Detail: detail},
+	}
+
+	// Act
+	got := ReferenceHints(msg, codegen.WriteOptions{})
+
+	// Assert
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("ReferenceHints() mismatch (-want +got):\n%s", diff)
+	}
+}
+
+// TestReferenceHintsSkipsGeneratedReferences pins which fields the walk skips
+// because the generator writes them as references. connectors' Secret becomes
+// a SecretRef, so clientSecret gets no hint. A proto message that is merely
+// named ModelRef is an ordinary struct, so the walk still descends into it and
+// hints its network field.
+func TestReferenceHintsSkipsGeneratedReferences(t *testing.T) {
+	// Arrange
+	message := fieldType(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE)
+	fd, err := protodesc.NewFile(&descriptorpb.FileDescriptorProto{
+		Name:    strPtr("connectors.proto"),
+		Package: strPtr("google.cloud.connectors.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name:  strPtr("Secret"),
+				Field: []*descriptorpb.FieldDescriptorProto{{Name: strPtr("secret_version"), Number: i32Ptr(1), Type: fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)}},
+			},
+			{
+				Name:  strPtr("ModelRef"),
+				Field: []*descriptorpb.FieldDescriptorProto{{Name: strPtr("network"), Number: i32Ptr(1), Type: fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)}},
+			},
+			{
+				Name: strPtr("Connection"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("client_secret"), Number: i32Ptr(1), Type: message, TypeName: strPtr(".google.cloud.connectors.v1.Secret")},
+					{Name: strPtr("api_secret"), Number: i32Ptr(2), Type: fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)},
+					{Name: strPtr("model_ref"), Number: i32Ptr(3), Type: message, TypeName: strPtr(".google.cloud.connectors.v1.ModelRef")},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		t.Fatalf("building file descriptor: %v", err)
+	}
+
+	// Act
+	items := ReferenceHints(fd.Messages().ByName("Connection"), codegen.WriteOptions{})
+
+	// Assert
+	var got []string
+	for _, it := range items {
+		got = append(got, it.FieldPath)
+	}
+	if want := []string{".spec.apiSecret", ".spec.modelRef.network"}; !slices.Equal(got, want) {
+		t.Errorf("hinted paths = %q, want %q", got, want)
 	}
 }
 
@@ -147,42 +249,12 @@ func referenceHintsMessage(t *testing.T) protoreflect.MessageDescriptor {
 	return fd.Messages().ByName("Widget")
 }
 
-// TestReferenceHintsQueuesNotRepresentableFields pins the entry for a field
-// Classify calls NotRepresentable. outputURI's comment also matches the loose
-// rule, and a loose hint would contradict the entry, so the field gets only
-// the one entry. gcsSource matches no other rule.
-func TestReferenceHintsQueuesNotRepresentableFields(t *testing.T) {
-	// Arrange
-	msg := namedCommentedMessage(t, [][2]string{
-		{"output_uri", "The resource name of the Cloud Storage object to write, such as gs://bucket/object."},
-		{"gcs_source", "URI of an object in Google Cloud Storage. Format: gs://{bucket}/{object}"},
-	})
-	const why = ": names another resource, but KCC cannot express it as a reference today, so it stays a string"
-	want := []string{
-		".spec.outputURI reference-not-representable gcs-object-path-string-for-now-decomposable-as-bucketref-plus-path" + why,
-		".spec.gcsSource reference-not-representable gcs-scheme-not-a-gcp-resource-name" + why,
-	}
-
-	// Act
-	items := ReferenceHints(msg, codegen.WriteOptions{})
-
-	// Assert
-	var got []string
-	for _, it := range items {
-		got = append(got, it.FieldPath+" "+it.Reason+" "+it.Detail)
-	}
-	if !slices.Equal(got, want) {
-		t.Errorf("ReferenceHints() =\n%q\nwant\n%q", got, want)
-	}
-}
-
-// TestReferenceHintsQueuesSensitiveFields pins the sensitive-field entry. The
-// rule is TestNoSensitiveField's, so it matches at any depth and in any case,
-// but only at the end of the path: passwordPolicy gets no entry. The message is
-// a cut-down websecurityscanner ScanConfig. Both passwords there are
-// INPUT_ONLY, which keeps them in the Spec.
-func TestReferenceHintsQueuesSensitiveFields(t *testing.T) {
-	// Arrange
+// scanConfigMessage builds a cut-down websecurityscanner ScanConfig. Its two
+// account messages each have a password, which is INPUT_ONLY and so stays in
+// the Spec. Two top-level fields have password in their names, one at the end
+// and one at the start.
+func scanConfigMessage(t *testing.T) protoreflect.MessageDescriptor {
+	t.Helper()
 	str := fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)
 	msgType := fieldType(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE)
 	account := func(name string) *descriptorpb.DescriptorProto {
@@ -218,69 +290,5 @@ func TestReferenceHintsQueuesSensitiveFields(t *testing.T) {
 	if err != nil {
 		t.Fatalf("building file descriptor: %v", err)
 	}
-	const why = "the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets"
-	want := []string{
-		".spec.authentication.googleAccount.password sensitive-field " + why,
-		".spec.authentication.customAccount.password sensitive-field " + why,
-		".spec.rootPassword sensitive-field " + why,
-	}
-
-	// Act
-	items := ReferenceHints(fd.Messages().ByName("ScanConfig"), codegen.WriteOptions{})
-
-	// Assert
-	var got []string
-	for _, it := range items {
-		got = append(got, it.FieldPath+" "+it.Reason+" "+it.Detail)
-	}
-	if !slices.Equal(got, want) {
-		t.Errorf("ReferenceHints() =\n%q\nwant\n%q", got, want)
-	}
-}
-
-// TestReferenceHintsSkipsGeneratedReferences pins which fields the walk skips
-// because the generator writes them as references. connectors' Secret becomes
-// a SecretRef, so clientSecret gets no hint. A proto message that is merely
-// named ModelRef is an ordinary struct, so the walk still descends into it and
-// hints its network field.
-func TestReferenceHintsSkipsGeneratedReferences(t *testing.T) {
-	// Arrange
-	message := fieldType(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE)
-	fd, err := protodesc.NewFile(&descriptorpb.FileDescriptorProto{
-		Name:    strPtr("connectors.proto"),
-		Package: strPtr("google.cloud.connectors.v1"),
-		MessageType: []*descriptorpb.DescriptorProto{
-			{
-				Name:  strPtr("Secret"),
-				Field: []*descriptorpb.FieldDescriptorProto{{Name: strPtr("secret_version"), Number: i32Ptr(1), Type: fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)}},
-			},
-			{
-				Name:  strPtr("ModelRef"),
-				Field: []*descriptorpb.FieldDescriptorProto{{Name: strPtr("network"), Number: i32Ptr(1), Type: fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)}},
-			},
-			{
-				Name: strPtr("Connection"),
-				Field: []*descriptorpb.FieldDescriptorProto{
-					{Name: strPtr("client_secret"), Number: i32Ptr(1), Type: message, TypeName: strPtr(".google.cloud.connectors.v1.Secret")},
-					{Name: strPtr("api_secret"), Number: i32Ptr(2), Type: fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)},
-					{Name: strPtr("model_ref"), Number: i32Ptr(3), Type: message, TypeName: strPtr(".google.cloud.connectors.v1.ModelRef")},
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		t.Fatalf("building file descriptor: %v", err)
-	}
-
-	// Act
-	items := ReferenceHints(fd.Messages().ByName("Connection"), codegen.WriteOptions{})
-
-	// Assert
-	var got []string
-	for _, it := range items {
-		got = append(got, it.FieldPath)
-	}
-	if want := []string{".spec.apiSecret", ".spec.modelRef.network"}; !slices.Equal(got, want) {
-		t.Errorf("hinted paths = %q, want %q", got, want)
-	}
+	return fd.Messages().ByName("ScanConfig")
 }
