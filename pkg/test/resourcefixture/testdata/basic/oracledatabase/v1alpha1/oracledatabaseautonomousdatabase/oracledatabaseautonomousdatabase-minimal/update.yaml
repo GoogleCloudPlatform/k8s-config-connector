@@ -23,7 +23,6 @@ spec:
     external: ${projectId}
   location: us-east4
   database: adbmin${uniqueId}
-  displayName: Min ADB ${uniqueId}
   adminPasswordSecretVersionRef:
     name: secretmanagersecretversion-${uniqueId}
   networkRef:

@@ -15,7 +15,6 @@ spec:
     name: secretmanagersecretversion-${uniqueId}
   cidr: 10.5.0.0/24
   database: adbmin${uniqueId}
-  displayName: Min ADB ${uniqueId}
   location: us-east4
   networkRef:
     name: ${networkID}
