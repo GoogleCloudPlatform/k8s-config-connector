@@ -16,7 +16,7 @@ spec:
     name: secretmanagersecretversion-${uniqueId}
   cidr: 10.6.0.0/24
   database: adbmax${uniqueId}
-  displayName: Max ADB Updated ${uniqueId}
+  displayName: Max ADB ${uniqueId}
   labels:
     test: max-updated
   location: us-east4
@@ -27,9 +27,9 @@ spec:
   properties:
     allowlistedIPs:
     - 10.0.0.0/16
-    backupRetentionPeriodDays: 14
+    backupRetentionPeriodDays: 7
     characterSet: AL32UTF8
-    computeCount: 4
+    computeCount: 2
     customerContacts:
     - email: oracle-db-admin@example.com
     dataStorageSizeTb: 1
@@ -38,6 +38,7 @@ spec:
     isAutoScalingEnabled: false
     isStorageAutoScalingEnabled: false
     licenseType: LICENSE_INCLUDED
+    localDataGuardEnabled: true
     maintenanceScheduleType: REGULAR
     mtlsConnectionRequired: false
     nCharacterSet: AL16UTF16
