@@ -2118,7 +2118,7 @@ func NodePoolNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) 
 	// (near miss): "DiskSizeGB" vs "DiskSizeGb"
 	out.OauthScopes = in.OauthScopes
 	if in.GetServiceAccount() != "" {
-		out.ServiceAccountRef = &krmiamrefs.IAMServiceAccountRef{External: in.GetServiceAccount()}
+		out.ServiceAccountRef = &krmiamiamrefs.IAMServiceAccountRef{External: in.GetServiceAccount()}
 	}
 	out.Metadata = in.Metadata
 	out.ImageType = direct.LazyPtr(in.GetImageType())

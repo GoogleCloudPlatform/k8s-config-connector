@@ -15,7 +15,7 @@
 package v1beta1
 
 import (
-	iamrefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/refs"
+	iamrefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/iamrefs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 

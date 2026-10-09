@@ -19,7 +19,7 @@ import (
 	"testing"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
-	iamrefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/refs"
+	iamrefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/iamrefs"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"

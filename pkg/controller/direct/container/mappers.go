@@ -18,7 +18,7 @@ import (
 	pb "cloud.google.com/go/container/apiv1/containerpb"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
-	iamrefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/refs"
+	iamrefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/iamrefs"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
