@@ -108,6 +108,6 @@ func IsIdentityReason(reason string) bool {
 const ReasonRequiredNotEnforced = "required-not-enforced"
 
 // ReasonUntriagedBulkGeneration marks a Kind that nobody has reviewed yet.
-// PrepopulateSpec queues it for each new Kind. While it is open,
-// generate-types runs the per-Kind checks again for that Kind.
+// PrepopulateSpec queues one for each new Kind. While the entry is open, each
+// generate-types run with --prepopulate-spec checks the Kind again.
 const ReasonUntriagedBulkGeneration = "untriaged-bulk-generation"

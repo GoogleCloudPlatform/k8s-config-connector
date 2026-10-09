@@ -298,12 +298,12 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 			if scaffolder.TypeFileExists(resource) {
 				klog.V(1).Infof("file %s already exists, skipping\n", scaffolder.PathToTypeFile(resource))
 				// Until someone reviews the Kind, its checks run again, so a
-				// check added since it was scaffolded still reaches the queue.
-				// The check only adds queue entries. It never rewrites
-				// <kind>_types.go, and it does not resolve the source links
-				// again. The entries describe what the generator would
-				// scaffold today, so after a generator change they can name a
-				// field the types file does not have.
+				// check added after the Kind was scaffolded still reaches the
+				// queue. This only adds queue entries: it never rewrites
+				// <kind>_types.go or resolves the source links again. The
+				// entries reflect what the generator would scaffold today, so
+				// after a generator change they can name a field the types file
+				// does not have.
 				if o.PrepopulateSpec {
 					untriaged, err := isUntriaged(o.OutputAPIDirectory, goPackage, resource.Kind, gv.Group)
 					if err != nil {
@@ -558,9 +558,9 @@ func resourceMessage(api *protoapi.Proto, fullName string) (protoreflect.Message
 }
 
 // isUntriaged reports whether the service's judgement queue still has an open
-// untriaged-bulk-generation entry for the Kind. PrepopulateSpec queues one
-// when the Kind is scaffolded, and a person resolves it after reviewing the
-// Kind.
+// untriaged-bulk-generation entry for the Kind. PrepopulateSpec queues that
+// entry when it scaffolds the Kind, and a reviewer resolves it once they have
+// looked the Kind over.
 func isUntriaged(apiDir, goPackage, kind, group string) (bool, error) {
 	q, err := judgement.Read(judgementQueuePath(apiDir, goPackage))
 	if err != nil {
@@ -575,10 +575,12 @@ func isUntriaged(apiDir, goPackage, kind, group string) (bool, error) {
 	return false, nil
 }
 
-// prepopulate fills the Spec and ObservedState for a new <kind>_types.go from
-// msg and runs the per-Kind checks, which add their items to the result's
-// Judgement. An untriaged Kind whose types file exists also comes through
-// here, and only its Judgement is used, so a new per-Kind check belongs here.
+// prepopulate fills in the Spec and ObservedState for a new <kind>_types.go
+// from msg, and runs the per-Kind checks, which add their items to the
+// result's Judgement.
+//
+// The re-check of an untriaged Kind calls it too, and uses only the
+// Judgement. Add new per-Kind checks here, so both paths run them.
 func prepopulate(msg protoreflect.MessageDescriptor, typeGenerator *codegen.TypeGenerator, o *GenerateCRDOptions, writeOptions codegen.WriteOptions) (*scaffold.PrepopulateResult, error) {
 	prepopulated, err := scaffold.PrepopulateSpec(msg, writeOptions)
 	if err != nil {
