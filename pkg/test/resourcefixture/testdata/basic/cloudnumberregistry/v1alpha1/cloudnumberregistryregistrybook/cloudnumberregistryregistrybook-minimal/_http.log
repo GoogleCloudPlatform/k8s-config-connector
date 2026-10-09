@@ -97,6 +97,7 @@ OK
 GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
 
 {
+  "force": true,
   "name": "projects/${projectId}/locations/global/registryBooks/cnr-rb-min-${uniqueId}"
 }
 
