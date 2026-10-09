@@ -21,56 +21,20 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	iamrefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var (
-	_ identity.IdentityV2 = &IAMServiceAccountIdentity{}
-	_ identity.Resource   = &IAMServiceAccount{}
+	_ identity.Resource = &IAMServiceAccount{}
 )
 
-var IAMServiceAccountIdentityFormat = gcpurls.Template[IAMServiceAccountIdentity](
-	"iam.googleapis.com",
-	"projects/{project}/serviceAccounts/{account}",
-)
+var IAMServiceAccountIdentityFormat = iamrefs.IAMServiceAccountIdentityFormat
 
 // IAMServiceAccountIdentity is the identity of a GCP IAMServiceAccount resource.
 // +k8s:deepcopy-gen=false
-type IAMServiceAccountIdentity struct {
-	Project string
-	Account string
-}
-
-func (i *IAMServiceAccountIdentity) String() string {
-	return IAMServiceAccountIdentityFormat.ToString(*i)
-}
-
-func (i *IAMServiceAccountIdentity) FromExternal(ref string) error {
-	parsed, match, err := IAMServiceAccountIdentityFormat.Parse(ref)
-	if err != nil {
-		return fmt.Errorf("format of IAMServiceAccount external=%q was not known (use %s): %w", ref, IAMServiceAccountIdentityFormat.CanonicalForm(), err)
-	}
-	if !match {
-		return fmt.Errorf("format of IAMServiceAccount external=%q was not known (use %s)", ref, IAMServiceAccountIdentityFormat.CanonicalForm())
-	}
-
-	if strings.Contains(parsed.Account, "@") {
-		return fmt.Errorf("format of IAMServiceAccount external=%q was not known (use %s): email format is not allowed in identity", ref, IAMServiceAccountIdentityFormat.CanonicalForm())
-	}
-
-	*i = *parsed
-	return nil
-}
-
-func (i *IAMServiceAccountIdentity) Host() string {
-	return IAMServiceAccountIdentityFormat.Host()
-}
-
-func (i *IAMServiceAccountIdentity) ParentString() string {
-	return "projects/" + i.Project
-}
+type IAMServiceAccountIdentity = iamrefs.IAMServiceAccountIdentity
 
 func getIdentityFromIAMServiceAccountSpec(ctx context.Context, reader client.Reader, obj *IAMServiceAccount) (*IAMServiceAccountIdentity, error) {
 	resourceID := common.ValueOf(obj.Spec.ResourceID)

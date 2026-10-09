@@ -41,6 +41,15 @@ func (i *SecretVersionIdentity) String() string {
 	return i.parent.String() + "/versions/" + i.id
 }
 
+func (i *SecretVersionIdentity) FromExternal(ref string) error {
+	id, err := ParseSecretVersionExternal(ref)
+	if err != nil {
+		return err
+	}
+	*i = *id
+	return nil
+}
+
 func (r *SecretVersionIdentity) Parent() *SecretVersionParent {
 	return r.parent
 }
