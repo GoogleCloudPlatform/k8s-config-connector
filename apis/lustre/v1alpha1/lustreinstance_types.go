@@ -71,12 +71,6 @@ type LustreInstanceSpec struct {
 	// +kcc:proto:field=google.cloud.lustre.v1.Instance.per_unit_storage_throughput
 	// +required
 	PerUnitStorageThroughput *int64 `json:"perUnitStorageThroughput,omitempty"`
-
-	// Optional. Indicates whether you want to enable support for GKE clients. By
-	//  default, GKE clients are not supported. Deprecated. No longer required for
-	//  GKE instance creation.
-	// +kcc:proto:field=google.cloud.lustre.v1.Instance.gke_support_enabled
-	GKESupportEnabled *bool `json:"gkeSupportEnabled,omitempty"`
 }
 
 // LustreInstanceStatus defines the config connector machine state of LustreInstance

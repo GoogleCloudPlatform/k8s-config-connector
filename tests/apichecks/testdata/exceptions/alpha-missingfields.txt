@@ -3074,7 +3074,6 @@
 [missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.capacityGib" is not set in unstructured objects
 [missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.filesystem" is not set in unstructured objects
-[missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.gkeSupportEnabled" is not set in unstructured objects
 [missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.network" is not set in unstructured objects
