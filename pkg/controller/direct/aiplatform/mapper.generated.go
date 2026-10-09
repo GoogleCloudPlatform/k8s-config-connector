@@ -572,24 +572,6 @@ func DiskSpec_ToProto(mapCtx *direct.MapContext, in *krm.DiskSpec) *pb.DiskSpec 
 	out.BootDiskSizeGb = direct.ValueOf(in.BootDiskSizeGB)
 	return out
 }
-func DynamicRetrievalConfig_FromProto(mapCtx *direct.MapContext, in *pb.DynamicRetrievalConfig) *krm.DynamicRetrievalConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DynamicRetrievalConfig{}
-	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
-	out.DynamicThreshold = in.DynamicThreshold
-	return out
-}
-func DynamicRetrievalConfig_ToProto(mapCtx *direct.MapContext, in *krm.DynamicRetrievalConfig) *pb.DynamicRetrievalConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DynamicRetrievalConfig{}
-	out.Mode = direct.Enum_ToProto[pb.DynamicRetrievalConfig_Mode](mapCtx, in.Mode)
-	out.DynamicThreshold = in.DynamicThreshold
-	return out
-}
 
 /* found existing non-generated mapping function "EncryptionSpec_FromProto", skipping
 func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
@@ -1130,22 +1112,6 @@ func GoogleMaps_ToProto(mapCtx *direct.MapContext, in *krm.GoogleMaps) *pb.Googl
 		return nil
 	}
 	out := &pb.GoogleMaps{}
-	return out
-}
-func GoogleSearchRetrieval_FromProto(mapCtx *direct.MapContext, in *pb.GoogleSearchRetrieval) *krm.GoogleSearchRetrieval {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GoogleSearchRetrieval{}
-	out.DynamicRetrievalConfig = DynamicRetrievalConfig_FromProto(mapCtx, in.GetDynamicRetrievalConfig())
-	return out
-}
-func GoogleSearchRetrieval_ToProto(mapCtx *direct.MapContext, in *krm.GoogleSearchRetrieval) *pb.GoogleSearchRetrieval {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GoogleSearchRetrieval{}
-	out.DynamicRetrievalConfig = DynamicRetrievalConfig_ToProto(mapCtx, in.DynamicRetrievalConfig)
 	return out
 }
 func InputDataConfig_FromProto(mapCtx *direct.MapContext, in *pb.InputDataConfig) *krm.InputDataConfig {
@@ -2591,7 +2557,7 @@ func Retrieval_FromProto(mapCtx *direct.MapContext, in *pb.Retrieval) *krm.Retri
 	out := &krm.Retrieval{}
 	out.VertexAiSearch = VertexAiSearch_FromProto(mapCtx, in.GetVertexAiSearch())
 	out.VertexRagStore = VertexRagStore_FromProto(mapCtx, in.GetVertexRagStore())
-	out.DisableAttribution = direct.LazyPtr(in.GetDisableAttribution())
+	// MISSING: DisableAttribution
 	return out
 }
 func Retrieval_ToProto(mapCtx *direct.MapContext, in *krm.Retrieval) *pb.Retrieval {
@@ -2605,7 +2571,7 @@ func Retrieval_ToProto(mapCtx *direct.MapContext, in *krm.Retrieval) *pb.Retriev
 	if oneof := VertexRagStore_ToProto(mapCtx, in.VertexRagStore); oneof != nil {
 		out.Source = &pb.Retrieval_VertexRagStore{VertexRagStore: oneof}
 	}
-	out.DisableAttribution = direct.ValueOf(in.DisableAttribution)
+	// MISSING: DisableAttribution
 	return out
 }
 func RetrievalConfig_FromProto(mapCtx *direct.MapContext, in *pb.RetrievalConfig) *krm.RetrievalConfig {
@@ -3379,7 +3345,7 @@ func Tool_FromProto(mapCtx *direct.MapContext, in *pb.Tool) *krm.Tool {
 	out.FunctionDeclarations = direct.Slice_FromProto(mapCtx, in.FunctionDeclarations, FunctionDeclaration_FromProto)
 	out.Retrieval = Retrieval_FromProto(mapCtx, in.GetRetrieval())
 	out.GoogleSearch = Tool_GoogleSearch_FromProto(mapCtx, in.GetGoogleSearch())
-	out.GoogleSearchRetrieval = GoogleSearchRetrieval_FromProto(mapCtx, in.GetGoogleSearchRetrieval())
+	// MISSING: GoogleSearchRetrieval
 	out.GoogleMaps = GoogleMaps_FromProto(mapCtx, in.GetGoogleMaps())
 	out.EnterpriseWebSearch = EnterpriseWebSearch_FromProto(mapCtx, in.GetEnterpriseWebSearch())
 	out.CodeExecution = Tool_CodeExecution_FromProto(mapCtx, in.GetCodeExecution())
@@ -3395,7 +3361,7 @@ func Tool_ToProto(mapCtx *direct.MapContext, in *krm.Tool) *pb.Tool {
 	out.FunctionDeclarations = direct.Slice_ToProto(mapCtx, in.FunctionDeclarations, FunctionDeclaration_ToProto)
 	out.Retrieval = Retrieval_ToProto(mapCtx, in.Retrieval)
 	out.GoogleSearch = Tool_GoogleSearch_ToProto(mapCtx, in.GoogleSearch)
-	out.GoogleSearchRetrieval = GoogleSearchRetrieval_ToProto(mapCtx, in.GoogleSearchRetrieval)
+	// MISSING: GoogleSearchRetrieval
 	out.GoogleMaps = GoogleMaps_ToProto(mapCtx, in.GoogleMaps)
 	out.EnterpriseWebSearch = EnterpriseWebSearch_ToProto(mapCtx, in.EnterpriseWebSearch)
 	out.CodeExecution = Tool_CodeExecution_ToProto(mapCtx, in.CodeExecution)
@@ -4003,8 +3969,8 @@ func VertexRagStore_FromProto(mapCtx *direct.MapContext, in *pb.VertexRagStore) 
 	}
 	out := &krm.VertexRagStore{}
 	out.RagResources = direct.Slice_FromProto(mapCtx, in.RagResources, VertexRagStore_RagResource_FromProto)
-	out.SimilarityTopK = in.SimilarityTopK
-	out.VectorDistanceThreshold = in.VectorDistanceThreshold
+	// MISSING: SimilarityTopK
+	// MISSING: VectorDistanceThreshold
 	out.RagRetrievalConfig = RagRetrievalConfig_FromProto(mapCtx, in.GetRagRetrievalConfig())
 	return out
 }
@@ -4014,8 +3980,8 @@ func VertexRagStore_ToProto(mapCtx *direct.MapContext, in *krm.VertexRagStore) *
 	}
 	out := &pb.VertexRagStore{}
 	out.RagResources = direct.Slice_ToProto(mapCtx, in.RagResources, VertexRagStore_RagResource_ToProto)
-	out.SimilarityTopK = in.SimilarityTopK
-	out.VectorDistanceThreshold = in.VectorDistanceThreshold
+	// MISSING: SimilarityTopK
+	// MISSING: VectorDistanceThreshold
 	out.RagRetrievalConfig = RagRetrievalConfig_ToProto(mapCtx, in.RagRetrievalConfig)
 	return out
 }

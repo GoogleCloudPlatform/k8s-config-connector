@@ -943,34 +943,12 @@ spec:
                             type: string
                           type: array
                       type: object
-                    googleSearchRetrieval:
-                      description: Optional. GoogleSearchRetrieval tool type. Specialized
-                        retrieval tool that is powered by Google search.
-                      properties:
-                        dynamicRetrievalConfig:
-                          description: Specifies the dynamic retrieval configuration
-                            for the given source.
-                          properties:
-                            dynamicThreshold:
-                              description: Optional. The threshold to be used in dynamic
-                                retrieval. If not set, a system default value is used.
-                              type: number
-                            mode:
-                              description: The mode of the predictor to be used in
-                                dynamic retrieval.
-                              type: string
-                          type: object
-                      type: object
                     retrieval:
                       description: Optional. Retrieval tool type. System will always
                         execute the provided retrieval tool(s) to get external knowledge
                         to answer the prompt. Retrieval results are presented to the
                         model for generation.
                       properties:
-                        disableAttribution:
-                          description: Optional. Deprecated. This option is no longer
-                            supported.
-                          type: boolean
                         vertexAiSearch:
                           description: Set to use data source powered by Vertex AI
                             Search.
@@ -1084,15 +1062,6 @@ spec:
                                   format: int32
                                   type: integer
                               type: object
-                            similarityTopK:
-                              description: Optional. Number of top k results to return
-                                from the selected corpora.
-                              format: int32
-                              type: integer
-                            vectorDistanceThreshold:
-                              description: Optional. Only return results with vector
-                                distance smaller than the threshold.
-                              type: number
                           type: object
                       type: object
                     urlContext:
