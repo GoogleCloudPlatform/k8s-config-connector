@@ -43,6 +43,11 @@ const (
 	NotRepresentable
 )
 
+// reasonGCSPath is the NotRepresentable reason for a Cloud Storage object
+// path or prefix, such as gs://bucket/dir/file. KCC has no reference to an
+// object, but the path could later be split into a bucketRef plus a path.
+const reasonGCSPath = "gcs-path-decomposable-as-bucketref-plus-path"
+
 // IsReferenceFieldPath reports whether fieldPath is already a KCC reference, or
 // the external or name field inside one.
 func IsReferenceFieldPath(fieldPath string) bool {
@@ -77,15 +82,15 @@ func Classify(fieldPath, desc string) (Verdict, string) {
 	isRef := len(ReferenceRules(fieldPath, desc)) > 0
 
 	if !isRef {
-		// A gs:// URI names a Cloud Storage object or prefix. That is not a
-		// GCP resource name, so a KCC reference cannot hold it. For example,
-		// config's terraformBlueprint.gcsSource says
-		// "Format: gs://{bucket}/{object}". notRepresentableReason only
-		// checks uri and url fields for Cloud Storage, so this catches the
-		// rest. It only runs when no earlier rule matched, so a field that one
-		// did, such as a pattern or bucket field, keeps its verdict.
+		// A gs:// URI names a Cloud Storage object or prefix, which a KCC
+		// reference cannot hold. notRepresentableReason only checks uri and
+		// url fields for Cloud Storage. This catches the rest and gives them
+		// the same reason. For example, config's terraformBlueprint.gcsSource
+		// says "Format: gs://{bucket}/{object}". It only runs when no earlier
+		// rule matched, so a field that one did, such as a pattern or bucket
+		// field, keeps its verdict.
 		if strings.Contains(desc, "gs://") {
-			return NotRepresentable, "gcs-scheme-not-a-gcp-resource-name"
+			return NotRepresentable, reasonGCSPath
 		}
 		return NotAReference, ""
 	}
@@ -327,11 +332,7 @@ func notRepresentableReason(fieldPath, desc string) string {
 	// with a "/" after the bucket. Classify treats a bucket-only field as a
 	// reference.
 	if isURIField && mentionsCloudStorage(desc) && !hasToken(fieldPath, "bucket") {
-		if hasToken(fieldPath, "prefix") || hasToken(fieldPath, "directory") ||
-			strings.Contains(desc, "output directory") || strings.Contains(desc, "directory path") {
-			return "gcs-prefix-needs-bucket-ref-plus-path"
-		}
-		return "gcs-object-path-string-for-now-decomposable-as-bucketref-plus-path"
+		return reasonGCSPath
 	}
 
 	return ""
