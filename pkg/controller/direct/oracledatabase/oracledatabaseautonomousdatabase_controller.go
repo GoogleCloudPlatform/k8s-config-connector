@@ -86,6 +86,14 @@ func (m *modelAutonomousDatabase) AdapterForObject(ctx context.Context, op *dire
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
+	if obj.Spec.AdminPasswordSecretVersionRef != nil {
+		ref, err := refsv1beta1.ResolveSecretManagerSecretVersionRef(ctx, reader, obj, obj.Spec.AdminPasswordSecretVersionRef)
+		if err != nil {
+			return nil, fmt.Errorf("resolving adminPasswordSecretVersionRef: %w", err)
+		}
+		obj.Spec.AdminPasswordSecretVersionRef = ref
+	}
+
 	mapCtx := &direct.MapContext{}
 	desired := OracleDatabaseAutonomousDatabaseSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
@@ -297,25 +305,24 @@ func (a *autonomousDatabaseAdapter) compareAutonomousDatabase(ctx context.Contex
 
 	clonedDesired := proto.Clone(desired).(*pb.AutonomousDatabase)
 
-	diffPaths, diff, err := common.CompareProtoMessageStructuredDiff(clonedDesired, maskedActual, common.BasicDiff)
+	diffPaths, err := common.CompareProtoMessage(clonedDesired, maskedActual, common.BasicDiff)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	diff.Controller = k8s.ReconcilerTypeDirect
-
 	// Filter out non-updatable identifier fields if present in diff
 	diffPaths.Delete("name")
-	var filteredFields []structuredreporting.DiffField
-	for _, f := range diff.Fields {
-		if f.ID != "name" {
-			filteredFields = append(filteredFields, f)
-		}
-	}
-	diff.Fields = filteredFields
 
 	paths := diffPaths.UnsortedList()
 	slices.Sort(paths)
+
+	diff := &structuredreporting.Diff{
+		Controller: k8s.ReconcilerTypeDirect,
+	}
+	for _, path := range paths {
+		diff.AddField(path, nil, nil)
+	}
+
 	updateMask := &fieldmaskpb.FieldMask{Paths: paths}
 
 	return diff, updateMask, nil
