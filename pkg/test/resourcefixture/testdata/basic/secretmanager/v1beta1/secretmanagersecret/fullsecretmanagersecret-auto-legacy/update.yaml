@@ -36,9 +36,9 @@ spec:
   annotations:
     "foo": secretmanagersecret
     "bar": secretmanagersecret-bar
-  expireTime: "2025-10-03T15:01:23Z"
+  expireTime: "2035-10-03T15:01:23Z"
   rotation:
-    nextRotationTime: "2025-10-03T15:01:23Z"
+    nextRotationTime: "2035-10-03T15:01:23Z"
     # TF-based controller does not allow changing the rotation period.
     # Though this is a mutable field.
     rotationPeriod: "3600s"

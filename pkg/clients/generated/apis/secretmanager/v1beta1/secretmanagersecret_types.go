@@ -214,6 +214,10 @@ type SecretManagerSecretSpec struct {
 }
 
 type SecretObservedStateStatus struct {
+	/* The time at which the SecretManagerSecret was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	// +optional
 	VersionAliases map[string]string `json:"versionAliases,omitempty"`
 }

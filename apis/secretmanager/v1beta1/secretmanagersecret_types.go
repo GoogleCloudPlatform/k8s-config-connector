@@ -208,6 +208,9 @@ type SecretManagerSecretStatus struct {
 // SecretManagerSecretSpec defines the desired state of SecretManagerSecret
 // +kcc:observedstate:proto=google.cloud.secretmanager.v1.Secret
 type SecretManagerSecretObservedState struct {
+	// The time at which the SecretManagerSecret was created.
+	CreateTime *string `json:"createTime,omitempty" tf:"create_time,omitempty"`
+
 	VersionAliases map[string]string `json:"versionAliases,omitempty"`
 }
 

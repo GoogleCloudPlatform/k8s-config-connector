@@ -35,5 +35,5 @@ spec:
     "foo": secretmanagersecret
   ttl: 100s
   rotation:
-    nextRotationTime: "2025-10-02T15:01:23Z"
+    nextRotationTime: "2035-10-02T15:01:23Z"
     rotationPeriod: "3600s"
