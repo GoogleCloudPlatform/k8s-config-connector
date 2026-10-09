@@ -297,9 +297,9 @@ type OutputOnlyCandidate struct {
 	// FieldPath is the KRM path the field was emitted at, e.g. ".spec.createTime"
 	// or, for a nested field, ".spec.config.state".
 	FieldPath string
-	// Reason is reasonOutputOnlyInComment when the comment opens with one of
-	// outputOnlyPrefixes, and reasonOutputOnlyMentioned, a weaker signal, when
-	// it says "output only" further on.
+	// Reason is reasonOutputOnlyInComment when the comment starts with one of
+	// outputOnlyPrefixes. It is reasonOutputOnlyMentioned, a weaker signal,
+	// when the comment says "output only" later on.
 	Reason string
 	// Comment is the proto's leading comment, so a reviewer can decide without
 	// opening the proto.
@@ -308,10 +308,10 @@ type OutputOnlyCandidate struct {
 
 // Item returns the queue entry for c.
 //
-// The entry names where the field belongs, not where it currently sits. It
-// accounts for a field absent from ObservedState, so a path under .spec would
-// never line up with what is missing. A nested field keeps the rest of its
-// path: .spec.config.state becomes .status.observedState.config.state.
+// The entry names where the field belongs, not where it sits now. The entry
+// is about a field missing from ObservedState, and a path under .spec would
+// not point there. A nested field keeps the rest of its path, so
+// .spec.config.state becomes .status.observedState.config.state.
 func (c OutputOnlyCandidate) Item() JudgementItem {
 	detail := "proto comment says output only but no field_behavior annotation, so it was generated into the Spec instead. Move it if the comment is right: "
 	if c.Reason == reasonOutputOnlyMentioned {
@@ -331,26 +331,27 @@ func (c OutputOnlyCandidate) Item() JudgementItem {
 // "[Output only]".
 var outputOnlyPrefixes = []string{"Output only.", "[Output Only]"}
 
-// outputOnlyMention matches the words "output only" in any case, apart or
-// joined by a hyphen, as in dlp's "Output-only field, populated by the system".
+// outputOnlyMention matches "output only" in any case, with a space or a
+// hyphen between the words, as in dlp's "Output-only field, populated by the
+// system".
 var outputOnlyMention = regexp.MustCompile(`(?i)\boutput[\s-]+only\b`)
 
 // DetectOutputOnlyInComments finds spec fields whose leading proto comments describe
 // them as output-only, but lack explicit google.api.field_behavior annotations.
 // It reports candidates for manual review rather than moving them automatically.
 //
-// It checks the fields of nested Spec structs too, with the same rules.
+// It checks nested Spec fields too, with the same rules.
 func DetectOutputOnlyInComments(msg protoreflect.MessageDescriptor, opts codegen.WriteOptions) []OutputOnlyCandidate {
 	if msg == nil {
 		return nil
 	}
 	var out []OutputOnlyCandidate
-	// walkSpecFields skips the fields PrepopulateSpec leaves out of the Spec.
-	// These are OUTPUT_ONLY fields, identity fields, deprecated top-level
-	// fields, and server-set fields when --place-server-set-fields is enabled.
-	// A server-set field is already in ObservedState with its own queue entry.
-	// It also skips fields the generator cannot type, which never reach the
-	// CRD, and fields it writes as references.
+	// walkSpecFields skips the fields PrepopulateSpec leaves out of the Spec:
+	// OUTPUT_ONLY fields, identity fields, deprecated top-level fields, and
+	// server-set fields when --place-server-set-fields is on. A server-set
+	// field is already in ObservedState with its own queue entry. The walk
+	// also skips fields the generator cannot type, since they never reach the
+	// CRD, and fields the generator writes as references.
 	walkSpecFields(msg, ".spec", opts, true, map[protoreflect.FullName]bool{}, func(path, comment string, _ protoreflect.FieldDescriptor) {
 		if reason, ok := outputOnlyReason(comment); ok {
 			out = append(out, OutputOnlyCandidate{FieldPath: path, Reason: reason, Comment: comment})
@@ -359,20 +360,20 @@ func DetectOutputOnlyInComments(msg protoreflect.MessageDescriptor, opts codegen
 	return out
 }
 
-// outputOnlyReason says whether a field's comment, on one line, calls the
-// field output only, and how strongly.
+// outputOnlyReason reports whether a field's comment, joined into one line,
+// says the field is output only, and how strongly.
 //
-// A comment that opens with one of outputOnlyPrefixes gets
+// A comment that starts with one of outputOnlyPrefixes gets
 // reasonOutputOnlyInComment. A comment that says "output only" after other
-// words gets reasonOutputOnlyMentioned, as websecurityscanner's managed_scan
-// does: "Whether the scan config is managed by Web Security Scanner, output
-// only." Brackets and punctuation in front of the words do not count as other
-// words.
+// words gets reasonOutputOnlyMentioned. websecurityscanner's managed_scan is
+// an example: "Whether the scan config is managed by Web Security Scanner,
+// output only." Brackets and punctuation before the words don't count as
+// other words.
 //
-// A comment that opens with the words, but not with a prefix, gets neither
-// unless it says them again further on. Such a comment usually runs on into a
-// condition, as in "Output only for the create operation", so the field is
-// only output some of the time.
+// A comment that starts with the words but not with a prefix gets neither
+// reason, unless it says them again later. Such a comment usually goes on to
+// a condition, as in "Output only for the create operation", so the field
+// is output only some of the time.
 func outputOnlyReason(comment string) (string, bool) {
 	for _, prefix := range outputOnlyPrefixes {
 		if len(comment) >= len(prefix) && strings.EqualFold(comment[:len(prefix)], prefix) {

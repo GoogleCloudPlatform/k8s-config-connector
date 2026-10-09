@@ -367,9 +367,9 @@ func TestDetectOutputOnlyInComments(t *testing.T) {
 }
 
 // A comment that says "output only" after other words gets the weaker reason,
-// in any case, with brackets or with a hyphen. websecurityscanner's
-// managed_scan slipped through before this rule. A sentence break between the
-// words is not a match.
+// in any case, in brackets or with a hyphen. websecurityscanner's managed_scan
+// slipped through before this rule. A sentence break between the words is not
+// a match.
 func TestDetectOutputOnlyMentionedInComment(t *testing.T) {
 	// Arrange
 	msg := commentedMessage(t,
@@ -393,9 +393,9 @@ func TestDetectOutputOnlyMentionedInComment(t *testing.T) {
 	}
 }
 
-// TestDetectOutputOnlyWalksNestedFields pins that both checks reach the fields
-// of nested Spec structs, in a list too. TestOutputOnlyCandidateItem pins the
-// path the queue entry gives a nested field.
+// TestDetectOutputOnlyWalksNestedFields checks that both rules reach nested
+// Spec fields, including ones in a list. TestOutputOnlyCandidateItem checks
+// the path the queue entry gives a nested field.
 func TestDetectOutputOnlyWalksNestedFields(t *testing.T) {
 	// Arrange
 	msg := nestedConfigMessage(t)
@@ -415,10 +415,10 @@ func TestDetectOutputOnlyWalksNestedFields(t *testing.T) {
 	}
 }
 
-// TestOutputOnlyCandidateItem pins the entry for each reason. The entry names
-// the field's place under ObservedState, with the rest of a nested path kept.
-// The detail ends with the comment, so a reviewer can decide without opening
-// the proto.
+// TestOutputOnlyCandidateItem checks the entry for each reason. The entry
+// names the field's place under ObservedState and keeps the rest of a nested
+// path. The detail ends with the comment, so a reviewer can decide without
+// opening the proto.
 func TestOutputOnlyCandidateItem(t *testing.T) {
 	for _, tc := range []struct {
 		name string
@@ -583,8 +583,8 @@ func namedCommentedMessage(t *testing.T, named [][2]string) protoreflect.Message
 }
 
 // nestedConfigMessage builds a Widget that holds a Config directly and in a
-// list. Config's state comment starts with "Output only.", managed's says it
-// further on, and target's says nothing about it.
+// list. In Config, state's comment starts with "Output only.", managed's says
+// it later on, and target's doesn't mention it.
 func nestedConfigMessage(t *testing.T) protoreflect.MessageDescriptor {
 	t.Helper()
 	str := fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)
