@@ -96,6 +96,7 @@ func (m *modelArtifactRegistryRepository) AdapterForObject(ctx context.Context, 
 	}
 
 	desiredPb.Labels = label.GCPLabels(obj)
+	populateCleanupPolicyDefaults(desiredPb)
 
 	return &ArtifactRegistryRepositoryAdapter{
 		id:         id.(*krm.ArtifactRegistryRepositoryIdentity),
@@ -278,6 +279,16 @@ func (a *ArtifactRegistryRepositoryAdapter) Delete(ctx context.Context, deleteOp
 	return true, nil
 }
 
+func populateCleanupPolicyDefaults(obj *pb.Repository) {
+	for _, policy := range obj.CleanupPolicies {
+		if cond := policy.GetCondition(); cond != nil {
+			if cond.TagState == nil || *cond.TagState == pb.CleanupPolicyCondition_TAG_STATE_UNSPECIFIED {
+				cond.TagState = direct.PtrTo(pb.CleanupPolicyCondition_ANY)
+			}
+		}
+	}
+}
+
 func compareRepository(ctx context.Context, actual, desired *pb.Repository, desiredKRM *krm.ArtifactRegistryRepository) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
 	maskedActual, err := mappers.OnlySpecFields(actual, ArtifactRegistryRepositorySpec_v1beta1_FromProto, ArtifactRegistryRepositorySpec_v1beta1_ToProto)
 	if err != nil {
@@ -286,29 +297,22 @@ func compareRepository(ctx context.Context, actual, desired *pb.Repository, desi
 	maskedActual.Name = actual.Name
 	maskedActual.Labels = actual.Labels
 
-	populateDefaults := func(obj *pb.Repository) {
-		if obj.Mode == pb.Repository_MODE_UNSPECIFIED {
-			obj.Mode = pb.Repository_STANDARD_REPOSITORY
-		}
-		for _, policy := range obj.CleanupPolicies {
-			if cond := policy.GetCondition(); cond != nil {
-				if cond.TagState == nil || *cond.TagState == pb.CleanupPolicyCondition_TAG_STATE_UNSPECIFIED {
-					cond.TagState = direct.PtrTo(pb.CleanupPolicyCondition_ANY)
-				}
-			}
-		}
-	}
-
 	desired = proto.CloneOf(desired)
 	desired.Name = actual.Name
 
-	populateDefaults(desired)
-	populateDefaults(maskedActual)
+	if desired.Mode == pb.Repository_MODE_UNSPECIFIED {
+		desired.Mode = pb.Repository_STANDARD_REPOSITORY
+	}
+	if maskedActual.Mode == pb.Repository_MODE_UNSPECIFIED {
+		maskedActual.Mode = pb.Repository_STANDARD_REPOSITORY
+	}
+
+	populateCleanupPolicyDefaults(desired)
+	populateCleanupPolicyDefaults(maskedActual)
 
 	if desiredKRM != nil {
 		if desiredKRM.Spec.CleanupPolicyDryRun == nil {
 			desired.CleanupPolicyDryRun = actual.CleanupPolicyDryRun
-			maskedActual.CleanupPolicyDryRun = actual.CleanupPolicyDryRun
 		}
 		if desiredKRM.Spec.CleanupPolicies == nil {
 			desired.CleanupPolicies = maskedActual.CleanupPolicies

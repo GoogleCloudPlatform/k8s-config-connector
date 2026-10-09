@@ -1,0 +1,387 @@
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories?alt=json&repository_id=arrepository-${uniqueId}
+Content-Type: application/json
+
+{
+  "cleanupPolicies": {
+    "delete-prerelease": {
+      "action": "DELETE",
+      "condition": {
+        "olderThan": "2592000s",
+        "tagPrefixes": [
+          "alpha"
+        ],
+        "tagState": "ANY"
+      }
+    },
+    "keep-minimum-versions": {
+      "action": "KEEP",
+      "mostRecentVersions": {
+        "keepCount": 5,
+        "packageNamePrefixes": [
+          "pkg"
+        ]
+      }
+    }
+  },
+  "description": "test repository description",
+  "format": "DOCKER",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "mode": "STANDARD_REPOSITORY"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.Repository",
+    "cleanupPolicies": {
+      "delete-prerelease": {
+        "action": "DELETE",
+        "condition": {
+          "olderThan": "2592000s",
+          "tagPrefixes": [
+            "alpha"
+          ],
+          "tagState": "ANY"
+        }
+      },
+      "keep-minimum-versions": {
+        "action": "KEEP",
+        "mostRecentVersions": {
+          "keepCount": 5,
+          "packageNamePrefixes": [
+            "pkg"
+          ]
+        }
+      }
+    },
+    "description": "test repository description",
+    "format": "DOCKER",
+    "labels": {
+      "cnrm-test": "true",
+      "label-one": "value-one",
+      "managed-by-cnrm": "true"
+    },
+    "mode": "STANDARD_REPOSITORY",
+    "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
+    "satisfiesPzi": true,
+    "vulnerabilityScanningConfig": {
+      "enablementState": "SCANNING_DISABLED",
+      "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+      "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+    }
+  }
+}
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cleanupPolicies": {
+    "delete-prerelease": {
+      "action": "DELETE",
+      "condition": {
+        "olderThan": "2592000s",
+        "tagPrefixes": [
+          "alpha"
+        ],
+        "tagState": "ANY"
+      }
+    },
+    "keep-minimum-versions": {
+      "action": "KEEP",
+      "mostRecentVersions": {
+        "keepCount": 5,
+        "packageNamePrefixes": [
+          "pkg"
+        ]
+      }
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test repository description",
+  "format": "DOCKER",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "mode": "STANDARD_REPOSITORY",
+  "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
+  "registryUri": "us-west1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}",
+  "satisfiesPzi": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vulnerabilityScanningConfig": {
+    "enablementState": "SCANNING_DISABLED",
+    "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+PATCH https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json&updateMask=description%2CcleanupPolicies
+Content-Type: application/json
+
+{
+  "cleanupPolicies": {
+    "delete-prerelease": {
+      "action": "DELETE",
+      "condition": {
+        "olderThan": "2592000s",
+        "tagPrefixes": [
+          "alpha",
+          "beta"
+        ],
+        "tagState": "ANY"
+      }
+    },
+    "keep-minimum-versions": {
+      "action": "KEEP",
+      "mostRecentVersions": {
+        "keepCount": 10,
+        "packageNamePrefixes": [
+          "pkg"
+        ]
+      }
+    }
+  },
+  "description": "test repository description 2",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cleanupPolicies": {
+    "delete-prerelease": {
+      "action": "DELETE",
+      "condition": {
+        "olderThan": "2592000s",
+        "tagPrefixes": [
+          "alpha",
+          "beta"
+        ],
+        "tagState": "ANY"
+      }
+    },
+    "keep-minimum-versions": {
+      "action": "KEEP",
+      "mostRecentVersions": {
+        "keepCount": 10,
+        "packageNamePrefixes": [
+          "pkg"
+        ]
+      }
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test repository description 2",
+  "format": "DOCKER",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "mode": "STANDARD_REPOSITORY",
+  "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
+  "satisfiesPzi": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vulnerabilityScanningConfig": {
+    "enablementState": "SCANNING_DISABLED",
+    "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cleanupPolicies": {
+    "delete-prerelease": {
+      "action": "DELETE",
+      "condition": {
+        "olderThan": "2592000s",
+        "tagPrefixes": [
+          "alpha",
+          "beta"
+        ],
+        "tagState": "ANY"
+      }
+    },
+    "keep-minimum-versions": {
+      "action": "KEEP",
+      "mostRecentVersions": {
+        "keepCount": 10,
+        "packageNamePrefixes": [
+          "pkg"
+        ]
+      }
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test repository description 2",
+  "format": "DOCKER",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "mode": "STANDARD_REPOSITORY",
+  "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
+  "registryUri": "us-west1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}",
+  "satisfiesPzi": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vulnerabilityScanningConfig": {
+    "enablementState": "SCANNING_DISABLED",
+    "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+---
+
+GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.OperationMetadata"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
