@@ -85,11 +85,6 @@ func (m *secureSourceManagerInstanceModel) AdapterForObject(ctx context.Context,
 		return nil, err
 	}
 
-	if obj.Spec.PrivateConfig != nil && obj.Spec.PrivateConfig.CAPoolRef != nil {
-		if err := obj.Spec.PrivateConfig.CAPoolRef.Normalize(ctx, reader, u.GetNamespace()); err != nil {
-			return nil, err
-		}
-	}
 	mapCtx := &direct.MapContext{}
 	desired := SecureSourceManagerInstanceSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {

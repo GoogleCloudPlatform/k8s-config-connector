@@ -19,6 +19,7 @@ import (
 	"testing"
 
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+	privatecarefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/privatecarefs"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -40,8 +41,17 @@ func TestSecureSourceManagerInstance_NormalizeReferences(t *testing.T) {
 		t.Fatalf("failed to set status.selfLink: %v", err)
 	}
 
+	readyCAPool := &unstructured.Unstructured{}
+	readyCAPool.SetGroupVersionKind(privatecarefs.PrivateCACAPoolGVK)
+	readyCAPool.SetName("test-ca-pool")
+	readyCAPool.SetNamespace("test-ns")
+	caPoolLink := "projects/test-project/locations/us-central1/caPools/test-ca-pool"
+	if err := unstructured.SetNestedField(readyCAPool.Object, caPoolLink, "status", "externalRef"); err != nil {
+		t.Fatalf("failed to set status.externalRef: %v", err)
+	}
+
 	scheme := runtime.NewScheme()
-	reader := fake.NewClientBuilder().WithScheme(scheme).WithObjects(readyKey).Build()
+	reader := fake.NewClientBuilder().WithScheme(scheme).WithObjects(readyKey, readyCAPool).Build()
 
 	t.Run("resolves KMSKeyRef by name", func(t *testing.T) {
 		obj := &krm.SecureSourceManagerInstance{
@@ -142,6 +152,39 @@ func TestSecureSourceManagerInstance_NormalizeReferences(t *testing.T) {
 		}
 		if protoObj.KmsKey != "" {
 			t.Errorf("protoObj KmsKey = %q, want empty", protoObj.KmsKey)
+		}
+	})
+
+	t.Run("resolves caPoolRef by name", func(t *testing.T) {
+		obj := &krm.SecureSourceManagerInstance{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "test-instance",
+				Namespace: "test-ns",
+			},
+			Spec: krm.SecureSourceManagerInstanceSpec{
+				PrivateConfig: &krm.Instance_PrivateConfig{
+					CAPoolRef: &privatecarefs.PrivateCACAPoolRef{
+						Name: "test-ca-pool",
+					},
+				},
+			},
+		}
+
+		if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+			t.Fatalf("NormalizeReferences() unexpected error: %v", err)
+		}
+
+		if obj.Spec.PrivateConfig.CAPoolRef.External != caPoolLink {
+			t.Errorf("NormalizeReferences() CAPoolRef.External = %q, want %q", obj.Spec.PrivateConfig.CAPoolRef.External, caPoolLink)
+		}
+
+		mapCtx := &direct.MapContext{}
+		protoObj := SecureSourceManagerInstanceSpec_ToProto(mapCtx, &obj.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("SecureSourceManagerInstanceSpec_ToProto unexpected error: %v", mapCtx.Err())
+		}
+		if protoObj.PrivateConfig == nil || protoObj.PrivateConfig.CaPool != caPoolLink {
+			t.Errorf("protoObj CaPool = %v, want %q", protoObj.PrivateConfig, caPoolLink)
 		}
 	})
 }
