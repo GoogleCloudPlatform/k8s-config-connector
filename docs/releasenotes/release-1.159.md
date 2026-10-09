@@ -5,29 +5,8 @@
 *   `AIPlatformReasoningEngine`
     *   Manage [Vertex AI Reasoning Engines](https://cloud.google.com/vertex-ai/docs/reasoning-engine/overview) to deploy and run customized reasoning applications.
 
-*   `CCInsightsAnalysisRule`
-    *   Manage [Contact Center Insights analysis rules](https://cloud.google.com/contact-center/insights/docs) to configure conversation analysis criteria.
-
 *   `CloudDeployCustomTargetType`
     *   Manage [Cloud Deploy custom target types](https://cloud.google.com/deploy/docs) to define custom deployment targets and rendering actions.
-
-*   `ConfigDeliveryResourceBundle`
-    *   Manage [Config Delivery resource bundles](https://cloud.google.com/kubernetes-engine/docs/concepts/fleet-deployment) for deploying declarative fleet packages.
-
-*   `DataformFolder`
-    *   Manage [Dataform folders](https://cloud.google.com/dataform/docs) in Dataform repositories to organize development assets.
-
-*   `DataLineageProcess`
-    *   Manage [Dataplex Data Lineage processes](https://cloud.google.com/dataplex/docs/data-lineage) to track data origin and movement.
-
-*   `DataplexDataProduct`
-    *   Manage [Dataplex data products](https://cloud.google.com/dataplex/docs) to govern and share data domain assets.
-
-*   `DialogflowKnowledgeBase`
-    *   Manage [Dialogflow knowledge bases](https://cloud.google.com/dialogflow/cx/docs) for conversational question-answering.
-
-*   `DiscoveryEngineControl`
-    *   Manage [Discovery Engine controls](https://cloud.google.com/generative-ai-app-builder/docs) to boost or filter search results.
 
 *   `EventarcPipeline`
     *   Manage [Eventarc pipelines](https://cloud.google.com/eventarc/docs) to transform and route events across Google Cloud services.
@@ -38,23 +17,11 @@
 *   `LiveStreamInput`
     *   Manage [Live Stream inputs](https://cloud.google.com/livestream/docs) to configure video ingestion endpoints.
 
-*   `ManagedKafkaConnectCluster`
-    *   Manage [Managed Service for Apache Kafka Connect clusters](https://cloud.google.com/managed-kafka/docs) for Apache Kafka Connect integrations.
-
-*   `MapManagementMapConfig`
-    *   Manage [Maps Management map configurations](https://developers.google.com/maps/documentation) to customize Google Maps features.
-
 *   `MapManagementStyleConfig`
     *   Manage [Maps Management style configurations](https://developers.google.com/maps/documentation) to define custom map styles.
 
-*   `NetworkConnectivityMulticloudDataTransferConfig`
-    *   Manage [Network Connectivity multicloud data transfer configs](https://cloud.google.com/network-connectivity/docs) for data transfer between cloud providers.
-
 *   `NetworkSecurityDNSThreatDetector`
     *   Manage [Network Security DNS threat detectors](https://cloud.google.com/secure-web-proxy/docs) to monitor and mitigate DNS-based threats.
-
-*   `NetworkSecurityMirroringEndpointGroupAssociation`
-    *   Manage [Network Security mirroring endpoint group associations](https://cloud.google.com/firewall/docs/packet-mirroring) to associate mirroring endpoint groups with VPC networks.
 
 ## New Fields:
 
