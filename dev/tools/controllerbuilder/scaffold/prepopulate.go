@@ -171,7 +171,7 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 	// The root marker records that nobody has reviewed this resource yet. It
 	// does not suppress any check.
 	out.Judgement = append([]JudgementItem{{
-		Reason: "untriaged-bulk-generation",
+		Reason: judgement.ReasonUntriagedBulkGeneration,
 		Detail: "spec was generated from proto definition; verify refs, omissions, and KRM conventions",
 	}}, out.Judgement...)
 
