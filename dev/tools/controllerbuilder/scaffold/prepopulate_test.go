@@ -440,7 +440,7 @@ func TestOutputOnlyCandidateItem(t *testing.T) {
 			want: JudgementItem{
 				FieldPath: ".status.observedState.createTime",
 				Reason:    "well-known-output-only-pattern-in-comment",
-				Detail:    "proto comment says output only but no field_behavior annotation, so it was generated into the Spec instead. Move it if the comment is right: Output only. When it was created.",
+				Detail:    "proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec. Move the field to status.observedState if it is confirmed output only. Proto comment: Output only. When it was created.",
 			},
 		},
 		{
@@ -450,7 +450,7 @@ func TestOutputOnlyCandidateItem(t *testing.T) {
 				FieldPath: ".status.observedState.config.managedScan",
 				Reason:    "possible-output-only-pattern-in-comment",
 				Detail: "proto comment mentions output only but doesn't start with \"Output only.\" or \"[Output Only]\", and there is no field_behavior annotation, so it was generated into the Spec. " +
-					"The comment may be a typo, apply only some of the time, or mean something else. Move the field if it is output only: Whether the scan config is managed by Web Security Scanner, output only.",
+					"The comment may be a typo, apply only some of the time, or mean something else. Move the field to status.observedState if it is confirmed output only. Proto comment: Whether the scan config is managed by Web Security Scanner, output only.",
 			},
 		},
 	} {
