@@ -36,6 +36,7 @@ ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.sql.v1beta4 \
   --api-version sql.cnrm.cloud.google.com/v1beta1  \
   --resource SQLInstance:DatabaseInstance \
+  --resource SQLSSLCert:SslCert \
   --skip-scaffold-files \
   --include-skipped-output \
   --prune-unused-types=false
