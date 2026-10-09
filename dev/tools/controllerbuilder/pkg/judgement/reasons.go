@@ -20,10 +20,11 @@ package judgement
 // means the two cannot drift apart.
 const (
 	// ReasonPossibleReference: the proto field has a
-	// google.api.resource_reference annotation.
+	// google.api.resource_reference annotation. The detail names the type.
 	ReasonPossibleReference = "possible-reference"
 	// ReasonPossibleReferenceByDescription: refs.Classify, the rule
-	// TestMissingRefs applies, says the field is a reference.
+	// TestMissingRefs applies, says the field is a reference. The detail says
+	// which of its rules matched.
 	ReasonPossibleReferenceByDescription = "possible-reference-by-description"
 	// ReasonPossibleReferenceByDescriptionLoose: a looser description rule
 	// matched. TestMissingRefs would not flag the field.

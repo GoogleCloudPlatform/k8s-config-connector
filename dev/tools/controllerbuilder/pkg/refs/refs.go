@@ -24,6 +24,7 @@
 package refs
 
 import (
+	"fmt"
 	"regexp"
 	"strings"
 )
@@ -69,32 +70,11 @@ func Classify(fieldPath, desc string) (Verdict, string) {
 		return NotRepresentable, reason
 	}
 
-	isRef := false
-
 	// Proto-level resource references (google.api.resource_reference) are resolved
 	// in the proto generator where the proto field descriptors are available.
 	// In Classify, which operates on KRM field paths and doc strings without direct
-	// proto context, heuristics are used instead.
-
-	// A resource-name template in the description marks a reference, as in
-	// "projects/{projectID}/locations/{location}/bars/{name}".
-	if hasResourceNameTemplate(desc) {
-		isRef = true
-	}
-
-	// The suffix matches serviceAccount and ServiceAccount alike.
-	if strings.HasSuffix(fieldPath, "erviceAccount") {
-		isRef = true
-	}
-	// TODO: how to detect KMS Key
-
-	// A Cloud Storage bucket reference is expressible today:
-	// StorageBucketIdentity.FromExternal accepts the bare "gs://<bucket>"
-	// form (apis/storage/v1beta1/storagebucket_identity.go).
-	// notRepresentableReason has already handled object paths.
-	if hasToken(fieldPath, "bucket") && mentionsCloudStorage(desc) {
-		isRef = true
-	}
+	// proto context, heuristics are used instead. ReferenceRules applies them.
+	isRef := len(ReferenceRules(fieldPath, desc)) > 0
 
 	if !isRef {
 		// A gs:// URI names a Cloud Storage object or prefix, which is not a
@@ -125,25 +105,57 @@ func Classify(fieldPath, desc string) (Verdict, string) {
 	return IsReference, ""
 }
 
+// ReferenceRules returns the rules that say a field names another resource,
+// each as a short phrase a person can check against the field. Classify calls
+// a field IsReference when one of them matches, unless one of its other checks
+// decides first, so the result only means something for a field Classify
+// calls IsReference.
+func ReferenceRules(fieldPath, desc string) []string {
+	var rules []string
+
+	// A resource-name template in the description marks a reference, as in
+	// "projects/{projectID}/locations/{location}/bars/{name}".
+	if template := resourceNameTemplate(desc); template != "" {
+		rules = append(rules, fmt.Sprintf("the description has the resource-name template %q", template))
+	}
+
+	// The suffix matches serviceAccount and ServiceAccount alike.
+	if strings.HasSuffix(fieldPath, "erviceAccount") {
+		rules = append(rules, "the field name ends in serviceAccount")
+	}
+	// TODO: how to detect KMS Key
+
+	// A Cloud Storage bucket reference is expressible today:
+	// StorageBucketIdentity.FromExternal accepts the bare "gs://<bucket>"
+	// form (apis/storage/v1beta1/storagebucket_identity.go).
+	// Classify runs notRepresentableReason first, which handles object paths.
+	if hasToken(fieldPath, "bucket") && mentionsCloudStorage(desc) {
+		rules = append(rules, "the field name has bucket and the description mentions Cloud Storage")
+	}
+	return rules
+}
+
 // resourceNamePrefixes are the collection segments that start a GCP resource
 // name. A description containing one of these followed by a placeholder is
 // describing a resource name, i.e. a reference.
 var resourceNamePrefixes = []string{"projects/", "locations/", "zones/", "regions/", "organizations/", "folders/"}
 
-// hasResourceNameTemplate reports whether desc contains a resource-name path
-// template.
+// resourceNameTemplate returns the first resource-name path template it finds
+// in desc, or "" if there is none.
 //
 // Placeholder syntax varies across APIs, and so does the character before
 // the path. notification_channels, for example, reads "Must be of the format
 // `projects/<project_id_or_number>/notificationChannels/<channel_id>`", with
 // a backtick rather than a space and <> rather than {}. Both forms count.
-func hasResourceNameTemplate(desc string) bool {
+func resourceNameTemplate(desc string) string {
 	// A placeholder immediately after a collection segment is unambiguous: the
 	// description is spelling out a resource name. Both brace and angle-bracket
 	// syntaxes are used upstream.
 	for _, prefix := range resourceNamePrefixes {
-		if strings.Contains(desc, prefix+"{") || strings.Contains(desc, prefix+"<") {
-			return true
+		for _, open := range []string{"{", "<"} {
+			if i := strings.Index(desc, prefix+open); i >= 0 {
+				return wordAt(desc, i)
+			}
 		}
 	}
 
@@ -151,7 +163,25 @@ func hasResourceNameTemplate(desc string) bool {
 	// this to other delimiters or to "locations/" matches ordinary prose, and it
 	// produced findings on container.username and allowedLocations, which are
 	// not references.
-	return strings.Contains(desc, " projects/")
+	if i := strings.Index(desc, " projects/"); i >= 0 {
+		return wordAt(desc, i+1)
+	}
+	return ""
+}
+
+// wordAt returns the word of desc that contains index i. A word ends at white
+// space, a quote or a backtick. An opening parenthesis before the word and
+// punctuation after it are dropped, so "(projects/{project})." gives
+// "projects/{project}". None of those is a letter, so the word is never empty
+// when a collection segment starts at i.
+func wordAt(desc string, i int) string {
+	const stops = " \t\r\n`'\""
+	start := strings.LastIndexAny(desc[:i], stops) + 1
+	end := len(desc)
+	if n := strings.IndexAny(desc[i:], stops); n >= 0 {
+		end = i + n
+	}
+	return strings.TrimRight(strings.TrimLeft(desc[start:end], "("), ".,;:)")
 }
 
 // hasToken reports whether the last segment of fieldPath contains tok as a
