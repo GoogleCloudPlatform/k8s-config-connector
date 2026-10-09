@@ -39,6 +39,7 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -64,6 +65,10 @@ func (m *backupPlanModel) AdapterForObject(ctx context.Context, op *directbase.A
 	obj := &krm.GKEBackupBackupPlan{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
+	}
+
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	id, err := krm.NewBackupPlanIdentity(ctx, reader, obj)
@@ -343,13 +348,6 @@ func (a *backupPlanAdapter) normalizeReferenceFields(ctx context.Context) error 
 
 	if obj.Spec.ClusterRef != nil {
 		if _, err := obj.Spec.ClusterRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
-			return err
-		}
-	}
-	if obj.Spec.BackupConfig != nil &&
-		obj.Spec.BackupConfig.EncryptionKey != nil &&
-		obj.Spec.BackupConfig.EncryptionKey.KMSKeyRef != nil {
-		if _, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.BackupConfig.EncryptionKey.KMSKeyRef); err != nil {
 			return err
 		}
 	}
