@@ -53,7 +53,9 @@ entries:
     field: .spec.rolloutKind
     reason: possible-reference
     detail: target=saasservicemgmt.googleapis.com/RolloutKind
-    status: open
+    status: resolved
+    resolution: deferred
+    note: string until KCC has a RolloutKind Kind
   - kind: SaaSServiceMgmtRollout
     group: saasservicemgmt.cnrm.cloud.google.com
     field: .spec.location
