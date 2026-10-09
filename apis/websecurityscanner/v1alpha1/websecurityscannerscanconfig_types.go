@@ -15,8 +15,7 @@
 // API sources for WebSecurityScannerScanConfig, recorded by generate-types:
 // +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/websecurityscanner/v1/scan_config.proto
 // +kcc:source:service-docs=https://cloud.google.com/security-command-center/docs/concepts-web-security-scanner-overview/
-// +kcc:guess=source-link reason=verify-resource-docs-link
-// +kcc:source:resource-docs=https://docs.cloud.google.com/security-command-center/docs/concepts-web-security-scanner-overview/reference/rest
+// +kcc:source:resource-docs=https://docs.cloud.google.com/security-command-center/docs/reference/web-security-scanner/rest/v1/projects.scanConfigs
 
 package v1alpha1
 
