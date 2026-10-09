@@ -211,7 +211,9 @@ const header = `# Judgement queue for this service, written by controllerbuilder
 # status, or tests/apichecks fails.
 #
 # Until a Kind's untriaged-bulk-generation entry is resolved, each run checks
-# the Kind again and adds any new findings here. Its types file is not touched.
+# the Kind again and adds any new findings here. It never rewrites the Kind's
+# <kind>_types.go, so after a generator change a finding can name a field
+# that file does not have.
 `
 
 // Write saves a queue file with its header.
