@@ -1,0 +1,220 @@
+GET https://saasservicemgmt.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/units/saasservicemgmtunit-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Funits%2Fsaasservicemgmtunit-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/units/saasservicemgmtunit-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://saasservicemgmt.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/units?%24alt=json%3Benum-encoding%3Dint&unitId=saasservicemgmtunit-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "maintenance": {
+    "pinnedUntilTime": "2027-01-01T00:00:00Z"
+  },
+  "managementMode": 1,
+  "name": "projects/${projectId}/locations/us-central1/units/saasservicemgmtunit-${uniqueId}",
+  "unitKind": "projects/${projectId}/locations/us-central1/unitKinds/kcc-test-unit-kind"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "flagConfigName": "projects/${projectId}/locations/us-central1/featureFlagsConfigs/saasservicemgmtunit-${uniqueId}",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "maintenance": {
+    "pinnedUntilTime": "2027-01-01T00:00:00Z"
+  },
+  "managementMode": 1,
+  "name": "projects/${projectId}/locations/us-central1/units/saasservicemgmtunit-${uniqueId}",
+  "unitKind": "projects/${projectId}/locations/us-central1/unitKinds/kcc-test-unit-kind"
+}
+
+---
+
+GET https://saasservicemgmt.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/units/saasservicemgmtunit-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Funits%2Fsaasservicemgmtunit-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "flagConfigName": "projects/${projectId}/locations/us-central1/featureFlagsConfigs/saasservicemgmtunit-${uniqueId}",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "maintenance": {
+    "pinnedUntilTime": "2027-01-01T00:00:00Z"
+  },
+  "managementMode": 1,
+  "name": "projects/${projectId}/locations/us-central1/units/saasservicemgmtunit-${uniqueId}",
+  "unitKind": "projects/${projectId}/locations/us-central1/unitKinds/kcc-test-unit-kind",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://saasservicemgmt.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/units/saasservicemgmtunit-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=maintenance
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: unit.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Funits%2Fsaasservicemgmtunit-${uniqueId}
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "maintenance": {
+    "pinnedUntilTime": "2027-02-01T00:00:00Z"
+  },
+  "managementMode": 1,
+  "name": "projects/${projectId}/locations/us-central1/units/saasservicemgmtunit-${uniqueId}",
+  "unitKind": "projects/${projectId}/locations/us-central1/unitKinds/kcc-test-unit-kind"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "flagConfigName": "projects/${projectId}/locations/us-central1/featureFlagsConfigs/saasservicemgmtunit-${uniqueId}",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "maintenance": {
+    "pinnedUntilTime": "2027-02-01T00:00:00Z"
+  },
+  "managementMode": 1,
+  "name": "projects/${projectId}/locations/us-central1/units/saasservicemgmtunit-${uniqueId}",
+  "unitKind": "projects/${projectId}/locations/us-central1/unitKinds/kcc-test-unit-kind"
+}
+
+---
+
+GET https://saasservicemgmt.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/units/saasservicemgmtunit-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Funits%2Fsaasservicemgmtunit-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "conditions": [
+    {
+      "lastTransitionTime": "2026-10-09T23:12:34.354523330Z",
+      "status": 3,
+      "type": 2
+    },
+    {
+      "lastTransitionTime": "2026-10-09T23:12:34.354524743Z",
+      "status": 3,
+      "type": 3
+    },
+    {
+      "lastTransitionTime": "2026-10-09T23:12:34.354525467Z",
+      "status": 1,
+      "type": 4
+    },
+    {
+      "lastTransitionTime": "2026-10-09T23:12:34.354527044Z",
+      "status": 3,
+      "type": 1
+    }
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "flagConfigName": "projects/${projectId}/locations/us-central1/featureFlagsConfigs/saasservicemgmtunit-${uniqueId}",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "maintenance": {
+    "pinnedUntilTime": "2027-02-01T00:00:00Z"
+  },
+  "managementMode": 1,
+  "name": "projects/${projectId}/locations/us-central1/units/saasservicemgmtunit-${uniqueId}",
+  "state": 1,
+  "unitKind": "projects/${projectId}/locations/us-central1/unitKinds/kcc-test-unit-kind",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://saasservicemgmt.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/units/saasservicemgmtunit-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Funits%2Fsaasservicemgmtunit-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
