@@ -149,7 +149,7 @@ spec:
                   will be used.
                 type: string
               rolloutKind:
-                description: Optional. Immutable. Name of the RolloutKind this rollout
+                description: Required. Immutable. Name of the RolloutKind this rollout
                   is stemming from and adhering to.
                 type: string
               rolloutOrchestrationStrategy:
@@ -176,6 +176,7 @@ spec:
             required:
             - location
             - projectRef
+            - rolloutKind
             type: object
           status:
             description: SaaSServiceMgmtRolloutStatus defines the config connector

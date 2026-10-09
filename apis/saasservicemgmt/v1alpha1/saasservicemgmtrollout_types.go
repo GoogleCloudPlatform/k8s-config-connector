@@ -66,10 +66,11 @@ type SaaSServiceMgmtRolloutSpec struct {
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.unit_filter
 	UnitFilter *string `json:"unitFilter,omitempty"`
 
-	// Optional. Immutable. Name of the RolloutKind this rollout is stemming from
+	// Required. Immutable. Name of the RolloutKind this rollout is stemming from
 	//  and adhering to.
+	// +required
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.rollout_kind
-	RolloutKind *string `json:"rolloutKind,omitempty"`
+	RolloutKind *string `json:"rolloutKind"`
 
 	// Optional. Requested change to the execution of this rollout.
 	//  Default RolloutControl.action is ROLLOUT_ACTION_RUN meaning
