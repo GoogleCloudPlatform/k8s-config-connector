@@ -30,7 +30,7 @@ var _ refs.Ref = &CertificateManagerCertificateMapEntryRef{}
 
 // CertificateManagerCertificateMapEntryRef is a reference to a GCP CertificateManagerCertificateMapEntry.
 type CertificateManagerCertificateMapEntryRef struct {
-	// A reference to an externally managed CertificateManagerCertificateMapEntry resource. Should be in the format "projects/{{projectID}}/locations/global/certificateMaps/{{certificateMapID}}/certificateMapEntries/{{certificateMapEntryID}}".
+	// A reference to an externally managed CertificateManagerCertificateMapEntry resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/certificateMaps/{{certificateMapID}}/certificateMapEntries/{{certificateMapEntryID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a CertificateManagerCertificateMapEntry resource.

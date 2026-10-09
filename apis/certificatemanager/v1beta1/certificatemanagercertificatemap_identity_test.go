@@ -36,6 +36,16 @@ func TestCertificateManagerCertificateMapIdentity_FromExternal(t *testing.T) {
 			ref:  "projects/my-project/locations/global/certificateMaps/my-certmap",
 			want: &CertificateManagerCertificateMapIdentity{
 				Project:        "my-project",
+				Location:       "global",
+				CertificateMap: "my-certmap",
+			},
+		},
+		{
+			name: "valid regional reference",
+			ref:  "projects/my-project/locations/u-region-1/certificateMaps/my-certmap",
+			want: &CertificateManagerCertificateMapIdentity{
+				Project:        "my-project",
+				Location:       "u-region-1",
 				CertificateMap: "my-certmap",
 			},
 		},
@@ -49,6 +59,7 @@ func TestCertificateManagerCertificateMapIdentity_FromExternal(t *testing.T) {
 			ref:  "https://certificatemanager.googleapis.com/projects/my-project/locations/global/certificateMaps/my-certmap",
 			want: &CertificateManagerCertificateMapIdentity{
 				Project:        "my-project",
+				Location:       "global",
 				CertificateMap: "my-certmap",
 			},
 		},
@@ -57,6 +68,7 @@ func TestCertificateManagerCertificateMapIdentity_FromExternal(t *testing.T) {
 			ref:  "//certificatemanager.googleapis.com/projects/my-project/locations/global/certificateMaps/my-certmap",
 			want: &CertificateManagerCertificateMapIdentity{
 				Project:        "my-project",
+				Location:       "global",
 				CertificateMap: "my-certmap",
 			},
 		},
@@ -94,7 +106,19 @@ func TestCertificateManagerCertificateMapRef_Normalize(t *testing.T) {
 		},
 	}
 
-	reader := fake.NewClientBuilder().WithScheme(s).WithObjects(certMap).Build()
+	regionalCertMap := &unstructured.Unstructured{}
+	regionalCertMap.SetGroupVersionKind(CertificateManagerCertificateMapGVK)
+	regionalCertMap.SetName("regional-certmap")
+	regionalCertMap.SetNamespace("my-ns")
+	regionalCertMap.Object["spec"] = map[string]interface{}{
+		"resourceID": "regional-certmap-id",
+		"location":   "u-region-1",
+		"projectRef": map[string]interface{}{
+			"external": "my-project",
+		},
+	}
+
+	reader := fake.NewClientBuilder().WithScheme(s).WithObjects(certMap, regionalCertMap).Build()
 
 	tests := []struct {
 		name             string
@@ -111,12 +135,20 @@ func TestCertificateManagerCertificateMapRef_Normalize(t *testing.T) {
 			want: "projects/my-project/locations/global/certificateMaps/my-certmap",
 		},
 		{
-			name: "internal reference",
+			name: "internal reference defaulting to global",
 			ref: &CertificateManagerCertificateMapRef{
 				Name:      "my-certmap",
 				Namespace: "my-ns",
 			},
 			want: "projects/my-project/locations/global/certificateMaps/my-certmap-id",
+		},
+		{
+			name: "internal reference with regional location",
+			ref: &CertificateManagerCertificateMapRef{
+				Name:      "regional-certmap",
+				Namespace: "my-ns",
+			},
+			want: "projects/my-project/locations/u-region-1/certificateMaps/regional-certmap-id",
 		},
 		{
 			name: "internal reference with default namespace",
