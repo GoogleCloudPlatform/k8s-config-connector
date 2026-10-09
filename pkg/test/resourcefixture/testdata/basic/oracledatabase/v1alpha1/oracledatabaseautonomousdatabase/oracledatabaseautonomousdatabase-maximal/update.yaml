@@ -24,7 +24,7 @@ spec:
     external: ${projectId}
   location: us-east4
   database: adbmax${uniqueId}
-  displayName: Max ADB Updated ${uniqueId}
+  displayName: Max ADB ${uniqueId}
   adminPasswordSecretVersionRef:
     name: secretmanagersecretversion-${uniqueId}
   networkRef:
@@ -35,7 +35,7 @@ spec:
   properties:
     dbWorkload: OLTP
     licenseType: LICENSE_INCLUDED
-    computeCount: 4
+    computeCount: 2
     dataStorageSizeTb: 1
     dbVersion: "19c"
     characterSet: "AL32UTF8"
@@ -44,8 +44,9 @@ spec:
     isStorageAutoScalingEnabled: false
     maintenanceScheduleType: "REGULAR"
     mtlsConnectionRequired: false
-    backupRetentionPeriodDays: 14
+    backupRetentionPeriodDays: 7
     allowlistedIPs:
       - 10.0.0.0/16
     customerContacts:
       - email: "oracle-db-admin@example.com"
+    localDataGuardEnabled: true
