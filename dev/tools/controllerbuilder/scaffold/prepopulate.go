@@ -17,6 +17,7 @@ package scaffold
 import (
 	"bytes"
 	"fmt"
+	"regexp"
 	"sort"
 	"strings"
 
@@ -283,14 +284,44 @@ func ExtraImportsFor(bodies ...string) []string {
 	return out
 }
 
+// Reasons for an OutputOnlyCandidate.
+const (
+	reasonWellKnownOutputOnlyPattern = "well-known-output-only-pattern-in-comment"
+	reasonPossibleOutputOnlyPattern  = "possible-output-only-pattern-in-comment"
+)
+
 // OutputOnlyCandidate is a field the proto documents as output-only in prose
 // while carrying no google.api.field_behavior annotation to say so.
 type OutputOnlyCandidate struct {
-	// FieldPath is the KRM path the field was emitted at, e.g. ".spec.createTime".
+	// FieldPath is the KRM path the field was emitted at, e.g. ".spec.createTime"
+	// or, for a nested field, ".spec.config.state".
 	FieldPath string
+	// Reason is reasonWellKnownOutputOnlyPattern when the comment starts with
+	// one of outputOnlyPrefixes. It is reasonPossibleOutputOnlyPattern, a
+	// weaker signal, when the comment says "output only" any other way.
+	Reason string
 	// Comment is the proto's leading comment, so a reviewer can decide without
 	// opening the proto.
 	Comment string
+}
+
+// Item returns the queue entry for c.
+//
+// The entry names where the field belongs, not where it sits now. The entry
+// is about a field missing from ObservedState, and a path under .spec would
+// not point there. A nested field keeps the rest of its path, so
+// .spec.config.state becomes .status.observedState.config.state.
+func (c OutputOnlyCandidate) Item() JudgementItem {
+	detail := "proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec."
+	if c.Reason == reasonPossibleOutputOnlyPattern {
+		detail = "proto comment mentions output only but doesn't start with \"Output only.\" or \"[Output Only]\", and there is no field_behavior annotation, so it was generated into the Spec. " +
+			"The comment may be a typo, apply only some of the time, or mean something else."
+	}
+	return JudgementItem{
+		FieldPath: ".status.observedState." + strings.TrimPrefix(c.FieldPath, ".spec."),
+		Reason:    c.Reason,
+		Detail:    detail + " Move the field to status.observedState if it is confirmed output only. Proto comment: " + c.Comment,
+	}
 }
 
 // outputOnlyPrefixes are the markers Google API comments use to say a field is
@@ -299,48 +330,55 @@ type OutputOnlyCandidate struct {
 // "[Output only]".
 var outputOnlyPrefixes = []string{"Output only.", "[Output Only]"}
 
+// outputOnlyMention matches "output only" in any case, with a space or a
+// hyphen between the words, as in dlp's "Output-only field, populated by the
+// system".
+var outputOnlyMention = regexp.MustCompile(`(?i)\boutput[\s-]+only\b`)
+
 // DetectOutputOnlyInComments finds spec fields whose leading proto comments describe
 // them as output-only, but lack explicit google.api.field_behavior annotations.
 // It reports candidates for manual review rather than moving them automatically.
+//
+// It checks nested Spec fields too, with the same rules.
 func DetectOutputOnlyInComments(msg protoreflect.MessageDescriptor, opts codegen.WriteOptions) []OutputOnlyCandidate {
 	if msg == nil {
 		return nil
 	}
 	var out []OutputOnlyCandidate
-	for i := 0; i < msg.Fields().Len(); i++ {
-		field := msg.Fields().Get(i)
-		// Skip the fields PrepopulateSpec leaves out of the Spec. These are
-		// OUTPUT_ONLY fields, identity fields, and server-set fields when
-		// --place-server-set-fields is enabled. A server-set field is already
-		// in ObservedState with its own queue entry.
-		if codegen.IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) || identityFields[string(field.Name())] || codegen.IsServerSetField(field, msg, opts) {
-			continue
+	// walkSpecFields skips the fields PrepopulateSpec leaves out of the Spec:
+	// OUTPUT_ONLY fields, identity fields, deprecated top-level fields, and
+	// server-set fields when --place-server-set-fields is on. A server-set
+	// field is already in ObservedState with its own queue entry. The walk
+	// also skips fields the generator cannot type, since they never reach the
+	// CRD, and fields the generator writes as references.
+	walkSpecFields(msg, ".spec", opts, true, map[protoreflect.FullName]bool{}, func(path, comment string, _ protoreflect.FieldDescriptor) {
+		if reason, ok := outputOnlyReason(comment); ok {
+			out = append(out, OutputOnlyCandidate{FieldPath: path, Reason: reason, Comment: comment})
 		}
-		// PrepopulateSpec leaves deprecated fields out of the Spec too.
-		if isDeprecated(field) {
-			continue
-		}
-		comment, ok := outputOnlyComment(field)
-		if !ok {
-			continue
-		}
-		out = append(out, OutputOnlyCandidate{
-			FieldPath: ".spec." + codegen.GetJSONForKRM(field, opts),
-			Comment:   comment,
-		})
-	}
+	})
 	return out
 }
 
-// outputOnlyComment returns a field's leading comment, formatted as a single
-// line, if the comment opens with one of outputOnlyPrefixes.
-func outputOnlyComment(field protoreflect.FieldDescriptor) (string, bool) {
-	loc := field.ParentFile().SourceLocations().ByDescriptor(field)
-	comment := strings.TrimSpace(loc.LeadingComments)
+// outputOnlyReason reports whether a field's comment, joined into one line,
+// says the field is output only, and how strongly.
+//
+// A comment that starts with one of outputOnlyPrefixes gets
+// reasonWellKnownOutputOnlyPattern. Any other mention of "output only" gets
+// reasonPossibleOutputOnlyPattern. That covers the words after other text,
+// as in websecurityscanner's managed_scan: "Whether the scan config is
+// managed by Web Security Scanner, output only." It also covers a comment
+// that starts with the words but not with a prefix. That is usually a typo,
+// as in automl's "Output only . The", or a condition, as in spanner's
+// Backup.name, which is output only for the CreateBackup operation and
+// required for UpdateBackup.
+func outputOnlyReason(comment string) (string, bool) {
 	for _, prefix := range outputOnlyPrefixes {
 		if len(comment) >= len(prefix) && strings.EqualFold(comment[:len(prefix)], prefix) {
-			return strings.Join(strings.Fields(comment), " "), true
+			return reasonWellKnownOutputOnlyPattern, true
 		}
+	}
+	if outputOnlyMention.MatchString(comment) {
+		return reasonPossibleOutputOnlyPattern, true
 	}
 	return "", false
 }
