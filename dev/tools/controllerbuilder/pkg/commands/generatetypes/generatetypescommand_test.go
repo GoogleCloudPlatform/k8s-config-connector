@@ -392,12 +392,12 @@ func TestAmbiguousResourceItem(t *testing.T) {
 	}
 }
 
-// TestRunGenerateCRDChecksUntriagedKindAgain pins the run for a Kind whose
-// types file exists while its untriaged-bulk-generation entry is open. The
-// per-Kind checks run again and queue what they find, here the network hint
-// and the empty ObservedState, and the untriaged entry takes the current
-// detail. The types file is left as it is, and nothing that only scaffolding
-// queues, such as location-parent-unknown, is added.
+// TestRunGenerateCRDChecksUntriagedKindAgain covers a Kind whose types file
+// exists and whose untriaged-bulk-generation entry is still open. The
+// per-Kind checks run again and queue what they find: here, the network hint
+// and the empty ObservedState. The untriaged entry gets the current detail.
+// The types file does not change, and entries that only scaffolding queues,
+// such as location-parent-unknown, are not added.
 func TestRunGenerateCRDChecksUntriagedKindAgain(t *testing.T) {
 	// Arrange
 	o, typesPath, queuePath := widgetService(t, `entries:
@@ -446,7 +446,7 @@ func TestRunGenerateCRDChecksUntriagedKindAgain(t *testing.T) {
 	}
 }
 
-// TestRunGenerateCRDLeavesReviewedKindAlone pins that a Kind whose
+// TestRunGenerateCRDLeavesReviewedKindAlone checks that a Kind whose
 // untriaged-bulk-generation entry is resolved is not checked again, so the
 // network hint is not queued.
 func TestRunGenerateCRDLeavesReviewedKindAlone(t *testing.T) {
@@ -480,8 +480,8 @@ func TestRunGenerateCRDLeavesReviewedKindAlone(t *testing.T) {
 	}
 }
 
-// TestRunGenerateCRDChecksUntriagedKindOncePerEntry pins that checking an
-// untriaged Kind again adds no duplicates: a second run leaves the queue file
+// TestRunGenerateCRDChecksUntriagedKindOncePerEntry checks that re-checking an
+// untriaged Kind adds no duplicates: a second run leaves the queue file
 // exactly as the first run wrote it.
 func TestRunGenerateCRDChecksUntriagedKindOncePerEntry(t *testing.T) {
 	// Arrange
@@ -516,8 +516,8 @@ const widgetTypesFile = `package v1alpha1
 type ExampleWidgetSpec struct{}
 `
 
-// widgetService lays out a service with one Kind, ExampleWidget, whose types
-// file already exists, next to the given queue file. It returns the options
+// widgetService sets up a service with one Kind, ExampleWidget, whose types
+// file already exists, plus the given queue file. It returns the options
 // for a run with --prepopulate-spec and --emit-reference-hints, and the paths
 // of the types file and the queue file.
 func widgetService(t *testing.T, queue string) (o *GenerateCRDOptions, typesPath, queuePath string) {
