@@ -176,6 +176,68 @@ func TestReferenceHintsQueuesNotRepresentableFields(t *testing.T) {
 	}
 }
 
+// TestReferenceHintsQueuesSensitiveFields pins the sensitive-field entry. The
+// rule is TestNoSensitiveField's, so it matches at any depth and in any case,
+// but only at the end of the path: passwordPolicy gets no entry. The message is
+// a cut-down websecurityscanner ScanConfig. Both passwords there are
+// INPUT_ONLY, which keeps them in the Spec.
+func TestReferenceHintsQueuesSensitiveFields(t *testing.T) {
+	// Arrange
+	str := fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)
+	msgType := fieldType(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE)
+	account := func(name string) *descriptorpb.DescriptorProto {
+		return &descriptorpb.DescriptorProto{
+			Name: strPtr(name),
+			Field: []*descriptorpb.FieldDescriptorProto{
+				{Name: strPtr("username"), Number: i32Ptr(1), Type: str},
+				{Name: strPtr("password"), Number: i32Ptr(2), Type: str, Options: behaviorOptions(annotations.FieldBehavior_REQUIRED, annotations.FieldBehavior_INPUT_ONLY)},
+			},
+		}
+	}
+	const pkg = ".google.cloud.websecurityscanner.v1.ScanConfig."
+	fd, err := protodesc.NewFile(&descriptorpb.FileDescriptorProto{
+		Name:    strPtr("scan_config.proto"),
+		Package: strPtr("google.cloud.websecurityscanner.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{{
+			Name: strPtr("ScanConfig"),
+			NestedType: []*descriptorpb.DescriptorProto{{
+				Name:       strPtr("Authentication"),
+				NestedType: []*descriptorpb.DescriptorProto{account("GoogleAccount"), account("CustomAccount")},
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("google_account"), Number: i32Ptr(1), Type: msgType, TypeName: strPtr(pkg + "Authentication.GoogleAccount")},
+					{Name: strPtr("custom_account"), Number: i32Ptr(2), Type: msgType, TypeName: strPtr(pkg + "Authentication.CustomAccount")},
+				},
+			}},
+			Field: []*descriptorpb.FieldDescriptorProto{
+				{Name: strPtr("authentication"), Number: i32Ptr(1), Type: msgType, TypeName: strPtr(pkg + "Authentication")},
+				{Name: strPtr("root_password"), Number: i32Ptr(2), Type: str},
+				{Name: strPtr("password_policy"), Number: i32Ptr(3), Type: str},
+			},
+		}},
+	}, nil)
+	if err != nil {
+		t.Fatalf("building file descriptor: %v", err)
+	}
+	const why = "the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets"
+	want := []string{
+		".spec.authentication.googleAccount.password sensitive-field " + why,
+		".spec.authentication.customAccount.password sensitive-field " + why,
+		".spec.rootPassword sensitive-field " + why,
+	}
+
+	// Act
+	items := ReferenceHints(fd.Messages().ByName("ScanConfig"), codegen.WriteOptions{})
+
+	// Assert
+	var got []string
+	for _, it := range items {
+		got = append(got, it.FieldPath+" "+it.Reason+" "+it.Detail)
+	}
+	if !slices.Equal(got, want) {
+		t.Errorf("ReferenceHints() =\n%q\nwant\n%q", got, want)
+	}
+}
+
 // TestReferenceHintsSkipsGeneratedReferences pins which fields the walk skips
 // because the generator writes them as references. connectors' Secret becomes
 // a SecretRef, so clientSecret gets no hint. A proto message that is merely

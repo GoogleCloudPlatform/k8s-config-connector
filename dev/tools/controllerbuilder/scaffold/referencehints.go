@@ -29,10 +29,14 @@ import (
 // URI templates, loose descriptions) and proposes potential references for review.
 // A field the rules say names another resource in a way KCC cannot express as
 // a reference gets an entry too, so a reviewer sees why it stays a string.
+// So does a field whose name says it holds a password.
 func ReferenceHints(msg protoreflect.MessageDescriptor, opts codegen.WriteOptions) []JudgementItem {
 	var out []JudgementItem
 	walkSpecFields(msg, ".spec", opts, true, map[protoreflect.FullName]bool{}, func(path, desc string) {
 		if item, ok := referenceHint(path, desc); ok {
+			out = append(out, item)
+		}
+		if item, ok := sensitiveField(path); ok {
 			out = append(out, item)
 		}
 	})
@@ -147,4 +151,20 @@ func referenceHint(path, desc string) (JudgementItem, bool) {
 		return JudgementItem{FieldPath: path, Reason: judgement.ReasonPossibleReferenceByName, Detail: target}, true
 	}
 	return JudgementItem{}, false
+}
+
+// sensitiveField returns a queue entry for a field whose name says it holds a
+// password. The rule is TestNoSensitiveField's in tests/apichecks: the KRM
+// path, lowercased, ends in "password". The generator writes such a field as a
+// plain value. How a new Kind should take a secret is not settled yet, so the
+// entry only flags the field.
+func sensitiveField(path string) (JudgementItem, bool) {
+	if !strings.HasSuffix(strings.ToLower(path), "password") {
+		return JudgementItem{}, false
+	}
+	return JudgementItem{
+		FieldPath: path,
+		Reason:    "sensitive-field",
+		Detail:    "the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets",
+	}, true
 }
