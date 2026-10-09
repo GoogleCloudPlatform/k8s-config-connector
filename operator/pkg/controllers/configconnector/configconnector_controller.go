@@ -24,6 +24,8 @@ import (
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/discovery"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/environment"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	cnrmmanifest "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/manifest"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/preflight"
@@ -136,6 +138,7 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 		declarative.WithObjectTransform(r.transformForClusterMode()),
 		declarative.WithObjectTransform(r.handleConfigConnectorLifecycle()),
 		declarative.WithObjectTransform(r.installV1Beta1CRDsOnly()),
+		declarative.WithObjectTransform(r.transformForSovereignEnvironment()),
 		declarative.WithObjectTransform(r.applyCustomizations()),
 		declarative.WithObjectTransform(r.transformForExperiments()),
 		declarative.WithStatus(&declarative.StatusBuilder{
@@ -608,6 +611,79 @@ func (r *Reconciler) selectCRDsByVersion(m *manifest.Objects, version string) er
 	}
 	m.Items = transformed
 	return nil
+}
+
+func (r *Reconciler) transformForSovereignEnvironment() declarative.ObjectTransform {
+	return func(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
+		envInfo, err := environment.DetectEnvironment(ctx, r.client)
+		if err != nil {
+			r.log.Error(err, "failed to detect cloud environment")
+			return nil
+		}
+
+		if !envInfo.IsSovereign {
+			return nil
+		}
+
+		r.log.Info("sovereign cloud detected; adapting configuration", "type", envInfo.Type, "universeDomain", envInfo.UniverseDomain)
+
+		// 1. Inject GOOGLE_CLOUD_UNIVERSE_DOMAIN into container specifications
+		for _, obj := range m.Items {
+			if obj.Kind == "StatefulSet" || obj.Kind == "Deployment" {
+				if err := obj.MutateContainers(func(container map[string]interface{}) error {
+					envs, _, _ := unstructured.NestedSlice(container, "env")
+					// Check if already present
+					for _, envRaw := range envs {
+						if envMap, ok := envRaw.(map[string]interface{}); ok {
+							if envMap["name"] == "GOOGLE_CLOUD_UNIVERSE_DOMAIN" {
+								return nil
+							}
+						}
+					}
+					envs = append(envs, map[string]interface{}{
+						"name":  "GOOGLE_CLOUD_UNIVERSE_DOMAIN",
+						"value": envInfo.UniverseDomain,
+					})
+					return unstructured.SetNestedSlice(container, envs, "env")
+				}); err != nil {
+					r.log.Error(err, "error injecting universe domain env to container", "object", obj.GetName())
+				}
+			}
+		}
+
+		// 2. Filter manifest CRDs to only include those matching supported API groups
+		allowedGroups := make(map[string]bool)
+		for group := range discovery.CoreAPIGroups {
+			allowedGroups[group] = true
+		}
+		// In sovereign environment, allow groups mapped to enabled services
+		for _, groups := range discovery.ServiceGroupMapping {
+			for _, g := range groups {
+				allowedGroups[g] = true
+			}
+		}
+
+		var filteredCRDItems []*manifest.Object
+		for _, obj := range m.Items {
+			if obj.Kind == "CustomResourceDefinition" {
+				if discovery.IsCRDSupported(obj.GetName(), allowedGroups) {
+					filteredCRDItems = append(filteredCRDItems, obj)
+				} else {
+					r.log.Info("pruning unsupported sovereign CRD from install manifest", "crd", obj.GetName())
+				}
+			} else {
+				filteredCRDItems = append(filteredCRDItems, obj)
+			}
+		}
+		m.Items = filteredCRDItems
+
+		// 3. Clean up active cluster CRDs that are unsupported and have 0 instances
+		if err := PruneUnsupportedSovereignCRDs(ctx, r.client, allowedGroups, r.log); err != nil {
+			r.log.Error(err, "error pruning unsupported sovereign CRDs from cluster")
+		}
+
+		return nil
+	}
 }
 
 // applyCustomizations fetches and applies all cluster-scoped customization CRDs.
