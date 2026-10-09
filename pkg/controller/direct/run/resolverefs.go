@@ -25,7 +25,6 @@ import (
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vpcaccess/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -71,10 +70,6 @@ func ResolveRunWorkerPoolRefs(ctx context.Context, kube client.Reader, desired *
 }
 
 func ResolveRunJobRefs(ctx context.Context, kube client.Reader, desired *krm.RunJob) error {
-	if err := common.NormalizeReferences(ctx, kube, desired, nil); err != nil {
-		return fmt.Errorf("normalizing references: %w", err)
-	}
-
 	if desired.Spec.Template == nil || desired.Spec.Template.Template == nil {
 		return nil
 	}
