@@ -43,6 +43,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource SaasServiceMgmtRelease:Release \
   --resource SaaSServiceMgmtTenant:Tenant \
   --resource SaaSServiceMgmtRollout:Rollout \
+  --resource SaaSServiceMgmtUnit:Unit \
   --prepopulate-spec \
   --emit-plural-acronyms \
   --emit-message-maps \

@@ -11,7 +11,14 @@
 # regenerating keeps the status of every entry it already has.
 #
 # While a possible-reference entry is open, TestMissingRefs does not fail on
-# that field. Once it is resolved, the field is checked like any other.
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
 
 entries:
   - kind: SaaSServiceMgmtTenant
@@ -23,7 +30,7 @@ entries:
     group: saasservicemgmt.cnrm.cloud.google.com
     field: .spec.saas
     reason: possible-reference
-    detail: target=saasservicemgmt.googleapis.com/Saas
+    detail: the proto marks this field as a reference to saasservicemgmt.googleapis.com/Saas (google.api.resource_reference); confirm whether it should be a KCC reference
     status: open
   - kind: SaaSServiceMgmtTenant
     group: saasservicemgmt.cnrm.cloud.google.com
@@ -46,13 +53,13 @@ entries:
     group: saasservicemgmt.cnrm.cloud.google.com
     field: .spec.release
     reason: possible-reference
-    detail: target=saasservicemgmt.googleapis.com/Release
+    detail: the proto marks this field as a reference to saasservicemgmt.googleapis.com/Release (google.api.resource_reference); confirm whether it should be a KCC reference
     status: open
   - kind: SaaSServiceMgmtRollout
     group: saasservicemgmt.cnrm.cloud.google.com
     field: .spec.rolloutKind
     reason: possible-reference
-    detail: target=saasservicemgmt.googleapis.com/RolloutKind
+    detail: the proto marks this field as a reference to saasservicemgmt.googleapis.com/RolloutKind (google.api.resource_reference); confirm whether it should be a KCC reference
     status: resolved
     resolution: deferred
     note: string until KCC has a RolloutKind Kind

@@ -33,10 +33,13 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 
 # The bulk generation flags below were added with AIPlatformCachedContent.
-# Three flags are left out because they change the types of existing kinds:
+# Two flags are left out because they change the types of existing kinds:
 # --emit-required-from-proto marks fields in existing structs as required,
-# --emit-plural-acronyms renames GCSSource.Uris to URIs, and
-# --emit-sibling-refs adds reference guesses to two existing status structs.
+# and --emit-sibling-refs adds reference guesses to two existing status
+# structs.
+# --emit-plural-acronyms renames GCSSource.Uris to URIs. That changes only
+# Go code: the JSON name stays uris, so the CRDs of existing kinds do not
+# change.
 ${CONTROLLERBUILDER} generate-types \
     --service google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1 \
     --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
@@ -52,6 +55,7 @@ ${CONTROLLERBUILDER} generate-types \
     --resource AIPlatformReasoningEngine:ReasoningEngine \
     --resource AIPlatformCachedContent:CachedContent \
     --prepopulate-spec \
+    --emit-plural-acronyms \
     --emit-message-maps \
     --place-server-set-fields \
     --detect-output-only-in-comments \
@@ -64,7 +68,8 @@ ${CONTROLLERBUILDER} generate-types \
 ${CONTROLLERBUILDER} generate-mapper \
     --service google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1 \
     --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
-    --include-skipped-output
+    --include-skipped-output \
+    --emit-plural-acronyms
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

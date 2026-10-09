@@ -737,7 +737,7 @@ type GCSSource struct {
 	//  wildcards. For more information on wildcards, see
 	//  https://cloud.google.com/storage/docs/wildcards.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.GcsSource.uris
-	Uris []string `json:"uris,omitempty"`
+	URIs []string `json:"uris,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.GenieSource
@@ -2516,7 +2516,7 @@ type VertexRagStore_RagResource struct {
 	// Optional. rag_file_id. The files should be in the same rag_corpus set in
 	//  rag_corpus field.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.VertexRagStore.RagResource.rag_file_ids
-	RagFileIds []string `json:"ragFileIds,omitempty"`
+	RagFileIDs []string `json:"ragFileIDs,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.VideoMetadata
