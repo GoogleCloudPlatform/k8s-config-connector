@@ -17,8 +17,10 @@ package scaffold
 import (
 	"bytes"
 	"fmt"
+	"regexp"
 	"sort"
 	"strings"
+	"unicode"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
@@ -268,11 +270,41 @@ func ExtraImportsFor(bodies ...string) []string {
 // OutputOnlyCandidate is a field the proto documents as output-only in prose
 // while carrying no google.api.field_behavior annotation to say so.
 type OutputOnlyCandidate struct {
-	// FieldPath is the KRM path the field was emitted at, e.g. ".spec.createTime".
+	// FieldPath is the KRM path the field was emitted at, e.g. ".spec.createTime"
+	// or, for a nested field, ".spec.config.state".
 	FieldPath string
+	// Reason is reasonOutputOnlyInComment when the comment opens with one of
+	// outputOnlyPrefixes, and reasonOutputOnlyMentioned, a weaker signal, when
+	// it says "output only" further on.
+	Reason string
 	// Comment is the proto's leading comment, so a reviewer can decide without
 	// opening the proto.
 	Comment string
+}
+
+// Reasons for an OutputOnlyCandidate.
+const (
+	reasonOutputOnlyInComment = "output-only-in-comment-only"
+	reasonOutputOnlyMentioned = "output-only-mentioned-in-comment"
+)
+
+// Item returns the queue entry for c.
+//
+// The entry names where the field belongs, not where it currently sits. It
+// accounts for a field absent from ObservedState, so a path under .spec would
+// never line up with what is missing. A nested field keeps the rest of its
+// path: .spec.config.state becomes .status.observedState.config.state.
+func (c OutputOnlyCandidate) Item() JudgementItem {
+	detail := "proto comment says output only but no field_behavior annotation, so it was generated into the Spec instead. Move it if the comment is right: "
+	if c.Reason == reasonOutputOnlyMentioned {
+		detail = "proto comment says output only, but not at the start, and there is no field_behavior annotation, so it was generated into the Spec. " +
+			"The comment may mean something else. Move the field if it is output only: "
+	}
+	return JudgementItem{
+		FieldPath: ".status.observedState." + strings.TrimPrefix(c.FieldPath, ".spec."),
+		Reason:    c.Reason,
+		Detail:    detail + c.Comment,
+	}
 }
 
 // outputOnlyPrefixes are the markers Google API comments use to say a field is
@@ -281,43 +313,58 @@ type OutputOnlyCandidate struct {
 // "[Output only]".
 var outputOnlyPrefixes = []string{"Output only.", "[Output Only]"}
 
+// outputOnlyMention matches the words "output only" in any case, apart or
+// joined by a hyphen, as in dlp's "Output-only field, populated by the system".
+var outputOnlyMention = regexp.MustCompile(`(?i)\boutput[\s-]+only\b`)
+
 // DetectOutputOnlyInComments finds spec fields whose leading proto comments describe
 // them as output-only, but lack explicit google.api.field_behavior annotations.
 // It reports candidates for manual review rather than moving them automatically.
+//
+// It checks the fields of nested Spec structs too, with the same rules.
 func DetectOutputOnlyInComments(msg protoreflect.MessageDescriptor, opts codegen.WriteOptions) []OutputOnlyCandidate {
 	if msg == nil {
 		return nil
 	}
 	var out []OutputOnlyCandidate
-	for i := 0; i < msg.Fields().Len(); i++ {
-		field := msg.Fields().Get(i)
-		// Skip the fields PrepopulateSpec leaves out of the Spec. These are
-		// OUTPUT_ONLY fields, identity fields, and server-set fields when
-		// --place-server-set-fields is enabled. A server-set field is already
-		// in ObservedState with its own queue entry.
-		if codegen.IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) || identityFields[string(field.Name())] || codegen.IsServerSetField(field, msg, opts) {
-			continue
+	// walkSpecFields skips the fields PrepopulateSpec leaves out of the Spec.
+	// These are OUTPUT_ONLY fields, identity fields, and server-set fields when
+	// --place-server-set-fields is enabled. A server-set field is already in
+	// ObservedState with its own queue entry. It also skips fields the
+	// generator cannot type, which never reach the CRD, and fields it writes
+	// as references.
+	walkSpecFields(msg, ".spec", opts, true, map[protoreflect.FullName]bool{}, func(path, comment string) {
+		if reason, ok := outputOnlyReason(comment); ok {
+			out = append(out, OutputOnlyCandidate{FieldPath: path, Reason: reason, Comment: comment})
 		}
-		comment, ok := outputOnlyComment(field)
-		if !ok {
-			continue
-		}
-		out = append(out, OutputOnlyCandidate{
-			FieldPath: ".spec." + codegen.GetJSONForKRM(field, opts),
-			Comment:   comment,
-		})
-	}
+	})
 	return out
 }
 
-// outputOnlyComment returns a field's leading comment, formatted as a single
-// line, if the comment opens with one of outputOnlyPrefixes.
-func outputOnlyComment(field protoreflect.FieldDescriptor) (string, bool) {
-	loc := field.ParentFile().SourceLocations().ByDescriptor(field)
-	comment := strings.TrimSpace(loc.LeadingComments)
+// outputOnlyReason says whether a field's comment, on one line, calls the
+// field output only, and how strongly.
+//
+// A comment that opens with one of outputOnlyPrefixes gets
+// reasonOutputOnlyInComment. A comment that says "output only" after other
+// words gets reasonOutputOnlyMentioned, as websecurityscanner's managed_scan
+// does: "Whether the scan config is managed by Web Security Scanner, output
+// only." Brackets and punctuation in front of the words do not count as other
+// words.
+//
+// A comment that opens with the words, but not with a prefix, gets neither
+// unless it says them again further on. Such a comment usually runs on into a
+// condition, as in "Output only for the create operation", so the field is
+// only output some of the time.
+func outputOnlyReason(comment string) (string, bool) {
 	for _, prefix := range outputOnlyPrefixes {
 		if len(comment) >= len(prefix) && strings.EqualFold(comment[:len(prefix)], prefix) {
-			return strings.Join(strings.Fields(comment), " "), true
+			return reasonOutputOnlyInComment, true
+		}
+	}
+	isWordChar := func(r rune) bool { return unicode.IsLetter(r) || unicode.IsDigit(r) }
+	for _, m := range outputOnlyMention.FindAllStringIndex(comment, -1) {
+		if strings.IndexFunc(comment[:m[0]], isWordChar) >= 0 {
+			return reasonOutputOnlyMentioned, true
 		}
 	}
 	return "", false
