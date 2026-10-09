@@ -18,7 +18,9 @@ entries:
     group: websecurityscanner.cnrm.cloud.google.com
     reason: verify-resource-docs-link
     detail: the proto declares no google.api.resource pattern, so the page for this resource could not be derived; this is a guess at the API's REST reference, find the resource in it
-    status: open
+    status: resolved
+    resolution: edited
+    note: set the resource docs link to https://docs.cloud.google.com/security-command-center/docs/reference/web-security-scanner/rest/v1/projects.scanConfigs
   - kind: WebSecurityScannerScanConfig
     group: websecurityscanner.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
