@@ -1,0 +1,9 @@
+apiVersion: cloudsupport.cnrm.cloud.google.com/v1alpha1
+kind: CloudSupportSupportEventSubscription
+metadata:
+  name: supporteventsubscription-min-${uniqueId}
+spec:
+  organizationRef:
+    external: "organizations/${TEST_ORG_ID}"
+  pubSubTopicRef:
+    name: pubsubtopic-updated-${uniqueId}
