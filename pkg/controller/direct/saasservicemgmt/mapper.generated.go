@@ -69,6 +69,46 @@ func BlueprintObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Blueprint
 	out.Version = direct.ValueOf(in.Version)
 	return out
 }
+func Dependency_FromProto(mapCtx *direct.MapContext, in *pb.Dependency) *krm.Dependency {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Dependency{}
+	if in.GetUnitKind() != "" {
+		out.UnitKindRef = &krm.SaaSServiceMgmtUnitKindRef{External: in.GetUnitKind()}
+	}
+	out.Alias = direct.LazyPtr(in.GetAlias())
+	return out
+}
+func Dependency_ToProto(mapCtx *direct.MapContext, in *krm.Dependency) *pb.Dependency {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Dependency{}
+	if in.UnitKindRef != nil {
+		out.UnitKind = in.UnitKindRef.External
+	}
+	out.Alias = direct.ValueOf(in.Alias)
+	return out
+}
+func FromMapping_FromProto(mapCtx *direct.MapContext, in *pb.FromMapping) *krm.FromMapping {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FromMapping{}
+	out.Dependency = direct.LazyPtr(in.GetDependency())
+	out.OutputVariable = direct.LazyPtr(in.GetOutputVariable())
+	return out
+}
+func FromMapping_ToProto(mapCtx *direct.MapContext, in *krm.FromMapping) *pb.FromMapping {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FromMapping{}
+	out.Dependency = direct.ValueOf(in.Dependency)
+	out.OutputVariable = direct.ValueOf(in.OutputVariable)
+	return out
+}
 func Release_ReleaseRequirements_FromProto(mapCtx *direct.MapContext, in *pb.Release_ReleaseRequirements) *krm.Release_ReleaseRequirements {
 	if in == nil {
 		return nil
@@ -83,6 +123,68 @@ func Release_ReleaseRequirements_ToProto(mapCtx *direct.MapContext, in *krm.Rele
 	}
 	out := &pb.Release_ReleaseRequirements{}
 	out.UpgradeableFromReleases = in.UpgradeableFromReleases
+	return out
+}
+func SaaSServiceMgmtUnitKindObservedState_FromProto(mapCtx *direct.MapContext, in *pb.UnitKind) *krm.SaaSServiceMgmtUnitKindObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SaaSServiceMgmtUnitKindObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func SaaSServiceMgmtUnitKindObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtUnitKindObservedState) *pb.UnitKind {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UnitKind{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func SaaSServiceMgmtUnitKindSpec_FromProto(mapCtx *direct.MapContext, in *pb.UnitKind) *krm.SaaSServiceMgmtUnitKindSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SaaSServiceMgmtUnitKindSpec{}
+	// MISSING: Name
+	if in.GetDefaultRelease() != "" {
+		out.DefaultReleaseRef = &krm.SaasServiceMgmtReleaseRef{External: in.GetDefaultRelease()}
+	}
+	out.Dependencies = direct.Slice_FromProto(mapCtx, in.Dependencies, Dependency_FromProto)
+	out.InputVariableMappings = direct.Slice_FromProto(mapCtx, in.InputVariableMappings, VariableMapping_FromProto)
+	out.OutputVariableMappings = direct.Slice_FromProto(mapCtx, in.OutputVariableMappings, VariableMapping_FromProto)
+	if in.GetSaas() != "" {
+		out.SaasRef = &krm.SaaSServiceMgmtSaaSRef{External: in.GetSaas()}
+	}
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
+	return out
+}
+func SaaSServiceMgmtUnitKindSpec_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtUnitKindSpec) *pb.UnitKind {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UnitKind{}
+	// MISSING: Name
+	if in.DefaultReleaseRef != nil {
+		out.DefaultRelease = in.DefaultReleaseRef.External
+	}
+	out.Dependencies = direct.Slice_ToProto(mapCtx, in.Dependencies, Dependency_ToProto)
+	out.InputVariableMappings = direct.Slice_ToProto(mapCtx, in.InputVariableMappings, VariableMapping_ToProto)
+	out.OutputVariableMappings = direct.Slice_ToProto(mapCtx, in.OutputVariableMappings, VariableMapping_ToProto)
+	if in.SaasRef != nil {
+		out.Saas = in.SaasRef.External
+	}
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
 	return out
 }
 func SaaSServiceMgmtUnitObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Unit) *krm.SaaSServiceMgmtUnitObservedState {
@@ -235,6 +337,26 @@ func SaasServiceMgmtReleaseSpec_ToProto(mapCtx *direct.MapContext, in *krm.SaasS
 	// MISSING: Annotations
 	return out
 }
+func ToMapping_FromProto(mapCtx *direct.MapContext, in *pb.ToMapping) *krm.ToMapping {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ToMapping{}
+	out.Dependency = direct.LazyPtr(in.GetDependency())
+	out.InputVariable = direct.LazyPtr(in.GetInputVariable())
+	out.IgnoreForLookup = direct.LazyPtr(in.GetIgnoreForLookup())
+	return out
+}
+func ToMapping_ToProto(mapCtx *direct.MapContext, in *krm.ToMapping) *pb.ToMapping {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ToMapping{}
+	out.Dependency = direct.ValueOf(in.Dependency)
+	out.InputVariable = direct.ValueOf(in.InputVariable)
+	out.IgnoreForLookup = direct.ValueOf(in.IgnoreForLookup)
+	return out
+}
 func UnitCondition_FromProto(mapCtx *direct.MapContext, in *pb.UnitCondition) *krm.UnitCondition {
 	if in == nil {
 		return nil
@@ -311,5 +433,29 @@ func UnitVariable_ToProto(mapCtx *direct.MapContext, in *krm.UnitVariable) *pb.U
 	out.Variable = direct.ValueOf(in.Variable)
 	out.Type = direct.Enum_ToProto[pb.UnitVariable_Type](mapCtx, in.Type)
 	out.Value = direct.ValueOf(in.Value)
+	return out
+}
+func VariableMapping_FromProto(mapCtx *direct.MapContext, in *pb.VariableMapping) *krm.VariableMapping {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VariableMapping{}
+	out.From = FromMapping_FromProto(mapCtx, in.GetFrom())
+	out.To = ToMapping_FromProto(mapCtx, in.GetTo())
+	out.Variable = direct.LazyPtr(in.GetVariable())
+	return out
+}
+func VariableMapping_ToProto(mapCtx *direct.MapContext, in *krm.VariableMapping) *pb.VariableMapping {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VariableMapping{}
+	if oneof := FromMapping_ToProto(mapCtx, in.From); oneof != nil {
+		out.MappingType = &pb.VariableMapping_From{From: oneof}
+	}
+	if oneof := ToMapping_ToProto(mapCtx, in.To); oneof != nil {
+		out.MappingType = &pb.VariableMapping_To{To: oneof}
+	}
+	out.Variable = direct.ValueOf(in.Variable)
 	return out
 }

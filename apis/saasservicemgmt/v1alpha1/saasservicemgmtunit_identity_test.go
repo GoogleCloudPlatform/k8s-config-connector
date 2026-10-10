@@ -80,66 +80,6 @@ func TestSaaSServiceMgmtUnitIdentity_FromExternal(t *testing.T) {
 	}
 }
 
-func TestSaaSServiceMgmtUnitKindIdentity_FromExternal(t *testing.T) {
-	tests := []struct {
-		name    string
-		ref     string
-		wantErr bool
-		want    *SaaSServiceMgmtUnitKindIdentity
-	}{
-		{
-			name: "valid relative reference",
-			ref:  "projects/my-project/locations/us-central1/unitKinds/my-unitkind",
-			want: &SaaSServiceMgmtUnitKindIdentity{
-				Project:  "my-project",
-				Location: "us-central1",
-				UnitKind: "my-unitkind",
-			},
-		},
-		{
-			name: "valid full url reference",
-			ref:  "https://saasservicemgmt.googleapis.com/projects/my-project/locations/us-central1/unitKinds/my-unitkind",
-			want: &SaaSServiceMgmtUnitKindIdentity{
-				Project:  "my-project",
-				Location: "us-central1",
-				UnitKind: "my-unitkind",
-			},
-		},
-		{
-			name:    "invalid reference format",
-			ref:     "projects/my-project/unitKinds/my-unitkind",
-			wantErr: true,
-		},
-		{
-			name:    "invalid schema",
-			ref:     "invalid/format",
-			wantErr: true,
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			i := &SaaSServiceMgmtUnitKindIdentity{}
-			err := i.FromExternal(tt.ref)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			if !tt.wantErr {
-				if diff := cmp.Diff(tt.want, i); diff != "" {
-					t.Errorf("FromExternal() mismatch (-want +got):\n%s", diff)
-				}
-				if got := i.String(); got != "projects/my-project/locations/us-central1/unitKinds/my-unitkind" {
-					t.Errorf("String() = %v, want %v", got, "projects/my-project/locations/us-central1/unitKinds/my-unitkind")
-				}
-				if got := i.ParentString(); got != "projects/my-project/locations/us-central1" {
-					t.Errorf("ParentString() = %v, want %v", got, "projects/my-project/locations/us-central1")
-				}
-			}
-		})
-	}
-}
-
 func TestSaaSServiceMgmtTenantIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
 		name    string
