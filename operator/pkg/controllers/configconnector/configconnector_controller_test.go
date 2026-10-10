@@ -1616,7 +1616,8 @@ func TestApplyRateLimitCustomizations(t *testing.T) {
 			expectedManifests:      testcontroller.ClusterModeComponentsWithRatLimitCustomization,
 			expectedCRStatus: customizev1beta1.ControllerReconcilerStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: true,
+					Healthy:            true,
+					ObservedGeneration: 1,
 				},
 			},
 		},
