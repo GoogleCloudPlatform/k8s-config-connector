@@ -16,7 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "deploymentResourcePool \"projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}\" not found",
+    "message": "DeploymentResourcePool projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId} does not exist.",
     "status": "NOT_FOUND"
   }
 }
@@ -59,15 +59,15 @@ X-Xss-Protection: 0
       "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}/operations/${operationID}"
+  "name": "projects/${projectNumber}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}/operations/${operationID}"
 }
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/ui/projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}/operations/${operationID}
+GET https://us-central1-aiplatform.googleapis.com/ui/projects/${projectNumber}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeploymentResourcePools%2Fpool-${uniqueId}%2Foperations%2F${operationID}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2FdeploymentResourcePools%2Fpool-${uniqueId}%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -88,19 +88,10 @@ X-Xss-Protection: 0
       "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}/operations/${operationID}",
+  "name": "projects/${projectNumber}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeploymentResourcePool",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "dedicatedResources": {
-      "machineSpec": {
-        "machineType": "n1-standard-2"
-      },
-      "minReplicaCount": 1
-    },
-    "name": "projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}",
-    "satisfiesPzi": true,
-    "satisfiesPzs": true
+    "name": "projects/${projectNumber}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}"
   }
 }
 
@@ -127,11 +118,10 @@ X-Xss-Protection: 0
     "machineSpec": {
       "machineType": "n1-standard-2"
     },
+    "maxReplicaCount": 1,
     "minReplicaCount": 1
   },
-  "name": "projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}",
-  "satisfiesPzi": true,
-  "satisfiesPzs": true
+  "name": "projects/${projectNumber}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}"
 }
 
 ---
@@ -160,7 +150,7 @@ X-Xss-Protection: 0
       "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectId}/locations/us-central1/deploymentResourcePools/pool-${uniqueId}/operations/${operationID}",
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }

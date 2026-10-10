@@ -15,7 +15,7 @@ spec:
       machineType: n1-standard-2
     maxReplicaCount: 3
     minReplicaCount: 2
-  disableContainerLogging: false
+  disableContainerLogging: true
   location: us-central1
   projectRef:
     external: ${projectId}
@@ -30,5 +30,3 @@ status:
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    satisfiesPzi: true
-    satisfiesPzs: true
