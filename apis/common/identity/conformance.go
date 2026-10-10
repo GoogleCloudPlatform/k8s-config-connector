@@ -63,121 +63,155 @@ func AssertConformance[I any](t *testing.T, tc ConformanceCase[I]) {
 		t.Fatal("ConformanceCase.SampleExternal must be set")
 	}
 
-	newID := func() (IdentityV2, *I) {
-		raw := new(I)
-		id, ok := any(raw).(IdentityV2)
-		if !ok {
-			t.Fatalf("%T does not implement identity.IdentityV2", raw)
-		}
-		return id, raw
-	}
-
 	t.Run("valid_external_ref", func(t *testing.T) {
-		id, raw := newID()
-		if err := id.FromExternal(tc.SampleExternal); err != nil {
-			t.Fatalf("FromExternal(%q) unexpected error: %v", tc.SampleExternal, err)
-		}
-		if got := id.String(); got != tc.SampleExternal {
-			t.Errorf("String() = %q, want %q", got, tc.SampleExternal)
-		}
-		if tc.WantHost != "" {
-			if got := id.Host(); got != tc.WantHost {
-				t.Errorf("Host() = %q, want %q", got, tc.WantHost)
-			}
-		}
-		if tc.WantIdentity != nil {
-			if !reflect.DeepEqual(raw, tc.WantIdentity) {
-				t.Errorf("parsed identity = %+v, want %+v", raw, tc.WantIdentity)
-			}
-		}
-		if tc.WantParent != "" {
-			if ps, ok := any(raw).(parentStringer); ok {
-				if got := ps.ParentString(); got != tc.WantParent {
-					t.Errorf("ParentString() = %q, want %q", got, tc.WantParent)
-				}
-			}
-		}
+		assertValidExternalRef(t, tc)
 	})
-
 	if tc.WantHost != "" {
 		t.Run("valid_external_ref_with_host_prefix", func(t *testing.T) {
-			id, raw := newID()
-			fullURI := "//" + tc.WantHost + "/" + tc.SampleExternal
-			if err := id.FromExternal(fullURI); err != nil {
-				t.Fatalf("FromExternal(%q) unexpected error: %v", fullURI, err)
-			}
-			if got := id.String(); got != tc.SampleExternal {
-				t.Errorf("String() after full URI parse = %q, want %q", got, tc.SampleExternal)
-			}
-			if tc.WantIdentity != nil && !reflect.DeepEqual(raw, tc.WantIdentity) {
-				t.Errorf("parsed identity from full URI = %+v, want %+v", raw, tc.WantIdentity)
-			}
+			assertHostPrefixExternalRef(t, tc)
 		})
 	}
-
-	invalids := []string{
-		"",
-		"invalid",
-		tc.SampleExternal + "/extra/segment",
-	}
-	if idx := strings.IndexByte(tc.SampleExternal, '/'); idx > 0 {
-		invalids = append(invalids, "wrongCollection"+tc.SampleExternal[idx:])
-	}
-	for _, inv := range invalids {
-		inv := inv
-		t.Run("invalid_"+inv, func(t *testing.T) {
-			id, _ := newID()
-			if err := id.FromExternal(inv); err == nil {
-				t.Errorf("FromExternal(%q) succeeded, expected error", inv)
-			}
-		})
-	}
-
+	assertInvalidExternalRefs(t, tc)
 	if tc.ExpectServerGenerated {
 		t.Run("server_generated_identity", func(t *testing.T) {
-			id, raw := newID()
-			sg, ok := any(raw).(ServerGeneratedIdentity)
-			if !ok {
-				t.Fatalf("%T does not implement identity.ServerGeneratedIdentity", raw)
-			}
-			if sg.HasIdentitySpecified() {
-				t.Errorf("zero-value %T reported HasIdentitySpecified() = true, want false", raw)
-			}
-			if err := id.FromExternal(tc.SampleExternal); err != nil {
-				t.Fatalf("FromExternal(%q) unexpected error: %v", tc.SampleExternal, err)
-			}
-			if !sg.HasIdentitySpecified() {
-				t.Errorf("populated %T reported HasIdentitySpecified() = false, want true", raw)
-			}
+			assertServerGeneratedIdentity(t, tc)
 		})
 	}
-
 	if tc.Ref != nil {
-		t.Run("reference_ValidateExternal", func(t *testing.T) {
-			if err := tc.Ref.ValidateExternal(tc.SampleExternal); err != nil {
-				t.Errorf("ValidateExternal(%q) unexpected error: %v", tc.SampleExternal, err)
-			}
-			if err := tc.Ref.ValidateExternal("invalid/external/ref"); err == nil {
-				t.Errorf("ValidateExternal(invalid) succeeded, expected error")
-			}
-		})
-		t.Run("reference_ParseExternalToIdentity", func(t *testing.T) {
-			tc.Ref.SetExternal(tc.SampleExternal)
-			parsed, err := tc.Ref.ParseExternalToIdentity()
-			if err != nil {
-				t.Fatalf("ParseExternalToIdentity(%q) unexpected error: %v", tc.SampleExternal, err)
-			}
-			if tc.WantIdentity != nil && !reflect.DeepEqual(parsed, tc.WantIdentity) {
-				t.Errorf("ParseExternalToIdentity(%q) = %+v, want %+v", tc.SampleExternal, parsed, tc.WantIdentity)
-			}
-			tc.Ref.SetExternal("invalid/external/ref")
-			if _, err := tc.Ref.ParseExternalToIdentity(); err == nil {
-				t.Errorf("ParseExternalToIdentity(invalid) succeeded, expected error")
-			}
-		})
+		assertReferenceConformance(t, tc)
 	}
 }
 
 type parentStringer interface {
 	ParentString() string
+}
+
+func newConformanceIdentity[I any](t *testing.T) (IdentityV2, *I) {
+	t.Helper()
+	raw := new(I)
+	id, ok := any(raw).(IdentityV2)
+	if !ok {
+		t.Fatalf("%T does not implement identity.IdentityV2", raw)
+	}
+	return id, raw
+}
+
+func assertValidExternalRef[I any](t *testing.T, tc ConformanceCase[I]) {
+	t.Helper()
+	id, raw := newConformanceIdentity[I](t)
+	if err := id.FromExternal(tc.SampleExternal); err != nil {
+		t.Fatalf("FromExternal(%q) unexpected error: %v", tc.SampleExternal, err)
+	}
+	if got := id.String(); got != tc.SampleExternal {
+		t.Errorf("String() = %q, want %q", got, tc.SampleExternal)
+	}
+	if tc.WantHost != "" {
+		if got := id.Host(); got != tc.WantHost {
+			t.Errorf("Host() = %q, want %q", got, tc.WantHost)
+		}
+	}
+	if tc.WantIdentity != nil && !reflect.DeepEqual(raw, tc.WantIdentity) {
+		t.Errorf("parsed identity = %+v, want %+v", raw, tc.WantIdentity)
+	}
+	if ps, ok := any(raw).(parentStringer); ok {
+		if got := ps.ParentString(); got != tc.WantParent {
+			t.Errorf("ParentString() = %q, want %q", got, tc.WantParent)
+		}
+	} else if tc.WantParent != "" {
+		t.Errorf("%T does not implement ParentString() string, but WantParent=%q was set", raw, tc.WantParent)
+	}
+}
+
+func assertHostPrefixExternalRef[I any](t *testing.T, tc ConformanceCase[I]) {
+	t.Helper()
+	id, raw := newConformanceIdentity[I](t)
+	fullURI := "//" + tc.WantHost + "/" + tc.SampleExternal
+	if err := id.FromExternal(fullURI); err != nil {
+		t.Fatalf("FromExternal(%q) unexpected error: %v", fullURI, err)
+	}
+	if got := id.String(); got != tc.SampleExternal {
+		t.Errorf("String() after full URI parse = %q, want %q", got, tc.SampleExternal)
+	}
+	if tc.WantIdentity != nil && !reflect.DeepEqual(raw, tc.WantIdentity) {
+		t.Errorf("parsed identity from full URI = %+v, want %+v", raw, tc.WantIdentity)
+	}
+}
+
+func assertInvalidExternalRefs[I any](t *testing.T, tc ConformanceCase[I]) {
+	t.Helper()
+	type invalidCase struct {
+		name string
+		ref  string
+	}
+	invalids := []invalidCase{
+		{name: "empty", ref: ""},
+		{name: "malformed", ref: "invalid"},
+		{name: "extra_segment", ref: tc.SampleExternal + "/extra/segment"},
+	}
+	if idx := strings.IndexByte(tc.SampleExternal, '/'); idx > 0 {
+		invalids = append(invalids, invalidCase{
+			name: "wrong_collection",
+			ref:  "wrongCollection" + tc.SampleExternal[idx:],
+		})
+	}
+	if tc.WantHost != "" && tc.WantHost != "wrong.googleapis.com" {
+		invalids = append(invalids, invalidCase{
+			name: "wrong_host",
+			ref:  "//wrong.googleapis.com/" + tc.SampleExternal,
+		})
+	}
+	for _, inv := range invalids {
+		inv := inv
+		t.Run("invalid_"+inv.name, func(t *testing.T) {
+			id, _ := newConformanceIdentity[I](t)
+			if err := id.FromExternal(inv.ref); err == nil {
+				t.Errorf("FromExternal(%q) succeeded, expected error", inv.ref)
+			}
+		})
+	}
+}
+
+func assertServerGeneratedIdentity[I any](t *testing.T, tc ConformanceCase[I]) {
+	t.Helper()
+	id, raw := newConformanceIdentity[I](t)
+	sg, ok := any(raw).(ServerGeneratedIdentity)
+	if !ok {
+		t.Fatalf("%T does not implement identity.ServerGeneratedIdentity", raw)
+	}
+	if sg.HasIdentitySpecified() {
+		t.Errorf("zero-value %T reported HasIdentitySpecified() = true, want false", raw)
+	}
+	if err := id.FromExternal(tc.SampleExternal); err != nil {
+		t.Fatalf("FromExternal(%q) unexpected error: %v", tc.SampleExternal, err)
+	}
+	if !sg.HasIdentitySpecified() {
+		t.Errorf("populated %T reported HasIdentitySpecified() = false, want true", raw)
+	}
+}
+
+func assertReferenceConformance[I any](t *testing.T, tc ConformanceCase[I]) {
+	t.Helper()
+	t.Run("reference_ValidateExternal", func(t *testing.T) {
+		if err := tc.Ref.ValidateExternal(tc.SampleExternal); err != nil {
+			t.Errorf("ValidateExternal(%q) unexpected error: %v", tc.SampleExternal, err)
+		}
+		if err := tc.Ref.ValidateExternal("invalid/external/ref"); err == nil {
+			t.Errorf("ValidateExternal(invalid) succeeded, expected error")
+		}
+	})
+	t.Run("reference_ParseExternalToIdentity", func(t *testing.T) {
+		tc.Ref.SetExternal(tc.SampleExternal)
+		parsed, err := tc.Ref.ParseExternalToIdentity()
+		if err != nil {
+			t.Fatalf("ParseExternalToIdentity(%q) unexpected error: %v", tc.SampleExternal, err)
+		}
+		if tc.WantIdentity != nil && !reflect.DeepEqual(parsed, tc.WantIdentity) {
+			t.Errorf("ParseExternalToIdentity(%q) = %+v, want %+v", tc.SampleExternal, parsed, tc.WantIdentity)
+		}
+		tc.Ref.SetExternal("invalid/external/ref")
+		if _, err := tc.Ref.ParseExternalToIdentity(); err == nil {
+			t.Errorf("ParseExternalToIdentity(invalid) succeeded, expected error")
+		}
+		tc.Ref.SetExternal("")
+	})
 }

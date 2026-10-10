@@ -125,6 +125,9 @@ func planGateCase(t *testing.T, api *protoapi.Proto, apisDir, caiPath string, tc
 
 func matchesAnyTemplate(plan *IdentityPlan, want []gateTemplate) bool {
 	if len(plan.MultiParentVariants) > 1 {
+		if len(plan.MultiParentVariants) != len(want) {
+			return false
+		}
 		for _, v := range plan.MultiParentVariants {
 			vNorm := tmplVarNormalizeRe.ReplaceAllString(v.TemplatePattern, "{}")
 			found := false
@@ -152,54 +155,73 @@ func matchesAnyTemplate(plan *IdentityPlan, want []gateTemplate) bool {
 var (
 	gateTemplateRe  = regexp.MustCompile(`gcpurls\.Template\[[^\]]+\]\(\s*"([^"]*)"\s*,\s*"([^"]+)"\s*\)`)
 	gateIdentityRe  = regexp.MustCompile(`func\s+\(\w+\s+\*([A-Za-z0-9_]+)\)\s+GetIdentity\(`)
-	gateSpecProtoRe = regexp.MustCompile(`\+kcc:(?:spec:)?proto=([A-Za-z0-9_.]+)\s*\n\s*type\s+([A-Za-z0-9_]+)Spec\s+struct`)
+	gateSpecProtoRe = regexp.MustCompile(`\+kcc:(?:spec:)?proto=([A-Za-z0-9_.]+)(?:\s*\n\s*//[^\n]*)*\s*\n\s*type\s+([A-Za-z0-9_]+)Spec\s+struct`)
 )
 
 func loadGateCases(t *testing.T, repoRoot, apisDir string) []gateCase {
 	t.Helper()
-	files, err := filepath.Glob(filepath.Join(apisDir, "*", "*", "*_identity.go"))
+	handFiles, err := filepath.Glob(filepath.Join(apisDir, "*", "*", "*_identity.go"))
 	if err != nil {
 		t.Fatalf("Glob _identity.go: %v", err)
 	}
+	genFiles, err := filepath.Glob(filepath.Join(apisDir, "*", "*", "*_identity.generated.go"))
+	if err != nil {
+		t.Fatalf("Glob _identity.generated.go: %v", err)
+	}
+	files := append(handFiles, genFiles...)
 	sort.Strings(files)
 
+	seen := make(map[string]bool)
 	var cases []gateCase
 	for _, idFile := range files {
-		rel, _ := filepath.Rel(repoRoot, idFile)
-		parts := strings.Split(filepath.ToSlash(rel), "/")
-		if len(parts) < 4 || parts[1] == "compute" {
+		tc, ok := parseGateCaseFromFile(repoRoot, idFile)
+		if !ok {
 			continue
 		}
-		src, err := os.ReadFile(idFile)
-		if err != nil {
+		key := tc.group + "/" + tc.version + "/" + tc.kind
+		if seen[key] {
 			continue
 		}
-		m := gateIdentityRe.FindSubmatch(src)
-		if m == nil {
-			continue
-		}
-		kind := string(m[1])
-		var tmpls []gateTemplate
-		for _, sub := range gateTemplateRe.FindAllStringSubmatch(string(src), -1) {
-			tmpls = append(tmpls, gateTemplate{host: sub[1], pattern: sub[2]})
-		}
-		if len(tmpls) == 0 {
-			continue
-		}
-		protoName := findSpecProto(filepath.Dir(idFile), kind)
-		if protoName == "" {
-			continue
-		}
-		cases = append(cases, gateCase{
-			kind:      kind,
-			group:     parts[1] + ".cnrm.cloud.google.com",
-			version:   parts[2],
-			protoName: protoName,
-			relPath:   rel,
-			templates: tmpls,
-		})
+		seen[key] = true
+		cases = append(cases, tc)
 	}
 	return cases
+}
+
+func parseGateCaseFromFile(repoRoot, idFile string) (gateCase, bool) {
+	rel, _ := filepath.Rel(repoRoot, idFile)
+	parts := strings.Split(filepath.ToSlash(rel), "/")
+	if len(parts) < 4 || parts[1] == "compute" {
+		return gateCase{}, false
+	}
+	src, err := os.ReadFile(idFile)
+	if err != nil {
+		return gateCase{}, false
+	}
+	m := gateIdentityRe.FindSubmatch(src)
+	if m == nil {
+		return gateCase{}, false
+	}
+	kind := string(m[1])
+	var tmpls []gateTemplate
+	for _, sub := range gateTemplateRe.FindAllStringSubmatch(string(src), -1) {
+		tmpls = append(tmpls, gateTemplate{host: sub[1], pattern: sub[2]})
+	}
+	if len(tmpls) == 0 {
+		return gateCase{}, false
+	}
+	protoName := findSpecProto(filepath.Dir(idFile), kind)
+	if protoName == "" {
+		return gateCase{}, false
+	}
+	return gateCase{
+		kind:      kind,
+		group:     parts[1] + ".cnrm.cloud.google.com",
+		version:   parts[2],
+		protoName: protoName,
+		relPath:   rel,
+		templates: tmpls,
+	}, true
 }
 
 func findSpecProto(pkgDir, kind string) string {

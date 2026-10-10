@@ -110,7 +110,7 @@ func TestGenerateScripts(t *testing.T) {
 			}
 
 			// 5) Check CONTROLLERBUILDER variable header definition
-			if strings.Contains(content, "generate-types") || strings.Contains(content, "generate-mapper") {
+			if strings.Contains(content, "generate-types") || strings.Contains(content, "generate-mapper") || strings.Contains(content, "generate-identity") {
 				if !strings.Contains(content, "CONTROLLERBUILDER=") {
 					t.Errorf("generate.sh script at %s is missing CONTROLLERBUILDER header definition.", relPath)
 				}

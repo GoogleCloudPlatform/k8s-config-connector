@@ -18,6 +18,7 @@ import (
 	"bufio"
 	"encoding/json"
 	"os"
+	"path/filepath"
 	"regexp"
 	"testing"
 
@@ -25,6 +26,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/filestore/v1beta1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	"sigs.k8s.io/yaml"
 )
 
 type CAIEntry struct {
@@ -182,6 +184,8 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Workflow Executions
 
 	}
+	loadJudgementQueueCAIIgnores(t, "../../apis/*/judgement_queue.yaml", ignoredTemplates)
+
 	for _, tmpl := range templates {
 		fullURL := "//" + tmpl.Host() + "/" + tmpl.CanonicalForm()
 		normalized := normalizeTemplateFormat(fullURL)
@@ -196,6 +200,40 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		if !caiFormats[normalized] {
 			t.Errorf("Registered template %q (normalized: %q) not found in CAI definitions", fullURL, normalized)
 		}
+	}
+}
+
+func TestLoadJudgementQueueCAIIgnores(t *testing.T) {
+	tmpDir := t.TempDir()
+	qFile := filepath.Join(tmpDir, "judgement_queue.yaml")
+	content := `entries:
+  - kind: ExampleResource
+    group: example.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//example.googleapis.com/projects/{project}/locations/{location}/widgets/{widget}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: RejectedResource
+    group: example.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//example.googleapis.com/projects/{project}/locations/{location}/badWidgets/{widget}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl
+    status: rejected
+  - kind: OtherResource
+    group: example.cnrm.cloud.google.com
+    reason: identity-multi-pattern
+    detail: template "//example.googleapis.com/projects/{project}/bars/{bar}"
+    status: open
+`
+	if err := os.WriteFile(qFile, []byte(content), 0o644); err != nil {
+		t.Fatalf("failed to write temp queue file: %v", err)
+	}
+	ignored := make(map[string]bool)
+	loadJudgementQueueCAIIgnores(t, filepath.Join(tmpDir, "*.yaml"), ignored)
+	want := "//example.googleapis.com/projects/{}/locations/{}/widgets/{}"
+	if !ignored[want] {
+		t.Errorf("expected %q to be in ignored map, got %v", want, ignored)
+	}
+	if len(ignored) != 1 {
+		t.Errorf("expected exactly 1 ignored entry, got %v", ignored)
 	}
 }
 
@@ -231,5 +269,41 @@ func loadMetadataFormats(t *testing.T, metadataPath string, out map[string]bool)
 	}
 	if err := scanner.Err(); err != nil {
 		t.Fatalf("scanner error reading %s: %v", metadataPath, err)
+	}
+}
+
+type judgementQueueFile struct {
+	Entries []struct {
+		Reason string `json:"reason"`
+		Detail string `json:"detail"`
+		Status string `json:"status"`
+	} `json:"entries"`
+}
+
+var judgementTemplateRegex = regexp.MustCompile(`template "([^"]+)"`)
+
+func loadJudgementQueueCAIIgnores(t *testing.T, globPattern string, ignored map[string]bool) {
+	t.Helper()
+	files, err := filepath.Glob(globPattern)
+	if err != nil {
+		t.Fatalf("failed to glob judgement queues %s: %v", globPattern, err)
+	}
+	for _, f := range files {
+		data, err := os.ReadFile(f)
+		if err != nil {
+			t.Fatalf("failed to read judgement queue %s: %v", f, err)
+		}
+		var q judgementQueueFile
+		if err := yaml.Unmarshal(data, &q); err != nil {
+			t.Fatalf("failed to unmarshal judgement queue %s: %v", f, err)
+		}
+		for _, entry := range q.Entries {
+			if entry.Reason != "identity-not-in-cai" || entry.Status == "rejected" {
+				continue
+			}
+			if m := judgementTemplateRegex.FindStringSubmatch(entry.Detail); len(m) == 2 {
+				ignored[normalizeTemplateFormat(m[1])] = true
+			}
+		}
 	}
 }

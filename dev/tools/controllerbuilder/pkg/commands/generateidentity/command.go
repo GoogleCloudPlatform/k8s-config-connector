@@ -67,74 +67,6 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 	return cmd
 }
 
-func (o *GenerateIdentityOptions) InitDefaults() error {
-	root, err := options.RepoRoot()
-	if err != nil {
-		return err
-	}
-	o.OutputAPIDirectory = filepath.Join(root, "apis")
-	o.EmitTests = true
-	return nil
-}
-
-func (o *GenerateIdentityOptions) BindFlags(cmd *cobra.Command) {
-	cmd.Flags().StringVarP(&o.ServiceName, "service", "s", o.ServiceName, "the GCP proto service name")
-	cmd.Flags().StringVar(&o.OutputAPIDirectory, "output-api", o.OutputAPIDirectory, "base directory for writing APIs")
-	cmd.Flags().Var(&o.Resources, "resource", "the KRM Kind and the equivalent proto resource separated with a colon (e.g. `StorageBucket:Bucket`). Can be specified multiple times.")
-	cmd.Flags().StringSliceVar(&o.Patterns, "pattern", nil, "explicit URL pattern override per Kind in the format `Kind=pattern` or `Kind=//host/pattern`. Can be specified multiple times.")
-	cmd.Flags().BoolVar(&o.EmitTests, "emit-tests", o.EmitTests, "emit <kind>_identity_generated_test.go calling identity.AssertConformance")
-}
-
-func (o *GenerateIdentityOptions) loadAndApplyConfig() error {
-	if o.ConfigFilePath == "" {
-		return nil
-	}
-	config, err := codegen.LoadConfig(o.ConfigFilePath)
-	if err != nil {
-		return fmt.Errorf("loading service config: %w", err)
-	}
-	if config == nil {
-		return nil
-	}
-
-	o.ServiceName = config.Service
-	o.APIVersion = config.APIVersion
-	if o.ProtoOverlayPath == "" && config.ProtoOverlay != "" {
-		if filepath.IsAbs(config.ProtoOverlay) {
-			o.ProtoOverlayPath = config.ProtoOverlay
-		} else {
-			o.ProtoOverlayPath = filepath.Join(filepath.Dir(o.ConfigFilePath), config.ProtoOverlay)
-		}
-	}
-	for _, res := range config.Resources {
-		o.Resources = append(o.Resources, options.Resource{
-			Kind:              res.Kind,
-			ProtoName:         res.ProtoName,
-			SkipScaffoldFiles: res.SkipScaffoldFiles,
-		})
-	}
-	return nil
-}
-
-func (o *GenerateIdentityOptions) validate() error {
-	if _, err := parsePatternFlags(o.Patterns); err != nil {
-		return err
-	}
-	if o.ServiceName == "" {
-		return fmt.Errorf("`--service` is required")
-	}
-	if o.APIVersion == "" {
-		return fmt.Errorf("`--api-version` is required")
-	}
-	if o.GenerateOptions.ProtoSourcePath == "" {
-		return fmt.Errorf("`--proto-source-path` is required")
-	}
-	if len(o.Resources) == 0 {
-		return fmt.Errorf("`--resource` is required")
-	}
-	return nil
-}
-
 func RunGenerateIdentity(ctx context.Context, o *GenerateIdentityOptions) error {
 	gv, err := schema.ParseGroupVersion(o.APIVersion)
 	if err != nil {
@@ -180,12 +112,91 @@ func RunGenerateIdentity(ctx context.Context, o *GenerateIdentityOptions) error 
 	}
 
 	if len(queued) > 0 {
+		codegen.SortIdentityJudgement(queued)
 		goPackage := strings.TrimSuffix(gv.Group, ".cnrm.cloud.google.com") + "/" + gv.Version
 		if err := writeJudgementQueue(o.OutputAPIDirectory, goPackage, queued); err != nil {
 			return fmt.Errorf("writing judgement queue: %w", err)
 		}
 	}
 
+	return nil
+}
+
+func (o *GenerateIdentityOptions) InitDefaults() error {
+	root, err := options.RepoRoot()
+	if err != nil {
+		return err
+	}
+	o.OutputAPIDirectory = filepath.Join(root, "apis")
+	o.EmitTests = true
+	return nil
+}
+
+func (o *GenerateIdentityOptions) BindFlags(cmd *cobra.Command) {
+	cmd.Flags().StringVarP(&o.ServiceName, "service", "s", o.ServiceName, "the GCP proto service name")
+	cmd.Flags().StringVar(&o.OutputAPIDirectory, "output-api", o.OutputAPIDirectory, "base directory for writing APIs")
+	cmd.Flags().Var(&o.Resources, "resource", "the KRM Kind and the equivalent proto resource separated with a colon (e.g. `StorageBucket:Bucket`). Can be specified multiple times.")
+	cmd.Flags().StringSliceVar(&o.Patterns, "pattern", nil, "explicit URL pattern override per Kind in the format `Kind=pattern` or `Kind=//host/pattern`. Can be specified multiple times.")
+	cmd.Flags().BoolVar(&o.EmitTests, "emit-tests", o.EmitTests, "emit <kind>_identity_generated_test.go calling identity.AssertConformance")
+}
+
+func (o *GenerateIdentityOptions) loadAndApplyConfig() error {
+	if o.ConfigFilePath == "" {
+		return nil
+	}
+	config, err := codegen.LoadConfig(o.ConfigFilePath)
+	if err != nil {
+		return fmt.Errorf("loading service config: %w", err)
+	}
+	if config == nil {
+		return nil
+	}
+
+	if o.ServiceName == "" {
+		o.ServiceName = config.Service
+	}
+	if o.APIVersion == "" {
+		o.APIVersion = config.APIVersion
+	}
+	if o.ProtoOverlayPath == "" && config.ProtoOverlay != "" {
+		if filepath.IsAbs(config.ProtoOverlay) {
+			o.ProtoOverlayPath = config.ProtoOverlay
+		} else {
+			o.ProtoOverlayPath = filepath.Join(filepath.Dir(o.ConfigFilePath), config.ProtoOverlay)
+		}
+	}
+	if len(o.Resources) == 0 {
+		for _, res := range config.Resources {
+			o.Resources = append(o.Resources, options.Resource{
+				Kind:              res.Kind,
+				ProtoName:         res.ProtoName,
+				SkipScaffoldFiles: res.SkipScaffoldFiles,
+			})
+		}
+	}
+	return nil
+}
+
+func (o *GenerateIdentityOptions) validate() error {
+	if _, err := parsePatternFlags(o.Patterns); err != nil {
+		return err
+	}
+	if o.ServiceName == "" {
+		return fmt.Errorf("`--service` is required")
+	}
+	if o.APIVersion == "" {
+		return fmt.Errorf("`--api-version` is required")
+	}
+	gv, err := schema.ParseGroupVersion(o.APIVersion)
+	if err != nil || gv.Group == "" || gv.Version == "" {
+		return fmt.Errorf("`--api-version` %q must be in Group/Version format (e.g. storage.cnrm.cloud.google.com/v1beta1)", o.APIVersion)
+	}
+	if o.GenerateOptions.ProtoSourcePath == "" {
+		return fmt.Errorf("`--proto-source-path` is required")
+	}
+	if len(o.Resources) == 0 {
+		return fmt.Errorf("`--resource` is required")
+	}
 	return nil
 }
 

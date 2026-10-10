@@ -366,6 +366,9 @@ func TestFixtureExternalRefEvidence(t *testing.T) {
 	if err != nil {
 		t.Fatalf("WalkDir failed: %v", err)
 	}
+	if checked == 0 {
+		t.Fatal("expected to verify at least 1 fixture golden status.externalRef, got 0")
+	}
 	t.Logf("Verified %d fixture golden status.externalRef evidence records against IdentityV2", checked)
 }
 
@@ -450,6 +453,11 @@ func normalizeFixtureKCCObjects(allObjs []*unstructured.Unstructured) []*unstruc
 		if ann["cnrm.cloud.google.com/project-id"] == "" {
 			ann["cnrm.cloud.google.com/project-id"] = "mock-project"
 			u.SetAnnotations(ann)
+		}
+		if u.GetKind() == "Folder" && group == "resourcemanager.cnrm.cloud.google.com" {
+			folderRef := "folders/" + u.GetName()
+			_ = unstructured.SetNestedField(u.Object, folderRef, "status", "name")
+			_ = unstructured.SetNestedField(u.Object, folderRef, "status", "externalRef")
 		}
 		kccObjs = append(kccObjs, u)
 	}
