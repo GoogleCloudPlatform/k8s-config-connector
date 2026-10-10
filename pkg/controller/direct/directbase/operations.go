@@ -59,6 +59,15 @@ type Operation interface {
 
 	// CompareLastModifiedCookie compares the last-changed-cookie annotation on the object with the hashes of the desired and actual state.
 	CompareLastModifiedCookie(desired, actual proto.Message) (bool, error)
+
+	// SetMBUR computes the MBUR hash value using the provided compute function and updates the mutable-unreadable-fields-hash annotation on the object.
+	SetMBUR(ctx context.Context, computeMBUR func() (string, error)) error
+
+	// CompareMBUR compares the mutable-unreadable-fields-hash annotation on the object with the computed MBUR hash from the compute function.
+	CompareMBUR(computeMBUR func() (string, error)) (bool, error)
+
+	// SetAnnotation sets an annotation on the object and persists it to the API server if changed.
+	SetAnnotation(ctx context.Context, key, value string) error
 }
 
 // GetUnstructured returns the object being reconciled, in unstructured format.
@@ -243,6 +252,72 @@ func (o *operationBase) CompareLastModifiedCookie(desired, actual proto.Message)
 	}
 	u := o.GetUnstructured()
 	return u.GetAnnotations()[k8s.LastChangedCookieAnnotation] == cookie, nil
+}
+
+func (o *operationBase) SetMBUR(ctx context.Context, computeMBUR func() (string, error)) error {
+	if computeMBUR == nil {
+		return nil
+	}
+	hash, err := computeMBUR()
+	if err != nil {
+		return err
+	}
+	u := o.GetUnstructured()
+	annotations := u.GetAnnotations()
+	if annotations == nil {
+		annotations = make(map[string]string)
+	}
+	existingHash, exists := annotations[k8s.MutableUnreadableFieldsHashAnnotation]
+	if hash == "" {
+		if !exists {
+			return nil
+		}
+		delete(annotations, k8s.MutableUnreadableFieldsHashAnnotation)
+	} else {
+		if exists && existingHash == hash {
+			return nil
+		}
+		annotations[k8s.MutableUnreadableFieldsHashAnnotation] = hash
+	}
+	u.SetAnnotations(annotations)
+	if err := o.client.Update(ctx, u); err != nil {
+		return fmt.Errorf("updating object to set %s: %w", k8s.MutableUnreadableFieldsHashAnnotation, err)
+	}
+	return nil
+}
+
+func (o *operationBase) CompareMBUR(computeMBUR func() (string, error)) (bool, error) {
+	if computeMBUR == nil {
+		return false, nil
+	}
+	hash, err := computeMBUR()
+	if err != nil {
+		return false, err
+	}
+	u := o.GetUnstructured()
+	annotations := u.GetAnnotations()
+	storedHash := annotations[k8s.MutableUnreadableFieldsHashAnnotation]
+	if hash == "" {
+		return storedHash == "", nil
+	}
+	return storedHash == hash, nil
+}
+
+func (o *operationBase) SetAnnotation(ctx context.Context, key, value string) error {
+	u := o.GetUnstructured()
+	annotations := u.GetAnnotations()
+	if annotations == nil {
+		annotations = make(map[string]string)
+	}
+	if annotations[key] == value {
+		return nil
+	}
+	annotations[key] = value
+	u.SetAnnotations(annotations)
+	if err := o.client.Update(ctx, u); err != nil {
+		return fmt.Errorf("updating object to set annotation %s: %w", key, err)
+	}
+	return nil
 }
 
 type statusWithConditions struct {

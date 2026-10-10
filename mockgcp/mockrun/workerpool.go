@@ -50,7 +50,10 @@ func (s *workerPools) GetWorkerPool(ctx context.Context, req *pb.GetWorkerPoolRe
 		return nil, err
 	}
 
-	return obj, nil
+	ret := proto.CloneOf(obj)
+	// CustomAudiences is mutable-but-unreadable in real GCP Cloud Run v2 API
+	ret.CustomAudiences = nil
+	return ret, nil
 }
 
 func (s *workerPools) CreateWorkerPool(ctx context.Context, req *pb.CreateWorkerPoolRequest) (*longrunning.Operation, error) {
@@ -90,7 +93,9 @@ func (s *workerPools) CreateWorkerPool(ctx context.Context, req *pb.CreateWorker
 		return nil, err
 	}
 	return s.operations.StartLRO(ctx, req.Parent, obj, func() (proto.Message, error) {
-		return obj, nil
+		ret := proto.CloneOf(obj)
+		ret.CustomAudiences = nil
+		return ret, nil
 	})
 }
 
@@ -131,15 +136,25 @@ func (s *workerPools) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorker
 
 	updated := req.GetWorkerPool()
 
-	// Basic update logic
-	if updated.Labels != nil {
-		obj.Labels = updated.Labels
-	}
-	if updated.Annotations != nil {
-		obj.Annotations = updated.Annotations
-	}
-	if updated.Template != nil {
-		obj.Template = updated.Template
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		// Basic update logic fallback
+		if updated.Labels != nil {
+			obj.Labels = updated.Labels
+		}
+		if updated.Annotations != nil {
+			obj.Annotations = updated.Annotations
+		}
+		if updated.Template != nil {
+			obj.Template = updated.Template
+		}
+		if updated.Description != "" {
+			obj.Description = updated.Description
+		}
+	} else {
+		if err := fields.UpdateByFieldMask(obj, updated, paths); err != nil {
+			return nil, status.Errorf(codes.Internal, "updating by field mask: %v", err)
+		}
 	}
 
 	obj.UpdateTime = timestamppb.Now()
@@ -151,7 +166,9 @@ func (s *workerPools) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorker
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return s.operations.StartLRO(ctx, lroPrefix, obj, func() (protoreflect.ProtoMessage, error) {
-		return obj, nil
+		ret := proto.CloneOf(obj)
+		ret.CustomAudiences = nil
+		return ret, nil
 	})
 }
 
