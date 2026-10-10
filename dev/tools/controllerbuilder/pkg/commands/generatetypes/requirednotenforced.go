@@ -15,7 +15,6 @@
 package generatetypes
 
 import (
-	"bytes"
 	"fmt"
 	"go/ast"
 	"go/parser"
@@ -24,6 +23,7 @@ import (
 	"path"
 	"path/filepath"
 	"reflect"
+	"regexp"
 	"sort"
 	"strconv"
 	"strings"
@@ -54,7 +54,10 @@ type goStruct struct {
 	// marked is true if the doc comment has the +kcc:required-from-proto
 	// marker.
 	marked bool
-	fields []goField
+	// stability is the level in the struct's stability-level label, or "" if
+	// it has none. Only a Kind has one.
+	stability stabilityLevel
+	fields    []goField
 }
 
 // goField is one field of a goStruct.
@@ -86,12 +89,18 @@ type goField struct {
 //
 // It reads the package's Go source, so it sees every field the CRD gets:
 // generated ones, hand-written ones, and those of Kinds scaffolded before the
-// marker existed. Run it after WriteFiles and prune.
+// marker existed. Run it after WriteFiles and prune. It also reads the other
+// versions of the service, to find how stable each Kind is.
 func requiredNotEnforced(files descriptorFinder, apisDir, goPackage, group string, kinds []string, protoFullNames map[string]string) ([]judgement.Entry, error) {
 	pkgDir := filepath.Join(apisDir, goPackage)
-	structs, err := loadStructs(pkgDir)
+	versions, err := loadServiceVersions(filepath.Dir(pkgDir))
 	if err != nil {
-		return nil, fmt.Errorf("reading %s: %w", pkgDir, err)
+		return nil, err
+	}
+	version := path.Base(goPackage)
+	structs, ok := versions[version]
+	if !ok {
+		return nil, fmt.Errorf("reading %s: no such directory", pkgDir)
 	}
 	users := structUsers(structs)
 	var out []judgement.Entry
@@ -104,17 +113,41 @@ func requiredNotEnforced(files descriptorFinder, apisDir, goPackage, group strin
 		if fqn == "" {
 			fqn = protoFullNames[kind]
 		}
+		stability, stableVersion := resourceStabilityLevel(versions, version, kind)
 		w := &requiredGapFinder{
-			structs:  structs,
-			users:    users,
-			files:    files,
-			kind:     kind,
-			group:    group,
-			marked:   spec.marked,
-			servedAs: servedBeyondAlpha(apisDir, goPackage, kind),
+			structs:   structs,
+			users:     users,
+			files:     files,
+			kind:      kind,
+			group:     group,
+			marked:    spec.marked,
+			stability: stability,
+			version:   stableVersion,
 		}
 		w.walk(spec, w.message(fqn), ".spec", true, nil, map[string]bool{})
 		out = append(out, w.entries...)
+	}
+	return out, nil
+}
+
+// loadServiceVersions loads the structs of each version of a service, such as
+// v1alpha1 and v1beta1, keyed by version.
+func loadServiceVersions(serviceDir string) (map[string]map[string]*goStruct, error) {
+	entries, err := os.ReadDir(serviceDir)
+	if err != nil {
+		return nil, err
+	}
+	out := map[string]map[string]*goStruct{}
+	for _, e := range entries {
+		if !e.IsDir() {
+			continue
+		}
+		dir := filepath.Join(serviceDir, e.Name())
+		structs, err := loadStructs(dir)
+		if err != nil {
+			return nil, fmt.Errorf("reading %s: %w", dir, err)
+		}
+		out[e.Name()] = structs
 	}
 	return out, nil
 }
@@ -166,6 +199,9 @@ func loadStructs(dir string) (map[string]*goStruct, error) {
 					}
 					if codegen.IsRequiredFromProtoMarker(line) {
 						s.marked = true
+					}
+					if level, ok := stabilityLabel(line); ok {
+						s.stability = level
 					}
 				}
 				for _, field := range st.Fields.List {
@@ -247,47 +283,98 @@ unwrap:
 	return out
 }
 
-// servedBeyondAlpha returns the beta or GA version kind is served at: the
-// package's own version if it isn't alpha, or another version of the service
-// that also declares the Kind. It returns "" for an alpha-only Kind.
-func servedBeyondAlpha(apisDir, goPackage, kind string) string {
-	version := path.Base(goPackage)
-	if !strings.Contains(version, "alpha") {
-		return version
-	}
-	serviceDir := filepath.Dir(filepath.Join(apisDir, goPackage))
-	entries, err := os.ReadDir(serviceDir)
-	if err != nil {
-		return ""
-	}
-	for _, e := range entries {
-		if !e.IsDir() || e.Name() == version || strings.Contains(e.Name(), "alpha") {
-			continue
-		}
-		if declaresStruct(filepath.Join(serviceDir, e.Name()), kind) {
-			return e.Name()
-		}
-	}
-	return ""
+// stabilityLevel is the value of a Kind's cnrm.cloud.google.com/stability-level
+// label.
+type stabilityLevel string
+
+const (
+	stabilityAlpha  stabilityLevel = "alpha"
+	stabilityBeta   stabilityLevel = "beta"
+	stabilityStable stabilityLevel = "stable"
+)
+
+// moreStableThan reports whether l is more stable than other.
+func (l stabilityLevel) moreStableThan(other stabilityLevel) bool {
+	return l.rank() > other.rank()
 }
 
-// declaresStruct reports whether a Go file in dir declares the struct name.
-func declaresStruct(dir, name string) bool {
-	entries, err := os.ReadDir(dir)
-	if err != nil {
-		return false
+func (l stabilityLevel) rank() int {
+	switch l {
+	case stabilityAlpha:
+		return 1
+	case stabilityBeta:
+		return 2
+	case stabilityStable:
+		return 3
+	default:
+		return 0
 	}
-	decl := []byte("\ntype " + name + " struct")
-	for _, e := range entries {
-		if e.IsDir() || !strings.HasSuffix(e.Name(), ".go") {
+}
+
+// stabilityLabelPattern matches the stability-level label in a
+// +kubebuilder:metadata:labels marker, which can list several labels.
+var stabilityLabelPattern = regexp.MustCompile(`^\s*//\s*\+kubebuilder:metadata:labels=.*"cnrm\.cloud\.google\.com/stability-level=(alpha|beta|stable)"`)
+
+// stabilityLabel returns the level that a doc comment line's
+// +kubebuilder:metadata:labels marker sets.
+func stabilityLabel(line string) (stabilityLevel, bool) {
+	m := stabilityLabelPattern.FindStringSubmatch(line)
+	if m == nil {
+		return "", false
+	}
+	return stabilityLevel(m[1]), true
+}
+
+// resourceStabilityLevel returns the Kind's most stable level across the
+// versions of its service, and the version that has it. version is the
+// package of the Kind's Spec. It counts even when it doesn't declare the Kind
+// itself.
+//
+// A Kind's level in a version is its stability-level label. Kinds that
+// generate-types scaffolds have no label, so then the version's name decides.
+func resourceStabilityLevel(versions map[string]map[string]*goStruct, version, kind string) (stabilityLevel, string) {
+	best, bestVersion := levelIn(versions[version][kind], version), version
+	for _, v := range sortedVersions(versions) {
+		s := versions[v][kind]
+		if v == version || s == nil {
 			continue
 		}
-		b, err := os.ReadFile(filepath.Join(dir, e.Name()))
-		if err == nil && bytes.Contains(b, decl) {
-			return true
+		if level := levelIn(s, v); level.moreStableThan(best) {
+			best, bestVersion = level, v
 		}
 	}
-	return false
+	return best, bestVersion
+}
+
+// levelIn returns the level of a Kind in version. s is the Kind's struct in
+// that version, or nil if the version doesn't declare it.
+func levelIn(s *goStruct, version string) stabilityLevel {
+	if s != nil && s.stability != "" {
+		return s.stability
+	}
+	return versionStability(version)
+}
+
+// versionStability returns the level a version's name implies: alpha for
+// v1alpha1, beta for v1beta1 and stable for v1.
+func versionStability(version string) stabilityLevel {
+	switch {
+	case strings.Contains(version, "alpha"):
+		return stabilityAlpha
+	case strings.Contains(version, "beta"):
+		return stabilityBeta
+	default:
+		return stabilityStable
+	}
+}
+
+func sortedVersions(versions map[string]map[string]*goStruct) []string {
+	out := make([]string, 0, len(versions))
+	for v := range versions {
+		out = append(out, v)
+	}
+	sort.Strings(out)
+	return out
 }
 
 // structUsers maps each struct in the package to what reaches it: a Kind's
@@ -365,10 +452,11 @@ type requiredGapFinder struct {
 	group string
 	// marked is true if the Kind's Spec has the marker.
 	marked bool
-	// servedAs is the beta or GA version the Kind is served at, or "" for an
-	// alpha Kind.
-	servedAs string
-	entries  []judgement.Entry
+	// stability is the Kind's most stable level, and version the version
+	// that has it.
+	stability stabilityLevel
+	version   string
+	entries   []judgement.Entry
 }
 
 // sharedWith returns what else reaches the named struct: other Kinds, and
@@ -564,8 +652,8 @@ func (w *requiredGapFinder) requiredNameTaken(s *goStruct) bool {
 // an edit in place would change them too.
 func (w *requiredGapFinder) detail(s *goStruct, f goField, entered *enteredStruct) string {
 	const what = "The proto marks this field REQUIRED, but the CRD leaves it optional."
-	if w.servedAs != "" {
-		return fmt.Sprintf("%s Keep it optional: %s is %s, and making a field required breaks objects that leave it out.", what, w.kind, w.servedAs)
+	if w.stability != stabilityAlpha {
+		return fmt.Sprintf("%s Keep it optional: %s is %s (%s), and making a field required breaks objects that leave it out.", what, w.kind, w.stability, w.version)
 	}
 	var how string
 	switch {

@@ -24,6 +24,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
+	"github.com/google/go-cmp/cmp"
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protodesc"
@@ -145,7 +146,7 @@ func TestRequiredNotEnforced(t *testing.T) {
 		addMarker   = "To enforce it, add +kcc:required-from-proto to ThingSpec and run generate.sh again."
 		useCopy     = " in thing_types.go from Inner to InnerRequired and run generate.sh again."
 		alpha       = "Thing is alpha, so it may be enforced"
-		beta        = "Keep it optional: Thing is v1beta1"
+		beta        = "Keep it optional: Thing is beta (v1beta1)"
 	)
 	// The opted-in Kind holds the plain Inner, with or without a copy on
 	// disk: generate-types writes the copy once code uses it.
@@ -270,15 +271,7 @@ func TestRequiredNotEnforced(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			// Arrange
 			dir := t.TempDir()
-			for name, src := range tc.files {
-				p := filepath.Join(dir, name)
-				if err := os.MkdirAll(filepath.Dir(p), 0o755); err != nil {
-					t.Fatal(err)
-				}
-				if err := os.WriteFile(p, []byte(src), 0o644); err != nil {
-					t.Fatal(err)
-				}
-			}
+			writeFiles(t, dir, tc.files)
 
 			// Act
 			entries, err := requiredNotEnforced(requiredGapFixture(t), dir, tc.goPackage, "test.cnrm.cloud.google.com",
@@ -310,6 +303,131 @@ func TestRequiredNotEnforced(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+// A Kind's level is its stability-level label, or else what its version's
+// name implies. The most stable version of the Kind wins.
+func TestResourceStabilityLevel(t *testing.T) {
+	type result struct {
+		Level   stabilityLevel
+		Version string
+	}
+	for _, tc := range []struct {
+		name  string
+		files map[string]string
+		// version is the package of the Kind's Spec.
+		version string
+		want    result
+	}{
+		{
+			name:    "an alpha Kind without a label",
+			files:   map[string]string{"v1alpha1/thing_types.go": kindTypes("v1alpha1", "")},
+			version: "v1alpha1",
+			want:    result{Level: stabilityAlpha, Version: "v1alpha1"},
+		},
+		{
+			name:    "a beta Kind without a label",
+			files:   map[string]string{"v1beta1/thing_types.go": kindTypes("v1beta1", "")},
+			version: "v1beta1",
+			want:    result{Level: stabilityBeta, Version: "v1beta1"},
+		},
+		{
+			name:    "a label wins over the version name",
+			files:   map[string]string{"v1beta1/thing_types.go": kindTypes("v1beta1", "stable")},
+			version: "v1beta1",
+			want:    result{Level: stabilityStable, Version: "v1beta1"},
+		},
+		{
+			name:    "an alpha label in a beta version",
+			files:   map[string]string{"v1beta1/thing_types.go": kindTypes("v1beta1", "alpha")},
+			version: "v1beta1",
+			want:    result{Level: stabilityAlpha, Version: "v1beta1"},
+		},
+		{
+			name: "a label among other labels",
+			files: map[string]string{"v1alpha1/thing_types.go": "package v1alpha1\n\n" +
+				"// +kubebuilder:metadata:labels=\"cnrm.cloud.google.com/tf2crd=true\";\"cnrm.cloud.google.com/stability-level=stable\";\"cnrm.cloud.google.com/system=true\"\n" +
+				"type Thing struct {\n}\n"},
+			version: "v1alpha1",
+			want:    result{Level: stabilityStable, Version: "v1alpha1"},
+		},
+		{
+			name: "a more stable version of the Kind",
+			files: map[string]string{
+				"v1alpha1/thing_types.go": kindTypes("v1alpha1", ""),
+				"v1beta1/thing_types.go":  kindTypes("v1beta1", "stable"),
+			},
+			version: "v1alpha1",
+			want:    result{Level: stabilityStable, Version: "v1beta1"},
+		},
+		{
+			name: "the most stable of several versions",
+			files: map[string]string{
+				"v1alpha1/thing_types.go": kindTypes("v1alpha1", ""),
+				"v1beta1/thing_types.go":  kindTypes("v1beta1", "beta"),
+				"v1/thing_types.go":       kindTypes("v1", ""),
+			},
+			version: "v1alpha1",
+			want:    result{Level: stabilityStable, Version: "v1"},
+		},
+		{
+			name: "another version that doesn't declare the Kind",
+			files: map[string]string{
+				"v1alpha1/thing_types.go": kindTypes("v1alpha1", ""),
+				"v1beta1/other_types.go":  "package v1beta1\n\ntype Other struct {\n}\n",
+			},
+			version: "v1alpha1",
+			want:    result{Level: stabilityAlpha, Version: "v1alpha1"},
+		},
+		{
+			name:    "no version declares the Kind",
+			files:   map[string]string{"v1beta1/thing_types.go": "package v1beta1\n\ntype ThingSpec struct {\n}\n"},
+			version: "v1beta1",
+			want:    result{Level: stabilityBeta, Version: "v1beta1"},
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			// Arrange
+			dir := t.TempDir()
+			writeFiles(t, dir, tc.files)
+			versions, err := loadServiceVersions(dir)
+			if err != nil {
+				t.Fatalf("loadServiceVersions: %v", err)
+			}
+
+			// Act
+			level, version := resourceStabilityLevel(versions, tc.version, "Thing")
+
+			// Assert
+			if diff := cmp.Diff(tc.want, result{Level: level, Version: version}); diff != "" {
+				t.Errorf("resourceStabilityLevel() mismatch (-want +got):\n%s", diff)
+			}
+		})
+	}
+}
+
+// kindTypes declares the Kind Thing in version, with a stability-level label
+// if level is set.
+func kindTypes(version, level string) string {
+	label := ""
+	if level != "" {
+		label = "// +kubebuilder:metadata:labels=\"cnrm.cloud.google.com/stability-level=" + level + "\"\n"
+	}
+	return "package " + version + "\n\n" + label + "type Thing struct {\n}\n"
+}
+
+// writeFiles writes each file, keyed by its path under dir.
+func writeFiles(t *testing.T, dir string, files map[string]string) {
+	t.Helper()
+	for name, src := range files {
+		p := filepath.Join(dir, name)
+		if err := os.MkdirAll(filepath.Dir(p), 0o755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(p, []byte(src), 0o644); err != nil {
+			t.Fatal(err)
+		}
 	}
 }
 
@@ -373,18 +491,10 @@ func TestRequiredNotEnforcedSharedHandWritten(t *testing.T) {
 		"\tInner *Inner `json:\"inner,omitempty\"`\n" +
 		"}\n"
 	dir := t.TempDir()
-	for name, src := range map[string]string{
+	writeFiles(t, dir, map[string]string{
 		"test/v1alpha1/thing_types.go":     handWritten,
 		"test/v1alpha1/types.generated.go": generatedTypes("v1alpha1", true, true),
-	} {
-		p := filepath.Join(dir, name)
-		if err := os.MkdirAll(filepath.Dir(p), 0o755); err != nil {
-			t.Fatal(err)
-		}
-		if err := os.WriteFile(p, []byte(src), 0o644); err != nil {
-			t.Fatal(err)
-		}
-	}
+	})
 
 	// Act
 	entries, err := requiredNotEnforced(requiredGapFixture(t), dir, "test/v1alpha1", "test.cnrm.cloud.google.com",
