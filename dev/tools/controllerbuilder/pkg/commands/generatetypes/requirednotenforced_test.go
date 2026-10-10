@@ -525,7 +525,8 @@ func TestRequiredNotEnforcedSharedHandWritten(t *testing.T) {
 }
 
 // Thing's spec and status both hold Shared. Other's spec holds it through
-// Wrapper.
+// Wrapper. Hidden has no users: only a json:"-" field holds it, and the CRD
+// leaves that field out.
 func TestStructUsers(t *testing.T) {
 	// Arrange
 	const src = "package v1alpha1\n\n" +
@@ -535,7 +536,11 @@ func TestStructUsers(t *testing.T) {
 		"\tSpec   ThingSpec   `json:\"spec,omitempty\"`\n" +
 		"\tStatus ThingStatus `json:\"status,omitempty\"`\n" +
 		"}\n\n" +
-		"type ThingSpec struct {\n\tShared *Shared `json:\"shared,omitempty\"`\n}\n\n" +
+		"type ThingSpec struct {\n" +
+		"\tShared *Shared `json:\"shared,omitempty\"`\n" +
+		"\tHidden *Hidden `json:\"-\"`\n" +
+		"}\n\n" +
+		"type Hidden struct {\n\tKey *string `json:\"key,omitempty\"`\n}\n\n" +
 		"type ThingStatus struct {\n\tShared *Shared `json:\"shared,omitempty\"`\n}\n\n" +
 		"type Other struct {\n" +
 		"\tmetav1.TypeMeta `json:\",inline\"`\n" +
