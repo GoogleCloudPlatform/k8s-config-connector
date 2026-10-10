@@ -26,6 +26,8 @@
 // resource: APIHubAttribute:Attribute
 // resource: APIHubDependency:Dependency
 // resource: APIHubCuration:Curation
+// resource: APIHubPluginInstance:PluginInstance
+// resource: APIHubVersion:Version
 
 package v1alpha1
 
@@ -73,6 +75,37 @@ type Attribute_AllowedValue struct {
 	Immutable *bool `json:"immutable,omitempty"`
 }
 
+// +kcc:proto=google.cloud.apihub.v1.Attribute.AllowedValue
+type Attribute_AllowedValueRequired struct {
+	// Required. The ID of the allowed value.
+	//  * If provided, the same will be used. The service will throw an error if
+	//  the specified id is already used by another allowed value in the same
+	//  attribute resource.
+	//  * If not provided, a system generated id derived from the display name
+	//  will be used. In this case, the service will handle conflict resolution
+	//  by adding a system generated suffix in case of duplicates.
+	//
+	//  This value should be 4-63 characters, and valid characters
+	//  are /[a-z][0-9]-/.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.id
+	// +required
+	ID *string `json:"id,omitempty"`
+
+	// Required. The display name of the allowed value.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.display_name
+	// +required
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The detailed description of the allowed value.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. When set to true, the allowed value cannot be updated or
+	//  deleted by the user. It can only be true for System defined attributes.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.immutable
+	Immutable *bool `json:"immutable,omitempty"`
+}
+
 // +kcc:proto=google.cloud.apihub.v1.AttributeValues
 type AttributeValues struct {
 	// The attribute values associated with a resource in case attribute data
@@ -96,11 +129,42 @@ type AttributeValues struct {
 	URIValues *AttributeValues_StringAttributeValues `json:"uriValues,omitempty"`
 }
 
+// +kcc:proto=google.cloud.apihub.v1.AttributeValues
+type AttributeValuesRequired struct {
+	// The attribute values associated with a resource in case attribute data
+	//  type is enum.
+	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.enum_values
+	EnumValues *AttributeValues_EnumAttributeValuesRequired `json:"enumValues,omitempty"`
+
+	// The attribute values associated with a resource in case attribute data
+	//  type is string.
+	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.string_values
+	StringValues *AttributeValues_StringAttributeValuesRequired `json:"stringValues,omitempty"`
+
+	// The attribute values associated with a resource in case attribute data
+	//  type is JSON.
+	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.json_values
+	JsonValues *AttributeValues_StringAttributeValuesRequired `json:"jsonValues,omitempty"`
+
+	// The attribute values associated with a resource in case attribute data
+	//  type is URL, URI or IP, like gs://bucket-name/object-name.
+	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.uri_values
+	URIValues *AttributeValues_StringAttributeValuesRequired `json:"uriValues,omitempty"`
+}
+
 // +kcc:proto=google.cloud.apihub.v1.AttributeValues.EnumAttributeValues
 type AttributeValues_EnumAttributeValues struct {
 	// Required. The attribute values in case attribute data type is enum.
 	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.EnumAttributeValues.values
 	Values []Attribute_AllowedValue `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.AttributeValues.EnumAttributeValues
+type AttributeValues_EnumAttributeValuesRequired struct {
+	// Required. The attribute values in case attribute data type is enum.
+	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.EnumAttributeValues.values
+	// +required
+	Values []Attribute_AllowedValueRequired `json:"values,omitempty"`
 }
 
 // +kcc:proto=google.cloud.apihub.v1.AttributeValues.StringAttributeValues
@@ -111,19 +175,173 @@ type AttributeValues_StringAttributeValues struct {
 	Values []string `json:"values,omitempty"`
 }
 
+// +kcc:proto=google.cloud.apihub.v1.AttributeValues.StringAttributeValues
+type AttributeValues_StringAttributeValuesRequired struct {
+	// Required. The attribute values in case attribute data type is string or
+	//  JSON.
+	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.StringAttributeValues.values
+	// +required
+	Values []string `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.AuthConfig
+type AuthConfig struct {
+	// Google Service Account.
+	// +kcc:proto:field=google.cloud.apihub.v1.AuthConfig.google_service_account_config
+	GoogleServiceAccountConfig *GoogleServiceAccountConfig `json:"googleServiceAccountConfig,omitempty"`
+
+	// User Password.
+	// +kcc:proto:field=google.cloud.apihub.v1.AuthConfig.user_password_config
+	UserPasswordConfig *AuthConfig_UserPasswordConfig `json:"userPasswordConfig,omitempty"`
+
+	// Api Key Config.
+	// +kcc:proto:field=google.cloud.apihub.v1.AuthConfig.api_key_config
+	APIKeyConfig *AuthConfig_APIKeyConfig `json:"apiKeyConfig,omitempty"`
+
+	// Oauth2.0 Client Credentials.
+	// +kcc:proto:field=google.cloud.apihub.v1.AuthConfig.oauth2_client_credentials_config
+	OAUTH2ClientCredentialsConfig *AuthConfig_OAUTH2ClientCredentialsConfig `json:"oauth2ClientCredentialsConfig,omitempty"`
+
+	// Required. The authentication type.
+	// +kcc:proto:field=google.cloud.apihub.v1.AuthConfig.auth_type
+	// +required
+	AuthType *string `json:"authType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.AuthConfig.ApiKeyConfig
+type AuthConfig_APIKeyConfig struct {
+	// Required. The parameter name of the API key.
+	//  E.g. If the API request is "https://example.com/act?api_key=<API KEY>",
+	//  "api_key" would be the parameter name.
+	// +kcc:proto:field=google.cloud.apihub.v1.AuthConfig.ApiKeyConfig.name
+	// +required
+	Name *string `json:"name,omitempty"`
+
+	// Required. The name of the SecretManager secret version resource storing
+	//  the API key. Format:
+	//  `projects/{project}/secrets/{secrete}/versions/{version}`. The
+	//  `secretmanager.versions.access` permission should be granted to the
+	//  service account accessing the secret.
+	// +kcc:proto:field=google.cloud.apihub.v1.AuthConfig.ApiKeyConfig.api_key
+	// +required
+	APIKey *Secret `json:"apiKey,omitempty"`
+
+	// Required. The location of the API key.
+	//  The default value is QUERY.
+	// +kcc:proto:field=google.cloud.apihub.v1.AuthConfig.ApiKeyConfig.http_element_location
+	// +required
+	HTTPElementLocation *string `json:"httpElementLocation,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.AuthConfig.Oauth2ClientCredentialsConfig
+type AuthConfig_OAUTH2ClientCredentialsConfig struct {
+	// Required. The client identifier.
+	// +kcc:proto:field=google.cloud.apihub.v1.AuthConfig.Oauth2ClientCredentialsConfig.client_id
+	// +required
+	ClientID *string `json:"clientID,omitempty"`
+
+	// Required. Secret version reference containing the client secret.
+	//  The `secretmanager.versions.access` permission should be
+	//  granted to the service account accessing the secret.
+	// +kcc:proto:field=google.cloud.apihub.v1.AuthConfig.Oauth2ClientCredentialsConfig.client_secret
+	// +required
+	ClientSecret *Secret `json:"clientSecret,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.AuthConfig.UserPasswordConfig
+type AuthConfig_UserPasswordConfig struct {
+	// Required. Username.
+	// +kcc:proto:field=google.cloud.apihub.v1.AuthConfig.UserPasswordConfig.username
+	// +required
+	Username *string `json:"username,omitempty"`
+
+	// Required. Secret version reference containing the password.
+	//  The `secretmanager.versions.access` permission should be
+	//  granted to the service account accessing the secret.
+	// +kcc:proto:field=google.cloud.apihub.v1.AuthConfig.UserPasswordConfig.password
+	// +required
+	Password *Secret `json:"password,omitempty"`
+}
+
 // +kcc:proto=google.cloud.apihub.v1.ConfigValueOption
 type ConfigValueOption struct {
 	// Required. Id of the option.
 	// +kcc:proto:field=google.cloud.apihub.v1.ConfigValueOption.id
+	// +required
 	ID *string `json:"id,omitempty"`
 
 	// Required. Display name of the option.
 	// +kcc:proto:field=google.cloud.apihub.v1.ConfigValueOption.display_name
+	// +required
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Optional. Description of the option.
 	// +kcc:proto:field=google.cloud.apihub.v1.ConfigValueOption.description
 	Description *string `json:"description,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.ConfigVariable
+type ConfigVariable struct {
+	// Optional. The config variable value in case of config variable of type
+	//  string.
+	// +kcc:proto:field=google.cloud.apihub.v1.ConfigVariable.string_value
+	StringValue *string `json:"stringValue,omitempty"`
+
+	// Optional. The config variable value in case of config variable of type
+	//  integer.
+	// +kcc:proto:field=google.cloud.apihub.v1.ConfigVariable.int_value
+	IntValue *int64 `json:"intValue,omitempty"`
+
+	// Optional. The config variable value in case of config variable of type
+	//  boolean.
+	// +kcc:proto:field=google.cloud.apihub.v1.ConfigVariable.bool_value
+	BoolValue *bool `json:"boolValue,omitempty"`
+
+	// Optional. The config variable value in case of config variable of type
+	//  secret.
+	// +kcc:proto:field=google.cloud.apihub.v1.ConfigVariable.secret_value
+	SecretValue *Secret `json:"secretValue,omitempty"`
+
+	// Optional. The config variable value in case of config variable of type
+	//  enum.
+	// +kcc:proto:field=google.cloud.apihub.v1.ConfigVariable.enum_value
+	EnumValue *ConfigValueOption `json:"enumValue,omitempty"`
+
+	// Optional. The config variable value in case of config variable of type
+	//  multi select.
+	// +kcc:proto:field=google.cloud.apihub.v1.ConfigVariable.multi_select_values
+	MultiSelectValues *ConfigVariable_MultiSelectValues `json:"multiSelectValues,omitempty"`
+
+	// Optional. The config variable value in case of config variable of type
+	//  multi string.
+	// +kcc:proto:field=google.cloud.apihub.v1.ConfigVariable.multi_string_values
+	MultiStringValues *ConfigVariable_MultiStringValues `json:"multiStringValues,omitempty"`
+
+	// Optional. The config variable value in case of config variable of type
+	//  multi integer.
+	// +kcc:proto:field=google.cloud.apihub.v1.ConfigVariable.multi_int_values
+	MultiIntValues *ConfigVariable_MultiIntValues `json:"multiIntValues,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.ConfigVariable.MultiIntValues
+type ConfigVariable_MultiIntValues struct {
+	// Optional. The config variable value of data type multi int.
+	// +kcc:proto:field=google.cloud.apihub.v1.ConfigVariable.MultiIntValues.values
+	Values []int32 `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.ConfigVariable.MultiSelectValues
+type ConfigVariable_MultiSelectValues struct {
+	// Optional. The config variable value of data type multi select.
+	// +kcc:proto:field=google.cloud.apihub.v1.ConfigVariable.MultiSelectValues.values
+	Values []ConfigValueOption `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.ConfigVariable.MultiStringValues
+type ConfigVariable_MultiStringValues struct {
+	// Optional. The config variable value of data type multi string.
+	// +kcc:proto:field=google.cloud.apihub.v1.ConfigVariable.MultiStringValues.values
+	Values []string `json:"values,omitempty"`
 }
 
 // +kcc:proto=google.cloud.apihub.v1.ConfigVariableTemplate
@@ -163,6 +381,29 @@ type ConfigVariableTemplate struct {
 
 // +kcc:proto=google.cloud.apihub.v1.Curation.PluginInstanceActionID
 type Curation_PluginInstanceActionID struct {
+}
+
+// +kcc:proto=google.cloud.apihub.v1.CurationConfig
+type CurationConfig struct {
+	// Optional. Custom curation information for this plugin instance.
+	// +kcc:proto:field=google.cloud.apihub.v1.CurationConfig.custom_curation
+	CustomCuration *CurationConfig_CustomCuration `json:"customCuration,omitempty"`
+
+	// Required. The curation type for this plugin instance.
+	// +kcc:proto:field=google.cloud.apihub.v1.CurationConfig.curation_type
+	// +required
+	CurationType *string `json:"curationType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.CurationConfig.CustomCuration
+type CurationConfig_CustomCuration struct {
+	// Required. The unique name of the curation resource. This will be the name
+	//  of the curation resource in the format:
+	//  `projects/{project}/locations/{location}/curations/{curation}`
+	// +kcc:guess=possible-reference target=APIHubCuration
+	// +kcc:proto:field=google.cloud.apihub.v1.CurationConfig.CustomCuration.curation
+	// +required
+	Curation *string `json:"curation,omitempty"`
 }
 
 // +kcc:proto=google.cloud.apihub.v1.DependencyEntityReference
@@ -208,6 +449,14 @@ type Endpoint struct {
 	ApplicationIntegrationEndpointDetails *ApplicationIntegrationEndpointDetails `json:"applicationIntegrationEndpointDetails,omitempty"`
 }
 
+// +kcc:proto=google.cloud.apihub.v1.ExecutionStatus
+type ExecutionStatus struct {
+}
+
+// +kcc:proto=google.cloud.apihub.v1.ExecutionStatus.LastExecution
+type ExecutionStatus_LastExecution struct {
+}
+
 // +kcc:proto=google.cloud.apihub.v1.GoogleServiceAccountConfig
 type GoogleServiceAccountConfig struct {
 	// Required. The service account to be used for authenticating request.
@@ -215,6 +464,7 @@ type GoogleServiceAccountConfig struct {
 	//  The `iam.serviceAccounts.getAccessToken` permission should be granted on
 	//  this service account to the impersonator service account.
 	// +kcc:proto:field=google.cloud.apihub.v1.GoogleServiceAccountConfig.service_account
+	// +required
 	ServiceAccount *string `json:"serviceAccount,omitempty"`
 }
 
@@ -291,6 +541,55 @@ type PluginActionConfig struct {
 	TriggerMode *string `json:"triggerMode,omitempty"`
 }
 
+// +kcc:proto=google.cloud.apihub.v1.PluginInstanceAction
+type PluginInstanceAction struct {
+	// Optional. The execution information for the plugin instance action done
+	//  corresponding to an API hub instance.
+	// +kcc:proto:field=google.cloud.apihub.v1.PluginInstanceAction.hub_instance_action
+	HubInstanceAction *ExecutionStatus `json:"hubInstanceAction,omitempty"`
+
+	// Required. This should map to one of the [action
+	//  id][google.cloud.apihub.v1.PluginActionConfig.id] specified in
+	//  [actions_config][google.cloud.apihub.v1.Plugin.actions_config] in the
+	//  plugin.
+	// +kcc:proto:field=google.cloud.apihub.v1.PluginInstanceAction.action_id
+	// +required
+	ActionID *string `json:"actionID,omitempty"`
+
+	// Optional. The schedule for this plugin instance action. This can only be
+	//  set if the plugin supports API_HUB_SCHEDULE_TRIGGER mode for this action.
+	// +kcc:proto:field=google.cloud.apihub.v1.PluginInstanceAction.schedule_cron_expression
+	ScheduleCronExpression *string `json:"scheduleCronExpression,omitempty"`
+
+	// Optional. This configuration should be provided if the plugin action is
+	//  publishing data to API hub curate layer.
+	// +kcc:proto:field=google.cloud.apihub.v1.PluginInstanceAction.curation_config
+	CurationConfig *CurationConfig `json:"curationConfig,omitempty"`
+
+	// Optional. The time zone for the schedule cron expression. If not provided,
+	//  UTC will be used.
+	// +kcc:proto:field=google.cloud.apihub.v1.PluginInstanceAction.schedule_time_zone
+	ScheduleTimeZone *string `json:"scheduleTimeZone,omitempty"`
+
+	// Optional. The service account used to publish data. Note, the service
+	//  account will only be accepted for non GCP plugins like OPDK.
+	// +kcc:proto:field=google.cloud.apihub.v1.PluginInstanceAction.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.PluginInstanceAction.ResourceConfig
+type PluginInstanceAction_ResourceConfig struct {
+}
+
+// +kcc:proto=google.cloud.apihub.v1.Secret
+type Secret struct {
+	// Required. The resource name of the secret version in the format,
+	//  format as: `projects/*/secrets/*/versions/*`.
+	// +kcc:proto:field=google.cloud.apihub.v1.Secret.secret_version
+	// +required
+	SecretVersion *string `json:"secretVersion,omitempty"`
+}
+
 // +kcc:proto=google.cloud.apihub.v1.SourceMetadata
 type SourceMetadata struct {
 }
@@ -303,6 +602,7 @@ type SourceMetadata_PluginInstanceActionSource struct {
 type AttributeValuesObservedState struct {
 	// Output only. The name of the attribute.
 	//  Format: projects/{project}/locations/{location}/attributes/{attribute}
+	// +kcc:guess=possible-reference target=APIHubAttribute
 	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.attribute
 	Attribute *string `json:"attribute,omitempty"`
 }
@@ -312,6 +612,7 @@ type Curation_PluginInstanceActionIDObservedState struct {
 	// Output only. Plugin instance that is using the curation.
 	//  Format is
 	//  `projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}`
+	// +kcc:guess=possible-reference target=APIHubPluginInstance
 	// +kcc:proto:field=google.cloud.apihub.v1.Curation.PluginInstanceActionID.plugin_instance
 	PluginInstance *string `json:"pluginInstance,omitempty"`
 
@@ -329,11 +630,73 @@ type DependencyEntityReferenceObservedState struct {
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.apihub.v1.ExecutionStatus
+type ExecutionStatusObservedState struct {
+	// Output only. The current state of the execution.
+	// +kcc:proto:field=google.cloud.apihub.v1.ExecutionStatus.current_execution_state
+	CurrentExecutionState *string `json:"currentExecutionState,omitempty"`
+
+	// Output only. The last execution of the plugin instance.
+	// +kcc:proto:field=google.cloud.apihub.v1.ExecutionStatus.last_execution
+	LastExecution *ExecutionStatus_LastExecutionObservedState `json:"lastExecution,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.apihub.v1.ExecutionStatus.LastExecution
+type ExecutionStatus_LastExecutionObservedState struct {
+	// Output only. The result of the last execution of the plugin instance.
+	// +kcc:proto:field=google.cloud.apihub.v1.ExecutionStatus.LastExecution.result
+	Result *string `json:"result,omitempty"`
+
+	// Output only. Error message describing the failure, if any, during the
+	//  last execution.
+	// +kcc:proto:field=google.cloud.apihub.v1.ExecutionStatus.LastExecution.error_message
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+
+	// Output only. The last execution start time of the plugin instance.
+	// +kcc:proto:field=google.cloud.apihub.v1.ExecutionStatus.LastExecution.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Output only. The last execution end time of the plugin instance.
+	// +kcc:proto:field=google.cloud.apihub.v1.ExecutionStatus.LastExecution.end_time
+	EndTime *string `json:"endTime,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.apihub.v1.PluginInstanceAction
+type PluginInstanceActionObservedState struct {
+	// Optional. The execution information for the plugin instance action done
+	//  corresponding to an API hub instance.
+	// +kcc:proto:field=google.cloud.apihub.v1.PluginInstanceAction.hub_instance_action
+	HubInstanceAction *ExecutionStatusObservedState `json:"hubInstanceAction,omitempty"`
+
+	// Output only. The current state of the plugin action in the plugin instance.
+	// +kcc:proto:field=google.cloud.apihub.v1.PluginInstanceAction.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The configuration of resources created for a given plugin
+	//  instance action. Note these will be returned only in case of Non-GCP
+	//  plugins like OPDK.
+	// +kcc:proto:field=google.cloud.apihub.v1.PluginInstanceAction.resource_config
+	ResourceConfig *PluginInstanceAction_ResourceConfigObservedState `json:"resourceConfig,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.apihub.v1.PluginInstanceAction.ResourceConfig
+type PluginInstanceAction_ResourceConfigObservedState struct {
+	// Output only. The type of the action.
+	// +kcc:proto:field=google.cloud.apihub.v1.PluginInstanceAction.ResourceConfig.action_type
+	ActionType *string `json:"actionType,omitempty"`
+
+	// Output only. The pubsub topic to publish the data to. Format is
+	//  projects/{project}/topics/{topic}
+	// +kcc:proto:field=google.cloud.apihub.v1.PluginInstanceAction.ResourceConfig.pubsub_topic
+	PubsubTopic *string `json:"pubsubTopic,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.apihub.v1.SourceMetadata.PluginInstanceActionSource
 type SourceMetadata_PluginInstanceActionSourceObservedState struct {
 	// Output only. The resource name of the source plugin instance.
 	//  Format is
 	//  `projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}`
+	// +kcc:guess=possible-reference target=APIHubPluginInstance
 	// +kcc:proto:field=google.cloud.apihub.v1.SourceMetadata.PluginInstanceActionSource.plugin_instance
 	PluginInstance *string `json:"pluginInstance,omitempty"`
 

@@ -71,6 +71,11 @@ type APIArgs struct {
 	// +kcc:source markers, written between the license and the package
 	// clause. Empty unless --emit-source-links is on.
 	SourceLinks string
+	// RequiredFromProto adds the +kcc:required-from-proto marker to the Spec,
+	// so generate-types puts +required on the fields the proto marks REQUIRED
+	// for this Kind. Set by --emit-required-from-proto. The text must match
+	// codegen.RequiredFromProtoMarker; a scaffold test checks it.
+	RequiredFromProto bool
 }
 
 const TypesTemplate = `
@@ -110,6 +115,9 @@ var {{ .Kind }}GVK = GroupVersion.WithKind("{{ .Kind }}")
 // {{ .Kind }}Spec defines the desired state of {{ .Kind }}
 {{- if .KindProtoTag }}
 // +kcc:spec:proto={{ .KindProtoTag }}
+{{- end }}
+{{- if .RequiredFromProto }}
+// +kcc:required-from-proto
 {{- end }}
 type {{ .Kind }}Spec struct {
 {{- if .RootRefField }}

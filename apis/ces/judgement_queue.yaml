@@ -1,0 +1,727 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: CESDeployment
+    group: ces.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1beta/projects.locations.apps.deployments: https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/docs/reference/rest/v1beta/projects.locations.apps.deployments'
+    status: open
+  - kind: CESDeployment
+    group: ces.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: CESDeployment
+    group: ces.cnrm.cloud.google.com
+    field: .spec.appVersion
+    reason: possible-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/AppVersion (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESDeployment
+    group: ces.cnrm.cloud.google.com
+    field: .spec.appVersion
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/apps/{app}/versions/{version}"
+    status: open
+  - kind: CESDeployment
+    group: ces.cnrm.cloud.google.com
+    field: .spec.experimentConfig.versionRelease.trafficAllocations[].appVersion
+    reason: possible-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/AppVersion (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESDeployment
+    group: ces.cnrm.cloud.google.com
+    field: .spec.experimentConfig.versionRelease.trafficAllocations[].appVersion
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/apps/{app}/versions/{version}"
+    status: open
+  - kind: CESDeployment
+    group: ces.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/apps/{app}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: CESDeployment
+    group: ces.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/apps/{app}, and no AppRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: CESEvaluationDataset
+    group: ces.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1beta/projects.locations.apps.evaluationDatasets: https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/docs/reference/rest/v1beta/projects.locations.apps.evaluationDatasets'
+    status: open
+  - kind: CESEvaluationDataset
+    group: ces.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: CESEvaluationDataset
+    group: ces.cnrm.cloud.google.com
+    field: .spec.evaluations
+    reason: possible-reference-by-sibling
+    detail: the name matches CESEvaluation, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - kind: CESEvaluationDataset
+    group: ces.cnrm.cloud.google.com
+    field: .spec.evaluations
+    reason: possible-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/Evaluation (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESEvaluationDataset
+    group: ces.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/apps/{app}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: CESEvaluationDataset
+    group: ces.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/apps/{app}, and no AppRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: CESEvaluationExpectation
+    group: ces.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1beta/projects.locations.apps.evaluationExpectations: https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/docs/reference/rest/v1beta/projects.locations.apps.evaluationExpectations'
+    status: open
+  - kind: CESEvaluationExpectation
+    group: ces.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: CESEvaluationExpectation
+    group: ces.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/apps/{app}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: CESEvaluationExpectation
+    group: ces.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/apps/{app}, and no AppRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: CESExample
+    group: ces.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1beta/projects.locations.apps.examples: https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/docs/reference/rest/v1beta/projects.locations.apps.examples'
+    status: open
+  - kind: CESExample
+    group: ces.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: CESExample
+    group: ces.cnrm.cloud.google.com
+    field: .spec.entryAgent
+    reason: possible-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESExample
+    group: ces.cnrm.cloud.google.com
+    field: .spec.entryAgent
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/apps/{app}/agents/{agent}"
+    status: open
+  - kind: CESExample
+    group: ces.cnrm.cloud.google.com
+    field: .spec.messages[].chunks[].toolCall.tool
+    reason: possible-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/Tool (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESExample
+    group: ces.cnrm.cloud.google.com
+    field: .spec.messages[].chunks[].toolCall.tool
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/apps/{app}/tools/{tool}"
+    status: open
+  - kind: CESExample
+    group: ces.cnrm.cloud.google.com
+    field: .spec.messages[].chunks[].toolCall.toolsetTool.toolset
+    reason: possible-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/Toolset (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESExample
+    group: ces.cnrm.cloud.google.com
+    field: .spec.messages[].chunks[].toolCall.toolsetTool.toolset
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}"
+    status: open
+  - kind: CESExample
+    group: ces.cnrm.cloud.google.com
+    field: .spec.messages[].chunks[].toolResponse.tool
+    reason: possible-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/Tool (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESExample
+    group: ces.cnrm.cloud.google.com
+    field: .spec.messages[].chunks[].toolResponse.tool
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/apps/{app}/tools/{tool}"
+    status: open
+  - kind: CESExample
+    group: ces.cnrm.cloud.google.com
+    field: .spec.messages[].chunks[].toolResponse.toolsetTool.toolset
+    reason: possible-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/Toolset (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESExample
+    group: ces.cnrm.cloud.google.com
+    field: .spec.messages[].chunks[].toolResponse.toolsetTool.toolset
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}"
+    status: open
+  - kind: CESExample
+    group: ces.cnrm.cloud.google.com
+    field: .spec.messages[].chunks[].agentTransfer.targetAgent
+    reason: possible-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESExample
+    group: ces.cnrm.cloud.google.com
+    field: .spec.messages[].chunks[].agentTransfer.targetAgent
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/apps/{app}/agents/{agent}"
+    status: open
+  - kind: CESExample
+    group: ces.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/apps/{app}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: CESExample
+    group: ces.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/apps/{app}, and no AppRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: CESGuardrail
+    group: ces.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1beta/projects.locations.apps.guardrails: https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/docs/reference/rest/v1beta/projects.locations.apps.guardrails'
+    status: open
+  - kind: CESGuardrail
+    group: ces.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: CESGuardrail
+    group: ces.cnrm.cloud.google.com
+    field: .spec.action.transferAgent.agent
+    reason: possible-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESGuardrail
+    group: ces.cnrm.cloud.google.com
+    field: .spec.action.transferAgent.agent
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/apps/{app}/agents/{agent}"
+    status: open
+  - kind: CESGuardrail
+    group: ces.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/apps/{app}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: CESGuardrail
+    group: ces.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/apps/{app}, and no AppRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: CESScheduledEvaluationRun
+    group: ces.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1beta/projects.locations.apps.scheduledEvaluationRuns: https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/docs/reference/rest/v1beta/projects.locations.apps.scheduledEvaluationRuns'
+    status: open
+  - kind: CESScheduledEvaluationRun
+    group: ces.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: CESScheduledEvaluationRun
+    group: ces.cnrm.cloud.google.com
+    field: .spec.request.app
+    reason: possible-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/App (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESScheduledEvaluationRun
+    group: ces.cnrm.cloud.google.com
+    field: .spec.request.app
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/apps/{app}"
+    status: open
+  - kind: CESScheduledEvaluationRun
+    group: ces.cnrm.cloud.google.com
+    field: .spec.request.evaluations
+    reason: possible-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/Evaluation (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESScheduledEvaluationRun
+    group: ces.cnrm.cloud.google.com
+    field: .spec.request.evaluations
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/apps/{app}/evaluations/{evaluation}"
+    status: open
+  - kind: CESScheduledEvaluationRun
+    group: ces.cnrm.cloud.google.com
+    field: .spec.request.evaluationDataset
+    reason: possible-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/EvaluationDataset (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESScheduledEvaluationRun
+    group: ces.cnrm.cloud.google.com
+    field: .spec.request.evaluationDataset
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/apps/{app}/evaluationDatasets/{evaluationDataset}"
+    status: open
+  - kind: CESScheduledEvaluationRun
+    group: ces.cnrm.cloud.google.com
+    field: .spec.request.appVersion
+    reason: possible-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/AppVersion (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESScheduledEvaluationRun
+    group: ces.cnrm.cloud.google.com
+    field: .spec.request.appVersion
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/apps/{app}/versions/{version}"
+    status: open
+  - kind: CESScheduledEvaluationRun
+    group: ces.cnrm.cloud.google.com
+    field: .spec.request.personaRunConfigs[].persona
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/apps/{app}/evaluationPersonas/{evaluationPersona}"
+    status: open
+  - kind: CESScheduledEvaluationRun
+    group: ces.cnrm.cloud.google.com
+    field: .spec.request.scheduledEvaluationRun
+    reason: possible-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/ScheduledEvaluationRun (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESScheduledEvaluationRun
+    group: ces.cnrm.cloud.google.com
+    field: .spec.request.scheduledEvaluationRun
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/apps/{app}/scheduledEvaluationRuns/{scheduled_evaluation_run}"
+    status: open
+  - kind: CESScheduledEvaluationRun
+    group: ces.cnrm.cloud.google.com
+    field: .spec.request.config.inputAudioConfig
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: open
+  - kind: CESScheduledEvaluationRun
+    group: ces.cnrm.cloud.google.com
+    field: .spec.request.config.outputAudioConfig
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: open
+  - kind: CESScheduledEvaluationRun
+    group: ces.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/apps/{app}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: CESScheduledEvaluationRun
+    group: ces.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/apps/{app}, and no AppRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1beta/projects.locations.apps.tools: https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/docs/reference/rest/v1beta/projects.locations.apps.tools'
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.openAPITool.apiAuthentication.apiKeyConfig.apiKeySecretVersion
+    reason: possible-reference
+    detail: the proto marks this field as a reference to secretmanager.googleapis.com/SecretVersion (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.openAPITool.apiAuthentication.apiKeyConfig.apiKeySecretVersion
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/secrets/{secret}/versions/{version}"
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.openAPITool.apiAuthentication.oauthConfig.clientSecretVersion
+    reason: possible-reference
+    detail: the proto marks this field as a reference to secretmanager.googleapis.com/SecretVersion (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.openAPITool.apiAuthentication.oauthConfig.clientSecretVersion
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/secrets/{secret}/versions/{version}"
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.openAPITool.apiAuthentication.serviceAccountAuthConfig.serviceAccount
+    reason: possible-reference-by-description
+    detail: the field name ends in serviceAccount
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.openAPITool.serviceDirectoryConfig.service
+    reason: possible-reference
+    detail: the proto marks this field as a reference to servicedirectory.googleapis.com/Service (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.openAPITool.serviceDirectoryConfig.service
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}"
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.connectorTool.connection
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/connections/{connection}"
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.dataStoreTool.dataStoreSource.dataStore.name
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}"
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.dataStoreTool.engineSource.engine
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/collections/{collection}/engines/{engine}"
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.dataStoreTool.engineSource.dataStoreSources[].dataStore.name
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}"
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.dataStoreTool.boostSpecs[].dataStores
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}"
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.pythonFunction.serviceDirectoryConfig.service
+    reason: possible-reference
+    detail: the proto marks this field as a reference to servicedirectory.googleapis.com/Service (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.pythonFunction.serviceDirectoryConfig.service
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}"
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.mcpTool.apiAuthentication.apiKeyConfig.apiKeySecretVersion
+    reason: possible-reference
+    detail: the proto marks this field as a reference to secretmanager.googleapis.com/SecretVersion (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.mcpTool.apiAuthentication.apiKeyConfig.apiKeySecretVersion
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/secrets/{secret}/versions/{version}"
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.mcpTool.apiAuthentication.oauthConfig.clientSecretVersion
+    reason: possible-reference
+    detail: the proto marks this field as a reference to secretmanager.googleapis.com/SecretVersion (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.mcpTool.apiAuthentication.oauthConfig.clientSecretVersion
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/secrets/{secret}/versions/{version}"
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.mcpTool.apiAuthentication.serviceAccountAuthConfig.serviceAccount
+    reason: possible-reference-by-description
+    detail: the field name ends in serviceAccount
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.mcpTool.serviceDirectoryConfig.service
+    reason: possible-reference
+    detail: the proto marks this field as a reference to servicedirectory.googleapis.com/Service (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.mcpTool.serviceDirectoryConfig.service
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}"
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.fileSearchTool.fileCorpus
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/ragCorpora/{rag_corpus}"
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.agentTool.rootAgent
+    reason: possible-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.agentTool.rootAgent
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/agents/{agent}"
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.agentTool.agent
+    reason: possible-reference
+    detail: the proto marks this field as a reference to ces.googleapis.com/Agent (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.agentTool.agent
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/agents/{agent}"
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.widgetTool.dataMapping.sourceToolName
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/agents/{agent}/tools/{tool}"
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.widgetTool.dataMapping.pythonFunction.serviceDirectoryConfig.service
+    reason: possible-reference
+    detail: the proto marks this field as a reference to servicedirectory.googleapis.com/Service (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.widgetTool.dataMapping.pythonFunction.serviceDirectoryConfig.service
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}"
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.agentTool.rootAgent
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.widgetTool.dataMapping.pythonScript
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/apps/{app}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/apps/{app}, and no AppRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - protoMessage: google.cloud.ces.v1beta.AudioProcessingConfig
+    field: synthesizeSpeechConfigs
+    reason: message-map-derived
+    detail: derived as map[string]SynthesizeSpeechConfig from proto google.cloud.ces.v1beta.SynthesizeSpeechConfig; verify Go type and mapping
+    status: open
+  - protoMessage: google.cloud.ces.v1beta.AgentSkill
+    field: examples
+    reason: possible-reference-by-sibling
+    detail: the name matches CESExample, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - protoMessage: google.cloud.ces.v1beta.Evaluation.Golden
+    field: evaluationExpectations
+    reason: possible-reference-by-sibling
+    detail: the name matches CESEvaluationExpectation, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - protoMessage: google.cloud.ces.v1beta.Evaluation.Scenario
+    field: evaluationExpectations
+    reason: possible-reference-by-sibling
+    detail: the name matches CESEvaluationExpectation, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - protoMessage: google.cloud.ces.v1beta.EvaluationDataset
+    field: evaluations
+    reason: possible-reference-by-sibling
+    detail: the name matches CESEvaluation, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - protoMessage: google.cloud.ces.v1beta.RunEvaluationRequest
+    field: app
+    reason: possible-reference-by-sibling
+    detail: the name matches CESApp, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - protoMessage: google.cloud.ces.v1beta.RunEvaluationRequest
+    field: evaluations
+    reason: possible-reference-by-sibling
+    detail: the name matches CESEvaluation, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - protoMessage: google.cloud.ces.v1beta.RunEvaluationRequest
+    field: evaluationDataset
+    reason: possible-reference-by-sibling
+    detail: the name matches CESEvaluationDataset, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - protoMessage: google.cloud.ces.v1beta.RunEvaluationRequest
+    field: scheduledEvaluationRun
+    reason: possible-reference-by-sibling
+    detail: the name matches CESScheduledEvaluationRun, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - protoMessage: google.cloud.ces.v1beta.ToolCall
+    field: tool
+    reason: possible-reference-by-sibling
+    detail: the name matches CESTool, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - protoMessage: google.cloud.ces.v1beta.ToolResponse
+    field: tool
+    reason: possible-reference-by-sibling
+    detail: the name matches CESTool, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.displayName
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to CESAppSpec.DisplayName in cesapp_types.go. CESApp is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.variableDeclarations[].name
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. App_VariableDeclaration in cesapp_types.go is also used by the status of CESApp. +required on App_VariableDeclaration.Name would apply there too. To enforce it for CESApp only, give CESApp its own copy of App_VariableDeclaration. CESApp is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.variableDeclarations[].description
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. App_VariableDeclaration in cesapp_types.go is also used by the status of CESApp. +required on App_VariableDeclaration.Description would apply there too. To enforce it for CESApp only, give CESApp its own copy of App_VariableDeclaration. CESApp is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.variableDeclarations[].schema
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. App_VariableDeclaration in cesapp_types.go is also used by the status of CESApp. +required on App_VariableDeclaration.Schema would apply there too. To enforce it for CESApp only, give CESApp its own copy of App_VariableDeclaration. CESApp is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.clientCertificateSettings.tlsCertificate
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to ClientCertificateSettings.TLSCertificate in cesapp_types.go. CESApp is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.clientCertificateSettings.privateKeyRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to ClientCertificateSettings.PrivateKeyRef in cesapp_types.go. CESApp is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.evaluationPersonas[].nameRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to EvaluationPersona.NameRef in cesapp_types.go. CESApp is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: CESApp
+    group: ces.cnrm.cloud.google.com
+    field: .spec.evaluationPersonas[].displayName
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to EvaluationPersona.DisplayName in cesapp_types.go. CESApp is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: CESDeployment
+    group: ces.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//ces.googleapis.com/projects/{project}/locations/{location}/apps/{app}/deployments/{deployment}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: CESDeployment
+    group: ces.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/apps/{app}/deployments/{deployment}" contains ancestor segment(s) apps/{app} with no matching reference or field on CESDeploymentSpec
+    status: open
+  - kind: CESEvaluationDataset
+    group: ces.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//ces.googleapis.com/projects/{project}/locations/{location}/apps/{app}/evaluationDatasets/{evaluation_dataset}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: CESEvaluationDataset
+    group: ces.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/apps/{app}/evaluationDatasets/{evaluation_dataset}" contains ancestor segment(s) apps/{app} with no matching reference or field on CESEvaluationDatasetSpec
+    status: open
+  - kind: CESEvaluationExpectation
+    group: ces.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//ces.googleapis.com/projects/{project}/locations/{location}/apps/{app}/evaluationExpectations/{evaluation_expectation}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: CESEvaluationExpectation
+    group: ces.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/apps/{app}/evaluationExpectations/{evaluation_expectation}" contains ancestor segment(s) apps/{app} with no matching reference or field on CESEvaluationExpectationSpec
+    status: open
+  - kind: CESExample
+    group: ces.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//ces.googleapis.com/projects/{project}/locations/{location}/apps/{app}/examples/{example}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: CESExample
+    group: ces.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/apps/{app}/examples/{example}" contains ancestor segment(s) apps/{app} with no matching reference or field on CESExampleSpec
+    status: open
+  - kind: CESGuardrail
+    group: ces.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//ces.googleapis.com/projects/{project}/locations/{location}/apps/{app}/guardrails/{guardrail}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: CESGuardrail
+    group: ces.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/apps/{app}/guardrails/{guardrail}" contains ancestor segment(s) apps/{app} with no matching reference or field on CESGuardrailSpec
+    status: open
+  - kind: CESScheduledEvaluationRun
+    group: ces.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//ces.googleapis.com/projects/{project}/locations/{location}/apps/{app}/scheduledEvaluationRuns/{scheduled_evaluation_run}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: CESScheduledEvaluationRun
+    group: ces.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/apps/{app}/scheduledEvaluationRuns/{scheduled_evaluation_run}" contains ancestor segment(s) apps/{app} with no matching reference or field on CESScheduledEvaluationRunSpec
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//ces.googleapis.com/projects/{project}/locations/{location}/apps/{app}/tools/{tool}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: CESTool
+    group: ces.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/apps/{app}/tools/{tool}" contains ancestor segment(s) apps/{app} with no matching reference or field on CESToolSpec
+    status: open

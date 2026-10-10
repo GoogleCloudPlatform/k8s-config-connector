@@ -30,18 +30,46 @@ fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-# Pin a googleapis SHA that contains the google.cloud.ces.v1beta service definition
 PROTO_SHA="1526e545e9d26f23b9c5d0f04af17297def8d045"
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
-
 ./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
 
 ${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
   --service google.cloud.ces.v1beta \
   --api-version ces.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --resource CESApp:App \
-  --proto-source-path ${PROTO_OUT}
+  --resource CESDeployment:Deployment \
+  --resource CESEvaluationDataset:EvaluationDataset \
+  --resource CESEvaluationExpectation:EvaluationExpectation \
+  --resource CESExample:Example \
+  --resource CESGuardrail:Guardrail \
+  --resource CESScheduledEvaluationRun:ScheduledEvaluationRun \
+  --resource CESTool:Tool \
+  --prepopulate-spec \
+  --emit-required-from-proto \
+  --emit-plural-acronyms \
+  --emit-message-maps \
+  --place-server-set-fields \
+  --detect-output-only-in-comments \
+  --emit-parent-refs \
+  --emit-sibling-refs \
+  --emit-reference-hints \
+  --emit-source-links
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.ces.v1beta \
+  --api-version ces.cnrm.cloud.google.com/v1alpha1 \
+  --resource CESDeployment:Deployment \
+  --resource CESEvaluationDataset:EvaluationDataset \
+  --resource CESEvaluationExpectation:EvaluationExpectation \
+  --resource CESExample:Example \
+  --resource CESGuardrail:Guardrail \
+  --resource CESScheduledEvaluationRun:ScheduledEvaluationRun \
+  --resource CESTool:Tool
+
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

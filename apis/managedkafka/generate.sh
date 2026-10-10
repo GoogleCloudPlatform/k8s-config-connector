@@ -29,9 +29,9 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
+
 ./generate-proto.sh
 
-# --- v1alpha1 ---
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.managedkafka.v1 \
   --api-version managedkafka.cnrm.cloud.google.com/v1alpha1 \
@@ -39,9 +39,26 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ManagedKafkaCluster:Cluster \
   --resource ManagedKafkaConnectCluster:ConnectCluster \
   --resource ManagedKafkaConsumerGroup:ConsumerGroup \
-  --resource ManagedKafkaTopic:Topic
+  --resource ManagedKafkaTopic:Topic \
+  --resource ManagedKafkaACL:Acl \
+  --resource ManagedKafkaConnector:Connector \
+  --prepopulate-spec \
+  --emit-required-from-proto \
+  --emit-plural-acronyms \
+  --emit-message-maps \
+  --place-server-set-fields \
+  --detect-output-only-in-comments \
+  --emit-parent-refs \
+  --emit-sibling-refs \
+  --emit-reference-hints \
+  --emit-source-links
 
-# --- v1beta1 ---
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.managedkafka.v1 \
+  --api-version managedkafka.cnrm.cloud.google.com/v1alpha1 \
+  --resource ManagedKafkaACL:Acl \
+  --resource ManagedKafkaConnector:Connector
+
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.managedkafka.v1 \
   --api-version managedkafka.cnrm.cloud.google.com/v1beta1 \
@@ -53,7 +70,10 @@ ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.managedkafka.v1 \
   --api-version managedkafka.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output \
-  --multiversion
+  --multiversion \
+  --emit-plural-acronyms \
+  --emit-message-maps
+
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

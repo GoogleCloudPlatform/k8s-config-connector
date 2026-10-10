@@ -1,0 +1,350 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: FinancialServicesBacktestResult
+    group: financialservices.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: FinancialServicesBacktestResult
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.dataset
+    reason: possible-reference-by-sibling
+    detail: the name matches FinancialServicesDataset, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - kind: FinancialServicesBacktestResult
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.dataset
+    reason: possible-reference
+    detail: the proto marks this field as a reference to financialservices.googleapis.com/Dataset (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: FinancialServicesBacktestResult
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.model
+    reason: possible-reference-by-sibling
+    detail: the name matches FinancialServicesModel, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - kind: FinancialServicesBacktestResult
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.model
+    reason: possible-reference
+    detail: the proto marks this field as a reference to financialservices.googleapis.com/Model (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: FinancialServicesBacktestResult
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.dataset
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}"
+    status: open
+  - kind: FinancialServicesBacktestResult
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.model
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "/projects/{project_num}/locations/{location}/instances/{instance}/models/{model}"
+    status: open
+  - kind: FinancialServicesBacktestResult
+    group: financialservices.cnrm.cloud.google.com
+    field: .status.observedState.name
+    reason: observedstate-identity-field-omitted
+    detail: proto marks field OUTPUT_ONLY; resource name is represented by status.externalRef. Verify applicability for this resource
+    status: open
+  - kind: FinancialServicesBacktestResult
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project_num}/locations/{location}/instances/{instance}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: FinancialServicesBacktestResult
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.instanceRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to FinancialServicesInstanceRef, read from the instances segment of projects/{project_num}/locations/{location}/instances/{instance}/backtestResults/{backtest_result}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - kind: FinancialServicesDataset
+    group: financialservices.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: FinancialServicesDataset
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.tableSpecs
+    reason: reference-not-representable
+    detail: 'bq-scheme-not-a-gcp-resource-name: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: FinancialServicesDataset
+    group: financialservices.cnrm.cloud.google.com
+    field: .status.observedState.name
+    reason: observedstate-identity-field-omitted
+    detail: proto marks field OUTPUT_ONLY; resource name is represented by status.externalRef. Verify applicability for this resource
+    status: open
+  - kind: FinancialServicesDataset
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project_num}/locations/{location}/instances/{instance}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: FinancialServicesDataset
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.instanceRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to FinancialServicesInstanceRef, read from the instances segment of projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - kind: FinancialServicesEngineConfig
+    group: financialservices.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: FinancialServicesEngineConfig
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.engineVersion
+    reason: possible-reference
+    detail: the proto marks this field as a reference to financialservices.googleapis.com/EngineVersion (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: FinancialServicesEngineConfig
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.engineVersion
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "/projects/{project_num}/locations/{location}/instances/{instance}/engineVersions/{engine_version}"
+    status: open
+  - kind: FinancialServicesEngineConfig
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.tuning.primaryDataset
+    reason: possible-reference
+    detail: the proto marks this field as a reference to financialservices.googleapis.com/Dataset (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: FinancialServicesEngineConfig
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.tuning.primaryDataset
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}"
+    status: open
+  - kind: FinancialServicesEngineConfig
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.hyperparameterSource.sourceEngineConfig
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "/projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engine_config}"
+    status: open
+  - kind: FinancialServicesEngineConfig
+    group: financialservices.cnrm.cloud.google.com
+    field: .status.observedState.name
+    reason: observedstate-identity-field-omitted
+    detail: proto marks field OUTPUT_ONLY; resource name is represented by status.externalRef. Verify applicability for this resource
+    status: open
+  - kind: FinancialServicesEngineConfig
+    group: financialservices.cnrm.cloud.google.com
+    field: .status.observedState.tuning
+    reason: possible-output-only-pattern-in-comment
+    detail: 'proto comment mentions output only but doesn''t start with "Output only." or "[Output Only]", and there is no field_behavior annotation, so it was generated into the Spec. The comment may be a typo, apply only some of the time, or mean something else. Move the field to status.observedState if it is confirmed output only. Proto comment: Optional. Configuration for tuning in creation of the EngineConfig. This field is required if `hyperparameter_source.type` is not `INHERITED`, and output-only otherwise.'
+    status: open
+  - kind: FinancialServicesEngineConfig
+    group: financialservices.cnrm.cloud.google.com
+    field: .status.observedState.performanceTarget
+    reason: possible-output-only-pattern-in-comment
+    detail: 'proto comment mentions output only but doesn''t start with "Output only." or "[Output Only]", and there is no field_behavior annotation, so it was generated into the Spec. The comment may be a typo, apply only some of the time, or mean something else. Move the field to status.observedState if it is confirmed output only. Proto comment: Optional. PerformanceTarget gives information on how the tuning and training will be evaluated. This field is required if `hyperparameter_source.type` is not `INHERITED`, and output-only otherwise.'
+    status: open
+  - kind: FinancialServicesEngineConfig
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project_num}/locations/{location}/instances/{instance}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: FinancialServicesEngineConfig
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.instanceRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to FinancialServicesInstanceRef, read from the instances segment of projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engine_config}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - kind: FinancialServicesModel
+    group: financialservices.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: FinancialServicesModel
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.engineConfig
+    reason: possible-reference-by-sibling
+    detail: the name matches FinancialServicesEngineConfig, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - kind: FinancialServicesModel
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.engineConfig
+    reason: possible-reference
+    detail: the proto marks this field as a reference to financialservices.googleapis.com/EngineConfig (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: FinancialServicesModel
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.primaryDataset
+    reason: possible-reference
+    detail: the proto marks this field as a reference to financialservices.googleapis.com/Dataset (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: FinancialServicesModel
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.engineConfig
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "/projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engineConfig}"
+    status: open
+  - kind: FinancialServicesModel
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.primaryDataset
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}"
+    status: open
+  - kind: FinancialServicesModel
+    group: financialservices.cnrm.cloud.google.com
+    field: .status.observedState.name
+    reason: observedstate-identity-field-omitted
+    detail: proto marks field OUTPUT_ONLY; resource name is represented by status.externalRef. Verify applicability for this resource
+    status: open
+  - kind: FinancialServicesModel
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project_num}/locations/{location}/instances/{instance}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: FinancialServicesModel
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.instanceRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to FinancialServicesInstanceRef, read from the instances segment of projects/{project_num}/locations/{location}/instances/{instance}/models/{model}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - kind: FinancialServicesPredictionResult
+    group: financialservices.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: FinancialServicesPredictionResult
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.dataset
+    reason: possible-reference-by-sibling
+    detail: the name matches FinancialServicesDataset, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - kind: FinancialServicesPredictionResult
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.dataset
+    reason: possible-reference
+    detail: the proto marks this field as a reference to financialservices.googleapis.com/Dataset (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: FinancialServicesPredictionResult
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.model
+    reason: possible-reference-by-sibling
+    detail: the name matches FinancialServicesModel, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - kind: FinancialServicesPredictionResult
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.model
+    reason: possible-reference
+    detail: the proto marks this field as a reference to financialservices.googleapis.com/Model (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: FinancialServicesPredictionResult
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.dataset
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "/projects/{project_num}/locations/{location}/instances/{instance}/dataset/{dataset_id}"
+    status: open
+  - kind: FinancialServicesPredictionResult
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.model
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "/projects/{project_num}/locations/{location}/instances/{instance}/models/{model}"
+    status: open
+  - kind: FinancialServicesPredictionResult
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.outputs.predictionDestination.tableURI
+    reason: reference-not-representable
+    detail: 'bq-scheme-not-a-gcp-resource-name: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: FinancialServicesPredictionResult
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.outputs.explainabilityDestination.tableURI
+    reason: reference-not-representable
+    detail: 'bq-scheme-not-a-gcp-resource-name: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: FinancialServicesPredictionResult
+    group: financialservices.cnrm.cloud.google.com
+    field: .status.observedState.name
+    reason: observedstate-identity-field-omitted
+    detail: proto marks field OUTPUT_ONLY; resource name is represented by status.externalRef. Verify applicability for this resource
+    status: open
+  - kind: FinancialServicesPredictionResult
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project_num}/locations/{location}/instances/{instance}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: FinancialServicesPredictionResult
+    group: financialservices.cnrm.cloud.google.com
+    field: .spec.instanceRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to FinancialServicesInstanceRef, read from the instances segment of projects/{project_num}/locations/{location}/instances/{instance}/predictionResults/{prediction_result}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - protoMessage: google.cloud.financialservices.v1.BacktestResult
+    field: dataset
+    reason: possible-reference-by-sibling
+    detail: the name matches FinancialServicesDataset, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - protoMessage: google.cloud.financialservices.v1.BacktestResult
+    field: model
+    reason: possible-reference-by-sibling
+    detail: the name matches FinancialServicesModel, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - protoMessage: google.cloud.financialservices.v1.Model
+    field: engineConfig
+    reason: possible-reference-by-sibling
+    detail: the name matches FinancialServicesEngineConfig, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - protoMessage: google.cloud.financialservices.v1.PredictionResult
+    field: dataset
+    reason: possible-reference-by-sibling
+    detail: the name matches FinancialServicesDataset, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - protoMessage: google.cloud.financialservices.v1.PredictionResult
+    field: model
+    reason: possible-reference-by-sibling
+    detail: the name matches FinancialServicesModel, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - kind: FinancialServicesBacktestResult
+    group: financialservices.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project_num}/locations/{location}/instances/{instance}/backtestResults/{backtest_result}" contains ancestor segment(s) instances/{instance} with no matching reference or field on FinancialServicesBacktestResultSpec
+    status: open
+  - kind: FinancialServicesDataset
+    group: financialservices.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}" contains ancestor segment(s) instances/{instance} with no matching reference or field on FinancialServicesDatasetSpec
+    status: open
+  - kind: FinancialServicesEngineConfig
+    group: financialservices.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engine_config}" contains ancestor segment(s) instances/{instance} with no matching reference or field on FinancialServicesEngineConfigSpec
+    status: open
+  - kind: FinancialServicesModel
+    group: financialservices.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project_num}/locations/{location}/instances/{instance}/models/{model}" contains ancestor segment(s) instances/{instance} with no matching reference or field on FinancialServicesModelSpec
+    status: open
+  - kind: FinancialServicesPredictionResult
+    group: financialservices.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project_num}/locations/{location}/instances/{instance}/predictionResults/{prediction_result}" contains ancestor segment(s) instances/{instance} with no matching reference or field on FinancialServicesPredictionResultSpec
+    status: open

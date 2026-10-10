@@ -128,6 +128,38 @@ spec:
                       or interaction) before the agent prompts the user for reengagement.
                       If not set, the agent will not prompt the user for reengagement.
                     type: string
+                  synthesizeSpeechConfigs:
+                    additionalProperties:
+                      properties:
+                        speakingRate:
+                          description: Optional. The speaking rate/speed in the range
+                            [0.25, 2.0]. 1.0 is the normal native speed supported
+                            by the specific voice. 2.0 is twice as fast, and 0.5 is
+                            half as fast. Values outside of the range [0.25, 2.0]
+                            will return an error.
+                          type: number
+                        voice:
+                          description: |-
+                            Optional. The name of the voice. If not set, the service will choose a
+                             voice based on the other parameters such as language_code.
+
+                             For the list of available voices, please refer to [Supported voices and
+                             languages](https://cloud.google.com/text-to-speech/docs/voices) from Cloud
+                             Text-to-Speech.
+                          type: string
+                      type: object
+                    description: |-
+                      Optional. Configuration of how the agent response should be synthesized,
+                       mapping from the language code to
+                       [SynthesizeSpeechConfig][google.cloud.ces.v1beta.SynthesizeSpeechConfig].
+
+                       If the configuration for the specified language code is not found, the
+                       configuration for the root language code will be used. For example, if the
+                       map contains "en-us" and "en", and the specified language code is "en-gb",
+                       then "en" configuration will be used.
+
+                       Note: Language code is case-insensitive.
+                    type: object
                 type: object
               clientCertificateSettings:
                 description: Optional. The default client certificate settings for

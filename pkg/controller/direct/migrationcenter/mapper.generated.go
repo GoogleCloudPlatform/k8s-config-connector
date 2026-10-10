@@ -47,6 +47,88 @@ func ComputeEnginePreferences_ToProto(mapCtx *direct.MapContext, in *krm.Compute
 	out.LicenseType = direct.Enum_ToProto[pb.LicenseType](mapCtx, in.LicenseType)
 	return out
 }
+func ExecutionReportObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionReport) *krm.ExecutionReportObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExecutionReportObservedState{}
+	out.FramesReported = direct.LazyPtr(in.GetFramesReported())
+	out.ExecutionErrors = ValidationReport_FromProto(mapCtx, in.GetExecutionErrors())
+	out.TotalRowsCount = direct.LazyPtr(in.GetTotalRowsCount())
+	return out
+}
+func ExecutionReportObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionReportObservedState) *pb.ExecutionReport {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExecutionReport{}
+	out.FramesReported = direct.ValueOf(in.FramesReported)
+	out.ExecutionErrors = ValidationReport_ToProto(mapCtx, in.ExecutionErrors)
+	out.TotalRowsCount = direct.ValueOf(in.TotalRowsCount)
+	return out
+}
+func FileValidationReport_FromProto(mapCtx *direct.MapContext, in *pb.FileValidationReport) *krm.FileValidationReport {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FileValidationReport{}
+	out.FileName = direct.LazyPtr(in.GetFileName())
+	out.RowErrors = direct.Slice_FromProto(mapCtx, in.RowErrors, ImportRowError_FromProto)
+	out.PartialReport = direct.LazyPtr(in.GetPartialReport())
+	out.FileErrors = direct.Slice_FromProto(mapCtx, in.FileErrors, ImportError_FromProto)
+	return out
+}
+func FileValidationReport_ToProto(mapCtx *direct.MapContext, in *krm.FileValidationReport) *pb.FileValidationReport {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FileValidationReport{}
+	out.FileName = direct.ValueOf(in.FileName)
+	out.RowErrors = direct.Slice_ToProto(mapCtx, in.RowErrors, ImportRowError_ToProto)
+	out.PartialReport = direct.ValueOf(in.PartialReport)
+	out.FileErrors = direct.Slice_ToProto(mapCtx, in.FileErrors, ImportError_ToProto)
+	return out
+}
+func ImportError_FromProto(mapCtx *direct.MapContext, in *pb.ImportError) *krm.ImportError {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ImportError{}
+	out.ErrorDetails = direct.LazyPtr(in.GetErrorDetails())
+	out.Severity = direct.Enum_FromProto(mapCtx, in.GetSeverity())
+	return out
+}
+func ImportError_ToProto(mapCtx *direct.MapContext, in *krm.ImportError) *pb.ImportError {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ImportError{}
+	out.ErrorDetails = direct.ValueOf(in.ErrorDetails)
+	out.Severity = direct.Enum_ToProto[pb.ImportError_Severity](mapCtx, in.Severity)
+	return out
+}
+func ImportRowError_FromProto(mapCtx *direct.MapContext, in *pb.ImportRowError) *krm.ImportRowError {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ImportRowError{}
+	out.RowNumber = direct.LazyPtr(in.GetRowNumber())
+	out.VMName = direct.LazyPtr(in.GetVmName())
+	out.VMUuid = direct.LazyPtr(in.GetVmUuid())
+	out.Errors = direct.Slice_FromProto(mapCtx, in.Errors, ImportError_FromProto)
+	return out
+}
+func ImportRowError_ToProto(mapCtx *direct.MapContext, in *krm.ImportRowError) *pb.ImportRowError {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ImportRowError{}
+	out.RowNumber = direct.ValueOf(in.RowNumber)
+	out.VmName = direct.ValueOf(in.VMName)
+	out.VmUuid = direct.ValueOf(in.VMUuid)
+	out.Errors = direct.Slice_ToProto(mapCtx, in.Errors, ImportError_ToProto)
+	return out
+}
 func MachinePreferences_FromProto(mapCtx *direct.MapContext, in *pb.MachinePreferences) *krm.MachinePreferences {
 	if in == nil {
 		return nil
@@ -119,6 +201,60 @@ func MigrationCenterGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.Migrati
 	out.Labels = in.Labels
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+func MigrationCenterImportJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ImportJob) *krm.MigrationCenterImportJobObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MigrationCenterImportJobObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.CompleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCompleteTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.ValidationReport = ValidationReport_FromProto(mapCtx, in.GetValidationReport())
+	out.ExecutionReport = ExecutionReportObservedState_FromProto(mapCtx, in.GetExecutionReport())
+	return out
+}
+func MigrationCenterImportJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MigrationCenterImportJobObservedState) *pb.ImportJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ImportJob{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.CompleteTime = direct.StringTimestamp_ToProto(mapCtx, in.CompleteTime)
+	out.State = direct.Enum_ToProto[pb.ImportJob_ImportJobState](mapCtx, in.State)
+	if oneof := ValidationReport_ToProto(mapCtx, in.ValidationReport); oneof != nil {
+		out.Report = &pb.ImportJob_ValidationReport{ValidationReport: oneof}
+	}
+	if oneof := ExecutionReportObservedState_ToProto(mapCtx, in.ExecutionReport); oneof != nil {
+		out.Report = &pb.ImportJob_ExecutionReport{ExecutionReport: oneof}
+	}
+	return out
+}
+func MigrationCenterImportJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.ImportJob) *krm.MigrationCenterImportJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MigrationCenterImportJobSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Labels = in.Labels
+	out.AssetSource = direct.LazyPtr(in.GetAssetSource())
+	return out
+}
+func MigrationCenterImportJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.MigrationCenterImportJobSpec) *pb.ImportJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ImportJob{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Labels = in.Labels
+	out.AssetSource = direct.ValueOf(in.AssetSource)
 	return out
 }
 func MigrationCenterPreferenceSetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PreferenceSet) *krm.MigrationCenterPreferenceSetObservedState {
@@ -215,6 +351,24 @@ func SoleTenantNodeType_ToProto(mapCtx *direct.MapContext, in *krm.SoleTenantNod
 	}
 	out := &pb.SoleTenantNodeType{}
 	out.NodeName = direct.ValueOf(in.NodeName)
+	return out
+}
+func ValidationReport_FromProto(mapCtx *direct.MapContext, in *pb.ValidationReport) *krm.ValidationReport {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ValidationReport{}
+	out.FileValidations = direct.Slice_FromProto(mapCtx, in.FileValidations, FileValidationReport_FromProto)
+	out.JobErrors = direct.Slice_FromProto(mapCtx, in.JobErrors, ImportError_FromProto)
+	return out
+}
+func ValidationReport_ToProto(mapCtx *direct.MapContext, in *krm.ValidationReport) *pb.ValidationReport {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ValidationReport{}
+	out.FileValidations = direct.Slice_ToProto(mapCtx, in.FileValidations, FileValidationReport_ToProto)
+	out.JobErrors = direct.Slice_ToProto(mapCtx, in.JobErrors, ImportError_ToProto)
 	return out
 }
 func VirtualMachinePreferences_FromProto(mapCtx *direct.MapContext, in *pb.VirtualMachinePreferences) *krm.VirtualMachinePreferences {

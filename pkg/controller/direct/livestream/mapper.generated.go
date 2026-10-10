@@ -168,6 +168,60 @@ func Channel_Output_ToProto(mapCtx *direct.MapContext, in *krm.Channel_Output) *
 	out.Uri = direct.ValueOf(in.URI)
 	return out
 }
+func DvrSession_DvrManifest_FromProto(mapCtx *direct.MapContext, in *pb.DvrSession_DvrManifest) *krm.DvrSession_DvrManifest {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DvrSession_DvrManifest{}
+	out.ManifestKey = direct.LazyPtr(in.GetManifestKey())
+	// MISSING: OutputURI
+	return out
+}
+func DvrSession_DvrManifest_ToProto(mapCtx *direct.MapContext, in *krm.DvrSession_DvrManifest) *pb.DvrSession_DvrManifest {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DvrSession_DvrManifest{}
+	out.ManifestKey = direct.ValueOf(in.ManifestKey)
+	// MISSING: OutputURI
+	return out
+}
+func DvrSession_DvrManifestObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DvrSession_DvrManifest) *krm.DvrSession_DvrManifestObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DvrSession_DvrManifestObservedState{}
+	// MISSING: ManifestKey
+	out.OutputURI = direct.LazyPtr(in.GetOutputUri())
+	return out
+}
+func DvrSession_DvrManifestObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DvrSession_DvrManifestObservedState) *pb.DvrSession_DvrManifest {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DvrSession_DvrManifest{}
+	// MISSING: ManifestKey
+	out.OutputUri = direct.ValueOf(in.OutputURI)
+	return out
+}
+func DvrSession_DvrWindow_FromProto(mapCtx *direct.MapContext, in *pb.DvrSession_DvrWindow) *krm.DvrSession_DvrWindow {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DvrSession_DvrWindow{}
+	out.TimeInterval = TimeInterval_FromProto(mapCtx, in.GetTimeInterval())
+	return out
+}
+func DvrSession_DvrWindow_ToProto(mapCtx *direct.MapContext, in *krm.DvrSession_DvrWindow) *pb.DvrSession_DvrWindow {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DvrSession_DvrWindow{}
+	if oneof := TimeInterval_ToProto(mapCtx, in.TimeInterval); oneof != nil {
+		out.Kind = &pb.DvrSession_DvrWindow_TimeInterval{TimeInterval: oneof}
+	}
+	return out
+}
 func ElementaryStream_FromProto(mapCtx *direct.MapContext, in *pb.ElementaryStream) *krm.ElementaryStream {
 	if in == nil {
 		return nil
@@ -556,6 +610,54 @@ func LiveStreamChannelSpec_ToProto(mapCtx *direct.MapContext, in *krm.LiveStream
 	out.StaticOverlays = direct.Slice_ToProto(mapCtx, in.StaticOverlays, StaticOverlay_ToProto)
 	return out
 }
+func LiveStreamDVRSessionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DvrSession) *krm.LiveStreamDVRSessionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LiveStreamDVRSessionObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
+	out.DvrManifests = direct.Slice_FromProto(mapCtx, in.DvrManifests, DvrSession_DvrManifestObservedState_FromProto)
+	return out
+}
+func LiveStreamDVRSessionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LiveStreamDVRSessionObservedState) *pb.DvrSession {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DvrSession{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.DvrSession_State](mapCtx, in.State)
+	out.Error = direct.Status_ToProto(mapCtx, in.Error)
+	out.DvrManifests = direct.Slice_ToProto(mapCtx, in.DvrManifests, DvrSession_DvrManifestObservedState_ToProto)
+	return out
+}
+func LiveStreamDVRSessionSpec_FromProto(mapCtx *direct.MapContext, in *pb.DvrSession) *krm.LiveStreamDVRSessionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LiveStreamDVRSessionSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.DvrManifests = direct.Slice_FromProto(mapCtx, in.DvrManifests, DvrSession_DvrManifest_FromProto)
+	out.DvrWindows = direct.Slice_FromProto(mapCtx, in.DvrWindows, DvrSession_DvrWindow_FromProto)
+	return out
+}
+func LiveStreamDVRSessionSpec_ToProto(mapCtx *direct.MapContext, in *krm.LiveStreamDVRSessionSpec) *pb.DvrSession {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DvrSession{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.DvrManifests = direct.Slice_ToProto(mapCtx, in.DvrManifests, DvrSession_DvrManifest_ToProto)
+	out.DvrWindows = direct.Slice_ToProto(mapCtx, in.DvrWindows, DvrSession_DvrWindow_ToProto)
+	return out
+}
 func LiveStreamInputObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Input) *krm.LiveStreamInputObservedState {
 	if in == nil {
 		return nil
@@ -892,6 +994,24 @@ func TextStream_ToProto(mapCtx *direct.MapContext, in *krm.TextStream) *pb.TextS
 	}
 	out := &pb.TextStream{}
 	out.Codec = direct.ValueOf(in.Codec)
+	return out
+}
+func TimeInterval_FromProto(mapCtx *direct.MapContext, in *pb.TimeInterval) *krm.TimeInterval {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TimeInterval{}
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	return out
+}
+func TimeInterval_ToProto(mapCtx *direct.MapContext, in *krm.TimeInterval) *pb.TimeInterval {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TimeInterval{}
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	return out
 }
 func TimecodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.TimecodeConfig) *krm.TimecodeConfig {

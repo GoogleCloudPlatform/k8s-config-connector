@@ -17,7 +17,9 @@
 // krm.group: configdelivery.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.configdelivery.v1
+// resource: ConfigDeliveryResourceBundle:ResourceBundle
 // resource: ConfigDeliveryFleetPackage:FleetPackage
+// resource: ConfigDeliveryRelease:Release
 
 package v1alpha1
 
@@ -91,6 +93,15 @@ type FleetPackageInfo struct {
 }
 */
 
+// +kcc:proto=google.cloud.configdelivery.v1.ReleaseInfo
+type ReleaseInfo struct {
+
+	// Optional. per-variant paths to the oci images the service uploads on
+	//  package release creation
+	// +kcc:proto:field=google.cloud.configdelivery.v1.ReleaseInfo.variant_oci_image_paths
+	VariantOciImagePaths map[string]string `json:"variantOciImagePaths,omitempty"`
+}
+
 // +kcc:proto=google.cloud.configdelivery.v1.RollingStrategy
 type RollingStrategy struct {
 	// Optional. Maximum number of clusters to update the resource bundle on
@@ -131,4 +142,12 @@ type FleetPackageInfoObservedState struct {
 	//  (if any).
 	// +kcc:proto:field=google.cloud.configdelivery.v1.FleetPackageInfo.errors
 	Errors []FleetPackageError `json:"errors,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.configdelivery.v1.ReleaseInfo
+type ReleaseInfoObservedState struct {
+	// Output only. path to the oci image the service uploads to on a `Release`
+	//  creation.
+	// +kcc:proto:field=google.cloud.configdelivery.v1.ReleaseInfo.oci_image_path
+	OciImagePath *string `json:"ociImagePath,omitempty"`
 }

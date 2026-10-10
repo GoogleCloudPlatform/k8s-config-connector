@@ -49,6 +49,24 @@ ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dataform.v1 \
   --api-version dataform.cnrm.cloud.google.com/v1alpha1 \
   --resource DataformTeamFolder:TeamFolder \
+  --resource DataformReleaseConfig:ReleaseConfig \
+  --proto-source-path ${PROTO_OUT} \
+  --prune-unused-types=false \
+  --prepopulate-spec \
+  --emit-required-from-proto \
+  --emit-plural-acronyms \
+  --emit-message-maps \
+  --place-server-set-fields \
+  --detect-output-only-in-comments \
+  --emit-parent-refs \
+  --emit-sibling-refs \
+  --emit-reference-hints \
+  --emit-source-links
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.dataform.v1 \
+  --api-version dataform.cnrm.cloud.google.com/v1alpha1 \
+  --resource DataformReleaseConfig:ReleaseConfig \
   --proto-source-path ${PROTO_OUT}
 
 

@@ -18,8 +18,231 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.ces.v1beta
 // resource: CESApp:App
+// resource: CESDeployment:Deployment
+// resource: CESEvaluationDataset:EvaluationDataset
+// resource: CESEvaluationExpectation:EvaluationExpectation
+// resource: CESExample:Example
+// resource: CESGuardrail:Guardrail
+// resource: CESScheduledEvaluationRun:ScheduledEvaluationRun
+// resource: CESTool:Tool
 
 package v1alpha1
+
+import (
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+)
+
+// +kcc:proto=google.cloud.ces.v1beta.Action
+type Action struct {
+	// ID of a Connection action for the tool to use.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Action.connection_action_id
+	ConnectionActionID *string `json:"connectionActionID,omitempty"`
+
+	// Entity operation configuration for the tool to use.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Action.entity_operation
+	EntityOperation *Action_EntityOperation `json:"entityOperation,omitempty"`
+
+	// Optional. Entity fields to use as inputs for the operation.
+	//  If no fields are specified, all fields of the Entity will be used.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Action.input_fields
+	InputFields []string `json:"inputFields,omitempty"`
+
+	// Optional. Entity fields to return from the operation.
+	//  If no fields are specified, all fields of the Entity will be returned.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Action.output_fields
+	OutputFields []string `json:"outputFields,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.Action.EntityOperation
+type Action_EntityOperation struct {
+	// Required. ID of the entity.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Action.EntityOperation.entity_id
+	// +required
+	EntityID *string `json:"entityID,omitempty"`
+
+	// Required. Operation to perform on the entity.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Action.EntityOperation.operation
+	// +required
+	Operation *string `json:"operation,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.AgentCard
+type AgentCard struct {
+	// Required. A human-readable name for the agent.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AgentCard.name
+	// +required
+	Name *string `json:"name,omitempty"`
+
+	// Required. A description of the agent's domain of action/solution space.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AgentCard.description
+	// +required
+	Description *string `json:"description,omitempty"`
+
+	// Required. Ordered list of supported interfaces. The first entry is
+	//  preferred.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AgentCard.supported_interfaces
+	// +required
+	SupportedInterfaces []AgentInterface `json:"supportedInterfaces,omitempty"`
+
+	// Required. The version of the agent.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AgentCard.version
+	// +required
+	Version *string `json:"version,omitempty"`
+
+	// Required. Skills represent a unit of ability an agent can perform. This may
+	//  somewhat abstract but represents a more focused set of actions that the
+	//  agent is highly likely to succeed at.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AgentCard.skills
+	// +required
+	Skills []AgentSkill `json:"skills,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.AgentInterface
+type AgentInterface struct {
+	// Required. The URL where this interface is available. Must be a valid
+	//  absolute HTTPS URL in production. Example:
+	//  "https://api.example.com/a2a/v1", "https://grpc.example.com/a2a"
+	// +kcc:proto:field=google.cloud.ces.v1beta.AgentInterface.url
+	// +required
+	URL *string `json:"url,omitempty"`
+
+	// Required. The protocol binding supported at this URL. This is an open form
+	//  string, to be easily extended for other protocol bindings. The core ones
+	//  officially supported are `JSONRPC`, `GRPC` and `HTTP+JSON`.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AgentInterface.protocol_binding
+	// +required
+	ProtocolBinding *string `json:"protocolBinding,omitempty"`
+
+	// Tenant ID to be used in the request when calling the agent.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AgentInterface.tenant
+	Tenant *string `json:"tenant,omitempty"`
+
+	// Required. The version of the A2A protocol this interface exposes.
+	//  Use the latest supported minor version per major version.
+	//  Examples: "0.3", "1.0"
+	// +kcc:proto:field=google.cloud.ces.v1beta.AgentInterface.protocol_version
+	// +required
+	ProtocolVersion *string `json:"protocolVersion,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.AgentSkill
+type AgentSkill struct {
+	// Required. A unique identifier for the agent's skill.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AgentSkill.id
+	// +required
+	ID *string `json:"id,omitempty"`
+
+	// Required. A human-readable name for the skill.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AgentSkill.name
+	// +required
+	Name *string `json:"name,omitempty"`
+
+	// Required. A detailed description of the skill.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AgentSkill.description
+	// +required
+	Description *string `json:"description,omitempty"`
+
+	// Required. A set of keywords describing the skill's capabilities.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AgentSkill.tags
+	// +required
+	Tags []string `json:"tags,omitempty"`
+
+	// Example prompts or scenarios that this skill can handle.
+	// +kcc:guess=possible-reference target=CESExample
+	// +kcc:proto:field=google.cloud.ces.v1beta.AgentSkill.examples
+	Examples []string `json:"examples,omitempty"`
+
+	// The set of supported input media types for this skill, overriding the
+	//  agent's defaults.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AgentSkill.input_modes
+	InputModes []string `json:"inputModes,omitempty"`
+
+	// The set of supported output media types for this skill, overriding the
+	//  agent's defaults.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AgentSkill.output_modes
+	OutputModes []string `json:"outputModes,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.AgentTool
+type AgentTool struct {
+	// Required. The name of the agent tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AgentTool.name
+	// +required
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Description of the tool's purpose.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AgentTool.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Deprecated: Use `agent` instead.
+	//  The resource name of the root agent that is the entry point of the tool.
+	//  Format: `projects/{project}/locations/{location}/agents/{agent}`
+	// +kcc:proto:field=google.cloud.ces.v1beta.AgentTool.root_agent
+	RootAgent *string `json:"rootAgent,omitempty"`
+
+	// Optional. The resource name of the agent that is the entry point of the
+	//  tool. Format: `projects/{project}/locations/{location}/agents/{agent}`
+	// +kcc:proto:field=google.cloud.ces.v1beta.AgentTool.agent
+	Agent *string `json:"agent,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.AgentTransfer
+type AgentTransfer struct {
+	// Required. The agent to which the conversation is being transferred. The
+	//  agent will handle the conversation from this point forward. Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/agents/{agent}`
+	// +kcc:proto:field=google.cloud.ces.v1beta.AgentTransfer.target_agent
+	// +required
+	TargetAgent *string `json:"targetAgent,omitempty"`
+}
+
+/* unreachable type AggregatedMetrics
+// +kcc:proto=google.cloud.ces.v1beta.AggregatedMetrics
+type AggregatedMetrics struct {
+}
+*/
+
+/* unreachable type AggregatedMetrics_HallucinationMetrics
+// +kcc:proto=google.cloud.ces.v1beta.AggregatedMetrics.HallucinationMetrics
+type AggregatedMetrics_HallucinationMetrics struct {
+}
+*/
+
+/* unreachable type AggregatedMetrics_MetricsByAppVersion
+// +kcc:proto=google.cloud.ces.v1beta.AggregatedMetrics.MetricsByAppVersion
+type AggregatedMetrics_MetricsByAppVersion struct {
+}
+*/
+
+/* unreachable type AggregatedMetrics_MetricsByTurn
+// +kcc:proto=google.cloud.ces.v1beta.AggregatedMetrics.MetricsByTurn
+type AggregatedMetrics_MetricsByTurn struct {
+}
+*/
+
+/* unreachable type AggregatedMetrics_SemanticSimilarityMetrics
+// +kcc:proto=google.cloud.ces.v1beta.AggregatedMetrics.SemanticSimilarityMetrics
+type AggregatedMetrics_SemanticSimilarityMetrics struct {
+}
+*/
+
+/* unreachable type AggregatedMetrics_ToolCallLatencyMetrics
+// +kcc:proto=google.cloud.ces.v1beta.AggregatedMetrics.ToolCallLatencyMetrics
+type AggregatedMetrics_ToolCallLatencyMetrics struct {
+}
+*/
+
+/* unreachable type AggregatedMetrics_ToolMetrics
+// +kcc:proto=google.cloud.ces.v1beta.AggregatedMetrics.ToolMetrics
+type AggregatedMetrics_ToolMetrics struct {
+}
+*/
+
+/* unreachable type AggregatedMetrics_TurnLatencyMetrics
+// +kcc:proto=google.cloud.ces.v1beta.AggregatedMetrics.TurnLatencyMetrics
+type AggregatedMetrics_TurnLatencyMetrics struct {
+}
+*/
 
 // +kcc:proto=google.cloud.ces.v1beta.AmbientSoundConfig
 type AmbientSoundConfig struct {
@@ -65,6 +288,54 @@ type AmbientSoundConfig struct {
 	//  any value greater than that.
 	// +kcc:proto:field=google.cloud.ces.v1beta.AmbientSoundConfig.volume_gain_db
 	VolumeGainDb *float64 `json:"volumeGainDb,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.ApiAuthentication
+type APIAuthentication struct {
+	// Optional. Config for API key auth.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ApiAuthentication.api_key_config
+	APIKeyConfig *APIKeyConfig `json:"apiKeyConfig,omitempty"`
+
+	// Optional. Config for OAuth.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ApiAuthentication.oauth_config
+	OauthConfig *OAuthConfig `json:"oauthConfig,omitempty"`
+
+	// Optional. Config for ID token auth generated from CES service agent.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ApiAuthentication.service_agent_id_token_auth_config
+	ServiceAgentIDTokenAuthConfig *ServiceAgentIDTokenAuthConfig `json:"serviceAgentIDTokenAuthConfig,omitempty"`
+
+	// Optional. Config for service account authentication.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ApiAuthentication.service_account_auth_config
+	ServiceAccountAuthConfig *ServiceAccountAuthConfig `json:"serviceAccountAuthConfig,omitempty"`
+
+	// Optional. Config for bearer token auth.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ApiAuthentication.bearer_token_config
+	BearerTokenConfig *BearerTokenConfig `json:"bearerTokenConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.ApiKeyConfig
+type APIKeyConfig struct {
+	// Required. The parameter name or the header name of the API key.
+	//  E.g., If the API request is "https://example.com/act?X-Api-Key=<API
+	//  KEY>", "X-Api-Key" would be the parameter name.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ApiKeyConfig.key_name
+	// +required
+	KeyName *string `json:"keyName,omitempty"`
+
+	// Required. The name of the SecretManager secret version resource storing the
+	//  API key. Format: `projects/{project}/secrets/{secret}/versions/{version}`
+	//
+	//  Note: You should grant `roles/secretmanager.secretAccessor` role to the CES
+	//  service agent
+	//  `service-<PROJECT-NUMBER>@gcp-sa-ces.iam.gserviceaccount.com`.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ApiKeyConfig.api_key_secret_version
+	// +required
+	APIKeySecretVersion *string `json:"apiKeySecretVersion,omitempty"`
+
+	// Required. Key location in the request.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ApiKeyConfig.request_location
+	// +required
+	RequestLocation *string `json:"requestLocation,omitempty"`
 }
 
 /* found existing non-generated go type with proto tag "google.cloud.ces.v1beta.App", skipping
@@ -203,8 +474,18 @@ type App_VariableDeclaration struct {
 
 // +kcc:proto=google.cloud.ces.v1beta.AudioProcessingConfig
 type AudioProcessingConfig struct {
-
-	// TODO: unsupported map type with key string and value message
+	// Optional. Configuration of how the agent response should be synthesized,
+	//  mapping from the language code to
+	//  [SynthesizeSpeechConfig][google.cloud.ces.v1beta.SynthesizeSpeechConfig].
+	//
+	//  If the configuration for the specified language code is not found, the
+	//  configuration for the root language code will be used. For example, if the
+	//  map contains "en-us" and "en", and the specified language code is "en-gb",
+	//  then "en" configuration will be used.
+	//
+	//  Note: Language code is case-insensitive.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AudioProcessingConfig.synthesize_speech_configs
+	SynthesizeSpeechConfigs map[string]SynthesizeSpeechConfig `json:"synthesizeSpeechConfigs,omitempty"`
 
 	// Optional. Configures the agent behavior for the user barge-in activities.
 	// +kcc:proto:field=google.cloud.ces.v1beta.AudioProcessingConfig.barge_in_config
@@ -271,6 +552,15 @@ type BargeInConfig struct {
 	BargeInAwareness *bool `json:"bargeInAwareness,omitempty"`
 }
 
+// +kcc:proto=google.cloud.ces.v1beta.BearerTokenConfig
+type BearerTokenConfig struct {
+	// Required. The bearer token.
+	//  Must be in the format `$context.variables.<name_of_variable>`.
+	// +kcc:proto:field=google.cloud.ces.v1beta.BearerTokenConfig.token
+	// +required
+	Token *string `json:"token,omitempty"`
+}
+
 // +kcc:proto=google.cloud.ces.v1beta.BigQueryExportSettings
 type BigQueryExportSettings struct {
 	// Optional. Indicates whether the BigQuery export is enabled.
@@ -288,6 +578,45 @@ type BigQueryExportSettings struct {
 	// Optional. The BigQuery **dataset ID** to export the data to.
 	// +kcc:proto:field=google.cloud.ces.v1beta.BigQueryExportSettings.dataset
 	Dataset *string `json:"dataset,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.Blob
+type Blob struct {
+	// Required. The IANA standard MIME type of the source data.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Blob.mime_type
+	// +required
+	MimeType *string `json:"mimeType,omitempty"`
+
+	// Required. Raw bytes of the blob.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Blob.data
+	// +required
+	Data []byte `json:"data,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.Callback
+type Callback struct {
+	// Required. The python code to execute for the callback.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Callback.python_code
+	// +required
+	PythonCode *string `json:"pythonCode,omitempty"`
+
+	// Optional. Human-readable description of the callback.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Callback.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Whether the callback is disabled. Disabled callbacks are ignored
+	//  by the agent.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Callback.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+
+	// Optional. If enabled, the callback will also be executed on intermediate
+	//  model outputs. This setting only affects after model callback.
+	//  **ENABLE WITH CAUTION**. Typically after model callback only needs to be
+	//  executed after receiving all model responses. Enabling proactive execution
+	//  may have negative implication on the execution cost and latency, and
+	//  should only be enabled in rare situations.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Callback.proactive_execution_enabled
+	ProactiveExecutionEnabled *bool `json:"proactiveExecutionEnabled,omitempty"`
 }
 
 // +kcc:proto=google.cloud.ces.v1beta.ChannelProfile
@@ -380,6 +709,51 @@ type ChannelProfile_WebWidgetConfig_SecuritySettings struct {
 	EnableRecaptcha *bool `json:"enableRecaptcha,omitempty"`
 }
 
+// +kcc:proto=google.cloud.ces.v1beta.Chunk
+type Chunk struct {
+	// Optional. Text data.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Chunk.text
+	Text *string `json:"text,omitempty"`
+
+	// Optional. Transcript associated with the audio.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Chunk.transcript
+	Transcript *string `json:"transcript,omitempty"`
+
+	// Optional. Blob data.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Chunk.blob
+	Blob *Blob `json:"blob,omitempty"`
+
+	// Optional. Custom payload data.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Chunk.payload
+	Payload apiextensionsv1.JSON `json:"payload,omitempty"`
+
+	// Optional. Image data.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Chunk.image
+	Image *Image `json:"image,omitempty"`
+
+	// Optional. Tool execution request.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Chunk.tool_call
+	ToolCall *ToolCall `json:"toolCall,omitempty"`
+
+	// Optional. Tool execution response.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Chunk.tool_response
+	ToolResponse *ToolResponse `json:"toolResponse,omitempty"`
+
+	// Optional. Agent transfer event.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Chunk.agent_transfer
+	AgentTransfer *AgentTransfer `json:"agentTransfer,omitempty"`
+
+	// A struct represents variables that were updated in the conversation,
+	//  keyed by variable names.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Chunk.updated_variables
+	UpdatedVariables apiextensionsv1.JSON `json:"updatedVariables,omitempty"`
+
+	// A struct represents default variables at the start of the conversation,
+	//  keyed by variable names.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Chunk.default_variables
+	DefaultVariables apiextensionsv1.JSON `json:"defaultVariables,omitempty"`
+}
+
 /* found existing non-generated go type "ClientCertificateSettings", skipping
 
 // +kcc:proto=google.cloud.ces.v1beta.ClientCertificateSettings
@@ -404,11 +778,85 @@ type ClientCertificateSettings struct {
 }
 */
 
+// +kcc:proto=google.cloud.ces.v1beta.ClientFunction
+type ClientFunction struct {
+	// Required. The function name.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ClientFunction.name
+	// +required
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The function description.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ClientFunction.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. The schema of the function parameters.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ClientFunction.parameters
+	Parameters *Schema `json:"parameters,omitempty"`
+
+	// Optional. The schema of the function response.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ClientFunction.response
+	Response *Schema `json:"response,omitempty"`
+}
+
 // +kcc:proto=google.cloud.ces.v1beta.CloudLoggingSettings
 type CloudLoggingSettings struct {
 	// Optional. Whether to enable Cloud Logging for the sessions.
 	// +kcc:proto:field=google.cloud.ces.v1beta.CloudLoggingSettings.enable_cloud_logging
 	EnableCloudLogging *bool `json:"enableCloudLogging,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.CodeBlock
+type CodeBlock struct {
+	// Required. Python code which will be invoked in tool fake mode.
+	//  Expected Python function signature -
+	//  To catch all tool calls:
+	//    def fake_tool_call(tool: Tool, input: dict[str, Any],
+	//      callback_context: CallbackContext) -> Optional[dict[str, Any]]:
+	//  To catch a specific tool call:
+	//    def fake_{tool_id}(tool: Tool, input: dict[str, Any],
+	//      callback_context: CallbackContext) -> Optional[dict[str, Any]]:
+	//  If the function returns None, the real tool will be invoked instead.
+	// +kcc:proto:field=google.cloud.ces.v1beta.CodeBlock.python_code
+	// +required
+	PythonCode *string `json:"pythonCode,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.ConnectorTool
+type ConnectorTool struct {
+	// Required. The full resource name of the referenced Integration Connectors
+	//  Connection.
+	//  Format:
+	//  `projects/{project}/locations/{location}/connections/{connection}`
+	// +kcc:proto:field=google.cloud.ces.v1beta.ConnectorTool.connection
+	// +required
+	Connection *string `json:"connection,omitempty"`
+
+	// Required. Action for the tool to use.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ConnectorTool.action
+	// +required
+	Action *Action `json:"action,omitempty"`
+
+	// Optional. Configures how authentication is handled in Integration
+	//  Connectors. By default, an admin authentication is passed in the
+	//  Integration Connectors API requests. You can override it with a different
+	//  end-user authentication config.
+	//  **Note**: The Connection must have authentication override enabled in
+	//  order to specify an EUC configuration here - otherwise, the ConnectorTool
+	//  creation will fail. See
+	//  https://cloud.google.com/application-integration/docs/configure-connectors-task#configure-authentication-override
+	//  for details.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ConnectorTool.auth_config
+	AuthConfig *EndUserAuthConfig `json:"authConfig,omitempty"`
+
+	// Optional. The name of the tool that can be used by the Agent to decide
+	//  whether to call this ConnectorTool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ConnectorTool.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The description of the tool that can be used by the Agent to
+	//  decide whether to call this ConnectorTool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ConnectorTool.description
+	Description *string `json:"description,omitempty"`
 }
 
 // +kcc:proto=google.cloud.ces.v1beta.ConversationLoggingSettings
@@ -421,6 +869,32 @@ type ConversationLoggingSettings struct {
 	//  If not set, the conversation will be retained for 365 days.
 	// +kcc:proto:field=google.cloud.ces.v1beta.ConversationLoggingSettings.retention_window
 	RetentionWindow *string `json:"retentionWindow,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.DataStore
+type DataStore struct {
+	// Required. Full resource name of the DataStore.
+	//  Format:
+	//  `projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}`
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStore.name
+	// +required
+	Name *string `json:"name,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.DataStore.ConnectorConfig
+type DataStore_ConnectorConfig struct {
+	// Resource name of the collection the data store belongs to.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStore.ConnectorConfig.collection
+	Collection *string `json:"collection,omitempty"`
+
+	// Display name of the collection the data store belongs to.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStore.ConnectorConfig.collection_display_name
+	CollectionDisplayName *string `json:"collectionDisplayName,omitempty"`
+
+	// The name of the data source.
+	//  Example: `salesforce`, `jira`, `confluence`, `bigquery`.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStore.ConnectorConfig.data_source
+	DataSource *string `json:"dataSource,omitempty"`
 }
 
 /* found existing non-generated go type "DataStoreSettings", skipping
@@ -436,6 +910,314 @@ type DataStoreSettings struct {
 type DataStoreSettings_Engine struct {
 }
 */
+
+// +kcc:proto=google.cloud.ces.v1beta.DataStoreTool
+type DataStoreTool struct {
+	// Optional. Search within a single specific DataStore.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.data_store_source
+	DataStoreSource *DataStoreTool_DataStoreSource `json:"dataStoreSource,omitempty"`
+
+	// Optional. Search within an Engine (potentially across multiple
+	//  DataStores).
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.engine_source
+	EngineSource *DataStoreTool_EngineSource `json:"engineSource,omitempty"`
+
+	// Required. The data store tool name.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.name
+	// +required
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The tool description.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Boost specification to boost certain documents.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.boost_specs
+	BoostSpecs []DataStoreTool_BoostSpecs `json:"boostSpecs,omitempty"`
+
+	// Optional. The modality configs for the data store.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.modality_configs
+	ModalityConfigs []DataStoreTool_ModalityConfig `json:"modalityConfigs,omitempty"`
+
+	// Optional. The filter parameter behavior.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.filter_parameter_behavior
+	FilterParameterBehavior *string `json:"filterParameterBehavior,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.DataStoreTool.BoostSpec
+type DataStoreTool_BoostSpec struct {
+	// Required. A list of boosting specifications.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.BoostSpec.condition_boost_specs
+	// +required
+	ConditionBoostSpecs []DataStoreTool_BoostSpec_ConditionBoostSpec `json:"conditionBoostSpecs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.DataStoreTool.BoostSpec.ConditionBoostSpec
+type DataStoreTool_BoostSpec_ConditionBoostSpec struct {
+	// Required. An expression which specifies a boost condition. The syntax
+	//  is the same as filter expression syntax. Currently, the only supported
+	//  condition is a list of BCP-47 lang codes. Example: To boost suggestions
+	//  in languages en or fr: (lang_code: ANY("en", "fr"))
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.BoostSpec.ConditionBoostSpec.condition
+	// +required
+	Condition *string `json:"condition,omitempty"`
+
+	// Optional. Strength of the boost, which should be in [-1, 1]. Negative
+	//  boost means demotion. Default is 0.0.
+	//
+	//  Setting to 1.0 gives the suggestions a big promotion. However, it does
+	//  not necessarily mean that the top result will be a boosted suggestion.
+	//
+	//  Setting to -1.0 gives the suggestions a big demotion. However, other
+	//  suggestions that are relevant might still be shown.
+	//
+	//  Setting to 0.0 means no boost applied. The boosting condition is
+	//  ignored.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.BoostSpec.ConditionBoostSpec.boost
+	Boost *float32 `json:"boost,omitempty"`
+
+	// Optional. Complex specification for custom ranking based on customer
+	//  defined attribute value.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.BoostSpec.ConditionBoostSpec.boost_control_spec
+	BoostControlSpec *DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec `json:"boostControlSpec,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.DataStoreTool.BoostSpec.ConditionBoostSpec.BoostControlSpec
+type DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec struct {
+	// Optional. The name of the field whose value will be used to determine
+	//  the boost amount.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.BoostSpec.ConditionBoostSpec.BoostControlSpec.field_name
+	FieldName *string `json:"fieldName,omitempty"`
+
+	// Optional. The attribute type to be used to determine the boost
+	//  amount. The attribute value can be derived from the field value of
+	//  the specified field_name. In the case of numerical it is
+	//  straightforward i.e. attribute_value = numerical_field_value. In the
+	//  case of freshness however, attribute_value = (time.now() -
+	//  datetime_field_value).
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.BoostSpec.ConditionBoostSpec.BoostControlSpec.attribute_type
+	AttributeType *string `json:"attributeType,omitempty"`
+
+	// Optional. The interpolation type to be applied to connect the control
+	//  points listed below.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.BoostSpec.ConditionBoostSpec.BoostControlSpec.interpolation_type
+	InterpolationType *string `json:"interpolationType,omitempty"`
+
+	// Optional. The control points used to define the curve. The monotonic
+	//  function (defined through the interpolation_type above) passes
+	//  through the control points listed here.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.BoostSpec.ConditionBoostSpec.BoostControlSpec.control_points
+	ControlPoints []DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec_ControlPoint `json:"controlPoints,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.DataStoreTool.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint
+type DataStoreTool_BoostSpec_ConditionBoostSpec_BoostControlSpec_ControlPoint struct {
+	// Optional. Can be one of:
+	//  1. The numerical field value.
+	//  2. The duration spec for freshness:
+	//  The value must be formatted as an XSD `dayTimeDuration` value (a
+	//  restricted subset of an ISO 8601 duration value). The pattern for
+	//  this is: `[nD][T[nH][nM][nS]]`.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint.attribute_value
+	AttributeValue *string `json:"attributeValue,omitempty"`
+
+	// Optional. The value between -1 to 1 by which to boost the score if
+	//  the attribute_value evaluates to the value specified above.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint.boost_amount
+	BoostAmount *float32 `json:"boostAmount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.DataStoreTool.BoostSpecs
+type DataStoreTool_BoostSpecs struct {
+	// Required. The Data Store where the boosting configuration is applied.
+	//  Full resource name of DataStore, such as
+	//  projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.BoostSpecs.data_stores
+	// +required
+	DataStores []string `json:"dataStores,omitempty"`
+
+	// Required. A list of boosting specifications.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.BoostSpecs.spec
+	// +required
+	Spec []DataStoreTool_BoostSpec `json:"spec,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.DataStoreTool.DataStoreSource
+type DataStoreTool_DataStoreSource struct {
+	// Optional. Filter specification for the DataStore.
+	//  See:
+	//  https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.DataStoreSource.filter
+	Filter *string `json:"filter,omitempty"`
+
+	// Optional. The data store.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.DataStoreSource.data_store
+	DataStore *DataStore `json:"dataStore,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.DataStoreTool.EngineSource
+type DataStoreTool_EngineSource struct {
+	// Required. Full resource name of the Engine.
+	//  Format:
+	//  `projects/{project}/locations/{location}/collections/{collection}/engines/{engine}`
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.EngineSource.engine
+	// +required
+	Engine *string `json:"engine,omitempty"`
+
+	// Optional. Use to target specific DataStores within the Engine.
+	//  If empty, the search applies to all DataStores associated with the
+	//  Engine.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.EngineSource.data_store_sources
+	DataStoreSources []DataStoreTool_DataStoreSource `json:"dataStoreSources,omitempty"`
+
+	// Optional. A filter applied to the search across the Engine. Not relevant
+	//  and not used if 'data_store_sources' is provided. See:
+	//  https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.EngineSource.filter
+	Filter *string `json:"filter,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.DataStoreTool.GroundingConfig
+type DataStoreTool_GroundingConfig struct {
+	// Optional. The groundedness threshold of the answer based on the retrieved
+	//  sources. The value has a configurable range of [1, 5]. The level is used
+	//  to threshold the groundedness of the answer, meaning that all responses
+	//  with a groundedness score below the threshold will fall back to returning
+	//  relevant snippets only.
+	//
+	//  For example, a level of 3 means that the groundedness score must be
+	//  3 or higher for the response to be returned.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.GroundingConfig.grounding_level
+	GroundingLevel *float32 `json:"groundingLevel,omitempty"`
+
+	// Optional. Whether grounding is disabled.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.GroundingConfig.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.DataStoreTool.ModalityConfig
+type DataStoreTool_ModalityConfig struct {
+	// Required. The modality type.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.ModalityConfig.modality_type
+	// +required
+	ModalityType *string `json:"modalityType,omitempty"`
+
+	// Optional. The rewriter config.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.ModalityConfig.rewriter_config
+	RewriterConfig *DataStoreTool_RewriterConfig `json:"rewriterConfig,omitempty"`
+
+	// Optional. The summarization config.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.ModalityConfig.summarization_config
+	SummarizationConfig *DataStoreTool_SummarizationConfig `json:"summarizationConfig,omitempty"`
+
+	// Optional. The grounding configuration.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.ModalityConfig.grounding_config
+	GroundingConfig *DataStoreTool_GroundingConfig `json:"groundingConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.DataStoreTool.RewriterConfig
+type DataStoreTool_RewriterConfig struct {
+	// Required. Configurations for the LLM model.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.RewriterConfig.model_settings
+	// +required
+	ModelSettings *ModelSettings `json:"modelSettings,omitempty"`
+
+	// Optional. The prompt definition. If not set, default prompt will be used.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.RewriterConfig.prompt
+	Prompt *string `json:"prompt,omitempty"`
+
+	// Optional. Whether the rewriter is disabled.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.RewriterConfig.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.DataStoreTool.SummarizationConfig
+type DataStoreTool_SummarizationConfig struct {
+	// Optional. Configurations for the LLM model.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.SummarizationConfig.model_settings
+	ModelSettings *ModelSettings `json:"modelSettings,omitempty"`
+
+	// Optional. The prompt definition. If not set, default prompt will be used.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.SummarizationConfig.prompt
+	Prompt *string `json:"prompt,omitempty"`
+
+	// Optional. Whether summarization is disabled.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.SummarizationConfig.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.ces.v1beta.Deployment", skipping
+
+// +kcc:proto=google.cloud.ces.v1beta.Deployment
+type Deployment struct {
+	// Identifier. The resource name of the deployment.
+	//  Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/deployments/{deployment}`
+	// +kcc:proto:field=google.cloud.ces.v1beta.Deployment.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Display name of the deployment.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Deployment.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The resource name of the app version to deploy.
+	//  Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/versions/{version}`
+	//  Use `projects/{project}/locations/{location}/apps/{app}/versions/-` to use
+	//  the draft app.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Deployment.app_version
+	AppVersion *string `json:"appVersion,omitempty"`
+
+	// Required. The channel profile used in the deployment.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Deployment.channel_profile
+	ChannelProfile *ChannelProfile `json:"channelProfile,omitempty"`
+
+	// Optional. Experiment configuration for the deployment.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Deployment.experiment_config
+	ExperimentConfig *ExperimentConfig `json:"experimentConfig,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.ces.v1beta.EndUserAuthConfig
+type EndUserAuthConfig struct {
+	// Oauth 2.0 Authorization Code authentication.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EndUserAuthConfig.oauth2_auth_code_config
+	OAUTH2AuthCodeConfig *EndUserAuthConfig_OAUTH2AuthCodeConfig `json:"oauth2AuthCodeConfig,omitempty"`
+
+	// JWT Profile Oauth 2.0 Authorization Grant authentication.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EndUserAuthConfig.oauth2_jwt_bearer_config
+	OAUTH2JwtBearerConfig *EndUserAuthConfig_OAUTH2JwtBearerConfig `json:"oauth2JwtBearerConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.EndUserAuthConfig.Oauth2AuthCodeConfig
+type EndUserAuthConfig_OAUTH2AuthCodeConfig struct {
+	// Required. Oauth token parameter name to pass through.
+	//  Must be in the format `$context.variables.<name_of_variable>`.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EndUserAuthConfig.Oauth2AuthCodeConfig.oauth_token
+	// +required
+	OauthToken *string `json:"oauthToken,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.EndUserAuthConfig.Oauth2JwtBearerConfig
+type EndUserAuthConfig_OAUTH2JwtBearerConfig struct {
+	// Required. Issuer parameter name to pass through.
+	//  Must be in the format `$context.variables.<name_of_variable>`.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EndUserAuthConfig.Oauth2JwtBearerConfig.issuer
+	// +required
+	Issuer *string `json:"issuer,omitempty"`
+
+	// Required. Subject parameter name to pass through.
+	//  Must be in the format `$context.variables.<name_of_variable>`.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EndUserAuthConfig.Oauth2JwtBearerConfig.subject
+	// +required
+	Subject *string `json:"subject,omitempty"`
+
+	// Required. Client parameter name to pass through.
+	//  Must be in the format `$context.variables.<name_of_variable>`.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EndUserAuthConfig.Oauth2JwtBearerConfig.client_key
+	// +required
+	ClientKey *string `json:"clientKey,omitempty"`
+}
 
 // +kcc:proto=google.cloud.ces.v1beta.ErrorHandlingSettings
 type ErrorHandlingSettings struct {
@@ -478,6 +1260,80 @@ type ErrorHandlingSettings_FallbackResponseConfig struct {
 	//  agent emitting [EndSession][google.cloud.ces.v1beta.EndSession] Signal.
 	// +kcc:proto:field=google.cloud.ces.v1beta.ErrorHandlingSettings.FallbackResponseConfig.max_fallback_attempts
 	MaxFallbackAttempts *int32 `json:"maxFallbackAttempts,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.EvaluationConfig
+type EvaluationConfig struct {
+	// Optional. Configuration for processing the input audio.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationConfig.input_audio_config
+	InputAudioConfig *InputAudioConfig `json:"inputAudioConfig,omitempty"`
+
+	// Optional. Configuration for generating the output audio.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationConfig.output_audio_config
+	OutputAudioConfig *OutputAudioConfig `json:"outputAudioConfig,omitempty"`
+
+	// Optional. The channel to evaluate.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationConfig.evaluation_channel
+	EvaluationChannel *string `json:"evaluationChannel,omitempty"`
+
+	// Optional. Specifies whether the evaluation should use real tool calls or
+	//  fake tools.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationConfig.tool_call_behaviour
+	ToolCallBehaviour *string `json:"toolCallBehaviour,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.ces.v1beta.EvaluationDataset", skipping
+
+// +kcc:proto=google.cloud.ces.v1beta.EvaluationDataset
+type EvaluationDataset struct {
+	// Identifier. The unique identifier of this evaluation dataset.
+	//  Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/evaluationDatasets/{evaluationDataset}`
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationDataset.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. User-defined display name of the evaluation dataset. Unique
+	//  within an App.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationDataset.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. Evaluations that are included in this dataset.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationDataset.evaluations
+	Evaluations []string `json:"evaluations,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.ces.v1beta.EvaluationExpectation", skipping
+
+// +kcc:proto=google.cloud.ces.v1beta.EvaluationExpectation
+type EvaluationExpectation struct {
+	// Optional. Evaluation criteria based on an LLM prompt.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationExpectation.llm_criteria
+	LlmCriteria *EvaluationExpectation_LlmCriteria `json:"llmCriteria,omitempty"`
+
+	// Identifier. The unique identifier of this evaluation expectation.
+	//  Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/evaluationExpectations/{evaluation_expectation}`
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationExpectation.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. User-defined display name. Must be unique within the app.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationExpectation.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. User-defined tags for expectations. Can be used to filter
+	//  expectations.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationExpectation.tags
+	Tags []string `json:"tags,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.ces.v1beta.EvaluationExpectation.LlmCriteria
+type EvaluationExpectation_LlmCriteria struct {
+	// Required. The prompt/instructions provided to the LLM judge.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationExpectation.LlmCriteria.prompt
+	// +required
+	Prompt *string `json:"prompt,omitempty"`
 }
 
 // +kcc:proto=google.cloud.ces.v1beta.EvaluationMetricsConfig
@@ -698,6 +1554,398 @@ type EvaluationSettings struct {
 	ScenarioExecutionMode *string `json:"scenarioExecutionMode,omitempty"`
 }
 
+/* found existing non-generated go type with proto tag "google.cloud.ces.v1beta.Example", skipping
+
+// +kcc:proto=google.cloud.ces.v1beta.Example
+type Example struct {
+	// Identifier. The unique identifier of the example.
+	//  Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/examples/{example}`
+	// +kcc:proto:field=google.cloud.ces.v1beta.Example.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Display name of the example.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Example.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. Human-readable description of the example.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Example.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. The agent that initially handles the conversation. If not
+	//  specified, the example represents a conversation that is handled by the
+	//  root agent. Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/agents/{agent}`
+	// +kcc:proto:field=google.cloud.ces.v1beta.Example.entry_agent
+	EntryAgent *string `json:"entryAgent,omitempty"`
+
+	// Optional. The collection of messages that make up the conversation.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Example.messages
+	Messages []Message `json:"messages,omitempty"`
+
+	// Etag used to ensure the object hasn't changed during a read-modify-write
+	//  operation. If the etag is empty, the update will overwrite any concurrent
+	//  changes.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Example.etag
+	Etag *string `json:"etag,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.ces.v1beta.ExperimentConfig
+type ExperimentConfig struct {
+	// Optional. Version release for the experiment.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ExperimentConfig.version_release
+	VersionRelease *ExperimentConfig_VersionRelease `json:"versionRelease,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.ExperimentConfig.VersionRelease
+type ExperimentConfig_VersionRelease struct {
+	// Optional. State of the version release.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ExperimentConfig.VersionRelease.state
+	State *string `json:"state,omitempty"`
+
+	// Optional. Traffic allocations for the version release.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ExperimentConfig.VersionRelease.traffic_allocations
+	TrafficAllocations []ExperimentConfig_VersionRelease_TrafficAllocation `json:"trafficAllocations,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.ExperimentConfig.VersionRelease.TrafficAllocation
+type ExperimentConfig_VersionRelease_TrafficAllocation struct {
+	// Optional. Id of the traffic allocation.
+	//  Free format string, up to 128 characters.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ExperimentConfig.VersionRelease.TrafficAllocation.id
+	ID *string `json:"id,omitempty"`
+
+	// Optional. Traffic percentage of the traffic allocation.
+	//  Must be between 0 and 100.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ExperimentConfig.VersionRelease.TrafficAllocation.traffic_percentage
+	TrafficPercentage *int32 `json:"trafficPercentage,omitempty"`
+
+	// Optional. App version of the traffic allocation.
+	//  Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/versions/{version}`
+	// +kcc:proto:field=google.cloud.ces.v1beta.ExperimentConfig.VersionRelease.TrafficAllocation.app_version
+	AppVersion *string `json:"appVersion,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.FileSearchTool
+type FileSearchTool struct {
+	// Optional. The type of the corpus. Default is FULLY_MANAGED.
+	// +kcc:proto:field=google.cloud.ces.v1beta.FileSearchTool.corpus_type
+	CorpusType *string `json:"corpusType,omitempty"`
+
+	// Required. The tool name.
+	// +kcc:proto:field=google.cloud.ces.v1beta.FileSearchTool.name
+	// +required
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The tool description.
+	// +kcc:proto:field=google.cloud.ces.v1beta.FileSearchTool.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. The corpus where files are stored.
+	//  Format:
+	//  projects/{project}/locations/{location}/ragCorpora/{rag_corpus}
+	// +kcc:proto:field=google.cloud.ces.v1beta.FileSearchTool.file_corpus
+	FileCorpus *string `json:"fileCorpus,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.GoogleSearchTool
+type GoogleSearchTool struct {
+	// Required. The name of the tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.GoogleSearchTool.name
+	// +required
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Description of the tool's purpose.
+	// +kcc:proto:field=google.cloud.ces.v1beta.GoogleSearchTool.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Content will be fetched directly from these URLs for context and
+	//  grounding. Example: "https://example.com/path.html". A maximum of 20 URLs
+	//  are allowed.
+	// +kcc:proto:field=google.cloud.ces.v1beta.GoogleSearchTool.context_urls
+	ContextURLs []string `json:"contextURLs,omitempty"`
+
+	// Optional. Specifies domains to restrict search results to.
+	//  Example: "example.com", "another.site". A maximum of 20 domains can be
+	//  specified.
+	// +kcc:proto:field=google.cloud.ces.v1beta.GoogleSearchTool.preferred_domains
+	PreferredDomains []string `json:"preferredDomains,omitempty"`
+
+	// Optional. List of domains to be excluded from the search results.
+	//  Example: "example.com".
+	//  A maximum of 2000 domains can be excluded.
+	// +kcc:proto:field=google.cloud.ces.v1beta.GoogleSearchTool.exclude_domains
+	ExcludeDomains []string `json:"excludeDomains,omitempty"`
+
+	// Optional. Prompt instructions passed to planner on how the search results
+	//  should be processed for text and voice.
+	// +kcc:proto:field=google.cloud.ces.v1beta.GoogleSearchTool.prompt_config
+	PromptConfig *GoogleSearchTool_PromptConfig `json:"promptConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.GoogleSearchTool.PromptConfig
+type GoogleSearchTool_PromptConfig struct {
+	// Optional. Defines the prompt used for the system instructions when
+	//  interacting with the agent in chat conversations. If not set, default
+	//  prompt will be used.
+	// +kcc:proto:field=google.cloud.ces.v1beta.GoogleSearchTool.PromptConfig.text_prompt
+	TextPrompt *string `json:"textPrompt,omitempty"`
+
+	// Optional. Defines the prompt used for the system instructions when
+	//  interacting with the agent in voice conversations. If not set, default
+	//  prompt will be used.
+	// +kcc:proto:field=google.cloud.ces.v1beta.GoogleSearchTool.PromptConfig.voice_prompt
+	VoicePrompt *string `json:"voicePrompt,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.ces.v1beta.Guardrail", skipping
+
+// +kcc:proto=google.cloud.ces.v1beta.Guardrail
+type Guardrail struct {
+	// Optional. Guardrail that bans certain content from being used in the
+	//  conversation.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.content_filter
+	ContentFilter *Guardrail_ContentFilter `json:"contentFilter,omitempty"`
+
+	// Optional. Guardrail that blocks the conversation if the prompt is
+	//  considered unsafe based on the LLM classification.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.llm_prompt_security
+	LlmPromptSecurity *Guardrail_LlmPromptSecurity `json:"llmPromptSecurity,omitempty"`
+
+	// Optional. Guardrail that blocks the conversation if the LLM response is
+	//  considered violating the policy based on the LLM classification.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.llm_policy
+	LlmPolicy *Guardrail_LlmPolicy `json:"llmPolicy,omitempty"`
+
+	// Optional. Guardrail that blocks the conversation if the LLM response is
+	//  considered unsafe based on the model safety settings.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.model_safety
+	ModelSafety *Guardrail_ModelSafety `json:"modelSafety,omitempty"`
+
+	// Optional. Guardrail that potentially blocks the conversation based on the
+	//  result of the callback execution.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.code_callback
+	CodeCallback *Guardrail_CodeCallback `json:"codeCallback,omitempty"`
+
+	// Identifier. The unique identifier of the guardrail.
+	//  Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/guardrails/{guardrail}`
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Display name of the guardrail.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. Description of the guardrail.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Whether the guardrail is enabled.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Optional. Action to take when the guardrail is triggered.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.action
+	Action *TriggerAction `json:"action,omitempty"`
+
+	// Etag used to ensure the object hasn't changed during a read-modify-write
+	//  operation. If the etag is empty, the update will overwrite any concurrent
+	//  changes.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.etag
+	Etag *string `json:"etag,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.ces.v1beta.Guardrail.CodeCallback
+type Guardrail_CodeCallback struct {
+	// Optional. The callback to execute before the agent is called.
+	//  Each callback function is expected to return a structure (e.g., a dict or
+	//  object) containing at least:
+	//    - 'decision': Either 'OK' or 'TRIGGER'.
+	//    - 'reason': A string explaining the decision.
+	//  A 'TRIGGER' decision may halt further processing.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.CodeCallback.before_agent_callback
+	BeforeAgentCallback *Callback `json:"beforeAgentCallback,omitempty"`
+
+	// Optional. The callback to execute after the agent is called.
+	//  Each callback function is expected to return a structure (e.g., a dict or
+	//  object) containing at least:
+	//    - 'decision': Either 'OK' or 'TRIGGER'.
+	//    - 'reason': A string explaining the decision.
+	//  A 'TRIGGER' decision may halt further processing.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.CodeCallback.after_agent_callback
+	AfterAgentCallback *Callback `json:"afterAgentCallback,omitempty"`
+
+	// Optional. The callback to execute before the model is called. If there
+	//  are multiple calls to the model, the callback will be executed multiple
+	//  times. Each callback function is expected to return a structure (e.g., a
+	//  dict or object) containing at least:
+	//    - 'decision': Either 'OK' or 'TRIGGER'.
+	//    - 'reason': A string explaining the decision.
+	//  A 'TRIGGER' decision may halt further processing.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.CodeCallback.before_model_callback
+	BeforeModelCallback *Callback `json:"beforeModelCallback,omitempty"`
+
+	// Optional. The callback to execute after the model is called. If there are
+	//  multiple calls to the model, the callback will be executed multiple
+	//  times. Each callback function is expected to return a structure (e.g., a
+	//  dict or object) containing at least:
+	//    - 'decision': Either 'OK' or 'TRIGGER'.
+	//    - 'reason': A string explaining the decision.
+	//  A 'TRIGGER' decision may halt further processing.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.CodeCallback.after_model_callback
+	AfterModelCallback *Callback `json:"afterModelCallback,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.Guardrail.ContentFilter
+type Guardrail_ContentFilter struct {
+	// Optional. List of banned phrases. Applies to both user inputs and agent
+	//  responses.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.ContentFilter.banned_contents
+	BannedContents []string `json:"bannedContents,omitempty"`
+
+	// Optional. List of banned phrases. Applies only to user inputs.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.ContentFilter.banned_contents_in_user_input
+	BannedContentsInUserInput []string `json:"bannedContentsInUserInput,omitempty"`
+
+	// Optional. List of banned phrases. Applies only to agent responses.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.ContentFilter.banned_contents_in_agent_response
+	BannedContentsInAgentResponse []string `json:"bannedContentsInAgentResponse,omitempty"`
+
+	// Required. Match type for the content filter.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.ContentFilter.match_type
+	// +required
+	MatchType *string `json:"matchType,omitempty"`
+
+	// Optional. If true, diacritics are ignored during matching.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.ContentFilter.disregard_diacritics
+	DisregardDiacritics *bool `json:"disregardDiacritics,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.Guardrail.LlmPolicy
+type Guardrail_LlmPolicy struct {
+	// Optional. When checking this policy, consider the last 'n' messages in
+	//  the conversation. When not set a default value of 10 will be used.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.LlmPolicy.max_conversation_messages
+	MaxConversationMessages *int32 `json:"maxConversationMessages,omitempty"`
+
+	// Optional. Model settings.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.LlmPolicy.model_settings
+	ModelSettings *ModelSettings `json:"modelSettings,omitempty"`
+
+	// Required. Policy prompt.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.LlmPolicy.prompt
+	// +required
+	Prompt *string `json:"prompt,omitempty"`
+
+	// Required. Defines when to apply the policy check during the conversation.
+	//  If set to `POLICY_SCOPE_UNSPECIFIED`, the policy will be applied to the
+	//  user input. When applying the policy to the agent response, additional
+	//  latency will be introduced before the agent can respond.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.LlmPolicy.policy_scope
+	// +required
+	PolicyScope *string `json:"policyScope,omitempty"`
+
+	// Optional. If an error occurs during the policy check, fail open and do
+	//  not trigger the guardrail.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.LlmPolicy.fail_open
+	FailOpen *bool `json:"failOpen,omitempty"`
+
+	// Optional. By default, the LLM policy check is bypassed for short
+	//  utterances. Enabling this setting applies the policy check to all
+	//  utterances, including those that would normally be skipped.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.LlmPolicy.allow_short_utterance
+	AllowShortUtterance *bool `json:"allowShortUtterance,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.Guardrail.LlmPromptSecurity
+type Guardrail_LlmPromptSecurity struct {
+	// Optional. Use the system's predefined default security settings.
+	//  To select this mode, include an empty 'default_settings' message
+	//  in the request. The 'default_prompt_template' field within
+	//  will be populated by the server in the response.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.LlmPromptSecurity.default_settings
+	DefaultSettings *Guardrail_LlmPromptSecurity_DefaultSecuritySettings `json:"defaultSettings,omitempty"`
+
+	// Optional. Use a user-defined LlmPolicy to configure the security
+	//  guardrail.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.LlmPromptSecurity.custom_policy
+	CustomPolicy *Guardrail_LlmPolicy `json:"customPolicy,omitempty"`
+
+	// Optional. Determines the behavior when the guardrail encounters an LLM
+	//  error.
+	//  - If true: the guardrail is bypassed.
+	//  - If false (default): the guardrail triggers/blocks.
+	//
+	//  Note: If a custom policy is provided, this field is ignored in favor
+	//  of the policy's 'fail_open' configuration.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.LlmPromptSecurity.fail_open
+	FailOpen *bool `json:"failOpen,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.Guardrail.LlmPromptSecurity.DefaultSecuritySettings
+type Guardrail_LlmPromptSecurity_DefaultSecuritySettings struct {
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.Guardrail.ModelSafety
+type Guardrail_ModelSafety struct {
+	// Required. List of safety settings.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.ModelSafety.safety_settings
+	// +required
+	SafetySettings []Guardrail_ModelSafety_SafetySetting `json:"safetySettings,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.Guardrail.ModelSafety.SafetySetting
+type Guardrail_ModelSafety_SafetySetting struct {
+	// Required. The harm category.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.ModelSafety.SafetySetting.category
+	// +required
+	Category *string `json:"category,omitempty"`
+
+	// Required. The harm block threshold.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.ModelSafety.SafetySetting.threshold
+	// +required
+	Threshold *string `json:"threshold,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.Image
+type Image struct {
+	// Required. The IANA standard MIME type of the source data.
+	//  Supported image types includes:
+	//   * image/png
+	//   * image/jpeg
+	//   * image/webp
+	// +kcc:proto:field=google.cloud.ces.v1beta.Image.mime_type
+	// +required
+	MimeType *string `json:"mimeType,omitempty"`
+
+	// Required. Raw bytes of the image.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Image.data
+	// +required
+	Data []byte `json:"data,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.InputAudioConfig
+type InputAudioConfig struct {
+	// Required. The encoding of the input audio data.
+	// +kcc:proto:field=google.cloud.ces.v1beta.InputAudioConfig.audio_encoding
+	// +required
+	AudioEncoding *string `json:"audioEncoding,omitempty"`
+
+	// Required. The sample rate (in Hertz) of the input audio data.
+	// +kcc:proto:field=google.cloud.ces.v1beta.InputAudioConfig.sample_rate_hertz
+	// +required
+	SampleRateHertz *int32 `json:"sampleRateHertz,omitempty"`
+
+	// Optional. Whether to enable noise suppression on the input audio.
+	//  Available values are "low", "moderate", "high", "very_high".
+	// +kcc:proto:field=google.cloud.ces.v1beta.InputAudioConfig.noise_suppression_level
+	NoiseSuppressionLevel *string `json:"noiseSuppressionLevel,omitempty"`
+}
+
 // +kcc:proto=google.cloud.ces.v1beta.LanguageSettings
 type LanguageSettings struct {
 	// Optional. The default language code of the app.
@@ -777,6 +2025,84 @@ type LoggingSettings struct {
 	MetricAnalysisSettings *MetricAnalysisSettings `json:"metricAnalysisSettings,omitempty"`
 }
 
+// +kcc:proto=google.cloud.ces.v1beta.McpTool
+type McpTool struct {
+	// Required. The name of the MCP tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.McpTool.name
+	// +required
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The name override of the MCP tool.
+	//  This is populated if the name was overridden by a Toolset override.
+	// +kcc:proto:field=google.cloud.ces.v1beta.McpTool.name_override
+	NameOverride *string `json:"nameOverride,omitempty"`
+
+	// Optional. The description of the MCP tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.McpTool.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. The schema of the input arguments of the MCP tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.McpTool.input_schema
+	InputSchema *Schema `json:"inputSchema,omitempty"`
+
+	// Optional. The schema of the output arguments of the MCP tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.McpTool.output_schema
+	OutputSchema *Schema `json:"outputSchema,omitempty"`
+
+	// Required. The server address of the MCP server, e.g.,
+	//  "https://example.com/mcp/". If the server is built with the MCP SDK, the
+	//  url should be suffixed with
+	//  "/mcp/". Only Streamable HTTP transport based servers are supported. This
+	//  is the same as the server_address in the McpToolset. See
+	//  https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http
+	//  for more details.
+	// +kcc:proto:field=google.cloud.ces.v1beta.McpTool.server_address
+	// +required
+	ServerAddress *string `json:"serverAddress,omitempty"`
+
+	// Optional. Authentication information required to execute the tool against
+	//  the MCP server. For bearer token authentication, the token applies only to
+	//  tool execution, not to listing tools. This requires that tools can be
+	//  listed without authentication.
+	// +kcc:proto:field=google.cloud.ces.v1beta.McpTool.api_authentication
+	APIAuthentication *APIAuthentication `json:"apiAuthentication,omitempty"`
+
+	// Optional. The TLS configuration. Includes the custom server certificates
+	//  that the client should trust.
+	// +kcc:proto:field=google.cloud.ces.v1beta.McpTool.tls_config
+	TLSConfig *TLSConfig `json:"tlsConfig,omitempty"`
+
+	// Optional. Service Directory configuration for VPC-SC, used to resolve
+	//  service names within a perimeter.
+	// +kcc:proto:field=google.cloud.ces.v1beta.McpTool.service_directory_config
+	ServiceDirectoryConfig *ServiceDirectoryConfig `json:"serviceDirectoryConfig,omitempty"`
+
+	// Optional. The custom headers to send in the request to the MCP server. The
+	//  values must be in the format `$context.variables.<name_of_variable>` and
+	//  can be set in the session variables. See
+	//  https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/tool/open-api#openapi-injection
+	//  for more details.
+	// +kcc:proto:field=google.cloud.ces.v1beta.McpTool.custom_headers
+	CustomHeaders map[string]string `json:"customHeaders,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.Message
+type Message struct {
+	// Optional. The role within the conversation, e.g., user, agent.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Message.role
+	Role *string `json:"role,omitempty"`
+
+	// Optional. Content of the message as a series of chunks.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Message.chunks
+	Chunks []Chunk `json:"chunks,omitempty"`
+
+	// Optional. Timestamp when the message was sent or received. Should not be
+	//  used if the message is part of an
+	//  [example][google.cloud.ces.v1beta.Example].
+	// +kcc:proto:field=google.cloud.ces.v1beta.Message.event_time
+	EventTime *string `json:"eventTime,omitempty"`
+}
+
 // +kcc:proto=google.cloud.ces.v1beta.MetricAnalysisSettings
 type MetricAnalysisSettings struct {
 	// Optional. Whether to collect conversation data for llm analysis metrics. If
@@ -799,6 +2125,136 @@ type ModelSettings struct {
 	//  temperatures produce responses that are more creative.
 	// +kcc:proto:field=google.cloud.ces.v1beta.ModelSettings.temperature
 	Temperature *float64 `json:"temperature,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.OAuthConfig
+type OAuthConfig struct {
+	// Required. OAuth grant types.
+	// +kcc:proto:field=google.cloud.ces.v1beta.OAuthConfig.oauth_grant_type
+	// +required
+	OauthGrantType *string `json:"oauthGrantType,omitempty"`
+
+	// Required. The client ID from the OAuth provider.
+	// +kcc:proto:field=google.cloud.ces.v1beta.OAuthConfig.client_id
+	// +required
+	ClientID *string `json:"clientID,omitempty"`
+
+	// Required. The name of the SecretManager secret version resource storing the
+	//  client secret.
+	//  Format: `projects/{project}/secrets/{secret}/versions/{version}`
+	//
+	//  Note: You should grant `roles/secretmanager.secretAccessor` role to the CES
+	//  service agent
+	//  `service-<PROJECT-NUMBER>@gcp-sa-ces.iam.gserviceaccount.com`.
+	// +kcc:proto:field=google.cloud.ces.v1beta.OAuthConfig.client_secret_version
+	// +required
+	ClientSecretVersion *string `json:"clientSecretVersion,omitempty"`
+
+	// Required. The token endpoint in the OAuth provider to exchange for an
+	//  access token.
+	// +kcc:proto:field=google.cloud.ces.v1beta.OAuthConfig.token_endpoint
+	// +required
+	TokenEndpoint *string `json:"tokenEndpoint,omitempty"`
+
+	// Optional. The OAuth scopes to grant.
+	// +kcc:proto:field=google.cloud.ces.v1beta.OAuthConfig.scopes
+	Scopes []string `json:"scopes,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.OpenApiTool
+type OpenAPITool struct {
+	// Required. The OpenAPI schema in JSON or YAML format.
+	// +kcc:proto:field=google.cloud.ces.v1beta.OpenApiTool.open_api_schema
+	// +required
+	OpenAPISchema *string `json:"openAPISchema,omitempty"`
+
+	// Optional. The name of the tool. If not provided, the name of the tool will
+	//  be derived from the OpenAPI schema, from `operation.operationId`.
+	// +kcc:proto:field=google.cloud.ces.v1beta.OpenApiTool.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The description of the tool. If not provided, the description of
+	//  the tool will be derived from the OpenAPI schema, from
+	//  `operation.description` or `operation.summary`.
+	// +kcc:proto:field=google.cloud.ces.v1beta.OpenApiTool.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Authentication information required by the API.
+	// +kcc:proto:field=google.cloud.ces.v1beta.OpenApiTool.api_authentication
+	APIAuthentication *APIAuthentication `json:"apiAuthentication,omitempty"`
+
+	// Optional. The TLS configuration. Includes the custom server certificates
+	//  that the client will trust.
+	// +kcc:proto:field=google.cloud.ces.v1beta.OpenApiTool.tls_config
+	TLSConfig *TLSConfig `json:"tlsConfig,omitempty"`
+
+	// Optional. Service Directory configuration.
+	// +kcc:proto:field=google.cloud.ces.v1beta.OpenApiTool.service_directory_config
+	ServiceDirectoryConfig *ServiceDirectoryConfig `json:"serviceDirectoryConfig,omitempty"`
+
+	// Optional. If true, the agent will ignore unknown fields in the API
+	//  response.
+	// +kcc:proto:field=google.cloud.ces.v1beta.OpenApiTool.ignore_unknown_fields
+	IgnoreUnknownFields *bool `json:"ignoreUnknownFields,omitempty"`
+
+	// Optional. The server URL of the Open API schema.
+	//  This field is only set in tools in the environment dependencies during the
+	//  export process if the schema contains a server url. During the import
+	//  process, if this url is present in the environment dependencies and the
+	//  schema has the $env_var placeholder, it will replace the placeholder in the
+	//  schema.
+	// +kcc:proto:field=google.cloud.ces.v1beta.OpenApiTool.url
+	URL *string `json:"url,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.OptimizationConfig
+type OptimizationConfig struct {
+	// Optional. Whether to generate a loss report.
+	// +kcc:proto:field=google.cloud.ces.v1beta.OptimizationConfig.generate_loss_report
+	GenerateLossReport *bool `json:"generateLossReport,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.OutputAudioConfig
+type OutputAudioConfig struct {
+	// Required. The encoding of the output audio data.
+	// +kcc:proto:field=google.cloud.ces.v1beta.OutputAudioConfig.audio_encoding
+	// +required
+	AudioEncoding *string `json:"audioEncoding,omitempty"`
+
+	// Required. The sample rate (in Hertz) of the output audio data.
+	// +kcc:proto:field=google.cloud.ces.v1beta.OutputAudioConfig.sample_rate_hertz
+	// +required
+	SampleRateHertz *int32 `json:"sampleRateHertz,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.PersonaRunConfig
+type PersonaRunConfig struct {
+	// Optional. The persona to use for the evaluation.
+	//  Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/evaluationPersonas/{evaluationPersona}`
+	// +kcc:proto:field=google.cloud.ces.v1beta.PersonaRunConfig.persona
+	Persona *string `json:"persona,omitempty"`
+
+	// Optional. The number of tasks to run for the persona.
+	// +kcc:proto:field=google.cloud.ces.v1beta.PersonaRunConfig.task_count
+	TaskCount *int32 `json:"taskCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.PythonFunction
+type PythonFunction struct {
+	// Optional. The name of the Python function to execute. Must match a Python
+	//  function name defined in the python code. Case sensitive. If the name is
+	//  not provided, the first function defined in the python code will be used.
+	// +kcc:proto:field=google.cloud.ces.v1beta.PythonFunction.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The Python code to execute for the tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.PythonFunction.python_code
+	PythonCode *string `json:"pythonCode,omitempty"`
+
+	// Optional. Service Directory configuration for the tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.PythonFunction.service_directory_config
+	ServiceDirectoryConfig *ServiceDirectoryConfig `json:"serviceDirectoryConfig,omitempty"`
 }
 
 /* found existing non-generated go type "RedactionConfig", skipping
@@ -828,6 +2284,148 @@ type RedactionConfig struct {
 }
 */
 
+// +kcc:proto=google.cloud.ces.v1beta.RemoteAgentTool
+type RemoteAgentTool struct {
+	// Required. The name of the tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.RemoteAgentTool.name
+	// +required
+	Name *string `json:"name,omitempty"`
+
+	// Required. The description of the tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.RemoteAgentTool.description
+	// +required
+	Description *string `json:"description,omitempty"`
+
+	// Required. The agent card of the remote agent that this tool invokes.
+	// +kcc:proto:field=google.cloud.ces.v1beta.RemoteAgentTool.agent_card
+	// +required
+	AgentCard *AgentCard `json:"agentCard,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.RunEvaluationRequest
+type RunEvaluationRequest struct {
+	// Required. The app to evaluate.
+	//  Format:
+	//  `projects/{project}/locations/{location}/apps/{app}`
+	// +kcc:guess=possible-reference target=CESApp
+	// +kcc:proto:field=google.cloud.ces.v1beta.RunEvaluationRequest.app
+	// +required
+	App *string `json:"app,omitempty"`
+
+	// Optional. List of evaluations to run.
+	//  Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/evaluations/{evaluation}`
+	// +kcc:proto:field=google.cloud.ces.v1beta.RunEvaluationRequest.evaluations
+	Evaluations []string `json:"evaluations,omitempty"`
+
+	// Optional. An evaluation dataset to run.
+	//  Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/evaluationDatasets/{evaluationDataset}`
+	// +kcc:guess=possible-reference target=CESEvaluationDataset
+	// +kcc:proto:field=google.cloud.ces.v1beta.RunEvaluationRequest.evaluation_dataset
+	EvaluationDataset *string `json:"evaluationDataset,omitempty"`
+
+	// Optional. The display name of the evaluation run.
+	// +kcc:proto:field=google.cloud.ces.v1beta.RunEvaluationRequest.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The app version to evaluate.
+	//  Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/versions/{version}`
+	// +kcc:proto:field=google.cloud.ces.v1beta.RunEvaluationRequest.app_version
+	AppVersion *string `json:"appVersion,omitempty"`
+
+	// Optional. The configuration to use for the run.
+	// +kcc:proto:field=google.cloud.ces.v1beta.RunEvaluationRequest.config
+	Config *EvaluationConfig `json:"config,omitempty"`
+
+	// Optional. The number of times to run the evaluation. If not set, the
+	//  default value is 1 per golden, and 5 per scenario.
+	// +kcc:proto:field=google.cloud.ces.v1beta.RunEvaluationRequest.run_count
+	RunCount *int32 `json:"runCount,omitempty"`
+
+	// Optional. The configuration to use for the run per persona.
+	// +kcc:proto:field=google.cloud.ces.v1beta.RunEvaluationRequest.persona_run_configs
+	PersonaRunConfigs []PersonaRunConfig `json:"personaRunConfigs,omitempty"`
+
+	// Optional. Configuration for running the optimization step after the
+	//  evaluation run. If not set, the optimization step will not be run.
+	// +kcc:proto:field=google.cloud.ces.v1beta.RunEvaluationRequest.optimization_config
+	OptimizationConfig *OptimizationConfig `json:"optimizationConfig,omitempty"`
+
+	// Optional. The resource name of the `ScheduledEvaluationRun` that is
+	//  triggering this evaluation run.
+	//
+	//  If this field is set, the `scheduled_evaluation_run` field on the created
+	//  `EvaluationRun` resource will be populated from this value.
+	//  Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/scheduledEvaluationRuns/{scheduled_evaluation_run}`
+	// +kcc:guess=possible-reference target=CESScheduledEvaluationRun
+	// +kcc:proto:field=google.cloud.ces.v1beta.RunEvaluationRequest.scheduled_evaluation_run
+	ScheduledEvaluationRun *string `json:"scheduledEvaluationRun,omitempty"`
+
+	// Optional. The method to run the evaluation if it is a golden evaluation. If
+	//  not set, default to STABLE.
+	// +kcc:proto:field=google.cloud.ces.v1beta.RunEvaluationRequest.golden_run_method
+	GoldenRunMethod *string `json:"goldenRunMethod,omitempty"`
+
+	// Optional. Whether to generate a latency report for the evaluation run.
+	// +kcc:proto:field=google.cloud.ces.v1beta.RunEvaluationRequest.generate_latency_report
+	GenerateLatencyReport *bool `json:"generateLatencyReport,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.ces.v1beta.ScheduledEvaluationRun", skipping
+
+// +kcc:proto=google.cloud.ces.v1beta.ScheduledEvaluationRun
+type ScheduledEvaluationRun struct {
+	// Identifier. The unique identifier of the scheduled evaluation run config.
+	//  Format:
+	//  projects/{projectId}/locations/{locationId}/apps/{appId}/scheduledEvaluationRuns/{scheduledEvaluationRunId}
+	// +kcc:proto:field=google.cloud.ces.v1beta.ScheduledEvaluationRun.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. User-defined display name of the scheduled evaluation run config.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ScheduledEvaluationRun.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Required. The RunEvaluationRequest to schedule
+	// +kcc:proto:field=google.cloud.ces.v1beta.ScheduledEvaluationRun.request
+	Request *RunEvaluationRequest `json:"request,omitempty"`
+
+	// Optional. User-defined description of the scheduled evaluation run.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ScheduledEvaluationRun.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. Configuration for the timing and frequency with which to execute
+	//  the evaluations.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ScheduledEvaluationRun.scheduling_config
+	SchedulingConfig *ScheduledEvaluationRun_SchedulingConfig `json:"schedulingConfig,omitempty"`
+
+	// Optional. Whether this config is active
+	// +kcc:proto:field=google.cloud.ces.v1beta.ScheduledEvaluationRun.active
+	Active *bool `json:"active,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.ces.v1beta.ScheduledEvaluationRun.SchedulingConfig
+type ScheduledEvaluationRun_SchedulingConfig struct {
+	// Required. The frequency with which to run the eval
+	// +kcc:proto:field=google.cloud.ces.v1beta.ScheduledEvaluationRun.SchedulingConfig.frequency
+	// +required
+	Frequency *string `json:"frequency,omitempty"`
+
+	// Required. Timestamp when the eval should start.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ScheduledEvaluationRun.SchedulingConfig.start_time
+	// +required
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Optional. The days of the week to run the eval. Applicable only for
+	//  Weekly and Biweekly frequencies. 1 is Monday, 2 is Tuesday, ..., 7 is
+	//  Sunday.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ScheduledEvaluationRun.SchedulingConfig.days_of_week
+	DaysOfWeek []int32 `json:"daysOfWeek,omitempty"`
+}
+
 /* found existing non-generated go type "Schema", skipping
 
 // +kcc:proto=google.cloud.ces.v1beta.Schema
@@ -836,8 +2434,9 @@ type Schema struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.Schema.type
 	Type *string `json:"type,omitempty"`
 
-	// TODO: unsupported map type with key string and value message
-
+	// Optional. Properties of Type.OBJECT.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Schema.properties
+	Properties map[string]Schema `json:"properties,omitempty"`
 
 	// Optional. Required properties of Type.OBJECT.
 	// +kcc:proto:field=google.cloud.ces.v1beta.Schema.required
@@ -913,8 +2512,10 @@ type Schema struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.Schema.ref
 	Ref *string `json:"ref,omitempty"`
 
-	// TODO: unsupported map type with key string and value message
-
+	// Optional. A map of definitions for use by `ref`. Only allowed at the root
+	//  of the schema.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Schema.defs
+	Defs map[string]Schema `json:"defs,omitempty"`
 
 	// Optional. The title of the schema.
 	// +kcc:proto:field=google.cloud.ces.v1beta.Schema.title
@@ -938,7 +2539,43 @@ type Schema struct {
 }
 */
 
-/* unreachable type SynthesizeSpeechConfig
+// +kcc:proto=google.cloud.ces.v1beta.ServiceAccountAuthConfig
+type ServiceAccountAuthConfig struct {
+	// Required. The email address of the service account used for authentication.
+	//  CES uses this service account to exchange an access token and the access
+	//  token is then sent in the `Authorization` header of the request.
+	//
+	//  The service account must have the
+	//  `roles/iam.serviceAccountTokenCreator` role granted to the
+	//  CES service agent
+	//  `service-<PROJECT-NUMBER>@gcp-sa-ces.iam.gserviceaccount.com`.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ServiceAccountAuthConfig.service_account
+	// +required
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+
+	// Optional. The OAuth scopes to grant. If not specified, the default scope
+	//  `https://www.googleapis.com/auth/cloud-platform` is used.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ServiceAccountAuthConfig.scopes
+	Scopes []string `json:"scopes,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.ServiceAgentIdTokenAuthConfig
+type ServiceAgentIDTokenAuthConfig struct {
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.ServiceDirectoryConfig
+type ServiceDirectoryConfig struct {
+	// Required. The name of [Service
+	//  Directory](https://cloud.google.com/service-directory) service.
+	//  Format:
+	//  `projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}`.
+	//  Location of the service directory must be the same as the location of the
+	//  app.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ServiceDirectoryConfig.service
+	// +required
+	Service *string `json:"service,omitempty"`
+}
+
 // +kcc:proto=google.cloud.ces.v1beta.SynthesizeSpeechConfig
 type SynthesizeSpeechConfig struct {
 	// Optional. The name of the voice. If not set, the service will choose a
@@ -957,7 +2594,14 @@ type SynthesizeSpeechConfig struct {
 	// +kcc:proto:field=google.cloud.ces.v1beta.SynthesizeSpeechConfig.speaking_rate
 	SpeakingRate *float64 `json:"speakingRate,omitempty"`
 }
-*/
+
+// +kcc:proto=google.cloud.ces.v1beta.SystemTool
+type SystemTool struct {
+	// Required. The name of the system tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.SystemTool.name
+	// +required
+	Name *string `json:"name,omitempty"`
+}
 
 // +kcc:proto=google.cloud.ces.v1beta.TimeZoneSettings
 type TimeZoneSettings struct {
@@ -966,6 +2610,258 @@ type TimeZoneSettings struct {
 	//  Europe/Paris.
 	// +kcc:proto:field=google.cloud.ces.v1beta.TimeZoneSettings.time_zone
 	TimeZone *string `json:"timeZone,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.TlsConfig
+type TLSConfig struct {
+	// Required. Specifies a list of allowed custom CA certificates for HTTPS
+	//  verification.
+	// +kcc:proto:field=google.cloud.ces.v1beta.TlsConfig.ca_certs
+	// +required
+	CACerts []TLSConfig_CACert `json:"caCerts,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.TlsConfig.CaCert
+type TLSConfig_CACert struct {
+	// Required. The name of the allowed custom CA certificates. This
+	//  can be used to disambiguate the custom CA certificates.
+	// +kcc:proto:field=google.cloud.ces.v1beta.TlsConfig.CaCert.display_name
+	// +required
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Required. The allowed custom CA certificates (in DER format) for
+	//  HTTPS verification. This overrides the default SSL trust store. If this
+	//  is empty or unspecified, CES will use Google's default trust
+	//  store to verify certificates. N.B. Make sure the HTTPS server
+	//  certificates are signed with "subject alt name". For instance a
+	//  certificate can be self-signed using the following command:
+	//
+	//  ```
+	//     openssl x509 -req -days 200 -in example.com.csr \
+	//       -signkey example.com.key \
+	//       -out example.com.crt \
+	//       -extfile <(printf "\nsubjectAltName='DNS:www.example.com'")
+	//  ```
+	// +kcc:proto:field=google.cloud.ces.v1beta.TlsConfig.CaCert.cert
+	// +required
+	Cert []byte `json:"cert,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.ces.v1beta.Tool", skipping
+
+// +kcc:proto=google.cloud.ces.v1beta.Tool
+type Tool struct {
+	// Optional. The client function.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.client_function
+	ClientFunction *ClientFunction `json:"clientFunction,omitempty"`
+
+	// Optional. The open API tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.open_api_tool
+	OpenAPITool *OpenAPITool `json:"openAPITool,omitempty"`
+
+	// Optional. The google search tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.google_search_tool
+	GoogleSearchTool *GoogleSearchTool `json:"googleSearchTool,omitempty"`
+
+	// Optional. The Integration Connector tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.connector_tool
+	ConnectorTool *ConnectorTool `json:"connectorTool,omitempty"`
+
+	// Optional. The data store tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.data_store_tool
+	DataStoreTool *DataStoreTool `json:"dataStoreTool,omitempty"`
+
+	// Optional. The python function tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.python_function
+	PythonFunction *PythonFunction `json:"pythonFunction,omitempty"`
+
+	// Optional. The MCP tool. An MCP tool cannot be created or updated directly
+	//  and is managed by the MCP toolset.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.mcp_tool
+	McpTool *McpTool `json:"mcpTool,omitempty"`
+
+	// Optional. The file search tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.file_search_tool
+	FileSearchTool *FileSearchTool `json:"fileSearchTool,omitempty"`
+
+	// Optional. The system tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.system_tool
+	SystemTool *SystemTool `json:"systemTool,omitempty"`
+
+	// Optional. The agent tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.agent_tool
+	AgentTool *AgentTool `json:"agentTool,omitempty"`
+
+	// Optional. The widget tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.widget_tool
+	WidgetTool *WidgetTool `json:"widgetTool,omitempty"`
+
+	// Optional. The remote agent tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.remote_agent_tool
+	RemoteAgentTool *RemoteAgentTool `json:"remoteAgentTool,omitempty"`
+
+	// Identifier. The resource name of the tool. Format:
+	//
+	//  * `projects/{project}/locations/{location}/apps/{app}/tools/{tool}`
+	//    for standalone tools.
+	//  * `projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}/tools/{tool}`
+	//    for tools retrieved from a toolset.
+	//
+	//  These tools are dynamic and output-only; they cannot be referenced directly
+	//  where a tool is expected.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The execution type of the tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.execution_type
+	ExecutionType *string `json:"executionType,omitempty"`
+
+	// Optional. The timeout for the tool execution. If not set, the default
+	//  timeout is 30 seconds for `SYNCHRONOUS` tools and 60 seconds for
+	//  `ASYNCHRONOUS` tools.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.timeout
+	Timeout *string `json:"timeout,omitempty"`
+
+	// Etag used to ensure the object hasn't changed during a read-modify-write
+	//  operation. If the etag is empty, the update will overwrite any concurrent
+	//  changes.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Optional. Configuration for tool behavior in fake mode.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.tool_fake_config
+	ToolFakeConfig *ToolFakeConfig `json:"toolFakeConfig,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.ces.v1beta.ToolCall
+type ToolCall struct {
+	// Optional. The name of the tool to execute.
+	//  Format: `projects/{project}/locations/{location}/apps/{app}/tools/{tool}`
+	// +kcc:guess=possible-reference target=CESTool
+	// +kcc:proto:field=google.cloud.ces.v1beta.ToolCall.tool
+	Tool *string `json:"tool,omitempty"`
+
+	// Optional. The toolset tool to execute.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ToolCall.toolset_tool
+	ToolsetTool *ToolsetTool `json:"toolsetTool,omitempty"`
+
+	// Optional. The unique identifier of the tool call. If populated, the client
+	//  should return the execution result with the matching ID in
+	//  [ToolResponse][google.cloud.ces.v1beta.ToolResponse.id].
+	// +kcc:proto:field=google.cloud.ces.v1beta.ToolCall.id
+	ID *string `json:"id,omitempty"`
+
+	// Optional. The input parameters and values for the tool in JSON object
+	//  format.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ToolCall.args
+	Args apiextensionsv1.JSON `json:"args,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.ToolFakeConfig
+type ToolFakeConfig struct {
+	// Optional. Code block which will be executed instead of a real tool call.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ToolFakeConfig.code_block
+	CodeBlock *CodeBlock `json:"codeBlock,omitempty"`
+
+	// Optional. Whether the tool is using fake mode.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ToolFakeConfig.enable_fake_mode
+	EnableFakeMode *bool `json:"enableFakeMode,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.ToolResponse
+type ToolResponse struct {
+	// Optional. The name of the tool to execute.
+	//  Format: `projects/{project}/locations/{location}/apps/{app}/tools/{tool}`
+	// +kcc:guess=possible-reference target=CESTool
+	// +kcc:proto:field=google.cloud.ces.v1beta.ToolResponse.tool
+	Tool *string `json:"tool,omitempty"`
+
+	// Optional. The toolset tool that got executed.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ToolResponse.toolset_tool
+	ToolsetTool *ToolsetTool `json:"toolsetTool,omitempty"`
+
+	// Optional. The matching ID of the [tool
+	//  call][google.cloud.ces.v1beta.ToolCall] the response is for.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ToolResponse.id
+	ID *string `json:"id,omitempty"`
+
+	// Required. The tool execution result in JSON object format.
+	//  Use "output" key to specify tool response and "error" key to specify
+	//  error details (if any). If "output" and "error" keys are not specified,
+	//  then whole "response" is treated as tool execution result.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ToolResponse.response
+	// +required
+	Response apiextensionsv1.JSON `json:"response,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.ToolsetTool
+type ToolsetTool struct {
+	// Required. The resource name of the Toolset from which this tool is derived.
+	//  Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}`
+	// +kcc:proto:field=google.cloud.ces.v1beta.ToolsetTool.toolset
+	// +required
+	Toolset *string `json:"toolset,omitempty"`
+
+	// Optional. The tool ID to filter the tools to retrieve the schema for.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ToolsetTool.tool_id
+	ToolID *string `json:"toolID,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.TriggerAction
+type TriggerAction struct {
+	// Optional. Immediately respond with a preconfigured response.
+	// +kcc:proto:field=google.cloud.ces.v1beta.TriggerAction.respond_immediately
+	RespondImmediately *TriggerAction_RespondImmediately `json:"respondImmediately,omitempty"`
+
+	// Optional. Transfer the conversation to a different agent.
+	// +kcc:proto:field=google.cloud.ces.v1beta.TriggerAction.transfer_agent
+	TransferAgent *TriggerAction_TransferAgent `json:"transferAgent,omitempty"`
+
+	// Optional. Respond with a generative answer.
+	// +kcc:proto:field=google.cloud.ces.v1beta.TriggerAction.generative_answer
+	GenerativeAnswer *TriggerAction_GenerativeAnswer `json:"generativeAnswer,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.TriggerAction.GenerativeAnswer
+type TriggerAction_GenerativeAnswer struct {
+	// Required. The prompt to use for the generative answer.
+	// +kcc:proto:field=google.cloud.ces.v1beta.TriggerAction.GenerativeAnswer.prompt
+	// +required
+	Prompt *string `json:"prompt,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.TriggerAction.RespondImmediately
+type TriggerAction_RespondImmediately struct {
+	// Required. The canned responses for the agent to choose from. The response
+	//  is chosen randomly.
+	// +kcc:proto:field=google.cloud.ces.v1beta.TriggerAction.RespondImmediately.responses
+	// +required
+	Responses []TriggerAction_Response `json:"responses,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.TriggerAction.Response
+type TriggerAction_Response struct {
+	// Required. Text for the agent to respond with.
+	// +kcc:proto:field=google.cloud.ces.v1beta.TriggerAction.Response.text
+	// +required
+	Text *string `json:"text,omitempty"`
+
+	// Optional. Whether the response is disabled. Disabled responses are not
+	//  used by the agent.
+	// +kcc:proto:field=google.cloud.ces.v1beta.TriggerAction.Response.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.TriggerAction.TransferAgent
+type TriggerAction_TransferAgent struct {
+	// Required. The name of the agent to transfer the conversation to. The
+	//  agent must be in the same app as the current agent. Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/agents/{agent}`
+	// +kcc:proto:field=google.cloud.ces.v1beta.TriggerAction.TransferAgent.agent
+	// +required
+	Agent *string `json:"agent,omitempty"`
 }
 
 /* unreachable type VPCScSettings
@@ -980,6 +2876,84 @@ type VPCScSettings struct {
 	AllowedOrigins []string `json:"allowedOrigins,omitempty"`
 }
 */
+
+// +kcc:proto=google.cloud.ces.v1beta.WidgetTool
+type WidgetTool struct {
+	// Optional. The input parameters of the widget tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.WidgetTool.parameters
+	Parameters *Schema `json:"parameters,omitempty"`
+
+	// Required. The display name of the widget tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.WidgetTool.name
+	// +required
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The description of the widget tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.WidgetTool.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. The type of the widget tool. If not specified, the default type
+	//  will be CUSTOMIZED.
+	// +kcc:proto:field=google.cloud.ces.v1beta.WidgetTool.widget_type
+	WidgetType *string `json:"widgetType,omitempty"`
+
+	// Optional. Configuration for rendering the widget.
+	// +kcc:proto:field=google.cloud.ces.v1beta.WidgetTool.ui_config
+	UiConfig apiextensionsv1.JSON `json:"uiConfig,omitempty"`
+
+	// Optional. The mapping that defines how data from a source tool is mapped to
+	//  the widget's input parameters.
+	// +kcc:proto:field=google.cloud.ces.v1beta.WidgetTool.data_mapping
+	DataMapping *WidgetTool_DataMapping `json:"dataMapping,omitempty"`
+
+	// Optional. Configuration for always-included text responses.
+	// +kcc:proto:field=google.cloud.ces.v1beta.WidgetTool.text_response_config
+	TextResponseConfig *WidgetTool_TextResponseConfig `json:"textResponseConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.WidgetTool.DataMapping
+type WidgetTool_DataMapping struct {
+	// Optional. The resource name of the tool that provides the data for the
+	//  widget (e.g., a search tool or a custom function). Format:
+	//  `projects/{project}/locations/{location}/agents/{agent}/tools/{tool}`
+	// +kcc:proto:field=google.cloud.ces.v1beta.WidgetTool.DataMapping.source_tool_name
+	SourceToolName *string `json:"sourceToolName,omitempty"`
+
+	// Optional. A map of widget input parameter fields to the corresponding
+	//  output fields of the source tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.WidgetTool.DataMapping.field_mappings
+	FieldMappings map[string]string `json:"fieldMappings,omitempty"`
+
+	// Optional. Configuration for a Python function used to transform the
+	//  source tool's output into the widget's input format.
+	// +kcc:proto:field=google.cloud.ces.v1beta.WidgetTool.DataMapping.python_function
+	PythonFunction *PythonFunction `json:"pythonFunction,omitempty"`
+
+	// Optional. The mode of the data mapping.
+	// +kcc:proto:field=google.cloud.ces.v1beta.WidgetTool.DataMapping.mode
+	Mode *string `json:"mode,omitempty"`
+
+	// Deprecated: Use `python_function` instead.
+	// +kcc:proto:field=google.cloud.ces.v1beta.WidgetTool.DataMapping.python_script
+	PythonScript *string `json:"pythonScript,omitempty"`
+}
+
+// +kcc:proto=google.cloud.ces.v1beta.WidgetTool.TextResponseConfig
+type WidgetTool_TextResponseConfig struct {
+	// Optional. The strategy for providing the text response.
+	// +kcc:proto:field=google.cloud.ces.v1beta.WidgetTool.TextResponseConfig.type
+	Type *string `json:"type,omitempty"`
+
+	// Optional. The static text response to return when type is STATIC.
+	// +kcc:proto:field=google.cloud.ces.v1beta.WidgetTool.TextResponseConfig.static_text
+	StaticText *string `json:"staticText,omitempty"`
+
+	// Optional. Instruction for the LLM on how to generate the text response.
+	//  Used as the description for the text response parameter if type is
+	//  LLM_GENERATED.
+	// +kcc:proto:field=google.cloud.ces.v1beta.WidgetTool.TextResponseConfig.text_response_instruction
+	TextResponseInstruction *string `json:"textResponseInstruction,omitempty"`
+}
 
 /* unreachable type ListValue
 // +kcc:proto=google.protobuf.ListValue
@@ -1019,6 +2993,135 @@ type Value struct {
 }
 */
 
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.AgentTransfer
+type AgentTransferObservedState struct {
+	// Output only. Display name of the agent.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AgentTransfer.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.AggregatedMetrics
+type AggregatedMetricsObservedState struct {
+	// Output only. Aggregated metrics, grouped by app version ID.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.metrics_by_app_version
+	MetricsByAppVersion []AggregatedMetrics_MetricsByAppVersionObservedState `json:"metricsByAppVersion,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.AggregatedMetrics.HallucinationMetrics
+type AggregatedMetrics_HallucinationMetricsObservedState struct {
+	// Output only. The average hallucination score (0 to 1).
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.HallucinationMetrics.score
+	Score *float32 `json:"score,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.AggregatedMetrics.MetricsByAppVersion
+type AggregatedMetrics_MetricsByAppVersionObservedState struct {
+	// Output only. The app version ID.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.MetricsByAppVersion.app_version_id
+	AppVersionID *string `json:"appVersionID,omitempty"`
+
+	// Output only. Metrics for each tool within this app version.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.MetricsByAppVersion.tool_metrics
+	ToolMetrics []AggregatedMetrics_ToolMetricsObservedState `json:"toolMetrics,omitempty"`
+
+	// Output only. Metrics for semantic similarity within this app version.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.MetricsByAppVersion.semantic_similarity_metrics
+	SemanticSimilarityMetrics []AggregatedMetrics_SemanticSimilarityMetricsObservedState `json:"semanticSimilarityMetrics,omitempty"`
+
+	// Output only. Metrics for hallucination within this app version.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.MetricsByAppVersion.hallucination_metrics
+	HallucinationMetrics []AggregatedMetrics_HallucinationMetricsObservedState `json:"hallucinationMetrics,omitempty"`
+
+	// Output only. Metrics for tool call latency within this app version.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.MetricsByAppVersion.tool_call_latency_metrics
+	ToolCallLatencyMetrics []AggregatedMetrics_ToolCallLatencyMetricsObservedState `json:"toolCallLatencyMetrics,omitempty"`
+
+	// Output only. Metrics for turn latency within this app version.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.MetricsByAppVersion.turn_latency_metrics
+	TurnLatencyMetrics []AggregatedMetrics_TurnLatencyMetricsObservedState `json:"turnLatencyMetrics,omitempty"`
+
+	// Output only. The number of times the evaluation passed.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.MetricsByAppVersion.pass_count
+	PassCount *int32 `json:"passCount,omitempty"`
+
+	// Output only. The number of times the evaluation failed.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.MetricsByAppVersion.fail_count
+	FailCount *int32 `json:"failCount,omitempty"`
+
+	// Output only. Metrics aggregated per turn within this app version.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.MetricsByAppVersion.metrics_by_turn
+	MetricsByTurn []AggregatedMetrics_MetricsByTurnObservedState `json:"metricsByTurn,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.AggregatedMetrics.MetricsByTurn
+type AggregatedMetrics_MetricsByTurnObservedState struct {
+	// Output only. The turn index (0-based).
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.MetricsByTurn.turn_index
+	TurnIndex *int32 `json:"turnIndex,omitempty"`
+
+	// Output only. Metrics for each tool within this turn.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.MetricsByTurn.tool_metrics
+	ToolMetrics []AggregatedMetrics_ToolMetricsObservedState `json:"toolMetrics,omitempty"`
+
+	// Output only. Metrics for semantic similarity within this turn.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.MetricsByTurn.semantic_similarity_metrics
+	SemanticSimilarityMetrics []AggregatedMetrics_SemanticSimilarityMetricsObservedState `json:"semanticSimilarityMetrics,omitempty"`
+
+	// Output only. Metrics for hallucination within this turn.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.MetricsByTurn.hallucination_metrics
+	HallucinationMetrics []AggregatedMetrics_HallucinationMetricsObservedState `json:"hallucinationMetrics,omitempty"`
+
+	// Output only. Metrics for tool call latency within this turn.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.MetricsByTurn.tool_call_latency_metrics
+	ToolCallLatencyMetrics []AggregatedMetrics_ToolCallLatencyMetricsObservedState `json:"toolCallLatencyMetrics,omitempty"`
+
+	// Output only. Metrics for turn latency within this turn.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.MetricsByTurn.turn_latency_metrics
+	TurnLatencyMetrics []AggregatedMetrics_TurnLatencyMetricsObservedState `json:"turnLatencyMetrics,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.AggregatedMetrics.SemanticSimilarityMetrics
+type AggregatedMetrics_SemanticSimilarityMetricsObservedState struct {
+	// Output only. The average semantic similarity score (0-4).
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.SemanticSimilarityMetrics.score
+	Score *float32 `json:"score,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.AggregatedMetrics.ToolCallLatencyMetrics
+type AggregatedMetrics_ToolCallLatencyMetricsObservedState struct {
+	// Output only. The name of the tool.
+	// +kcc:guess=possible-reference target=CESTool
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.ToolCallLatencyMetrics.tool
+	Tool *string `json:"tool,omitempty"`
+
+	// Output only. The average latency of the tool calls.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.ToolCallLatencyMetrics.average_latency
+	AverageLatency *string `json:"averageLatency,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.AggregatedMetrics.ToolMetrics
+type AggregatedMetrics_ToolMetricsObservedState struct {
+	// Output only. The name of the tool.
+	// +kcc:guess=possible-reference target=CESTool
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.ToolMetrics.tool
+	Tool *string `json:"tool,omitempty"`
+
+	// Output only. The number of times the tool passed.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.ToolMetrics.pass_count
+	PassCount *int32 `json:"passCount,omitempty"`
+
+	// Output only. The number of times the tool failed.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.ToolMetrics.fail_count
+	FailCount *int32 `json:"failCount,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.AggregatedMetrics.TurnLatencyMetrics
+type AggregatedMetrics_TurnLatencyMetricsObservedState struct {
+	// Output only. The average latency of the turns.
+	// +kcc:proto:field=google.cloud.ces.v1beta.AggregatedMetrics.TurnLatencyMetrics.average_latency
+	AverageLatency *string `json:"averageLatency,omitempty"`
+}
+
 /* found existing non-generated go type with proto tag "google.cloud.ces.v1beta.App", skipping
 
 // +kcc:observedstate:proto=google.cloud.ces.v1beta.App
@@ -1055,6 +3158,46 @@ type AppObservedState struct {
 }
 */
 
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.Chunk
+type ChunkObservedState struct {
+	// Optional. Tool execution request.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Chunk.tool_call
+	ToolCall *ToolCallObservedState `json:"toolCall,omitempty"`
+
+	// Optional. Tool execution response.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Chunk.tool_response
+	ToolResponse *ToolResponseObservedState `json:"toolResponse,omitempty"`
+
+	// Optional. Agent transfer event.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Chunk.agent_transfer
+	AgentTransfer *AgentTransferObservedState `json:"agentTransfer,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.DataStore
+type DataStoreObservedState struct {
+	// Output only. The type of the data store. This field is readonly and
+	//  populated by the server.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStore.type
+	Type *string `json:"type,omitempty"`
+
+	// Output only. The document processing mode for the data store connection.
+	//  Only set for PUBLIC_WEB and UNSTRUCTURED data stores.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStore.document_processing_mode
+	DocumentProcessingMode *string `json:"documentProcessingMode,omitempty"`
+
+	// Output only. The display name of the data store.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStore.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Output only. Timestamp when the data store was created.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStore.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The connector config for the data store connection.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStore.connector_config
+	ConnectorConfig *DataStore_ConnectorConfig `json:"connectorConfig,omitempty"`
+}
+
 /* found existing non-generated go type "DataStoreSettingsObservedState", skipping
 
 // +kcc:observedstate:proto=google.cloud.ces.v1beta.DataStoreSettings
@@ -1080,3 +3223,354 @@ type DataStoreSettings_EngineObservedState struct {
 	Type *string `json:"type,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.DataStoreTool
+type DataStoreToolObservedState struct {
+	// Optional. Search within a single specific DataStore.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.data_store_source
+	DataStoreSource *DataStoreTool_DataStoreSourceObservedState `json:"dataStoreSource,omitempty"`
+
+	// Optional. Search within an Engine (potentially across multiple
+	//  DataStores).
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.engine_source
+	EngineSource *DataStoreTool_EngineSourceObservedState `json:"engineSource,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.DataStoreTool.DataStoreSource
+type DataStoreTool_DataStoreSourceObservedState struct {
+	// Optional. The data store.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.DataStoreSource.data_store
+	DataStore *DataStoreObservedState `json:"dataStore,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.DataStoreTool.EngineSource
+type DataStoreTool_EngineSourceObservedState struct {
+	// Optional. Use to target specific DataStores within the Engine.
+	//  If empty, the search applies to all DataStores associated with the
+	//  Engine.
+	// +kcc:proto:field=google.cloud.ces.v1beta.DataStoreTool.EngineSource.data_store_sources
+	DataStoreSources []DataStoreTool_DataStoreSourceObservedState `json:"dataStoreSources,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.ces.v1beta.Deployment", skipping
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.Deployment
+type DeploymentObservedState struct {
+	// Output only. Timestamp when this deployment was created.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Deployment.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Timestamp when this deployment was last updated.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Deployment.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Etag used to ensure the object hasn't changed during a
+	//  read-modify-write operation. If the etag is empty, the update will
+	//  overwrite any concurrent changes.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Deployment.etag
+	Etag *string `json:"etag,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.ces.v1beta.EvaluationDataset", skipping
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.EvaluationDataset
+type EvaluationDatasetObservedState struct {
+	// Output only. Timestamp when the evaluation dataset was created.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationDataset.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Timestamp when the evaluation dataset was last updated.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationDataset.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Etag used to ensure the object hasn't changed during a
+	//  read-modify-write operation. If the etag is empty, the update will
+	//  overwrite any concurrent changes.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationDataset.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Output only. The user who created the evaluation dataset.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationDataset.created_by
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// Output only. The user who last updated the evaluation dataset.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationDataset.last_updated_by
+	LastUpdatedBy *string `json:"lastUpdatedBy,omitempty"`
+
+	// Output only. The aggregated metrics for this evaluation dataset across all
+	//  runs.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationDataset.aggregated_metrics
+	AggregatedMetrics *AggregatedMetricsObservedState `json:"aggregatedMetrics,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.ces.v1beta.EvaluationExpectation", skipping
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.EvaluationExpectation
+type EvaluationExpectationObservedState struct {
+	// Output only. Timestamp when the evaluation expectation was created.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationExpectation.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Timestamp when the evaluation expectation was last updated.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationExpectation.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Etag used to ensure the object hasn't changed during a
+	//  read-modify-write operation. If the etag is empty, the update will
+	//  overwrite any concurrent changes.
+	// +kcc:proto:field=google.cloud.ces.v1beta.EvaluationExpectation.etag
+	Etag *string `json:"etag,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.ces.v1beta.Example", skipping
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.Example
+type ExampleObservedState struct {
+	// Optional. The collection of messages that make up the conversation.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Example.messages
+	Messages []MessageObservedState `json:"messages,omitempty"`
+
+	// Output only. Timestamp when the example was created.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Example.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Timestamp when the example was last updated.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Example.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The example may become invalid if referencing resources are
+	//  deleted. Invalid examples will not be used as few-shot examples.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Example.invalid
+	Invalid *bool `json:"invalid,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.ces.v1beta.Guardrail", skipping
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.Guardrail
+type GuardrailObservedState struct {
+	// Optional. Guardrail that blocks the conversation if the prompt is
+	//  considered unsafe based on the LLM classification.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.llm_prompt_security
+	LlmPromptSecurity *Guardrail_LlmPromptSecurityObservedState `json:"llmPromptSecurity,omitempty"`
+
+	// Output only. Timestamp when the guardrail was created.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Timestamp when the guardrail was last updated.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.Guardrail.LlmPromptSecurity
+type Guardrail_LlmPromptSecurityObservedState struct {
+	// Optional. Use the system's predefined default security settings.
+	//  To select this mode, include an empty 'default_settings' message
+	//  in the request. The 'default_prompt_template' field within
+	//  will be populated by the server in the response.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.LlmPromptSecurity.default_settings
+	DefaultSettings *Guardrail_LlmPromptSecurity_DefaultSecuritySettingsObservedState `json:"defaultSettings,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.Guardrail.LlmPromptSecurity.DefaultSecuritySettings
+type Guardrail_LlmPromptSecurity_DefaultSecuritySettingsObservedState struct {
+	// Output only. The default prompt template used by the system.
+	//  This field is for display purposes to show the user what prompt
+	//  the system uses by default. It is OUTPUT_ONLY.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Guardrail.LlmPromptSecurity.DefaultSecuritySettings.default_prompt_template
+	DefaultPromptTemplate *string `json:"defaultPromptTemplate,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.McpTool
+type McpToolObservedState struct {
+	// Output only. The dynamic availability state of the tool on the external
+	//  server.
+	// +kcc:proto:field=google.cloud.ces.v1beta.McpTool.state
+	State *string `json:"state,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.Message
+type MessageObservedState struct {
+	// Optional. Content of the message as a series of chunks.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Message.chunks
+	Chunks []ChunkObservedState `json:"chunks,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.OptimizationConfig
+type OptimizationConfigObservedState struct {
+	// Output only. The assistant session to use for the optimization based on
+	//  this evaluation run. Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/assistantSessions/{assistantSession}`
+	// +kcc:proto:field=google.cloud.ces.v1beta.OptimizationConfig.assistant_session
+	AssistantSession *string `json:"assistantSession,omitempty"`
+
+	// Output only. The summary of the loss report.
+	// +kcc:proto:field=google.cloud.ces.v1beta.OptimizationConfig.report_summary
+	ReportSummary *string `json:"reportSummary,omitempty"`
+
+	// Output only. Whether to suggest a fix for the losses.
+	// +kcc:proto:field=google.cloud.ces.v1beta.OptimizationConfig.should_suggest_fix
+	ShouldSuggestFix *bool `json:"shouldSuggestFix,omitempty"`
+
+	// Output only. The status of the optimization run.
+	// +kcc:proto:field=google.cloud.ces.v1beta.OptimizationConfig.status
+	Status *string `json:"status,omitempty"`
+
+	// Output only. The error message if the optimization run failed.
+	// +kcc:proto:field=google.cloud.ces.v1beta.OptimizationConfig.error_message
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+
+	// Output only. The generated loss report.
+	// +kcc:proto:field=google.cloud.ces.v1beta.OptimizationConfig.loss_report
+	LossReport apiextensionsv1.JSON `json:"lossReport,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.PythonFunction
+type PythonFunctionObservedState struct {
+	// Output only. The description of the Python function, parsed from the python
+	//  code's docstring.
+	// +kcc:proto:field=google.cloud.ces.v1beta.PythonFunction.description
+	Description *string `json:"description,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.RunEvaluationRequest
+type RunEvaluationRequestObservedState struct {
+	// Optional. Configuration for running the optimization step after the
+	//  evaluation run. If not set, the optimization step will not be run.
+	// +kcc:proto:field=google.cloud.ces.v1beta.RunEvaluationRequest.optimization_config
+	OptimizationConfig *OptimizationConfigObservedState `json:"optimizationConfig,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.ces.v1beta.ScheduledEvaluationRun", skipping
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.ScheduledEvaluationRun
+type ScheduledEvaluationRunObservedState struct {
+	// Required. The RunEvaluationRequest to schedule
+	// +kcc:proto:field=google.cloud.ces.v1beta.ScheduledEvaluationRun.request
+	Request *RunEvaluationRequestObservedState `json:"request,omitempty"`
+
+	// Output only. The last successful EvaluationRun of this scheduled execution.
+	//  Format:
+	//  `projects/{project}/locations/{location}/apps/{app}/evaluationRuns/{evaluationRun}`
+	// +kcc:proto:field=google.cloud.ces.v1beta.ScheduledEvaluationRun.last_completed_run
+	LastCompletedRun *string `json:"lastCompletedRun,omitempty"`
+
+	// Output only. The total number of times this run has been executed
+	// +kcc:proto:field=google.cloud.ces.v1beta.ScheduledEvaluationRun.total_executions
+	TotalExecutions *int32 `json:"totalExecutions,omitempty"`
+
+	// Output only. The next time this is scheduled to execute
+	// +kcc:proto:field=google.cloud.ces.v1beta.ScheduledEvaluationRun.next_scheduled_execution_time
+	NextScheduledExecutionTime *string `json:"nextScheduledExecutionTime,omitempty"`
+
+	// Output only. Timestamp when the scheduled evaluation run was created.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ScheduledEvaluationRun.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The user who created the scheduled evaluation run.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ScheduledEvaluationRun.created_by
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// Output only. Timestamp when the evaluation was last updated.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ScheduledEvaluationRun.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The user who last updated the evaluation.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ScheduledEvaluationRun.last_updated_by
+	LastUpdatedBy *string `json:"lastUpdatedBy,omitempty"`
+
+	// Output only. Etag used to ensure the object hasn't changed during a
+	//  read-modify-write operation. If the etag is empty, the update will
+	//  overwrite any concurrent changes.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ScheduledEvaluationRun.etag
+	Etag *string `json:"etag,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.SystemTool
+type SystemToolObservedState struct {
+	// Output only. The description of the system tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.SystemTool.description
+	Description *string `json:"description,omitempty"`
+}
+
+/* found existing non-generated go type with proto tag "google.cloud.ces.v1beta.Tool", skipping
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.Tool
+type ToolObservedState struct {
+	// Optional. The data store tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.data_store_tool
+	DataStoreTool *DataStoreToolObservedState `json:"dataStoreTool,omitempty"`
+
+	// Optional. The python function tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.python_function
+	PythonFunction *PythonFunctionObservedState `json:"pythonFunction,omitempty"`
+
+	// Optional. The MCP tool. An MCP tool cannot be created or updated directly
+	//  and is managed by the MCP toolset.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.mcp_tool
+	McpTool *McpToolObservedState `json:"mcpTool,omitempty"`
+
+	// Optional. The system tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.system_tool
+	SystemTool *SystemToolObservedState `json:"systemTool,omitempty"`
+
+	// Optional. The widget tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.widget_tool
+	WidgetTool *WidgetToolObservedState `json:"widgetTool,omitempty"`
+
+	// Output only. The display name of the tool, derived based on the tool's
+	//  type. For example, display name of a [ClientFunction][Tool.ClientFunction]
+	//  is derived from its `name` property.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Output only. Timestamp when the tool was created.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Timestamp when the tool was last updated.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. If the tool is generated by the LLM assistant, this field
+	//  contains a descriptive summary of the generation.
+	// +kcc:proto:field=google.cloud.ces.v1beta.Tool.generated_summary
+	GeneratedSummary *string `json:"generatedSummary,omitempty"`
+}
+*/
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.ToolCall
+type ToolCallObservedState struct {
+	// Output only. Display name of the tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ToolCall.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.ToolResponse
+type ToolResponseObservedState struct {
+	// Output only. Display name of the tool.
+	// +kcc:proto:field=google.cloud.ces.v1beta.ToolResponse.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.WidgetTool
+type WidgetToolObservedState struct {
+	// Optional. The mapping that defines how data from a source tool is mapped to
+	//  the widget's input parameters.
+	// +kcc:proto:field=google.cloud.ces.v1beta.WidgetTool.data_mapping
+	DataMapping *WidgetTool_DataMappingObservedState `json:"dataMapping,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.ces.v1beta.WidgetTool.DataMapping
+type WidgetTool_DataMappingObservedState struct {
+	// Optional. Configuration for a Python function used to transform the
+	//  source tool's output into the widget's input format.
+	// +kcc:proto:field=google.cloud.ces.v1beta.WidgetTool.DataMapping.python_function
+	PythonFunction *PythonFunctionObservedState `json:"pythonFunction,omitempty"`
+}

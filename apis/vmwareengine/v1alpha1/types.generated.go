@@ -23,8 +23,95 @@
 // resource: VMwareEngineExternalAccessRule:ExternalAccessRule
 // resource: VMwareEnginePrivateCloud:PrivateCloud
 // resource: VMwareEnginePrivateConnection:PrivateConnection
+// resource: VMwareEngineCluster:Cluster
+// resource: VMwareEngineLoggingServer:LoggingServer
+// resource: VMwareEngineManagementDNSZoneBinding:ManagementDnsZoneBinding
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.vmwareengine.v1.AutoscalingSettings
+type AutoscalingSettings struct {
+	// Required. The map with autoscaling policies applied to the cluster.
+	//  The key is the identifier of the policy.
+	//  It must meet the following requirements:
+	//
+	//  * Only contains 1-63 alphanumeric characters and hyphens
+	//  * Begins with an alphabetical character
+	//  * Ends with a non-hyphen character
+	//  * Not formatted as a UUID
+	//  * Complies with [RFC
+	//  1034](https://datatracker.ietf.org/doc/html/rfc1034) (section 3.5)
+	//
+	//  Currently there map must contain only one element
+	//  that describes the autoscaling policy for compute nodes.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.autoscaling_policies
+	// +required
+	AutoscalingPolicies map[string]AutoscalingSettings_AutoscalingPolicy `json:"autoscalingPolicies,omitempty"`
+
+	// Optional. Minimum number of nodes of any type in a cluster.
+	//  If not specified the default limits apply.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.min_cluster_node_count
+	MinClusterNodeCount *int32 `json:"minClusterNodeCount,omitempty"`
+
+	// Optional. Maximum number of nodes of any type in a cluster.
+	//  If not specified the default limits apply.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.max_cluster_node_count
+	MaxClusterNodeCount *int32 `json:"maxClusterNodeCount,omitempty"`
+
+	// Optional. The minimum duration between consecutive autoscale operations.
+	//  It starts once addition or removal of nodes is fully completed.
+	//  Defaults to 30 minutes if not specified. Cool down period must be in whole
+	//  minutes (for example, 30, 31, 50, 180 minutes).
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.cool_down_period
+	CoolDownPeriod *string `json:"coolDownPeriod,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vmwareengine.v1.AutoscalingSettings.AutoscalingPolicy
+type AutoscalingSettings_AutoscalingPolicy struct {
+	// Required. The canonical identifier of the node type to add or remove.
+	//  Corresponds to the `NodeType`.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.AutoscalingPolicy.node_type_id
+	// +required
+	NodeTypeID *string `json:"nodeTypeID,omitempty"`
+
+	// Required. Number of nodes to add to a cluster during a scale-out
+	//  operation. Must be divisible by 2 for stretched clusters. During a
+	//  scale-in operation only one node (or 2 for stretched clusters) are
+	//  removed in a single iteration.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.AutoscalingPolicy.scale_out_size
+	// +required
+	ScaleOutSize *int32 `json:"scaleOutSize,omitempty"`
+
+	// Optional. Utilization thresholds pertaining to CPU utilization.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.AutoscalingPolicy.cpu_thresholds
+	CPUThresholds *AutoscalingSettings_Thresholds `json:"cpuThresholds,omitempty"`
+
+	// Optional. Utilization thresholds pertaining to amount of granted memory.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.AutoscalingPolicy.granted_memory_thresholds
+	GrantedMemoryThresholds *AutoscalingSettings_Thresholds `json:"grantedMemoryThresholds,omitempty"`
+
+	// Optional. Utilization thresholds pertaining to amount of consumed memory.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.AutoscalingPolicy.consumed_memory_thresholds
+	ConsumedMemoryThresholds *AutoscalingSettings_Thresholds `json:"consumedMemoryThresholds,omitempty"`
+
+	// Optional. Utilization thresholds pertaining to amount of consumed
+	//  storage.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.AutoscalingPolicy.storage_thresholds
+	StorageThresholds *AutoscalingSettings_Thresholds `json:"storageThresholds,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vmwareengine.v1.AutoscalingSettings.Thresholds
+type AutoscalingSettings_Thresholds struct {
+	// Required. The utilization triggering the scale-out operation in percent.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.Thresholds.scale_out
+	// +required
+	ScaleOut *int32 `json:"scaleOut,omitempty"`
+
+	// Required. The utilization triggering the scale-in operation in percent.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.Thresholds.scale_in
+	// +required
+	ScaleIn *int32 `json:"scaleIn,omitempty"`
+}
 
 // +kcc:proto=google.cloud.vmwareengine.v1.NetworkPolicy.NetworkService
 type NetworkPolicy_NetworkService struct {
@@ -57,6 +144,7 @@ type VmwareEngineNetwork_VPCNetworkObservedState struct {
 	// Output only. The relative resource name of the service VPC network this
 	//  VMware Engine network is attached to. For example:
 	//  `projects/123123/global/networks/my-network`
+	// +kcc:guess=possible-reference target=VMwareEngineNetwork
 	// +kcc:proto:field=google.cloud.vmwareengine.v1.VmwareEngineNetwork.VpcNetwork.network
 	Network *string `json:"network,omitempty"`
 }

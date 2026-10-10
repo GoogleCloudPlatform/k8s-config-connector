@@ -74,3 +74,40 @@ const (
 func IsSourceLinkReason(reason string) bool {
 	return reason == ReasonVerifyResourceDocsLink || reason == ReasonVerifyServiceDocsLink
 }
+
+// Reasons for identity and reference generation.
+const (
+	// ReasonIdentityMultiPattern: google.api.resource declares more than one
+	// pattern; the generated identity uses the pattern matching the Spec layout
+	// (or the first pattern).
+	ReasonIdentityMultiPattern = "identity-multi-pattern"
+	// ReasonIdentityRootUnknown: the resource declares no google.api.resource
+	// pattern, or the Spec does not model the root/parent segments of the pattern.
+	ReasonIdentityRootUnknown = "identity-root-unknown"
+	// ReasonIdentityNotInCAI: the template URL is not listed in
+	// docs/ai/metadata/cloudassetinventory_names.jsonl.
+	ReasonIdentityNotInCAI = "identity-not-in-cai"
+)
+
+var identityReasons = map[string]bool{
+	ReasonIdentityMultiPattern: true,
+	ReasonIdentityRootUnknown:  true,
+	ReasonIdentityNotInCAI:     true,
+}
+
+// IsIdentityReason reports whether reason is about an identity or reference file.
+func IsIdentityReason(reason string) bool {
+	return identityReasons[reason]
+}
+
+// ReasonRequiredNotEnforced: the proto marks a spec field REQUIRED, but the
+// CRD leaves it optional. generate-types --emit-required-from-proto writes one
+// per field, for each Kind in the run. Making the field required breaks
+// objects that omit it, so a person decides: an alpha Kind may take the break,
+// and a beta or stable Kind keeps the field optional.
+const ReasonRequiredNotEnforced = "required-not-enforced"
+
+// ReasonUntriagedBulkGeneration marks a Kind that nobody has reviewed yet.
+// PrepopulateSpec queues one for each new Kind. While the entry is open, each
+// generate-types run with --prepopulate-spec checks the Kind again.
+const ReasonUntriagedBulkGeneration = "untriaged-bulk-generation"

@@ -1,0 +1,104 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: ConfigDeliveryRelease
+    group: configdelivery.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ConfigDeliveryRelease
+    group: configdelivery.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/resourceBundles/{resource_bundle}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: ConfigDeliveryRelease
+    group: configdelivery.cnrm.cloud.google.com
+    field: .spec.resourceBundleRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to ConfigDeliveryResourceBundleRef, read from the resourceBundles segment of projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - kind: ConfigDeliveryFleetPackage
+    group: configdelivery.cnrm.cloud.google.com
+    field: .spec.resourceBundleSelector
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to ConfigDeliveryFleetPackageSpec.ResourceBundleSelector in configdeliveryfleetpackage_types.go. ConfigDeliveryFleetPackage is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: ConfigDeliveryFleetPackage
+    group: configdelivery.cnrm.cloud.google.com
+    field: .spec.resourceBundleSelector.resourceBundle.resourceBundleRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to FleetPackage_ResourceBundleTag.ResourceBundleRef in configdeliveryfleetpackage_types.go. ConfigDeliveryFleetPackage is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: ConfigDeliveryFleetPackage
+    group: configdelivery.cnrm.cloud.google.com
+    field: .spec.resourceBundleSelector.resourceBundle.tag
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to FleetPackage_ResourceBundleTag.Tag in configdeliveryfleetpackage_types.go. ConfigDeliveryFleetPackage is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: ConfigDeliveryFleetPackage
+    group: configdelivery.cnrm.cloud.google.com
+    field: .spec.resourceBundleSelector.cloudBuildRepository.repositoryRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to FleetPackage_CloudBuildRepository.RepositoryRef in configdeliveryfleetpackage_types.go. ConfigDeliveryFleetPackage is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: ConfigDeliveryFleetPackage
+    group: configdelivery.cnrm.cloud.google.com
+    field: .spec.resourceBundleSelector.cloudBuildRepository.tag
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to FleetPackage_CloudBuildRepository.Tag in configdeliveryfleetpackage_types.go. ConfigDeliveryFleetPackage is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: ConfigDeliveryFleetPackage
+    group: configdelivery.cnrm.cloud.google.com
+    field: .spec.resourceBundleSelector.cloudBuildRepository.serviceAccountRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to FleetPackage_CloudBuildRepository.ServiceAccountRef in configdeliveryfleetpackage_types.go. ConfigDeliveryFleetPackage is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: ConfigDeliveryFleetPackage
+    group: configdelivery.cnrm.cloud.google.com
+    field: .spec.target.fleet.projectRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to Fleet.ProjectRef in configdeliveryfleetpackage_types.go. ConfigDeliveryFleetPackage is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: ConfigDeliveryFleetPackage
+    group: configdelivery.cnrm.cloud.google.com
+    field: .spec.variantSelector
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to ConfigDeliveryFleetPackageSpec.VariantSelector in configdeliveryfleetpackage_types.go. ConfigDeliveryFleetPackage is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: ConfigDeliveryFleetPackage
+    group: configdelivery.cnrm.cloud.google.com
+    field: .spec.variantSelector.variantNameTemplate
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to ConfigDeliveryFleetPackageSpec and run generate.sh again. ConfigDeliveryFleetPackage is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: ConfigDeliveryRelease
+    group: configdelivery.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//configdelivery.googleapis.com/projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: ConfigDeliveryRelease
+    group: configdelivery.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}" contains ancestor segment(s) resourceBundles/{resource_bundle} with no matching reference or field on ConfigDeliveryReleaseSpec
+    status: open

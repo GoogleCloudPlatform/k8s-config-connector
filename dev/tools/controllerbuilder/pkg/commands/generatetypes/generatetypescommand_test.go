@@ -15,6 +15,7 @@
 package generatetypes
 
 import (
+	"context"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -24,6 +25,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/scaffold"
+
+	"github.com/google/go-cmp/cmp"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/descriptorpb"
 )
 
 // generate.sh calls generate-types once per proto version, so the queue has to
@@ -385,4 +390,215 @@ func TestAmbiguousResourceItem(t *testing.T) {
 			}
 		})
 	}
+}
+
+// TestRunGenerateCRDChecksUntriagedKindAgain covers a Kind whose types file
+// exists and whose untriaged-bulk-generation entry is still open. The
+// per-Kind checks run again and queue what they find: here, the network hint
+// and the empty ObservedState. The untriaged entry gets the current detail.
+// The types file does not change, and entries that only scaffolding queues,
+// such as location-parent-unknown, are not added.
+func TestRunGenerateCRDChecksUntriagedKindAgain(t *testing.T) {
+	// Arrange
+	o, typesPath, queuePath := widgetService(t, `entries:
+- kind: ExampleWidget
+  group: example.cnrm.cloud.google.com
+  reason: untriaged-bulk-generation
+  status: open
+`)
+	want := []judgement.Entry{
+		{
+			Kind:   "ExampleWidget",
+			Group:  "example.cnrm.cloud.google.com",
+			Reason: "untriaged-bulk-generation",
+			Detail: "spec was generated from proto definition; verify refs, omissions, and KRM conventions",
+			Status: judgement.StatusOpen,
+		},
+		{
+			Kind:   "ExampleWidget",
+			Group:  "example.cnrm.cloud.google.com",
+			Field:  ".spec.network",
+			Reason: "possible-reference-by-description",
+			Detail: `the description has the resource-name template "projects/{project}/global/networks/{network}"`,
+			Status: judgement.StatusOpen,
+		},
+		{
+			Kind:   "ExampleWidget",
+			Group:  "example.cnrm.cloud.google.com",
+			Reason: "empty-observedstate",
+			Detail: "nothing was generated into status.observedState; the proto probably marks no field OUTPUT_ONLY, so output fields landed in the Spec. Decide what belongs in status",
+			Status: judgement.StatusOpen,
+		},
+	}
+
+	// Act
+	err := RunGenerateCRD(context.Background(), o)
+
+	// Assert
+	if err != nil {
+		t.Fatalf("RunGenerateCRD() error: %v", err)
+	}
+	if diff := cmp.Diff(widgetTypesFile, readFile(t, typesPath)); diff != "" {
+		t.Errorf("RunGenerateCRD() changed the types file (-want +got):\n%s", diff)
+	}
+	if diff := cmp.Diff(want, readQueueEntries(t, queuePath)); diff != "" {
+		t.Errorf("queue entries mismatch (-want +got):\n%s", diff)
+	}
+}
+
+// TestRunGenerateCRDLeavesReviewedKindAlone checks that a Kind whose
+// untriaged-bulk-generation entry is resolved is not checked again, so the
+// network hint is not queued.
+func TestRunGenerateCRDLeavesReviewedKindAlone(t *testing.T) {
+	// Arrange
+	o, _, queuePath := widgetService(t, `entries:
+- kind: ExampleWidget
+  group: example.cnrm.cloud.google.com
+  reason: untriaged-bulk-generation
+  status: resolved
+  resolution: accepted
+`)
+	want := []judgement.Entry{
+		{
+			Kind:       "ExampleWidget",
+			Group:      "example.cnrm.cloud.google.com",
+			Reason:     "untriaged-bulk-generation",
+			Status:     judgement.StatusResolved,
+			Resolution: judgement.ResolutionAccepted,
+		},
+	}
+
+	// Act
+	err := RunGenerateCRD(context.Background(), o)
+
+	// Assert
+	if err != nil {
+		t.Fatalf("RunGenerateCRD() error: %v", err)
+	}
+	if diff := cmp.Diff(want, readQueueEntries(t, queuePath)); diff != "" {
+		t.Errorf("queue entries mismatch (-want +got):\n%s", diff)
+	}
+}
+
+// TestRunGenerateCRDChecksUntriagedKindOncePerEntry checks that re-checking an
+// untriaged Kind adds no duplicates: a second run leaves the queue file
+// exactly as the first run wrote it.
+func TestRunGenerateCRDChecksUntriagedKindOncePerEntry(t *testing.T) {
+	// Arrange
+	o, _, queuePath := widgetService(t, `entries:
+- kind: ExampleWidget
+  group: example.cnrm.cloud.google.com
+  reason: untriaged-bulk-generation
+  status: open
+`)
+
+	// Act
+	if err := RunGenerateCRD(context.Background(), o); err != nil {
+		t.Fatalf("first run: %v", err)
+	}
+	afterFirst := readFile(t, queuePath)
+	if err := RunGenerateCRD(context.Background(), o); err != nil {
+		t.Fatalf("second run: %v", err)
+	}
+	afterSecond := readFile(t, queuePath)
+
+	// Assert
+	if diff := cmp.Diff(afterFirst, afterSecond); diff != "" {
+		t.Errorf("the second run changed the queue file (-first +second):\n%s", diff)
+	}
+}
+
+// widgetTypesFile stands in for an ExampleWidget types file that someone has
+// edited since it was scaffolded.
+const widgetTypesFile = `package v1alpha1
+
+// ExampleWidgetSpec was edited by hand.
+type ExampleWidgetSpec struct{}
+`
+
+// widgetService sets up a service with one Kind, ExampleWidget, whose types
+// file already exists, plus the given queue file. It returns the options
+// for a run with --prepopulate-spec and --emit-reference-hints, and the paths
+// of the types file and the queue file.
+func widgetService(t *testing.T, queue string) (o *GenerateCRDOptions, typesPath, queuePath string) {
+	t.Helper()
+	dir := t.TempDir()
+	apiDir := filepath.Join(dir, "apis")
+	typesPath = filepath.Join(apiDir, "example", "v1alpha1", "examplewidget_types.go")
+	queuePath = filepath.Join(apiDir, "example", judgement.FileName)
+	writeFile(t, typesPath, widgetTypesFile)
+	writeFile(t, queuePath, queue)
+	o = &GenerateCRDOptions{
+		GenerateOptions: &options.GenerateOptions{
+			ProtoSourcePath: writeWidgetProto(t, dir),
+			APIVersion:      "example.cnrm.cloud.google.com/v1alpha1",
+		},
+		ServiceName:        "google.cloud.example.v1",
+		OutputAPIDirectory: apiDir,
+		Resources:          options.ResourceList{{Kind: "ExampleWidget", ProtoName: "Widget"}},
+		PrepopulateSpec:    true,
+		EmitReferenceHints: true,
+	}
+	return o, typesPath, queuePath
+}
+
+// writeWidgetProto writes a descriptor set holding google.cloud.example.v1.Widget
+// to dir and returns its path. Widget has no OUTPUT_ONLY field, and the
+// comment on network spells out a resource-name template.
+func writeWidgetProto(t *testing.T, dir string) string {
+	t.Helper()
+	str := descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum()
+	fds := &descriptorpb.FileDescriptorSet{File: []*descriptorpb.FileDescriptorProto{{
+		Name:    proto.String("google/cloud/example/v1/widget.proto"),
+		Package: proto.String("google.cloud.example.v1"),
+		Syntax:  proto.String("proto3"),
+		MessageType: []*descriptorpb.DescriptorProto{{
+			Name: proto.String("Widget"),
+			Field: []*descriptorpb.FieldDescriptorProto{
+				{Name: proto.String("name"), Number: proto.Int32(1), Type: str},
+				{Name: proto.String("network"), Number: proto.Int32(2), Type: str},
+			},
+		}},
+		SourceCodeInfo: &descriptorpb.SourceCodeInfo{Location: []*descriptorpb.SourceCodeInfo_Location{{
+			// [4=message_type 0, 2=field 1] is Widget.network.
+			Path:            []int32{4, 0, 2, 1},
+			Span:            []int32{0, 0, 1},
+			LeadingComments: proto.String(" The network to join. Format: projects/{project}/global/networks/{network}\n"),
+		}}},
+	}}}
+	b, err := proto.Marshal(fds)
+	if err != nil {
+		t.Fatalf("marshalling descriptor set: %v", err)
+	}
+	path := filepath.Join(dir, "widget.pb")
+	writeFile(t, path, string(b))
+	return path
+}
+
+func writeFile(t *testing.T, path, content string) {
+	t.Helper()
+	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(path, []byte(content), 0644); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func readFile(t *testing.T, path string) string {
+	t.Helper()
+	b, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return string(b)
+}
+
+func readQueueEntries(t *testing.T, path string) []judgement.Entry {
+	t.Helper()
+	q, err := judgement.Read(path)
+	if err != nil {
+		t.Fatalf("reading queue: %v", err)
+	}
+	return q.Entries
 }

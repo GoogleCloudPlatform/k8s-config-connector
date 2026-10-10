@@ -18,5 +18,38 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.vectorsearch.v1
 // resource: VectorSearchCollection:Collection
+// resource: VectorSearchDataObject:DataObject
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.vectorsearch.v1.DenseVector
+type DenseVector struct {
+	// Required. The values of the vector.
+	// +kcc:proto:field=google.cloud.vectorsearch.v1.DenseVector.values
+	// +required
+	Values []float32 `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vectorsearch.v1.SparseVector
+type SparseVector struct {
+	// Required. The values of the vector.
+	// +kcc:proto:field=google.cloud.vectorsearch.v1.SparseVector.values
+	// +required
+	Values []float32 `json:"values,omitempty"`
+
+	// Required. The corresponding indices for the values.
+	// +kcc:proto:field=google.cloud.vectorsearch.v1.SparseVector.indices
+	// +required
+	Indices []int32 `json:"indices,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vectorsearch.v1.Vector
+type Vector struct {
+	// A dense vector.
+	// +kcc:proto:field=google.cloud.vectorsearch.v1.Vector.dense
+	Dense *DenseVector `json:"dense,omitempty"`
+
+	// A sparse vector.
+	// +kcc:proto:field=google.cloud.vectorsearch.v1.Vector.sparse
+	Sparse *SparseVector `json:"sparse,omitempty"`
+}
