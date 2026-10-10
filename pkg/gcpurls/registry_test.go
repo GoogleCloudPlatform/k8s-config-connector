@@ -317,6 +317,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Service Usage
 		"//serviceusage.googleapis.com/projects/{}/services/{}/identity": true,
 
+		// Cloud SQL
+		"//sqladmin.googleapis.com/projects/{}/instances/{}/sslCerts/{}": true,
+
 		// Redis
 		"//redis.googleapis.com/projects/{}/locations/{}/backupCollections/{}/backups/{}": true,
 
