@@ -18,5 +18,5 @@ metadata:
   name: firebasehostingsite-${uniqueId}
 spec:
   projectRef:
-    name: project-${uniqueId}
+    external: ${projectId}
   resourceID: firebasehostingsite${uniqueId}
