@@ -1,0 +1,142 @@
+#!/usr/bin/env python3
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import json
+import os
+import re
+import sys
+import urllib.request
+from concurrent.futures import ThreadPoolExecutor
+
+DISCOVERY_DIRECTORY_URL = "https://www.googleapis.com/discovery/v1/apis"
+OUTPUT_PATH = "docs/ai/metadata/discovery_names.jsonl"
+VERSIONS_TO_PROBE = ("v1", "v1beta1", "v1beta", "v1alpha1", "v1alpha", "v2", "v2beta", "v3")
+
+# Additional GCP service prefixes known in KCC whose names differ from apis/<dir>
+EXTRA_SERVICES = {
+    "bigtableadmin",
+    "cloudbilling",
+    "cloudkms",
+    "cloudresourcemanager",
+    "containeranalysis",
+    "datapipelines",
+    "Identitytoolkit",
+    "Modelarmor",
+    "oslogin",
+    "pubsub",
+    " servicedirectory",
+    "sqladmin",
+    "storage",
+    "testing",
+    "vision",
+    "workflowexecutions",
+}
+
+
+def fetch_json(url, timeout=10):
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        return json.loads(resp.read().decode("utf-8"))
+
+
+def extract_formats_from_doc(url):
+    try:
+        doc = fetch_json(url, timeout=8)
+    except Exception:
+        return {}
+
+    root_url = doc.get("rootUrl", "")
+    if "//" not in root_url:
+        return {}
+    host = root_url.split("//", 1)[1].rstrip("/")
+    if not host.endswith(".googleapis.com"):
+        return {}
+
+    by_type = {}
+
+    def walk(node, collection_name=""):
+        for mname, m in node.get("methods", {}).items():
+            fp = m.get("flatPath") or m.get("path", "")
+            if not fp or ":" in fp:
+                continue
+            # Strip leading version prefix such as v1/, v1beta1/, v2alpha/
+            fp = re.sub(r"^v\d+[a-z0-9]*/", "", fp).strip("/")
+            if not fp:
+                continue
+            # Convert {param} to {{param}} to match cloudassetinventory_names.jsonl
+            fmt = f"//{host}/" + re.sub(r"\{([^}]+)\}", r"{{\1}}", fp)
+
+            # Determine resourceType from response.$ref on get, or collection name
+            res_ref = ""
+            if mname == "get":
+                res_ref = m.get("response", {}).get("$ref", "")
+            if not res_ref:
+                res_ref = collection_name or "Resource"
+            rt = f"{host}/{res_ref}"
+            by_type.setdefault(rt, set()).add(fmt)
+
+        for rname, rnode in node.get("resources", {}).items():
+            walk(rnode, rname)
+
+    walk(doc)
+    return by_type
+
+
+def main():
+    try:
+        directory = fetch_json(DISCOVERY_DIRECTORY_URL, timeout=15)
+    except Exception as e:
+        print(f"Error fetching Discovery directory: {e}", file=sys.stderr)
+        sys.exit(1)
+
+    urls = set()
+    for item in directory.get("items", []):
+        rest_url = item.get("discoveryRestUrl")
+        if rest_url:
+            urls.add(rest_url)
+
+    services = {s.strip().lower() for s in EXTRA_SERVICES}
+    if os.path.isdir("apis"):
+        for d in os.listdir("apis"):
+            if os.path.isdir(os.path.join("apis", d)):
+                services.add(d.lower())
+
+    for srv in sorted(services):
+        for ver in VERSIONS_TO_PROBE:
+            urls.add(f"https://{srv}.googleapis.com/$discovery/rest?version={ver}")
+
+    merged = {}
+    with ThreadPoolExecutor(max_workers=24) as executor:
+        for doc_map in executor.map(extract_formats_from_doc, sorted(urls)):
+            for rt, fmts in doc_map.items():
+                merged.setdefault(rt, set()).update(fmts)
+
+    count = 0
+    with open(OUTPUT_PATH, "w") as f:
+        for rt in sorted(merged.keys()):
+            fmts = sorted(merged[rt])
+            if fmts:
+                entry = {
+                    "resourceType": rt,
+                    "nameFormats": fmts,
+                }
+                f.write(json.dumps(entry) + "\n")
+                count += 1
+
+    print(f"Generated {count} entries to {OUTPUT_PATH}")
+
+
+if __name__ == "__main__":
+    main()
