@@ -386,12 +386,9 @@ type StorageBucket struct {
 	}
 }
 
-
-func TestIdentityGenerator_SingleParentToMultiParentRerun(t *testing.T) {
+func TestIdentityGenerator_FailClosedOnAmbiguousMultiPattern(t *testing.T) {
 	tmp := t.TempDir()
 	pkgDir := filepath.Join(tmp, "apis", "privilegedaccessmanager", "v1beta1")
-
-	// Pass 1: initial types only declare ProjectRef.
 	writeFakeTypesFile(t, pkgDir, "v1beta1", `
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
@@ -399,20 +396,16 @@ import (
 )
 
 type PrivilegedAccessManagerEntitlementSpec struct {
-	ProjectRef *parent.ProjectRef ` + "`" + `json:"projectRef,omitempty"` + "`" + `
-	Location *string ` + "`" + `json:"location"` + "`" + `
-	ResourceID *string ` + "`" + `json:"resourceID,omitempty"` + "`" + `
-}
-
-type PrivilegedAccessManagerEntitlementStatus struct {
-	ExternalRef *string ` + "`" + `json:"externalRef,omitempty"` + "`" + `
+	ProjectRef *parent.ProjectRef `+"`"+`json:"projectRef,omitempty"`+"`"+`
+	OrganizationRef *parent.OrganizationRef `+"`"+`json:"organizationRef,omitempty"`+"`"+`
+	Location string `+"`"+`json:"location"`+"`"+`
+	ResourceID *string `+"`"+`json:"resourceID,omitempty"`+"`"+`
 }
 
 type PrivilegedAccessManagerEntitlement struct {
 	metav1.TypeMeta
 	metav1.ObjectMeta
 	Spec PrivilegedAccessManagerEntitlementSpec
-	Status PrivilegedAccessManagerEntitlementStatus
 }
 `)
 
@@ -423,7 +416,6 @@ type PrivilegedAccessManagerEntitlement struct {
 		"privilegedaccessmanager.googleapis.com/Entitlement",
 		[]string{
 			"projects/{project}/locations/{location}/entitlements/{entitlement}",
-			"folders/{folder}/locations/{location}/entitlements/{entitlement}",
 			"organizations/{organization}/locations/{location}/entitlements/{entitlement}",
 		},
 	)
@@ -436,77 +428,64 @@ type PrivilegedAccessManagerEntitlement struct {
 		EmitTests:    true,
 	})
 
-	res1, err := gen.Generate("PrivilegedAccessManagerEntitlement", msg)
+	res, err := gen.Generate("PrivilegedAccessManagerEntitlement", msg)
 	if err != nil {
-		t.Fatalf("Pass 1 Generate failed: %v", err)
+		t.Fatalf("Generate failed: %v", err)
 	}
-	if len(res1.Plan.MultiParentVariants) != 0 {
-		t.Fatalf("Pass 1 expected single-parent plan, got %d multi-parent plans", len(res1.Plan.MultiParentVariants))
+	if !res.IdentitySkipped || !res.ReferenceSkipped || !res.TestSkipped {
+		t.Fatalf("expected all files skipped on ambiguous multi-pattern tie, got skipped=(%v, %v, %v)",
+			res.IdentitySkipped, res.ReferenceSkipped, res.TestSkipped)
 	}
-	idBytes1, err := os.ReadFile(res1.IdentityPath)
-	if err != nil {
-		t.Fatalf("ReadFile Pass 1 identity: %v", err)
+	if len(res.Plan.Judgement) != 1 || res.Plan.Judgement[0].Reason != judgement.ReasonIdentityMultiPattern {
+		t.Fatalf("expected [%s] judgement entry, got %+v", judgement.ReasonIdentityMultiPattern, res.Plan.Judgement)
 	}
-	assertValidGoSource(t, res1.IdentityPath, idBytes1)
-	if !strings.Contains(string(idBytes1), "PrivilegedAccessManagerEntitlementIdentityFormat = gcpurls.Template") {
-		t.Errorf("Pass 1 expected single-parent template var:\n%s", string(idBytes1))
-	}
+}
 
-	// Pass 2: corrective types pass adds FolderRef and OrganizationRef, then re-runs Generate.
+func TestIdentityGenerator_FailClosedOnUnresolvedAncestor(t *testing.T) {
+	tmp := t.TempDir()
+	pkgDir := filepath.Join(tmp, "apis", "spanner", "v1beta1")
 	writeFakeTypesFile(t, pkgDir, "v1beta1", `
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type PrivilegedAccessManagerEntitlementSpec struct {
-	ProjectRef *parent.ProjectRef ` + "`" + `json:"projectRef,omitempty"` + "`" + `
-	FolderRef *parent.FolderRef ` + "`" + `json:"folderRef,omitempty"` + "`" + `
-	OrganizationRef *parent.OrganizationRef ` + "`" + `json:"organizationRef,omitempty"` + "`" + `
-	Location *string ` + "`" + `json:"location"` + "`" + `
-	ResourceID *string ` + "`" + `json:"resourceID,omitempty"` + "`" + `
+type SpannerDatabaseSpec struct {
+	ProjectRef *parent.ProjectRef `+"`"+`json:"projectRef,omitempty"`+"`"+`
+	ResourceID *string `+"`"+`json:"resourceID,omitempty"`+"`"+`
 }
 
-type PrivilegedAccessManagerEntitlementStatus struct {
-	ExternalRef *string ` + "`" + `json:"externalRef,omitempty"` + "`" + `
-}
-
-type PrivilegedAccessManagerEntitlement struct {
+type SpannerDatabase struct {
 	metav1.TypeMeta
 	metav1.ObjectMeta
-	Spec PrivilegedAccessManagerEntitlementSpec
-	Status PrivilegedAccessManagerEntitlementStatus
+	Spec SpannerDatabaseSpec
 }
 `)
 
-	res2, err := gen.Generate("PrivilegedAccessManagerEntitlement", msg)
+	msg := buildTestResourceDescriptor(
+		t,
+		"google.spanner.admin.database.v1",
+		"Database",
+		"spanner.googleapis.com/Database",
+		[]string{"projects/{project}/instances/{instance}/databases/{database}"},
+	)
+
+	gen := NewIdentityGenerator(IdentityGeneratorOptions{
+		Group:        "spanner.cnrm.cloud.google.com",
+		Version:      "v1beta1",
+		ProtoService: "google.spanner.admin.database.v1",
+		APIDirectory: filepath.Join(tmp, "apis"),
+	})
+
+	res, err := gen.Generate("SpannerDatabase", msg)
 	if err != nil {
-		t.Fatalf("Pass 2 Generate failed: %v", err)
+		t.Fatalf("Generate failed: %v", err)
 	}
-	if res2.IdentitySkipped || res2.ReferenceSkipped || res2.TestSkipped {
-		t.Fatalf("Pass 2 expected previously generated files to be overwritten, got skipped=(%v, %v, %v)", res2.IdentitySkipped, res2.ReferenceSkipped, res2.TestSkipped)
+	if !res.Plan.HasUnresolvedAncestors {
+		t.Fatalf("expected HasUnresolvedAncestors=true when InstanceRef is missing from Spec")
 	}
-	if len(res2.Plan.MultiParentVariants) != 3 {
-		t.Fatalf("Pass 2 expected 3 multi-parent plans, got %d", len(res2.Plan.MultiParentVariants))
-	}
-	idBytes2, err := os.ReadFile(res2.IdentityPath)
-	if err != nil {
-		t.Fatalf("ReadFile Pass 2 identity: %v", err)
-	}
-	assertValidGoSource(t, res2.IdentityPath, idBytes2)
-	idSrc2 := string(idBytes2)
-	for _, want := range []string{
-		"ProjectPrivilegedAccessManagerEntitlementIdentityFormat",
-		"FolderPrivilegedAccessManagerEntitlementIdentityFormat",
-		"OrganizationPrivilegedAccessManagerEntitlementIdentityFormat",
-		"if i.Project != \"\"",
-		"if i.Folder != \"\"",
-		"if i.Organization != \"\"",
-		"at most one of spec.projectRef, spec.folderRef, spec.organizationRef can be set",
-	} {
-		if !strings.Contains(idSrc2, want) {
-			t.Errorf("Pass 2 identity output missing %q:\n%s", want, idSrc2)
-		}
+	if !res.IdentitySkipped {
+		t.Fatalf("expected IdentitySkipped=true when ancestor is unresolved and getIdentityFromSpec is not hand-written")
 	}
 }
 
@@ -559,72 +538,3 @@ func assertValidGoSource(t *testing.T, filename string, src []byte) {
 		t.Fatalf("generated %s is not valid Go:\n%s\nerr: %v", filename, string(src), err)
 	}
 }
-
-func TestPopulatePatternSegmentsThreeRepeatedPlaceholders(t *testing.T) {
-	plan := &IdentityPlan{}
-	populatePatternSegments(plan, "folders/{folder}/folders/{folder}/folders/{folder}/items/{item}")
-	if len(plan.Fields) != 4 {
-		t.Fatalf("expected 4 fields, got %d", len(plan.Fields))
-	}
-	wantStructFields := []string{"Folder", "Folder2", "Folder3", "Item"}
-	wantTmplVars := []string{"folder", "folder2", "folder3", "item"}
-	for i := range wantStructFields {
-		if plan.Fields[i].StructField != wantStructFields[i] {
-			t.Errorf("field[%d].StructField = %q, want %q", i, plan.Fields[i].StructField, wantStructFields[i])
-		}
-		if plan.Fields[i].TemplateVar != wantTmplVars[i] {
-			t.Errorf("field[%d].TemplateVar = %q, want %q", i, plan.Fields[i].TemplateVar, wantTmplVars[i])
-		}
-	}
-}
-
-func TestIsServerGeneratedCreateInputSkipsRequestID(t *testing.T) {
-	fdp := &descriptorpb.FileDescriptorProto{
-		Name:    proto.String("create_test.proto"),
-		Package: proto.String("google.example.v1"),
-		Syntax:  proto.String("proto3"),
-		MessageType: []*descriptorpb.DescriptorProto{
-			{
-				Name: proto.String("CreateWithRequestIDOnlyRequest"),
-				Field: []*descriptorpb.FieldDescriptorProto{
-					{Name: proto.String("parent"), Number: proto.Int32(1), Type: descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum()},
-					{Name: proto.String("request_id"), Number: proto.Int32(2), Type: descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum()},
-				},
-			},
-			{
-				Name: proto.String("CreateWithResourceIDAndRequestIDRequest"),
-				Field: []*descriptorpb.FieldDescriptorProto{
-					{Name: proto.String("parent"), Number: proto.Int32(1), Type: descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum()},
-					{Name: proto.String("widget_id"), Number: proto.Int32(2), Type: descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum()},
-					{Name: proto.String("request_id"), Number: proto.Int32(3), Type: descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum()},
-				},
-			},
-		},
-	}
-	fd, err := protodesc.NewFile(fdp, nil)
-	if err != nil {
-		t.Fatalf("protodesc.NewFile: %v", err)
-	}
-	reqOnly := fd.Messages().ByName("CreateWithRequestIDOnlyRequest")
-	if !isServerGeneratedCreateInput(reqOnly.Fields()) {
-		t.Errorf("expected CreateWithRequestIDOnlyRequest (only parent + request_id) to be server-generated")
-	}
-	withWidgetID := fd.Messages().ByName("CreateWithResourceIDAndRequestIDRequest")
-	if isServerGeneratedCreateInput(withWidgetID.Fields()) {
-		t.Errorf("expected CreateWithResourceIDAndRequestIDRequest (has widget_id) not to be server-generated")
-	}
-}
-
-func TestSafeAncestorVarNameKeywords(t *testing.T) {
-	for _, kw := range []string{"break", "case", "chan", "const", "continue", "default", "defer", "else",
-		"fallthrough", "for", "func", "go", "goto", "if", "import", "interface",
-		"map", "package", "range", "return", "select", "struct", "switch", "type", "var"} {
-		if got, want := safeAncestorVarName(kw), kw+"ID"; got != want {
-			t.Errorf("safeAncestorVarName(%q) = %q, want %q", kw, got, want)
-		}
-	}
-	if got, want := safeAncestorVarName("cluster"), "cluster"; got != want {
-		t.Errorf("safeAncestorVarName(\"cluster\") = %q, want %q", got, want)
-	}
-}
-

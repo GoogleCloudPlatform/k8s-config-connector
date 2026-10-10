@@ -19,8 +19,6 @@ import (
 	"fmt"
 	"go/format"
 	"strings"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
 )
 
 // RenderIdentityFile renders <kind>_identity.generated.go, omitting any declaration
@@ -97,10 +95,8 @@ func (g *IdentityGenerator) RenderIdentityTestFile(plan *IdentityPlan) ([]byte, 
 		body.WriteString("\t\tExpectServerGenerated: true,\n")
 	}
 	fmt.Fprintf(&body, "\t\tWantIdentity: &%s{\n", idType)
-	for _, s := range plan.Segments {
-		if s.IsVariable {
-			fmt.Fprintf(&body, "\t\t\t%s: %q,\n", s.Field.StructField, s.Field.SampleValue)
-		}
+	for _, f := range plan.Fields {
+		fmt.Fprintf(&body, "\t\t\t%s: %q,\n", f.StructField, f.SampleValue)
 	}
 	body.WriteString("\t\t},\n")
 	fmt.Fprintf(&body, "\t\tRef: &%s{},\n", refType)
@@ -112,6 +108,9 @@ func (g *IdentityGenerator) RenderIdentityTestFile(plan *IdentityPlan) ([]byte, 
 
 func shouldEmitIdentityFile(plan *IdentityPlan, ov *HandWrittenOverrides) bool {
 	if ov.HasIdentityStruct && ov.ResourceMethods["GetIdentity"] {
+		return false
+	}
+	if plan.HasUnresolvedAncestors && !ov.HasGetIdentityFromSpec {
 		return false
 	}
 	needHasID := plan.ServerGeneratedID && !ov.IdentityMethods["HasIdentitySpecified"]
@@ -142,18 +141,9 @@ func renderIdentityInterfaceAssertions(w *bytes.Buffer, plan *IdentityPlan, ov *
 
 func renderIdentityStructAndMethods(w *bytes.Buffer, plan *IdentityPlan, ov *HandWrittenOverrides, idType, formatVar string) {
 	kind := plan.Kind
-	isMultiParent := len(plan.MultiParentVariants) > 1
 	if !ov.HasIdentityFormat {
-		if isMultiParent {
-			w.WriteString("var (\n")
-			for _, v := range plan.MultiParentVariants {
-				fmt.Fprintf(w, "\t%s = gcpurls.Template[%s](%q, %q)\n", v.FormatVar, idType, plan.Host, v.TemplatePattern)
-			}
-			w.WriteString(")\n\n")
-		} else {
-			fmt.Fprintf(w, "var %s = gcpurls.Template[%s](%q, %q)\n\n",
-				formatVar, idType, plan.Host, plan.TemplatePattern)
-		}
+		fmt.Fprintf(w, "var %s = gcpurls.Template[%s](%q, %q)\n\n",
+			formatVar, idType, plan.Host, plan.TemplatePattern)
 	}
 	if !ov.HasIdentityStruct {
 		fmt.Fprintf(w, "// %s is the identity of a GCP %s resource.\n", idType, kind)
@@ -169,15 +159,6 @@ func renderIdentityStructAndMethods(w *bytes.Buffer, plan *IdentityPlan, ov *Han
 		fmt.Fprintf(w, "\treturn i.%s != \"\"\n", plan.ResourceIDField.StructField)
 		w.WriteString("}\n\n")
 	}
-	if isMultiParent {
-		renderMultiParentIdentityMethods(w, plan, ov, idType)
-		return
-	}
-	renderSingleParentIdentityMethods(w, plan, ov, idType, formatVar)
-}
-
-func renderSingleParentIdentityMethods(w *bytes.Buffer, plan *IdentityPlan, ov *HandWrittenOverrides, idType, formatVar string) {
-	kind := plan.Kind
 	if !ov.IdentityMethods["String"] {
 		fmt.Fprintf(w, "func (i *%s) String() string {\n", idType)
 		fmt.Fprintf(w, "\treturn %s.ToString(*i)\n", formatVar)
@@ -204,47 +185,6 @@ func renderSingleParentIdentityMethods(w *bytes.Buffer, plan *IdentityPlan, ov *
 	if !ov.IdentityMethods["ParentString"] {
 		fmt.Fprintf(w, "func (i *%s) ParentString() string {\n", idType)
 		fmt.Fprintf(w, "\treturn %s\n", renderParentStringExpr(plan.ParentSegments))
-		w.WriteString("}\n\n")
-	}
-}
-
-func renderMultiParentIdentityMethods(w *bytes.Buffer, plan *IdentityPlan, ov *HandWrittenOverrides, idType string) {
-	variants := plan.MultiParentVariants
-	if !ov.IdentityMethods["String"] {
-		fmt.Fprintf(w, "func (i *%s) String() string {\n", idType)
-		for _, v := range variants {
-			fmt.Fprintf(w, "\tif i.%s != \"\" {\n", v.RootField.StructField)
-			fmt.Fprintf(w, "\t\treturn %s.ToString(*i)\n", v.FormatVar)
-			w.WriteString("\t}\n")
-		}
-		w.WriteString("\treturn \"\"\n")
-		w.WriteString("}\n\n")
-	}
-	if !ov.IdentityMethods["FromExternal"] {
-		fmt.Fprintf(w, "func (i *%s) FromExternal(ref string) error {\n", idType)
-		for _, v := range variants {
-			fmt.Fprintf(w, "\tif parsed, match, _ := %s.Parse(ref); match {\n", v.FormatVar)
-			w.WriteString("\t\t*i = *parsed\n")
-			w.WriteString("\t\treturn nil\n")
-			w.WriteString("\t}\n")
-		}
-		fmt.Fprintf(w, "\treturn fmt.Errorf(\"format of %s external=%%q was not known (use %%s)\", ref, %s.CanonicalForm())\n",
-			plan.Kind, variants[0].FormatVar)
-		w.WriteString("}\n\n")
-	}
-	if !ov.IdentityMethods["Host"] {
-		fmt.Fprintf(w, "func (i *%s) Host() string {\n", idType)
-		fmt.Fprintf(w, "\treturn %s.Host()\n", variants[0].FormatVar)
-		w.WriteString("}\n\n")
-	}
-	if !ov.IdentityMethods["ParentString"] {
-		fmt.Fprintf(w, "func (i *%s) ParentString() string {\n", idType)
-		for _, v := range variants {
-			fmt.Fprintf(w, "\tif i.%s != \"\" {\n", v.RootField.StructField)
-			fmt.Fprintf(w, "\t\treturn %s\n", renderParentStringExpr(v.ParentSegments))
-			w.WriteString("\t}\n")
-		}
-		w.WriteString("\treturn \"\"\n")
 		w.WriteString("}\n\n")
 	}
 }
@@ -288,10 +228,6 @@ func renderParentStringExpr(segs []IdentitySegment) string {
 func renderGetIdentityFromSpec(w *bytes.Buffer, plan *IdentityPlan, fnName, idType string) {
 	fmt.Fprintf(w, "func %s(ctx context.Context, reader client.Reader, obj *%s) (*%s, error) {\n", fnName, plan.Kind, idType)
 	renderResourceIDLookup(w, plan)
-	if len(plan.MultiParentVariants) > 1 {
-		renderMultiParentGetIdentityFromSpec(w, plan, idType)
-		return
-	}
 	if plan.ParentRef != nil {
 		renderParentRefIdentityFromSpec(w, plan, idType)
 		return
@@ -311,102 +247,6 @@ func renderGetIdentityFromSpec(w *bytes.Buffer, plan *IdentityPlan, fnName, idTy
 	}
 	w.WriteString("\t}, nil\n")
 	w.WriteString("}\n\n")
-}
-
-func renderMultiParentGetIdentityFromSpec(w *bytes.Buffer, plan *IdentityPlan, idType string) {
-	fieldVars := map[string]string{}
-	if plan.ResourceIDField != nil {
-		fieldVars[plan.ResourceIDField.StructField] = "resourceID"
-	}
-	for _, anc := range plan.Ancestors {
-		if isRootCollection(anc.Field.Collection) {
-			continue
-		}
-		fieldVars[anc.Field.StructField] = renderSingleAncestorLookup(w, plan, anc)
-	}
-
-	fmt.Fprintf(w, "\tspecIdentity := &%s{\n", idType)
-	for _, f := range plan.Fields {
-		if v, ok := fieldVars[f.StructField]; ok {
-			fmt.Fprintf(w, "\t\t%s: %s,\n", f.StructField, v)
-		}
-	}
-	w.WriteString("\t}\n\n")
-
-	var specNames []string
-	w.WriteString("\tparentCount := 0\n")
-	for _, v := range plan.MultiParentVariants {
-		specNames = append(specNames, "spec."+v.SpecJSONName)
-		fmt.Fprintf(w, "\tif %s {\n\t\tparentCount++\n\t}\n", rootVariantSetCond(v))
-	}
-	w.WriteString("\tif parentCount > 1 {\n")
-	fmt.Fprintf(w, "\t\treturn nil, fmt.Errorf(\"at most one of %s can be set\")\n", strings.Join(specNames, ", "))
-	w.WriteString("\t}\n\n")
-
-	hasProjectVariant := false
-	var projectField string
-	for idx, v := range plan.MultiParentVariants {
-		if v.RootCollection == "projects" {
-			hasProjectVariant = true
-			projectField = v.RootField.StructField
-		}
-		kw := "if"
-		if idx > 0 {
-			kw = "} else if"
-		}
-		fmt.Fprintf(w, "\t%s %s {\n", kw, rootVariantSetCond(v))
-		renderMultiParentBranchBody(w, v)
-	}
-	if hasProjectVariant {
-		w.WriteString("\t} else {\n")
-		w.WriteString("\t\tprojectID, err := refs.ResolveProjectID(ctx, reader, obj)\n")
-		w.WriteString("\t\tif err != nil {\n")
-		w.WriteString("\t\t\treturn nil, fmt.Errorf(\"cannot resolve project: %w\", err)\n")
-		w.WriteString("\t\t}\n")
-		fmt.Fprintf(w, "\t\tspecIdentity.%s = projectID\n", projectField)
-		w.WriteString("\t}\n\n")
-	} else {
-		w.WriteString("\t}\n\n")
-	}
-	w.WriteString("\treturn specIdentity, nil\n")
-	w.WriteString("}\n\n")
-}
-
-func rootVariantSetCond(v RootVariant) string {
-	if v.IsPointer {
-		return "obj.Spec." + v.SpecFieldName + " != nil"
-	}
-	if v.RootCollection == "organizations" {
-		return "obj.Spec." + v.SpecFieldName + ".External != \"\""
-	}
-	return "obj.Spec." + v.SpecFieldName + ".External != \"\" || obj.Spec." + v.SpecFieldName + ".Name != \"\""
-}
-
-func renderMultiParentBranchBody(w *bytes.Buffer, v RootVariant) {
-	refExpr := "obj.Spec." + v.SpecFieldName
-	if !v.IsPointer {
-		refExpr = "&obj.Spec." + v.SpecFieldName
-	}
-	switch v.RootCollection {
-	case "projects":
-		w.WriteString("\t\tprojectID, err := refs.ResolveProjectID(ctx, reader, obj)\n")
-		w.WriteString("\t\tif err != nil {\n")
-		w.WriteString("\t\t\treturn nil, fmt.Errorf(\"cannot resolve project: %w\", err)\n")
-		w.WriteString("\t\t}\n")
-		fmt.Fprintf(w, "\t\tspecIdentity.%s = projectID\n", v.RootField.StructField)
-	case "folders":
-		fmt.Fprintf(w, "\t\tfolder, err := refs.ResolveFolder(ctx, reader, obj, %s)\n", refExpr)
-		w.WriteString("\t\tif err != nil {\n")
-		w.WriteString("\t\t\treturn nil, fmt.Errorf(\"cannot resolve folder: %w\", err)\n")
-		w.WriteString("\t\t}\n")
-		fmt.Fprintf(w, "\t\tspecIdentity.%s = folder.FolderID\n", v.RootField.StructField)
-	case "organizations":
-		fmt.Fprintf(w, "\t\torg, err := refs.ResolveOrganization(ctx, reader, obj, %s)\n", refExpr)
-		w.WriteString("\t\tif err != nil {\n")
-		w.WriteString("\t\t\treturn nil, fmt.Errorf(\"cannot resolve organization: %w\", err)\n")
-		w.WriteString("\t\t}\n")
-		fmt.Fprintf(w, "\t\tspecIdentity.%s = org.OrganizationID\n", v.RootField.StructField)
-	}
 }
 
 func renderResourceIDLookup(w *bytes.Buffer, plan *IdentityPlan) {
@@ -498,12 +338,6 @@ func renderSingleAncestorLookup(w *bytes.Buffer, plan *IdentityPlan, anc Ancesto
 		}
 	case AncestorParentRef:
 		renderParentRefSegmentLookup(w, anc, varName)
-	default:
-		fmt.Fprintf(w, "\t// +kcc:guess reason=%s\n", judgement.ReasonIdentityRootUnknown)
-		fmt.Fprintf(w, "\t%s := \"\"\n", varName)
-		fmt.Fprintf(w, "\tif %s == \"\" {\n", varName)
-		fmt.Fprintf(w, "\t\treturn nil, fmt.Errorf(\"cannot resolve %s for %s\")\n", anc.Field.RawPlaceholder, plan.Kind)
-		w.WriteString("\t}\n\n")
 	}
 	return varName
 }
@@ -606,9 +440,7 @@ func renderParentRefSegmentLookup(w *bytes.Buffer, anc AncestorResolution, varNa
 func safeAncestorVarName(rawPlaceholder string) string {
 	varName := snakeToLowerCamel(rawPlaceholder)
 	switch varName {
-	case "break", "case", "chan", "const", "continue", "default", "defer", "else",
-		"fallthrough", "for", "func", "go", "goto", "if", "import", "interface",
-		"map", "package", "range", "return", "select", "struct", "switch", "type", "var":
+	case "type", "func", "range", "map", "default", "select", "case", "interface", "struct", "package", "import":
 		return varName + "ID"
 	default:
 		return varName

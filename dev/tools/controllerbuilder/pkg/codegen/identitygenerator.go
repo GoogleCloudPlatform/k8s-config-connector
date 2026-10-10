@@ -21,14 +21,12 @@ import (
 	"regexp"
 	"sort"
 	"strings"
-	"sync"
 	"unicode"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/reflect/protoreflect"
-	"k8s.io/klog/v2"
 )
 
 const (
@@ -54,11 +52,7 @@ type IdentityGeneratorOptions struct {
 // IdentityGenerator deterministically plans and emits <kind>_identity.generated.go,
 // <kind>_reference.generated.go, and <kind>_identity_generated_test.go files.
 type IdentityGenerator struct {
-	opts       IdentityGeneratorOptions
-	caiOnce    sync.Once
-	caiByType  map[string][]string
-	caiFormats map[string]bool
-	caiLoadErr error
+	opts IdentityGeneratorOptions
 }
 
 // IdentitySegment represents one "/"-delimited segment in a GCP resource name pattern.
@@ -110,48 +104,32 @@ type ParentRefResolution struct {
 	TailSegments  []IdentitySegment
 }
 
-// RootVariant describes one root-scoped template variant of a multi-parent identity
-// (such as Project, Folder, or Organization).
-type RootVariant struct {
-	Prefix          string
-	FormatVar       string
-	RootCollection  string
-	RootField       IdentityField
-	SpecFieldName   string
-	SpecJSONName    string
-	IsPointer       bool
-	RawPattern      string
-	TemplatePattern string
-	ParentSegments  []IdentitySegment
-}
-
 // IdentityPlan is the deterministic plan for generating a resource's identity,
 // reference, and conformance test files.
 type IdentityPlan struct {
-	Kind                string
-	Group               string
-	Version             string
-	PackageName         string
-	PackageDir          string
-	ProtoMessage        string
-	ProtoService        string
-	Host                string
-	RawPattern          string
-	TemplatePattern     string
-	DocFormat           string
-	Segments            []IdentitySegment
-	Fields              []IdentityField
-	ParentSegments      []IdentitySegment
-	ResourceIDField     *IdentityField
-	ServerGeneratedID   bool
-	SpecIDIsPointer     bool
-	StatusField         string
-	StatusFieldIsPtr    bool
-	Ancestors           []AncestorResolution
-	ParentRef           *ParentRefResolution
-	MultiParentVariants []RootVariant
-	Overrides           HandWrittenOverrides
-	Judgement           []judgement.Entry
+	Kind              string
+	Group             string
+	Version           string
+	PackageName       string
+	PackageDir        string
+	ProtoMessage      string
+	ProtoService      string
+	Host              string
+	RawPattern        string
+	TemplatePattern   string
+	DocFormat         string
+	Segments          []IdentitySegment
+	Fields            []IdentityField
+	ParentSegments    []IdentitySegment
+	ResourceIDField   *IdentityField
+	ServerGeneratedID bool
+	SpecIDIsPointer   bool
+	StatusField       string
+	StatusFieldIsPtr  bool
+	Ancestors              []AncestorResolution
+	HasUnresolvedAncestors bool
+	ParentRef         *ParentRefResolution
+	Judgement         []judgement.Entry
 }
 
 // IdentityGenerateResult summarizes the files written or skipped for one resource.
@@ -193,6 +171,10 @@ func (g *IdentityGenerator) Generate(kind string, msg protoreflect.MessageDescri
 	if err != nil {
 		return nil, err
 	}
+	typeInfo, err := inspectKRMPackage(plan.PackageDir, kind, g.opts.Version)
+	if err != nil {
+		return nil, err
+	}
 
 	res := &IdentityGenerateResult{
 		Plan:          plan,
@@ -207,13 +189,13 @@ func (g *IdentityGenerator) Generate(kind string, msg protoreflect.MessageDescri
 		return res, nil
 	}
 
-	if err := g.writeIdentityArtifact(res, plan, &plan.Overrides); err != nil {
+	if err := g.writeIdentityArtifact(res, plan, &typeInfo.Overrides); err != nil {
 		return nil, err
 	}
-	if err := g.writeReferenceArtifact(res, plan, &plan.Overrides); err != nil {
+	if err := g.writeReferenceArtifact(res, plan, &typeInfo.Overrides); err != nil {
 		return nil, err
 	}
-	if err := g.writeTestArtifact(res, plan, &plan.Overrides); err != nil {
+	if err := g.writeTestArtifact(res, plan, &typeInfo.Overrides); err != nil {
 		return nil, err
 	}
 	return res, nil
@@ -227,9 +209,6 @@ func (g *IdentityGenerator) Plan(kind string, msg protoreflect.MessageDescriptor
 	if strings.HasPrefix(string(msg.FullName()), "mockgcp.") {
 		return nil, fmt.Errorf("generate-identity does not support mockgcp proto %s; use a googleapis proto service", msg.FullName())
 	}
-	if err := g.ensureCAILoaded(); err != nil {
-		klog.Warningf("failed to load CAI metadata: %v", err)
-	}
 
 	pkgDir := g.packageDir()
 	typeInfo, err := inspectKRMPackage(pkgDir, kind, g.opts.Version)
@@ -238,7 +217,7 @@ func (g *IdentityGenerator) Plan(kind string, msg protoreflect.MessageDescriptor
 	}
 
 	rd := getResourceDescriptorProto(msg)
-	defaultHost, getHTTPPath, serverGenID := g.inspectProtoService(msg)
+	defaultHost, serverGenID := g.inspectProtoService(msg)
 	plan := &IdentityPlan{
 		Kind:             kind,
 		Group:            g.opts.Group,
@@ -250,37 +229,48 @@ func (g *IdentityGenerator) Plan(kind string, msg protoreflect.MessageDescriptor
 		SpecIDIsPointer:  typeInfo.ResourceIDIsPtr,
 		StatusField:      typeInfo.StatusField,
 		StatusFieldIsPtr: typeInfo.StatusFieldIsPtr,
-		Overrides:        typeInfo.Overrides,
 	}
 
-	patterns, hostOverride, patOverride := g.resolveCandidatePatterns(kind, msg, rd, getHTTPPath, defaultHost)
+	patterns, hostOverride, patOverride := g.resolveCandidatePatterns(kind, msg)
 	if len(patterns) == 0 {
-		detail := fmt.Sprintf("proto message %s declares no google.api.resource pattern; pass --pattern %s=<pattern> to generate-identity", msg.FullName(), kind)
-		klog.Warningf("skipping identity generation for %s: %s", kind, detail)
 		plan.Judgement = append(plan.Judgement, judgement.Entry{
 			Kind:   kind,
 			Group:  g.opts.Group,
 			Reason: judgement.ReasonIdentityRootUnknown,
-			Detail: detail,
+			Detail: fmt.Sprintf("proto message %s declares no google.api.resource pattern; pass --pattern %s=<pattern> to generate-identity", msg.FullName(), kind),
 			Status: judgement.StatusOpen,
 		})
 		return plan, nil
 	}
 
-	initialHost := g.resolveInitialHost(rd, defaultHost, hostOverride)
-	rawPattern, tied := selectBestPattern(patterns, typeInfo, initialHost, g.caiFormats)
-	normPath := tmplVarNormalizeRe.ReplaceAllString(rawPattern, "{}")
+	rawPattern, unique := selectBestPattern(patterns, msg, typeInfo)
+	if !unique {
+		plan.Judgement = append(plan.Judgement, judgement.Entry{
+			Kind:   kind,
+			Group:  g.opts.Group,
+			Reason: judgement.ReasonIdentityMultiPattern,
+			Detail: fmt.Sprintf("proto message %s declares %d resource name patterns (%s) that cannot be uniquely disambiguated from %sSpec; pass --pattern %s=<pattern> to generate-identity",
+				msg.FullName(), len(patterns), strings.Join(patterns, ", "), kind, kind),
+			Status: judgement.StatusOpen,
+		})
+		return plan, nil
+	}
 
 	plan.RawPattern = rawPattern
-	plan.Host = g.refineHostWithCAI(rd, initialHost, hostOverride, normPath)
+	plan.Host = g.resolveHost(rd, defaultHost, hostOverride)
+	if patOverride == "" && len(patterns) > 1 {
+		plan.Judgement = append(plan.Judgement, judgement.Entry{
+			Kind:   plan.Kind,
+			Group:  g.opts.Group,
+			Reason: judgement.ReasonIdentityMultiPattern,
+			Detail: fmt.Sprintf("proto message %s declares %d resource name patterns (%s); generated identity uses %q (pass --pattern %s=<pattern> to override)",
+				msg.FullName(), len(patterns), strings.Join(patterns, ", "), plan.RawPattern, plan.Kind),
+			Status: judgement.StatusOpen,
+		})
+	}
 
 	populatePatternSegments(plan, rawPattern)
 	populateParentSegments(plan)
-	if patOverride == "" {
-		g.populateMultiParentVariants(plan, patterns, typeInfo, initialHost)
-	}
-	g.recordPatternJudgements(plan, msg, patterns, patOverride, normPath, tied)
-
 	plan.ServerGeneratedID = (serverGenID || typeInfo.ResourceIDServer) && plan.ResourceIDField != nil
 	g.resolveSpecAncestors(plan, typeInfo)
 	return plan, nil
@@ -336,27 +326,14 @@ func (g *IdentityGenerator) packageDir() string {
 	return filepath.Join(parts...)
 }
 
-func (g *IdentityGenerator) resolveCandidatePatterns(kind string, msg protoreflect.MessageDescriptor, rd *annotations.ResourceDescriptor, getHTTPPath, defaultHost string) ([]string, string, string) {
+func (g *IdentityGenerator) resolveCandidatePatterns(kind string, msg protoreflect.MessageDescriptor) ([]string, string, string) {
 	if rawOv, ok := g.opts.PatternOverrides[kind]; ok && strings.TrimSpace(rawOv) != "" {
 		hostOv, patOv := parsePatternOverride(rawOv)
 		return []string{patOv}, hostOv, patOv
 	}
-
 	var patterns []string
 	if md := protoapi.GetResourceMetadata(msg); md != nil {
-		for _, p := range md.Patterns {
-			if strings.Contains(p, "/location/{location}/") && strings.Contains(getHTTPPath, "/locations/") {
-				p = strings.ReplaceAll(p, "/location/{location}/", "/locations/{location}/")
-			}
-			patterns = append(patterns, p)
-		}
-	}
-	if rd != nil && rd.GetType() != "" {
-		patterns = appendUniquePatterns(patterns, g.caiPatternsForType(rd.GetType()))
-	}
-	patterns = appendUniquePatterns(patterns, g.rpcPatternsForMessage(msg))
-	if len(patterns) == 0 {
-		patterns = g.fallbackPatterns(msg, defaultHost)
+		patterns = appendUniquePatterns(patterns, md.Patterns)
 	}
 	return patterns, "", ""
 }
@@ -392,161 +369,33 @@ func parsePatternOverride(raw string) (host, pattern string) {
 	return "", strings.TrimPrefix(raw, "/")
 }
 
-func (g *IdentityGenerator) resolveInitialHost(rd *annotations.ResourceDescriptor, defaultHost, hostOverride string) string {
+func (g *IdentityGenerator) resolveHost(rd *annotations.ResourceDescriptor, defaultHost, hostOverride string) string {
 	if hostOverride != "" {
 		return hostOverride
-	}
-	if defaultHost != "" {
-		return defaultHost
 	}
 	if rd != nil && rd.GetType() != "" {
 		if svc, _ := protoapi.ParseResourceTarget(rd.GetType()); svc != "" {
 			return svc + ".googleapis.com"
 		}
 	}
+	if defaultHost != "" {
+		return defaultHost
+	}
 	groupPrefix := strings.Split(g.opts.Group, ".")[0]
 	return groupPrefix + ".googleapis.com"
 }
 
-func (g *IdentityGenerator) refineHostWithCAI(rd *annotations.ResourceDescriptor, host, hostOverride, normPath string) string {
-	if hostOverride != "" || rd == nil || rd.GetType() == "" {
-		return host
-	}
-	suffix := "/" + normPath
-	for _, nf := range g.caiByType[rd.GetType()] {
-		normCAI := caiVarNormalizeRe.ReplaceAllString(nf, "{}")
-		if !strings.HasPrefix(normCAI, "//") || !strings.HasSuffix(normCAI, suffix) {
-			continue
-		}
-		caiHost := strings.TrimPrefix(strings.TrimSuffix(normCAI, suffix), "//")
-		if caiHost != "" && !strings.Contains(caiHost, "/") {
-			return caiHost
-		}
-	}
-	return host
-}
-
-func (g *IdentityGenerator) populateMultiParentVariants(plan *IdentityPlan, patterns []string, info *krmTypeInfo, host string) {
-	if info == nil || info.rootRefCount() < 2 || len(patterns) < 2 {
-		return
-	}
-	type rootSpec struct {
-		collection string
-		prefix     string
-		fieldName  string
-		jsonName   string
-		isPtr      bool
-		enabled    bool
-	}
-	roots := []rootSpec{
-		{collection: "projects", prefix: "Project", fieldName: "ProjectRef", jsonName: "projectRef", isPtr: info.ProjectRefIsPtr, enabled: info.HasProjectRef},
-		{collection: "folders", prefix: "Folder", fieldName: "FolderRef", jsonName: "folderRef", isPtr: info.FolderRefIsPtr, enabled: info.HasFolderRef},
-		{collection: "organizations", prefix: "Organization", fieldName: "OrganizationRef", jsonName: "organizationRef", isPtr: info.OrgRefIsPtr, enabled: info.HasOrgRef},
-	}
-
-	var variants []RootVariant
-	for _, r := range roots {
-		if !r.enabled {
-			continue
-		}
-		pat := findBestPatternWithRoot(patterns, r.collection, info, host, g.caiFormats)
-		if pat == "" {
-			continue
-		}
-		subPlan := &IdentityPlan{}
-		populatePatternSegments(subPlan, pat)
-		populateParentSegments(subPlan)
-		if len(subPlan.Fields) == 0 {
-			continue
-		}
-		variants = append(variants, RootVariant{
-			Prefix:          r.prefix,
-			FormatVar:       r.prefix + plan.Kind + "IdentityFormat",
-			RootCollection:  r.collection,
-			RootField:       subPlan.Fields[0],
-			SpecFieldName:   r.fieldName,
-			SpecJSONName:    r.jsonName,
-			IsPointer:       r.isPtr,
-			RawPattern:      pat,
-			TemplatePattern: subPlan.TemplatePattern,
-			ParentSegments:  subPlan.ParentSegments,
-		})
-	}
-	if len(variants) < 2 {
-		return
-	}
-	plan.MultiParentVariants = variants
-	plan.RawPattern = variants[0].RawPattern
-	plan.Segments = nil
-	plan.Fields = nil
-	plan.ParentSegments = nil
-	populatePatternSegments(plan, variants[0].RawPattern)
-	populateParentSegments(plan)
-
-	var combinedFields []IdentityField
-	for _, v := range variants {
-		combinedFields = append(combinedFields, v.RootField)
-	}
-	if len(plan.Fields) > 1 {
-		combinedFields = append(combinedFields, plan.Fields[1:]...)
-	}
-	plan.Fields = combinedFields
-}
-
-func findBestPatternWithRoot(patterns []string, rootCol string, info *krmTypeInfo, host string, caiFormats map[string]bool) string {
-	var matching []string
-	prefix := rootCol + "/{"
-	for _, p := range patterns {
-		if strings.HasPrefix(p, prefix) {
-			matching = append(matching, p)
-		}
-	}
-	if len(matching) == 0 {
-		return ""
-	}
-	best, _ := selectBestPattern(matching, info, host, caiFormats)
-	return best
-}
-
-func (g *IdentityGenerator) recordPatternJudgements(plan *IdentityPlan, msg protoreflect.MessageDescriptor, patterns []string, patOverride, normPath string, tied bool) {
-	if patOverride == "" && len(patterns) > 1 && len(plan.MultiParentVariants) == 0 {
-		detail := fmt.Sprintf("proto message %s declares %d resource name patterns (%s); generated identity uses %q (pass --pattern %s=<pattern> to override)",
-			msg.FullName(), len(patterns), strings.Join(patterns, ", "), plan.RawPattern, plan.Kind)
-		if tied {
-			detail = fmt.Sprintf("proto message %s declares %d resource name patterns (%s) that tied on %sSpec; generated identity defaulted to %q (pass --pattern %s=<pattern> to override)",
-				msg.FullName(), len(patterns), strings.Join(patterns, ", "), plan.Kind, plan.RawPattern, plan.Kind)
-		}
-		plan.Judgement = append(plan.Judgement, judgement.Entry{
-			Kind:   plan.Kind,
-			Group:  g.opts.Group,
-			Reason: judgement.ReasonIdentityMultiPattern,
-			Detail: detail,
-			Status: judgement.StatusOpen,
-		})
-	}
-	if len(g.caiFormats) > 0 && !g.caiFormats["//"+plan.Host+"/"+normPath] {
-		plan.Judgement = append(plan.Judgement, judgement.Entry{
-			Kind:   plan.Kind,
-			Group:  g.opts.Group,
-			Reason: judgement.ReasonIdentityNotInCAI,
-			Detail: fmt.Sprintf("template %q is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go",
-				"//"+plan.Host+"/"+plan.RawPattern),
-			Status: judgement.StatusOpen,
-		})
-	}
-}
-
 var tmplVarNormalizeRe = regexp.MustCompile(`\{[^}]+\}`)
 
-func selectBestPattern(patterns []string, info *krmTypeInfo, host string, caiFormats map[string]bool) (string, bool) {
+func selectBestPattern(patterns []string, msg protoreflect.MessageDescriptor, info *krmTypeInfo) (string, bool) {
 	if len(patterns) == 1 {
-		return patterns[0], false
+		return patterns[0], true
 	}
 	best := patterns[0]
-	bestScore := scorePatternAgainstSpec(patterns[0], info, host, caiFormats)
+	bestScore := scorePatternAgainstSpec(patterns[0], msg, info)
 	tiedCount := 1
 	for _, p := range patterns[1:] {
-		sc := scorePatternAgainstSpec(p, info, host, caiFormats)
+		sc := scorePatternAgainstSpec(p, msg, info)
 		if sc > bestScore {
 			best = p
 			bestScore = sc
@@ -555,28 +404,27 @@ func selectBestPattern(patterns []string, info *krmTypeInfo, host string, caiFor
 			tiedCount++
 		}
 	}
-	return best, tiedCount > 1
+	if tiedCount > 1 || bestScore <= 0 {
+		return "", false
+	}
+	return best, true
 }
 
-func scorePatternAgainstSpec(pattern string, info *krmTypeInfo, host string, caiFormats map[string]bool) int {
-	normPat := tmplVarNormalizeRe.ReplaceAllString(pattern, "{}")
-	score := 0
-	if len(caiFormats) > 0 && host != "" && caiFormats["//"+host+"/"+normPat] {
-		score += 10
-	}
-	if info == nil {
-		return score
+func scorePatternAgainstSpec(pattern string, msg protoreflect.MessageDescriptor, info *krmTypeInfo) int {
+	if info == nil || !strings.Contains(pattern, "{") {
+		return -10
 	}
 	segs := strings.Split(pattern, "/")
-	score += scoreRootSegment(segs, info)
+	score := scoreRootSegment(segs, info)
 	score += scoreLocationSegments(segs, info)
 	score += scoreIntermediateParentSegments(segs, info)
+	score += scoreAlternatingSegmentsAndLeaf(segs, msg)
 	return score
 }
 
 func scoreRootSegment(segs []string, info *krmTypeInfo) int {
 	if len(segs) < 2 {
-		return -4
+		return -10
 	}
 	switch segs[0] {
 	case "projects":
@@ -586,18 +434,27 @@ func scoreRootSegment(segs []string, info *krmTypeInfo) int {
 		if !info.HasOrgRef && !info.HasFolderRef {
 			return 2
 		}
+		return -5
 	case "organizations":
 		if info.HasOrgRef {
 			return 4
 		}
-		return -2
+		return -10
 	case "folders":
 		if info.HasFolderRef {
 			return 4
 		}
-		return -2
+		return -10
+	default:
+		if strings.HasPrefix(segs[1], "{") {
+			ph := strings.Trim(segs[1], "{}")
+			af := IdentityField{RawPlaceholder: ph, StructField: snakeToPascal(ph), Collection: segs[0]}
+			if matchParentRefField(af, info.SpecFields) != nil || matchPlainSpecField(af, info.SpecFields) != nil {
+				return 4
+			}
+		}
+		return -10
 	}
-	return 0
 }
 
 func scoreLocationSegments(segs []string, info *krmTypeInfo) int {
@@ -619,7 +476,7 @@ func scoreLocationSegments(segs []string, info *krmTypeInfo) int {
 		return bonus + 3
 	}
 	if hasLocInPattern && !info.HasLocation {
-		return bonus - 2
+		return bonus - 3
 	}
 	return bonus
 }
@@ -639,6 +496,24 @@ func scoreIntermediateParentSegments(segs []string, info *krmTypeInfo) int {
 		}
 		if matchParentRefField(af, info.SpecFields) != nil || matchPlainSpecField(af, info.SpecFields) != nil {
 			score += 3
+		} else {
+			score -= 2
+		}
+	}
+	return score
+}
+
+func scoreAlternatingSegmentsAndLeaf(segs []string, msg protoreflect.MessageDescriptor) int {
+	score := 0
+	for i := 0; i+1 < len(segs); i++ {
+		if !strings.HasPrefix(segs[i], "{") && !strings.HasPrefix(segs[i+1], "{") {
+			score -= 2
+		}
+	}
+	if msg != nil && len(segs) >= 2 && strings.HasPrefix(segs[len(segs)-1], "{") {
+		leafVar := strings.ReplaceAll(strings.ToLower(strings.Trim(segs[len(segs)-1], "{}")), "_", "")
+		if leafVar == strings.ToLower(string(msg.Name())) {
+			score += 1
 		}
 	}
 	return score
@@ -684,13 +559,12 @@ func buildIdentityField(seg, lastLiteral string, usedStructFields map[string]int
 	}
 	structField := snakeToPascal(rawVar)
 	tmplVar := snakeToLowerCamel(rawVar)
-	baseKey := strings.ToLower(structField)
-	if count := usedStructFields[baseKey]; count > 0 {
+	if count := usedStructFields[strings.ToLower(structField)]; count > 0 {
 		suffix := fmt.Sprintf("%d", count+1)
 		structField += suffix
 		tmplVar += suffix
 	}
-	usedStructFields[baseKey]++
+	usedStructFields[strings.ToLower(structField)]++
 	return IdentityField{
 		RawPlaceholder: rawVar,
 		TemplateVar:    tmplVar,

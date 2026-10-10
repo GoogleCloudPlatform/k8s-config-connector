@@ -15,14 +15,8 @@
 package codegen
 
 import (
-	"bufio"
-	"encoding/json"
 	"fmt"
-	"os"
-	"path/filepath"
-	"regexp"
 	"strings"
-	"unicode"
 
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/proto"
@@ -64,11 +58,10 @@ func (g *IdentityGenerator) ResolveMessage(protoName string) (protoreflect.Messa
 	return nil, fmt.Errorf("finding proto message %q", protoName)
 }
 
-func (g *IdentityGenerator) inspectProtoService(msg protoreflect.MessageDescriptor) (defaultHost, getHTTPPath string, serverGeneratedID bool) {
+func (g *IdentityGenerator) inspectProtoService(msg protoreflect.MessageDescriptor) (defaultHost string, serverGeneratedID bool) {
 	if msg == nil {
-		return "", "", false
+		return "", false
 	}
-	wantGet := "Get" + string(msg.Name())
 	wantCreate := "Create" + string(msg.Name())
 	for _, fd := range g.serviceFilesForMessage(msg) {
 		svcs := fd.Services()
@@ -77,16 +70,12 @@ func (g *IdentityGenerator) inspectProtoService(msg protoreflect.MessageDescript
 			if defaultHost == "" {
 				defaultHost = extractServiceDefaultHost(svc)
 			}
-			getPath, isServerGen := inspectServiceMethods(svc, wantGet, wantCreate)
-			if getHTTPPath == "" && getPath != "" {
-				getHTTPPath = getPath
-			}
-			if isServerGen {
+			if hasServerGeneratedCreateMethod(svc, wantCreate) {
 				serverGeneratedID = true
 			}
 		}
 	}
-	return defaultHost, getHTTPPath, serverGeneratedID
+	return defaultHost, serverGeneratedID
 }
 
 func extractServiceDefaultHost(svc protoreflect.ServiceDescriptor) string {
@@ -94,20 +83,15 @@ func extractServiceDefaultHost(svc protoreflect.ServiceDescriptor) string {
 	return h
 }
 
-func inspectServiceMethods(svc protoreflect.ServiceDescriptor, wantGet, wantCreate string) (getHTTPPath string, serverGeneratedID bool) {
+func hasServerGeneratedCreateMethod(svc protoreflect.ServiceDescriptor, wantCreate string) bool {
 	meths := svc.Methods()
 	for j := 0; j < meths.Len(); j++ {
 		m := meths.Get(j)
-		if string(m.Name()) == wantGet && getHTTPPath == "" {
-			if rule, ok := proto.GetExtension(m.Options(), annotations.E_Http).(*annotations.HttpRule); ok && rule != nil {
-				getHTTPPath = rule.GetGet()
-			}
-		}
 		if string(m.Name()) == wantCreate && isServerGeneratedCreateInput(m.Input().Fields()) {
-			serverGeneratedID = true
+			return true
 		}
 	}
-	return getHTTPPath, serverGeneratedID
+	return false
 }
 
 func isServerGeneratedCreateInput(inFields protoreflect.FieldDescriptors) bool {
@@ -116,51 +100,11 @@ func isServerGeneratedCreateInput(inFields protoreflect.FieldDescriptors) bool {
 	}
 	for k := 0; k < inFields.Len(); k++ {
 		f := inFields.Get(k)
-		name := string(f.Name())
-		if name == "request_id" {
-			continue
-		}
-		if strings.HasSuffix(name, "_id") && f.Kind() == protoreflect.StringKind {
+		if strings.HasSuffix(string(f.Name()), "_id") && f.Kind() == protoreflect.StringKind {
 			return false
 		}
 	}
 	return true
-}
-
-var httpBindingVarRe = regexp.MustCompile(`\{[a-zA-Z0-9_.]+=([^}]+)\}`)
-
-func (g *IdentityGenerator) rpcPatternsForMessage(msg protoreflect.MessageDescriptor) []string {
-	if msg == nil || strings.HasPrefix(string(msg.FullName()), "mockgcp.") {
-		return nil
-	}
-	var out []string
-	for _, fd := range g.serviceFilesForMessage(msg) {
-		svcs := fd.Services()
-		for i := 0; i < svcs.Len(); i++ {
-			meths := svcs.Get(i).Methods()
-			for j := 0; j < meths.Len(); j++ {
-				if pat := extractGetRPCPattern(meths.Get(j), msg.FullName()); pat != "" {
-					out = append(out, pat)
-				}
-			}
-		}
-	}
-	return out
-}
-
-func extractGetRPCPattern(m protoreflect.MethodDescriptor, wantOutput protoreflect.FullName) string {
-	if !strings.HasPrefix(string(m.Name()), "Get") || m.Output().FullName() != wantOutput {
-		return ""
-	}
-	rule, ok := proto.GetExtension(m.Options(), annotations.E_Http).(*annotations.HttpRule)
-	if !ok || rule == nil || rule.GetGet() == "" {
-		return ""
-	}
-	sub := httpBindingVarRe.FindStringSubmatch(rule.GetGet())
-	if sub == nil {
-		return ""
-	}
-	return wildcardPathToPattern(sub[1])
 }
 
 func (g *IdentityGenerator) serviceFilesForMessage(msg protoreflect.MessageDescriptor) []protoreflect.FileDescriptor {
@@ -196,38 +140,6 @@ func matchesGroupServicePackage(pkg, groupPrefix string) bool {
 	return strings.HasPrefix(pkg, "google."+groupPrefix+".") || strings.HasPrefix(pkg, "google.cloud."+groupPrefix+".")
 }
 
-func wildcardPathToPattern(wc string) string {
-	segs := strings.Split(strings.Trim(wc, "/"), "/")
-	if len(segs) < 2 {
-		return ""
-	}
-	for i := 0; i < len(segs); i++ {
-		if segs[i] != "*" && segs[i] != "**" {
-			continue
-		}
-		if i == 0 || strings.HasPrefix(segs[i-1], "{") || strings.HasPrefix(segs[i-1], "*") {
-			return ""
-		}
-		segs[i] = "{" + snakeCaseIdent(Singular(segs[i-1])) + "}"
-	}
-	return strings.Join(segs, "/")
-}
-
-func snakeCaseIdent(s string) string {
-	var b strings.Builder
-	for i, r := range s {
-		if unicode.IsUpper(r) {
-			if i > 0 {
-				b.WriteByte('_')
-			}
-			b.WriteRune(unicode.ToLower(r))
-		} else {
-			b.WriteRune(r)
-		}
-	}
-	return b.String()
-}
-
 func getResourceDescriptorProto(msg protoreflect.MessageDescriptor) *annotations.ResourceDescriptor {
 	if msg == nil {
 		return nil
@@ -235,138 +147,4 @@ func getResourceDescriptorProto(msg protoreflect.MessageDescriptor) *annotations
 	v := proto.GetExtension(msg.Options(), annotations.E_Resource)
 	rd, _ := v.(*annotations.ResourceDescriptor)
 	return rd
-}
-
-var (
-	caiVarNormalizeRe = regexp.MustCompile(`\{\{[^}]+\}\}`)
-	caiDoubleBraceRe  = regexp.MustCompile(`\{\{([^}]+)\}\}`)
-)
-
-func (g *IdentityGenerator) ensureCAILoaded() error {
-	g.caiOnce.Do(func() {
-		g.caiByType = make(map[string][]string)
-		g.caiFormats = make(map[string]bool)
-
-		path := g.resolveCAIMetadataPath()
-		if path == "" {
-			return
-		}
-		f, err := os.Open(path)
-		if err != nil {
-			g.caiLoadErr = fmt.Errorf("opening CAI metadata %s: %w", path, err)
-			return
-		}
-		defer f.Close()
-
-		type caiEntry struct {
-			ResourceType string   `json:"resourceType"`
-			NameFormats  []string `json:"nameFormats"`
-		}
-		sc := bufio.NewScanner(f)
-		lineNum := 0
-		for sc.Scan() {
-			lineNum++
-			var e caiEntry
-			if err := json.Unmarshal(sc.Bytes(), &e); err != nil {
-				g.caiLoadErr = fmt.Errorf("parsing CAI metadata %s line %d: %w", path, lineNum, err)
-				return
-			}
-			g.caiByType[e.ResourceType] = append(g.caiByType[e.ResourceType], e.NameFormats...)
-			for _, nf := range e.NameFormats {
-				g.caiFormats[caiVarNormalizeRe.ReplaceAllString(nf, "{}")] = true
-			}
-		}
-		if err := sc.Err(); err != nil {
-			g.caiLoadErr = fmt.Errorf("scanning CAI metadata %s: %w", path, err)
-		}
-	})
-	return g.caiLoadErr
-}
-
-func (g *IdentityGenerator) resolveCAIMetadataPath() string {
-	path := g.opts.CAIMetadataPath
-	if g.opts.APIDirectory == "" {
-		return path
-	}
-	repoRoot := filepath.Dir(strings.TrimRight(g.opts.APIDirectory, "/"))
-	candidate := filepath.Join(repoRoot, "docs", "ai", "metadata", "cloudassetinventory_names.jsonl")
-	if path == "" {
-		if _, err := os.Stat(candidate); err == nil {
-			path = candidate
-		}
-	}
-	if path == candidate {
-		g.loadRegistryTestAllowlist(repoRoot)
-	}
-	return path
-}
-
-func (g *IdentityGenerator) loadRegistryTestAllowlist(repoRoot string) {
-	regBytes, err := os.ReadFile(filepath.Join(repoRoot, "pkg", "gcpurls", "registry_test.go"))
-	if err != nil {
-		return
-	}
-	for _, line := range strings.Split(string(regBytes), "\n") {
-		line = strings.TrimSpace(line)
-		if !strings.HasPrefix(line, `"//`) || !strings.HasSuffix(line, `true,`) {
-			continue
-		}
-		if idx := strings.Index(line[1:], `"`); idx > 0 {
-			g.caiFormats[line[1:1+idx]] = true
-		}
-	}
-}
-
-func (g *IdentityGenerator) caiPatternsForType(resType string) []string {
-	var out []string
-	for _, nf := range g.caiByType[resType] {
-		if pat := convertCAINameFormatToPattern(nf, true); pat != "" {
-			out = append(out, pat)
-		}
-	}
-	return out
-}
-
-func (g *IdentityGenerator) fallbackPatterns(msg protoreflect.MessageDescriptor, defaultHost string) []string {
-	host := defaultHost
-	if host == "" {
-		if groupPrefix := strings.TrimSuffix(g.opts.Group, ".cnrm.cloud.google.com"); groupPrefix != "" {
-			host = groupPrefix + ".googleapis.com"
-		}
-	}
-	if host == "" {
-		return nil
-	}
-	resType := host + "/" + string(msg.Name())
-	var out []string
-	for _, nf := range g.caiByType[resType] {
-		if pat := convertCAINameFormatToPattern(nf, false); pat != "" {
-			out = append(out, pat)
-		}
-	}
-	return out
-}
-
-func convertCAINameFormatToPattern(nf string, stripNameSuffix bool) string {
-	if !strings.HasPrefix(nf, "//") {
-		return ""
-	}
-	rest := strings.TrimPrefix(nf, "//")
-	slash := strings.IndexByte(rest, '/')
-	if slash <= 0 {
-		return ""
-	}
-	conv := caiDoubleBraceRe.ReplaceAllStringFunc(rest[slash+1:], func(m string) string {
-		inner := strings.ToLower(strings.Trim(m, "{}"))
-		inner = strings.TrimSuffix(inner, "_id")
-		inner = strings.TrimSuffix(inner, "_number")
-		if stripNameSuffix {
-			inner = strings.TrimSuffix(inner, "_name")
-		}
-		return "{" + inner + "}"
-	})
-	if !strings.Contains(conv, "/") {
-		return ""
-	}
-	return conv
 }

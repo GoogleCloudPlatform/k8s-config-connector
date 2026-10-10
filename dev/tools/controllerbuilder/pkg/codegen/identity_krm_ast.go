@@ -43,7 +43,6 @@ type krmTypeInfo struct {
 	PackageName      string
 	SpecFields       []krmSpecField
 	HasProjectRef    bool
-	ProjectRefIsPtr  bool
 	HasOrgRef        bool
 	OrgRefIsPtr      bool
 	HasFolderRef     bool
@@ -160,7 +159,7 @@ func inspectKRMTypeSpec(s *ast.TypeSpec, kind string, isGenerated bool, info *kr
 func inspectKRMValueSpec(s *ast.ValueSpec, kind string, info *krmTypeInfo) {
 	for _, ident := range s.Names {
 		switch ident.Name {
-		case kind + "IdentityFormat", "Project" + kind + "IdentityFormat":
+		case kind + "IdentityFormat":
 			info.Overrides.HasIdentityFormat = true
 		case kind + "GVK":
 			info.Overrides.HasGVKVar = true
@@ -204,7 +203,6 @@ func populateSpecFieldFlags(kind string, info *krmTypeInfo, fset *token.FileSet,
 		switch sf.GoName {
 		case "ProjectRef":
 			info.HasProjectRef = true
-			info.ProjectRefIsPtr = sf.IsPointer
 		case "OrganizationRef":
 			info.HasOrgRef = true
 			info.OrgRefIsPtr = sf.IsPointer
@@ -226,20 +224,6 @@ func populateSpecFieldFlags(kind string, info *krmTypeInfo, fset *token.FileSet,
 			}
 		}
 	}
-}
-
-func (info *krmTypeInfo) rootRefCount() int {
-	count := 0
-	if info.HasProjectRef {
-		count++
-	}
-	if info.HasFolderRef {
-		count++
-	}
-	if info.HasOrgRef {
-		count++
-	}
-	return count
 }
 
 func populateStatusFieldFlags(kind string, info *krmTypeInfo, fset *token.FileSet, structDecls map[string]*ast.StructType) {
@@ -421,6 +405,7 @@ func (g *IdentityGenerator) resolveSpecAncestors(plan *IdentityPlan, typeInfo *k
 				plan.RawPattern, strings.Join(unknownAncestors, ", "), plan.Kind),
 			Status: judgement.StatusOpen,
 		})
+		plan.HasUnresolvedAncestors = true
 	}
 }
 
@@ -459,27 +444,27 @@ func resolveSingleAncestor(af IdentityField, typeInfo *krmTypeInfo) (AncestorRes
 		known := typeInfo.HasProjectRef || len(typeInfo.SpecFields) > 0
 		return AncestorResolution{Field: af, Source: AncestorProjectRef}, known
 	case "organizations":
-		if typeInfo.HasOrgRef {
-			return AncestorResolution{
-				Field:         af,
-				Source:        AncestorOrganizationRef,
-				SpecFieldName: "OrganizationRef",
-				SpecJSONName:  "organizationRef",
-				IsPointer:     typeInfo.OrgRefIsPtr,
-			}, true
+		if !typeInfo.HasOrgRef {
+			return AncestorResolution{Field: af, Source: AncestorOrganizationRef}, false
 		}
-		return AncestorResolution{Field: af, Source: AncestorOrganizationRef}, true
+		return AncestorResolution{
+			Field:         af,
+			Source:        AncestorOrganizationRef,
+			SpecFieldName: "OrganizationRef",
+			SpecJSONName:  "organizationRef",
+			IsPointer:     typeInfo.OrgRefIsPtr,
+		}, true
 	case "folders":
-		if typeInfo.HasFolderRef {
-			return AncestorResolution{
-				Field:         af,
-				Source:        AncestorFolderRef,
-				SpecFieldName: "FolderRef",
-				SpecJSONName:  "folderRef",
-				IsPointer:     typeInfo.FolderRefIsPtr,
-			}, true
+		if !typeInfo.HasFolderRef {
+			return AncestorResolution{Field: af, Source: AncestorFolderRef}, false
 		}
-		return AncestorResolution{Field: af, Source: AncestorFolderRef}, true
+		return AncestorResolution{
+			Field:         af,
+			Source:        AncestorFolderRef,
+			SpecFieldName: "FolderRef",
+			SpecJSONName:  "folderRef",
+			IsPointer:     typeInfo.FolderRefIsPtr,
+		}, true
 	case "locations", "regions", "zones":
 		if !typeInfo.HasLocation {
 			return AncestorResolution{Field: af, Source: AncestorLocation}, false
