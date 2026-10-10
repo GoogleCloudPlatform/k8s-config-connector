@@ -387,9 +387,9 @@ func TestPlanRequiredStructsNamedCopy(t *testing.T) {
 }
 
 // The walk follows hand-written types. A struct that only the opted-in Kind
-// reaches through a hand-written helper gets +required, with no copy. Once
-// something else reaches it, through a hand-written type or a generated
-// struct that holds one, its plain struct stays optional.
+// uses through a hand-written helper gets +required, with no copy. Once
+// something else uses it, through a hand-written type or a generated struct
+// that holds one, its plain struct stays optional.
 func TestPlanRequiredStructsFollowsHandWrittenTypes(t *testing.T) {
 	markedSpecWithWrapper := "package test\n\n" +
 		"// " + RequiredFromProtoMarker + "\n" +
