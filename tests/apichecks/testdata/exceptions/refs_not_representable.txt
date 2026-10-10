@@ -85,5 +85,6 @@
 [not_representable] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.predictSchemata.parametersSchemaURI" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelToUpload.predictSchemata.predictionSchemaURI" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.trainingTaskDefinition" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=vertexaituningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.supervisedTuningSpec.evaluationConfig.outputConfig.gcsDestination.outputURIPrefix" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=vertexaituningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.supervisedTuningSpec.trainingDatasetURI" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=vertexaituningjobs.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.supervisedTuningSpec.validationDatasetURI" reason=gcs-path-decomposable-as-bucketref-plus-path
