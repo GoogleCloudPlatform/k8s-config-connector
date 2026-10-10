@@ -102,6 +102,13 @@ func TestGenerateScripts(t *testing.T) {
 				}
 			}
 
+			// 4b) If apis/<service>/*/*_identity.generated.go or *_reference.generated.go exists, generate.sh MUST call generate-identity
+			idMatches, _ := filepath.Glob(filepath.Join(apisDir, service, "*", "*_identity.generated.go"))
+			refMatches, _ := filepath.Glob(filepath.Join(apisDir, service, "*", "*_reference.generated.go"))
+			if len(idMatches)+len(refMatches) > 0 && !strings.Contains(content, "generate-identity") {
+				t.Errorf("generate.sh script at %s is missing call to generate-identity (generated identity/reference files exist under apis/%s)", relPath, service)
+			}
+
 			// 5) Check CONTROLLERBUILDER variable header definition
 			if strings.Contains(content, "generate-types") || strings.Contains(content, "generate-mapper") {
 				if !strings.Contains(content, "CONTROLLERBUILDER=") {

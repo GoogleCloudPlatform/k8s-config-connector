@@ -43,6 +43,11 @@ ${CONTROLLERBUILDER} generate-types \
   --resource NetworkConnectivityTransport:Transport \
   --resource NetworkConnectivityServiceConnectionMap:ServiceConnectionMap
 
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.networkconnectivity.v1 \
+  --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
+  --resource NetworkConnectivityServiceConnectionMap:ServiceConnectionMap
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service mockgcp.cloud.networkconnectivity.v1 \
   --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
