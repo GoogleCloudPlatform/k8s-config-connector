@@ -1,0 +1,34 @@
+apiVersion: storageinsights.cnrm.cloud.google.com/v1alpha1
+kind: StorageInsightsReportConfig
+metadata:
+  name: storageinsightsreportconfig-parquet-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "Updated Parquet Storage Insights Report Config"
+  frequencyOptions:
+    frequency: WEEKLY
+    startDate:
+      year: 2050
+      month: 1
+      day: 1
+    endDate:
+      year: 2050
+      month: 1
+      day: 5
+  parquetOptions: {}
+  objectMetadataReportOptions:
+    metadataFields:
+      - bucket
+      - project
+      - name
+      - size
+      - updated
+    storageFilters:
+      bucketRef:
+        name: storageinsights-pq-dep-${uniqueId}
+    storageDestinationOptions:
+      bucketRef:
+        name: storageinsights-pq-dep-${uniqueId}
+      destinationPath: "updated-parquet-reports"

@@ -1,0 +1,42 @@
+apiVersion: storageinsights.cnrm.cloud.google.com/v1alpha1
+kind: StorageInsightsReportConfig
+metadata:
+  name: storageinsightsreportconfig-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "Updated Storage Insights Report Config"
+  labels:
+    env: test-updated
+    managed-by: kcc
+  frequencyOptions:
+    frequency: WEEKLY
+    startDate:
+      year: 2050
+      month: 1
+      day: 1
+    endDate:
+      year: 2050
+      month: 3
+      day: 1
+  csvOptions:
+    recordSeparator: "\n"
+    delimiter: ";"
+    headerRequired: false
+  objectMetadataReportOptions:
+    metadataFields:
+      - bucket
+      - project
+      - name
+      - size
+      - updated
+      - storageClass
+      - crc32c
+    storageFilters:
+      bucketRef:
+        name: storageinsights-max-dep-${uniqueId}
+    storageDestinationOptions:
+      bucketRef:
+        name: storageinsights-max-dep-${uniqueId}
+      destinationPath: "updated-insights-reports"
