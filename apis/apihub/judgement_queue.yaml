@@ -1,0 +1,541 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.additionalConfig
+    reason: message-map-derived
+    detail: derived as map[string]ConfigVariable from proto google.cloud.apihub.v1.ConfigVariable; verify Go type and mapping
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.authConfig.googleServiceAccountConfig.serviceAccount
+    reason: possible-reference
+    detail: the proto marks this field as a reference to iam.googleapis.com/ServiceAccount (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.authConfig.googleServiceAccountConfig.serviceAccount
+    reason: possible-reference-by-description
+    detail: the field name ends in serviceAccount
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.authConfig.userPasswordConfig.password
+    reason: sensitive-field
+    detail: the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.authConfig.userPasswordConfig.password.secretVersion
+    reason: possible-reference-by-description-loose
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.authConfig.apiKeyConfig.apiKey
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/secrets/{secrete}/versions/{version}"
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.authConfig.apiKeyConfig.apiKey.secretVersion
+    reason: possible-reference-by-description-loose
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.authConfig.oauth2ClientCredentialsConfig.clientSecret
+    reason: possible-reference-by-name
+    detail: SecretManagerSecretVersionRef
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.authConfig.oauth2ClientCredentialsConfig.clientSecret.secretVersion
+    reason: possible-reference-by-description-loose
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.additionalConfig.KEY.secretValue
+    reason: possible-reference-by-name
+    detail: SecretManagerSecretVersionRef
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.additionalConfig.KEY.secretValue.secretVersion
+    reason: possible-reference-by-description-loose
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.actions[].curationConfig.customCuration.curation
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/curations/{curation}"
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.actions[].serviceAccount
+    reason: possible-reference-by-description
+    detail: the field name ends in serviceAccount
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/plugins/{plugin}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/plugins/{plugin}, and no PluginRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.deployments
+    reason: possible-reference-by-sibling
+    detail: the name matches APIHubDeployment, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.deployments
+    reason: possible-reference
+    detail: the proto marks this field as a reference to apihub.googleapis.com/Deployment (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributes
+    reason: message-map-derived
+    detail: derived as map[string]AttributeValues from proto google.cloud.apihub.v1.AttributeValues; verify Go type and mapping
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.selectedDeployment
+    reason: possible-reference
+    detail: the proto marks this field as a reference to apihub.googleapis.com/Deployment (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.deployments
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/deployments/{deployment}"
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.lifecycle
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/attributes/system-lifecycle"
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.lifecycle.uriValues
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.compliance
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/attributes/system-compliance"
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.compliance.uriValues
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.accreditation
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/attributes/system-accreditation"
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.accreditation.uriValues
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributes
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/attributes/{attribute}"
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributes.KEY.uriValues
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.selectedDeployment
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/deployments/{deployment}"
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/apis/{api}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/apis/{api}, and no ApisRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - protoMessage: google.cloud.apihub.v1.PluginInstance
+    field: additionalConfig
+    reason: message-map-derived
+    detail: derived as map[string]ConfigVariable from proto google.cloud.apihub.v1.ConfigVariable; verify Go type and mapping
+    status: open
+  - protoMessage: google.cloud.apihub.v1.Version
+    field: attributes
+    reason: message-map-derived
+    detail: derived as map[string]AttributeValues from proto google.cloud.apihub.v1.AttributeValues; verify Go type and mapping
+    status: open
+  - protoMessage: google.cloud.apihub.v1.CurationConfig.CustomCuration
+    field: curation
+    reason: possible-reference-by-sibling
+    detail: the name matches APIHubCuration, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - protoMessage: google.cloud.apihub.v1.Version
+    field: deployments
+    reason: possible-reference-by-sibling
+    detail: the name matches APIHubDeployment, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.owner.email
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributeRefs[].values.enumValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributeRefs[].values.enumValues.values[].id
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributeRefs[].values.enumValues.values[].displayName
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributeRefs[].values.stringValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributeRefs[].values.jsonValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributeRefs[].values.uriValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.apiRequirements.enumValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.apiRequirements.enumValues.values[].id
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.apiRequirements.enumValues.values[].displayName
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.apiRequirements.stringValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.apiRequirements.jsonValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.apiRequirements.uriValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.apiFunctionalRequirements.enumValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.apiFunctionalRequirements.enumValues.values[].id
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.apiFunctionalRequirements.enumValues.values[].displayName
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.apiFunctionalRequirements.stringValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.apiFunctionalRequirements.jsonValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.apiFunctionalRequirements.uriValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.apiTechnicalRequirements.enumValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.apiTechnicalRequirements.enumValues.values[].id
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.apiTechnicalRequirements.enumValues.values[].displayName
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.apiTechnicalRequirements.stringValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.apiTechnicalRequirements.jsonValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.apiTechnicalRequirements.uriValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAPISpec and run generate.sh again. APIHubAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubPlugin
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.type.enumValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubPluginSpec and run generate.sh again. APIHubPlugin is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubPlugin
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.type.enumValues.values[].id
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubPluginSpec and run generate.sh again. APIHubPlugin is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubPlugin
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.type.enumValues.values[].displayName
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubPluginSpec and run generate.sh again. APIHubPlugin is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubPlugin
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.type.stringValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubPluginSpec and run generate.sh again. APIHubPlugin is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubPlugin
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.type.jsonValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubPluginSpec and run generate.sh again. APIHubPlugin is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubPlugin
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.type.uriValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubPluginSpec and run generate.sh again. APIHubPlugin is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubExternalAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributeRefs[].values.enumValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubExternalAPISpec and run generate.sh again. APIHubExternalAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubExternalAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributeRefs[].values.enumValues.values[].id
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubExternalAPISpec and run generate.sh again. APIHubExternalAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubExternalAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributeRefs[].values.enumValues.values[].displayName
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubExternalAPISpec and run generate.sh again. APIHubExternalAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubExternalAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributeRefs[].values.stringValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubExternalAPISpec and run generate.sh again. APIHubExternalAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubExternalAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributeRefs[].values.jsonValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubExternalAPISpec and run generate.sh again. APIHubExternalAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubExternalAPI
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributeRefs[].values.uriValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubExternalAPISpec and run generate.sh again. APIHubExternalAPI is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAttribute
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.allowedValues[].id
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAttributeSpec and run generate.sh again. APIHubAttribute is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubAttribute
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.allowedValues[].displayName
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubAttributeSpec and run generate.sh again. APIHubAttribute is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubDependency
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributes.KEY.enumValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubDependencySpec and run generate.sh again. APIHubDependency is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubDependency
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributes.KEY.enumValues.values[].id
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubDependencySpec and run generate.sh again. APIHubDependency is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubDependency
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributes.KEY.enumValues.values[].displayName
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubDependencySpec and run generate.sh again. APIHubDependency is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubDependency
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributes.KEY.stringValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubDependencySpec and run generate.sh again. APIHubDependency is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubDependency
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributes.KEY.jsonValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubDependencySpec and run generate.sh again. APIHubDependency is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubDependency
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributes.KEY.uriValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubDependencySpec and run generate.sh again. APIHubDependency is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubCuration
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.endpoint.applicationIntegrationEndpointDetails
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubCurationSpec and run generate.sh again. APIHubCuration is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubCuration
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.endpoint.applicationIntegrationEndpointDetails.uri
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubCurationSpec and run generate.sh again. APIHubCuration is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubCuration
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.endpoint.applicationIntegrationEndpointDetails.triggerID
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to APIHubCurationSpec and run generate.sh again. APIHubCuration is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//apihub.googleapis.com/projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}" contains ancestor segment(s) plugins/{plugin} with no matching reference or field on APIHubPluginInstanceSpec
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//apihub.googleapis.com/projects/{project}/locations/{location}/apis/{api}/versions/{version}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/apis/{api}/versions/{version}" contains ancestor segment(s) apis/{api} with no matching reference or field on APIHubVersionSpec
+    status: open

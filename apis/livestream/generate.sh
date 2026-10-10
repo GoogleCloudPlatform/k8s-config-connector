@@ -29,17 +29,38 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
 
+./generate-proto.sh
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.video.livestream.v1 \
   --api-version livestream.cnrm.cloud.google.com/v1alpha1 \
   --resource LiveStreamAsset:Asset \
   --resource LiveStreamChannel:Channel \
-  --resource LiveStreamInput:Input
+  --resource LiveStreamInput:Input \
+  --resource LiveStreamDVRSession:DvrSession \
+  --prepopulate-spec \
+  --emit-required-from-proto \
+  --emit-plural-acronyms \
+  --emit-message-maps \
+  --place-server-set-fields \
+  --detect-output-only-in-comments \
+  --emit-parent-refs \
+  --emit-sibling-refs \
+  --emit-reference-hints \
+  --emit-source-links
 
-${CONTROLLERBUILDER} generate-mapper --service google.cloud.video.livestream.v1 --api-version livestream.cnrm.cloud.google.com/v1alpha1
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.video.livestream.v1 \
+  --api-version livestream.cnrm.cloud.google.com/v1alpha1 \
+  --resource LiveStreamDVRSession:DvrSession
+
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.video.livestream.v1 \
+  --api-version livestream.cnrm.cloud.google.com/v1alpha1 \
+  --emit-plural-acronyms \
+  --emit-message-maps
+
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

@@ -23,6 +23,7 @@
 // resource: CCInsightsConversation:Conversation
 // resource: CCInsightsQAScorecard:QaScorecard
 // resource: CCInsightsAnalysisRule:AnalysisRule
+// resource: CCInsightsFeedbackLabel:FeedbackLabel
 
 package v1alpha1
 
@@ -57,7 +58,9 @@ type AnalysisResult_CallAnalysisMetadata struct {
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnalysisResult.CallAnalysisMetadata.annotations
 	Annotations []CallAnnotation `json:"annotations,omitempty"`
 
-	// TODO: unsupported map type with key string and value message
+	// All the entities in the call.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnalysisResult.CallAnalysisMetadata.entities
+	Entities map[string]Entity `json:"entities,omitempty"`
 
 	// Overall conversation-level sentiment for each channel of the call.
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnalysisResult.CallAnalysisMetadata.sentiments
@@ -67,9 +70,13 @@ type AnalysisResult_CallAnalysisMetadata struct {
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnalysisResult.CallAnalysisMetadata.silence
 	Silence *ConversationLevelSilence `json:"silence,omitempty"`
 
-	// TODO: unsupported map type with key string and value message
+	// All the matched intents in the call.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnalysisResult.CallAnalysisMetadata.intents
+	Intents map[string]Intent `json:"intents,omitempty"`
 
-	// TODO: unsupported map type with key string and value message
+	// All the matched phrase matchers in the call.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnalysisResult.CallAnalysisMetadata.phrase_matchers
+	PhraseMatchers map[string]PhraseMatchData `json:"phraseMatchers,omitempty"`
 
 	// Overall conversation-level issue modeling result.
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnalysisResult.CallAnalysisMetadata.issue_model_result
@@ -739,6 +746,30 @@ type FaqAnswerData struct {
 	Source *string `json:"source,omitempty"`
 }
 
+/* found existing non-generated go type with proto tag "google.cloud.contactcenterinsights.v1.FeedbackLabel", skipping
+
+// +kcc:proto=google.cloud.contactcenterinsights.v1.FeedbackLabel
+type FeedbackLabel struct {
+	// String label.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.FeedbackLabel.label
+	Label *string `json:"label,omitempty"`
+
+	// QaAnswer label.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.FeedbackLabel.qa_answer_label
+	QaAnswerLabel *QaAnswer_AnswerValue `json:"qaAnswerLabel,omitempty"`
+
+	// Immutable. Resource name of the FeedbackLabel.
+	//  Format:
+	//  projects/{project}/locations/{location}/conversations/{conversation}/feedbackLabels/{feedback_label}
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.FeedbackLabel.name
+	Name *string `json:"name,omitempty"`
+
+	// Resource name of the resource to be labeled.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.FeedbackLabel.labeled_resource
+	LabeledResource *string `json:"labeledResource,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.contactcenterinsights.v1.GcsSource
 type GCSSource struct {
 	// Cloud Storage URI that points to a file that contains the conversation
@@ -856,8 +887,9 @@ type IssueModelLabelStats struct {
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.IssueModelLabelStats.unclassified_conversations_count
 	UnclassifiedConversationsCount *int64 `json:"unclassifiedConversationsCount,omitempty"`
 
-	// TODO: unsupported map type with key string and value message
-
+	// Statistics on each issue. Key is the issue's resource name.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.IssueModelLabelStats.issue_stats
+	IssueStats map[string]IssueModelLabelStats_IssueStats `json:"issueStats,omitempty"`
 }
 
 // +kcc:proto=google.cloud.contactcenterinsights.v1.IssueModelLabelStats.IssueStats
@@ -1357,7 +1389,9 @@ type AnalysisResult_CallAnalysisMetadataObservedState struct {
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnalysisResult.CallAnalysisMetadata.annotations
 	Annotations []CallAnnotation `json:"annotations,omitempty"`
 
-	// TODO: unsupported map type with key string and value message
+	// All the entities in the call.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnalysisResult.CallAnalysisMetadata.entities
+	Entities map[string]Entity `json:"entities,omitempty"`
 
 	// Overall conversation-level sentiment for each channel of the call.
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnalysisResult.CallAnalysisMetadata.sentiments
@@ -1367,9 +1401,13 @@ type AnalysisResult_CallAnalysisMetadataObservedState struct {
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnalysisResult.CallAnalysisMetadata.silence
 	Silence *ConversationLevelSilence `json:"silence,omitempty"`
 
-	// TODO: unsupported map type with key string and value message
+	// All the matched intents in the call.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnalysisResult.CallAnalysisMetadata.intents
+	Intents map[string]Intent `json:"intents,omitempty"`
 
-	// TODO: unsupported map type with key string and value message
+	// All the matched phrase matchers in the call.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnalysisResult.CallAnalysisMetadata.phrase_matchers
+	PhraseMatchers map[string]PhraseMatchData `json:"phraseMatchers,omitempty"`
 
 	// Overall conversation-level issue modeling result.
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.AnalysisResult.CallAnalysisMetadata.issue_model_result
@@ -1435,8 +1473,11 @@ type ConversationObservedState struct {
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.Conversation.runtime_annotations
 	RuntimeAnnotations []RuntimeAnnotation `json:"runtimeAnnotations,omitempty"`
 
-	// TODO: unsupported map type with key string and value message
-
+	// Output only. All the matched Dialogflow intents in the call. The key
+	//  corresponds to a Dialogflow intent, format:
+	//  projects/{project}/agent/{agent}/intents/{intent}
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.Conversation.dialogflow_intents
+	DialogflowIntents map[string]DialogflowIntent `json:"dialogflowIntents,omitempty"`
 }
 */
 
@@ -1455,6 +1496,24 @@ type DialogflowSourceObservedState struct {
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.DialogflowSource.dialogflow_conversation
 	DialogflowConversation *string `json:"dialogflowConversation,omitempty"`
 }
+
+/* found existing non-generated go type with proto tag "google.cloud.contactcenterinsights.v1.FeedbackLabel", skipping
+
+// +kcc:observedstate:proto=google.cloud.contactcenterinsights.v1.FeedbackLabel
+type FeedbackLabelObservedState struct {
+	// QaAnswer label.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.FeedbackLabel.qa_answer_label
+	QaAnswerLabel *QaAnswer_AnswerValueObservedState `json:"qaAnswerLabel,omitempty"`
+
+	// Output only. Create time of the label.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.FeedbackLabel.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Update time of the label.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.FeedbackLabel.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.contactcenterinsights.v1.IssueModel", skipping
 
@@ -1563,27 +1622,6 @@ type QaAnswer_AnswerSourceObservedState struct {
 
 // +kcc:observedstate:proto=google.cloud.contactcenterinsights.v1.QaAnswer.AnswerValue
 type QaAnswer_AnswerValueObservedState struct {
-	// String value.
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaAnswer.AnswerValue.str_value
-	StrValue *string `json:"strValue,omitempty"`
-
-	// Numerical value.
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaAnswer.AnswerValue.num_value
-	NumValue *float64 `json:"numValue,omitempty"`
-
-	// Boolean value.
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaAnswer.AnswerValue.bool_value
-	BoolValue *bool `json:"boolValue,omitempty"`
-
-	// A value of "Not Applicable (N/A)". Should only ever be `true`.
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaAnswer.AnswerValue.na_value
-	NaValue *bool `json:"naValue,omitempty"`
-
-	// A short string used as an identifier. Matches the value used in
-	//  QaQuestion.AnswerChoice.key.
-	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaAnswer.AnswerValue.key
-	Key *string `json:"key,omitempty"`
-
 	// Output only. Numerical score of the answer.
 	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaAnswer.AnswerValue.score
 	Score *float64 `json:"score,omitempty"`

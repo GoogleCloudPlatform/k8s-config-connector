@@ -29,31 +29,51 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
+
 ./generate-proto.sh
 
-# --- v1alpha1 ---
 ${CONTROLLERBUILDER} generate-types \
-    --service google.cloud.vmwareengine.v1 \
-    --api-version vmwareengine.cnrm.cloud.google.com/v1alpha1  \
-    --resource VMwareEngineNetwork:VmwareEngineNetwork \
-    --resource VMwareEngineNetworkPeering:NetworkPeering \
-    --resource VMwareEngineNetworkPolicy:NetworkPolicy \
-    --resource VMwareEngineExternalAccessRule:ExternalAccessRule \
-    --resource VMwareEnginePrivateCloud:PrivateCloud \
-    --resource VMwareEnginePrivateConnection:PrivateConnection \
+  --service google.cloud.vmwareengine.v1 \
+  --api-version vmwareengine.cnrm.cloud.google.com/v1alpha1 \
+  --resource VMwareEngineNetwork:VmwareEngineNetwork \
+  --resource VMwareEngineNetworkPeering:NetworkPeering \
+  --resource VMwareEngineNetworkPolicy:NetworkPolicy \
+  --resource VMwareEngineExternalAccessRule:ExternalAccessRule \
+  --resource VMwareEnginePrivateCloud:PrivateCloud \
+  --resource VMwareEnginePrivateConnection:PrivateConnection \
+  --resource VMwareEngineCluster:Cluster \
+  --resource VMwareEngineLoggingServer:LoggingServer \
+  --resource VMwareEngineManagementDNSZoneBinding:ManagementDnsZoneBinding \
+  --prepopulate-spec \
+  --emit-required-from-proto \
+  --emit-plural-acronyms \
+  --emit-message-maps \
+  --place-server-set-fields \
+  --detect-output-only-in-comments \
+  --emit-parent-refs \
+  --emit-sibling-refs \
+  --emit-reference-hints \
+  --emit-source-links
 
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.vmwareengine.v1 \
+  --api-version vmwareengine.cnrm.cloud.google.com/v1alpha1 \
+  --resource VMwareEngineCluster:Cluster \
+  --resource VMwareEngineLoggingServer:LoggingServer \
+  --resource VMwareEngineManagementDNSZoneBinding:ManagementDnsZoneBinding
 
-
-# --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
-    --service google.cloud.vmwareengine.v1 \
-    --api-version vmwareengine.cnrm.cloud.google.com/v1beta1  \
-    --resource VMwareEngineExternalAddress:ExternalAddress
+  --service google.cloud.vmwareengine.v1 \
+  --api-version vmwareengine.cnrm.cloud.google.com/v1beta1 \
+  --resource VMwareEngineExternalAddress:ExternalAddress
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.vmwareengine.v1 \
-  --api-version "vmwareengine.cnrm.cloud.google.com/v1beta1" \
-  --multiversion
+  --api-version vmwareengine.cnrm.cloud.google.com/v1beta1 \
+  --multiversion \
+  --emit-plural-acronyms \
+  --emit-message-maps
+
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

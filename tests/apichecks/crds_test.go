@@ -1164,7 +1164,15 @@ func TestCRDObjectTypes(t *testing.T) {
 		"vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com":                    true, // status.observedState.modelToUpload.originalModelInfo is an empty object
 		"vertexaischedules.aiplatform.cnrm.cloud.google.com":                            true, // spec.createNotebookExecutionJobRequest.notebookExecutionJob.workbenchRuntime is an empty object
 		"transcoderjobs.transcoder.cnrm.cloud.google.com":                               true, // spec.config.elementaryStreams[].videoStream.vp9.sdr is an empty object
-
+		"apihubplugininstances.apihub.cnrm.cloud.google.com":                            true, // spec.actions[].hubInstanceAction is an empty object
+		"artifactregistryrules.artifactregistry.cnrm.cloud.google.com":                  true, // status.observedState is an empty object
+		"cesevaluations.ces.cnrm.cloud.google.com":                                      true, // spec.golden.turns[].rootSpan is an empty object
+		"cesguardrails.ces.cnrm.cloud.google.com":                                       true, // spec.llmPromptSecurity.defaultSettings is an empty object
+		"cestools.ces.cnrm.cloud.google.com":                                            true, // spec.mcpTool.apiAuthentication.serviceAgentIDTokenAuthConfig is an empty object
+		"composeruserworkloadsconfigmaps.composer.cnrm.cloud.google.com":                true, // status.observedState is an empty object
+		"composeruserworkloadssecrets.composer.cnrm.cloud.google.com":                   true, // status.observedState is an empty object
+		"retailcontrols.retail.cnrm.cloud.google.com":                                   true, // spec.rule.pinAction is an empty object
+		"retailservingconfigs.retail.cnrm.cloud.google.com":                             true, // status.observedState is an empty object
 	}
 
 	crds, err := crdloader.LoadAllCRDs()

@@ -1,0 +1,2 @@
+[no_refs_in_status] crd=cesevaluations.ces.cnrm.cloud.google.com version=v1alpha1: reference field ".status.observedState.lastCompletedResult.persona.nameRef" should not be in status
+[no_refs_in_status] crd=cesevaluations.ces.cnrm.cloud.google.com version=v1alpha1: reference field ".status.observedState.lastTenResults[].persona.nameRef" should not be in status

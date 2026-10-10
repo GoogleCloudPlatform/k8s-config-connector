@@ -1,0 +1,266 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: NetworkSecurityGatewaySecurityPolicyRule
+    group: networksecurity.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.gatewaySecurityPolicies.rules: https://docs.cloud.google.com/networking/docs/reference/rest/v1/projects.locations.gatewaySecurityPolicies.rules'
+    status: open
+  - kind: NetworkSecurityGatewaySecurityPolicyRule
+    group: networksecurity.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: NetworkSecurityGatewaySecurityPolicyRule
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/gatewaySecurityPolicies/{gateway_security_policy}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: NetworkSecurityGatewaySecurityPolicyRule
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.gatewaySecurityPolicyRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to NetworkSecurityGatewaySecurityPolicyRef, read from the gatewaySecurityPolicies segment of projects/{project}/locations/{location}/gatewaySecurityPolicies/{gateway_security_policy}/rules/{rule}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - kind: NetworkSecuritySecurityProfile
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.threatPreventionProfile.severityOverrides[].severity
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to SeverityOverride.Severity in networksecuritysecurityprofile_types.go. NetworkSecuritySecurityProfile is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecuritySecurityProfile
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.threatPreventionProfile.severityOverrides[].action
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to SeverityOverride.Action in networksecuritysecurityprofile_types.go. NetworkSecuritySecurityProfile is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecuritySecurityProfile
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.threatPreventionProfile.threatOverrides[].threatID
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to ThreatOverride.ThreatID in networksecuritysecurityprofile_types.go. NetworkSecuritySecurityProfile is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecuritySecurityProfile
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.threatPreventionProfile.threatOverrides[].action
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to ThreatOverride.Action in networksecuritysecurityprofile_types.go. NetworkSecuritySecurityProfile is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecuritySecurityProfile
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.threatPreventionProfile.antivirusOverrides[].protocol
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AntivirusOverride.Protocol in networksecuritysecurityprofile_types.go. NetworkSecuritySecurityProfile is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecuritySecurityProfile
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.threatPreventionProfile.antivirusOverrides[].action
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AntivirusOverride.Action in networksecuritysecurityprofile_types.go. NetworkSecuritySecurityProfile is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecuritySecurityProfile
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.customMirroringProfile.mirroringEndpointGroupRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to CustomMirroringProfile.MirroringEndpointGroupRef in networksecuritysecurityprofile_types.go. NetworkSecuritySecurityProfile is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecuritySecurityProfile
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.customInterceptProfile.interceptEndpointGroupRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to CustomInterceptProfile.InterceptEndpointGroupRef in networksecuritysecurityprofile_types.go. NetworkSecuritySecurityProfile is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecuritySecurityProfile
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.urlFilteringProfile.urlFilters[].filteringAction
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to URLFilter.FilteringAction in networksecuritysecurityprofile_types.go. NetworkSecuritySecurityProfile is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecuritySecurityProfile
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.urlFilteringProfile.urlFilters[].urls
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to URLFilter.Urls in networksecuritysecurityprofile_types.go. NetworkSecuritySecurityProfile is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecuritySecurityProfile
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.urlFilteringProfile.urlFilters[].priority
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to URLFilter.Priority in networksecuritysecurityprofile_types.go. NetworkSecuritySecurityProfile is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityTLSInspectionPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.caPoolRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to NetworkSecurityTLSInspectionPolicySpec.CaPoolRef in networksecuritytlsinspectionpolicy_types.go. NetworkSecurityTLSInspectionPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.target
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to NetworkSecurityAuthzPolicySpec.Target in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.target.resources
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AuthzPolicy_Target.Resources in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.httpRules[].from.sources[].principals[].principal
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AuthzPolicy_AuthzRule_Principal.Principal in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.httpRules[].from.sources[].ipBlocks[].prefix
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AuthzPolicy_AuthzRule_IPBlock.Prefix in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.httpRules[].from.sources[].ipBlocks[].length
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AuthzPolicy_AuthzRule_IPBlock.Length in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.httpRules[].from.notSources[].principals[].principal
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AuthzPolicy_AuthzRule_Principal.Principal in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.httpRules[].from.notSources[].ipBlocks[].prefix
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AuthzPolicy_AuthzRule_IPBlock.Prefix in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.httpRules[].from.notSources[].ipBlocks[].length
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AuthzPolicy_AuthzRule_IPBlock.Length in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.httpRules[].to.operations[].headerSet.headers
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AuthzPolicy_AuthzRule_To_RequestOperation_HeaderSet.Headers in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.httpRules[].to.operations[].mcp.methods[].name
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AuthzPolicy_AuthzRule_To_RequestOperation_McpMethod.Name in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.httpRules[].to.notOperations[].headerSet.headers
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AuthzPolicy_AuthzRule_To_RequestOperation_HeaderSet.Headers in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.httpRules[].to.notOperations[].mcp.methods[].name
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AuthzPolicy_AuthzRule_To_RequestOperation_McpMethod.Name in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.networkRules[].from.sources[].principals[].principal
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AuthzPolicy_AuthzRule_Principal.Principal in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.networkRules[].from.sources[].ipBlocks[].prefix
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AuthzPolicy_AuthzRule_IPBlock.Prefix in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.networkRules[].from.sources[].ipBlocks[].length
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AuthzPolicy_AuthzRule_IPBlock.Length in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.networkRules[].from.notSources[].principals[].principal
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AuthzPolicy_AuthzRule_Principal.Principal in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.networkRules[].from.notSources[].ipBlocks[].prefix
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AuthzPolicy_AuthzRule_IPBlock.Prefix in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.networkRules[].from.notSources[].ipBlocks[].length
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AuthzPolicy_AuthzRule_IPBlock.Length in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.networkRules[].to.operations[].headerSet.headers
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AuthzPolicy_AuthzRule_To_RequestOperation_HeaderSet.Headers in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.networkRules[].to.operations[].mcp.methods[].name
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AuthzPolicy_AuthzRule_To_RequestOperation_McpMethod.Name in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.networkRules[].to.notOperations[].headerSet.headers
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AuthzPolicy_AuthzRule_To_RequestOperation_HeaderSet.Headers in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.networkRules[].to.notOperations[].mcp.methods[].name
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AuthzPolicy_AuthzRule_To_RequestOperation_McpMethod.Name in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.action
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to NetworkSecurityAuthzPolicySpec.Action in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityAuthzPolicy
+    group: networksecurity.cnrm.cloud.google.com
+    field: .spec.customProvider.authzExtension.resources
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AuthzPolicy_CustomProvider_AuthzExtension.Resources in networksecurityauthzpolicy_types.go. NetworkSecurityAuthzPolicy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: NetworkSecurityGatewaySecurityPolicyRule
+    group: networksecurity.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/gatewaySecurityPolicies/{gateway_security_policy}/rules/{rule}" contains ancestor segment(s) gatewaySecurityPolicies/{gateway_security_policy} with no matching reference or field on NetworkSecurityGatewaySecurityPolicyRuleSpec
+    status: open

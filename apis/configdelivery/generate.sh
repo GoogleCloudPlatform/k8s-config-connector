@@ -29,22 +29,37 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
+
 ./generate-proto.sh
 
-
 ${CONTROLLERBUILDER} generate-types \
-    --service google.cloud.configdelivery.v1 \
-    --api-version "configdelivery.cnrm.cloud.google.com/v1alpha1" \
-    --resource ConfigDeliveryResourceBundle:ResourceBundle
+  --service google.cloud.configdelivery.v1 \
+  --api-version configdelivery.cnrm.cloud.google.com/v1alpha1 \
+  --resource ConfigDeliveryResourceBundle:ResourceBundle \
+  --resource ConfigDeliveryFleetPackage:FleetPackage \
+  --resource ConfigDeliveryRelease:Release \
+  --prepopulate-spec \
+  --emit-required-from-proto \
+  --emit-plural-acronyms \
+  --emit-message-maps \
+  --place-server-set-fields \
+  --detect-output-only-in-comments \
+  --emit-parent-refs \
+  --emit-sibling-refs \
+  --emit-reference-hints \
+  --emit-source-links
 
-${CONTROLLERBUILDER} generate-types \
-    --service google.cloud.configdelivery.v1 \
-    --api-version "configdelivery.cnrm.cloud.google.com/v1alpha1" \
-    --resource ConfigDeliveryFleetPackage:FleetPackage
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.configdelivery.v1 \
+  --api-version configdelivery.cnrm.cloud.google.com/v1alpha1 \
+  --resource ConfigDeliveryRelease:Release
 
 ${CONTROLLERBUILDER} generate-mapper \
-    --service google.cloud.configdelivery.v1 \
-    --api-version "configdelivery.cnrm.cloud.google.com/v1alpha1"
+  --service google.cloud.configdelivery.v1 \
+  --api-version configdelivery.cnrm.cloud.google.com/v1alpha1 \
+  --emit-plural-acronyms \
+  --emit-message-maps
+
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
