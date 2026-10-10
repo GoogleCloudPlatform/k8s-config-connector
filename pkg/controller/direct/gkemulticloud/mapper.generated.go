@@ -130,6 +130,356 @@ func AttachedProxyConfig_ToProto(mapCtx *direct.MapContext, in *krm.AttachedProx
 	out.KubernetesSecret = KubernetesSecret_ToProto(mapCtx, in.KubernetesSecret)
 	return out
 }
+func AwsAutoscalingGroupMetricsCollection_FromProto(mapCtx *direct.MapContext, in *pb.AwsAutoscalingGroupMetricsCollection) *krm.AwsAutoscalingGroupMetricsCollection {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AwsAutoscalingGroupMetricsCollection{}
+	out.Granularity = direct.LazyPtr(in.GetGranularity())
+	out.Metrics = in.Metrics
+	return out
+}
+func AwsAutoscalingGroupMetricsCollection_ToProto(mapCtx *direct.MapContext, in *krm.AwsAutoscalingGroupMetricsCollection) *pb.AwsAutoscalingGroupMetricsCollection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AwsAutoscalingGroupMetricsCollection{}
+	out.Granularity = direct.ValueOf(in.Granularity)
+	out.Metrics = in.Metrics
+	return out
+}
+func AwsConfigEncryption_FromProto(mapCtx *direct.MapContext, in *pb.AwsConfigEncryption) *krm.AwsConfigEncryption {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AwsConfigEncryption{}
+	out.KMSKeyArn = direct.LazyPtr(in.GetKmsKeyArn())
+	return out
+}
+func AwsConfigEncryption_ToProto(mapCtx *direct.MapContext, in *krm.AwsConfigEncryption) *pb.AwsConfigEncryption {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AwsConfigEncryption{}
+	out.KmsKeyArn = direct.ValueOf(in.KMSKeyArn)
+	return out
+}
+func AwsInstancePlacement_FromProto(mapCtx *direct.MapContext, in *pb.AwsInstancePlacement) *krm.AwsInstancePlacement {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AwsInstancePlacement{}
+	out.Tenancy = direct.Enum_FromProto(mapCtx, in.GetTenancy())
+	return out
+}
+func AwsInstancePlacement_ToProto(mapCtx *direct.MapContext, in *krm.AwsInstancePlacement) *pb.AwsInstancePlacement {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AwsInstancePlacement{}
+	out.Tenancy = direct.Enum_ToProto[pb.AwsInstancePlacement_Tenancy](mapCtx, in.Tenancy)
+	return out
+}
+func AwsNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.AwsNodeConfig) *krm.AwsNodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AwsNodeConfig{}
+	out.InstanceType = direct.LazyPtr(in.GetInstanceType())
+	out.RootVolume = AwsVolumeTemplate_FromProto(mapCtx, in.GetRootVolume())
+	out.Taints = direct.Slice_FromProto(mapCtx, in.Taints, NodeTaint_FromProto)
+	out.Labels = in.Labels
+	out.Tags = in.Tags
+	out.IAMInstanceProfile = direct.LazyPtr(in.GetIamInstanceProfile())
+	out.ImageType = direct.LazyPtr(in.GetImageType())
+	out.SSHConfig = AwsSSHConfig_FromProto(mapCtx, in.GetSshConfig())
+	out.SecurityGroupIDs = in.SecurityGroupIds
+	out.ProxyConfig = AwsProxyConfig_FromProto(mapCtx, in.GetProxyConfig())
+	out.ConfigEncryption = AwsConfigEncryption_FromProto(mapCtx, in.GetConfigEncryption())
+	out.InstancePlacement = AwsInstancePlacement_FromProto(mapCtx, in.GetInstancePlacement())
+	out.AutoscalingMetricsCollection = AwsAutoscalingGroupMetricsCollection_FromProto(mapCtx, in.GetAutoscalingMetricsCollection())
+	out.SpotConfig = SpotConfig_FromProto(mapCtx, in.GetSpotConfig())
+	return out
+}
+func AwsNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.AwsNodeConfig) *pb.AwsNodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AwsNodeConfig{}
+	out.InstanceType = direct.ValueOf(in.InstanceType)
+	out.RootVolume = AwsVolumeTemplate_ToProto(mapCtx, in.RootVolume)
+	out.Taints = direct.Slice_ToProto(mapCtx, in.Taints, NodeTaint_ToProto)
+	out.Labels = in.Labels
+	out.Tags = in.Tags
+	out.IamInstanceProfile = direct.ValueOf(in.IAMInstanceProfile)
+	out.ImageType = direct.ValueOf(in.ImageType)
+	out.SshConfig = AwsSSHConfig_ToProto(mapCtx, in.SSHConfig)
+	out.SecurityGroupIds = in.SecurityGroupIDs
+	out.ProxyConfig = AwsProxyConfig_ToProto(mapCtx, in.ProxyConfig)
+	out.ConfigEncryption = AwsConfigEncryption_ToProto(mapCtx, in.ConfigEncryption)
+	out.InstancePlacement = AwsInstancePlacement_ToProto(mapCtx, in.InstancePlacement)
+	out.AutoscalingMetricsCollection = AwsAutoscalingGroupMetricsCollection_ToProto(mapCtx, in.AutoscalingMetricsCollection)
+	out.SpotConfig = SpotConfig_ToProto(mapCtx, in.SpotConfig)
+	return out
+}
+func AwsNodeManagement_FromProto(mapCtx *direct.MapContext, in *pb.AwsNodeManagement) *krm.AwsNodeManagement {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AwsNodeManagement{}
+	out.AutoRepair = direct.LazyPtr(in.GetAutoRepair())
+	return out
+}
+func AwsNodeManagement_ToProto(mapCtx *direct.MapContext, in *krm.AwsNodeManagement) *pb.AwsNodeManagement {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AwsNodeManagement{}
+	out.AutoRepair = direct.ValueOf(in.AutoRepair)
+	return out
+}
+func AwsNodePoolAutoscaling_FromProto(mapCtx *direct.MapContext, in *pb.AwsNodePoolAutoscaling) *krm.AwsNodePoolAutoscaling {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AwsNodePoolAutoscaling{}
+	out.MinNodeCount = direct.LazyPtr(in.GetMinNodeCount())
+	out.MaxNodeCount = direct.LazyPtr(in.GetMaxNodeCount())
+	return out
+}
+func AwsNodePoolAutoscaling_ToProto(mapCtx *direct.MapContext, in *krm.AwsNodePoolAutoscaling) *pb.AwsNodePoolAutoscaling {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AwsNodePoolAutoscaling{}
+	out.MinNodeCount = direct.ValueOf(in.MinNodeCount)
+	out.MaxNodeCount = direct.ValueOf(in.MaxNodeCount)
+	return out
+}
+func AwsNodePoolError_FromProto(mapCtx *direct.MapContext, in *pb.AwsNodePoolError) *krm.AwsNodePoolError {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AwsNodePoolError{}
+	out.Message = direct.LazyPtr(in.GetMessage())
+	return out
+}
+func AwsNodePoolError_ToProto(mapCtx *direct.MapContext, in *krm.AwsNodePoolError) *pb.AwsNodePoolError {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AwsNodePoolError{}
+	out.Message = direct.ValueOf(in.Message)
+	return out
+}
+func AwsProxyConfig_FromProto(mapCtx *direct.MapContext, in *pb.AwsProxyConfig) *krm.AwsProxyConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AwsProxyConfig{}
+	out.SecretArn = direct.LazyPtr(in.GetSecretArn())
+	out.SecretVersion = direct.LazyPtr(in.GetSecretVersion())
+	return out
+}
+func AwsProxyConfig_ToProto(mapCtx *direct.MapContext, in *krm.AwsProxyConfig) *pb.AwsProxyConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AwsProxyConfig{}
+	out.SecretArn = direct.ValueOf(in.SecretArn)
+	out.SecretVersion = direct.ValueOf(in.SecretVersion)
+	return out
+}
+func AwsSSHConfig_FromProto(mapCtx *direct.MapContext, in *pb.AwsSshConfig) *krm.AwsSSHConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AwsSSHConfig{}
+	out.Ec2KeyPair = direct.LazyPtr(in.GetEc2KeyPair())
+	return out
+}
+func AwsSSHConfig_ToProto(mapCtx *direct.MapContext, in *krm.AwsSSHConfig) *pb.AwsSshConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AwsSshConfig{}
+	out.Ec2KeyPair = direct.ValueOf(in.Ec2KeyPair)
+	return out
+}
+func AwsVolumeTemplate_FromProto(mapCtx *direct.MapContext, in *pb.AwsVolumeTemplate) *krm.AwsVolumeTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AwsVolumeTemplate{}
+	out.SizeGib = direct.LazyPtr(in.GetSizeGib())
+	out.VolumeType = direct.Enum_FromProto(mapCtx, in.GetVolumeType())
+	out.Iops = direct.LazyPtr(in.GetIops())
+	out.Throughput = direct.LazyPtr(in.GetThroughput())
+	out.KMSKeyArn = direct.LazyPtr(in.GetKmsKeyArn())
+	return out
+}
+func AwsVolumeTemplate_ToProto(mapCtx *direct.MapContext, in *krm.AwsVolumeTemplate) *pb.AwsVolumeTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AwsVolumeTemplate{}
+	out.SizeGib = direct.ValueOf(in.SizeGib)
+	out.VolumeType = direct.Enum_ToProto[pb.AwsVolumeTemplate_VolumeType](mapCtx, in.VolumeType)
+	out.Iops = direct.ValueOf(in.Iops)
+	out.Throughput = direct.ValueOf(in.Throughput)
+	out.KmsKeyArn = direct.ValueOf(in.KMSKeyArn)
+	return out
+}
+func AzureConfigEncryption_FromProto(mapCtx *direct.MapContext, in *pb.AzureConfigEncryption) *krm.AzureConfigEncryption {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AzureConfigEncryption{}
+	out.KeyID = direct.LazyPtr(in.GetKeyId())
+	out.PublicKey = direct.LazyPtr(in.GetPublicKey())
+	return out
+}
+func AzureConfigEncryption_ToProto(mapCtx *direct.MapContext, in *krm.AzureConfigEncryption) *pb.AzureConfigEncryption {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AzureConfigEncryption{}
+	out.KeyId = direct.ValueOf(in.KeyID)
+	out.PublicKey = direct.ValueOf(in.PublicKey)
+	return out
+}
+func AzureDiskTemplate_FromProto(mapCtx *direct.MapContext, in *pb.AzureDiskTemplate) *krm.AzureDiskTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AzureDiskTemplate{}
+	out.SizeGib = direct.LazyPtr(in.GetSizeGib())
+	return out
+}
+func AzureDiskTemplate_ToProto(mapCtx *direct.MapContext, in *krm.AzureDiskTemplate) *pb.AzureDiskTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AzureDiskTemplate{}
+	out.SizeGib = direct.ValueOf(in.SizeGib)
+	return out
+}
+func AzureNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.AzureNodeConfig) *krm.AzureNodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AzureNodeConfig{}
+	out.VMSize = direct.LazyPtr(in.GetVmSize())
+	out.RootVolume = AzureDiskTemplate_FromProto(mapCtx, in.GetRootVolume())
+	out.Tags = in.Tags
+	out.ImageType = direct.LazyPtr(in.GetImageType())
+	out.SSHConfig = AzureSSHConfig_FromProto(mapCtx, in.GetSshConfig())
+	out.ProxyConfig = AzureProxyConfig_FromProto(mapCtx, in.GetProxyConfig())
+	out.ConfigEncryption = AzureConfigEncryption_FromProto(mapCtx, in.GetConfigEncryption())
+	out.Taints = direct.Slice_FromProto(mapCtx, in.Taints, NodeTaint_FromProto)
+	out.Labels = in.Labels
+	return out
+}
+func AzureNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.AzureNodeConfig) *pb.AzureNodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AzureNodeConfig{}
+	out.VmSize = direct.ValueOf(in.VMSize)
+	out.RootVolume = AzureDiskTemplate_ToProto(mapCtx, in.RootVolume)
+	out.Tags = in.Tags
+	out.ImageType = direct.ValueOf(in.ImageType)
+	out.SshConfig = AzureSSHConfig_ToProto(mapCtx, in.SSHConfig)
+	out.ProxyConfig = AzureProxyConfig_ToProto(mapCtx, in.ProxyConfig)
+	out.ConfigEncryption = AzureConfigEncryption_ToProto(mapCtx, in.ConfigEncryption)
+	out.Taints = direct.Slice_ToProto(mapCtx, in.Taints, NodeTaint_ToProto)
+	out.Labels = in.Labels
+	return out
+}
+func AzureNodeManagement_FromProto(mapCtx *direct.MapContext, in *pb.AzureNodeManagement) *krm.AzureNodeManagement {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AzureNodeManagement{}
+	out.AutoRepair = direct.LazyPtr(in.GetAutoRepair())
+	return out
+}
+func AzureNodeManagement_ToProto(mapCtx *direct.MapContext, in *krm.AzureNodeManagement) *pb.AzureNodeManagement {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AzureNodeManagement{}
+	out.AutoRepair = direct.ValueOf(in.AutoRepair)
+	return out
+}
+func AzureNodePoolAutoscaling_FromProto(mapCtx *direct.MapContext, in *pb.AzureNodePoolAutoscaling) *krm.AzureNodePoolAutoscaling {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AzureNodePoolAutoscaling{}
+	out.MinNodeCount = direct.LazyPtr(in.GetMinNodeCount())
+	out.MaxNodeCount = direct.LazyPtr(in.GetMaxNodeCount())
+	return out
+}
+func AzureNodePoolAutoscaling_ToProto(mapCtx *direct.MapContext, in *krm.AzureNodePoolAutoscaling) *pb.AzureNodePoolAutoscaling {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AzureNodePoolAutoscaling{}
+	out.MinNodeCount = direct.ValueOf(in.MinNodeCount)
+	out.MaxNodeCount = direct.ValueOf(in.MaxNodeCount)
+	return out
+}
+func AzureNodePoolError_FromProto(mapCtx *direct.MapContext, in *pb.AzureNodePoolError) *krm.AzureNodePoolError {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AzureNodePoolError{}
+	out.Message = direct.LazyPtr(in.GetMessage())
+	return out
+}
+func AzureNodePoolError_ToProto(mapCtx *direct.MapContext, in *krm.AzureNodePoolError) *pb.AzureNodePoolError {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AzureNodePoolError{}
+	out.Message = direct.ValueOf(in.Message)
+	return out
+}
+func AzureProxyConfig_FromProto(mapCtx *direct.MapContext, in *pb.AzureProxyConfig) *krm.AzureProxyConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AzureProxyConfig{}
+	out.ResourceGroupID = direct.LazyPtr(in.GetResourceGroupId())
+	out.SecretID = direct.LazyPtr(in.GetSecretId())
+	return out
+}
+func AzureProxyConfig_ToProto(mapCtx *direct.MapContext, in *krm.AzureProxyConfig) *pb.AzureProxyConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AzureProxyConfig{}
+	out.ResourceGroupId = direct.ValueOf(in.ResourceGroupID)
+	out.SecretId = direct.ValueOf(in.SecretID)
+	return out
+}
+func AzureSSHConfig_FromProto(mapCtx *direct.MapContext, in *pb.AzureSshConfig) *krm.AzureSSHConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AzureSSHConfig{}
+	out.AuthorizedKey = direct.LazyPtr(in.GetAuthorizedKey())
+	return out
+}
+func AzureSSHConfig_ToProto(mapCtx *direct.MapContext, in *krm.AzureSSHConfig) *pb.AzureSshConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AzureSshConfig{}
+	out.AuthorizedKey = direct.ValueOf(in.AuthorizedKey)
+	return out
+}
 func BinaryAuthorization_FromProto(mapCtx *direct.MapContext, in *pb.BinaryAuthorization) *krm.BinaryAuthorization {
 	if in == nil {
 		return nil
@@ -200,6 +550,70 @@ func FleetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FleetObserved
 	out := &pb.Fleet{}
 	// MISSING: Project
 	out.Membership = direct.ValueOf(in.Membership)
+	return out
+}
+func GKEMulticloudAWSNodePoolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AwsNodePool) *krm.GKEMulticloudAWSNodePoolObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GKEMulticloudAWSNodePoolObservedState{}
+	// MISSING: Name
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Errors = direct.Slice_FromProto(mapCtx, in.Errors, AwsNodePoolError_FromProto)
+	return out
+}
+func GKEMulticloudAWSNodePoolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GKEMulticloudAWSNodePoolObservedState) *pb.AwsNodePool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AwsNodePool{}
+	// MISSING: Name
+	out.State = direct.Enum_ToProto[pb.AwsNodePool_State](mapCtx, in.State)
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Errors = direct.Slice_ToProto(mapCtx, in.Errors, AwsNodePoolError_ToProto)
+	return out
+}
+func GKEMulticloudAWSNodePoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.AwsNodePool) *krm.GKEMulticloudAWSNodePoolSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GKEMulticloudAWSNodePoolSpec{}
+	// MISSING: Name
+	out.Version = direct.LazyPtr(in.GetVersion())
+	out.Config = AwsNodeConfig_FromProto(mapCtx, in.GetConfig())
+	out.Autoscaling = AwsNodePoolAutoscaling_FromProto(mapCtx, in.GetAutoscaling())
+	out.SubnetID = direct.LazyPtr(in.GetSubnetId())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Annotations = in.Annotations
+	out.MaxPodsConstraint = MaxPodsConstraint_FromProto(mapCtx, in.GetMaxPodsConstraint())
+	out.Management = AwsNodeManagement_FromProto(mapCtx, in.GetManagement())
+	out.KubeletConfig = NodeKubeletConfig_FromProto(mapCtx, in.GetKubeletConfig())
+	out.UpdateSettings = UpdateSettings_FromProto(mapCtx, in.GetUpdateSettings())
+	return out
+}
+func GKEMulticloudAWSNodePoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.GKEMulticloudAWSNodePoolSpec) *pb.AwsNodePool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AwsNodePool{}
+	// MISSING: Name
+	out.Version = direct.ValueOf(in.Version)
+	out.Config = AwsNodeConfig_ToProto(mapCtx, in.Config)
+	out.Autoscaling = AwsNodePoolAutoscaling_ToProto(mapCtx, in.Autoscaling)
+	out.SubnetId = direct.ValueOf(in.SubnetID)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Annotations = in.Annotations
+	out.MaxPodsConstraint = MaxPodsConstraint_ToProto(mapCtx, in.MaxPodsConstraint)
+	out.Management = AwsNodeManagement_ToProto(mapCtx, in.Management)
+	out.KubeletConfig = NodeKubeletConfig_ToProto(mapCtx, in.KubeletConfig)
+	out.UpdateSettings = UpdateSettings_ToProto(mapCtx, in.UpdateSettings)
 	return out
 }
 func GKEMulticloudAttachedClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AttachedCluster) *krm.GKEMulticloudAttachedClusterObservedState {
@@ -284,6 +698,68 @@ func GKEMulticloudAttachedClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Tags = in.Tags
 	return out
 }
+func GKEMulticloudAzureNodePoolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AzureNodePool) *krm.GKEMulticloudAzureNodePoolObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GKEMulticloudAzureNodePoolObservedState{}
+	// MISSING: Name
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Errors = direct.Slice_FromProto(mapCtx, in.Errors, AzureNodePoolError_FromProto)
+	return out
+}
+func GKEMulticloudAzureNodePoolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GKEMulticloudAzureNodePoolObservedState) *pb.AzureNodePool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AzureNodePool{}
+	// MISSING: Name
+	out.State = direct.Enum_ToProto[pb.AzureNodePool_State](mapCtx, in.State)
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Errors = direct.Slice_ToProto(mapCtx, in.Errors, AzureNodePoolError_ToProto)
+	return out
+}
+func GKEMulticloudAzureNodePoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.AzureNodePool) *krm.GKEMulticloudAzureNodePoolSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GKEMulticloudAzureNodePoolSpec{}
+	// MISSING: Name
+	out.Version = direct.LazyPtr(in.GetVersion())
+	out.Config = AzureNodeConfig_FromProto(mapCtx, in.GetConfig())
+	out.SubnetID = direct.LazyPtr(in.GetSubnetId())
+	out.Autoscaling = AzureNodePoolAutoscaling_FromProto(mapCtx, in.GetAutoscaling())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Annotations = in.Annotations
+	out.MaxPodsConstraint = MaxPodsConstraint_FromProto(mapCtx, in.GetMaxPodsConstraint())
+	out.AzureAvailabilityZone = direct.LazyPtr(in.GetAzureAvailabilityZone())
+	out.Management = AzureNodeManagement_FromProto(mapCtx, in.GetManagement())
+	return out
+}
+func GKEMulticloudAzureNodePoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.GKEMulticloudAzureNodePoolSpec) *pb.AzureNodePool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AzureNodePool{}
+	// MISSING: Name
+	out.Version = direct.ValueOf(in.Version)
+	out.Config = AzureNodeConfig_ToProto(mapCtx, in.Config)
+	out.SubnetId = direct.ValueOf(in.SubnetID)
+	out.Autoscaling = AzureNodePoolAutoscaling_ToProto(mapCtx, in.Autoscaling)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Annotations = in.Annotations
+	out.MaxPodsConstraint = MaxPodsConstraint_ToProto(mapCtx, in.MaxPodsConstraint)
+	out.AzureAvailabilityZone = direct.ValueOf(in.AzureAvailabilityZone)
+	out.Management = AzureNodeManagement_ToProto(mapCtx, in.Management)
+	return out
+}
 func KubernetesSecret_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesSecret) *krm.KubernetesSecret {
 	if in == nil {
 		return nil
@@ -350,6 +826,22 @@ func ManagedPrometheusConfig_ToProto(mapCtx *direct.MapContext, in *krm.ManagedP
 	out.Enabled = direct.ValueOf(in.Enabled)
 	return out
 }
+func MaxPodsConstraint_FromProto(mapCtx *direct.MapContext, in *pb.MaxPodsConstraint) *krm.MaxPodsConstraint {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MaxPodsConstraint{}
+	out.MaxPodsPerNode = direct.LazyPtr(in.GetMaxPodsPerNode())
+	return out
+}
+func MaxPodsConstraint_ToProto(mapCtx *direct.MapContext, in *krm.MaxPodsConstraint) *pb.MaxPodsConstraint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MaxPodsConstraint{}
+	out.MaxPodsPerNode = direct.ValueOf(in.MaxPodsPerNode)
+	return out
+}
 func MonitoringConfig_FromProto(mapCtx *direct.MapContext, in *pb.MonitoringConfig) *krm.MonitoringConfig {
 	if in == nil {
 		return nil
@@ -368,6 +860,50 @@ func MonitoringConfig_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringConfi
 	out.CloudMonitoringConfig = CloudMonitoringConfig_ToProto(mapCtx, in.CloudMonitoringConfig)
 	return out
 }
+func NodeKubeletConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeKubeletConfig) *krm.NodeKubeletConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodeKubeletConfig{}
+	out.InsecureKubeletReadonlyPortEnabled = direct.LazyPtr(in.GetInsecureKubeletReadonlyPortEnabled())
+	out.CPUManagerPolicy = in.CpuManagerPolicy
+	out.CPUCfsQuota = in.CpuCfsQuota
+	out.CPUCfsQuotaPeriod = in.CpuCfsQuotaPeriod
+	out.PodPidsLimit = in.PodPidsLimit
+	return out
+}
+func NodeKubeletConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeKubeletConfig) *pb.NodeKubeletConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodeKubeletConfig{}
+	out.InsecureKubeletReadonlyPortEnabled = direct.ValueOf(in.InsecureKubeletReadonlyPortEnabled)
+	out.CpuManagerPolicy = in.CPUManagerPolicy
+	out.CpuCfsQuota = in.CPUCfsQuota
+	out.CpuCfsQuotaPeriod = in.CPUCfsQuotaPeriod
+	out.PodPidsLimit = in.PodPidsLimit
+	return out
+}
+func NodeTaint_FromProto(mapCtx *direct.MapContext, in *pb.NodeTaint) *krm.NodeTaint {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodeTaint{}
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.Value = direct.LazyPtr(in.GetValue())
+	out.Effect = direct.Enum_FromProto(mapCtx, in.GetEffect())
+	return out
+}
+func NodeTaint_ToProto(mapCtx *direct.MapContext, in *krm.NodeTaint) *pb.NodeTaint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodeTaint{}
+	out.Key = direct.ValueOf(in.Key)
+	out.Value = direct.ValueOf(in.Value)
+	out.Effect = direct.Enum_ToProto[pb.NodeTaint_Effect](mapCtx, in.Effect)
+	return out
+}
 func SecurityPostureConfig_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPostureConfig) *krm.SecurityPostureConfig {
 	if in == nil {
 		return nil
@@ -382,6 +918,56 @@ func SecurityPostureConfig_ToProto(mapCtx *direct.MapContext, in *krm.SecurityPo
 	}
 	out := &pb.SecurityPostureConfig{}
 	out.VulnerabilityMode = direct.Enum_ToProto[pb.SecurityPostureConfig_VulnerabilityMode](mapCtx, in.VulnerabilityMode)
+	return out
+}
+func SpotConfig_FromProto(mapCtx *direct.MapContext, in *pb.SpotConfig) *krm.SpotConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SpotConfig{}
+	out.InstanceTypes = in.InstanceTypes
+	return out
+}
+func SpotConfig_ToProto(mapCtx *direct.MapContext, in *krm.SpotConfig) *pb.SpotConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SpotConfig{}
+	out.InstanceTypes = in.InstanceTypes
+	return out
+}
+func SurgeSettings_FromProto(mapCtx *direct.MapContext, in *pb.SurgeSettings) *krm.SurgeSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SurgeSettings{}
+	out.MaxSurge = direct.LazyPtr(in.GetMaxSurge())
+	out.MaxUnavailable = direct.LazyPtr(in.GetMaxUnavailable())
+	return out
+}
+func SurgeSettings_ToProto(mapCtx *direct.MapContext, in *krm.SurgeSettings) *pb.SurgeSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SurgeSettings{}
+	out.MaxSurge = direct.ValueOf(in.MaxSurge)
+	out.MaxUnavailable = direct.ValueOf(in.MaxUnavailable)
+	return out
+}
+func UpdateSettings_FromProto(mapCtx *direct.MapContext, in *pb.UpdateSettings) *krm.UpdateSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UpdateSettings{}
+	out.SurgeSettings = SurgeSettings_FromProto(mapCtx, in.GetSurgeSettings())
+	return out
+}
+func UpdateSettings_ToProto(mapCtx *direct.MapContext, in *krm.UpdateSettings) *pb.UpdateSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UpdateSettings{}
+	out.SurgeSettings = SurgeSettings_ToProto(mapCtx, in.SurgeSettings)
 	return out
 }
 func WorkloadIdentityConfig_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadIdentityConfig) *krm.WorkloadIdentityConfig {

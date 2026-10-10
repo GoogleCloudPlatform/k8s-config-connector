@@ -30,22 +30,40 @@ fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-# We need a newer googleapis to get google.cloud.vectorsearch.v1
 PROTO_SHA="120a55ddd98884993645c8ceb474dffbf8286595"
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
-
 ./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
 
 ${CONTROLLERBUILDER} generate-types \
-    --service google.cloud.vectorsearch.v1 \
-    --api-version "vectorsearch.cnrm.cloud.google.com/v1alpha1" \
-    --resource VectorSearchCollection:Collection \
-    --proto-source-path ${PROTO_OUT}
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.vectorsearch.v1 \
+  --api-version vectorsearch.cnrm.cloud.google.com/v1alpha1 \
+  --resource VectorSearchCollection:Collection \
+  --resource VectorSearchDataObject:DataObject \
+  --prepopulate-spec \
+  --emit-required-from-proto \
+  --emit-plural-acronyms \
+  --emit-message-maps \
+  --place-server-set-fields \
+  --detect-output-only-in-comments \
+  --emit-parent-refs \
+  --emit-sibling-refs \
+  --emit-reference-hints \
+  --emit-source-links
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.vectorsearch.v1 \
+  --api-version vectorsearch.cnrm.cloud.google.com/v1alpha1 \
+  --resource VectorSearchDataObject:DataObject
 
 ${CONTROLLERBUILDER} generate-mapper \
-    --service google.cloud.vectorsearch.v1 \
-    --api-version "vectorsearch.cnrm.cloud.google.com/v1alpha1" \
-    --proto-source-path ${PROTO_OUT}
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.vectorsearch.v1 \
+  --api-version vectorsearch.cnrm.cloud.google.com/v1alpha1 \
+  --emit-plural-acronyms \
+  --emit-message-maps
+
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

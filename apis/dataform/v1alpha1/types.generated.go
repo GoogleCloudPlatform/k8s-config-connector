@@ -18,5 +18,105 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.dataform.v1
 // resource: DataformTeamFolder:TeamFolder
+// resource: DataformReleaseConfig:ReleaseConfig
 
 package v1alpha1
+
+import (
+	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+)
+
+// +kcc:proto=google.cloud.dataform.v1.CodeCompilationConfig
+type CodeCompilationConfig struct {
+	// Optional. The default database (Google Cloud project ID).
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.default_database
+	DefaultDatabase *string `json:"defaultDatabase,omitempty"`
+
+	// Optional. The default schema (BigQuery dataset ID).
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.default_schema
+	DefaultSchema *string `json:"defaultSchema,omitempty"`
+
+	// Optional. The default BigQuery location to use. Defaults to "US".
+	//  See the BigQuery docs for a full list of locations:
+	//  https://cloud.google.com/bigquery/docs/locations.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.default_location
+	DefaultLocation *string `json:"defaultLocation,omitempty"`
+
+	// Optional. The default schema (BigQuery dataset ID) for assertions.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.assertion_schema
+	AssertionSchema *string `json:"assertionSchema,omitempty"`
+
+	// Optional. User-defined variables that are made available to project code
+	//  during compilation.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.vars
+	Vars map[string]string `json:"vars,omitempty"`
+
+	// Optional. The suffix that should be appended to all database (Google Cloud
+	//  project ID) names.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.database_suffix
+	DatabaseSuffix *string `json:"databaseSuffix,omitempty"`
+
+	// Optional. The suffix that should be appended to all schema (BigQuery
+	//  dataset ID) names.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.schema_suffix
+	SchemaSuffix *string `json:"schemaSuffix,omitempty"`
+
+	// Optional. The prefix that should be prepended to all table names.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.table_prefix
+	TablePrefix *string `json:"tablePrefix,omitempty"`
+
+	// Optional. The prefix to prepend to built-in assertion names.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.builtin_assertion_name_prefix
+	BuiltinAssertionNamePrefix *string `json:"builtinAssertionNamePrefix,omitempty"`
+
+	// Optional. The default notebook runtime options.
+	// +kcc:proto:field=google.cloud.dataform.v1.CodeCompilationConfig.default_notebook_runtime_options
+	DefaultNotebookRuntimeOptions *NotebookRuntimeOptions `json:"defaultNotebookRuntimeOptions,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataform.v1.NotebookRuntimeOptions
+type NotebookRuntimeOptions struct {
+	// Optional. The Google Cloud Storage location to upload the result to.
+	//  Format: `gs://bucket-name`.
+	// +kcc:proto:field=google.cloud.dataform.v1.NotebookRuntimeOptions.gcs_output_bucket
+	GCSOutputBucket *string `json:"gcsOutputBucket,omitempty"`
+
+	// Optional. The resource name of the [Colab runtime template]
+	//  (https://cloud.google.com/colab/docs/runtimes), from which a runtime is
+	//  created for notebook executions. If not specified, a runtime is created
+	//  with Colab's default specifications.
+	// +kcc:proto:field=google.cloud.dataform.v1.NotebookRuntimeOptions.ai_platform_notebook_runtime_template
+	AiPlatformNotebookRuntimeTemplate *string `json:"aiPlatformNotebookRuntimeTemplate,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataform.v1.ReleaseConfig.ScheduledReleaseRecord
+type ReleaseConfig_ScheduledReleaseRecord struct {
+	// The name of the created compilation result, if one was successfully
+	//  created. Must be in the format
+	//  `projects/*/locations/*/repositories/*/compilationResults/*`.
+	// +kcc:proto:field=google.cloud.dataform.v1.ReleaseConfig.ScheduledReleaseRecord.compilation_result
+	CompilationResult *string `json:"compilationResult,omitempty"`
+
+	// The error status encountered upon this attempt to create the
+	//  compilation result, if the attempt was unsuccessful.
+	// +kcc:proto:field=google.cloud.dataform.v1.ReleaseConfig.ScheduledReleaseRecord.error_status
+	ErrorStatus *common.Status `json:"errorStatus,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataform.v1.ReleaseConfig.ScheduledReleaseRecord
+type ReleaseConfig_ScheduledReleaseRecordObservedState struct {
+	// The name of the created compilation result, if one was successfully
+	//  created. Must be in the format
+	//  `projects/*/locations/*/repositories/*/compilationResults/*`.
+	// +kcc:proto:field=google.cloud.dataform.v1.ReleaseConfig.ScheduledReleaseRecord.compilation_result
+	CompilationResult *string `json:"compilationResult,omitempty"`
+
+	// The error status encountered upon this attempt to create the
+	//  compilation result, if the attempt was unsuccessful.
+	// +kcc:proto:field=google.cloud.dataform.v1.ReleaseConfig.ScheduledReleaseRecord.error_status
+	ErrorStatus *common.Status `json:"errorStatus,omitempty"`
+
+	// Output only. The timestamp of this release attempt.
+	// +kcc:proto:field=google.cloud.dataform.v1.ReleaseConfig.ScheduledReleaseRecord.release_time
+	ReleaseTime *string `json:"releaseTime,omitempty"`
+}

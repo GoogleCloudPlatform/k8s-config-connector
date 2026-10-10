@@ -1,0 +1,126 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: RetailControl
+    group: retail.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v2/projects.locations.catalogs.controls: https://docs.cloud.google.com/recommendations/docs/reference/rest/v2/projects.locations.catalogs.controls'
+    status: open
+  - kind: RetailControl
+    group: retail.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: RetailControl
+    group: retail.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/catalogs/{catalog}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: RetailControl
+    group: retail.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/catalogs/{catalog}, and no CatalogRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: RetailModel
+    group: retail.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v2/projects.locations.catalogs.models: https://docs.cloud.google.com/recommendations/docs/reference/rest/v2/projects.locations.catalogs.models'
+    status: open
+  - kind: RetailModel
+    group: retail.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: RetailModel
+    group: retail.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/catalogs/{catalog}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: RetailModel
+    group: retail.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/catalogs/{catalog}, and no CatalogRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: RetailServingConfig
+    group: retail.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v2/projects.locations.catalogs.servingConfigs: https://docs.cloud.google.com/recommendations/docs/reference/rest/v2/projects.locations.catalogs.servingConfigs'
+    status: open
+  - kind: RetailServingConfig
+    group: retail.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: RetailServingConfig
+    group: retail.cnrm.cloud.google.com
+    reason: empty-observedstate
+    detail: nothing was generated into status.observedState; the proto probably marks no field OUTPUT_ONLY, so output fields landed in the Spec. Decide what belongs in status
+    status: open
+  - kind: RetailServingConfig
+    group: retail.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/catalogs/{catalog}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: RetailServingConfig
+    group: retail.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/catalogs/{catalog}, and no CatalogRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - protoMessage: google.cloud.retail.v2.Rule.PinAction
+    field: pinMap
+    reason: unsupported-field-type
+    detail: unsupported map type with key int64 and value string
+    status: open
+  - kind: RetailControl
+    group: retail.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//retail.googleapis.com/projects/{project}/locations/{location}/catalogs/{catalog}/controls/{control}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: RetailControl
+    group: retail.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/catalogs/{catalog}/controls/{control}" contains ancestor segment(s) catalogs/{catalog} with no matching reference or field on RetailControlSpec
+    status: open
+  - kind: RetailModel
+    group: retail.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//retail.googleapis.com/projects/{project}/locations/{location}/catalogs/{catalog}/models/{model}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: RetailModel
+    group: retail.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/catalogs/{catalog}/models/{model}" contains ancestor segment(s) catalogs/{catalog} with no matching reference or field on RetailModelSpec
+    status: open
+  - kind: RetailServingConfig
+    group: retail.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//retail.googleapis.com/projects/{project}/locations/{location}/catalogs/{catalog}/servingConfigs/{serving_config}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: RetailServingConfig
+    group: retail.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/catalogs/{catalog}/servingConfigs/{serving_config}" contains ancestor segment(s) catalogs/{catalog} with no matching reference or field on RetailServingConfigSpec
+    status: open

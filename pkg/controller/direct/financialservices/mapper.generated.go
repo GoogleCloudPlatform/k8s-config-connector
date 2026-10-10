@@ -20,6 +20,7 @@
 // krm.group: financialservices.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.financialservices.v1
+// proto.service: google.type
 
 package financialservices
 
@@ -28,8 +29,266 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/financialservices/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	datetimepb "google.golang.org/genproto/googleapis/type/datetime"
+	intervalpb "google.golang.org/genproto/googleapis/type/interval"
 )
 
+func BacktestResult_PerformanceTarget_FromProto(mapCtx *direct.MapContext, in *pb.BacktestResult_PerformanceTarget) *krm.BacktestResult_PerformanceTarget {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BacktestResult_PerformanceTarget{}
+	out.PartyInvestigationsPerPeriodHint = direct.LazyPtr(in.GetPartyInvestigationsPerPeriodHint())
+	return out
+}
+func BacktestResult_PerformanceTarget_ToProto(mapCtx *direct.MapContext, in *krm.BacktestResult_PerformanceTarget) *pb.BacktestResult_PerformanceTarget {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BacktestResult_PerformanceTarget{}
+	out.PartyInvestigationsPerPeriodHint = direct.ValueOf(in.PartyInvestigationsPerPeriodHint)
+	return out
+}
+func BigQueryDestination_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDestination) *krm.BigQueryDestination {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryDestination{}
+	out.TableURI = direct.LazyPtr(in.GetTableUri())
+	out.WriteDisposition = direct.Enum_FromProto(mapCtx, in.GetWriteDisposition())
+	return out
+}
+func BigQueryDestination_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDestination) *pb.BigQueryDestination {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BigQueryDestination{}
+	out.TableUri = direct.ValueOf(in.TableURI)
+	out.WriteDisposition = direct.Enum_ToProto[pb.BigQueryDestination_WriteDisposition](mapCtx, in.WriteDisposition)
+	return out
+}
+func EngineConfig_HyperparameterSource_FromProto(mapCtx *direct.MapContext, in *pb.EngineConfig_HyperparameterSource) *krm.EngineConfig_HyperparameterSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EngineConfig_HyperparameterSource{}
+	out.SourceEngineConfig = direct.LazyPtr(in.GetSourceEngineConfig())
+	// MISSING: SourceEngineVersion
+	return out
+}
+func EngineConfig_HyperparameterSource_ToProto(mapCtx *direct.MapContext, in *krm.EngineConfig_HyperparameterSource) *pb.EngineConfig_HyperparameterSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EngineConfig_HyperparameterSource{}
+	out.SourceEngineConfig = direct.ValueOf(in.SourceEngineConfig)
+	// MISSING: SourceEngineVersion
+	return out
+}
+func EngineConfig_HyperparameterSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EngineConfig_HyperparameterSource) *krm.EngineConfig_HyperparameterSourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EngineConfig_HyperparameterSourceObservedState{}
+	// MISSING: SourceEngineConfig
+	out.SourceEngineVersion = direct.LazyPtr(in.GetSourceEngineVersion())
+	return out
+}
+func EngineConfig_HyperparameterSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EngineConfig_HyperparameterSourceObservedState) *pb.EngineConfig_HyperparameterSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EngineConfig_HyperparameterSource{}
+	// MISSING: SourceEngineConfig
+	out.SourceEngineVersion = direct.ValueOf(in.SourceEngineVersion)
+	return out
+}
+func EngineConfig_PerformanceTarget_FromProto(mapCtx *direct.MapContext, in *pb.EngineConfig_PerformanceTarget) *krm.EngineConfig_PerformanceTarget {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EngineConfig_PerformanceTarget{}
+	out.PartyInvestigationsPerPeriodHint = direct.LazyPtr(in.GetPartyInvestigationsPerPeriodHint())
+	return out
+}
+func EngineConfig_PerformanceTarget_ToProto(mapCtx *direct.MapContext, in *krm.EngineConfig_PerformanceTarget) *pb.EngineConfig_PerformanceTarget {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EngineConfig_PerformanceTarget{}
+	out.PartyInvestigationsPerPeriodHint = direct.ValueOf(in.PartyInvestigationsPerPeriodHint)
+	return out
+}
+func EngineConfig_Tuning_FromProto(mapCtx *direct.MapContext, in *pb.EngineConfig_Tuning) *krm.EngineConfig_Tuning {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EngineConfig_Tuning{}
+	out.PrimaryDataset = direct.LazyPtr(in.GetPrimaryDataset())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	return out
+}
+func EngineConfig_Tuning_ToProto(mapCtx *direct.MapContext, in *krm.EngineConfig_Tuning) *pb.EngineConfig_Tuning {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EngineConfig_Tuning{}
+	out.PrimaryDataset = direct.ValueOf(in.PrimaryDataset)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	return out
+}
+func FinancialServicesBacktestResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BacktestResult) *krm.FinancialServicesBacktestResultObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FinancialServicesBacktestResultObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.LineOfBusiness = direct.Enum_FromProto(mapCtx, in.GetLineOfBusiness())
+	return out
+}
+func FinancialServicesBacktestResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FinancialServicesBacktestResultObservedState) *pb.BacktestResult {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BacktestResult{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.BacktestResult_State](mapCtx, in.State)
+	out.LineOfBusiness = direct.Enum_ToProto[pb.LineOfBusiness](mapCtx, in.LineOfBusiness)
+	return out
+}
+func FinancialServicesBacktestResultSpec_FromProto(mapCtx *direct.MapContext, in *pb.BacktestResult) *krm.FinancialServicesBacktestResultSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FinancialServicesBacktestResultSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.Dataset = direct.LazyPtr(in.GetDataset())
+	out.Model = direct.LazyPtr(in.GetModel())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.BacktestPeriods = direct.LazyPtr(in.GetBacktestPeriods())
+	out.PerformanceTarget = BacktestResult_PerformanceTarget_FromProto(mapCtx, in.GetPerformanceTarget())
+	return out
+}
+func FinancialServicesBacktestResultSpec_ToProto(mapCtx *direct.MapContext, in *krm.FinancialServicesBacktestResultSpec) *pb.BacktestResult {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BacktestResult{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.Dataset = direct.ValueOf(in.Dataset)
+	out.Model = direct.ValueOf(in.Model)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.BacktestPeriods = direct.ValueOf(in.BacktestPeriods)
+	out.PerformanceTarget = BacktestResult_PerformanceTarget_ToProto(mapCtx, in.PerformanceTarget)
+	return out
+}
+func FinancialServicesDatasetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krm.FinancialServicesDatasetObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FinancialServicesDatasetObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func FinancialServicesDatasetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FinancialServicesDatasetObservedState) *pb.Dataset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Dataset{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.Dataset_State](mapCtx, in.State)
+	return out
+}
+func FinancialServicesDatasetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krm.FinancialServicesDatasetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FinancialServicesDatasetSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.TableSpecs = in.TableSpecs
+	out.DateRange = Interval_FromProto(mapCtx, in.GetDateRange())
+	out.TimeZone = TimeZone_FromProto(mapCtx, in.GetTimeZone())
+	return out
+}
+func FinancialServicesDatasetSpec_ToProto(mapCtx *direct.MapContext, in *krm.FinancialServicesDatasetSpec) *pb.Dataset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Dataset{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.TableSpecs = in.TableSpecs
+	out.DateRange = Interval_ToProto(mapCtx, in.DateRange)
+	out.TimeZone = TimeZone_ToProto(mapCtx, in.TimeZone)
+	return out
+}
+func FinancialServicesEngineConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EngineConfig) *krm.FinancialServicesEngineConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FinancialServicesEngineConfigObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.LineOfBusiness = direct.Enum_FromProto(mapCtx, in.GetLineOfBusiness())
+	out.HyperparameterSource = EngineConfig_HyperparameterSourceObservedState_FromProto(mapCtx, in.GetHyperparameterSource())
+	return out
+}
+func FinancialServicesEngineConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FinancialServicesEngineConfigObservedState) *pb.EngineConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EngineConfig{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.EngineConfig_State](mapCtx, in.State)
+	out.LineOfBusiness = direct.Enum_ToProto[pb.LineOfBusiness](mapCtx, in.LineOfBusiness)
+	out.HyperparameterSource = EngineConfig_HyperparameterSourceObservedState_ToProto(mapCtx, in.HyperparameterSource)
+	return out
+}
+func FinancialServicesEngineConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.EngineConfig) *krm.FinancialServicesEngineConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FinancialServicesEngineConfigSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.EngineVersion = direct.LazyPtr(in.GetEngineVersion())
+	out.Tuning = EngineConfig_Tuning_FromProto(mapCtx, in.GetTuning())
+	out.PerformanceTarget = EngineConfig_PerformanceTarget_FromProto(mapCtx, in.GetPerformanceTarget())
+	out.HyperparameterSourceType = direct.Enum_FromProto(mapCtx, in.GetHyperparameterSourceType())
+	out.HyperparameterSource = EngineConfig_HyperparameterSource_FromProto(mapCtx, in.GetHyperparameterSource())
+	return out
+}
+func FinancialServicesEngineConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.FinancialServicesEngineConfigSpec) *pb.EngineConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EngineConfig{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.EngineVersion = direct.ValueOf(in.EngineVersion)
+	out.Tuning = EngineConfig_Tuning_ToProto(mapCtx, in.Tuning)
+	out.PerformanceTarget = EngineConfig_PerformanceTarget_ToProto(mapCtx, in.PerformanceTarget)
+	out.HyperparameterSourceType = direct.Enum_ToProto[pb.EngineConfig_HyperparameterSourceType](mapCtx, in.HyperparameterSourceType)
+	out.HyperparameterSource = EngineConfig_HyperparameterSource_ToProto(mapCtx, in.HyperparameterSource)
+	return out
+}
 func FinancialServicesInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.FinancialServicesInstanceObservedState {
 	if in == nil {
 		return nil
@@ -74,5 +333,161 @@ func FinancialServicesInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Fi
 	if in.KMSKeyRef != nil {
 		out.KmsKey = in.KMSKeyRef.External
 	}
+	return out
+}
+func FinancialServicesModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.FinancialServicesModelObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FinancialServicesModelObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.EngineVersion = direct.LazyPtr(in.GetEngineVersion())
+	out.LineOfBusiness = direct.Enum_FromProto(mapCtx, in.GetLineOfBusiness())
+	return out
+}
+func FinancialServicesModelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FinancialServicesModelObservedState) *pb.Model {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Model{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.Model_State](mapCtx, in.State)
+	out.EngineVersion = direct.ValueOf(in.EngineVersion)
+	out.LineOfBusiness = direct.Enum_ToProto[pb.LineOfBusiness](mapCtx, in.LineOfBusiness)
+	return out
+}
+func FinancialServicesModelSpec_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.FinancialServicesModelSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FinancialServicesModelSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.EngineConfig = direct.LazyPtr(in.GetEngineConfig())
+	out.PrimaryDataset = direct.LazyPtr(in.GetPrimaryDataset())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	return out
+}
+func FinancialServicesModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.FinancialServicesModelSpec) *pb.Model {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Model{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.EngineConfig = direct.ValueOf(in.EngineConfig)
+	out.PrimaryDataset = direct.ValueOf(in.PrimaryDataset)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	return out
+}
+func FinancialServicesPredictionResultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PredictionResult) *krm.FinancialServicesPredictionResultObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FinancialServicesPredictionResultObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.LineOfBusiness = direct.Enum_FromProto(mapCtx, in.GetLineOfBusiness())
+	return out
+}
+func FinancialServicesPredictionResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FinancialServicesPredictionResultObservedState) *pb.PredictionResult {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PredictionResult{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.PredictionResult_State](mapCtx, in.State)
+	out.LineOfBusiness = direct.Enum_ToProto[pb.LineOfBusiness](mapCtx, in.LineOfBusiness)
+	return out
+}
+func FinancialServicesPredictionResultSpec_FromProto(mapCtx *direct.MapContext, in *pb.PredictionResult) *krm.FinancialServicesPredictionResultSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FinancialServicesPredictionResultSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.Dataset = direct.LazyPtr(in.GetDataset())
+	out.Model = direct.LazyPtr(in.GetModel())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.PredictionPeriods = direct.LazyPtr(in.GetPredictionPeriods())
+	out.Outputs = PredictionResult_Outputs_FromProto(mapCtx, in.GetOutputs())
+	return out
+}
+func FinancialServicesPredictionResultSpec_ToProto(mapCtx *direct.MapContext, in *krm.FinancialServicesPredictionResultSpec) *pb.PredictionResult {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PredictionResult{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.Dataset = direct.ValueOf(in.Dataset)
+	out.Model = direct.ValueOf(in.Model)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.PredictionPeriods = direct.ValueOf(in.PredictionPeriods)
+	out.Outputs = PredictionResult_Outputs_ToProto(mapCtx, in.Outputs)
+	return out
+}
+func Interval_FromProto(mapCtx *direct.MapContext, in *intervalpb.Interval) *krm.Interval {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Interval{}
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	return out
+}
+func Interval_ToProto(mapCtx *direct.MapContext, in *krm.Interval) *intervalpb.Interval {
+	if in == nil {
+		return nil
+	}
+	out := &intervalpb.Interval{}
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	return out
+}
+func PredictionResult_Outputs_FromProto(mapCtx *direct.MapContext, in *pb.PredictionResult_Outputs) *krm.PredictionResult_Outputs {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PredictionResult_Outputs{}
+	out.PredictionDestination = BigQueryDestination_FromProto(mapCtx, in.GetPredictionDestination())
+	out.ExplainabilityDestination = BigQueryDestination_FromProto(mapCtx, in.GetExplainabilityDestination())
+	return out
+}
+func PredictionResult_Outputs_ToProto(mapCtx *direct.MapContext, in *krm.PredictionResult_Outputs) *pb.PredictionResult_Outputs {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PredictionResult_Outputs{}
+	out.PredictionDestination = BigQueryDestination_ToProto(mapCtx, in.PredictionDestination)
+	out.ExplainabilityDestination = BigQueryDestination_ToProto(mapCtx, in.ExplainabilityDestination)
+	return out
+}
+func TimeZone_FromProto(mapCtx *direct.MapContext, in *datetimepb.TimeZone) *krm.TimeZone {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TimeZone{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.Version = direct.LazyPtr(in.GetVersion())
+	return out
+}
+func TimeZone_ToProto(mapCtx *direct.MapContext, in *krm.TimeZone) *datetimepb.TimeZone {
+	if in == nil {
+		return nil
+	}
+	out := &datetimepb.TimeZone{}
+	out.Id = direct.ValueOf(in.ID)
+	out.Version = direct.ValueOf(in.Version)
 	return out
 }

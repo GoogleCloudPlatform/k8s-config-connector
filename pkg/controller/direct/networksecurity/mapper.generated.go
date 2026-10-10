@@ -1158,6 +1158,64 @@ func NetworkSecurityGatewaySecurityPolicyObservedState_v1alpha1_ToProto(mapCtx *
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
+func NetworkSecurityGatewaySecurityPolicyRuleObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GatewaySecurityPolicyRule) *krmnetworksecurityv1alpha1.NetworkSecurityGatewaySecurityPolicyRuleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityGatewaySecurityPolicyRuleObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func NetworkSecurityGatewaySecurityPolicyRuleObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityGatewaySecurityPolicyRuleObservedState) *pb.GatewaySecurityPolicyRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GatewaySecurityPolicyRule{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func NetworkSecurityGatewaySecurityPolicyRuleSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GatewaySecurityPolicyRule) *krmnetworksecurityv1alpha1.NetworkSecurityGatewaySecurityPolicyRuleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityGatewaySecurityPolicyRuleSpec{}
+	out.BasicProfile = direct.Enum_FromProto(mapCtx, in.GetBasicProfile())
+	// MISSING: Name
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	out.Priority = direct.LazyPtr(in.GetPriority())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.SessionMatcher = direct.LazyPtr(in.GetSessionMatcher())
+	out.ApplicationMatcher = direct.LazyPtr(in.GetApplicationMatcher())
+	out.TLSInspectionEnabled = direct.LazyPtr(in.GetTlsInspectionEnabled())
+	return out
+}
+func NetworkSecurityGatewaySecurityPolicyRuleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityGatewaySecurityPolicyRuleSpec) *pb.GatewaySecurityPolicyRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GatewaySecurityPolicyRule{}
+	if oneof := NetworkSecurityGatewaySecurityPolicyRuleSpec_BasicProfile_ToProto(mapCtx, in.BasicProfile); oneof != nil {
+		out.Profile = oneof
+	}
+	// MISSING: Name
+	out.Enabled = direct.ValueOf(in.Enabled)
+	out.Priority = direct.ValueOf(in.Priority)
+	out.Description = direct.ValueOf(in.Description)
+	out.SessionMatcher = direct.ValueOf(in.SessionMatcher)
+	out.ApplicationMatcher = direct.ValueOf(in.ApplicationMatcher)
+	out.TlsInspectionEnabled = direct.ValueOf(in.TLSInspectionEnabled)
+	return out
+}
+func NetworkSecurityGatewaySecurityPolicyRuleSpec_BasicProfile_ToProto(mapCtx *direct.MapContext, in *string) *pb.GatewaySecurityPolicyRule_BasicProfile_ {
+	if in == nil {
+		return nil
+	}
+	return &pb.GatewaySecurityPolicyRule_BasicProfile_{BasicProfile: direct.Enum_ToProto[pb.GatewaySecurityPolicyRule_BasicProfile](mapCtx, in)}
+}
 func NetworkSecurityGatewaySecurityPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GatewaySecurityPolicy) *krmnetworksecurityv1alpha1.NetworkSecurityGatewaySecurityPolicySpec {
 	if in == nil {
 		return nil

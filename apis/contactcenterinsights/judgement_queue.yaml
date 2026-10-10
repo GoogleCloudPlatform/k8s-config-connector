@@ -1,0 +1,80 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: CCInsightsFeedbackLabel
+    group: contactcenterinsights.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: CCInsightsFeedbackLabel
+    group: contactcenterinsights.cnrm.cloud.google.com
+    field: .spec.labeledResource
+    reason: possible-reference-by-description-loose
+    status: open
+  - kind: CCInsightsFeedbackLabel
+    group: contactcenterinsights.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/conversations/{conversation}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: CCInsightsFeedbackLabel
+    group: contactcenterinsights.cnrm.cloud.google.com
+    field: .spec.conversationRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to CCInsightsConversationRef, read from the conversations segment of projects/{project}/locations/{location}/conversations/{conversation}/feedbackLabels/{feedback_label}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - protoMessage: google.cloud.contactcenterinsights.v1.AnalysisResult.CallAnalysisMetadata
+    field: entities
+    reason: message-map-derived
+    detail: derived as map[string]Entity from proto google.cloud.contactcenterinsights.v1.Entity; verify Go type and mapping
+    status: open
+  - protoMessage: google.cloud.contactcenterinsights.v1.AnalysisResult.CallAnalysisMetadata
+    field: intents
+    reason: message-map-derived
+    detail: derived as map[string]Intent from proto google.cloud.contactcenterinsights.v1.Intent; verify Go type and mapping
+    status: open
+  - protoMessage: google.cloud.contactcenterinsights.v1.AnalysisResult.CallAnalysisMetadata
+    field: phraseMatchers
+    reason: message-map-derived
+    detail: derived as map[string]PhraseMatchData from proto google.cloud.contactcenterinsights.v1.PhraseMatchData; verify Go type and mapping
+    status: open
+  - protoMessage: google.cloud.contactcenterinsights.v1.IssueModelLabelStats
+    field: issueStats
+    reason: message-map-derived
+    detail: derived as map[string]IssueModelLabelStats_IssueStats from proto google.cloud.contactcenterinsights.v1.IssueModelLabelStats.IssueStats; verify Go type and mapping
+    status: open
+  - kind: CCInsightsFeedbackLabel
+    group: contactcenterinsights.cnrm.cloud.google.com
+    reason: identity-multi-pattern
+    detail: proto message google.cloud.contactcenterinsights.v1.FeedbackLabel declares 2 resource name patterns (projects/{project}/locations/{location}/conversations/{conversation}/feedbackLabels/{feedback_label}, projects/{project}/locations/{location}/authorizedViewSets/{authorized_view_set}/authorizedViews/{authorized_view}/conversations/{conversation}/feedbackLabels/{feedback_label}) that tied on CCInsightsFeedbackLabelSpec; generated identity defaulted to "projects/{project}/locations/{location}/conversations/{conversation}/feedbackLabels/{feedback_label}" (pass --pattern CCInsightsFeedbackLabel=<pattern> to override)
+    status: open
+  - kind: CCInsightsFeedbackLabel
+    group: contactcenterinsights.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//contactcenterinsights.googleapis.com/projects/{project}/locations/{location}/conversations/{conversation}/feedbackLabels/{feedback_label}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: CCInsightsFeedbackLabel
+    group: contactcenterinsights.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/conversations/{conversation}/feedbackLabels/{feedback_label}" contains ancestor segment(s) conversations/{conversation} with no matching reference or field on CCInsightsFeedbackLabelSpec
+    status: open

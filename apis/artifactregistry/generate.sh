@@ -29,29 +29,44 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
+
 ./generate-proto.sh
 
-# --- v1alpha1 ---
 ${CONTROLLERBUILDER} generate-types \
   --service google.devtools.artifactregistry.v1 \
-  --api-version artifactregistry.cnrm.cloud.google.com/v1alpha1  \
+  --api-version artifactregistry.cnrm.cloud.google.com/v1alpha1 \
   --resource ArtifactRegistryVPCSCConfig:VPCSCConfig \
-  --skip-scaffold-files
+  --resource ArtifactRegistryRule:Rule \
+  --prepopulate-spec \
+  --emit-required-from-proto \
+  --emit-plural-acronyms \
+  --emit-message-maps \
+  --place-server-set-fields \
+  --detect-output-only-in-comments \
+  --emit-parent-refs \
+  --emit-sibling-refs \
+  --emit-reference-hints \
+  --emit-source-links
 
+${CONTROLLERBUILDER} generate-identity \
+  --service google.devtools.artifactregistry.v1 \
+  --api-version artifactregistry.cnrm.cloud.google.com/v1alpha1 \
+  --resource ArtifactRegistryRule:Rule
 
-
-# --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
   --service google.devtools.artifactregistry.v1 \
-  --api-version artifactregistry.cnrm.cloud.google.com/v1beta1  \
+  --api-version artifactregistry.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output \
   --resource ArtifactRegistryRepository:Repository
 
 ${CONTROLLERBUILDER} generate-mapper \
-  --service google.devtools.artifactregistry.v1 \
-  --api-version "artifactregistry.cnrm.cloud.google.com/v1beta1" \
+  --service google.devtools.artifactregistry.v1,google.type \
+  --api-version artifactregistry.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output \
-  --multiversion
+  --multiversion \
+  --emit-plural-acronyms \
+  --emit-message-maps
+
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

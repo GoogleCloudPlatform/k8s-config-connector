@@ -18,5 +18,131 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.financialservices.v1
 // resource: FinancialServicesInstance:Instance
+// resource: FinancialServicesBacktestResult:BacktestResult
+// resource: FinancialServicesDataset:Dataset
+// resource: FinancialServicesEngineConfig:EngineConfig
+// resource: FinancialServicesModel:Model
+// resource: FinancialServicesPredictionResult:PredictionResult
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.financialservices.v1.BacktestResult.PerformanceTarget
+type BacktestResult_PerformanceTarget struct {
+	// Required. A number that gives the tuner a hint on the number of parties
+	//  from this data that will be investigated per period (monthly). This is
+	//  used to control how the model is evaluated. For example, when trying AML
+	//  AI for the first time, we recommend setting this to the number of parties
+	//  investigated in an average month, based on alerts from your existing
+	//  automated alerting system.
+	// +kcc:proto:field=google.cloud.financialservices.v1.BacktestResult.PerformanceTarget.party_investigations_per_period_hint
+	// +required
+	PartyInvestigationsPerPeriodHint *int64 `json:"partyInvestigationsPerPeriodHint,omitempty"`
+}
+
+// +kcc:proto=google.cloud.financialservices.v1.BigQueryDestination
+type BigQueryDestination struct {
+	// Optional. BigQuery URI to a table, must be of the form
+	//  bq://projectId.bqDatasetId.tableId.
+	//  Note that the BigQuery dataset must already exist.
+	//  VPC-SC restrictions apply.
+	// +kcc:proto:field=google.cloud.financialservices.v1.BigQueryDestination.table_uri
+	TableURI *string `json:"tableURI,omitempty"`
+
+	// Required. Whether or not to overwrite the destination table. By default the
+	//  table won't be overwritten and an error will be returned if the table
+	//  exists and contains data.
+	// +kcc:proto:field=google.cloud.financialservices.v1.BigQueryDestination.write_disposition
+	// +required
+	WriteDisposition *string `json:"writeDisposition,omitempty"`
+}
+
+// +kcc:proto=google.cloud.financialservices.v1.EngineConfig.HyperparameterSource
+type EngineConfig_HyperparameterSource struct {
+	// Required. The resource name of the source EngineConfig whose outputs are
+	//  used. Format:
+	//  `/projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engine_config}`
+	// +kcc:proto:field=google.cloud.financialservices.v1.EngineConfig.HyperparameterSource.source_engine_config
+	// +required
+	SourceEngineConfig *string `json:"sourceEngineConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.financialservices.v1.EngineConfig.PerformanceTarget
+type EngineConfig_PerformanceTarget struct {
+	// Required. A number that gives the tuner a hint on the number of parties
+	//  from this data that will be investigated per period (monthly). This is
+	//  used to control how the model is evaluated. For example, when trying AML
+	//  AI for the first time, we recommend setting this to the number of parties
+	//  investigated in an average month, based on alerts from your existing
+	//  automated alerting system.
+	// +kcc:proto:field=google.cloud.financialservices.v1.EngineConfig.PerformanceTarget.party_investigations_per_period_hint
+	// +required
+	PartyInvestigationsPerPeriodHint *int64 `json:"partyInvestigationsPerPeriodHint,omitempty"`
+}
+
+// +kcc:proto=google.cloud.financialservices.v1.EngineConfig.Tuning
+type EngineConfig_Tuning struct {
+	// Required. The resource name of the Primary Dataset used in this model
+	//  tuning. For information about how primary and auxiliary datasets are
+	//  used, refer to the engine version's documentation.  Format:
+	//  `/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}`
+	// +kcc:proto:field=google.cloud.financialservices.v1.EngineConfig.Tuning.primary_dataset
+	// +required
+	PrimaryDataset *string `json:"primaryDataset,omitempty"`
+
+	// Required. End_time specifies the latest time from which labels are used
+	//  and from which data is used to generate features for tuning.  End_time
+	//  should be no later than the end of the date_range of the dataset.
+	// +kcc:proto:field=google.cloud.financialservices.v1.EngineConfig.Tuning.end_time
+	// +required
+	EndTime *string `json:"endTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.financialservices.v1.PredictionResult.Outputs
+type PredictionResult_Outputs struct {
+	// Required. The location to output the predictions.
+	// +kcc:proto:field=google.cloud.financialservices.v1.PredictionResult.Outputs.prediction_destination
+	// +required
+	PredictionDestination *BigQueryDestination `json:"predictionDestination,omitempty"`
+
+	// The location to output explainability information.  If not specified
+	//  no explainability data will be output.
+	// +kcc:proto:field=google.cloud.financialservices.v1.PredictionResult.Outputs.explainability_destination
+	ExplainabilityDestination *BigQueryDestination `json:"explainabilityDestination,omitempty"`
+}
+
+// +kcc:proto=google.type.Interval
+type Interval struct {
+	// Optional. Inclusive start of the interval.
+	//
+	//  If specified, a Timestamp matching this interval will have to be the same
+	//  or after the start.
+	// +kcc:proto:field=google.type.Interval.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Optional. Exclusive end of the interval.
+	//
+	//  If specified, a Timestamp matching this interval will have to be before the
+	//  end.
+	// +kcc:proto:field=google.type.Interval.end_time
+	EndTime *string `json:"endTime,omitempty"`
+}
+
+// +kcc:proto=google.type.TimeZone
+type TimeZone struct {
+	// IANA Time Zone Database time zone, e.g. "America/New_York".
+	// +kcc:proto:field=google.type.TimeZone.id
+	ID *string `json:"id,omitempty"`
+
+	// Optional. IANA Time Zone Database version number, e.g. "2019a".
+	// +kcc:proto:field=google.type.TimeZone.version
+	Version *string `json:"version,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.financialservices.v1.EngineConfig.HyperparameterSource
+type EngineConfig_HyperparameterSourceObservedState struct {
+	// Output only. The resource name of the EngineVersion that was used in the
+	//  tuning run. Format:
+	//  `/projects/{project_num}/locations/{location}/instances/{instance}/engineVersions/{engine_version}`
+	// +kcc:proto:field=google.cloud.financialservices.v1.EngineConfig.HyperparameterSource.source_engine_version
+	SourceEngineVersion *string `json:"sourceEngineVersion,omitempty"`
+}

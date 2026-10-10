@@ -1,0 +1,174 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: LiveStreamDVRSession
+    group: livestream.cnrm.cloud.google.com
+    reason: verify-service-docs-link
+    detail: neither the Discovery directory nor the service config names a docs page; add one
+    status: open
+  - kind: LiveStreamDVRSession
+    group: livestream.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: found no docs root for this API; find the REST reference page by hand
+    status: open
+  - kind: LiveStreamDVRSession
+    group: livestream.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: LiveStreamDVRSession
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/channels/{channel}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: LiveStreamDVRSession
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.channelRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to LiveStreamChannelRef, read from the channels segment of projects/{project}/locations/{location}/channels/{channel}/dvrSessions/{dvr_session}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - kind: LiveStreamChannel
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.output
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to LiveStreamChannelSpec.Output in livestreamchannel_types.go. LiveStreamChannel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: LiveStreamChannel
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.elementaryStreams[].videoStream.h264.frameRate
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to LiveStreamChannelSpec and run generate.sh again. LiveStreamChannel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: LiveStreamChannel
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.elementaryStreams[].videoStream.h264.bitrateBps
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to LiveStreamChannelSpec and run generate.sh again. LiveStreamChannel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: LiveStreamChannel
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.elementaryStreams[].audioStream.bitrateBps
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to LiveStreamChannelSpec and run generate.sh again. LiveStreamChannel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: LiveStreamChannel
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.elementaryStreams[].audioStream.mapping[].inputKey
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to LiveStreamChannelSpec and run generate.sh again. LiveStreamChannel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: LiveStreamChannel
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.elementaryStreams[].audioStream.mapping[].inputTrack
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to LiveStreamChannelSpec and run generate.sh again. LiveStreamChannel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: LiveStreamChannel
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.elementaryStreams[].audioStream.mapping[].inputChannel
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to LiveStreamChannelSpec and run generate.sh again. LiveStreamChannel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: LiveStreamChannel
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.elementaryStreams[].audioStream.mapping[].outputChannel
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to LiveStreamChannelSpec and run generate.sh again. LiveStreamChannel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: LiveStreamChannel
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.elementaryStreams[].textStream.codec
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to LiveStreamChannelSpec and run generate.sh again. LiveStreamChannel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: LiveStreamChannel
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.manifests[].type
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to LiveStreamChannelSpec and run generate.sh again. LiveStreamChannel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: LiveStreamChannel
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.manifests[].muxStreams
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to LiveStreamChannelSpec and run generate.sh again. LiveStreamChannel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: LiveStreamChannel
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.spriteSheets[].filePrefix
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to LiveStreamChannelSpec and run generate.sh again. LiveStreamChannel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: LiveStreamChannel
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.spriteSheets[].spriteWidthPixels
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to LiveStreamChannelSpec and run generate.sh again. LiveStreamChannel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: LiveStreamChannel
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.spriteSheets[].spriteHeightPixels
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to LiveStreamChannelSpec and run generate.sh again. LiveStreamChannel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: LiveStreamChannel
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.encryptions[].id
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to LiveStreamChannelSpec and run generate.sh again. LiveStreamChannel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: LiveStreamChannel
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.encryptions[].secretManagerKeySource.secretVersionRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to Encryption_SecretManagerSource.SecretVersionRef in livestreamchannel_types.go. LiveStreamChannel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: LiveStreamChannel
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.encryptions[].drmSystems
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to LiveStreamChannelSpec and run generate.sh again. LiveStreamChannel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: LiveStreamChannel
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.encryptions[].mpegCenc.scheme
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to LiveStreamChannelSpec and run generate.sh again. LiveStreamChannel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: LiveStreamChannel
+    group: livestream.cnrm.cloud.google.com
+    field: .spec.staticOverlays[].assetRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to StaticOverlay.AssetRef in livestreamchannel_types.go. LiveStreamChannel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: LiveStreamDVRSession
+    group: livestream.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//livestream.googleapis.com/projects/{project}/locations/{location}/channels/{channel}/dvrSessions/{dvr_session}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: LiveStreamDVRSession
+    group: livestream.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/channels/{channel}/dvrSessions/{dvr_session}" contains ancestor segment(s) channels/{channel} with no matching reference or field on LiveStreamDVRSessionSpec
+    status: open

@@ -29,8 +29,32 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
+
 ./generate-proto.sh
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.securesourcemanager.v1 \
+  --api-version securesourcemanager.cnrm.cloud.google.com/v1alpha1 \
+  --resource SecureSourceManagerBranchRule:BranchRule \
+  --resource SecureSourceManagerHook:Hook \
+  --resource SecureSourceManagerIssue:Issue \
+  --prepopulate-spec \
+  --emit-required-from-proto \
+  --emit-plural-acronyms \
+  --emit-message-maps \
+  --place-server-set-fields \
+  --detect-output-only-in-comments \
+  --emit-parent-refs \
+  --emit-sibling-refs \
+  --emit-reference-hints \
+  --emit-source-links
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.securesourcemanager.v1 \
+  --api-version securesourcemanager.cnrm.cloud.google.com/v1alpha1 \
+  --resource SecureSourceManagerBranchRule:BranchRule \
+  --resource SecureSourceManagerHook:Hook \
+  --resource SecureSourceManagerIssue:Issue
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.securesourcemanager.v1 \
@@ -43,6 +67,7 @@ ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.securesourcemanager.v1 \
   --api-version securesourcemanager.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output
+
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

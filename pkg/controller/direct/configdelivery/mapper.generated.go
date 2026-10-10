@@ -98,6 +98,54 @@ func ConfigDeliveryFleetPackageSpec_ToProto(mapCtx *direct.MapContext, in *krm.C
 	out.State = direct.Enum_ToProto[pb.FleetPackage_State](mapCtx, in.State)
 	return out
 }
+func ConfigDeliveryReleaseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Release) *krm.ConfigDeliveryReleaseObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConfigDeliveryReleaseObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.PublishTime = direct.StringTimestamp_FromProto(mapCtx, in.GetPublishTime())
+	out.Info = ReleaseInfoObservedState_FromProto(mapCtx, in.GetInfo())
+	return out
+}
+func ConfigDeliveryReleaseObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ConfigDeliveryReleaseObservedState) *pb.Release {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Release{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.PublishTime = direct.StringTimestamp_ToProto(mapCtx, in.PublishTime)
+	out.Info = ReleaseInfoObservedState_ToProto(mapCtx, in.Info)
+	return out
+}
+func ConfigDeliveryReleaseSpec_FromProto(mapCtx *direct.MapContext, in *pb.Release) *krm.ConfigDeliveryReleaseSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConfigDeliveryReleaseSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.Lifecycle = direct.Enum_FromProto(mapCtx, in.GetLifecycle())
+	out.Version = direct.LazyPtr(in.GetVersion())
+	out.Info = ReleaseInfo_FromProto(mapCtx, in.GetInfo())
+	return out
+}
+func ConfigDeliveryReleaseSpec_ToProto(mapCtx *direct.MapContext, in *krm.ConfigDeliveryReleaseSpec) *pb.Release {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Release{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.Lifecycle = direct.Enum_ToProto[pb.Release_Lifecycle](mapCtx, in.Lifecycle)
+	out.Version = direct.ValueOf(in.Version)
+	out.Info = ReleaseInfo_ToProto(mapCtx, in.Info)
+	return out
+}
 func ConfigDeliveryResourceBundleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResourceBundle) *krm.ConfigDeliveryResourceBundleObservedState {
 	if in == nil {
 		return nil
@@ -284,6 +332,42 @@ func Fleet_LabelSelector_ToProto(mapCtx *direct.MapContext, in *krm.Fleet_LabelS
 	}
 	out := &pb.Fleet_LabelSelector{}
 	out.MatchLabels = in.MatchLabels
+	return out
+}
+func ReleaseInfo_FromProto(mapCtx *direct.MapContext, in *pb.ReleaseInfo) *krm.ReleaseInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReleaseInfo{}
+	// MISSING: OciImagePath
+	out.VariantOciImagePaths = in.VariantOciImagePaths
+	return out
+}
+func ReleaseInfo_ToProto(mapCtx *direct.MapContext, in *krm.ReleaseInfo) *pb.ReleaseInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReleaseInfo{}
+	// MISSING: OciImagePath
+	out.VariantOciImagePaths = in.VariantOciImagePaths
+	return out
+}
+func ReleaseInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ReleaseInfo) *krm.ReleaseInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReleaseInfoObservedState{}
+	out.OciImagePath = direct.LazyPtr(in.GetOciImagePath())
+	// MISSING: VariantOciImagePaths
+	return out
+}
+func ReleaseInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ReleaseInfoObservedState) *pb.ReleaseInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReleaseInfo{}
+	out.OciImagePath = direct.ValueOf(in.OciImagePath)
+	// MISSING: VariantOciImagePaths
 	return out
 }
 func RollingStrategy_FromProto(mapCtx *direct.MapContext, in *pb.RollingStrategy) *krm.RollingStrategy {

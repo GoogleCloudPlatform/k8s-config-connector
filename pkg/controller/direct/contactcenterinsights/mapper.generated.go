@@ -425,6 +425,62 @@ func CCInsightsConversationSpec_ToProto(mapCtx *direct.MapContext, in *krm.CCIns
 	out.ObfuscatedUserId = direct.ValueOf(in.ObfuscatedUserID)
 	return out
 }
+func CCInsightsFeedbackLabelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FeedbackLabel) *krm.CCInsightsFeedbackLabelObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CCInsightsFeedbackLabelObservedState{}
+	out.QaAnswerLabel = QaAnswer_AnswerValueObservedState_FromProto(mapCtx, in.GetQaAnswerLabel())
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func CCInsightsFeedbackLabelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsFeedbackLabelObservedState) *pb.FeedbackLabel {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeedbackLabel{}
+	if oneof := QaAnswer_AnswerValueObservedState_ToProto(mapCtx, in.QaAnswerLabel); oneof != nil {
+		out.LabelType = &pb.FeedbackLabel_QaAnswerLabel{QaAnswerLabel: oneof}
+	}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func CCInsightsFeedbackLabelSpec_FromProto(mapCtx *direct.MapContext, in *pb.FeedbackLabel) *krm.CCInsightsFeedbackLabelSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CCInsightsFeedbackLabelSpec{}
+	out.Label = direct.LazyPtr(in.GetLabel())
+	out.QaAnswerLabel = QaAnswer_AnswerValue_FromProto(mapCtx, in.GetQaAnswerLabel())
+	// MISSING: Name
+	out.LabeledResource = direct.LazyPtr(in.GetLabeledResource())
+	return out
+}
+func CCInsightsFeedbackLabelSpec_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsFeedbackLabelSpec) *pb.FeedbackLabel {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeedbackLabel{}
+	if oneof := CCInsightsFeedbackLabelSpec_Label_ToProto(mapCtx, in.Label); oneof != nil {
+		out.LabelType = oneof
+	}
+	if oneof := QaAnswer_AnswerValue_ToProto(mapCtx, in.QaAnswerLabel); oneof != nil {
+		out.LabelType = &pb.FeedbackLabel_QaAnswerLabel{QaAnswerLabel: oneof}
+	}
+	// MISSING: Name
+	out.LabeledResource = direct.ValueOf(in.LabeledResource)
+	return out
+}
+func CCInsightsFeedbackLabelSpec_Label_ToProto(mapCtx *direct.MapContext, in *string) *pb.FeedbackLabel_Label {
+	if in == nil {
+		return nil
+	}
+	return &pb.FeedbackLabel_Label{Label: *in}
+}
 func CCInsightsIssueModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.IssueModel) *krm.CCInsightsIssueModelObservedState {
 	if in == nil {
 		return nil
@@ -1154,7 +1210,14 @@ func IssueModelLabelStats_FromProto(mapCtx *direct.MapContext, in *pb.IssueModel
 	out := &krm.IssueModelLabelStats{}
 	out.AnalyzedConversationsCount = direct.LazyPtr(in.GetAnalyzedConversationsCount())
 	out.UnclassifiedConversationsCount = direct.LazyPtr(in.GetUnclassifiedConversationsCount())
-	// MISSING: IssueStats
+	if in.IssueStats != nil {
+		out.IssueStats = make(map[string]krm.IssueModelLabelStats_IssueStats, len(in.IssueStats))
+		for k, v := range in.IssueStats {
+			if c := IssueModelLabelStats_IssueStats_FromProto(mapCtx, v); c != nil {
+				out.IssueStats[k] = *c
+			}
+		}
+	}
 	return out
 }
 func IssueModelLabelStats_ToProto(mapCtx *direct.MapContext, in *krm.IssueModelLabelStats) *pb.IssueModelLabelStats {
@@ -1164,7 +1227,12 @@ func IssueModelLabelStats_ToProto(mapCtx *direct.MapContext, in *krm.IssueModelL
 	out := &pb.IssueModelLabelStats{}
 	out.AnalyzedConversationsCount = direct.ValueOf(in.AnalyzedConversationsCount)
 	out.UnclassifiedConversationsCount = direct.ValueOf(in.UnclassifiedConversationsCount)
-	// MISSING: IssueStats
+	if in.IssueStats != nil {
+		out.IssueStats = make(map[string]*pb.IssueModelLabelStats_IssueStats, len(in.IssueStats))
+		for k, v := range in.IssueStats {
+			out.IssueStats[k] = IssueModelLabelStats_IssueStats_ToProto(mapCtx, &v)
+		}
+	}
 	return out
 }
 func IssueModelLabelStats_IssueStats_FromProto(mapCtx *direct.MapContext, in *pb.IssueModelLabelStats_IssueStats) *krm.IssueModelLabelStats_IssueStats {
@@ -1474,11 +1542,11 @@ func QaAnswer_AnswerValueObservedState_FromProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &krm.QaAnswer_AnswerValueObservedState{}
-	out.StrValue = direct.LazyPtr(in.GetStrValue())
-	out.NumValue = direct.LazyPtr(in.GetNumValue())
-	out.BoolValue = direct.LazyPtr(in.GetBoolValue())
-	out.NaValue = direct.LazyPtr(in.GetNaValue())
-	out.Key = direct.LazyPtr(in.GetKey())
+	// MISSING: StrValue
+	// MISSING: NumValue
+	// MISSING: BoolValue
+	// MISSING: NaValue
+	// MISSING: Key
 	out.Score = in.Score
 	out.PotentialScore = in.PotentialScore
 	out.NormalizedScore = in.NormalizedScore
@@ -1489,47 +1557,15 @@ func QaAnswer_AnswerValueObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 		return nil
 	}
 	out := &pb.QaAnswer_AnswerValue{}
-	if oneof := QaAnswer_AnswerValueObservedState_StrValue_ToProto(mapCtx, in.StrValue); oneof != nil {
-		out.Value = oneof
-	}
-	if oneof := QaAnswer_AnswerValueObservedState_NumValue_ToProto(mapCtx, in.NumValue); oneof != nil {
-		out.Value = oneof
-	}
-	if oneof := QaAnswer_AnswerValueObservedState_BoolValue_ToProto(mapCtx, in.BoolValue); oneof != nil {
-		out.Value = oneof
-	}
-	if oneof := QaAnswer_AnswerValueObservedState_NaValue_ToProto(mapCtx, in.NaValue); oneof != nil {
-		out.Value = oneof
-	}
-	out.Key = direct.ValueOf(in.Key)
+	// MISSING: StrValue
+	// MISSING: NumValue
+	// MISSING: BoolValue
+	// MISSING: NaValue
+	// MISSING: Key
 	out.Score = in.Score
 	out.PotentialScore = in.PotentialScore
 	out.NormalizedScore = in.NormalizedScore
 	return out
-}
-func QaAnswer_AnswerValueObservedState_StrValue_ToProto(mapCtx *direct.MapContext, in *string) *pb.QaAnswer_AnswerValue_StrValue {
-	if in == nil {
-		return nil
-	}
-	return &pb.QaAnswer_AnswerValue_StrValue{StrValue: *in}
-}
-func QaAnswer_AnswerValueObservedState_NumValue_ToProto(mapCtx *direct.MapContext, in *float64) *pb.QaAnswer_AnswerValue_NumValue {
-	if in == nil {
-		return nil
-	}
-	return &pb.QaAnswer_AnswerValue_NumValue{NumValue: *in}
-}
-func QaAnswer_AnswerValueObservedState_BoolValue_ToProto(mapCtx *direct.MapContext, in *bool) *pb.QaAnswer_AnswerValue_BoolValue {
-	if in == nil {
-		return nil
-	}
-	return &pb.QaAnswer_AnswerValue_BoolValue{BoolValue: *in}
-}
-func QaAnswer_AnswerValueObservedState_NaValue_ToProto(mapCtx *direct.MapContext, in *bool) *pb.QaAnswer_AnswerValue_NaValue {
-	if in == nil {
-		return nil
-	}
-	return &pb.QaAnswer_AnswerValue_NaValue{NaValue: *in}
 }
 func QaScorecardResult_FromProto(mapCtx *direct.MapContext, in *pb.QaScorecardResult) *krm.QaScorecardResult {
 	if in == nil {

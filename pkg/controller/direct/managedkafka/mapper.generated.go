@@ -64,6 +64,28 @@ func AccessConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafka
 	out.NetworkConfigs = direct.Slice_ToProto(mapCtx, in.NetworkConfigs, NetworkConfig_v1beta1_ToProto)
 	return out
 }
+func AclEntry_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AclEntry) *krmmanagedkafkav1alpha1.AclEntry {
+	if in == nil {
+		return nil
+	}
+	out := &krmmanagedkafkav1alpha1.AclEntry{}
+	out.Principal = direct.LazyPtr(in.GetPrincipal())
+	out.PermissionType = direct.LazyPtr(in.GetPermissionType())
+	out.Operation = direct.LazyPtr(in.GetOperation())
+	out.Host = direct.LazyPtr(in.GetHost())
+	return out
+}
+func AclEntry_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.AclEntry) *pb.AclEntry {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AclEntry{}
+	out.Principal = direct.ValueOf(in.Principal)
+	out.PermissionType = direct.ValueOf(in.PermissionType)
+	out.Operation = direct.ValueOf(in.Operation)
+	out.Host = direct.ValueOf(in.Host)
+	return out
+}
 func CapacityConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CapacityConfig) *krmmanagedkafkav1alpha1.CapacityConfig {
 	if in == nil {
 		return nil
@@ -222,6 +244,48 @@ found existing non-generated mapping function "GcpConfig_v1beta1_ToProto", skipp
 		return out
 	}
 */
+func ManagedKafkaACLObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Acl) *krmmanagedkafkav1alpha1.ManagedKafkaACLObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmmanagedkafkav1alpha1.ManagedKafkaACLObservedState{}
+	// MISSING: Name
+	out.ResourceType = direct.LazyPtr(in.GetResourceType())
+	out.ResourceName = direct.LazyPtr(in.GetResourceName())
+	out.PatternType = direct.LazyPtr(in.GetPatternType())
+	return out
+}
+func ManagedKafkaACLObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.ManagedKafkaACLObservedState) *pb.Acl {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Acl{}
+	// MISSING: Name
+	out.ResourceType = direct.ValueOf(in.ResourceType)
+	out.ResourceName = direct.ValueOf(in.ResourceName)
+	out.PatternType = direct.ValueOf(in.PatternType)
+	return out
+}
+func ManagedKafkaACLSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Acl) *krmmanagedkafkav1alpha1.ManagedKafkaACLSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmmanagedkafkav1alpha1.ManagedKafkaACLSpec{}
+	// MISSING: Name
+	out.AclEntries = direct.Slice_FromProto(mapCtx, in.AclEntries, AclEntry_v1alpha1_FromProto)
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+func ManagedKafkaACLSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.ManagedKafkaACLSpec) *pb.Acl {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Acl{}
+	// MISSING: Name
+	out.AclEntries = direct.Slice_ToProto(mapCtx, in.AclEntries, AclEntry_v1alpha1_ToProto)
+	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
 func ManagedKafkaClusterObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krmmanagedkafkav1alpha1.ManagedKafkaClusterObservedState {
 	if in == nil {
 		return nil
@@ -386,22 +450,64 @@ func ManagedKafkaConnectClusterSpec_v1alpha1_FromProto(mapCtx *direct.MapContext
 }
 */
 
-/* found existing non-generated mapping function "ManagedKafkaConnectClusterSpec_v1alpha1_ToProto", skipping
-func ManagedKafkaConnectClusterSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.ManagedKafkaConnectClusterSpec) *pb.ConnectCluster {
+/*
+found existing non-generated mapping function "ManagedKafkaConnectClusterSpec_v1alpha1_ToProto", skipping
+
+	func ManagedKafkaConnectClusterSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.ManagedKafkaConnectClusterSpec) *pb.ConnectCluster {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ConnectCluster{}
+		// MISSING: GcpConfig
+		// (near miss): "GcpConfig" vs "GCPConfig"
+		// MISSING: Name
+		// MISSING: KafkaCluster
+		out.Labels = in.Labels
+		out.CapacityConfig = CapacityConfig_v1alpha1_ToProto(mapCtx, in.CapacityConfig)
+		out.Config = in.Config
+		return out
+	}
+*/
+func ManagedKafkaConnectorObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Connector) *krmmanagedkafkav1alpha1.ManagedKafkaConnectorObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ConnectCluster{}
-	// MISSING: GcpConfig
-	// (near miss): "GcpConfig" vs "GCPConfig"
+	out := &krmmanagedkafkav1alpha1.ManagedKafkaConnectorObservedState{}
 	// MISSING: Name
-	// MISSING: KafkaCluster
-	out.Labels = in.Labels
-	out.CapacityConfig = CapacityConfig_v1alpha1_ToProto(mapCtx, in.CapacityConfig)
-	out.Config = in.Config
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
 }
-*/
+func ManagedKafkaConnectorObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.ManagedKafkaConnectorObservedState) *pb.Connector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Connector{}
+	// MISSING: Name
+	out.State = direct.Enum_ToProto[pb.Connector_State](mapCtx, in.State)
+	return out
+}
+func ManagedKafkaConnectorSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Connector) *krmmanagedkafkav1alpha1.ManagedKafkaConnectorSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmmanagedkafkav1alpha1.ManagedKafkaConnectorSpec{}
+	out.TaskRestartPolicy = TaskRetryPolicy_v1alpha1_FromProto(mapCtx, in.GetTaskRestartPolicy())
+	// MISSING: Name
+	out.Configs = in.Configs
+	return out
+}
+func ManagedKafkaConnectorSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.ManagedKafkaConnectorSpec) *pb.Connector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Connector{}
+	if oneof := TaskRetryPolicy_v1alpha1_ToProto(mapCtx, in.TaskRestartPolicy); oneof != nil {
+		out.RestartPolicy = &pb.Connector_TaskRestartPolicy{TaskRestartPolicy: oneof}
+	}
+	// MISSING: Name
+	out.Configs = in.Configs
+	return out
+}
 
 /* found existing non-generated mapping function "ManagedKafkaConsumerGroupObservedState_v1alpha1_FromProto", skipping
 func ManagedKafkaConsumerGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ConsumerGroup) *krmmanagedkafkav1alpha1.ManagedKafkaConsumerGroupObservedState {
@@ -410,7 +516,12 @@ func ManagedKafkaConsumerGroupObservedState_v1alpha1_FromProto(mapCtx *direct.Ma
 	}
 	out := &krmmanagedkafkav1alpha1.ManagedKafkaConsumerGroupObservedState{}
 	// MISSING: Name
-	out.Topics = Topics_FromProto(mapCtx, in.Topics)
+	if in.Topics != nil {
+		out.Topics = make(map[string]*krmmanagedkafkav1alpha1.ConsumerTopicMetadata, len(in.Topics))
+		for k, v := range in.Topics {
+			out.Topics[k] = ConsumerTopicMetadata_v1alpha1_FromProto(mapCtx, v)
+		}
+	}
 	return out
 }
 */
@@ -422,7 +533,12 @@ func ManagedKafkaConsumerGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapC
 	}
 	out := &pb.ConsumerGroup{}
 	// MISSING: Name
-	out.Topics = Topics_ToProto(mapCtx, in.Topics)
+	if in.Topics != nil {
+		out.Topics = make(map[string]*pb.ConsumerTopicMetadata, len(in.Topics))
+		for k, v := range in.Topics {
+			out.Topics[k] = ConsumerTopicMetadata_v1alpha1_ToProto(mapCtx, v)
+		}
+	}
 	return out
 }
 */
@@ -572,5 +688,23 @@ func RebalanceConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmmanagedka
 	}
 	out := &pb.RebalanceConfig{}
 	out.Mode = direct.Enum_ToProto[pb.RebalanceConfig_Mode](mapCtx, in.Mode)
+	return out
+}
+func TaskRetryPolicy_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TaskRetryPolicy) *krmmanagedkafkav1alpha1.TaskRetryPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krmmanagedkafkav1alpha1.TaskRetryPolicy{}
+	out.MinimumBackoff = direct.StringDuration_FromProto(mapCtx, in.GetMinimumBackoff())
+	out.MaximumBackoff = direct.StringDuration_FromProto(mapCtx, in.GetMaximumBackoff())
+	return out
+}
+func TaskRetryPolicy_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1alpha1.TaskRetryPolicy) *pb.TaskRetryPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TaskRetryPolicy{}
+	out.MinimumBackoff = direct.StringDuration_ToProto(mapCtx, in.MinimumBackoff)
+	out.MaximumBackoff = direct.StringDuration_ToProto(mapCtx, in.MaximumBackoff)
 	return out
 }

@@ -29,17 +29,40 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
+
 ./generate-proto.sh
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.orchestration.airflow.service.v1 \
+  --api-version composer.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComposerUserWorkloadsConfigMap:UserWorkloadsConfigMap \
+  --resource ComposerUserWorkloadsSecret:UserWorkloadsSecret \
+  --prepopulate-spec \
+  --emit-required-from-proto \
+  --emit-plural-acronyms \
+  --emit-message-maps \
+  --place-server-set-fields \
+  --detect-output-only-in-comments \
+  --emit-parent-refs \
+  --emit-sibling-refs \
+  --emit-reference-hints \
+  --emit-source-links
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.orchestration.airflow.service.v1 \
+  --api-version composer.cnrm.cloud.google.com/v1alpha1 \
+  --resource ComposerUserWorkloadsConfigMap:UserWorkloadsConfigMap \
+  --resource ComposerUserWorkloadsSecret:UserWorkloadsSecret
 
 ${CONTROLLERBUILDER} generate-types \
-    --service google.cloud.orchestration.airflow.service.v1 \
-    --api-version "composer.cnrm.cloud.google.com/v1beta1" \
-    --resource ComposerEnvironment:Environment
+  --service google.cloud.orchestration.airflow.service.v1 \
+  --api-version composer.cnrm.cloud.google.com/v1beta1 \
+  --resource ComposerEnvironment:Environment
 
 ${CONTROLLERBUILDER} generate-mapper \
-    --service google.cloud.orchestration.airflow.service.v1 \
-    --api-version "composer.cnrm.cloud.google.com/v1beta1"
+  --service google.cloud.orchestration.airflow.service.v1 \
+  --api-version composer.cnrm.cloud.google.com/v1beta1
+
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

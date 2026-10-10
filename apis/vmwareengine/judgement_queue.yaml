@@ -1,0 +1,196 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: VMwareEngineCluster
+    group: vmwareengine.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.privateClouds.clusters: https://docs.cloud.google.com/solutions/vmware-as-a-service/docs/reference/rest/v1/projects.locations.privateClouds.clusters'
+    status: open
+  - kind: VMwareEngineCluster
+    group: vmwareengine.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: VMwareEngineCluster
+    group: vmwareengine.cnrm.cloud.google.com
+    field: .spec.nodeTypeConfigs
+    reason: message-map-derived
+    detail: derived as map[string]NodeTypeConfig from proto google.cloud.vmwareengine.v1.NodeTypeConfig; verify Go type and mapping
+    status: open
+  - kind: VMwareEngineCluster
+    group: vmwareengine.cnrm.cloud.google.com
+    field: .spec.stretchedClusterConfig.preferredLocation
+    reason: possible-reference
+    detail: the proto marks this field as a reference to locations.googleapis.com/Location (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: VMwareEngineCluster
+    group: vmwareengine.cnrm.cloud.google.com
+    field: .spec.stretchedClusterConfig.preferredLocation
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/europe-west3-a"
+    status: open
+  - kind: VMwareEngineCluster
+    group: vmwareengine.cnrm.cloud.google.com
+    field: .spec.stretchedClusterConfig.secondaryLocation
+    reason: possible-reference
+    detail: the proto marks this field as a reference to locations.googleapis.com/Location (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: VMwareEngineCluster
+    group: vmwareengine.cnrm.cloud.google.com
+    field: .spec.stretchedClusterConfig.secondaryLocation
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/europe-west3-b"
+    status: open
+  - kind: VMwareEngineCluster
+    group: vmwareengine.cnrm.cloud.google.com
+    field: .status.observedState.name
+    reason: observedstate-identity-field-omitted
+    detail: proto marks field OUTPUT_ONLY; resource name is represented by status.externalRef. Verify applicability for this resource
+    status: open
+  - kind: VMwareEngineCluster
+    group: vmwareengine.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/privateClouds/{private_cloud}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: VMwareEngineCluster
+    group: vmwareengine.cnrm.cloud.google.com
+    field: .spec.privateCloudRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to PrivateCloudRef, read from the privateClouds segment of projects/{project}/locations/{location}/privateClouds/{private_cloud}/clusters/{cluster}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - kind: VMwareEngineLoggingServer
+    group: vmwareengine.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.privateClouds.loggingServers: https://docs.cloud.google.com/solutions/vmware-as-a-service/docs/reference/rest/v1/projects.locations.privateClouds.loggingServers'
+    status: open
+  - kind: VMwareEngineLoggingServer
+    group: vmwareengine.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: VMwareEngineLoggingServer
+    group: vmwareengine.cnrm.cloud.google.com
+    field: .status.observedState.name
+    reason: observedstate-identity-field-omitted
+    detail: proto marks field OUTPUT_ONLY; resource name is represented by status.externalRef. Verify applicability for this resource
+    status: open
+  - kind: VMwareEngineLoggingServer
+    group: vmwareengine.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/privateClouds/{private_cloud}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: VMwareEngineLoggingServer
+    group: vmwareengine.cnrm.cloud.google.com
+    field: .spec.privateCloudRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to PrivateCloudRef, read from the privateClouds segment of projects/{project}/locations/{location}/privateClouds/{private_cloud}/loggingServers/{logging_server}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - kind: VMwareEngineManagementDNSZoneBinding
+    group: vmwareengine.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.privateClouds.managementDnsZoneBindings: https://docs.cloud.google.com/solutions/vmware-as-a-service/docs/reference/rest/v1/projects.locations.privateClouds.managementDnsZoneBindings'
+    status: open
+  - kind: VMwareEngineManagementDNSZoneBinding
+    group: vmwareengine.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: VMwareEngineManagementDNSZoneBinding
+    group: vmwareengine.cnrm.cloud.google.com
+    field: .spec.vpcNetwork
+    reason: possible-reference
+    detail: the proto marks this field as a reference to compute.googleapis.com/Network (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: VMwareEngineManagementDNSZoneBinding
+    group: vmwareengine.cnrm.cloud.google.com
+    field: .spec.vmwareEngineNetwork
+    reason: possible-reference
+    detail: the proto marks this field as a reference to vmwareengine.googleapis.com/VmwareEngineNetwork (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: VMwareEngineManagementDNSZoneBinding
+    group: vmwareengine.cnrm.cloud.google.com
+    field: .spec.vpcNetwork
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/global/networks/{network_id}"
+    status: open
+  - kind: VMwareEngineManagementDNSZoneBinding
+    group: vmwareengine.cnrm.cloud.google.com
+    field: .spec.vmwareEngineNetwork
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/global/vmwareEngineNetworks/{vmware_engine_network_id}"
+    status: open
+  - kind: VMwareEngineManagementDNSZoneBinding
+    group: vmwareengine.cnrm.cloud.google.com
+    field: .status.observedState.name
+    reason: observedstate-identity-field-omitted
+    detail: proto marks field OUTPUT_ONLY; resource name is represented by status.externalRef. Verify applicability for this resource
+    status: open
+  - kind: VMwareEngineManagementDNSZoneBinding
+    group: vmwareengine.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/privateClouds/{private_cloud}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: VMwareEngineManagementDNSZoneBinding
+    group: vmwareengine.cnrm.cloud.google.com
+    field: .spec.privateCloudRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to PrivateCloudRef, read from the privateClouds segment of projects/{project}/locations/{location}/privateClouds/{private_cloud}/managementDnsZoneBindings/{management_dns_zone_binding}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - protoMessage: google.cloud.vmwareengine.v1.AutoscalingSettings
+    field: autoscalingPolicies
+    reason: message-map-derived
+    detail: derived as map[string]AutoscalingSettings_AutoscalingPolicy from proto google.cloud.vmwareengine.v1.AutoscalingSettings.AutoscalingPolicy; verify Go type and mapping
+    status: open
+  - protoMessage: google.cloud.vmwareengine.v1.Cluster
+    field: nodeTypeConfigs
+    reason: message-map-derived
+    detail: derived as map[string]NodeTypeConfig from proto google.cloud.vmwareengine.v1.NodeTypeConfig; verify Go type and mapping
+    status: open
+  - kind: VMwareEngineCluster
+    group: vmwareengine.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/privateClouds/{private_cloud}/clusters/{cluster}" contains ancestor segment(s) privateClouds/{private_cloud} with no matching reference or field on VMwareEngineClusterSpec
+    status: open
+  - kind: VMwareEngineLoggingServer
+    group: vmwareengine.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//vmwareengine.googleapis.com/projects/{project}/locations/{location}/privateClouds/{private_cloud}/loggingServers/{logging_server}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: VMwareEngineLoggingServer
+    group: vmwareengine.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/privateClouds/{private_cloud}/loggingServers/{logging_server}" contains ancestor segment(s) privateClouds/{private_cloud} with no matching reference or field on VMwareEngineLoggingServerSpec
+    status: open
+  - kind: VMwareEngineManagementDNSZoneBinding
+    group: vmwareengine.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//vmwareengine.googleapis.com/projects/{project}/locations/{location}/privateClouds/{private_cloud}/managementDnsZoneBindings/{management_dns_zone_binding}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: VMwareEngineManagementDNSZoneBinding
+    group: vmwareengine.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/privateClouds/{private_cloud}/managementDnsZoneBindings/{management_dns_zone_binding}" contains ancestor segment(s) privateClouds/{private_cloud} with no matching reference or field on VMwareEngineManagementDNSZoneBindingSpec
+    status: open

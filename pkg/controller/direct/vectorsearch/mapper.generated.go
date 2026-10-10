@@ -29,6 +29,22 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func DenseVector_FromProto(mapCtx *direct.MapContext, in *pb.DenseVector) *krm.DenseVector {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DenseVector{}
+	out.Values = in.Values
+	return out
+}
+func DenseVector_ToProto(mapCtx *direct.MapContext, in *krm.DenseVector) *pb.DenseVector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DenseVector{}
+	out.Values = in.Values
+	return out
+}
 func DenseVectorField_FromProto(mapCtx *direct.MapContext, in *pb.DenseVectorField) *krm.DenseVectorField {
 	if in == nil {
 		return nil
@@ -47,6 +63,24 @@ func DenseVectorField_ToProto(mapCtx *direct.MapContext, in *krm.DenseVectorFiel
 	out.VertexEmbeddingConfig = VertexEmbeddingConfig_ToProto(mapCtx, in.VertexEmbeddingConfig)
 	return out
 }
+func SparseVector_FromProto(mapCtx *direct.MapContext, in *pb.SparseVector) *krm.SparseVector {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SparseVector{}
+	out.Values = in.Values
+	out.Indices = in.Indices
+	return out
+}
+func SparseVector_ToProto(mapCtx *direct.MapContext, in *krm.SparseVector) *pb.SparseVector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SparseVector{}
+	out.Values = in.Values
+	out.Indices = in.Indices
+	return out
+}
 func SparseVectorField_FromProto(mapCtx *direct.MapContext, in *pb.SparseVectorField) *krm.SparseVectorField {
 	if in == nil {
 		return nil
@@ -59,6 +93,28 @@ func SparseVectorField_ToProto(mapCtx *direct.MapContext, in *krm.SparseVectorFi
 		return nil
 	}
 	out := &pb.SparseVectorField{}
+	return out
+}
+func Vector_FromProto(mapCtx *direct.MapContext, in *pb.Vector) *krm.Vector {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Vector{}
+	out.Dense = DenseVector_FromProto(mapCtx, in.GetDense())
+	out.Sparse = SparseVector_FromProto(mapCtx, in.GetSparse())
+	return out
+}
+func Vector_ToProto(mapCtx *direct.MapContext, in *krm.Vector) *pb.Vector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Vector{}
+	if oneof := DenseVector_ToProto(mapCtx, in.Dense); oneof != nil {
+		out.VectorType = &pb.Vector_Dense{Dense: oneof}
+	}
+	if oneof := SparseVector_ToProto(mapCtx, in.Sparse); oneof != nil {
+		out.VectorType = &pb.Vector_Sparse{Sparse: oneof}
+	}
 	return out
 }
 func VectorField_FromProto(mapCtx *direct.MapContext, in *pb.VectorField) *krm.VectorField {
@@ -112,7 +168,14 @@ func VectorSearchCollectionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Coll
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Labels = in.Labels
-	out.VectorSchema = VectorSchema_FromProto(mapCtx, in.VectorSchema)
+	if in.VectorSchema != nil {
+		out.VectorSchema = make(map[string]krm.VectorField, len(in.VectorSchema))
+		for k, v := range in.VectorSchema {
+			if c := VectorField_FromProto(mapCtx, v); c != nil {
+				out.VectorSchema[k] = *c
+			}
+		}
+	}
 	out.DataSchema = direct.Struct_FromProto(mapCtx, in.GetDataSchema())
 	return out
 }
@@ -125,8 +188,71 @@ func VectorSearchCollectionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Vecto
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
 	out.Labels = in.Labels
-	out.VectorSchema = VectorSchema_ToProto(mapCtx, in.VectorSchema)
+	if in.VectorSchema != nil {
+		out.VectorSchema = make(map[string]*pb.VectorField, len(in.VectorSchema))
+		for k, v := range in.VectorSchema {
+			out.VectorSchema[k] = VectorField_ToProto(mapCtx, &v)
+		}
+	}
 	out.DataSchema = direct.Struct_ToProto(mapCtx, in.DataSchema)
+	return out
+}
+func VectorSearchDataObjectObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataObject) *krm.VectorSearchDataObjectObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VectorSearchDataObjectObservedState{}
+	// MISSING: Name
+	out.DataObjectID = direct.LazyPtr(in.GetDataObjectId())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func VectorSearchDataObjectObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VectorSearchDataObjectObservedState) *pb.DataObject {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataObject{}
+	// MISSING: Name
+	out.DataObjectId = direct.ValueOf(in.DataObjectID)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func VectorSearchDataObjectSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataObject) *krm.VectorSearchDataObjectSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VectorSearchDataObjectSpec{}
+	// MISSING: Name
+	if v := direct.Struct_FromProto(mapCtx, in.GetData()); v != nil {
+		out.Data = *v
+	}
+	if in.Vectors != nil {
+		out.Vectors = make(map[string]krm.Vector, len(in.Vectors))
+		for k, v := range in.Vectors {
+			if c := Vector_FromProto(mapCtx, v); c != nil {
+				out.Vectors[k] = *c
+			}
+		}
+	}
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+func VectorSearchDataObjectSpec_ToProto(mapCtx *direct.MapContext, in *krm.VectorSearchDataObjectSpec) *pb.DataObject {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataObject{}
+	// MISSING: Name
+	out.Data = direct.Struct_ToProto(mapCtx, &in.Data)
+	if in.Vectors != nil {
+		out.Vectors = make(map[string]*pb.Vector, len(in.Vectors))
+		for k, v := range in.Vectors {
+			out.Vectors[k] = Vector_ToProto(mapCtx, &v)
+		}
+	}
+	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
 func VertexEmbeddingConfig_FromProto(mapCtx *direct.MapContext, in *pb.VertexEmbeddingConfig) *krm.VertexEmbeddingConfig {

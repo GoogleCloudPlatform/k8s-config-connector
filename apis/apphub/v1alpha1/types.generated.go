@@ -20,8 +20,63 @@
 // resource: AppHubDiscoveredService:DiscoveredService
 // resource: AppHubDiscoveredWorkload:DiscoveredWorkload
 // resource: AppHubServiceProjectAttachment:ServiceProjectAttachment
+// resource: AppHubService:Service
+// resource: AppHubWorkload:Workload
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.apphub.v1.Attributes
+type Attributes struct {
+	// Optional. User-defined criticality information.
+	// +kcc:proto:field=google.cloud.apphub.v1.Attributes.criticality
+	Criticality *Criticality `json:"criticality,omitempty"`
+
+	// Optional. User-defined environment information.
+	// +kcc:proto:field=google.cloud.apphub.v1.Attributes.environment
+	Environment *Environment `json:"environment,omitempty"`
+
+	// Optional. Developer team that owns development and coding.
+	// +kcc:proto:field=google.cloud.apphub.v1.Attributes.developer_owners
+	DeveloperOwners []ContactInfo `json:"developerOwners,omitempty"`
+
+	// Optional. Operator team that ensures runtime and operations.
+	// +kcc:proto:field=google.cloud.apphub.v1.Attributes.operator_owners
+	OperatorOwners []ContactInfo `json:"operatorOwners,omitempty"`
+
+	// Optional. Business team that ensures user needs are met and value is
+	//  delivered
+	// +kcc:proto:field=google.cloud.apphub.v1.Attributes.business_owners
+	BusinessOwners []ContactInfo `json:"businessOwners,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apphub.v1.ContactInfo
+type ContactInfo struct {
+	// Optional. Contact's name.
+	//  Can have a maximum length of 63 characters.
+	// +kcc:proto:field=google.cloud.apphub.v1.ContactInfo.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Required. Email address of the contacts.
+	// +kcc:proto:field=google.cloud.apphub.v1.ContactInfo.email
+	// +required
+	Email *string `json:"email,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apphub.v1.Criticality
+type Criticality struct {
+	// Required. Criticality Type.
+	// +kcc:proto:field=google.cloud.apphub.v1.Criticality.type
+	// +required
+	Type *string `json:"type,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apphub.v1.Environment
+type Environment struct {
+	// Required. Environment Type.
+	// +kcc:proto:field=google.cloud.apphub.v1.Environment.type
+	// +required
+	Type *string `json:"type,omitempty"`
+}
 
 /* unreachable type WorkloadProperties
 // +kcc:proto=google.cloud.apphub.v1.WorkloadProperties

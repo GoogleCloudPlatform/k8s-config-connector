@@ -1,0 +1,104 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: JobsCompany
+    group: jobs.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: JobsCompany
+    group: jobs.cnrm.cloud.google.com
+    field: .spec.keywordSearchableJobCustomAttributes
+    reason: deprecated-field
+    detail: the proto marks this field deprecated, so new Kinds leave it out of the Spec. If this Spec still has it, remove it by hand; add it back only if users still need it
+    status: open
+  - kind: JobsCompany
+    group: jobs.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/tenants/{tenant}, and no TenantRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: JobsJob
+    group: jobs.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: JobsJob
+    group: jobs.cnrm.cloud.google.com
+    field: .spec.company
+    reason: possible-reference-by-sibling
+    detail: the name matches JobsCompany, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - kind: JobsJob
+    group: jobs.cnrm.cloud.google.com
+    field: .spec.company
+    reason: possible-reference
+    detail: the proto marks this field as a reference to jobs.googleapis.com/Company (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: JobsJob
+    group: jobs.cnrm.cloud.google.com
+    field: .spec.customAttributes
+    reason: message-map-derived
+    detail: derived as map[string]CustomAttribute from proto google.cloud.talent.v4.CustomAttribute; verify Go type and mapping
+    status: open
+  - kind: JobsJob
+    group: jobs.cnrm.cloud.google.com
+    field: .spec.visibility
+    reason: deprecated-field
+    detail: the proto marks this field deprecated, so new Kinds leave it out of the Spec. If this Spec still has it, remove it by hand; add it back only if users still need it
+    status: open
+  - kind: JobsJob
+    group: jobs.cnrm.cloud.google.com
+    field: .spec.company
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}"
+    status: open
+  - kind: JobsJob
+    group: jobs.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/tenants/{tenant}, and no TenantRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - protoMessage: google.cloud.talent.v4.Job
+    field: customAttributes
+    reason: message-map-derived
+    detail: derived as map[string]CustomAttribute from proto google.cloud.talent.v4.CustomAttribute; verify Go type and mapping
+    status: open
+  - protoMessage: google.cloud.talent.v4.Job
+    field: company
+    reason: possible-reference-by-sibling
+    detail: the name matches JobsCompany, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - kind: JobsCompany
+    group: jobs.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/tenants/{tenant}/companies/{company}" contains ancestor segment(s) tenants/{tenant} with no matching reference or field on JobsCompanySpec
+    status: open
+  - kind: JobsJob
+    group: jobs.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//jobs.googleapis.com/projects/{project}/tenants/{tenant}/jobs/{job}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: JobsJob
+    group: jobs.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/tenants/{tenant}/jobs/{job}" contains ancestor segment(s) tenants/{tenant} with no matching reference or field on JobsJobSpec
+    status: open

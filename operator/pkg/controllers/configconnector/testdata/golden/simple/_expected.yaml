@@ -2600,6 +2600,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - chronicle.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - cloudasset.cnrm.cloud.google.com
   resources:
   - '*'
@@ -3308,6 +3320,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - gdchardwaremanagement.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - geminidataanalytics.cnrm.cloud.google.com
   resources:
   - '*'
@@ -3417,6 +3441,18 @@ rules:
   - delete
 - apiGroups:
   - identityplatform.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - jobs.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -3812,6 +3848,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - retail.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - run.cnrm.cloud.google.com
   resources:
   - '*'
@@ -4017,6 +4065,18 @@ rules:
   - delete
 - apiGroups:
   - tags.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - telcoautomation.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -4710,6 +4770,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - chronicle.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - cloudasset.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5182,6 +5250,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - gdchardwaremanagement.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - geminidataanalytics.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5255,6 +5331,14 @@ rules:
   - watch
 - apiGroups:
   - identityplatform.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - jobs.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -5518,6 +5602,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - retail.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - run.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5655,6 +5747,14 @@ rules:
   - watch
 - apiGroups:
   - tags.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - telcoautomation.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
