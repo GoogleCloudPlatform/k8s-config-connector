@@ -103,7 +103,7 @@ func ScanRequiredUses(pkgDir, apisDir, importPath string) (*RequiredUses, error)
 // scanPackage records the types that the package's hand-written files
 // declare.
 func (u *RequiredUses) scanPackage(dir string) error {
-	entries, err := os.ReadDir(dir)
+	decls, err := ParseTypeDecls(dir, isHandWrittenSource)
 	if os.IsNotExist(err) {
 		// A service generated for the first time has no package yet.
 		return nil
@@ -111,14 +111,8 @@ func (u *RequiredUses) scanPackage(dir string) error {
 	if err != nil {
 		return fmt.Errorf("reading %s: %w", dir, err)
 	}
-	fset := token.NewFileSet()
-	for _, e := range entries {
-		if !isHandWrittenSource(e) {
-			continue
-		}
-		if err := u.scanFile(fset, filepath.Join(dir, e.Name())); err != nil {
-			return err
-		}
+	for _, d := range decls {
+		u.recordType(d)
 	}
 	return nil
 }
@@ -132,70 +126,22 @@ func isHandWrittenSource(e fs.DirEntry) bool {
 	return !e.IsDir() && isGoSource(name) && !strings.HasSuffix(name, "generated.go") && !strings.HasPrefix(name, "zz_generated")
 }
 
-// scanFile records the types that a hand-written file declares.
-func (u *RequiredUses) scanFile(fset *token.FileSet, p string) error {
-	f, err := parser.ParseFile(fset, p, nil, parser.ParseComments)
-	if err != nil {
-		return fmt.Errorf("parsing %s: %w", p, err)
-	}
-	for _, t := range declaredTypes(f) {
-		u.recordType(t)
-	}
-	return nil
-}
-
-// declaredType is a type that a hand-written file declares.
-type declaredType struct {
-	spec *ast.TypeSpec
-	// doc is the type's doc comment.
-	doc *ast.CommentGroup
-}
-
-// declaredTypes returns the types that a file declares.
-func declaredTypes(f *ast.File) []declaredType {
-	var out []declaredType
-	for _, decl := range f.Decls {
-		if gd, ok := decl.(*ast.GenDecl); ok && gd.Tok == token.TYPE {
-			out = append(out, typesIn(gd)...)
-		}
-	}
-	return out
-}
-
-// typesIn returns the types that a type declaration declares.
-func typesIn(gd *ast.GenDecl) []declaredType {
-	var out []declaredType
-	for _, spec := range gd.Specs {
-		ts, ok := spec.(*ast.TypeSpec)
-		if !ok {
-			continue
-		}
-		doc := ts.Doc
-		if doc == nil && len(gd.Specs) == 1 {
-			// A declaration of one type holds that type's doc comment.
-			doc = gd.Doc
-		}
-		out = append(out, declaredType{spec: ts, doc: doc})
-	}
-	return out
-}
-
 // recordType records what a hand-written type uses, and whether it is an
 // opted-in Spec.
-func (u *RequiredUses) recordType(t declaredType) {
-	name := t.spec.Name.Name
-	if kind, ok := t.markedKind(); ok {
+func (u *RequiredUses) recordType(d TypeDecl) {
+	name := d.Name()
+	if kind, ok := d.markedKind(); ok {
 		u.MarkedKinds[kind] = true
 		u.MarkedSpecs[name] = true
 	}
-	u.HandWritten[name] = t.typeRefs()
+	u.HandWritten[name] = d.typeRefs()
 }
 
-// markedKind returns the Kind whose Spec t is, if t has
+// markedKind returns the Kind whose Spec d is, if d has
 // RequiredFromProtoMarker.
-func (t declaredType) markedKind() (string, bool) {
-	kind, ok := strings.CutSuffix(t.spec.Name.Name, "Spec")
-	if !ok || kind == "" || !hasRequiredFromProtoMarker(t.doc) {
+func (d TypeDecl) markedKind() (string, bool) {
+	kind, ok := strings.CutSuffix(d.Name(), "Spec")
+	if !ok || kind == "" || !hasRequiredFromProtoMarker(d.Doc) {
 		return "", false
 	}
 	return kind, true
@@ -213,10 +159,10 @@ func hasRequiredFromProtoMarker(doc *ast.CommentGroup) bool {
 	return false
 }
 
-// typeRefs returns the type names that t's declaration uses.
-func (t declaredType) typeRefs() map[string]bool {
+// typeRefs returns the type names that d's declaration uses.
+func (d TypeDecl) typeRefs() map[string]bool {
 	refs := map[string]bool{}
-	collectTypeRefs(t.spec.Type, refs)
+	collectTypeRefs(d.Spec.Type, refs)
 	return refs
 }
 
