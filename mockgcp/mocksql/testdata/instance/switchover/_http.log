@@ -148,6 +148,9 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "CLOUD_STORAGE"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "dataCacheConfig": {
+      "dataCacheEnabled": true
+    },
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
@@ -331,6 +334,9 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "CLOUD_STORAGE"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "dataCacheConfig": {
+      "dataCacheEnabled": true
+    },
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "databaseReplicationEnabled": true,
@@ -430,6 +436,9 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "CLOUD_STORAGE"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "dataCacheConfig": {
+      "dataCacheEnabled": true
+    },
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
@@ -533,6 +542,9 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "CLOUD_STORAGE"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "dataCacheConfig": {
+      "dataCacheEnabled": true
+    },
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "databaseReplicationEnabled": true,
@@ -632,6 +644,9 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "CLOUD_STORAGE"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "dataCacheConfig": {
+      "dataCacheEnabled": true
+    },
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
@@ -808,6 +823,9 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "CLOUD_STORAGE"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "dataCacheConfig": {
+      "dataCacheEnabled": true
+    },
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
@@ -914,6 +932,9 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "CLOUD_STORAGE"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "dataCacheConfig": {
+      "dataCacheEnabled": true
+    },
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "databaseReplicationEnabled": true,
@@ -1079,6 +1100,9 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "CLOUD_STORAGE"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "dataCacheConfig": {
+      "dataCacheEnabled": true
+    },
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
@@ -1184,6 +1208,9 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "CLOUD_STORAGE"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "dataCacheConfig": {
+      "dataCacheEnabled": true
+    },
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "databaseReplicationEnabled": true,
@@ -1348,6 +1375,9 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "CLOUD_STORAGE"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "dataCacheConfig": {
+      "dataCacheEnabled": true
+    },
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
@@ -1454,6 +1484,9 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "CLOUD_STORAGE"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "dataCacheConfig": {
+      "dataCacheEnabled": true
+    },
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "databaseReplicationEnabled": true,
@@ -1618,6 +1651,9 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "CLOUD_STORAGE"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "dataCacheConfig": {
+      "dataCacheEnabled": true
+    },
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
