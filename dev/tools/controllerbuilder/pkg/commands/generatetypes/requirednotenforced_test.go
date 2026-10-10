@@ -87,8 +87,8 @@ func requiredGapFixture(t *testing.T) *protoregistry.Files {
 	return files
 }
 
-// thingTypes is a hand-written thing_types.go. inner is the struct its
-// nested fields hold.
+// thingTypes returns a hand-written thing_types.go. inner names the struct
+// that its nested fields hold.
 func thingTypes(version string, marked bool, inner string) string {
 	marker := ""
 	if marked {
@@ -114,8 +114,8 @@ func thingTypes(version string, marked bool, inner string) string {
 		"}\n"
 }
 
-// generatedTypes is types.generated.go. It has Inner unless prune commented
-// it out, and InnerRequired when generate-types wrote the copy.
+// generatedTypes returns a types.generated.go. plain adds Inner, which prune
+// may have commented out, and requiredCopy adds InnerRequired.
 func generatedTypes(version string, plain, requiredCopy bool) string {
 	src := "package " + version + "\n"
 	if plain {

@@ -14,9 +14,10 @@
 
 package codegen
 
-// Reachable returns the nodes that seeds reach through next, seeds included.
-// The walk doesn't enter a node for which stop returns true. A nil stop lets
-// it enter every node.
+// Reachable walks a graph and returns every node it visits. It starts at the
+// seeds and follows next, which returns the nodes a node points to. It skips
+// any node for which stop returns true, and doesn't walk past it. stop can be
+// nil.
 func Reachable[T comparable](seeds []T, next func(T) []T, stop func(T) bool) map[T]bool {
 	reached := map[T]bool{}
 	queue := append([]T(nil), seeds...)

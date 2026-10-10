@@ -53,8 +53,8 @@ type goStruct struct {
 	// marked is true if the doc comment has the +kcc:required-from-proto
 	// marker.
 	marked bool
-	// stability is the level in the struct's stability-level label, or "" if
-	// it has none. Only a Kind has one.
+	// stability is the value of the struct's stability-level label, or "" if
+	// it has none. Only Kinds have the label.
 	stability stabilityLevel
 	fields    []goField
 }
@@ -84,12 +84,12 @@ type goField struct {
 
 // requiredNotEnforced returns a queue entry for each spec field, at any
 // depth, that the proto marks REQUIRED but the CRD leaves optional. It checks
-// each Kind in the run.
+// every Kind in the run.
 //
-// It reads the package's Go source, so it sees every field the CRD gets:
-// generated ones, hand-written ones, and those of Kinds scaffolded before the
-// marker existed. Run it after WriteFiles and prune. It also reads the other
-// versions of the service, to find how stable each Kind is.
+// It reads the package's Go files, so it sees every field the CRD will have:
+// generated, hand-written, and from Kinds scaffolded before the marker
+// existed. Run it after WriteFiles and prune. It also reads the service's
+// other versions to tell how stable each Kind is.
 func requiredNotEnforced(files descriptorFinder, apisDir, goPackage, group string, kinds []string, protoFullNames map[string]string) ([]judgement.Entry, error) {
 	pkgDir := filepath.Join(apisDir, goPackage)
 	versions, err := loadServiceVersions(filepath.Dir(pkgDir))
@@ -305,8 +305,8 @@ func (l stabilityLevel) rank() int {
 // +kubebuilder:metadata:labels marker, which can list several labels.
 var stabilityLabelPattern = regexp.MustCompile(`^\s*//\s*\+kubebuilder:metadata:labels=.*"cnrm\.cloud\.google\.com/stability-level=(alpha|beta|stable)"`)
 
-// stabilityLabel returns the level that a doc comment line's
-// +kubebuilder:metadata:labels marker sets.
+// stabilityLabel returns the stability level that a doc comment line sets
+// with a +kubebuilder:metadata:labels marker.
 func stabilityLabel(line string) (stabilityLevel, bool) {
 	m := stabilityLabelPattern.FindStringSubmatch(line)
 	if m == nil {
@@ -315,13 +315,12 @@ func stabilityLabel(line string) (stabilityLevel, bool) {
 	return stabilityLevel(m[1]), true
 }
 
-// resourceStabilityLevel returns the Kind's most stable level across the
-// versions of its service, and the version that has it. version is the
-// package of the Kind's Spec. It counts even when it doesn't declare the Kind
-// itself.
+// resourceStabilityLevel returns the most stable level the Kind has in any
+// version of its service, and that version. version is where the Kind's Spec
+// lives. It counts even if it doesn't declare the Kind type itself.
 //
-// A Kind's level in a version is its stability-level label. Kinds that
-// generate-types scaffolds have no label, so then the version's name decides.
+// The level comes from the Kind's stability-level label. Kinds scaffolded by
+// generate-types have no label, so for them the version name decides.
 func resourceStabilityLevel(versions map[string]map[string]*goStruct, version, kind string) (stabilityLevel, string) {
 	best, bestVersion := levelIn(versions[version][kind], version), version
 	for _, v := range sortedVersions(versions) {
@@ -376,7 +375,8 @@ type structUser struct {
 	status bool
 }
 
-// String names the user in a queue detail.
+// String returns how a queue detail names the user: "Foo", or "the status of
+// Foo".
 func (u structUser) String() string {
 	if u.status {
 		return "the status of " + u.kind
@@ -385,8 +385,7 @@ func (u structUser) String() string {
 }
 
 // structUsers maps each struct in the package to its users: the Kinds whose
-// spec or status holds it, directly or through other structs. A Kind is a
-// struct that embeds metav1.TypeMeta.
+// spec or status holds it, directly or through other structs.
 func structUsers(structs map[string]*goStruct) map[string][]structUser {
 	out := map[string][]structUser{}
 	for _, s := range structs {
@@ -415,8 +414,8 @@ func addKindUsers(out map[string][]structUser, structs map[string]*goStruct, s *
 	}
 }
 
-// kindUser returns the user that a Kind's field makes of the struct it holds:
-// the Kind for its spec field, or the Kind's status for its status field.
+// kindUser returns the user behind a Kind's spec or status field: the Kind
+// for spec, and its status for status. It returns false for other fields.
 func kindUser(kind string, f goField) (structUser, bool) {
 	switch f.json {
 	case "spec":
@@ -445,6 +444,7 @@ func sortUsers(users []structUser) {
 	sort.Slice(users, func(i, j int) bool { return users[i].String() < users[j].String() })
 }
 
+// isKind reports whether s is a Kind: a struct that embeds metav1.TypeMeta.
 func isKind(s *goStruct) bool {
 	for _, f := range s.fields {
 		if f.inline && strings.HasSuffix(f.qualified, ".TypeMeta") {
@@ -494,9 +494,9 @@ func (w *requiredGapFinder) sharedWith(name string) []structUser {
 	return out
 }
 
-// enteredStruct is where the walk crossed from a hand-written struct into a
-// generated one. For an opted-in Kind, that hand-written field should switch
-// to the generated struct's Required copy.
+// enteredStruct records where the walk went from a hand-written struct into
+// a generated one. For an opted-in Kind, that hand-written field should hold
+// the generated struct's Required copy instead.
 type enteredStruct struct {
 	// parent is the hand-written struct, and field the Go name of its field.
 	parent *goStruct
@@ -505,13 +505,13 @@ type enteredStruct struct {
 	child *goStruct
 }
 
-// walk checks the fields of s, the struct at path prefix, and walks into the
-// structs they hold. msg is the message s maps to, or nil. top is true for the
-// Spec itself. entered is where the walk last crossed from hand-written into
-// generated code, or nil.
+// walk checks each field of s, the struct at path prefix, then walks into the
+// structs those fields hold. msg is the message s maps to, or nil. top is
+// true only for the Spec. entered is where the walk last went from
+// hand-written into generated code, or nil.
 //
-// onPath holds the structs between the Spec and s. A struct can hold itself
-// through a pointer, so a struct already on the path is not entered again.
+// onPath holds the structs from the Spec down to s. A struct can hold itself
+// through a pointer, so the walk skips a struct that is already on the path.
 func (w *requiredGapFinder) walk(s *goStruct, msg protoreflect.MessageDescriptor, prefix string, top bool, entered *enteredStruct, onPath map[string]bool) {
 	if onPath[s.name] {
 		return
@@ -566,9 +566,9 @@ func (w *requiredGapFinder) walk(s *goStruct, msg protoreflect.MessageDescriptor
 	}
 }
 
-// enter returns the enteredStruct for the walk below child: nil when child
-// is hand-written, a new one when a hand-written parent holds a generated
-// child, and entered unchanged otherwise.
+// enter returns the enteredStruct to use below child: nil if child is
+// hand-written, a new one if a hand-written parent holds a generated child,
+// and entered otherwise.
 func (w *requiredGapFinder) enter(parent *goStruct, f goField, child *goStruct, entered *enteredStruct) *enteredStruct {
 	switch {
 	case !child.generated:
@@ -636,6 +636,8 @@ func krmNamesFor(j string) []string {
 	return names
 }
 
+// message looks up a message by full name. It returns nil if fqn is empty or
+// names no message.
 func (w *requiredGapFinder) message(fqn string) protoreflect.MessageDescriptor {
 	if fqn == "" {
 		return nil
@@ -678,12 +680,12 @@ func (w *requiredGapFinder) requiredNameTaken(s *goStruct) bool {
 	return other != nil && !w.isRequiredCopy(other)
 }
 
-// detail says why the field is optional, how to enforce it, and whether this
-// Kind may.
+// detail explains why the field is optional, how to enforce it, and whether
+// this Kind may.
 //
-// The fix only ever changes this Kind. If another Kind or a status also uses
-// the hand-written struct to edit, the detail asks for a copy instead, since
-// an edit in place would change them too.
+// A fix only ever changes this Kind. If another Kind or a status also uses
+// the hand-written struct that needs the edit, the detail asks for a copy
+// instead, since editing it in place would change them too.
 func (w *requiredGapFinder) detail(s *goStruct, f goField, entered *enteredStruct) string {
 	const what = "The proto marks this field REQUIRED, but the CRD leaves it optional."
 	if w.stability != stabilityAlpha {

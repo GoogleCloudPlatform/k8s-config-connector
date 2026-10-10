@@ -86,9 +86,10 @@ const (
 	skipDeprecated
 )
 
-// topLevelSkip returns why PrepopulateSpec leaves field, a field of the
-// resource message msg, out of the Spec, or inSpec. SpecFields and
-// walkSpecFields use it too, so all three drop the same fields.
+// topLevelSkip returns why PrepopulateSpec leaves a top-level field of the
+// resource message msg out of the Spec, or inSpec if the field stays.
+// SpecFields and walkSpecFields use it too, so all three drop the same
+// fields.
 func topLevelSkip(field protoreflect.FieldDescriptor, msg protoreflect.MessageDescriptor, opts codegen.WriteOptions) specSkip {
 	switch {
 	case codegen.IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY):
