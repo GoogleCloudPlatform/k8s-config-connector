@@ -523,6 +523,11 @@ func (in *AccessContextManagerServicePerimeterIdentity) DeepCopyInto(out *Access
 		*out = new(refsv1beta1.IAMServiceAccountRef)
 		**out = **in
 	}
+	if in.Group != nil {
+		in, out := &in.Group, &out.Group
+		*out = new(string)
+		**out = **in
+	}
 	if in.User != nil {
 		in, out := &in.User, &out.User
 		*out = new(string)
