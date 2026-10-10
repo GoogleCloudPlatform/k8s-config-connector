@@ -1,0 +1,403 @@
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "DataStore projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId} not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores?%24alt=json%3Benum-encoding%3Dint&dataStoreId=datastore-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection
+X-Goog-User-Project: ${projectId}
+
+{
+  "displayName": "DataStore for Schema Maximal ${uniqueId}",
+  "industryVertical": 1,
+  "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.DataStore",
+    "defaultSchemaId": "default_schema",
+    "displayName": "DataStore for Schema Maximal ${uniqueId}",
+    "industryVertical": 1,
+    "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
+    "naturalLanguageQueryUnderstandingConfig": {
+      "mode": 2
+    }
+  }
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/dataStores/datastore-${uniqueId}/schemas/default_schema?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FdataStores%2Fdatastore-${uniqueId}%2Fschemas%2Fdefault_schema
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "jsonSchema": "{\"geolocation_detection\":true,\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"datetime_detection\":true,\"type\":\"object\"}",
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
+}
+
+---
+
+PATCH https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/dataStores/datastore-${uniqueId}/schemas/default_schema?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: schema.name=projects%2F${projectId}%2Flocations%2Fglobal%2FdataStores%2Fdatastore-${uniqueId}%2Fschemas%2Fdefault_schema
+X-Goog-User-Project: ${projectId}
+
+{
+  "jsonSchema": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"title\": {\n      \"type\": \"string\",\n      \"keyPropertyMapping\": \"title\"\n    },\n    \"url\": {\n      \"type\": \"string\",\n      \"keyPropertyMapping\": \"uri\"\n    }\n  }\n}\n",
+  "name": "projects/${projectId}/locations/global/dataStores/datastore-${uniqueId}/schemas/default_schema"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.UpdateSchemaMetadata"
+  },
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema/operations/${operationID}"
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1/projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}%2Fschemas%2Fdefault_schema%2Foperations%2F${operationID}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.UpdateSchemaMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.Schema",
+    "jsonSchema": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"properties\":{\"title\":{\"type\":\"string\",\"keyPropertyMapping\":\"title\"},\"url\":{\"keyPropertyMapping\":\"uri\",\"type\":\"string\"}},\"type\":\"object\"}",
+    "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
+  }
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/dataStores/datastore-${uniqueId}/schemas/default_schema?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FdataStores%2Fdatastore-${uniqueId}%2Fschemas%2Fdefault_schema
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "jsonSchema": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"title\":{\"type\":\"string\",\"keyPropertyMapping\":\"title\"},\"url\":{\"type\":\"string\",\"keyPropertyMapping\":\"uri\"}}}",
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/dataStores/datastore-${uniqueId}/schemas/default_schema?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FdataStores%2Fdatastore-${uniqueId}%2Fschemas%2Fdefault_schema
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "jsonSchema": "{\"properties\":{\"title\":{\"type\":\"string\",\"keyPropertyMapping\":\"title\"},\"url\":{\"type\":\"string\",\"keyPropertyMapping\":\"uri\"}},\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft/2020-12/schema\"}",
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
+}
+
+---
+
+PATCH https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/dataStores/datastore-${uniqueId}/schemas/default_schema?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: schema.name=projects%2F${projectId}%2Flocations%2Fglobal%2FdataStores%2Fdatastore-${uniqueId}%2Fschemas%2Fdefault_schema
+X-Goog-User-Project: ${projectId}
+
+{
+  "jsonSchema": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"title\": {\n      \"type\": \"string\",\n      \"keyPropertyMapping\": \"title\"\n    },\n    \"url\": {\n      \"type\": \"string\",\n      \"keyPropertyMapping\": \"uri\"\n    },\n    \"description\": {\n      \"type\": \"string\",\n      \"keyPropertyMapping\": \"description\"\n    }\n  }\n}\n",
+  "name": "projects/${projectId}/locations/global/dataStores/datastore-${uniqueId}/schemas/default_schema"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.UpdateSchemaMetadata"
+  },
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema/operations/${operationID}"
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1/projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}%2Fschemas%2Fdefault_schema%2Foperations%2F${operationID}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.UpdateSchemaMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.Schema",
+    "jsonSchema": "{\"properties\":{\"url\":{\"type\":\"string\",\"keyPropertyMapping\":\"uri\"},\"title\":{\"type\":\"string\",\"keyPropertyMapping\":\"title\"},\"description\":{\"type\":\"string\",\"keyPropertyMapping\":\"description\"}},\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\"}",
+    "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
+  }
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/dataStores/datastore-${uniqueId}/schemas/default_schema?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FdataStores%2Fdatastore-${uniqueId}%2Fschemas%2Fdefault_schema
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "jsonSchema": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"title\":{\"type\":\"string\",\"keyPropertyMapping\":\"title\"},\"url\":{\"keyPropertyMapping\":\"uri\",\"type\":\"string\"},\"description\":{\"type\":\"string\",\"keyPropertyMapping\":\"description\"}}}",
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/dataStores/datastore-${uniqueId}/schemas/default_schema?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FdataStores%2Fdatastore-${uniqueId}%2Fschemas%2Fdefault_schema
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "jsonSchema": "{\"type\":\"object\",\"properties\":{\"url\":{\"type\":\"string\",\"keyPropertyMapping\":\"uri\"},\"title\":{\"keyPropertyMapping\":\"title\",\"type\":\"string\"},\"description\":{\"keyPropertyMapping\":\"description\",\"type\":\"string\"}},\"$schema\":\"https://json-schema.org/draft/2020-12/schema\"}",
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/dataStores/datastore-${uniqueId}/schemas/default_schema?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FdataStores%2Fdatastore-${uniqueId}%2Fschemas%2Fdefault_schema
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "jsonSchema": "{\"properties\":{\"title\":{\"type\":\"string\",\"keyPropertyMapping\":\"title\"},\"url\":{\"type\":\"string\",\"keyPropertyMapping\":\"uri\"},\"description\":{\"type\":\"string\",\"keyPropertyMapping\":\"description\"}},\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\"}",
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
+}
+
+---
+
+DELETE https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/dataStores/datastore-${uniqueId}/schemas/default_schema?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FdataStores%2Fdatastore-${uniqueId}%2Fschemas%2Fdefault_schema
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.DeleteSchemaMetadata"
+  },
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema/operations/${operationID}"
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "DataStore for Schema Maximal ${uniqueId}",
+  "industryVertical": 1,
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
+  "naturalLanguageQueryUnderstandingConfig": {
+    "mode": 2
+  }
+}
+
+---
+
+DELETE https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/operations/${operationID}"
+}
