@@ -16,14 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Resource \"projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-minimal-${uniqueId}\" was not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Resource \"projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-minimal-${uniqueId}\" was not found",
+    "message": "Resource 'projects/${projectId}/locations/us-central1/preferenceSets/migrationcenterpreferenceset-minimal-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }

@@ -69,7 +69,7 @@ func (s *MigrationCenterV1) GetPreferenceSet(ctx context.Context, req *pb.GetPre
 	obj := &pb.PreferenceSet{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Resource %q was not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
@@ -170,7 +170,7 @@ func (s *MigrationCenterV1) DeletePreferenceSet(ctx context.Context, req *pb.Del
 	obj := &pb.PreferenceSet{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Resource %q was not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
