@@ -89,6 +89,14 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
+	if obj.Spec.KMSKeyRef != nil {
+		kmsKeyRef, err := refsv1beta1.ResolveKMSCryptoKeyRef(ctx, reader, obj, obj.Spec.KMSKeyRef)
+		if err != nil {
+			return nil, err
+		}
+		obj.Spec.KMSKeyRef = kmsKeyRef
+	}
+
 	mapCtx := &direct.MapContext{}
 	desired := FinancialServicesInstanceSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
@@ -195,11 +203,14 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
+	instance := proto.Clone(a.desired).(*pb.Instance)
+	instance.Name = a.id.String()
+	instance.KmsKey = "" // kmsKey is immutable and should not be sent on update
+
 	req := &pb.UpdateInstanceRequest{
-		Instance:   proto.Clone(a.desired).(*pb.Instance),
+		Instance:   instance,
 		UpdateMask: updateMask,
 	}
-	req.Instance.Name = a.id.String()
 
 	op, err := a.gcpClient.UpdateInstance(ctx, req)
 	if err != nil {
