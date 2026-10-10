@@ -21,7 +21,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	iamrefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/refs"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/iamrefs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
