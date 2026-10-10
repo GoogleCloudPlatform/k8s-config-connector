@@ -95,6 +95,7 @@ func (m *modelLoggingLogBucket) AdapterForObject(ctx context.Context, op *direct
 		id:        id.(*krm.LogBucketIdentity),
 		gcpClient: gcpClient,
 		desired:   desiredPb,
+		spec:      &obj.Spec,
 	}, nil
 }
 
@@ -121,6 +122,7 @@ type LoggingLogBucketAdapter struct {
 	gcpClient *gcp.ConfigClient
 	desired   *loggingpb.LogBucket
 	actual    *loggingpb.LogBucket
+	spec      *krm.LoggingLogBucketSpec
 }
 
 var _ directbase.Adapter = &LoggingLogBucketAdapter{}
@@ -168,7 +170,7 @@ func (a *LoggingLogBucketAdapter) Update(ctx context.Context, updateOp *directba
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating LoggingLogBucket", "name", a.id.String())
 
-	diffs, updateMask, err := compareBucket(ctx, a.actual, a.desired)
+	diffs, updateMask, err := compareBucket(ctx, a.actual, a.desired, a.spec, a.id.Bucket)
 	if err != nil {
 		return err
 	}
@@ -232,6 +234,11 @@ func (a *LoggingLogBucketAdapter) Delete(ctx context.Context, deleteOp *directba
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting LogBucket", "name", a.id)
 
+	if a.id.Bucket == "_Default" || a.id.Bucket == "_Required" {
+		log.V(2).Info("LoggingLogBucket is a well-known bucket (_Default or _Required), skipping deletion", "name", a.id.String())
+		return true, nil
+	}
+
 	req := &loggingpb.DeleteBucketRequest{Name: a.id.String()}
 	err := a.gcpClient.DeleteBucket(ctx, req)
 	if err != nil {
@@ -245,7 +252,22 @@ func (a *LoggingLogBucketAdapter) Delete(ctx context.Context, deleteOp *directba
 	return true, nil
 }
 
-func compareBucket(ctx context.Context, actual, desired *loggingpb.LogBucket) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+func compareBucket(ctx context.Context, actual, desired *loggingpb.LogBucket, spec *krm.LoggingLogBucketSpec, bucketName string) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	if bucketName == "_Default" || bucketName == "_Required" {
+		if spec.Description == nil {
+			desired.Description = actual.Description
+		}
+		if spec.Locked == nil {
+			desired.Locked = actual.Locked
+		}
+		if spec.EnableAnalytics == nil {
+			desired.AnalyticsEnabled = actual.AnalyticsEnabled
+		}
+		if spec.RetentionDays == nil {
+			desired.RetentionDays = actual.RetentionDays
+		}
+	}
+
 	var maskedActual *loggingpb.LogBucket
 	{
 		// A "trick" to only compare spec fields - round trip via the spec
