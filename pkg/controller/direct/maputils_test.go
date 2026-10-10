@@ -98,6 +98,16 @@ func TestIsAlreadyExists(t *testing.T) {
 			err:  fmt.Errorf("creating resource: %w", status.Error(codes.AlreadyExists, "already exists")),
 			want: true,
 		},
+		{
+			name: "googleapi 409 Conflict",
+			err:  &googleapi.Error{Code: 409, Message: "Conflict"},
+			want: true,
+		},
+		{
+			name: "googleapi 400 Bad Request",
+			err:  &googleapi.Error{Code: 400, Message: "Bad Request"},
+			want: false,
+		},
 	}
 
 	for _, tc := range tests {

@@ -26,6 +26,7 @@ import (
 	pb "cloud.google.com/go/essentialcontacts/apiv1/essentialcontactspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -43,6 +44,9 @@ func (s *EssentialContactsV1) GetContact(ctx context.Context, req *pb.GetContact
 
 	obj := &pb.Contact{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Requested entity was not found.")
+		}
 		return nil, err
 	}
 
@@ -50,15 +54,56 @@ func (s *EssentialContactsV1) GetContact(ctx context.Context, req *pb.GetContact
 }
 
 func (s *EssentialContactsV1) CreateContact(ctx context.Context, req *pb.CreateContactRequest) (*pb.Contact, error) {
-	//name, err := common.NewResourceID(req.Parent, "", "")
-	contactId := 7 // to match mock logs. server generates this id.
-	reqName := fmt.Sprintf("%s/contacts/%d", req.GetParent(), contactId)
-	name, err := s.parseContactName(reqName)
-	if err != nil {
+	parent := req.GetParent()
+	prefix := parent + "/contacts/"
+	tokens := strings.Split(parent, "/")
+	if len(tokens) == 2 && tokens[0] == "projects" {
+		if project, err := s.Projects.GetProjectByIDOrNumber(tokens[1]); err == nil {
+			prefix = fmt.Sprintf("projects/%s/contacts/", project.ID)
+		}
+	}
+
+	contactKind := (&pb.Contact{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, contactKind, storage.ListOptions{
+		Prefix: prefix,
+	}, func(obj proto.Message) error {
+		existing := obj.(*pb.Contact)
+		if strings.EqualFold(existing.GetEmail(), req.GetContact().GetEmail()) {
+			st := status.New(codes.AlreadyExists, fmt.Sprintf("There is already a contact with the given email address %s. To add new category subscriptions, please use UpdateContact instead.", req.GetContact().GetEmail()))
+			st, err := st.WithDetails(&errdetails.ErrorInfo{
+				Reason: "CONTACT_ALREADY_EXISTS",
+				Domain: "essentialcontacts.googleapis.com",
+			})
+			if err != nil {
+				return status.Errorf(codes.Internal, "unexpected error attaching details to status: %v", err)
+			}
+			return st.Err()
+		}
+		return nil
+	}); err != nil {
 		return nil, err
 	}
 
-	fqn := name.String()
+	contactId := 7 // to match mock logs. server generates this id.
+	var fqn string
+	var name *contactName
+	for {
+		reqName := fmt.Sprintf("%s/contacts/%d", req.GetParent(), contactId)
+		var err error
+		name, err = s.parseContactName(reqName)
+		if err != nil {
+			return nil, err
+		}
+		fqn = name.String()
+		existing := &pb.Contact{}
+		if err := s.storage.Get(ctx, fqn, existing); err != nil {
+			if status.Code(err) == codes.NotFound {
+				break
+			}
+			return nil, err
+		}
+		contactId++
+	}
 
 	obj := proto.CloneOf(req.GetContact())
 	obj.Name = name.GetName()
@@ -80,6 +125,9 @@ func (s *EssentialContactsV1) UpdateContact(ctx context.Context, req *pb.UpdateC
 	fqn := name.String()
 	obj := &pb.Contact{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Requested entity was not found.")
+		}
 		return nil, err
 	}
 
@@ -117,6 +165,9 @@ func (s *EssentialContactsV1) DeleteContact(ctx context.Context, req *pb.DeleteC
 
 	deletedObj := &pb.Contact{}
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Requested entity was not found.")
+		}
 		return nil, err
 	}
 	return &emptypb.Empty{}, nil
@@ -129,9 +180,17 @@ func (s *EssentialContactsV1) ListContacts(ctx context.Context, req *pb.ListCont
 		return nil, status.Errorf(codes.InvalidArgument, "parent must be specified")
 	}
 
+	prefix := parent + "/contacts/"
+	tokens := strings.Split(parent, "/")
+	if len(tokens) == 2 && tokens[0] == "projects" {
+		if project, err := s.Projects.GetProjectByIDOrNumber(tokens[1]); err == nil {
+			prefix = fmt.Sprintf("projects/%s/contacts/", project.ID)
+		}
+	}
+
 	var contacts []*pb.Contact
 	if err := s.storage.List(ctx, (&pb.Contact{}).ProtoReflect().Descriptor(), storage.ListOptions{
-		Prefix: parent + "/contacts/",
+		Prefix: prefix,
 	}, func(obj proto.Message) error {
 		contact := obj.(*pb.Contact)
 		contacts = append(contacts, contact)
@@ -165,7 +224,7 @@ func (s *MockService) parseContactName(name string) (*contactName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "contacts" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
 		if err != nil {
 			return nil, err
 		}
