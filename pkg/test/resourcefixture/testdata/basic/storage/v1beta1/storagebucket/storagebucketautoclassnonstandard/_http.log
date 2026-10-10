@@ -48,7 +48,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
   },
   "location": "US",
   "name": "storagebucket-autoclass-ns-${uniqueId}",
-  "storageClass": "NEARLINE"
+  "storageClass": "STANDARD"
 }
 
 200 OK
