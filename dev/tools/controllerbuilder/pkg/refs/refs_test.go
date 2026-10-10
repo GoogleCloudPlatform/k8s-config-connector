@@ -14,7 +14,11 @@
 
 package refs
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/google/go-cmp/cmp"
+)
 
 // TestClassify pins one field per branch of Classify. TestMissingRefs turns an
 // IsReference into a missingrefs.txt entry and a NotRepresentable into a
@@ -130,18 +134,63 @@ func TestClassify(t *testing.T) {
 			wantReason:  "bigquery-uri-not-a-gcp-resource-name",
 		},
 		{
-			name:        "a storage prefix needs a bucket reference plus a path",
+			name:        "a storage prefix gets the same reason as an object path",
 			fieldPath:   ".spec.outputURIPrefix",
 			desc:        "The Cloud Storage location to write to.",
 			wantVerdict: NotRepresentable,
-			wantReason:  "gcs-prefix-needs-bucket-ref-plus-path",
+			wantReason:  "gcs-path-decomposable-as-bucketref-plus-path",
 		},
 		{
 			name:        "a storage object path stays a string for now",
 			fieldPath:   ".spec.configURI",
 			desc:        "A gs:// path to the config file.",
 			wantVerdict: NotRepresentable,
-			wantReason:  "gcs-object-path-string-for-now-decomposable-as-bucketref-plus-path",
+			wantReason:  "gcs-path-decomposable-as-bucketref-plus-path",
+		},
+		{
+			name:        "a gs:// path in a field not named uri gets the same reason",
+			fieldPath:   ".spec.terraformBlueprint.gcsSource",
+			desc:        "URI of an object in Google Cloud Storage. Format: gs://{bucket}/{object}",
+			wantVerdict: NotRepresentable,
+			wantReason:  "gcs-path-decomposable-as-bucketref-plus-path",
+		},
+		{
+			name:        "a gs:// list in a field not named uris gets it too",
+			fieldPath:   ".spec.spark.infrastructureSpec.containerImage.javaJars",
+			desc:        "Optional. A list of Java JARS to add to the classpath. For example, gs://bucket-name/my/path/to/file.jar",
+			wantVerdict: NotRepresentable,
+			wantReason:  "gcs-path-decomposable-as-bucketref-plus-path",
+		},
+		{
+			name:        "a bucket field that mentions gs:// stays a reference",
+			fieldPath:   ".spec.loggingSettings.audioRecordingConfig.gcsBucket",
+			desc:        "Optional. The Cloud Storage bucket to store the session audio recordings. The URI must start with \"gs://\".",
+			wantVerdict: IsReference,
+		},
+		{
+			name:        "a resource-name template wins over gs://",
+			fieldPath:   ".spec.source",
+			desc:        "Either projects/{project}/locations/{location}/datasets/{dataset} or a gs:// path.",
+			wantVerdict: IsReference,
+		},
+		{
+			name:        "a service account that mentions gs:// stays a reference",
+			fieldPath:   ".spec.serviceAccount",
+			desc:        "The service account that reads gs://my-bucket.",
+			wantVerdict: IsReference,
+		},
+		{
+			name:        "a gs:// pattern still matches a set of objects",
+			fieldPath:   ".spec.gcsFilesetSpec.filePatterns",
+			desc:        "Patterns to identify a set of files in Google Cloud Storage. See Wildcard Names. Example: gs://bucket_name/*",
+			wantVerdict: NotAReference,
+		},
+		{
+			name:        "bq:// comes before gs://",
+			fieldPath:   ".spec.inputSource",
+			desc:        "A gs:// path or a bq:// table.",
+			wantVerdict: NotRepresentable,
+			wantReason:  "bq-scheme-not-a-gcp-resource-name",
 		},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
@@ -152,6 +201,87 @@ func TestClassify(t *testing.T) {
 			if verdict != tc.wantVerdict || reason != tc.wantReason {
 				t.Errorf("Classify(%q) = %v, %q, want %v, %q",
 					tc.fieldPath, verdict, reason, tc.wantVerdict, tc.wantReason)
+			}
+		})
+	}
+}
+
+// TestReferenceRules checks the phrases the generator puts in the detail of a
+// possible-reference-by-description entry. The template phrase quotes the
+// whole word that holds the template, without the backticks, quotes,
+// parentheses or punctuation around it. When several rules match, all of
+// them are listed.
+func TestReferenceRules(t *testing.T) {
+	for _, tc := range []struct {
+		name      string
+		fieldPath string
+		desc      string
+		want      []string
+	}{
+		{
+			name:      "a brace template in backticks",
+			fieldPath: ".spec.ragResources[].ragCorpus",
+			desc:      "Optional. RagCorpora resource name. Format: `projects/{project}/locations/{location}/ragCorpora/{rag_corpus}`",
+			want:      []string{`the description has the resource-name template "projects/{project}/locations/{location}/ragCorpora/{rag_corpus}"`},
+		},
+		{
+			name:      "an angle-bracket template",
+			fieldPath: ".spec.notificationChannels[]",
+			desc:      "Must be of the format `projects/<project_id_or_number>/notificationChannels/<channel_id>`",
+			want:      []string{`the description has the resource-name template "projects/<project_id_or_number>/notificationChannels/<channel_id>"`},
+		},
+		{
+			name:      "a template in parentheses at the end of a sentence",
+			fieldPath: ".spec.network",
+			desc:      "The network to join (projects/{project}/global/networks/{network}).",
+			want:      []string{`the description has the resource-name template "projects/{project}/global/networks/{network}"`},
+		},
+		{
+			name:      "the whole word is quoted when a later segment matched",
+			fieldPath: ".spec.policy",
+			desc:      "Format: organizations/{organization}/locations/{location}/policies/{policy}",
+			want:      []string{`the description has the resource-name template "organizations/{organization}/locations/{location}/policies/{policy}"`},
+		},
+		{
+			name:      "projects/ after a space needs no placeholder",
+			fieldPath: ".spec.topic",
+			desc:      "The topic, such as projects/my-project/topics/my-topic.",
+			want:      []string{`the description has the resource-name template "projects/my-project/topics/my-topic"`},
+		},
+		{
+			name:      "a service account",
+			fieldPath: ".spec.runAsServiceAccount",
+			desc:      "Email of the service account to run as.",
+			want:      []string{"the field name ends in serviceAccount"},
+		},
+		{
+			name:      "a Cloud Storage bucket",
+			fieldPath: ".spec.artifactsGCSBucket",
+			desc:      "The Cloud Storage bucket that holds the artifacts.",
+			want:      []string{"the field name has bucket and the description mentions Cloud Storage"},
+		},
+		{
+			name:      "every matching rule is listed",
+			fieldPath: ".spec.serviceAccount",
+			desc:      "Format: projects/{project}/serviceAccounts/{email}",
+			want: []string{
+				`the description has the resource-name template "projects/{project}/serviceAccounts/{email}"`,
+				"the field name ends in serviceAccount",
+			},
+		},
+		{
+			name:      "no rule",
+			fieldPath: ".spec.displayName",
+			desc:      "A name people can read.",
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			// Act
+			got := ReferenceRules(tc.fieldPath, tc.desc)
+
+			// Assert
+			if diff := cmp.Diff(tc.want, got); diff != "" {
+				t.Errorf("ReferenceRules(%q) mismatch (-want +got):\n%s", tc.fieldPath, diff)
 			}
 		})
 	}

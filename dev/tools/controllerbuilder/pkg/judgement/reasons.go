@@ -20,10 +20,11 @@ package judgement
 // means the two cannot drift apart.
 const (
 	// ReasonPossibleReference: the proto field has a
-	// google.api.resource_reference annotation.
+	// google.api.resource_reference annotation. The detail names the type.
 	ReasonPossibleReference = "possible-reference"
 	// ReasonPossibleReferenceByDescription: refs.Classify, the rule
-	// TestMissingRefs applies, says the field is a reference.
+	// TestMissingRefs applies, says the field is a reference. The detail says
+	// which of its rules matched.
 	ReasonPossibleReferenceByDescription = "possible-reference-by-description"
 	// ReasonPossibleReferenceByDescriptionLoose: a looser description rule
 	// matched. TestMissingRefs would not flag the field.
@@ -43,6 +44,13 @@ var referenceReasons = map[string]bool{
 	ReasonPossibleReferenceByName:             true,
 	ReasonPossibleReferenceBySibling:          true,
 }
+
+// ReasonReferenceNotRepresentable: refs.Classify says the field names another
+// resource, but KCC cannot express it as a reference today, so it stays a
+// string. This is not a reference reason. TestMissingRefs lists such a field
+// in refs_not_representable.txt and never fails on it, so an open entry has
+// nothing to hide.
+const ReasonReferenceNotRepresentable = "reference-not-representable"
 
 // IsReferenceReason reports whether reason says a field may need to be a
 // reference.

@@ -23,6 +23,7 @@ import (
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
+	"github.com/google/go-cmp/cmp"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
@@ -59,7 +60,8 @@ func (q *judgementQueue) SuppressesRef(kind, group, fieldPath string) bool {
 
 // loadJudgementQueue reads and validates every queue file matching glob.
 // A file that does not validate is an error, so a typo cannot quietly change
-// what is suppressed.
+// what is suppressed. So is a field whose reference entries disagree on
+// status; see checkRefStatuses.
 func loadJudgementQueue(glob string) (*judgementQueue, error) {
 	paths, err := filepath.Glob(glob)
 	if err != nil {
@@ -78,7 +80,48 @@ func loadJudgementQueue(glob string) (*judgementQueue, error) {
 			}
 		}
 	}
+	if err := checkRefStatuses(out.entries); err != nil {
+		return nil, err
+	}
 	return out, nil
+}
+
+// checkRefStatuses returns an error that names each field whose reference
+// entries do not all have the same status. The generator files one entry for
+// each signal that a field may be a reference, and keeps them all because the
+// signals are independent. SuppressesRef hides the field while any of them is
+// open, so resolving one and forgetting the others would keep it hidden.
+func checkRefStatuses(entries []judgement.Entry) error {
+	var fields []string
+	byField := map[string][]judgement.Entry{}
+	for _, e := range entries {
+		if e.Kind == "" || e.Field == "" || !judgement.IsReferenceReason(e.Reason) {
+			continue
+		}
+		key := refFieldKey(e.Kind, e.Group, e.Field)
+		if _, ok := byField[key]; !ok {
+			fields = append(fields, key)
+		}
+		byField[key] = append(byField[key], e)
+	}
+
+	var problems []string
+	for _, key := range fields {
+		statuses := sets.NewString()
+		var parts []string
+		for _, e := range byField[key] {
+			statuses.Insert(string(e.Status))
+			parts = append(parts, e.Reason+" is "+string(e.Status))
+		}
+		if statuses.Len() > 1 {
+			e := byField[key][0]
+			problems = append(problems, fmt.Sprintf("  kind %s, group %s, field %s: %s", e.Kind, e.Group, e.Field, strings.Join(parts, ", ")))
+		}
+	}
+	if len(problems) == 0 {
+		return nil
+	}
+	return fmt.Errorf("the reference entries for a field must all have the same status, because TestMissingRefs skips the field while any of them is open. Resolve the open ones too, or reopen the resolved ones:\n%s", strings.Join(problems, "\n"))
 }
 
 // summary counts entries by reason, split into open and each resolution.
@@ -267,6 +310,130 @@ func TestLoadJudgementQueueRejectsBadEntry(t *testing.T) {
 	}
 	if !strings.Contains(err.Error(), filepath.Join("svc", judgement.FileName)) {
 		t.Errorf("error should name the file, got: %v", err)
+	}
+}
+
+// TestLoadJudgementQueueRejectsMixedReferenceStatuses checks the error for
+// fields whose reference entries have different statuses. The error lists
+// each such field with all of its reference entries. network's entries agree,
+// so it is not listed.
+func TestLoadJudgementQueueRejectsMixedReferenceStatuses(t *testing.T) {
+	// Arrange
+	dir := t.TempDir()
+	writeQueueFile(t, dir, "networkservices", `entries:
+- kind: NetworkServicesLBTrafficExtension
+  group: networkservices.cnrm.cloud.google.com
+  field: .spec.forwardingRules
+  reason: possible-reference
+  status: resolved
+  resolution: accepted
+- kind: NetworkServicesLBTrafficExtension
+  group: networkservices.cnrm.cloud.google.com
+  field: .spec.forwardingRules
+  reason: possible-reference-by-description
+  status: open
+- kind: NetworkServicesLBTrafficExtension
+  group: networkservices.cnrm.cloud.google.com
+  field: .spec.network
+  reason: possible-reference-by-name
+  status: open
+- kind: NetworkServicesLBTrafficExtension
+  group: networkservices.cnrm.cloud.google.com
+  field: .spec.network
+  reason: possible-reference-by-description
+  status: open
+`)
+	writeQueueFile(t, dir, "dataproc", `entries:
+- kind: DataprocBatch
+  group: dataproc.cnrm.cloud.google.com
+  field: .spec.serviceAccount
+  reason: possible-reference
+  status: open
+- kind: DataprocBatch
+  group: dataproc.cnrm.cloud.google.com
+  field: .spec.serviceAccount
+  reason: possible-reference-by-description
+  status: resolved
+  resolution: edited
+  note: changed to serviceAccountRef
+- kind: DataprocBatch
+  group: dataproc.cnrm.cloud.google.com
+  field: .spec.serviceAccount
+  reason: possible-reference-by-name
+  status: open
+`)
+	want := `the reference entries for a field must all have the same status, because TestMissingRefs skips the field while any of them is open. Resolve the open ones too, or reopen the resolved ones:
+  kind DataprocBatch, group dataproc.cnrm.cloud.google.com, field .spec.serviceAccount: possible-reference is open, possible-reference-by-description is resolved, possible-reference-by-name is open
+  kind NetworkServicesLBTrafficExtension, group networkservices.cnrm.cloud.google.com, field .spec.forwardingRules: possible-reference is resolved, possible-reference-by-description is open`
+
+	// Act
+	_, err := loadJudgementQueue(filepath.Join(dir, "*", judgement.FileName))
+
+	// Assert
+	if err == nil {
+		t.Fatal("loadJudgementQueue() succeeded, want an error")
+	}
+	if diff := cmp.Diff(want, err.Error()); diff != "" {
+		t.Errorf("loadJudgementQueue() error mismatch (-want +got):\n%s", diff)
+	}
+}
+
+// TestLoadJudgementQueueAcceptsMatchingReferenceStatuses checks what the
+// status check allows: reference entries that are all open or all resolved,
+// next to an entry with another reason in any status. A field is suppressed
+// while its reference entries are open.
+func TestLoadJudgementQueueAcceptsMatchingReferenceStatuses(t *testing.T) {
+	// Arrange
+	dir := t.TempDir()
+	writeQueueFile(t, dir, "networkservices", `entries:
+- kind: NetworkServicesLBTrafficExtension
+  group: networkservices.cnrm.cloud.google.com
+  field: .spec.forwardingRules
+  reason: possible-reference
+  status: open
+- kind: NetworkServicesLBTrafficExtension
+  group: networkservices.cnrm.cloud.google.com
+  field: .spec.forwardingRules
+  reason: possible-reference-by-description
+  status: open
+- kind: NetworkServicesLBTrafficExtension
+  group: networkservices.cnrm.cloud.google.com
+  field: .spec.network
+  reason: possible-reference
+  status: resolved
+  resolution: accepted
+- kind: NetworkServicesLBTrafficExtension
+  group: networkservices.cnrm.cloud.google.com
+  field: .spec.network
+  reason: possible-reference-by-name
+  status: resolved
+  resolution: accepted
+- kind: NetworkServicesLBTrafficExtension
+  group: networkservices.cnrm.cloud.google.com
+  field: .spec.service
+  reason: possible-reference-by-description
+  status: open
+- kind: NetworkServicesLBTrafficExtension
+  group: networkservices.cnrm.cloud.google.com
+  field: .spec.service
+  reason: output-only-mentioned-in-comment
+  status: resolved
+  resolution: accepted
+`)
+	want := []string{
+		"NetworkServicesLBTrafficExtension.networkservices.cnrm.cloud.google.com|.spec.forwardingRules",
+		"NetworkServicesLBTrafficExtension.networkservices.cnrm.cloud.google.com|.spec.service",
+	}
+
+	// Act
+	q, err := loadJudgementQueue(filepath.Join(dir, "*", judgement.FileName))
+
+	// Assert
+	if err != nil {
+		t.Fatalf("loadJudgementQueue() error: %v", err)
+	}
+	if diff := cmp.Diff(want, q.openRefFields.List()); diff != "" {
+		t.Errorf("open reference fields mismatch (-want +got):\n%s", diff)
 	}
 }
 

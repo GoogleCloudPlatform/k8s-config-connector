@@ -127,10 +127,10 @@ func TestReferenceHintsSkipsDeprecatedTopLevelFields(t *testing.T) {
 	// Arrange
 	msg := deprecatedMessage(t)
 	want := []JudgementItem{
-		{FieldPath: ".spec.config.target", Reason: "possible-reference-by-description"},
-		{FieldPath: ".spec.config.legacyTarget", Reason: "possible-reference-by-description"},
-		{FieldPath: ".spec.peers[].target", Reason: "possible-reference-by-description"},
-		{FieldPath: ".spec.peers[].legacyTarget", Reason: "possible-reference-by-description"},
+		{FieldPath: ".spec.config.target", Reason: "possible-reference-by-description", Detail: `the description has the resource-name template "projects/{project}/topics/{topic}"`},
+		{FieldPath: ".spec.config.legacyTarget", Reason: "possible-reference-by-description", Detail: `the description has the resource-name template "projects/{project}/topics/{topic}"`},
+		{FieldPath: ".spec.peers[].target", Reason: "possible-reference-by-description", Detail: `the description has the resource-name template "projects/{project}/topics/{topic}"`},
+		{FieldPath: ".spec.peers[].legacyTarget", Reason: "possible-reference-by-description", Detail: `the description has the resource-name template "projects/{project}/topics/{topic}"`},
 	}
 
 	// Act
