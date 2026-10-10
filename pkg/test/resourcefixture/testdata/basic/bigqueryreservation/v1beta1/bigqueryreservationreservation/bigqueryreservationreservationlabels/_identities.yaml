@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: bigqueryreservation.cnrm.cloud.google.com
+  kind: BigQueryReservationReservation
+  name: bigqueryreservationreservation-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
