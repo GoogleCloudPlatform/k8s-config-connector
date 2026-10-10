@@ -284,4 +284,3 @@ func TestRunJob_NormalizeReferences_SecretRef(t *testing.T) {
 		}
 	})
 }
-

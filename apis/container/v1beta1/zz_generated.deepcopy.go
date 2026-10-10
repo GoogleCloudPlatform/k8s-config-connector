@@ -21,7 +21,7 @@ package v1beta1
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-	iamrefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/refs"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/iamrefs"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
