@@ -88,6 +88,9 @@ func (s *SecurityPoliciesV1) Insert(ctx context.Context, req *pb.InsertSecurityP
 		if rule.Preview == nil {
 			rule.Preview = PtrTo(false)
 		}
+		if err := validateAndNormalizeRateLimitOptions(rule); err != nil {
+			return nil, err
+		}
 	}
 
 	sort.Slice(obj.Rules, func(i, j int) bool {
@@ -141,6 +144,9 @@ func (s *SecurityPoliciesV1) Patch(ctx context.Context, req *pb.PatchSecurityPol
 	for _, rule := range obj.Rules {
 		if rule.Kind == nil {
 			rule.Kind = PtrTo("compute#securityPolicyRule")
+		}
+		if err := validateAndNormalizeRateLimitOptions(rule); err != nil {
+			return nil, err
 		}
 	}
 
@@ -201,6 +207,9 @@ func (s *SecurityPoliciesV1) AddRule(ctx context.Context, req *pb.AddRuleSecurit
 	if rule.Kind == nil {
 		rule.Kind = PtrTo("compute#securityPolicyRule")
 	}
+	if err := validateAndNormalizeRateLimitOptions(rule); err != nil {
+		return nil, err
+	}
 	obj.Rules = append(obj.Rules, rule)
 
 	sort.Slice(obj.Rules, func(i, j int) bool {
@@ -235,13 +244,40 @@ func (s *SecurityPoliciesV1) PatchRule(ctx context.Context, req *pb.PatchRuleSec
 	}
 
 	priority := req.GetPriority()
+	updateMask := req.GetUpdateMask()
 	found := false
 	for idx, rule := range obj.Rules {
 		if rule.GetPriority() == priority {
 			newRule := req.GetSecurityPolicyRuleResource()
+			// Clear repeated fields before proto.Merge so they are replaced rather than appended
+			if newRule.RateLimitOptions != nil && rule.RateLimitOptions != nil {
+				if newRule.Match != nil && newRule.Match.Config != nil && rule.Match != nil && rule.Match.Config != nil && len(newRule.Match.Config.SrcIpRanges) > 0 {
+					rule.Match.Config.SrcIpRanges = nil
+				}
+				if updateMask == "" || strings.Contains(updateMask, "enforce_on_key_configs") || strings.Contains(updateMask, "enforceOnKeyConfigs") {
+					rule.RateLimitOptions.EnforceOnKeyConfigs = nil
+				}
+				if updateMask == "" || strings.Contains(updateMask, "enforce_on_key") || strings.Contains(updateMask, "enforceOnKey") {
+					rule.RateLimitOptions.EnforceOnKey = nil
+				}
+				if strings.Contains(updateMask, "enforce_on_key_name") || strings.Contains(updateMask, "enforceOnKeyName") {
+					rule.RateLimitOptions.EnforceOnKeyName = nil
+				}
+			}
+			// Save existing EnforceOnKeyName if not in updateMask so proto.Merge doesn't overwrite with empty string
+			var savedEnforceOnKeyName *string
+			if rule.RateLimitOptions != nil && updateMask != "" && !strings.Contains(updateMask, "enforce_on_key_name") && !strings.Contains(updateMask, "enforceOnKeyName") {
+				savedEnforceOnKeyName = rule.RateLimitOptions.EnforceOnKeyName
+			}
 			proto.Merge(rule, newRule)
 			if newRule.Kind == nil {
 				rule.Kind = PtrTo("compute#securityPolicyRule")
+			}
+			if savedEnforceOnKeyName != nil && rule.RateLimitOptions != nil {
+				rule.RateLimitOptions.EnforceOnKeyName = savedEnforceOnKeyName
+			}
+			if err := validateAndNormalizeRateLimitOptions(rule); err != nil {
+				return nil, err
 			}
 			obj.Rules[idx] = rule
 			found = true
@@ -564,4 +600,16 @@ func (s *RegionSecurityPoliciesV1) List(ctx context.Context, req *pb.ListRegionS
 	}
 
 	return response, nil
+}
+
+func validateAndNormalizeRateLimitOptions(rule *pb.SecurityPolicyRule) error {
+	if rlo := rule.RateLimitOptions; rlo != nil {
+		if rlo.GetEnforceOnKey() != "" && len(rlo.GetEnforceOnKeyConfigs()) > 0 {
+			return status.Errorf(codes.InvalidArgument, "Invalid value for field 'resource.rules.rateLimitOptions': Only one of enforceOnKey and enforceOnKeyConfigs can be specified.")
+		}
+		if rlo.EnforceOnKey != nil && *rlo.EnforceOnKey == "" {
+			rlo.EnforceOnKey = nil
+		}
+	}
+	return nil
 }
