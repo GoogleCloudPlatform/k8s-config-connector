@@ -123,12 +123,20 @@ remoteRepositoryConfig:
     uri: string
   description: string
   dockerRepository:
+    customRepository:
+      uri: string
     publicRepository: string
   mavenRepository:
+    customRepository:
+      uri: string
     publicRepository: string
   npmRepository:
+    customRepository:
+      uri: string
     publicRepository: string
   pythonRepository:
+    customRepository:
+      uri: string
     publicRepository: string
 resourceID: string
 virtualRepositoryConfig:
@@ -520,6 +528,26 @@ virtualRepositoryConfig:
     </tr>
     <tr>
         <td>
+            <p><code>remoteRepositoryConfig.dockerRepository.customRepository</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Customer-specified remote repository.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>remoteRepositoryConfig.dockerRepository.customRepository.uri</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>An http/https uri reference to the custom remote repository, for ex: "https://registry-1.docker.io".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>remoteRepositoryConfig.dockerRepository.publicRepository</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -536,6 +564,26 @@ virtualRepositoryConfig:
         <td>
             <p><code class="apitype">object</code></p>
             <p>Specific settings for a Maven remote repository.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>remoteRepositoryConfig.mavenRepository.customRepository</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Customer-specified remote repository.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>remoteRepositoryConfig.mavenRepository.customRepository.uri</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>An http/https uri reference to the upstream remote repository, for ex: "https://my.maven.registry/".</p>
         </td>
     </tr>
     <tr>
@@ -560,6 +608,26 @@ virtualRepositoryConfig:
     </tr>
     <tr>
         <td>
+            <p><code>remoteRepositoryConfig.npmRepository.customRepository</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Customer-specified remote repository.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>remoteRepositoryConfig.npmRepository.customRepository.uri</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>An http/https uri reference to the upstream remote repository, for ex: "https://my.npm.registry/".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>remoteRepositoryConfig.npmRepository.publicRepository</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -576,6 +644,26 @@ virtualRepositoryConfig:
         <td>
             <p><code class="apitype">object</code></p>
             <p>Specific settings for a Python remote repository.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>remoteRepositoryConfig.pythonRepository.customRepository</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Customer-specified remote repository.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>remoteRepositoryConfig.pythonRepository.customRepository.uri</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>An http/https uri reference to the upstream remote repository, for ex: "https://my.python.registry/".</p>
         </td>
     </tr>
     <tr>
