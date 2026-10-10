@@ -74,3 +74,8 @@ const (
 func IsSourceLinkReason(reason string) bool {
 	return reason == ReasonVerifyResourceDocsLink || reason == ReasonVerifyServiceDocsLink
 }
+
+// ReasonUntriagedBulkGeneration marks a Kind that nobody has reviewed yet.
+// PrepopulateSpec queues one for each new Kind. While the entry is open, each
+// generate-types run with --prepopulate-spec checks the Kind again.
+const ReasonUntriagedBulkGeneration = "untriaged-bulk-generation"

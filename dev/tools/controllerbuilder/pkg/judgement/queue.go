@@ -209,6 +209,11 @@ const header = `# Judgement queue for this service, written by controllerbuilder
 # that field. Once it is resolved, the field is checked like any other. A field
 # can have several of these entries, one per signal. Give them all the same
 # status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
 `
 
 // Write saves a queue file with its header.
