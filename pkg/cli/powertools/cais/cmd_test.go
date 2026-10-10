@@ -325,6 +325,137 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 	}
 }
 
+// TestFixtureExternalRefEvidence verifies that for every resource fixture with a
+// _generated_object_*.golden.yaml recording status.externalRef, the primary
+// resource's IdentityV2 accepts the recorded status.externalRef and round-trips cleanly.
+func TestFixtureExternalRefEvidence(t *testing.T) {
+	ctx := context.Background()
+	scheme := cais.NewScheme()
+	caistesting.InitializeFakeGCPVariables()
+
+	rootPath := filepath.Join("..", "..", "..", "test", "resourcefixture", "testdata")
+	gcpProject := testgcp.GCPProject{ProjectID: "mock-project", ProjectNumber: 1234567890}
+
+	checked := 0
+	err := filepath.WalkDir(rootPath, func(path string, d os.DirEntry, err error) error {
+		if err != nil || d.IsDir() || d.Name() != "create.yaml" {
+			return err
+		}
+		dir := filepath.Dir(path)
+		goldens, _ := filepath.Glob(filepath.Join(dir, "_generated_object_*.golden.yaml"))
+		if len(goldens) == 0 {
+			return nil
+		}
+		idV2, kind := resolveFixtureIdentityV2(t, ctx, scheme, dir, gcpProject)
+		if idV2 == nil {
+			return nil
+		}
+		for _, extRef := range readGoldenExternalRefs(t, goldens, kind, gcpProject) {
+			checked++
+			if err := idV2.FromExternal(extRef); err != nil {
+				t.Errorf("%s: recorded status.externalRef=%q rejected by %s IdentityV2.FromExternal: %v", dir, extRef, kind, err)
+				continue
+			}
+			wantRel := strings.TrimPrefix(extRef, "//"+idV2.Host()+"/")
+			if got := idV2.String(); got != wantRel {
+				t.Errorf("%s: IdentityV2.String() after FromExternal(%q) = %q, want %q", dir, extRef, got, wantRel)
+			}
+		}
+		return nil
+	})
+	if err != nil {
+		t.Fatalf("WalkDir failed: %v", err)
+	}
+	t.Logf("Verified %d fixture golden status.externalRef evidence records against IdentityV2", checked)
+}
+
+func resolveFixtureIdentityV2(t *testing.T, ctx context.Context, scheme *runtime.Scheme, dir string, gcpProject testgcp.GCPProject) (identity.IdentityV2, string) {
+	t.Helper()
+	depObjs := parseFixtureYAML(t, filepath.Join(dir, "dependencies.yaml"), gcpProject)
+	createObjs := parseFixtureYAML(t, filepath.Join(dir, "create.yaml"), gcpProject)
+	if len(createObjs) == 0 {
+		return nil, ""
+	}
+	primary := createObjs[len(createObjs)-1]
+	kccObjs := normalizeFixtureKCCObjects(append(depObjs, createObjs...))
+
+	gk := primary.GroupVersionKind().GroupKind()
+	obj, err := kccscheme.NewObject(gk)
+	if err != nil {
+		return nil, ""
+	}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(primary.Object, obj); err != nil {
+		return nil, ""
+	}
+	res, ok := obj.(identity.Resource)
+	if !ok {
+		return nil, ""
+	}
+	id, err := res.GetIdentity(ctx, cais.NewInMemoryReader(scheme, kccObjs))
+	if err != nil || id == nil {
+		return nil, ""
+	}
+	if sg, ok := id.(identity.ServerGeneratedIdentity); ok && !sg.HasIdentitySpecified() {
+		return nil, ""
+	}
+	idV2, ok := id.(identity.IdentityV2)
+	if !ok {
+		return nil, ""
+	}
+	return idV2, gk.Kind
+}
+
+func readGoldenExternalRefs(t *testing.T, goldens []string, kind string, gcpProject testgcp.GCPProject) []string {
+	t.Helper()
+	var refs []string
+	for _, gPath := range goldens {
+		for _, gu := range parseFixtureYAML(t, gPath, gcpProject) {
+			if gu.GetKind() != kind {
+				continue
+			}
+			extRef, found, err := unstructured.NestedString(gu.Object, "status", "externalRef")
+			if err == nil && found && extRef != "" && !strings.Contains(extRef, "${") {
+				refs = append(refs, extRef)
+			}
+		}
+	}
+	return refs
+}
+
+func parseFixtureYAML(t *testing.T, path string, gcpProject testgcp.GCPProject) []*unstructured.Unstructured {
+	t.Helper()
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		return nil
+	}
+	expanded := cleanDoubleQuotes(testcontroller.ReplaceTestVars(t, raw, "puxvndidajatl5i", gcpProject))
+	objs, _ := objects.ParseObjectsFromStream(bytes.NewReader(expanded))
+	return objs
+}
+
+func normalizeFixtureKCCObjects(allObjs []*unstructured.Unstructured) []*unstructured.Unstructured {
+	var kccObjs []*unstructured.Unstructured
+	for _, u := range allObjs {
+		group := u.GroupVersionKind().Group
+		if !strings.HasSuffix(group, ".cnrm.cloud.google.com") || group == "core.cnrm.cloud.google.com" {
+			continue
+		}
+		if u.GetNamespace() == "" {
+			u.SetNamespace("puxvndidajatl5i")
+		}
+		ann := u.GetAnnotations()
+		if ann == nil {
+			ann = make(map[string]string)
+		}
+		if ann["cnrm.cloud.google.com/project-id"] == "" {
+			ann["cnrm.cloud.google.com/project-id"] = "mock-project"
+			u.SetAnnotations(ann)
+		}
+		kccObjs = append(kccObjs, u)
+	}
+	return kccObjs
+}
+
 // cleanDoubleQuotes removes any duplicate double quotes created when placeholder expansion replaces inside quoted strings
 func cleanDoubleQuotes(b []byte) []byte {
 	s := string(b)
