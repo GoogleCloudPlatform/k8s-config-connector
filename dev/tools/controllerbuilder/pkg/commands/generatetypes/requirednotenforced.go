@@ -81,12 +81,12 @@ type goField struct {
 }
 
 // requiredNotEnforced returns a queue entry for each spec field, at any
-// depth, that the proto marks REQUIRED but the CRD leaves optional. It
-// checks each Kind in the run.
+// depth, that the proto marks REQUIRED but the CRD leaves optional. It checks
+// each Kind in the run.
 //
-// It reads the package's Go source, so it sees every field that ends up in
-// the CRD: generated fields, hand-written fields, and fields of Kinds
-// scaffolded before the marker existed. Run it after WriteFiles and prune.
+// It reads the package's Go source, so it sees every field the CRD gets:
+// generated ones, hand-written ones, and those of Kinds scaffolded before the
+// marker existed. Run it after WriteFiles and prune.
 func requiredNotEnforced(files descriptorFinder, apisDir, goPackage, group string, kinds []string, protoFullNames map[string]string) ([]judgement.Entry, error) {
 	pkgDir := filepath.Join(apisDir, goPackage)
 	structs, err := loadStructs(pkgDir)
@@ -290,9 +290,9 @@ func declaresStruct(dir, name string) bool {
 	return false
 }
 
-// structUsers maps each struct in the package to what reaches it: the Kind's
-// name if a Kind's spec reaches it, and "the status of <Kind>" if its status
-// does. A Kind is a struct that embeds metav1.TypeMeta.
+// structUsers maps each struct in the package to what reaches it: a Kind's
+// name for its spec, and "the status of <Kind>" for its status. A Kind is a
+// struct that embeds metav1.TypeMeta.
 func structUsers(structs map[string]*goStruct) map[string][]string {
 	seen := map[string]map[string]bool{}
 	var visit func(name, user string)
@@ -384,9 +384,9 @@ func (w *requiredGapFinder) sharedWith(name string) []string {
 	return out
 }
 
-// enteredStruct is where the walk went from a hand-written struct into a
-// generated one. For an opted-in Kind, that hand-written field is the one
-// to switch to the generated struct's Required copy.
+// enteredStruct is where the walk crossed from a hand-written struct into a
+// generated one. For an opted-in Kind, that hand-written field should switch
+// to the generated struct's Required copy.
 type enteredStruct struct {
 	// parent is the hand-written struct, and field the Go name of its field.
 	parent *goStruct
@@ -549,19 +549,19 @@ func (w *requiredGapFinder) isRequiredCopy(s *goStruct) bool {
 }
 
 // requiredNameTaken reports whether another type already has the name of s's
-// Required copy. Then generate-types writes no copy, and s stays optional for
-// every Kind.
+// Required copy. If so, generate-types writes no copy, and s stays optional
+// for every Kind.
 func (w *requiredGapFinder) requiredNameTaken(s *goStruct) bool {
 	other := w.structs[s.name+"Required"]
 	return other != nil && !w.isRequiredCopy(other)
 }
 
-// detail says why the field is optional, how to enforce it, and whether that
-// is allowed for this Kind.
+// detail says why the field is optional, how to enforce it, and whether this
+// Kind may.
 //
-// The fix only ever changes this Kind. If the hand-written struct to edit is
-// also used by another Kind or a status, the detail asks for a copy instead,
-// because editing it in place would change those too.
+// The fix only ever changes this Kind. If another Kind or a status also uses
+// the hand-written struct to edit, the detail asks for a copy instead, since
+// an edit in place would change them too.
 func (w *requiredGapFinder) detail(s *goStruct, f goField, entered *enteredStruct) string {
 	const what = "The proto marks this field REQUIRED, but the CRD leaves it optional."
 	if w.servedAs != "" {

@@ -54,10 +54,10 @@ type APIScaffolder struct {
 	EmitParentRefs bool
 
 	// RequiredFromProto adds the +kcc:required-from-proto marker to the Spec
-	// of each <kind>_types.go it scaffolds. generate-types then puts +required
+	// of each <kind>_types.go it scaffolds, so generate-types puts +required
 	// on the fields the proto marks REQUIRED, for that Kind only. Kinds
-	// scaffolded earlier keep their optional fields, because making a field
-	// required breaks objects that leave it out.
+	// scaffolded earlier keep their optional fields, since making a field
+	// required breaks objects that omit it.
 	RequiredFromProto bool
 }
 

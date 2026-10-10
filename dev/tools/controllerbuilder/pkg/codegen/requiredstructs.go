@@ -38,9 +38,9 @@ import (
 // the fields the proto marks REQUIRED.
 //
 // With --emit-required-from-proto, the scaffold adds it to each new
-// <kind>_types.go. Existing Kinds don't have it, so they keep their optional
-// fields: making a field required breaks objects that leave it out. To opt
-// in an existing Kind, add the marker by hand.
+// <kind>_types.go. Existing Kinds lack it and keep their optional fields,
+// since making a field required breaks objects that omit it. To opt in an
+// existing Kind, add the marker by hand.
 const RequiredFromProtoMarker = "+kcc:required-from-proto"
 
 // IsRequiredFromProtoMarker reports whether a comment line is the marker.
@@ -49,7 +49,7 @@ func IsRequiredFromProtoMarker(line string) bool {
 }
 
 // RequiredStructName is the name of msg's Required copy: the plain name plus
-// "Required". Opted-in Kinds use it when something else also uses msg.
+// "Required". Opted-in Kinds use the copy when msg has other users.
 func RequiredStructName(msg protoreflect.MessageDescriptor) string {
 	return GoNameForProtoMessage(msg) + "Required"
 }
@@ -70,19 +70,18 @@ type RequiredUses struct {
 	MarkedKinds map[string]bool
 	// FromMarkedSpecs are the types an opted-in Spec uses directly.
 	FromMarkedSpecs map[string]bool
-	// FromElsewhere are the types used anywhere else: the Spec of a Kind
-	// without the marker, a status, a hand-written helper type, or another
-	// package under apis/.
+	// FromElsewhere are the types used anywhere else: an unmarked Kind's Spec,
+	// a status, a hand-written helper type, or another package under apis/.
 	FromElsewhere map[string]bool
 }
 
-// ScanRequiredUses reads the hand-written Go files in pkgDir and the Go files
+// ScanRequiredUses reads the hand-written Go files in pkgDir, and the Go files
 // of every other package under apisDir that imports importPath.
 //
-// Only the fields of an opted-in Spec count as strict uses. The scan doesn't
-// follow hand-written types, so a hand-written helper type counts as a use
-// from elsewhere, even when only an opted-in Spec reaches it. When in doubt
-// the field stays optional, and the judgement queue reports it.
+// Only an opted-in Spec's fields count as strict uses. The scan doesn't follow
+// hand-written types, so a hand-written helper type counts as a use from
+// elsewhere, even if only an opted-in Spec reaches it. When in doubt, the
+// field stays optional and the judgement queue reports it.
 func ScanRequiredUses(pkgDir, apisDir, importPath string) (*RequiredUses, error) {
 	uses := &RequiredUses{
 		MarkedKinds:     map[string]bool{},
@@ -148,9 +147,9 @@ func (u *RequiredUses) scanPackage(dir string) error {
 	return nil
 }
 
-// scanImporters records the types of the package that other packages under
+// scanImporters records which of the package's types other packages under
 // apisDir use, such as a v1alpha1 Spec that holds a v1beta1 struct. The
-// generator has no other way to see those uses.
+// generator can't see those uses any other way.
 func (u *RequiredUses) scanImporters(apisDir, pkgDir, importPath string) error {
 	quoted := []byte(strconv.Quote(importPath))
 	skip := filepath.Clean(pkgDir)
@@ -273,12 +272,12 @@ type requiredPlan struct {
 // PlanRequiredStructs decides which structs get +required markers. Call it
 // after VisitProto and before WriteVisitedMessages.
 //
-// A message that an opted-in Spec reaches gets a strict struct. A message
-// that anything else reaches gets a lenient one: a Spec without the marker,
-// a status, a hand-written type or another package. If a message needs both,
-// the plain name stays lenient, so its current users don't change, and the
-// strict version is written next to it as <Name>Required. If code already
-// uses <Name>Required, it is always written.
+// A message reached from an opted-in Spec gets a strict struct. A message
+// reached from anything else gets a lenient one: an unmarked Spec, a status,
+// a hand-written type or another package. A message that needs both keeps
+// its plain name lenient, so its current users don't change, and gets a
+// strict <Name>Required copy. A copy that code already uses is always
+// written.
 //
 // newSpecFields are the top-level Spec fields of the Kinds this run
 // scaffolds. Those Kinds get the marker, so their fields are strict uses.
@@ -293,8 +292,8 @@ func (g *TypeGenerator) PlanRequiredStructs(uses *RequiredUses, newSpecFields []
 
 	strict := map[string]bool{}
 	lenient := map[string]bool{}
-	// named holds the messages whose Required copy some code already uses.
-	// That code doesn't compile unless the copy is written.
+	// named holds the messages whose Required copy code already uses. That
+	// code only compiles if the copy is written.
 	named := map[string]bool{}
 	use := func(typeName string, fromMarkedSpec bool) {
 		// Check message names first: a message can be called FooRequired
@@ -326,8 +325,8 @@ func (g *TypeGenerator) PlanRequiredStructs(uses *RequiredUses, newSpecFields []
 			strict[fqn] = true
 		}
 	}
-	// An ObservedState struct can hold a message's plain struct: for a message
-	// with no ObservedState struct of its own, and for map values. Those must
+	// An ObservedState struct holds a message's plain struct when the message
+	// has no ObservedState struct of its own, and for map values. Those must
 	// stay lenient, or +required ends up in the status schema.
 	for _, details := range g.outputMessages {
 		for _, f := range details.OutputFields {
@@ -373,11 +372,11 @@ func (g *TypeGenerator) PlanRequiredStructs(uses *RequiredUses, newSpecFields []
 		taken[name] = true
 	}
 
-	// A message needs two structs only if its two versions differ: it has a
-	// REQUIRED field, or it holds a message that is split. Splitting a message
-	// can make its parent differ too, also through cycles, so loop until
-	// nothing changes. A message whose Required copy code already uses is
-	// always split, so that code compiles.
+	// A message needs two structs only if its versions differ: it has a
+	// REQUIRED field or holds a split message. Splitting a message can make its
+	// parents differ too, including through cycles, so loop until nothing
+	// changes. A message whose Required copy code already uses is always split,
+	// so that code compiles.
 	split := map[string]bool{}
 	collided := map[string]bool{}
 	for changed := true; changed; {
