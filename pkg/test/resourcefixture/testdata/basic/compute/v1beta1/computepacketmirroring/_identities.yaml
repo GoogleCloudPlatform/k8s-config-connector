@@ -22,7 +22,7 @@
   name: computeinstance-2-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-west2/backendServices/computebackendservice-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeBackendService
   name: computebackendservice-${uniqueId}
