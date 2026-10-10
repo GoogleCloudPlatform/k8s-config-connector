@@ -1,5 +1,6 @@
 GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/edgeCacheOrigins/networkservicesedgecacheorigin${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -23,6 +24,7 @@ X-Xss-Protection: 0
 
 POST https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/edgeCacheOrigins?alt=json&edgeCacheOriginId=networkservicesedgecacheorigin${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "description": "The default bucket for media edge test",
@@ -58,6 +60,7 @@ X-Xss-Protection: 0
 
 GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -98,6 +101,7 @@ X-Xss-Protection: 0
 
 GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/edgeCacheOrigins/networkservicesedgecacheorigin${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -125,6 +129,7 @@ X-Xss-Protection: 0
 
 GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/edgeCacheServices/networkservicesedgecacheservice${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -148,6 +153,7 @@ X-Xss-Protection: 0
 
 POST https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/edgeCacheServices?alt=json&edgeCacheServiceId=networkservicesedgecacheservice${uniqueId}
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "description": "An edge cache service test",
@@ -233,6 +239,7 @@ X-Xss-Protection: 0
 
 GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -329,6 +336,7 @@ X-Xss-Protection: 0
 
 GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/edgeCacheServices/networkservicesedgecacheservice${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -412,6 +420,7 @@ X-Xss-Protection: 0
 
 PATCH https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/edgeCacheServices/networkservicesedgecacheservice${uniqueId}?alt=json&updateMask=description%2Crouting
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "description": "An edge cache service test updated",
@@ -498,6 +507,7 @@ X-Xss-Protection: 0
 
 GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -595,6 +605,7 @@ X-Xss-Protection: 0
 
 GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/edgeCacheServices/networkservicesedgecacheservice${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -679,6 +690,7 @@ X-Xss-Protection: 0
 
 DELETE https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/edgeCacheServices/networkservicesedgecacheservice${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -705,6 +717,7 @@ X-Xss-Protection: 0
 
 GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -736,6 +749,7 @@ X-Xss-Protection: 0
 
 GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/edgeCacheOrigins/networkservicesedgecacheorigin${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -763,6 +777,7 @@ X-Xss-Protection: 0
 
 DELETE https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/edgeCacheOrigins/networkservicesedgecacheorigin${uniqueId}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -789,6 +804,7 @@ X-Xss-Protection: 0
 
 GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
