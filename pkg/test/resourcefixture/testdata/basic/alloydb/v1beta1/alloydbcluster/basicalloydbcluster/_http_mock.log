@@ -102,6 +102,7 @@ Content-Type: application/json
   },
   "labels": {
     "cnrm-test": "true",
+    "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
   "networkConfig": {
@@ -213,6 +214,7 @@ X-Xss-Protection: 0
     "geminiConfig": {},
     "labels": {
       "cnrm-test": "true",
+      "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
@@ -296,6 +298,7 @@ X-Xss-Protection: 0
   "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
+    "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
@@ -312,7 +315,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=initialUser
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
 Content-Type: application/json
 
 {
@@ -353,6 +356,7 @@ Content-Type: application/json
   },
   "labels": {
     "cnrm-test": "true",
+    "label-one": "value-two",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
@@ -468,6 +472,7 @@ X-Xss-Protection: 0
     "geminiConfig": {},
     "labels": {
       "cnrm-test": "true",
+      "label-one": "value-two",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
@@ -551,6 +556,7 @@ X-Xss-Protection: 0
   "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
+    "label-one": "value-two",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",

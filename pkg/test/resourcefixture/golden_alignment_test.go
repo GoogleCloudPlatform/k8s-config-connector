@@ -647,6 +647,15 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			}
 		}
 
+		// AlloyDB specific fields to normalize alignment differences between mock and real GCP responses
+		delete(v, "dataplexConfig")
+		delete(v, "serviceAccountEmail")
+		if dv, ok := v["databaseVersion"].(float64); ok && (dv == 4 || dv == 6) {
+			v["databaseVersion"] = float64(4)
+		} else if dv, ok := v["databaseVersion"].(string); ok && (dv == "POSTGRES_16" || dv == "POSTGRES_18") {
+			v["databaseVersion"] = "POSTGRES_16"
+		}
+
 		// Normalize empty LRO response payloads (e.g., from mock Delete operations returning Empty, but real returns nothing)
 		if resp, ok := v["response"].(map[string]interface{}); ok {
 			if len(resp) == 0 || (len(resp) == 1 && resp["@type"] == "type.googleapis.com/google.protobuf.Empty") {

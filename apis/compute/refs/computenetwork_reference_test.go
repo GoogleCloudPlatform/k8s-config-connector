@@ -159,9 +159,9 @@ func TestCanonicalizeNetworkValue(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			ctx := context.TODO()
-			got := canonicalizeNetworkValue(ctx, tc.val, tc.parentProjectID, projectMapper)
+			got := CanonicalizeNetworkValue(ctx, tc.val, tc.parentProjectID, projectMapper)
 			if got != tc.want {
-				t.Errorf("canonicalizeNetworkValue(%q, %q) = %q, want %q", tc.val, tc.parentProjectID, got, tc.want)
+				t.Errorf("CanonicalizeNetworkValue(%q, %q) = %q, want %q", tc.val, tc.parentProjectID, got, tc.want)
 			}
 		})
 	}

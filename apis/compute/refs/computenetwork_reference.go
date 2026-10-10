@@ -86,9 +86,9 @@ func (r *ComputeNetworkRef) SetExternal(ref string) {
 	r.Namespace = ""
 }
 
-// canonicalizeNetworkValue transforms any raw network string (full URI, short name, or relative path with project number)
+// CanonicalizeNetworkValue transforms any raw network string (full URI, short name, or relative path with project number)
 // into a canonical relative path: "projects/{projectID}/global/networks/{network}".
-func canonicalizeNetworkValue(ctx context.Context, val string, parentProjectID string, projectMapper *projects.ProjectMapper) string {
+func CanonicalizeNetworkValue(ctx context.Context, val string, parentProjectID string, projectMapper *projects.ProjectMapper) string {
 	if val == "" {
 		return ""
 	}
@@ -165,7 +165,7 @@ func (r *ComputeNetworkRef) CanonicalizeAndNormalize(ctx context.Context, reader
 	if r == nil {
 		return nil
 	}
-	r.External = canonicalizeNetworkValue(ctx, r.External, parentProjectID, projectMapper)
+	r.External = CanonicalizeNetworkValue(ctx, r.External, parentProjectID, projectMapper)
 	return r.Normalize(ctx, reader, defaultNamespace)
 }
 
