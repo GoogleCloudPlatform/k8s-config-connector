@@ -4,11 +4,10 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
     label-one: value-one
@@ -28,18 +27,63 @@ spec:
   nodeCount: 2
   queuedProvisioning:
     enabled: true
-  resourceID: nodepool-sample-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: The resource is up to date
-    reason: UpToDate
-    status: "True"
+    message: "Update call failed: error updating: setting size for ContainerNodePool
+      \"projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}\":
+      googleapi: Error 400: Manual resizing of queued provisioning node pool (nodepool-sample-${uniqueId})
+      to a value other than 0 is not allowed.\nerror details: name = RequestInfo id
+      = 0x900893a2cbcc8107 data = \nerror details: name = DebugInfo detail = INVALID_ARGUMENT:
+      Manual resizing of queued provisioning node pool (nodepool-sample-${uniqueId})
+      to a value other than 0 is not allowed stack = cloud/kubernetes/engine/common/error_desc.go:440
+      +0x26 google3/cloud/kubernetes/engine/common/errdesc.(*GKEErrorDescriptor).createErr(0x2fe2b77f8fa0,
+      {0x55bec196f370, 0x2fe3a210d1a0}) cloud/kubernetes/engine/common/error_desc.go:315
+      +0x4c google3/cloud/kubernetes/engine/common/errdesc.(*GKEErrorDescriptor).WithMsgCtx(0x2fe3b0a201e0?,
+      {0x55bec196f370?, 0x2fe3a210d1a0?}, {0x55beac5310ef, 0x5c}, {0x2fe45ef23260,
+      0x1, 0x1}) cloud/kubernetes/server/server_update.go:600 +0x25c google3/cloud/kubernetes/server/server.(*ClusterServer).validateSetNodePoolSize(0x2fe31af82488,
+      {0x55bec196f370, 0x2fe3a210d1a0}, 0xb00119cb41, {0x2fe2b7681719, 0x12}, 0x2fe43ea39508,
+      {0x2fe2b7681776, 0x1f}, 0x2) cloud/kubernetes/server/server_update.go:518 +0x4e
+      google3/cloud/kubernetes/server/server.(*ClusterServer).SetNodePoolSize.func3({0x55bec196f370?,
+      0x2fe3a210d1a0?}) cloud/kubernetes/engine/requests/stage.go:211 +0x78 google3/cloud/kubernetes/engine/requests/stage.Record.func1({0x55bec196f370,
+      0x2fe3a210d1a0}) cloud/kubernetes/engine/common/stage/stage.go:316 +0xc03 google3/cloud/kubernetes/engine/common/stage/stage.Record({0x55bec196f370,
+      0x2fe3a2a6e330}, {0x55beac2aeca5, 0x17}, {0x55beac227ff0, 0x3}, 0x2fe45ef23770,
+      {0x2fe45ef23748, 0x1, 0x1}) cloud/kubernetes/engine/requests/stage.go:250 +0x653
+      google3/cloud/kubernetes/engine/requests/stage.Record({0x55bec196f370, 0x2fe3a2a6e330},
+      {0x55beac2aeca5, 0x17}, {0x55beac227ff0, 0x3}, 0x2fe45ef238e0, {0x0, 0x0, 0x0})
+      cloud/kubernetes/server/server_update.go:517 +0x412 google3/cloud/kubernetes/server/server.(*ClusterServer).SetNodePoolSize(0x2fe31af82488,
+      {0x55bec196f370, 0x2fe3a2a6e330}, {0x2fe2b7681736, 0xd}, {0x2fe2b7681719, 0x12},
+      {0x2fe2b768174d, 0x1e}, {0x2fe2b7681776, ...}, ...) cloud/kubernetes/server/v1alpha1/server.go:2409
+      +0x20f google3/cloud/kubernetes/server/v1alpha1/server.(*ClusterServer).setNodePoolSize(0x2fe31d6cba40,
+      {0x55bec196f370, 0x2fe3a2a6e330}, 0x2fe320c9c510, 0x2fe43f314b40, 0x2fe44234ebe8)
+      cloud/kubernetes/server/v1alpha1/server.go:2380 +0x585 google3/cloud/kubernetes/server/v1alpha1/server.(*ClusterServer).SetNodePoolSize.func1({0x55bec196f370,
+      0x2fe3a2a6e330}) cloud/kubernetes/engine/requests/stage.go:211 +0x78 google3/cloud/kubernetes/engine/requests/stage.Record.func1({0x55bec196f370,
+      0x2fe3a2a6e330}) cloud/kubernetes/engine/common/stage/stage.go:316 +0xc03 google3/cloud/kubernetes/engine/common/stage/stage.Record({0x55bec196f370,
+      0x2fe3a2a6e000}, {0x55beac2ae997, 0x17}, {0x55beac227ff0, 0x3}, 0x2fe312e182d8,
+      {0x2fe312e182b0, 0x1, 0x1}) cloud/kubernetes/engine/requests/stage.go:250 +0x653
+      google3/cloud/kubernetes/engine/requests/stage.Record({0x55bec196f370, 0x2fe3a2a6e000},
+      {0x55beac2ae997, 0x17}, {0x55beac227ff0, 0x3}, 0x2fe312e183b8, {0x0, 0x0, 0x0})
+      cloud/kubernetes/server/v1alpha1/server.go:2347 google3/cloud/kubernetes/server/v1alpha1/server.(*ClusterServer).SetNodePoolSize(...)
+      cloud/kubernetes/engine/server/api/v1/server.go:466 +0x156 google3/cloud/kubernetes/engine/server/api/v1/server.(*ClusterServer).SetNodePoolSize(0x2fe3198dc368,
+      {0x55bec196f370, 0x2fe3a2a6e000}, 0x2fe4168466c0, 0x2fe43f314a20) net/goa/rpc/rpchandler.go:111
+      +0x4f7 google3/net/goa/rpc/rpchandler.ExecHandlerSubset({0x55bec196f370?, 0x2fe3ceb01bc0?},
+      0x2fe45ef254e0) net/goa/rpc/rpchandler.go:345 +0xa1f google3/net/goa/rpc/rpchandler.(*closedRegistry).hook(0x2fe2e0de0780,
+      {0x55bec196fc68, 0x2fe2decac8a0}, 0x2fe44a851780) production/fireaxe/go/filters/rpcserverinterceptor.go:62
+      +0x35e google3/production/fireaxe/go/filters/rpcserverinterceptor.(*Interceptor).MakeHook.func2({0x55bec196fc68,
+      0x2fe2decac8a0}, 0x2fe44a851780)"
+    reason: UpdateFailed
+    status: "False"
     type: Ready
+  externalRef: projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}
   instanceGroupUrls:
-  - https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-nodepool-sample-${uniqueId}-grp
+  - https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-normalized-grp
   managedInstanceGroupUrls:
-  - https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-nodepool-sample-${uniqueId}-grp
-  observedGeneration: 3
+  - https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-normalized-grp
+  observedGeneration: 2
   observedState:
+    nodeConfig:
+      taint:
+      - effect: NO_SCHEDULE
+        key: cloud.google.com/gke-queued
+        value: "true"
     version: 1.30.5-gke.1014001

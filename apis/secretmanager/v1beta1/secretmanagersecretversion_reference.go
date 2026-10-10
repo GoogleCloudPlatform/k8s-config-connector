@@ -19,20 +19,25 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+var _ refsv1beta1.Ref = &SecretVersionRef{}
+var _ refsv1beta1.ExternalRef = &SecretVersionRef{}
 var _ refsv1beta1.ExternalNormalizer = &SecretVersionRef{}
 
 // SecretVersionRef is a reference to a SecretManagerSecretVersion.
+// +k8s:deepcopy-gen=true
 type SecretVersionRef struct {
 	// A reference to an externally managed SecretManagerSecretVersion resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/secretversions/{{secretversionID}}".
+	// Should be in the format "projects/{{projectID}}/secrets/{{secretID}}/versions/{{versionID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a SecretManagerSecretVersion resource.
@@ -40,6 +45,58 @@ type SecretVersionRef struct {
 
 	// The namespace of a SecretManagerSecretVersion resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+// +k8s:deepcopy-gen=false
+type SecretManagerSecretVersionRef = SecretVersionRef
+
+func init() {
+	refsv1beta1.Register(&SecretVersionRef{}, &SecretManagerSecretVersion{})
+}
+
+func (r *SecretVersionRef) GetGVK() schema.GroupVersionKind {
+	return SecretManagerSecretVersionGVK
+}
+
+func (r *SecretVersionRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *SecretVersionRef) GetExternal() string {
+	return r.External
+}
+
+func (r *SecretVersionRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *SecretVersionRef) ValidateExternal(ref string) error {
+	_, err := ParseSecretVersionExternal(ref)
+	return err
+}
+
+func (r *SecretVersionRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &SecretVersionIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+func (r *SecretVersionRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	fallback := func(u *unstructured.Unstructured) string {
+		actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "name")
+		if err == nil {
+			return actualExternalRef
+		}
+		return ""
+	}
+	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on SecretManagerSecretVersion.

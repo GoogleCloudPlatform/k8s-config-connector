@@ -1,0 +1,38 @@
+7d6
+<     cnrm.cloud.google.com/state-into-spec: absent
+29,45c28,30
+<     message: |-
+<       Update call failed: error applying desired state: summary: error creating NodePool: googleapi: Error 400: Invalid value at 'node_pool.config.windows_node_config.os_version' (type.googleapis.com/google.container.v1beta1.WindowsNodeConfig.OSVersion), "OS_2022"
+<       Details:
+<       [
+<         {
+<           "@type": "type.googleapis.com/google.rpc.BadRequest",
+<           "fieldViolations": [
+<             {
+<               "description": "Invalid value at 'node_pool.config.windows_node_config.os_version' (type.googleapis.com/google.container.v1beta1.WindowsNodeConfig.OSVersion), \"OS_2022\"",
+<               "field": "node_pool.config.windows_node_config.os_version"
+<             }
+<           ]
+<         }
+<       ]
+<       , invalid
+<     reason: UpdateFailed
+<     status: "False"
+---
+>     message: The resource is up to date
+>     reason: UpToDate
+>     status: "True"
+46a32,36
+>   externalRef: projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}
+>   instanceGroupUrls:
+>   - https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-normalized-grp
+>   managedInstanceGroupUrls:
+>   - https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-normalized-grp
+47a38,44
+>   observedState:
+>     nodeConfig:
+>       taint:
+>       - effect: NO_SCHEDULE
+>         key: node.kubernetes.io/os
+>         value: windows
+>     version: 1.30.5-gke.1014001

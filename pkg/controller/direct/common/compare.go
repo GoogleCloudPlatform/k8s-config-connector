@@ -539,3 +539,247 @@ func extractProtoLabels(msg proto.Message, labelsFieldName string) map[string]st
 	})
 	return labels
 }
+
+type SpecDiffResult[ProtoT proto.Message] struct {
+	Diff          *structuredreporting.Diff
+	FieldMask     *fieldmaskpb.FieldMask
+	MergedDesired ProtoT
+}
+
+func (r *SpecDiffResult[ProtoT]) Empty() bool {
+	return r == nil || r.FieldMask == nil || len(r.FieldMask.GetPaths()) == 0
+}
+
+func (r *SpecDiffResult[ProtoT]) Has(path string) bool {
+	if r == nil || r.FieldMask == nil {
+		return false
+	}
+	for _, p := range r.FieldMask.GetPaths() {
+		if p == path || strings.HasPrefix(p, path+".") {
+			return true
+		}
+	}
+	return false
+}
+
+func valToMap(v protoreflect.Value) map[string]string {
+	if !v.IsValid() {
+		return nil
+	}
+	m := v.Map()
+	if m.Len() == 0 {
+		return nil
+	}
+	res := make(map[string]string, m.Len())
+	m.Range(func(k protoreflect.MapKey, val protoreflect.Value) bool {
+		if s, ok := val.Interface().(string); ok {
+			res[k.String()] = s
+		} else {
+			res[k.String()] = fmt.Sprintf("%v", val.Interface())
+		}
+		return true
+	})
+	return res
+}
+
+func DiffForFields(ctx context.Context, desired protoreflect.Message, actual protoreflect.Message, fineGrained bool) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	diff := &structuredreporting.Diff{
+		Controller: k8s.ReconcilerTypeDirect,
+	}
+	var paths []string
+
+	var recurse func(prefix string, dMsg protoreflect.Message, aMsg protoreflect.Message)
+	recurse = func(prefix string, dMsg protoreflect.Message, aMsg protoreflect.Message) {
+		fields := aMsg.Descriptor().Fields()
+		for i := 0; i < fields.Len(); i++ {
+			f := fields.Get(i)
+			fieldName := string(f.Name())
+			path := fieldName
+			if prefix != "" {
+				path = prefix + "." + fieldName
+			}
+
+			if fineGrained && shouldRecurse(f, aMsg) {
+				dSub := dMsg.Get(f).Message()
+				aSub := aMsg.Get(f).Message()
+				recurse(path, dSub, aSub)
+			} else {
+				fieldDiff := fieldHasChangedAt(ctx, path, dMsg, aMsg, f)
+				if fieldDiff == nil {
+					continue
+				}
+				diff.AddProtoField(fieldDiff.FieldPath, f, valToAny(fieldDiff.ActualValue), valToAny(fieldDiff.DesiredValue))
+				paths = append(paths, fieldDiff.FieldPath)
+			}
+		}
+	}
+
+	recurse("", desired, actual)
+
+	slices.SortFunc(diff.Fields, func(a, b structuredreporting.DiffField) int {
+		return strings.Compare(a.ID, b.ID)
+	})
+
+	return diff, &fieldmaskpb.FieldMask{Paths: paths}, nil
+}
+
+func fieldHasChangedAt(ctx context.Context, fieldPath string, desired protoreflect.Message, actual protoreflect.Message, fd protoreflect.FieldDescriptor) *FieldChange {
+	change := &FieldChange{FieldPath: fieldPath}
+
+	actualValue := actual.Get(fd)
+	change.ActualValue = actualValue
+
+	desiredValue := desired.Get(fd)
+	change.DesiredValue = desiredValue
+
+	foundActual := actual.Has(fd)
+	foundDesired := desired.Has(fd)
+
+	if fd != nil && fd.IsMap() {
+		aLen := 0
+		if actualValue.IsValid() {
+			aLen = actualValue.Map().Len()
+		}
+		dLen := 0
+		if desiredValue.IsValid() {
+			dLen = desiredValue.Map().Len()
+		}
+		if aLen == 0 && dLen == 0 {
+			return nil
+		}
+		if aLen != dLen {
+			return change
+		}
+		aMap := actualValue.Map()
+		dMap := desiredValue.Map()
+		equal := true
+		dMap.Range(func(k protoreflect.MapKey, dVal protoreflect.Value) bool {
+			if !aMap.Has(k) {
+				equal = false
+				return false
+			}
+			aVal := aMap.Get(k)
+			if fd.MapValue().Kind() == protoreflect.MessageKind {
+				if !proto.Equal(aVal.Message().Interface(), dVal.Message().Interface()) {
+					equal = false
+					return false
+				}
+			} else {
+				if !aVal.Equal(dVal) {
+					equal = false
+					return false
+				}
+			}
+			return true
+		})
+		if equal {
+			return nil
+		}
+		return change
+	}
+
+	if fd != nil && fd.IsList() {
+		if !foundActual && !foundDesired {
+			return nil
+		}
+		if actualValue.List().Len() == 0 && desiredValue.List().Len() == 0 {
+			return nil
+		}
+		if actualValue.Equal(desiredValue) {
+			return nil
+		}
+		return change
+	}
+
+	if !foundActual && !foundDesired {
+		return nil
+	}
+
+	if actualValue.Equal(desiredValue) {
+		return nil
+	}
+
+	if fd != nil && fd.Kind() == protoreflect.MessageKind {
+		if actualValue.IsValid() && desiredValue.IsValid() {
+			if proto.Equal(actualValue.Message().Interface(), desiredValue.Message().Interface()) {
+				return nil
+			}
+		}
+	}
+
+	return change
+}
+
+func CompareSpecifiedSpec[SpecType any, ProtoT interface {
+	proto.Message
+}](
+	ctx context.Context,
+	desiredKRM *SpecType,
+	actualProto ProtoT,
+	specFromProto func(mapCtx *direct.MapContext, in ProtoT) *SpecType,
+	specToProto func(mapCtx *direct.MapContext, in *SpecType) ProtoT,
+	normalize func(ctx context.Context, pb ProtoT) error,
+	fineGrained bool,
+) (*SpecDiffResult[ProtoT], error) {
+	mapCtx := &direct.MapContext{}
+
+	// Step 1: actualProto -> actualKRM (Spec_FromProto)
+	actualKRM := specFromProto(mapCtx, actualProto)
+	if err := mapCtx.Err(); err != nil {
+		return nil, err
+	}
+
+	// Step 2: Merge Unspecified Fields (MergeUnsetFields)
+	var clonedDesiredKRM *SpecType
+	if desiredKRM != nil {
+		bytes, err := json.Marshal(desiredKRM)
+		if err != nil {
+			return nil, fmt.Errorf("cloning desiredKRM: %w", err)
+		}
+		clonedDesiredKRM = new(SpecType)
+		if err := json.Unmarshal(bytes, clonedDesiredKRM); err != nil {
+			return nil, fmt.Errorf("cloning desiredKRM: %w", err)
+		}
+	}
+	MergeUnsetFields(reflect.ValueOf(clonedDesiredKRM), reflect.ValueOf(actualKRM))
+
+	// Step 3: Convert KRM Specs to Protos (Spec_ToProto)
+	desiredProtoMasked := specToProto(mapCtx, clonedDesiredKRM)
+	if err := mapCtx.Err(); err != nil {
+		return nil, err
+	}
+
+	actualProtoMasked := specToProto(mapCtx, actualKRM)
+	if err := mapCtx.Err(); err != nil {
+		return nil, err
+	}
+
+	// Step 4: Normalization & Slice Sorting (normalize & SortRepeatedFields)
+	if normalize != nil {
+		if err := normalize(ctx, desiredProtoMasked); err != nil {
+			return nil, err
+		}
+		if err := normalize(ctx, actualProtoMasked); err != nil {
+			return nil, err
+		}
+	}
+	SortRepeatedFields(proto.Message(desiredProtoMasked).ProtoReflect())
+	SortRepeatedFields(proto.Message(actualProtoMasked).ProtoReflect())
+
+	// Step 5: Diff & FieldMask Generation (DiffForFields)
+	diff, fieldMask, err := DiffForFields(
+		ctx,
+		proto.Message(desiredProtoMasked).ProtoReflect(),
+		proto.Message(actualProtoMasked).ProtoReflect(),
+		fineGrained,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &SpecDiffResult[ProtoT]{
+		Diff:          diff,
+		FieldMask:     fieldMask,
+		MergedDesired: desiredProtoMasked,
+	}, nil
+}
