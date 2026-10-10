@@ -2106,6 +2106,8 @@ func NodePoolManagement_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolManag
 	// MISSING: UpgradeOptions
 	return out
 }
+
+/* found existing non-generated mapping function "NodePoolNodeConfig_FromProto", skipping
 func NodePoolNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.NodePoolNodeConfig {
 	if in == nil {
 		return nil
@@ -2116,7 +2118,7 @@ func NodePoolNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) 
 	// (near miss): "DiskSizeGB" vs "DiskSizeGb"
 	out.OauthScopes = in.OauthScopes
 	if in.GetServiceAccount() != "" {
-		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+		out.ServiceAccountRef = &krmiamiamrefs.IAMServiceAccountRef{External: in.GetServiceAccount()}
 	}
 	out.Metadata = in.Metadata
 	out.ImageType = direct.LazyPtr(in.GetImageType())
@@ -2163,63 +2165,69 @@ func NodePoolNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) 
 	// MISSING: BootDisk
 	return out
 }
-func NodePoolNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolNodeConfig) *pb.NodeConfig {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "NodePoolNodeConfig_ToProto", skipping
+
+	func NodePoolNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolNodeConfig) *pb.NodeConfig {
+		if in == nil {
+			return nil
+		}
+		out := &pb.NodeConfig{}
+		out.MachineType = direct.ValueOf(in.MachineType)
+		// MISSING: DiskSizeGB
+		// (near miss): "DiskSizeGB" vs "DiskSizeGb"
+		out.OauthScopes = in.OauthScopes
+		if in.ServiceAccountRef != nil {
+			out.ServiceAccount = in.ServiceAccountRef.External
+		}
+		out.Metadata = in.Metadata
+		out.ImageType = direct.ValueOf(in.ImageType)
+		out.Labels = in.Labels
+		out.LocalSsdCount = direct.ValueOf(in.LocalSsdCount)
+		out.Tags = in.Tags
+		out.Preemptible = direct.ValueOf(in.Preemptible)
+		// MISSING: Accelerators
+		out.DiskType = direct.ValueOf(in.DiskType)
+		out.MinCpuPlatform = direct.ValueOf(in.MinCPUPlatform)
+		// MISSING: WorkloadMetadataConfig
+		// MISSING: Taints
+		out.SandboxConfig = SandboxConfig_ToProto(mapCtx, in.SandboxConfig)
+		if in.NodeGroupRef != nil {
+			out.NodeGroup = in.NodeGroupRef.External
+		}
+		out.ReservationAffinity = ReservationAffinity_ToProto(mapCtx, in.ReservationAffinity)
+		out.ShieldedInstanceConfig = ShieldedInstanceConfig_ToProto(mapCtx, in.ShieldedInstanceConfig)
+		out.LinuxNodeConfig = LinuxNodeConfig_ToProto(mapCtx, in.LinuxNodeConfig)
+		out.KubeletConfig = KubeletConfig_ToProto(mapCtx, in.KubeletConfig)
+		// MISSING: BootDiskKMSKey
+		out.GcfsConfig = GcfsConfig_ToProto(mapCtx, in.GcfsConfig)
+		out.AdvancedMachineFeatures = NodeConfig_AdvancedMachineFeatures_ToProto(mapCtx, in.AdvancedMachineFeatures)
+		// MISSING: Gvnic
+		out.Spot = direct.ValueOf(in.Spot)
+		out.ConfidentialNodes = ConfidentialNodes_ToProto(mapCtx, in.ConfidentialNodes)
+		out.FastSocket = FastSocket_ToProto(mapCtx, in.FastSocket)
+		out.ResourceLabels = in.ResourceLabels
+		// MISSING: LoggingConfig
+		out.WindowsNodeConfig = WindowsNodeConfig_ToProto(mapCtx, in.WindowsNodeConfig)
+		// MISSING: LocalNvmeSsdBlockConfig
+		out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_ToProto(mapCtx, in.EphemeralStorageLocalSsdConfig)
+		// MISSING: SoleTenantConfig
+		out.ContainerdConfig = ContainerdConfig_ToProto(mapCtx, in.ContainerdConfig)
+		out.ResourceManagerTags = map_string_string_ToProto(mapCtx, in.ResourceManagerTags)
+		// MISSING: EnableConfidentialStorage
+		// MISSING: SecondaryBootDisks
+		// MISSING: StoragePools
+		// MISSING: SecondaryBootDiskUpdateStrategy
+		// MISSING: MaxRunDuration
+		// MISSING: LocalSsdEncryptionMode
+		// MISSING: EffectiveCgroupMode
+		// MISSING: FlexStart
+		// MISSING: BootDisk
+		return out
 	}
-	out := &pb.NodeConfig{}
-	out.MachineType = direct.ValueOf(in.MachineType)
-	// MISSING: DiskSizeGB
-	// (near miss): "DiskSizeGB" vs "DiskSizeGb"
-	out.OauthScopes = in.OauthScopes
-	if in.ServiceAccountRef != nil {
-		out.ServiceAccount = in.ServiceAccountRef.External
-	}
-	out.Metadata = in.Metadata
-	out.ImageType = direct.ValueOf(in.ImageType)
-	out.Labels = in.Labels
-	out.LocalSsdCount = direct.ValueOf(in.LocalSsdCount)
-	out.Tags = in.Tags
-	out.Preemptible = direct.ValueOf(in.Preemptible)
-	// MISSING: Accelerators
-	out.DiskType = direct.ValueOf(in.DiskType)
-	out.MinCpuPlatform = direct.ValueOf(in.MinCPUPlatform)
-	// MISSING: WorkloadMetadataConfig
-	// MISSING: Taints
-	out.SandboxConfig = SandboxConfig_ToProto(mapCtx, in.SandboxConfig)
-	if in.NodeGroupRef != nil {
-		out.NodeGroup = in.NodeGroupRef.External
-	}
-	out.ReservationAffinity = ReservationAffinity_ToProto(mapCtx, in.ReservationAffinity)
-	out.ShieldedInstanceConfig = ShieldedInstanceConfig_ToProto(mapCtx, in.ShieldedInstanceConfig)
-	out.LinuxNodeConfig = LinuxNodeConfig_ToProto(mapCtx, in.LinuxNodeConfig)
-	out.KubeletConfig = KubeletConfig_ToProto(mapCtx, in.KubeletConfig)
-	// MISSING: BootDiskKMSKey
-	out.GcfsConfig = GcfsConfig_ToProto(mapCtx, in.GcfsConfig)
-	out.AdvancedMachineFeatures = NodeConfig_AdvancedMachineFeatures_ToProto(mapCtx, in.AdvancedMachineFeatures)
-	// MISSING: Gvnic
-	out.Spot = direct.ValueOf(in.Spot)
-	out.ConfidentialNodes = ConfidentialNodes_ToProto(mapCtx, in.ConfidentialNodes)
-	out.FastSocket = FastSocket_ToProto(mapCtx, in.FastSocket)
-	out.ResourceLabels = in.ResourceLabels
-	// MISSING: LoggingConfig
-	out.WindowsNodeConfig = WindowsNodeConfig_ToProto(mapCtx, in.WindowsNodeConfig)
-	// MISSING: LocalNvmeSsdBlockConfig
-	out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_ToProto(mapCtx, in.EphemeralStorageLocalSsdConfig)
-	// MISSING: SoleTenantConfig
-	out.ContainerdConfig = ContainerdConfig_ToProto(mapCtx, in.ContainerdConfig)
-	out.ResourceManagerTags = map_string_string_ToProto(mapCtx, in.ResourceManagerTags)
-	// MISSING: EnableConfidentialStorage
-	// MISSING: SecondaryBootDisks
-	// MISSING: StoragePools
-	// MISSING: SecondaryBootDiskUpdateStrategy
-	// MISSING: MaxRunDuration
-	// MISSING: LocalSsdEncryptionMode
-	// MISSING: EffectiveCgroupMode
-	// MISSING: FlexStart
-	// MISSING: BootDisk
-	return out
-}
+*/
 func NodePoolQueuedProvisioning_FromProto(mapCtx *direct.MapContext, in *pb.NodePool_QueuedProvisioning) *krm.NodePoolQueuedProvisioning {
 	if in == nil {
 		return nil

@@ -147,19 +147,23 @@ func resolveSecretKeySelector(ctx context.Context, kube client.Reader, namespace
 			return err
 		}
 	}
-	if versionRef != nil && versionRef.External == "" {
-		versionRef.External, err = versionRef.NormalizedExternal(ctx, kube, namespace)
-		if err != nil {
-			return err
-		}
-		fullSecretVersionExternal := versionRef.External
-
-		if *secretRef == nil {
-			*secretRef = &secretmanagerv1beta1.SecretRef{
-				External: strings.Split(fullSecretVersionExternal, "/versions/")[0],
+	if versionRef != nil {
+		if versionRef.External == "" {
+			versionRef.External, err = versionRef.NormalizedExternal(ctx, kube, namespace)
+			if err != nil {
+				return err
 			}
 		}
-		versionRef.External = strings.Split(versionRef.External, "/versions/")[1]
+		if strings.Contains(versionRef.External, "/versions/") {
+			fullSecretVersionExternal := versionRef.External
+
+			if *secretRef == nil {
+				*secretRef = &secretmanagerv1beta1.SecretRef{
+					External: strings.Split(fullSecretVersionExternal, "/versions/")[0],
+				}
+			}
+			versionRef.External = strings.Split(versionRef.External, "/versions/")[1]
+		}
 	}
 	return nil
 }
@@ -196,10 +200,12 @@ func resolveCommonVolumeRefs(ctx context.Context, kube client.Reader, owner clie
 			}
 		}
 		for _, vRef := range versionRefs {
-			if vRef != nil && vRef.External == "" {
-				vRef.External, err = vRef.NormalizedExternal(ctx, kube, owner.GetNamespace())
-				if err != nil {
-					return err
+			if vRef != nil {
+				if vRef.External == "" {
+					vRef.External, err = vRef.NormalizedExternal(ctx, kube, owner.GetNamespace())
+					if err != nil {
+						return err
+					}
 				}
 				if strings.Contains(vRef.External, "/versions/") {
 					vRef.External = strings.Split(vRef.External, "/versions/")[1]

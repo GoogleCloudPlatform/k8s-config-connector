@@ -17,7 +17,9 @@ package v1beta1
 import (
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/iamrefs"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -170,7 +172,7 @@ type NodePoolNodeConfig struct {
 
 	/* Immutable. Cryptographic key used to encrypt the boot disk. */
 	// +kcc:proto:field=google.container.v1.NodeConfig.boot_disk_kms_key
-	BootDiskKMSCryptoKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"bootDiskKMSCryptoKeyRef,omitempty"`
+	BootDiskKMSCryptoKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"bootDiskKMSCryptoKeyRef,omitempty"`
 
 	/* Immutable. Configuration for the confidential nodes feature, which makes nodes run on confidential VMs. Warning: This configuration can't be changed (or added/removed) after pool creation without deleting and recreating the entire pool. */
 	// +kcc:proto:field=google.container.v1.NodeConfig.confidential_nodes
@@ -287,7 +289,7 @@ type NodePoolNodeConfig struct {
 	SandboxConfig *SandboxConfig `json:"sandboxConfig,omitempty"`
 
 	// +kcc:proto:field=google.container.v1.NodeConfig.service_account
-	ServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *iamrefs.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
 
 	/* Immutable. Shielded Instance options. */
 	// +kcc:proto:field=google.container.v1.NodeConfig.shielded_instance_config
@@ -534,7 +536,7 @@ type RegistryHeader struct {
 type RegistryCA struct {
 	/* Reference to SecretManagerSecretVersion for the CA certificate. */
 	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.CA.gcp_secret_manager_secret_uri
-	SecretRef *refsv1beta1.SecretManagerSecretVersionRef `json:"secretRef,omitempty"`
+	SecretRef *secretmanagerv1beta1.SecretVersionRef `json:"secretRef,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.ContainerdConfig.RegistryHost.Client
@@ -550,14 +552,14 @@ type RegistryClient struct {
 type RegistryClientCert struct {
 	/* Reference to SecretManagerSecretVersion for the client certificate. */
 	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.ClientCert.gcp_secret_manager_secret_uri
-	SecretRef *refsv1beta1.SecretManagerSecretVersionRef `json:"secretRef,omitempty"`
+	SecretRef *secretmanagerv1beta1.SecretVersionRef `json:"secretRef,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.ContainerdConfig.RegistryHost.ClientKey
 type RegistryClientKey struct {
 	/* Reference to SecretManagerSecretVersion for the client key. */
 	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.ClientKey.gcp_secret_manager_secret_uri
-	SecretRef *refsv1beta1.SecretManagerSecretVersionRef `json:"secretRef,omitempty"`
+	SecretRef *secretmanagerv1beta1.SecretVersionRef `json:"secretRef,omitempty"`
 }
 
 // +kcc:proto=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig
@@ -586,7 +588,7 @@ type CertificateAuthorityDomainConfig struct {
 type GCPSecretManagerCertificateConfig struct {
 	/* SecretRef is a reference to a SecretManagerSecretVersion resource. */
 	// +kcc:proto:field=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig.GCPSecretManagerCertificateConfig.secret_uri
-	SecretRef *refsv1beta1.SecretManagerSecretVersionRef `json:"secretRef,omitempty"`
+	SecretRef *secretmanagerv1beta1.SecretVersionRef `json:"secretRef,omitempty"`
 }
 
 func init() {

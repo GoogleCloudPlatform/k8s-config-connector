@@ -18,6 +18,8 @@ import (
 	pb "cloud.google.com/go/container/apiv1/containerpb"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/iamrefs"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -319,5 +321,93 @@ func ContainerNodePoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerN
 	out.PlacementPolicy = NodePool_PlacementPolicy_ToProto(mapCtx, in.PlacementPolicy)
 	out.UpgradeSettings = NodePoolUpgradeSettings_ToProto(mapCtx, in.UpgradeSettings)
 	out.Version = direct.ValueOf(in.Version)
+	return out
+}
+
+// NodePoolNodeConfig_FromProto maps NodePoolNodeConfig from proto.
+// Handwritten to map directly to kmsv1beta1 and iamrefs.
+func NodePoolNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.NodePoolNodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodePoolNodeConfig{}
+	out.MachineType = direct.LazyPtr(in.GetMachineType())
+	out.OauthScopes = in.OauthScopes
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &iamrefs.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	out.Metadata = in.Metadata
+	out.ImageType = direct.LazyPtr(in.GetImageType())
+	out.Labels = in.Labels
+	out.LocalSsdCount = direct.LazyPtr(in.GetLocalSsdCount())
+	out.Tags = in.Tags
+	out.Preemptible = direct.LazyPtr(in.GetPreemptible())
+	out.DiskType = direct.LazyPtr(in.GetDiskType())
+	out.MinCPUPlatform = direct.LazyPtr(in.GetMinCpuPlatform())
+	out.SandboxConfig = SandboxConfig_FromProto(mapCtx, in.GetSandboxConfig())
+	if in.GetNodeGroup() != "" {
+		out.NodeGroupRef = &computev1beta1.ComputeNodeGroupRef{External: in.GetNodeGroup()}
+	}
+	out.ReservationAffinity = ReservationAffinity_FromProto(mapCtx, in.GetReservationAffinity())
+	out.ShieldedInstanceConfig = ShieldedInstanceConfig_FromProto(mapCtx, in.GetShieldedInstanceConfig())
+	out.LinuxNodeConfig = LinuxNodeConfig_FromProto(mapCtx, in.GetLinuxNodeConfig())
+	out.KubeletConfig = KubeletConfig_FromProto(mapCtx, in.GetKubeletConfig())
+	if in.GetBootDiskKmsKey() != "" {
+		out.BootDiskKMSCryptoKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetBootDiskKmsKey()}
+	}
+	out.GcfsConfig = GcfsConfig_FromProto(mapCtx, in.GetGcfsConfig())
+	out.AdvancedMachineFeatures = NodeConfig_AdvancedMachineFeatures_FromProto(mapCtx, in.GetAdvancedMachineFeatures())
+	out.Spot = direct.LazyPtr(in.GetSpot())
+	out.ConfidentialNodes = ConfidentialNodes_FromProto(mapCtx, in.GetConfidentialNodes())
+	out.FastSocket = FastSocket_FromProto(mapCtx, in.GetFastSocket())
+	out.ResourceLabels = in.ResourceLabels
+	out.WindowsNodeConfig = WindowsNodeConfig_FromProto(mapCtx, in.GetWindowsNodeConfig())
+	out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_FromProto(mapCtx, in.GetEphemeralStorageLocalSsdConfig())
+	out.ContainerdConfig = ContainerdConfig_FromProto(mapCtx, in.GetContainerdConfig())
+	out.ResourceManagerTags = map_string_string_FromProto(mapCtx, in.GetResourceManagerTags())
+	return out
+}
+
+// NodePoolNodeConfig_ToProto maps NodePoolNodeConfig to proto.
+// Handwritten to map directly to kmsv1beta1 and iamrefs.
+func NodePoolNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolNodeConfig) *pb.NodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodeConfig{}
+	out.MachineType = direct.ValueOf(in.MachineType)
+	out.OauthScopes = in.OauthScopes
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
+	out.Metadata = in.Metadata
+	out.ImageType = direct.ValueOf(in.ImageType)
+	out.Labels = in.Labels
+	out.LocalSsdCount = direct.ValueOf(in.LocalSsdCount)
+	out.Tags = in.Tags
+	out.Preemptible = direct.ValueOf(in.Preemptible)
+	out.DiskType = direct.ValueOf(in.DiskType)
+	out.MinCpuPlatform = direct.ValueOf(in.MinCPUPlatform)
+	out.SandboxConfig = SandboxConfig_ToProto(mapCtx, in.SandboxConfig)
+	if in.NodeGroupRef != nil {
+		out.NodeGroup = in.NodeGroupRef.External
+	}
+	out.ReservationAffinity = ReservationAffinity_ToProto(mapCtx, in.ReservationAffinity)
+	out.ShieldedInstanceConfig = ShieldedInstanceConfig_ToProto(mapCtx, in.ShieldedInstanceConfig)
+	out.LinuxNodeConfig = LinuxNodeConfig_ToProto(mapCtx, in.LinuxNodeConfig)
+	out.KubeletConfig = KubeletConfig_ToProto(mapCtx, in.KubeletConfig)
+	if in.BootDiskKMSCryptoKeyRef != nil {
+		out.BootDiskKmsKey = in.BootDiskKMSCryptoKeyRef.External
+	}
+	out.GcfsConfig = GcfsConfig_ToProto(mapCtx, in.GcfsConfig)
+	out.AdvancedMachineFeatures = NodeConfig_AdvancedMachineFeatures_ToProto(mapCtx, in.AdvancedMachineFeatures)
+	out.Spot = direct.ValueOf(in.Spot)
+	out.ConfidentialNodes = ConfidentialNodes_ToProto(mapCtx, in.ConfidentialNodes)
+	out.FastSocket = FastSocket_ToProto(mapCtx, in.FastSocket)
+	out.ResourceLabels = in.ResourceLabels
+	out.WindowsNodeConfig = WindowsNodeConfig_ToProto(mapCtx, in.WindowsNodeConfig)
+	out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_ToProto(mapCtx, in.EphemeralStorageLocalSsdConfig)
+	out.ContainerdConfig = ContainerdConfig_ToProto(mapCtx, in.ContainerdConfig)
+	out.ResourceManagerTags = map_string_string_ToProto(mapCtx, in.ResourceManagerTags)
 	return out
 }
