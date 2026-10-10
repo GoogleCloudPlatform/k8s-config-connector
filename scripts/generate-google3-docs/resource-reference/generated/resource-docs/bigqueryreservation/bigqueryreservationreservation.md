@@ -64,12 +64,14 @@ failover:
   secondaryLocation: string
 ignoreIdleSlots: boolean
 location: string
+maxSlots: integer
 projectRef:
   external: string
   kind: string
   name: string
   namespace: string
 resourceID: string
+scalingMode: string
 slotCapacity: integer
 ```
 
@@ -170,6 +172,16 @@ Immutable.</p>
     </tr>
     <tr>
         <td>
+            <p><code>maxSlots</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Optional. Capping a reservation's idle slot usage is best effort and its usage may exceed the max_slots value. However, in terms of autoscale.current_slots (which accounts for the additional added slots), it will never exceed the max_slots - baseline.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>projectRef</code></p>
             <p><i>Required</i></p>
         </td>
@@ -226,6 +238,16 @@ Immutable.</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>Immutable. Optional. The BigQuery Reservation ID used for resource creation or acquisition. It must only contain lower case alphanumeric characters or dashes. It must start with a letter and must not end with a dash. Its maximum length is 64 characters. For creation: If specified, this value is used as the Reservation ID. If not provided, a UUID will be generated and assigned as the Reservation ID. For acquisition: This field must be provided to identify the Reservation resource to acquire.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scalingMode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Optional. The scaling mode for the reservation. Valid values are AUTOSCALE_ONLY, IDLE_SLOTS_ONLY, ALL_SLOTS.</p>
         </td>
     </tr>
     <tr>
