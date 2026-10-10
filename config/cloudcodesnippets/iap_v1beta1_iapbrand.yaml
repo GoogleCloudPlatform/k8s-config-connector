@@ -1,5 +1,5 @@
 label: Config Connector IAPBrand
-markdownDescription: Creates yaml for a IAPBrand resource
+markdownDescription: Creates yaml for an IAPBrand resource
 insertText: |
   apiVersion: iap.cnrm.cloud.google.com/v1beta1
   kind: IAPBrand
