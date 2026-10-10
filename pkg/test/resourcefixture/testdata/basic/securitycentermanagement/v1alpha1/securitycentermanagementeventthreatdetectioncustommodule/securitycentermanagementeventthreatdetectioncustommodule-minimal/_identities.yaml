@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: securitycentermanagement.cnrm.cloud.google.com
+  kind: SecurityCenterManagementEventThreatDetectionCustomModule
+  name: sccetdcm-min-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
