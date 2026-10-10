@@ -1,0 +1,361 @@
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/serviceLbPolicies/servicelbpolicy-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FserviceLbPolicies%2Fservicelbpolicy-maximal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/global/serviceLbPolicies/servicelbpolicy-maximal-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/serviceLbPolicies?%24alt=json%3Benum-encoding%3Dint&serviceLbPolicyId=servicelbpolicy-maximal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "autoCapacityDrain": {
+    "enable": true
+  },
+  "description": "Initial description for ServiceLBPolicy",
+  "failoverConfig": {
+    "failoverHealthThreshold": 70
+  },
+  "isolationConfig": {
+    "isolationGranularity": 1,
+    "isolationMode": 1
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test-label": "initial-value"
+  },
+  "loadBalancingAlgorithm": 4,
+  "name": "projects/${projectId}/locations/global/serviceLbPolicies/servicelbpolicy-maximal-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/serviceLbPolicies/servicelbpolicy-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/serviceLbPolicies/servicelbpolicy-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.ServiceLbPolicy",
+    "autoCapacityDrain": {
+      "enable": true
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Initial description for ServiceLBPolicy",
+    "failoverConfig": {
+      "failoverHealthThreshold": 70
+    },
+    "isolationConfig": {
+      "isolationGranularity": "REGION",
+      "isolationMode": "NEAREST"
+    },
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true",
+      "test-label": "initial-value"
+    },
+    "loadBalancingAlgorithm": "SPRAY_TO_REGION",
+    "name": "projects/${projectId}/locations/global/serviceLbPolicies/servicelbpolicy-maximal-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/serviceLbPolicies/servicelbpolicy-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FserviceLbPolicies%2Fservicelbpolicy-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCapacityDrain": {
+    "enable": true
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Initial description for ServiceLBPolicy",
+  "failoverConfig": {
+    "failoverHealthThreshold": 70
+  },
+  "isolationConfig": {
+    "isolationGranularity": 1,
+    "isolationMode": 1
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test-label": "initial-value"
+  },
+  "loadBalancingAlgorithm": 4,
+  "name": "projects/${projectId}/locations/global/serviceLbPolicies/servicelbpolicy-maximal-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/serviceLbPolicies/servicelbpolicy-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=autoCapacityDrain%2Cdescription%2CfailoverConfig%2CisolationConfig%2Clabels%2CloadBalancingAlgorithm
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: service_lb_policy.name=projects%2F${projectId}%2Flocations%2Fglobal%2FserviceLbPolicies%2Fservicelbpolicy-maximal-${uniqueId}
+
+{
+  "autoCapacityDrain": {},
+  "description": "Updated description for ServiceLBPolicy",
+  "failoverConfig": {
+    "failoverHealthThreshold": 80
+  },
+  "isolationConfig": {
+    "isolationGranularity": 1,
+    "isolationMode": 2
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test-label": "updated-value"
+  },
+  "loadBalancingAlgorithm": 6,
+  "name": "projects/${projectId}/locations/global/serviceLbPolicies/servicelbpolicy-maximal-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/serviceLbPolicies/servicelbpolicy-maximal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/serviceLbPolicies/servicelbpolicy-maximal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.ServiceLbPolicy",
+    "autoCapacityDrain": {},
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Updated description for ServiceLBPolicy",
+    "failoverConfig": {
+      "failoverHealthThreshold": 80
+    },
+    "isolationConfig": {
+      "isolationGranularity": "REGION",
+      "isolationMode": "STRICT"
+    },
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true",
+      "test-label": "updated-value"
+    },
+    "loadBalancingAlgorithm": "WATERFALL_BY_ZONE",
+    "name": "projects/${projectId}/locations/global/serviceLbPolicies/servicelbpolicy-maximal-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/serviceLbPolicies/servicelbpolicy-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FserviceLbPolicies%2Fservicelbpolicy-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCapacityDrain": {},
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description for ServiceLBPolicy",
+  "failoverConfig": {
+    "failoverHealthThreshold": 80
+  },
+  "isolationConfig": {
+    "isolationGranularity": 1,
+    "isolationMode": 2
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "test-label": "updated-value"
+  },
+  "loadBalancingAlgorithm": 6,
+  "name": "projects/${projectId}/locations/global/serviceLbPolicies/servicelbpolicy-maximal-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/serviceLbPolicies/servicelbpolicy-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FserviceLbPolicies%2Fservicelbpolicy-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/serviceLbPolicies/servicelbpolicy-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/serviceLbPolicies/servicelbpolicy-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
