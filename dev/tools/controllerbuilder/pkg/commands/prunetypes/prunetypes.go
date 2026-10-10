@@ -77,6 +77,9 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 
 func isGeneratedFile(filePath string, file *ast.File) bool {
 	base := filepath.Base(filePath)
+	if strings.HasSuffix(base, "_identity.generated.go") || strings.HasSuffix(base, "_reference.generated.go") {
+		return false
+	}
 	if strings.Contains(base, ".generated.") || strings.Contains(base, "_generated") || strings.HasPrefix(base, "zz_") {
 		return true
 	}
@@ -114,6 +117,9 @@ func PruneTypes(ctx context.Context, o *PruneTypesOptions) error {
 				continue
 			}
 			name := entry.Name()
+			if strings.HasSuffix(name, "_identity.generated.go") || strings.HasSuffix(name, "_reference.generated.go") {
+				continue
+			}
 			if strings.Contains(name, ".generated.") && strings.HasSuffix(name, ".go") {
 				targetFiles = append(targetFiles, filepath.Join(pkgDir, name))
 			}
