@@ -1,0 +1,24 @@
+GET https://cloudresourcemanager.googleapis.com/v3/tagBindings/?alt=json&pageSize=300&parent=%2F%2Fsecretmanager.googleapis.com%2Fprojects%2F${projectNumber}%2Fsecrets%2Fsecretmanagersecret-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "tagBindings": [
+    {
+      "name": "tagBindings/%2F%2Fsecretmanager.googleapis.com%2Fprojects%2F${projectNumber}%2Fsecrets%2Fsecretmanagersecret-${uniqueId}/tagValues/${tagValueID}",
+      "parent": "//secretmanager.googleapis.com/projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
+      "tagValue": "tagValues/${tagValueID}",
+      "tagValueNamespacedName": "${projectId}/secrettag${uniqueId}/enabled"
+    }
+  ]
+}

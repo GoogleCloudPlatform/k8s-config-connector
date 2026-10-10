@@ -700,46 +700,49 @@ func convertTFReferenceToKCCReference(tfField, specKey string, state map[string]
 		if stateVal == "" {
 			return nil
 		}
-		if len(refConfig.Types) > 0 {
-			// Get the first item in the list of types -- for now this is the defaulted ref
-			defaultType := refConfig.Types[0]
-			if defaultType.JSONSchemaType != "" {
-				return map[string]interface{}{
-					defaultType.Key: stateVal,
-				}
-			}
-
-			return map[string]interface{}{
-				defaultType.Key: corekccv1alpha1.ResourceReference{
-					External: stateVal,
-				},
-			}
-		}
-		return corekccv1alpha1.ResourceReference{
-			External: stateVal,
-		}
+		return convertTFReferenceValueToKCCReference(stateVal, refConfig)
 	case []interface{}:
 		if len(stateVal) == 0 {
 			return nil
 		}
-		refs := make([]interface{}, 0)
+		refs := make([]interface{}, 0, len(stateVal))
 		for _, elem := range stateVal {
-			var newRef interface{}
-			newRef = corekccv1alpha1.ResourceReference{
-				External: elem.(string),
-			}
-			// this is a repeat of the same short-term fix made above for the string case when Types is an array
-			if len(refConfig.Types) > 0 {
-				newRef = map[string]interface{}{
-					refConfig.Types[0].Key: newRef,
-				}
-			}
-			refs = append(refs, newRef)
+			refs = append(refs, convertTFReferenceValueToKCCReference(elem.(string), refConfig))
 		}
 		return refs
 	default:
 		panic(fmt.Errorf("value of TF reference field '%v' was neither a string nor a list", tfField))
 	}
+}
+
+func convertTFReferenceValueToKCCReference(stateVal string, refConfig *corekccv1alpha1.ReferenceConfig) interface{} {
+	if len(refConfig.Types) == 0 {
+		return corekccv1alpha1.ResourceReference{External: stateVal}
+	}
+
+	defaultType := refConfig.Types[0]
+	if defaultType.Key != "" {
+		if defaultType.JSONSchemaType != "" {
+			return map[string]interface{}{defaultType.Key: stateVal}
+		}
+		return map[string]interface{}{
+			defaultType.Key: corekccv1alpha1.ResourceReference{External: stateVal},
+		}
+	}
+
+	selectedType := defaultType
+	for _, candidate := range refConfig.Types {
+		if candidate.ValueTemplate != "" && valueMatchesTemplate(candidate.ValueTemplate, stateVal) {
+			selectedType = candidate
+			break
+		}
+	}
+
+	ref := map[string]interface{}{"external": stateVal}
+	if selectedType.GVK.Kind != "" {
+		ref["kind"] = selectedType.GVK.Kind
+	}
+	return ref
 }
 
 // convertTFSetToKCCSet converts a set object in Terraform to a KCC set object
