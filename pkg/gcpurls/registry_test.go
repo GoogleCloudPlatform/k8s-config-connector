@@ -333,6 +333,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Vision
 		"//vision.googleapis.com/projects/{}/locations/{}/products/{}": true,
 
+		// Vision AI
+		"//visionai.googleapis.com/projects/{}/locations/{}/applications/{}": true,
+
 		// Vector Search
 		"//vectorsearch.googleapis.com/projects/{}/locations/{}/collections/{}": true,
 
