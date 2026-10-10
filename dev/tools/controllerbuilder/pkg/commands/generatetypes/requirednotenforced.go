@@ -225,7 +225,8 @@ func commentLines(cg *ast.CommentGroup) []string {
 	return out
 }
 
-// parseFields returns one goField per name the field declares.
+// parseFields returns one goField per name the field declares, or none for a
+// field the CRD leaves out.
 func parseFields(field *ast.Field) []goField {
 	var f goField
 	t := field.Type
@@ -265,6 +266,11 @@ unwrap:
 		if tag, err := strconv.Unquote(field.Tag.Value); err == nil {
 			f.json, _, _ = strings.Cut(reflect.StructTag(tag).Get("json"), ",")
 		}
+	}
+	if f.json == "-" {
+		// The CRD leaves out a field tagged json:"-", so there is nothing to
+		// check.
+		return nil
 	}
 	if len(field.Names) == 0 {
 		f.goName = f.typeName
@@ -501,6 +507,13 @@ type enteredStruct struct {
 	child *goStruct
 }
 
+// walk checks the fields of s, the struct at path prefix, and walks into the
+// structs they hold. msg is the message s maps to, or nil. top is true for the
+// Spec itself. entered is where the walk last crossed from hand-written into
+// generated code, or nil.
+//
+// onPath holds the structs between the Spec and s. A struct can hold itself
+// through a pointer, so a struct already on the path is not entered again.
 func (w *requiredGapFinder) walk(s *goStruct, msg protoreflect.MessageDescriptor, prefix string, top bool, entered *enteredStruct, onPath map[string]bool) {
 	if onPath[s.name] {
 		return
@@ -509,11 +522,9 @@ func (w *requiredGapFinder) walk(s *goStruct, msg protoreflect.MessageDescriptor
 	defer delete(onPath, s.name)
 
 	for _, f := range s.fields {
-		if f.json == "-" {
-			continue
-		}
 		child := w.structs[f.typeName]
 		if f.inline {
+			// An embedded struct's fields sit at this struct's path.
 			if child != nil {
 				w.walk(child, msg, prefix, top, w.enter(s, f, child, entered), onPath)
 			}
@@ -533,9 +544,14 @@ func (w *requiredGapFinder) walk(s *goStruct, msg protoreflect.MessageDescriptor
 			})
 		}
 
+		// child is nil for a scalar, or for a type from another package. The
+		// walk doesn't follow other packages, so REQUIRED fields under them go
+		// unchecked.
 		if child == nil {
 			continue
 		}
+		// A struct without a +kcc:proto annotation maps to the message that
+		// its proto field holds.
 		childMsg := w.message(child.proto)
 		if childMsg == nil && fd != nil {
 			childMsg = fieldMessage(fd)
@@ -594,6 +610,8 @@ func (w *requiredGapFinder) protoField(f goField, msg protoreflect.MessageDescri
 	}
 	for i := 0; i < msg.Fields().Len(); i++ {
 		fd := msg.Fields().Get(i)
+		// A struct can spell a plural acronym either way, relatedURIs or
+		// relatedUris, depending on EmitPluralAcronyms, so try both.
 		for _, plural := range []bool{false, true} {
 			for _, name := range krmNamesFor(codegen.GetJSONForKRM(fd, codegen.WriteOptions{EmitPluralAcronyms: plural})) {
 				if name == f.json {

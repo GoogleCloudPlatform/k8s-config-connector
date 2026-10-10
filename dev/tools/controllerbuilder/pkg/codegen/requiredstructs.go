@@ -261,6 +261,7 @@ func (u *RequiredUses) scanImporters(apisDir, pkgDir, importPath string) error {
 		return u.scanImporterFile(fset, p, importPath)
 	})
 	if os.IsNotExist(err) {
+		// Without an apis directory, there are no other packages to scan.
 		return nil
 	}
 	return err

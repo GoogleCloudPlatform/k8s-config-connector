@@ -252,6 +252,8 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		if err != nil {
 			return fmt.Errorf("finding the uses of generated types: %w", err)
 		}
+		// Without --prepopulate-spec, a new Spec starts with no proto fields,
+		// so there are no new Spec fields to plan for.
 		var newSpecFields []protoreflect.FieldDescriptor
 		if o.PrepopulateSpec {
 			for _, resource := range o.Resources {
