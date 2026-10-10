@@ -44,6 +44,10 @@ func (i *NetworkConnectivityServiceConnectionMapIdentity) String() string {
 	return NetworkConnectivityServiceConnectionMapIdentityFormat.ToString(*i)
 }
 
+func (i *NetworkConnectivityServiceConnectionMapIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *NetworkConnectivityServiceConnectionMapIdentity) FromExternal(ref string) error {
 	parsed, match, err := NetworkConnectivityServiceConnectionMapIdentityFormat.Parse(ref)
 	if err != nil {

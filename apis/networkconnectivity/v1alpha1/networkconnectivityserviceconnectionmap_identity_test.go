@@ -57,6 +57,10 @@ func TestNetworkConnectivityServiceConnectionMapIdentity_FromExternal(t *testing
 				if got := i.String(); got != tt.ref {
 					t.Errorf("NetworkConnectivityServiceConnectionMapIdentity.String() = %v, want %v", got, tt.ref)
 				}
+				wantParent := "projects/my-project/locations/us-central1"
+				if gotParent := i.ParentString(); gotParent != wantParent {
+					t.Errorf("NetworkConnectivityServiceConnectionMapIdentity.ParentString() = %v, want %v", gotParent, wantParent)
+				}
 			}
 		})
 	}
