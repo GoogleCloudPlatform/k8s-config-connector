@@ -301,7 +301,11 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//notebooks.googleapis.com/projects/{}/locations/{}/schedules/{}":    true,
 
 		// Oracle Database
-		"//oracledatabase.googleapis.com/projects/{}/locations/{}/exadbVmClusters/{}": true,
+		"//oracledatabase.googleapis.com/projects/{}/locations/{}/autonomousDatabaseBackups/{}": true,
+		"//oracledatabase.googleapis.com/projects/{}/locations/{}/exadbVmClusters/{}":           true,
+		"//oracledatabase.googleapis.com/projects/{}/locations/{}/exascaleDbStorageVaults/{}":   true,
+		"//oracledatabase.googleapis.com/projects/{}/locations/{}/odbNetworks/{}":               true,
+		"//oracledatabase.googleapis.com/projects/{}/locations/{}/odbNetworks/{}/odbSubnets/{}": true,
 
 		// OSConfig
 		"//osconfig.googleapis.com/projects/{}/guestPolicies/{}": true,
