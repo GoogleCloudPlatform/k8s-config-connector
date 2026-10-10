@@ -742,7 +742,7 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 					}
 				}
 
-				if !options.FallbackToOldController && ShouldTestRereconiliation(t, testName, primaryResource) {
+				if ShouldTestRereconiliation(t, testName, primaryResource) {
 					h.Log("Testing re-reconciliation...", "test name", testName, "primary GVK", primaryResource.GroupVersionKind().String())
 					eventsBefore := h.Events.GetHTTPEvents()
 

@@ -22,6 +22,8 @@ import (
 
 	gcp "cloud.google.com/go/container/apiv1"
 	pb "cloud.google.com/go/container/apiv1/containerpb"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -78,11 +80,19 @@ func (m *nodePoolModel) AdapterForObject(ctx context.Context, op *directbase.Ada
 		return nil, fmt.Errorf("converting unstructured to %T: %w", obj, err)
 	}
 
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, err
+	}
+
 	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
 	nodePoolID := id.(*krm.ContainerNodePoolIdentity)
+
+	if err := resolveNodeCount(obj, nodePoolID); err != nil {
+		return nil, err
+	}
 
 	client, err := m.client(ctx)
 	if err != nil {
@@ -97,23 +107,33 @@ func (m *nodePoolModel) AdapterForObject(ctx context.Context, op *directbase.Ada
 	}, nil
 }
 
+func resolveNodeCount(obj *krm.ContainerNodePool, id *krm.ContainerNodePoolIdentity) error {
+	// Terraform legacy behavior compatibility:
+	// In the GKE API, the node pool size is specified via 'initial_node_count' at creation time,
+	// and GKE updates this field upon resizing via SetNodePoolSize.
+	// In Terraform's schema, both 'initial_node_count' (ForceNew) and 'node_count' (mutable in-place) exist.
+	// In TF's expandNodePool, setting both initial_node_count and node_count is disallowed:
+	// "Cannot set both initial_node_count and node_count on node pool".
+	// However, if initialNodeCount == 0 (e.g. scale-from-zero or queued provisioning),
+	// Terraform's d.GetOk("initial_node_count") evaluates to false (0 is zero-value),
+	// allowing node_count to be set alongside initialNodeCount: 0.
+	// We preserve this exact logic here by setting initialNodeCount from nodeCount so that
+	// mappers and diffing work natively without customization.
+	if obj.Spec.InitialNodeCount != nil && *obj.Spec.InitialNodeCount != 0 && obj.Spec.NodeCount != nil {
+		idStr := obj.GetName()
+		if id != nil {
+			idStr = id.String()
+		}
+		return fmt.Errorf("cannot set both initialNodeCount and nodeCount on ContainerNodePool %s", idStr)
+	}
+	if obj.Spec.NodeCount != nil {
+		obj.Spec.InitialNodeCount = obj.Spec.NodeCount
+	}
+	return nil
+}
+
 func (m *nodePoolModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	return nil, nil
-}
-
-func (a *nodePoolAdapter) location() string {
-	if a.id.Zone != "" {
-		return a.id.Zone
-	}
-	return a.id.Location
-}
-
-func (a *nodePoolAdapter) fullyQualifiedName() string {
-	return fmt.Sprintf("projects/%s/locations/%s/clusters/%s/nodePools/%s", a.id.Project, a.location(), a.id.Cluster, a.id.NodePool)
-}
-
-func (a *nodePoolAdapter) parentFQN() string {
-	return fmt.Sprintf("projects/%s/locations/%s/clusters/%s", a.id.Project, a.location(), a.id.Cluster)
 }
 
 func (a *nodePoolAdapter) waitForOperation(ctx context.Context, op *pb.Operation) error {
@@ -122,7 +142,7 @@ func (a *nodePoolAdapter) waitForOperation(ctx context.Context, op *pb.Operation
 	}
 	opName := op.GetName()
 	if !strings.HasPrefix(opName, "projects/") {
-		opName = fmt.Sprintf("projects/%s/locations/%s/operations/%s", a.id.Project, a.location(), op.GetName())
+		opName = fmt.Sprintf("projects/%s/locations/%s/operations/%s", a.id.Project, a.id.LocationValue(), op.GetName())
 	}
 	pollInterval := 2 * time.Second
 	_, err := common.WaitForOperation(ctx, pollInterval, func(op *pb.Operation) (bool, error) {
@@ -141,24 +161,27 @@ func (a *nodePoolAdapter) waitForOperation(ctx context.Context, op *pb.Operation
 
 func (a *nodePoolAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("finding ContainerNodePool", "name", a.fullyQualifiedName())
+	log.V(2).Info("finding ContainerNodePool", "name", a.id.String())
 
 	req := &pb.GetNodePoolRequest{
-		Name: a.fullyQualifiedName(),
+		Name: a.id.String(),
 	}
 	resp, err := a.client.GetNodePool(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting ContainerNodePool %q: %w", a.fullyQualifiedName(), err)
+		return false, fmt.Errorf("getting ContainerNodePool %q: %w", a.id.String(), err)
 	}
 
 	a.actual = resp
 	return true, nil
 }
 
-func (a *nodePoolAdapter) populateStatus(status *krm.ContainerNodePoolStatus, actual *pb.NodePool) {
+func (a *nodePoolAdapter) populateStatus(status *krm.ContainerNodePoolStatus, actual *pb.NodePool) error {
+	// Note on migration diff: We use the canonical location-based externalRef (projects/.../locations/.../clusters/.../nodePools/...)
+	// across all operations to keep create, read, update, and delete consistent. This intentionally differs
+	// from the legacy controller which used "zones/{zone}" for create and "locations/{location}" for update.
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	status.InstanceGroupUrls = actual.GetInstanceGroupUrls()
 	var managedIgmUrls []string
@@ -169,23 +192,14 @@ func (a *nodePoolAdapter) populateStatus(status *krm.ContainerNodePoolStatus, ac
 	}
 	status.ManagedInstanceGroupUrls = managedIgmUrls
 
-	observedState := &krm.NodepoolObservedStateStatus{}
-	if actual.GetVersion() != "" {
-		observedState.Version = direct.LazyPtr(actual.GetVersion())
-	}
-	if actual.GetConfig() != nil && len(actual.GetConfig().GetTaints()) > 0 {
-		mapCtx := &direct.MapContext{}
-		taints := direct.Slice_FromProto(mapCtx, actual.GetConfig().GetTaints(), NodeTaint_FromProto)
-		observedState.NodeConfig = &krm.NodePoolNodeConfigObservedState{
-			Taint: taints,
-		}
-	}
-	status.ObservedState = observedState
+	mapCtx := &direct.MapContext{}
+	status.ObservedState = NodepoolObservedStateStatus_FromProto(mapCtx, actual)
+	return mapCtx.Err()
 }
 
 func (a *nodePoolAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating ContainerNodePool", "name", a.fullyQualifiedName())
+	log.V(2).Info("creating ContainerNodePool", "name", a.id.String())
 
 	if err := common.NormalizeReferences(ctx, a.reader, a.desiredKRM, nil); err != nil {
 		return fmt.Errorf("normalizing references: %w", err)
@@ -199,28 +213,34 @@ func (a *nodePoolAdapter) Create(ctx context.Context, createOp *directbase.Creat
 
 	desired.Name = a.id.NodePool
 
+	if err := a.normalizeNodePool(ctx, desired); err != nil {
+		return err
+	}
+
 	req := &pb.CreateNodePoolRequest{
-		Parent:   a.parentFQN(),
+		Parent:   a.id.ParentString(),
 		NodePool: desired,
 	}
 
 	op, err := a.client.CreateNodePool(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating ContainerNodePool %q: %w", a.fullyQualifiedName(), err)
+		return fmt.Errorf("creating ContainerNodePool %q: %w", a.id.String(), err)
 	}
 
 	if err := a.waitForOperation(ctx, op); err != nil {
-		return fmt.Errorf("waiting for creation of ContainerNodePool %q: %w", a.fullyQualifiedName(), err)
+		return fmt.Errorf("waiting for creation of ContainerNodePool %q: %w", a.id.String(), err)
 	}
 
-	created, err := a.client.GetNodePool(ctx, &pb.GetNodePoolRequest{Name: a.fullyQualifiedName()})
+	created, err := a.client.GetNodePool(ctx, &pb.GetNodePoolRequest{Name: a.id.String()})
 	if err != nil {
-		return fmt.Errorf("getting created ContainerNodePool %q: %w", a.fullyQualifiedName(), err)
+		return fmt.Errorf("getting created ContainerNodePool %q: %w", a.id.String(), err)
 	}
 	a.actual = created
 
 	status := &krm.ContainerNodePoolStatus{}
-	a.populateStatus(status, created)
+	if err := a.populateStatus(status, created); err != nil {
+		return err
+	}
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -228,58 +248,50 @@ func (a *nodePoolAdapter) normalizeNodePool(ctx context.Context, pbNodePool *pb.
 	if pbNodePool == nil {
 		return nil
 	}
-	// initial_node_count is INPUT_ONLY in GKE API and not returned on GET
-	pbNodePool.InitialNodeCount = 0
+
+	// In the KRM CRD, autoscaling does not expose an explicit `enabled` field; the presence
+	// of the autoscaling configuration implies autoscaling is enabled. GCP GKE requires
+	// enabled=true in the request whenever autoscaling is configured.
+	if as := pbNodePool.GetAutoscaling(); as != nil {
+		as.Enabled = true
+	}
 
 	if netConfig := pbNodePool.GetNetworkConfig(); netConfig != nil {
+		if netConfig.GetSubnetwork() != "" {
+			canonicalized, err := computev1beta1.CanonicalizeSubnetworkValue(ctx, netConfig.GetSubnetwork(), a.id.Project, a.id.LocationValue(), nil)
+			if err != nil {
+				return err
+			}
+			netConfig.Subnetwork = canonicalized
+		}
 		for _, addNodeNet := range netConfig.GetAdditionalNodeNetworkConfigs() {
 			if addNodeNet.GetNetwork() != "" {
-				addNodeNet.Network = canonicalizeNetworkURL(a.id.Project, addNodeNet.GetNetwork())
+				addNodeNet.Network = computerefs.CanonicalizeNetworkValue(ctx, addNodeNet.GetNetwork(), a.id.Project, nil)
 			}
 			if addNodeNet.GetSubnetwork() != "" {
-				addNodeNet.Subnetwork = canonicalizeSubnetworkURL(a.id.Project, a.location(), addNodeNet.GetSubnetwork())
+				canonicalized, err := computev1beta1.CanonicalizeSubnetworkValue(ctx, addNodeNet.GetSubnetwork(), a.id.Project, a.id.LocationValue(), nil)
+				if err != nil {
+					return err
+				}
+				addNodeNet.Subnetwork = canonicalized
 			}
 		}
 		for _, addPodNet := range netConfig.GetAdditionalPodNetworkConfigs() {
 			if addPodNet.GetSubnetwork() != "" {
-				addPodNet.Subnetwork = canonicalizeSubnetworkURL(a.id.Project, a.location(), addPodNet.GetSubnetwork())
+				canonicalized, err := computev1beta1.CanonicalizeSubnetworkValue(ctx, addPodNet.GetSubnetwork(), a.id.Project, a.id.LocationValue(), nil)
+				if err != nil {
+					return err
+				}
+				addPodNet.Subnetwork = canonicalized
 			}
 		}
 	}
 	return nil
 }
 
-func canonicalizeSubnetworkURL(project, location, val string) string {
-	if val == "" {
-		return ""
-	}
-	val = strings.TrimPrefix(val, "https://www.googleapis.com/compute/v1/")
-	val = strings.TrimPrefix(val, "https://compute.googleapis.com/compute/v1/")
-	if strings.HasPrefix(val, "projects/") {
-		return val
-	}
-	region := location
-	if parts := strings.Split(location, "-"); len(parts) == 3 {
-		region = fmt.Sprintf("%s-%s", parts[0], parts[1])
-	}
-	return fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", project, region, val)
-}
-
-func canonicalizeNetworkURL(project, val string) string {
-	if val == "" {
-		return ""
-	}
-	val = strings.TrimPrefix(val, "https://www.googleapis.com/compute/v1/")
-	val = strings.TrimPrefix(val, "https://compute.googleapis.com/compute/v1/")
-	if strings.HasPrefix(val, "projects/") {
-		return val
-	}
-	return fmt.Sprintf("projects/%s/global/networks/%s", project, val)
-}
-
 func (a *nodePoolAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating ContainerNodePool", "name", a.fullyQualifiedName())
+	log.V(2).Info("updating ContainerNodePool", "name", a.id.String())
 
 	if a.actual == nil {
 		return fmt.Errorf("actual is nil in Update")
@@ -299,13 +311,15 @@ func (a *nodePoolAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		true, // fineGrained
 	)
 	if err != nil {
-		return fmt.Errorf("comparing specs for ContainerNodePool %q: %w", a.fullyQualifiedName(), err)
+		return fmt.Errorf("comparing specs for ContainerNodePool %q: %w", a.id.String(), err)
 	}
 
 	if diffRes.Empty() {
-		log.V(2).Info("no changes detected for ContainerNodePool", "name", a.fullyQualifiedName())
+		log.V(2).Info("no changes detected for ContainerNodePool", "name", a.id.String())
 		status := &krm.ContainerNodePoolStatus{}
-		a.populateStatus(status, a.actual)
+		if err := a.populateStatus(status, a.actual); err != nil {
+			return err
+		}
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
@@ -316,51 +330,51 @@ func (a *nodePoolAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	// 1. Update Autoscaling via UpdateCluster if changed
 	if diffRes.Has("autoscaling") {
 		op, err := a.client.UpdateCluster(ctx, &pb.UpdateClusterRequest{
-			Name: a.parentFQN(),
+			Name: a.id.ParentString(),
 			Update: &pb.ClusterUpdate{
 				DesiredNodePoolId:          a.id.NodePool,
 				DesiredNodePoolAutoscaling: desired.GetAutoscaling(),
 			},
 		})
 		if err != nil {
-			return fmt.Errorf("updating autoscaling for ContainerNodePool %q: %w", a.fullyQualifiedName(), err)
+			return fmt.Errorf("updating autoscaling for ContainerNodePool %q: %w", a.id.String(), err)
 		}
 		if err := a.waitForOperation(ctx, op); err != nil {
-			return fmt.Errorf("waiting for autoscaling update for ContainerNodePool %q: %w", a.fullyQualifiedName(), err)
+			return fmt.Errorf("waiting for autoscaling update for ContainerNodePool %q: %w", a.id.String(), err)
 		}
 	}
 
 	// 2. Update Management if changed
 	if diffRes.Has("management") {
 		op, err := a.client.SetNodePoolManagement(ctx, &pb.SetNodePoolManagementRequest{
-			Name:       a.fullyQualifiedName(),
+			Name:       a.id.String(),
 			Management: desired.GetManagement(),
 		})
 		if err != nil {
-			return fmt.Errorf("updating management for ContainerNodePool %q: %w", a.fullyQualifiedName(), err)
+			return fmt.Errorf("updating management for ContainerNodePool %q: %w", a.id.String(), err)
 		}
 		if err := a.waitForOperation(ctx, op); err != nil {
-			return fmt.Errorf("waiting for management update for ContainerNodePool %q: %w", a.fullyQualifiedName(), err)
+			return fmt.Errorf("waiting for management update for ContainerNodePool %q: %w", a.id.String(), err)
 		}
 	}
 
 	// 3. Update Node Pool Size if node count changed
-	if diffRes.Has("initial_node_count") || diffRes.Has("node_count") {
+	if diffRes.Has("initial_node_count") {
 		op, err := a.client.SetNodePoolSize(ctx, &pb.SetNodePoolSizeRequest{
-			Name:      a.fullyQualifiedName(),
+			Name:      a.id.String(),
 			NodeCount: desired.GetInitialNodeCount(),
 		})
 		if err != nil {
-			return fmt.Errorf("setting size for ContainerNodePool %q: %w", a.fullyQualifiedName(), err)
+			return fmt.Errorf("setting size for ContainerNodePool %q: %w", a.id.String(), err)
 		}
 		if err := a.waitForOperation(ctx, op); err != nil {
-			return fmt.Errorf("waiting for size update for ContainerNodePool %q: %w", a.fullyQualifiedName(), err)
+			return fmt.Errorf("waiting for size update for ContainerNodePool %q: %w", a.id.String(), err)
 		}
 	}
 
 	// 4. Update NodePool fields via UpdateNodePool
 	updateReq := &pb.UpdateNodePoolRequest{
-		Name: a.fullyQualifiedName(),
+		Name: a.id.String(),
 	}
 	hasUpdates := false
 
@@ -456,30 +470,32 @@ func (a *nodePoolAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	if hasUpdates {
 		op, err := a.client.UpdateNodePool(ctx, updateReq)
 		if err != nil {
-			return fmt.Errorf("updating ContainerNodePool %q: %w", a.fullyQualifiedName(), err)
+			return fmt.Errorf("updating ContainerNodePool %q: %w", a.id.String(), err)
 		}
 		if err := a.waitForOperation(ctx, op); err != nil {
-			return fmt.Errorf("waiting for update of ContainerNodePool %q: %w", a.fullyQualifiedName(), err)
+			return fmt.Errorf("waiting for update of ContainerNodePool %q: %w", a.id.String(), err)
 		}
 	}
 
-	updated, err := a.client.GetNodePool(ctx, &pb.GetNodePoolRequest{Name: a.fullyQualifiedName()})
+	updated, err := a.client.GetNodePool(ctx, &pb.GetNodePoolRequest{Name: a.id.String()})
 	if err != nil {
-		return fmt.Errorf("getting updated ContainerNodePool %q: %w", a.fullyQualifiedName(), err)
+		return fmt.Errorf("getting updated ContainerNodePool %q: %w", a.id.String(), err)
 	}
 	a.actual = updated
 
 	status := &krm.ContainerNodePoolStatus{}
-	a.populateStatus(status, updated)
+	if err := a.populateStatus(status, updated); err != nil {
+		return err
+	}
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *nodePoolAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting ContainerNodePool", "name", a.fullyQualifiedName())
+	log.V(2).Info("deleting ContainerNodePool", "name", a.id.String())
 
 	req := &pb.DeleteNodePoolRequest{
-		Name: a.fullyQualifiedName(),
+		Name: a.id.String(),
 	}
 
 	op, err := a.client.DeleteNodePool(ctx, req)
@@ -487,11 +503,11 @@ func (a *nodePoolAdapter) Delete(ctx context.Context, deleteOp *directbase.Delet
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("deleting ContainerNodePool %q: %w", a.fullyQualifiedName(), err)
+		return false, fmt.Errorf("deleting ContainerNodePool %q: %w", a.id.String(), err)
 	}
 
 	if err := a.waitForOperation(ctx, op); err != nil {
-		return false, fmt.Errorf("waiting for deletion of ContainerNodePool %q: %w", a.fullyQualifiedName(), err)
+		return false, fmt.Errorf("waiting for deletion of ContainerNodePool %q: %w", a.id.String(), err)
 	}
 
 	return false, nil
@@ -511,7 +527,7 @@ func (a *nodePoolAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 	obj := &krm.ContainerNodePool{
 		Spec: *spec,
 	}
-	obj.Spec.Location = a.location()
+	obj.Spec.Location = a.id.LocationValue()
 	obj.Spec.ClusterRef = krm.ContainerClusterRef{
 		External: a.id.ParentString(),
 	}

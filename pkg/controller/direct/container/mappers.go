@@ -20,6 +20,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/iamrefs"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -628,6 +629,361 @@ func WindowsNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.WindowsNodeCon
 			out.OsVersion = pb.WindowsNodeConfig_OS_VERSION_UNSPECIFIED
 		default:
 			out.OsVersion = direct.Enum_ToProto[pb.WindowsNodeConfig_OSVersion](mapCtx, in.OSVersion)
+		}
+	}
+	return out
+}
+
+func NodepoolObservedStateStatus_FromProto(mapCtx *direct.MapContext, in *pb.NodePool) *krm.NodepoolObservedStateStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodepoolObservedStateStatus{}
+	if in.GetVersion() != "" {
+		out.Version = direct.LazyPtr(in.GetVersion())
+	}
+	if in.GetConfig() != nil && len(in.GetConfig().GetTaints()) > 0 {
+		out.NodeConfig = &krm.NodePoolNodeConfigObservedState{
+			Taint: direct.Slice_FromProto(mapCtx, in.GetConfig().GetTaints(), NodeTaint_FromProto),
+		}
+	}
+	return out
+}
+
+func NodepoolObservedStateStatus_ToProto(mapCtx *direct.MapContext, in *krm.NodepoolObservedStateStatus) *pb.NodePool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodePool{}
+	out.Version = direct.ValueOf(in.Version)
+	if in.NodeConfig != nil && len(in.NodeConfig.Taint) > 0 {
+		out.Config = &pb.NodeConfig{
+			Taints: direct.Slice_ToProto(mapCtx, in.NodeConfig.Taint, NodeTaint_ToProto),
+		}
+	}
+	return out
+}
+
+func LinuxNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.LinuxNodeConfig) *krm.LinuxNodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LinuxNodeConfig{}
+	out.Sysctls = in.Sysctls
+	out.CgroupMode = direct.Enum_FromProto(mapCtx, in.GetCgroupMode())
+	out.SwapConfig = LinuxNodeConfig_SwapConfig_FromProto(mapCtx, in.GetSwapConfig())
+	return out
+}
+
+func LinuxNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.LinuxNodeConfig) *pb.LinuxNodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LinuxNodeConfig{}
+	out.Sysctls = in.Sysctls
+	out.CgroupMode = direct.Enum_ToProto[pb.LinuxNodeConfig_CgroupMode](mapCtx, in.CgroupMode)
+	out.SwapConfig = LinuxNodeConfig_SwapConfig_ToProto(mapCtx, in.SwapConfig)
+	return out
+}
+
+func LinuxNodeConfig_SwapConfig_FromProto(mapCtx *direct.MapContext, in *pb.LinuxNodeConfig_SwapConfig) *krm.LinuxNodeConfig_SwapConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LinuxNodeConfig_SwapConfig{}
+	out.Enabled = in.Enabled
+	if in.EncryptionConfig != nil {
+		out.EncryptionConfig = &krm.SwapConfig_EncryptionConfig{
+			Disabled: in.EncryptionConfig.Disabled,
+		}
+	}
+	switch p := in.PerformanceProfile.(type) {
+	case *pb.LinuxNodeConfig_SwapConfig_BootDiskProfile_:
+		if bp := p.BootDiskProfile; bp != nil {
+			out.BootDiskProfile = &krm.SwapConfig_BootDiskProfile{}
+			switch s := bp.SwapSize.(type) {
+			case *pb.LinuxNodeConfig_SwapConfig_BootDiskProfile_SwapSizeGib:
+				out.BootDiskProfile.SwapSizeGib = direct.LazyPtr(int(s.SwapSizeGib))
+			case *pb.LinuxNodeConfig_SwapConfig_BootDiskProfile_SwapSizePercent:
+				out.BootDiskProfile.SwapSizePercent = direct.LazyPtr(int(s.SwapSizePercent))
+			}
+		}
+	case *pb.LinuxNodeConfig_SwapConfig_EphemeralLocalSsdProfile_:
+		if ep := p.EphemeralLocalSsdProfile; ep != nil {
+			out.EphemeralLocalSsdProfile = &krm.SwapConfig_EphemeralLocalSsdProfile{}
+			switch s := ep.SwapSize.(type) {
+			case *pb.LinuxNodeConfig_SwapConfig_EphemeralLocalSsdProfile_SwapSizeGib:
+				out.EphemeralLocalSsdProfile.SwapSizeGib = direct.LazyPtr(int(s.SwapSizeGib))
+			case *pb.LinuxNodeConfig_SwapConfig_EphemeralLocalSsdProfile_SwapSizePercent:
+				out.EphemeralLocalSsdProfile.SwapSizePercent = direct.LazyPtr(int(s.SwapSizePercent))
+			}
+		}
+	case *pb.LinuxNodeConfig_SwapConfig_DedicatedLocalSsdProfile_:
+		if dp := p.DedicatedLocalSsdProfile; dp != nil {
+			out.DedicatedLocalSsdProfile = &krm.SwapConfig_DedicatedLocalSsdProfile{
+				DiskCount: direct.LazyPtr(int(dp.DiskCount)),
+			}
+		}
+	}
+	return out
+}
+
+func LinuxNodeConfig_SwapConfig_ToProto(mapCtx *direct.MapContext, in *krm.LinuxNodeConfig_SwapConfig) *pb.LinuxNodeConfig_SwapConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LinuxNodeConfig_SwapConfig{}
+	out.Enabled = in.Enabled
+	if in.EncryptionConfig != nil {
+		out.EncryptionConfig = &pb.LinuxNodeConfig_SwapConfig_EncryptionConfig{
+			Disabled: in.EncryptionConfig.Disabled,
+		}
+	}
+	if bp := in.BootDiskProfile; bp != nil {
+		p := &pb.LinuxNodeConfig_SwapConfig_BootDiskProfile{}
+		if bp.SwapSizeGib != nil {
+			p.SwapSize = &pb.LinuxNodeConfig_SwapConfig_BootDiskProfile_SwapSizeGib{
+				SwapSizeGib: int64(*bp.SwapSizeGib),
+			}
+		} else if bp.SwapSizePercent != nil {
+			p.SwapSize = &pb.LinuxNodeConfig_SwapConfig_BootDiskProfile_SwapSizePercent{
+				SwapSizePercent: int32(*bp.SwapSizePercent),
+			}
+		}
+		out.PerformanceProfile = &pb.LinuxNodeConfig_SwapConfig_BootDiskProfile_{
+			BootDiskProfile: p,
+		}
+	} else if ep := in.EphemeralLocalSsdProfile; ep != nil {
+		p := &pb.LinuxNodeConfig_SwapConfig_EphemeralLocalSsdProfile{}
+		if ep.SwapSizeGib != nil {
+			p.SwapSize = &pb.LinuxNodeConfig_SwapConfig_EphemeralLocalSsdProfile_SwapSizeGib{
+				SwapSizeGib: int64(*ep.SwapSizeGib),
+			}
+		} else if ep.SwapSizePercent != nil {
+			p.SwapSize = &pb.LinuxNodeConfig_SwapConfig_EphemeralLocalSsdProfile_SwapSizePercent{
+				SwapSizePercent: int32(*ep.SwapSizePercent),
+			}
+		}
+		out.PerformanceProfile = &pb.LinuxNodeConfig_SwapConfig_EphemeralLocalSsdProfile_{
+			EphemeralLocalSsdProfile: p,
+		}
+	} else if dp := in.DedicatedLocalSsdProfile; dp != nil {
+		out.PerformanceProfile = &pb.LinuxNodeConfig_SwapConfig_DedicatedLocalSsdProfile_{
+			DedicatedLocalSsdProfile: &pb.LinuxNodeConfig_SwapConfig_DedicatedLocalSsdProfile{
+				DiskCount: int64(direct.ValueOf(dp.DiskCount)),
+			},
+		}
+	}
+	return out
+}
+
+func ContainerdConfig_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConfig) *krm.ContainerdConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContainerdConfig{}
+	out.PrivateRegistryAccessConfig = PrivateRegistryAccessConfig_FromProto(mapCtx, in.GetPrivateRegistryAccessConfig())
+	out.WritableCgroups = WritableCgroups_FromProto(mapCtx, in.GetWritableCgroups())
+	out.RegistryHosts = direct.Slice_FromProto(mapCtx, in.GetRegistryHosts(), RegistryHosts_FromProto)
+	return out
+}
+
+func ContainerdConfig_ToProto(mapCtx *direct.MapContext, in *krm.ContainerdConfig) *pb.ContainerdConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContainerdConfig{}
+	out.PrivateRegistryAccessConfig = PrivateRegistryAccessConfig_ToProto(mapCtx, in.PrivateRegistryAccessConfig)
+	out.WritableCgroups = WritableCgroups_ToProto(mapCtx, in.WritableCgroups)
+	out.RegistryHosts = direct.Slice_ToProto(mapCtx, in.RegistryHosts, RegistryHosts_ToProto)
+	return out
+}
+
+func WritableCgroups_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConfig_WritableCgroups) *krm.WritableCgroups {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WritableCgroups{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	return out
+}
+
+func WritableCgroups_ToProto(mapCtx *direct.MapContext, in *krm.WritableCgroups) *pb.ContainerdConfig_WritableCgroups {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContainerdConfig_WritableCgroups{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	return out
+}
+
+func GCPSecretManagerCertificateConfig_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig_GCPSecretManagerCertificateConfig) *krm.GCPSecretManagerCertificateConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GCPSecretManagerCertificateConfig{}
+	if in.GetSecretUri() != "" {
+		out.SecretRef = &secretmanagerv1beta1.SecretVersionRef{
+			External: in.GetSecretUri(),
+		}
+	}
+	return out
+}
+
+func GCPSecretManagerCertificateConfig_ToProto(mapCtx *direct.MapContext, in *krm.GCPSecretManagerCertificateConfig) *pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig_GCPSecretManagerCertificateConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig_GCPSecretManagerCertificateConfig{}
+	if in.SecretRef != nil {
+		out.SecretUri = in.SecretRef.External
+	}
+	return out
+}
+
+func RegistryHosts_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConfig_RegistryHostConfig) *krm.RegistryHosts {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RegistryHosts{}
+	out.Server = direct.LazyPtr(in.GetServer())
+	out.Hosts = direct.Slice_FromProto(mapCtx, in.GetHosts(), RegistryHostsConfig_FromProto)
+	return out
+}
+
+func RegistryHosts_ToProto(mapCtx *direct.MapContext, in *krm.RegistryHosts) *pb.ContainerdConfig_RegistryHostConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContainerdConfig_RegistryHostConfig{}
+	out.Server = direct.ValueOf(in.Server)
+	out.Hosts = direct.Slice_ToProto(mapCtx, in.Hosts, RegistryHostsConfig_ToProto)
+	return out
+}
+
+func RegistryHostsConfig_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConfig_RegistryHostConfig_HostConfig) *krm.RegistryHostsConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RegistryHostsConfig{}
+	out.Host = direct.LazyPtr(in.GetHost())
+	for _, cap := range in.GetCapabilities() {
+		if s := direct.Enum_FromProto(mapCtx, cap); s != nil {
+			out.Capabilities = append(out.Capabilities, *s)
+		}
+	}
+	out.OverridePath = direct.LazyPtr(in.GetOverridePath())
+	out.DialTimeout = direct.Duration_FromProto(mapCtx, in.GetDialTimeout())
+	out.Header = direct.Slice_FromProto(mapCtx, in.GetHeader(), RegistryHeader_FromProto)
+	out.Ca = direct.Slice_FromProto(mapCtx, in.GetCa(), RegistryCA_FromProto)
+	out.Client = direct.Slice_FromProto(mapCtx, in.GetClient(), RegistryClient_FromProto)
+	return out
+}
+
+func RegistryHostsConfig_ToProto(mapCtx *direct.MapContext, in *krm.RegistryHostsConfig) *pb.ContainerdConfig_RegistryHostConfig_HostConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContainerdConfig_RegistryHostConfig_HostConfig{}
+	out.Host = direct.ValueOf(in.Host)
+	for _, cap := range in.Capabilities {
+		out.Capabilities = append(out.Capabilities, direct.Enum_ToProto[pb.ContainerdConfig_RegistryHostConfig_HostCapability](mapCtx, direct.LazyPtr(cap)))
+	}
+	out.OverridePath = direct.ValueOf(in.OverridePath)
+	out.DialTimeout = direct.StringDuration_ToProto(mapCtx, in.DialTimeout)
+	out.Header = direct.Slice_ToProto(mapCtx, in.Header, RegistryHeader_ToProto)
+	out.Ca = direct.Slice_ToProto(mapCtx, in.Ca, RegistryCA_ToProto)
+	out.Client = direct.Slice_ToProto(mapCtx, in.Client, RegistryClient_ToProto)
+	return out
+}
+
+func RegistryHeader_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConfig_RegistryHostConfig_RegistryHeader) *krm.RegistryHeader {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RegistryHeader{}
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.Value = in.GetValue()
+	return out
+}
+
+func RegistryHeader_ToProto(mapCtx *direct.MapContext, in *krm.RegistryHeader) *pb.ContainerdConfig_RegistryHostConfig_RegistryHeader {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContainerdConfig_RegistryHostConfig_RegistryHeader{}
+	out.Key = direct.ValueOf(in.Key)
+	out.Value = in.Value
+	return out
+}
+
+func RegistryCA_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConfig_RegistryHostConfig_CertificateConfig) *krm.RegistryCA {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RegistryCA{}
+	if uri := in.GetGcpSecretManagerSecretUri(); uri != "" {
+		out.SecretRef = &secretmanagerv1beta1.SecretVersionRef{
+			External: uri,
+		}
+	}
+	return out
+}
+
+func RegistryCA_ToProto(mapCtx *direct.MapContext, in *krm.RegistryCA) *pb.ContainerdConfig_RegistryHostConfig_CertificateConfig {
+	if in == nil || in.SecretRef == nil || in.SecretRef.External == "" {
+		return nil
+	}
+	return &pb.ContainerdConfig_RegistryHostConfig_CertificateConfig{
+		Certificate: &pb.ContainerdConfig_RegistryHostConfig_CertificateConfig_GcpSecretManagerSecretUri{
+			GcpSecretManagerSecretUri: in.SecretRef.External,
+		},
+	}
+}
+
+func RegistryClient_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConfig_RegistryHostConfig_CertificateConfigPair) *krm.RegistryClient {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RegistryClient{}
+	if in.Cert != nil {
+		if uri := in.Cert.GetGcpSecretManagerSecretUri(); uri != "" {
+			out.Cert = &krm.RegistryClientCert{
+				SecretRef: &secretmanagerv1beta1.SecretVersionRef{
+					External: uri,
+				},
+			}
+		}
+	}
+	if in.Key != nil {
+		if uri := in.Key.GetGcpSecretManagerSecretUri(); uri != "" {
+			out.Key = &krm.RegistryClientKey{
+				SecretRef: &secretmanagerv1beta1.SecretVersionRef{
+					External: uri,
+				},
+			}
+		}
+	}
+	return out
+}
+
+func RegistryClient_ToProto(mapCtx *direct.MapContext, in *krm.RegistryClient) *pb.ContainerdConfig_RegistryHostConfig_CertificateConfigPair {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContainerdConfig_RegistryHostConfig_CertificateConfigPair{}
+	if in.Cert != nil && in.Cert.SecretRef != nil && in.Cert.SecretRef.External != "" {
+		out.Cert = &pb.ContainerdConfig_RegistryHostConfig_CertificateConfig{
+			Certificate: &pb.ContainerdConfig_RegistryHostConfig_CertificateConfig_GcpSecretManagerSecretUri{
+				GcpSecretManagerSecretUri: in.Cert.SecretRef.External,
+			},
+		}
+	}
+	if in.Key != nil && in.Key.SecretRef != nil && in.Key.SecretRef.External != "" {
+		out.Key = &pb.ContainerdConfig_RegistryHostConfig_CertificateConfig{
+			Certificate: &pb.ContainerdConfig_RegistryHostConfig_CertificateConfig_GcpSecretManagerSecretUri{
+				GcpSecretManagerSecretUri: in.Key.SecretRef.External,
+			},
 		}
 	}
 	return out

@@ -877,6 +877,7 @@ found existing non-generated mapping function "ContainerNodePoolSpec_ToProto", s
 		return out
 	}
 */
+/* found existing non-generated mapping function "ContainerdConfig_FromProto", skipping
 func ContainerdConfig_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConfig) *krm.ContainerdConfig {
 	if in == nil {
 		return nil
@@ -885,6 +886,8 @@ func ContainerdConfig_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConf
 	out.PrivateRegistryAccessConfig = PrivateRegistryAccessConfig_FromProto(mapCtx, in.GetPrivateRegistryAccessConfig())
 	return out
 }
+*/
+/* found existing non-generated mapping function "ContainerdConfig_ToProto", skipping
 func ContainerdConfig_ToProto(mapCtx *direct.MapContext, in *krm.ContainerdConfig) *pb.ContainerdConfig {
 	if in == nil {
 		return nil
@@ -893,6 +896,7 @@ func ContainerdConfig_ToProto(mapCtx *direct.MapContext, in *krm.ContainerdConfi
 	out.PrivateRegistryAccessConfig = PrivateRegistryAccessConfig_ToProto(mapCtx, in.PrivateRegistryAccessConfig)
 	return out
 }
+*/
 func ControlPlaneEndpointsConfig_FromProto(mapCtx *direct.MapContext, in *pb.ControlPlaneEndpointsConfig) *krm.ControlPlaneEndpointsConfig {
 	if in == nil {
 		return nil
@@ -1173,6 +1177,8 @@ func FastSocket_ToProto(mapCtx *direct.MapContext, in *krm.FastSocket) *pb.FastS
 	out.Enabled = direct.ValueOf(in.Enabled)
 	return out
 }
+
+/* found existing non-generated mapping function "GCPSecretManagerCertificateConfig_FromProto", skipping
 func GCPSecretManagerCertificateConfig_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig_GCPSecretManagerCertificateConfig) *krm.GCPSecretManagerCertificateConfig {
 	if in == nil {
 		return nil
@@ -1181,6 +1187,8 @@ func GCPSecretManagerCertificateConfig_FromProto(mapCtx *direct.MapContext, in *
 	// MISSING: SecretURI
 	return out
 }
+*/
+/* found existing non-generated mapping function "GCPSecretManagerCertificateConfig_ToProto", skipping
 func GCPSecretManagerCertificateConfig_ToProto(mapCtx *direct.MapContext, in *krm.GCPSecretManagerCertificateConfig) *pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig_GCPSecretManagerCertificateConfig {
 	if in == nil {
 		return nil
@@ -1189,6 +1197,7 @@ func GCPSecretManagerCertificateConfig_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: SecretURI
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "GKEBackupAgentConfig_FromProto", skipping
 func GKEBackupAgentConfig_FromProto(mapCtx *direct.MapContext, in *pb.GkeBackupAgentConfig) *krm.GKEBackupAgentConfig {
@@ -1491,6 +1500,7 @@ found existing non-generated mapping function "KubeletConfig_ToProto", skipping
 		return out
 	}
 */
+/* found existing non-generated mapping function "LinuxNodeConfig_FromProto", skipping
 func LinuxNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.LinuxNodeConfig) *krm.LinuxNodeConfig {
 	if in == nil {
 		return nil
@@ -1503,6 +1513,8 @@ func LinuxNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.LinuxNodeConfig
 	// MISSING: TransparentHugepageDefrag
 	return out
 }
+*/
+/* found existing non-generated mapping function "LinuxNodeConfig_ToProto", skipping
 func LinuxNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.LinuxNodeConfig) *pb.LinuxNodeConfig {
 	if in == nil {
 		return nil
@@ -1515,6 +1527,7 @@ func LinuxNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.LinuxNodeConfig)
 	// MISSING: TransparentHugepageDefrag
 	return out
 }
+*/
 func LoggingConfig_FromProto(mapCtx *direct.MapContext, in *pb.LoggingConfig) *krm.LoggingConfig {
 	if in == nil {
 		return nil

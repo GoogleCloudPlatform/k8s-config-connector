@@ -45,7 +45,7 @@ func TestContainerNodePoolIdentity_FromExternal(t *testing.T) {
 			ref:  "projects/my-project/zones/us-central1-a/clusters/my-cluster/nodePools/my-nodepool",
 			want: &ContainerNodePoolIdentity{
 				Project:  "my-project",
-				Zone:     "us-central1-a",
+				Location: "us-central1-a",
 				Cluster:  "my-cluster",
 				NodePool: "my-nodepool",
 			},
@@ -65,7 +65,7 @@ func TestContainerNodePoolIdentity_FromExternal(t *testing.T) {
 			ref:  "https://container.googleapis.com/v1/projects/my-project/zones/us-central1-a/clusters/my-cluster/nodePools/my-nodepool",
 			want: &ContainerNodePoolIdentity{
 				Project:  "my-project",
-				Zone:     "us-central1-a",
+				Location: "us-central1-a",
 				Cluster:  "my-cluster",
 				NodePool: "my-nodepool",
 			},
@@ -110,14 +110,14 @@ func TestContainerNodePoolIdentity_String(t *testing.T) {
 			expected: "projects/my-project/locations/us-central1/clusters/my-cluster/nodePools/my-nodepool",
 		},
 		{
-			name: "zonal",
+			name: "zonal formats to locations",
 			identity: &ContainerNodePoolIdentity{
 				Project:  "my-project",
-				Zone:     "us-central1-a",
+				Location: "us-central1-a",
 				Cluster:  "my-cluster",
 				NodePool: "my-nodepool",
 			},
-			expected: "projects/my-project/zones/us-central1-a/clusters/my-cluster/nodePools/my-nodepool",
+			expected: "projects/my-project/locations/us-central1-a/clusters/my-cluster/nodePools/my-nodepool",
 		},
 	}
 
@@ -147,14 +147,14 @@ func TestContainerNodePoolIdentity_ParentString(t *testing.T) {
 			expected: "projects/my-project/locations/us-central1/clusters/my-cluster",
 		},
 		{
-			name: "zonal parent",
+			name: "zonal parent formats to locations",
 			identity: &ContainerNodePoolIdentity{
 				Project:  "my-project",
-				Zone:     "us-central1-a",
+				Location: "us-central1-a",
 				Cluster:  "my-cluster",
 				NodePool: "my-nodepool",
 			},
-			expected: "projects/my-project/zones/us-central1-a/clusters/my-cluster",
+			expected: "projects/my-project/locations/us-central1-a/clusters/my-cluster",
 		},
 	}
 
@@ -197,6 +197,26 @@ func TestContainerNodePool_GetIdentity(t *testing.T) {
 			want: &ContainerNodePoolIdentity{
 				Project:  "my-project",
 				Location: "us-central1",
+				Cluster:  "my-cluster",
+				NodePool: "my-nodepool",
+			},
+		},
+		{
+			name: "GetIdentity with zonal cluster and legacy zonal status.externalRef",
+			obj: &ContainerNodePool{
+				Spec: ContainerNodePoolSpec{
+					ClusterRef: ContainerClusterRef{
+						External: "projects/my-project/locations/us-central1-a/clusters/my-cluster",
+					},
+					ResourceID: lazyPtr("my-nodepool"),
+				},
+				Status: ContainerNodePoolStatus{
+					ExternalRef: lazyPtr("projects/my-project/zones/us-central1-a/clusters/my-cluster/nodePools/my-nodepool"),
+				},
+			},
+			want: &ContainerNodePoolIdentity{
+				Project:  "my-project",
+				Location: "us-central1-a",
 				Cluster:  "my-cluster",
 				NodePool: "my-nodepool",
 			},
