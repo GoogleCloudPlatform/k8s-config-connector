@@ -303,10 +303,10 @@ func (g *TypeGenerator) PlanRequiredStructs(uses *RequiredUses, newSpecFields []
 	}
 	p := g.newRequiredPlanner(uses)
 	named := p.requiredCopiesInUse()
-	strictReached := p.walk(p.strictSeeds(named, newSpecFields), neverStop)
+	strictReached := Reachable(p.strictSeeds(named, newSpecFields), p.next, nil)
 	// The lenient walk stops at opted-in Specs, so a Kind that holds its own
 	// Spec doesn't make it lenient.
-	lenientReached := p.walk(p.lenientSeeds(strictReached), p.isMarkedSpec)
+	lenientReached := Reachable(p.lenientSeeds(strictReached), p.next, p.isMarkedSpec)
 	strict := messagesIn(strictReached)
 	lenient := messagesIn(lenientReached)
 	split := p.splitMessages(strict, lenient, named)
@@ -448,26 +448,6 @@ func (p *requiredPlanner) statusSeeds() []structNode {
 func (p *requiredPlanner) isMarkedSpec(n structNode) bool {
 	return p.uses.MarkedSpecs[n.handWritten]
 }
-
-// walk returns the nodes that seeds reach. It doesn't enter a node for which
-// stop returns true.
-func (p *requiredPlanner) walk(seeds []structNode, stop func(structNode) bool) map[structNode]bool {
-	reached := map[structNode]bool{}
-	queue := append([]structNode(nil), seeds...)
-	for len(queue) > 0 {
-		n := queue[0]
-		queue = queue[1:]
-		if reached[n] || stop(n) {
-			continue
-		}
-		reached[n] = true
-		queue = append(queue, p.next(n)...)
-	}
-	return reached
-}
-
-// neverStop lets a walk enter every node.
-func neverStop(structNode) bool { return false }
 
 // next returns the nodes for the structs that n holds.
 func (p *requiredPlanner) next(n structNode) []structNode {

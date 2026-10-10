@@ -388,40 +388,54 @@ func (u structUser) String() string {
 // spec or status holds it, directly or through other structs. A Kind is a
 // struct that embeds metav1.TypeMeta.
 func structUsers(structs map[string]*goStruct) map[string][]structUser {
-	seen := map[string]map[structUser]bool{}
-	var visit func(name string, user structUser)
-	visit = func(name string, user structUser) {
-		s := structs[name]
-		if s == nil || seen[name][user] {
-			return
-		}
-		if seen[name] == nil {
-			seen[name] = map[structUser]bool{}
-		}
-		seen[name][user] = true
-		for _, f := range s.fields {
-			visit(f.typeName, user)
+	out := map[string][]structUser{}
+	for _, s := range structs {
+		if isKind(s) {
+			addKindUsers(out, structs, s)
 		}
 	}
-	for _, s := range structs {
-		if !isKind(s) {
+	for _, users := range out {
+		sortUsers(users)
+	}
+	return out
+}
+
+// addKindUsers adds the Kind s to out as a user of each struct its spec
+// holds, and its status as a user of each struct its status holds.
+func addKindUsers(out map[string][]structUser, structs map[string]*goStruct, s *goStruct) {
+	held := func(name string) []string { return heldStructs(structs, name) }
+	for _, f := range s.fields {
+		user, ok := kindUser(s.name, f)
+		if !ok || structs[f.typeName] == nil {
 			continue
 		}
-		for _, f := range s.fields {
-			switch f.json {
-			case "spec":
-				visit(f.typeName, structUser{kind: s.name})
-			case "status":
-				visit(f.typeName, structUser{kind: s.name, status: true})
-			}
+		for name := range codegen.Reachable([]string{f.typeName}, held, nil) {
+			out[name] = append(out[name], user)
 		}
 	}
-	out := map[string][]structUser{}
-	for name, users := range seen {
-		for u := range users {
-			out[name] = append(out[name], u)
+}
+
+// kindUser returns the user that a Kind's field makes of the struct it holds:
+// the Kind for its spec field, or the Kind's status for its status field.
+func kindUser(kind string, f goField) (structUser, bool) {
+	switch f.json {
+	case "spec":
+		return structUser{kind: kind}, true
+	case "status":
+		return structUser{kind: kind, status: true}, true
+	default:
+		return structUser{}, false
+	}
+}
+
+// heldStructs returns the structs of the package that the named struct's
+// fields hold.
+func heldStructs(structs map[string]*goStruct, name string) []string {
+	var out []string
+	for _, f := range structs[name].fields {
+		if structs[f.typeName] != nil {
+			out = append(out, f.typeName)
 		}
-		sortUsers(out[name])
 	}
 	return out
 }
