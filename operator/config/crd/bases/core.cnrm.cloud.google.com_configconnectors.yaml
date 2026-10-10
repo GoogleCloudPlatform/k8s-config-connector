@@ -148,6 +148,25 @@ spec:
                 - cluster
                 - namespaced
                 type: string
+              resourceKinds:
+                description: ResourceKinds allows specifying which resource kinds
+                  to enable or disable.
+                properties:
+                  allowlist:
+                    description: |-
+                      Allowlist is the list of resource kinds to allow.
+                      If Allowlist is non-empty, only the resource kinds in the list will be allowed.
+                    items:
+                      type: string
+                    type: array
+                  denylist:
+                    description: |-
+                      Denylist is the list of resource kinds to deny.
+                      If a resource kind is in Denylist, it will be denied even if it is in Allowlist.
+                    items:
+                      type: string
+                    type: array
+                type: object
               stateIntoSpec:
                 description: |-
                   StateIntoSpec is the user override of the default value for the
