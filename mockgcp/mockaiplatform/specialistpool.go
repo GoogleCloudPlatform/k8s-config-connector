@@ -179,12 +179,13 @@ func (s *specialistPoolService) ListSpecialistPools(ctx context.Context, req *pb
 	location := tokens[3]
 
 	findPrefix := fmt.Sprintf("projects/%d/locations/%s/specialistPools/", project.Number, location)
+	findPrefixID := fmt.Sprintf("projects/%s/locations/%s/specialistPools/", project.ID, location)
 
 	var specialistPools []*pb.SpecialistPool
 	specialistPoolKind := (&pb.SpecialistPool{}).ProtoReflect().Descriptor()
 	if err := s.storage.List(ctx, specialistPoolKind, storage.ListOptions{}, func(obj proto.Message) error {
 		sp := obj.(*pb.SpecialistPool)
-		if strings.HasPrefix(sp.GetName(), findPrefix) {
+		if strings.HasPrefix(sp.GetName(), findPrefix) || strings.HasPrefix(sp.GetName(), findPrefixID) {
 			specialistPools = append(specialistPools, sp)
 		}
 		return nil
