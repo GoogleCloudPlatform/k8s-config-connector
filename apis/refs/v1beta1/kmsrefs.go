@@ -31,6 +31,9 @@ import (
 // NOTE: If references a KMSKey, use `KMSKeyRef_OneOf` instead!
 // todo: use unexported variable kmsCryptoKeyRef to avoid referencing to the KMS crypto key.
 
+// KMSCryptoKeyRef is a reference to a KMSCryptoKey.
+// Deprecated: Use kmsv1beta1.KMSCryptoKeyRef instead.
+
 type KMSCryptoKeyRef struct {
 	// A reference to an externally managed KMSCryptoKey.
 	// Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
@@ -44,6 +47,7 @@ type KMSCryptoKeyRef struct {
 }
 
 // ResolveKMSCryptoKeyRef will resolve a KMSCryptoKeyRef to a KMSCryptoKey.
+// Deprecated: Use kmsv1beta1.KMSCryptoKeyRef and refs.Normalize (or common.NormalizeReferences) instead.
 func ResolveKMSCryptoKeyRef(ctx context.Context, reader client.Reader, src client.Object, ref *KMSCryptoKeyRef) (*KMSCryptoKeyRef, error) {
 	if ref == nil {
 		return nil, nil
