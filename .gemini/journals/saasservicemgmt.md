@@ -1,3 +1,11 @@
+### [2026-10-09] Direct Controller, Fuzzer, and E2E Fixtures Implementation for SaaSServiceMgmtUnit
+- **Context**: Implementing the Greenfield direct controller, KRM fuzzer, and real GCP test fixtures for `SaaSServiceMgmtUnit`.
+- **Observations**:
+  - **UnitKind Requirement in GCP**: While proto marks `unit_kind` as optional, the live GCP API returns `400 Bad Request: resource name is empty` if `unitKind` is omitted during `CreateUnit`. Supplying `unitKindRef` resolves this.
+  - **Tenant Gateway Verification**: Specifying `tenantRef` causes live GCP API calls to fail with `400 Bad Request: unable to retrieve Tenant ... from the gateway: rpc error: code = NotFound`. Unlike `unitKind`, tenant existence is strictly verified on creation. Since KCC does not currently manage `SaaSServiceMgmtTenant`, `tenantRef` was omitted from maximal test fixtures.
+  - **Identifier Handling in Diff**: Restoring `maskedActual.Name = desired.Name` in `compareUnit` is essential after `mappers.OnlySpecFields` to avoid false diffs on the `name` field during re-reconciliation.
+  - **Synchronous Operations**: `CreateUnit`, `UpdateUnit`, and `DeleteUnit` are all synchronous calls on `SaasDeploymentsClient`, avoiding LRO polling.
+
 ### [2026-07-03] Direct Controller and Fuzzer Implementation for SaasServiceMgmtRelease
 - **Context**: Implementing the Greenfield direct controller, KRM fuzzer, and test fixtures for `SaasServiceMgmtRelease`.
 - **Observations**: 

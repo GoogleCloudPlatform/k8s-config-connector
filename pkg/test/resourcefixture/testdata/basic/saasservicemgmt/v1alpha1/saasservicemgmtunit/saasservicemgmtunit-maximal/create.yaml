@@ -1,0 +1,13 @@
+apiVersion: saasservicemgmt.cnrm.cloud.google.com/v1alpha1
+kind: SaaSServiceMgmtUnit
+metadata:
+  name: saasservicemgmtunit-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  unitKindRef:
+    external: projects/${projectId}/locations/us-central1/unitKinds/kcc-test-unit-kind
+  managementMode: MANAGEMENT_MODE_USER
+  maintenance:
+    pinnedUntilTime: "2027-01-01T00:00:00Z"
