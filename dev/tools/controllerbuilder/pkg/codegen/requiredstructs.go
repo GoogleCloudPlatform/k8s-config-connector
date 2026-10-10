@@ -326,10 +326,10 @@ func isGoSource(name string) bool {
 // requiredPlan says which structs WriteVisitedMessages writes for each
 // message. Keys are full proto names.
 type requiredPlan struct {
-	// strict holds the messages an opted-in Spec reaches. Their struct gets
-	// +required markers.
+	// strict holds the messages that opted-in Specs use, directly or through
+	// other structs. Their struct gets +required markers.
 	strict map[string]bool
-	// lenient holds the messages anything else reaches. Their struct keeps
+	// lenient holds the messages that anything else uses. Their struct keeps
 	// every field optional.
 	lenient map[string]bool
 	// split holds the messages in both sets whose two versions differ. Each
@@ -340,11 +340,11 @@ type requiredPlan struct {
 // PlanRequiredStructs decides which structs get +required markers. Call it
 // after VisitProto and before WriteVisitedMessages.
 //
-// A message reached from an opted-in Spec gets a strict struct. A message
-// reached from anything else gets a lenient one: a Kind, a status, an
-// unmarked Spec or another package. Both walks follow hand-written types, so a
-// struct that only opted-in Kinds reach is strict even through a hand-written
-// helper. A message that needs both keeps its plain name lenient, so its
+// A message that an opted-in Spec uses, directly or through other structs,
+// gets a strict struct. A message that anything else uses gets a lenient one:
+// a Kind, a status, an unmarked Spec or another package. Both walks follow
+// hand-written types, so a struct that only opted-in Kinds use is strict even
+// through a hand-written helper. A message that needs both keeps its plain name lenient, so its
 // current users don't change, and gets a strict <Name>Required copy. A copy
 // that code already uses is always written.
 //
@@ -462,7 +462,7 @@ func (p *requiredPlanner) strictSeeds(named map[string]bool, newSpecFields []pro
 
 // lenientSeeds returns where the lenient walk starts. Every hand-written type
 // that the strict walk doesn't reach starts it: a Kind, a status, an unmarked
-// Spec, or a type nothing uses. A type that only opted-in Specs reach doesn't,
+// Spec, or a type nothing uses. A type that only opted-in Specs use doesn't,
 // so what it holds stays strict. The types other packages use, and the plain
 // structs in statuses, start it too.
 func (p *requiredPlanner) lenientSeeds(strictReached map[structNode]bool) []structNode {
@@ -657,7 +657,7 @@ func (p *requiredPlanner) takenTypeNames() map[string]bool {
 // needsSplit reports whether a strict message needs a Required copy, given
 // the messages split so far. A message whose Required copy code already uses
 // always does, so that code compiles. Otherwise it needs one only if
-// something lenient reaches it too and its versions differ: it has a REQUIRED
+// something lenient uses it too and its versions differ: it has a REQUIRED
 // field or holds a split message.
 func (p *requiredPlanner) needsSplit(fqn string, lenient, named, split map[string]bool) bool {
 	if named[fqn] {
@@ -740,8 +740,8 @@ func (g *TypeGenerator) lenientWriteOptions() WriteOptions {
 
 // StrictWriteOptions are the options for a struct that enforces the proto's
 // REQUIRED fields: the Spec of a new, opted-in Kind, or a nested struct that
-// only opted-in Kinds reach. A field whose message is split holds the
-// Required copy.
+// only opted-in Kinds use. A field whose message is split holds the Required
+// copy.
 func (g *TypeGenerator) StrictWriteOptions() WriteOptions {
 	opts := g.writeOptions
 	if g.requiredPlan != nil {

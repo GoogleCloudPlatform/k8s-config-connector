@@ -95,7 +95,7 @@ type WriteOptions struct {
 	// google.api.field_behavior = REQUIRED.
 	//
 	// generate-types sets it for the whole service, and PlanRequiredStructs
-	// narrows it down: only structs that opted-in Kinds reach get the markers.
+	// narrows it down: only structs that opted-in Kinds use get the markers.
 	EmitRequired bool
 	// RequiredStructs holds the messages written twice: a plain struct for
 	// everything else, and a <Name>Required copy for opted-in Kinds. A field
