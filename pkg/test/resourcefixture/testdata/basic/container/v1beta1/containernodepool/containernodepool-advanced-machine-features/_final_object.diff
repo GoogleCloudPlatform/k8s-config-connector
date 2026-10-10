@@ -7,8 +7,10 @@
 32d30
 <   resourceID: nodepool-sample-${uniqueId}
 39a38
->   externalRef: projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}
-44c43
+>   externalRef: projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}
+43,44c42,43
+<   - https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-normalized-grp
 <   observedGeneration: 3
 ---
+>   - https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-normalized-grp
 >   observedGeneration: 2

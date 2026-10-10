@@ -28,15 +28,50 @@ spec:
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: The resource is up to date
-    reason: UpToDate
-    status: "True"
+    message: "Update call failed: error updating: updating ContainerNodePool \"projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}\":
+      googleapi: Error 400: Swap is disabled, no other swapConfig fields can be set.\nerror
+      details: name = RequestInfo id = 0x2f8ea9f73d5e979f data = \nerror details:
+      name = DebugInfo detail = INVALID_ARGUMENT: swap is disabled, no other swapConfig
+      fields can be set stack = cloud/kubernetes/engine/common/error_desc.go:440 +0x26
+      google3/cloud/kubernetes/engine/common/errdesc.(*GKEErrorDescriptor).createErr(0x3534dee76040,
+      {0x55d45a56f370, 0x353630ecfe30}) cloud/kubernetes/engine/common/error_desc.go:315
+      +0x4c google3/cloud/kubernetes/engine/common/errdesc.(*GKEErrorDescriptor).WithMsgCtx(0x55d45a56f370?,
+      {0x55d45a56f370?, 0x353630ecfe30?}, {0x55d44504fe14, 0x37}, {0x0, 0x0, 0x0})
+      cloud/kubernetes/server/patch/field/node/node_pool_config.go:886 +0x119a google3/cloud/kubernetes/server/patch/field/node/config.validateSwapConfig({0x55d45a56f370,
+      0x353630ecfe30}, 0x3535f10661c0, 0x35358daa56c0, {0x55d45a544c28, 0x3534fb26b3b0},
+      0x3534e18e3050, {0x7f853635df58, 0x3534ebbfe570}) cloud/kubernetes/server/patch/field/node/node_pool_config.go:1979
+      +0x4ba google3/cloud/kubernetes/server/patch/field/node/config.(*nodeConfigValidator).validateNodeSystemConfig(0x353506761ad0,
+      {0x55d45a56f370, 0x353630ecfe30}, 0x3535f10661c0, 0x35358daa56c0, {0x55d45a544c28,
+      0x3534fb26b3b0}, {0x7f8541d01ae0, 0x3536141c7a40}) cloud/kubernetes/server/patch/field/node/node_pool_config.go:623
+      +0xfeb google3/cloud/kubernetes/server/patch/field/node/config.(*nodeConfigValidator).Validate(0x353506761ad0,
+      {0x55d45a56f370, 0x353630ecfe30}, 0x3535f10661c0, 0x0) cloud/kubernetes/server/patch/common/field.go:250
+      +0x66 google3/cloud/kubernetes/server/patch/common/patchbase.(*Field).Validate(0x353647bdc580,
+      {0x55d45a56f370, 0x353630ecfe30}, 0x3535f10661c0, 0x0) cloud/kubernetes/server/patch/patcher/field_list.go:330
+      +0x32 google3/cloud/kubernetes/server/patch/patcher/fieldlist.FieldList.ValidateWithPipeline.func1.1({0x55d45a56f370?,
+      0x353630ecfe30?}) cloud/kubernetes/engine/requests/stage.go:211 +0x78 google3/cloud/kubernetes/engine/requests/stage.Record.func1({0x55d45a56f370,
+      0x353630ecfe30}) cloud/kubernetes/engine/common/stage/stage.go:316 +0xc03 google3/cloud/kubernetes/engine/common/stage/stage.Record({0x55d45a56f370,
+      0x353630ecfb30}, {0x55d444e2d09c, 0x6}, {0x55d444e2929f, 0x4}, 0x3535429319a8,
+      {0x353542931980, 0x1, 0x1}) cloud/kubernetes/engine/requests/stage.go:250 +0x653
+      google3/cloud/kubernetes/engine/requests/stage.Record({0x55d45a56f370, 0x353630ecfb30},
+      {0x55d444e2d09c, 0x6}, {0x55d444e2929f, 0x4}, 0x353542931ad0, {0x0, 0x0, 0x0})
+      cloud/kubernetes/server/patch/patcher/field_list.go:330 +0xaa google3/cloud/kubernetes/server/patch/patcher/fieldlist.FieldList.ValidateWithPipeline.func1({0x55d45a56f370,
+      0x353630ecfb30}, {0x353542931b20?, 0x55d449d23453?}) cloud/kubernetes/server/patch/patcher/field_list.go:318
+      +0x37 google3/cloud/kubernetes/server/patch/patcher/fieldlist.functionRunner.Run(0x0?,
+      {0x55d45a56f370?, 0x353630ecfb30?}, {0x55d45a58abd8?, 0x3535dc5a1c80?}) cloud/kubernetes/engine/common/sequencing/pipeline/memory.go:187
+      +0xa5 google3/cloud/kubernetes/engine/common/sequencing/pipeline/memory.(*memoryWorkItem).Run(0x3535dc5a1c80,
+      {0x55d45a56f370, 0x353630ecfb30}, 0x0) cloud/kubernetes/engine/common/sequencing/pipeline/internal.go:407
+      +0x28a google3/cloud/kubernetes/engine/common/sequencing/pipeline/internal.(*DependencyRunner).runWorkItemConsumer(0x35356be0b9d8,
+      {0x55d45a56f3a8, 0x3534e3afeb40}, 0x3535aa30e1c0, 0x3535aa30e230) cloud/kubernetes/engine/common/sequencing/pipeline/internal.go:140
+      +0x179 created by google3/cloud/kubernetes/engine/common/sequencing/pipeline/internal.(*DependencyRunner).Run
+      in goroutine 1747866584"
+    reason: UpdateFailed
+    status: "False"
     type: Ready
-  externalRef: projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}
+  externalRef: projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/nodepool-sample-${uniqueId}
   instanceGroupUrls:
-  - https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-nodepool-sample-${uniqueId}-grp
+  - https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-normalized-grp
   managedInstanceGroupUrls:
-  - https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-nodepool-sample-${uniqueId}-grp
+  - https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-normalized-grp
   observedGeneration: 2
   observedState:
     version: 1.30.5-gke.1014001
