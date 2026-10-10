@@ -236,6 +236,13 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeTargetTCPProxy"}:
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeTargetVPNGateway"}:
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeURLMap"}:
+		// Enable re-reconciliation for new test cases; keep old test cases
+		// untouched until we verify they work.
+		if strings.HasPrefix(testName, "globalcomputeurlmapredirect") {
+			return true
+		} else {
+			return false
+		}
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeVPNGateway"}:
 	case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeVPNTunnel"}:
 	case schema.GroupKind{Group: "configcontroller.cnrm.cloud.google.com", Kind: "ConfigControllerInstance"}:
