@@ -17,8 +17,7 @@ package generatetypes
 import (
 	"fmt"
 	"go/ast"
-	"go/parser"
-	"go/token"
+	"io/fs"
 	"os"
 	"path"
 	"path/filepath"
@@ -155,63 +154,48 @@ func loadServiceVersions(serviceDir string) (map[string]map[string]*goStruct, er
 // loadStructs reads the structs declared in the Go files of dir, skipping
 // tests and deepcopy.
 func loadStructs(dir string) (map[string]*goStruct, error) {
-	entries, err := os.ReadDir(dir)
+	decls, err := codegen.ParseTypeDecls(dir, isTypesSource)
 	if err != nil {
 		return nil, err
 	}
 	out := map[string]*goStruct{}
-	fset := token.NewFileSet()
-	for _, e := range entries {
-		name := e.Name()
-		if e.IsDir() || !strings.HasSuffix(name, ".go") || strings.HasSuffix(name, "_test.go") || strings.HasPrefix(name, "zz_generated") {
-			continue
-		}
-		f, err := parser.ParseFile(fset, filepath.Join(dir, name), nil, parser.ParseComments)
-		if err != nil {
-			return nil, err
-		}
-		for _, decl := range f.Decls {
-			gd, ok := decl.(*ast.GenDecl)
-			if !ok || gd.Tok != token.TYPE {
-				continue
-			}
-			for _, spec := range gd.Specs {
-				ts, ok := spec.(*ast.TypeSpec)
-				if !ok {
-					continue
-				}
-				st, ok := ts.Type.(*ast.StructType)
-				if !ok {
-					continue
-				}
-				doc := ts.Doc
-				if doc == nil && len(gd.Specs) == 1 {
-					doc = gd.Doc
-				}
-				s := &goStruct{
-					name:      ts.Name.Name,
-					file:      name,
-					generated: strings.HasSuffix(name, "generated.go"),
-				}
-				for _, line := range commentLines(doc) {
-					if msg, _, ok := codegen.GetProtoMessageAndKindFromAnnotation(line); ok && s.proto == "" {
-						s.proto = msg
-					}
-					if codegen.IsRequiredFromProtoMarker(line) {
-						s.marked = true
-					}
-					if level, ok := stabilityLabel(line); ok {
-						s.stability = level
-					}
-				}
-				for _, field := range st.Fields.List {
-					s.fields = append(s.fields, parseFields(field)...)
-				}
-				out[s.name] = s
-			}
+	for _, d := range decls {
+		if st, ok := d.Spec.Type.(*ast.StructType); ok {
+			out[d.Name()] = newGoStruct(d, st)
 		}
 	}
 	return out, nil
+}
+
+// isTypesSource reports whether e is a Go file that can declare the
+// package's structs: not a test or a deepcopy file.
+func isTypesSource(e fs.DirEntry) bool {
+	name := e.Name()
+	return !e.IsDir() && strings.HasSuffix(name, ".go") && !strings.HasSuffix(name, "_test.go") && !strings.HasPrefix(name, "zz_generated")
+}
+
+// newGoStruct reads the markers and fields of a struct declaration.
+func newGoStruct(d codegen.TypeDecl, st *ast.StructType) *goStruct {
+	s := &goStruct{
+		name:      d.Name(),
+		file:      d.File,
+		generated: strings.HasSuffix(d.File, "generated.go"),
+	}
+	for _, line := range commentLines(d.Doc) {
+		if msg, _, ok := codegen.GetProtoMessageAndKindFromAnnotation(line); ok && s.proto == "" {
+			s.proto = msg
+		}
+		if codegen.IsRequiredFromProtoMarker(line) {
+			s.marked = true
+		}
+		if level, ok := stabilityLabel(line); ok {
+			s.stability = level
+		}
+	}
+	for _, field := range st.Fields.List {
+		s.fields = append(s.fields, parseFields(field)...)
+	}
+	return s
 }
 
 func commentLines(cg *ast.CommentGroup) []string {
