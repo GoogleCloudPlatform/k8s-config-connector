@@ -21,6 +21,7 @@ spec:
     external: ${projectId}
   resourceID: firestoredatabase-${uniqueId}
   locationID: us-west2
+  type: FIRESTORE_NATIVE
   concurrencyMode: PESSIMISTIC
   pointInTimeRecoveryEnablement: POINT_IN_TIME_RECOVERY_DISABLED
   deleteProtectionState: DELETE_PROTECTION_ENABLED

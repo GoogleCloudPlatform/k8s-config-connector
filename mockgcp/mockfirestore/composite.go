@@ -91,7 +91,9 @@ func (s *firestoreAdminServer) populateDefaultsForIndex(obj *pb.Index) {
 	if !hasName {
 		lastField := obj.Fields[len(obj.Fields)-1]
 		direction := lastField.GetOrder()
-		if direction == pb.Index_IndexField_ORDER_UNSPECIFIED {
+		// Datastore mode always defaults __name__ to ascending, even when the
+		// preceding field is descending.
+		if obj.ApiScope == pb.Index_DATASTORE_MODE_API || direction == pb.Index_IndexField_ORDER_UNSPECIFIED {
 			direction = pb.Index_IndexField_ASCENDING
 		}
 		obj.Fields = append(obj.Fields, &pb.Index_IndexField{
