@@ -33,6 +33,7 @@
 | apigee.cnrm.cloud.google.com                   | ApigeeSyncAuthorization                                  | True         | False       | False  | Terraform  | False       |
 | apihub.cnrm.cloud.google.com                   | APIHubAPI                                                | True         | False       | False  | Direct     | True        |
 | apihub.cnrm.cloud.google.com                   | APIHubAttribute                                          | True         | False       | False  | Direct     | True        |
+| apihub.cnrm.cloud.google.com                   | APIHubCuration                                           | True         | False       | False  | Direct     | True        |
 | apihub.cnrm.cloud.google.com                   | APIHubDependency                                         | True         | False       | False  | Direct     | True        |
 | apihub.cnrm.cloud.google.com                   | APIHubDeployment                                         | True         | False       | False  | Direct     | True        |
 | apihub.cnrm.cloud.google.com                   | APIHubExternalAPI                                        | True         | False       | False  | Direct     | True        |
@@ -67,7 +68,6 @@
 | beyondcorp.cnrm.cloud.google.com               | BeyondCorpAppConnection                                  | True         | False       | False  | Terraform  | False       |
 | beyondcorp.cnrm.cloud.google.com               | BeyondCorpAppConnector                                   | True         | False       | False  | Terraform  | False       |
 | beyondcorp.cnrm.cloud.google.com               | BeyondCorpAppGateway                                     | True         | False       | False  | Terraform  | False       |
-| beyondcorp.cnrm.cloud.google.com               | BeyondCorpClientConnectorService                         | True         | False       | False  | Direct     | True        |
 | bigquerybiglake.cnrm.cloud.google.com          | BigLakeCatalog                                           | True         | False       | False  | Direct     | True        |
 | bigquerybiglake.cnrm.cloud.google.com          | BigLakeDatabase                                          | True         | False       | False  | Direct     | True        |
 | bigquerybiglake.cnrm.cloud.google.com          | BigLakeTable                                             | True         | True        | False  | Direct     | True        |
@@ -249,7 +249,6 @@
 | dataform.cnrm.cloud.google.com                 | DataformTeamFolder                                       | True         | False       | False  | Direct     | True        |
 | datafusion.cnrm.cloud.google.com               | DataFusionInstance                                       | False        | True        | False  | DCL        | False       |
 | datalabeling.cnrm.cloud.google.com             | DataLabelingAnnotationSpecSet                            | True         | False       | False  | Direct     | True        |
-| datalabeling.cnrm.cloud.google.com             | DataLabelingDataset                                      | True         | False       | False  | Direct     | True        |
 | datalabeling.cnrm.cloud.google.com             | DataLabelingEvaluationJob                                | True         | False       | False  | Direct     | True        |
 | datalabeling.cnrm.cloud.google.com             | DataLabelingInstruction                                  | True         | False       | False  | Direct     | True        |
 | datalineage.cnrm.cloud.google.com              | DataLineageProcess                                       | True         | False       | False  | Direct     | True        |
