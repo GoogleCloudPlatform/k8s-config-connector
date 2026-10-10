@@ -1468,18 +1468,18 @@ type VideoStream_Vp9ColorFormatHlg struct {
 type VideoStream_Vp9ColorFormatSdr struct {
 }
 
-// +kcc:observedstate:proto=google.cloud.video.transcoder.v1.Input
-type InputObservedState struct {
-	// Optional. Input Attributes.
-	// +kcc:proto:field=google.cloud.video.transcoder.v1.Input.attributes
-	Attributes *InputAttributesObservedState `json:"attributes,omitempty"`
-}
-
 // +kcc:observedstate:proto=google.cloud.video.transcoder.v1.InputAttributes
 type InputAttributesObservedState struct {
 	// Optional. A list of track definitions for the input asset.
 	// +kcc:proto:field=google.cloud.video.transcoder.v1.InputAttributes.track_definitions
 	TrackDefinitions []TrackDefinitionObservedState `json:"trackDefinitions,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.video.transcoder.v1.Input
+type InputObservedState struct {
+	// Optional. Input Attributes.
+	// +kcc:proto:field=google.cloud.video.transcoder.v1.Input.attributes
+	Attributes *InputAttributesObservedState `json:"attributes,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.video.transcoder.v1.JobConfig

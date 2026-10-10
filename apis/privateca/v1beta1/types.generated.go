@@ -295,23 +295,6 @@ type Certificate struct {
 }
 */
 
-/* unreachable type Certificate_RevocationDetails
-// +kcc:proto=google.cloud.security.privateca.v1.Certificate.RevocationDetails
-type Certificate_RevocationDetails struct {
-	// Indicates why a
-	//  [Certificate][google.cloud.security.privateca.v1.Certificate] was
-	//  revoked.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.RevocationDetails.revocation_state
-	RevocationState *string `json:"revocationState,omitempty"`
-
-	// The time at which this
-	//  [Certificate][google.cloud.security.privateca.v1.Certificate] was
-	//  revoked.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.RevocationDetails.revocation_time
-	RevocationTime *string `json:"revocationTime,omitempty"`
-}
-*/
-
 /* found existing non-generated go type with proto tag "google.cloud.security.privateca.v1.CertificateAuthority", skipping
 
 // +kcc:proto=google.cloud.security.privateca.v1.CertificateAuthority
@@ -736,6 +719,47 @@ type CertificateTemplate struct {
 }
 */
 
+/* unreachable type Certificate_RevocationDetails
+// +kcc:proto=google.cloud.security.privateca.v1.Certificate.RevocationDetails
+type Certificate_RevocationDetails struct {
+	// Indicates why a
+	//  [Certificate][google.cloud.security.privateca.v1.Certificate] was
+	//  revoked.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.RevocationDetails.revocation_state
+	RevocationState *string `json:"revocationState,omitempty"`
+
+	// The time at which this
+	//  [Certificate][google.cloud.security.privateca.v1.Certificate] was
+	//  revoked.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.RevocationDetails.revocation_time
+	RevocationTime *string `json:"revocationTime,omitempty"`
+}
+*/
+
+// +kcc:proto=google.type.Expr
+type Expr struct {
+	// Textual representation of an expression in Common Expression Language
+	//  syntax.
+	// +kcc:proto:field=google.type.Expr.expression
+	Expression *string `json:"expression,omitempty"`
+
+	// Optional. Title for the expression, i.e. a short string describing
+	//  its purpose. This can be used e.g. in UIs which allow to enter the
+	//  expression.
+	// +kcc:proto:field=google.type.Expr.title
+	Title *string `json:"title,omitempty"`
+
+	// Optional. Description of the expression. This is a longer text which
+	//  describes the expression, e.g. when hovered over it in a UI.
+	// +kcc:proto:field=google.type.Expr.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. String indicating the location of the expression for error
+	//  reporting, e.g. a file name and a position in the file.
+	// +kcc:proto:field=google.type.Expr.location
+	Location *string `json:"location,omitempty"`
+}
+
 /* found existing non-generated go type "KeyUsage", skipping
 
 // +kcc:proto=google.cloud.security.privateca.v1.KeyUsage
@@ -1109,72 +1133,6 @@ type X509Parameters_NameConstraints struct {
 }
 */
 
-// +kcc:proto=google.type.Expr
-type Expr struct {
-	// Textual representation of an expression in Common Expression Language
-	//  syntax.
-	// +kcc:proto:field=google.type.Expr.expression
-	Expression *string `json:"expression,omitempty"`
-
-	// Optional. Title for the expression, i.e. a short string describing
-	//  its purpose. This can be used e.g. in UIs which allow to enter the
-	//  expression.
-	// +kcc:proto:field=google.type.Expr.title
-	Title *string `json:"title,omitempty"`
-
-	// Optional. Description of the expression. This is a longer text which
-	//  describes the expression, e.g. when hovered over it in a UI.
-	// +kcc:proto:field=google.type.Expr.description
-	Description *string `json:"description,omitempty"`
-
-	// Optional. String indicating the location of the expression for error
-	//  reporting, e.g. a file name and a position in the file.
-	// +kcc:proto:field=google.type.Expr.location
-	Location *string `json:"location,omitempty"`
-}
-
-/* found existing non-generated go type with proto tag "google.cloud.security.privateca.v1.Certificate", skipping
-
-// +kcc:observedstate:proto=google.cloud.security.privateca.v1.Certificate
-type CertificateObservedState struct {
-	// Output only. The resource name of the issuing
-	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
-	//  in the format `projects/* /locations/* /caPools/* /certificateAuthorities/*`.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.issuer_certificate_authority
-	IssuerCertificateAuthority *string `json:"issuerCertificateAuthority,omitempty"`
-
-	// Output only. Details regarding the revocation of this
-	//  [Certificate][google.cloud.security.privateca.v1.Certificate]. This
-	//  [Certificate][google.cloud.security.privateca.v1.Certificate] is considered
-	//  revoked if and only if this field is present.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.revocation_details
-	RevocationDetails *Certificate_RevocationDetails `json:"revocationDetails,omitempty"`
-
-	// Output only. The pem-encoded, signed X.509 certificate.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.pem_certificate
-	PemCertificate *string `json:"pemCertificate,omitempty"`
-
-	// Output only. A structured description of the issued X.509 certificate.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.certificate_description
-	CertificateDescription *CertificateDescription `json:"certificateDescription,omitempty"`
-
-	// Output only. The chain that may be used to verify the X.509 certificate.
-	//  Expected to be in issuer-to-root order according to RFC 5246.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.pem_certificate_chain
-	PemCertificateChain []string `json:"pemCertificateChain,omitempty"`
-
-	// Output only. The time at which this
-	//  [Certificate][google.cloud.security.privateca.v1.Certificate] was created.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The time at which this
-	//  [Certificate][google.cloud.security.privateca.v1.Certificate] was updated.
-	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-}
-*/
-
 /* found existing non-generated go type with proto tag "google.cloud.security.privateca.v1.CertificateAuthority", skipping
 
 // +kcc:observedstate:proto=google.cloud.security.privateca.v1.CertificateAuthority
@@ -1251,6 +1209,48 @@ type CertificateAuthorityObservedState struct {
 	// Output only. Reserved for future use.
 	// +kcc:proto:field=google.cloud.security.privateca.v1.CertificateAuthority.satisfies_pzi
 	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.security.privateca.v1.Certificate", skipping
+
+// +kcc:observedstate:proto=google.cloud.security.privateca.v1.Certificate
+type CertificateObservedState struct {
+	// Output only. The resource name of the issuing
+	//  [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+	//  in the format `projects/* /locations/* /caPools/* /certificateAuthorities/*`.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.issuer_certificate_authority
+	IssuerCertificateAuthority *string `json:"issuerCertificateAuthority,omitempty"`
+
+	// Output only. Details regarding the revocation of this
+	//  [Certificate][google.cloud.security.privateca.v1.Certificate]. This
+	//  [Certificate][google.cloud.security.privateca.v1.Certificate] is considered
+	//  revoked if and only if this field is present.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.revocation_details
+	RevocationDetails *Certificate_RevocationDetails `json:"revocationDetails,omitempty"`
+
+	// Output only. The pem-encoded, signed X.509 certificate.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.pem_certificate
+	PemCertificate *string `json:"pemCertificate,omitempty"`
+
+	// Output only. A structured description of the issued X.509 certificate.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.certificate_description
+	CertificateDescription *CertificateDescription `json:"certificateDescription,omitempty"`
+
+	// Output only. The chain that may be used to verify the X.509 certificate.
+	//  Expected to be in issuer-to-root order according to RFC 5246.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.pem_certificate_chain
+	PemCertificateChain []string `json:"pemCertificateChain,omitempty"`
+
+	// Output only. The time at which this
+	//  [Certificate][google.cloud.security.privateca.v1.Certificate] was created.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time at which this
+	//  [Certificate][google.cloud.security.privateca.v1.Certificate] was updated.
+	// +kcc:proto:field=google.cloud.security.privateca.v1.Certificate.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
 
