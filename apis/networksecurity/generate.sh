@@ -45,6 +45,7 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
   --resource NetworkSecurityBackendAuthenticationConfig:BackendAuthenticationConfig \
   --resource NetworkSecurityInterceptDeployment:InterceptDeployment \
+  --resource NetworkSecurityInterceptDeploymentGroup:InterceptDeploymentGroup \
   --resource NetworkSecurityAddressGroup:AddressGroup \
   --resource NetworkSecurityInterceptEndpointGroup:InterceptEndpointGroup \
   --resource NetworkSecurityMirroringDeployment:MirroringDeployment \
