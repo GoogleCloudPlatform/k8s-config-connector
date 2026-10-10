@@ -1,0 +1,25 @@
+apiVersion: oracledatabase.cnrm.cloud.google.com/v1alpha1
+kind: OracleDatabaseExadbVMCluster
+metadata:
+  name: exadbvm-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-east4
+  displayName: "Exadb VM Cluster Minimal"
+  odbSubnetRef:
+    external: projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/odb-subnet-${uniqueId}
+  backupOdbSubnetRef:
+    external: projects/${projectId}/locations/us-east4/odbNetworks/odb-network-${uniqueId}/odbSubnets/backup-subnet-${uniqueId}
+  properties:
+    gridImageID: "gi-image-id-val"
+    nodeCount: 3
+    enabledEcpuCountPerNode: 4
+    vmFileSystemStorage:
+      sizeInGBsPerNode: 120
+    exascaleDbStorageVaultRef:
+      external: projects/${projectId}/locations/us-east4/exascaleDbStorageVaults/vault-${uniqueId}
+    hostnamePrefix: "host-pref"
+    sshPublicKeys:
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6f3v..."
+    shapeAttribute: "SMART_STORAGE"
