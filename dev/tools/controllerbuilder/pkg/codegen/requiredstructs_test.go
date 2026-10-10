@@ -18,10 +18,10 @@ import (
 	"bytes"
 	"os"
 	"path/filepath"
-	"reflect"
 	"strings"
 	"testing"
 
+	"github.com/google/go-cmp/cmp"
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protodesc"
@@ -386,6 +386,69 @@ func TestPlanRequiredStructsNamedCopy(t *testing.T) {
 	})
 }
 
+// The walk follows hand-written types. A struct that only the opted-in Kind
+// reaches through a hand-written helper gets +required, with no copy. Once
+// something else reaches it, through a hand-written type or a generated
+// struct that holds one, its plain struct stays optional.
+func TestPlanRequiredStructsFollowsHandWrittenTypes(t *testing.T) {
+	markedSpecWithWrapper := "package test\n\n" +
+		"// " + RequiredFromProtoMarker + "\n" +
+		"type NewKindSpec struct {\n\tWrapper *Wrapper `json:\"wrapper,omitempty\"`\n}\n\n" +
+		"type Wrapper struct {\n\tOnlyNew *OnlyNew `json:\"onlyNew,omitempty\"`\n}\n"
+	onlyNewSplit := []structWant{
+		{name: "OnlyNew", want: []string{"Token *string"}, notWant: []string{"+required"}},
+		{name: "OnlyNewRequired", want: []string{"// +required\n\tToken *string"}},
+	}
+	for _, tc := range []struct {
+		name          string
+		files         map[string]string
+		newSpecFields []protoreflect.FieldDescriptor
+		want          []structWant
+		notDeclared   []string
+	}{
+		{
+			name:        "a hand-written helper only the opted-in Spec uses",
+			files:       map[string]string{"test/newkind_types.go": markedSpecWithWrapper},
+			want:        []structWant{{name: "OnlyNew", want: []string{"// +required\n\tToken *string"}}},
+			notDeclared: []string{"OnlyNewRequired"},
+		},
+		{
+			name: "a hand-written helper an unmarked Spec also uses",
+			files: map[string]string{
+				"test/newkind_types.go": markedSpecWithWrapper,
+				"test/oldkind_types.go": "package test\n\n" +
+					"type OldKindSpec struct {\n\tWrapper *Wrapper `json:\"wrapper,omitempty\"`\n}\n",
+			},
+			want: onlyNewSplit,
+		},
+		{
+			name: "a hand-written type that a generated struct holds",
+			files: map[string]string{
+				"test/oldkind_types.go": "package test\n\n" +
+					"type OldKindSpec struct {\n\tHolder *Holder `json:\"holder,omitempty\"`\n}\n",
+				// Holder is generated and holds Shared, written by hand.
+				"test/shared_types.go": "package test\n\n" +
+					"type Shared struct {\n\tKey *string `json:\"key,omitempty\"`\n\tOnlyNew *OnlyNew `json:\"onlyNew,omitempty\"`\n}\n",
+			},
+			newSpecFields: newKindSpecFields(requiredSplitFixture(t)),
+			want:          onlyNewSplit,
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			// Act
+			_, body := planAndWrite(t, tc.files, tc.newSpecFields)
+
+			// Assert
+			checkStructs(t, body, tc.want)
+			for _, name := range tc.notDeclared {
+				if structBody(body, name) != "" {
+					t.Errorf("%s is declared:\n%s", name, body)
+				}
+			}
+		})
+	}
+}
+
 func TestScanRequiredUses(t *testing.T) {
 	// Arrange
 	dir := t.TempDir()
@@ -425,14 +488,19 @@ func TestScanRequiredUses(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ScanRequiredUses: %v", err)
 	}
-	if want := map[string]bool{"Marked": true}; !reflect.DeepEqual(uses.MarkedKinds, want) {
-		t.Errorf("MarkedKinds = %v, want %v", uses.MarkedKinds, want)
+	want := &RequiredUses{
+		MarkedKinds: map[string]bool{"Marked": true},
+		MarkedSpecs: map[string]bool{"MarkedSpec": true},
+		HandWritten: map[string]map[string]bool{
+			"MarkedSpec":          {"A": true, "B": true, "C": true, "string": true},
+			"MarkedObservedState": {"D": true},
+			"PlainSpec":           {"E": true},
+			"helper":              {"F": true},
+		},
+		FromOtherPackages: map[string]bool{"M": true, "N": true},
 	}
-	if want := map[string]bool{"A": true, "B": true, "C": true, "string": true}; !reflect.DeepEqual(uses.FromMarkedSpecs, want) {
-		t.Errorf("FromMarkedSpecs = %v, want %v", uses.FromMarkedSpecs, want)
-	}
-	if want := map[string]bool{"D": true, "E": true, "F": true, "M": true, "N": true}; !reflect.DeepEqual(uses.FromElsewhere, want) {
-		t.Errorf("FromElsewhere = %v, want %v", uses.FromElsewhere, want)
+	if diff := cmp.Diff(want, uses); diff != "" {
+		t.Errorf("ScanRequiredUses() mismatch (-want +got):\n%s", diff)
 	}
 }
 
@@ -442,8 +510,14 @@ func TestScanRequiredUsesWithoutPackage(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ScanRequiredUses: %v", err)
 	}
-	if len(uses.MarkedKinds)+len(uses.FromMarkedSpecs)+len(uses.FromElsewhere) != 0 {
-		t.Errorf("uses = %+v, want none", uses)
+	want := &RequiredUses{
+		MarkedKinds:       map[string]bool{},
+		MarkedSpecs:       map[string]bool{},
+		HandWritten:       map[string]map[string]bool{},
+		FromOtherPackages: map[string]bool{},
+	}
+	if diff := cmp.Diff(want, uses); diff != "" {
+		t.Errorf("ScanRequiredUses() mismatch (-want +got):\n%s", diff)
 	}
 }
 

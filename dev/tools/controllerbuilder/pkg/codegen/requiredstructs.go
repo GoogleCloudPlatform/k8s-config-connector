@@ -64,29 +64,29 @@ func specStructName(msg protoreflect.MessageDescriptor, opts WriteOptions) strin
 	return GoNameForProtoMessage(msg)
 }
 
-// RequiredUses records where hand-written code uses the types of a package.
+// RequiredUses records the hand-written code that uses a package's types.
 type RequiredUses struct {
 	// MarkedKinds are the Kinds whose Spec has RequiredFromProtoMarker.
 	MarkedKinds map[string]bool
-	// FromMarkedSpecs are the types an opted-in Spec uses directly.
-	FromMarkedSpecs map[string]bool
-	// FromElsewhere are the types used anywhere else: an unmarked Kind's Spec,
-	// a status, a hand-written helper type, or another package under apis/.
-	FromElsewhere map[string]bool
+	// MarkedSpecs are the opted-in Specs, by type name.
+	MarkedSpecs map[string]bool
+	// HandWritten maps each type the package declares by hand to the type
+	// names its declaration uses.
+	HandWritten map[string]map[string]bool
+	// FromOtherPackages are the types that other packages under apis/ use.
+	FromOtherPackages map[string]bool
 }
 
 // ScanRequiredUses reads the hand-written Go files in pkgDir, and the Go files
-// of every other package under apisDir that imports importPath.
-//
-// Only an opted-in Spec's fields count as strict uses. The scan doesn't follow
-// hand-written types, so a hand-written helper type counts as a use from
-// elsewhere, even if only an opted-in Spec reaches it. When in doubt, the
-// field stays optional and the judgement queue reports it.
+// of every other package under apisDir that imports importPath. It records
+// what each hand-written type uses, so PlanRequiredStructs can follow
+// hand-written types.
 func ScanRequiredUses(pkgDir, apisDir, importPath string) (*RequiredUses, error) {
 	uses := &RequiredUses{
-		MarkedKinds:     map[string]bool{},
-		FromMarkedSpecs: map[string]bool{},
-		FromElsewhere:   map[string]bool{},
+		MarkedKinds:       map[string]bool{},
+		MarkedSpecs:       map[string]bool{},
+		HandWritten:       map[string]map[string]bool{},
+		FromOtherPackages: map[string]bool{},
 	}
 	if err := uses.scanPackage(pkgDir); err != nil {
 		return nil, err
@@ -135,12 +135,13 @@ func (u *RequiredUses) scanPackage(dir string) error {
 				if doc == nil && len(gd.Specs) == 1 {
 					doc = gd.Doc
 				}
-				into := u.FromElsewhere
 				if kind, ok := strings.CutSuffix(ts.Name.Name, "Spec"); ok && kind != "" && hasRequiredFromProtoMarker(doc) {
 					u.MarkedKinds[kind] = true
-					into = u.FromMarkedSpecs
+					u.MarkedSpecs[ts.Name.Name] = true
 				}
-				collectTypeRefs(ts.Type, into)
+				used := map[string]bool{}
+				collectTypeRefs(ts.Type, used)
+				u.HandWritten[ts.Name.Name] = used
 			}
 		}
 	}
@@ -185,7 +186,7 @@ func (u *RequiredUses) scanImporters(apisDir, pkgDir, importPath string) error {
 		ast.Inspect(f, func(n ast.Node) bool {
 			if sel, ok := n.(*ast.SelectorExpr); ok {
 				if id, ok := sel.X.(*ast.Ident); ok && id.Name == alias {
-					u.FromElsewhere[sel.Sel.Name] = true
+					u.FromOtherPackages[sel.Sel.Name] = true
 				}
 			}
 			return true
@@ -273,15 +274,19 @@ type requiredPlan struct {
 // after VisitProto and before WriteVisitedMessages.
 //
 // A message reached from an opted-in Spec gets a strict struct. A message
-// reached from anything else gets a lenient one: an unmarked Spec, a status,
-// a hand-written type or another package. A message that needs both keeps
-// its plain name lenient, so its current users don't change, and gets a
-// strict <Name>Required copy. A copy that code already uses is always
-// written.
+// reached from anything else gets a lenient one: a Kind, a status, an
+// unmarked Spec or another package. Both walks follow hand-written types, so a
+// struct that only opted-in Kinds reach is strict even through a hand-written
+// helper. A message that needs both keeps its plain name lenient, so its
+// current users don't change, and gets a strict <Name>Required copy. A copy
+// that code already uses is always written.
 //
 // newSpecFields are the top-level Spec fields of the Kinds this run
 // scaffolds. Those Kinds get the marker, so their fields are strict uses.
 func (g *TypeGenerator) PlanRequiredStructs(uses *RequiredUses, newSpecFields []protoreflect.FieldDescriptor) {
+	if uses == nil {
+		uses = &RequiredUses{}
+	}
 	written := g.messagesToWrite()
 	byName := map[string]string{}
 	byRequiredName := map[string]string{}
@@ -290,49 +295,141 @@ func (g *TypeGenerator) PlanRequiredStructs(uses *RequiredUses, newSpecFields []
 		byRequiredName[RequiredStructName(msg)] = fqn
 	}
 
-	strict := map[string]bool{}
-	lenient := map[string]bool{}
-	// named holds the messages whose Required copy code already uses. That
-	// code only compiles if the copy is written.
+	// The walks visit generated messages, as "msg:<full name>", and types
+	// declared by hand, as "go:<name>". A generated field reaches a
+	// hand-written type when that type stands in for the field's message.
+	msgNode := func(fqn string) string { return "msg:" + fqn }
+	goNode := func(name string) string { return "go:" + name }
+	// typeNode is the node a type name refers to, or "" for a name that is
+	// neither, such as string.
+	typeNode := func(name string) string {
+		if fqn, ok := byName[name]; ok {
+			return msgNode(fqn)
+		}
+		if _, ok := uses.HandWritten[name]; ok {
+			return goNode(name)
+		}
+		return ""
+	}
+	// fieldNode is the node for the struct a field holds.
+	fieldNode := func(f protoreflect.FieldDescriptor, fqn string) string {
+		if written[fqn] != nil {
+			return msgNode(fqn)
+		}
+		return typeNode(GoNameForProtoMessage(childMessage(f)))
+	}
+	next := func(node string) []string {
+		var out []string
+		if name, ok := strings.CutPrefix(node, "go:"); ok {
+			for _, used := range sortedKeys(uses.HandWritten[name]) {
+				if n := typeNode(used); n != "" {
+					out = append(out, n)
+				}
+			}
+			return out
+		}
+		msg := written[strings.TrimPrefix(node, "msg:")]
+		for i := 0; i < msg.Fields().Len(); i++ {
+			f := msg.Fields().Get(i)
+			if IsFieldBehavior(f, annotations.FieldBehavior_OUTPUT_ONLY) {
+				// WriteMessage leaves these out of the struct.
+				continue
+			}
+			if fqn, ok := specChild(f, g.writeOptions); ok {
+				if n := fieldNode(f, fqn); n != "" {
+					out = append(out, n)
+				}
+			}
+		}
+		return out
+	}
+	walk := func(seeds []string, stop func(string) bool) map[string]bool {
+		reached := map[string]bool{}
+		queue := append([]string(nil), seeds...)
+		for len(queue) > 0 {
+			n := queue[0]
+			queue = queue[1:]
+			if n == "" || reached[n] || stop(n) {
+				continue
+			}
+			reached[n] = true
+			queue = append(queue, next(n)...)
+		}
+		return reached
+	}
+
+	// Code that uses a Required copy needs it, wherever that code is.
 	named := map[string]bool{}
-	use := func(typeName string, fromMarkedSpec bool) {
+	var strictSeeds []string
+	used := map[string]bool{}
+	for _, names := range uses.HandWritten {
+		for name := range names {
+			used[name] = true
+		}
+	}
+	for name := range uses.FromOtherPackages {
+		used[name] = true
+	}
+	for _, name := range sortedKeys(used) {
 		// Check message names first: a message can be called FooRequired
 		// without being Foo's copy.
-		if fqn, ok := byName[typeName]; ok {
-			if fromMarkedSpec {
-				strict[fqn] = true
-			} else {
-				lenient[fqn] = true
-			}
-			return
+		if _, ok := byName[name]; ok {
+			continue
 		}
-		if fqn, ok := byRequiredName[typeName]; ok && !g.declaredByHand(typeName) {
-			// Code that uses the Required copy needs it, wherever that code is.
-			strict[fqn] = true
+		if fqn, ok := byRequiredName[name]; ok && !g.declaredByHand(name) {
 			named[fqn] = true
+			strictSeeds = append(strictSeeds, msgNode(fqn))
 		}
 	}
-	if uses != nil {
-		for _, name := range sortedKeys(uses.FromMarkedSpecs) {
-			use(name, true)
-		}
-		for _, name := range sortedKeys(uses.FromElsewhere) {
-			use(name, false)
-		}
+	for _, name := range sortedKeys(uses.MarkedSpecs) {
+		strictSeeds = append(strictSeeds, goNode(name))
 	}
 	for _, f := range newSpecFields {
-		if fqn, ok := specChild(f, g.writeOptions); ok && written[fqn] != nil {
-			strict[fqn] = true
+		if fqn, ok := specChild(f, g.writeOptions); ok {
+			strictSeeds = append(strictSeeds, fieldNode(f, fqn))
 		}
+	}
+	strictReached := walk(strictSeeds, func(string) bool { return false })
+
+	// Every other hand-written type starts a lenient walk: a Kind, a status,
+	// an unmarked Spec, or a type nothing uses. A type that only opted-in
+	// Specs reach doesn't, so what it holds stays strict. The walk stops at
+	// opted-in Specs, so a Kind that holds its own Spec doesn't make it
+	// lenient.
+	var lenientSeeds []string
+	for _, name := range sortedKeys(uses.HandWritten) {
+		if !uses.MarkedSpecs[name] && !strictReached[goNode(name)] {
+			lenientSeeds = append(lenientSeeds, goNode(name))
+		}
+	}
+	for _, name := range sortedKeys(uses.FromOtherPackages) {
+		lenientSeeds = append(lenientSeeds, typeNode(name))
 	}
 	// An ObservedState struct holds a message's plain struct when the message
 	// has no ObservedState struct of its own, and for map values. Those must
 	// stay lenient, or +required ends up in the status schema.
 	for _, details := range g.outputMessages {
 		for _, f := range details.OutputFields {
-			if fqn, ok := plainChildInStatus(f, g.observedStateMessages, g.writeOptions); ok && written[fqn] != nil {
-				lenient[fqn] = true
+			if fqn, ok := plainChildInStatus(f, g.observedStateMessages, g.writeOptions); ok {
+				lenientSeeds = append(lenientSeeds, fieldNode(f, fqn))
 			}
+		}
+	}
+	lenientReached := walk(lenientSeeds, func(n string) bool {
+		name, ok := strings.CutPrefix(n, "go:")
+		return ok && uses.MarkedSpecs[name]
+	})
+
+	strict := map[string]bool{}
+	for n := range strictReached {
+		if fqn, ok := strings.CutPrefix(n, "msg:"); ok {
+			strict[fqn] = true
+		}
+	}
+	lenient := map[string]bool{}
+	for n := range lenientReached {
+		if fqn, ok := strings.CutPrefix(n, "msg:"); ok {
+			lenient[fqn] = true
 		}
 	}
 
@@ -351,8 +448,6 @@ func (g *TypeGenerator) PlanRequiredStructs(uses *RequiredUses, newSpecFields []
 		}
 		return out
 	}
-	closeOver(strict, children)
-	closeOver(lenient, children)
 
 	// The Required name must not collide with a type the package has or is
 	// about to get.
@@ -500,6 +595,16 @@ func specChild(f protoreflect.FieldDescriptor, opts WriteOptions) (string, bool)
 	return string(f.Message().FullName()), true
 }
 
+// childMessage returns the message whose struct a field holds: its own
+// message, or the value message of a map. Call it only for a field that
+// specChild accepts.
+func childMessage(f protoreflect.FieldDescriptor) protoreflect.MessageDescriptor {
+	if f.IsMap() {
+		return f.MapValue().Message()
+	}
+	return f.Message()
+}
+
 // plainChildInStatus returns the message whose plain struct an ObservedState
 // field holds, as WriteObservedStateFields writes it.
 func plainChildInStatus(f protoreflect.FieldDescriptor, observedStateMessages sets.String, opts WriteOptions) (string, bool) {
@@ -529,22 +634,7 @@ func hasEmittedRequired(msg protoreflect.MessageDescriptor, opts WriteOptions) b
 	return false
 }
 
-// closeOver adds to set everything its members reach through children.
-func closeOver(set map[string]bool, children func(string) []string) {
-	queue := sortedKeys(set)
-	for len(queue) > 0 {
-		fqn := queue[0]
-		queue = queue[1:]
-		for _, child := range children(fqn) {
-			if !set[child] {
-				set[child] = true
-				queue = append(queue, child)
-			}
-		}
-	}
-}
-
-func sortedKeys(m map[string]bool) []string {
+func sortedKeys[V any](m map[string]V) []string {
 	out := make([]string, 0, len(m))
 	for k := range m {
 		out = append(out, k)
