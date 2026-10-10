@@ -377,19 +377,36 @@ func sortedVersions(versions map[string]map[string]*goStruct) []string {
 	return out
 }
 
-// structUsers maps each struct in the package to what reaches it: a Kind's
-// name for its spec, and "the status of <Kind>" for its status. A Kind is a
+// structUser is a Kind whose spec or status holds a struct, directly or
+// through other structs.
+type structUser struct {
+	kind string
+	// status is true when the Kind's status holds the struct, and false when
+	// its spec does.
+	status bool
+}
+
+// String names the user in a queue detail.
+func (u structUser) String() string {
+	if u.status {
+		return "the status of " + u.kind
+	}
+	return u.kind
+}
+
+// structUsers maps each struct in the package to its users: the Kinds whose
+// spec or status holds it, directly or through other structs. A Kind is a
 // struct that embeds metav1.TypeMeta.
-func structUsers(structs map[string]*goStruct) map[string][]string {
-	seen := map[string]map[string]bool{}
-	var visit func(name, user string)
-	visit = func(name, user string) {
+func structUsers(structs map[string]*goStruct) map[string][]structUser {
+	seen := map[string]map[structUser]bool{}
+	var visit func(name string, user structUser)
+	visit = func(name string, user structUser) {
 		s := structs[name]
 		if s == nil || seen[name][user] {
 			return
 		}
 		if seen[name] == nil {
-			seen[name] = map[string]bool{}
+			seen[name] = map[structUser]bool{}
 		}
 		seen[name][user] = true
 		for _, f := range s.fields {
@@ -403,20 +420,25 @@ func structUsers(structs map[string]*goStruct) map[string][]string {
 		for _, f := range s.fields {
 			switch f.json {
 			case "spec":
-				visit(f.typeName, s.name)
+				visit(f.typeName, structUser{kind: s.name})
 			case "status":
-				visit(f.typeName, "the status of "+s.name)
+				visit(f.typeName, structUser{kind: s.name, status: true})
 			}
 		}
 	}
-	out := map[string][]string{}
+	out := map[string][]structUser{}
 	for name, users := range seen {
 		for u := range users {
 			out[name] = append(out[name], u)
 		}
-		sort.Strings(out[name])
+		sortUsers(out[name])
 	}
 	return out
+}
+
+// sortUsers sorts users by how a queue detail names them.
+func sortUsers(users []structUser) {
+	sort.Slice(users, func(i, j int) bool { return users[i].String() < users[j].String() })
 }
 
 func isKind(s *goStruct) bool {
@@ -428,25 +450,21 @@ func isKind(s *goStruct) bool {
 	return false
 }
 
-// joinUsers lists up to three users, and says how many more there are.
-func joinUsers(users []string) string {
-	const shown = 3
-	switch {
-	case len(users) > shown:
-		return fmt.Sprintf("%s and %d more", strings.Join(users[:shown], ", "), len(users)-shown)
-	case len(users) == 1:
-		return users[0]
-	default:
-		return strings.Join(users[:len(users)-1], ", ") + " and " + users[len(users)-1]
+// joinUsers lists users, separated by commas.
+func joinUsers(users []structUser) string {
+	names := make([]string, 0, len(users))
+	for _, u := range users {
+		names = append(names, u.String())
 	}
+	return strings.Join(names, ", ")
 }
 
 // requiredGapFinder walks one Kind's Spec and records the fields the proto
 // marks REQUIRED that have no +required marker.
 type requiredGapFinder struct {
 	structs map[string]*goStruct
-	// users is what reaches each struct; see structUsers.
-	users map[string][]string
+	// users maps each struct to its users; see structUsers.
+	users map[string][]structUser
 	files descriptorFinder
 	kind  string
 	group string
@@ -459,13 +477,13 @@ type requiredGapFinder struct {
 	entries   []judgement.Entry
 }
 
-// sharedWith returns what else reaches the named struct: other Kinds, and
+// sharedWith returns the other users of the named struct: other Kinds, and
 // the status of any Kind, including this one. A +required marker in that
 // struct would apply to all of them.
-func (w *requiredGapFinder) sharedWith(name string) []string {
-	var out []string
+func (w *requiredGapFinder) sharedWith(name string) []structUser {
+	var out []structUser
 	for _, u := range w.users[name] {
-		if u != w.kind {
+		if u.status || u.kind != w.kind {
 			out = append(out, u)
 		}
 	}
@@ -659,7 +677,7 @@ func (w *requiredGapFinder) detail(s *goStruct, f goField, entered *enteredStruc
 	switch {
 	case !s.generated:
 		if others := w.sharedWith(s.name); len(others) > 0 {
-			how = fmt.Sprintf("%s in %s is also used by %s, and +required on %s.%s would apply there too. To enforce it for %s only, give %s its own copy of %s.",
+			how = fmt.Sprintf("%s in %s is also used by %s. +required on %s.%s would apply there too. To enforce it for %s only, give %s its own copy of %s.",
 				s.name, s.file, joinUsers(others), s.name, f.goName, w.kind, w.kind, s.name)
 		} else {
 			how = fmt.Sprintf("To enforce it, add +required to %s.%s in %s.", s.name, f.goName, s.file)

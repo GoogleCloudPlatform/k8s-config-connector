@@ -509,7 +509,7 @@ func TestRequiredNotEnforcedSharedHandWritten(t *testing.T) {
 		got[e.Field] = e.Detail
 	}
 	want := map[string]string{
-		".spec.inner.a": "HandInner in thing_types.go is also used by the status of Thing, and +required on HandInner.A would apply there too. " +
+		".spec.inner.a": "HandInner in thing_types.go is also used by the status of Thing. +required on HandInner.A would apply there too. " +
 			"To enforce it for Thing only, give Thing its own copy of HandInner.",
 		".spec.wrapper.inner.a": "Wrapper in thing_types.go is also used by Other. " +
 			"To enforce it for Thing only, give Thing its own copy of Wrapper whose Inner field holds InnerRequired, and run generate.sh again.",
@@ -524,18 +524,72 @@ func TestRequiredNotEnforcedSharedHandWritten(t *testing.T) {
 	}
 }
 
+// Thing's spec and status both hold Shared. Other's spec holds it through
+// Wrapper.
+func TestStructUsers(t *testing.T) {
+	// Arrange
+	const src = "package v1alpha1\n\n" +
+		"import metav1 \"k8s.io/apimachinery/pkg/apis/meta/v1\"\n\n" +
+		"type Thing struct {\n" +
+		"\tmetav1.TypeMeta `json:\",inline\"`\n" +
+		"\tSpec   ThingSpec   `json:\"spec,omitempty\"`\n" +
+		"\tStatus ThingStatus `json:\"status,omitempty\"`\n" +
+		"}\n\n" +
+		"type ThingSpec struct {\n\tShared *Shared `json:\"shared,omitempty\"`\n}\n\n" +
+		"type ThingStatus struct {\n\tShared *Shared `json:\"shared,omitempty\"`\n}\n\n" +
+		"type Other struct {\n" +
+		"\tmetav1.TypeMeta `json:\",inline\"`\n" +
+		"\tSpec OtherSpec `json:\"spec,omitempty\"`\n" +
+		"}\n\n" +
+		"type OtherSpec struct {\n\tWrapper *Wrapper `json:\"wrapper,omitempty\"`\n}\n\n" +
+		"type Wrapper struct {\n\tShared *Shared `json:\"shared,omitempty\"`\n}\n\n" +
+		"type Shared struct {\n\tKey *string `json:\"key,omitempty\"`\n}\n"
+	dir := t.TempDir()
+	writeFiles(t, dir, map[string]string{"thing_types.go": src})
+	structs, err := loadStructs(dir)
+	if err != nil {
+		t.Fatalf("loadStructs: %v", err)
+	}
+	want := map[string][]structUser{
+		"OtherSpec":   {{kind: "Other"}},
+		"Shared":      {{kind: "Other"}, {kind: "Thing"}, {kind: "Thing", status: true}},
+		"ThingSpec":   {{kind: "Thing"}},
+		"ThingStatus": {{kind: "Thing", status: true}},
+		"Wrapper":     {{kind: "Other"}},
+	}
+
+	// Act
+	got := structUsers(structs)
+
+	// Assert
+	if diff := cmp.Diff(want, got, cmp.AllowUnexported(structUser{})); diff != "" {
+		t.Errorf("structUsers() mismatch (-want +got):\n%s", diff)
+	}
+}
+
+// joinUsers lists every user. It doesn't cut the list short.
 func TestJoinUsers(t *testing.T) {
 	for _, tc := range []struct {
-		users []string
+		name  string
+		users []structUser
 		want  string
 	}{
-		{users: []string{"A"}, want: "A"},
-		{users: []string{"A", "B"}, want: "A and B"},
-		{users: []string{"A", "B", "C"}, want: "A, B and C"},
-		{users: []string{"A", "B", "C", "D", "E"}, want: "A, B, C and 2 more"},
+		{name: "a Kind", users: []structUser{{kind: "A"}}, want: "A"},
+		{name: "a status", users: []structUser{{kind: "A", status: true}}, want: "the status of A"},
+		{
+			name:  "many users",
+			users: []structUser{{kind: "A"}, {kind: "B"}, {kind: "C"}, {kind: "D"}, {kind: "A", status: true}},
+			want:  "A, B, C, D, the status of A",
+		},
 	} {
-		if got := joinUsers(tc.users); got != tc.want {
-			t.Errorf("joinUsers(%v) = %q, want %q", tc.users, got, tc.want)
-		}
+		t.Run(tc.name, func(t *testing.T) {
+			// Act
+			got := joinUsers(tc.users)
+
+			// Assert
+			if got != tc.want {
+				t.Errorf("joinUsers() = %q, want %q", got, tc.want)
+			}
+		})
 	}
 }
