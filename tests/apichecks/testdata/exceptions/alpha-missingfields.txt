@@ -2852,6 +2852,15 @@
 [missing_field] crd=livestreamchannels.livestream.cnrm.cloud.google.com version=v1alpha1: field ".spec.timecodeConfig.timeZone.id" is not set in unstructured objects
 [missing_field] crd=livestreamchannels.livestream.cnrm.cloud.google.com version=v1alpha1: field ".spec.timecodeConfig.timeZone.version" is not set in unstructured objects
 [missing_field] crd=livestreamchannels.livestream.cnrm.cloud.google.com version=v1alpha1: field ".spec.timecodeConfig.utcOffset" is not set in unstructured objects
+[missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.capacityGib" is not set in unstructured objects
+[missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.filesystem" is not set in unstructured objects
+[missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.gkeSupportEnabled" is not set in unstructured objects
+[missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.perUnitStorageThroughput" is not set in unstructured objects
+[missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.config" is not set in unstructured objects
 [missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcpConfig.secretPaths[].external" is not set in unstructured objects
 [missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcpConfig.secretPaths[].name" is not set in unstructured objects
