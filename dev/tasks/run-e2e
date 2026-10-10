@@ -17,6 +17,10 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+# Avoid git issues on some environments where GIT_CONFIG_GLOBAL and GIT_CONFIG_SYSTEM are set to /dev/null
+export GIT_CONFIG_GLOBAL=""
+export GIT_CONFIG_SYSTEM=""
+
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 

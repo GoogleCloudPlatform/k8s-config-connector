@@ -15,19 +15,16 @@
 package mockdevicestreaming
 
 import (
-	"strings"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".expireTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
-	// Only apply normalization if the request is for this service
-	if !strings.Contains(event.URL(), "devicestreaming.googleapis.com") {
-		return
-	}
+	// No-op for now
 }
