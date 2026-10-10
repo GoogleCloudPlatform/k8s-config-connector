@@ -1,0 +1,166 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ArtifactRegistryRepository/arrepository-${uniqueId}",
+    "fields": [
+      {
+        "id": "create_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "test repository description"
+      },
+      {
+        "id": "format",
+        "old": "",
+        "new": "DOCKER"
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "3"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.label-one",
+        "old": "",
+        "new": "value-one"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "location",
+        "old": "",
+        "new": "us-west1"
+      },
+      {
+        "id": "mode",
+        "old": "",
+        "new": "VIRTUAL_REPOSITORY"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "repository_id",
+        "old": "",
+        "new": "arrepository-${uniqueId}"
+      },
+      {
+        "id": "update_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "virtual_repository_config.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "virtual_repository_config.0.upstream_policies.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "virtual_repository_config.0.upstream_policies.0.id",
+        "old": "",
+        "new": "upstream-repo"
+      },
+      {
+        "id": "virtual_repository_config.0.upstream_policies.0.priority",
+        "old": "",
+        "new": "1"
+      },
+      {
+        "id": "virtual_repository_config.0.upstream_policies.0.repository",
+        "old": "",
+        "new": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ArtifactRegistryRepository/arrepository-${uniqueId}-2",
+    "fields": [
+      {
+        "id": "create_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "format",
+        "old": "",
+        "new": "DOCKER"
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "3"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.label-one",
+        "old": "",
+        "new": "value-two"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "location",
+        "old": "",
+        "new": "us-west1"
+      },
+      {
+        "id": "mode",
+        "old": "",
+        "new": "STANDARD_REPOSITORY"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "repository_id",
+        "old": "",
+        "new": "arrepository-${uniqueId}-2"
+      },
+      {
+        "id": "update_time",
+        "old": "",
+        "new": ""
+      }
+    ]
+  }
+]

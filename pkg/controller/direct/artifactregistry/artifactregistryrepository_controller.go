@@ -96,11 +96,13 @@ func (m *modelArtifactRegistryRepository) AdapterForObject(ctx context.Context, 
 	}
 
 	desiredPb.Labels = label.GCPLabels(obj)
+	populateCleanupPolicyDefaults(desiredPb)
 
 	return &ArtifactRegistryRepositoryAdapter{
-		id:        id.(*krm.ArtifactRegistryRepositoryIdentity),
-		gcpClient: gcpClient,
-		desired:   desiredPb,
+		id:         id.(*krm.ArtifactRegistryRepositoryIdentity),
+		gcpClient:  gcpClient,
+		desired:    desiredPb,
+		desiredKRM: obj,
 	}, nil
 }
 
@@ -123,10 +125,11 @@ func (m *modelArtifactRegistryRepository) AdapterForURL(ctx context.Context, url
 }
 
 type ArtifactRegistryRepositoryAdapter struct {
-	id        *krm.ArtifactRegistryRepositoryIdentity
-	gcpClient *gcp.Client
-	desired   *pb.Repository
-	actual    *pb.Repository
+	id         *krm.ArtifactRegistryRepositoryIdentity
+	gcpClient  *gcp.Client
+	desired    *pb.Repository
+	desiredKRM *krm.ArtifactRegistryRepository
+	actual     *pb.Repository
 }
 
 var _ directbase.Adapter = &ArtifactRegistryRepositoryAdapter{}
@@ -177,7 +180,7 @@ func (a *ArtifactRegistryRepositoryAdapter) Update(ctx context.Context, updateOp
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating ArtifactRegistryRepository", "name", a.id.String())
 
-	diffs, updateMask, err := compareRepository(ctx, a.actual, a.desired)
+	diffs, updateMask, err := compareRepository(ctx, a.actual, a.desired, a.desiredKRM)
 	if err != nil {
 		return err
 	}
@@ -276,7 +279,17 @@ func (a *ArtifactRegistryRepositoryAdapter) Delete(ctx context.Context, deleteOp
 	return true, nil
 }
 
-func compareRepository(ctx context.Context, actual, desired *pb.Repository) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+func populateCleanupPolicyDefaults(obj *pb.Repository) {
+	for _, policy := range obj.CleanupPolicies {
+		if cond := policy.GetCondition(); cond != nil {
+			if cond.TagState == nil || *cond.TagState == pb.CleanupPolicyCondition_TAG_STATE_UNSPECIFIED {
+				cond.TagState = direct.PtrTo(pb.CleanupPolicyCondition_ANY)
+			}
+		}
+	}
+}
+
+func compareRepository(ctx context.Context, actual, desired *pb.Repository, desiredKRM *krm.ArtifactRegistryRepository) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
 	maskedActual, err := mappers.OnlySpecFields(actual, ArtifactRegistryRepositorySpec_v1beta1_FromProto, ArtifactRegistryRepositorySpec_v1beta1_ToProto)
 	if err != nil {
 		return nil, nil, err
@@ -284,17 +297,27 @@ func compareRepository(ctx context.Context, actual, desired *pb.Repository) (*st
 	maskedActual.Name = actual.Name
 	maskedActual.Labels = actual.Labels
 
-	populateDefaults := func(obj *pb.Repository) {
-		if obj.Mode == pb.Repository_MODE_UNSPECIFIED {
-			obj.Mode = pb.Repository_STANDARD_REPOSITORY
-		}
-	}
-
 	desired = proto.CloneOf(desired)
 	desired.Name = actual.Name
 
-	populateDefaults(desired)
-	populateDefaults(maskedActual)
+	if desired.Mode == pb.Repository_MODE_UNSPECIFIED {
+		desired.Mode = pb.Repository_STANDARD_REPOSITORY
+	}
+	if maskedActual.Mode == pb.Repository_MODE_UNSPECIFIED {
+		maskedActual.Mode = pb.Repository_STANDARD_REPOSITORY
+	}
+
+	populateCleanupPolicyDefaults(desired)
+	populateCleanupPolicyDefaults(maskedActual)
+
+	if desiredKRM != nil {
+		if desiredKRM.Spec.CleanupPolicyDryRun == nil {
+			desired.CleanupPolicyDryRun = actual.CleanupPolicyDryRun
+		}
+		if desiredKRM.Spec.CleanupPolicies == nil {
+			desired.CleanupPolicies = maskedActual.CleanupPolicies
+		}
+	}
 
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
