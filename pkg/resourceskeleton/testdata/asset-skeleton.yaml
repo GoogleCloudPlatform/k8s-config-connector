@@ -449,6 +449,8 @@
       location: us-central1-a
   resourceConfigId: ComputeNetworkEndpointGroup:zonal
 # not supported by asset inventory
+- resourceConfigId: ComputeNetworkEndpoint
+# not supported by asset inventory
 - resourceConfigId: ComputeNetworkFirewallPolicy
 # not supported by asset inventory
 - resourceConfigId: ComputeNetworkFirewallPolicyAssociation
