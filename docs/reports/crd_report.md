@@ -33,6 +33,7 @@
 | apigee.cnrm.cloud.google.com                   | ApigeeSyncAuthorization                                  | True         | False       | False  | Terraform  | False       |
 | apihub.cnrm.cloud.google.com                   | APIHubAPI                                                | True         | False       | False  | Direct     | True        |
 | apihub.cnrm.cloud.google.com                   | APIHubAttribute                                          | True         | False       | False  | Direct     | True        |
+| apihub.cnrm.cloud.google.com                   | APIHubCuration                                           | True         | False       | False  | Direct     | True        |
 | apihub.cnrm.cloud.google.com                   | APIHubDependency                                         | True         | False       | False  | Direct     | True        |
 | apihub.cnrm.cloud.google.com                   | APIHubDeployment                                         | True         | False       | False  | Direct     | True        |
 | apihub.cnrm.cloud.google.com                   | APIHubExternalAPI                                        | True         | False       | False  | Direct     | True        |
@@ -134,6 +135,8 @@
 | cloudids.cnrm.cloud.google.com                 | CloudIDSEndpoint                                         | True         | True        | False  | Terraform  | False       |
 | cloudiot.cnrm.cloud.google.com                 | CloudIOTDeviceRegistry                                   | True         | False       | False  | Terraform  | False       |
 | cloudiot.cnrm.cloud.google.com                 | CloudIOTDevice                                           | True         | False       | False  | Terraform  | False       |
+| cloudnumberregistry.cnrm.cloud.google.com      | CloudNumberRegistryCustomRange                           | True         | False       | False  | Direct     | True        |
+| cloudnumberregistry.cnrm.cloud.google.com      | CloudNumberRegistryRegistryBook                          | True         | False       | False  | Direct     | True        |
 | cloudscheduler.cnrm.cloud.google.com           | CloudSchedulerJob                                        | False        | True        | False  | DCL        | False       |
 | cloudsecuritycompliance.cnrm.cloud.google.com  | CloudSecurityComplianceCloudControl                      | True         | False       | False  | Direct     | True        |
 | cloudsecuritycompliance.cnrm.cloud.google.com  | CloudSecurityComplianceFramework                         | True         | False       | False  | Direct     | True        |
@@ -249,7 +252,6 @@
 | dataform.cnrm.cloud.google.com                 | DataformTeamFolder                                       | True         | False       | False  | Direct     | True        |
 | datafusion.cnrm.cloud.google.com               | DataFusionInstance                                       | False        | True        | False  | DCL        | False       |
 | datalabeling.cnrm.cloud.google.com             | DataLabelingAnnotationSpecSet                            | True         | False       | False  | Direct     | True        |
-| datalabeling.cnrm.cloud.google.com             | DataLabelingDataset                                      | True         | False       | False  | Direct     | True        |
 | datalabeling.cnrm.cloud.google.com             | DataLabelingEvaluationJob                                | True         | False       | False  | Direct     | True        |
 | datalabeling.cnrm.cloud.google.com             | DataLabelingInstruction                                  | True         | False       | False  | Direct     | True        |
 | datalineage.cnrm.cloud.google.com              | DataLineageProcess                                       | True         | False       | False  | Direct     | True        |
@@ -427,6 +429,7 @@
 | metastore.cnrm.cloud.google.com                | MetastoreService                                         | True         | False       | False  | Direct     | True        |
 | migrationcenter.cnrm.cloud.google.com          | MigrationCenterGroup                                     | True         | False       | False  | Direct     | True        |
 | mlengine.cnrm.cloud.google.com                 | MLEngineModel                                            | True         | False       | False  | Terraform  | False       |
+| modelarmor.cnrm.cloud.google.com               | ModelArmorFloorSetting                                   | True         | False       | False  | Direct     | True        |
 | modelarmor.cnrm.cloud.google.com               | ModelArmorTemplate                                       | True         | False       | False  | Direct     | True        |
 | monitoring.cnrm.cloud.google.com               | MonitoringAlertPolicy                                    | False        | True        | False  | Terraform  | True        |
 | monitoring.cnrm.cloud.google.com               | MonitoringDashboard                                      | False        | True        | False  | Direct     | True        |
