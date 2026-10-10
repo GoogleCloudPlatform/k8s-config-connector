@@ -594,6 +594,7 @@ func TestSpecFieldsMatchesPrepopulateSpec(t *testing.T) {
 			msg:  namedCommentedMessage(t, [][2]string{{"etag", ""}, {"description", ""}, {"self_link", ""}}),
 			opts: codegen.WriteOptions{PlaceServerSetFields: true},
 		},
+		{name: "deprecated top-level fields", msg: deprecatedMessage(t)},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			// Act
