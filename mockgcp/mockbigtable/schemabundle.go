@@ -37,6 +37,7 @@ import (
 	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 )
 
+// GetSchemaBundle retrieves a Bigtable SchemaBundle by name.
 func (s *tableAdminServer) GetSchemaBundle(ctx context.Context, req *pb.GetSchemaBundleRequest) (*pb.SchemaBundle, error) {
 	name, err := s.parseSchemaBundleName(req.GetName())
 	if err != nil {
@@ -56,7 +57,21 @@ func (s *tableAdminServer) GetSchemaBundle(ctx context.Context, req *pb.GetSchem
 	return obj, nil
 }
 
+// CreateSchemaBundle creates a new Bigtable SchemaBundle.
 func (s *tableAdminServer) CreateSchemaBundle(ctx context.Context, req *pb.CreateSchemaBundleRequest) (*longrunningpb.Operation, error) {
+	tableName, err := s.parseTableName(req.GetParent())
+	if err != nil {
+		return nil, err
+	}
+	tableFQN := tableName.String()
+	tableObj := &pb.Table{}
+	if err := s.storage.Get(ctx, tableFQN, tableObj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Table %s not found.", tableFQN)
+		}
+		return nil, err
+	}
+
 	reqName := req.GetParent() + "/schemaBundles/" + req.GetSchemaBundleId()
 	name, err := s.parseSchemaBundleName(reqName)
 	if err != nil {
@@ -94,6 +109,7 @@ func (s *tableAdminServer) CreateSchemaBundle(ctx context.Context, req *pb.Creat
 	})
 }
 
+// UpdateSchemaBundle updates an existing Bigtable SchemaBundle.
 func (s *tableAdminServer) UpdateSchemaBundle(ctx context.Context, req *pb.UpdateSchemaBundleRequest) (*longrunningpb.Operation, error) {
 	reqBundle := req.GetSchemaBundle()
 	if reqBundle == nil {
@@ -159,6 +175,7 @@ func (s *tableAdminServer) UpdateSchemaBundle(ctx context.Context, req *pb.Updat
 	})
 }
 
+// DeleteSchemaBundle deletes a Bigtable SchemaBundle by name.
 func (s *tableAdminServer) DeleteSchemaBundle(ctx context.Context, req *pb.DeleteSchemaBundleRequest) (*emptypb.Empty, error) {
 	name, err := s.parseSchemaBundleName(req.GetName())
 	if err != nil {
@@ -178,6 +195,7 @@ func (s *tableAdminServer) DeleteSchemaBundle(ctx context.Context, req *pb.Delet
 	return &emptypb.Empty{}, nil
 }
 
+// ListSchemaBundles lists all Bigtable SchemaBundles under a table.
 func (s *tableAdminServer) ListSchemaBundles(ctx context.Context, req *pb.ListSchemaBundlesRequest) (*pb.ListSchemaBundlesResponse, error) {
 	tableName, err := s.parseTableName(req.GetParent())
 	if err != nil {
