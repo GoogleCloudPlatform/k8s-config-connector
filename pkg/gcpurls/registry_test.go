@@ -116,6 +116,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 		// Bigtable
 		"//bigtable.googleapis.com/projects/{}/instances/{}/tables/{}/columnFamilies/{}": true,
+		"//bigtable.googleapis.com/projects/{}/instances/{}/clusters/{}/memoryLayer":     true,
 
 		// Billing Budgets
 		"//billingbudgets.googleapis.com/billingAccounts/{}/budgets/{}": true,
