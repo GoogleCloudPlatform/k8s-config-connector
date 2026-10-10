@@ -88,6 +88,7 @@ spec:
           external: string
           name: string
           namespace: string
+    title: string
   ingressPolicies:
   - ingressFrom:
       identities:
@@ -117,6 +118,7 @@ spec:
           external: string
           name: string
           namespace: string
+    title: string
   resources:
   - projectRef:
       external: string
@@ -155,6 +157,7 @@ status:
           external: string
           name: string
           namespace: string
+    title: string
   ingressPolicies:
   - ingressFrom:
       identities:
@@ -184,6 +187,7 @@ status:
           external: string
           name: string
           namespace: string
+    title: string
   resources:
   - projectRef:
       external: string
@@ -623,6 +627,16 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
     </tr>
     <tr>
         <td>
+            <p><code>spec.egressPolicies[].title</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Optional. Human-readable title for the egress rule. The title must be unique within the perimeter and cannot exceed 100 characters.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>spec.ingressPolicies</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -969,6 +983,16 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         <td>
             <p><code class="apitype">string</code></p>
             <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>spec.ingressPolicies[].title</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Optional. Human-readable title for the ingress rule. The title must be unique within the perimeter and cannot exceed 100 characters.</p>
         </td>
     </tr>
     <tr>
@@ -1423,6 +1447,16 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
     </tr>
     <tr>
         <td>
+            <p><code>egressPolicies[].title</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Optional. Human-readable title for the egress rule. The title must be unique within the perimeter and cannot exceed 100 characters.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>ingressPolicies</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1769,6 +1803,16 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
         <td>
             <p><code class="apitype">string</code></p>
             <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ingressPolicies[].title</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Optional. Human-readable title for the ingress rule. The title must be unique within the perimeter and cannot exceed 100 characters.</p>
         </td>
     </tr>
     <tr>
