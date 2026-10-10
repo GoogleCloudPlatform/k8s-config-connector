@@ -119,3 +119,17 @@ func (m *gcpClient) dataProductClient(ctx context.Context) (*api.DataProductClie
 
 	return restClient, nil
 }
+
+func (m *gcpClient) businessGlossaryClient(ctx context.Context) (*api.BusinessGlossaryClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+
+	restClient, err := api.NewBusinessGlossaryRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building dataplex business glossary REST client: %w", err)
+	}
+
+	return restClient, nil
+}
