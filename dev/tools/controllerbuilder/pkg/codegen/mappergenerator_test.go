@@ -149,9 +149,9 @@ func TestKRMMapValueType(t *testing.T) {
 	}
 }
 
-// TestMapValueConverters checks which converters a map of messages calls. The
-// name follows the KRM value type, so a strict struct that holds
-// map[string]TargetMessageRequired calls TargetMessageRequired's converters.
+// TestMapValueConverters checks which converters a map of messages uses. They
+// follow the KRM value type, so map[string]TargetMessageRequired uses
+// TargetMessageRequired's converters.
 func TestMapValueConverters(t *testing.T) {
 	fdp := &descriptorpb.FileDescriptorProto{
 		Name:    protoPtr("maps.proto"),

@@ -241,11 +241,11 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	}
 
 	// With --emit-required-from-proto, +required only goes on structs that
-	// opted-in Kinds use: Kinds whose Spec has +kcc:required-from-proto. A
-	// struct with other users is written twice: the plain struct stays
-	// optional, and a <Name>Required copy enforces the proto's REQUIRED
-	// fields. The Kinds scaffolded below get the marker, so their Spec fields
-	// count as opted-in uses and their Spec gets the strict options.
+	// opted-in Kinds use, meaning Kinds whose Spec has
+	// +kcc:required-from-proto. A struct Foo with other users is written
+	// twice: Foo stays optional, and FooRequired gets +required. The Kinds
+	// scaffolded below get the marker, so their Spec fields count as opted-in
+	// uses, and their Spec gets the strict options.
 	specOptions := writeOptions
 	if o.EmitRequiredFromProto {
 		uses, err := codegen.ScanRequiredUses(filepath.Join(o.OutputAPIDirectory, goPackage), o.OutputAPIDirectory, apisImportPrefix+goPackage)

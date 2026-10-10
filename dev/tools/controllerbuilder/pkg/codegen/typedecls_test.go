@@ -24,8 +24,8 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-// A type gets the doc comment of its declaration only when the declaration
-// has no other types. Files that include rejects are not read.
+// A type takes its declaration's doc comment only when it is the only type in
+// the declaration. Files that include rejects aren't read.
 func TestParseTypeDecls(t *testing.T) {
 	// Arrange
 	dir := t.TempDir()

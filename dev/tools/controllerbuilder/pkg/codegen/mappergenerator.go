@@ -1216,9 +1216,9 @@ func mapValueConverters(protoField protoreflect.FieldDescriptor, krmFieldType, v
 	// same way. The special-cased converters live in the direct package and
 	// have no suffix.
 	//
-	// The name comes from the KRM field's value type when that type is in the
-	// same package, as for slices and single messages. A strict struct holds
-	// map[string]FooRequired for message Foo, and its values need
+	// If the KRM field's value type is in this package, use its name, as
+	// slices and single messages do. A struct with +required can hold
+	// map[string]FooRequired for message Foo, and those values need
 	// FooRequired's converters.
 	name := GoNameForProtoMessage(valueMsg)
 	if elem := strings.TrimPrefix(strings.TrimPrefix(krmFieldType, "map[string]"), "*"); elem != "" && !strings.Contains(elem, ".") && types.Universe.Lookup(elem) == nil {

@@ -97,10 +97,10 @@ type WriteOptions struct {
 	// generate-types sets it for the whole service, and PlanRequiredStructs
 	// narrows it down: only structs that opted-in Kinds use get the markers.
 	EmitRequired bool
-	// RequiredStructs holds the messages written twice: a plain struct for
-	// everything else, and a <Name>Required copy for opted-in Kinds. A field
-	// of one of these types holds the copy. Only the strict options set it;
-	// see StrictWriteOptions.
+	// RequiredStructs holds the messages written as two structs: Foo for
+	// everyone else, and FooRequired for opted-in Kinds. A field of one of
+	// these types holds FooRequired. Only the strict options set it; see
+	// StrictWriteOptions.
 	RequiredStructs map[string]bool
 	// Prepopulating indicates whether --prepopulate-spec is enabled for this run.
 	//

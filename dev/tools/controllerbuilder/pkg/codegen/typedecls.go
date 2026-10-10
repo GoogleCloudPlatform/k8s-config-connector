@@ -38,9 +38,9 @@ func (d TypeDecl) Name() string {
 	return d.Spec.Name.Name
 }
 
-// ParseTypeDecls returns the types declared in the Go files of dir that
-// include accepts. An error reading dir is returned as is, so callers can
-// check os.IsNotExist.
+// ParseTypeDecls parses the Go files in dir that include accepts, and returns
+// the types they declare. If dir can't be read, the error comes back
+// unwrapped, so callers can check os.IsNotExist.
 func ParseTypeDecls(dir string, include func(fs.DirEntry) bool) ([]TypeDecl, error) {
 	entries, err := os.ReadDir(dir)
 	if err != nil {
@@ -77,7 +77,7 @@ func parseTypeDeclsInFile(fset *token.FileSet, dir, file string) ([]TypeDecl, er
 	return out, nil
 }
 
-// typesIn returns the types that a type declaration in file declares.
+// typesIn returns the types in one type declaration from file.
 func typesIn(gd *ast.GenDecl, file string) []TypeDecl {
 	var out []TypeDecl
 	for _, spec := range gd.Specs {
@@ -87,7 +87,8 @@ func typesIn(gd *ast.GenDecl, file string) []TypeDecl {
 		}
 		doc := ts.Doc
 		if doc == nil && len(gd.Specs) == 1 {
-			// A declaration of one type holds that type's doc comment.
+			// When a declaration has a single type, Go attaches the doc
+			// comment to the declaration rather than to the type.
 			doc = gd.Doc
 		}
 		out = append(out, TypeDecl{File: file, Spec: ts, Doc: doc})
