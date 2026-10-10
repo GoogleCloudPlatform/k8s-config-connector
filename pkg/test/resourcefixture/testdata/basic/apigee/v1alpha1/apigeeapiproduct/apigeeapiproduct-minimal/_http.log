@@ -1,0 +1,232 @@
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts/apigeeapiproduct-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "no connections available from the Apigee connect agent(s): refer documentation to triage further",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "approvalType": "auto",
+  "displayName": "Minimal API Product",
+  "name": "apigeeapiproduct-${uniqueId}"
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "no connections available from the Apigee connect agent(s): refer documentation to triage further",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts/apigeeapiproduct-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "no connections available from the Apigee connect agent(s): refer documentation to triage further",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "approvalType": "auto",
+  "displayName": "Minimal API Product",
+  "name": "apigeeapiproduct-${uniqueId}"
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "no connections available from the Apigee connect agent(s): refer documentation to triage further",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts/apigeeapiproduct-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "no connections available from the Apigee connect agent(s): refer documentation to triage further",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "approvalType": "manual",
+  "displayName": "Minimal API Product Updated",
+  "name": "apigeeapiproduct-${uniqueId}"
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "no connections available from the Apigee connect agent(s): refer documentation to triage further",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts/apigeeapiproduct-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "no connections available from the Apigee connect agent(s): refer documentation to triage further",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "approvalType": "manual",
+  "displayName": "Minimal API Product Updated",
+  "name": "apigeeapiproduct-${uniqueId}"
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "no connections available from the Apigee connect agent(s): refer documentation to triage further",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/apiproducts/apigeeapiproduct-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "no connections available from the Apigee connect agent(s): refer documentation to triage further",
+    "status": "FAILED_PRECONDITION"
+  }
+}
