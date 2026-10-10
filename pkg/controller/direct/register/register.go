@@ -119,6 +119,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/licensemanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/livestream"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/logging"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/lustre"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/managedkafka"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/mapmanagement"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/memorystore"

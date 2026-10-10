@@ -2852,6 +2852,12 @@
 [missing_field] crd=livestreamchannels.livestream.cnrm.cloud.google.com version=v1alpha1: field ".spec.timecodeConfig.timeZone.id" is not set in unstructured objects
 [missing_field] crd=livestreamchannels.livestream.cnrm.cloud.google.com version=v1alpha1: field ".spec.timecodeConfig.timeZone.version" is not set in unstructured objects
 [missing_field] crd=livestreamchannels.livestream.cnrm.cloud.google.com version=v1alpha1: field ".spec.timecodeConfig.utcOffset" is not set in unstructured objects
+[missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.accessRulesOptions.accessRules[].ipAddressRanges[]" is not set in unstructured objects
+[missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.accessRulesOptions.accessRules[].name" is not set in unstructured objects
+[missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.accessRulesOptions.accessRules[].squashMode" is not set in unstructured objects
+[missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.accessRulesOptions.defaultSquashGid" is not set in unstructured objects
+[missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.accessRulesOptions.defaultSquashMode" is not set in unstructured objects
+[missing_field] crd=lustreinstances.lustre.cnrm.cloud.google.com version=v1alpha1: field ".spec.accessRulesOptions.defaultSquashUid" is not set in unstructured objects
 [missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.config" is not set in unstructured objects
 [missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcpConfig.secretPaths[].external" is not set in unstructured objects
 [missing_field] crd=managedkafkaconnectclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcpConfig.secretPaths[].name" is not set in unstructured objects
