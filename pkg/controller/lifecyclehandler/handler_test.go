@@ -17,6 +17,7 @@ package lifecyclehandler
 import (
 	"context"
 	"errors"
+	"strings"
 	"testing"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -28,6 +29,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/client-go/tools/record"
 )
 
 func TestIsOrphaned(t *testing.T) {
@@ -256,5 +258,79 @@ func Test_reasonForUnresolvableDeps(t *testing.T) {
 				t.Errorf("reasonForUnresolvableDeps() got = %v, want %v", got, test.want)
 			}
 		})
+	}
+}
+
+func TestHandlePaused(t *testing.T) {
+	ctx := context.TODO()
+	h := test.NewKubeHarness(ctx, t)
+	c := h.GetClient()
+
+	h.CreateDummyCRD(schema.GroupVersionKind{Group: "test1.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "Test1Bar"})
+
+	testID := testvariable.NewUniqueID()
+	h.EnsureNamespaceExists(testID)
+
+	bar := test.NewBarUnstructured("test-bar", testID, "")
+	test.EnsureObjectsExist(t, []*unstructured.Unstructured{bar}, c)
+
+	recorder := record.NewFakeRecorder(100)
+	handler := NewLifecycleHandler(c, recorder)
+
+	resource, err := k8s.NewResource(bar)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if err := handler.HandlePaused(ctx, resource); err != nil {
+		t.Fatalf("HandlePaused failed: %v", err)
+	}
+
+	// Verify an event was recorded on state transition
+	select {
+	case event := <-recorder.Events:
+		if !strings.Contains(event, k8s.Paused) {
+			t.Errorf("unexpected event: %s, want event containing %s", event, k8s.Paused)
+		}
+	default:
+		t.Errorf("expected an event to be recorded, but got none")
+	}
+
+	// Fetch object from apiserver and verify condition
+	updatedBar := &unstructured.Unstructured{}
+	updatedBar.SetGroupVersionKind(bar.GroupVersionKind())
+	if err := c.Get(ctx, types.NamespacedName{Namespace: testID, Name: "test-bar"}, updatedBar); err != nil {
+		t.Fatalf("failed to get updated bar: %v", err)
+	}
+
+	updatedResource, err := k8s.NewResource(updatedBar)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	cond, found := k8s.GetReadyCondition(updatedResource)
+	if !found {
+		t.Fatalf("ready condition not found")
+	}
+	if cond.Status != corev1.ConditionFalse {
+		t.Errorf("ready condition status = %v, want %v", cond.Status, corev1.ConditionFalse)
+	}
+	if cond.Reason != k8s.Paused {
+		t.Errorf("ready condition reason = %v, want %v", cond.Reason, k8s.Paused)
+	}
+	if cond.Message != k8s.PausedMessage {
+		t.Errorf("ready condition message = %v, want %v", cond.Message, k8s.PausedMessage)
+	}
+
+	// Subsequent HandlePaused call on already-paused resource should be idempotent and not emit duplicate events
+	if err := handler.HandlePaused(ctx, updatedResource); err != nil {
+		t.Fatalf("HandlePaused second call failed: %v", err)
+	}
+
+	select {
+	case event := <-recorder.Events:
+		t.Errorf("expected no event on idempotent HandlePaused call, but got: %s", event)
+	default:
+		// expected
 	}
 }

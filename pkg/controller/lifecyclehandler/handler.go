@@ -370,6 +370,21 @@ func (r *LifecycleHandler) HandleUnmanaged(ctx context.Context, resource *k8s.Re
 	return nil
 }
 
+func (r *LifecycleHandler) HandlePaused(ctx context.Context, resource *k8s.Resource) error {
+	msg := k8s.PausedMessage
+	// Only update the API server if there's new information
+	if !k8s.ReadyConditionMatches(resource, corev1.ConditionFalse, k8s.Paused, msg) {
+		setCondition(resource, corev1.ConditionFalse, k8s.Paused, msg)
+		setObservedGeneration(resource, resource.GetGeneration())
+		if err := r.updateStatus(ctx, resource); err != nil {
+			return err
+		}
+		r.recordEvent(ctx, resource, corev1.EventTypeNormal, k8s.Paused, msg)
+	}
+
+	return nil
+}
+
 func setCondition(resource *k8s.Resource, status corev1.ConditionStatus, reason, msg string) {
 	if resource.Status == nil {
 		resource.Status = make(map[string]interface{})
