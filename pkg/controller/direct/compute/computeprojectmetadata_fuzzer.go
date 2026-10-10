@@ -35,6 +35,21 @@ func computeProjectMetadataFuzzer() fuzztesting.KRMFuzzer {
 		ComputeProjectMetadataStatus_FromProto, ComputeProjectMetadataStatus_ToProto,
 	)
 
+	// Detailed Field Comparison:
+	// KRM Spec Field / Path       <-> Proto/Fuzzer Path/Field Mapping Status
+	// ==============================================================================
+	// .spec.metadata              <-> .items (SpecField: map of key-values mapped to Items slice)
+	//
+	// KRM Status Field / Path     <-> Proto/Fuzzer Path/Field Mapping Status
+	// ==============================================================================
+	// .status.conditions          <-> (KRM standard status field, not in proto)
+	// .status.observedGeneration  <-> (KRM standard status field, not in proto)
+	//
+	// Proto Field                 <-> Mapping Status
+	// ==============================================================================
+	// .fingerprint                <-> Unimplemented_NotYetTriaged (optimistic locking hash)
+	// .kind                       <-> Unimplemented_NotYetTriaged (output-only resource discriminator)
+
 	// Spec fields
 	f.SpecField(".items")
 
