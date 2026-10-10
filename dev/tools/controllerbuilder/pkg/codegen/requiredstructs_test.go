@@ -121,8 +121,8 @@ func newKindSpecFields(fd protoreflect.FileDescriptor) []protoreflect.FieldDescr
 const testImportPath = "example.com/apis/test"
 
 // planAndWrite runs generate-types the way RunGenerateCRD does: visit both
-// resources, plan, then write. files are written under the apis directory
-// first, keyed by their path relative to it.
+// resources, plan, then write. It first writes files under the apis
+// directory, keyed by their path relative to it.
 func planAndWrite(t *testing.T, files map[string]string, newSpecFields []protoreflect.FieldDescriptor) (*TypeGenerator, string) {
 	t.Helper()
 	fd := requiredSplitFixture(t)
@@ -210,9 +210,8 @@ func checkStructs(t *testing.T, body string, wants []structWant) {
 	}
 }
 
-// splitWants is what every case below expects: structs that something other
-// than the opted-in Kind uses keep their name and stay optional, and the
-// opted-in Kind gets Required copies.
+// splitWants is what every case below expects: structs with other users keep
+// their name and stay optional, and the opted-in Kind gets Required copies.
 var splitWants = []structWant{
 	{name: "Shared", want: []string{"Key *string"}, notWant: []string{"+required"}},
 	{name: "SharedRequired", want: []string{"// +kcc:proto=google.cloud.test.v1.Shared\n", "// +required\n\tKey *string"}},
@@ -365,9 +364,9 @@ func TestPlanRequiredStructsNameTaken(t *testing.T) {
 	}
 }
 
-// Code that uses a Required copy gets it, even if nothing else uses the
-// message, or that code wouldn't compile. This is how a Kind that opts in by
-// hand switches a field to the copy.
+// generate-types writes a Required copy that code uses, even if nothing else
+// needs it, so that code compiles. This is how a Kind that opts in by hand
+// switches a field to the copy.
 func TestPlanRequiredStructsNamedCopy(t *testing.T) {
 	files := map[string]string{
 		"test/newkind_types.go": "package test\n\n" +

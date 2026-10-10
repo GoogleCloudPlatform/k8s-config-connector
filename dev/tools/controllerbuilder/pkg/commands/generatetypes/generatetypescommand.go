@@ -240,12 +240,12 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		resourceAnnotations = append(resourceAnnotations, fmt.Sprintf("%s:%s", resource.Kind, resource.ProtoName))
 	}
 
-	// With --emit-required-from-proto, +required only goes on structs that
-	// opted-in Kinds reach, the ones with +kcc:required-from-proto. If
-	// something else also uses a struct, it is written twice: the plain struct
-	// stays optional, and a <Name>Required copy enforces the proto's REQUIRED
-	// fields. The Kinds scaffolded below get the marker, so their Spec fields
-	// count as opted-in uses and their Spec gets the strict options.
+	// With --emit-required-from-proto, +required only goes on structs reached
+	// from opted-in Kinds, the ones marked +kcc:required-from-proto. A struct
+	// with other users is written twice: the plain struct stays optional, and
+	// a <Name>Required copy enforces the proto's REQUIRED fields. The Kinds
+	// scaffolded below get the marker, so their Spec fields count as opted-in
+	// uses and their Spec gets the strict options.
 	specOptions := writeOptions
 	if o.EmitRequiredFromProto {
 		uses, err := codegen.ScanRequiredUses(filepath.Join(o.OutputAPIDirectory, goPackage), o.OutputAPIDirectory, apisImportPrefix+goPackage)
@@ -422,10 +422,10 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	}
 
 	// A field the proto marks REQUIRED can still be optional in the CRD: its
-	// Kind hasn't opted in, a hand-written field has no +required, or
-	// something else also uses its struct. Each such field goes to the queue
-	// for a person to decide. The check reads the Go files, so it runs after
-	// WriteFiles and prune, and the queue is written after it.
+	// Kind hasn't opted in, a hand-written field lacks +required, or its
+	// struct has other users. Each such field goes to the queue for a person to
+	// decide. The check reads the Go files, so it runs after WriteFiles and
+	// prune, and before the queue is written.
 	if o.EmitRequiredFromProto {
 		kinds := make([]string, 0, len(o.Resources))
 		for _, resource := range o.Resources {
