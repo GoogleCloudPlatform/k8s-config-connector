@@ -76,16 +76,10 @@
 [missing_field] crd=apiquotapreferences.cloudquota.cnrm.cloud.google.com version=v1beta1: field ".spec.justification" is not set in unstructured objects
 [missing_field] crd=apiquotapreferences.cloudquota.cnrm.cloud.google.com version=v1beta1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apiquotapreferences.cloudquota.cnrm.cloud.google.com version=v1beta1: field ".spec.quotaConfig.annotations" is not set in unstructured objects
-[missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.cleanupPolicies[].action" is not set in unstructured objects
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.cleanupPolicies[].condition.newerThan" is not set in unstructured objects
-[missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.cleanupPolicies[].condition.olderThan" is not set in unstructured objects
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.cleanupPolicies[].condition.packageNamePrefixes[]" is not set in unstructured objects
-[missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.cleanupPolicies[].condition.tagPrefixes[]" is not set in unstructured objects
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.cleanupPolicies[].condition.tagState" is not set in unstructured objects
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.cleanupPolicies[].condition.versionNamePrefixes[]" is not set in unstructured objects
-[missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.cleanupPolicies[].id" is not set in unstructured objects
-[missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.cleanupPolicies[].mostRecentVersions.keepCount" is not set in unstructured objects
-[missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.cleanupPolicies[].mostRecentVersions.packageNamePrefixes[]" is not set in unstructured objects
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.cleanupPolicyDryRun" is not set in unstructured objects
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.dockerConfig.immutableTags" is not set in unstructured objects
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
