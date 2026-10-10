@@ -65,10 +65,12 @@ X-Xss-Protection: 0
         {
           "processingUnits": 2000,
           "replicaSelection": {
-            "location": "us-central1"
+            "location": "us-central1",
+            "replicaType": 1
           }
         }
       ],
+      "resourceLocation": "us-central1",
       "state": "READY"
     },
     "startTime": "2024-04-01T12:34:56.123456Z"
@@ -114,10 +116,12 @@ X-Xss-Protection: 0
         {
           "processingUnits": 2000,
           "replicaSelection": {
-            "location": "us-central1"
+            "location": "us-central1",
+            "replicaType": 1
           }
         }
       ],
+      "resourceLocation": "us-central1",
       "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -147,6 +151,7 @@ X-Xss-Protection: 0
         }
       }
     ],
+    "resourceLocation": "us-central1",
     "state": "READY",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -188,6 +193,7 @@ X-Xss-Protection: 0
       }
     }
   ],
+  "resourceLocation": "us-central1",
   "state": "READY",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -241,10 +247,12 @@ X-Xss-Protection: 0
         {
           "processingUnits": 3000,
           "replicaSelection": {
-            "location": "us-central1"
+            "location": "us-central1",
+            "replicaType": 1
           }
         }
       ],
+      "resourceLocation": "us-central1",
       "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -291,10 +299,12 @@ X-Xss-Protection: 0
         {
           "processingUnits": 3000,
           "replicaSelection": {
-            "location": "us-central1"
+            "location": "us-central1",
+            "replicaType": 1
           }
         }
       ],
+      "resourceLocation": "us-central1",
       "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -324,6 +334,7 @@ X-Xss-Protection: 0
         }
       }
     ],
+    "resourceLocation": "us-central1",
     "state": "READY",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -365,6 +376,7 @@ X-Xss-Protection: 0
       }
     }
   ],
+  "resourceLocation": "us-central1",
   "state": "READY",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
