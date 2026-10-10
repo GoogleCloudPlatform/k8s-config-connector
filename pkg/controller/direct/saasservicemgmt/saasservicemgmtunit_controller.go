@@ -20,6 +20,7 @@ import (
 
 	gcp "cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1"
 	pb "cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1/saasservicemgmtpb"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/saasservicemgmt/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -69,7 +70,7 @@ func (m *unitModel) AdapterForObject(ctx context.Context, op *directbase.Adapter
 	u := op.GetUnstructured()
 	reader := op.Reader
 	obj := &krm.SaaSServiceMgmtUnit{}
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
@@ -156,7 +157,7 @@ func (a *SaaSServiceMgmtUnitAdapter) Create(ctx context.Context, createOp *direc
 	}
 	created, err := a.gcpClient.CreateUnit(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating SaaSServiceMgmtUnit %s: %w", a.id.Unit, err)
+		return fmt.Errorf("creating SaaSServiceMgmtUnit %s: %w", fqn, err)
 	}
 	log.V(2).Info("successfully created SaaSServiceMgmtUnit", "name", created.Name)
 
@@ -186,11 +187,15 @@ func (a *SaaSServiceMgmtUnitAdapter) Update(ctx context.Context, updateOp *direc
 			UpdateMask: updateMask,
 		}
 
-		updated, err := a.gcpClient.UpdateUnit(ctx, req)
-		if err != nil {
+		if _, err := a.gcpClient.UpdateUnit(ctx, req); err != nil {
 			return fmt.Errorf("updating SaaSServiceMgmtUnit %s: %w", fqn, err)
 		}
-		latest = updated
+
+		// Fetch fully-populated resource after update
+		latest, err = a.gcpClient.GetUnit(ctx, &pb.GetUnitRequest{Name: fqn})
+		if err != nil {
+			return fmt.Errorf("getting SaaSServiceMgmtUnit %s after update: %w", fqn, err)
+		}
 	}
 
 	return a.updateStatus(ctx, updateOp, latest)
@@ -218,13 +223,16 @@ func (a *SaaSServiceMgmtUnitAdapter) Export(ctx context.Context) (*unstructured.
 		return nil, mapCtx.Err()
 	}
 
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Project}
+	obj.Spec.Location = &a.id.Location
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u.Object = uObj
-	u.SetName(a.actual.Name)
+	u.SetName(a.id.Unit)
 	u.SetGroupVersionKind(krm.SaaSServiceMgmtUnitGVK)
 	return u, nil
 }
