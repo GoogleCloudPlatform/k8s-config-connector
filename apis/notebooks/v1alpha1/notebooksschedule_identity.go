@@ -32,6 +32,7 @@ var (
 
 var NotebooksScheduleIdentityFormat = gcpurls.Template[NotebooksScheduleIdentity]("notebooks.googleapis.com", "projects/{project}/locations/{location}/schedules/{schedule}")
 
+// NotebooksScheduleIdentity is the identity of a GCP NotebooksSchedule resource.
 // +k8s:deepcopy-gen=false
 type NotebooksScheduleIdentity struct {
 	Project  string
