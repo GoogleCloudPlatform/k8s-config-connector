@@ -27,7 +27,7 @@ import (
 	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	krmbigtablev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
 	krmbigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krmkmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -73,6 +73,7 @@ func AppProfile_StandardIsolation_v1beta1_FromProto(mapCtx *direct.MapContext, i
 	}
 	out := &krmbigtablev1beta1.AppProfile_StandardIsolation{}
 	out.Priority = direct.Enum_FromProto(mapCtx, in.GetPriority())
+	out.MemoryConfig = AppProfile_StandardIsolation_MemoryConfig_v1beta1_FromProto(mapCtx, in.GetMemoryConfig())
 	return out
 }
 func AppProfile_StandardIsolation_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.AppProfile_StandardIsolation) *pb.AppProfile_StandardIsolation {
@@ -81,6 +82,21 @@ func AppProfile_StandardIsolation_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 	}
 	out := &pb.AppProfile_StandardIsolation{}
 	out.Priority = direct.Enum_ToProto[pb.AppProfile_Priority](mapCtx, in.Priority)
+	out.MemoryConfig = AppProfile_StandardIsolation_MemoryConfig_v1beta1_ToProto(mapCtx, in.MemoryConfig)
+	return out
+}
+func AppProfile_StandardIsolation_MemoryConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_StandardIsolation_MemoryConfig) *krmbigtablev1beta1.AppProfile_StandardIsolation_MemoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigtablev1beta1.AppProfile_StandardIsolation_MemoryConfig{}
+	return out
+}
+func AppProfile_StandardIsolation_MemoryConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.AppProfile_StandardIsolation_MemoryConfig) *pb.AppProfile_StandardIsolation_MemoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AppProfile_StandardIsolation_MemoryConfig{}
 	return out
 }
 func AuthorizedView_SubsetView_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedView_SubsetView) *krmbigtablev1alpha1.AuthorizedView_SubsetView {
@@ -320,6 +336,7 @@ func BigtableInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.In
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	// MISSING: State
 	// MISSING: Type
+	// MISSING: Edition
 	// MISSING: Labels
 	// MISSING: CreateTime
 	// MISSING: SatisfiesPzs
@@ -336,6 +353,7 @@ func BigtableInstanceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigt
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	// MISSING: State
 	// MISSING: Type
+	// MISSING: Edition
 	// MISSING: Labels
 	// MISSING: CreateTime
 	// MISSING: SatisfiesPzs
@@ -394,6 +412,7 @@ func BigtableSchemaBundleSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *
 	out := &krmbigtablev1alpha1.BigtableSchemaBundleSpec{}
 	// MISSING: Name
 	out.ProtoSchema = ProtoSchema_v1alpha1_FromProto(mapCtx, in.GetProtoSchema())
+	// MISSING: AvroSchema
 	// MISSING: Etag
 	return out
 }
@@ -406,6 +425,7 @@ func BigtableSchemaBundleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *kr
 	if oneof := ProtoSchema_v1alpha1_ToProto(mapCtx, in.ProtoSchema); oneof != nil {
 		out.Type = &pb.SchemaBundle_ProtoSchema{ProtoSchema: oneof}
 	}
+	// MISSING: AvroSchema
 	// MISSING: Etag
 	return out
 }
@@ -465,7 +485,7 @@ func Cluster_EncryptionConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *
 	}
 	out := &krmbigtablev1alpha1.Cluster_EncryptionConfig{}
 	if in.GetKmsKeyName() != "" {
-		out.KMSKeyNameRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+		out.KMSKeyNameRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
 	}
 	return out
 }

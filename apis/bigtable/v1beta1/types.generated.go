@@ -56,6 +56,15 @@ type AppProfile_StandardIsolation struct {
 	// The priority of requests sent using this app profile.
 	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.StandardIsolation.priority
 	Priority *string `json:"priority,omitempty"`
+
+	// Optional. The memory config to use for requests sent using this app
+	//  profile.
+	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.StandardIsolation.memory_config
+	MemoryConfig *AppProfile_StandardIsolation_MemoryConfig `json:"memoryConfig,omitempty"`
+}
+
+// +kcc:proto=google.bigtable.admin.v2.AppProfile.StandardIsolation.MemoryConfig
+type AppProfile_StandardIsolation_MemoryConfig struct {
 }
 
 // +kcc:proto=google.bigtable.admin.v2.BackupInfo
@@ -563,15 +572,6 @@ type RestoreInfoObservedState struct {
 }
 */
 
-/* unreachable type TypeObservedState
-// +kcc:observedstate:proto=google.bigtable.admin.v2.Type
-type TypeObservedState struct {
-	// Aggregate
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.aggregate_type
-	AggregateType *Type_AggregateObservedState `json:"aggregateType,omitempty"`
-}
-*/
-
 /* unreachable type Type_AggregateObservedState
 // +kcc:observedstate:proto=google.bigtable.admin.v2.Type.Aggregate
 type Type_AggregateObservedState struct {
@@ -579,47 +579,6 @@ type Type_AggregateObservedState struct {
 	//  `Aggregate`. This is a function of the `input_type` and `aggregator`
 	//  chosen, and will always specify a full encoding.
 	// +kcc:proto:field=google.bigtable.admin.v2.Type.Aggregate.state_type
-	StateType *TypeObservedState `json:"stateType,omitempty"`
-}
-*/
-
-/* unreachable type Type_ArrayObservedState
-// +kcc:observedstate:proto=google.bigtable.admin.v2.Type.Array
-type Type_ArrayObservedState struct {
-	// The type of the elements in the array. This must not be `Array`.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.Array.element_type
-	ElementType *TypeObservedState `json:"elementType,omitempty"`
-}
-*/
-
-/* unreachable type Type_MapObservedState
-// +kcc:observedstate:proto=google.bigtable.admin.v2.Type.Map
-type Type_MapObservedState struct {
-	// The type of a map key.
-	//  Only `Bytes`, `String`, and `Int64` are allowed as key types.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.Map.key_type
-	KeyType *TypeObservedState `json:"keyType,omitempty"`
-
-	// The type of the values in a map.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.Map.value_type
-	ValueType *TypeObservedState `json:"valueType,omitempty"`
-}
-*/
-
-/* unreachable type Type_StructObservedState
-// +kcc:observedstate:proto=google.bigtable.admin.v2.Type.Struct
-type Type_StructObservedState struct {
-	// The names and types of the fields in this struct.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.Struct.fields
-	Fields []Type_Struct_FieldObservedState `json:"fields,omitempty"`
-}
-*/
-
-/* unreachable type Type_Struct_FieldObservedState
-// +kcc:observedstate:proto=google.bigtable.admin.v2.Type.Struct.Field
-type Type_Struct_FieldObservedState struct {
-	// The type of values in this field.
-	// +kcc:proto:field=google.bigtable.admin.v2.Type.Struct.Field.type
-	Type *TypeObservedState `json:"type,omitempty"`
+	StateType *Type `json:"stateType,omitempty"`
 }
 */
