@@ -7,7 +7,7 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a114af15bd
+X-Goog-Gcs-Base-Ts: 1a12a85fdd4
 
 {
   "error": {
@@ -53,7 +53,7 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a114af1873
+X-Goog-Gcs-Base-Ts: 1a12a860089
 
 {
   "etag": "abcdef0123A=",
@@ -99,7 +99,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a114af189e
+X-Goog-Gcs-Base-Ts: 1a12a8600c3
 
 {
   "etag": "abcdef0123A=",
@@ -146,7 +146,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a114af1cb9
+X-Goog-Gcs-Base-Ts: 1a12a86049a
 
 {
   "bindings": [
@@ -208,7 +208,7 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a114af1edf
+X-Goog-Gcs-Base-Ts: 1a12a8606b5
 
 {
   "bindings": [
@@ -249,7 +249,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a114af22fb
+X-Goog-Gcs-Base-Ts: 1a12a860ada
 
 {
   "bindings": [
@@ -308,6 +308,8 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
   },
   "labels": {
     "cnrm-test": "true",
+    "env": "test",
+    "managed-by": "kcc",
     "managed-by-cnrm": "true"
   },
   "objectMetadataReportOptions": {
@@ -362,9 +364,11 @@ X-Xss-Protection: 0
   },
   "labels": {
     "cnrm-test": "true",
+    "env": "test",
+    "managed-by": "kcc",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/us-central1/reportConfigs/ef821d9c-0665-425b-a40e-a70fba6927f1",
+  "name": "projects/${projectId}/locations/us-central1/reportConfigs/8d05bb0a-1f10-4f31-b96c-ba09008a003e",
   "objectMetadataReportOptions": {
     "metadataFields": [
       "bucket",
@@ -387,10 +391,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://storageinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/reportConfigs/ef821d9c-0665-425b-a40e-a70fba6927f1?%24alt=json%3Benum-encoding%3Dint
+GET https://storageinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/reportConfigs/8d05bb0a-1f10-4f31-b96c-ba09008a003e?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FreportConfigs%2Fef821d9c-0665-425b-a40e-a70fba6927f1
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FreportConfigs%2F8d05bb0a-1f10-4f31-b96c-ba09008a003e
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -425,9 +429,11 @@ X-Xss-Protection: 0
   },
   "labels": {
     "cnrm-test": "true",
+    "env": "test",
+    "managed-by": "kcc",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/us-central1/reportConfigs/ef821d9c-0665-425b-a40e-a70fba6927f1",
+  "name": "projects/${projectId}/locations/us-central1/reportConfigs/8d05bb0a-1f10-4f31-b96c-ba09008a003e",
   "objectMetadataReportOptions": {
     "metadataFields": [
       "bucket",
@@ -450,14 +456,15 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://storageinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/reportConfigs/ef821d9c-0665-425b-a40e-a70fba6927f1?%24alt=json%3Benum-encoding%3Dint&updateMask=csvOptions%2CdisplayName%2CfrequencyOptions%2CobjectMetadataReportOptions.metadataFields%2CobjectMetadataReportOptions.storageDestinationOptions.destinationPath
+PATCH https://storageinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/reportConfigs/8d05bb0a-1f10-4f31-b96c-ba09008a003e?%24alt=json%3Benum-encoding%3Dint&updateMask=csvOptions%2CdisplayName%2CfrequencyOptions%2Clabels%2CobjectMetadataReportOptions.metadataFields%2CobjectMetadataReportOptions.storageDestinationOptions.destinationPath
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: report_config.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FreportConfigs%2Fef821d9c-0665-425b-a40e-a70fba6927f1
+X-Goog-Request-Params: report_config.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FreportConfigs%2F8d05bb0a-1f10-4f31-b96c-ba09008a003e
 
 {
   "csvOptions": {
     "delimiter": ";",
+    "headerRequired": true,
     "recordSeparator": "\n"
   },
   "displayName": "Updated Storage Insights Report Config",
@@ -476,9 +483,11 @@ X-Goog-Request-Params: report_config.name=projects%2F${projectId}%2Flocations%2F
   },
   "labels": {
     "cnrm-test": "true",
+    "env": "test-updated",
+    "managed-by": "kcc",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/us-central1/reportConfigs/ef821d9c-0665-425b-a40e-a70fba6927f1",
+  "name": "projects/${projectId}/locations/us-central1/reportConfigs/8d05bb0a-1f10-4f31-b96c-ba09008a003e",
   "objectMetadataReportOptions": {
     "metadataFields": [
       "bucket",
@@ -532,9 +541,11 @@ X-Xss-Protection: 0
   },
   "labels": {
     "cnrm-test": "true",
+    "env": "test-updated",
+    "managed-by": "kcc",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/us-central1/reportConfigs/ef821d9c-0665-425b-a40e-a70fba6927f1",
+  "name": "projects/${projectId}/locations/us-central1/reportConfigs/8d05bb0a-1f10-4f31-b96c-ba09008a003e",
   "objectMetadataReportOptions": {
     "metadataFields": [
       "bucket",
@@ -558,10 +569,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://storageinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/reportConfigs/ef821d9c-0665-425b-a40e-a70fba6927f1?%24alt=json%3Benum-encoding%3Dint
+GET https://storageinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/reportConfigs/8d05bb0a-1f10-4f31-b96c-ba09008a003e?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FreportConfigs%2Fef821d9c-0665-425b-a40e-a70fba6927f1
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FreportConfigs%2F8d05bb0a-1f10-4f31-b96c-ba09008a003e
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -596,9 +607,11 @@ X-Xss-Protection: 0
   },
   "labels": {
     "cnrm-test": "true",
+    "env": "test-updated",
+    "managed-by": "kcc",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/us-central1/reportConfigs/ef821d9c-0665-425b-a40e-a70fba6927f1",
+  "name": "projects/${projectId}/locations/us-central1/reportConfigs/8d05bb0a-1f10-4f31-b96c-ba09008a003e",
   "objectMetadataReportOptions": {
     "metadataFields": [
       "bucket",
@@ -622,10 +635,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://storageinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/reportConfigs/ef821d9c-0665-425b-a40e-a70fba6927f1?%24alt=json%3Benum-encoding%3Dint
+DELETE https://storageinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/reportConfigs/8d05bb0a-1f10-4f31-b96c-ba09008a003e?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FreportConfigs%2Fef821d9c-0665-425b-a40e-a70fba6927f1
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FreportConfigs%2F8d05bb0a-1f10-4f31-b96c-ba09008a003e
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -650,7 +663,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a114af4492
+X-Goog-Gcs-Base-Ts: 1a12a862a18
 
 {
   "bindings": [
@@ -712,7 +725,7 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a114af4661
+X-Goog-Gcs-Base-Ts: 1a12a862be1
 
 {
   "bindings": [
@@ -747,7 +760,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a114af4ad2
+X-Goog-Gcs-Base-Ts: 1a12a862ff5
 
 {
   "bindings": [
@@ -781,7 +794,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a114af5815
+X-Goog-Gcs-Base-Ts: 1a12a863974
 
 {
   "etag": "abcdef0123A=",
@@ -827,7 +840,7 @@ Content-Type: application/json; charset=UTF-8
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a114af5844
+X-Goog-Gcs-Base-Ts: 1a12a863991
 
 {
   "kind": "storage#objects"
@@ -844,4 +857,4 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-X-Goog-Gcs-Base-Ts: 1a114af59af
+X-Goog-Gcs-Base-Ts: 1a12a863b6c

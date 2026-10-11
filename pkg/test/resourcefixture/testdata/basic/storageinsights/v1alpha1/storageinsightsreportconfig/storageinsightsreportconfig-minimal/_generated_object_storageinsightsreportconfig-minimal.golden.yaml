@@ -42,7 +42,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-central1/reportConfigs/1ba23212-846f-4906-baf9-f1aa34ee2adf
+  externalRef: projects/${projectId}/locations/us-central1/reportConfigs/0227e9a6-ba57-4118-8693-bf51f6231cca
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"

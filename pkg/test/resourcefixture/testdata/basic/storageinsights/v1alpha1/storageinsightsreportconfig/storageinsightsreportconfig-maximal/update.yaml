@@ -23,7 +23,7 @@ spec:
   csvOptions:
     recordSeparator: "\n"
     delimiter: ";"
-    headerRequired: false
+    headerRequired: true
   objectMetadataReportOptions:
     metadataFields:
       - bucket

@@ -279,6 +279,16 @@ func compareReportConfig(ctx context.Context, actual, desired *pb.ReportConfig) 
 	maskedActual.Labels = actual.Labels
 
 	clonedDesired := proto.CloneOf(desired)
+	if desiredCsv := clonedDesired.GetCsvOptions(); desiredCsv != nil {
+		if actualCsv := maskedActual.GetCsvOptions(); actualCsv != nil {
+			if desiredCsv.GetRecordSeparator() == "" {
+				desiredCsv.RecordSeparator = actualCsv.GetRecordSeparator()
+			}
+			if desiredCsv.GetDelimiter() == "" {
+				desiredCsv.Delimiter = actualCsv.GetDelimiter()
+			}
+		}
+	}
 
 	diffs, topLevelUpdateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {

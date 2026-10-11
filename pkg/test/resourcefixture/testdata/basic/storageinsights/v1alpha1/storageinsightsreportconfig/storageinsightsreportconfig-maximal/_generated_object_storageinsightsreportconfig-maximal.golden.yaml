@@ -12,7 +12,7 @@ metadata:
 spec:
   csvOptions:
     delimiter: ;
-    headerRequired: false
+    headerRequired: true
     recordSeparator: |2+
 
   displayName: Updated Storage Insights Report Config
@@ -55,7 +55,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-central1/reportConfigs/ef821d9c-0665-425b-a40e-a70fba6927f1
+  externalRef: projects/${projectId}/locations/us-central1/reportConfigs/8d05bb0a-1f10-4f31-b96c-ba09008a003e
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
