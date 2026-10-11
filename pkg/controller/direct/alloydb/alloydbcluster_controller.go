@@ -112,6 +112,10 @@ func (m *modelCluster) AdapterForObject(ctx context.Context, op *directbase.Adap
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	idObj, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
@@ -204,30 +208,6 @@ func (a *ClusterAdapter) normalizeReferences(ctx context.Context) error {
 
 	if err := a.resolveNetworkRef(ctx); err != nil {
 		return err
-	}
-
-	if obj.Spec.AutomatedBackupPolicy != nil && obj.Spec.AutomatedBackupPolicy.EncryptionConfig != nil && obj.Spec.AutomatedBackupPolicy.EncryptionConfig.KMSKeyNameRef != nil {
-		key, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.AutomatedBackupPolicy.EncryptionConfig.KMSKeyNameRef)
-		if err != nil {
-			return err
-		}
-		obj.Spec.AutomatedBackupPolicy.EncryptionConfig.KMSKeyNameRef = key
-	}
-
-	if obj.Spec.ContinuousBackupConfig != nil && obj.Spec.ContinuousBackupConfig.EncryptionConfig != nil && obj.Spec.ContinuousBackupConfig.EncryptionConfig.KMSKeyNameRef != nil {
-		key, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.ContinuousBackupConfig.EncryptionConfig.KMSKeyNameRef)
-		if err != nil {
-			return err
-		}
-		obj.Spec.ContinuousBackupConfig.EncryptionConfig.KMSKeyNameRef = key
-	}
-
-	if obj.Spec.EncryptionConfig != nil && obj.Spec.EncryptionConfig.KMSKeyNameRef != nil {
-		key, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.EncryptionConfig.KMSKeyNameRef)
-		if err != nil {
-			return err
-		}
-		obj.Spec.EncryptionConfig.KMSKeyNameRef = key
 	}
 
 	if obj.Spec.RestoreBackupSource != nil && obj.Spec.RestoreBackupSource.BackupNameRef != nil {
