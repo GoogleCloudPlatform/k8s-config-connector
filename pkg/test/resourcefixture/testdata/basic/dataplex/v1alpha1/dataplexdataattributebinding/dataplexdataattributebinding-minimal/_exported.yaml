@@ -1,0 +1,20 @@
+apiVersion: dataplex.cnrm.cloud.google.com/v1alpha1
+kind: DataplexDataAttributeBinding
+metadata:
+  labels:
+    cnrm-test: "true"
+    managed-by-cnrm: "true"
+  name: dab-minimal-${uniqueId}
+spec:
+  attributeRefs:
+  - external: projects/${projectId}/locations/us-central1/dataTaxonomies/dt-minimal-${uniqueId}/attributes/fake-attribute
+  description: Updated Minimal Data Attribute Binding
+  labels:
+    cnrm-test: "true"
+    managed-by-cnrm: "true"
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  resourceID: dab-minimal-${uniqueId}
+  resourceRef:
+    external: projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}/zones/dataplexzone-${uniqueId}/entities/fake-entity
