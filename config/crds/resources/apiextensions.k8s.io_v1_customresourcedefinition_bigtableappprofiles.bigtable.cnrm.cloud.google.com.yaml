@@ -136,10 +136,6 @@ spec:
                 description: The standard options used for isolating this app profile's
                   traffic from other use cases.
                 properties:
-                  memoryConfig:
-                    description: Optional. The memory config to use for requests sent
-                      using this app profile.
-                    type: object
                   priority:
                     description: The priority of requests sent using this app profile.
                     type: string

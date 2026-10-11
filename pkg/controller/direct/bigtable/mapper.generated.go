@@ -73,7 +73,6 @@ func AppProfile_StandardIsolation_v1beta1_FromProto(mapCtx *direct.MapContext, i
 	}
 	out := &krmbigtablev1beta1.AppProfile_StandardIsolation{}
 	out.Priority = direct.Enum_FromProto(mapCtx, in.GetPriority())
-	out.MemoryConfig = AppProfile_StandardIsolation_MemoryConfig_v1beta1_FromProto(mapCtx, in.GetMemoryConfig())
 	return out
 }
 func AppProfile_StandardIsolation_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.AppProfile_StandardIsolation) *pb.AppProfile_StandardIsolation {
@@ -82,21 +81,6 @@ func AppProfile_StandardIsolation_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 	}
 	out := &pb.AppProfile_StandardIsolation{}
 	out.Priority = direct.Enum_ToProto[pb.AppProfile_Priority](mapCtx, in.Priority)
-	out.MemoryConfig = AppProfile_StandardIsolation_MemoryConfig_v1beta1_ToProto(mapCtx, in.MemoryConfig)
-	return out
-}
-func AppProfile_StandardIsolation_MemoryConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_StandardIsolation_MemoryConfig) *krmbigtablev1beta1.AppProfile_StandardIsolation_MemoryConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krmbigtablev1beta1.AppProfile_StandardIsolation_MemoryConfig{}
-	return out
-}
-func AppProfile_StandardIsolation_MemoryConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.AppProfile_StandardIsolation_MemoryConfig) *pb.AppProfile_StandardIsolation_MemoryConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AppProfile_StandardIsolation_MemoryConfig{}
 	return out
 }
 func AuthorizedView_SubsetView_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedView_SubsetView) *krmbigtablev1alpha1.AuthorizedView_SubsetView {

@@ -56,15 +56,6 @@ type AppProfile_StandardIsolation struct {
 	// The priority of requests sent using this app profile.
 	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.StandardIsolation.priority
 	Priority *string `json:"priority,omitempty"`
-
-	// Optional. The memory config to use for requests sent using this app
-	//  profile.
-	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.StandardIsolation.memory_config
-	MemoryConfig *AppProfile_StandardIsolation_MemoryConfig `json:"memoryConfig,omitempty"`
-}
-
-// +kcc:proto=google.bigtable.admin.v2.AppProfile.StandardIsolation.MemoryConfig
-type AppProfile_StandardIsolation_MemoryConfig struct {
 }
 
 // +kcc:proto=google.bigtable.admin.v2.BackupInfo
