@@ -5,6 +5,7 @@ GOLANG_X_TOOLS_VERSION?=$(shell grep -E '^\s*golang.org/x/tools\s+' ../../go.mod
 generate-grpc-for-google-protos: tools
 	mkdir -p .build/
 	git clone https://github.com/googleapis/googleapis.git .build/googleapis || (cd .build/googleapis && git fetch --all && git reset --hard $(GOOGLEAPI_VERSION))
+	cd .build/googleapis && git fetch origin initial-test-for-dns && git checkout origin/initial-test-for-dns -- google/cloud/dns
 	mkdir -p ./generated
 
 	PATH=.build/bin/:${PATH} .build/bin/protoc/bin/protoc \
@@ -24,6 +25,15 @@ generate-grpc-for-google-protos: tools
 		--go-grpc_out ./generated \
 		--go-grpc_opt paths=source_relative \
 		./.build/googleapis/google/cloud/sql/v1beta4/*.proto
+
+	PATH=.build/bin/:${PATH} .build/bin/protoc/bin/protoc \
+		-I ./.build/googleapis \
+		--experimental_allow_proto3_optional \
+		--go_out ./generated \
+		--go_opt paths=source_relative \
+		--go-grpc_out ./generated \
+		--go-grpc_opt paths=source_relative \
+		./.build/googleapis/google/cloud/dns/v1/*.proto
 
 	go run -mod=readonly golang.org/x/tools/cmd/goimports@$(GOLANG_X_TOOLS_VERSION) -w generated
 
