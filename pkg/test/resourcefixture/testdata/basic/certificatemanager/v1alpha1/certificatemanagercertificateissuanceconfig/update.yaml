@@ -6,7 +6,7 @@ spec:
   projectRef:
     external: ${projectId}
   location: us-central1
-  description: sample certificate issuance config
+  description: updated sample certificate issuance config
   certificateAuthorityConfig:
     certificateAuthorityServiceConfig:
       caPoolRef:
