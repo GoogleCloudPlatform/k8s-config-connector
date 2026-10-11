@@ -69,6 +69,19 @@ type AutoscalingLimits struct {
 	MaxServeNodes *int32 `json:"maxServeNodes,omitempty"`
 }
 
+/* unreachable type AvroSchema
+// +kcc:proto=google.bigtable.admin.v2.AvroSchema
+type AvroSchema struct {
+	// Required. The Avro schemas in JSON format.
+	//  Each element must be the content of a valid, self-contained Avro schema
+	//  file (.avsc), as described in https://avro.apache.org/docs/1.8.1/spec.html.
+	//  Use repeated elements to include multiple Avro schema files in a single
+	//  bundle.
+	// +kcc:proto:field=google.bigtable.admin.v2.AvroSchema.json_schemas
+	JsonSchemas []string `json:"jsonSchemas,omitempty"`
+}
+*/
+
 // +kcc:proto=google.bigtable.admin.v2.Cluster.ClusterAutoscalingConfig
 type Cluster_ClusterAutoscalingConfig struct {
 	// Required. Autoscaling limits for this cluster.
