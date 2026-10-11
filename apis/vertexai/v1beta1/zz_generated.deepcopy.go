@@ -30,7 +30,7 @@ func (in *DatasetEncryptionSpec) DeepCopyInto(out *DatasetEncryptionSpec) {
 	*out = *in
 	if in.KmsKeyNameRef != nil {
 		in, out := &in.KmsKeyNameRef, &out.KmsKeyNameRef
-		*out = new(refsv1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 }

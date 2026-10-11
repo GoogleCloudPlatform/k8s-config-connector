@@ -15,8 +15,8 @@
 package v1beta1
 
 import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -28,7 +28,7 @@ type DatasetEncryptionSpec struct {
 	// Has the form: projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key.
 	// The key needs to be in the same region as where the compute resource is created.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.EncryptionSpec.kms_key_name
-	KmsKeyNameRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyNameRef,omitempty"`
+	KmsKeyNameRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyNameRef,omitempty"`
 }
 
 // VertexAIDatasetSpec defines the desired state of VertexAIDataset

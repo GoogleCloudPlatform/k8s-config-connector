@@ -26,7 +26,7 @@ package financialservices
 import (
 	pb "cloud.google.com/go/financialservices/apiv1/financialservicespb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/financialservices/v1alpha1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krmkmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -60,7 +60,7 @@ func FinancialServicesInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.I
 	// MISSING: Name
 	out.Labels = in.Labels
 	if in.GetKmsKey() != "" {
-		out.KMSKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
+		out.KMSKeyRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
 	}
 	return out
 }
