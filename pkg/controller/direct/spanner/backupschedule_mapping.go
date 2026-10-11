@@ -16,7 +16,7 @@ package spanner
 
 import (
 	pb "cloud.google.com/go/spanner/admin/database/apiv1/databasepb"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -28,12 +28,12 @@ func CreateBackupEncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.Cr
 	out := &krm.CreateBackupEncryptionConfig{}
 	out.EncryptionType = direct.Enum_FromProto(mapCtx, in.GetEncryptionType())
 	if in.GetKmsKeyName() != "" {
-		out.KMSKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+		out.KMSKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
 	}
-	kmsKeyNameRefs := []*refs.KMSCryptoKeyRef{}
+	kmsKeyNameRefs := []*kmsv1beta1.KMSCryptoKeyRef{}
 	if in.GetKmsKeyNames() != nil {
 		for _, kmsKeyName := range in.GetKmsKeyNames() {
-			kmsKeyNameRefs = append(kmsKeyNameRefs, &refs.KMSCryptoKeyRef{External: kmsKeyName})
+			kmsKeyNameRefs = append(kmsKeyNameRefs, &kmsv1beta1.KMSCryptoKeyRef{External: kmsKeyName})
 		}
 	}
 	out.KMSKeyRefs = kmsKeyNameRefs
@@ -45,18 +45,20 @@ func CreateBackupEncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.Cre
 	}
 	out := &pb.CreateBackupEncryptionConfig{}
 	out.EncryptionType = direct.Enum_ToProto[pb.CreateBackupEncryptionConfig_EncryptionType](mapCtx, in.EncryptionType)
-	if in.KMSKeyRef != nil {
-		out.KmsKeyName = in.KMSKeyRef.External
-	}
-	kmsKeyNames := []string{}
-	if in.KMSKeyRefs != nil {
-		for _, kmsKeyNameRef := range in.KMSKeyRefs {
-			if kmsKeyNameRef != nil {
-				kmsKeyNames = append(kmsKeyNames, kmsKeyNameRef.External)
+	if in.EncryptionType == nil || *in.EncryptionType == "CUSTOMER_MANAGED_ENCRYPTION" {
+		if in.KMSKeyRef != nil {
+			out.KmsKeyName = in.KMSKeyRef.External
+		}
+		kmsKeyNames := []string{}
+		if in.KMSKeyRefs != nil {
+			for _, kmsKeyNameRef := range in.KMSKeyRefs {
+				if kmsKeyNameRef != nil {
+					kmsKeyNames = append(kmsKeyNames, kmsKeyNameRef.External)
+				}
 			}
 		}
+		out.KmsKeyNames = kmsKeyNames
 	}
-	out.KmsKeyNames = kmsKeyNames
 	return out
 }
 func CrontabSpec_FromProto(mapCtx *direct.MapContext, in *pb.CrontabSpec) *krm.CrontabSpec {

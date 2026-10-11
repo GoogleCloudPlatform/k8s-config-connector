@@ -46,5 +46,14 @@ func spannerBackupScheduleFuzzer() fuzztesting.KRMFuzzer {
 
 	f.UnimplementedFields.Insert(".name") // Identifier, output only
 
+	f.FilterSpec = func(in *pb.BackupSchedule) {
+		if in.EncryptionConfig != nil {
+			if in.EncryptionConfig.EncryptionType != pb.CreateBackupEncryptionConfig_CUSTOMER_MANAGED_ENCRYPTION {
+				in.EncryptionConfig.KmsKeyName = ""
+				in.EncryptionConfig.KmsKeyNames = nil
+			}
+		}
+	}
+
 	return f
 }

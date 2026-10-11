@@ -1508,7 +1508,7 @@ func WorkerPoolRevisionTemplate_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 	out.Containers = direct.Slice_FromProto(mapCtx, in.Containers, Container_v1alpha1_FromProto)
 	out.Volumes = direct.Slice_FromProto(mapCtx, in.Volumes, Volume_v1alpha1_FromProto)
 	if in.GetEncryptionKey() != "" {
-		out.EncryptionKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetEncryptionKey()}
+		out.EncryptionKeyRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetEncryptionKey()}
 	}
 	out.ServiceMesh = ServiceMesh_v1alpha1_FromProto(mapCtx, in.GetServiceMesh())
 	out.EncryptionKeyRevocationAction = direct.Enum_FromProto(mapCtx, in.GetEncryptionKeyRevocationAction())
