@@ -1,0 +1,34 @@
+{"severity":"info","timestamp":"2026-03-05T22:56:48.631Z","logger":"setup","msg":"Creating the manager"}
+I0305 22:56:48.632327       1 kccmanager.go:139] checking for ConfigConnector object
+I0305 22:56:48.639763       1 kccmanager.go:145] found ConfigConnector object
+I0305 22:56:48.639777       1 kccmanager.go:147] multi-cluster leader election is configured
+{"severity":"info","timestamp":"2026-03-05T22:56:48.831Z","logger":"setup","msg":"Registering controller OpenCensus views."}
+{"severity":"info","timestamp":"2026-03-05T22:56:48.831Z","logger":"setup","msg":"Registering the Prometheus exporter"}
+I0305 22:56:48.832570       1 leaderelection.go:257] attempting to acquire leader lease multiclusterlease/cnrm-system/kcc-leader-lease...
+{"severity":"info","timestamp":"2026-03-05T22:56:48.832Z","logger":"setup","msg":"Setting container as ready..."}
+{"severity":"info","timestamp":"2026-03-05T22:56:48.832Z","logger":"setup","msg":"Container is ready."}
+{"severity":"info","timestamp":"2026-03-05T22:56:48.832Z","logger":"setup","msg":"Starting the Cmd."}
+I0305 22:56:49.853017       1 leaderelection.go:271] successfully acquired lease multiclusterlease/cnrm-system/kcc-leader-lease
+I0305 22:56:49.853176       1 kccmanager.go:206] started leading; identity: kcc-cluster-b
+{"severity":"info","timestamp":"2026-03-05T22:56:49.856Z","logger":"controller-runtime.metrics","msg":"Starting metrics server"}
+{"severity":"info","timestamp":"2026-03-05T22:56:49.857Z","logger":"controller-runtime.metrics","msg":"Serving metrics server","bindAddress":":8080","secure":false}
+{"severity":"info","timestamp":"2026-03-05T22:56:49.857Z","msg":"Starting EventSource","controller":"registration-controller","source":"kind source: *v1.CustomResourceDefinition"}
+{"severity":"info","timestamp":"2026-03-05T22:56:49.957Z","msg":"Starting Controller","controller":"registration-controller"}
+{"severity":"info","timestamp":"2026-03-05T22:56:49.957Z","msg":"Starting workers","controller":"registration-controller","worker count":20}
+{"severity":"info","timestamp":"2026-03-05T22:56:48.631Z","logger":"setup","msg":"Creating the manager"}
+I0305 22:56:48.632327       1 kccmanager.go:139] checking for ConfigConnector object
+I0305 22:56:48.639763       1 kccmanager.go:145] found ConfigConnector object
+I0305 22:56:48.639777       1 kccmanager.go:147] multi-cluster leader election is configured
+{"severity":"info","timestamp":"2026-03-05T22:56:48.831Z","logger":"setup","msg":"Registering controller OpenCensus views."}
+{"severity":"info","timestamp":"2026-03-05T22:56:48.831Z","logger":"setup","msg":"Registering the Prometheus exporter"}
+I0305 22:56:48.832570       1 leaderelection.go:257] attempting to acquire leader lease multiclusterlease/cnrm-system/kcc-leader-lease...
+{"severity":"info","timestamp":"2026-03-05T22:56:48.832Z","logger":"setup","msg":"Setting container as ready..."}
+{"severity":"info","timestamp":"2026-03-05T22:56:48.832Z","logger":"setup","msg":"Container is ready."}
+{"severity":"info","timestamp":"2026-03-05T22:56:48.832Z","logger":"setup","msg":"Starting the Cmd."}
+I0305 22:56:49.853017       1 leaderelection.go:271] successfully acquired lease multiclusterlease/cnrm-system/kcc-leader-lease
+I0305 22:56:49.853176       1 kccmanager.go:206] started leading; identity: kcc-cluster-b
+{"severity":"info","timestamp":"2026-03-05T22:56:49.856Z","logger":"controller-runtime.metrics","msg":"Starting metrics server"}
+{"severity":"info","timestamp":"2026-03-05T22:56:49.857Z","logger":"controller-runtime.metrics","msg":"Serving metrics server","bindAddress":":8080","secure":false}
+{"severity":"info","timestamp":"2026-03-05T22:56:49.857Z","msg":"Starting EventSource","controller":"registration-controller","source":"kind source: *v1.CustomResourceDefinition"}
+{"severity":"info","timestamp":"2026-03-05T22:56:49.957Z","msg":"Starting Controller","controller":"registration-controller"}
+{"severity":"info","timestamp":"2026-03-05T22:56:49.957Z","msg":"Starting workers","controller":"registration-controller","worker count":20}

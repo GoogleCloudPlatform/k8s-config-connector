@@ -1,0 +1,12 @@
+apiVersion: essentialcontacts.cnrm.cloud.google.com/v1beta1
+kind: EssentialContactsContact
+metadata:
+  name: ${RESOURCE_NAME}
+  namespace: ${NAMESPACE}
+spec:
+  projectRef:
+    external: ${PROJECT_ID}
+  languageTag: en
+  notificationCategorySubscriptions:
+    - BILLING
+  email: "mcl-test@test.com"
