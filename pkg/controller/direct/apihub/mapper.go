@@ -17,7 +17,7 @@ package apihub
 import (
 	pb "cloud.google.com/go/apihub/apiv1/apihubpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apihub/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -28,7 +28,7 @@ func APIHubInstance_Config_FromProto(mapCtx *direct.MapContext, in *pb.ApiHubIns
 	out := &krm.APIHubInstance_Config{}
 
 	if in.GetCmekKeyName() != "" {
-		out.CmekKeyRef = &refs.KMSCryptoKeyRef{External: in.GetCmekKeyName()}
+		out.CmekKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetCmekKeyName()}
 	}
 
 	return out
