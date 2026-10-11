@@ -28,6 +28,7 @@ import (
 	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataflow/v1beta1"
+	krmkmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -54,7 +55,7 @@ func DataflowFlexTemplateJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Fle
 	}
 	// MISSING: AdditionalUserLabels
 	if in.GetKmsKeyName() != "" {
-		out.KMSKeyNameRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+		out.KMSKeyNameRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
 	}
 	out.IPConfiguration = direct.Enum_FromProto(mapCtx, in.GetIpConfiguration())
 	// MISSING: WorkerRegion
