@@ -1407,6 +1407,7 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	visitor.replacePaths[".etag"] = "abcdef0123A="
 	visitor.replacePaths[".dashboard.etag"] = "abcdef0123A="
 	visitor.replacePaths[".response.etag"] = "abcdef0123A="
+	visitor.replacePaths[".guestPolicy.etag"] = "abcdef0123A="
 	visitor.replacePaths[".serviceAccount.etag"] = "abcdef0123A="
 	visitor.replacePaths[".response.uniqueId"] = "12345678"
 	visitor.replacePaths[".response.uid"] = "111111111111111111111"
