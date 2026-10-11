@@ -17,7 +17,6 @@ package vertexai
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -121,7 +120,7 @@ func DatasetEncryptionSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.E
 	}
 	out := &krmv1beta1.DatasetEncryptionSpec{}
 	if in.KmsKeyName != "" {
-		out.KmsKeyNameRef = &v1beta1.KMSCryptoKeyRef{
+		out.KmsKeyNameRef = &kmsv1beta1.KMSCryptoKeyRef{
 			External: in.KmsKeyName,
 		}
 	}
