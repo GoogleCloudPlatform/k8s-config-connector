@@ -97,7 +97,13 @@ func (m *storageInsightsReportConfigModel) AdapterForObject(ctx context.Context,
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	desired.Labels = label.NewGCPLabelsFromK8sLabels(obj.GetLabels())
+	desired.Labels = label.GCPLabels(obj)
+	for k, v := range obj.Spec.Labels {
+		if desired.Labels == nil {
+			desired.Labels = make(map[string]string)
+		}
+		desired.Labels[k] = v
+	}
 
 	return &storageInsightsReportConfigAdapter{
 		gcpClient: gcpClient,
@@ -158,10 +164,6 @@ func (a *storageInsightsReportConfigAdapter) Find(ctx context.Context) (bool, er
 func (a *storageInsightsReportConfigAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating StorageInsightsReportConfig", "name", a.id)
-
-	if a.id.ReportConfig != "" {
-		a.desired.Name = a.id.String()
-	}
 
 	req := &pb.CreateReportConfigRequest{
 		Parent:       a.id.ParentString(),
