@@ -33,11 +33,6 @@ func ResolveRunWorkerPoolRefs(ctx context.Context, kube client.Reader, desired *
 		return nil
 	}
 	template := desired.Spec.Template
-	if template.EncryptionKeyRef != nil {
-		if _, err := refs.ResolveKMSCryptoKeyRef(ctx, kube, desired, template.EncryptionKeyRef); err != nil {
-			return err
-		}
-	}
 	if err := resolveCommonTemplateRefs(ctx, kube, desired, template.ServiceAccountRef, template.VPCAccess); err != nil {
 		return err
 	}
