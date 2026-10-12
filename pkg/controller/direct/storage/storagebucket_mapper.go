@@ -19,7 +19,7 @@
 package storage
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	pb "google.golang.org/genproto/googleapis/storage/v1"
@@ -124,7 +124,7 @@ func StorageBucketEncryption_FromProto(mapCtx *direct.MapContext, in *pb.Bucket_
 	}
 	out := &krm.StorageBucketEncryption{}
 	if in.DefaultKmsKeyName != "" {
-		out.KmsKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.DefaultKmsKeyName}
+		out.KmsKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.DefaultKmsKeyName}
 	}
 	return out
 }
