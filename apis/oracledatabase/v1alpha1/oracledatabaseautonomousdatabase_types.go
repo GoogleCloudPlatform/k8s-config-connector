@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -144,7 +145,7 @@ type EncryptionKey struct {
 
 	// Optional. The KMS key used to encrypt the Autonomous Database.
 	//  This field is required if the provider is GOOGLE_MANAGED.
-	KmsKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.oracledatabase.v1.EncryptionKey
