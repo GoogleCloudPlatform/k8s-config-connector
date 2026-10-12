@@ -295,6 +295,11 @@ func IsAlreadyExists(err error) bool {
 		return false
 	}
 
+	var googleAPIErr *googleapi.Error
+	if errors.As(err, &googleAPIErr) && googleAPIErr.Code == 409 {
+		return true
+	}
+
 	apiError := &apierror.APIError{}
 	return errors.As(err, &apiError) && apiError.HTTPCode() == 409 ||
 		grpcStatus.Code(err) == grpcCode.AlreadyExists

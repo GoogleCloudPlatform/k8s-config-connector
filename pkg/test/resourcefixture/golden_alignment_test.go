@@ -491,6 +491,7 @@ func cleanURL(u string) string {
 		u = u[slashIdx:]
 	}
 	u = regexp.MustCompile(`/instanceGroupManagers/gke-.*-grp`).ReplaceAllString(u, "/instanceGroupManagers/gke-containercluster-normalized-grp")
+	u = regexp.MustCompile(`/contacts/[0-9]+`).ReplaceAllString(u, "/contacts/${contactID}")
 	return u
 }
 
@@ -966,6 +967,10 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		return v
 	case string:
 		v = strings.ReplaceAll(v, "${projectNumber}", "${projectId}")
+		if strings.Contains(v, "/contacts/") {
+			re := regexp.MustCompile(`/contacts/[0-9]+`)
+			v = re.ReplaceAllString(v, "/contacts/${contactID}")
+		}
 		if strings.Contains(v, "/forwardingRules/") {
 			re := regexp.MustCompile(`/forwardingRules/[^/]+`)
 			v = re.ReplaceAllString(v, "/forwardingRules/${forwardingRuleID}")

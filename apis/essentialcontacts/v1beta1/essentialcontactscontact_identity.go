@@ -38,6 +38,10 @@ func (i *ContactIdentity) ID() string {
 	return i.id
 }
 
+func (i *ContactIdentity) SetID(id string) {
+	i.id = id
+}
+
 func (i *ContactIdentity) Parent() *ContactParent {
 	return i.parent
 }
