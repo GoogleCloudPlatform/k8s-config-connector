@@ -89,20 +89,10 @@ func (m *modelArtifactRegistryRepository) AdapterForObject(ctx context.Context, 
 		return nil, err
 	}
 
-	mapCtx := &direct.MapContext{}
-	desiredPb := ArtifactRegistryRepositorySpec_v1beta1_ToProto(mapCtx, &obj.Spec)
-	if mapCtx.Err() != nil {
-		return nil, mapCtx.Err()
-	}
-
-	desiredPb.Labels = label.GCPLabels(obj)
-	populateCleanupPolicyDefaults(desiredPb)
-
 	return &ArtifactRegistryRepositoryAdapter{
-		id:         id.(*krm.ArtifactRegistryRepositoryIdentity),
-		gcpClient:  gcpClient,
-		desired:    desiredPb,
-		desiredKRM: obj,
+		id:        id.(*krm.ArtifactRegistryRepositoryIdentity),
+		gcpClient: gcpClient,
+		desired:   obj,
 	}, nil
 }
 
@@ -125,11 +115,10 @@ func (m *modelArtifactRegistryRepository) AdapterForURL(ctx context.Context, url
 }
 
 type ArtifactRegistryRepositoryAdapter struct {
-	id         *krm.ArtifactRegistryRepositoryIdentity
-	gcpClient  *gcp.Client
-	desired    *pb.Repository
-	desiredKRM *krm.ArtifactRegistryRepository
-	actual     *pb.Repository
+	id        *krm.ArtifactRegistryRepositoryIdentity
+	gcpClient *gcp.Client
+	desired   *krm.ArtifactRegistryRepository
+	actual    *pb.Repository
 }
 
 var _ directbase.Adapter = &ArtifactRegistryRepositoryAdapter{}
@@ -158,9 +147,17 @@ func (a *ArtifactRegistryRepositoryAdapter) Create(ctx context.Context, createOp
 	parent := fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location)
 	repositoryID := a.id.Repository
 
+	mapCtx := &direct.MapContext{}
+	desiredPb := ArtifactRegistryRepositorySpec_v1beta1_ToProto(mapCtx, &a.desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	desiredPb.Labels = label.GCPLabels(a.desired)
+	populateCleanupPolicyDefaults(desiredPb)
+
 	req := &pb.CreateRepositoryRequest{
 		Parent:       parent,
-		Repository:   a.desired,
+		Repository:   desiredPb,
 		RepositoryId: repositoryID,
 	}
 	op, err := a.gcpClient.CreateRepository(ctx, req)
@@ -180,7 +177,7 @@ func (a *ArtifactRegistryRepositoryAdapter) Update(ctx context.Context, updateOp
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating ArtifactRegistryRepository", "name", a.id.String())
 
-	diffs, updateMask, err := compareRepository(ctx, a.actual, a.desired, a.desiredKRM)
+	diffs, updateMask, desiredPb, err := compareRepository(ctx, a.actual, a.desired)
 	if err != nil {
 		return err
 	}
@@ -191,7 +188,7 @@ func (a *ArtifactRegistryRepositoryAdapter) Update(ctx context.Context, updateOp
 		structuredreporting.ReportDiff(ctx, diffs)
 
 		req := &pb.UpdateRepositoryRequest{
-			Repository: a.desired,
+			Repository: desiredPb,
 			UpdateMask: updateMask,
 		}
 		req.Repository.Name = a.id.String()
@@ -289,39 +286,43 @@ func populateCleanupPolicyDefaults(obj *pb.Repository) {
 	}
 }
 
-func compareRepository(ctx context.Context, actual, desired *pb.Repository, desiredKRM *krm.ArtifactRegistryRepository) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+func compareRepository(ctx context.Context, actual *pb.Repository, desiredKRM *krm.ArtifactRegistryRepository) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, *pb.Repository, error) {
 	maskedActual, err := mappers.OnlySpecFields(actual, ArtifactRegistryRepositorySpec_v1beta1_FromProto, ArtifactRegistryRepositorySpec_v1beta1_ToProto)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, nil, err
 	}
 	maskedActual.Name = actual.Name
 	maskedActual.Labels = actual.Labels
 
-	desired = proto.CloneOf(desired)
-	desired.Name = actual.Name
+	mapCtx := &direct.MapContext{}
+	desiredPb := ArtifactRegistryRepositorySpec_v1beta1_ToProto(mapCtx, &desiredKRM.Spec)
+	if mapCtx.Err() != nil {
+		return nil, nil, nil, mapCtx.Err()
+	}
+	desiredPb.Name = actual.Name
+	desiredPb.Labels = label.GCPLabels(desiredKRM)
 
-	if desired.Mode == pb.Repository_MODE_UNSPECIFIED {
-		desired.Mode = pb.Repository_STANDARD_REPOSITORY
+	populateCleanupPolicyDefaults(desiredPb)
+	populateCleanupPolicyDefaults(maskedActual)
+
+	if desiredKRM.Spec.CleanupPolicyDryRun == nil {
+		desiredPb.CleanupPolicyDryRun = actual.CleanupPolicyDryRun
+	}
+	if desiredKRM.Spec.CleanupPolicies == nil {
+		desiredPb.CleanupPolicies = maskedActual.CleanupPolicies
+	}
+
+	forDiff := proto.Clone(desiredPb).(*pb.Repository)
+	if forDiff.Mode == pb.Repository_MODE_UNSPECIFIED {
+		forDiff.Mode = pb.Repository_STANDARD_REPOSITORY
 	}
 	if maskedActual.Mode == pb.Repository_MODE_UNSPECIFIED {
 		maskedActual.Mode = pb.Repository_STANDARD_REPOSITORY
 	}
 
-	populateCleanupPolicyDefaults(desired)
-	populateCleanupPolicyDefaults(maskedActual)
-
-	if desiredKRM != nil {
-		if desiredKRM.Spec.CleanupPolicyDryRun == nil {
-			desired.CleanupPolicyDryRun = actual.CleanupPolicyDryRun
-		}
-		if desiredKRM.Spec.CleanupPolicies == nil {
-			desired.CleanupPolicies = maskedActual.CleanupPolicies
-		}
-	}
-
-	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, forDiff.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, nil, err
 	}
-	return diffs, updateMask, nil
+	return diffs, updateMask, desiredPb, nil
 }
