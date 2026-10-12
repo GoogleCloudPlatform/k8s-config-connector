@@ -121,10 +121,6 @@ func (m *redisInstanceModel) AdapterForURL(ctx context.Context, url string) (dir
 
 // Find implements the Adapter interface.
 func (a *redisInstanceAdapter) Find(ctx context.Context) (bool, error) {
-	if a.id.Instance == "" {
-		return false, nil
-	}
-
 	req := &redispb.GetInstanceRequest{
 		Name: a.id.String(),
 	}
