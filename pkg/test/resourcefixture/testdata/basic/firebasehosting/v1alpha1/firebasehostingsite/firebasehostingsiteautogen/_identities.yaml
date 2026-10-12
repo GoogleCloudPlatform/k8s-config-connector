@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //firebasehosting.googleapis.com/projects/${projectId}/sites/firebasehostingsite${uniqueId}
   group: firebasehosting.cnrm.cloud.google.com
   kind: FirebaseHostingSite
   name: firebasehostingsite-${uniqueId}
