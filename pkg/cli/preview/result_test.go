@@ -249,10 +249,10 @@ func TestCombinedSummaryReport(t *testing.T) {
 	// Verify klog output prints alternative run results when controller type differs even if healthy/unhealthy status is the same
 	logs := logBuf.String()
 	expectedLogSubstrings := []string{
-		`name="name3" group="g3" kind="K3" current_status="UpdateFailed" controller_type="tf"`,
-		`name="name3" group="g3" kind="K3" current_status="UpdateFailed" controller_type="direct"`,
-		`name="name5" group="g5" kind="K5" current_status="UpToDate" controller_type="tf"`,
-		`name="name5" group="g5" kind="K5" current_status="UpToDate" controller_type="direct"`,
+		fmt.Sprintf(`run_type=%q ns="n3" name="name3" group="g3" kind="K3" current_status="UpdateFailed" controller_type="tf"`, RunTypeDefault),
+		fmt.Sprintf(`run_type=%q ns="n3" name="name3" group="g3" kind="K3" current_status="UpdateFailed" controller_type="direct"`, RunTypeAlternative),
+		fmt.Sprintf(`run_type=%q ns="n5" name="name5" group="g5" kind="K5" current_status="UpToDate" controller_type="tf"`, RunTypeDefault),
+		fmt.Sprintf(`run_type=%q ns="n5" name="name5" group="g5" kind="K5" current_status="UpToDate" controller_type="direct"`, RunTypeAlternative),
 	}
 	for _, sub := range expectedLogSubstrings {
 		if !strings.Contains(logs, sub) {
