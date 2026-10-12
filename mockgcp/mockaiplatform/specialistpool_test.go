@@ -136,6 +136,26 @@ func TestSpecialistPoolLifecycle(t *testing.T) {
 		t.Fatalf("expected 1 specialist pool, got %d", len(listResp.SpecialistPools))
 	}
 
+	// List with project number parent
+	listReqNum := &pb.ListSpecialistPoolsRequest{
+		Parent: "projects/1234567890/locations/us-central1",
+	}
+	listRespNum, err := service.ListSpecialistPools(ctx, listReqNum)
+	if err != nil {
+		t.Fatalf("ListSpecialistPools with project number failed: %v", err)
+	}
+	if len(listRespNum.SpecialistPools) != 1 {
+		t.Fatalf("expected 1 specialist pool with project number, got %d", len(listRespNum.SpecialistPools))
+	}
+
+	// List with invalid parent
+	invalidListReq := &pb.ListSpecialistPoolsRequest{
+		Parent: "invalid-parent",
+	}
+	if _, err := service.ListSpecialistPools(ctx, invalidListReq); status.Code(err) != codes.InvalidArgument {
+		t.Errorf("expected InvalidArgument for invalid parent in ListSpecialistPools, got %v", err)
+	}
+
 	created := listResp.SpecialistPools[0]
 	if created.DisplayName != "test-pool" {
 		t.Errorf("expected displayName 'test-pool', got %q", created.DisplayName)
@@ -187,6 +207,19 @@ func TestSpecialistPoolLifecycle(t *testing.T) {
 	}
 	if getResp.SpecialistManagersCount != 2 {
 		t.Errorf("expected updated specialistManagersCount 2, got %d", getResp.SpecialistManagersCount)
+	}
+
+	// Update with invalid mask path
+	invalidUpdateReq := &pb.UpdateSpecialistPoolRequest{
+		SpecialistPool: &pb.SpecialistPool{
+			Name: created.Name,
+		},
+		UpdateMask: &field_mask.FieldMask{
+			Paths: []string{"unsupportedField"},
+		},
+	}
+	if _, err := service.UpdateSpecialistPool(ctx, invalidUpdateReq); status.Code(err) != codes.InvalidArgument {
+		t.Errorf("expected InvalidArgument for unhandled mask path in UpdateSpecialistPool, got %v", err)
 	}
 
 	// Delete
