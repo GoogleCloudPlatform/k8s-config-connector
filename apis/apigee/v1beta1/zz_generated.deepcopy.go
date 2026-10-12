@@ -1397,7 +1397,7 @@ func (in *ApigeeOrganizationSpec) DeepCopyInto(out *ApigeeOrganizationSpec) {
 	}
 	if in.RuntimeDatabaseEncryptionKeyRef != nil {
 		in, out := &in.RuntimeDatabaseEncryptionKeyRef, &out.RuntimeDatabaseEncryptionKeyRef
-		*out = new(refsv1beta1.KMSCryptoKeyRef)
+		*out = new(kmsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 	if in.RuntimeType != nil {
