@@ -94,6 +94,8 @@ func topLevelSkip(field protoreflect.FieldDescriptor, msg protoreflect.MessageDe
 	switch {
 	case codegen.IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY):
 		return skipOutputOnly
+	case codegen.IsFieldAllOutputOnlyMessage(field):
+		return skipOutputOnly
 	case codegen.IsServerSetField(field, msg, opts):
 		return skipServerSet
 	case identityFields[string(field.Name())]:

@@ -230,6 +230,7 @@ func (a *APIScaffolder) AddTypeFile(resource options.Resource, prepopulated *Pre
 		cArgs.SpecFields = prepopulated.SpecFields
 		cArgs.ObservedStateFields = prepopulated.ObservedStateFields
 		cArgs.ExtraImports = prepopulated.ExtraImports
+		cArgs.PrepopulateSpec = true
 		root, item := a.rootRef(cArgs.ResourcePattern)
 		cArgs.RootRefField = root
 		if item != nil {

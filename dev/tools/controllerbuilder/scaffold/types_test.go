@@ -134,6 +134,36 @@ func TestAddTypeFileWritesPrepopulatedBodies(t *testing.T) {
 	}
 }
 
+func TestAddTypeFileCommentsOutEmptyObservedStateWhenPrepopulating(t *testing.T) {
+	dir := t.TempDir()
+	scaffolder := &APIScaffolder{
+		BaseDir:         dir,
+		GoPackage:       "composer/v1alpha1",
+		Group:           "composer.cnrm.cloud.google.com",
+		Version:         "v1alpha1",
+		PackageProtoTag: "google.cloud.orchestration.airflow.service.v1",
+	}
+	resource := options.Resource{Kind: "ComposerUserWorkloadsSecret", ProtoName: "UserWorkloadsSecret"}
+	prepopulated := &PrepopulateResult{
+		SpecFields:          "\tData map[string]string `json:\"data,omitempty\"`\n",
+		ObservedStateFields: "",
+	}
+	if err := scaffolder.AddTypeFile(resource, prepopulated, ""); err != nil {
+		t.Fatalf("AddTypeFile: %v", err)
+	}
+	b, err := os.ReadFile(filepath.Join(dir, scaffolder.GoPackage, "composeruserworkloadssecret_types.go"))
+	if err != nil {
+		t.Fatalf("reading scaffolded file: %v", err)
+	}
+	got := string(b)
+	if !strings.Contains(got, "// ObservedState *ComposerUserWorkloadsSecretObservedState") {
+		t.Errorf("expected ObservedState field to be commented out when empty:\n%s", got)
+	}
+	if !strings.Contains(got, "// type ComposerUserWorkloadsSecretObservedState struct {") {
+		t.Errorf("expected ObservedState struct to be commented out when empty:\n%s", got)
+	}
+}
+
 // TestPackageDeclaresGVK pins which files count as declaring <Kind>GVK: a
 // top-level var for this exact Kind, in any Go file but a _types.go.
 // AddTypeFile sets SkipGVK from the answer.

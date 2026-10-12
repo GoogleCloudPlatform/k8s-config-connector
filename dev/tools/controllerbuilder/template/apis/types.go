@@ -76,6 +76,7 @@ type APIArgs struct {
 	// for this Kind. Set by --emit-required-from-proto. The text must match
 	// codegen.RequiredFromProtoMarker; a scaffold test checks it.
 	RequiredFromProto bool
+	PrepopulateSpec   bool
 }
 
 const TypesTemplate = `
@@ -149,15 +150,24 @@ type {{ .Kind }}Status struct {
 	ExternalRef *string ` + "`" + `json:"externalRef,omitempty"` + "`" + `
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
+{{- if or (not .PrepopulateSpec) .ObservedStateFields }}
 	ObservedState *{{ .Kind }}ObservedState ` + "`" + `json:"observedState,omitempty"` + "`" + `
+{{- else }}
+	// ObservedState *{{ .Kind }}ObservedState ` + "`" + `json:"observedState,omitempty"` + "`" + `
+{{- end }}
 }
 
 // {{ .Kind }}ObservedState is the state of the {{ .Kind }} resource as most recently observed in GCP.
 {{- if .KindProtoTag }}
 // +kcc:observedstate:proto={{ .KindProtoTag }}
 {{- end }}
+{{- if or (not .PrepopulateSpec) .ObservedStateFields }}
 type {{ .Kind }}ObservedState struct {
 {{ .ObservedStateFields }}}
+{{- else }}
+// type {{ .Kind }}ObservedState struct {
+// }
+{{- end }}
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
