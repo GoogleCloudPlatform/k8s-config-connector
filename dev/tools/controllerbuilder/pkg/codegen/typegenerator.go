@@ -91,6 +91,7 @@ func (g *TypeGenerator) WithActiveJudgementMessages(msgs map[string]bool) *TypeG
 type OutputMessageDetails struct {
 	Message      protoreflect.MessageDescriptor
 	OutputFields []protoreflect.FieldDescriptor
+	ForceAll     bool
 }
 
 // WriteOptions configures optional KRM marker generation derived from proto annotations.
@@ -341,7 +342,7 @@ func (g *TypeGenerator) identifyOutputs(msg protoreflect.MessageDescriptor, seen
 	}
 	seen[seenKey] = "visiting"
 
-	details := &OutputMessageDetails{Message: msg}
+	details := &OutputMessageDetails{Message: msg, ForceAll: forceAll}
 	hasOutputs := false
 
 	for i := 0; i < msg.Fields().Len(); i++ {
@@ -365,7 +366,9 @@ func (g *TypeGenerator) identifyOutputs(msg protoreflect.MessageDescriptor, seen
 	}
 
 	if hasOutputs {
-		outputDeps[fqn] = details
+		if existing, ok := outputDeps[fqn]; !ok || (existing.ForceAll && !forceAll) {
+			outputDeps[fqn] = details
+		}
 		seen[seenKey] = "has_outputs"
 		return true
 	}
@@ -396,6 +399,19 @@ func writeCopyright(w io.Writer, year int) {
 }
 
 func (g *TypeGenerator) WriteVisitedMessages() error {
+	referencedInSpec := make(map[string]bool)
+	for _, m := range g.visitedMessages {
+		for i := 0; i < m.Fields().Len(); i++ {
+			f := m.Fields().Get(i)
+			if f.Kind() != protoreflect.MessageKind || f.IsMap() || f.Message() == nil {
+				continue
+			}
+			if IsFieldBehavior(f, annotations.FieldBehavior_OUTPUT_ONLY) || g.isServerSet(f, m) || IsFieldAllOutputOnlyMessage(f) {
+				continue
+			}
+			referencedInSpec[string(f.Message().FullName())] = true
+		}
+	}
 	for _, msg := range deduplicateAndSort(g.visitedMessages) {
 		if msg.IsMapEntry() {
 			continue
@@ -463,6 +479,9 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 			continue
 		}
 
+		if g.writeOptions.Prepopulating && IsAllOutputOnlyMessage(msg) && !referencedInSpec[string(msg.FullName())] {
+			continue
+		}
 		activeForJudgement := g.activeJudgementMessages == nil || g.activeJudgementMessages[string(msg.FullName())]
 		renderOpts := opts
 		if !activeForJudgement {
@@ -613,16 +632,83 @@ func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor, opts WriteO
 // a split message is written this way, with the strict options. Both structs
 // have the same proto annotation, so generate-mapper writes converters for
 // each.
+// IsAllOutputOnlyMessage reports whether msg has at least one field and every
+// field (recursively) is marked OUTPUT_ONLY. A 0-field proto message (such as
+// an empty oneof marker) returns false because it is a valid Spec choice.
+func IsAllOutputOnlyMessage(msg protoreflect.MessageDescriptor) bool {
+	return isAllOutputOnlyMessage(msg, make(map[string]bool))
+}
+
+// IsFieldAllOutputOnlyMessage reports whether field is a message field whose
+// target message has only OUTPUT_ONLY fields (IsAllOutputOnlyMessage), AND
+// if field belongs to a real proto oneof, every alternative in that oneof is
+// also output-only. When a oneof mixes an all-output-only message (such as
+// DefaultSecuritySettings) with input alternatives (such as CustomPolicy),
+// the empty struct in Spec serves as the oneof branch selector.
+func IsFieldAllOutputOnlyMessage(field protoreflect.FieldDescriptor) bool {
+	if field.Kind() != protoreflect.MessageKind || field.IsMap() || field.Message() == nil {
+		return false
+	}
+	if !IsAllOutputOnlyMessage(field.Message()) {
+		return false
+	}
+	if oneof := field.ContainingOneof(); oneof != nil && !oneof.IsSynthetic() {
+		for i := 0; i < oneof.Fields().Len(); i++ {
+			sibling := oneof.Fields().Get(i)
+			if IsFieldBehavior(sibling, annotations.FieldBehavior_OUTPUT_ONLY) {
+				continue
+			}
+			if sibling.Kind() == protoreflect.MessageKind && !sibling.IsMap() && sibling.Message() != nil && IsAllOutputOnlyMessage(sibling.Message()) {
+				continue
+			}
+			return false
+		}
+	}
+	return true
+}
+
+func isAllOutputOnlyMessage(msg protoreflect.MessageDescriptor, visiting map[string]bool) bool {
+	if msg == nil || msg.Fields().Len() == 0 {
+		return false
+	}
+	fqn := string(msg.FullName())
+	if visiting[fqn] {
+		return true
+	}
+	visiting[fqn] = true
+	for i := 0; i < msg.Fields().Len(); i++ {
+		f := msg.Fields().Get(i)
+		if IsFieldBehavior(f, annotations.FieldBehavior_OUTPUT_ONLY) {
+			continue
+		}
+		if f.Kind() == protoreflect.MessageKind && !f.IsMap() {
+			if _, ok := protoMessagesNotMappedToGoStruct[string(f.Message().FullName())]; !ok {
+				if isAllOutputOnlyMessage(f.Message(), visiting) {
+					continue
+				}
+			}
+		}
+		return false
+	}
+	return true
+}
+
 func writeMessageNamed(out io.Writer, msg protoreflect.MessageDescriptor, goType string, opts WriteOptions) {
 	fmt.Fprintf(out, "\n")
 	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotationMisc, msg.FullName())
 	fmt.Fprintf(out, "type %s struct {\n", goType)
+	emitted := 0
 	for i := 0; i < msg.Fields().Len(); i++ {
 		field := msg.Fields().Get(i)
-		if !IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
-			// Only write non-output fields.
-			WriteField(out, field, msg, i, false, opts, "")
+		if IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
+			continue
 		}
+		if opts.Prepopulating && IsFieldAllOutputOnlyMessage(field) {
+			continue
+		}
+		// Only write non-output fields.
+		WriteField(out, field, msg, emitted, false, opts, "")
+		emitted++
 	}
 	fmt.Fprintf(out, "}\n")
 }
@@ -885,7 +971,9 @@ func deduplicateAndSortOutputMessages(messages []*OutputMessageDetails) []*Outpu
 	m := make(map[string]*OutputMessageDetails)
 	for _, msg := range messages {
 		key := string(msg.Message.FullName())
-		m[key] = msg
+		if existing, ok := m[key]; !ok || (existing.ForceAll && !msg.ForceAll) {
+			m[key] = msg
+		}
 	}
 	var keys []string
 	for key := range m {
