@@ -13,9 +13,9 @@ For such resources, the Kubernetes configuration uses `spec.resourceID` to speci
 
 ---
 
-## The 4 Rules for Service-Generated Resource IDs
+## The 5 Rules for Service-Generated Resource IDs
 
-When implementing or migrating direct controllers for resources that use service-assigned or service-generated identifiers, you must strictly follow these four architectural rules:
+When implementing or migrating direct controllers for resources that use service-assigned or service-generated identifiers, you must strictly follow these five architectural rules:
 
 ### Rule 1: Identity Construction (`getIdentityFromSpec`)
 - Retrieve the resource ID using `GetServiceGeneratedResourceID(obj)` (or `common.ValueOf(obj.Spec.ResourceID)`).
@@ -23,8 +23,9 @@ When implementing or migrating direct controllers for resources that use service
 - If `spec.resourceID` is empty or unset, the parsed `specIdentity.<ResourceID>` MUST be set to `""`.
 
 ### Rule 2: `Find()` Pre-Check Guard
-- The first line of the `Find()` method **MUST** check if the parsed identifier is empty:
-  ```go
+- The first line of the `Find()` method **MUST** check if the parsed identifier is empty, and the guard **MUST** be preceded by the following comment:
+  ```
+  // This resource has a service-generated ID.
   if a.id.<ResourceID> == "" {
       return false, nil
   }
@@ -40,11 +41,20 @@ When `status.externalRef` is present during reconciliation:
 - **If `GetServiceGeneratedResourceID(obj) == ""` (Empty)**:
   - Do **NOT** compare `specIdentity.<ResourceID>` (`""`) against `statusIdentity.<ResourceID>` (e.g., `"12345"`).
   - Verify that immutable parent fields (such as `Project` and `Location`) match.
-  - Return `statusIdentity` (which carries the server-assigned ID).
+  - Return `statusIdentity` (which carries the service-generated ID).
 - **If `GetServiceGeneratedResourceID(obj) != ""` (Non-Empty)**:
   - `specIdentity` **MUST equal `statusIdentity`** (i.e. `specIdentity.<ResourceID> == statusIdentity.<ResourceID>`).
   - If `specIdentity.<ResourceID> != statusIdentity.<ResourceID>`, return an error:  
     `cannot change resource identity (old=%q, new=%q)`
+
+### Rule 5: `spec.resourceID` Field Description in the Types File
+- In the KRM types file (`apis/<service>/<version>/<kind>_types.go`), the `ResourceID` field in the `Spec` struct **MUST** have exactly the following field description:
+  ```
+  // Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
+  ResourceID *string `json:"resourceID,omitempty"`
+  ```
+- **MUST NOT** use descriptions that imply a user-specified or `metadata.name`-defaulted ID, such as `If not given, the metadata.name will be used.` or `When unset, the value of metadata.name is used as the default.`
+- After updating the description, regenerate the CRD (e.g. run the service's `generate.sh` / `dev/tasks/generate-crds`) so the description in `config/crds/resources/` stays in sync.
 
 ---
 
@@ -69,6 +79,7 @@ func GetServiceGeneratedResourceID(obj *krm.MyResource) string {
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
     // Rule 2: Find() Pre-Check Guard
+    // This resource has a service-generated ID.
     if a.id.<ResourceID> == "" {
         return false, nil
     }
@@ -103,5 +114,11 @@ func GetIdentity(ctx context.Context, obj *krm.MyResource, statusIdentity *Ident
 
     // Return identity mapped from spec
     return specIdentity, nil
+}
+
+// Rule 5: spec.resourceID field description (in apis/<service>/<version>/<kind>_types.go)
+type MyResourceSpec struct {
+  // Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
+  ResourceID *string `json:"resourceID,omitempty"`
 }
 ```
