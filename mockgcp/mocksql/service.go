@@ -16,8 +16,10 @@ package mocksql
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strings"
+	"sync"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
@@ -41,6 +43,12 @@ type MockService struct {
 	operations *operations
 
 	users *sqlUsersService
+
+	// mutex guards nextInstanceCreateFailure.
+	mutex sync.Mutex
+	// nextInstanceCreateFailure, if set, makes the next instances.insert fail asynchronously.
+	// It is set through the RunTestCommand backdoor.
+	nextInstanceCreateFailure *operationFailure
 }
 
 // New creates a MockService.
@@ -51,6 +59,34 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 		operations: &operations{storage: storage},
 	}
 	return s
+}
+
+// RunTestCommand implements mockgcp.SupportsTestCommands, a backdoor for fault injection
+// that script-driven tests trigger with a MockGCPBackdoor object.
+func (s *MockService) RunTestCommand(ctx context.Context, serviceName string, command string) error {
+	switch command {
+	case "FailNextInstanceCreateWithStockout":
+		// Real GCP can't be made to do this on demand: the create operation finishes with
+		// status DONE and an ERROR_STOCKOUT error, and the instance is left in FAILED state.
+		s.mutex.Lock()
+		defer s.mutex.Unlock()
+		s.nextInstanceCreateFailure = &operationFailure{
+			Code:    "ERROR_STOCKOUT",
+			Message: "The zone or region does not have sufficient resources to handle the request at the moment.",
+		}
+		return nil
+	default:
+		return fmt.Errorf("test-command %q not known", command)
+	}
+}
+
+// takeNextInstanceCreateFailure returns and clears the pending instance-creation failure, if any.
+func (s *MockService) takeNextInstanceCreateFailure() *operationFailure {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+	failure := s.nextInstanceCreateFailure
+	s.nextInstanceCreateFailure = nil
+	return failure
 }
 
 func (s *MockService) ExpectedHosts() []string {
