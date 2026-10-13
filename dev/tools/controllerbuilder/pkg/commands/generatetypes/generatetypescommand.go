@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -64,6 +65,7 @@ type GenerateCRDOptions struct {
 	EmitReferenceHints   bool
 	PlaceServerSetFields bool
 	EmitSourceLinks      bool
+	AllowNonGAProto      bool
 }
 
 func (o *GenerateCRDOptions) InitDefaults() error {
@@ -93,6 +95,7 @@ func (o *GenerateCRDOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().BoolVar(&o.EmitSiblingRefs, "emit-sibling-refs", false, "mark a string field whose name matches a resource this service declares as a probable reference to it, with a +kcc:guess comment and an entry in apis/<service>/judgement_queue.yaml. The field stays a string: this reports a candidate rather than generating a reference. Opt in one service at a time, though controller-gen strips the comment, so this cannot change a CRD")
 	cmd.Flags().BoolVar(&o.EmitSourceLinks, "emit-source-links", false, "write links to the resource's proto, its service docs and its REST reference page as +kcc:source markers at the top of a new <kind>_types.go. A docs link that could not be verified is still written, marked +kcc:guess and recorded in apis/<service>/judgement_queue.yaml. Only a newly scaffolded types file gets links, so existing resources do not change")
 	cmd.Flags().BoolVar(&o.EmitReferenceHints, "emit-reference-hints", false, "record a spec field, at any depth, whose description or name suggests it points at another resource, in apis/<service>/judgement_queue.yaml. Uses the rules TestMissingRefs applies, plus looser description and name rules that only hint. A field those rules say KCC cannot express as a reference is recorded too, with the reason, and so is a field whose name ends in password. A nested field with a google.api.resource_reference annotation is recorded the way --prepopulate-spec records a top-level one. Requires --prepopulate-spec. Reports only: the field is still generated as a string")
+	cmd.Flags().BoolVar(&o.AllowNonGAProto, "allow-non-ga-proto", false, "allow scaffolding new resources backed by non-GA (alpha or beta) proto packages")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -154,6 +157,17 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		Proto:             api,
 		EmitParentRefs:    o.EmitParentRefs,
 		RequiredFromProto: o.EmitRequiredFromProto,
+	}
+	if !o.AllowNonGAProto && !o.SkipScaffoldFiles {
+		for _, resource := range o.Resources {
+			if resource.SkipScaffoldFiles || scaffolder.TypeFileExists(resource) {
+				continue
+			}
+			resourceProtoFullName, _ := resolveProtoFullName(api, o.ServiceName, resource)
+			if isNonGAProto(resourceProtoFullName) {
+				return fmt.Errorf("resource %s resolves to non-GA proto %q; use a GA proto package or pass --allow-non-ga-proto", resource.Kind, resourceProtoFullName)
+			}
+		}
 	}
 	if scaffolder.DocFileNotExist() {
 		if err := scaffolder.AddDocFile(); err != nil {
@@ -739,4 +753,18 @@ func writeJudgementQueue(apiDir, goPackage string, entries []judgement.Entry) er
 // as "example/v1alpha1": apis/example/judgement_queue.yaml.
 func judgementQueuePath(apiDir, goPackage string) string {
 	return filepath.Join(filepath.Dir(filepath.Join(apiDir, goPackage)), judgement.FileName)
+}
+
+var nonGAProtoVersionSegment = regexp.MustCompile(`(?i)^v[0-9]+[a-z0-9]*(alpha|beta)[a-z0-9]*$`)
+
+// isNonGAProto reports whether a fully qualified proto message or package name
+// contains a pre-GA version segment (e.g. v1alpha, v1alpha1, v1beta, v1beta1,
+// v1p1beta1).
+func isNonGAProto(fullName string) bool {
+	for _, seg := range strings.Split(fullName, ".") {
+		if nonGAProtoVersionSegment.MatchString(seg) {
+			return true
+		}
+	}
+	return false
 }
