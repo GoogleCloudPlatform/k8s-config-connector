@@ -22,6 +22,7 @@ var allServices = []string{
 	"cloudresourcemanager.googleapis.com",
 	"compute.googleapis.com",
 	"dataflow.googleapis.com",
+	"firebasehosting.googleapis.com",
 	"pubsub.googleapis.com",
 	"runtimeconfig.googleapis.com",
 	"storage.googleapis.com",

@@ -1,0 +1,1363 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto2";
+package mockgcp.cloud.firebasehosting.v1beta1;
+import "google/api/annotations.proto";
+import "google/longrunning/operations.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/firebasehosting/v1beta1;firebasehostingpb";
+
+service ProjectsServer {
+}
+
+service ProjectsSitesServer {
+
+  // Creates a new Hosting Site in the specified parent Firebase project. Note that Hosting sites can take several minutes to propagate through Firebase systems.
+  rpc CreateProjectsSite(CreateProjectsSiteRequest) returns (Site) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=projects/*}/sites"
+      body: "projects_site"
+    };
+  };
+
+  // Deletes the specified Hosting Site from the specified parent Firebase project.
+  rpc DeleteProjectsSite(DeleteProjectsSiteRequest) returns (Empty) {
+    option (google.api.http) = {
+      delete: "/v1beta1/{name=projects/*/sites/*}"
+    };
+  };
+
+  // Gets the specified Hosting Site.
+  rpc GetProjectsSite(GetProjectsSiteRequest) returns (Site) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=projects/*/sites/*}"
+    };
+  };
+
+  // Gets the Hosting metadata for a specific site.
+  rpc GetConfigProjectsSite(GetConfigProjectsSiteRequest) returns (SiteConfig) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=projects/*/sites/*/config}"
+    };
+  };
+
+  // Lists each Hosting Site associated with the specified parent Firebase project.
+  rpc ListProjectsSites(ListProjectsSitesRequest) returns (ListSitesResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=projects/*}/sites"
+    };
+  };
+
+  // Updates attributes of the specified Hosting Site.
+  rpc PatchProjectsSite(PatchProjectsSiteRequest) returns (Site) {
+    option (google.api.http) = {
+      patch: "/v1beta1/{name=projects/*/sites/*}"
+      body: "projects_site"
+    };
+  };
+
+  // Sets the Hosting metadata for a specific site.
+  rpc UpdateConfigProjectsSite(UpdateConfigProjectsSiteRequest) returns (SiteConfig) {
+    option (google.api.http) = {
+      patch: "/v1beta1/{name=projects/*/sites/*/config}"
+      body: "projects_site"
+    };
+  };
+}
+
+service ProjectsSitesChannelsServer {
+
+  // Creates a new channel in the specified site.
+  rpc CreateProjectsSitesChannel(CreateProjectsSitesChannelRequest) returns (Channel) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=projects/*/sites/*}/channels"
+      body: "projects_sites_channel"
+    };
+  };
+
+  // Deletes the specified channel of the specified site. The `live` channel cannot be deleted.
+  rpc DeleteProjectsSitesChannel(DeleteProjectsSitesChannelRequest) returns (Empty) {
+    option (google.api.http) = {
+      delete: "/v1beta1/{name=projects/*/sites/*/channels/*}"
+    };
+  };
+
+  // Retrieves information for the specified channel of the specified site.
+  rpc GetProjectsSitesChannel(GetProjectsSitesChannelRequest) returns (Channel) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=projects/*/sites/*/channels/*}"
+    };
+  };
+
+  // Lists the channels for the specified site. All sites have a default `live` channel.
+  rpc ListProjectsSitesChannels(ListProjectsSitesChannelsRequest) returns (ListChannelsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=projects/*/sites/*}/channels"
+    };
+  };
+
+  // Updates information for the specified channel of the specified site. Implicitly creates the channel if it doesn't already exist.
+  rpc PatchProjectsSitesChannel(PatchProjectsSitesChannelRequest) returns (Channel) {
+    option (google.api.http) = {
+      patch: "/v1beta1/{name=projects/*/sites/*/channels/*}"
+      body: "projects_sites_channel"
+    };
+  };
+}
+
+service ProjectsSitesChannelsReleasesServer {
+
+  // Creates a new release, which makes the content of the specified version actively display on the appropriate URL(s).
+  rpc CreateProjectsSitesChannelsRelease(CreateProjectsSitesChannelsReleaseRequest) returns (Release) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=projects/*/sites/*/channels/*}/releases"
+      body: "projects_sites_channels_release"
+    };
+  };
+
+  // Gets the specified release for a site or channel. When used to get a release for a site, this can get releases for both the default `live` channel and any active preview channels for the specified site.
+  rpc GetProjectsSitesChannelsRelease(GetProjectsSitesChannelsReleaseRequest) returns (Release) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=projects/*/sites/*/channels/*/releases/*}"
+    };
+  };
+
+  // Lists the releases that have been created for the specified site or channel. When used to list releases for a site, this list includes releases for both the default `live` channel and any active preview channels for the specified site.
+  rpc ListProjectsSitesChannelsReleases(ListProjectsSitesChannelsReleasesRequest) returns (ListReleasesResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=projects/*/sites/*/channels/*}/releases"
+    };
+  };
+}
+
+service ProjectsSitesCustomDomainsServer {
+
+  // Creates a `CustomDomain`.
+  rpc CreateProjectsSitesCustomDomain(CreateProjectsSitesCustomDomainRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=projects/*/sites/*}/customDomains"
+      body: "projects_sites_custom_domain"
+    };
+  };
+
+  // Deletes the specified `CustomDomain`.
+  rpc DeleteProjectsSitesCustomDomain(DeleteProjectsSitesCustomDomainRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1beta1/{name=projects/*/sites/*/customDomains/*}"
+    };
+  };
+
+  // Gets the specified `CustomDomain`.
+  rpc GetProjectsSitesCustomDomain(GetProjectsSitesCustomDomainRequest) returns (CustomDomain) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=projects/*/sites/*/customDomains/*}"
+    };
+  };
+
+  // Lists each `CustomDomain` associated with the specified parent Hosting site. Returns `CustomDomain`s in a consistent, but undefined, order to facilitate pagination.
+  rpc ListProjectsSitesCustomDomains(ListProjectsSitesCustomDomainsRequest) returns (ListCustomDomainsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=projects/*/sites/*}/customDomains"
+    };
+  };
+
+  // Updates the specified `CustomDomain`.
+  rpc PatchProjectsSitesCustomDomain(PatchProjectsSitesCustomDomainRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1beta1/{name=projects/*/sites/*/customDomains/*}"
+      body: "projects_sites_custom_domain"
+    };
+  };
+
+  // Undeletes the specified `CustomDomain` if it has been soft-deleted. Hosting retains soft-deleted custom domains for around 30 days before permanently deleting them.
+  rpc UndeleteProjectsSitesCustomDomain(UndeleteProjectsSitesCustomDomainRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{name=projects/*/sites/*/customDomains/*}:undelete"
+      body: "projects_sites_custom_domain"
+    };
+  };
+}
+
+service ProjectsSitesDomainsServer {
+
+  // Creates a domain mapping on the specified site.
+  rpc CreateProjectsSitesDomain(CreateProjectsSitesDomainRequest) returns (Domain) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=projects/*/sites/*}/domains"
+      body: "projects_sites_domain"
+    };
+  };
+
+  // Deletes the existing domain mapping on the specified site.
+  rpc DeleteProjectsSitesDomain(DeleteProjectsSitesDomainRequest) returns (Empty) {
+    option (google.api.http) = {
+      delete: "/v1beta1/{name=projects/*/sites/*/domains/*}"
+    };
+  };
+
+  // Gets a domain mapping on the specified site.
+  rpc GetProjectsSitesDomain(GetProjectsSitesDomainRequest) returns (Domain) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=projects/*/sites/*/domains/*}"
+    };
+  };
+
+  // Lists the domains for the specified site.
+  rpc ListProjectsSitesDomains(ListProjectsSitesDomainsRequest) returns (ListDomainsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=projects/*/sites/*}/domains"
+    };
+  };
+
+  // Updates the specified domain mapping, creating the mapping as if it does not exist.
+  rpc UpdateProjectsSitesDomain(UpdateProjectsSitesDomainRequest) returns (Domain) {
+    option (google.api.http) = {
+      put: "/v1beta1/{name=projects/*/sites/*/domains/*}"
+      body: "projects_sites_domain"
+    };
+  };
+}
+
+service ProjectsSitesReleasesServer {
+
+  // Creates a new release, which makes the content of the specified version actively display on the appropriate URL(s).
+  rpc CreateProjectsSitesRelease(CreateProjectsSitesReleaseRequest) returns (Release) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=projects/*/sites/*}/releases"
+      body: "projects_sites_release"
+    };
+  };
+
+  // Gets the specified release for a site or channel. When used to get a release for a site, this can get releases for both the default `live` channel and any active preview channels for the specified site.
+  rpc GetProjectsSitesRelease(GetProjectsSitesReleaseRequest) returns (Release) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=projects/*/sites/*/releases/*}"
+    };
+  };
+
+  // Lists the releases that have been created for the specified site or channel. When used to list releases for a site, this list includes releases for both the default `live` channel and any active preview channels for the specified site.
+  rpc ListProjectsSitesReleases(ListProjectsSitesReleasesRequest) returns (ListReleasesResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=projects/*/sites/*}/releases"
+    };
+  };
+}
+
+service ProjectsSitesVersionsServer {
+
+  // Creates a new version on the specified target site using the content of the specified version.
+  rpc CloneProjectsSitesVersion(CloneProjectsSitesVersionRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=projects/*/sites/*}/versions:clone"
+      body: "projects_sites_version"
+    };
+  };
+
+  // Creates a new version for the specified site.
+  rpc CreateProjectsSitesVersion(CreateProjectsSitesVersionRequest) returns (Version) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=projects/*/sites/*}/versions"
+      body: "projects_sites_version"
+    };
+  };
+
+  // Deletes the specified version.
+  rpc DeleteProjectsSitesVersion(DeleteProjectsSitesVersionRequest) returns (Empty) {
+    option (google.api.http) = {
+      delete: "/v1beta1/{name=projects/*/sites/*/versions/*}"
+    };
+  };
+
+  // Get the specified version that has been created for the specified site. This can include versions that were created for the default `live` channel or for any active preview channels for the specified site.
+  rpc GetProjectsSitesVersion(GetProjectsSitesVersionRequest) returns (Version) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=projects/*/sites/*/versions/*}"
+    };
+  };
+
+  // Lists the versions that have been created for the specified site. This list includes versions for both the default `live` channel and any active preview channels for the specified site.
+  rpc ListProjectsSitesVersions(ListProjectsSitesVersionsRequest) returns (ListVersionsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=projects/*/sites/*}/versions"
+    };
+  };
+
+  //  Updates the specified metadata for the specified version. This method will fail with `FAILED_PRECONDITION` in the event of an invalid state transition. The supported [state](../sites.versions#versionstatus) transitions for a version are from `CREATED` to `FINALIZED`. Use [`DeleteVersion`](delete) to set the status of a version to `DELETED`.
+  rpc PatchProjectsSitesVersion(PatchProjectsSitesVersionRequest) returns (Version) {
+    option (google.api.http) = {
+      patch: "/v1beta1/{name=projects/*/sites/*/versions/*}"
+      body: "projects_sites_version"
+    };
+  };
+
+  //  Adds content files to the specified version. Each file must be under 2 GB.
+  rpc PopulateFilesProjectsSitesVersion(PopulateFilesProjectsSitesVersionRequest) returns (PopulateVersionFilesResponse) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=projects/*/sites/*/versions/*}:populateFiles"
+      body: "projects_sites_version"
+    };
+  };
+}
+
+service ProjectsSitesVersionsFilesServer {
+
+  // Lists the remaining files to be uploaded for the specified version.
+  rpc ListProjectsSitesVersionsFiles(ListProjectsSitesVersionsFilesRequest) returns (ListVersionFilesResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=projects/*/sites/*/versions/*}/files"
+    };
+  };
+}
+
+service SitesServer {
+
+  // Gets the Hosting metadata for a specific site.
+  rpc GetConfigSite(GetConfigSiteRequest) returns (SiteConfig) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=sites/*/config}"
+    };
+  };
+
+  // Sets the Hosting metadata for a specific site.
+  rpc UpdateConfigSite(UpdateConfigSiteRequest) returns (SiteConfig) {
+    option (google.api.http) = {
+      patch: "/v1beta1/{name=sites/*/config}"
+      body: "site"
+    };
+  };
+}
+
+service SitesChannelsServer {
+
+  // Creates a new channel in the specified site.
+  rpc CreateSitesChannel(CreateSitesChannelRequest) returns (Channel) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=sites/*}/channels"
+      body: "sites_channel"
+    };
+  };
+
+  // Deletes the specified channel of the specified site. The `live` channel cannot be deleted.
+  rpc DeleteSitesChannel(DeleteSitesChannelRequest) returns (Empty) {
+    option (google.api.http) = {
+      delete: "/v1beta1/{name=sites/*/channels/*}"
+    };
+  };
+
+  // Retrieves information for the specified channel of the specified site.
+  rpc GetSitesChannel(GetSitesChannelRequest) returns (Channel) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=sites/*/channels/*}"
+    };
+  };
+
+  // Lists the channels for the specified site. All sites have a default `live` channel.
+  rpc ListSitesChannels(ListSitesChannelsRequest) returns (ListChannelsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=sites/*}/channels"
+    };
+  };
+
+  // Updates information for the specified channel of the specified site. Implicitly creates the channel if it doesn't already exist.
+  rpc PatchSitesChannel(PatchSitesChannelRequest) returns (Channel) {
+    option (google.api.http) = {
+      patch: "/v1beta1/{name=sites/*/channels/*}"
+      body: "sites_channel"
+    };
+  };
+}
+
+service SitesChannelsReleasesServer {
+
+  // Creates a new release, which makes the content of the specified version actively display on the appropriate URL(s).
+  rpc CreateSitesChannelsRelease(CreateSitesChannelsReleaseRequest) returns (Release) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=sites/*/channels/*}/releases"
+      body: "sites_channels_release"
+    };
+  };
+
+  // Gets the specified release for a site or channel. When used to get a release for a site, this can get releases for both the default `live` channel and any active preview channels for the specified site.
+  rpc GetSitesChannelsRelease(GetSitesChannelsReleaseRequest) returns (Release) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=sites/*/channels/*/releases/*}"
+    };
+  };
+
+  // Lists the releases that have been created for the specified site or channel. When used to list releases for a site, this list includes releases for both the default `live` channel and any active preview channels for the specified site.
+  rpc ListSitesChannelsReleases(ListSitesChannelsReleasesRequest) returns (ListReleasesResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=sites/*/channels/*}/releases"
+    };
+  };
+}
+
+service SitesDomainsServer {
+
+  // Creates a domain mapping on the specified site.
+  rpc CreateSitesDomain(CreateSitesDomainRequest) returns (Domain) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=sites/*}/domains"
+      body: "sites_domain"
+    };
+  };
+
+  // Deletes the existing domain mapping on the specified site.
+  rpc DeleteSitesDomain(DeleteSitesDomainRequest) returns (Empty) {
+    option (google.api.http) = {
+      delete: "/v1beta1/{name=sites/*/domains/*}"
+    };
+  };
+
+  // Gets a domain mapping on the specified site.
+  rpc GetSitesDomain(GetSitesDomainRequest) returns (Domain) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=sites/*/domains/*}"
+    };
+  };
+
+  // Lists the domains for the specified site.
+  rpc ListSitesDomains(ListSitesDomainsRequest) returns (ListDomainsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=sites/*}/domains"
+    };
+  };
+
+  // Updates the specified domain mapping, creating the mapping as if it does not exist.
+  rpc UpdateSitesDomain(UpdateSitesDomainRequest) returns (Domain) {
+    option (google.api.http) = {
+      put: "/v1beta1/{name=sites/*/domains/*}"
+      body: "sites_domain"
+    };
+  };
+}
+
+service SitesReleasesServer {
+
+  // Creates a new release, which makes the content of the specified version actively display on the appropriate URL(s).
+  rpc CreateSitesRelease(CreateSitesReleaseRequest) returns (Release) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=sites/*}/releases"
+      body: "sites_release"
+    };
+  };
+
+  // Gets the specified release for a site or channel. When used to get a release for a site, this can get releases for both the default `live` channel and any active preview channels for the specified site.
+  rpc GetSitesRelease(GetSitesReleaseRequest) returns (Release) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=sites/*/releases/*}"
+    };
+  };
+
+  // Lists the releases that have been created for the specified site or channel. When used to list releases for a site, this list includes releases for both the default `live` channel and any active preview channels for the specified site.
+  rpc ListSitesReleases(ListSitesReleasesRequest) returns (ListReleasesResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=sites/*}/releases"
+    };
+  };
+}
+
+service SitesVersionsServer {
+
+  // Creates a new version on the specified target site using the content of the specified version.
+  rpc CloneSitesVersion(CloneSitesVersionRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=sites/*}/versions:clone"
+      body: "sites_version"
+    };
+  };
+
+  // Creates a new version for the specified site.
+  rpc CreateSitesVersion(CreateSitesVersionRequest) returns (Version) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=sites/*}/versions"
+      body: "sites_version"
+    };
+  };
+
+  // Deletes the specified version.
+  rpc DeleteSitesVersion(DeleteSitesVersionRequest) returns (Empty) {
+    option (google.api.http) = {
+      delete: "/v1beta1/{name=sites/*/versions/*}"
+    };
+  };
+
+  // Get the specified version that has been created for the specified site. This can include versions that were created for the default `live` channel or for any active preview channels for the specified site.
+  rpc GetSitesVersion(GetSitesVersionRequest) returns (Version) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=sites/*/versions/*}"
+    };
+  };
+
+  // Lists the versions that have been created for the specified site. This list includes versions for both the default `live` channel and any active preview channels for the specified site.
+  rpc ListSitesVersions(ListSitesVersionsRequest) returns (ListVersionsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=sites/*}/versions"
+    };
+  };
+
+  //  Updates the specified metadata for the specified version. This method will fail with `FAILED_PRECONDITION` in the event of an invalid state transition. The supported [state](../sites.versions#versionstatus) transitions for a version are from `CREATED` to `FINALIZED`. Use [`DeleteVersion`](delete) to set the status of a version to `DELETED`.
+  rpc PatchSitesVersion(PatchSitesVersionRequest) returns (Version) {
+    option (google.api.http) = {
+      patch: "/v1beta1/{name=sites/*/versions/*}"
+      body: "sites_version"
+    };
+  };
+
+  //  Adds content files to the specified version. Each file must be under 2 GB.
+  rpc PopulateFilesSitesVersion(PopulateFilesSitesVersionRequest) returns (PopulateVersionFilesResponse) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=sites/*/versions/*}:populateFiles"
+      body: "sites_version"
+    };
+  };
+}
+
+service SitesVersionsFilesServer {
+
+  // Lists the remaining files to be uploaded for the specified version.
+  rpc ListSitesVersionsFiles(ListSitesVersionsFilesRequest) returns (ListVersionFilesResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=sites/*/versions/*}/files"
+    };
+  };
+}
+
+// Contains metadata about the user who performed an action, such as creating a release or finalizing a version.
+message ActingUser {
+  // The email address of the user when the user performed the action.
+  optional string email = 1 [json_name="email"];
+  // A profile image URL for the user. May not be present if the user has changed their email address or deleted their account.
+  optional string image_url = 2 [json_name="imageUrl"];
+}
+
+// Represents a DNS certificate challenge.
+message CertDnsChallenge {
+  // The domain name upon which the DNS challenge must be satisfied.
+  optional string domain_name = 1 [json_name="domainName"];
+  // The value that must be present as a TXT record on the domain name to satisfy the challenge.
+  optional string token = 2 [json_name="token"];
+}
+
+// Represents an HTTP certificate challenge.
+message CertHttpChallenge {
+  // The URL path on which to serve the specified token to satisfy the certificate challenge.
+  optional string path = 1 [json_name="path"];
+  // The token to serve at the specified URL path to satisfy the certificate challenge.
+  optional string token = 2 [json_name="token"];
+}
+
+// A set of ACME challenges you can use to allow Hosting to create an SSL certificate for your domain name before directing traffic to Hosting servers. Use either the DNS or HTTP challenge; it's not necessary to provide both.
+message CertVerification {
+  // Output only. A `TXT` record to add to your DNS records that confirms your intent to let Hosting create an SSL cert for your domain name.
+  optional DnsUpdates dns = 1 [json_name="dns"];
+  // Output only. A file to add to your existing, non-Hosting hosting service that confirms your intent to let Hosting create an SSL cert for your domain name.
+  optional HttpUpdate http = 2 [json_name="http"];
+}
+
+// An SSL certificate used to provide end-to-end encryption for requests against your domain name. A `Certificate` can be an actual SSL certificate or, for newly-created custom domains, Hosting's intent to create one.
+message Certificate {
+  // Output only. The certificate's creation time. For `TEMPORARY` certs this is the time Hosting first generated challenges for your domain name. For all other cert types, it's the time the actual cert was created.
+  optional .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  // Output only. The certificate's expiration time. After this time, the cert can no longer be used to provide secure communication between Hosting and your site's visitors.
+  optional .google.protobuf.Timestamp expire_time = 2 [json_name="expireTime"];
+  // Output only. A set of errors Hosting encountered when attempting to create a cert for your domain name. Resolve these issues to ensure Hosting is able to provide secure communication with your site's visitors.
+  repeated Status issues = 3 [json_name="issues"];
+  // Output only. The state of the certificate. Only the `CERT_ACTIVE` and `CERT_EXPIRING_SOON` states provide SSL coverage for a domain name. If the state is `PROPAGATING` and Hosting had an active cert for the domain name before, that formerly-active cert provides SSL coverage for the domain name until the current cert propagates.
+  optional string state = 4 [json_name="state"];
+  // Output only. The certificate's type.
+  optional string type = 5 [json_name="type"];
+  // Output only. A set of ACME challenges you can add to your DNS records or existing, non-Hosting hosting provider to allow Hosting to create an SSL certificate for your domain name before you point traffic toward hosting. You can use thse challenges as part of a zero downtime transition from your old provider to Hosting.
+  optional CertVerification verification = 6 [json_name="verification"];
+}
+
+// A `Channel` represents a stream of releases for a site. All sites have a default `live` channel that serves content to the Firebase-provided subdomains and any connected custom domains.
+message Channel {
+  // Output only. The time at which the channel was created.
+  optional .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  // The time at which the channel will be automatically deleted. If null, the channel will not be automatically deleted. This field is present in the output whether it's set directly or via the `ttl` field.
+  optional .google.protobuf.Timestamp expire_time = 2 [json_name="expireTime"];
+  // Text labels used for extra metadata and/or filtering.
+  map<string, string> labels = 3 [json_name="labels"];
+  // The fully-qualified resource name for the channel, in the format: sites/ SITE_ID/channels/CHANNEL_ID
+  optional string name = 4 [json_name="name"];
+  // Output only. The current release for the channel, if any.
+  optional Release release = 5 [json_name="release"];
+  // The number of previous releases to retain on the channel for rollback or other purposes. Must be a number between 1-100. Defaults to 10 for new channels.
+  optional int32 retained_release_count = 6 [json_name="retainedReleaseCount"];
+  // Input only. A time-to-live for this channel. Sets `expire_time` to the provided duration past the time of the request.
+  optional .google.protobuf.Duration ttl = 7 [json_name="ttl"];
+  // Output only. The time at which the channel was last updated.
+  optional .google.protobuf.Timestamp update_time = 8 [json_name="updateTime"];
+  // Output only. The URL at which the content of this channel's current release can be viewed. This URL is a Firebase-provided subdomain of `web.app`. The content of this channel's current release can also be viewed at the Firebase-provided subdomain of `firebaseapp.com`. If this channel is the `live` channel for the Hosting site, then the content of this channel's current release can also be viewed at any connected custom domains.
+  optional string url = 9 [json_name="url"];
+}
+
+message CloneVersionRequest {
+  // If provided, only paths that do not match any of the RegEx values in this list will be included in the new version.
+  optional PathFilter exclude = 1 [json_name="exclude"];
+  // If true, the call to `CloneVersion` immediately finalizes the version after cloning is complete. If false, the cloned version will have a status of `CREATED`. Use [`UpdateVersion`](patch) to set the status of the version to `FINALIZED`.
+  optional bool finalize = 2 [json_name="finalize"];
+  // If provided, only paths that match one or more RegEx values in this list will be included in the new version.
+  optional PathFilter include = 3 [json_name="include"];
+  // Required. The unique identifier for the version to be cloned, in the format: sites/SITE_ID/versions/VERSION_ID
+  optional string source_version = 4 [json_name="sourceVersion"];
+}
+
+// A configured rewrite that directs requests to a Cloud Run service. If the Cloud Run service does not exist when setting or updating your Firebase Hosting configuration, then the request fails. Any errors from the Cloud Run service are passed to the end user (for example, if you delete a service, any requests directed to that service receive a `404` error).
+message CloudRunRewrite {
+  // Optional. User-provided region where the Cloud Run service is hosted. Defaults to `us-central1` if not supplied.
+  optional string region = 1 [json_name="region"];
+  // Required. User-defined ID of the Cloud Run service.
+  optional string service_id = 2 [json_name="serviceId"];
+  // Optional. User-provided TrafficConfig tag to send traffic to. When omitted, traffic is sent to the service-wide URI
+  optional string tag = 3 [json_name="tag"];
+}
+
+// A `CustomDomain` is an entity that links a domain name to a Firebase Hosting site. Add a `CustomDomain` to your site to allow Hosting to serve the site's content in response to requests against your domain name.
+message CustomDomain {
+  // Annotations you can add to leave both human- and machine-readable metadata about your `CustomDomain`.
+  map<string, string> annotations = 1 [json_name="annotations"];
+  // Output only. The SSL certificate Hosting has for this custom domain's domain name. For new custom domains, this often represents Hosting's intent to create a certificate, rather than an actual cert. Check the `state` field for more.
+  optional Certificate cert = 2 [json_name="cert"];
+  // A field that lets you specify which SSL certificate type Hosting creates for your domain name. Spark plan custom domains only have access to the `GROUPED` cert type, while Blaze plan domains can select any option.
+  optional string cert_preference = 3 [json_name="certPreference"];
+  // Output only. The custom domain's create time.
+  optional .google.protobuf.Timestamp create_time = 4 [json_name="createTime"];
+  // Output only. The time the `CustomDomain` was deleted; null for custom domains that haven't been deleted. Deleted custom domains persist for approximately 30 days, after which time Hosting removes them completely. To restore a deleted custom domain, make an `UndeleteCustomDomain` request.
+  optional .google.protobuf.Timestamp delete_time = 5 [json_name="deleteTime"];
+  // Output only. A string that represents the current state of the `CustomDomain` and allows you to confirm its initial state in requests that would modify it. Use the tag to ensure consistency when making `UpdateCustomDomain`, `DeleteCustomDomain`, and `UndeleteCustomDomain` requests.
+  optional string etag = 6 [json_name="etag"];
+  // Output only. The minimum time before a soft-deleted `CustomDomain` is completely removed from Hosting; null for custom domains that haven't been deleted.
+  optional .google.protobuf.Timestamp expire_time = 7 [json_name="expireTime"];
+  // Output only. The `HostState` of the domain name this `CustomDomain` refers to.
+  optional string host_state = 8 [json_name="hostState"];
+  // Output only. A set of errors Hosting systems encountered when trying to establish Hosting's ability to serve secure content for your domain name. Resolve these issues to ensure your `CustomDomain` behaves properly.
+  repeated Status issues = 9 [json_name="issues"];
+  // Labels used for extra metadata and/or filtering.
+  map<string, string> labels = 10 [json_name="labels"];
+  // Identifier. The fully-qualified name of the `CustomDomain`.
+  optional string name = 11 [json_name="name"];
+  // Output only. The `OwnershipState` of the domain name this `CustomDomain` refers to.
+  optional string ownership_state = 12 [json_name="ownershipState"];
+  // Output only. A field that, if true, indicates that Hosting's systems are attmepting to make the custom domain's state match your preferred state. This is most frequently `true` when initially provisioning a `CustomDomain` after a `CreateCustomDomain` request or when creating a new SSL certificate to match an updated `cert_preference` after an `UpdateCustomDomain` request.
+  optional bool reconciling = 13 [json_name="reconciling"];
+  // A domain name that this `CustomDomain` should direct traffic towards. If specified, Hosting will respond to requests against this custom domain with an HTTP 301 code, and route traffic to the specified `redirect_target` instead.
+  optional string redirect_target = 14 [json_name="redirectTarget"];
+  // Output only. A set of updates you should make to the domain name's DNS records to let Hosting serve secure content on its behalf.
+  optional DnsUpdates required_dns_updates = 15 [json_name="requiredDnsUpdates"];
+  // Output only. The last time the `CustomDomain` was updated.
+  optional .google.protobuf.Timestamp update_time = 16 [json_name="updateTime"];
+}
+
+// Metadata associated with a`CustomDomain` operation.
+message CustomDomainMetadata {
+  // The `CertState` of the domain name's SSL certificate.
+  optional string cert_state = 1 [json_name="certState"];
+  // The `HostState` of the domain name this `CustomDomain` refers to.
+  optional string host_state = 2 [json_name="hostState"];
+  // A list of issues that are currently preventing Hosting from completing the operation. These are generally DNS-related issues that Hosting encounters when querying a domain name's records or attempting to mint an SSL certificate.
+  repeated Status issues = 3 [json_name="issues"];
+  // A set of DNS record updates and ACME challenges that allow you to transition domain names to Firebase Hosting with zero downtime. These updates allow Hosting to create an SSL certificate and establish ownership for your custom domain before Hosting begins serving traffic on it. If your domain name is already in active use with another provider, add one of the challenges and make the recommended DNS updates. After adding challenges and adjusting DNS records as necessary, wait for the `ownershipState` to be `OWNERSHIP_ACTIVE` and the `certState` to be `CERT_ACTIVE` before sending traffic to Hosting.
+  repeated LiveMigrationStep live_migration_steps = 4 [json_name="liveMigrationSteps"];
+  // The `OwnershipState` of the domain name this `CustomDomain` refers to.
+  optional string ownership_state = 5 [json_name="ownershipState"];
+  // A set of DNS record updates that allow Hosting to serve secure content on your domain name. The record type determines the update's purpose: - `A` and `AAAA`: Updates your domain name's IP addresses so that they direct traffic to Hosting servers. - `TXT`: Updates ownership permissions on your domain name, letting Hosting know that your custom domain's project has permission to perform actions for that domain name. - `CAA`: Updates your domain name's list of authorized Certificate Authorities (CAs). Only present if you have existing `CAA` records that prohibit Hosting's CA from minting certs for your domain name. These updates include all DNS changes you'll need to get started with Hosting, but, if made all at once, can result in a brief period of downtime for your domain name--while Hosting creates and uploads an SSL cert, for example. If you'd like to add your domain name to Hosting without downtime, complete the `liveMigrationSteps` first, before making the remaining updates in this field.
+  optional DnsUpdates quick_setup_updates = 6 [json_name="quickSetupUpdates"];
+}
+
+// DNS records are resource records that define how systems and services should behave when handling requests for a domain name. For example, when you add `A` records to your domain name's DNS records, you're informing other systems (such as your users' web browsers) to contact those IPv4 addresses to retrieve resources relevant to your domain name (such as your Hosting site files).
+message DnsRecord {
+  // Output only. The domain name the record pertains to, e.g. `foo.bar.com.`.
+  optional string domain_name = 1 [json_name="domainName"];
+  // Output only. The data of the record. The meaning of the value depends on record type: - A and AAAA: IP addresses for the domain name. - CNAME: Another domain to check for records. - TXT: Arbitrary text strings associated with the domain name. Hosting uses TXT records to determine which Firebase projects have permission to act on the domain name's behalf. - CAA: The record's flags, tag, and value, e.g. `0 issue "pki.goog"`.
+  optional string rdata = 2 [json_name="rdata"];
+  // Output only. An enum that indicates the a required action for this record.
+  optional string required_action = 3 [json_name="requiredAction"];
+  // Output only. The record's type, which determines what data the record contains.
+  optional string type = 4 [json_name="type"];
+}
+
+// A set of DNS records relevant to the setup and maintenance of a custom domain in Firebase Hosting.
+message DnsRecordSet {
+  // Output only. An error Hosting services encountered when querying your domain name's DNS records. Note: Hosting ignores `NXDOMAIN` errors, as those generally just mean that a domain name hasn't been set up yet.
+  optional Status check_error = 1 [json_name="checkError"];
+  // Output only. The domain name the record set pertains to.
+  optional string domain_name = 2 [json_name="domainName"];
+  // Output only. Records on the domain.
+  repeated DnsRecord records = 3 [json_name="records"];
+}
+
+// A set of DNS record updates that you should make to allow Hosting to serve secure content in response to requests against your domain name. These updates present the current state of your domain name's DNS records when Hosting last queried them, and the desired set of records that Hosting needs to see before your custom domain can be fully active.
+message DnsUpdates {
+  // The last time Hosting checked your custom domain's DNS records.
+  optional .google.protobuf.Timestamp check_time = 1 [json_name="checkTime"];
+  // The set of DNS records Hosting needs to serve secure content on the domain.
+  repeated DnsRecordSet desired = 2 [json_name="desired"];
+  // The set of DNS records Hosting discovered when inspecting a domain.
+  repeated DnsRecordSet discovered = 3 [json_name="discovered"];
+}
+
+// The intended behavior and status information of a domain.
+message Domain {
+  // Required. The domain name of the association.
+  optional string domain_name = 1 [json_name="domainName"];
+  // If set, the domain should redirect with the provided parameters.
+  optional DomainRedirect domain_redirect = 2 [json_name="domainRedirect"];
+  // Output only. Information about the provisioning of certificates and the health of the DNS resolution for the domain.
+  optional DomainProvisioning provisioning = 3 [json_name="provisioning"];
+  // Required. The site name of the association.
+  optional string site = 4 [json_name="site"];
+  // Output only. Additional status of the domain association.
+  optional string status = 5 [json_name="status"];
+  // Output only. The time at which the domain was last updated.
+  optional .google.protobuf.Timestamp update_time = 6 [json_name="updateTime"];
+}
+
+// The current certificate provisioning status information for a domain.
+message DomainProvisioning {
+  // The TXT records (for the certificate challenge) that were found at the last DNS fetch.
+  repeated string cert_challenge_discovered_txt = 1 [json_name="certChallengeDiscoveredTxt"];
+  // The DNS challenge for generating a certificate.
+  optional CertDnsChallenge cert_challenge_dns = 2 [json_name="certChallengeDns"];
+  // The HTTP challenge for generating a certificate.
+  optional CertHttpChallenge cert_challenge_http = 3 [json_name="certChallengeHttp"];
+  // The certificate provisioning status; updated when Firebase Hosting provisions an SSL certificate for the domain.
+  optional string cert_status = 4 [json_name="certStatus"];
+  // The IPs found at the last DNS fetch.
+  repeated string discovered_ips = 5 [json_name="discoveredIps"];
+  // The time at which the last DNS fetch occurred.
+  optional .google.protobuf.Timestamp dns_fetch_time = 6 [json_name="dnsFetchTime"];
+  // The DNS record match status as of the last DNS fetch.
+  optional string dns_status = 7 [json_name="dnsStatus"];
+  // The list of IPs to which the domain is expected to resolve.
+  repeated string expected_ips = 8 [json_name="expectedIps"];
+}
+
+// Defines the behavior of a domain-level redirect. Domain redirects preserve the path of the redirect but replace the requested domain with the one specified in the redirect configuration.
+message DomainRedirect {
+  // Required. The domain name to redirect to.
+  optional string domain_name = 1 [json_name="domainName"];
+  // Required. The redirect status code.
+  optional string type = 2 [json_name="type"];
+}
+
+// A generic empty message that you can re-use to avoid defining duplicated empty messages in your APIs. A typical example is to use it as the request or the response type of an API method. For instance: service Foo { rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty); }
+message Empty {
+}
+
+// A [`Header`](https://firebase.google.com/docs/hosting/full-config#headers) specifies a URL pattern that, if matched to the request URL path, triggers Hosting to apply the specified custom response headers.
+message Header {
+  // The user-supplied [glob](https://firebase.google.com/docs/hosting/full-config#glob_pattern_matching) to match against the request URL path.
+  optional string glob = 1 [json_name="glob"];
+  // Required. The additional headers to add to the response.
+  map<string, string> headers = 2 [json_name="headers"];
+  // The user-supplied RE2 regular expression to match against the request URL path.
+  optional string regex = 3 [json_name="regex"];
+}
+
+// A file you can add to your existing, non-Hosting hosting service that confirms your intent to allow Hosting's Certificate Authorities to create an SSL certificate for your domain.
+message HttpUpdate {
+  // Output only. An error encountered during the last contents check. If null, the check completed successfully.
+  optional Status check_error = 1 [json_name="checkError"];
+  // Output only. A text string to serve at the path.
+  optional string desired = 2 [json_name="desired"];
+  // Output only. Whether Hosting was able to find the required file contents on the specified path during its last check.
+  optional string discovered = 3 [json_name="discovered"];
+  // Output only. The last time Hosting systems checked for the file contents.
+  optional .google.protobuf.Timestamp last_check_time = 4 [json_name="lastCheckTime"];
+  // Output only. The path to the file.
+  optional string path = 5 [json_name="path"];
+}
+
+// If provided, i18n rewrites are enabled.
+message I18nConfig {
+  // Required. The user-supplied path where country and language specific content will be looked for within the public directory.
+  optional string root = 1 [json_name="root"];
+}
+
+message ListChannelsResponse {
+  // The list of channels.
+  repeated Channel channels = 1 [json_name="channels"];
+  // The pagination token, if more results exist beyond the ones in this response. Include this token in your next call to `ListChannels`. Page tokens are short-lived and should not be stored.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+// The response from `ListCustomDomains`.
+message ListCustomDomainsResponse {
+  // A list of `CustomDomain` entities associated with the specified Firebase `Site`.
+  repeated CustomDomain custom_domains = 1 [json_name="customDomains"];
+  // The pagination token, if more results exist beyond the ones in this response. Include this token in your next call to `ListCustomDomains`. Page tokens are short-lived and should not be stored.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+// The response to listing Domains.
+message ListDomainsResponse {
+  // The list of domains, if any exist.
+  repeated Domain domains = 1 [json_name="domains"];
+  // The pagination token, if more results exist.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+// The response message for Operations.ListOperations.
+message ListOperationsResponse {
+  // The standard List next-page token.
+  optional string next_page_token = 1 [json_name="nextPageToken"];
+  // A list of operations that matches the specified filter in the request.
+  repeated .google.longrunning.Operation operations = 2 [json_name="operations"];
+  // Unordered list. Unreachable resources. Populated when the request sets `ListOperationsRequest.return_partial_success` and reads across collections. For example, when attempting to list all resources across all supported locations.
+  repeated string unreachable = 3 [json_name="unreachable"];
+}
+
+message ListReleasesResponse {
+  // The pagination token, if more results exist beyond the ones in this response. Include this token in your next call to `ListReleases`. Page tokens are short-lived and should not be stored.
+  optional string next_page_token = 1 [json_name="nextPageToken"];
+  // The list of hashes of files that still need to be uploaded, if any exist.
+  repeated Release releases = 2 [json_name="releases"];
+}
+
+message ListSitesResponse {
+  // The pagination token, if more results exist beyond the ones in this response. Include this token in your next call to `ListSites`. Page tokens are short-lived and should not be stored.
+  optional string next_page_token = 1 [json_name="nextPageToken"];
+  // A list of Site objects associated with the specified Firebase project.
+  repeated Site sites = 2 [json_name="sites"];
+}
+
+message ListVersionFilesResponse {
+  //  The list of paths to the hashes of the files in the specified version.
+  repeated VersionFile files = 1 [json_name="files"];
+  // The pagination token, if more results exist beyond the ones in this response. Include this token in your next call to `ListVersionFiles`. Page tokens are short-lived and should not be stored.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+message ListVersionsResponse {
+  // The pagination token, if more results exist beyond the ones in this response. Include this token in your next call to `ListVersions`. Page tokens are short-lived and should not be stored.
+  optional string next_page_token = 1 [json_name="nextPageToken"];
+  // The list of versions, if any exist.
+  repeated Version versions = 2 [json_name="versions"];
+}
+
+// A set of updates including ACME challenges and DNS records that allow Hosting to create an SSL certificate and establish project ownership for your domain name before you direct traffic to Hosting servers. Use these updates to facilitate zero downtime migrations to Hosting from other services. After you've made the recommended updates, check your custom domain's `ownershipState` and `certState`. To avoid downtime, they should be `OWNERSHIP_ACTIVE` and `CERT_ACTIVE`, respectively, before you update your `A` and `AAAA` records.
+message LiveMigrationStep {
+  // Output only. A pair of ACME challenges that Hosting's Certificate Authority (CA) can use to create an SSL cert for your domain name. Use either the DNS or HTTP challenge; it's not necessary to provide both.
+  optional CertVerification cert_verification = 1 [json_name="certVerification"];
+  // Output only. DNS updates to facilitate your domain's zero-downtime migration to Hosting.
+  optional DnsUpdates dns_updates = 2 [json_name="dnsUpdates"];
+  // Output only. Issues that prevent the current step from completing.
+  repeated Status issues = 3 [json_name="issues"];
+  // Output only. The state of the live migration step, indicates whether you should work to complete the step now, in the future, or have already completed it.
+  optional string state = 4 [json_name="state"];
+}
+
+// A representation of filter path.
+message PathFilter {
+  // An array of RegEx values by which to filter.
+  repeated string regexes = 1 [json_name="regexes"];
+}
+
+message PopulateVersionFilesRequest {
+  // A set of file paths to the hashes corresponding to assets that should be added to the version. A file path to an empty hash will remove the path from the version. Calculate a hash by Gzipping the file then taking the SHA256 hash of the newly compressed file.
+  map<string, string> files = 1 [json_name="files"];
+}
+
+message PopulateVersionFilesResponse {
+  // The content hashes of the specified files that need to be uploaded to the specified URL.
+  repeated string upload_required_hashes = 1 [json_name="uploadRequiredHashes"];
+  // The URL to which the files should be uploaded, in the format: "https://upload-firebasehosting.googleapis.com/upload/sites/SITE_ID /versions/VERSION_ID/files" Perform a multipart `POST` of the Gzipped file contents to the URL using a forward slash and the hash of the file appended to the end.
+  optional string upload_url = 2 [json_name="uploadUrl"];
+}
+
+// A [`Redirect`](https://firebase.google.com/docs/hosting/full-config#redirects) specifies a URL pattern that, if matched to the request URL path, triggers Hosting to respond with a redirect to the specified destination path.
+message Redirect {
+  // The user-supplied [glob](https://firebase.google.com/docs/hosting/full-config#glob_pattern_matching) to match against the request URL path.
+  optional string glob = 1 [json_name="glob"];
+  // Required. The value to put in the HTTP location header of the response. The location can contain capture group values from the pattern using a `:` prefix to identify the segment and an optional `*` to capture the rest of the URL. For example: "glob": "/:capture*", "statusCode": 301, "location": "https://example.com/foo/:capture"
+  optional string location = 2 [json_name="location"];
+  // The user-supplied RE2 regular expression to match against the request URL path.
+  optional string regex = 3 [json_name="regex"];
+  // Required. The status HTTP code to return in the response. It must be a valid 3xx status code.
+  optional int32 status_code = 4 [json_name="statusCode"];
+}
+
+//  A `Release` is a particular [collection of configurations and files](sites.versions) that is set to be public at a particular time.
+message Release {
+  // The deploy description when the release was created. The value can be up to 512 characters.
+  optional string message = 1 [json_name="message"];
+  // Output only. The unique identifier for the release, in either of the following formats: - sites/SITE_ID/releases/RELEASE_ID - sites/SITE_ID/channels/CHANNEL_ID/releases/RELEASE_ID This name is provided in the response body when you call [`releases.create`](sites.releases/create) or [`channels.releases.create`](sites.channels.releases/create).
+  optional string name = 2 [json_name="name"];
+  // Output only. The time at which the version is set to be public.
+  optional .google.protobuf.Timestamp release_time = 3 [json_name="releaseTime"];
+  // Output only. Identifies the user who created the release.
+  optional ActingUser release_user = 4 [json_name="releaseUser"];
+  // Explains the reason for the release. Specify a value for this field only when creating a `SITE_DISABLE` type release.
+  optional string type = 5 [json_name="type"];
+  // Output only. The configuration and content that was released.
+  optional Version version = 6 [json_name="version"];
+}
+
+// A [`Rewrite`](https://firebase.google.com/docs/hosting/full-config#rewrites) specifies a URL pattern that, if matched to the request URL path, triggers Hosting to respond as if the service were given the specified destination URL.
+message Rewrite {
+  // The request will be forwarded to Firebase Dynamic Links.
+  optional bool dynamic_links = 1 [json_name="dynamicLinks"];
+  // The function to proxy requests to. Must match the exported function name exactly.
+  optional string function = 2 [json_name="function"];
+  // Optional. Specify a Cloud region for rewritten Functions invocations. If not provided, defaults to us-central1.
+  optional string function_region = 3 [json_name="functionRegion"];
+  // The user-supplied [glob](https://firebase.google.com/docs/hosting/full-config#glob_pattern_matching) to match against the request URL path.
+  optional string glob = 4 [json_name="glob"];
+  // The URL path to rewrite the request to.
+  optional string path = 5 [json_name="path"];
+  // The user-supplied RE2 regular expression to match against the request URL path.
+  optional string regex = 6 [json_name="regex"];
+  // The request will be forwarded to Cloud Run.
+  optional CloudRunRewrite run = 7 [json_name="run"];
+}
+
+// The configuration for how incoming requests to a site should be routed and processed before serving content. The URL request paths are matched against the specified URL patterns in the configuration, then Hosting applies the applicable configuration according to a specific [priority order](https://firebase.google.com/docs/hosting/full-config#hosting_priority_order).
+message ServingConfig {
+  // How to handle well known App Association files.
+  optional string app_association = 1 [json_name="appAssociation"];
+  // Defines whether to drop the file extension from uploaded files.
+  optional bool clean_urls = 2 [json_name="cleanUrls"];
+  // An array of objects, where each object specifies a URL pattern that, if matched to the request URL path, triggers Hosting to apply the specified custom response headers.
+  repeated Header headers = 3 [json_name="headers"];
+  // Optional. Defines i18n rewrite behavior.
+  optional I18nConfig i18n = 4 [json_name="i18n"];
+  // An array of objects (called redirect rules), where each rule specifies a URL pattern that, if matched to the request URL path, triggers Hosting to respond with a redirect to the specified destination path.
+  repeated Redirect redirects = 5 [json_name="redirects"];
+  // An array of objects (called rewrite rules), where each rule specifies a URL pattern that, if matched to the request URL path, triggers Hosting to respond as if the service were given the specified destination URL.
+  repeated Rewrite rewrites = 6 [json_name="rewrites"];
+  // Defines how to handle a trailing slash in the URL path.
+  optional string trailing_slash_behavior = 7 [json_name="trailingSlashBehavior"];
+}
+
+// A `Site` represents a Firebase Hosting site.
+message Site {
+  // Optional. The [ID of a Web App](https://firebase.google.com/docs/reference/firebase-management/rest/v1beta1/projects.webApps#WebApp.FIELDS.app_id) associated with the Hosting site.
+  optional string app_id = 1 [json_name="appId"];
+  // Output only. The default URL for the Hosting site.
+  optional string default_url = 2 [json_name="defaultUrl"];
+  // Optional. User-specified labels for the Hosting site.
+  map<string, string> labels = 3 [json_name="labels"];
+  // Output only. The fully-qualified resource name of the Hosting site, in the format: projects/PROJECT_IDENTIFIER/sites/SITE_ID PROJECT_IDENTIFIER: the Firebase project's [`ProjectNumber`](https://firebase.google.com/docs/reference/firebase-management/rest/v1beta1/projects#FirebaseProject.FIELDS.project_number) ***(recommended)*** or its [`ProjectId`](https://firebase.google.com/docs/reference/firebase-management/rest/v1beta1/projects#FirebaseProject.FIELDS.project_id). Learn more about using project identifiers in Google's [AIP 2510 standard](https://google.aip.dev/cloud/2510).
+  optional string name = 4 [json_name="name"];
+  // Output only. The type of Hosting site. Every Firebase project has a `DEFAULT_SITE`, which is created when Hosting is provisioned for the project. All additional sites are `USER_SITE`.
+  optional string type = 5 [json_name="type"];
+}
+
+// A `SiteConfig` contains metadata associated with a specific site that controls Firebase Hosting serving behavior
+message SiteConfig {
+  // Whether or not web requests made by site visitors are logged via Cloud Logging.
+  optional bool cloud_logging_enabled = 1 [json_name="cloudLoggingEnabled"];
+  // The number of FINALIZED versions that will be held for a site before automatic deletion. When a new version is deployed, content for versions in storage in excess of this number will be deleted, and will no longer be billed for storage usage. Oldest versions will be deleted first; sites are created with an unlimited number of max_versions by default.
+  optional int64 max_versions = 2 [json_name="maxVersions"];
+}
+
+// The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).
+message Status {
+  // The status code, which should be an enum value of google.rpc.Code.
+  optional int32 code = 1 [json_name="code"];
+  // A list of messages that carry the error details. There is a common set of message types for APIs to use.
+  repeated .google.protobuf.Any details = 2 [json_name="details"];
+  // A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client.
+  optional string message = 3 [json_name="message"];
+}
+
+// The request sent to `UndeleteCustomDomain`.
+message UndeleteCustomDomainRequest {
+  // A tag that represents the state of the `CustomDomain` as you know it. If present, the supplied tag must match the current value on your `CustomDomain`, or the request fails.
+  optional string etag = 1 [json_name="etag"];
+  // If true, Hosting validates that it's possible to complete your request but doesn't actually delete the `CustomDomain`.
+  optional bool validate_only = 2 [json_name="validateOnly"];
+}
+
+// A `Version` is a configuration and a collection of static files which determine how a site is displayed.
+message Version {
+  // The configuration for the behavior of the site. This configuration exists in the [`firebase.json`](https://firebase.google.com/docs/cli/#the_firebasejson_file) file.
+  optional ServingConfig config = 1 [json_name="config"];
+  // Output only. The time at which the version was created.
+  optional .google.protobuf.Timestamp create_time = 2 [json_name="createTime"];
+  // Output only. Identifies the user who created the version.
+  optional ActingUser create_user = 3 [json_name="createUser"];
+  // Output only. The time at which the version was `DELETED`.
+  optional .google.protobuf.Timestamp delete_time = 4 [json_name="deleteTime"];
+  // Output only. Identifies the user who `DELETED` the version.
+  optional ActingUser delete_user = 5 [json_name="deleteUser"];
+  // Output only. The total number of files associated with the version. This value is calculated after a version is `FINALIZED`.
+  optional int64 file_count = 6 [json_name="fileCount"];
+  // Output only. The time at which the version was `FINALIZED`.
+  optional .google.protobuf.Timestamp finalize_time = 7 [json_name="finalizeTime"];
+  // Output only. Identifies the user who `FINALIZED` the version.
+  optional ActingUser finalize_user = 8 [json_name="finalizeUser"];
+  // The labels used for extra metadata and/or filtering.
+  map<string, string> labels = 9 [json_name="labels"];
+  // The fully-qualified resource name for the version, in the format: sites/ SITE_ID/versions/VERSION_ID This name is provided in the response body when you call [`CreateVersion`](sites.versions/create).
+  optional string name = 10 [json_name="name"];
+  // The deploy status of the version. For a successful deploy, call [`CreateVersion`](sites.versions/create) to make a new version (`CREATED` status), [upload all desired files](sites.versions/populateFiles) to the version, then [update](sites.versions/patch) the version to the `FINALIZED` status. Note that if you leave the version in the `CREATED` state for more than 12 hours, the system will automatically mark the version as `ABANDONED`. You can also change the status of a version to `DELETED` by calling [`DeleteVersion`](sites.versions/delete).
+  optional string status = 11 [json_name="status"];
+  // Output only. The total stored bytesize of the version. This value is calculated after a version is `FINALIZED`.
+  optional int64 version_bytes = 12 [json_name="versionBytes"];
+}
+
+// A static content file that is part of a version.
+message VersionFile {
+  // The SHA256 content hash of the file.
+  optional string hash = 1 [json_name="hash"];
+  // The URI at which the file's content should display.
+  optional string path = 2 [json_name="path"];
+  // Output only. The current status of a particular file in the specified version. The value will be either `pending upload` or `uploaded`.
+  optional string status = 3 [json_name="status"];
+}
+
+message CreateProjectsSiteRequest {
+  optional string parent = 1;
+  optional string site_id = 2;
+  optional bool validate_only = 3;
+  optional Site projects_site = 4;
+}
+
+message DeleteProjectsSiteRequest {
+  optional string name = 1;
+}
+
+message GetProjectsSiteRequest {
+  optional string name = 1;
+}
+
+message GetConfigProjectsSiteRequest {
+  optional string name = 1;
+}
+
+message ListProjectsSitesRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+  optional string parent = 3;
+}
+
+message PatchProjectsSiteRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional Site projects_site = 3;
+}
+
+message UpdateConfigProjectsSiteRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional SiteConfig projects_site = 3;
+}
+
+message CreateProjectsSitesChannelRequest {
+  optional string channel_id = 1;
+  optional string parent = 2;
+  optional Channel projects_sites_channel = 3;
+}
+
+message DeleteProjectsSitesChannelRequest {
+  optional string name = 1;
+}
+
+message GetProjectsSitesChannelRequest {
+  optional string name = 1;
+}
+
+message ListProjectsSitesChannelsRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+  optional string parent = 3;
+}
+
+message PatchProjectsSitesChannelRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional Channel projects_sites_channel = 3;
+}
+
+message CreateProjectsSitesChannelsReleaseRequest {
+  optional string parent = 1;
+  optional string version_name = 2;
+  optional Release projects_sites_channels_release = 3;
+}
+
+message GetProjectsSitesChannelsReleaseRequest {
+  optional string name = 1;
+}
+
+message ListProjectsSitesChannelsReleasesRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+  optional string parent = 3;
+}
+
+message CreateProjectsSitesCustomDomainRequest {
+  optional string custom_domain_id = 1;
+  optional string parent = 2;
+  optional bool validate_only = 3;
+  optional CustomDomain projects_sites_custom_domain = 4;
+}
+
+message DeleteProjectsSitesCustomDomainRequest {
+  optional bool allow_missing = 1;
+  optional string etag = 2;
+  optional string name = 3;
+  optional bool validate_only = 4;
+}
+
+message GetProjectsSitesCustomDomainRequest {
+  optional string name = 1;
+}
+
+message ListProjectsSitesCustomDomainsRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+  optional string parent = 3;
+  optional bool show_deleted = 4;
+}
+
+message PatchProjectsSitesCustomDomainRequest {
+  optional bool allow_missing = 1;
+  optional string name = 2;
+  optional string update_mask = 3;
+  optional bool validate_only = 4;
+  optional CustomDomain projects_sites_custom_domain = 5;
+}
+
+message UndeleteProjectsSitesCustomDomainRequest {
+  optional string name = 1;
+  optional UndeleteCustomDomainRequest projects_sites_custom_domain = 2;
+}
+
+message CreateProjectsSitesDomainRequest {
+  optional string parent = 1;
+  optional Domain projects_sites_domain = 2;
+}
+
+message DeleteProjectsSitesDomainRequest {
+  optional string name = 1;
+}
+
+message GetProjectsSitesDomainRequest {
+  optional string name = 1;
+}
+
+message ListProjectsSitesDomainsRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+  optional string parent = 3;
+}
+
+message UpdateProjectsSitesDomainRequest {
+  optional string name = 1;
+  optional Domain projects_sites_domain = 2;
+}
+
+message CreateProjectsSitesReleaseRequest {
+  optional string parent = 1;
+  optional string version_name = 2;
+  optional Release projects_sites_release = 3;
+}
+
+message GetProjectsSitesReleaseRequest {
+  optional string name = 1;
+}
+
+message ListProjectsSitesReleasesRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+  optional string parent = 3;
+}
+
+message CloneProjectsSitesVersionRequest {
+  optional string parent = 1;
+  optional CloneVersionRequest projects_sites_version = 2;
+}
+
+message CreateProjectsSitesVersionRequest {
+  optional string parent = 1;
+  optional string size_bytes = 2;
+  optional string version_id = 3;
+  optional Version projects_sites_version = 4;
+}
+
+message DeleteProjectsSitesVersionRequest {
+  optional string name = 1;
+}
+
+message GetProjectsSitesVersionRequest {
+  optional string name = 1;
+}
+
+message ListProjectsSitesVersionsRequest {
+  optional string filter = 1;
+  optional int32 page_size = 2;
+  optional string page_token = 3;
+  optional string parent = 4;
+}
+
+message PatchProjectsSitesVersionRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional Version projects_sites_version = 3;
+}
+
+message PopulateFilesProjectsSitesVersionRequest {
+  optional string parent = 1;
+  optional PopulateVersionFilesRequest projects_sites_version = 2;
+}
+
+message ListProjectsSitesVersionsFilesRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+  optional string parent = 3;
+  optional string status = 4;
+}
+
+message GetConfigSiteRequest {
+  optional string name = 1;
+}
+
+message UpdateConfigSiteRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional SiteConfig site = 3;
+}
+
+message CreateSitesChannelRequest {
+  optional string channel_id = 1;
+  optional string parent = 2;
+  optional Channel sites_channel = 3;
+}
+
+message DeleteSitesChannelRequest {
+  optional string name = 1;
+}
+
+message GetSitesChannelRequest {
+  optional string name = 1;
+}
+
+message ListSitesChannelsRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+  optional string parent = 3;
+}
+
+message PatchSitesChannelRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional Channel sites_channel = 3;
+}
+
+message CreateSitesChannelsReleaseRequest {
+  optional string parent = 1;
+  optional string version_name = 2;
+  optional Release sites_channels_release = 3;
+}
+
+message GetSitesChannelsReleaseRequest {
+  optional string name = 1;
+}
+
+message ListSitesChannelsReleasesRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+  optional string parent = 3;
+}
+
+message CreateSitesDomainRequest {
+  optional string parent = 1;
+  optional Domain sites_domain = 2;
+}
+
+message DeleteSitesDomainRequest {
+  optional string name = 1;
+}
+
+message GetSitesDomainRequest {
+  optional string name = 1;
+}
+
+message ListSitesDomainsRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+  optional string parent = 3;
+}
+
+message UpdateSitesDomainRequest {
+  optional string name = 1;
+  optional Domain sites_domain = 2;
+}
+
+message CreateSitesReleaseRequest {
+  optional string parent = 1;
+  optional string version_name = 2;
+  optional Release sites_release = 3;
+}
+
+message GetSitesReleaseRequest {
+  optional string name = 1;
+}
+
+message ListSitesReleasesRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+  optional string parent = 3;
+}
+
+message CloneSitesVersionRequest {
+  optional string parent = 1;
+  optional CloneVersionRequest sites_version = 2;
+}
+
+message CreateSitesVersionRequest {
+  optional string parent = 1;
+  optional string size_bytes = 2;
+  optional string version_id = 3;
+  optional Version sites_version = 4;
+}
+
+message DeleteSitesVersionRequest {
+  optional string name = 1;
+}
+
+message GetSitesVersionRequest {
+  optional string name = 1;
+}
+
+message ListSitesVersionsRequest {
+  optional string filter = 1;
+  optional int32 page_size = 2;
+  optional string page_token = 3;
+  optional string parent = 4;
+}
+
+message PatchSitesVersionRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional Version sites_version = 3;
+}
+
+message PopulateFilesSitesVersionRequest {
+  optional string parent = 1;
+  optional PopulateVersionFilesRequest sites_version = 2;
+}
+
+message ListSitesVersionsFilesRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+  optional string parent = 3;
+  optional string status = 4;
+}

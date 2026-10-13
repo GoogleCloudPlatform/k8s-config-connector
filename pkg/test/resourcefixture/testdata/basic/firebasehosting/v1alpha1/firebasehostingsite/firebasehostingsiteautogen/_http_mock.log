@@ -1,0 +1,62 @@
+GET https://firebasehosting.googleapis.com/v1beta1/projects/${projectId}/sites/firebasehostingsite${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "site \"projects/${projectId}/sites/firebasehostingsite${uniqueId}\" not found"
+}
+
+---
+
+POST https://firebasehosting.googleapis.com/v1beta1/projects/${projectId}/sites?alt=json&siteId=firebasehostingsite${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "appId": null,
+  "defaultUrl": "https://firebasehostingsite${uniqueId}.web.app",
+  "labels": {},
+  "name": "projects/${projectId}/sites/firebasehostingsite${uniqueId}",
+  "type": "USER_SITE"
+}
+
+---
+
+GET https://firebasehosting.googleapis.com/v1beta1/projects/${projectId}/sites/firebasehostingsite${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "appId": null,
+  "defaultUrl": "https://firebasehostingsite${uniqueId}.web.app",
+  "labels": {},
+  "name": "projects/${projectId}/sites/firebasehostingsite${uniqueId}",
+  "type": "USER_SITE"
+}
+
+---
+
+DELETE https://firebasehosting.googleapis.com/v1beta1/projects/${projectId}/sites/firebasehostingsite${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{}
