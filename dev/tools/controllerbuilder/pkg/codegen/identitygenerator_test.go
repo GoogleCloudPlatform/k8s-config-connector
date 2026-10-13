@@ -185,8 +185,8 @@ type CloudBuildTrigger struct {
 	if !plan.ServerGeneratedID {
 		t.Fatalf("expected ServerGeneratedID=true from comment")
 	}
-	if len(plan.Judgement) != 1 || plan.Judgement[0].Reason != judgement.ReasonIdentityMultiPattern {
-		t.Fatalf("expected [%s] judgement entry, got %+v", judgement.ReasonIdentityMultiPattern, plan.Judgement)
+	if len(plan.Judgement) != 2 || plan.Judgement[0].Reason != judgement.ReasonIdentityMultiPattern || plan.Judgement[1].Reason != judgement.ReasonIdentityServerGeneratedID {
+		t.Fatalf("expected [%s, %s] judgement entries, got %+v", judgement.ReasonIdentityMultiPattern, judgement.ReasonIdentityServerGeneratedID, plan.Judgement)
 	}
 
 	idBytes, emitted, err := gen.RenderIdentityFile(plan, nil)
@@ -386,7 +386,6 @@ type StorageBucket struct {
 	}
 }
 
-
 func TestIdentityGenerator_SingleParentToMultiParentRerun(t *testing.T) {
 	tmp := t.TempDir()
 	pkgDir := filepath.Join(tmp, "apis", "privilegedaccessmanager", "v1beta1")
@@ -399,13 +398,13 @@ import (
 )
 
 type PrivilegedAccessManagerEntitlementSpec struct {
-	ProjectRef *parent.ProjectRef ` + "`" + `json:"projectRef,omitempty"` + "`" + `
-	Location *string ` + "`" + `json:"location"` + "`" + `
-	ResourceID *string ` + "`" + `json:"resourceID,omitempty"` + "`" + `
+	ProjectRef *parent.ProjectRef `+"`"+`json:"projectRef,omitempty"`+"`"+`
+	Location *string `+"`"+`json:"location"`+"`"+`
+	ResourceID *string `+"`"+`json:"resourceID,omitempty"`+"`"+`
 }
 
 type PrivilegedAccessManagerEntitlementStatus struct {
-	ExternalRef *string ` + "`" + `json:"externalRef,omitempty"` + "`" + `
+	ExternalRef *string `+"`"+`json:"externalRef,omitempty"`+"`"+`
 }
 
 type PrivilegedAccessManagerEntitlement struct {
@@ -460,15 +459,15 @@ import (
 )
 
 type PrivilegedAccessManagerEntitlementSpec struct {
-	ProjectRef *parent.ProjectRef ` + "`" + `json:"projectRef,omitempty"` + "`" + `
-	FolderRef *parent.FolderRef ` + "`" + `json:"folderRef,omitempty"` + "`" + `
-	OrganizationRef *parent.OrganizationRef ` + "`" + `json:"organizationRef,omitempty"` + "`" + `
-	Location *string ` + "`" + `json:"location"` + "`" + `
-	ResourceID *string ` + "`" + `json:"resourceID,omitempty"` + "`" + `
+	ProjectRef *parent.ProjectRef `+"`"+`json:"projectRef,omitempty"`+"`"+`
+	FolderRef *parent.FolderRef `+"`"+`json:"folderRef,omitempty"`+"`"+`
+	OrganizationRef *parent.OrganizationRef `+"`"+`json:"organizationRef,omitempty"`+"`"+`
+	Location *string `+"`"+`json:"location"`+"`"+`
+	ResourceID *string `+"`"+`json:"resourceID,omitempty"`+"`"+`
 }
 
 type PrivilegedAccessManagerEntitlementStatus struct {
-	ExternalRef *string ` + "`" + `json:"externalRef,omitempty"` + "`" + `
+	ExternalRef *string `+"`"+`json:"externalRef,omitempty"`+"`"+`
 }
 
 type PrivilegedAccessManagerEntitlement struct {

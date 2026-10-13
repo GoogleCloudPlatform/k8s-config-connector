@@ -49,6 +49,9 @@ func ReferenceHints(msg protoreflect.MessageDescriptor, opts codegen.WriteOption
 		if item, ok := sensitiveField(path, msg); ok {
 			out = append(out, item)
 		}
+		if item, ok := wellKnownProtoTypeItem(field, path); ok {
+			out = append(out, item)
+		}
 	})
 	return out
 }
@@ -203,14 +206,14 @@ func sensitiveField(path string, rootMsg protoreflect.MessageDescriptor) (Judgem
 	if strings.HasSuffix(strings.ToLower(path), "password") {
 		return JudgementItem{
 			FieldPath: path,
-			Reason:    "sensitive-field",
+			Reason:    judgement.ReasonSensitiveField,
 			Detail:    "the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets",
 		}, true
 	}
 	if path == ".spec.data" && rootMsg != nil && strings.HasSuffix(strings.ToLower(string(rootMsg.Name())), "secret") {
 		return JudgementItem{
 			FieldPath: path,
-			Reason:    "sensitive-field",
+			Reason:    judgement.ReasonSensitiveField,
 			Detail:    "holds secret data as a plain value on a Secret resource. Leave this open until we settle how new Kinds take secrets",
 		}, true
 	}

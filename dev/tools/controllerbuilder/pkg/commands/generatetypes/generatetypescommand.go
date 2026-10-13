@@ -400,7 +400,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 			queued = append(queued, judgement.Entry{
 				ProtoMessage: f.Message,
 				Field:        f.Field,
-				Reason:       "unsupported-field-type",
+				Reason:       judgement.ReasonUnsupportedFieldType,
 				Detail:       f.Reason,
 				Status:       judgement.StatusOpen,
 			})
@@ -409,7 +409,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 			queued = append(queued, judgement.Entry{
 				ProtoMessage: m.Message,
 				Field:        m.Field,
-				Reason:       "message-map-derived",
+				Reason:       judgement.ReasonMessageMapDerived,
 				Detail:       fmt.Sprintf("derived as map[string]%s from proto %s; verify Go type and mapping", m.GoType, m.ProtoType),
 				Status:       judgement.StatusOpen,
 			})
@@ -579,7 +579,7 @@ func ambiguousResourceItem(resource options.Resource, matches []string) (scaffol
 		return scaffold.JudgementItem{}, false
 	}
 	return scaffold.JudgementItem{
-		Reason: "ambiguous-proto-name",
+		Reason: judgement.ReasonAmbiguousProtoName,
 		Detail: fmt.Sprintf("%s exists in %d of the listed services (%s); generated from %s. "+
 			"Put the full proto name in --resource to choose one",
 			resource.ProtoName, len(matches), strings.Join(matches, ", "), matches[0]),
@@ -630,6 +630,8 @@ func prepopulate(msg protoreflect.MessageDescriptor, typeGenerator *codegen.Type
 	}
 	if o.EmitReferenceHints {
 		prepopulated.Judgement = append(prepopulated.Judgement, scaffold.ReferenceHints(msg, writeOptions)...)
+	} else {
+		prepopulated.Judgement = append(prepopulated.Judgement, scaffold.WellKnownProtoTypes(msg, writeOptions)...)
 	}
 	// PrepopulateSpec left deprecated top-level fields out of the
 	// Spec. Deprecated fields in nested structs stay, so they are
@@ -656,7 +658,7 @@ func prepopulate(msg protoreflect.MessageDescriptor, typeGenerator *codegen.Type
 	// reaches that allowlist.
 	if prepopulated.ObservedStateFields == "" {
 		prepopulated.Judgement = append(prepopulated.Judgement, scaffold.JudgementItem{
-			Reason: "empty-observedstate",
+			Reason: judgement.ReasonEmptyObservedState,
 			Detail: "nothing was generated into status.observedState; the proto " +
 				"probably marks no field OUTPUT_ONLY, so output fields landed " +
 				"in the Spec. Decide what belongs in status",
