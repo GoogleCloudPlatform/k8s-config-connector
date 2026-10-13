@@ -129,9 +129,7 @@ func TestCompareCertificate(t *testing.T) {
 				}
 				return d
 			}(),
-			// In the unfixed direct controller, pemPrivateKey being absent from actual causes
-			// a diff on self_managed:
-			wantPaths: []string{"self_managed"},
+			wantPaths: []string{},
 		},
 		{
 			name: "mutable description and labels updated",

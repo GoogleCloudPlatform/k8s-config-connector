@@ -21,11 +21,13 @@ import (
 	gcp "cloud.google.com/go/certificatemanager/apiv1"
 	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1beta1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -33,9 +35,13 @@ import (
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
+	corev1 "k8s.io/api/core/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -63,6 +69,61 @@ func (m *certificateModel) client(ctx context.Context) (*gcp.Client, error) {
 	return gcpClient, nil
 }
 
+func resolveCertificateSecrets(ctx context.Context, kube client.Reader, obj *krm.CertificateManagerCertificate) error {
+	if obj.Spec.SelfManaged == nil {
+		return nil
+	}
+
+	resolveSecretVal := func(secretKeyRef *k8sv1alpha1.SecretKeyRef) (*string, error) {
+		if secretKeyRef == nil {
+			return nil, nil
+		}
+		key := types.NamespacedName{
+			Namespace: obj.Namespace,
+			Name:      secretKeyRef.Name,
+		}
+		secret := &corev1.Secret{}
+		if err := kube.Get(ctx, key, secret); err != nil {
+			if apierrors.IsNotFound(err) {
+				return nil, k8s.NewSecretNotFoundError(key)
+			}
+			return nil, fmt.Errorf("error reading referenced Secret %v: %w", key, err)
+		}
+		valBytes, ok := secret.Data[secretKeyRef.Key]
+		if !ok {
+			return nil, fmt.Errorf("key %q not found in Secret %v", secretKeyRef.Key, key)
+		}
+		val := string(valBytes)
+		return &val, nil
+	}
+
+	if obj.Spec.SelfManaged.PemPrivateKey != nil && obj.Spec.SelfManaged.PemPrivateKey.ValueFrom != nil {
+		if obj.Spec.SelfManaged.PemPrivateKey.Value != nil {
+			return fmt.Errorf("cannot specify both spec.selfManaged.pemPrivateKey.value and spec.selfManaged.pemPrivateKey.valueFrom")
+		}
+		val, err := resolveSecretVal(obj.Spec.SelfManaged.PemPrivateKey.ValueFrom.SecretKeyRef)
+		if err != nil {
+			return fmt.Errorf("resolving spec.selfManaged.pemPrivateKey: %w", err)
+		}
+		obj.Spec.SelfManaged.PemPrivateKey.Value = val
+		obj.Spec.SelfManaged.PemPrivateKey.ValueFrom = nil
+	}
+
+	if obj.Spec.SelfManaged.PrivateKeyPem != nil && obj.Spec.SelfManaged.PrivateKeyPem.ValueFrom != nil {
+		if obj.Spec.SelfManaged.PrivateKeyPem.Value != nil {
+			return fmt.Errorf("cannot specify both spec.selfManaged.privateKeyPem.value and spec.selfManaged.privateKeyPem.valueFrom")
+		}
+		val, err := resolveSecretVal(obj.Spec.SelfManaged.PrivateKeyPem.ValueFrom.SecretKeyRef)
+		if err != nil {
+			return fmt.Errorf("resolving spec.selfManaged.privateKeyPem: %w", err)
+		}
+		obj.Spec.SelfManaged.PrivateKeyPem.Value = val
+		obj.Spec.SelfManaged.PrivateKeyPem.ValueFrom = nil
+	}
+
+	return nil
+}
+
 func (m *certificateModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
 	reader := op.Reader
@@ -73,6 +134,10 @@ func (m *certificateModel) AdapterForObject(ctx context.Context, op *directbase.
 
 	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
+	if err := resolveCertificateSecrets(ctx, reader, obj); err != nil {
+		return nil, err
 	}
 
 	identity, err := obj.GetIdentity(ctx, reader)
@@ -270,6 +335,28 @@ func compareCertificate(ctx context.Context, actual, desired *pb.Certificate) (*
 	}
 	maskedActual.Name = desired.Name
 	maskedActual.Labels = actual.Labels
+
+	// The GCP Certificate resource type (managed vs self_managed) is immutable.
+	// For self_managed certificates, GCP never returns the private key (pemPrivateKey) on GET calls.
+	// Normalize maskedActual's pemPrivateKey to match desired so we don't trigger a false diff on the secret,
+	// and avoid mutating desired in-place.
+	if desiredSelfManaged := desired.GetSelfManaged(); desiredSelfManaged != nil {
+		if actualSelfManaged := maskedActual.GetSelfManaged(); actualSelfManaged != nil {
+			actualSelfManaged.PemPrivateKey = desiredSelfManaged.PemPrivateKey
+		}
+	}
+
+	// For managed certificates, GCP populates server-computed state, authorization attempt info, etc.
+	// Ensure that actual and desired managed fields only compare user-specified spec fields.
+	if desiredManaged := desired.GetManaged(); desiredManaged != nil {
+		if actualManaged := maskedActual.GetManaged(); actualManaged != nil {
+			// If IssuanceConfig was not specified in desired KRM, normalize maskedActual to match desired.
+			if desiredManaged.IssuanceConfig == "" {
+				actualManaged.IssuanceConfig = desiredManaged.IssuanceConfig
+			}
+		}
+	}
+
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
