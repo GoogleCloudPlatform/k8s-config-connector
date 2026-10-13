@@ -27,6 +27,10 @@
 < PATCH https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?alt=json&updateMask=description
 ---
 > PATCH https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description
+380c379
+<     "projects/${projectNumber}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
+---
+>     "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
 386c385,387
 <   }
 ---

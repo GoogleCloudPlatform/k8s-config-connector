@@ -26,8 +26,26 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/klog/v2"
 
+	"strings"
+
 	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
 )
+
+func (s *CertificateManagerV1) normalizeCertificates(certificates []string) []string {
+	normalized := make([]string, len(certificates))
+	for i, cert := range certificates {
+		tokens := strings.Split(cert, "/")
+		if len(tokens) >= 2 && tokens[0] == "projects" {
+			if project, err := s.Projects.GetProjectByIDOrNumber(tokens[1]); err == nil {
+				tokens[1] = fmt.Sprintf("%d", project.Number)
+				normalized[i] = strings.Join(tokens, "/")
+				continue
+			}
+		}
+		normalized[i] = cert
+	}
+	return normalized
+}
 
 func (s *CertificateManagerV1) GetCertificateMapEntry(ctx context.Context, req *pb.GetCertificateMapEntryRequest) (*pb.CertificateMapEntry, error) {
 	name, err := s.parseCertificateMapEntryName(req.Name)
@@ -56,6 +74,7 @@ func (s *CertificateManagerV1) CreateCertificateMapEntry(ctx context.Context, re
 
 	obj := proto.CloneOf(req.CertificateMapEntry)
 	obj.Name = fqn
+	obj.Certificates = s.normalizeCertificates(obj.Certificates)
 	now := timestamppb.Now()
 	obj.CreateTime = now
 
@@ -104,6 +123,8 @@ func (s *CertificateManagerV1) UpdateCertificateMapEntry(ctx context.Context, re
 			obj.Description = req.GetCertificateMapEntry().GetDescription()
 		case "labels":
 			obj.Labels = req.GetCertificateMapEntry().GetLabels()
+		case "certificates":
+			obj.Certificates = s.normalizeCertificates(req.GetCertificateMapEntry().GetCertificates())
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}

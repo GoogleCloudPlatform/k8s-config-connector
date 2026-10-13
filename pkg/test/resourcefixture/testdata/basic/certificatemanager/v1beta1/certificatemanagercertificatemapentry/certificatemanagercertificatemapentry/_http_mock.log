@@ -331,7 +331,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.CertificateMapEntry",
     "certificates": [
-      "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
+      "projects/${projectNumber}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
     ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "sample certificate map entry",
@@ -357,7 +357,7 @@ X-Xss-Protection: 0
 
 {
   "certificates": [
-    "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
+    "projects/${projectNumber}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
   ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "sample certificate map entry",
@@ -436,7 +436,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.CertificateMapEntry",
     "certificates": [
-      "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
+      "projects/${projectNumber}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
     ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "updated certificate map entry",
@@ -462,7 +462,7 @@ X-Xss-Protection: 0
 
 {
   "certificates": [
-    "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
+    "projects/${projectNumber}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
   ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "updated certificate map entry",

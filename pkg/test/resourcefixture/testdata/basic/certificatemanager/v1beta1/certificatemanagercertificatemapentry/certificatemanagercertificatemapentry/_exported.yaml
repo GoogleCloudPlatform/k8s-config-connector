@@ -7,7 +7,7 @@ metadata:
   name: certificatemanagercertificatemapentry${uniqueId}
 spec:
   certificatesRefs:
-  - external: projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}
+  - external: projects/${projectNumber}/locations/global/certificates/certificatemanagercertificate${uniqueId}
   description: updated certificate map entry
   mapRef:
     external: projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}
