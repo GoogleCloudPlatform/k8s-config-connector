@@ -50,6 +50,8 @@
 [not_representable] crd=livestreamassets.livestream.cnrm.cloud.google.com version=v1alpha1: field ".spec.image.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=livestreamassets.livestream.cnrm.cloud.google.com version=v1alpha1: field ".spec.video.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=livestreamchannels.livestream.cnrm.cloud.google.com version=v1alpha1: field ".spec.output.uri" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcsSource.uris" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1beta1: field ".spec.gcsSource.uris" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.hiveMetastoreConfig.kerberosConfig.krb5ConfigGCSURI" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=networkservicesedgecacheorigins.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.originAddress" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.postStartupScript" reason=gcs-path-decomposable-as-bucketref-plus-path

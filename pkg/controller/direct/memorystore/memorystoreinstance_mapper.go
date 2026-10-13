@@ -140,6 +140,22 @@ func Instance_StateInfo_UpdateInfoObservedState_ToProto(mapCtx *direct.MapContex
 	out.TargetReplicaCount = in.TargetReplicaCount
 	return out
 }
+func Instance_GCSBackupSource_FromProto(mapCtx *direct.MapContext, in *pb.Instance_GcsBackupSource) *krmv1beta1.Instance_GCSBackupSource {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.Instance_GCSBackupSource{}
+	out.Uris = in.Uris
+	return out
+}
+func Instance_GCSBackupSource_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Instance_GCSBackupSource) *pb.Instance_GcsBackupSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance_GcsBackupSource{}
+	out.Uris = in.Uris
+	return out
+}
 func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmv1beta1.MemorystoreInstanceObservedState {
 	if in == nil {
 		return nil
@@ -207,6 +223,7 @@ func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instanc
 	if in.GetKmsKey() != "" {
 		out.KmsKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
 	}
+	out.GCSSource = Instance_GCSBackupSource_FromProto(mapCtx, in.GetGcsSource())
 
 	return out
 }
@@ -235,6 +252,9 @@ func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.M
 	out.MaintenancePolicy = MaintenancePolicy_ToProto(mapCtx, in.MaintenancePolicy)
 	if in.KmsKeyRef != nil {
 		out.KmsKey = direct.LazyPtr(in.KmsKeyRef.External)
+	}
+	if oneof := Instance_GCSBackupSource_ToProto(mapCtx, in.GCSSource); oneof != nil {
+		out.ImportSources = &pb.Instance_GcsSource{GcsSource: oneof}
 	}
 	return out
 }

@@ -94,6 +94,9 @@ endpoints:
 engineConfigs:
   string: string
 engineVersion: string
+gcsSource:
+  uris:
+  - string
 kmsKeyRef:
   external: string
   name: string
@@ -544,6 +547,36 @@ zoneDistributionConfig:
         <td>
             <p><code class="apitype">string</code></p>
             <p>Optional. Immutable. Engine version of the instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gcsSource</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. Immutable. Backups that stored in Cloud Storage buckets. The Cloud Storage buckets need to be the same region as the instances. Read permission is required to import from the provided Cloud Storage Objects.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gcsSource.uris</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>Optional. Example: gs://bucket1/object1, gs://bucket2/folder2/object2</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gcsSource.uris[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
         </td>
     </tr>
     <tr>
