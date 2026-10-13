@@ -30,3 +30,16 @@
   2. Registered `k8s.ReconcilerTypeDirect` under `SupportedControllers` for `NetworkServicesHTTPRoute` in `pkg/controller/resourceconfig/static_config.go`.
   3. Ran tests with `KUBEBUILDER_ASSETS=""` to allow `setup-envtest` to locate/download the correct control plane assets in `/workspaces/.home/...`.
 - **Impact**: Enables 100% test coverage and validation of the direct `NetworkServicesHTTPRoute` controller. All mock and golden fixture tests are now passing successfully.
+
+### [2026-10-07] Implementing Direct Controller and Fixtures for NetworkServicesServiceLBPolicy
+- **Context**: Greenfield implementation of direct controller, fuzzer, and E2E fixtures for `NetworkServicesServiceLBPolicy` (Issue #13785).
+- **Problem**: 
+  1. `NetworkServicesServiceLBPolicy` had generated types and mappers but lacked direct controller implementation and fuzzer.
+  2. The resource had to be registered with `ReconcilerTypeDirect` in `pkg/controller/resourceconfig/static_config.go` so the unified test harness recognized it.
+- **Solution**: 
+  1. Implemented direct controller `networkservicesservicelbpolicy_controller.go` using GAPIC REST client `gcp.NewRESTClient`.
+  2. Implemented round-trip KRM fuzzer `networkservicesservicelbpolicy_fuzzer.go` and verified it via `fuzztests`.
+  3. Registered `NetworkServicesServiceLBPolicy` in `pkg/controller/resourceconfig/static_config.go`.
+  4. Created minimal and maximal test fixtures and recorded golden traffic (`_http.log`) and probe audits (`_audit_probe.log`) against live GCP with `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`.
+- **Impact**: Fully functional direct controller for `NetworkServicesServiceLBPolicy` verified against real GCP with golden logs and fuzz testing.
+
