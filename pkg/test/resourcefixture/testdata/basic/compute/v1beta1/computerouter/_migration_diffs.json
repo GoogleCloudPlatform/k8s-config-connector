@@ -1,0 +1,78 @@
+[
+  {
+    "controller": "direct",
+    "isNewObject": false,
+    "resource": "ComputeRouter/computerouter-${uniqueId}",
+    "fields": [
+      {
+        "id": "network",
+        "old": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+        "new": "projects/${projectId}/global/networks/default"
+      },
+      {
+        "id": "region",
+        "old": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+        "new": "us-west1"
+      }
+    ]
+  },
+  {
+    "controller": "direct",
+    "isNewObject": false,
+    "resource": "ComputeRouter/computerouter-${uniqueId}",
+    "fields": [
+      {
+        "id": "network",
+        "old": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+        "new": "projects/${projectId}/global/networks/default"
+      },
+      {
+        "id": "region",
+        "old": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
+        "new": "us-west1"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeRouter/computerouter-${uniqueId}",
+    "fields": [
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "example router description"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computerouter-${uniqueId}"
+      },
+      {
+        "id": "network",
+        "old": "",
+        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "region",
+        "old": "",
+        "new": "us-west1"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      }
+    ]
+  }
+]
