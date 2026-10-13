@@ -21,6 +21,7 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+	"sync"
 	"unicode"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
@@ -54,9 +55,9 @@ type IdentityGeneratorOptions struct {
 // <kind>_reference.generated.go, and <kind>_identity_generated_test.go files.
 type IdentityGenerator struct {
 	opts       IdentityGeneratorOptions
+	caiOnce    sync.Once
 	caiByType  map[string][]string
 	caiFormats map[string]bool
-	caiLoaded  bool
 	caiLoadErr error
 }
 
@@ -149,6 +150,7 @@ type IdentityPlan struct {
 	Ancestors           []AncestorResolution
 	ParentRef           *ParentRefResolution
 	MultiParentVariants []RootVariant
+	Overrides           HandWrittenOverrides
 	Judgement           []judgement.Entry
 }
 
@@ -191,10 +193,6 @@ func (g *IdentityGenerator) Generate(kind string, msg protoreflect.MessageDescri
 	if err != nil {
 		return nil, err
 	}
-	typeInfo, err := inspectKRMPackage(plan.PackageDir, kind, g.opts.Version)
-	if err != nil {
-		return nil, err
-	}
 
 	res := &IdentityGenerateResult{
 		Plan:          plan,
@@ -209,13 +207,13 @@ func (g *IdentityGenerator) Generate(kind string, msg protoreflect.MessageDescri
 		return res, nil
 	}
 
-	if err := g.writeIdentityArtifact(res, plan, &typeInfo.Overrides); err != nil {
+	if err := g.writeIdentityArtifact(res, plan, &plan.Overrides); err != nil {
 		return nil, err
 	}
-	if err := g.writeReferenceArtifact(res, plan, &typeInfo.Overrides); err != nil {
+	if err := g.writeReferenceArtifact(res, plan, &plan.Overrides); err != nil {
 		return nil, err
 	}
-	if err := g.writeTestArtifact(res, plan, &typeInfo.Overrides); err != nil {
+	if err := g.writeTestArtifact(res, plan, &plan.Overrides); err != nil {
 		return nil, err
 	}
 	return res, nil
@@ -252,6 +250,7 @@ func (g *IdentityGenerator) Plan(kind string, msg protoreflect.MessageDescriptor
 		SpecIDIsPointer:  typeInfo.ResourceIDIsPtr,
 		StatusField:      typeInfo.StatusField,
 		StatusFieldIsPtr: typeInfo.StatusFieldIsPtr,
+		Overrides:        typeInfo.Overrides,
 	}
 
 	patterns, hostOverride, patOverride := g.resolveCandidatePatterns(kind, msg, rd, getHTTPPath, defaultHost)
@@ -685,12 +684,13 @@ func buildIdentityField(seg, lastLiteral string, usedStructFields map[string]int
 	}
 	structField := snakeToPascal(rawVar)
 	tmplVar := snakeToLowerCamel(rawVar)
-	if count := usedStructFields[strings.ToLower(structField)]; count > 0 {
+	baseKey := strings.ToLower(structField)
+	if count := usedStructFields[baseKey]; count > 0 {
 		suffix := fmt.Sprintf("%d", count+1)
 		structField += suffix
 		tmplVar += suffix
 	}
-	usedStructFields[strings.ToLower(structField)]++
+	usedStructFields[baseKey]++
 	return IdentityField{
 		RawPlaceholder: rawVar,
 		TemplateVar:    tmplVar,

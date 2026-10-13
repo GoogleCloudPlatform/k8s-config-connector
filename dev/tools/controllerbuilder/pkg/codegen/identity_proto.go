@@ -116,7 +116,11 @@ func isServerGeneratedCreateInput(inFields protoreflect.FieldDescriptors) bool {
 	}
 	for k := 0; k < inFields.Len(); k++ {
 		f := inFields.Get(k)
-		if strings.HasSuffix(string(f.Name()), "_id") && f.Kind() == protoreflect.StringKind {
+		name := string(f.Name())
+		if name == "request_id" {
+			continue
+		}
+		if strings.HasSuffix(name, "_id") && f.Kind() == protoreflect.StringKind {
 			return false
 		}
 	}
@@ -239,47 +243,44 @@ var (
 )
 
 func (g *IdentityGenerator) ensureCAILoaded() error {
-	if g.caiLoaded {
-		return g.caiLoadErr
-	}
-	g.caiLoaded = true
-	g.caiByType = make(map[string][]string)
-	g.caiFormats = make(map[string]bool)
+	g.caiOnce.Do(func() {
+		g.caiByType = make(map[string][]string)
+		g.caiFormats = make(map[string]bool)
 
-	path := g.resolveCAIMetadataPath()
-	if path == "" {
-		return nil
-	}
-	f, err := os.Open(path)
-	if err != nil {
-		g.caiLoadErr = fmt.Errorf("opening CAI metadata %s: %w", path, err)
-		return g.caiLoadErr
-	}
-	defer f.Close()
+		path := g.resolveCAIMetadataPath()
+		if path == "" {
+			return
+		}
+		f, err := os.Open(path)
+		if err != nil {
+			g.caiLoadErr = fmt.Errorf("opening CAI metadata %s: %w", path, err)
+			return
+		}
+		defer f.Close()
 
-	type caiEntry struct {
-		ResourceType string   `json:"resourceType"`
-		NameFormats  []string `json:"nameFormats"`
-	}
-	sc := bufio.NewScanner(f)
-	lineNum := 0
-	for sc.Scan() {
-		lineNum++
-		var e caiEntry
-		if err := json.Unmarshal(sc.Bytes(), &e); err != nil {
-			g.caiLoadErr = fmt.Errorf("parsing CAI metadata %s line %d: %w", path, lineNum, err)
-			return g.caiLoadErr
+		type caiEntry struct {
+			ResourceType string   `json:"resourceType"`
+			NameFormats  []string `json:"nameFormats"`
 		}
-		g.caiByType[e.ResourceType] = append(g.caiByType[e.ResourceType], e.NameFormats...)
-		for _, nf := range e.NameFormats {
-			g.caiFormats[caiVarNormalizeRe.ReplaceAllString(nf, "{}")] = true
+		sc := bufio.NewScanner(f)
+		lineNum := 0
+		for sc.Scan() {
+			lineNum++
+			var e caiEntry
+			if err := json.Unmarshal(sc.Bytes(), &e); err != nil {
+				g.caiLoadErr = fmt.Errorf("parsing CAI metadata %s line %d: %w", path, lineNum, err)
+				return
+			}
+			g.caiByType[e.ResourceType] = append(g.caiByType[e.ResourceType], e.NameFormats...)
+			for _, nf := range e.NameFormats {
+				g.caiFormats[caiVarNormalizeRe.ReplaceAllString(nf, "{}")] = true
+			}
 		}
-	}
-	if err := sc.Err(); err != nil {
-		g.caiLoadErr = fmt.Errorf("scanning CAI metadata %s: %w", path, err)
-		return g.caiLoadErr
-	}
-	return nil
+		if err := sc.Err(); err != nil {
+			g.caiLoadErr = fmt.Errorf("scanning CAI metadata %s: %w", path, err)
+		}
+	})
+	return g.caiLoadErr
 }
 
 func (g *IdentityGenerator) resolveCAIMetadataPath() string {

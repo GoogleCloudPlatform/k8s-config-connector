@@ -559,3 +559,72 @@ func assertValidGoSource(t *testing.T, filename string, src []byte) {
 		t.Fatalf("generated %s is not valid Go:\n%s\nerr: %v", filename, string(src), err)
 	}
 }
+
+func TestPopulatePatternSegmentsThreeRepeatedPlaceholders(t *testing.T) {
+	plan := &IdentityPlan{}
+	populatePatternSegments(plan, "folders/{folder}/folders/{folder}/folders/{folder}/items/{item}")
+	if len(plan.Fields) != 4 {
+		t.Fatalf("expected 4 fields, got %d", len(plan.Fields))
+	}
+	wantStructFields := []string{"Folder", "Folder2", "Folder3", "Item"}
+	wantTmplVars := []string{"folder", "folder2", "folder3", "item"}
+	for i := range wantStructFields {
+		if plan.Fields[i].StructField != wantStructFields[i] {
+			t.Errorf("field[%d].StructField = %q, want %q", i, plan.Fields[i].StructField, wantStructFields[i])
+		}
+		if plan.Fields[i].TemplateVar != wantTmplVars[i] {
+			t.Errorf("field[%d].TemplateVar = %q, want %q", i, plan.Fields[i].TemplateVar, wantTmplVars[i])
+		}
+	}
+}
+
+func TestIsServerGeneratedCreateInputSkipsRequestID(t *testing.T) {
+	fdp := &descriptorpb.FileDescriptorProto{
+		Name:    proto.String("create_test.proto"),
+		Package: proto.String("google.example.v1"),
+		Syntax:  proto.String("proto3"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name: proto.String("CreateWithRequestIDOnlyRequest"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: proto.String("parent"), Number: proto.Int32(1), Type: descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum()},
+					{Name: proto.String("request_id"), Number: proto.Int32(2), Type: descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum()},
+				},
+			},
+			{
+				Name: proto.String("CreateWithResourceIDAndRequestIDRequest"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: proto.String("parent"), Number: proto.Int32(1), Type: descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum()},
+					{Name: proto.String("widget_id"), Number: proto.Int32(2), Type: descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum()},
+					{Name: proto.String("request_id"), Number: proto.Int32(3), Type: descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum()},
+				},
+			},
+		},
+	}
+	fd, err := protodesc.NewFile(fdp, nil)
+	if err != nil {
+		t.Fatalf("protodesc.NewFile: %v", err)
+	}
+	reqOnly := fd.Messages().ByName("CreateWithRequestIDOnlyRequest")
+	if !isServerGeneratedCreateInput(reqOnly.Fields()) {
+		t.Errorf("expected CreateWithRequestIDOnlyRequest (only parent + request_id) to be server-generated")
+	}
+	withWidgetID := fd.Messages().ByName("CreateWithResourceIDAndRequestIDRequest")
+	if isServerGeneratedCreateInput(withWidgetID.Fields()) {
+		t.Errorf("expected CreateWithResourceIDAndRequestIDRequest (has widget_id) not to be server-generated")
+	}
+}
+
+func TestSafeAncestorVarNameKeywords(t *testing.T) {
+	for _, kw := range []string{"break", "case", "chan", "const", "continue", "default", "defer", "else",
+		"fallthrough", "for", "func", "go", "goto", "if", "import", "interface",
+		"map", "package", "range", "return", "select", "struct", "switch", "type", "var"} {
+		if got, want := safeAncestorVarName(kw), kw+"ID"; got != want {
+			t.Errorf("safeAncestorVarName(%q) = %q, want %q", kw, got, want)
+		}
+	}
+	if got, want := safeAncestorVarName("cluster"), "cluster"; got != want {
+		t.Errorf("safeAncestorVarName(\"cluster\") = %q, want %q", got, want)
+	}
+}
+

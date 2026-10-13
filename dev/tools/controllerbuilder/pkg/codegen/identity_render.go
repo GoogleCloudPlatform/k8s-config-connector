@@ -606,7 +606,9 @@ func renderParentRefSegmentLookup(w *bytes.Buffer, anc AncestorResolution, varNa
 func safeAncestorVarName(rawPlaceholder string) string {
 	varName := snakeToLowerCamel(rawPlaceholder)
 	switch varName {
-	case "type", "func", "range", "map", "default", "select", "case", "interface", "struct", "package", "import":
+	case "break", "case", "chan", "const", "continue", "default", "defer", "else",
+		"fallthrough", "for", "func", "go", "goto", "if", "import", "interface",
+		"map", "package", "range", "return", "select", "struct", "switch", "type", "var":
 		return varName + "ID"
 	default:
 		return varName
