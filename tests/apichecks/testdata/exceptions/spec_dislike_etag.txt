@@ -1,0 +1,3 @@
+[spec_etag] crd=cesexamples.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
+[spec_etag] crd=cesguardrails.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
+[spec_etag] crd=cestools.ces.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
