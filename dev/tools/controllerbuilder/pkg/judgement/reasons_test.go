@@ -30,7 +30,7 @@ func TestIsReferenceReason(t *testing.T) {
 		{ReasonPossibleReferenceByName, true},
 		{ReasonPossibleReferenceBySibling, true},
 		{ReasonReferenceNotRepresentable, false},
-		{"untriaged-bulk-generation", false},
+		{ReasonUntriagedBulkGeneration, false},
 	} {
 		t.Run(tc.reason, func(t *testing.T) {
 			// Act
