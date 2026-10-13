@@ -420,7 +420,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "osconfig.cnrm.cloud.google.com", Kind: "OSConfigGuestPolicy"}:
 	case schema.GroupKind{Group: "osconfig.cnrm.cloud.google.com", Kind: "OSConfigOSPolicyAssignment"}:
 	case schema.GroupKind{Group: "osconfig.cnrm.cloud.google.com", Kind: "OSConfigPatchDeployment"}:
-	case schema.GroupKind{Group: "oslogin.cnrm.cloud.google.com", Kind: "OSLoginSSHPublicKey"}:
 	case schema.GroupKind{Group: "privateca.cnrm.cloud.google.com", Kind: "PrivateCACAPool"}:
 	case schema.GroupKind{Group: "privateca.cnrm.cloud.google.com", Kind: "PrivateCACertificateAuthority"}:
 	case schema.GroupKind{Group: "privateca.cnrm.cloud.google.com", Kind: "PrivateCACertificate"}:

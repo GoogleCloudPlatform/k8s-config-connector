@@ -43,6 +43,7 @@ var allServices = []string{
 	"cloudapis.googleapis.com",
 	"orgpolicy.googleapis.com",
 	"osconfig.googleapis.com",
+	"oslogin.googleapis.com",
 	"privateca.googleapis.com",
 }
 

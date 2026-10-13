@@ -84,6 +84,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknotebooks"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockorgpolicy"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockosconfig"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockoslogin"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockparametermanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivateca"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockpubsub"

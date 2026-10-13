@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,5 +17,6 @@ kind: OSLoginSSHPublicKey
 metadata:
   name: osloginsshpublickey-${uniqueId}
 spec:
-  key: ${file("path/to/id_rsa.pub")}
-  user: ${data.google_client_openid_userinfo.me.email}
+  key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPM4pxpbPpjuBocS6qlW0BHRYgH5xmv/yVrANZR9lc1N test-user@example.com"
+  user: "test-user-${uniqueId}@example.com"
+  expirationTimeUsec: "1893456000000000"
