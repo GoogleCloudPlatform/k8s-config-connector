@@ -21,6 +21,7 @@ import (
 	gcp "cloud.google.com/go/certificatemanager/apiv1"
 	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -95,9 +96,10 @@ func (m *certificateMapEntryModel) AdapterForObject(ctx context.Context, op *dir
 	desiredPb.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
 
 	return &CertificateMapEntryAdapter{
-		id:        identity.(*krm.CertificateManagerCertificateMapEntryIdentity),
-		gcpClient: gcpClient,
-		desired:   desiredPb,
+		id:            identity.(*krm.CertificateManagerCertificateMapEntryIdentity),
+		gcpClient:     gcpClient,
+		desired:       desiredPb,
+		projectMapper: m.config.ProjectMapper,
 	}, nil
 }
 
@@ -114,16 +116,18 @@ func (m *certificateMapEntryModel) AdapterForURL(ctx context.Context, url string
 	}
 
 	return &CertificateMapEntryAdapter{
-		id:        id,
-		gcpClient: gcpClient,
+		id:            id,
+		gcpClient:     gcpClient,
+		projectMapper: m.config.ProjectMapper,
 	}, nil
 }
 
 type CertificateMapEntryAdapter struct {
-	id        *krm.CertificateManagerCertificateMapEntryIdentity
-	gcpClient *gcp.Client
-	desired   *pb.CertificateMapEntry
-	actual    *pb.CertificateMapEntry
+	id            *krm.CertificateManagerCertificateMapEntryIdentity
+	gcpClient     *gcp.Client
+	desired       *pb.CertificateMapEntry
+	actual        *pb.CertificateMapEntry
+	projectMapper *projects.ProjectMapper
 }
 
 var _ directbase.Adapter = &CertificateMapEntryAdapter{}
@@ -175,7 +179,7 @@ func (a *CertificateMapEntryAdapter) Update(ctx context.Context, updateOp *direc
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating CertificateManagerCertificateMapEntry", "name", a.id.String())
 
-	diffs, updateMask, err := compareCertificateMapEntry(ctx, a.actual, a.desired)
+	diffs, updateMask, err := compareCertificateMapEntry(ctx, a.projectMapper, a.actual, a.desired)
 	if err != nil {
 		return err
 	}
@@ -273,14 +277,31 @@ func (a *CertificateMapEntryAdapter) Delete(ctx context.Context, deleteOp *direc
 	return true, nil
 }
 
-func compareCertificateMapEntry(ctx context.Context, actual, desired *pb.CertificateMapEntry) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+func compareCertificateMapEntry(ctx context.Context, projectMapper *projects.ProjectMapper, actual, desired *pb.CertificateMapEntry) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
 	maskedActual, err := mappers.OnlySpecFields(actual, CertificateManagerCertificateMapEntrySpec_v1beta1_FromProto, CertificateManagerCertificateMapEntrySpec_v1beta1_ToProto)
 	if err != nil {
 		return nil, nil, err
 	}
 	maskedActual.Name = desired.Name
 	maskedActual.Labels = actual.Labels
-	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+
+	clonedDesired := proto.Clone(desired).(*pb.CertificateMapEntry)
+
+	// Normalize project number to project ID in certificates for both actual and desired
+	if projectMapper != nil {
+		for i, cert := range maskedActual.Certificates {
+			if normalized, err := projectMapper.ReplaceProjectNumberWithIDInLink(ctx, cert); err == nil {
+				maskedActual.Certificates[i] = normalized
+			}
+		}
+		for i, cert := range clonedDesired.Certificates {
+			if normalized, err := projectMapper.ReplaceProjectNumberWithIDInLink(ctx, cert); err == nil {
+				clonedDesired.Certificates[i] = normalized
+			}
+		}
+	}
+
+	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
 	}
