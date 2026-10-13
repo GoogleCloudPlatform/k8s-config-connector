@@ -141,7 +141,7 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 			// field lands in both structs.
 			out.Judgement = append(out.Judgement, JudgementItem{
 				FieldPath: ".status.observedState." + codegen.GetJSONForKRM(field, opts),
-				Reason:    "server-set-field-placed",
+				Reason:    judgement.ReasonServerSetFieldPlaced,
 				Detail: "moved to ObservedState because its name is on the " +
 					"server-set allowlist, not because the proto says so: no " +
 					"field on this message carries field_behavior. Confirm GCP " +
@@ -162,7 +162,7 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 			// field, so the detail says what to do in both cases.
 			out.Judgement = append(out.Judgement, JudgementItem{
 				FieldPath: ".spec." + codegen.GetJSONForKRM(field, opts),
-				Reason:    "deprecated-field",
+				Reason:    judgement.ReasonDeprecatedField,
 				Detail: "the proto marks this field deprecated, so new Kinds leave it out of the Spec. " +
 					"If this Spec still has it, remove it by hand; add it back only if users still need it",
 			})
@@ -194,14 +194,14 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 		if _, reason, ok := codegen.UnsupportedFieldMarker(field_.String()); ok {
 			out.Judgement = append(out.Judgement, JudgementItem{
 				FieldPath: ".spec." + codegen.GetJSONForKRM(field, opts),
-				Reason:    "unsupported-field-type",
+				Reason:    judgement.ReasonUnsupportedFieldType,
 				Detail:    reason,
 			})
 		} else if opts.EmitMessageMaps {
 			if protoMsg, goType, ok := codegen.MessageMapValueInfo(field); ok {
 				out.Judgement = append(out.Judgement, JudgementItem{
 					FieldPath: ".spec." + codegen.GetJSONForKRM(field, opts),
-					Reason:    "message-map-derived",
+					Reason:    judgement.ReasonMessageMapDerived,
 					Detail:    fmt.Sprintf("derived as map[string]%s from proto %s; verify Go type and mapping", goType, protoMsg),
 				})
 			}
@@ -233,7 +233,7 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 // PrepopulateObservedState generates the struct body for the resource-level
 // <Kind>ObservedState from output message details, along with queue entries
 // for any output-only fields that require review or could not be mapped.
-func PrepopulateObservedState(details *codegen.OutputMessageDetails, observedStateMessages sets.String, opts codegen.WriteOptions) (fields string, judgement []JudgementItem) {
+func PrepopulateObservedState(details *codegen.OutputMessageDetails, observedStateMessages sets.String, opts codegen.WriteOptions) (fields string, items []JudgementItem) {
 	if details == nil {
 		return "", nil
 	}
@@ -249,31 +249,41 @@ func PrepopulateObservedState(details *codegen.OutputMessageDetails, observedSta
 	for _, n := range notes {
 		switch {
 		case n.Skipped:
-			judgement = append(judgement, JudgementItem{
+			items = append(items, JudgementItem{
 				FieldPath: ".status.observedState." + n.JSONName,
-				Reason:    "observedstate-identity-field-omitted",
+				Reason:    judgement.ReasonObservedStateIdentityFieldOmitted,
 				Detail:    "proto marks field OUTPUT_ONLY; resource name is represented by status.externalRef. Verify applicability for this resource",
 			})
 		default:
 			if _, reason, ok := codegen.UnsupportedFieldMarker(n.Rendered); ok {
-				judgement = append(judgement, JudgementItem{
+				items = append(items, JudgementItem{
 					FieldPath: ".status.observedState." + n.JSONName,
-					Reason:    "unsupported-field-type",
+					Reason:    judgement.ReasonUnsupportedFieldType,
 					Detail:    reason,
 				})
 			} else if opts.EmitMessageMaps && n.Field != nil {
 				if protoMsg, goType, ok := codegen.MessageMapValueInfo(n.Field); ok {
-					judgement = append(judgement, JudgementItem{
+					items = append(items, JudgementItem{
 						FieldPath: ".status.observedState." + n.JSONName,
-						Reason:    "message-map-derived",
+						Reason:    judgement.ReasonMessageMapDerived,
 						Detail:    fmt.Sprintf("derived as map[string]%s from proto %s; verify Go type and mapping", goType, protoMsg),
 					})
 				}
 			}
+			isOut := isOutputOrServerSetField(n.Field, details.Message, opts)
+			walkObservedStateWellKnownProtoTypes(n.Field, ".status.observedState."+n.JSONName, opts, observedStateMessages, isOut || details.ForceAll, map[protoreflect.FullName]bool{}, &items)
 		}
 	}
 
-	return fields, judgement
+	return fields, items
+}
+
+func isOutputOrServerSetField(field protoreflect.FieldDescriptor, msg protoreflect.MessageDescriptor, opts codegen.WriteOptions) bool {
+	if field == nil {
+		return false
+	}
+	return codegen.IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) ||
+		codegen.IsServerSetField(field, msg, opts)
 }
 
 // judgementFor checks whether a proto field carries a google.api.resource_reference
@@ -342,20 +352,14 @@ func ExtraImportsFor(bodies ...string) []string {
 	return out
 }
 
-// Reasons for an OutputOnlyCandidate.
-const (
-	reasonWellKnownOutputOnlyPattern = "well-known-output-only-pattern-in-comment"
-	reasonPossibleOutputOnlyPattern  = "possible-output-only-pattern-in-comment"
-)
-
 // OutputOnlyCandidate is a field the proto documents as output-only in prose
 // while carrying no google.api.field_behavior annotation to say so.
 type OutputOnlyCandidate struct {
 	// FieldPath is the KRM path the field was emitted at, e.g. ".spec.createTime"
 	// or, for a nested field, ".spec.config.state".
 	FieldPath string
-	// Reason is reasonWellKnownOutputOnlyPattern when the comment starts with
-	// one of outputOnlyPrefixes. It is reasonPossibleOutputOnlyPattern, a
+	// Reason is judgement.ReasonWellKnownOutputOnlyPattern when the comment starts with
+	// one of outputOnlyPrefixes. It is judgement.ReasonPossibleOutputOnlyPattern, a
 	// weaker signal, when the comment says "output only" any other way.
 	Reason string
 	// Comment is the proto's leading comment, so a reviewer can decide without
@@ -370,15 +374,109 @@ type OutputOnlyCandidate struct {
 // not point there. A nested field keeps the rest of its path, so
 // .spec.config.state becomes .status.observedState.config.state.
 func (c OutputOnlyCandidate) Item() JudgementItem {
-	detail := "proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec."
-	if c.Reason == reasonPossibleOutputOnlyPattern {
-		detail = "proto comment mentions output only but doesn't start with \"Output only.\" or \"[Output Only]\", and there is no field_behavior annotation, so it was generated into the Spec. " +
+	targetPath := ".status.observedState." + strings.TrimPrefix(c.FieldPath, ".spec.")
+	detail := "proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at " + c.FieldPath + "."
+	if c.Reason == judgement.ReasonPossibleOutputOnlyPattern {
+		detail = "proto comment mentions output only but doesn't start with \"Output only.\" or \"[Output Only]\", and there is no field_behavior annotation, so it was generated into the Spec at " + c.FieldPath + ". " +
 			"The comment may be a typo, apply only some of the time, or mean something else."
 	}
 	return JudgementItem{
-		FieldPath: ".status.observedState." + strings.TrimPrefix(c.FieldPath, ".spec."),
+		FieldPath: targetPath,
 		Reason:    c.Reason,
-		Detail:    detail + " Move the field to status.observedState if it is confirmed output only. Proto comment: " + c.Comment,
+		Detail:    detail + " Move the field to " + targetPath + " if it is confirmed output only. Proto comment: " + c.Comment,
+	}
+}
+
+// wellKnownProtoTypeItem returns a queue entry if field uses a google.protobuf.*
+// message type that is generated as a Go struct rather than mapped to a scalar
+// or special KRM type (e.g. google.protobuf.DoubleValue, Int32Value, Empty).
+func wellKnownProtoTypeItem(field protoreflect.FieldDescriptor, path string) (JudgementItem, bool) {
+	if field.ContainingMessage() != nil && strings.HasPrefix(string(field.ContainingMessage().FullName()), "google.protobuf.") {
+		return JudgementItem{}, false
+	}
+	var subMsg protoreflect.MessageDescriptor
+	switch {
+	case field.IsMap():
+		if v := field.MapValue(); v.Kind() == protoreflect.MessageKind {
+			subMsg = v.Message()
+		}
+	case field.Kind() == protoreflect.MessageKind:
+		subMsg = field.Message()
+	}
+	if subMsg == nil || !codegen.MapsToGoStruct(subMsg) {
+		return JudgementItem{}, false
+	}
+	if !strings.HasPrefix(string(subMsg.FullName()), "google.protobuf.") {
+		return JudgementItem{}, false
+	}
+	return JudgementItem{
+		FieldPath: path,
+		Reason:    judgement.ReasonWellKnownProtoType,
+		Detail: fmt.Sprintf("field uses well-known protobuf type %s, which was generated as struct %s; confirm KRM representation",
+			subMsg.FullName(), codegen.GoNameForProtoMessage(subMsg)),
+	}, true
+}
+
+// WellKnownProtoTypes returns a queue entry for each Spec field, at any depth,
+// that uses a google.protobuf.* message type generated as a Go struct.
+func WellKnownProtoTypes(msg protoreflect.MessageDescriptor, opts codegen.WriteOptions) []JudgementItem {
+	if msg == nil {
+		return nil
+	}
+	var out []JudgementItem
+	walkSpecFields(msg, ".spec", opts, true, map[protoreflect.FullName]bool{}, func(path, _ string, field protoreflect.FieldDescriptor) {
+		if item, ok := wellKnownProtoTypeItem(field, path); ok {
+			out = append(out, item)
+		}
+	})
+	return out
+}
+
+func walkObservedStateWellKnownProtoTypes(field protoreflect.FieldDescriptor, path string, opts codegen.WriteOptions, observedStateMessages sets.String, forceAll bool, onPath map[protoreflect.FullName]bool, out *[]JudgementItem) {
+	if field == nil {
+		return
+	}
+	if item, ok := wellKnownProtoTypeItem(field, path); ok {
+		*out = append(*out, item)
+	}
+	var subMsg protoreflect.MessageDescriptor
+	nextPrefix := path
+	switch {
+	case field.IsMap():
+		if value := field.MapValue(); value.Kind() == protoreflect.MessageKind && codegen.MapsToGoStruct(value.Message()) {
+			subMsg = value.Message()
+			nextPrefix = path + ".KEY"
+		}
+	case field.Kind() == protoreflect.MessageKind && codegen.MapsToGoStruct(field.Message()):
+		subMsg = field.Message()
+		if field.IsList() {
+			nextPrefix += "[]"
+		}
+	}
+	if subMsg == nil || strings.HasPrefix(string(subMsg.FullName()), "google.protobuf.") || onPath[subMsg.FullName()] {
+		return
+	}
+	onPath[subMsg.FullName()] = true
+	defer delete(onPath, subMsg.FullName())
+	subUsesObservedState := !field.IsMap() && observedStateMessages.Has(string(subMsg.FullName()))
+	for i := 0; i < subMsg.Fields().Len(); i++ {
+		child := subMsg.Fields().Get(i)
+		childIsOut := codegen.IsFieldBehavior(child, annotations.FieldBehavior_OUTPUT_ONLY)
+		childHasOutputs := child.Kind() == protoreflect.MessageKind && !child.IsMap() && observedStateMessages.Has(string(child.Message().FullName()))
+		if subUsesObservedState {
+			if !forceAll && !childIsOut && !childHasOutputs {
+				continue
+			}
+		} else {
+			if childIsOut || (opts.Prepopulating && codegen.IsFieldAllOutputOnlyMessage(child)) {
+				continue
+			}
+		}
+		if _, err := codegen.GoTypeForField(child, false, opts); err != nil {
+			continue
+		}
+		childPath := nextPrefix + "." + codegen.GetJSONForKRM(child, opts)
+		walkObservedStateWellKnownProtoTypes(child, childPath, opts, observedStateMessages, forceAll || childIsOut, onPath, out)
 	}
 }
 
@@ -421,8 +519,8 @@ func DetectOutputOnlyInComments(msg protoreflect.MessageDescriptor, opts codegen
 // says the field is output only, and how strongly.
 //
 // A comment that starts with one of outputOnlyPrefixes gets
-// reasonWellKnownOutputOnlyPattern. Any other mention of "output only" gets
-// reasonPossibleOutputOnlyPattern. That covers the words after other text,
+// judgement.ReasonWellKnownOutputOnlyPattern. Any other mention of "output only" gets
+// judgement.ReasonPossibleOutputOnlyPattern. That covers the words after other text,
 // as in websecurityscanner's managed_scan: "Whether the scan config is
 // managed by Web Security Scanner, output only." It also covers a comment
 // that starts with the words but not with a prefix. That is usually a typo,
@@ -432,11 +530,11 @@ func DetectOutputOnlyInComments(msg protoreflect.MessageDescriptor, opts codegen
 func outputOnlyReason(comment string) (string, bool) {
 	for _, prefix := range outputOnlyPrefixes {
 		if len(comment) >= len(prefix) && strings.EqualFold(comment[:len(prefix)], prefix) {
-			return reasonWellKnownOutputOnlyPattern, true
+			return judgement.ReasonWellKnownOutputOnlyPattern, true
 		}
 	}
 	if outputOnlyMention.MatchString(comment) {
-		return reasonPossibleOutputOnlyPattern, true
+		return judgement.ReasonPossibleOutputOnlyPattern, true
 	}
 	return "", false
 }

@@ -248,6 +248,49 @@ func deprecatedMessage(t *testing.T) protoreflect.MessageDescriptor {
 	return fd.Messages().ByName("Widget")
 }
 
+func TestDeprecatedMessageAndResource(t *testing.T) {
+	str := fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)
+	msgType := fieldType(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE)
+	fd, err := protodesc.NewFile(&descriptorpb.FileDescriptorProto{
+		Name:    strPtr("deprecated_msg.proto"),
+		Package: strPtr("google.cloud.test.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name:    strPtr("LegacySubConfig"),
+				Options: &descriptorpb.MessageOptions{Deprecated: proto.Bool(true)},
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("mode"), Number: i32Ptr(1), Type: str},
+				},
+			},
+			{
+				Name:    strPtr("LegacyResource"),
+				Options: &descriptorpb.MessageOptions{Deprecated: proto.Bool(true)},
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("sub_config"), Number: i32Ptr(1), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.LegacySubConfig")},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		t.Fatalf("building file descriptor: %v", err)
+	}
+	got := NestedDeprecatedFields(fd.Messages().ByName("LegacyResource"), codegen.WriteOptions{})
+	want := []JudgementItem{
+		{
+			Reason: "deprecated-resource",
+			Detail: "the proto marks message google.cloud.test.v1.LegacyResource deprecated (option deprecated = true); confirm whether this resource should be generated",
+		},
+		{
+			FieldPath: ".spec.subConfig",
+			Reason:    "deprecated-message",
+			Detail:    "the proto marks message google.cloud.test.v1.LegacySubConfig deprecated (option deprecated = true); confirm whether this field should be kept",
+		},
+	}
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("NestedDeprecatedFields() mismatch (-want +got):\n%s", diff)
+	}
+}
+
 // markDeprecated sets [deprecated = true] on o, or on new options if o is nil.
 func markDeprecated(o *descriptorpb.FieldOptions) *descriptorpb.FieldOptions {
 	if o == nil {
