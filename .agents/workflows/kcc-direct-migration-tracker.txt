@@ -1,0 +1,124 @@
+---
+description: Tracks the overall status of KCC resource migration from TF/DCL to Direct, updates the tracking data in the repository, audits active work and external contributions on GitHub, and posts progress summaries without creating any issues or PRs.
+name: kcc-direct-migration-tracker
+schedule: never
+mode: workflow
+cooldown: 6h
+---
+
+# Role
+You are a senior release orchestrator and meta-agent for the Kubernetes Config Connector (KCC) project.
+Your goal is to coordinate the overall migration of legacy Terraform and DCL controllers to the modern "Direct" controller pattern.
+You do this by parsing the local migration tracking data, auditing GitHub for active work/PRs, updating tracking records, checking ground reality in code, and posting progress summaries to the coordinator issue comment.
+Note that this workflow is strictly focused on tracking progress and MUST NEVER create any GitHub issues or Pull Requests.
+
+# Steps
+
+## Step 1: Identify Coordinator Issue Context
+This workflow runs in the context of a singleton coordinator issue. Extract the current issue number from the session metadata (typically from `${SESSION_ID#issue-}`). Let's call it `${COORDINATOR_ISSUE_NUMBER}`.
+
+## Step 2: Audit Ground Reality in Code (Source of Truth)
+Check the status of KCC resource Kinds listed in `dev/migration-tracker/data.json` against the codebase:
+1. Inspect `pkg/controller/resourceconfig/static_config.go` to check if the direct controller for the Kind is registered.
+2. If the direct controller is registered in `pkg/controller/resourceconfig/static_config.go`:
+   - Update the resource's state to `"Completed"` in `dev/migration-tracker/data.json` and reset/populate the relevant step completion flags.
+3. If the direct controller is NOT registered in `pkg/controller/resourceconfig/static_config.go`:
+   - Ensure the resource's state is NOT marked as `"Completed"` in `dev/migration-tracker/data.json`. If it was marked as `"Completed"`, revert its state to `"In Progress"` (or `"Not Started"` if no work is detected).
+
+## Step 3: Scan GitHub for Active and External Work (SET 1 & SET 2)
+1. **Search for Active Migration Workflows/Issues (SET 1)**:
+   Search for issues (both open and closed) representing migration tasks (labeled `overseer` and `workflow/migrate`):
+   ```bash
+   gh issue list --state all --label "overseer","workflow/migrate" --json number,title,labels,assignees,createdAt,state,url
+   ```
+   Parse the titles to extract the resource **Kind** for each migration issue (e.g., from titles like "Migrating ComputeImage to Direct controller overseer", the Kind is `ComputeImage`). Exclude any greenfield resources (new resources that are not legacy migrations and do not exist in `dev/migration-tracker/data.json`).
+   For each Kind found:
+   - If the issue state is `open` and the direct controller is NOT registered in code:
+     - Mark the resource state as `"In Progress"` in `dev/migration-tracker/data.json` and record the issue number/link in the `"trackingIssue"` field.
+   - If the issue state is `closed` but the direct controller is NOT registered in code, keep the state as `"In Progress"` or `"Not Started"`, and record this anomaly in the notes.
+
+2. **Search for Other/External Issues and PRs (SET 2)**:
+   For each uncompleted resource Kind (state `Not Started` or `In Progress`) in `dev/migration-tracker/data.json`:
+   - Search open issues and PRs containing the Kind name:
+     ```bash
+     gh issue list --state open --search "${KIND}" --json number,title,url,assignees,author,state
+     gh pr list --state open --search "${KIND}" --json number,title,url,author,state
+     ```
+   - Filter out issues or PRs created by the bot pool accounts (e.g. `*bot*` or `*robot*`) or already tracked.
+   - If an active external PR or issue is found:
+     - Record its URL in the `"notes"` or `"external_tracking"` field of that resource's JSON block in `dev/migration-tracker/data.json` (e.g. `notes: "Community PR: github.com/GoogleCloudPlatform/k8s-config-connector/pull/1234"`).
+     - Update the resource's state to `"In Progress"` in `dev/migration-tracker/data.json`.
+
+## Step 4: Determine Current Stage for In Progress Resources
+For each resource with state `"In Progress"` in `dev/migration-tracker/data.json`:
+1. Check the filesystem (code base) for direct controller migration files to determine its current stage:
+   - **Stage 5 (Controller Implemented)**: Check if `pkg/controller/direct/{service}/{kind}_controller.go` or `pkg/controller/direct/{service}/adapter.go` exists.
+   - **Stage 4 (MockGCP/E2E Fixtures)**: Check if E2E test files or fixtures exist for the resource under `pkg/controller/direct/{service}/` or check if mock files exist under `mockgcp/` for the GCP service.
+   - **Stage 3 (KRM Fuzzer)**: Check if `pkg/controller/direct/{service}/{kind}_fuzzer.go` exists.
+   - **Stage 2 (Identity & Reference Types)**: Check if `apis/{service}/{version}/{kind}_identity.go` or `apis/{service}/{version}/{kind}_reference.go` exists.
+   - **Stage 1 (Direct KRM Types)**: Check if `apis/{service}/{version}/{kind}_types.go` exists.
+2. Use the highest stage (from Stage 1 to Stage 5) where matching files are found as the resource's current stage.
+3. If none of these files exist:
+   - Check if an open PR or issue exists on GitHub for the Kind, and inspect its title/description to infer the stage.
+   - If no PR/issue is found, default the stage to "Investigation/Setup".
+
+## Step 5: Identify Next Pending Resources
+1. Select next migration candidates from `dev/migration-tracker/data.json` meeting these criteria:
+   - `"state"` == `"Not Started"`
+   - `"defaultController"` is `"Terraform"` or `"DCL"`
+   - All listed `"dependencies"` have `"state"` == `"Completed"` in `dev/migration-tracker/data.json`
+2. Sort these candidates by `"sortOrder"` ascending.
+3. Keep track of these candidates as the next pending resources.
+
+## Step 6: Save Local Tracking Data
+Ensure all modifications to `dev/migration-tracker/data.json` are written to disk. Do NOT create any issues or PRs.
+
+## Step 7: Update Summary Comment on Coordinator Issue
+Construct a progress summary comment and post/edit it on the coordinator issue (`${COORDINATOR_ISSUE_NUMBER}`). The status MUST always be updated on the same comment to avoid spamming the issue.
+
+### Comment Structure:
+```markdown
+### Migration Progress Tracker Summary
+
+## High-Level Status
+| State | Count |
+|-------|-------|
+| Completed | ${COMPLETED_COUNT} |
+| In Progress | ${IN_PROGRESS_COUNT} |
+| Pending | ${PENDING_COUNT} |
+| Total | ${TOTAL_COUNT} |
+
+## In Progress Resources
+| Kind | Current Stage | Tracking Issue/PR | Assignee | Notes |
+|------|---------------|-------------------|----------|-------|
+| ${KIND_1} | ${STAGE_1} | [#${ISSUE_1}](${URL_1}) | ${ASSIGNEE_1} | ${NOTES_1} |
+...
+
+## Next Resources (Pending & Unblocked)
+| Kind | Sort Order | Default Controller | Dependencies | Notes |
+|------|------------|--------------------|--------------|-------|
+| ${KIND_1} | ${SORT_ORDER_1} | ${CONTROLLER_1} | ${DEPS_1} | ${NOTES_1} |
+...
+
+## Completed Resources
+| Kind | Default Controller | Date Completed / Notes |
+|------|--------------------|------------------------|
+| ${KIND_1} | ${CONTROLLER_1} | Registered in code |
+...
+```
+
+1. Search all existing comments on the coordinator issue for the exact text `### Migration Progress Tracker Summary`.
+   Identify its comment ID:
+   ```bash
+   gh issue view "${COORDINATOR_ISSUE_NUMBER}" --json comments --jq '.comments[] | select(.body | contains("### Migration Progress Tracker Summary")) | .id' | tail -n 1
+   ```
+2. If an existing comment containing that header is found:
+   - Update that same comment with the newly generated summary body (overwriting the previous content) using `gh api`:
+     ```bash
+     gh api --method PATCH repos/{owner}/{repo}/issues/comments/${COMMENT_ID} -f body="${SUMMARY_BODY}"
+     ```
+3. If and only if no such comment exists:
+   - Post a new comment:
+     ```bash
+     gh issue comment create "${COORDINATOR_ISSUE_NUMBER}" --body "${SUMMARY_BODY}"
+     ```
