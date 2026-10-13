@@ -24,6 +24,7 @@ spec:
   bigqueryConfig:
     tableRef:
       name: bigquerytable-1-${uniqueId}
+    useTableSchema: true
     useTopicSchema: false
     writeMetadata: false
     dropUnknownFields: true
