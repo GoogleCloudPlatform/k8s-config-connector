@@ -1,0 +1,94 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ArtifactRegistryRepository/arrepository-${uniqueId}",
+    "fields": [
+      {
+        "id": "create_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "test remote repository description"
+      },
+      {
+        "id": "format",
+        "old": "",
+        "new": "DOCKER"
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "3"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.label-one",
+        "old": "",
+        "new": "value-one"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "location",
+        "old": "",
+        "new": "us-west1"
+      },
+      {
+        "id": "mode",
+        "old": "",
+        "new": "REMOTE_REPOSITORY"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "remote_repository_config.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "remote_repository_config.0.common_repository.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "remote_repository_config.0.common_repository.0.uri",
+        "old": "",
+        "new": "https://docker.io"
+      },
+      {
+        "id": "remote_repository_config.0.description",
+        "old": "",
+        "new": "test remote repository"
+      },
+      {
+        "id": "repository_id",
+        "old": "",
+        "new": "arrepository-${uniqueId}"
+      },
+      {
+        "id": "update_time",
+        "old": "",
+        "new": ""
+      }
+    ]
+  }
+]

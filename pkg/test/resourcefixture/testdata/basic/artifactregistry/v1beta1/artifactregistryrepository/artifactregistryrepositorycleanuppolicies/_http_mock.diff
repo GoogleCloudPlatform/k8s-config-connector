@@ -1,0 +1,171 @@
+1c1
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+24c24
+< POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories?alt=json&repository_id=arrepository-${uniqueId}
+---
+> POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories?%24alt=json%3Benum-encoding%3Dint&repositoryId=arrepository-${uniqueId}
+30c30
+<       "action": "DELETE",
+---
+>       "action": 1,
+36,37c36,38
+<         "tagState": "ANY"
+<       }
+---
+>         "tagState": 3
+>       },
+>       "id": "delete-prerelease"
+40c41,42
+<       "action": "KEEP",
+---
+>       "action": 2,
+>       "id": "keep-minimum-versions",
+50c52
+<   "format": "DOCKER",
+---
+>   "format": 1,
+55,56c57
+<   },
+<   "mode": "STANDARD_REPOSITORY"
+---
+>   }
+78c79
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}
+108c109,110
+<         }
+---
+>         },
+>         "id": "delete-prerelease"
+111a114
+>         "id": "keep-minimum-versions",
+140c143
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+156c159
+<       "action": "DELETE",
+---
+>       "action": 1,
+162,163c165,167
+<         "tagState": "ANY"
+<       }
+---
+>         "tagState": 3
+>       },
+>       "id": "delete-prerelease"
+166c170,171
+<       "action": "KEEP",
+---
+>       "action": 2,
+>       "id": "keep-minimum-versions",
+177c182
+<   "format": "DOCKER",
+---
+>   "format": 1,
+183c188
+<   "mode": "STANDARD_REPOSITORY",
+---
+>   "mode": 1,
+189c194
+<     "enablementState": "SCANNING_DISABLED",
+---
+>     "enablementState": 2,
+197c202
+< PATCH https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json&updateMask=description%2CcleanupPolicies
+---
+> PATCH https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=cleanupPolicies%2Cdescription
+203c208
+<       "action": "DELETE",
+---
+>       "action": 1,
+210,211c215,217
+<         "tagState": "ANY"
+<       }
+---
+>         "tagState": 3
+>       },
+>       "id": "delete-prerelease"
+214c220,221
+<       "action": "KEEP",
+---
+>       "action": 2,
+>       "id": "keep-minimum-versions",
+223a231
+>   "format": 1,
+228c236,237
+<   }
+---
+>   },
+>   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}"
+244c253
+<       "action": "DELETE",
+---
+>       "action": 1,
+251,252c260,262
+<         "tagState": "ANY"
+<       }
+---
+>         "tagState": 3
+>       },
+>       "id": "delete-prerelease"
+255c265,266
+<       "action": "KEEP",
+---
+>       "action": 2,
+>       "id": "keep-minimum-versions",
+266c277
+<   "format": "DOCKER",
+---
+>   "format": 1,
+272c283
+<   "mode": "STANDARD_REPOSITORY",
+---
+>   "mode": 1,
+277c288
+<     "enablementState": "SCANNING_DISABLED",
+---
+>     "enablementState": 2,
+285c296
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+301c312
+<       "action": "DELETE",
+---
+>       "action": 1,
+308,309c319,321
+<         "tagState": "ANY"
+<       }
+---
+>         "tagState": 3
+>       },
+>       "id": "delete-prerelease"
+312c324,325
+<       "action": "KEEP",
+---
+>       "action": 2,
+>       "id": "keep-minimum-versions",
+323c336
+<   "format": "DOCKER",
+---
+>   "format": 1,
+329c342
+<   "mode": "STANDARD_REPOSITORY",
+---
+>   "mode": 1,
+335c348
+<     "enablementState": "SCANNING_DISABLED",
+---
+>     "enablementState": 2,
+343c356
+< DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?alt=json
+---
+> DELETE https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+365c378
+< GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}?alt=json
+---
+> GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/operations/${operationID}

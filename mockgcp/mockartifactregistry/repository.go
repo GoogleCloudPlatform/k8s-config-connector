@@ -141,6 +141,10 @@ func (s *ArtifactRegistryV1) UpdateRepository(ctx context.Context, req *pb.Updat
 			obj.Description = req.Repository.GetDescription()
 		case "labels":
 			obj.Labels = req.Repository.GetLabels()
+		case "cleanup_policies", "cleanupPolicies":
+			obj.CleanupPolicies = req.Repository.GetCleanupPolicies()
+		case "cleanup_policy_dry_run", "cleanupPolicyDryRun":
+			obj.CleanupPolicyDryRun = req.Repository.GetCleanupPolicyDryRun()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
 		}

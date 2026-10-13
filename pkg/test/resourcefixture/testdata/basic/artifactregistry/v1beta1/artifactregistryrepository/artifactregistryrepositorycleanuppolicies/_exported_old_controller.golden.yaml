@@ -1,0 +1,31 @@
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
+kind: ArtifactRegistryRepository
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  labels:
+    cnrm-test: "true"
+    label-one: value-one
+    managed-by-cnrm: "true"
+  name: arrepository-${uniqueId}
+spec:
+  cleanupPolicies:
+  - action: DELETE
+    condition:
+      olderThan: 2592000s
+      tagPrefixes:
+      - alpha
+      - beta
+      tagState: ANY
+    id: delete-prerelease
+  - action: KEEP
+    id: keep-minimum-versions
+    mostRecentVersions:
+      keepCount: 10
+      packageNamePrefixes:
+      - pkg
+  description: test repository description 2
+  format: DOCKER
+  location: us-west1
+  mode: STANDARD_REPOSITORY
+  resourceID: arrepository-${uniqueId}
