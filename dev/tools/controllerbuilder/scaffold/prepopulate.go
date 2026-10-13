@@ -61,6 +61,50 @@ type PrepopulateResult struct {
 	Judgement []JudgementItem
 }
 
+// SpecFields returns the fields of msg that PrepopulateSpec writes into the
+// Spec, in proto order. generate-types uses it to plan the structs before
+// the Spec exists. Both use topLevelSkip, and a test checks that they agree.
+func SpecFields(msg protoreflect.MessageDescriptor, opts codegen.WriteOptions) []protoreflect.FieldDescriptor {
+	var out []protoreflect.FieldDescriptor
+	for i := 0; i < msg.Fields().Len(); i++ {
+		if field := msg.Fields().Get(i); topLevelSkip(field, msg, opts) == inSpec {
+			out = append(out, field)
+		}
+	}
+	return out
+}
+
+// specSkip says why PrepopulateSpec leaves a top-level field out of the Spec.
+type specSkip int
+
+const (
+	// inSpec means the field goes in the Spec.
+	inSpec specSkip = iota
+	skipOutputOnly
+	skipServerSet
+	skipIdentity
+	skipDeprecated
+)
+
+// topLevelSkip returns why PrepopulateSpec leaves a top-level field of the
+// resource message msg out of the Spec, or inSpec if the field stays.
+// SpecFields and walkSpecFields use it too, so all three drop the same
+// fields.
+func topLevelSkip(field protoreflect.FieldDescriptor, msg protoreflect.MessageDescriptor, opts codegen.WriteOptions) specSkip {
+	switch {
+	case codegen.IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY):
+		return skipOutputOnly
+	case codegen.IsServerSetField(field, msg, opts):
+		return skipServerSet
+	case identityFields[string(field.Name())]:
+		return skipIdentity
+	case isDeprecated(field):
+		return skipDeprecated
+	default:
+		return inSpec
+	}
+}
+
 // PrepopulateSpec renders the top-level Spec fields for a resource proto message.
 //
 // Fields requiring decisions (such as potential references) are emitted using
@@ -84,15 +128,15 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 	for i := 0; i < msg.Fields().Len(); i++ {
 		field := msg.Fields().Get(i)
 
-		// Output-only fields belong in ObservedState, which the type generator
-		// writes separately.
-		if codegen.IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
+		switch topLevelSkip(field, msg, opts) {
+		case skipOutputOnly:
+			// Output-only fields belong in ObservedState, which the type
+			// generator writes separately.
 			continue
-		}
-		// A server-set field goes to ObservedState, like an OUTPUT_ONLY one. This
-		// check and the type generator's have to agree, or the field lands in
-		// both structs.
-		if codegen.IsServerSetField(field, msg, opts) {
+		case skipServerSet:
+			// A server-set field goes to ObservedState, like an OUTPUT_ONLY
+			// one. This check and the type generator's have to agree, or the
+			// field lands in both structs.
 			out.Judgement = append(out.Judgement, JudgementItem{
 				FieldPath: ".status.observedState." + codegen.GetJSONForKRM(field, opts),
 				Reason:    "server-set-field-placed",
@@ -102,19 +146,18 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 					"sets this field instead of a user",
 			})
 			continue
-		}
-		if identityFields[string(field.Name())] {
-			// Identity fields (e.g. "name") are managed via status.externalRef rather
-			// than directly in spec fields.
+		case skipIdentity:
+			// Identity fields (e.g. "name") are managed via status.externalRef
+			// rather than directly in spec fields.
 			continue
-		}
-		// Leave out a field the proto marks deprecated, so a new Kind does not
-		// start with it. walkSpecFields and DetectOutputOnlyInComments skip it
-		// too, or their entries would name a path the CRD does not have.
-		//
-		// A types file scaffolded before this check can still have the field,
-		// so the detail says what to do in both cases.
-		if isDeprecated(field) {
+		case skipDeprecated:
+			// Leave out a field the proto marks deprecated, so a new Kind does
+			// not start with it. walkSpecFields and DetectOutputOnlyInComments
+			// skip it too, or their entries would name a path the CRD does not
+			// have.
+			//
+			// A types file scaffolded before this check can still have the
+			// field, so the detail says what to do in both cases.
 			out.Judgement = append(out.Judgement, JudgementItem{
 				FieldPath: ".spec." + codegen.GetJSONForKRM(field, opts),
 				Reason:    "deprecated-field",

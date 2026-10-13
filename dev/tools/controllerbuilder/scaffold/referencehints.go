@@ -79,18 +79,11 @@ func walkSpecFields(msg protoreflect.MessageDescriptor, prefix string, opts code
 			continue
 		}
 		// Skip the fields PrepopulateSpec drops, or a hint names a path the CRD
-		// does not have. This applies to identity fields, and to server-set
-		// fields when --place-server-set-fields is enabled. PrepopulateSpec only
-		// drops them from the resource's top-level message, so they are only
-		// checked at the top.
-		if top && identityFields[string(field.Name())] {
-			continue
-		}
-		if top && codegen.IsServerSetField(field, msg, opts) {
-			continue
-		}
-		// PrepopulateSpec drops deprecated top-level fields too.
-		if top && isDeprecated(field) {
+		// does not have: identity fields, server-set fields when
+		// --place-server-set-fields is enabled, and deprecated fields.
+		// PrepopulateSpec only drops them from the resource's top-level
+		// message, so they are only checked at the top.
+		if top && topLevelSkip(field, msg, opts) != inSpec {
 			continue
 		}
 		goType, err := codegen.GoTypeForField(field, false, opts)
