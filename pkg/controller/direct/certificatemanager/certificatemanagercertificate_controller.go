@@ -270,6 +270,27 @@ func compareCertificate(ctx context.Context, actual, desired *pb.Certificate) (*
 	}
 	maskedActual.Name = desired.Name
 	maskedActual.Labels = actual.Labels
+
+	// The GCP Certificate resource type (managed vs self_managed) is immutable.
+	// For self_managed certificates, GCP never returns the private key (pemPrivateKey) on GET calls.
+	// Set the desired pemPrivateKey to match actual so we don't trigger a false diff on the secret.
+	if desiredSelfManaged := desired.GetSelfManaged(); desiredSelfManaged != nil {
+		if actualSelfManaged := maskedActual.GetSelfManaged(); actualSelfManaged != nil {
+			desiredSelfManaged.PemPrivateKey = actualSelfManaged.PemPrivateKey
+		}
+	}
+
+	// For managed certificates, GCP populates server-computed state, authorization attempt info, etc.
+	// Ensure that actual and desired managed fields only compare user-specified spec fields.
+	if desiredManaged := desired.GetManaged(); desiredManaged != nil {
+		if actualManaged := maskedActual.GetManaged(); actualManaged != nil {
+			// If IssuanceConfig was not specified in desired KRM, preserve actual to prevent false diffs.
+			if desiredManaged.IssuanceConfig == "" {
+				desiredManaged.IssuanceConfig = actualManaged.IssuanceConfig
+			}
+		}
+	}
+
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
