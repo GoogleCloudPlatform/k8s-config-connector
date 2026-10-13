@@ -34,7 +34,19 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ${CONTROLLERBUILDER} generate-types     --service google.cloud.tpu.v2     --api-version tpu.cnrm.cloud.google.com/v1alpha1     --resource TPUVirtualMachine:Node
 
+${CONTROLLERBUILDER} generate-types     --service google.cloud.tpu.v2     --api-version tpu.cnrm.cloud.google.com/v1alpha1     --resource TPUQueuedResource:QueuedResource
+
 ${CONTROLLERBUILDER} generate-mapper     --service google.cloud.tpu.v2     --api-version tpu.cnrm.cloud.google.com/v1alpha1
+
+# Add +kubebuilder:validation:XPreserveUnknownFields to empty structs in types.generated.go to avoid openapi schema errors
+sed -i 's/type QueuedResource_Spot struct {/\/\/ +kubebuilder:validation:XPreserveUnknownFields\ntype QueuedResource_Spot struct {/g' "${REPO_ROOT}/apis/tpu/v1alpha1/types.generated.go"
+sed -i 's/type QueuedResourceState_AcceptedData struct {/\/\/ +kubebuilder:validation:XPreserveUnknownFields\ntype QueuedResourceState_AcceptedData struct {/g' "${REPO_ROOT}/apis/tpu/v1alpha1/types.generated.go"
+sed -i 's/type QueuedResourceState_ActiveData struct {/\/\/ +kubebuilder:validation:XPreserveUnknownFields\ntype QueuedResourceState_ActiveData struct {/g' "${REPO_ROOT}/apis/tpu/v1alpha1/types.generated.go"
+sed -i 's/type QueuedResourceState_CreatingData struct {/\/\/ +kubebuilder:validation:XPreserveUnknownFields\ntype QueuedResourceState_CreatingData struct {/g' "${REPO_ROOT}/apis/tpu/v1alpha1/types.generated.go"
+sed -i 's/type QueuedResourceState_DeletingData struct {/\/\/ +kubebuilder:validation:XPreserveUnknownFields\ntype QueuedResourceState_DeletingData struct {/g' "${REPO_ROOT}/apis/tpu/v1alpha1/types.generated.go"
+sed -i 's/type QueuedResourceState_ProvisioningData struct {/\/\/ +kubebuilder:validation:XPreserveUnknownFields\ntype QueuedResourceState_ProvisioningData struct {/g' "${REPO_ROOT}/apis/tpu/v1alpha1/types.generated.go"
+sed -i 's/type QueuedResourceState_SuspendedData struct {/\/\/ +kubebuilder:validation:XPreserveUnknownFields\ntype QueuedResourceState_SuspendedData struct {/g' "${REPO_ROOT}/apis/tpu/v1alpha1/types.generated.go"
+sed -i 's/type QueuedResourceState_SuspendingData struct {/\/\/ +kubebuilder:validation:XPreserveUnknownFields\ntype QueuedResourceState_SuspendingData struct {/g' "${REPO_ROOT}/apis/tpu/v1alpha1/types.generated.go"
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
