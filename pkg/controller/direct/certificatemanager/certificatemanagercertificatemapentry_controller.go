@@ -17,6 +17,7 @@ package certificatemanager
 import (
 	"context"
 	"fmt"
+	"strconv"
 
 	gcp "cloud.google.com/go/certificatemanager/apiv1"
 	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
@@ -175,7 +176,7 @@ func (a *CertificateMapEntryAdapter) Update(ctx context.Context, updateOp *direc
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating CertificateManagerCertificateMapEntry", "name", a.id.String())
 
-	diffs, updateMask, err := compareCertificateMapEntry(ctx, a.actual, a.desired)
+	diffs, updateMask, err := a.compareCertificateMapEntry(ctx, a.actual, a.desired)
 	if err != nil {
 		return err
 	}
@@ -273,16 +274,65 @@ func (a *CertificateMapEntryAdapter) Delete(ctx context.Context, deleteOp *direc
 	return true, nil
 }
 
-func compareCertificateMapEntry(ctx context.Context, actual, desired *pb.CertificateMapEntry) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+func isNumeric(s string) bool {
+	_, err := strconv.ParseInt(s, 10, 64)
+	return err == nil
+}
+
+func isCertificateEquivalent(actual, desired, entryProject string) bool {
+	if actual == desired {
+		return true
+	}
+	actualID, actualMatch, _ := krm.CertificateManagerCertificateIdentityFormat.Parse(actual)
+	desiredID, desiredMatch, _ := krm.CertificateManagerCertificateIdentityFormat.Parse(desired)
+	if !actualMatch || !desiredMatch {
+		return false
+	}
+	if actualID.Location != desiredID.Location || actualID.Certificate != desiredID.Certificate {
+		return false
+	}
+	if actualID.Project == desiredID.Project {
+		return true
+	}
+	// Suppress diffs when actual certificate uses project number and desired uses the entry's project ID.
+	if isNumeric(actualID.Project) && desiredID.Project == entryProject {
+		return true
+	}
+	if isNumeric(desiredID.Project) && actualID.Project == entryProject {
+		return true
+	}
+	return false
+}
+
+func normalizeActualCertificates(actual, desired []string, entryProject string) []string {
+	if len(actual) != len(desired) {
+		return actual
+	}
+	normalized := make([]string, len(actual))
+	for i := range actual {
+		if isCertificateEquivalent(actual[i], desired[i], entryProject) {
+			normalized[i] = desired[i]
+		} else {
+			normalized[i] = actual[i]
+		}
+	}
+	return normalized
+}
+
+func (a *CertificateMapEntryAdapter) compareCertificateMapEntry(ctx context.Context, actual, desired *pb.CertificateMapEntry) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
 	maskedActual, err := mappers.OnlySpecFields(actual, CertificateManagerCertificateMapEntrySpec_v1beta1_FromProto, CertificateManagerCertificateMapEntrySpec_v1beta1_ToProto)
 	if err != nil {
 		return nil, nil, err
 	}
 	maskedActual.Name = desired.Name
 	maskedActual.Labels = actual.Labels
-	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
-	if err != nil {
-		return nil, nil, err
+
+	// Suppress diffs when actual certificates returned by GCP API use project number instead of project ID.
+	entryProject := ""
+	if a.id != nil {
+		entryProject = a.id.Project
 	}
-	return diffs, updateMask, nil
+	maskedActual.Certificates = normalizeActualCertificates(maskedActual.Certificates, desired.Certificates, entryProject)
+
+	return common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 }
