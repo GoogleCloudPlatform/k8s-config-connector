@@ -29,6 +29,8 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".primary.generateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".backupSource.backupUid", "1a1a1a-222b-3cc3-d444-e555ee555555")
 	replacements.ReplacePath(".response.backupSource.backupUid", "1a1a1a-222b-3cc3-d444-e555ee555555")
+	replacements.ReplacePath(".serviceAccountEmail", "c-${projectNumber}-12345678@gcp-sa-alloydb.iam.gserviceaccount.com")
+	replacements.ReplacePath(".response.serviceAccountEmail", "c-${projectNumber}-12345678@gcp-sa-alloydb.iam.gserviceaccount.com")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
