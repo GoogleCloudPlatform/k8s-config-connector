@@ -58,11 +58,11 @@ func saasServiceMgmtUnitFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".uid")
 	f.StatusField(".create_time")
 	f.StatusField(".update_time")
+	f.StatusField(".etag")
 
 	// Unimplemented or ignore fields
 	f.Unimplemented_LabelsAnnotations(".labels")
 	f.Unimplemented_LabelsAnnotations(".annotations")
-	f.Unimplemented_Etag()
 	f.Unimplemented_NotYetTriaged(".application")
 	f.Unimplemented_NotYetTriaged(".satisfies_pzi")
 	f.Unimplemented_NotYetTriaged(".satisfies_pzs")

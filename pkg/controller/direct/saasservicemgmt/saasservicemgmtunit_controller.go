@@ -161,7 +161,13 @@ func (a *SaaSServiceMgmtUnitAdapter) Create(ctx context.Context, createOp *direc
 	}
 	log.V(2).Info("successfully created SaaSServiceMgmtUnit", "name", created.Name)
 
-	return a.updateStatus(ctx, createOp, created)
+	// Fetch fully-populated resource after create
+	latest, err := a.gcpClient.GetUnit(ctx, &pb.GetUnitRequest{Name: fqn})
+	if err != nil {
+		return fmt.Errorf("getting SaaSServiceMgmtUnit %s after create: %w", fqn, err)
+	}
+
+	return a.updateStatus(ctx, createOp, latest)
 }
 
 func (a *SaaSServiceMgmtUnitAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {

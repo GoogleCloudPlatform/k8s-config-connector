@@ -90,6 +90,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.lastModifiedCookie"] = "normalized-cookie"
 	visitor.replacePaths[".status.creationTimestamp"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.conditions[].lastTransitionTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.conditions[].lastTransitionTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.uniqueId"] = "12345678"
 	visitor.replacePaths[".status.uid"] = "12345678"
 	visitor.replacePaths[".status.observedState.uid"] = "0123456789abcdef"

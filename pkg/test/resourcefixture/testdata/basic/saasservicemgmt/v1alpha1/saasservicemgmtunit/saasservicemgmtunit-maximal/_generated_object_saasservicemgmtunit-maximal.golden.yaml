@@ -27,4 +27,21 @@ status:
     type: Ready
   externalRef: projects/${projectId}/locations/us-central1/units/saasservicemgmtunit-${uniqueId}
   observedGeneration: 2
-  observedState: {}
+  observedState:
+    conditions:
+    - lastTransitionTime: "1970-01-01T00:00:00Z"
+      status: STATUS_FALSE
+      type: TYPE_UPDATING
+    - lastTransitionTime: "1970-01-01T00:00:00Z"
+      status: STATUS_FALSE
+      type: TYPE_PROVISIONED
+    - lastTransitionTime: "1970-01-01T00:00:00Z"
+      status: STATUS_UNKNOWN
+      type: TYPE_OPERATION_ERROR
+    - lastTransitionTime: "1970-01-01T00:00:00Z"
+      status: STATUS_FALSE
+      type: TYPE_READY
+    createTime: "1970-01-01T00:00:00Z"
+    etag: abcdef123456
+    state: UNIT_STATE_NOT_PROVISIONED
+    updateTime: "1970-01-01T00:00:00Z"
