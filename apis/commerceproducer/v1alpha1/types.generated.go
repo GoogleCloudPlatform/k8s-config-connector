@@ -121,7 +121,7 @@ type PrivateOffer struct {
 }
 */
 
-/* found existing non-generated go type "PrivateOffer_Customer", skipping
+/* found existing non-generated go type with proto tag "google.cloud.commerceproducer.v1beta.PrivateOffer.Customer", skipping
 
 // +kcc:proto=google.cloud.commerceproducer.v1beta.PrivateOffer.Customer
 type PrivateOffer_Customer struct {
@@ -163,6 +163,8 @@ type PrivateOffer_Customer struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.commerceproducer.v1beta.PrivateOffer.PartnerContact", skipping
+
 // +kcc:proto=google.cloud.commerceproducer.v1beta.PrivateOffer.PartnerContact
 type PrivateOffer_PartnerContact struct {
 	// Optional. Display text identifying the partner sales contact.
@@ -180,20 +182,23 @@ type PrivateOffer_PartnerContact struct {
 	// +kcc:proto:field=google.cloud.commerceproducer.v1beta.PrivateOffer.PartnerContact.email
 	Email *string `json:"email,omitempty"`
 }
+*/
 
-/* unreachable type PrivateOffer_PublishRequirementGoogleReview
+/* found existing non-generated go type with proto tag "google.cloud.commerceproducer.v1beta.PrivateOffer.PublishRequirementGoogleReview", skipping
+
 // +kcc:proto=google.cloud.commerceproducer.v1beta.PrivateOffer.PublishRequirementGoogleReview
 type PrivateOffer_PublishRequirementGoogleReview struct {
 }
 */
 
-/* unreachable type PrivateOffer_ResellerContact
+/* found existing non-generated go type with proto tag "google.cloud.commerceproducer.v1beta.PrivateOffer.ResellerContact", skipping
+
 // +kcc:proto=google.cloud.commerceproducer.v1beta.PrivateOffer.ResellerContact
 type PrivateOffer_ResellerContact struct {
 }
 */
 
-/* found existing non-generated go type "PrivateOffer_SingleProductOffer", skipping
+/* found existing non-generated go type with proto tag "google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer", skipping
 
 // +kcc:proto=google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer
 type PrivateOffer_SingleProductOffer struct {
@@ -307,7 +312,7 @@ type PrivateOffer_SingleProductOffer struct {
 }
 */
 
-/* found existing non-generated go type "PrivateOffer_SingleProductOffer_AdditionalContractValue", skipping
+/* found existing non-generated go type with proto tag "google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.AdditionalContractValue", skipping
 
 // +kcc:proto=google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.AdditionalContractValue
 type PrivateOffer_SingleProductOffer_AdditionalContractValue struct {
@@ -364,6 +369,8 @@ type PrivateOffer_SingleProductOffer_ContractValue struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.CustomIntervalPrice", skipping
+
 // +kcc:proto=google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.CustomIntervalPrice
 type PrivateOffer_SingleProductOffer_CustomIntervalPrice struct {
 	// Optional. The installments that make up the installment timeline.
@@ -375,6 +382,9 @@ type PrivateOffer_SingleProductOffer_CustomIntervalPrice struct {
 	// +kcc:proto:field=google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.CustomIntervalPrice.installments
 	Installments []PrivateOffer_SingleProductOffer_Installment `json:"installments,omitempty"`
 }
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.Feature", skipping
 
 // +kcc:proto=google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.Feature
 type PrivateOffer_SingleProductOffer_Feature struct {
@@ -396,8 +406,9 @@ type PrivateOffer_SingleProductOffer_Feature struct {
 	// +kcc:proto:field=google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.Feature.value
 	Value *string `json:"value,omitempty"`
 }
+*/
 
-/* found existing non-generated go type "PrivateOffer_SingleProductOffer_Installment", skipping
+/* found existing non-generated go type with proto tag "google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.Installment", skipping
 
 // +kcc:proto=google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.Installment
 type PrivateOffer_SingleProductOffer_Installment struct {
@@ -433,7 +444,7 @@ type PrivateOffer_SingleProductOffer_Installment struct {
 }
 */
 
-/* found existing non-generated go type "PrivateOffer_SingleProductOffer_PriceModel", skipping
+/* found existing non-generated go type with proto tag "google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.PriceModel", skipping
 
 // +kcc:proto=google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.PriceModel
 type PrivateOffer_SingleProductOffer_PriceModel struct {
@@ -459,6 +470,8 @@ type PrivateOffer_SingleProductOffer_PriceModel struct {
 	Usage *PrivateOffer_SingleProductOffer_PriceModel_Usage `json:"usage,omitempty"`
 }
 */
+
+/* found existing non-generated go type with proto tag "google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.PriceModel.Commitment", skipping
 
 // +kcc:proto=google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.PriceModel.Commitment
 type PrivateOffer_SingleProductOffer_PriceModel_Commitment struct {
@@ -518,6 +531,9 @@ type PrivateOffer_SingleProductOffer_PriceModel_Commitment struct {
 	// +kcc:proto:field=google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.PriceModel.Commitment.discard_previous_credit_balance
 	DiscardPreviousCreditBalance *bool `json:"discardPreviousCreditBalance,omitempty"`
 }
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.PriceModel.FlatFee", skipping
 
 // +kcc:proto=google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.PriceModel.FlatFee
 type PrivateOffer_SingleProductOffer_PriceModel_FlatFee struct {
@@ -529,8 +545,9 @@ type PrivateOffer_SingleProductOffer_PriceModel_FlatFee struct {
 	// +kcc:proto:field=google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.PriceModel.FlatFee.flat_fee_override
 	FlatFeeOverride *Money `json:"flatFeeOverride,omitempty"`
 }
+*/
 
-/* found existing non-generated go type "PrivateOffer_SingleProductOffer_PriceModel_SkuDiscount", skipping
+/* found existing non-generated go type with proto tag "google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.PriceModel.SkuDiscount", skipping
 
 // +kcc:proto=google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.PriceModel.SkuDiscount
 type PrivateOffer_SingleProductOffer_PriceModel_SkuDiscount struct {
@@ -579,7 +596,7 @@ type PrivateOffer_SingleProductOffer_PriceModel_SkuDiscount struct {
 }
 */
 
-/* found existing non-generated go type "PrivateOffer_SingleProductOffer_PriceModel_Usage", skipping
+/* found existing non-generated go type with proto tag "google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.PriceModel.Usage", skipping
 
 // +kcc:proto=google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.PriceModel.Usage
 type PrivateOffer_SingleProductOffer_PriceModel_Usage struct {
@@ -608,6 +625,8 @@ type PrivateOffer_SingleProductOffer_RevenueShare struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.StandardIntervalPrice", skipping
+
 // +kcc:proto=google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.StandardIntervalPrice
 type PrivateOffer_SingleProductOffer_StandardIntervalPrice struct {
 	// Optional. The standard interval of the offer.
@@ -620,6 +639,9 @@ type PrivateOffer_SingleProductOffer_StandardIntervalPrice struct {
 	// +kcc:proto:field=google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.StandardIntervalPrice.price_model
 	PriceModel *PrivateOffer_SingleProductOffer_PriceModel `json:"priceModel,omitempty"`
 }
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.commerceproducer.v1beta.PrivateOffer.Term", skipping
 
 // +kcc:proto=google.cloud.commerceproducer.v1beta.PrivateOffer.Term
 type PrivateOffer_Term struct {
@@ -697,6 +719,7 @@ type PrivateOffer_Term struct {
 	// +kcc:proto:field=google.cloud.commerceproducer.v1beta.PrivateOffer.Term.end_policy
 	EndPolicy *string `json:"endPolicy,omitempty"`
 }
+*/
 
 // +kcc:proto=google.type.DateTime
 type DateTime struct {
@@ -910,7 +933,7 @@ type PrivateOfferObservedState struct {
 }
 */
 
-/* found existing non-generated go type "PrivateOffer_CustomerObservedState", skipping
+/* found existing non-generated go type with proto tag "google.cloud.commerceproducer.v1beta.PrivateOffer.Customer", skipping
 
 // +kcc:observedstate:proto=google.cloud.commerceproducer.v1beta.PrivateOffer.Customer
 type PrivateOffer_CustomerObservedState struct {
@@ -922,12 +945,17 @@ type PrivateOffer_CustomerObservedState struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.commerceproducer.v1beta.PrivateOffer.PublishRequirementGoogleReview", skipping
+
 // +kcc:observedstate:proto=google.cloud.commerceproducer.v1beta.PrivateOffer.PublishRequirementGoogleReview
 type PrivateOffer_PublishRequirementGoogleReviewObservedState struct {
 	// Output only. The approval time of the Google review process.
 	// +kcc:proto:field=google.cloud.commerceproducer.v1beta.PrivateOffer.PublishRequirementGoogleReview.review_approve_time
 	ReviewApproveTime *string `json:"reviewApproveTime,omitempty"`
 }
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.commerceproducer.v1beta.PrivateOffer.ResellerContact", skipping
 
 // +kcc:observedstate:proto=google.cloud.commerceproducer.v1beta.PrivateOffer.ResellerContact
 type PrivateOffer_ResellerContactObservedState struct {
@@ -939,8 +967,9 @@ type PrivateOffer_ResellerContactObservedState struct {
 	// +kcc:proto:field=google.cloud.commerceproducer.v1beta.PrivateOffer.ResellerContact.email
 	Email *string `json:"email,omitempty"`
 }
+*/
 
-/* found existing non-generated go type "PrivateOffer_SingleProductOfferObservedState", skipping
+/* found existing non-generated go type with proto tag "google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer", skipping
 
 // +kcc:observedstate:proto=google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer
 type PrivateOffer_SingleProductOfferObservedState struct {
@@ -977,7 +1006,7 @@ type PrivateOffer_SingleProductOfferObservedState struct {
 }
 */
 
-/* found existing non-generated go type "PrivateOffer_SingleProductOffer_ContractValueObservedState", skipping
+/* found existing non-generated go type with proto tag "google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.ContractValue", skipping
 
 // +kcc:observedstate:proto=google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.ContractValue
 type PrivateOffer_SingleProductOffer_ContractValueObservedState struct {
@@ -992,7 +1021,7 @@ type PrivateOffer_SingleProductOffer_ContractValueObservedState struct {
 }
 */
 
-/* found existing non-generated go type "PrivateOffer_SingleProductOffer_RevenueShareObservedState", skipping
+/* found existing non-generated go type with proto tag "google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.RevenueShare", skipping
 
 // +kcc:observedstate:proto=google.cloud.commerceproducer.v1beta.PrivateOffer.SingleProductOffer.RevenueShare
 type PrivateOffer_SingleProductOffer_RevenueShareObservedState struct {
@@ -1016,6 +1045,8 @@ type PrivateOffer_SingleProductOffer_RevenueShareObservedState struct {
 	RenewalTermVendorNetRevenuePercent *Decimal `json:"renewalTermVendorNetRevenuePercent,omitempty"`
 }
 */
+
+/* found existing non-generated go type with proto tag "google.cloud.commerceproducer.v1beta.PrivateOffer.Term", skipping
 
 // +kcc:observedstate:proto=google.cloud.commerceproducer.v1beta.PrivateOffer.Term
 type PrivateOffer_TermObservedState struct {
@@ -1053,3 +1084,4 @@ type PrivateOffer_TermObservedState struct {
 	// +kcc:proto:field=google.cloud.commerceproducer.v1beta.PrivateOffer.Term.effective_term_end_time
 	EffectiveTermEndTime *DateTime `json:"effectiveTermEndTime,omitempty"`
 }
+*/
