@@ -251,6 +251,12 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 				continue
 			}
 
+			// We don't want to upgrade/downgrade maintenance versions if the user didn't specify one
+			if path == "maintenance_version" && desired.MaintenanceVersion == nil {
+				log.V(2).Info("skipping update for maintenance_version since desired value is empty", "name", a.id)
+				continue
+			}
+
 			// Do not attempt to update immutable fields if desired left them unspecified.
 			if path == "node_type" && desired.NodeType == memorystorepb.Instance_NODE_TYPE_UNSPECIFIED {
 				log.V(2).Info("skipping update for node_type since desired value is unspecified", "name", a.id)
