@@ -270,12 +270,16 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 				switch kind {
 				case "addresses":
 					placeholder = "${addressID}"
+				case "projects":
+					placeholder = "${projectNumber}"
 				}
 
 				namePlaceholder := placeholder
 				switch kind {
 				case "routes":
 					namePlaceholder = "${routeName}"
+				case "projects":
+					namePlaceholder = "${projectId}"
 				}
 
 				// We _should_ differentiate between ID and number.
