@@ -21,6 +21,7 @@ import (
 	"regexp"
 	"testing"
 
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/commerceproducer/v1alpha1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/filestore/v1beta1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
@@ -116,6 +117,11 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 		// Bigtable
 		"//bigtable.googleapis.com/projects/{}/instances/{}/tables/{}/columnFamilies/{}": true,
+
+		// Commerce Producer
+		"//commerceproducer.googleapis.com/projects/{}/locations/{}/privateOffers/{}":              true,
+		"//commerceproducer.googleapis.com/projects/{}/locations/{}/services/{}/standardOffers/{}": true,
+		"//commerceproducer.googleapis.com/projects/{}/locations/{}/services/{}/skus/{}":           true,
 
 		// Billing Budgets
 		"//billingbudgets.googleapis.com/billingAccounts/{}/budgets/{}": true,
