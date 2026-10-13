@@ -140,7 +140,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "binaryauthorization.cnrm.cloud.google.com", Kind: "BinaryAuthorizationPolicy"}:
 	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerCertificateMapEntry"}:
 	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerCertificateMap"}:
-	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerCertificate"}:
 	case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerDNSAuthorization"}:
 	case schema.GroupKind{Group: "cloudasset.cnrm.cloud.google.com", Kind: "CloudAssetFolderFeed"}:
 	case schema.GroupKind{Group: "cloudasset.cnrm.cloud.google.com", Kind: "CloudAssetOrganizationFeed"}:
