@@ -1,0 +1,6 @@
+- caisURL: //oslogin.googleapis.com/users/test-user-${uniqueId}@example.com/sshPublicKeys/08a609d6412a8593121f70eee64392f88dce4dcde71bcd3762cf274dc86f00d3
+  group: oslogin.cnrm.cloud.google.com
+  kind: OSLoginSSHPublicKey
+  name: osloginsshpublickey-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

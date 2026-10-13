@@ -3412,7 +3412,6 @@
 [missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.rollout.disruptionBudget.fixed" is not set in unstructured objects
 [missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.rollout.disruptionBudget.percentage" is not set in unstructured objects
 [missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.rollout.mode" is not set in unstructured objects
-[missing_field] crd=osloginsshpublickeys.oslogin.cnrm.cloud.google.com version=v1alpha1: field ".spec.expirationTimeUsec" is not set in unstructured objects
 [missing_field] crd=osloginsshpublickeys.oslogin.cnrm.cloud.google.com version=v1alpha1: field ".spec.project" is not set in unstructured objects
 [missing_field] crd=pubsublitesubscriptions.pubsublite.cnrm.cloud.google.com version=v1alpha1: field ".spec.region" is not set in unstructured objects
 [missing_field] crd=pubsublitetopics.pubsublite.cnrm.cloud.google.com version=v1alpha1: field ".spec.region" is not set in unstructured objects
