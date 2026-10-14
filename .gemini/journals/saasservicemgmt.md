@@ -6,6 +6,14 @@
   - **Synchronous Operations**: Create, Update, and Delete on `SaasRolloutsClient` for RolloutKind are all synchronous calls that return the resource or error directly without using LROs.
   - **Audit Probe**: `_audit_probe.log` captures the GET REST call and audit markers are emitted to Cloud Logging.
 
+### [2026-10-14] Direct Controller, E2E Fixtures, and Fuzzer Implementation for SaaSServiceMgmtTenant
+- **Context**: Implementing the Greenfield direct controller, KRM fuzzer, and E2E test fixtures for `SaaSServiceMgmtTenant`.
+- **Observations**:
+  - **Synchronous API**: All operations (`CreateTenant`, `GetTenant`, `UpdateTenant`, `DeleteTenant`) on `SaasDeploymentsClient` are synchronous (do not return LROs).
+  - **Client Selection**: Utilized GAPIC REST client (`NewSaasDeploymentsRESTClient`) with `m.config.RESTClientOptions()`.
+  - **Spec Immutability**: All spec fields (`projectRef`, `location`, `resourceID`, `saasRef`, `consumerResource`) are immutable in GCP. As directed by the Greenfield controller instructions, `update.yaml` was omitted from both minimal and maximal fixtures.
+  - **Reference Validation**: The GCP API accepted `saasRef` pointing to a SaaS resource format (`projects/{project}/locations/{location}/saas/kcc-test-saas`) without requiring the SaaS resource to exist beforehand.
+
 ### [2026-10-09] Direct Controller, Fuzzer, and E2E Fixtures Implementation for SaaSServiceMgmtUnit
 - **Context**: Implementing the Greenfield direct controller, KRM fuzzer, and real GCP test fixtures for `SaaSServiceMgmtUnit`.
 - **Observations**:
