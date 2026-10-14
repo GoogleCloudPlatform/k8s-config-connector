@@ -465,7 +465,6 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		return err
 	}
 
-
 	// Diff mutable-but-unreadable fields (initialUser) using the annotation
 	k8sResource, err := k8s.NewResource(u)
 	if err != nil {

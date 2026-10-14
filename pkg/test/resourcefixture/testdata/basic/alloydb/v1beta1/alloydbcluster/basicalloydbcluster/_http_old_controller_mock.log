@@ -207,7 +207,10 @@ X-Xss-Protection: 0
       ]
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseVersion": "POSTGRES_16",
+    "databaseVersion": "POSTGRES_18",
+    "dataplexConfig": {
+      "enabled": true
+    },
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
@@ -292,7 +295,10 @@ X-Xss-Protection: 0
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": 4,
+  "databaseVersion": 6,
+  "dataplexConfig": {
+    "enabled": true
+  },
   "encryptionInfo": {
     "encryptionType": 1
   },
@@ -373,7 +379,7 @@ Content-Type: application/json
     "enabled": true,
     "recoveryWindowDays": 14
   },
-  "databaseVersion": 4,
+  "databaseVersion": 6,
   "initialUser": {
     "password": "updated",
     "user": "postgres"
@@ -488,7 +494,10 @@ X-Xss-Protection: 0
       ]
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseVersion": "POSTGRES_16",
+    "databaseVersion": "POSTGRES_18",
+    "dataplexConfig": {
+      "enabled": true
+    },
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
@@ -573,7 +582,10 @@ X-Xss-Protection: 0
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": 4,
+  "databaseVersion": 6,
+  "dataplexConfig": {
+    "enabled": true
+  },
   "encryptionInfo": {
     "encryptionType": 1
   },

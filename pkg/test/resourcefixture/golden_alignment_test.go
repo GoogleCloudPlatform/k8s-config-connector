@@ -39,6 +39,8 @@ var mockGCPSkipFixtures = map[string]bool{
 	"composer/v1beta1/composerenvironment/composerenvironmentwithrefs":        true,
 	"composer/v1beta1/composerenvironment/composerenvironmentnodeconfig":      true,
 	"container/v1beta1/containernodepool/containernodepool-windowsnodeconfig": true,
+	// AlloyDB restore continuous backup test relies on pre-existing resources in external project KCC_ALLOYDB_TEST_PROJECT
+	"alloydb/v1beta1/alloydbcluster/restorecontinuesbackupalloydbcluster": true,
 }
 
 var realGCPSkipFixtures = map[string]bool{
@@ -625,6 +627,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		// Cloud Resource Manager Project fields to normalize alignment differences
 		if _, ok := v["projectId"]; ok {
 			delete(v, "displayName")
+			delete(v, "name")
 			delete(v, "parent")
 		}
 
@@ -650,15 +653,6 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			if settings, ok := v["settings"].(map[string]interface{}); ok {
 				delete(settings, "backupConfiguration")
 			}
-		}
-
-		// AlloyDB specific fields to normalize alignment differences between mock and real GCP responses
-		delete(v, "dataplexConfig")
-		delete(v, "serviceAccountEmail")
-		if dv, ok := v["databaseVersion"].(float64); ok && (dv == 4 || dv == 6) {
-			v["databaseVersion"] = float64(4)
-		} else if dv, ok := v["databaseVersion"].(string); ok && (dv == "POSTGRES_16" || dv == "POSTGRES_18") {
-			v["databaseVersion"] = "POSTGRES_16"
 		}
 		if gc, ok := v["geminiConfig"].(map[string]interface{}); ok && len(gc) == 0 {
 			delete(v, "geminiConfig")
@@ -1031,9 +1025,7 @@ func normalizeDataprocWorkerConfig(cfg interface{}) {
 		}
 	}
 	// zone(i.e., us-central1-a) is auto assigned when not specified
-	if _, ok := m["machineTypeUri"]; ok {
-		delete(m, "machineTypeUri")
-	}
+	delete(m, "machineTypeUri")
 }
 
 func getGVKFromYAML(path string) (schema.GroupVersionKind, error) {
