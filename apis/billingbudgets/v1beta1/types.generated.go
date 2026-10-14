@@ -101,6 +101,28 @@ type CustomPeriod struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.type.Date", skipping
+
+// +kcc:proto=google.type.Date
+type Date struct {
+	// Year of the date. Must be from 1 to 9999, or 0 to specify a date without
+	//  a year.
+	// +kcc:proto:field=google.type.Date.year
+	Year *int32 `json:"year,omitempty"`
+
+	// Month of a year. Must be from 1 to 12, or 0 to specify a year without a
+	//  month and day.
+	// +kcc:proto:field=google.type.Date.month
+	Month *int32 `json:"month,omitempty"`
+
+	// Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
+	//  to specify a year by itself or a year and month where the day isn't
+	//  significant.
+	// +kcc:proto:field=google.type.Date.day
+	Day *int32 `json:"day,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.billing.budgets.v1.Filter", skipping
 
 // +kcc:proto=google.cloud.billing.budgets.v1.Filter
@@ -180,6 +202,39 @@ type Filter struct {
 
 // +kcc:proto=google.cloud.billing.budgets.v1.LastPeriodAmount
 type LastPeriodAmount struct {
+}
+*/
+
+/* unreachable type ListValue
+// +kcc:proto=google.protobuf.ListValue
+type ListValue struct {
+	// Repeated field of dynamically typed values.
+	// +kcc:proto:field=google.protobuf.ListValue.values
+	Values []Value `json:"values,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.type.Money", skipping
+
+// +kcc:proto=google.type.Money
+type Money struct {
+	// The three-letter currency code defined in ISO 4217.
+	// +kcc:proto:field=google.type.Money.currency_code
+	CurrencyCode *string `json:"currencyCode,omitempty"`
+
+	// The whole units of the amount.
+	//  For example if `currencyCode` is `"USD"`, then 1 unit is one US dollar.
+	// +kcc:proto:field=google.type.Money.units
+	Units *int64 `json:"units,omitempty"`
+
+	// Number of nano (10^-9) units of the amount.
+	//  The value must be between -999,999,999 and +999,999,999 inclusive.
+	//  If `units` is positive, `nanos` must be positive or zero.
+	//  If `units` is zero, `nanos` can be positive, zero, or negative.
+	//  If `units` is negative, `nanos` must be negative or zero.
+	//  For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
+	// +kcc:proto:field=google.type.Money.nanos
+	Nanos *int32 `json:"nanos,omitempty"`
 }
 */
 
@@ -286,15 +341,6 @@ type ThresholdRule struct {
 }
 */
 
-/* unreachable type ListValue
-// +kcc:proto=google.protobuf.ListValue
-type ListValue struct {
-	// Repeated field of dynamically typed values.
-	// +kcc:proto:field=google.protobuf.ListValue.values
-	Values []Value `json:"values,omitempty"`
-}
-*/
-
 /* unreachable type Value
 // +kcc:proto=google.protobuf.Value
 type Value struct {
@@ -321,52 +367,6 @@ type Value struct {
 	// Represents a repeated `Value`.
 	// +kcc:proto:field=google.protobuf.Value.list_value
 	ListValue *ListValue `json:"listValue,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.type.Date", skipping
-
-// +kcc:proto=google.type.Date
-type Date struct {
-	// Year of the date. Must be from 1 to 9999, or 0 to specify a date without
-	//  a year.
-	// +kcc:proto:field=google.type.Date.year
-	Year *int32 `json:"year,omitempty"`
-
-	// Month of a year. Must be from 1 to 12, or 0 to specify a year without a
-	//  month and day.
-	// +kcc:proto:field=google.type.Date.month
-	Month *int32 `json:"month,omitempty"`
-
-	// Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
-	//  to specify a year by itself or a year and month where the day isn't
-	//  significant.
-	// +kcc:proto:field=google.type.Date.day
-	Day *int32 `json:"day,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.type.Money", skipping
-
-// +kcc:proto=google.type.Money
-type Money struct {
-	// The three-letter currency code defined in ISO 4217.
-	// +kcc:proto:field=google.type.Money.currency_code
-	CurrencyCode *string `json:"currencyCode,omitempty"`
-
-	// The whole units of the amount.
-	//  For example if `currencyCode` is `"USD"`, then 1 unit is one US dollar.
-	// +kcc:proto:field=google.type.Money.units
-	Units *int64 `json:"units,omitempty"`
-
-	// Number of nano (10^-9) units of the amount.
-	//  The value must be between -999,999,999 and +999,999,999 inclusive.
-	//  If `units` is positive, `nanos` must be positive or zero.
-	//  If `units` is zero, `nanos` can be positive, zero, or negative.
-	//  If `units` is negative, `nanos` must be negative or zero.
-	//  For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
-	// +kcc:proto:field=google.type.Money.nanos
-	Nanos *int32 `json:"nanos,omitempty"`
 }
 */
 

@@ -1049,6 +1049,16 @@ type CostManagementConfig struct {
 }
 */
 
+/* found existing non-generated go type "DNSCacheConfig", skipping
+
+// +kcc:proto=google.container.v1.DnsCacheConfig
+type DNSCacheConfig struct {
+	// Whether NodeLocal DNSCache is enabled for this cluster.
+	// +kcc:proto:field=google.container.v1.DnsCacheConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
 /* found existing non-generated go type "DNSConfig", skipping
 
 // +kcc:proto=google.container.v1.DNSConfig
@@ -1131,16 +1141,6 @@ type DefaultSnatStatus struct {
 	// Disables cluster default sNAT rules.
 	// +kcc:proto:field=google.container.v1.DefaultSnatStatus.disabled
 	Disabled *bool `json:"disabled,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "DNSCacheConfig", skipping
-
-// +kcc:proto=google.container.v1.DnsCacheConfig
-type DNSCacheConfig struct {
-	// Whether NodeLocal DNSCache is enabled for this cluster.
-	// +kcc:proto:field=google.container.v1.DnsCacheConfig.enabled
-	Enabled *bool `json:"enabled,omitempty"`
 }
 */
 
@@ -1351,64 +1351,11 @@ type Fleet struct {
 }
 */
 
-/* found existing non-generated go type with proto tag "google.container.v1.GPUDriverInstallationConfig", skipping
-
-// +kcc:proto=google.container.v1.GPUDriverInstallationConfig
-type GpuDriverInstallationConfig struct {
-	// Mode for how the GPU driver is installed.
-	// +kcc:proto:field=google.container.v1.GPUDriverInstallationConfig.gpu_driver_version
-	GpuDriverVersion *string `json:"gpuDriverVersion,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.container.v1.GPUSharingConfig", skipping
-
-// +kcc:proto=google.container.v1.GPUSharingConfig
-type GpuSharingConfig struct {
-	// The max number of containers that can share a physical GPU.
-	// +kcc:proto:field=google.container.v1.GPUSharingConfig.max_shared_clients_per_gpu
-	MaxSharedClientsPerGpu *int64 `json:"maxSharedClientsPerGpu,omitempty"`
-
-	// The type of GPU sharing strategy to enable on the GPU node.
-	// +kcc:proto:field=google.container.v1.GPUSharingConfig.gpu_sharing_strategy
-	GpuSharingStrategy *string `json:"gpuSharingStrategy,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "GatewayAPIConfig", skipping
-
-// +kcc:proto=google.container.v1.GatewayAPIConfig
-type GatewayAPIConfig struct {
-	// The Gateway API release channel to use for Gateway API.
-	// +kcc:proto:field=google.container.v1.GatewayAPIConfig.channel
-	Channel *string `json:"channel,omitempty"`
-}
-*/
-
 /* unreachable type GCEPersistentDiskCsiDriverConfig
 // +kcc:proto=google.container.v1.GcePersistentDiskCsiDriverConfig
 type GCEPersistentDiskCsiDriverConfig struct {
 	// Whether the Compute Engine PD CSI driver is enabled for this cluster.
 	// +kcc:proto:field=google.container.v1.GcePersistentDiskCsiDriverConfig.enabled
-	Enabled *bool `json:"enabled,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "GcfsConfig", skipping
-
-// +kcc:proto=google.container.v1.GcfsConfig
-type GcfsConfig struct {
-	// Whether to use GCFS.
-	// +kcc:proto:field=google.container.v1.GcfsConfig.enabled
-	Enabled *bool `json:"enabled,omitempty"`
-}
-*/
-
-/* unreachable type GcpFilestoreCsiDriverConfig
-// +kcc:proto=google.container.v1.GcpFilestoreCsiDriverConfig
-type GcpFilestoreCsiDriverConfig struct {
-	// Whether the GCP Filestore CSI driver is enabled for this cluster.
-	// +kcc:proto:field=google.container.v1.GcpFilestoreCsiDriverConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
 */
@@ -1442,6 +1389,71 @@ type GKEBackupAgentConfig struct {
 }
 */
 
+/* found existing non-generated go type "GatewayAPIConfig", skipping
+
+// +kcc:proto=google.container.v1.GatewayAPIConfig
+type GatewayAPIConfig struct {
+	// The Gateway API release channel to use for Gateway API.
+	// +kcc:proto:field=google.container.v1.GatewayAPIConfig.channel
+	Channel *string `json:"channel,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "GcfsConfig", skipping
+
+// +kcc:proto=google.container.v1.GcfsConfig
+type GcfsConfig struct {
+	// Whether to use GCFS.
+	// +kcc:proto:field=google.container.v1.GcfsConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
+/* unreachable type GcpFilestoreCsiDriverConfig
+// +kcc:proto=google.container.v1.GcpFilestoreCsiDriverConfig
+type GcpFilestoreCsiDriverConfig struct {
+	// Whether the GCP Filestore CSI driver is enabled for this cluster.
+	// +kcc:proto:field=google.container.v1.GcpFilestoreCsiDriverConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.container.v1.GPUDriverInstallationConfig", skipping
+
+// +kcc:proto=google.container.v1.GPUDriverInstallationConfig
+type GpuDriverInstallationConfig struct {
+	// Mode for how the GPU driver is installed.
+	// +kcc:proto:field=google.container.v1.GPUDriverInstallationConfig.gpu_driver_version
+	GpuDriverVersion *string `json:"gpuDriverVersion,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.container.v1.GPUSharingConfig", skipping
+
+// +kcc:proto=google.container.v1.GPUSharingConfig
+type GpuSharingConfig struct {
+	// The max number of containers that can share a physical GPU.
+	// +kcc:proto:field=google.container.v1.GPUSharingConfig.max_shared_clients_per_gpu
+	MaxSharedClientsPerGpu *int64 `json:"maxSharedClientsPerGpu,omitempty"`
+
+	// The type of GPU sharing strategy to enable on the GPU node.
+	// +kcc:proto:field=google.container.v1.GPUSharingConfig.gpu_sharing_strategy
+	GpuSharingStrategy *string `json:"gpuSharingStrategy,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "HTTPLoadBalancing", skipping
+
+// +kcc:proto=google.container.v1.HttpLoadBalancing
+type HTTPLoadBalancing struct {
+	// Whether the HTTP Load Balancing controller is enabled in the cluster.
+	//  When enabled, it runs a small pod in the cluster that manages the load
+	//  balancers.
+	// +kcc:proto:field=google.container.v1.HttpLoadBalancing.disabled
+	Disabled *bool `json:"disabled,omitempty"`
+}
+*/
+
 /* unreachable type HighScaleCheckpointingConfig
 // +kcc:proto=google.container.v1.HighScaleCheckpointingConfig
 type HighScaleCheckpointingConfig struct {
@@ -1460,18 +1472,6 @@ type HorizontalPodAutoscaling struct {
 	//  When enabled, it ensures that metrics are collected into Stackdriver
 	//  Monitoring.
 	// +kcc:proto:field=google.container.v1.HorizontalPodAutoscaling.disabled
-	Disabled *bool `json:"disabled,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "HTTPLoadBalancing", skipping
-
-// +kcc:proto=google.container.v1.HttpLoadBalancing
-type HTTPLoadBalancing struct {
-	// Whether the HTTP Load Balancing controller is enabled in the cluster.
-	//  When enabled, it runs a small pod in the cluster that manages the load
-	//  balancers.
-	// +kcc:proto:field=google.container.v1.HttpLoadBalancing.disabled
 	Disabled *bool `json:"disabled,omitempty"`
 }
 */
@@ -2884,6 +2884,91 @@ type NodePool struct {
 }
 */
 
+/* found existing non-generated go type "NodePoolAutoConfig", skipping
+
+// +kcc:proto=google.container.v1.NodePoolAutoConfig
+type NodePoolAutoConfig struct {
+	// The list of instance tags applied to all nodes. Tags are used to identify
+	//  valid sources or targets for network firewalls and are specified by
+	//  the client during cluster creation. Each tag within the list
+	//  must comply with RFC1035.
+	// +kcc:proto:field=google.container.v1.NodePoolAutoConfig.network_tags
+	NetworkTags *NetworkTags `json:"networkTags,omitempty"`
+
+	// Resource manager tag keys and values to be attached to the nodes
+	//  for managing Compute Engine firewalls using Network Firewall Policies.
+	// +kcc:proto:field=google.container.v1.NodePoolAutoConfig.resource_manager_tags
+	ResourceManagerTags *ResourceManagerTags `json:"resourceManagerTags,omitempty"`
+
+	// NodeKubeletConfig controls the defaults for autoprovisioned node-pools.
+	//
+	//  Currently only `insecure_kubelet_readonly_port_enabled` can be set here.
+	// +kcc:proto:field=google.container.v1.NodePoolAutoConfig.node_kubelet_config
+	NodeKubeletConfig *NodeKubeletConfig `json:"nodeKubeletConfig,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "NodePoolAutoscaling", skipping
+
+// +kcc:proto=google.container.v1.NodePoolAutoscaling
+type NodePoolAutoscaling struct {
+	// Is autoscaling enabled for this node pool.
+	// +kcc:proto:field=google.container.v1.NodePoolAutoscaling.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Minimum number of nodes for one location in the node pool. Must be greater
+	//  than or equal to 0 and less than or equal to max_node_count.
+	// +kcc:proto:field=google.container.v1.NodePoolAutoscaling.min_node_count
+	MinNodeCount *int32 `json:"minNodeCount,omitempty"`
+
+	// Maximum number of nodes for one location in the node pool. Must be >=
+	//  min_node_count. There has to be enough quota to scale up the cluster.
+	// +kcc:proto:field=google.container.v1.NodePoolAutoscaling.max_node_count
+	MaxNodeCount *int32 `json:"maxNodeCount,omitempty"`
+
+	// Can this node pool be deleted automatically.
+	// +kcc:proto:field=google.container.v1.NodePoolAutoscaling.autoprovisioned
+	Autoprovisioned *bool `json:"autoprovisioned,omitempty"`
+
+	// Location policy used when scaling up a nodepool.
+	// +kcc:proto:field=google.container.v1.NodePoolAutoscaling.location_policy
+	LocationPolicy *string `json:"locationPolicy,omitempty"`
+
+	// Minimum number of nodes in the node pool. Must be greater than or equal
+	//  to 0 and less than or equal to total_max_node_count.
+	//  The total_*_node_count fields are mutually exclusive with the *_node_count
+	//  fields.
+	// +kcc:proto:field=google.container.v1.NodePoolAutoscaling.total_min_node_count
+	TotalMinNodeCount *int32 `json:"totalMinNodeCount,omitempty"`
+
+	// Maximum number of nodes in the node pool. Must be greater than or equal to
+	//  total_min_node_count. There has to be enough quota to scale up the cluster.
+	//  The total_*_node_count fields are mutually exclusive with the *_node_count
+	//  fields.
+	// +kcc:proto:field=google.container.v1.NodePoolAutoscaling.total_max_node_count
+	TotalMaxNodeCount *int32 `json:"totalMaxNodeCount,omitempty"`
+}
+*/
+
+/* found existing non-generated go type "NodePoolDefaults", skipping
+
+// +kcc:proto=google.container.v1.NodePoolDefaults
+type NodePoolDefaults struct {
+	// Subset of NodeConfig message that has defaults.
+	// +kcc:proto:field=google.container.v1.NodePoolDefaults.node_config_defaults
+	NodeConfigDefaults *NodeConfigDefaults `json:"nodeConfigDefaults,omitempty"`
+}
+*/
+
+/* unreachable type NodePoolLoggingConfig
+// +kcc:proto=google.container.v1.NodePoolLoggingConfig
+type NodePoolLoggingConfig struct {
+	// Logging variant configuration.
+	// +kcc:proto:field=google.container.v1.NodePoolLoggingConfig.variant_config
+	VariantConfig *LoggingVariantConfig `json:"variantConfig,omitempty"`
+}
+*/
+
 /* found existing non-generated go type "NodePool_PlacementPolicy", skipping
 
 // +kcc:proto=google.container.v1.NodePool.PlacementPolicy
@@ -2978,91 +3063,6 @@ type NodePool_UpgradeSettings struct {
 	// Settings for blue-green upgrade strategy.
 	// +kcc:proto:field=google.container.v1.NodePool.UpgradeSettings.blue_green_settings
 	BlueGreenSettings *BlueGreenSettings `json:"blueGreenSettings,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "NodePoolAutoConfig", skipping
-
-// +kcc:proto=google.container.v1.NodePoolAutoConfig
-type NodePoolAutoConfig struct {
-	// The list of instance tags applied to all nodes. Tags are used to identify
-	//  valid sources or targets for network firewalls and are specified by
-	//  the client during cluster creation. Each tag within the list
-	//  must comply with RFC1035.
-	// +kcc:proto:field=google.container.v1.NodePoolAutoConfig.network_tags
-	NetworkTags *NetworkTags `json:"networkTags,omitempty"`
-
-	// Resource manager tag keys and values to be attached to the nodes
-	//  for managing Compute Engine firewalls using Network Firewall Policies.
-	// +kcc:proto:field=google.container.v1.NodePoolAutoConfig.resource_manager_tags
-	ResourceManagerTags *ResourceManagerTags `json:"resourceManagerTags,omitempty"`
-
-	// NodeKubeletConfig controls the defaults for autoprovisioned node-pools.
-	//
-	//  Currently only `insecure_kubelet_readonly_port_enabled` can be set here.
-	// +kcc:proto:field=google.container.v1.NodePoolAutoConfig.node_kubelet_config
-	NodeKubeletConfig *NodeKubeletConfig `json:"nodeKubeletConfig,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "NodePoolAutoscaling", skipping
-
-// +kcc:proto=google.container.v1.NodePoolAutoscaling
-type NodePoolAutoscaling struct {
-	// Is autoscaling enabled for this node pool.
-	// +kcc:proto:field=google.container.v1.NodePoolAutoscaling.enabled
-	Enabled *bool `json:"enabled,omitempty"`
-
-	// Minimum number of nodes for one location in the node pool. Must be greater
-	//  than or equal to 0 and less than or equal to max_node_count.
-	// +kcc:proto:field=google.container.v1.NodePoolAutoscaling.min_node_count
-	MinNodeCount *int32 `json:"minNodeCount,omitempty"`
-
-	// Maximum number of nodes for one location in the node pool. Must be >=
-	//  min_node_count. There has to be enough quota to scale up the cluster.
-	// +kcc:proto:field=google.container.v1.NodePoolAutoscaling.max_node_count
-	MaxNodeCount *int32 `json:"maxNodeCount,omitempty"`
-
-	// Can this node pool be deleted automatically.
-	// +kcc:proto:field=google.container.v1.NodePoolAutoscaling.autoprovisioned
-	Autoprovisioned *bool `json:"autoprovisioned,omitempty"`
-
-	// Location policy used when scaling up a nodepool.
-	// +kcc:proto:field=google.container.v1.NodePoolAutoscaling.location_policy
-	LocationPolicy *string `json:"locationPolicy,omitempty"`
-
-	// Minimum number of nodes in the node pool. Must be greater than or equal
-	//  to 0 and less than or equal to total_max_node_count.
-	//  The total_*_node_count fields are mutually exclusive with the *_node_count
-	//  fields.
-	// +kcc:proto:field=google.container.v1.NodePoolAutoscaling.total_min_node_count
-	TotalMinNodeCount *int32 `json:"totalMinNodeCount,omitempty"`
-
-	// Maximum number of nodes in the node pool. Must be greater than or equal to
-	//  total_min_node_count. There has to be enough quota to scale up the cluster.
-	//  The total_*_node_count fields are mutually exclusive with the *_node_count
-	//  fields.
-	// +kcc:proto:field=google.container.v1.NodePoolAutoscaling.total_max_node_count
-	TotalMaxNodeCount *int32 `json:"totalMaxNodeCount,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "NodePoolDefaults", skipping
-
-// +kcc:proto=google.container.v1.NodePoolDefaults
-type NodePoolDefaults struct {
-	// Subset of NodeConfig message that has defaults.
-	// +kcc:proto:field=google.container.v1.NodePoolDefaults.node_config_defaults
-	NodeConfigDefaults *NodeConfigDefaults `json:"nodeConfigDefaults,omitempty"`
-}
-*/
-
-/* unreachable type NodePoolLoggingConfig
-// +kcc:proto=google.container.v1.NodePoolLoggingConfig
-type NodePoolLoggingConfig struct {
-	// Logging variant configuration.
-	// +kcc:proto:field=google.container.v1.NodePoolLoggingConfig.variant_config
-	VariantConfig *LoggingVariantConfig `json:"variantConfig,omitempty"`
 }
 */
 
@@ -3215,21 +3215,6 @@ type PrivateClusterMasterGlobalAccessConfig struct {
 }
 */
 
-/* unreachable type RbacBindingConfig
-// +kcc:proto=google.container.v1.RBACBindingConfig
-type RbacBindingConfig struct {
-	// Setting this to true will allow any ClusterRoleBinding and RoleBinding
-	//  with subjets system:anonymous or system:unauthenticated.
-	// +kcc:proto:field=google.container.v1.RBACBindingConfig.enable_insecure_binding_system_unauthenticated
-	EnableInsecureBindingSystemUnauthenticated *bool `json:"enableInsecureBindingSystemUnauthenticated,omitempty"`
-
-	// Setting this to true will allow any ClusterRoleBinding and RoleBinding
-	//  with subjects system:authenticated.
-	// +kcc:proto:field=google.container.v1.RBACBindingConfig.enable_insecure_binding_system_authenticated
-	EnableInsecureBindingSystemAuthenticated *bool `json:"enableInsecureBindingSystemAuthenticated,omitempty"`
-}
-*/
-
 /* found existing non-generated go type "RangeInfo", skipping
 
 // +kcc:proto=google.container.v1.RangeInfo
@@ -3269,6 +3254,21 @@ type RayOperatorConfig struct {
 	// Optional. Monitoring configuration for Ray clusters.
 	// +kcc:proto:field=google.container.v1.RayOperatorConfig.ray_cluster_monitoring_config
 	RayClusterMonitoringConfig *RayClusterMonitoringConfig `json:"rayClusterMonitoringConfig,omitempty"`
+}
+*/
+
+/* unreachable type RbacBindingConfig
+// +kcc:proto=google.container.v1.RBACBindingConfig
+type RbacBindingConfig struct {
+	// Setting this to true will allow any ClusterRoleBinding and RoleBinding
+	//  with subjets system:anonymous or system:unauthenticated.
+	// +kcc:proto:field=google.container.v1.RBACBindingConfig.enable_insecure_binding_system_unauthenticated
+	EnableInsecureBindingSystemUnauthenticated *bool `json:"enableInsecureBindingSystemUnauthenticated,omitempty"`
+
+	// Setting this to true will allow any ClusterRoleBinding and RoleBinding
+	//  with subjects system:authenticated.
+	// +kcc:proto:field=google.container.v1.RBACBindingConfig.enable_insecure_binding_system_authenticated
+	EnableInsecureBindingSystemAuthenticated *bool `json:"enableInsecureBindingSystemAuthenticated,omitempty"`
 }
 */
 
@@ -3784,6 +3784,17 @@ type AutoprovisioningNodePoolDefaultsObservedState struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.container.v1.ClusterAutoscaling", skipping
+
+// +kcc:observedstate:proto=google.container.v1.ClusterAutoscaling
+type ClusterAutoscalingObservedState struct {
+	// AutoprovisioningNodePoolDefaults contains defaults for a node pool
+	//  created by NAP.
+	// +kcc:proto:field=google.container.v1.ClusterAutoscaling.autoprovisioning_node_pool_defaults
+	AutoprovisioningNodePoolDefaults *AutoprovisioningNodePoolDefaultsObservedState `json:"autoprovisioningNodePoolDefaults,omitempty"`
+}
+*/
+
 /* found existing non-generated go type "ClusterObservedState", skipping
 
 // +kcc:observedstate:proto=google.container.v1.Cluster
@@ -3960,17 +3971,6 @@ type ClusterObservedState struct {
 	// Output only. Reserved for future use.
 	// +kcc:proto:field=google.container.v1.Cluster.satisfies_pzi
 	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.container.v1.ClusterAutoscaling", skipping
-
-// +kcc:observedstate:proto=google.container.v1.ClusterAutoscaling
-type ClusterAutoscalingObservedState struct {
-	// AutoprovisioningNodePoolDefaults contains defaults for a node pool
-	//  created by NAP.
-	// +kcc:proto:field=google.container.v1.ClusterAutoscaling.autoprovisioning_node_pool_defaults
-	AutoprovisioningNodePoolDefaults *AutoprovisioningNodePoolDefaultsObservedState `json:"autoprovisioningNodePoolDefaults,omitempty"`
 }
 */
 
@@ -4217,6 +4217,16 @@ type NodeNetworkConfigObservedState struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.container.v1.NodePoolAutoConfig", skipping
+
+// +kcc:observedstate:proto=google.container.v1.NodePoolAutoConfig
+type NodePoolAutoConfigObservedState struct {
+	// Output only. Configuration options for Linux nodes.
+	// +kcc:proto:field=google.container.v1.NodePoolAutoConfig.linux_node_config
+	LinuxNodeConfig *LinuxNodeConfig `json:"linuxNodeConfig,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.container.v1.NodePool", skipping
 
 // +kcc:observedstate:proto=google.container.v1.NodePool
@@ -4264,16 +4274,6 @@ type NodePoolObservedState struct {
 	//  pool update.
 	// +kcc:proto:field=google.container.v1.NodePool.update_info
 	UpdateInfo *NodePool_UpdateInfo `json:"updateInfo,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.container.v1.NodePoolAutoConfig", skipping
-
-// +kcc:observedstate:proto=google.container.v1.NodePoolAutoConfig
-type NodePoolAutoConfigObservedState struct {
-	// Output only. Configuration options for Linux nodes.
-	// +kcc:proto:field=google.container.v1.NodePoolAutoConfig.linux_node_config
-	LinuxNodeConfig *LinuxNodeConfig `json:"linuxNodeConfig,omitempty"`
 }
 */
 

@@ -43,89 +43,6 @@ type BuildNote struct {
 	BuilderVersion *string `json:"builderVersion,omitempty"`
 }
 
-// +kcc:proto=grafeas.v1.CVSS
-type Cvss struct {
-	// The base score is a function of the base metric scores.
-	// +kcc:proto:field=grafeas.v1.CVSS.base_score
-	BaseScore *float32 `json:"baseScore,omitempty"`
-
-	// +kcc:proto:field=grafeas.v1.CVSS.exploitability_score
-	ExploitabilityScore *float32 `json:"exploitabilityScore,omitempty"`
-
-	// +kcc:proto:field=grafeas.v1.CVSS.impact_score
-	ImpactScore *float32 `json:"impactScore,omitempty"`
-
-	// Base Metrics
-	//  Represents the intrinsic characteristics of a vulnerability that are
-	//  constant over time and across user environments.
-	// +kcc:proto:field=grafeas.v1.CVSS.attack_vector
-	AttackVector *string `json:"attackVector,omitempty"`
-
-	// +kcc:proto:field=grafeas.v1.CVSS.attack_complexity
-	AttackComplexity *string `json:"attackComplexity,omitempty"`
-
-	// +kcc:proto:field=grafeas.v1.CVSS.authentication
-	Authentication *string `json:"authentication,omitempty"`
-
-	// +kcc:proto:field=grafeas.v1.CVSS.privileges_required
-	PrivilegesRequired *string `json:"privilegesRequired,omitempty"`
-
-	// +kcc:proto:field=grafeas.v1.CVSS.user_interaction
-	UserInteraction *string `json:"userInteraction,omitempty"`
-
-	// +kcc:proto:field=grafeas.v1.CVSS.scope
-	Scope *string `json:"scope,omitempty"`
-
-	// +kcc:proto:field=grafeas.v1.CVSS.confidentiality_impact
-	ConfidentialityImpact *string `json:"confidentialityImpact,omitempty"`
-
-	// +kcc:proto:field=grafeas.v1.CVSS.integrity_impact
-	IntegrityImpact *string `json:"integrityImpact,omitempty"`
-
-	// +kcc:proto:field=grafeas.v1.CVSS.availability_impact
-	AvailabilityImpact *string `json:"availabilityImpact,omitempty"`
-}
-
-// +kcc:proto=grafeas.v1.CVSSv3
-type CvsSv3 struct {
-	// The base score is a function of the base metric scores.
-	// +kcc:proto:field=grafeas.v1.CVSSv3.base_score
-	BaseScore *float32 `json:"baseScore,omitempty"`
-
-	// +kcc:proto:field=grafeas.v1.CVSSv3.exploitability_score
-	ExploitabilityScore *float32 `json:"exploitabilityScore,omitempty"`
-
-	// +kcc:proto:field=grafeas.v1.CVSSv3.impact_score
-	ImpactScore *float32 `json:"impactScore,omitempty"`
-
-	// Base Metrics
-	//  Represents the intrinsic characteristics of a vulnerability that are
-	//  constant over time and across user environments.
-	// +kcc:proto:field=grafeas.v1.CVSSv3.attack_vector
-	AttackVector *string `json:"attackVector,omitempty"`
-
-	// +kcc:proto:field=grafeas.v1.CVSSv3.attack_complexity
-	AttackComplexity *string `json:"attackComplexity,omitempty"`
-
-	// +kcc:proto:field=grafeas.v1.CVSSv3.privileges_required
-	PrivilegesRequired *string `json:"privilegesRequired,omitempty"`
-
-	// +kcc:proto:field=grafeas.v1.CVSSv3.user_interaction
-	UserInteraction *string `json:"userInteraction,omitempty"`
-
-	// +kcc:proto:field=grafeas.v1.CVSSv3.scope
-	Scope *string `json:"scope,omitempty"`
-
-	// +kcc:proto:field=grafeas.v1.CVSSv3.confidentiality_impact
-	ConfidentialityImpact *string `json:"confidentialityImpact,omitempty"`
-
-	// +kcc:proto:field=grafeas.v1.CVSSv3.integrity_impact
-	IntegrityImpact *string `json:"integrityImpact,omitempty"`
-
-	// +kcc:proto:field=grafeas.v1.CVSSv3.availability_impact
-	AvailabilityImpact *string `json:"availabilityImpact,omitempty"`
-}
-
 // +kcc:proto=grafeas.v1.ComplianceNote
 type ComplianceNote struct {
 	// The title that identifies this compliance check.
@@ -186,19 +103,87 @@ type ComplianceVersion struct {
 	Version *string `json:"version,omitempty"`
 }
 
-// +kcc:proto=grafeas.v1.DSSEAttestationNote
-type DsseAttestationNote struct {
-	// DSSEHint hints at the purpose of the attestation authority.
-	// +kcc:proto:field=grafeas.v1.DSSEAttestationNote.hint
-	Hint *DsseAttestationNote_DsseHint `json:"hint,omitempty"`
+// +kcc:proto=grafeas.v1.CVSSv3
+type CvsSv3 struct {
+	// The base score is a function of the base metric scores.
+	// +kcc:proto:field=grafeas.v1.CVSSv3.base_score
+	BaseScore *float32 `json:"baseScore,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.CVSSv3.exploitability_score
+	ExploitabilityScore *float32 `json:"exploitabilityScore,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.CVSSv3.impact_score
+	ImpactScore *float32 `json:"impactScore,omitempty"`
+
+	// Base Metrics
+	//  Represents the intrinsic characteristics of a vulnerability that are
+	//  constant over time and across user environments.
+	// +kcc:proto:field=grafeas.v1.CVSSv3.attack_vector
+	AttackVector *string `json:"attackVector,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.CVSSv3.attack_complexity
+	AttackComplexity *string `json:"attackComplexity,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.CVSSv3.privileges_required
+	PrivilegesRequired *string `json:"privilegesRequired,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.CVSSv3.user_interaction
+	UserInteraction *string `json:"userInteraction,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.CVSSv3.scope
+	Scope *string `json:"scope,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.CVSSv3.confidentiality_impact
+	ConfidentialityImpact *string `json:"confidentialityImpact,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.CVSSv3.integrity_impact
+	IntegrityImpact *string `json:"integrityImpact,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.CVSSv3.availability_impact
+	AvailabilityImpact *string `json:"availabilityImpact,omitempty"`
 }
 
-// +kcc:proto=grafeas.v1.DSSEAttestationNote.DSSEHint
-type DsseAttestationNote_DsseHint struct {
-	// Required. The human readable name of this attestation authority, for
-	//  example "cloudbuild-prod".
-	// +kcc:proto:field=grafeas.v1.DSSEAttestationNote.DSSEHint.human_readable_name
-	HumanReadableName *string `json:"humanReadableName,omitempty"`
+// +kcc:proto=grafeas.v1.CVSS
+type Cvss struct {
+	// The base score is a function of the base metric scores.
+	// +kcc:proto:field=grafeas.v1.CVSS.base_score
+	BaseScore *float32 `json:"baseScore,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.CVSS.exploitability_score
+	ExploitabilityScore *float32 `json:"exploitabilityScore,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.CVSS.impact_score
+	ImpactScore *float32 `json:"impactScore,omitempty"`
+
+	// Base Metrics
+	//  Represents the intrinsic characteristics of a vulnerability that are
+	//  constant over time and across user environments.
+	// +kcc:proto:field=grafeas.v1.CVSS.attack_vector
+	AttackVector *string `json:"attackVector,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.CVSS.attack_complexity
+	AttackComplexity *string `json:"attackComplexity,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.CVSS.authentication
+	Authentication *string `json:"authentication,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.CVSS.privileges_required
+	PrivilegesRequired *string `json:"privilegesRequired,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.CVSS.user_interaction
+	UserInteraction *string `json:"userInteraction,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.CVSS.scope
+	Scope *string `json:"scope,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.CVSS.confidentiality_impact
+	ConfidentialityImpact *string `json:"confidentialityImpact,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.CVSS.integrity_impact
+	IntegrityImpact *string `json:"integrityImpact,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.CVSS.availability_impact
+	AvailabilityImpact *string `json:"availabilityImpact,omitempty"`
 }
 
 // +kcc:proto=grafeas.v1.DeploymentNote
@@ -254,6 +239,21 @@ type Distribution struct {
 	// The distribution channel-specific description of this package.
 	// +kcc:proto:field=grafeas.v1.Distribution.description
 	Description *string `json:"description,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.DSSEAttestationNote
+type DsseAttestationNote struct {
+	// DSSEHint hints at the purpose of the attestation authority.
+	// +kcc:proto:field=grafeas.v1.DSSEAttestationNote.hint
+	Hint *DsseAttestationNote_DsseHint `json:"hint,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.DSSEAttestationNote.DSSEHint
+type DsseAttestationNote_DsseHint struct {
+	// Required. The human readable name of this attestation authority, for
+	//  example "cloudbuild-prod".
+	// +kcc:proto:field=grafeas.v1.DSSEAttestationNote.DSSEHint.human_readable_name
+	HumanReadableName *string `json:"humanReadableName,omitempty"`
 }
 
 // +kcc:proto=grafeas.v1.Fingerprint

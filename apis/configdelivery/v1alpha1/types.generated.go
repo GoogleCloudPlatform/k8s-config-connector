@@ -25,14 +25,27 @@ package v1alpha1
 type AllAtOnceStrategy struct {
 }
 
-// +kcc:proto=google.cloud.configdelivery.v1.Fleet.LabelSelector
-type Fleet_LabelSelector struct {
-	// Optional. match_labels is a map of {key,value} pairs. Each {key,value}
-	//  pair must match an existing label key and value exactly in order to
-	//  satisfy the match.
-	// +kcc:proto:field=google.cloud.configdelivery.v1.Fleet.LabelSelector.match_labels
-	MatchLabels map[string]string `json:"matchLabels,omitempty"`
+// +kcc:proto=google.cloud.configdelivery.v1.FleetPackageError
+type FleetPackageError struct {
+	// Optional. A description of the error.
+	// +kcc:proto:field=google.cloud.configdelivery.v1.FleetPackageError.error_message
+	ErrorMessage *string `json:"errorMessage,omitempty"`
 }
+
+/* unreachable type FleetPackageInfo
+// +kcc:proto=google.cloud.configdelivery.v1.FleetPackageInfo
+type FleetPackageInfo struct {
+	// Optional. The active rollout, if any. Format is
+	//  `projects/{project}/locations/{location}/fleetPackages/{fleet_package}/rollouts/{rollout}`.
+	// +kcc:proto:field=google.cloud.configdelivery.v1.FleetPackageInfo.active_rollout
+	ActiveRollout *string `json:"activeRollout,omitempty"`
+
+	// Optional. The last completed rollout, if any. Format is
+	//  `projects/{project}/locations/{location}/fleetPackages/{fleet_package}/rollouts/{rollout}`.
+	// +kcc:proto:field=google.cloud.configdelivery.v1.FleetPackageInfo.last_completed_rollout
+	LastCompletedRollout *string `json:"lastCompletedRollout,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.configdelivery.v1.FleetPackage.ResourceBundleSelector
 type FleetPackage_ResourceBundleSelector struct {
@@ -69,27 +82,14 @@ type FleetPackage_VariantSelector struct {
 	VariantNameTemplate *string `json:"variantNameTemplate,omitempty"`
 }
 
-// +kcc:proto=google.cloud.configdelivery.v1.FleetPackageError
-type FleetPackageError struct {
-	// Optional. A description of the error.
-	// +kcc:proto:field=google.cloud.configdelivery.v1.FleetPackageError.error_message
-	ErrorMessage *string `json:"errorMessage,omitempty"`
+// +kcc:proto=google.cloud.configdelivery.v1.Fleet.LabelSelector
+type Fleet_LabelSelector struct {
+	// Optional. match_labels is a map of {key,value} pairs. Each {key,value}
+	//  pair must match an existing label key and value exactly in order to
+	//  satisfy the match.
+	// +kcc:proto:field=google.cloud.configdelivery.v1.Fleet.LabelSelector.match_labels
+	MatchLabels map[string]string `json:"matchLabels,omitempty"`
 }
-
-/* unreachable type FleetPackageInfo
-// +kcc:proto=google.cloud.configdelivery.v1.FleetPackageInfo
-type FleetPackageInfo struct {
-	// Optional. The active rollout, if any. Format is
-	//  `projects/{project}/locations/{location}/fleetPackages/{fleet_package}/rollouts/{rollout}`.
-	// +kcc:proto:field=google.cloud.configdelivery.v1.FleetPackageInfo.active_rollout
-	ActiveRollout *string `json:"activeRollout,omitempty"`
-
-	// Optional. The last completed rollout, if any. Format is
-	//  `projects/{project}/locations/{location}/fleetPackages/{fleet_package}/rollouts/{rollout}`.
-	// +kcc:proto:field=google.cloud.configdelivery.v1.FleetPackageInfo.last_completed_rollout
-	LastCompletedRollout *string `json:"lastCompletedRollout,omitempty"`
-}
-*/
 
 // +kcc:proto=google.cloud.configdelivery.v1.RollingStrategy
 type RollingStrategy struct {

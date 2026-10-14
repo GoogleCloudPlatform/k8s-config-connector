@@ -87,6 +87,17 @@ type AudioStream struct {
 	SampleRateHertz *int32 `json:"sampleRateHertz,omitempty"`
 }
 
+// +kcc:proto=google.cloud.video.livestream.v1.AudioStreamProperty
+type AudioStreamProperty struct {
+	// Index of this audio stream.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.AudioStreamProperty.index
+	Index *int32 `json:"index,omitempty"`
+
+	// Properties of the audio format.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.AudioStreamProperty.audio_format
+	AudioFormat *AudioFormat `json:"audioFormat,omitempty"`
+}
+
 // +kcc:proto=google.cloud.video.livestream.v1.AudioStream.AudioMapping
 type AudioStream_AudioMapping struct {
 	// Required. The `Channel`
@@ -118,17 +129,6 @@ type AudioStream_AudioMapping struct {
 	//  positive values increase. The default is 0.
 	// +kcc:proto:field=google.cloud.video.livestream.v1.AudioStream.AudioMapping.gain_db
 	GainDb *float64 `json:"gainDb,omitempty"`
-}
-
-// +kcc:proto=google.cloud.video.livestream.v1.AudioStreamProperty
-type AudioStreamProperty struct {
-	// Index of this audio stream.
-	// +kcc:proto:field=google.cloud.video.livestream.v1.AudioStreamProperty.index
-	Index *int32 `json:"index,omitempty"`
-
-	// Properties of the audio format.
-	// +kcc:proto:field=google.cloud.video.livestream.v1.AudioStreamProperty.audio_format
-	AudioFormat *AudioFormat `json:"audioFormat,omitempty"`
 }
 
 // +kcc:proto=google.cloud.video.livestream.v1.Channel.Output
@@ -476,6 +476,17 @@ type TextStream struct {
 	Codec *string `json:"codec,omitempty"`
 }
 
+// +kcc:proto=google.type.TimeZone
+type TimeZone struct {
+	// IANA Time Zone Database time zone, e.g. "America/New_York".
+	// +kcc:proto:field=google.type.TimeZone.id
+	ID *string `json:"id,omitempty"`
+
+	// Optional. IANA Time Zone Database version number, e.g. "2019a".
+	// +kcc:proto:field=google.type.TimeZone.version
+	Version *string `json:"version,omitempty"`
+}
+
 // +kcc:proto=google.cloud.video.livestream.v1.TimecodeConfig
 type TimecodeConfig struct {
 	// The source of the timecode that will later be used in outputs/manifests.
@@ -517,6 +528,17 @@ type VideoStream struct {
 	// H264 codec settings.
 	// +kcc:proto:field=google.cloud.video.livestream.v1.VideoStream.h264
 	H264 *VideoStream_H264CodecSettings `json:"h264,omitempty"`
+}
+
+// +kcc:proto=google.cloud.video.livestream.v1.VideoStreamProperty
+type VideoStreamProperty struct {
+	// Index of this video stream.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.VideoStreamProperty.index
+	Index *int32 `json:"index,omitempty"`
+
+	// Properties of the video format.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.VideoStreamProperty.video_format
+	VideoFormat *VideoFormat `json:"videoFormat,omitempty"`
 }
 
 // +kcc:proto=google.cloud.video.livestream.v1.VideoStream.H264CodecSettings
@@ -636,26 +658,4 @@ type VideoStream_H264CodecSettings struct {
 	//  message.
 	// +kcc:proto:field=google.cloud.video.livestream.v1.VideoStream.H264CodecSettings.tune
 	Tune *string `json:"tune,omitempty"`
-}
-
-// +kcc:proto=google.cloud.video.livestream.v1.VideoStreamProperty
-type VideoStreamProperty struct {
-	// Index of this video stream.
-	// +kcc:proto:field=google.cloud.video.livestream.v1.VideoStreamProperty.index
-	Index *int32 `json:"index,omitempty"`
-
-	// Properties of the video format.
-	// +kcc:proto:field=google.cloud.video.livestream.v1.VideoStreamProperty.video_format
-	VideoFormat *VideoFormat `json:"videoFormat,omitempty"`
-}
-
-// +kcc:proto=google.type.TimeZone
-type TimeZone struct {
-	// IANA Time Zone Database time zone, e.g. "America/New_York".
-	// +kcc:proto:field=google.type.TimeZone.id
-	ID *string `json:"id,omitempty"`
-
-	// Optional. IANA Time Zone Database version number, e.g. "2019a".
-	// +kcc:proto:field=google.type.TimeZone.version
-	Version *string `json:"version,omitempty"`
 }

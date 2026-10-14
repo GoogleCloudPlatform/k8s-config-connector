@@ -475,6 +475,11 @@ spec:
                           not require the above permission as VM no longer use default
                           Compute Engine SA, but a P4SA.
                         type: boolean
+                      eucDisabled:
+                        description: Input only. Whether EUC is disabled in this NotebookRuntimeTemplate.
+                          In proto3, the default value of a boolean is false. In this
+                          way, by default EUC will be enabled for NotebookRuntimeTemplate.
+                        type: boolean
                     type: object
                   updateTime:
                     description: Output only. Timestamp when this NotebookRuntimeTemplate

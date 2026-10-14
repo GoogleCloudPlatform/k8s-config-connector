@@ -407,6 +407,11 @@ type ShieldedVMConfig struct {
 /* unreachable type ColabImageObservedState
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.ColabImage
 type ColabImageObservedState struct {
+	// Optional. The release name of the NotebookRuntime Colab image, e.g.
+	//  "py310". If not specified, detault to the latest release.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ColabImage.release_name
+	ReleaseName *string `json:"releaseName,omitempty"`
+
 	// Output only. A human-readable description of the specified colab image
 	//  release, populated by the system. Example: "Python 3.10", "Latest - current
 	//  Python 3.11"
@@ -417,6 +422,12 @@ type ColabImageObservedState struct {
 
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.NotebookEucConfig
 type NotebookEUCConfigObservedState struct {
+	// Input only. Whether EUC is disabled in this NotebookRuntimeTemplate.
+	//  In proto3, the default value of a boolean is false. In this way, by default
+	//  EUC will be enabled for NotebookRuntimeTemplate.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookEucConfig.euc_disabled
+	EUCDisabled *bool `json:"eucDisabled,omitempty"`
+
 	// Output only. Whether ActAs check is bypassed for service account attached
 	//  to the VM. If false, we need ActAs check for the default Compute Engine
 	//  Service account. When a Runtime is created, a VM is allocated using Default
@@ -574,5 +585,13 @@ type NotebookSoftwareConfigObservedState struct {
 	// Optional. Google-managed NotebookRuntime colab image.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookSoftwareConfig.colab_image
 	ColabImage *ColabImageObservedState `json:"colabImage,omitempty"`
+
+	// Optional. Environment variables to be passed to the container.
+	//  Maximum limit is 100.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookSoftwareConfig.env
+	Env []EnvVar `json:"env,omitempty"`
+
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookSoftwareConfig.post_startup_script_config
+	PostStartupScriptConfig *PostStartupScriptConfig `json:"postStartupScriptConfig,omitempty"`
 }
 */

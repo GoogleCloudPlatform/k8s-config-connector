@@ -22,6 +22,98 @@
 
 package v1beta1
 
+/* unreachable type API
+// +kcc:proto=google.protobuf.Api
+type API struct {
+	// The fully qualified name of this interface, including package name
+	//  followed by the interface's simple name.
+	// +kcc:proto:field=google.protobuf.Api.name
+	Name *string `json:"name,omitempty"`
+
+	// The methods of this interface, in unspecified order.
+	// +kcc:proto:field=google.protobuf.Api.methods
+	Methods []Method `json:"methods,omitempty"`
+
+	// Any metadata attached to the interface.
+	// +kcc:proto:field=google.protobuf.Api.options
+	Options []Option `json:"options,omitempty"`
+
+	// A version string for this interface. If specified, must have the form
+	//  `major-version.minor-version`, as in `1.10`. If the minor version is
+	//  omitted, it defaults to zero. If the entire version field is empty, the
+	//  major version is derived from the package name, as outlined below. If the
+	//  field is not empty, the version in the package name will be verified to be
+	//  consistent with what is provided here.
+	//
+	//  The versioning schema uses [semantic
+	//  versioning](http://semver.org) where the major version number
+	//  indicates a breaking change and the minor version an additive,
+	//  non-breaking change. Both version numbers are signals to users
+	//  what to expect from different versions, and should be carefully
+	//  chosen based on the product plan.
+	//
+	//  The major version is also reflected in the package name of the
+	//  interface, which must end in `v<major-version>`, as in
+	//  `google.feature.v1`. For major versions 0 and 1, the suffix can
+	//  be omitted. Zero major versions must only be used for
+	//  experimental, non-GA interfaces.
+	// +kcc:proto:field=google.protobuf.Api.version
+	Version *string `json:"version,omitempty"`
+
+	// Source context for the protocol buffer service represented by this
+	//  message.
+	// +kcc:proto:field=google.protobuf.Api.source_context
+	SourceContext *SourceContext `json:"sourceContext,omitempty"`
+
+	// Included interfaces. See [Mixin][].
+	// +kcc:proto:field=google.protobuf.Api.mixins
+	Mixins []Mixin `json:"mixins,omitempty"`
+
+	// The source syntax of the service.
+	// +kcc:proto:field=google.protobuf.Api.syntax
+	Syntax *string `json:"syntax,omitempty"`
+}
+*/
+
+/* unreachable type Any
+// +kcc:proto=google.protobuf.Any
+type Any struct {
+	// A URL/resource name that uniquely identifies the type of the serialized
+	//  protocol buffer message. This string must contain at least
+	//  one "/" character. The last segment of the URL's path must represent
+	//  the fully qualified name of the type (as in
+	//  `path/google.protobuf.Duration`). The name should be in a canonical form
+	//  (e.g., leading "." is not accepted).
+	//
+	//  In practice, teams usually precompile into the binary all types that they
+	//  expect it to use in the context of Any. However, for URLs which use the
+	//  scheme `http`, `https`, or no scheme, one can optionally set up a type
+	//  server that maps type URLs to message definitions as follows:
+	//
+	//  * If no scheme is provided, `https` is assumed.
+	//  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+	//    value in binary format, or produce an error.
+	//  * Applications are allowed to cache lookup results based on the
+	//    URL, or have them precompiled into a binary to avoid any
+	//    lookup. Therefore, binary compatibility needs to be preserved
+	//    on changes to types. (Use versioned type names to manage
+	//    breaking changes.)
+	//
+	//  Note: this functionality is not currently available in the official
+	//  protobuf release, and it is not used for type URLs beginning with
+	//  type.googleapis.com.
+	//
+	//  Schemes other than `http`, `https` (or the empty scheme) might be
+	//  used with implementation specific semantics.
+	// +kcc:proto:field=google.protobuf.Any.type_url
+	TypeURL *string `json:"typeURL,omitempty"`
+
+	// Must be a valid serialized protocol buffer of the above specified type.
+	// +kcc:proto:field=google.protobuf.Any.value
+	Value []byte `json:"value,omitempty"`
+}
+*/
+
 /* unreachable type AuthProvider
 // +kcc:proto=google.api.AuthProvider
 type AuthProvider struct {
@@ -328,6 +420,39 @@ type LabelDescriptor struct {
 }
 */
 
+/* unreachable type Method
+// +kcc:proto=google.protobuf.Method
+type Method struct {
+	// The simple name of this method.
+	// +kcc:proto:field=google.protobuf.Method.name
+	Name *string `json:"name,omitempty"`
+
+	// A URL of the input message type.
+	// +kcc:proto:field=google.protobuf.Method.request_type_url
+	RequestTypeURL *string `json:"requestTypeURL,omitempty"`
+
+	// If true, the request is streamed.
+	// +kcc:proto:field=google.protobuf.Method.request_streaming
+	RequestStreaming *bool `json:"requestStreaming,omitempty"`
+
+	// The URL of the output message type.
+	// +kcc:proto:field=google.protobuf.Method.response_type_url
+	ResponseTypeURL *string `json:"responseTypeURL,omitempty"`
+
+	// If true, the response is streamed.
+	// +kcc:proto:field=google.protobuf.Method.response_streaming
+	ResponseStreaming *bool `json:"responseStreaming,omitempty"`
+
+	// Any metadata attached to the method.
+	// +kcc:proto:field=google.protobuf.Method.options
+	Options []Option `json:"options,omitempty"`
+
+	// The source syntax of this method.
+	// +kcc:proto:field=google.protobuf.Method.syntax
+	Syntax *string `json:"syntax,omitempty"`
+}
+*/
+
 /* unreachable type MetricRule
 // +kcc:proto=google.api.MetricRule
 type MetricRule struct {
@@ -346,6 +471,20 @@ type MetricRule struct {
 	//  The value must not be negative.
 	// +kcc:proto:field=google.api.MetricRule.metric_costs
 	MetricCosts map[string]int64 `json:"metricCosts,omitempty"`
+}
+*/
+
+/* unreachable type Mixin
+// +kcc:proto=google.protobuf.Mixin
+type Mixin struct {
+	// The fully qualified name of the interface which is included.
+	// +kcc:proto:field=google.protobuf.Mixin.name
+	Name *string `json:"name,omitempty"`
+
+	// If non-empty specifies a path under which inherited HTTP paths
+	//  are rooted.
+	// +kcc:proto:field=google.protobuf.Mixin.root
+	Root *string `json:"root,omitempty"`
 }
 */
 
@@ -446,6 +585,25 @@ type OAuthRequirements struct {
 	//                         https://www.googleapis.com/auth/calendar.read
 	// +kcc:proto:field=google.api.OAuthRequirements.canonical_scopes
 	CanonicalScopes *string `json:"canonicalScopes,omitempty"`
+}
+*/
+
+/* unreachable type Option
+// +kcc:proto=google.protobuf.Option
+type Option struct {
+	// The option's name. For protobuf built-in options (options defined in
+	//  descriptor.proto), this is the short name. For example, `"map_entry"`.
+	//  For custom options, it should be the fully-qualified name. For example,
+	//  `"google.api.http"`.
+	// +kcc:proto:field=google.protobuf.Option.name
+	Name *string `json:"name,omitempty"`
+
+	// The option's value packed in an Any message. If the value is a primitive,
+	//  the corresponding wrapper type defined in google/protobuf/wrappers.proto
+	//  should be used. If the value is an enum, it should be stored as an int32
+	//  value using the google.protobuf.Int32Value type.
+	// +kcc:proto:field=google.protobuf.Option.value
+	Value *Any `json:"value,omitempty"`
 }
 */
 
@@ -589,65 +747,6 @@ type QuotaLimit struct {
 }
 */
 
-/* unreachable type Usage
-// +kcc:proto=google.api.Usage
-type Usage struct {
-	// Requirements that must be satisfied before a consumer project can use the
-	//  service. Each requirement is of the form <service.name>/<requirement-id>;
-	//  for example 'serviceusage.googleapis.com/billing-enabled'.
-	//
-	//  For Google APIs, a Terms of Service requirement must be included here.
-	//  Google Cloud APIs must include "serviceusage.googleapis.com/tos/cloud".
-	//  Other Google APIs should include
-	//  "serviceusage.googleapis.com/tos/universal". Additional ToS can be
-	//  included based on the business needs.
-	// +kcc:proto:field=google.api.Usage.requirements
-	Requirements []string `json:"requirements,omitempty"`
-
-	// A list of usage rules that apply to individual API methods.
-	//
-	//  **NOTE:** All service configuration rules follow "last one wins" order.
-	// +kcc:proto:field=google.api.Usage.rules
-	Rules []UsageRule `json:"rules,omitempty"`
-
-	// The full resource name of a channel used for sending notifications to the
-	//  service producer.
-	//
-	//  Google Service Management currently only supports
-	//  [Google Cloud Pub/Sub](https://cloud.google.com/pubsub) as a notification
-	//  channel. To use Google Cloud Pub/Sub as the channel, this must be the name
-	//  of a Cloud Pub/Sub topic that uses the Cloud Pub/Sub topic name format
-	//  documented in https://cloud.google.com/pubsub/docs/overview.
-	// +kcc:proto:field=google.api.Usage.producer_notification_channel
-	ProducerNotificationChannel *string `json:"producerNotificationChannel,omitempty"`
-}
-*/
-
-/* unreachable type UsageRule
-// +kcc:proto=google.api.UsageRule
-type UsageRule struct {
-	// Selects the methods to which this rule applies. Use '*' to indicate all
-	//  methods in all APIs.
-	//
-	//  Refer to [selector][google.api.DocumentationRule.selector] for syntax
-	//  details.
-	// +kcc:proto:field=google.api.UsageRule.selector
-	Selector *string `json:"selector,omitempty"`
-
-	// If true, the selected method allows unregistered calls, e.g. calls
-	//  that don't identify any user or application.
-	// +kcc:proto:field=google.api.UsageRule.allow_unregistered_calls
-	AllowUnregisteredCalls *bool `json:"allowUnregisteredCalls,omitempty"`
-
-	// If true, the selected method should skip service control and the control
-	//  plane features, such as quota and billing, will not be available.
-	//  This flag is used by Google Cloud Endpoints to bypass checks for internal
-	//  methods, such as service health check methods.
-	// +kcc:proto:field=google.api.UsageRule.skip_service_control
-	SkipServiceControl *bool `json:"skipServiceControl,omitempty"`
-}
-*/
-
 /* found existing non-generated go type "Service", skipping
 
 // +kcc:proto=google.api.serviceusage.v1beta1.Service
@@ -749,164 +848,6 @@ type ServiceIdentity struct {
 }
 */
 
-/* unreachable type Any
-// +kcc:proto=google.protobuf.Any
-type Any struct {
-	// A URL/resource name that uniquely identifies the type of the serialized
-	//  protocol buffer message. This string must contain at least
-	//  one "/" character. The last segment of the URL's path must represent
-	//  the fully qualified name of the type (as in
-	//  `path/google.protobuf.Duration`). The name should be in a canonical form
-	//  (e.g., leading "." is not accepted).
-	//
-	//  In practice, teams usually precompile into the binary all types that they
-	//  expect it to use in the context of Any. However, for URLs which use the
-	//  scheme `http`, `https`, or no scheme, one can optionally set up a type
-	//  server that maps type URLs to message definitions as follows:
-	//
-	//  * If no scheme is provided, `https` is assumed.
-	//  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-	//    value in binary format, or produce an error.
-	//  * Applications are allowed to cache lookup results based on the
-	//    URL, or have them precompiled into a binary to avoid any
-	//    lookup. Therefore, binary compatibility needs to be preserved
-	//    on changes to types. (Use versioned type names to manage
-	//    breaking changes.)
-	//
-	//  Note: this functionality is not currently available in the official
-	//  protobuf release, and it is not used for type URLs beginning with
-	//  type.googleapis.com.
-	//
-	//  Schemes other than `http`, `https` (or the empty scheme) might be
-	//  used with implementation specific semantics.
-	// +kcc:proto:field=google.protobuf.Any.type_url
-	TypeURL *string `json:"typeURL,omitempty"`
-
-	// Must be a valid serialized protocol buffer of the above specified type.
-	// +kcc:proto:field=google.protobuf.Any.value
-	Value []byte `json:"value,omitempty"`
-}
-*/
-
-/* unreachable type API
-// +kcc:proto=google.protobuf.Api
-type API struct {
-	// The fully qualified name of this interface, including package name
-	//  followed by the interface's simple name.
-	// +kcc:proto:field=google.protobuf.Api.name
-	Name *string `json:"name,omitempty"`
-
-	// The methods of this interface, in unspecified order.
-	// +kcc:proto:field=google.protobuf.Api.methods
-	Methods []Method `json:"methods,omitempty"`
-
-	// Any metadata attached to the interface.
-	// +kcc:proto:field=google.protobuf.Api.options
-	Options []Option `json:"options,omitempty"`
-
-	// A version string for this interface. If specified, must have the form
-	//  `major-version.minor-version`, as in `1.10`. If the minor version is
-	//  omitted, it defaults to zero. If the entire version field is empty, the
-	//  major version is derived from the package name, as outlined below. If the
-	//  field is not empty, the version in the package name will be verified to be
-	//  consistent with what is provided here.
-	//
-	//  The versioning schema uses [semantic
-	//  versioning](http://semver.org) where the major version number
-	//  indicates a breaking change and the minor version an additive,
-	//  non-breaking change. Both version numbers are signals to users
-	//  what to expect from different versions, and should be carefully
-	//  chosen based on the product plan.
-	//
-	//  The major version is also reflected in the package name of the
-	//  interface, which must end in `v<major-version>`, as in
-	//  `google.feature.v1`. For major versions 0 and 1, the suffix can
-	//  be omitted. Zero major versions must only be used for
-	//  experimental, non-GA interfaces.
-	// +kcc:proto:field=google.protobuf.Api.version
-	Version *string `json:"version,omitempty"`
-
-	// Source context for the protocol buffer service represented by this
-	//  message.
-	// +kcc:proto:field=google.protobuf.Api.source_context
-	SourceContext *SourceContext `json:"sourceContext,omitempty"`
-
-	// Included interfaces. See [Mixin][].
-	// +kcc:proto:field=google.protobuf.Api.mixins
-	Mixins []Mixin `json:"mixins,omitempty"`
-
-	// The source syntax of the service.
-	// +kcc:proto:field=google.protobuf.Api.syntax
-	Syntax *string `json:"syntax,omitempty"`
-}
-*/
-
-/* unreachable type Method
-// +kcc:proto=google.protobuf.Method
-type Method struct {
-	// The simple name of this method.
-	// +kcc:proto:field=google.protobuf.Method.name
-	Name *string `json:"name,omitempty"`
-
-	// A URL of the input message type.
-	// +kcc:proto:field=google.protobuf.Method.request_type_url
-	RequestTypeURL *string `json:"requestTypeURL,omitempty"`
-
-	// If true, the request is streamed.
-	// +kcc:proto:field=google.protobuf.Method.request_streaming
-	RequestStreaming *bool `json:"requestStreaming,omitempty"`
-
-	// The URL of the output message type.
-	// +kcc:proto:field=google.protobuf.Method.response_type_url
-	ResponseTypeURL *string `json:"responseTypeURL,omitempty"`
-
-	// If true, the response is streamed.
-	// +kcc:proto:field=google.protobuf.Method.response_streaming
-	ResponseStreaming *bool `json:"responseStreaming,omitempty"`
-
-	// Any metadata attached to the method.
-	// +kcc:proto:field=google.protobuf.Method.options
-	Options []Option `json:"options,omitempty"`
-
-	// The source syntax of this method.
-	// +kcc:proto:field=google.protobuf.Method.syntax
-	Syntax *string `json:"syntax,omitempty"`
-}
-*/
-
-/* unreachable type Mixin
-// +kcc:proto=google.protobuf.Mixin
-type Mixin struct {
-	// The fully qualified name of the interface which is included.
-	// +kcc:proto:field=google.protobuf.Mixin.name
-	Name *string `json:"name,omitempty"`
-
-	// If non-empty specifies a path under which inherited HTTP paths
-	//  are rooted.
-	// +kcc:proto:field=google.protobuf.Mixin.root
-	Root *string `json:"root,omitempty"`
-}
-*/
-
-/* unreachable type Option
-// +kcc:proto=google.protobuf.Option
-type Option struct {
-	// The option's name. For protobuf built-in options (options defined in
-	//  descriptor.proto), this is the short name. For example, `"map_entry"`.
-	//  For custom options, it should be the fully-qualified name. For example,
-	//  `"google.api.http"`.
-	// +kcc:proto:field=google.protobuf.Option.name
-	Name *string `json:"name,omitempty"`
-
-	// The option's value packed in an Any message. If the value is a primitive,
-	//  the corresponding wrapper type defined in google/protobuf/wrappers.proto
-	//  should be used. If the value is an enum, it should be stored as an int32
-	//  value using the google.protobuf.Int32Value type.
-	// +kcc:proto:field=google.protobuf.Option.value
-	Value *Any `json:"value,omitempty"`
-}
-*/
-
 /* unreachable type SourceContext
 // +kcc:proto=google.protobuf.SourceContext
 type SourceContext struct {
@@ -914,5 +855,64 @@ type SourceContext struct {
 	//  protobuf element.  For example: `"google/protobuf/source_context.proto"`.
 	// +kcc:proto:field=google.protobuf.SourceContext.file_name
 	FileName *string `json:"fileName,omitempty"`
+}
+*/
+
+/* unreachable type Usage
+// +kcc:proto=google.api.Usage
+type Usage struct {
+	// Requirements that must be satisfied before a consumer project can use the
+	//  service. Each requirement is of the form <service.name>/<requirement-id>;
+	//  for example 'serviceusage.googleapis.com/billing-enabled'.
+	//
+	//  For Google APIs, a Terms of Service requirement must be included here.
+	//  Google Cloud APIs must include "serviceusage.googleapis.com/tos/cloud".
+	//  Other Google APIs should include
+	//  "serviceusage.googleapis.com/tos/universal". Additional ToS can be
+	//  included based on the business needs.
+	// +kcc:proto:field=google.api.Usage.requirements
+	Requirements []string `json:"requirements,omitempty"`
+
+	// A list of usage rules that apply to individual API methods.
+	//
+	//  **NOTE:** All service configuration rules follow "last one wins" order.
+	// +kcc:proto:field=google.api.Usage.rules
+	Rules []UsageRule `json:"rules,omitempty"`
+
+	// The full resource name of a channel used for sending notifications to the
+	//  service producer.
+	//
+	//  Google Service Management currently only supports
+	//  [Google Cloud Pub/Sub](https://cloud.google.com/pubsub) as a notification
+	//  channel. To use Google Cloud Pub/Sub as the channel, this must be the name
+	//  of a Cloud Pub/Sub topic that uses the Cloud Pub/Sub topic name format
+	//  documented in https://cloud.google.com/pubsub/docs/overview.
+	// +kcc:proto:field=google.api.Usage.producer_notification_channel
+	ProducerNotificationChannel *string `json:"producerNotificationChannel,omitempty"`
+}
+*/
+
+/* unreachable type UsageRule
+// +kcc:proto=google.api.UsageRule
+type UsageRule struct {
+	// Selects the methods to which this rule applies. Use '*' to indicate all
+	//  methods in all APIs.
+	//
+	//  Refer to [selector][google.api.DocumentationRule.selector] for syntax
+	//  details.
+	// +kcc:proto:field=google.api.UsageRule.selector
+	Selector *string `json:"selector,omitempty"`
+
+	// If true, the selected method allows unregistered calls, e.g. calls
+	//  that don't identify any user or application.
+	// +kcc:proto:field=google.api.UsageRule.allow_unregistered_calls
+	AllowUnregisteredCalls *bool `json:"allowUnregisteredCalls,omitempty"`
+
+	// If true, the selected method should skip service control and the control
+	//  plane features, such as quota and billing, will not be available.
+	//  This flag is used by Google Cloud Endpoints to bypass checks for internal
+	//  methods, such as service health check methods.
+	// +kcc:proto:field=google.api.UsageRule.skip_service_control
+	SkipServiceControl *bool `json:"skipServiceControl,omitempty"`
 }
 */

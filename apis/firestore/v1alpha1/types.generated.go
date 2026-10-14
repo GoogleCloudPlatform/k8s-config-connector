@@ -23,6 +23,15 @@
 
 package v1alpha1
 
+/* unreachable type ArrayValue
+// +kcc:proto=google.firestore.v1.ArrayValue
+type ArrayValue struct {
+	// Values in the array.
+	// +kcc:proto:field=google.firestore.v1.ArrayValue.values
+	Values []Value `json:"values,omitempty"`
+}
+*/
+
 // +kcc:proto=google.firestore.admin.v1.DailyRecurrence
 type DailyRecurrence struct {
 }
@@ -74,21 +83,16 @@ type Index_IndexField_VectorConfig struct {
 type Index_IndexField_VectorConfig_FlatIndex struct {
 }
 
-// +kcc:proto=google.firestore.admin.v1.WeeklyRecurrence
-type WeeklyRecurrence struct {
-	// The day of week to run.
-	//
-	//  DAY_OF_WEEK_UNSPECIFIED is not allowed.
-	// +kcc:proto:field=google.firestore.admin.v1.WeeklyRecurrence.day
-	Day *string `json:"day,omitempty"`
-}
+/* unreachable type LatLng
+// +kcc:proto=google.type.LatLng
+type LatLng struct {
+	// The latitude in degrees. It must be in the range [-90.0, +90.0].
+	// +kcc:proto:field=google.type.LatLng.latitude
+	Latitude *float64 `json:"latitude,omitempty"`
 
-/* unreachable type ArrayValue
-// +kcc:proto=google.firestore.v1.ArrayValue
-type ArrayValue struct {
-	// Values in the array.
-	// +kcc:proto:field=google.firestore.v1.ArrayValue.values
-	Values []Value `json:"values,omitempty"`
+	// The longitude in degrees. It must be in the range [-180.0, +180.0].
+	// +kcc:proto:field=google.type.LatLng.longitude
+	Longitude *float64 `json:"longitude,omitempty"`
 }
 */
 
@@ -164,18 +168,14 @@ type Value struct {
 }
 */
 
-/* unreachable type LatLng
-// +kcc:proto=google.type.LatLng
-type LatLng struct {
-	// The latitude in degrees. It must be in the range [-90.0, +90.0].
-	// +kcc:proto:field=google.type.LatLng.latitude
-	Latitude *float64 `json:"latitude,omitempty"`
-
-	// The longitude in degrees. It must be in the range [-180.0, +180.0].
-	// +kcc:proto:field=google.type.LatLng.longitude
-	Longitude *float64 `json:"longitude,omitempty"`
+// +kcc:proto=google.firestore.admin.v1.WeeklyRecurrence
+type WeeklyRecurrence struct {
+	// The day of week to run.
+	//
+	//  DAY_OF_WEEK_UNSPECIFIED is not allowed.
+	// +kcc:proto:field=google.firestore.admin.v1.WeeklyRecurrence.day
+	Day *string `json:"day,omitempty"`
 }
-*/
 
 // +kcc:observedstate:proto=google.firestore.admin.v1.Field.TtlConfig
 type Field_TTLConfigObservedState struct {

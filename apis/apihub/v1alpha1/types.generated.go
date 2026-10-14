@@ -44,35 +44,6 @@ type ApplicationIntegrationEndpointDetails struct {
 	TriggerID *string `json:"triggerID,omitempty"`
 }
 
-// +kcc:proto=google.cloud.apihub.v1.Attribute.AllowedValue
-type Attribute_AllowedValue struct {
-	// Required. The ID of the allowed value.
-	//  * If provided, the same will be used. The service will throw an error if
-	//  the specified id is already used by another allowed value in the same
-	//  attribute resource.
-	//  * If not provided, a system generated id derived from the display name
-	//  will be used. In this case, the service will handle conflict resolution
-	//  by adding a system generated suffix in case of duplicates.
-	//
-	//  This value should be 4-63 characters, and valid characters
-	//  are /[a-z][0-9]-/.
-	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.id
-	ID *string `json:"id,omitempty"`
-
-	// Required. The display name of the allowed value.
-	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Optional. The detailed description of the allowed value.
-	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.description
-	Description *string `json:"description,omitempty"`
-
-	// Optional. When set to true, the allowed value cannot be updated or
-	//  deleted by the user. It can only be true for System defined attributes.
-	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.immutable
-	Immutable *bool `json:"immutable,omitempty"`
-}
-
 // +kcc:proto=google.cloud.apihub.v1.AttributeValues
 type AttributeValues struct {
 	// The attribute values associated with a resource in case attribute data
@@ -109,6 +80,35 @@ type AttributeValues_StringAttributeValues struct {
 	//  JSON.
 	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.StringAttributeValues.values
 	Values []string `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.Attribute.AllowedValue
+type Attribute_AllowedValue struct {
+	// Required. The ID of the allowed value.
+	//  * If provided, the same will be used. The service will throw an error if
+	//  the specified id is already used by another allowed value in the same
+	//  attribute resource.
+	//  * If not provided, a system generated id derived from the display name
+	//  will be used. In this case, the service will handle conflict resolution
+	//  by adding a system generated suffix in case of duplicates.
+	//
+	//  This value should be 4-63 characters, and valid characters
+	//  are /[a-z][0-9]-/.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.id
+	ID *string `json:"id,omitempty"`
+
+	// Required. The display name of the allowed value.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The detailed description of the allowed value.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. When set to true, the allowed value cannot be updated or
+	//  deleted by the user. It can only be true for System defined attributes.
+	// +kcc:proto:field=google.cloud.apihub.v1.Attribute.AllowedValue.immutable
+	Immutable *bool `json:"immutable,omitempty"`
 }
 
 // +kcc:proto=google.cloud.apihub.v1.ConfigValueOption
@@ -229,6 +229,25 @@ type Owner struct {
 	Email *string `json:"email,omitempty"`
 }
 
+// +kcc:proto=google.cloud.apihub.v1.PluginActionConfig
+type PluginActionConfig struct {
+	// Required. The id of the action.
+	// +kcc:proto:field=google.cloud.apihub.v1.PluginActionConfig.id
+	ID *string `json:"id,omitempty"`
+
+	// Required. The display name of the action.
+	// +kcc:proto:field=google.cloud.apihub.v1.PluginActionConfig.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Required. The description of the operation performed by the action.
+	// +kcc:proto:field=google.cloud.apihub.v1.PluginActionConfig.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. The trigger mode supported by the action.
+	// +kcc:proto:field=google.cloud.apihub.v1.PluginActionConfig.trigger_mode
+	TriggerMode *string `json:"triggerMode,omitempty"`
+}
+
 // +kcc:proto=google.cloud.apihub.v1.Plugin.ConfigTemplate
 type Plugin_ConfigTemplate struct {
 	// Optional. The authentication template for the plugin.
@@ -270,25 +289,6 @@ type Plugin_HostingService struct {
 	//  required for user defined plugins.
 	// +kcc:proto:field=google.cloud.apihub.v1.Plugin.HostingService.service_uri
 	ServiceURI *string `json:"serviceURI,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apihub.v1.PluginActionConfig
-type PluginActionConfig struct {
-	// Required. The id of the action.
-	// +kcc:proto:field=google.cloud.apihub.v1.PluginActionConfig.id
-	ID *string `json:"id,omitempty"`
-
-	// Required. The display name of the action.
-	// +kcc:proto:field=google.cloud.apihub.v1.PluginActionConfig.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Required. The description of the operation performed by the action.
-	// +kcc:proto:field=google.cloud.apihub.v1.PluginActionConfig.description
-	Description *string `json:"description,omitempty"`
-
-	// Required. The trigger mode supported by the action.
-	// +kcc:proto:field=google.cloud.apihub.v1.PluginActionConfig.trigger_mode
-	TriggerMode *string `json:"triggerMode,omitempty"`
 }
 
 // +kcc:proto=google.cloud.apihub.v1.SourceMetadata
