@@ -35,6 +35,7 @@ func TranslateAdaptiveMtDatasetObservedState_FromProto(mapCtx *direct.MapContext
 	}
 	out := &krm.TranslateAdaptiveMtDatasetObservedState{}
 	// MISSING: Name
+	out.ExampleCount = direct.LazyPtr(in.GetExampleCount())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
@@ -45,6 +46,7 @@ func TranslateAdaptiveMtDatasetObservedState_ToProto(mapCtx *direct.MapContext, 
 	}
 	out := &pb.AdaptiveMtDataset{}
 	// MISSING: Name
+	out.ExampleCount = direct.ValueOf(in.ExampleCount)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
@@ -58,7 +60,6 @@ func TranslateAdaptiveMtDatasetSpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.SourceLanguageCode = direct.LazyPtr(in.GetSourceLanguageCode())
 	out.TargetLanguageCode = direct.LazyPtr(in.GetTargetLanguageCode())
-	out.ExampleCount = direct.LazyPtr(in.GetExampleCount())
 	return out
 }
 func TranslateAdaptiveMtDatasetSpec_ToProto(mapCtx *direct.MapContext, in *krm.TranslateAdaptiveMtDatasetSpec) *pb.AdaptiveMtDataset {
@@ -70,6 +71,5 @@ func TranslateAdaptiveMtDatasetSpec_ToProto(mapCtx *direct.MapContext, in *krm.T
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.SourceLanguageCode = direct.ValueOf(in.SourceLanguageCode)
 	out.TargetLanguageCode = direct.ValueOf(in.TargetLanguageCode)
-	out.ExampleCount = direct.ValueOf(in.ExampleCount)
 	return out
 }

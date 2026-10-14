@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: translate.cnrm.cloud.google.com
+  kind: TranslateAdaptiveMtDataset
+  name: dataset-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
