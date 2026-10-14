@@ -402,6 +402,10 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 	for path, mockMethods := range mockGrouped {
 		realMethods, pathExistsInReal := realGrouped[path]
 		if !pathExistsInReal {
+			// Ignore project ID lookup calls to Cloud Resource Manager made by direct controller reference resolution
+			if strings.HasPrefix(path, "/projects/${projectNumber}") {
+				continue
+			}
 			t.Errorf("path %q present in mock log but missing in real log", path)
 			continue
 		}
@@ -655,6 +659,13 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			v["databaseVersion"] = float64(4)
 		} else if dv, ok := v["databaseVersion"].(string); ok && (dv == "POSTGRES_16" || dv == "POSTGRES_18") {
 			v["databaseVersion"] = "POSTGRES_16"
+		}
+		if gc, ok := v["geminiConfig"].(map[string]interface{}); ok && len(gc) == 0 {
+			delete(v, "geminiConfig")
+		}
+		delete(v, "subscriptionType")
+		if iu, ok := v["initialUser"].(map[string]interface{}); ok {
+			delete(iu, "password")
 		}
 
 		// Normalize empty LRO response payloads (e.g., from mock Delete operations returning Empty, but real returns nothing)

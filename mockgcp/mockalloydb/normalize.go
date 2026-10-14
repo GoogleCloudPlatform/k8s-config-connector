@@ -15,12 +15,17 @@
 package mockalloydb
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "alloydb.googleapis.com") {
+		return
+	}
 	replacements.ReplacePath(".continuousBackupInfo.enabledTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".response.continuousBackupInfo.enabledTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".ipAddress", "10.1.2.3")
