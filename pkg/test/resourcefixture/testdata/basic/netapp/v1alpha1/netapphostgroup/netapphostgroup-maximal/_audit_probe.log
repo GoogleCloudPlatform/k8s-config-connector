@@ -1,0 +1,21 @@
+GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-central1/hostGroups/netapphostgroup-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "description": "An updated maximal NetApp host group test resource",
+  "hosts": [
+    "iqn.1994-05.com.redhat:host3",
+    "iqn.1994-05.com.redhat:host4"
+  ],
+  "labels": {
+    "environment": "test-updated",
+    "managed-by": "kcc-updated"
+  },
+  "name": "projects/${projectId}/locations/us-central1/hostGroups/netapphostgroup-maximal-${uniqueId}",
+  "osType": 1,
+  "state": 2,
+  "type": 1
+}
