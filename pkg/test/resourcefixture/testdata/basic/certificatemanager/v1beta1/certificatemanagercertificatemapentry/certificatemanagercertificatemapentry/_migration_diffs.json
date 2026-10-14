@@ -114,38 +114,6 @@
     ]
   },
   {
-    "controller": "direct",
-    "isNewObject": false,
-    "resource": "CertificateManagerCertificateMapEntry/certificatemanagercertificatemapentry-${uniqueId}",
-    "fields": [
-      {
-        "id": "certificates",
-        "old": [
-          "projects/${projectNumber}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
-        ],
-        "new": [
-          "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
-        ]
-      }
-    ]
-  },
-  {
-    "controller": "direct",
-    "isNewObject": false,
-    "resource": "CertificateManagerCertificateMapEntry/certificatemanagercertificatemapentry-${uniqueId}",
-    "fields": [
-      {
-        "id": "certificates",
-        "old": [
-          "projects/${projectNumber}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
-        ],
-        "new": [
-          "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
-        ]
-      }
-    ]
-  },
-  {
     "controller": "tf",
     "isNewObject": true,
     "resource": "CertificateManagerCertificateMapEntry/certificatemanagercertificatemapentry-${uniqueId}",
