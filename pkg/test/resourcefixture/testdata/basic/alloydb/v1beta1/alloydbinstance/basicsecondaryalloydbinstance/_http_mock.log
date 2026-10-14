@@ -278,6 +278,7 @@ X-Xss-Protection: 0
       "network": "projects/${projectNumber}/global/networks/${networkID}"
     },
     "reconciling": false,
+    "serviceAccountEmail": "c-${projectNumber}-12345678@gcp-sa-alloydb.iam.gserviceaccount.com",
     "state": "READY",
     "subscriptionType": "STANDARD",
     "uid": "111111111111111111111",
@@ -362,6 +363,7 @@ X-Xss-Protection: 0
     "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
+  "serviceAccountEmail": "c-${projectNumber}-12345678@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": "READY",
   "subscriptionType": "STANDARD",
   "uid": "111111111111111111111",
@@ -1051,6 +1053,7 @@ X-Xss-Protection: 0
     "secondaryConfig": {
       "primaryClusterName": "projects/${projectNumber}/locations/europe-west1/clusters/alloydbcluster-1-${uniqueId}"
     },
+    "serviceAccountEmail": "c-${projectNumber}-12345678@gcp-sa-alloydb.iam.gserviceaccount.com",
     "state": "READY",
     "subscriptionType": "STANDARD",
     "uid": "111111111111111111111",
@@ -1138,6 +1141,7 @@ X-Xss-Protection: 0
   "secondaryConfig": {
     "primaryClusterName": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-1-${uniqueId}"
   },
+  "serviceAccountEmail": "c-${projectNumber}-12345678@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": "READY",
   "subscriptionType": "STANDARD",
   "uid": "111111111111111111111",
@@ -1644,6 +1648,7 @@ X-Xss-Protection: 0
   "secondaryConfig": {
     "primaryClusterName": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-1-${uniqueId}"
   },
+  "serviceAccountEmail": "c-${projectNumber}-12345678@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": "READY",
   "subscriptionType": "STANDARD",
   "uid": "111111111111111111111",
@@ -2148,6 +2153,7 @@ X-Xss-Protection: 0
   },
   "primaryConfig": {},
   "reconciling": false,
+  "serviceAccountEmail": "c-${projectNumber}-12345678@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": "READY",
   "subscriptionType": "STANDARD",
   "uid": "111111111111111111111",

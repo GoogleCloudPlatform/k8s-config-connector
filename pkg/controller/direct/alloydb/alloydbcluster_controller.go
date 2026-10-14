@@ -465,11 +465,6 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		return err
 	}
 
-	// TODO(b/443107538): Remove the immutability check after API handles it properly
-	// Also add the major version upgrade support
-	if a.desired.Spec.DatabaseVersion != nil && a.actual.DatabaseVersion != alloydbpb.DatabaseVersion_DATABASE_VERSION_UNSPECIFIED && *a.desired.Spec.DatabaseVersion != a.actual.DatabaseVersion.String() {
-		return fmt.Errorf("field 'spec.databaseVersion' is immutable and cannot be updated from %q to %q", a.actual.DatabaseVersion, *a.desired.Spec.DatabaseVersion)
-	}
 
 	// Diff mutable-but-unreadable fields (initialUser) using the annotation
 	k8sResource, err := k8s.NewResource(u)

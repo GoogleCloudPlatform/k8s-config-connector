@@ -16,6 +16,7 @@ package mockalloydb
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"k8s.io/apimachinery/pkg/util/uuid"
@@ -157,6 +158,9 @@ func setClusterFields(name *clusterName, obj *pb.Cluster) {
 	obj.Reconciling = false
 	obj.State = pb.Cluster_READY
 	obj.Uid = "111111111111111111111"
+	if obj.ServiceAccountEmail == "" {
+		obj.ServiceAccountEmail = fmt.Sprintf("c-%d-12345678@gcp-sa-alloydb.iam.gserviceaccount.com", name.Project.Number)
+	}
 	// TODO: Validate the logic for PrimaryConfig.
 	// PrimaryConfig is probably set when the primary cluster has a secondary
 	// cluster associated with it.
