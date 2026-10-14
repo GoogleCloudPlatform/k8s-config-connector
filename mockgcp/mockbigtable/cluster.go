@@ -291,3 +291,110 @@ func (s *MockService) parseClusterName(name string) (*clusterName, error) {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
 }
+
+type memoryLayerName struct {
+	cluster *clusterName
+}
+
+func (n *memoryLayerName) String() string {
+	return n.cluster.String() + "/memoryLayer"
+}
+
+func (s *MockService) parseMemoryLayerName(name string) (*memoryLayerName, error) {
+	if !strings.HasSuffix(name, "/memoryLayer") {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid for memoryLayer", name)
+	}
+	clusterPart := strings.TrimSuffix(name, "/memoryLayer")
+	clusterN, err := s.parseClusterName(clusterPart)
+	if err != nil {
+		return nil, err
+	}
+	return &memoryLayerName{cluster: clusterN}, nil
+}
+
+func (s *instanceAdminServer) GetMemoryLayer(ctx context.Context, req *adminpb.GetMemoryLayerRequest) (*adminpb.MemoryLayer, error) {
+	name, err := s.parseMemoryLayerName(req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &adminpb.MemoryLayer{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return &adminpb.MemoryLayer{
+				Name:  req.GetName(),
+				State: adminpb.MemoryLayer_DISABLED,
+			}, nil
+		}
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *instanceAdminServer) UpdateMemoryLayer(ctx context.Context, req *adminpb.UpdateMemoryLayerRequest) (*longrunning.Operation, error) {
+	ml := req.GetMemoryLayer()
+	if ml == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "memory_layer is required")
+	}
+
+	name, err := s.parseMemoryLayerName(ml.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	// Fetch the cluster to get location for LRO prefix.
+	cluster := &pb.Cluster{}
+	if err := s.storage.Get(ctx, name.cluster.String(), cluster); err != nil {
+		return nil, err
+	}
+
+	existing := &adminpb.MemoryLayer{}
+	exists := true
+	if err := s.storage.Get(ctx, fqn, existing); err != nil {
+		if status.Code(err) != codes.NotFound {
+			return nil, err
+		}
+		exists = false
+		existing = &adminpb.MemoryLayer{
+			Name:  ml.GetName(),
+			State: adminpb.MemoryLayer_DISABLED,
+		}
+	}
+
+	updateMask := req.GetUpdateMask()
+	for _, path := range updateMask.GetPaths() {
+		switch path {
+		case "memory_config":
+			existing.MemoryConfig = ml.MemoryConfig
+			if ml.MemoryConfig != nil {
+				existing.State = adminpb.MemoryLayer_READY
+			} else {
+				existing.State = adminpb.MemoryLayer_DISABLED
+			}
+		default:
+			return nil, fmt.Errorf("mock does not implement update of MemoryLayer field %q", path)
+		}
+	}
+
+	if exists {
+		if err := s.storage.Update(ctx, fqn, existing); err != nil {
+			return nil, err
+		}
+	} else {
+		if err := s.storage.Create(ctx, fqn, existing); err != nil {
+			return nil, err
+		}
+	}
+
+	zone := lastComponent(cluster.GetLocation())
+	lroPrefix := fmt.Sprintf("operations/%s/locations/%s", name.cluster.String(), zone)
+	metadata := &adminpb.UpdateMemoryLayerMetadata{}
+	return s.operations.StartLRO(ctx, lroPrefix, metadata, func() (proto.Message, error) {
+		return existing, nil
+	})
+}
