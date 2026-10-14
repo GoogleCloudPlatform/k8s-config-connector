@@ -80,6 +80,13 @@ func (s *NetworkServicesServer) ListLbTrafficExtensions(ctx context.Context, req
 }
 
 func (s *NetworkServicesServer) CreateLbTrafficExtension(ctx context.Context, req *pb.CreateLbTrafficExtensionRequest) (*longrunningpb.Operation, error) {
+	if req.LbTrafficExtensionId == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "lb_traffic_extension_id is required")
+	}
+	if req.LbTrafficExtension == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "lb_traffic_extension is required")
+	}
+
 	reqName := req.Parent + "/lbTrafficExtensions/" + req.LbTrafficExtensionId
 	name, err := s.parseLbTrafficExtensionName(reqName)
 	if err != nil {
@@ -118,6 +125,10 @@ func (s *NetworkServicesServer) CreateLbTrafficExtension(ctx context.Context, re
 }
 
 func (s *NetworkServicesServer) UpdateLbTrafficExtension(ctx context.Context, req *pb.UpdateLbTrafficExtensionRequest) (*longrunningpb.Operation, error) {
+	if req.GetLbTrafficExtension() == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "lb_traffic_extension is required")
+	}
+
 	reqName := req.GetLbTrafficExtension().GetName()
 
 	name, err := s.parseLbTrafficExtensionName(reqName)
@@ -128,6 +139,9 @@ func (s *NetworkServicesServer) UpdateLbTrafficExtension(ctx context.Context, re
 	fqn := name.String()
 	obj := &pb.LbTrafficExtension{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -199,6 +213,9 @@ func (s *NetworkServicesServer) DeleteLbTrafficExtension(ctx context.Context, re
 
 	deleted := &pb.LbTrafficExtension{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -230,7 +247,7 @@ func (p *lbTrafficExtensionParent) String() string {
 func (s *NetworkServicesServer) parseLbTrafficExtensionParent(parent string) (*lbTrafficExtensionParent, error) {
 	tokens := strings.Split(parent, "/")
 
-	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "locations" {
+	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[1] != "" && tokens[3] != "" {
 		projectName, err := projects.ParseProjectName(tokens[0] + "/" + tokens[1])
 		if err != nil {
 			return nil, err
@@ -261,7 +278,7 @@ func (n *lbTrafficExtensionName) String() string {
 func (s *NetworkServicesServer) parseLbTrafficExtensionName(name string) (*lbTrafficExtensionName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "lbTrafficExtensions" {
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "lbTrafficExtensions" && tokens[1] != "" && tokens[3] != "" && tokens[5] != "" {
 		projectName, err := projects.ParseProjectName(tokens[0] + "/" + tokens[1])
 		if err != nil {
 			return nil, err
