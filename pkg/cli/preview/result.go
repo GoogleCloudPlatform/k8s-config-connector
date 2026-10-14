@@ -56,6 +56,18 @@ const (
 	UnhealthyReasonError    UnhealthyReason = "RECONCILE_ERROR"
 )
 
+// RunType represents the execution run type in the preview summary report.
+type RunType string
+
+const (
+	RunTypeDefault     RunType = "DEFAULT"
+	RunTypeAlternative RunType = "ALTERNATIVE"
+)
+
+func (r RunType) String() string {
+	return string(r)
+}
+
 // GKNNReconciledResult is the result of reconciling a GKNN object with a specific controller type.
 type GKNNReconciledResult struct {
 	GKNN             GKNN
@@ -290,7 +302,7 @@ func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, al
 			defCtrl = string(pair.def.ControllerType)
 			defStatus = formatReconciledStatus(pair.def)
 			defDiffs = FormatFieldIDs(pair.def.Diffs)
-			klog.V(0).Info("\"PreviewResult\" ", pair.def.FormatGKNNReconciledResult())
+			klog.V(0).Infof("\"PreviewResult\" run_type=%q %s", RunTypeDefault, pair.def.FormatGKNNReconciledResult())
 			if pair.def.ReconcileStatus == ReconcileStatusUnhealthy {
 				combinedBadResult = append(combinedBadResult, pair.def)
 			}
@@ -310,7 +322,7 @@ func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, al
 
 			// Only log alternative results if there is a difference from the default result or if it uses a different controller
 			if pair.def == nil || altCtrl != defCtrl || altStatus != defStatus || altDiffs != defDiffs {
-				klog.V(0).Info("\"PreviewResult\" ", pair.alt.FormatGKNNReconciledResult())
+				klog.V(0).Infof("\"PreviewResult\" run_type=%q %s", RunTypeAlternative, pair.alt.FormatGKNNReconciledResult())
 				if pair.alt.ReconcileStatus == ReconcileStatusUnhealthy {
 					combinedBadResult = append(combinedBadResult, pair.alt)
 				}
