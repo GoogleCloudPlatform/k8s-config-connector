@@ -1,0 +1,270 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package mocksql
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/sql/v1beta4"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/timestamppb"
+)
+
+type sqlSslCertsServer struct {
+	*MockService
+	pb.UnimplementedSqlSslCertsServiceServer
+}
+
+const (
+	dummyClientCert = "-----BEGIN CERTIFICATE-----\n" +
+		"MIIDhTCCAm2gAwIBAgIEQ5YU2jANBgkqhkiG9w0BAQsFADB8MS0wKwYDVQQuEyQ3\n" +
+		"MjZlMmU5MC01NTAyLTQ5NjctYmJkZi02MTZiMzBhN2ViZTQxKDAmBgNVBAMTH0Ns\n" +
+		"b3VkIFNRTCBDbGllbnQgQ0EgY2xpZW50LW5hbWUxFDASBgNVBAoTC0dvb2dsZSwg\n" +
+		"SW5jMQswCQYDVQQGEwJVUzAeFw0yNjEwMTQwMDQ0MDJaFw0zNjEwMTEwMDQ1MDJa\n" +
+		"MDkxFDASBgNVBAMTC2NsaWVudC1uYW1lMRQwEgYDVQQKEwtHb29nbGUsIEluYzEL\n" +
+		"MAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCYudgZ\n" +
+		"BsmIPVsLP5axLmzou+LsfH9gmlXOFBnl1oU2KiWfI94t+Zzlyfu7E7jVdZWwGt2g\n" +
+		"ah9qtIq3LyVso4B8vbjzwnAlhz94wUrhckFk2bCfMjvBlJxl5GW7lu4lbpq6HV7D\n" +
+		"sBQ6fXv8vHCKNNF4XniSUC/8ig6KAieiGD7bkQnCIvAScxptaFDgTobiPTkjKu+/\n" +
+		"Tah2cuR/gl0P6d1gO6BKZbq+McbM33Y9eFu0gbQ9Ew3KHff9DFqzyQgREbP6G8QG\n" +
+		"T2aT4kcfdFQXvq2xjzsczJJU6QxtQyrnHSyHIr+JMdsSB3+FMEVwGLVJpdz9Zr0I\n" +
+		"+MyHw7XWBgStFkqdAgMBAAGjUjBQMAkGA1UdEwQCMAAwQwYDVR0RBDwwOoE4b3Zl\n" +
+		"cnNlZXIta2NjLXRlc3RlckBjbnJtLWJhcm5pLTQuaWFtLmdzZXJ2aWNlYWNjb3Vu\n" +
+		"dC5jb20wDQYJKoZIhvcNAQELBQADggEBALOErfUQV5Gn27pFr7T/1lKM9mj72flG\n" +
+		"UDUaKXfyjwVHf/gdZo2F5Z0atA70aLQhfT5KP6kYdVWgs7WnYSpZnEKxq32Lndxp\n" +
+		"eQ/VgOE57JnsPDLVo5dFyjbT2Y8TkS/vBLTcLHH35ocxKmKrHduBbh3/T5uu6Jlz\n" +
+		"CWKO6nTFPm/ovGWW4BRAC8NvVNnQsz3csnTfbcurUPFYeDmrBPHzIo/pubpOoj+3\n" +
+		"oP3T4EY4n2Ec20gRpv0Kx8J+AFPRR65Fk7TdrMMCczM0/x4MwXRzxB3Un9T+Zo18\n" +
+		"3UwfUAscOjZYnxq5Joencwboh1fzdEC1NTxJzCxfFblXnM5dbACVvWY=\n" +
+		"-----END CERTIFICATE-----"
+
+	dummyPrivateKey = "-----BEGIN RSA PRIVATE KEY-----\n" +
+		"MIIEogIBAAKCAQEAmLnYGQbJiD1bCz+WsS5s6Lvi7Hx/YJpVzhQZ5daFNiolnyPe\n" +
+		"Lfmc5cn7uxO41XWVsBrdoGofarSKty8lbKOAfL2488JwJYc/eMFK4XJBZNmwnzI7\n" +
+		"wZScZeRlu5buJW6auh1ew7AUOn17/LxwijTReF54klAv/IoOigInohg+25EJwiLw\n" +
+		"EnMabWhQ4E6G4j05Iyrvv02odnLkf4JdD+ndYDugSmW6vjHGzN92PXhbtIG0PRMN\nyh33/Qxas8kIERGz+hvEBk9mk+JHH3RUF76tsY87HMySVOkMbUMq5x0shyK/iTHb\n" +
+		"Egd/hTBFcBi1SaXc/Wa9CPjMh8O11gYErRZKnQIDAQABAoIBADksHQLlYQ1A1rPD\nxrAmTnvjVgQsaOyraeKe8MDzCOQpa/MClNpGHp+A+Nzj+aXjAjmuHPg/seoakvEX\n" +
+		"U52zKVbJGRMbXysVUcPtLBBwWp2bxnwZ7He/n7qfARxz2Eun94EjnIWKBVCOCBup\nGUILmrzCNMWlAgm6Ts4IF3kdNW6w7QHJLXUESCqoeFXZdpWJ+Coipezlr9kE/29N\n" +
+		"WLnxaEAvX5yzW8IjtYO7sNA3l5sFV3e1R/ILuXMgYbM+trJCbOEPToe23VcuWZ6a\nFL0gJ69cKwkivi0atJQpf29GSDewNR3B4V91bJDpi1PJ5V0oA9N5Ts9egfJzouAQ\n" +
+		"XIaFdZsCgYEAuMVZue2/uDRpJVKaYc8ydwl2mWm3cBAu00J/4OmMIaXgdqIOLMcU\n/od6AxX8TnCCCsDtru0Nyp0Pzqft/R9QKyi/wgc0TVgu1FWE5rPBPBIhRB/umKAv\n" +
+		"cT0JcE+kdSEoPfhUbcI4HsI4Kb0Xl+6fjt3qvdU6XDpojU6C6iZMZQsCgYEA05oL\nrEB4X5v/9+ypYyfaftuoCLnGRlqPS/+Oh2fpD485EcWR5+hE9vuQN0vlwd5RdGSC\n" +
+		"Pjxp78p0IXL+RAcZU1BhFABamTLltZJLl/OdT5Gllo6zIJJWsum/qEqkyu60kcrP\nFp3bzjKFMtsI6GYbiObek2uOTNBroEf+Wi9Ih/cCgYBXUVQ8zIEs0P/blnTEwkEM\n" +
+		"BhnZGB+LQuqOBcAfDt+dSyGPjrf6Kz7dpjJf4PTyMLMT1+a7IuXAmYbN14hddX3S\nV5h/Xh42avT+fUeoKsyn0b2MzzZXRGQHNJwQSmLiw3+cAY4MrJsO1iPqfaT3tNoM\n" +
+		"jw0PFwRUb3nXRYISm3TAzwKBgHLDIYGSlbaFDRaRrGyyuLYEu+W/m+GcTAuT1uFp\nYeWmb/VLig6U0pKBbX4QE9RJlzPhLyJB8dKzorhhfbW3g+zDs2L9riVYjW0kowsO\n" +
+		"fUsiWwSE8HHB7HOsgt3rXeUSAazwqdBCXWw/yi4CzZn9hwGA9UZPFyZiA30yjqiq\n7FORAoGAVVGQUCRxigYQfsJJVGNNJXjEvTd8alcpWtdetQlHkcDQshe3/RfkVM0Y\n" +
+		"xxkcQgFxb//Nl5ynuYv/fYsRXoqffZzOXJF+f+ev++cmalpCveHIjUnpdGoSjpYH\nTNS31CbYI2xzuUC01hVjtFosY0mYRq+V62MPgkxuIeXhZvK6PdU=\n" +
+		"-----END RSA PRIVATE KEY-----"
+
+	dummyServerCaCert = "-----BEGIN CERTIFICATE-----\n" +
+		"MIIDcTCCAlmgAwIBAgIBADANBgkqhkiG9w0BAQsFADBwMS0wKwYDVQQuEyQ1Yzcw\n" +
+		"MmI0ZS1jMzExLTRjZGQtYWVjOS00N2MzOWM3ZDRhODYxHDAaBgNVBAMTE0Nsb3Vk\n" +
+		"IFNRTCBTZXJ2ZXIgQ0ExFDASBgNVBAoTC0dvb2dsZSwgSW5jMQswCQYDVQQGEwJV\n" +
+		"UzAeFw0yNjEwMTQwMDQyMzBaFw0zNjEwMTEwMDQzMzBaMHAxLTArBgNVBC4TJDVj\n" +
+		"NzAyYjRlLWMzMTEtNGNkZC1hZWM5LTQ3YzM5YzdkNGE4NjEcMBoGA1UEAxMTQ2xv\n" +
+		"dWQgU1FMIFNlcnZlciBDQTEUMBIGA1UEChMLR29vZ2xlLCBJbmMxCzAJBgNVBAYT\n" +
+		"AlVTMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2YOdMjrFrkDS9vfx\n" +
+		"lC88iuxMuaqRaWkZL9iVRXg4MHQ2RnvmtbKjVTOzJQV+adnazBU2jBPGDUl4X2xb\n" +
+		"PeTiKTWIAovBg48ilL2zUaHzvjlgphUe3/IRiqXkgMcqDcG3j8iCi61sfEFVx5lL\n" +
+		"1cD5Ud9OIMuOZ+kbWT6t9PTN+9Y6LPOmjRGClCieWYc4Rtwh6cIrCHXKTOqJfXRi\n" +
+		"RaFfGWaJJxQUfMfULxbBVpuoKKhEQBxvKmC6YzyGPSupSzG3Nhwyz6Amz4xCtOOn\n" +
+		"pwq9+8pS0AEfpVEpMZIfm61wzJtwJ2qyiWvxE40KuO/gocJo0Nqw6Go+PL45L3k5\n" +
+		"aga+fwIDAQABoxYwFDASBgNVHRMBAf8ECDAGAQH/AgEAMA0GCSqGSIb3DQEBCwUA\n" +
+		"A4IBAQAHlNisEnlUqwkqQ9VOaHJ6YqhKMgf3re6JY//gCi9CIA+l9T5h3FGu29DN\n" +
+		"Uq+Hw0ohMOZrBER4vbzk3CnemJ26RJfVnIYa8kKKLst25LoDKnqTIi4K2wG/clvN\n" +
+		"TYpO2SxZXhIy1i0PeLbFii4Sh44CCvsggSWtO+d5NuCsdbjpTrwvjIJzX3K65IP/\n" +
+		"yKIlWs8cDJdB4xCC/IWuvXlDZJ2cOpXw/o4tUfQU4OVXEm6zwNAHSextY3NJGVUY\n" +
+		"47LkmvpoAKzt1+AUj3FSE3cC6Z5YGmrqXQJ/lAW2B1jRpXZVRx8P5UcQL/a1UX98\n" +
+		"UkHyCUyp43q6jU/hR0L6JNS3esPj\n" +
+		"-----END CERTIFICATE-----"
+)
+
+type SslCertName struct {
+	Project      *projects.ProjectData
+	InstanceName string
+	Fingerprint  string
+}
+
+func (n *SslCertName) String() string {
+	return "projects/" + n.Project.ID + "/instances/" + n.InstanceName + "/sslCerts/" + n.Fingerprint
+}
+
+func (s *MockService) buildSslCertName(projectID, instanceName, fingerprint string) (*SslCertName, error) {
+	project, err := s.projects.GetProjectByID(projectID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &SslCertName{
+		Project:      project,
+		InstanceName: instanceName,
+		Fingerprint:  fingerprint,
+	}, nil
+}
+
+func (s *sqlSslCertsServer) Get(ctx context.Context, req *pb.SqlSslCertsGetRequest) (*pb.SslCert, error) {
+	name, err := s.buildSslCertName(req.GetProject(), req.GetInstance(), req.GetSha1Fingerprint())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.SslCert{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The SSL certificate does not exist.")
+		}
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *sqlSslCertsServer) List(ctx context.Context, req *pb.SqlSslCertsListRequest) (*pb.SslCertsListResponse, error) {
+	instanceName, err := s.buildInstanceName(req.GetProject(), req.GetInstance())
+	if err != nil {
+		return nil, err
+	}
+
+	ret := &pb.SslCertsListResponse{
+		Kind: "sql#sslCertsList",
+	}
+
+	certKind := (&pb.SslCert{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, certKind, storage.ListOptions{}, func(obj proto.Message) error {
+		cert := obj.(*pb.SslCert)
+		if cert.GetInstance() == instanceName.InstanceName {
+			ret.Items = append(ret.Items, cert)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return ret, nil
+}
+
+func (s *sqlSslCertsServer) Insert(ctx context.Context, req *pb.SqlSslCertsInsertRequest) (*pb.SslCertsInsertResponse, error) {
+	instanceName, err := s.buildInstanceName(req.GetProject(), req.GetInstance())
+	if err != nil {
+		return nil, err
+	}
+
+	instance := &pb.DatabaseInstance{}
+	if err := s.storage.Get(ctx, instanceName.String(), instance); err != nil {
+		return nil, err
+	}
+
+	commonName := ""
+	if req.GetBody() != nil {
+		commonName = req.GetBody().GetCommonName()
+	}
+
+	fingerprint := "760567766a057bb737d50ac1e5798bb9c039dea6"
+	serialNumber := "1133909210"
+
+	certName, err := s.buildSslCertName(req.GetProject(), req.GetInstance(), fingerprint)
+	if err != nil {
+		return nil, err
+	}
+
+	certObj := &pb.SslCert{
+		Kind:             "sql#sslCert",
+		CertSerialNumber: serialNumber,
+		Cert:             dummyClientCert,
+		CommonName:       commonName,
+		CreateTime:       timestamppb.New(time.Date(2026, 10, 14, 0, 44, 2, 750000000, time.UTC)),
+		ExpirationTime:   timestamppb.New(time.Date(2036, 10, 11, 0, 45, 2, 750000000, time.UTC)),
+		Sha1Fingerprint:  fingerprint,
+		Instance:         instanceName.InstanceName,
+		SelfLink:         fmt.Sprintf("https://sqladmin.googleapis.com/sql/v1beta4/projects/%s/instances/%s/sslCerts/%s", instanceName.Project.ID, instanceName.InstanceName, fingerprint),
+	}
+
+	if err := s.storage.Create(ctx, certName.String(), certObj); err != nil {
+		return nil, err
+	}
+
+	serverCaCert := proto.Clone(instance.ServerCaCert).(*pb.SslCert)
+	if serverCaCert == nil {
+		serverCaCert = &pb.SslCert{
+			CertSerialNumber: "0",
+			CommonName:       "common-name",
+			CreateTime:       timestamppb.New(time.Date(2024, 4, 1, 12, 34, 56, 123456000, time.UTC)),
+			ExpirationTime:   timestamppb.New(time.Date(2024, 4, 1, 12, 34, 56, 123456000, time.UTC)),
+			Sha1Fingerprint:  "12345678",
+			Instance:         instanceName.InstanceName,
+			Kind:             "sql#sslCert",
+		}
+	}
+	serverCaCert.Cert = dummyServerCaCert
+	serverCaCert.SelfLink = fmt.Sprintf("https://sqladmin.googleapis.com/sql/v1beta4/projects/%s/instances/%s/sslCerts/4465455dc1e21f3addca06cd586e6f7a9c146140", instanceName.Project.ID, instanceName.InstanceName)
+
+	op := &pb.Operation{
+		TargetProject: instanceName.Project.ID,
+		OperationType: pb.Operation_UPDATE,
+		Status:        pb.Operation_PENDING,
+	}
+
+	lro, err := s.operations.startLRO(ctx, op, certObj, func() (proto.Message, error) {
+		return certObj, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	ret := &pb.SslCertsInsertResponse{
+		Kind:         "sql#sslCertsInsert",
+		Operation:    lro,
+		ServerCaCert: serverCaCert,
+		ClientCert: &pb.SslCertDetail{
+			CertInfo:       certObj,
+			CertPrivateKey: dummyPrivateKey,
+		},
+	}
+
+	return ret, nil
+}
+
+func (s *sqlSslCertsServer) Delete(ctx context.Context, req *pb.SqlSslCertsDeleteRequest) (*pb.Operation, error) {
+	name, err := s.buildSslCertName(req.GetProject(), req.GetInstance(), req.GetSha1Fingerprint())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	deleted := &pb.SslCert{}
+	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The SSL certificate does not exist.")
+		}
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetProject: name.Project.ID,
+		OperationType: pb.Operation_UPDATE,
+		Status:        pb.Operation_PENDING,
+	}
+	return s.operations.startLRO(ctx, op, deleted, func() (proto.Message, error) {
+		return deleted, nil
+	})
+}

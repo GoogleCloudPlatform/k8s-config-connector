@@ -1,0 +1,104 @@
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLSSLCert
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: sqlsslcert-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  commonName: client-name
+  instanceRef:
+    name: sqlinstance-${uniqueId}
+  resourceID: 760567766a057bb737d50ac1e5798bb9c039dea6
+status:
+  cert: |-
+    -----BEGIN CERTIFICATE-----
+    MIIDhTCCAm2gAwIBAgIEQ5YU2jANBgkqhkiG9w0BAQsFADB8MS0wKwYDVQQuEyQ3
+    MjZlMmU5MC01NTAyLTQ5NjctYmJkZi02MTZiMzBhN2ViZTQxKDAmBgNVBAMTH0Ns
+    b3VkIFNRTCBDbGllbnQgQ0EgY2xpZW50LW5hbWUxFDASBgNVBAoTC0dvb2dsZSwg
+    SW5jMQswCQYDVQQGEwJVUzAeFw0yNjEwMTQwMDQ0MDJaFw0zNjEwMTEwMDQ1MDJa
+    MDkxFDASBgNVBAMTC2NsaWVudC1uYW1lMRQwEgYDVQQKEwtHb29nbGUsIEluYzEL
+    MAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCYudgZ
+    BsmIPVsLP5axLmzou+LsfH9gmlXOFBnl1oU2KiWfI94t+Zzlyfu7E7jVdZWwGt2g
+    ah9qtIq3LyVso4B8vbjzwnAlhz94wUrhckFk2bCfMjvBlJxl5GW7lu4lbpq6HV7D
+    sBQ6fXv8vHCKNNF4XniSUC/8ig6KAieiGD7bkQnCIvAScxptaFDgTobiPTkjKu+/
+    Tah2cuR/gl0P6d1gO6BKZbq+McbM33Y9eFu0gbQ9Ew3KHff9DFqzyQgREbP6G8QG
+    T2aT4kcfdFQXvq2xjzsczJJU6QxtQyrnHSyHIr+JMdsSB3+FMEVwGLVJpdz9Zr0I
+    +MyHw7XWBgStFkqdAgMBAAGjUjBQMAkGA1UdEwQCMAAwQwYDVR0RBDwwOoE4b3Zl
+    cnNlZXIta2NjLXRlc3RlckBjbnJtLWJhcm5pLTQuaWFtLmdzZXJ2aWNlYWNjb3Vu
+    dC5jb20wDQYJKoZIhvcNAQELBQADggEBALOErfUQV5Gn27pFr7T/1lKM9mj72flG
+    UDUaKXfyjwVHf/gdZo2F5Z0atA70aLQhfT5KP6kYdVWgs7WnYSpZnEKxq32Lndxp
+    eQ/VgOE57JnsPDLVo5dFyjbT2Y8TkS/vBLTcLHH35ocxKmKrHduBbh3/T5uu6Jlz
+    CWKO6nTFPm/ovGWW4BRAC8NvVNnQsz3csnTfbcurUPFYeDmrBPHzIo/pubpOoj+3
+    oP3T4EY4n2Ec20gRpv0Kx8J+AFPRR65Fk7TdrMMCczM0/x4MwXRzxB3Un9T+Zo18
+    3UwfUAscOjZYnxq5Joencwboh1fzdEC1NTxJzCxfFblXnM5dbACVvWY=
+    -----END CERTIFICATE-----
+  certSerialNumber: "1133909210"
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  createTime: "1970-01-01T00:00:00Z"
+  expirationTime: "2036-10-11T00:45:02.750Z"
+  observedGeneration: 2
+  privateKey: |-
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEogIBAAKCAQEAmLnYGQbJiD1bCz+WsS5s6Lvi7Hx/YJpVzhQZ5daFNiolnyPe
+    Lfmc5cn7uxO41XWVsBrdoGofarSKty8lbKOAfL2488JwJYc/eMFK4XJBZNmwnzI7
+    wZScZeRlu5buJW6auh1ew7AUOn17/LxwijTReF54klAv/IoOigInohg+25EJwiLw
+    EnMabWhQ4E6G4j05Iyrvv02odnLkf4JdD+ndYDugSmW6vjHGzN92PXhbtIG0PRMN
+    yh33/Qxas8kIERGz+hvEBk9mk+JHH3RUF76tsY87HMySVOkMbUMq5x0shyK/iTHb
+    Egd/hTBFcBi1SaXc/Wa9CPjMh8O11gYErRZKnQIDAQABAoIBADksHQLlYQ1A1rPD
+    xrAmTnvjVgQsaOyraeKe8MDzCOQpa/MClNpGHp+A+Nzj+aXjAjmuHPg/seoakvEX
+    U52zKVbJGRMbXysVUcPtLBBwWp2bxnwZ7He/n7qfARxz2Eun94EjnIWKBVCOCBup
+    GUILmrzCNMWlAgm6Ts4IF3kdNW6w7QHJLXUESCqoeFXZdpWJ+Coipezlr9kE/29N
+    WLnxaEAvX5yzW8IjtYO7sNA3l5sFV3e1R/ILuXMgYbM+trJCbOEPToe23VcuWZ6a
+    FL0gJ69cKwkivi0atJQpf29GSDewNR3B4V91bJDpi1PJ5V0oA9N5Ts9egfJzouAQ
+    XIaFdZsCgYEAuMVZue2/uDRpJVKaYc8ydwl2mWm3cBAu00J/4OmMIaXgdqIOLMcU
+    /od6AxX8TnCCCsDtru0Nyp0Pzqft/R9QKyi/wgc0TVgu1FWE5rPBPBIhRB/umKAv
+    cT0JcE+kdSEoPfhUbcI4HsI4Kb0Xl+6fjt3qvdU6XDpojU6C6iZMZQsCgYEA05oL
+    rEB4X5v/9+ypYyfaftuoCLnGRlqPS/+Oh2fpD485EcWR5+hE9vuQN0vlwd5RdGSC
+    Pjxp78p0IXL+RAcZU1BhFABamTLltZJLl/OdT5Gllo6zIJJWsum/qEqkyu60kcrP
+    Fp3bzjKFMtsI6GYbiObek2uOTNBroEf+Wi9Ih/cCgYBXUVQ8zIEs0P/blnTEwkEM
+    BhnZGB+LQuqOBcAfDt+dSyGPjrf6Kz7dpjJf4PTyMLMT1+a7IuXAmYbN14hddX3S
+    V5h/Xh42avT+fUeoKsyn0b2MzzZXRGQHNJwQSmLiw3+cAY4MrJsO1iPqfaT3tNoM
+    jw0PFwRUb3nXRYISm3TAzwKBgHLDIYGSlbaFDRaRrGyyuLYEu+W/m+GcTAuT1uFp
+    YeWmb/VLig6U0pKBbX4QE9RJlzPhLyJB8dKzorhhfbW3g+zDs2L9riVYjW0kowsO
+    fUsiWwSE8HHB7HOsgt3rXeUSAazwqdBCXWw/yi4CzZn9hwGA9UZPFyZiA30yjqiq
+    7FORAoGAVVGQUCRxigYQfsJJVGNNJXjEvTd8alcpWtdetQlHkcDQshe3/RfkVM0Y
+    xxkcQgFxb//Nl5ynuYv/fYsRXoqffZzOXJF+f+ev++cmalpCveHIjUnpdGoSjpYH
+    TNS31CbYI2xzuUC01hVjtFosY0mYRq+V62MPgkxuIeXhZvK6PdU=
+    -----END RSA PRIVATE KEY-----
+  serverCaCert: |-
+    -----BEGIN CERTIFICATE-----
+    MIIDcTCCAlmgAwIBAgIBADANBgkqhkiG9w0BAQsFADBwMS0wKwYDVQQuEyQ1Yzcw
+    MmI0ZS1jMzExLTRjZGQtYWVjOS00N2MzOWM3ZDRhODYxHDAaBgNVBAMTE0Nsb3Vk
+    IFNRTCBTZXJ2ZXIgQ0ExFDASBgNVBAoTC0dvb2dsZSwgSW5jMQswCQYDVQQGEwJV
+    UzAeFw0yNjEwMTQwMDQyMzBaFw0zNjEwMTEwMDQzMzBaMHAxLTArBgNVBC4TJDVj
+    NzAyYjRlLWMzMTEtNGNkZC1hZWM5LTQ3YzM5YzdkNGE4NjEcMBoGA1UEAxMTQ2xv
+    dWQgU1FMIFNlcnZlciBDQTEUMBIGA1UEChMLR29vZ2xlLCBJbmMxCzAJBgNVBAYT
+    AlVTMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2YOdMjrFrkDS9vfx
+    lC88iuxMuaqRaWkZL9iVRXg4MHQ2RnvmtbKjVTOzJQV+adnazBU2jBPGDUl4X2xb
+    PeTiKTWIAovBg48ilL2zUaHzvjlgphUe3/IRiqXkgMcqDcG3j8iCi61sfEFVx5lL
+    1cD5Ud9OIMuOZ+kbWT6t9PTN+9Y6LPOmjRGClCieWYc4Rtwh6cIrCHXKTOqJfXRi
+    RaFfGWaJJxQUfMfULxbBVpuoKKhEQBxvKmC6YzyGPSupSzG3Nhwyz6Amz4xCtOOn
+    pwq9+8pS0AEfpVEpMZIfm61wzJtwJ2qyiWvxE40KuO/gocJo0Nqw6Go+PL45L3k5
+    aga+fwIDAQABoxYwFDASBgNVHRMBAf8ECDAGAQH/AgEAMA0GCSqGSIb3DQEBCwUA
+    A4IBAQAHlNisEnlUqwkqQ9VOaHJ6YqhKMgf3re6JY//gCi9CIA+l9T5h3FGu29DN
+    Uq+Hw0ohMOZrBER4vbzk3CnemJ26RJfVnIYa8kKKLst25LoDKnqTIi4K2wG/clvN
+    TYpO2SxZXhIy1i0PeLbFii4Sh44CCvsggSWtO+d5NuCsdbjpTrwvjIJzX3K65IP/
+    yKIlWs8cDJdB4xCC/IWuvXlDZJ2cOpXw/o4tUfQU4OVXEm6zwNAHSextY3NJGVUY
+    47LkmvpoAKzt1+AUj3FSE3cC6Z5YGmrqXQJ/lAW2B1jRpXZVRx8P5UcQL/a1UX98
+    UkHyCUyp43q6jU/hR0L6JNS3esPj
+    -----END CERTIFICATE-----
+  sha1Fingerprint: 760567766a057bb737d50ac1e5798bb9c039dea6

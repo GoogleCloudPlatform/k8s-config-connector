@@ -109,6 +109,15 @@ func NormalizeDynamicIDs(s string) string {
 				lines[i] = "  caisURL: unknown"
 			}
 		}
+		// Normalize SQLSSLCert IDs: projects/.../instances/.../sslCerts/<sha1Fingerprint>
+		// Since it has a server-generated ID (fingerprint), we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/sslCerts/"); idx != -1 {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
 		// Normalize VertexAITensorboard IDs: locations/.../tensorboards/<tensorboardId>
 		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
 		if idx := strings.Index(line, "/tensorboards/"); idx != -1 {
