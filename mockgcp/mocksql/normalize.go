@@ -32,6 +32,7 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.RemovePath(".response.replicaNames")
 
 	// SQLSSLCert
+	replacements.ReplacePath(".clientCert.certPrivateKey", dummyPrivateKey)
 	replacements.ReplacePath(".operation.insertTime", "2026-10-14T00:45:02.805Z")
 	replacements.ReplacePath(".operation.user", "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com")
 	replacements.ReplacePath(".clientCert.certInfo.createTime", "2026-10-14T00:44:02.750Z")
