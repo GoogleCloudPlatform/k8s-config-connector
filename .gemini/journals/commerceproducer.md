@@ -1,0 +1,11 @@
+### [2026-10-14] CommerceProducerPrivateOffer Direct Controller Implementation
+- **Context**: Greenfield implementation of direct controller, mappers, fuzzer, and E2E fixtures for `CommerceProducerPrivateOffer`.
+- **GCP Service Availability Observation**:
+  - `commerceproducer.googleapis.com` (Cloud Commerce Producer API) is in Early Access / restricted availability (Partner API for Cloud Commerce Producer API Early Access).
+  - Enabling this service via `gcloud services enable commerceproducer.googleapis.com` fails with `PERMISSION_DENIED` (`servicemanagement.services.bind` required), as standard project service accounts do not have access to bind Early Access partner services.
+  - Endpoints return `403 SERVICE_DISABLED` ("Cloud Commerce Producer API has not been used in project ... before or it is disabled").
+- **Controller & Mapper Notes**:
+  - Uses GAPIC REST client constructor `commerceproducer.NewCommerceTransactionRESTClient`.
+  - Handwritten custom mappers implemented for Google type protos (`datetime.DateTime`, `decimal.Decimal`, `money.Money`) as well as protobuf oneof mappings on `PrivateOffer_SingleProductOffer` (`AmendedOffer`, `Price`) and `SkuDiscount` (`Target`, `Discount`).
+  - Spec and Status round-trip fuzzers implemented and verified against proto definitions.
+  - Static configuration registered under `pkg/controller/resourceconfig/static_config.go`.
