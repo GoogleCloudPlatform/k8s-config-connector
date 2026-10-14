@@ -22,19 +22,19 @@
   name: hc-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/backendServices/bs-lb-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeBackendService
   name: bs-lb-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/backendServices/bs-callout-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeBackendService
   name: bs-callout-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/backendServices/bs-callout2-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeBackendService
   name: bs-callout2-${uniqueId}

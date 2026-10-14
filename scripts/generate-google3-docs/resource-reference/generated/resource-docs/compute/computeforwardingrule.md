@@ -243,7 +243,7 @@ internal load balancer.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The value of an externally managed ComputeBackendService resource.</p>
+            <p>A reference to an externally managed ComputeBackendService resource. Should be in the format "projects/{{projectID}}/global/backendServices/{{backendservice}}" or "projects/{{projectID}}/regions/{{location}}/backendServices/{{backendservice}}".</p>
         </td>
     </tr>
     <tr>
