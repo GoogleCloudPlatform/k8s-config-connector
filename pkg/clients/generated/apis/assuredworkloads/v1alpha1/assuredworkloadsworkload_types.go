@@ -74,6 +74,14 @@ type AssuredWorkloadsWorkloadSpec struct {
 	// +optional
 	EnableSovereignControls *bool `json:"enableSovereignControls,omitempty"`
 
+	/* Required. Immutable. The location that the workload belongs to. */
+	// +optional
+	Location *string `json:"location,omitempty"`
+
+	/* Required. The organization that the workload belongs to. */
+	// +optional
+	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+
 	/* Optional. Compliance Regime associated with this workload. */
 	// +optional
 	Partner *string `json:"partner,omitempty"`

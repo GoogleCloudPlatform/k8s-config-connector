@@ -70,6 +70,12 @@ type ExternalapiStringValues struct {
 	Values []ExternalapiValues `json:"values,omitempty"`
 }
 
+type ExternalapiUriValues struct {
+	/* Required. The attribute values in case attribute data type is string or JSON. */
+	// +optional
+	Values []ExternalapiValues `json:"values,omitempty"`
+}
+
 type ExternalapiValues struct {
 	/* Optional. The detailed description of the allowed value. */
 	// +optional

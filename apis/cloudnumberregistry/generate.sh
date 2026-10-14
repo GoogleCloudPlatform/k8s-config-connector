@@ -52,7 +52,8 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version cloudnumberregistry.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --resource CloudNumberRegistryRegistryBook:RegistryBook \
-  --resource CloudNumberRegistryIpamAdminScope:IpamAdminScope
+  --resource CloudNumberRegistryIpamAdminScope:IpamAdminScope \
+  --resource CloudNumberRegistryCustomRange:CustomRange
 
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path "${REPO_ROOT}/.build/googleapis-numberregistry.pb" \

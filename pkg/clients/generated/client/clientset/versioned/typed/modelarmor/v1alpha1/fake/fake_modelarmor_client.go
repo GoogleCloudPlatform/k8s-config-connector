@@ -31,6 +31,10 @@ type FakeModelarmorV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeModelarmorV1alpha1) ModelArmorFloorSettings(namespace string) v1alpha1.ModelArmorFloorSettingInterface {
+	return newFakeModelArmorFloorSettings(c, namespace)
+}
+
 func (c *FakeModelarmorV1alpha1) ModelArmorTemplates(namespace string) v1alpha1.ModelArmorTemplateInterface {
 	return newFakeModelArmorTemplates(c, namespace)
 }

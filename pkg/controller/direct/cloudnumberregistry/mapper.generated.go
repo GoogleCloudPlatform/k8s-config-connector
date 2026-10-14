@@ -30,6 +30,92 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/cloudnumberregistry/pb"
 )
 
+func Attribute_FromProto(mapCtx *direct.MapContext, in *pb.Attribute) *krm.Attribute {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Attribute{}
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.Value = direct.LazyPtr(in.GetValue())
+	return out
+}
+func Attribute_ToProto(mapCtx *direct.MapContext, in *krm.Attribute) *pb.Attribute {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Attribute{}
+	out.Key = direct.ValueOf(in.Key)
+	out.Value = direct.ValueOf(in.Value)
+	return out
+}
+func CloudNumberRegistryCustomRangeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomRange) *krm.CloudNumberRegistryCustomRangeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudNumberRegistryCustomRangeObservedState{}
+	// MISSING: Name
+	out.RegistryBook = direct.LazyPtr(in.GetRegistryBook())
+	return out
+}
+func CloudNumberRegistryCustomRangeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudNumberRegistryCustomRangeObservedState) *pb.CustomRange {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomRange{}
+	// MISSING: Name
+	out.RegistryBook = direct.ValueOf(in.RegistryBook)
+	return out
+}
+func CloudNumberRegistryCustomRangeSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomRange) *krm.CloudNumberRegistryCustomRangeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudNumberRegistryCustomRangeSpec{}
+	out.IPV4CIDRRange = direct.LazyPtr(in.GetIpv4CidrRange())
+	out.IPV6CIDRRange = direct.LazyPtr(in.GetIpv6CidrRange())
+	// MISSING: Name
+	out.Realm = direct.LazyPtr(in.GetRealm())
+	if in.GetParentRange() != "" {
+		out.ParentRangeRef = &krm.CloudNumberRegistryCustomRangeRef{External: in.GetParentRange()}
+	}
+	out.Attributes = direct.Slice_FromProto(mapCtx, in.Attributes, Attribute_FromProto)
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	return out
+}
+func CloudNumberRegistryCustomRangeSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudNumberRegistryCustomRangeSpec) *pb.CustomRange {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomRange{}
+	if oneof := CloudNumberRegistryCustomRangeSpec_Ipv4CidrRange_ToProto(mapCtx, in.IPV4CIDRRange); oneof != nil {
+		out.IpCidrRange = oneof
+	}
+	if oneof := CloudNumberRegistryCustomRangeSpec_Ipv6CidrRange_ToProto(mapCtx, in.IPV6CIDRRange); oneof != nil {
+		out.IpCidrRange = oneof
+	}
+	// MISSING: Name
+	out.Realm = direct.ValueOf(in.Realm)
+	if in.ParentRangeRef != nil {
+		out.ParentRange = in.ParentRangeRef.External
+	}
+	out.Attributes = direct.Slice_ToProto(mapCtx, in.Attributes, Attribute_ToProto)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	return out
+}
+func CloudNumberRegistryCustomRangeSpec_Ipv4CidrRange_ToProto(mapCtx *direct.MapContext, in *string) *pb.CustomRange_Ipv4CidrRange {
+	if in == nil {
+		return nil
+	}
+	return &pb.CustomRange_Ipv4CidrRange{Ipv4CidrRange: *in}
+}
+func CloudNumberRegistryCustomRangeSpec_Ipv6CidrRange_ToProto(mapCtx *direct.MapContext, in *string) *pb.CustomRange_Ipv6CidrRange {
+	if in == nil {
+		return nil
+	}
+	return &pb.CustomRange_Ipv6CidrRange{Ipv6CidrRange: *in}
+}
 func CloudNumberRegistryIpamAdminScopeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.IpamAdminScope) *krm.CloudNumberRegistryIpamAdminScopeObservedState {
 	if in == nil {
 		return nil

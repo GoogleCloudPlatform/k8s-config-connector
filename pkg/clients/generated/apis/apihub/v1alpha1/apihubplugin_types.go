@@ -68,6 +68,16 @@ type PluginType struct {
 	/* The attribute values associated with a resource in case attribute data type is string. */
 	// +optional
 	StringValues *PluginStringValues `json:"stringValues,omitempty"`
+
+	/* The attribute values associated with a resource in case attribute data type is URL, URI or IP, like gs://bucket-name/object-name. */
+	// +optional
+	UriValues *PluginUriValues `json:"uriValues,omitempty"`
+}
+
+type PluginUriValues struct {
+	/* Required. The attribute values in case attribute data type is string or JSON. */
+	// +optional
+	Values []PluginValues `json:"values,omitempty"`
 }
 
 type PluginValues struct {

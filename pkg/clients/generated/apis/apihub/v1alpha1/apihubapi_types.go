@@ -50,6 +50,10 @@ type ApiApiFunctionalRequirements struct {
 	/* The attribute values associated with a resource in case attribute data type is string. */
 	// +optional
 	StringValues *ApiStringValues `json:"stringValues,omitempty"`
+
+	/* The attribute values associated with a resource in case attribute data type is URL, URI or IP, like gs://bucket-name/object-name. */
+	// +optional
+	UriValues *ApiUriValues `json:"uriValues,omitempty"`
 }
 
 type ApiApiRequirements struct {
@@ -64,6 +68,10 @@ type ApiApiRequirements struct {
 	/* The attribute values associated with a resource in case attribute data type is string. */
 	// +optional
 	StringValues *ApiStringValues `json:"stringValues,omitempty"`
+
+	/* The attribute values associated with a resource in case attribute data type is URL, URI or IP, like gs://bucket-name/object-name. */
+	// +optional
+	UriValues *ApiUriValues `json:"uriValues,omitempty"`
 }
 
 type ApiApiTechnicalRequirements struct {
@@ -78,6 +86,10 @@ type ApiApiTechnicalRequirements struct {
 	/* The attribute values associated with a resource in case attribute data type is string. */
 	// +optional
 	StringValues *ApiStringValues `json:"stringValues,omitempty"`
+
+	/* The attribute values associated with a resource in case attribute data type is URL, URI or IP, like gs://bucket-name/object-name. */
+	// +optional
+	UriValues *ApiUriValues `json:"uriValues,omitempty"`
 }
 
 type ApiAttributeRefs struct {
@@ -117,6 +129,12 @@ type ApiOwner struct {
 }
 
 type ApiStringValues struct {
+	/* Required. The attribute values in case attribute data type is string or JSON. */
+	// +optional
+	Values []ApiValues `json:"values,omitempty"`
+}
+
+type ApiUriValues struct {
 	/* Required. The attribute values in case attribute data type is string or JSON. */
 	// +optional
 	Values []ApiValues `json:"values,omitempty"`
