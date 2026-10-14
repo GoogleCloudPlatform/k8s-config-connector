@@ -139,6 +139,11 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.nextRotationTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".status.observedState.expireTime"] = mockgcpregistry.PlaceholderTimestamp
 
+	// Specific to ArtifactRegistry
+	if u.GroupVersionKind().Group == "artifactregistry.cnrm.cloud.google.com" {
+		visitor.SortSliceBy(".spec.cleanupPolicies", "id")
+	}
+
 	// Specific to BigQuery
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
 
@@ -782,8 +787,15 @@ type sortSliceBy struct {
 
 func (o *sortSliceBy) sortSlice(s []any) ([]any, error) {
 	sort.Slice(s, func(i, j int) bool {
-		v1 := s[i].(map[string]any)[o.sortBy]
-		v2 := s[j].(map[string]any)[o.sortBy]
+		m1, _ := s[i].(map[string]any)
+		m2, _ := s[j].(map[string]any)
+		var v1, v2 any
+		if m1 != nil {
+			v1 = m1[o.sortBy]
+		}
+		if m2 != nil {
+			v2 = m2[o.sortBy]
+		}
 
 		s1 := fmt.Sprintf("%v", v1)
 		s2 := fmt.Sprintf("%v", v2)
