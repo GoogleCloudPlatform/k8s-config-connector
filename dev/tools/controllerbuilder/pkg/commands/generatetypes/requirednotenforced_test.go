@@ -15,6 +15,7 @@
 package generatetypes
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -22,6 +23,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/genproto/googleapis/api/annotations"
@@ -91,26 +93,33 @@ func requiredGapFixture(t *testing.T) *protoregistry.Files {
 func thingTypes(version string, marked bool, inner string) string {
 	marker := ""
 	if marked {
-		marker = "// " + requiredFromProtoMarker + "\n"
+		marker = "// " + codegen.RequiredFromProtoMarker + "\n"
 	}
-	return "package " + version + "\n\n" +
-		"// ThingSpec defines the desired state of Thing\n" +
-		"// +kcc:spec:proto=google.cloud.test.v1.Thing\n" +
-		marker +
-		"type ThingSpec struct {\n" +
-		"\t// +kcc:proto:field=google.cloud.test.v1.Thing.saas\n" +
-		"\tSaas *string `json:\"saas,omitempty\"`\n\n" +
-		"\t// +kcc:proto:field=google.cloud.test.v1.Thing.inner\n" +
-		"\tInner *" + inner + " `json:\"inner,omitempty\"`\n\n" +
-		// No annotation on these two: they are matched by name.
-		"\tInners []" + inner + " `json:\"inners,omitempty\"`\n\n" +
-		"\tInnerByKey map[string]" + inner + " `json:\"innerByKey,omitempty\"`\n\n" +
-		"\tNetworkRef *refsv1beta1.ComputeNetworkRef `json:\"networkRef,omitempty\"`\n\n" +
-		"\t// +kcc:proto:field=google.cloud.test.v1.Thing.done\n" +
-		"\t// +required\n" +
-		"\tDone *string `json:\"done,omitempty\"`\n\n" +
-		"\tResourceID *string `json:\"resourceID,omitempty\"`\n" +
-		"}\n"
+	return fmt.Sprintf(`package %s
+
+// ThingSpec defines the desired state of Thing
+// +kcc:spec:proto=google.cloud.test.v1.Thing
+%stype ThingSpec struct {
+	// +kcc:proto:field=google.cloud.test.v1.Thing.saas
+	Saas *string 'json:"saas,omitempty"'
+
+	// +kcc:proto:field=google.cloud.test.v1.Thing.inner
+	Inner *%s 'json:"inner,omitempty"'
+
+	// No annotation on these two: they are matched by name.
+	Inners []%s 'json:"inners,omitempty"'
+
+	InnerByKey map[string]%s 'json:"innerByKey,omitempty"'
+
+	NetworkRef *refsv1beta1.ComputeNetworkRef 'json:"networkRef,omitempty"'
+
+	// +kcc:proto:field=google.cloud.test.v1.Thing.done
+	// +required
+	Done *string 'json:"done,omitempty"'
+
+	ResourceID *string 'json:"resourceID,omitempty"'
+}
+`, version, marker, inner, inner, inner)
 }
 
 // generatedTypes returns a types.generated.go. plain adds Inner, which prune
@@ -118,23 +127,29 @@ func thingTypes(version string, marked bool, inner string) string {
 func generatedTypes(version string, plain, requiredCopy bool) string {
 	src := "package " + version + "\n"
 	if plain {
-		src += "\n// +kcc:proto=google.cloud.test.v1.Inner\n" +
-			"type Inner struct {\n" +
-			"\t// +kcc:proto:field=google.cloud.test.v1.Inner.a\n" +
-			"\tA *string `json:\"a,omitempty\"`\n\n" +
-			"\t// +kcc:proto:field=google.cloud.test.v1.Inner.b\n" +
-			"\tB *string `json:\"b,omitempty\"`\n" +
-			"}\n"
+		src += `
+// +kcc:proto=google.cloud.test.v1.Inner
+type Inner struct {
+	// +kcc:proto:field=google.cloud.test.v1.Inner.a
+	A *string 'json:"a,omitempty"'
+
+	// +kcc:proto:field=google.cloud.test.v1.Inner.b
+	B *string 'json:"b,omitempty"'
+}
+`
 	}
 	if requiredCopy {
-		src += "\n// +kcc:proto=google.cloud.test.v1.Inner\n" +
-			"type InnerWithRequired struct {\n" +
-			"\t// +kcc:proto:field=google.cloud.test.v1.Inner.a\n" +
-			"\t// +required\n" +
-			"\tA *string `json:\"a,omitempty\"`\n\n" +
-			"\t// +kcc:proto:field=google.cloud.test.v1.Inner.b\n" +
-			"\tB *string `json:\"b,omitempty\"`\n" +
-			"}\n"
+		src += `
+// +kcc:proto=google.cloud.test.v1.Inner
+type InnerWithRequired struct {
+	// +kcc:proto:field=google.cloud.test.v1.Inner.a
+	// +required
+	A *string 'json:"a,omitempty"'
+
+	// +kcc:proto:field=google.cloud.test.v1.Inner.b
+	B *string 'json:"b,omitempty"'
+}
+`
 	}
 	return src
 }
@@ -225,7 +240,12 @@ func TestRequiredNotEnforced(t *testing.T) {
 			files: map[string]string{
 				"test/v1alpha1/thing_types.go":     thingTypes("v1alpha1", true, "Inner"),
 				"test/v1alpha1/types.generated.go": generatedTypes("v1alpha1", true, false),
-				"test/v1alpha1/other_types.go":     "package v1alpha1\n\ntype InnerWithRequired struct {\n\tOther *string `json:\"other,omitempty\"`\n}\n",
+				"test/v1alpha1/other_types.go": `package v1alpha1
+
+type InnerWithRequired struct {
+	Other *string 'json:"other,omitempty"'
+}
+`,
 			},
 			want: map[string][]string{
 				".spec.saas":             {handWritten + "Saas in thing_types.go."},
@@ -345,9 +365,12 @@ func TestResourceStabilityLevel(t *testing.T) {
 		},
 		{
 			name: "a label among other labels",
-			files: map[string]string{"v1alpha1/thing_types.go": "package v1alpha1\n\n" +
-				"// +kubebuilder:metadata:labels=\"cnrm.cloud.google.com/tf2crd=true\";\"cnrm.cloud.google.com/stability-level=stable\";\"cnrm.cloud.google.com/system=true\"\n" +
-				"type Thing struct {\n}\n"},
+			files: map[string]string{"v1alpha1/thing_types.go": `package v1alpha1
+
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+type Thing struct {
+}
+`},
 			version: "v1alpha1",
 			want:    result{Level: stabilityStable, Version: "v1alpha1"},
 		},
@@ -416,7 +439,8 @@ func kindTypes(version, level string) string {
 	return "package " + version + "\n\n" + label + "type Thing struct {\n}\n"
 }
 
-// writeFiles writes each file, keyed by its path under dir.
+// writeFiles writes each file, keyed by its path under dir. Single quotes in
+// src are replaced with backticks so test snippets can be raw strings.
 func writeFiles(t *testing.T, dir string, files map[string]string) {
 	t.Helper()
 	for name, src := range files {
@@ -424,6 +448,7 @@ func writeFiles(t *testing.T, dir string, files map[string]string) {
 		if err := os.MkdirAll(filepath.Dir(p), 0o755); err != nil {
 			t.Fatal(err)
 		}
+		src = strings.ReplaceAll(src, "'", "`")
 		if err := os.WriteFile(p, []byte(src), 0o644); err != nil {
 			t.Fatal(err)
 		}
@@ -458,37 +483,51 @@ func TestRequiredNotEnforcedSharedHandWritten(t *testing.T) {
 	// Arrange
 	// HandInner is in Thing's spec and status. Wrapper is in Thing's and
 	// Other's spec, and holds the generated Inner.
-	const handWritten = "package v1alpha1\n\n" +
-		"import metav1 \"k8s.io/apimachinery/pkg/apis/meta/v1\"\n\n" +
-		"// +kcc:spec:proto=google.cloud.test.v1.Thing\n" +
-		"// +kcc:required-from-proto\n" +
-		"type ThingSpec struct {\n" +
-		"\t// +kcc:proto:field=google.cloud.test.v1.Thing.inner\n" +
-		"\tInner *HandInner `json:\"inner,omitempty\"`\n\n" +
-		"\t// +kcc:proto:field=google.cloud.test.v1.Thing.wrapper\n" +
-		"\tWrapper *Wrapper `json:\"wrapper,omitempty\"`\n" +
-		"}\n\n" +
-		"type ThingStatus struct {\n\tInner *HandInner `json:\"inner,omitempty\"`\n}\n\n" +
-		"type Thing struct {\n" +
-		"\tmetav1.TypeMeta `json:\",inline\"`\n" +
-		"\tSpec   ThingSpec   `json:\"spec,omitempty\"`\n" +
-		"\tStatus ThingStatus `json:\"status,omitempty\"`\n" +
-		"}\n\n" +
-		"type OtherSpec struct {\n\tWrapper *Wrapper `json:\"wrapper,omitempty\"`\n}\n\n" +
-		"type Other struct {\n" +
-		"\tmetav1.TypeMeta `json:\",inline\"`\n" +
-		"\tSpec OtherSpec `json:\"spec,omitempty\"`\n" +
-		"}\n\n" +
-		"// +kcc:proto=google.cloud.test.v1.Inner\n" +
-		"type HandInner struct {\n" +
-		"\t// +kcc:proto:field=google.cloud.test.v1.Inner.a\n" +
-		"\tA *string `json:\"a,omitempty\"`\n" +
-		"}\n\n" +
-		"// +kcc:proto=google.cloud.test.v1.Wrapper\n" +
-		"type Wrapper struct {\n" +
-		"\t// +kcc:proto:field=google.cloud.test.v1.Wrapper.inner\n" +
-		"\tInner *Inner `json:\"inner,omitempty\"`\n" +
-		"}\n"
+	const handWritten = `package v1alpha1
+
+import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+// +kcc:spec:proto=google.cloud.test.v1.Thing
+// +kcc:required-from-proto
+type ThingSpec struct {
+	// +kcc:proto:field=google.cloud.test.v1.Thing.inner
+	Inner *HandInner 'json:"inner,omitempty"'
+
+	// +kcc:proto:field=google.cloud.test.v1.Thing.wrapper
+	Wrapper *Wrapper 'json:"wrapper,omitempty"'
+}
+
+type ThingStatus struct {
+	Inner *HandInner 'json:"inner,omitempty"'
+}
+
+type Thing struct {
+	metav1.TypeMeta 'json:",inline"'
+	Spec   ThingSpec   'json:"spec,omitempty"'
+	Status ThingStatus 'json:"status,omitempty"'
+}
+
+type OtherSpec struct {
+	Wrapper *Wrapper 'json:"wrapper,omitempty"'
+}
+
+type Other struct {
+	metav1.TypeMeta 'json:",inline"'
+	Spec OtherSpec 'json:"spec,omitempty"'
+}
+
+// +kcc:proto=google.cloud.test.v1.Inner
+type HandInner struct {
+	// +kcc:proto:field=google.cloud.test.v1.Inner.a
+	A *string 'json:"a,omitempty"'
+}
+
+// +kcc:proto=google.cloud.test.v1.Wrapper
+type Wrapper struct {
+	// +kcc:proto:field=google.cloud.test.v1.Wrapper.inner
+	Inner *Inner 'json:"inner,omitempty"'
+}
+`
 	dir := t.TempDir()
 	writeFiles(t, dir, map[string]string{
 		"test/v1alpha1/thing_types.go":     handWritten,
@@ -528,26 +567,46 @@ func TestRequiredNotEnforcedSharedHandWritten(t *testing.T) {
 // leaves that field out.
 func TestStructUsers(t *testing.T) {
 	// Arrange
-	const src = "package v1alpha1\n\n" +
-		"import metav1 \"k8s.io/apimachinery/pkg/apis/meta/v1\"\n\n" +
-		"type Thing struct {\n" +
-		"\tmetav1.TypeMeta `json:\",inline\"`\n" +
-		"\tSpec   ThingSpec   `json:\"spec,omitempty\"`\n" +
-		"\tStatus ThingStatus `json:\"status,omitempty\"`\n" +
-		"}\n\n" +
-		"type ThingSpec struct {\n" +
-		"\tShared *Shared `json:\"shared,omitempty\"`\n" +
-		"\tHidden *Hidden `json:\"-\"`\n" +
-		"}\n\n" +
-		"type Hidden struct {\n\tKey *string `json:\"key,omitempty\"`\n}\n\n" +
-		"type ThingStatus struct {\n\tShared *Shared `json:\"shared,omitempty\"`\n}\n\n" +
-		"type Other struct {\n" +
-		"\tmetav1.TypeMeta `json:\",inline\"`\n" +
-		"\tSpec OtherSpec `json:\"spec,omitempty\"`\n" +
-		"}\n\n" +
-		"type OtherSpec struct {\n\tWrapper *Wrapper `json:\"wrapper,omitempty\"`\n}\n\n" +
-		"type Wrapper struct {\n\tShared *Shared `json:\"shared,omitempty\"`\n}\n\n" +
-		"type Shared struct {\n\tKey *string `json:\"key,omitempty\"`\n}\n"
+	const src = `package v1alpha1
+
+import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+type Thing struct {
+	metav1.TypeMeta 'json:",inline"'
+	Spec   ThingSpec   'json:"spec,omitempty"'
+	Status ThingStatus 'json:"status,omitempty"'
+}
+
+type ThingSpec struct {
+	Shared *Shared 'json:"shared,omitempty"'
+	Hidden *Hidden 'json:"-"'
+}
+
+type Hidden struct {
+	Key *string 'json:"key,omitempty"'
+}
+
+type ThingStatus struct {
+	Shared *Shared 'json:"shared,omitempty"'
+}
+
+type Other struct {
+	metav1.TypeMeta 'json:",inline"'
+	Spec OtherSpec 'json:"spec,omitempty"'
+}
+
+type OtherSpec struct {
+	Wrapper *Wrapper 'json:"wrapper,omitempty"'
+}
+
+type Wrapper struct {
+	Shared *Shared 'json:"shared,omitempty"'
+}
+
+type Shared struct {
+	Key *string 'json:"key,omitempty"'
+}
+`
 	dir := t.TempDir()
 	writeFiles(t, dir, map[string]string{"thing_types.go": src})
 	structs, err := loadStructs(dir)

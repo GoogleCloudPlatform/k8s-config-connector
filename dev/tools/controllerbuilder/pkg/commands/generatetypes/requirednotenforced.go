@@ -17,8 +17,6 @@ package generatetypes
 import (
 	"fmt"
 	"go/ast"
-	"go/parser"
-	"go/token"
 	"io/fs"
 	"os"
 	"path"
@@ -156,7 +154,7 @@ func loadServiceVersions(serviceDir string) (map[string]map[string]*goStruct, er
 // loadStructs reads the structs declared in the Go files of dir, skipping
 // tests and deepcopy.
 func loadStructs(dir string) (map[string]*goStruct, error) {
-	decls, err := parseTypeDecls(dir, isTypesSource)
+	decls, err := codegen.ParseTypeDecls(dir, isTypesSource)
 	if err != nil {
 		return nil, err
 	}
@@ -177,7 +175,7 @@ func isTypesSource(e fs.DirEntry) bool {
 }
 
 // newGoStruct reads the markers and fields of a struct declaration.
-func newGoStruct(d typeDecl, st *ast.StructType) *goStruct {
+func newGoStruct(d codegen.TypeDecl, st *ast.StructType) *goStruct {
 	s := &goStruct{
 		name:      d.Name(),
 		file:      d.File,
@@ -187,7 +185,7 @@ func newGoStruct(d typeDecl, st *ast.StructType) *goStruct {
 		if msg, _, ok := codegen.GetProtoMessageAndKindFromAnnotation(line); ok && s.proto == "" {
 			s.proto = msg
 		}
-		if isRequiredFromProtoMarker(line) {
+		if codegen.IsRequiredFromProtoMarker(line) {
 			s.marked = true
 		}
 		if level, ok := stabilityLabel(line); ok {
@@ -410,7 +408,7 @@ func addKindUsers(out map[string][]structUser, structs map[string]*goStruct, s *
 		if !ok || structs[f.typeName] == nil {
 			continue
 		}
-		for name := range reachable([]string{f.typeName}, held, nil) {
+		for name := range codegen.Reachable([]string{f.typeName}, held, nil) {
 			out[name] = append(out[name], user)
 		}
 	}
@@ -671,7 +669,7 @@ func fieldMessage(fd protoreflect.FieldDescriptor) protoreflect.MessageDescripto
 // wrote.
 func (w *requiredGapFinder) isRequiredCopy(s *goStruct) bool {
 	msg := w.message(s.proto)
-	return s.generated && msg != nil && s.name == requiredStructName(msg)
+	return s.generated && msg != nil && s.name == codegen.RequiredStructName(msg)
 }
 
 // requiredNameTaken reports whether another type already has the name of s's
@@ -703,7 +701,7 @@ func (w *requiredGapFinder) detail(s *goStruct, f goField, entered *enteredStruc
 			how = fmt.Sprintf("To enforce it, add +required to %s.%s in %s.", s.name, f.goName, s.file)
 		}
 	case !w.marked:
-		how = fmt.Sprintf("To enforce it, add %s to %sSpec and run generate.sh again.", requiredFromProtoMarker, w.kind)
+		how = fmt.Sprintf("To enforce it, add %s to %sSpec and run generate.sh again.", codegen.RequiredFromProtoMarker, w.kind)
 	case w.requiredNameTaken(s):
 		how = fmt.Sprintf("%s has no Required copy because another type is called %sWithRequired. To enforce it, rename that type and run generate.sh again.", s.name, s.name)
 	case entered != nil && !w.isRequiredCopy(entered.child):
@@ -721,76 +719,3 @@ func (w *requiredGapFinder) detail(s *goStruct, f goField, entered *enteredStruc
 	}
 	return fmt.Sprintf("%s %s %s is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.", what, how, w.kind)
 }
-
-const requiredFromProtoMarker = "+kcc:required-from-proto"
-
-func isRequiredFromProtoMarker(line string) bool {
-	return strings.TrimSpace(strings.TrimPrefix(strings.TrimSpace(line), "//")) == requiredFromProtoMarker
-}
-
-func requiredStructName(msg protoreflect.MessageDescriptor) string {
-	return codegen.GoNameForProtoMessage(msg) + "WithRequired"
-}
-
-type typeDecl struct {
-	File string
-	Spec *ast.TypeSpec
-	Doc  *ast.CommentGroup
-}
-
-func (d typeDecl) Name() string {
-	return d.Spec.Name.Name
-}
-
-func parseTypeDecls(dir string, include func(fs.DirEntry) bool) ([]typeDecl, error) {
-	entries, err := os.ReadDir(dir)
-	if err != nil {
-		return nil, err
-	}
-	fset := token.NewFileSet()
-	var out []typeDecl
-	for _, e := range entries {
-		if !include(e) {
-			continue
-		}
-		p := filepath.Join(dir, e.Name())
-		f, err := parser.ParseFile(fset, p, nil, parser.ParseComments)
-		if err != nil {
-			return nil, fmt.Errorf("parsing %s: %w", p, err)
-		}
-		for _, decl := range f.Decls {
-			gd, ok := decl.(*ast.GenDecl)
-			if !ok || gd.Tok != token.TYPE {
-				continue
-			}
-			for _, spec := range gd.Specs {
-				ts, ok := spec.(*ast.TypeSpec)
-				if !ok {
-					continue
-				}
-				doc := ts.Doc
-				if doc == nil && len(gd.Specs) == 1 {
-					doc = gd.Doc
-				}
-				out = append(out, typeDecl{File: e.Name(), Spec: ts, Doc: doc})
-			}
-		}
-	}
-	return out, nil
-}
-
-func reachable[T comparable](seeds []T, next func(T) []T, stop func(T) bool) map[T]bool {
-	reached := map[T]bool{}
-	queue := append([]T(nil), seeds...)
-	for len(queue) > 0 {
-		n := queue[0]
-		queue = queue[1:]
-		if reached[n] || (stop != nil && stop(n)) {
-			continue
-		}
-		reached[n] = true
-		queue = append(queue, next(n)...)
-	}
-	return reached
-}
-
