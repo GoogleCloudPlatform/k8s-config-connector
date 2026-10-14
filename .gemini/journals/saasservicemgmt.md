@@ -6,6 +6,15 @@
   - **Synchronous Operations**: Create, Update, and Delete on `SaasRolloutsClient` for RolloutKind are all synchronous calls that return the resource or error directly without using LROs.
   - **Audit Probe**: `_audit_probe.log` captures the GET REST call and audit markers are emitted to Cloud Logging.
 
+### [2026-10-14] Direct Controller and Fuzzer Implementation for SaaSServiceMgmtRollout
+- **Context**: Implementing the Greenfield direct controller, KRM fuzzer, and test fixtures for `SaaSServiceMgmtRollout`.
+- **Observations**:
+  - **Client Library**: Rollout operations belong to `SaasRolloutsClient` rather than `SaasDeploymentsClient`. Used `NewSaasRolloutsRESTClient` from `cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1`.
+  - **Prerequisite Resources**: Real GCP requires a valid `RolloutKind` in the same location upon creation of a Rollout.
+  - **Control Defaulting**: GCP defaults `control.action` to `ROLLOUT_ACTION_RUN` (enum value 1). When `spec.control` is not specified by the user, `compareRollout` preserves `maskedActual.Control` to prevent false diffs and spurious update requests during re-reconciliation.
+  - **CEL Unit Filter & Mutability**: `unitFilter` takes a CEL boolean expression (e.g. `"true"`). In GCP, updating `unitFilter` is rejected unless the Rollout is in a `PAUSED` state.
+  - **Synchronous Operations**: `CreateRollout`, `UpdateRollout`, and `DeleteRollout` are synchronous calls (not LROs).
+
 ### [2026-10-14] Direct Controller, E2E Fixtures, and Fuzzer Implementation for SaaSServiceMgmtTenant
 - **Context**: Implementing the Greenfield direct controller, KRM fuzzer, and E2E test fixtures for `SaaSServiceMgmtTenant`.
 - **Observations**:
