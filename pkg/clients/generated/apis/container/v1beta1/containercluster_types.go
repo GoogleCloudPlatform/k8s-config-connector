@@ -825,6 +825,7 @@ type ClusterNodeConfig struct {
 	// +optional
 	AdvancedMachineFeatures *ClusterAdvancedMachineFeatures `json:"advancedMachineFeatures,omitempty"`
 
+	/* KMSCryptoKeyRef is a reference to a KMSCryptoKey. */
 	// +optional
 	BootDiskKMSCryptoKeyRef *v1alpha1.ResourceRef `json:"bootDiskKMSCryptoKeyRef,omitempty"`
 
@@ -1064,6 +1065,12 @@ type ClusterPrivateRegistryAccessConfig struct {
 	/* Private registry access is enabled. */
 	// +optional
 	Enabled *bool `json:"enabled,omitempty"`
+}
+
+type ClusterPrivilegedAdmissionConfig struct {
+	/* The customer allowlist Cloud Storage paths for the cluster. These paths are used with the `--autopilot-privileged-admission` flag to authorize privileged workloads in Autopilot clusters. */
+	// +optional
+	AllowlistPaths []string `json:"allowlistPaths,omitempty"`
 }
 
 type ClusterProtectConfig struct {
@@ -1525,6 +1532,10 @@ type ContainerClusterSpec struct {
 	/* The desired state of IPv6 connectivity to Google Services. By default, no private IPv6 access to or from Google Services (all access will be via IPv4). */
 	// +optional
 	PrivateIpv6GoogleAccess *string `json:"privateIpv6GoogleAccess,omitempty"`
+
+	/* Policy for privileged workloads admission. */
+	// +optional
+	PrivilegedAdmissionConfig *ClusterPrivilegedAdmissionConfig `json:"privilegedAdmissionConfig,omitempty"`
 
 	/* Enable/Disable Protect API features for the cluster. */
 	// +optional
