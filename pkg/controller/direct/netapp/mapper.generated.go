@@ -44,6 +44,9 @@ func BackupVaultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Backup
 	// MISSING: SourceBackupVault
 	// MISSING: DestinationBackupVault
 	// MISSING: BackupRetentionPolicy
+	// MISSING: KMSConfig
+	// MISSING: EncryptionState
+	// MISSING: BackupsCryptoKeyVersion
 	return out
 }
 func BackupVaultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupVaultObservedState) *pb.BackupVault {
@@ -61,6 +64,9 @@ func BackupVaultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupV
 	// MISSING: SourceBackupVault
 	// MISSING: DestinationBackupVault
 	// MISSING: BackupRetentionPolicy
+	// MISSING: KMSConfig
+	// MISSING: EncryptionState
+	// MISSING: BackupsCryptoKeyVersion
 	return out
 }
 func BackupVaultSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupVaultSpec {
@@ -77,6 +83,9 @@ func BackupVaultSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *k
 	// MISSING: SourceBackupVault
 	// MISSING: DestinationBackupVault
 	// MISSING: BackupRetentionPolicy
+	// MISSING: KMSConfig
+	// MISSING: EncryptionState
+	// MISSING: BackupsCryptoKeyVersion
 	return out
 }
 func BackupVaultSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupVaultSpec) *pb.BackupVault {
@@ -93,6 +102,9 @@ func BackupVaultSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupVaultSpec)
 	// MISSING: SourceBackupVault
 	// MISSING: DestinationBackupVault
 	// MISSING: BackupRetentionPolicy
+	// MISSING: KMSConfig
+	// MISSING: EncryptionState
+	// MISSING: BackupsCryptoKeyVersion
 	return out
 }
 func NetAppActiveDirectoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ActiveDirectory) *krm.NetAppActiveDirectoryObservedState {
@@ -227,5 +239,51 @@ func NetAppBackupPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetAppBac
 	out.Description = in.Description
 	out.Enabled = in.Enabled
 	// MISSING: Labels
+	return out
+}
+func NetAppHostGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.HostGroup) *krm.NetAppHostGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetAppHostGroupObservedState{}
+	// MISSING: Name
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	return out
+}
+func NetAppHostGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetAppHostGroupObservedState) *pb.HostGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HostGroup{}
+	// MISSING: Name
+	out.State = direct.Enum_ToProto[pb.HostGroup_State](mapCtx, in.State)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	return out
+}
+func NetAppHostGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.HostGroup) *krm.NetAppHostGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetAppHostGroupSpec{}
+	// MISSING: Name
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Hosts = in.Hosts
+	out.OSType = direct.Enum_FromProto(mapCtx, in.GetOsType())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	return out
+}
+func NetAppHostGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetAppHostGroupSpec) *pb.HostGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HostGroup{}
+	// MISSING: Name
+	out.Type = direct.Enum_ToProto[pb.HostGroup_Type](mapCtx, in.Type)
+	out.Hosts = in.Hosts
+	out.OsType = direct.Enum_ToProto[pb.OsType](mapCtx, in.OSType)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
 	return out
 }
