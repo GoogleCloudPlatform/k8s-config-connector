@@ -1,0 +1,93 @@
+apiVersion: commerceproducer.cnrm.cloud.google.com/v1alpha1
+kind: CommerceProducerPrivateOffer
+metadata:
+  name: commerceproducerprivateoffer-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  title: Updated Maximal Private Offer ${uniqueId}
+  customerNote: Updated Customer note for ${uniqueId}
+  internalNote: Updated Internal note for ${uniqueId}
+  offerDealType: NEW
+  customer:
+    targetBillingAccountRef:
+      external: billingAccounts/000000-000000-000000
+    entityTitle: Updated Example Customer Corp
+    contact: John Doe Updated
+    email: updated-johndoe@example.com
+  partnerContact:
+    contact: Jane Partner Updated
+    email: updated-partner@example.com
+  acceptDeadlineTime:
+    year: 2030
+    month: 12
+    day: 31
+    hours: 23
+    minutes: 59
+    seconds: 59
+    nanos: 0
+    timeZone:
+      id: UTC
+      version: "2024a"
+  term:
+    durationMonths: 24
+    endPolicy: CANCEL_SUBSCRIPTION
+    maxRenewalCount: 3
+    scheduledStartTime:
+      year: 2030
+      month: 1
+      day: 1
+      hours: 0
+      minutes: 0
+      seconds: 0
+      nanos: 0
+      timeZone:
+        id: UTC
+        version: "2024a"
+    scheduledEndTime:
+      year: 2032
+      month: 1
+      day: 1
+      hours: 0
+      minutes: 0
+      seconds: 0
+      nanos: 0
+      timeZone:
+        id: UTC
+        version: "2024a"
+    startPolicy: UPON_ISSUANCE
+  singleProductOffer:
+    amendedPrivateOfferRef:
+      external: projects/${projectId}/locations/us-central1/privateOffers/amended-offer
+    baseStandardOfferRef:
+      external: projects/${projectId}/locations/us-central1/services/test-service/standardOffers/base-standard
+    features:
+      - displayName: Premium Support Updated
+        value: 24/7 Phone Support Updated
+    additionalContractValue:
+      contractValue:
+        currencyCode: USD
+        units: 60000
+        nanos: 0
+      eligibleSkuRefs:
+        - external: projects/${projectId}/locations/us-central1/services/test-service/skus/test-sku
+    standardIntervalPrice:
+      standardInterval: MONTH
+      priceModel:
+        flatFee:
+          flatFeeOverride:
+            currencyCode: USD
+            units: 2500
+            nanos: 0
+        usage:
+          defaultDiscountPercent:
+            value: "6.0"
+          skuDiscounts:
+            - skuRef:
+                external: projects/${projectId}/locations/us-central1/services/test-service/skus/test-sku
+              discountPercent:
+                value: "18.0"
+            - cloudBillingSku: 0000-0000-0000
+              discountPercent:
+                value: "12.0"
