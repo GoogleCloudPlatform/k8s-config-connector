@@ -104,3 +104,10 @@ var identityReasons = map[string]bool{
 func IsIdentityReason(reason string) bool {
 	return identityReasons[reason]
 }
+
+// ReasonRequiredNotEnforced: the proto marks a spec field REQUIRED, but the
+// CRD leaves it optional. generate-types --emit-required-from-proto writes one
+// per field, for each Kind in the run. Making the field required breaks
+// objects that omit it, so a person decides: an alpha Kind may take the break,
+// and a beta or stable Kind keeps the field optional.
+const ReasonRequiredNotEnforced = "required-not-enforced"
