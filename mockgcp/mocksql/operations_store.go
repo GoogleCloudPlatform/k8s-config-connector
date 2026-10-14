@@ -53,6 +53,9 @@ func (s *operations) startLRO(ctx context.Context, op *pb.Operation, obj proto.M
 	case *pb.Database:
 		op.TargetId = obj.Instance
 		op.TargetLink = fmt.Sprintf("https://sqladmin.googleapis.com/sql/v1beta4/projects/%s/instances/%s/databases/%s", obj.Project, obj.Instance, obj.Name)
+	case *pb.SslCert:
+		op.TargetId = obj.Instance
+		op.TargetLink = fmt.Sprintf("https://sqladmin.googleapis.com/sql/v1beta4/projects/%s/instances/%s", op.TargetProject, op.TargetId)
 	default:
 		klog.Fatalf("unhandled type %T", obj)
 	}

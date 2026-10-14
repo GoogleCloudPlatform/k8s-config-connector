@@ -30,6 +30,12 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	// replicaNames is not consistently returned by real GCP in the v1beta4 API under various circumstances, so we remove it.
 	replacements.RemovePath(".replicaNames")
 	replacements.RemovePath(".response.replicaNames")
+
+	// SQLSSLCert
+	replacements.ReplacePath(".operation.insertTime", "2026-10-14T00:45:02.805Z")
+	replacements.ReplacePath(".operation.user", "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com")
+	replacements.ReplacePath(".clientCert.certInfo.createTime", "2026-10-14T00:44:02.750Z")
+	replacements.ReplacePath(".clientCert.certInfo.expirationTime", "2036-10-11T00:45:02.750Z")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
