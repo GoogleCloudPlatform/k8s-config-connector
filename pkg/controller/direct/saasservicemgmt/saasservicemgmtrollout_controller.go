@@ -20,6 +20,7 @@ import (
 
 	gcp "cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1"
 	pb "cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1/saasservicemgmtpb"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/saasservicemgmt/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -228,13 +229,16 @@ func (a *SaaSServiceMgmtRolloutAdapter) Export(ctx context.Context) (*unstructur
 		return nil, mapCtx.Err()
 	}
 
+	obj.Spec.Location = direct.LazyPtr(a.id.Location)
+	obj.Spec.ProjectRef = &refsv1beta1.ProjectRef{External: a.id.Project}
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u.Object = uObj
-	u.SetName(a.actual.Name)
+	u.SetName(a.id.Rollout)
 	u.SetGroupVersionKind(krm.SaaSServiceMgmtRolloutGVK)
 	return u, nil
 }
