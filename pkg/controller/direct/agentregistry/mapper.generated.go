@@ -149,3 +149,131 @@ func AgentRegistryBindingTarget_Identifier_ToProto(mapCtx *direct.MapContext, in
 	}
 	return &pb.Binding_Target_Identifier{Identifier: *in}
 }
+func AgentRegistryServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.AgentRegistryServiceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AgentRegistryServiceObservedState{}
+	// MISSING: Name
+	out.RegistryResource = direct.LazyPtr(in.GetRegistryResource())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func AgentRegistryServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AgentRegistryServiceObservedState) *pb.Service {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Service{}
+	// MISSING: Name
+	out.RegistryResource = direct.ValueOf(in.RegistryResource)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func AgentRegistryServiceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.AgentRegistryServiceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AgentRegistryServiceSpec{}
+	out.AgentSpec = ServiceAgentSpec_FromProto(mapCtx, in.GetAgentSpec())
+	out.McpServerSpec = ServiceMcpServerSpec_FromProto(mapCtx, in.GetMcpServerSpec())
+	out.EndpointSpec = ServiceEndpointSpec_FromProto(mapCtx, in.GetEndpointSpec())
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Interfaces = direct.Slice_FromProto(mapCtx, in.Interfaces, ServiceInterface_FromProto)
+	return out
+}
+func AgentRegistryServiceSpec_ToProto(mapCtx *direct.MapContext, in *krm.AgentRegistryServiceSpec) *pb.Service {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Service{}
+	if oneof := ServiceAgentSpec_ToProto(mapCtx, in.AgentSpec); oneof != nil {
+		out.Spec = &pb.Service_AgentSpec_{AgentSpec: oneof}
+	}
+	if oneof := ServiceMcpServerSpec_ToProto(mapCtx, in.McpServerSpec); oneof != nil {
+		out.Spec = &pb.Service_McpServerSpec_{McpServerSpec: oneof}
+	}
+	if oneof := ServiceEndpointSpec_ToProto(mapCtx, in.EndpointSpec); oneof != nil {
+		out.Spec = &pb.Service_EndpointSpec_{EndpointSpec: oneof}
+	}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Interfaces = direct.Slice_ToProto(mapCtx, in.Interfaces, ServiceInterface_ToProto)
+	return out
+}
+func ServiceAgentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Service_AgentSpec) *krm.ServiceAgentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceAgentSpec{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Content = direct.Struct_FromProto(mapCtx, in.GetContent())
+	return out
+}
+func ServiceAgentSpec_ToProto(mapCtx *direct.MapContext, in *krm.ServiceAgentSpec) *pb.Service_AgentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Service_AgentSpec{}
+	out.Type = direct.Enum_ToProto[pb.Service_AgentSpec_Type](mapCtx, in.Type)
+	out.Content = direct.Struct_ToProto(mapCtx, in.Content)
+	return out
+}
+func ServiceEndpointSpec_FromProto(mapCtx *direct.MapContext, in *pb.Service_EndpointSpec) *krm.ServiceEndpointSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceEndpointSpec{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Content = direct.Struct_FromProto(mapCtx, in.GetContent())
+	return out
+}
+func ServiceEndpointSpec_ToProto(mapCtx *direct.MapContext, in *krm.ServiceEndpointSpec) *pb.Service_EndpointSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Service_EndpointSpec{}
+	out.Type = direct.Enum_ToProto[pb.Service_EndpointSpec_Type](mapCtx, in.Type)
+	out.Content = direct.Struct_ToProto(mapCtx, in.Content)
+	return out
+}
+func ServiceInterface_FromProto(mapCtx *direct.MapContext, in *pb.Interface) *krm.ServiceInterface {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceInterface{}
+	out.URL = direct.LazyPtr(in.GetUrl())
+	out.ProtocolBinding = direct.Enum_FromProto(mapCtx, in.GetProtocolBinding())
+	return out
+}
+func ServiceInterface_ToProto(mapCtx *direct.MapContext, in *krm.ServiceInterface) *pb.Interface {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Interface{}
+	out.Url = direct.ValueOf(in.URL)
+	out.ProtocolBinding = direct.Enum_ToProto[pb.Interface_ProtocolBinding](mapCtx, in.ProtocolBinding)
+	return out
+}
+func ServiceMcpServerSpec_FromProto(mapCtx *direct.MapContext, in *pb.Service_McpServerSpec) *krm.ServiceMcpServerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceMcpServerSpec{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Content = direct.Struct_FromProto(mapCtx, in.GetContent())
+	return out
+}
+func ServiceMcpServerSpec_ToProto(mapCtx *direct.MapContext, in *krm.ServiceMcpServerSpec) *pb.Service_McpServerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Service_McpServerSpec{}
+	out.Type = direct.Enum_ToProto[pb.Service_McpServerSpec_Type](mapCtx, in.Type)
+	out.Content = direct.Struct_ToProto(mapCtx, in.Content)
+	return out
+}
