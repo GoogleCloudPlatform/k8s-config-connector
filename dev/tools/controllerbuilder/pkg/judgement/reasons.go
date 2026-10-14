@@ -79,3 +79,28 @@ func IsSourceLinkReason(reason string) bool {
 // PrepopulateSpec queues one for each new Kind. While the entry is open, each
 // generate-types run with --prepopulate-spec checks the Kind again.
 const ReasonUntriagedBulkGeneration = "untriaged-bulk-generation"
+
+// Reasons for identity and reference generation.
+const (
+	// ReasonIdentityMultiPattern: google.api.resource declares more than one
+	// pattern; the generated identity uses the pattern matching the Spec layout
+	// (or the first pattern).
+	ReasonIdentityMultiPattern = "identity-multi-pattern"
+	// ReasonIdentityRootUnknown: the resource declares no google.api.resource
+	// pattern, or the Spec does not model the root/parent segments of the pattern.
+	ReasonIdentityRootUnknown = "identity-root-unknown"
+	// ReasonIdentityNotInCAI: the template URL is not listed in
+	// docs/ai/metadata/cloudassetinventory_names.jsonl.
+	ReasonIdentityNotInCAI = "identity-not-in-cai"
+)
+
+var identityReasons = map[string]bool{
+	ReasonIdentityMultiPattern: true,
+	ReasonIdentityRootUnknown:  true,
+	ReasonIdentityNotInCAI:     true,
+}
+
+// IsIdentityReason reports whether reason is about an identity or reference file.
+func IsIdentityReason(reason string) bool {
+	return identityReasons[reason]
+}
