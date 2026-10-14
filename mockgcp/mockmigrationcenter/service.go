@@ -17,6 +17,7 @@ package mockmigrationcenter
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"google.golang.org/grpc"
 
@@ -73,5 +74,12 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	if err != nil {
 		return nil, err
 	}
+
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 && strings.Contains(error.Message, "/preferenceSets/") {
+			error.Errors = nil
+		}
+	}
+
 	return mux, nil
 }
