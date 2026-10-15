@@ -167,7 +167,7 @@ GRPC /google.storage.control.v2.StorageControl/GetAnywhereCache
 OK
 
 {
-  "admissionPolicy": "admit-on-second-miss",
+  "admissionPolicy": "admit-on-first-miss",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a",
   "state": "running",
@@ -188,7 +188,7 @@ GRPC /google.storage.control.v2.StorageControl/GetAnywhereCache
 OK
 
 {
-  "admissionPolicy": "admit-on-second-miss",
+  "admissionPolicy": "admit-on-first-miss",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a",
   "state": "running",
@@ -209,7 +209,7 @@ GRPC /google.storage.control.v2.StorageControl/UpdateAnywhereCache
     "zone": "us-central1-a"
   },
   "requestId": "1234",
-  "updateMask": "admissionPolicy,ttl"
+  "updateMask": "ttl"
 }
 
 OK
