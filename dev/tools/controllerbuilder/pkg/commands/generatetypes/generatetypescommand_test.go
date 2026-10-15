@@ -602,3 +602,62 @@ func readQueueEntries(t *testing.T, path string) []judgement.Entry {
 	}
 	return q.Entries
 }
+
+func TestRunGenerateCRDSkipScaffoldFilesSuppressesJudgements(t *testing.T) {
+	dir := t.TempDir()
+	apiDir := filepath.Join(dir, "apis")
+	queuePath := filepath.Join(apiDir, "example", judgement.FileName)
+
+	str := descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum()
+	msgType := descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+	fds := &descriptorpb.FileDescriptorSet{File: []*descriptorpb.FileDescriptorProto{{
+		Name:    proto.String("google/cloud/example/v1/widget.proto"),
+		Package: proto.String("google.cloud.example.v1"),
+		Syntax:  proto.String("proto3"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name: proto.String("Widget"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: proto.String("name"), Number: proto.Int32(1), Type: str},
+					{Name: proto.String("config"), Number: proto.Int32(2), Type: msgType, TypeName: proto.String(".google.cloud.example.v1.WidgetConfig")},
+				},
+			},
+			{
+				Name: proto.String("WidgetConfig"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: proto.String("widget"), Number: proto.Int32(1), Type: str},
+				},
+			},
+		},
+	}}}
+	b, err := proto.Marshal(fds)
+	if err != nil {
+		t.Fatalf("marshalling descriptor set: %v", err)
+	}
+	pbPath := filepath.Join(dir, "widget.pb")
+	writeFile(t, pbPath, string(b))
+
+	o := &GenerateCRDOptions{
+		GenerateOptions: &options.GenerateOptions{
+			ProtoSourcePath: pbPath,
+			APIVersion:      "example.cnrm.cloud.google.com/v1alpha1",
+		},
+		ServiceName:        "google.cloud.example.v1",
+		OutputAPIDirectory: apiDir,
+		Resources:          options.ResourceList{{Kind: "ExampleWidget", ProtoName: "Widget"}},
+		SkipScaffoldFiles:  true,
+		PrepopulateSpec:    true,
+		EmitSiblingRefs:    true,
+	}
+
+	if err := RunGenerateCRD(context.Background(), o); err != nil {
+		t.Fatalf("RunGenerateCRD() error: %v", err)
+	}
+	if _, statErr := os.Stat(queuePath); !os.IsNotExist(statErr) {
+		t.Errorf("expected no judgement_queue.yaml when SkipScaffoldFiles is true, got stat err: %v", statErr)
+	}
+	genTypes := readFile(t, filepath.Join(apiDir, "example", "v1alpha1", "types.generated.go"))
+	if strings.Contains(genTypes, "+kcc:guess=") {
+		t.Errorf("expected no +kcc:guess comments in types.generated.go when SkipScaffoldFiles is true, got:\n%s", genTypes)
+	}
+}

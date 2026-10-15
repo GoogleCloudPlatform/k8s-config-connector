@@ -276,9 +276,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		}
 		resourceAnnotations = append(resourceAnnotations, fmt.Sprintf("%s:%s", resource.Kind, resource.ProtoName))
 	}
-	if !o.SkipScaffoldFiles {
-		typeGenerator.WithActiveJudgementMessages(activeProtoMessages)
-	}
+	typeGenerator.WithActiveJudgementMessages(activeProtoMessages)
 
 	// With --emit-required-from-proto, +required only goes on structs that
 	// opted-in Kinds use, meaning Kinds whose Spec has

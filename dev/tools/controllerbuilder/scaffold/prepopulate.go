@@ -210,7 +210,7 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 		if string(field.Name()) == "etag" {
 			out.Judgement = append(out.Judgement, JudgementItem{
 				FieldPath: ".spec." + codegen.GetJSONForKRM(field, opts),
-				Reason:    "etag-in-spec",
+				Reason:    judgement.ReasonEtagInSpec,
 				Detail:    "etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState",
 			})
 		}
