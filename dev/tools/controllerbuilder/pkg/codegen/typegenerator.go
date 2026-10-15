@@ -76,6 +76,16 @@ type TypeGenerator struct {
 	// requiredPlan says which structs get +required markers. It is nil
 	// unless PlanRequiredStructs ran.
 	requiredPlan *requiredPlan
+
+	activeJudgementMessages map[string]bool
+}
+
+// WithActiveJudgementMessages restricts proto-message judgement collection and
+// sibling guess markers to the given set of message full names. When nil, all
+// visited messages are included.
+func (g *TypeGenerator) WithActiveJudgementMessages(msgs map[string]bool) *TypeGenerator {
+	g.activeJudgementMessages = msgs
+	return g
 }
 
 type OutputMessageDetails struct {
@@ -453,24 +463,31 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 			continue
 		}
 
+		activeForJudgement := g.activeJudgementMessages == nil || g.activeJudgementMessages[string(msg.FullName())]
+		renderOpts := opts
+		if !activeForJudgement {
+			renderOpts.Siblings = nil
+		}
 		// Render the message to a buffer to scan for markers emitted by WriteField.
 		var rendered bytes.Buffer
-		WriteMessage(&rendered, msg, opts)
-		g.unsupportedFields = append(g.unsupportedFields, scanUnsupported(string(msg.FullName()), rendered.String())...)
-		if g.writeOptions.EmitMessageMaps {
-			for i := 0; i < msg.Fields().Len(); i++ {
-				f := msg.Fields().Get(i)
-				if protoMsg, goType, ok := MessageMapValueInfo(f); ok {
-					g.derivedMessageMaps = append(g.derivedMessageMaps, DerivedMessageMap{
-						Message:   string(msg.FullName()),
-						Field:     GetJSONForKRM(f, g.writeOptions),
-						ProtoType: protoMsg,
-						GoType:    goType,
-					})
+		WriteMessage(&rendered, msg, renderOpts)
+		if activeForJudgement {
+			g.unsupportedFields = append(g.unsupportedFields, scanUnsupported(string(msg.FullName()), rendered.String())...)
+			if g.writeOptions.EmitMessageMaps {
+				for i := 0; i < msg.Fields().Len(); i++ {
+					f := msg.Fields().Get(i)
+					if protoMsg, goType, ok := MessageMapValueInfo(f); ok {
+						g.derivedMessageMaps = append(g.derivedMessageMaps, DerivedMessageMap{
+							Message:   string(msg.FullName()),
+							Field:     GetJSONForKRM(f, g.writeOptions),
+							ProtoType: protoMsg,
+							GoType:    goType,
+						})
+					}
 				}
 			}
+			g.siblingGuesses = append(g.siblingGuesses, scanSiblingGuesses(string(msg.FullName()), rendered.String())...)
 		}
-		g.siblingGuesses = append(g.siblingGuesses, scanSiblingGuesses(string(msg.FullName()), rendered.String())...)
 		out.body.Write(rendered.Bytes())
 
 		// The Required copy has the same fields as the plain struct, so the
@@ -546,7 +563,8 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 			continue
 		}
 
-		if g.writeOptions.EmitMessageMaps {
+		activeForJudgement := g.activeJudgementMessages == nil || g.activeJudgementMessages[string(msg.FullName())]
+		if activeForJudgement && g.writeOptions.EmitMessageMaps {
 			for _, f := range msgDetails.OutputFields {
 				if protoMsg, goType, ok := MessageMapValueInfo(f); ok {
 					g.derivedMessageMaps = append(g.derivedMessageMaps, DerivedMessageMap{
@@ -637,6 +655,7 @@ func WriteObservedStateFields(out io.Writer, msgDetails *OutputMessageDetails, o
 	observedOpts := opts
 	observedOpts.EmitRequired = false
 	observedOpts.RequiredStructs = nil
+	observedOpts.Siblings = nil
 
 	for _, field := range msgDetails.OutputFields {
 		if skip[string(field.Name())] {
