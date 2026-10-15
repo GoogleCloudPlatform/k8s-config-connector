@@ -33,6 +33,8 @@ func TestSingular(t *testing.T) {
 		{"ss is not a plural", "access", "access"},
 		{"us is not a plural", "status", "status"},
 		{"is is not a plural", "analysis", "analysis"},
+		{"plural acronym apis", "apis", "api"},
+		{"plural acronym uris", "uris", "uri"},
 		{"trailing s", "subnetworks", "subnetwork"},
 		{"trailing s, too short", "as", "as"},
 		{"no plural to strip", "policy", "policy"},

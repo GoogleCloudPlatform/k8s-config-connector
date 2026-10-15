@@ -707,3 +707,29 @@ func nestedConfigMessage(t *testing.T) protoreflect.MessageDescriptor {
 	}
 	return fd.Messages().ByName("Widget")
 }
+
+func TestPrepopulateSpecQueuesEtagInSpec(t *testing.T) {
+	msg := namedCommentedMessage(t, [][2]string{
+		{"etag", "For optimistic concurrency control."},
+		{"description", "Human-readable description."},
+	})
+	got, err := PrepopulateSpec(msg, codegen.WriteOptions{})
+	if err != nil {
+		t.Fatalf("PrepopulateSpec: %v", err)
+	}
+	wantItem := JudgementItem{
+		FieldPath: ".spec.etag",
+		Reason:    judgement.ReasonEtagInSpec,
+		Detail:    "etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState",
+	}
+	found := false
+	for _, item := range got.Judgement {
+		if item == wantItem {
+			found = true
+			break
+		}
+	}
+	if !found {
+		t.Errorf("PrepopulateSpec judgements %+v did not contain %+v", got.Judgement, wantItem)
+	}
+}

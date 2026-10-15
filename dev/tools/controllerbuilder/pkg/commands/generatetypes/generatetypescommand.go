@@ -218,19 +218,56 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		if err != nil {
 			return fmt.Errorf("setting up --emit-source-links: %w", err)
 		}
+		if sha := sourcelinks.SHAFromProtoSourcePath(o.GenerateOptions.ProtoSourcePath); sha != "" {
+			linkResolver.GoogleapisSHA = sha
+		}
+	}
+
+	// Gate judgement queue emission and sibling markers to newly scaffolded or
+	// untriaged Kinds so existing already-triaged resources do not get unexpected
+	// judgement_queue.yaml entries.
+	activeJudgementKinds := make(map[string]bool, len(o.Resources))
+	for _, resource := range o.Resources {
+		if o.SkipScaffoldFiles || resource.SkipScaffoldFiles {
+			continue
+		}
+		if !scaffolder.TypeFileExists(resource) {
+			activeJudgementKinds[resource.Kind] = true
+			continue
+		}
+		if o.PrepopulateSpec {
+			untriaged, err := isUntriaged(o.OutputAPIDirectory, goPackage, resource.Kind, gv.Group)
+			if err != nil {
+				return fmt.Errorf("reading judgement queue: %w", err)
+			}
+			if untriaged {
+				activeJudgementKinds[resource.Kind] = true
+			}
+		}
 	}
 
 	// Each --resource is resolved once here, so the warning is logged once and
 	// the scaffolding below uses the same message.
 	protoFullNames := make(map[string]string, len(o.Resources))
 	resourceAnnotations := make([]string, 0, len(o.Resources))
+	activeProtoMessages := make(map[string]bool)
 	for _, resource := range o.Resources {
 		resourceProtoFullName, matches := resolveProtoFullName(api, o.ServiceName, resource)
 		protoFullNames[resource.Kind] = resourceProtoFullName
 		if item, ok := ambiguousResourceItem(resource, matches); ok {
 			klog.Warningf("%s: %s", resource.Kind, item.Detail)
-			if o.PrepopulateSpec {
+			if o.PrepopulateSpec && activeJudgementKinds[resource.Kind] {
 				queued = append(queued, scaffold.JudgementEntries(resource.Kind, gv.Group, []scaffold.JudgementItem{item})...)
+			}
+		}
+		if activeJudgementKinds[resource.Kind] {
+			if msg, err := resourceMessage(api, resourceProtoFullName); err == nil && msg != nil {
+				activeProtoMessages[string(msg.FullName())] = true
+				if deps, err := codegen.FindDependenciesForMessage(msg, nil); err == nil {
+					for _, dep := range deps {
+						activeProtoMessages[string(dep.FullName())] = true
+					}
+				}
 			}
 		}
 		log.V(2).Info("visiting proto", "name", resourceProtoFullName)
@@ -239,6 +276,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		}
 		resourceAnnotations = append(resourceAnnotations, fmt.Sprintf("%s:%s", resource.Kind, resource.ProtoName))
 	}
+	typeGenerator.WithActiveJudgementMessages(activeProtoMessages)
 
 	// With --emit-required-from-proto, +required only goes on structs that
 	// opted-in Kinds use, meaning Kinds whose Spec has
@@ -412,13 +450,17 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	if o.EmitRequiredFromProto {
 		kinds := make([]string, 0, len(o.Resources))
 		for _, resource := range o.Resources {
-			kinds = append(kinds, resource.Kind)
+			if activeJudgementKinds[resource.Kind] {
+				kinds = append(kinds, resource.Kind)
+			}
 		}
-		entries, err := requiredNotEnforced(api.Files(), o.OutputAPIDirectory, goPackage, gv.Group, kinds, protoFullNames)
-		if err != nil {
-			return fmt.Errorf("checking REQUIRED fields: %w", err)
+		if len(kinds) > 0 {
+			entries, err := requiredNotEnforced(api.Files(), o.OutputAPIDirectory, goPackage, gv.Group, kinds, protoFullNames)
+			if err != nil {
+				return fmt.Errorf("checking REQUIRED fields: %w", err)
+			}
+			queued = append(queued, entries...)
 		}
-		queued = append(queued, entries...)
 	}
 
 	if len(queued) > 0 {

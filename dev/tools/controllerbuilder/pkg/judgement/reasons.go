@@ -111,3 +111,7 @@ func IsIdentityReason(reason string) bool {
 // objects that omit it, so a person decides: an alpha Kind may take the break,
 // and a beta or stable Kind keeps the field optional.
 const ReasonRequiredNotEnforced = "required-not-enforced"
+
+// ReasonEtagInSpec: a top-level etag field was generated in Spec because the
+// proto does not mark it OUTPUT_ONLY.
+const ReasonEtagInSpec = "etag-in-spec"

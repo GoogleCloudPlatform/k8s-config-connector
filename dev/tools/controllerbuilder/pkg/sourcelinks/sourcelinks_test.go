@@ -351,3 +351,16 @@ func TestRenderAndParse(t *testing.T) {
 		t.Errorf("Guesses = %q", got)
 	}
 }
+
+func TestSHAFromProtoSourcePath(t *testing.T) {
+	for path, want := range map[string]string{
+		"/repo/.build/googleapis-cdc919ff596e263f2cc55a9780d2f74633da1ced.pb": "cdc919ff596e263f2cc55a9780d2f74633da1ced",
+		"googleapis-665784f816da130b27edb566694b2441d0cfddf2.pb":              "665784f816da130b27edb566694b2441d0cfddf2",
+		"/repo/.build/googleapis.pb":                                          "",
+		"/repo/.build/googleapis-HEAD.pb":                                     "",
+	} {
+		if got := SHAFromProtoSourcePath(path); got != want {
+			t.Errorf("SHAFromProtoSourcePath(%q) = %q, want %q", path, got, want)
+		}
+	}
+}

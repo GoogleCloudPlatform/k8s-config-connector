@@ -116,6 +116,19 @@ func NewResolver(repoRoot string) (*Resolver, error) {
 	}, nil
 }
 
+var protoSourceSHARe = regexp.MustCompile(`googleapis-([0-9a-f]{40})\.pb$`)
+
+// SHAFromProtoSourcePath extracts the 40-char git SHA from a proto descriptor
+// filename of the form "googleapis-<sha>.pb", or returns "" if the path does
+// not match.
+func SHAFromProtoSourcePath(protoSourcePath string) string {
+	m := protoSourceSHARe.FindStringSubmatch(filepath.Base(protoSourcePath))
+	if m == nil {
+		return ""
+	}
+	return m[1]
+}
+
 func googleapisSHA(path string) (string, error) {
 	f, err := os.Open(path)
 	if err != nil {
