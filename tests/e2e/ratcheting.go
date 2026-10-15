@@ -459,7 +459,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "speech.cnrm.cloud.google.com", Kind: "SpeechRecognizer"}:
 	case schema.GroupKind{Group: "sql.cnrm.cloud.google.com", Kind: "SQLDatabase"}:
 	case schema.GroupKind{Group: "sql.cnrm.cloud.google.com", Kind: "SQLUser"}:
-	case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageAnywhereCache"}:
 	case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageBucketAccessControl"}:
 	case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageBucket"}:
 	case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageDefaultObjectAccessControl"}:
