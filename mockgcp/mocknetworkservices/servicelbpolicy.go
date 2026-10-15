@@ -96,6 +96,9 @@ func (s *NetworkServicesServer) CreateServiceLbPolicy(ctx context.Context, req *
 	obj.UpdateTime = timestamppb.New(now)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.AlreadyExists {
+			return nil, status.Errorf(codes.AlreadyExists, "Resource '%s' already exists", fqn)
+		}
 		return nil, err
 	}
 
@@ -123,6 +126,9 @@ func (s *NetworkServicesServer) UpdateServiceLbPolicy(ctx context.Context, req *
 	fqn := name.String()
 	obj := &pb.ServiceLbPolicy{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -186,6 +192,9 @@ func (s *NetworkServicesServer) DeleteServiceLbPolicy(ctx context.Context, req *
 
 	deleted := &pb.ServiceLbPolicy{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
