@@ -661,3 +661,91 @@ func TestRunGenerateCRDSkipScaffoldFilesSuppressesJudgements(t *testing.T) {
 		t.Errorf("expected no +kcc:guess comments in types.generated.go when SkipScaffoldFiles is true, got:\n%s", genTypes)
 	}
 }
+
+func TestIsNonGAProto(t *testing.T) {
+	for _, tc := range []struct {
+		fullName string
+		want     bool
+	}{
+		{"google.cloud.apihub.v1.PluginInstance", false},
+		{"google.cloud.retail.v2.Control", false},
+		{"google.cloud.talent.v4.Job", false},
+		{"google.cloud.ces.v1beta.Deployment", true},
+		{"google.cloud.dataform.v1beta1.Config", true},
+		{"google.cloud.gdchardwaremanagement.v1alpha.Hardware", true},
+		{"google.cloud.bigquery.migration.v2alpha.MigrationWorkflow", true},
+		{"google.cloud.speech.v1p1beta1.CustomClass", true},
+	} {
+		if got := isNonGAProto(tc.fullName); got != tc.want {
+			t.Errorf("isNonGAProto(%q) = %v, want %v", tc.fullName, got, tc.want)
+		}
+	}
+}
+
+func TestRunGenerateCRDRejectsNewNonGAProtoWithoutFlag(t *testing.T) {
+	apiDir := t.TempDir()
+	pbPath := writeBetaWidgetProto(t, t.TempDir())
+
+	baseOpts := func() *GenerateCRDOptions {
+		o := &GenerateCRDOptions{
+			GenerateOptions: &options.GenerateOptions{
+				ProtoSourcePath: pbPath,
+				APIVersion:      "example.cnrm.cloud.google.com/v1alpha1",
+			},
+			ServiceName:        "google.cloud.example.v1beta",
+			OutputAPIDirectory: apiDir,
+			Resources:          options.ResourceList{{Kind: "ExampleWidget", ProtoName: "Widget"}},
+			PrepopulateSpec:    true,
+		}
+		return o
+	}
+
+	// 1. Scaffolding a new resource from a non-GA proto fails without --allow-non-ga-proto.
+	err := RunGenerateCRD(context.Background(), baseOpts())
+	if err == nil || !strings.Contains(err.Error(), "--allow-non-ga-proto") {
+		t.Fatalf("expected --allow-non-ga-proto error, got: %v", err)
+	}
+	typeFile := filepath.Join(apiDir, "example/v1alpha1/examplewidget_types.go")
+	if _, statErr := os.Stat(typeFile); !os.IsNotExist(statErr) {
+		t.Fatalf("expected %s not to be created on failure", typeFile)
+	}
+
+	// 2. Passing --allow-non-ga-proto succeeds and creates <kind>_types.go.
+	allowed := baseOpts()
+	allowed.AllowNonGAProto = true
+	if err := RunGenerateCRD(context.Background(), allowed); err != nil {
+		t.Fatalf("RunGenerateCRD with AllowNonGAProto: %v", err)
+	}
+	if _, statErr := os.Stat(typeFile); statErr != nil {
+		t.Fatalf("expected %s to exist after AllowNonGAProto: %v", typeFile, statErr)
+	}
+
+	// 3. Re-running when <kind>_types.go already exists succeeds even without --allow-non-ga-proto.
+	if err := RunGenerateCRD(context.Background(), baseOpts()); err != nil {
+		t.Fatalf("RunGenerateCRD on existing resource without AllowNonGAProto: %v", err)
+	}
+}
+
+func writeBetaWidgetProto(t *testing.T, dir string) string {
+	t.Helper()
+	str := descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum()
+	fds := &descriptorpb.FileDescriptorSet{File: []*descriptorpb.FileDescriptorProto{{
+		Name:    proto.String("google/cloud/example/v1beta/widget.proto"),
+		Package: proto.String("google.cloud.example.v1beta"),
+		Syntax:  proto.String("proto3"),
+		MessageType: []*descriptorpb.DescriptorProto{{
+			Name: proto.String("Widget"),
+			Field: []*descriptorpb.FieldDescriptorProto{
+				{Name: proto.String("name"), Number: proto.Int32(1), Type: str},
+				{Name: proto.String("display_name"), Number: proto.Int32(2), Type: str},
+			},
+		}},
+	}}}
+	b, err := proto.Marshal(fds)
+	if err != nil {
+		t.Fatalf("marshalling descriptor set: %v", err)
+	}
+	path := filepath.Join(dir, "widget_beta.pb")
+	writeFile(t, path, string(b))
+	return path
+}

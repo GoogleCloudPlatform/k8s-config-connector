@@ -92,12 +92,17 @@ const (
 	// ReasonIdentityNotInCAI: the template URL is not listed in
 	// docs/ai/metadata/cloudassetinventory_names.jsonl.
 	ReasonIdentityNotInCAI = "identity-not-in-cai"
+	// ReasonIdentityServerGeneratedID: the Create RPC has no *_id parameter (or
+	// the Spec comment marks ResourceID server-generated), so the generated
+	// identity implements identity.ServerGeneratedIdentity.
+	ReasonIdentityServerGeneratedID = "identity-server-generated-id"
 )
 
 var identityReasons = map[string]bool{
-	ReasonIdentityMultiPattern: true,
-	ReasonIdentityRootUnknown:  true,
-	ReasonIdentityNotInCAI:     true,
+	ReasonIdentityMultiPattern:      true,
+	ReasonIdentityRootUnknown:       true,
+	ReasonIdentityNotInCAI:          true,
+	ReasonIdentityServerGeneratedID: true,
 }
 
 // IsIdentityReason reports whether reason is about an identity or reference file.
@@ -115,3 +120,51 @@ const ReasonRequiredNotEnforced = "required-not-enforced"
 // ReasonEtagInSpec: a top-level etag field was generated in Spec because the
 // proto does not mark it OUTPUT_ONLY.
 const ReasonEtagInSpec = "etag-in-spec"
+
+// Reasons for deprecated proto resources, fields, and messages.
+const (
+	// ReasonDeprecatedResource: the proto marks the resource message itself
+	// deprecated (option deprecated = true).
+	ReasonDeprecatedResource = "deprecated-resource"
+	// ReasonDeprecatedField: the proto marks the field deprecated.
+	ReasonDeprecatedField = "deprecated-field"
+	// ReasonDeprecatedMessage: the proto marks the field's message type
+	// deprecated (option deprecated = true).
+	ReasonDeprecatedMessage = "deprecated-message"
+)
+
+// Reasons for spec and observed-state field review items.
+const (
+	// ReasonWellKnownProtoType: the field uses a google.protobuf.* message type
+	// that was generated as a Go struct rather than mapped to a scalar or
+	// special KRM type.
+	ReasonWellKnownProtoType = "well-known-proto-type"
+	// ReasonSensitiveField: the field name or path indicates sensitive/secret
+	// data generated as a plain value.
+	ReasonSensitiveField = "sensitive-field"
+	// ReasonMessageMapDerived: a map<string, Message> field was generated as
+	// map[string]<GoType> under --emit-message-maps.
+	ReasonMessageMapDerived = "message-map-derived"
+	// ReasonUnsupportedFieldType: the generator could not produce a Go type for
+	// the proto field.
+	ReasonUnsupportedFieldType = "unsupported-field-type"
+	// ReasonEmptyObservedState: no fields were generated into
+	// status.observedState for the resource.
+	ReasonEmptyObservedState = "empty-observedstate"
+	// ReasonAmbiguousProtoName: the --resource proto name matched more than one
+	// listed service package.
+	ReasonAmbiguousProtoName = "ambiguous-proto-name"
+	// ReasonServerSetFieldPlaced: a field on the server-set allowlist was moved
+	// to ObservedState because the message carries no field_behavior.
+	ReasonServerSetFieldPlaced = "server-set-field-placed"
+	// ReasonObservedStateIdentityFieldOmitted: an OUTPUT_ONLY identity field
+	// (such as name) was omitted from ObservedState.
+	ReasonObservedStateIdentityFieldOmitted = "observedstate-identity-field-omitted"
+	// ReasonWellKnownOutputOnlyPattern: a field's proto comment starts with
+	// "Output only." or "[Output Only]" without a field_behavior annotation.
+	ReasonWellKnownOutputOnlyPattern = "well-known-output-only-pattern-in-comment"
+	// ReasonPossibleOutputOnlyPattern: a field's proto comment mentions
+	// "output only" without starting with a well-known prefix.
+	ReasonPossibleOutputOnlyPattern = "possible-output-only-pattern-in-comment"
+)
+

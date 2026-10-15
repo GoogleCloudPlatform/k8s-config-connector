@@ -672,8 +672,10 @@ func renderReferenceStructAndGVK(w *bytes.Buffer, plan *IdentityPlan, ov *HandWr
 		fmt.Fprintf(w, "\tKind:    %q,\n", kind)
 		w.WriteString("}\n\n")
 	}
-	if !ov.HasRefStruct {
+	if !ov.RefMethods["Normalize"] {
 		fmt.Fprintf(w, "var _ refs.Ref = &%s{}\n\n", refType)
+	}
+	if !ov.HasRefStruct {
 		fmt.Fprintf(w, "// %s is a reference to a GCP %s resource.\n", refType, kind)
 		fmt.Fprintf(w, "type %s struct {\n", refType)
 		fmt.Fprintf(w, "\t// A reference to an externally managed %s resource.\n", kind)

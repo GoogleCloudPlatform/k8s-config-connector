@@ -46,7 +46,10 @@ func ReferenceHints(msg protoreflect.MessageDescriptor, opts codegen.WriteOption
 		if item, ok := referenceHint(path, desc, field); ok {
 			out = append(out, item)
 		}
-		if item, ok := sensitiveField(path); ok {
+		if item, ok := sensitiveField(path, msg); ok {
+			out = append(out, item)
+		}
+		if item, ok := wellKnownProtoTypeItem(field, path); ok {
 			out = append(out, item)
 		}
 	})
@@ -84,6 +87,9 @@ func walkSpecFields(msg protoreflect.MessageDescriptor, prefix string, opts code
 		// PrepopulateSpec only drops them from the resource's top-level
 		// message, so they are only checked at the top.
 		if top && topLevelSkip(field, msg, opts) != inSpec {
+			continue
+		}
+		if codegen.IsFieldAllOutputOnlyMessage(field) {
 			continue
 		}
 		goType, err := codegen.GoTypeForField(field, false, opts)
@@ -196,13 +202,20 @@ func hasResourceIDSuffix(path string) bool {
 // KRM path, lowercased, ends in "password". The generator still writes the
 // field as a plain value. We haven't settled how a new Kind should take a
 // secret, so the entry only flags the field.
-func sensitiveField(path string) (JudgementItem, bool) {
-	if !strings.HasSuffix(strings.ToLower(path), "password") {
-		return JudgementItem{}, false
+func sensitiveField(path string, rootMsg protoreflect.MessageDescriptor) (JudgementItem, bool) {
+	if strings.HasSuffix(strings.ToLower(path), "password") {
+		return JudgementItem{
+			FieldPath: path,
+			Reason:    judgement.ReasonSensitiveField,
+			Detail:    "the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets",
+		}, true
 	}
-	return JudgementItem{
-		FieldPath: path,
-		Reason:    "sensitive-field",
-		Detail:    "the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets",
-	}, true
+	if path == ".spec.data" && rootMsg != nil && strings.HasSuffix(strings.ToLower(string(rootMsg.Name())), "secret") {
+		return JudgementItem{
+			FieldPath: path,
+			Reason:    judgement.ReasonSensitiveField,
+			Detail:    "holds secret data as a plain value on a Secret resource. Leave this open until we settle how new Kinds take secrets",
+		}, true
+	}
+	return JudgementItem{}, false
 }
