@@ -68,7 +68,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -91,12 +91,11 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters?%24alt=json%3Benum-encoding%3Dint&clusterId=alloydbcluster${uniqueId}
+POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters?alt=json&clusterId=alloydbcluster${uniqueId}
 Content-Type: application/json
 
 {
-  "clusterType": 1,
-  "databaseVersion": 4,
+  "clusterType": "PRIMARY",
   "initialUser": {
     "password": "postgres",
     "user": "postgres"
@@ -105,9 +104,7 @@ Content-Type: application/json
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "networkConfig": {
-    "network": "projects/${projectId}/global/networks/${networkID}"
-  }
+  "network": "projects/${projectId}/global/networks/${networkID}"
 }
 
 200 OK
@@ -135,7 +132,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/operations/${operationID}
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -231,7 +228,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -254,13 +251,13 @@ X-Xss-Protection: 0
     },
     "weeklySchedule": {
       "daysOfWeek": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "SUNDAY"
       ],
       "startTimes": [
         {
@@ -269,7 +266,7 @@ X-Xss-Protection: 0
       ]
     }
   },
-  "clusterType": 1,
+  "clusterType": "PRIMARY",
   "continuousBackupConfig": {
     "enabled": true,
     "recoveryWindowDays": 14
@@ -277,22 +274,22 @@ X-Xss-Protection: 0
   "continuousBackupInfo": {
     "enabledTime": "2024-04-01T12:34:56.123456Z",
     "encryptionInfo": {
-      "encryptionType": 1
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
     "schedule": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7
+      "MONDAY",
+      "TUESDAY",
+      "WEDNESDAY",
+      "THURSDAY",
+      "FRIDAY",
+      "SATURDAY",
+      "SUNDAY"
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": 4,
+  "databaseVersion": "POSTGRES_16",
   "encryptionInfo": {
-    "encryptionType": 1
+    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
   },
   "geminiConfig": {},
   "labels": {
@@ -305,15 +302,15 @@ X-Xss-Protection: 0
     "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
-  "state": 1,
-  "subscriptionType": 1,
+  "state": "READY",
+  "subscriptionType": "STANDARD",
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -341,7 +338,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/operations/${operationID}
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK

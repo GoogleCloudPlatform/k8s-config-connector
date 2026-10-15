@@ -1,0 +1,89 @@
+71c71
+< GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?alt=json
+---
+> GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+94c94
+< POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters?alt=json&clusterId=alloydbcluster${uniqueId}
+---
+> POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters?%24alt=json%3Benum-encoding%3Dint&clusterId=alloydbcluster${uniqueId}
+98c98,99
+<   "clusterType": "PRIMARY",
+---
+>   "clusterType": 1,
+>   "databaseVersion": 4,
+107c108,110
+<   "network": "projects/${projectId}/global/networks/${networkID}"
+---
+>   "networkConfig": {
+>     "network": "projects/${projectId}/global/networks/${networkID}"
+>   }
+135c138
+< GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/operations/${operationID}?alt=json
+---
+> GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/operations/${operationID}
+231c234
+< GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?alt=json
+---
+> GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+254,260c257,263
+<         "MONDAY",
+<         "TUESDAY",
+<         "WEDNESDAY",
+<         "THURSDAY",
+<         "FRIDAY",
+<         "SATURDAY",
+<         "SUNDAY"
+---
+>         1,
+>         2,
+>         3,
+>         4,
+>         5,
+>         6,
+>         7
+269c272
+<   "clusterType": "PRIMARY",
+---
+>   "clusterType": 1,
+277c280
+<       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+---
+>       "encryptionType": 1
+280,286c283,289
+<       "MONDAY",
+<       "TUESDAY",
+<       "WEDNESDAY",
+<       "THURSDAY",
+<       "FRIDAY",
+<       "SATURDAY",
+<       "SUNDAY"
+---
+>       1,
+>       2,
+>       3,
+>       4,
+>       5,
+>       6,
+>       7
+290c293
+<   "databaseVersion": "POSTGRES_16",
+---
+>   "databaseVersion": 4,
+292c295
+<     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+---
+>     "encryptionType": 1
+305,306c308,309
+<   "state": "READY",
+<   "subscriptionType": "STANDARD",
+---
+>   "state": 1,
+>   "subscriptionType": 1,
+313c316
+< DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?alt=json
+---
+> DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+341c344
+< GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/operations/${operationID}?alt=json
+---
+> GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/operations/${operationID}

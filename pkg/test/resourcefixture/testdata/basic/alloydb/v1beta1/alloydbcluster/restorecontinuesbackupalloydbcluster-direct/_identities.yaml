@@ -1,0 +1,6 @@
+- caisURL: //alloydb.googleapis.com/projects/${KCC_ALLOYDB_TEST_PROJECT}/locations/us-east4/clusters/restored-alloydbcluster-${uniqueId}
+  group: alloydb.cnrm.cloud.google.com
+  kind: AlloyDBCluster
+  name: restored-alloydbcluster-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
