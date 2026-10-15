@@ -89,16 +89,10 @@ func (m *modelExadbVMCluster) AdapterForObject(ctx context.Context, op *directba
 		return nil, err
 	}
 
-	mapCtx := &direct.MapContext{}
-	desired := OracleDatabaseExadbVMClusterSpec_ToProto(mapCtx, &obj.Spec)
-	if mapCtx.Err() != nil {
-		return nil, mapCtx.Err()
-	}
-
 	return &ExadbVMClusterAdapter{
 		id:        id.(*krm.OracleDatabaseExadbVMClusterIdentity),
 		gcpClient: gcpClient,
-		desired:   desired,
+		desired:   obj,
 	}, nil
 }
 
@@ -123,7 +117,7 @@ func (m *modelExadbVMCluster) AdapterForURL(ctx context.Context, url string) (di
 type ExadbVMClusterAdapter struct {
 	id        *krm.OracleDatabaseExadbVMClusterIdentity
 	gcpClient *gcp.Client
-	desired   *pb.ExadbVmCluster
+	desired   *krm.OracleDatabaseExadbVMCluster
 	actual    *pb.ExadbVmCluster
 }
 
@@ -150,12 +144,16 @@ func (a *ExadbVMClusterAdapter) Create(ctx context.Context, createOp *directbase
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating ExadbVMCluster", "name", a.id)
 
-	clonedDesired := proto.Clone(a.desired).(*pb.ExadbVmCluster)
+	mapCtx := &direct.MapContext{}
+	desiredPb := OracleDatabaseExadbVMClusterSpec_ToProto(mapCtx, &a.desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
 
 	req := &pb.CreateExadbVmClusterRequest{
 		Parent:           a.id.ParentString(),
 		ExadbVmClusterId: a.id.ExadbVmCluster,
-		ExadbVmCluster:   clonedDesired,
+		ExadbVmCluster:   desiredPb,
 	}
 	op, err := a.gcpClient.CreateExadbVmCluster(ctx, req)
 	if err != nil {
@@ -180,10 +178,14 @@ func (a *ExadbVMClusterAdapter) Update(ctx context.Context, updateOp *directbase
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating ExadbVMCluster", "name", a.id)
 
-	clonedDesired := proto.Clone(a.desired).(*pb.ExadbVmCluster)
-	clonedDesired.Name = a.id.String()
+	mapCtx := &direct.MapContext{}
+	desiredPb := OracleDatabaseExadbVMClusterSpec_ToProto(mapCtx, &a.desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	desiredPb.Name = a.id.String()
 
-	diffs, updateMask, err := compareResource(ctx, a.actual, clonedDesired)
+	diffs, updateMask, err := compareResource(ctx, a.actual, desiredPb)
 	if err != nil {
 		return err
 	}
@@ -198,7 +200,7 @@ func (a *ExadbVMClusterAdapter) Update(ctx context.Context, updateOp *directbase
 
 		req := &pb.UpdateExadbVmClusterRequest{
 			UpdateMask:     updateMask,
-			ExadbVmCluster: clonedDesired,
+			ExadbVmCluster: desiredPb,
 		}
 		op, err := a.gcpClient.UpdateExadbVmCluster(ctx, req)
 		if err != nil {
