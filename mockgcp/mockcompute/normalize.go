@@ -90,6 +90,7 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 			delete(obj, "satisfiesPzi")
 			delete(obj, "sizeGb")
 			delete(obj, "recommendedSize")
+			delete(obj, "resourceMetadata")
 			delete(obj, "loadBalancer")
 			delete(obj, "cpuPlatform")
 			delete(obj, "lastStartTimestamp")
