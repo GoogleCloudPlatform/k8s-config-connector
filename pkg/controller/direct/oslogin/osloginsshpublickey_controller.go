@@ -93,17 +93,10 @@ func (m *modelOSLoginSSHPublicKey) AdapterForObject(ctx context.Context, op *dir
 		return nil, err
 	}
 
-	mapCtx := &direct.MapContext{}
-	desired := OSLoginSSHPublicKeySpec_v1alpha1_ToProto(mapCtx, &obj.Spec)
-	if mapCtx.Err() != nil {
-		return nil, mapCtx.Err()
-	}
-
 	return &osloginSSHPublicKeyAdapter{
-		gcpClient:      gcpClient,
-		id:             id,
-		desired:        desired,
-		desiredProject: obj.Spec.Project,
+		gcpClient: gcpClient,
+		id:        id,
+		desired:   obj,
 	}, nil
 }
 
@@ -125,11 +118,10 @@ func (m *modelOSLoginSSHPublicKey) AdapterForURL(ctx context.Context, url string
 }
 
 type osloginSSHPublicKeyAdapter struct {
-	gcpClient      *gcp.Client
-	id             *krm.OSLoginSSHPublicKeyIdentity
-	desired        *commonpb.SshPublicKey
-	desiredProject *string
-	actual         *commonpb.SshPublicKey
+	gcpClient *gcp.Client
+	id        *krm.OSLoginSSHPublicKeyIdentity
+	desired   *krm.OSLoginSSHPublicKey
+	actual    *commonpb.SshPublicKey
 }
 
 var _ directbase.Adapter = &osloginSSHPublicKeyAdapter{}
@@ -161,10 +153,16 @@ func (a *osloginSSHPublicKeyAdapter) Create(ctx context.Context, createOp *direc
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating OSLoginSSHPublicKey", "user", a.id.User)
 
+	mapCtx := &direct.MapContext{}
+	desired := OSLoginSSHPublicKeySpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
 	req := &osloginpb.ImportSshPublicKeyRequest{
 		Parent:       a.id.ParentString(),
-		SshPublicKey: a.desired,
-		ProjectId:    apiscommon.ValueOf(a.desiredProject),
+		SshPublicKey: desired,
+		ProjectId:    apiscommon.ValueOf(a.desired.Spec.Project),
 	}
 	resp, err := a.gcpClient.ImportSshPublicKey(ctx, req)
 	if err != nil {
@@ -174,7 +172,7 @@ func (a *osloginSSHPublicKeyAdapter) Create(ctx context.Context, createOp *direc
 	var createdKey *commonpb.SshPublicKey
 	if resp.GetLoginProfile() != nil {
 		for _, k := range resp.GetLoginProfile().GetSshPublicKeys() {
-			if strings.TrimSpace(k.GetKey()) == strings.TrimSpace(a.desired.GetKey()) {
+			if strings.TrimSpace(k.GetKey()) == strings.TrimSpace(desired.GetKey()) {
 				createdKey = k
 				break
 			}
@@ -198,7 +196,13 @@ func (a *osloginSSHPublicKeyAdapter) Update(ctx context.Context, updateOp *direc
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating OSLoginSSHPublicKey", "name", a.id.String())
 
-	diffs, updateMask, err := compareOSLoginSSHPublicKey(ctx, a.actual, a.desired)
+	mapCtx := &direct.MapContext{}
+	desired := OSLoginSSHPublicKeySpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	diffs, updateMask, err := compareOSLoginSSHPublicKey(ctx, a.actual, desired)
 	if err != nil {
 		return err
 	}
@@ -212,7 +216,7 @@ func (a *osloginSSHPublicKeyAdapter) Update(ctx context.Context, updateOp *direc
 		for _, path := range updateMask.Paths {
 			switch path {
 			case "expiration_time_usec", "expirationTimeUsec":
-				updatePb.ExpirationTimeUsec = a.desired.ExpirationTimeUsec
+				updatePb.ExpirationTimeUsec = desired.ExpirationTimeUsec
 			default:
 				return fmt.Errorf("field %q is immutable and cannot be updated", path)
 			}
