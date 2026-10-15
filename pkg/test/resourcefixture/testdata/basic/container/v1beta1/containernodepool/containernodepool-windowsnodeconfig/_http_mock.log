@@ -951,7 +951,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
         }
       },
       "windowsNodeConfig": {
-        "osVersion": "OS_2022"
+        "osVersion": "OS_VERSION_LTSC2022"
       }
     },
     "initialNodeCount": 1,
@@ -1029,7 +1029,6 @@ X-Xss-Protection: 0
     },
     "diskSizeGb": 100,
     "diskType": "pd-balanced",
-    "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "WINDOWS_LTSC_CONTAINERD",
     "kubeletConfig": {
       "insecureKubeletReadonlyPortEnabled": false,
@@ -1060,7 +1059,7 @@ X-Xss-Protection: 0
       "enableIntegrityMonitoring": true
     },
     "windowsNodeConfig": {
-      "osVersion": "OS_2022"
+      "osVersion": "OS_VERSION_LTSC2022"
     }
   },
   "instanceGroupUrls": [
@@ -1166,7 +1165,6 @@ X-Xss-Protection: 0
     },
     "diskSizeGb": 100,
     "diskType": "pd-balanced",
-    "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "WINDOWS_LTSC_CONTAINERD",
     "kubeletConfig": {
       "insecureKubeletReadonlyPortEnabled": false,
@@ -1197,7 +1195,7 @@ X-Xss-Protection: 0
       "enableIntegrityMonitoring": true
     },
     "windowsNodeConfig": {
-      "osVersion": "OS_2022"
+      "osVersion": "OS_VERSION_LTSC2022"
     }
   },
   "instanceGroupUrls": [
@@ -1303,7 +1301,6 @@ X-Xss-Protection: 0
     },
     "diskSizeGb": 100,
     "diskType": "pd-balanced",
-    "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "WINDOWS_LTSC_CONTAINERD",
     "kubeletConfig": {
       "insecureKubeletReadonlyPortEnabled": false,
@@ -1334,7 +1331,7 @@ X-Xss-Protection: 0
       "enableIntegrityMonitoring": true
     },
     "windowsNodeConfig": {
-      "osVersion": "OS_2022"
+      "osVersion": "OS_VERSION_LTSC2022"
     }
   },
   "instanceGroupUrls": [
@@ -1440,7 +1437,6 @@ X-Xss-Protection: 0
     },
     "diskSizeGb": 100,
     "diskType": "pd-balanced",
-    "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "WINDOWS_LTSC_CONTAINERD",
     "kubeletConfig": {
       "insecureKubeletReadonlyPortEnabled": false,
@@ -1471,7 +1467,7 @@ X-Xss-Protection: 0
       "enableIntegrityMonitoring": true
     },
     "windowsNodeConfig": {
-      "osVersion": "OS_2022"
+      "osVersion": "OS_VERSION_LTSC2022"
     }
   },
   "instanceGroupUrls": [

@@ -35,10 +35,9 @@ var mockGCPSkipFixtures = map[string]bool{
 	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-maximal": true,
 	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-minimal": true,
 	// TODO(https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/12388): Align outdated ComposerEnvironment mock logs with real GCP
-	"composer/v1beta1/composerenvironment/composerenvironmentwithkms":         true,
-	"composer/v1beta1/composerenvironment/composerenvironmentwithrefs":        true,
-	"composer/v1beta1/composerenvironment/composerenvironmentnodeconfig":      true,
-	"container/v1beta1/containernodepool/containernodepool-windowsnodeconfig": true,
+	"composer/v1beta1/composerenvironment/composerenvironmentwithkms":    true,
+	"composer/v1beta1/composerenvironment/composerenvironmentwithrefs":   true,
+	"composer/v1beta1/composerenvironment/composerenvironmentnodeconfig": true,
 }
 
 var realGCPSkipFixtures = map[string]bool{

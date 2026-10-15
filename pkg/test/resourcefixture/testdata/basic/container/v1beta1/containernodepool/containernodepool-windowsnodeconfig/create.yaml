@@ -24,6 +24,6 @@ spec:
   nodeConfig:
     imageType: WINDOWS_LTSC_CONTAINERD
     windowsNodeConfig:
-      osVersion: OS_2022
+      osVersion: OS_VERSION_LTSC2022
   clusterRef:
     name: cluster-sample-${uniqueId}
