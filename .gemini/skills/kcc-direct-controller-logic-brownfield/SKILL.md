@@ -19,6 +19,7 @@ This skill guides the implementation of the `Adapter` interface
     - Implement `Find`, `Create`, `Update`, and `Delete`.
     - Use the generated mappers and manual mappers as needed.
     - Ensure correct error handling (e.g., handling 404s in `Find`).
+    - **Desired Object in Adapter (`desired`)**: The `Adapter` struct MUST store the KRM object (`desired *krm.<Kind>`) rather than the GCP API/Proto object. Do NOT convert `spec` to GCP API/Proto types in `AdapterForObject`. Do NOT store both `desired` and `desiredpb`. Instead, perform mappings on-demand inside `Create` and `Update` methods as needed.
     - **Service-Generated Resource IDs**: If the brownfield resource has a service-generated resource ID, see the `kcc-direct-service-generated-id` skill for mandatory identity and reconciler rules (including `Find()` pre-check guards, `Create()` request handling, and `GetIdentity()` comparison rules).
     - **Labels in Brownfield Direct Controllers**: If the brownfield resource supports GCP labels, see the `kcc-direct-brownfield-labels` skill to properly map and reconcile labels using `metadata.labels` instead of `spec.labels`, preventing empty payloads, update mask issues, and untested fixtures.
 
@@ -83,8 +84,9 @@ This skill guides the implementation of the `Adapter` interface
           *   Missing status attributes previously consumed by downstream controllers or end users.
 
       Focus on the **Adapter** implementation:
+      - `desired`: The Adapter MUST store the KRM object (`*krm.<Kind>`) in its `desired` field, not the GCP API/Proto representation. Avoid premature mapping in `AdapterForObject`.
       - `Find`: Check if fields are correctly read, populated, and mapped from the GCP SDK response.
-      - `Create` / `Update`: Ensure fields are correctly mapped to the GCP SDK request and correct APIs are called. Pay attention to differences in Patch/Put calls due to incorrect diffing logic in the Update method.
+      - `Create` / `Update`: Ensure fields are correctly mapped from the KRM `desired` object to the GCP SDK request and correct APIs are called. Pay attention to differences in Patch/Put calls due to incorrect diffing logic in the Update method.
       - `Delete`: Check that deletion logic works and returns correct status/error code.
       
       If a fix is needed in any place other than the Adapter in the controller code, please carefully asses it and make a well scoped change.
