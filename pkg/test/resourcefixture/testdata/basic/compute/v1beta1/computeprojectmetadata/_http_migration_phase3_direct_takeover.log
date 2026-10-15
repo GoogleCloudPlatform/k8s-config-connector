@@ -1,7 +1,7 @@
-GET https://compute.googleapis.com/compute/v1/projects/example-project-01
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: project=example-project-01
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -14,8 +14,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "cloudArmorTier": "CA_STANDARD",
   "commonInstanceMetadata": {
-    "fingerprint": "XPoBKO4Dib2kMR4P0Q8xrw==",
+    "fingerprint": "CcFbaT6TiQQ=",
     "items": [
       {
         "key": "baz",
@@ -30,9 +31,243 @@ X-Xss-Protection: 0
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "defaultNetworkTier": "PREMIUM",
-  "defaultServiceAccount": "1137903263-compute@developer.gserviceaccount.com",
+  "defaultServiceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
   "id": "000000000000000000000",
   "kind": "compute#project",
-  "name": "example-project-01",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/example-project-01"
+  "name": "${projectId}",
+  "quotas": [
+    {
+      "limit": 10000,
+      "metric": "SNAPSHOTS",
+      "usage": 1
+    },
+    {
+      "limit": 30,
+      "metric": "NETWORKS",
+      "usage": 26
+    },
+    {
+      "limit": 500,
+      "metric": "FIREWALLS",
+      "usage": 25
+    },
+    {
+      "limit": 5000,
+      "metric": "IMAGES",
+      "usage": 0
+    },
+    {
+      "limit": 175,
+      "metric": "STATIC_ADDRESSES",
+      "usage": 0
+    },
+    {
+      "limit": 300,
+      "metric": "ROUTES",
+      "usage": 0
+    },
+    {
+      "limit": 150,
+      "metric": "FORWARDING_RULES",
+      "usage": 0
+    },
+    {
+      "limit": 500,
+      "metric": "TARGET_POOLS",
+      "usage": 0
+    },
+    {
+      "limit": 1000,
+      "metric": "HEALTH_CHECKS",
+      "usage": 8
+    },
+    {
+      "limit": 575,
+      "metric": "IN_USE_ADDRESSES",
+      "usage": 0
+    },
+    {
+      "limit": 500,
+      "metric": "TARGET_INSTANCES",
+      "usage": 0
+    },
+    {
+      "limit": 100,
+      "metric": "TARGET_HTTP_PROXIES",
+      "usage": 0
+    },
+    {
+      "limit": 100,
+      "metric": "URL_MAPS",
+      "usage": 2
+    },
+    {
+      "limit": 150,
+      "metric": "BACKEND_SERVICES",
+      "usage": 0
+    },
+    {
+      "limit": 1000,
+      "metric": "INSTANCE_TEMPLATES",
+      "usage": 0
+    },
+    {
+      "limit": 50,
+      "metric": "TARGET_VPN_GATEWAYS",
+      "usage": 0
+    },
+    {
+      "limit": 100,
+      "metric": "VPN_TUNNELS",
+      "usage": 0
+    },
+    {
+      "limit": 30,
+      "metric": "BACKEND_BUCKETS",
+      "usage": 0
+    },
+    {
+      "limit": 20,
+      "metric": "ROUTERS",
+      "usage": 8
+    },
+    {
+      "limit": 100,
+      "metric": "TARGET_SSL_PROXIES",
+      "usage": 0
+    },
+    {
+      "limit": 100,
+      "metric": "TARGET_HTTPS_PROXIES",
+      "usage": 0
+    },
+    {
+      "limit": 100,
+      "metric": "SSL_CERTIFICATES",
+      "usage": 0
+    },
+    {
+      "limit": 275,
+      "metric": "SUBNETWORKS",
+      "usage": 0
+    },
+    {
+      "limit": 100,
+      "metric": "TARGET_TCP_PROXIES",
+      "usage": 0
+    },
+    {
+      "limit": 10,
+      "metric": "SECURITY_POLICIES",
+      "usage": 0
+    },
+    {
+      "limit": 200,
+      "metric": "SECURITY_POLICY_RULES",
+      "usage": 0
+    },
+    {
+      "limit": 1000,
+      "metric": "XPN_SERVICE_PROJECTS",
+      "usage": 0
+    },
+    {
+      "limit": 150,
+      "metric": "PACKET_MIRRORINGS",
+      "usage": 0
+    },
+    {
+      "limit": 2000,
+      "metric": "NETWORK_ENDPOINT_GROUPS",
+      "usage": 0
+    },
+    {
+      "limit": 6,
+      "metric": "INTERCONNECTS",
+      "usage": 0
+    },
+    {
+      "limit": 100,
+      "metric": "SSL_POLICIES",
+      "usage": 0
+    },
+    {
+      "limit": 5000,
+      "metric": "GLOBAL_INTERNAL_ADDRESSES",
+      "usage": 0
+    },
+    {
+      "limit": 50,
+      "metric": "VPN_GATEWAYS",
+      "usage": 0
+    },
+    {
+      "limit": 5000,
+      "metric": "MACHINE_IMAGES",
+      "usage": 0
+    },
+    {
+      "limit": 20,
+      "metric": "SECURITY_POLICY_CEVAL_RULES",
+      "usage": 0
+    },
+    {
+      "limit": 50,
+      "metric": "EXTERNAL_VPN_GATEWAYS",
+      "usage": 0
+    },
+    {
+      "limit": 1,
+      "metric": "PUBLIC_ADVERTISED_PREFIXES",
+      "usage": 0
+    },
+    {
+      "limit": 10,
+      "metric": "PUBLIC_DELEGATED_PREFIXES",
+      "usage": 0
+    },
+    {
+      "limit": 1024,
+      "metric": "STATIC_BYOIP_ADDRESSES",
+      "usage": 0
+    },
+    {
+      "limit": 60,
+      "metric": "NETWORK_FIREWALL_POLICIES",
+      "usage": 0
+    },
+    {
+      "limit": 150,
+      "metric": "INTERNAL_TRAFFIC_DIRECTOR_FORWARDING_RULES",
+      "usage": 0
+    },
+    {
+      "limit": 150,
+      "metric": "GLOBAL_EXTERNAL_MANAGED_FORWARDING_RULES",
+      "usage": 0
+    },
+    {
+      "limit": 150,
+      "metric": "GLOBAL_INTERNAL_MANAGED_BACKEND_SERVICES",
+      "usage": 1
+    },
+    {
+      "limit": 150,
+      "metric": "GLOBAL_EXTERNAL_MANAGED_BACKEND_SERVICES",
+      "usage": 0
+    },
+    {
+      "limit": 150,
+      "metric": "GLOBAL_EXTERNAL_PROXY_LB_BACKEND_SERVICES",
+      "usage": 1
+    },
+    {
+      "limit": 750,
+      "metric": "GLOBAL_INTERNAL_TRAFFIC_DIRECTOR_BACKEND_SERVICES",
+      "usage": 0
+    }
+  ],
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}",
+  "vmDnsSetting": "GLOBAL_DEFAULT",
+  "xpnProjectStatus": "UNSPECIFIED_XPN_PROJECT_STATUS"
 }

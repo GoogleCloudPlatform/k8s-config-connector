@@ -23,80 +23,28 @@
   },
   {
     "controller": "tf",
-    "isNewObject": true,
+    "isNewObject": false,
     "resource": "Project/metadata-${uniqueId}",
     "fields": [
       {
-        "id": "auto_create_network",
-        "old": "",
-        "new": "true"
-      },
-      {
-        "id": "billing_account",
-        "old": "",
-        "new": "123456-777777-000001"
-      },
-      {
         "id": "labels.%",
-        "old": "0",
+        "old": "4",
         "new": "2"
       },
       {
-        "id": "labels.cnrm-test",
-        "old": "",
-        "new": "true"
+        "id": "labels.firebase",
+        "old": "enabled",
+        "new": ""
       },
       {
-        "id": "labels.managed-by-cnrm",
-        "old": "",
-        "new": "true"
+        "id": "labels.firebase-core",
+        "old": "disabled",
+        "new": ""
       },
       {
         "id": "name",
-        "old": "",
+        "old": "${projectId}",
         "new": "Dependent Project"
-      },
-      {
-        "id": "number",
-        "old": "",
-        "new": ""
-      },
-      {
-        "id": "org_id",
-        "old": "",
-        "new": "123450001"
-      },
-      {
-        "id": "project_id",
-        "old": "",
-        "new": "example-project-01"
-      },
-      {
-        "id": "skip_delete",
-        "old": "",
-        "new": ""
-      }
-    ]
-  },
-  {
-    "controller": "tf",
-    "isNewObject": true,
-    "resource": "Service/compute.googleapis.com",
-    "fields": [
-      {
-        "id": "disable_on_destroy",
-        "old": "",
-        "new": "true"
-      },
-      {
-        "id": "project",
-        "old": "",
-        "new": "example-project-01"
-      },
-      {
-        "id": "service",
-        "old": "",
-        "new": "compute.googleapis.com"
       }
     ]
   }
