@@ -38,6 +38,8 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 		return
 	}
 
+	replacements.ReplacePath(".ipAddress", "10.1.2.3")
+	replacements.ReplacePath(".response.ipAddress", "10.1.2.3")
 	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".metadata.createTime", mockgcpregistry.PlaceholderTimestamp)
