@@ -85,16 +85,10 @@ func (m *computeProjectMetadataModel) AdapterForObject(ctx context.Context, op *
 		return nil, err
 	}
 
-	mapCtx := &direct.MapContext{}
-	desired := ComputeProjectMetadataSpec_ToProto(mapCtx, &obj.Spec)
-	if mapCtx.Err() != nil {
-		return nil, mapCtx.Err()
-	}
-
 	return &ComputeProjectMetadataAdapter{
 		gcpClient: projectsClient,
 		id:        id,
-		desired:   desired,
+		desired:   obj,
 		reader:    reader,
 	}, nil
 }
@@ -119,7 +113,7 @@ func (m *computeProjectMetadataModel) AdapterForURL(ctx context.Context, url str
 type ComputeProjectMetadataAdapter struct {
 	gcpClient *compute.ProjectsClient
 	id        *krm.ComputeProjectMetadataIdentity
-	desired   *pb.Metadata
+	desired   *krm.ComputeProjectMetadata
 	actual    *pb.Metadata
 	reader    client.Reader
 }
@@ -149,14 +143,24 @@ func (a *ComputeProjectMetadataAdapter) Find(ctx context.Context) (bool, error) 
 }
 
 func (a *ComputeProjectMetadataAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	return a.save(ctx, createOp.GetUnstructured(), createOp)
+	mapCtx := &direct.MapContext{}
+	desired := ComputeProjectMetadataSpec_ToProto(mapCtx, &a.desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	return a.save(ctx, createOp.GetUnstructured(), createOp, desired)
 }
 
 func (a *ComputeProjectMetadataAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	return a.save(ctx, updateOp.GetUnstructured(), updateOp)
+	mapCtx := &direct.MapContext{}
+	desired := ComputeProjectMetadataSpec_ToProto(mapCtx, &a.desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	return a.save(ctx, updateOp.GetUnstructured(), updateOp, desired)
 }
 
-func (a *ComputeProjectMetadataAdapter) save(ctx context.Context, u *unstructured.Unstructured, op directbase.Operation) error {
+func (a *ComputeProjectMetadataAdapter) save(ctx context.Context, u *unstructured.Unstructured, op directbase.Operation, desired *pb.Metadata) error {
 	log := klog.FromContext(ctx)
 
 	if a.actual == nil {
@@ -169,7 +173,7 @@ func (a *ComputeProjectMetadataAdapter) save(ctx context.Context, u *unstructure
 		}
 	}
 
-	diffs, err := compareComputeProjectMetadata(ctx, a.actual, a.desired)
+	diffs, err := compareComputeProjectMetadata(ctx, a.actual, desired)
 	if err != nil {
 		return err
 	}
@@ -179,7 +183,7 @@ func (a *ComputeProjectMetadataAdapter) save(ctx context.Context, u *unstructure
 		diffs.Object = u
 		structuredreporting.ReportDiff(ctx, diffs)
 
-		metadataResource := proto.Clone(a.desired).(*pb.Metadata)
+		metadataResource := proto.Clone(desired).(*pb.Metadata)
 		metadataResource.Fingerprint = a.actual.Fingerprint
 
 		req := &computepb.SetCommonInstanceMetadataProjectRequest{
