@@ -4,13 +4,18 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+//    http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+// API sources for SaaSServiceMgmtRollout, recorded by generate-types:
+// +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/saasplatform/saasservicemgmt/v1beta1/rollouts_resources.proto
+// +kcc:source:service-docs=https://cloud.google.com/saas-runtime/docs
+// +kcc:source:resource-docs=https://docs.cloud.google.com/saas-runtime/docs/reference/rest/v1beta1/projects.locations.rollouts
 
 package v1alpha1
 
@@ -24,26 +29,21 @@ var SaaSServiceMgmtRolloutGVK = GroupVersion.WithKind("SaaSServiceMgmtRollout")
 
 // SaaSServiceMgmtRolloutSpec defines the desired state of SaaSServiceMgmtRollout
 // +kcc:spec:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout
+// +kcc:required-from-proto
 type SaaSServiceMgmtRolloutSpec struct {
 	// The project that this resource belongs to.
-	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
-	// Immutable. The location of this resource.
-	// +required
-	Location *string `json:"location"`
+	// The location of this resource.
+	Location string `json:"location"`
 
 	// The SaaSServiceMgmtRollout name. If not given, the metadata.name will be used.
-	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
-
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ReleaseRef field is immutable"
 	// Optional. Immutable. Name of the Release that gets rolled out to target
 	//  Units. Required if no other type of release is specified.
-	// +optional
+	// +kcc:guess=possible-reference target=SaasServiceMgmtRelease
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.release
-	ReleaseRef *SaasServiceMgmtReleaseRef `json:"releaseRef,omitempty"`
+	Release *string `json:"release,omitempty"`
 
 	// Optional. The strategy used for executing this Rollout.
 	//  This strategy will override whatever strategy is specified in the
@@ -56,7 +56,6 @@ type SaaSServiceMgmtRolloutSpec struct {
 	//
 	//  A rollout with one of these simple strategies will rollout across
 	//  all locations defined in the targeted UnitKind's Saas Locations.
-	// +optional
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.rollout_orchestration_strategy
 	RolloutOrchestrationStrategy *string `json:"rolloutOrchestrationStrategy,omitempty"`
 
@@ -65,16 +64,13 @@ type SaaSServiceMgmtRolloutSpec struct {
 	//  population. This filter can only reduce, but not expand the scope of the
 	//  rollout. If not provided, the unit_filter from the RolloutType will be
 	//  used.
-	// +optional
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.unit_filter
 	UnitFilter *string `json:"unitFilter,omitempty"`
 
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="RolloutKindRef field is immutable"
 	// Optional. Immutable. Name of the RolloutKind this rollout is stemming from
 	//  and adhering to.
-	// +optional
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.rollout_kind
-	RolloutKindRef *SaaSServiceMgmtRolloutKindRef `json:"rolloutKindRef,omitempty"`
+	RolloutKind *string `json:"rolloutKind,omitempty"`
 
 	// Optional. Requested change to the execution of this rollout.
 	//  Default RolloutControl.action is ROLLOUT_ACTION_RUN meaning
@@ -82,9 +78,22 @@ type SaaSServiceMgmtRolloutSpec struct {
 	//  all natural Rollout States (such as RUNNING -> SUCCEEDED or RUNNING ->
 	//  FAILED). Requests can only be made when the Rollout is in a non-terminal
 	//  state.
-	// +optional
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.control
 	Control *RolloutControl `json:"control,omitempty"`
+
+	// Optional. The labels on the resource, which can be used for categorization.
+	//  similar to Kubernetes resource labels.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Annotations is an unstructured key-value map stored with a
+	//  resource that may be set by external tools to store and retrieve arbitrary
+	//  metadata. They are not queryable and should be preserved when modifying
+	//  objects.
+	//
+	//  More info: https://kubernetes.io/docs/user-guide/annotations
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Rollout.annotations
+	Annotations map[string]string `json:"annotations,omitempty"`
 }
 
 // SaaSServiceMgmtRolloutStatus defines the config connector machine state of SaaSServiceMgmtRollout
@@ -183,7 +192,6 @@ type SaaSServiceMgmtRolloutObservedState struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

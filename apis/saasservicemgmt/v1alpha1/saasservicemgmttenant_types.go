@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// API sources for SaaSServiceMgmtTenant, recorded by generate-types:
+// +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/saasplatform/saasservicemgmt/v1beta1/deployments_resources.proto
+// +kcc:source:service-docs=https://cloud.google.com/saas-runtime/docs
+// +kcc:source:resource-docs=https://docs.cloud.google.com/saas-runtime/docs/reference/rest/v1beta1/projects.locations.tenants
+
 package v1alpha1
 
 import (
@@ -24,31 +29,44 @@ var SaaSServiceMgmtTenantGVK = GroupVersion.WithKind("SaaSServiceMgmtTenant")
 
 // SaaSServiceMgmtTenantSpec defines the desired state of SaaSServiceMgmtTenant
 // +kcc:spec:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant
+// +kcc:required-from-proto
 type SaaSServiceMgmtTenantSpec struct {
 	// The project that this resource belongs to.
-	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
-	// Immutable. The location of this resource.
-	// +required
-	Location *string `json:"location"`
+	// The location of this resource.
+	Location string `json:"location"`
 
 	// The SaaSServiceMgmtTenant name. If not given, the metadata.name will be used.
-	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
-
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ConsumerResource field is immutable"
-	// Optional. Immutable. A reference to the consumer resource this SaaS Tenant is representing.
-	// +optional
+	// Optional. Immutable. A reference to the consumer resource this SaaS Tenant
+	//  is representing.
+	//
+	//  The relationship with a consumer resource can be used by SaaS Runtime for
+	//  retrieving consumer-defined settings and policies such as maintenance
+	//  policies (using Unified Maintenance Policy API).
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant.consumer_resource
 	ConsumerResource *string `json:"consumerResource,omitempty"`
 
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="SaasRef field is immutable"
-	// Required. Immutable. A reference to the Saas that defines the product (managed service) that the producer wants to manage with SaaS Runtime.
-	// +required
+	// Required. Immutable. A reference to the Saas that defines the product
+	//  (managed service) that the producer wants to manage with SaaS Runtime. Part
+	//  of the SaaS Runtime common data model.
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant.saas
-	SaasRef *SaaSServiceMgmtSaaSRef `json:"saasRef"`
+	Saas *string `json:"saas,omitempty"`
+
+	// Optional. The labels on the resource, which can be used for categorization.
+	//  similar to Kubernetes resource labels.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Annotations is an unstructured key-value map stored with a
+	//  resource that may be set by external tools to store and retrieve arbitrary
+	//  metadata. They are not queryable and should be preserved when modifying
+	//  objects.
+	//
+	//  More info: https://kubernetes.io/docs/user-guide/annotations
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant.annotations
+	Annotations map[string]string `json:"annotations,omitempty"`
 }
 
 // SaaSServiceMgmtTenantStatus defines the config connector machine state of SaaSServiceMgmtTenant
@@ -101,7 +119,6 @@ type SaaSServiceMgmtTenantObservedState struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

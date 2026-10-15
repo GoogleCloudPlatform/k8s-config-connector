@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// API sources for MigrationCenterSource, recorded by generate-types:
+// +kcc:source:proto=https://github.com/googleapis/googleapis/blob/1765b559c42386788ff0c6412491277b4791107a/google/cloud/migrationcenter/v1/migrationcenter.proto
+// +kcc:source:service-docs=https://cloud.google.com/migration-center
+// +kcc:source:resource-docs=https://docs.cloud.google.com/migration-center/docs/reference/rest/v1/projects.locations.sources
+
 package v1alpha1
 
 import (
@@ -24,44 +29,34 @@ var MigrationCenterSourceGVK = GroupVersion.WithKind("MigrationCenterSource")
 
 // MigrationCenterSourceSpec defines the desired state of MigrationCenterSource
 // +kcc:spec:proto=google.cloud.migrationcenter.v1.Source
+// +kcc:required-from-proto
 type MigrationCenterSourceSpec struct {
 	// The project that this resource belongs to.
-	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
-	// Immutable. The location of this resource.
-	// +required
-	Location *string `json:"location"`
+	// The location of this resource.
+	Location string `json:"location"`
 
 	// The MigrationCenterSource name. If not given, the metadata.name will be used.
-	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
-
 	// User-friendly display name.
-	// +optional
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Free-text description.
-	// +optional
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.description
 	Description *string `json:"description,omitempty"`
 
 	// Data source type.
-	// +kubebuilder:validation:Enum=SOURCE_TYPE_UNKNOWN;SOURCE_TYPE_UPLOAD;SOURCE_TYPE_GUEST_OS_SCAN;SOURCE_TYPE_INVENTORY_SCAN;SOURCE_TYPE_CUSTOM
-	// +optional
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.type
 	Type *string `json:"type,omitempty"`
 
 	// The information confidence of the source.
-	// The higher the value, the higher the confidence.
-	// +optional
+	//  The higher the value, the higher the confidence.
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.priority
 	Priority *int32 `json:"priority,omitempty"`
 
 	// If `true`, the source is managed by other service(s).
-	// +optional
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.managed
 	Managed *bool `json:"managed,omitempty"`
 }
@@ -86,28 +81,23 @@ type MigrationCenterSourceStatus struct {
 // +kcc:observedstate:proto=google.cloud.migrationcenter.v1.Source
 type MigrationCenterSourceObservedState struct {
 	// Output only. The timestamp when the source was created.
-	// +optional
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. The timestamp when the source was last updated.
-	// +optional
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
 	// Output only. Number of frames that are still being processed.
-	// +optional
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.pending_frame_count
 	PendingFrameCount *int32 `json:"pendingFrameCount,omitempty"`
 
-	// Output only. The number of frames that were reported by the source and contained errors.
-	// +optional
+	// Output only. The number of frames that were reported by the source and
+	//  contained errors.
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.error_frame_count
 	ErrorFrameCount *int32 `json:"errorFrameCount,omitempty"`
 
 	// Output only. The state of the source.
-	// +kubebuilder:validation:Enum=STATE_UNSPECIFIED;ACTIVE;DELETING;INVALID
-	// +optional
 	// +kcc:proto:field=google.cloud.migrationcenter.v1.Source.state
 	State *string `json:"state,omitempty"`
 }
@@ -118,7 +108,6 @@ type MigrationCenterSourceObservedState struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

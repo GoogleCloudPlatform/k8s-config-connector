@@ -1,0 +1,658 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other.
+
+entries:
+  - kind: AIPlatformPersistentResource
+    group: aiplatform.cnrm.cloud.google.com
+    reason: ambiguous-proto-name
+    detail: PersistentResource exists in 2 of the listed services (google.cloud.aiplatform.v1.PersistentResource, google.cloud.aiplatform.v1beta1.PersistentResource); generated from google.cloud.aiplatform.v1.PersistentResource. Put the full proto name in --resource to choose one
+    status: open
+  - kind: AIPlatformSpecialistPool
+    group: aiplatform.cnrm.cloud.google.com
+    reason: ambiguous-proto-name
+    detail: SpecialistPool exists in 2 of the listed services (google.cloud.aiplatform.v1.SpecialistPool, google.cloud.aiplatform.v1beta1.SpecialistPool); generated from google.cloud.aiplatform.v1.SpecialistPool. Put the full proto name in --resource to choose one
+    status: open
+  - kind: AIPlatformModel
+    group: aiplatform.cnrm.cloud.google.com
+    reason: ambiguous-proto-name
+    detail: Model exists in 2 of the listed services (google.cloud.aiplatform.v1.Model, google.cloud.aiplatform.v1beta1.Model); generated from google.cloud.aiplatform.v1.Model. Put the full proto name in --resource to choose one
+    status: open
+  - kind: VertexAIFeatureOnlineStore
+    group: aiplatform.cnrm.cloud.google.com
+    reason: ambiguous-proto-name
+    detail: FeatureOnlineStore exists in 2 of the listed services (google.cloud.aiplatform.v1.FeatureOnlineStore, google.cloud.aiplatform.v1beta1.FeatureOnlineStore); generated from google.cloud.aiplatform.v1.FeatureOnlineStore. Put the full proto name in --resource to choose one
+    status: open
+  - kind: VertexAIPipelineJob
+    group: aiplatform.cnrm.cloud.google.com
+    reason: ambiguous-proto-name
+    detail: PipelineJob exists in 2 of the listed services (google.cloud.aiplatform.v1.PipelineJob, google.cloud.aiplatform.v1beta1.PipelineJob); generated from google.cloud.aiplatform.v1.PipelineJob. Put the full proto name in --resource to choose one
+    status: open
+  - kind: VertexAITuningJob
+    group: aiplatform.cnrm.cloud.google.com
+    reason: ambiguous-proto-name
+    detail: TuningJob exists in 2 of the listed services (google.cloud.aiplatform.v1.TuningJob, google.cloud.aiplatform.v1beta1.TuningJob); generated from google.cloud.aiplatform.v1.TuningJob. Put the full proto name in --resource to choose one
+    status: open
+  - kind: VertexAIStudy
+    group: aiplatform.cnrm.cloud.google.com
+    reason: ambiguous-proto-name
+    detail: Study exists in 2 of the listed services (google.cloud.aiplatform.v1.Study, google.cloud.aiplatform.v1beta1.Study); generated from google.cloud.aiplatform.v1.Study. Put the full proto name in --resource to choose one
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    reason: ambiguous-proto-name
+    detail: TrainingPipeline exists in 2 of the listed services (google.cloud.aiplatform.v1.TrainingPipeline, google.cloud.aiplatform.v1beta1.TrainingPipeline); generated from google.cloud.aiplatform.v1.TrainingPipeline. Put the full proto name in --resource to choose one
+    status: open
+  - kind: VertexAISchedule
+    group: aiplatform.cnrm.cloud.google.com
+    reason: ambiguous-proto-name
+    detail: Schedule exists in 2 of the listed services (google.cloud.aiplatform.v1.Schedule, google.cloud.aiplatform.v1beta1.Schedule); generated from google.cloud.aiplatform.v1.Schedule. Put the full proto name in --resource to choose one
+    status: open
+  - kind: AIPlatformReasoningEngine
+    group: aiplatform.cnrm.cloud.google.com
+    reason: ambiguous-proto-name
+    detail: ReasoningEngine exists in 2 of the listed services (google.cloud.aiplatform.v1.ReasoningEngine, google.cloud.aiplatform.v1beta1.ReasoningEngine); generated from google.cloud.aiplatform.v1.ReasoningEngine. Put the full proto name in --resource to choose one
+    status: open
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    reason: ambiguous-proto-name
+    detail: CachedContent exists in 2 of the listed services (google.cloud.aiplatform.v1.CachedContent, google.cloud.aiplatform.v1beta1.CachedContent); generated from google.cloud.aiplatform.v1.CachedContent. Put the full proto name in --resource to choose one
+    status: open
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.cachedContents: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.cachedContents, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.cachedContents'
+    status: open
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.model
+    reason: possible-reference-by-description
+    status: open
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].retrieval.vertexAiSearch.datastore
+    reason: possible-reference-by-description
+    status: open
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].retrieval.vertexAiSearch.engine
+    reason: possible-reference-by-description
+    status: open
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].retrieval.vertexAiSearch.dataStoreSpecs[].dataStore
+    reason: possible-reference-by-description
+    status: open
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.tools[].retrieval.vertexRagStore.ragResources[].ragCorpus
+    reason: possible-reference-by-description
+    status: open
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyName
+    reason: possible-reference-by-name
+    detail: KMSCryptoKeyRef
+    status: open
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: open
+  - kind: AIPlatformPersistentResource
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.resourcePools
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to AIPlatformPersistentResourceSpec.ResourcePools in aiplatformpersistentresource_types.go. AIPlatformPersistentResource is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformPersistentResource
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.resourcePools[].machineSpec
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to AIPlatformPersistentResourceSpec and run generate.sh again. AIPlatformPersistentResource is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformPersistentResource
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.resourcePools[].machineSpec.reservationAffinity.reservationAffinityType
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to AIPlatformPersistentResourceSpec and run generate.sh again. AIPlatformPersistentResource is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformPersistentResource
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.pscInterfaceConfig.dnsPeeringConfigs[].domain
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in vertexaipipelinejob_types.go is also used by AIPlatformReasoningEngine and VertexAIPipelineJob, and +required on DNSPeeringConfig.Domain would apply there too. To enforce it for AIPlatformPersistentResource only, give AIPlatformPersistentResource its own copy of DNSPeeringConfig. AIPlatformPersistentResource is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformPersistentResource
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.pscInterfaceConfig.dnsPeeringConfigs[].targetProjectRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in vertexaipipelinejob_types.go is also used by AIPlatformReasoningEngine and VertexAIPipelineJob, and +required on DNSPeeringConfig.TargetProjectRef would apply there too. To enforce it for AIPlatformPersistentResource only, give AIPlatformPersistentResource its own copy of DNSPeeringConfig. AIPlatformPersistentResource is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformPersistentResource
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.pscInterfaceConfig.dnsPeeringConfigs[].targetNetworkRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in vertexaipipelinejob_types.go is also used by AIPlatformReasoningEngine and VertexAIPipelineJob, and +required on DNSPeeringConfig.TargetNetworkRef would apply there too. To enforce it for AIPlatformPersistentResource only, give AIPlatformPersistentResource its own copy of DNSPeeringConfig. AIPlatformPersistentResource is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformPersistentResource
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in vertexaischedule_types.go is also used by AIPlatformCachedContent, AIPlatformModel, AIPlatformReasoningEngine and 5 more, and +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformPersistentResource only, give AIPlatformPersistentResource its own copy of EncryptionSpec. AIPlatformPersistentResource is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformPersistentResource
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.resourceRuntimeSpec.serviceAccountSpec.enableCustomServiceAccount
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to ServiceAccountSpec.EnableCustomServiceAccount in aiplatformpersistentresource_types.go. AIPlatformPersistentResource is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformModel
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.displayName
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. AIPlatformModelSpec in aiplatformmodel_types.go is also used by VertexAITrainingPipeline, and +required on AIPlatformModelSpec.DisplayName would apply there too. To enforce it for AIPlatformModel only, give AIPlatformModel its own copy of AIPlatformModelSpec. AIPlatformModel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformModel
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.containerSpec.imageURI
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to AIPlatformModelSpec and run generate.sh again. AIPlatformModel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformModel
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.containerSpec.env[].name
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to AIPlatformModelSpec and run generate.sh again. AIPlatformModel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformModel
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.containerSpec.env[].value
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to AIPlatformModelSpec and run generate.sh again. AIPlatformModel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformModel
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.parameters
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to AIPlatformModelSpec and run generate.sh again. AIPlatformModel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformModel
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.parameters.sampledShapleyAttribution.pathCount
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to AIPlatformModelSpec and run generate.sh again. AIPlatformModel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformModel
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.parameters.integratedGradientsAttribution.stepCount
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to AIPlatformModelSpec and run generate.sh again. AIPlatformModel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformModel
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.parameters.xraiAttribution.stepCount
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to AIPlatformModelSpec and run generate.sh again. AIPlatformModel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformModel
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.parameters.examples.exampleGCSSource.gcsSource.uris
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to AIPlatformModelSpec and run generate.sh again. AIPlatformModel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformModel
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.metadata.inputs
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationMetadata in aiplatformmodel_types.go is also used by VertexAITrainingPipeline, and +required on ExplanationMetadata.Inputs would apply there too. To enforce it for AIPlatformModel only, give AIPlatformModel its own copy of ExplanationMetadata. AIPlatformModel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformModel
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.explanationSpec.metadata.outputs
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationMetadata in aiplatformmodel_types.go is also used by VertexAITrainingPipeline, and +required on ExplanationMetadata.Outputs would apply there too. To enforce it for AIPlatformModel only, give AIPlatformModel its own copy of ExplanationMetadata. AIPlatformModel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformModel
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in vertexaischedule_types.go is also used by AIPlatformCachedContent, AIPlatformPersistentResource, AIPlatformReasoningEngine and 5 more, and +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformModel only, give AIPlatformModel its own copy of EncryptionSpec. AIPlatformModel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformModel
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.baseModelSource.modelGardenSource.publicModelName
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to AIPlatformModelSpec and run generate.sh again. AIPlatformModel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformModel
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.baseModelSource.genieSource.baseModelURI
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to AIPlatformModelSpec and run generate.sh again. AIPlatformModel is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIFeatureOnlineStore
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.bigtable.autoScaling
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to FeatureOnlineStore_Bigtable.AutoScaling in vertexaifeatureonlinestore_types.go. VertexAIFeatureOnlineStore is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIFeatureOnlineStore
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.bigtable.autoScaling.minNodeCount
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to FeatureOnlineStore_Bigtable_AutoScaling.MinNodeCount in vertexaifeatureonlinestore_types.go. VertexAIFeatureOnlineStore is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIFeatureOnlineStore
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.bigtable.autoScaling.maxNodeCount
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to FeatureOnlineStore_Bigtable_AutoScaling.MaxNodeCount in vertexaifeatureonlinestore_types.go. VertexAIFeatureOnlineStore is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIFeatureOnlineStore
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.dedicatedServingEndpoint.privateServiceConnectConfig.enablePrivateServiceConnect
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to PrivateServiceConnectConfig.EnablePrivateServiceConnect in vertexaifeatureonlinestore_types.go. VertexAIFeatureOnlineStore is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIFeatureOnlineStore
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.dedicatedServingEndpoint.privateServiceConnectConfig.pscAutomationConfigs[].projectID
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to PSCAutomationConfig.ProjectID in vertexaifeatureonlinestore_types.go. VertexAIFeatureOnlineStore is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIFeatureOnlineStore
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.dedicatedServingEndpoint.privateServiceConnectConfig.pscAutomationConfigs[].networkRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to PSCAutomationConfig.NetworkRef in vertexaifeatureonlinestore_types.go. VertexAIFeatureOnlineStore is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIFeatureOnlineStore
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in vertexaischedule_types.go is also used by AIPlatformCachedContent, AIPlatformModel, AIPlatformPersistentResource and 5 more, and +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for VertexAIFeatureOnlineStore only, give VertexAIFeatureOnlineStore its own copy of EncryptionSpec. VertexAIFeatureOnlineStore is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIPipelineJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.runtimeConfig.gcsOutputDirectory
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to PipelineJobRuntimeConfig.GCSOutputDirectory in vertexaipipelinejob_types.go. VertexAIPipelineJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIPipelineJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in vertexaischedule_types.go is also used by AIPlatformCachedContent, AIPlatformModel, AIPlatformPersistentResource and 5 more, and +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for VertexAIPipelineJob only, give VertexAIPipelineJob its own copy of EncryptionSpec. VertexAIPipelineJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIPipelineJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.pscInterfaceConfig.dnsPeeringConfigs[].domain
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in vertexaipipelinejob_types.go is also used by AIPlatformPersistentResource and AIPlatformReasoningEngine, and +required on DNSPeeringConfig.Domain would apply there too. To enforce it for VertexAIPipelineJob only, give VertexAIPipelineJob its own copy of DNSPeeringConfig. VertexAIPipelineJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIPipelineJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.pscInterfaceConfig.dnsPeeringConfigs[].targetProjectRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in vertexaipipelinejob_types.go is also used by AIPlatformPersistentResource and AIPlatformReasoningEngine, and +required on DNSPeeringConfig.TargetProjectRef would apply there too. To enforce it for VertexAIPipelineJob only, give VertexAIPipelineJob its own copy of DNSPeeringConfig. VertexAIPipelineJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIPipelineJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.pscInterfaceConfig.dnsPeeringConfigs[].targetNetworkRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in vertexaipipelinejob_types.go is also used by AIPlatformPersistentResource and AIPlatformReasoningEngine, and +required on DNSPeeringConfig.TargetNetworkRef would apply there too. To enforce it for VertexAIPipelineJob only, give VertexAIPipelineJob its own copy of DNSPeeringConfig. VertexAIPipelineJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITuningJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.supervisedTuningSpec.trainingDatasetURI
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAITuningJobSpec and run generate.sh again. VertexAITuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITuningJob
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in vertexaischedule_types.go is also used by AIPlatformCachedContent, AIPlatformModel, AIPlatformPersistentResource and 5 more, and +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for VertexAITuningJob only, give VertexAITuningJob its own copy of EncryptionSpec. VertexAITuningJob is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIStudy
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.studySpec.metrics
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAIStudySpec and run generate.sh again. VertexAIStudy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIStudy
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.studySpec.metrics[].metricID
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAIStudySpec and run generate.sh again. VertexAIStudy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIStudy
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.studySpec.metrics[].goal
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAIStudySpec and run generate.sh again. VertexAIStudy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIStudy
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.studySpec.parameters
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAIStudySpec and run generate.sh again. VertexAIStudy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIStudy
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.studySpec.parameters[].doubleValueSpec.minValue
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAIStudySpec and run generate.sh again. VertexAIStudy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIStudy
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.studySpec.parameters[].doubleValueSpec.maxValue
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAIStudySpec and run generate.sh again. VertexAIStudy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIStudy
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.studySpec.parameters[].integerValueSpec.minValue
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAIStudySpec and run generate.sh again. VertexAIStudy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIStudy
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.studySpec.parameters[].integerValueSpec.maxValue
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAIStudySpec and run generate.sh again. VertexAIStudy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIStudy
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.studySpec.parameters[].categoricalValueSpec.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAIStudySpec and run generate.sh again. VertexAIStudy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIStudy
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.studySpec.parameters[].discreteValueSpec.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAIStudySpec and run generate.sh again. VertexAIStudy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIStudy
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.studySpec.parameters[].parameterID
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAIStudySpec and run generate.sh again. VertexAIStudy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIStudy
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.studySpec.parameters[].conditionalParameterSpecs[].parentDiscreteValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAIStudySpec and run generate.sh again. VertexAIStudy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIStudy
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.studySpec.parameters[].conditionalParameterSpecs[].parentIntValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAIStudySpec and run generate.sh again. VertexAIStudy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAIStudy
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.studySpec.parameters[].conditionalParameterSpecs[].parentCategoricalValues.values
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAIStudySpec and run generate.sh again. VertexAIStudy is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.filterSplit.trainingFilter
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAITrainingPipelineSpec and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.filterSplit.validationFilter
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAITrainingPipelineSpec and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.filterSplit.testFilter
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAITrainingPipelineSpec and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.predefinedSplit.key
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAITrainingPipelineSpec and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.timestampSplit.key
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAITrainingPipelineSpec and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.stratifiedSplit.key
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAITrainingPipelineSpec and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.gcsDestination.outputURIPrefix
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAITrainingPipelineSpec and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.bigqueryDestination.outputURI
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAITrainingPipelineSpec and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.inputDataConfig.datasetID
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAITrainingPipelineSpec and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.displayName
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. AIPlatformModelSpec in aiplatformmodel_types.go is also used by AIPlatformModel, and +required on AIPlatformModelSpec.DisplayName would apply there too. To enforce it for VertexAITrainingPipeline only, give VertexAITrainingPipeline its own copy of AIPlatformModelSpec. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.containerSpec.imageURI
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAITrainingPipelineSpec and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.containerSpec.env[].name
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAITrainingPipelineSpec and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.containerSpec.env[].value
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAITrainingPipelineSpec and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.explanationSpec.parameters
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAITrainingPipelineSpec and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.explanationSpec.parameters.sampledShapleyAttribution.pathCount
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAITrainingPipelineSpec and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.explanationSpec.parameters.integratedGradientsAttribution.stepCount
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAITrainingPipelineSpec and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.explanationSpec.parameters.xraiAttribution.stepCount
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAITrainingPipelineSpec and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.explanationSpec.parameters.examples.exampleGCSSource.gcsSource.uris
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAITrainingPipelineSpec and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.explanationSpec.metadata.inputs
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationMetadata in aiplatformmodel_types.go is also used by AIPlatformModel, and +required on ExplanationMetadata.Inputs would apply there too. To enforce it for VertexAITrainingPipeline only, give VertexAITrainingPipeline its own copy of ExplanationMetadata. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.explanationSpec.metadata.outputs
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. ExplanationMetadata in aiplatformmodel_types.go is also used by AIPlatformModel, and +required on ExplanationMetadata.Outputs would apply there too. To enforce it for VertexAITrainingPipeline only, give VertexAITrainingPipeline its own copy of ExplanationMetadata. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.encryptionSpec.kmsKeyRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in vertexaischedule_types.go is also used by AIPlatformCachedContent, AIPlatformModel, AIPlatformPersistentResource and 5 more, and +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for VertexAITrainingPipeline only, give VertexAITrainingPipeline its own copy of EncryptionSpec. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.baseModelSource.modelGardenSource.publicModelName
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAITrainingPipelineSpec and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.modelToUpload.baseModelSource.genieSource.baseModelURI
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAITrainingPipelineSpec and run generate.sh again. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAITrainingPipeline
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in vertexaischedule_types.go is also used by AIPlatformCachedContent, AIPlatformModel, AIPlatformPersistentResource and 5 more, and +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for VertexAITrainingPipeline only, give VertexAITrainingPipeline its own copy of EncryptionSpec. VertexAITrainingPipeline is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAISchedule
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.createPipelineJobRequest.parent
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to CreatePipelineJobRequest.Parent in vertexaischedule_types.go. VertexAISchedule is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAISchedule
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.createPipelineJobRequest.pipelineJob
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to CreatePipelineJobRequest.PipelineJob in vertexaischedule_types.go. VertexAISchedule is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAISchedule
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.createNotebookExecutionJobRequest.parent
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to CreateNotebookExecutionJobRequest.Parent in vertexaischedule_types.go. VertexAISchedule is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAISchedule
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.createNotebookExecutionJobRequest.notebookExecutionJob
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to CreateNotebookExecutionJobRequest.NotebookExecutionJob in vertexaischedule_types.go. VertexAISchedule is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAISchedule
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.createNotebookExecutionJobRequest.notebookExecutionJob.customEnvironmentSpec.machineSpec.reservationAffinity.reservationAffinityType
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to VertexAIScheduleSpec and run generate.sh again. VertexAISchedule is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: VertexAISchedule
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.createNotebookExecutionJobRequest.notebookExecutionJob.encryptionSpec.kmsKeyRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in vertexaischedule_types.go is also used by AIPlatformCachedContent, AIPlatformModel, AIPlatformPersistentResource and 5 more, and +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for VertexAISchedule only, give VertexAISchedule its own copy of EncryptionSpec. VertexAISchedule is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformReasoningEngine
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.spec.deploymentSpec.env[].name
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to AIPlatformReasoningEngineSpec and run generate.sh again. AIPlatformReasoningEngine is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformReasoningEngine
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.spec.deploymentSpec.env[].value
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to AIPlatformReasoningEngineSpec and run generate.sh again. AIPlatformReasoningEngine is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformReasoningEngine
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.spec.deploymentSpec.secretEnv[].name
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to AIPlatformReasoningEngineSpec and run generate.sh again. AIPlatformReasoningEngine is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformReasoningEngine
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.spec.deploymentSpec.secretEnv[].secretRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to AIPlatformReasoningEngineSpec and run generate.sh again. AIPlatformReasoningEngine is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformReasoningEngine
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.spec.deploymentSpec.secretEnv[].secretRef.secretRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +required to SecretRef.SecretRef in aiplatformreasoningengine_types.go. AIPlatformReasoningEngine is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformReasoningEngine
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.spec.deploymentSpec.pscInterfaceConfig.dnsPeeringConfigs[].domain
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in vertexaipipelinejob_types.go is also used by AIPlatformPersistentResource and VertexAIPipelineJob, and +required on DNSPeeringConfig.Domain would apply there too. To enforce it for AIPlatformReasoningEngine only, give AIPlatformReasoningEngine its own copy of DNSPeeringConfig. AIPlatformReasoningEngine is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformReasoningEngine
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.spec.deploymentSpec.pscInterfaceConfig.dnsPeeringConfigs[].targetProjectRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in vertexaipipelinejob_types.go is also used by AIPlatformPersistentResource and VertexAIPipelineJob, and +required on DNSPeeringConfig.TargetProjectRef would apply there too. To enforce it for AIPlatformReasoningEngine only, give AIPlatformReasoningEngine its own copy of DNSPeeringConfig. AIPlatformReasoningEngine is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformReasoningEngine
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.spec.deploymentSpec.pscInterfaceConfig.dnsPeeringConfigs[].targetNetworkRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. DNSPeeringConfig in vertexaipipelinejob_types.go is also used by AIPlatformPersistentResource and VertexAIPipelineJob, and +required on DNSPeeringConfig.TargetNetworkRef would apply there too. To enforce it for AIPlatformReasoningEngine only, give AIPlatformReasoningEngine its own copy of DNSPeeringConfig. AIPlatformReasoningEngine is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformReasoningEngine
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in vertexaischedule_types.go is also used by AIPlatformCachedContent, AIPlatformModel, AIPlatformPersistentResource and 5 more, and +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformReasoningEngine only, give AIPlatformReasoningEngine its own copy of EncryptionSpec. AIPlatformReasoningEngine is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: AIPlatformCachedContent
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.encryptionSpec.kmsKeyRef
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. EncryptionSpec in vertexaischedule_types.go is also used by AIPlatformModel, AIPlatformPersistentResource, AIPlatformReasoningEngine and 5 more, and +required on EncryptionSpec.KmsKeyRef would apply there too. To enforce it for AIPlatformCachedContent only, give AIPlatformCachedContent its own copy of EncryptionSpec. AIPlatformCachedContent is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open

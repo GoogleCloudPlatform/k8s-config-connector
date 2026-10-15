@@ -1,0 +1,64 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other.
+
+entries:
+  - kind: ContentWarehouseDocumentSchema
+    group: contentwarehouse.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ContentWarehouseDocumentSchema
+    group: contentwarehouse.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: parent.ProjectAndLocationRef in apis/common/parent, inlined, could replace projectRef and location; the CRD keeps the same keys
+    status: open
+  - protoMessage: google.cloud.contentwarehouse.v1.MapProperty
+    field: fields
+    reason: message-map-derived
+    detail: derived as map[string]Value from proto google.cloud.contentwarehouse.v1.Value; verify Go type and mapping
+    status: open
+  - kind: ContentWarehouseDocumentSchema
+    group: contentwarehouse.cnrm.cloud.google.com
+    field: .spec.propertyDefinitions[].name
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change ContentWarehouseDocumentSchemaSpec.PropertyDefinitions in contentwarehousedocumentschema_types.go from PropertyDefinition to PropertyDefinitionRequired and run generate.sh again. ContentWarehouseDocumentSchema is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: Switched ContentWarehouseDocumentSchemaSpec.PropertyDefinitions to PropertyDefinitionRequired.
+  - kind: ContentWarehouseDocumentSchema
+    group: contentwarehouse.cnrm.cloud.google.com
+    field: .spec.propertyDefinitions[].enumTypeOptions.possibleValues
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change ContentWarehouseDocumentSchemaSpec.PropertyDefinitions in contentwarehousedocumentschema_types.go from PropertyDefinition to PropertyDefinitionRequired and run generate.sh again. ContentWarehouseDocumentSchema is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: Switched ContentWarehouseDocumentSchemaSpec.PropertyDefinitions to PropertyDefinitionRequired.
+  - kind: ContentWarehouseDocumentSchema
+    group: contentwarehouse.cnrm.cloud.google.com
+    field: .spec.propertyDefinitions[].propertyTypeOptions.propertyDefinitions[].name
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change PropertyTypeOptions.PropertyDefinitions in contentwarehousedocumentschema_types.go from PropertyDefinition to PropertyDefinitionRequired and run generate.sh again. ContentWarehouseDocumentSchema is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: Switched PropertyTypeOptions.PropertyDefinitions to PropertyDefinitionRequired.
+  - kind: ContentWarehouseDocumentSchema
+    group: contentwarehouse.cnrm.cloud.google.com
+    field: .spec.propertyDefinitions[].propertyTypeOptions.propertyDefinitions[].enumTypeOptions.possibleValues
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, change PropertyTypeOptions.PropertyDefinitions in contentwarehousedocumentschema_types.go from PropertyDefinition to PropertyDefinitionRequired and run generate.sh again. ContentWarehouseDocumentSchema is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: resolved
+    resolution: edited
+    note: Switched PropertyTypeOptions.PropertyDefinitions to PropertyDefinitionRequired.
