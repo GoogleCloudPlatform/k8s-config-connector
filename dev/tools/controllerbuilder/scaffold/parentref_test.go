@@ -101,6 +101,14 @@ func TestParentRef(t *testing.T) {
 			refSource: "package v1alpha1\n\ntype OrganizationRef struct{}\n",
 		},
 		{
+			name:       "an acronym parent segment uses uppercase acronym casing",
+			pattern:    "projects/{project}/locations/{location}/apis/{api}/versions/{version}",
+			refSource:  "package v1alpha1\n\ntype APIHubAPIRef struct{}\n",
+			wantField:  "APIRef *APIHubAPIRef `json:\"apiRef,omitempty\"`",
+			wantReason: "parent-ref-guessed",
+			wantPath:   "projects/{project}/locations/{location}/apis/{api}",
+		},
+		{
 			name:      "a resource with no pattern has no parent to name",
 			pattern:   "",
 			wantField: "",

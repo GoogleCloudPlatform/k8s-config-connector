@@ -223,5 +223,8 @@ func exportedName(s string) string {
 	if s == "" {
 		return s
 	}
+	if cased, ok := codegen.AcronymCasing(s, true); ok {
+		return cased
+	}
 	return strings.ToUpper(s[:1]) + s[1:]
 }

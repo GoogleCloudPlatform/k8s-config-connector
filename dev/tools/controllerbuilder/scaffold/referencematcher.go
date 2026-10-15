@@ -58,7 +58,7 @@ func (a *APIScaffolder) candidatesForTarget(targetType, serviceDir string) map[s
 			}
 		}
 		if len(found) > 0 {
-			return found
+			return disambiguateServiceRefs(found, currentService, targetService, want)
 		}
 	}
 
@@ -147,9 +147,30 @@ func parentRefTypes(repoRoot, serviceDir, currentService, name string) map[strin
 	}
 
 	if found := scan(serviceDir, "", false); len(found) > 0 {
-		return found
+		return disambiguateServiceRefs(found, currentService, "", want)
 	}
 	return scan(filepath.Join(repoRoot, sharedRefsPackage), "refsv1beta1", true)
+}
+
+// disambiguateServiceRefs narrows multiple suffix matches in the same package
+// (such as APIHubAPIRef and APIHubExternalAPIRef for want="apiref") when
+// exactly one candidate matches the bare want or <service><want>.
+func disambiguateServiceRefs(found map[string]string, currentService, targetService, want string) map[string]string {
+	if len(found) <= 1 {
+		return found
+	}
+	exact := map[string]string{}
+	for typeName, qual := range found {
+		if strings.EqualFold(typeName, want) ||
+			(currentService != "" && strings.EqualFold(typeName, currentService+want)) ||
+			(targetService != "" && strings.EqualFold(typeName, targetService+want)) {
+			exact[typeName] = qual
+		}
+	}
+	if len(exact) == 1 {
+		return exact
+	}
+	return found
 }
 
 // isAllowedSharedRef ensures that types in apis/refs/v1beta1 only match if
