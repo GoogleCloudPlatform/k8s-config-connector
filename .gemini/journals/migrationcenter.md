@@ -10,3 +10,9 @@
 - **Context**: Implementing Greenfield direct controller, E2E fixtures, and fuzzer for `MigrationCenterPreferenceSet` under `v1alpha1`.
 - **Solution**: Implemented direct controller and fuzzer in `pkg/controller/direct/migrationcenter/` reusing generated mappers. Configured minimal and maximal test fixtures with complete field coverage across all compute, VMware Engine, and Sole Tenancy preferences, and recorded golden HTTP traffic and objects against real GCP.
 - **Impact**: Full CRUD reconciliation support for `MigrationCenterPreferenceSet` with 100% test coverage for all CRD spec and status fields.
+
+### 2026-10-14 Greenfield controller for MigrationCenterSource
+- **Context**: Implementing Greenfield direct controller, E2E fixtures, and fuzzer for `MigrationCenterSource` under `v1alpha1`.
+- **Solution**: Implemented direct controller in `pkg/controller/direct/migrationcenter/migrationcentersource_controller.go` and fuzzer in `migrationcentersource_fuzzer.go` reusing existing generated mappers. Registered `MigrationCenterSource` in `pkg/controller/resourceconfig/static_config.go`. Created minimal and maximal test fixtures, recorded golden outputs and HTTP traffic against real GCP using `hack/record-gcp` with `RECORD_AUDIT_PROBE=1`, and updated test coverage exceptions.
+- **Impact**: Full CRUD reconciliation support for `MigrationCenterSource` with 100% test coverage for all CRD spec and status fields.
+
