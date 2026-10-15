@@ -270,7 +270,24 @@ func compareCertificate(ctx context.Context, actual, desired *pb.Certificate) (*
 	}
 	maskedActual.Name = desired.Name
 	maskedActual.Labels = actual.Labels
-	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+
+	clonedDesired := proto.CloneOf(desired)
+	// Both managed and self_managed are immutable in KRM spec and in the legacy Terraform
+	// controller (ForceNew: true).
+	// - For managed certificates, GCP rejects updating `managed` (paths not permitted to be updated),
+	//   and returns dns_authorizations using project numbers rather than project IDs.
+	// - For self_managed certificates, pem_private_key is write-only / INPUT_ONLY, and GCP returns
+	//   pemCertificate at the root Certificate object rather than inside selfManaged.
+	// Aligning the Type oneof between clonedDesired and maskedActual when both are of the same type
+	// avoids false diffs and unwanted PATCH calls during direct takeover and re-reconciliation.
+	if clonedDesired.GetManaged() != nil && maskedActual.GetManaged() != nil {
+		maskedActual.Type = clonedDesired.Type
+	}
+	if clonedDesired.GetSelfManaged() != nil && maskedActual.GetSelfManaged() != nil {
+		maskedActual.Type = clonedDesired.Type
+	}
+
+	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
 	}
