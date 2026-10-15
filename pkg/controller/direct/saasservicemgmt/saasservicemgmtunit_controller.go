@@ -275,15 +275,3 @@ func compareUnit(ctx context.Context, actual, desired *pb.Unit) (*structuredrepo
 	}
 	return diffs, updateMask, nil
 }
-
-func SaaSServiceMgmtUnitStatus_FromProto(mapCtx *direct.MapContext, in *pb.Unit) *krm.SaaSServiceMgmtUnitStatus {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SaaSServiceMgmtUnitStatus{}
-	if in.Name != "" {
-		out.ExternalRef = &in.Name
-	}
-	out.ObservedState = SaaSServiceMgmtUnitObservedState_FromProto(mapCtx, in)
-	return out
-}
