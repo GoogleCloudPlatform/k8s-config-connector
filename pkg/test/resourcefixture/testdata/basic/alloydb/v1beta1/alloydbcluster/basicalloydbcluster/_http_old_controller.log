@@ -19,6 +19,56 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "peerings": [
+    {
+      "autoCreateRoutes": true,
+      "connectionStatus": {
+        "trafficConfiguration": {
+          "exportCustomRoutesToPeer": true,
+          "exportSubnetRoutesWithPublicIpToPeer": true,
+          "importCustomRoutesFromPeer": true,
+          "importSubnetRoutesWithPublicIpFromPeer": true,
+          "stackType": "IPV4_ONLY"
+        },
+        "updateStrategy": "INDEPENDENT"
+      },
+      "exchangeSubnetRoutes": true,
+      "exportCustomRoutes": true,
+      "exportSubnetRoutesWithPublicIp": true,
+      "importCustomRoutes": true,
+      "importSubnetRoutesWithPublicIp": true,
+      "name": "filestore-peer-205697518936",
+      "network": "https://www.googleapis.com/compute/beta/projects/r839adf9e2adedea3p-tp/global/networks/${networkID}-2309458234058",
+      "stackType": "IPV4_ONLY",
+      "state": "ACTIVE",
+      "stateDetails": "[2024-04-01T12:34:56.123-07:00]: Connected.",
+      "updateStrategy": "INDEPENDENT"
+    },
+    {
+      "autoCreateRoutes": true,
+      "connectionStatus": {
+        "trafficConfiguration": {
+          "exportCustomRoutesToPeer": false,
+          "exportSubnetRoutesWithPublicIpToPeer": true,
+          "importCustomRoutesFromPeer": false,
+          "importSubnetRoutesWithPublicIpFromPeer": true,
+          "stackType": "IPV4_ONLY"
+        },
+        "updateStrategy": "INDEPENDENT"
+      },
+      "exchangeSubnetRoutes": true,
+      "exportCustomRoutes": false,
+      "exportSubnetRoutesWithPublicIp": true,
+      "importCustomRoutes": false,
+      "importSubnetRoutesWithPublicIp": true,
+      "name": "redis-peer-1035741069106",
+      "network": "https://www.googleapis.com/compute/beta/projects/n93e82bfd992400f1p-tp/global/networks/${networkID}-redis-e619463a-57d4-4053-a70d-b8c275ad4d49",
+      "stackType": "IPV4_ONLY",
+      "state": "ACTIVE",
+      "stateDetails": "[2024-04-01T12:34:56.123-07:00]: Connected.",
+      "updateStrategy": "INDEPENDENT"
+    }
+  ],
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "subnetworks": [
@@ -32,6 +82,7 @@ X-Xss-Protection: 0
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast3/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/${networkID}",
@@ -206,7 +257,10 @@ X-Xss-Protection: 0
       ]
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseVersion": "POSTGRES_16",
+    "databaseVersion": "POSTGRES_17",
+    "dataplexConfig": {
+      "enabled": true
+    },
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
@@ -221,6 +275,7 @@ X-Xss-Protection: 0
       "network": "projects/${projectNumber}/global/networks/${networkID}"
     },
     "reconciling": false,
+    "serviceAccountEmail": "c-${projectNumber}-abcdef12@gcp-sa-alloydb.iam.gserviceaccount.com",
     "state": "READY",
     "subscriptionType": "STANDARD",
     "uid": "111111111111111111111",
@@ -289,7 +344,10 @@ X-Xss-Protection: 0
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": 4,
+  "databaseVersion": 5,
+  "dataplexConfig": {
+    "enabled": true
+  },
   "encryptionInfo": {
     "encryptionType": 1
   },
@@ -304,6 +362,7 @@ X-Xss-Protection: 0
     "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
+  "serviceAccountEmail": "c-${projectNumber}-abcdef12@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": 1,
   "subscriptionType": 1,
   "uid": "111111111111111111111",
@@ -312,7 +371,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=initialUser
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=dataplexConfig%2CinitialUser
 Content-Type: application/json
 
 {
@@ -345,7 +404,7 @@ Content-Type: application/json
     "enabled": true,
     "recoveryWindowDays": 14
   },
-  "databaseVersion": 4,
+  "databaseVersion": 5,
   "geminiConfig": {},
   "initialUser": {
     "password": "updated",
@@ -461,7 +520,10 @@ X-Xss-Protection: 0
       ]
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseVersion": "POSTGRES_16",
+    "databaseVersion": "POSTGRES_17",
+    "dataplexConfig": {
+      "enabled": true
+    },
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
@@ -476,6 +538,7 @@ X-Xss-Protection: 0
       "network": "projects/${projectNumber}/global/networks/${networkID}"
     },
     "reconciling": false,
+    "serviceAccountEmail": "c-${projectNumber}-abcdef12@gcp-sa-alloydb.iam.gserviceaccount.com",
     "state": "READY",
     "subscriptionType": "STANDARD",
     "uid": "111111111111111111111",
@@ -544,7 +607,10 @@ X-Xss-Protection: 0
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": 4,
+  "databaseVersion": 5,
+  "dataplexConfig": {
+    "enabled": true
+  },
   "encryptionInfo": {
     "encryptionType": 1
   },
@@ -559,6 +625,7 @@ X-Xss-Protection: 0
     "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
+  "serviceAccountEmail": "c-${projectNumber}-abcdef12@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": 1,
   "subscriptionType": 1,
   "uid": "111111111111111111111",

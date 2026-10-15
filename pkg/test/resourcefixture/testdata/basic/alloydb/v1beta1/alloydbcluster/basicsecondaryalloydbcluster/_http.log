@@ -256,7 +256,10 @@ X-Xss-Protection: 0
       ]
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseVersion": "POSTGRES_16",
+    "databaseVersion": "POSTGRES_17",
+    "dataplexConfig": {
+      "enabled": true
+    },
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
@@ -271,6 +274,7 @@ X-Xss-Protection: 0
       "network": "projects/${projectNumber}/global/networks/${networkID}"
     },
     "reconciling": false,
+    "serviceAccountEmail": "c-${projectNumber}-abcdef12@gcp-sa-alloydb.iam.gserviceaccount.com",
     "state": "READY",
     "subscriptionType": "STANDARD",
     "uid": "111111111111111111111",
@@ -398,18 +402,17 @@ X-Xss-Protection: 0
   "address": "8.8.8.8",
   "addressType": "INTERNAL",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "id": "000000000000000000000",
   "kind": "compute#address",
   "labelFingerprint": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
   "name": "${addressID}",
-  "network": "projects/${projectId}/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "networkTier": "PREMIUM",
   "prefixLength": 16,
   "purpose": "VPC_PEERING",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
+  "status": "RESERVED"
 }
 
 ---
@@ -436,14 +439,19 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "endTime": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
-  "progress": 0,
+  "operationType": "setLabels",
+  "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "DONE",
+  "targetId": "${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
+  "user": "user@example.com"
 }
 
 ---
@@ -465,6 +473,7 @@ X-Xss-Protection: 0
   "address": "8.8.8.8",
   "addressType": "INTERNAL",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "id": "000000000000000000000",
   "kind": "compute#address",
   "labelFingerprint": "abcdef0123A=",
@@ -473,10 +482,12 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "${addressID}",
-  "network": "projects/${projectId}/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "networkTier": "PREMIUM",
   "prefixLength": 16,
   "purpose": "VPC_PEERING",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
+  "status": "RESERVED"
 }
 
 ---
@@ -495,7 +506,16 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "lifecycleState": "ACTIVE",
+  "name": "${projectId}",
+  "parent": {
+    "id": "${folderID}",
+    "type": "organization"
+  },
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
@@ -532,7 +552,16 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "lifecycleState": "ACTIVE",
+  "name": "${projectId}",
+  "parent": {
+    "id": "${folderID}",
+    "type": "organization"
+  },
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
@@ -586,8 +615,7 @@ X-Xss-Protection: 0
     "peering": "servicenetworking-googleapis-com",
     "reservedPeeringRanges": [
       "${addressID}"
-    ],
-    "service": "services/servicenetworking.googleapis.com"
+    ]
   }
 }
 
@@ -607,7 +635,16 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "lifecycleState": "ACTIVE",
+  "name": "${projectId}",
+  "parent": {
+    "id": "${folderID}",
+    "type": "organization"
+  },
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
@@ -731,6 +768,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.Instance",
+    "activationPolicy": "ALWAYS",
     "availabilityType": "REGIONAL",
     "clientConnectionConfig": {
       "sslConfig": {
@@ -738,6 +776,7 @@ X-Xss-Protection: 0
       }
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "gcaConfig": {},
     "geminiConfig": {},
     "instanceType": "PRIMARY",
     "ipAddress": "10.1.2.3",
@@ -748,6 +787,7 @@ X-Xss-Protection: 0
     "machineConfig": {
       "cpuCount": 2
     },
+    "maintenanceVersionName": "POSTGRES_17.20260722.04_06",
     "name": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}/instances/alloydbinstance-${uniqueId}",
     "nodes": [
       {
@@ -921,7 +961,10 @@ X-Xss-Protection: 0
       ]
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseVersion": "POSTGRES_16",
+    "databaseVersion": "POSTGRES_17",
+    "dataplexConfig": {
+      "enabled": true
+    },
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
@@ -939,6 +982,7 @@ X-Xss-Protection: 0
     "secondaryConfig": {
       "primaryClusterName": "projects/${projectNumber}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}"
     },
+    "serviceAccountEmail": "c-${projectNumber}-abcdef12@gcp-sa-alloydb.iam.gserviceaccount.com",
     "state": "READY",
     "subscriptionType": "STANDARD",
     "uid": "111111111111111111111",
@@ -1007,7 +1051,10 @@ X-Xss-Protection: 0
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": 4,
+  "databaseVersion": 5,
+  "dataplexConfig": {
+    "enabled": true
+  },
   "encryptionInfo": {
     "encryptionType": 1
   },
@@ -1025,6 +1072,7 @@ X-Xss-Protection: 0
   "secondaryConfig": {
     "primaryClusterName": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}"
   },
+  "serviceAccountEmail": "c-${projectNumber}-abcdef12@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": 1,
   "subscriptionType": 1,
   "uid": "111111111111111111111",
@@ -1033,7 +1081,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupPolicy
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupPolicy%2CdataplexConfig
 Content-Type: application/json
 
 {
@@ -1069,7 +1117,7 @@ Content-Type: application/json
     "enabled": true,
     "recoveryWindowDays": 14
   },
-  "databaseVersion": 4,
+  "databaseVersion": 5,
   "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
@@ -1187,7 +1235,10 @@ X-Xss-Protection: 0
       ]
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseVersion": "POSTGRES_16",
+    "databaseVersion": "POSTGRES_17",
+    "dataplexConfig": {
+      "enabled": true
+    },
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
@@ -1205,6 +1256,7 @@ X-Xss-Protection: 0
     "secondaryConfig": {
       "primaryClusterName": "projects/${projectNumber}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}"
     },
+    "serviceAccountEmail": "c-${projectNumber}-abcdef12@gcp-sa-alloydb.iam.gserviceaccount.com",
     "state": "READY",
     "subscriptionType": "STANDARD",
     "uid": "111111111111111111111",
@@ -1276,7 +1328,10 @@ X-Xss-Protection: 0
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": 4,
+  "databaseVersion": 5,
+  "dataplexConfig": {
+    "enabled": true
+  },
   "encryptionInfo": {
     "encryptionType": 1
   },
@@ -1294,6 +1349,7 @@ X-Xss-Protection: 0
   "secondaryConfig": {
     "primaryClusterName": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}"
   },
+  "serviceAccountEmail": "c-${projectNumber}-abcdef12@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": 1,
   "subscriptionType": 1,
   "uid": "111111111111111111111",
@@ -1376,6 +1432,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "activationPolicy": 1,
   "availabilityType": 2,
   "clientConnectionConfig": {
     "sslConfig": {
@@ -1383,6 +1440,7 @@ X-Xss-Protection: 0
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "gcaConfig": {},
   "geminiConfig": {},
   "instanceType": 1,
   "ipAddress": "10.1.2.3",
@@ -1393,6 +1451,7 @@ X-Xss-Protection: 0
   "machineConfig": {
     "cpuCount": 2
   },
+  "maintenanceVersionName": "POSTGRES_17.20260722.04_06",
   "name": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}/instances/alloydbinstance-${uniqueId}",
   "nodes": [
     {
@@ -1502,7 +1561,16 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "lifecycleState": "ACTIVE",
+  "name": "${projectId}",
+  "parent": {
+    "id": "${folderID}",
+    "type": "organization"
+  },
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
@@ -1550,7 +1618,16 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "lifecycleState": "ACTIVE",
+  "name": "${projectId}",
+  "parent": {
+    "id": "${folderID}",
+    "type": "organization"
+  },
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
@@ -1579,10 +1656,14 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "removePeering",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING"
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
 }
 
 ---
@@ -1605,10 +1686,14 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "removePeering",
   "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
 }
 
 ---
@@ -1630,6 +1715,7 @@ X-Xss-Protection: 0
   "address": "8.8.8.8",
   "addressType": "INTERNAL",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
   "id": "000000000000000000000",
   "kind": "compute#address",
   "labelFingerprint": "abcdef0123A=",
@@ -1638,10 +1724,12 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "${addressID}",
-  "network": "projects/${projectId}/global/networks/${networkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "networkTier": "PREMIUM",
   "prefixLength": 16,
   "purpose": "VPC_PEERING",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
+  "status": "RESERVED"
 }
 
 ---
@@ -1765,7 +1853,10 @@ X-Xss-Protection: 0
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": 4,
+  "databaseVersion": 5,
+  "dataplexConfig": {
+    "enabled": true
+  },
   "encryptionInfo": {
     "encryptionType": 1
   },
@@ -1781,6 +1872,7 @@ X-Xss-Protection: 0
   },
   "primaryConfig": {},
   "reconciling": false,
+  "serviceAccountEmail": "c-${projectNumber}-abcdef12@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": 1,
   "subscriptionType": 1,
   "uid": "111111111111111111111",
