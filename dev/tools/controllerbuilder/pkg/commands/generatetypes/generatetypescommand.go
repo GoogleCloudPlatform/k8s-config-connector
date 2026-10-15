@@ -218,6 +218,9 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		if err != nil {
 			return fmt.Errorf("setting up --emit-source-links: %w", err)
 		}
+		if sha := sourcelinks.SHAFromProtoSourcePath(o.GenerateOptions.ProtoSourcePath); sha != "" {
+			linkResolver.GoogleapisSHA = sha
+		}
 	}
 
 	// Each --resource is resolved once here, so the warning is logged once and
