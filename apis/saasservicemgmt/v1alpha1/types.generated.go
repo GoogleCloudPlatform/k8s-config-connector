@@ -18,12 +18,13 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.saasplatform.saasservicemgmt.v1beta1
 // resource: SaasServiceMgmtRelease:Release
-// resource: SaaSServiceMgmtRollout:Rollout
 // resource: SaaSServiceMgmtTenant:Tenant
+// resource: SaaSServiceMgmtRollout:Rollout
 // resource: SaaSServiceMgmtUnit:Unit
 
 package v1alpha1
 
+/* unreachable type Aggregate
 // +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Aggregate
 type Aggregate struct {
 	// Required. Group by which to aggregate.
@@ -34,6 +35,7 @@ type Aggregate struct {
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Aggregate.count
 	Count *int32 `json:"count,omitempty"`
 }
+*/
 
 // +kcc:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Blueprint
 type Blueprint struct {
@@ -349,6 +351,17 @@ type UnitVariable struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Aggregate
+type AggregateObservedState struct {
+	// Required. Group by which to aggregate.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Aggregate.group
+	Group *string `json:"group,omitempty"`
+
+	// Required. Number of records in the group.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Aggregate.count
+	Count *int32 `json:"count,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.Blueprint
 type BlueprintObservedState struct {
 	// Output only. Type of the engine used to actuate the blueprint. e.g.
@@ -373,12 +386,12 @@ type ReleaseObservedState struct {
 	// Optional. Output only. List of input variables declared on the blueprint
 	//  and can be present with their values on the unit spec
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Release.input_variables
-	InputVariables []UnitVariable `json:"inputVariables,omitempty"`
+	InputVariables []UnitVariableObservedState `json:"inputVariables,omitempty"`
 
 	// Optional. Output only. List of output variables declared on the blueprint
 	//  and can be present with their values on the unit status
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Release.output_variables
-	OutputVariables []UnitVariable `json:"outputVariables,omitempty"`
+	OutputVariables []UnitVariableObservedState `json:"outputVariables,omitempty"`
 
 	// Output only. The unique identifier of the resource. UID is unique in the
 	//  time and space for this resource within the scope of the service. It is
@@ -498,7 +511,7 @@ type RolloutStatsObservedState struct {
 	//  - "FAILED"
 	//  - "CANCELLED"
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.RolloutStats.operations_by_state
-	OperationsByState []Aggregate `json:"operationsByState,omitempty"`
+	OperationsByState []AggregateObservedState `json:"operationsByState,omitempty"`
 }
 
 /* found existing non-generated go type with proto tag "google.cloud.saasplatform.saasservicemgmt.v1beta1.Tenant", skipping
@@ -565,14 +578,14 @@ type UnitObservedState struct {
 	// Optional. Output only. Indicates the current input variables deployed by
 	//  the unit
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.input_variables
-	InputVariables []UnitVariable `json:"inputVariables,omitempty"`
+	InputVariables []UnitVariableObservedState `json:"inputVariables,omitempty"`
 
 	// Optional. Output only. Set of key/value pairs corresponding to output
 	//  variables from execution of actuation templates. The variables are declared
 	//  in actuation configs (e.g in helm chart or terraform) and the values are
 	//  fetched and returned by the actuation engine upon completion of execution.
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.output_variables
-	OutputVariables []UnitVariable `json:"outputVariables,omitempty"`
+	OutputVariables []UnitVariableObservedState `json:"outputVariables,omitempty"`
 
 	// Optional. Output only. Current lifecycle state of the resource (e.g. if
 	//  it's being created or ready to use).
@@ -582,7 +595,7 @@ type UnitObservedState struct {
 	// Optional. Output only. A set of conditions which indicate the various
 	//  conditions this resource can have.
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.conditions
-	Conditions []UnitCondition `json:"conditions,omitempty"`
+	Conditions []UnitConditionObservedState `json:"conditions,omitempty"`
 
 	// Optional. Output only. Indicates the system managed state of the unit.
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.Unit.system_managed_state
@@ -619,6 +632,32 @@ type UnitObservedState struct {
 }
 */
 
+/* unreachable type UnitConditionObservedState
+// +kcc:observedstate:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitCondition
+type UnitConditionObservedState struct {
+	// Required. Status of the condition.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitCondition.status
+	Status *string `json:"status,omitempty"`
+
+	// Required. Type of the condition.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitCondition.type
+	Type *string `json:"type,omitempty"`
+
+	// Required. Last time the condition transited from one status to another.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitCondition.last_transition_time
+	LastTransitionTime *string `json:"lastTransitionTime,omitempty"`
+
+	// Required. Human readable message indicating details about the last
+	//  transition.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitCondition.message
+	Message *string `json:"message,omitempty"`
+
+	// Required. Brief reason for the condition's last transition.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitCondition.reason
+	Reason *string `json:"reason,omitempty"`
+}
+*/
+
 // +kcc:observedstate:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitDependency
 type UnitDependencyObservedState struct {
 	// Output only. Alias for the name of the dependency.
@@ -629,3 +668,21 @@ type UnitDependencyObservedState struct {
 	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitDependency.unit
 	Unit *string `json:"unit,omitempty"`
 }
+
+/* unreachable type UnitVariableObservedState
+// +kcc:observedstate:proto=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitVariable
+type UnitVariableObservedState struct {
+	// Required. Immutable. Name of the variable from actuation configs.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitVariable.variable
+	Variable *string `json:"variable,omitempty"`
+
+	// Optional. Immutable. Name of a supported variable type. Supported types are
+	//  string, int, bool.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitVariable.type
+	Type *string `json:"type,omitempty"`
+
+	// Optional. String encoded value for the variable.
+	// +kcc:proto:field=google.cloud.saasplatform.saasservicemgmt.v1beta1.UnitVariable.value
+	Value *string `json:"value,omitempty"`
+}
+*/
