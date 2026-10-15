@@ -21,6 +21,8 @@
 // resource: ManagedKafkaConnectCluster:ConnectCluster
 // resource: ManagedKafkaConsumerGroup:ConsumerGroup
 // resource: ManagedKafkaTopic:Topic
+// resource: ManagedKafkaACL:Acl
+// resource: ManagedKafkaConnector:Connector
 
 package v1alpha1
 
@@ -35,6 +37,89 @@ type AccessConfig struct {
 	NetworkConfigs []NetworkConfig `json:"networkConfigs,omitempty"`
 }
 */
+
+/* found existing non-generated go type with proto tag "google.cloud.managedkafka.v1.Acl", skipping
+
+// +kcc:proto=google.cloud.managedkafka.v1.Acl
+type Acl struct {
+	// Identifier. The name for the acl. Represents a single Resource Pattern.
+	//  Structured like:
+	//  projects/{project}/locations/{location}/clusters/{cluster}/acls/{acl_id}
+	//
+	//  The structure of `acl_id` defines the Resource Pattern (resource_type,
+	//  resource_name, pattern_type) of the acl. `acl_id` is structured like one of
+	//  the following:
+	//
+	//  For acls on the cluster:
+	//    `cluster`
+	//
+	//  For acls on a single resource within the cluster:
+	//    `topic/{resource_name}`
+	//    `consumerGroup/{resource_name}`
+	//    `transactionalId/{resource_name}`
+	//
+	//  For acls on all resources that match a prefix:
+	//    `topicPrefixed/{resource_name}`
+	//    `consumerGroupPrefixed/{resource_name}`
+	//    `transactionalIdPrefixed/{resource_name}`
+	//
+	//  For acls on all resources of a given type (i.e. the wildcard literal "*"):
+	//    `allTopics` (represents `topic/*`)
+	//    `allConsumerGroups` (represents `consumerGroup/*`)
+	//    `allTransactionalIds` (represents `transactionalId/*`)
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Acl.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The ACL entries that apply to the resource pattern. The maximum
+	//  number of allowed entries 100.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Acl.acl_entries
+	AclEntries []AclEntry `json:"aclEntries,omitempty"`
+
+	// Optional. `etag` is used for concurrency control. An `etag` is returned in
+	//  the response to `GetAcl` and `CreateAcl`. Callers are required to put that
+	//  etag in the request to `UpdateAcl` to ensure that their change will be
+	//  applied to the same version of the acl that exists in the Kafka Cluster.
+	//
+	//  A terminal 'T' character in the etag indicates that the AclEntries were
+	//  truncated; more entries for the Acl exist on the Kafka Cluster, but can't
+	//  be returned in the Acl due to repeated field limits.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Acl.etag
+	Etag *string `json:"etag,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.managedkafka.v1.AclEntry
+type AclEntry struct {
+	// Required. The principal. Specified as Google Cloud account, with the Kafka
+	//  StandardAuthorizer prefix "User:". For example:
+	//  "User:test-kafka-client@test-project.iam.gserviceaccount.com".
+	//  Can be the wildcard "User:*" to refer to all users.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.AclEntry.principal
+	// +required
+	Principal *string `json:"principal,omitempty"`
+
+	// Required. The permission type. Accepted values are (case insensitive):
+	//  ALLOW, DENY.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.AclEntry.permission_type
+	// +required
+	PermissionType *string `json:"permissionType,omitempty"`
+
+	// Required. The operation type. Allowed values are (case insensitive): ALL,
+	//  READ, WRITE, CREATE, DELETE, ALTER, DESCRIBE, CLUSTER_ACTION,
+	//  DESCRIBE_CONFIGS, ALTER_CONFIGS, and IDEMPOTENT_WRITE. See
+	//  https://kafka.apache.org/documentation/#operations_resources_and_protocols
+	//  for valid combinations of resource_type and operation for different Kafka
+	//  API requests.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.AclEntry.operation
+	// +required
+	Operation *string `json:"operation,omitempty"`
+
+	// Required. The host. Must be set to "*" for Managed Service for Apache
+	//  Kafka.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.AclEntry.host
+	// +required
+	Host *string `json:"host,omitempty"`
+}
 
 /* found existing non-generated go type "CapacityConfig", skipping
 
@@ -185,6 +270,28 @@ type ConnectNetworkConfig struct {
 }
 */
 
+/* found existing non-generated go type with proto tag "google.cloud.managedkafka.v1.Connector", skipping
+
+// +kcc:proto=google.cloud.managedkafka.v1.Connector
+type Connector struct {
+	// Optional. Restarts the individual tasks of a Connector.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Connector.task_restart_policy
+	TaskRestartPolicy *TaskRetryPolicy `json:"taskRestartPolicy,omitempty"`
+
+	// Identifier. The name of the connector.
+	//  Structured like:
+	//  projects/{project}/locations/{location}/connectClusters/{connect_cluster}/connectors/{connector}
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Connector.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Connector config as keys/values.
+	//  The keys of the map are connector property names, for example:
+	//  `connector.class`, `tasks.max`, `key.converter`.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Connector.configs
+	Configs map[string]string `json:"configs,omitempty"`
+}
+*/
+
 /* found existing non-generated go type with proto tag "google.cloud.managedkafka.v1.ConsumerGroup", skipping
 
 // +kcc:proto=google.cloud.managedkafka.v1.ConsumerGroup
@@ -195,8 +302,11 @@ type ConsumerGroup struct {
 	// +kcc:proto:field=google.cloud.managedkafka.v1.ConsumerGroup.name
 	Name *string `json:"name,omitempty"`
 
-	// TODO: unsupported map type with key string and value message
-
+	// Optional. Metadata for this consumer group for all topics it has metadata
+	//  for. The key of the map is a topic name, structured like:
+	//  projects/{project}/locations/{location}/clusters/{cluster}/topics/{topic}
+	// +kcc:proto:field=google.cloud.managedkafka.v1.ConsumerGroup.topics
+	Topics map[string]ConsumerTopicMetadata `json:"topics,omitempty"`
 }
 */
 
@@ -221,7 +331,7 @@ type ConsumerPartitionMetadata struct {
 // +kcc:proto=google.cloud.managedkafka.v1.ConsumerTopicMetadata
 type ConsumerTopicMetadata struct {
 
-	// TODO: unsupported map type with key int32 and value message
+	// TODO: partitions: unsupported map type with key int32 and value message
 
 }
 */
@@ -269,6 +379,19 @@ type RebalanceConfig struct {
 	Mode *string `json:"mode,omitempty"`
 }
 */
+
+// +kcc:proto=google.cloud.managedkafka.v1.TaskRetryPolicy
+type TaskRetryPolicy struct {
+	// Optional. The minimum amount of time to wait before retrying a failed task.
+	//  This sets a lower bound for the backoff delay.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.TaskRetryPolicy.minimum_backoff
+	MinimumBackoff *string `json:"minimumBackoff,omitempty"`
+
+	// Optional. The maximum amount of time to wait before retrying a failed task.
+	//  This sets an upper bound for the backoff delay.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.TaskRetryPolicy.maximum_backoff
+	MaximumBackoff *string `json:"maximumBackoff,omitempty"`
+}
 
 /* unreachable type TLSConfig
 // +kcc:proto=google.cloud.managedkafka.v1.TlsConfig
@@ -328,7 +451,7 @@ type TrustConfig struct {
 	// Optional. Configuration for the Google Certificate Authority Service.
 	//  Maximum 10.
 	// +kcc:proto:field=google.cloud.managedkafka.v1.TrustConfig.cas_configs
-	CasConfigs []TrustConfig_CertificateAuthorityServiceConfig `json:"casConfigs,omitempty"`
+	CAsConfigs []TrustConfig_CertificateAuthorityServiceConfig `json:"casConfigs,omitempty"`
 }
 */
 
@@ -342,6 +465,28 @@ type TrustConfig_CertificateAuthorityServiceConfig struct {
 	//  Kafka cluster.
 	// +kcc:proto:field=google.cloud.managedkafka.v1.TrustConfig.CertificateAuthorityServiceConfig.ca_pool
 	CAPool *string `json:"caPool,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.managedkafka.v1.Acl", skipping
+
+// +kcc:observedstate:proto=google.cloud.managedkafka.v1.Acl
+type AclObservedState struct {
+	// Output only. The ACL resource type derived from the name. One of: CLUSTER,
+	//  TOPIC, GROUP, TRANSACTIONAL_ID.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Acl.resource_type
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// Output only. The ACL resource name derived from the name. For cluster
+	//  resource_type, this is always "kafka-cluster". Can be the wildcard literal
+	//  "*".
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Acl.resource_name
+	ResourceName *string `json:"resourceName,omitempty"`
+
+	// Output only. The ACL pattern type derived from the name. One of: LITERAL,
+	//  PREFIXED.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Acl.pattern_type
+	PatternType *string `json:"patternType,omitempty"`
 }
 */
 
@@ -385,6 +530,16 @@ type ConnectClusterObservedState struct {
 
 	// Output only. The current state of the cluster.
 	// +kcc:proto:field=google.cloud.managedkafka.v1.ConnectCluster.state
+	State *string `json:"state,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.managedkafka.v1.Connector", skipping
+
+// +kcc:observedstate:proto=google.cloud.managedkafka.v1.Connector
+type ConnectorObservedState struct {
+	// Output only. The current state of the connector.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.Connector.state
 	State *string `json:"state,omitempty"`
 }
 */

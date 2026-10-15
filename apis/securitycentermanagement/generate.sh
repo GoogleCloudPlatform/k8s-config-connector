@@ -29,14 +29,36 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
+
 ./generate-proto.sh
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.securitycentermanagement.v1 \
   --api-version securitycentermanagement.cnrm.cloud.google.com/v1alpha1 \
-  --resource SecurityCenterManagementEventThreatDetectionCustomModule:EventThreatDetectionCustomModule
+  --resource SecurityCenterManagementEventThreatDetectionCustomModule:EventThreatDetectionCustomModule \
+  --resource SecurityCenterManagementSecurityHealthAnalyticsCustomModule:SecurityHealthAnalyticsCustomModule \
+  --prepopulate-spec \
+  --emit-required-from-proto \
+  --emit-plural-acronyms \
+  --emit-message-maps \
+  --place-server-set-fields \
+  --detect-output-only-in-comments \
+  --emit-parent-refs \
+  --emit-sibling-refs \
+  --emit-reference-hints \
+  --emit-source-links
 
-${CONTROLLERBUILDER} generate-mapper --service google.cloud.securitycentermanagement.v1 --api-version securitycentermanagement.cnrm.cloud.google.com/v1alpha1
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.securitycentermanagement.v1 \
+  --api-version securitycentermanagement.cnrm.cloud.google.com/v1alpha1 \
+  --resource SecurityCenterManagementSecurityHealthAnalyticsCustomModule:SecurityHealthAnalyticsCustomModule
+
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.securitycentermanagement.v1,google.type \
+  --api-version securitycentermanagement.cnrm.cloud.google.com/v1alpha1 \
+  --emit-plural-acronyms \
+  --emit-message-maps
+
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

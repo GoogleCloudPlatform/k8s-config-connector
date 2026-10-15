@@ -1,0 +1,109 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: AppHubService
+    group: apphub.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: AppHubService
+    group: apphub.cnrm.cloud.google.com
+    field: .spec.discoveredService
+    reason: possible-reference-by-sibling
+    detail: the name matches AppHubDiscoveredService, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - kind: AppHubService
+    group: apphub.cnrm.cloud.google.com
+    field: .spec.discoveredService
+    reason: possible-reference
+    detail: the proto marks this field as the parent of a apphub.googleapis.com/DiscoveredService (google.api.resource_reference child_type); confirm whether it should be a KCC reference
+    status: open
+  - kind: AppHubService
+    group: apphub.cnrm.cloud.google.com
+    field: .spec.discoveredService
+    reason: possible-reference-by-description-loose
+    status: open
+  - kind: AppHubService
+    group: apphub.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/applications/{application}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: AppHubService
+    group: apphub.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/applications/{application}, and no ApplicationRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: AppHubWorkload
+    group: apphub.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: AppHubWorkload
+    group: apphub.cnrm.cloud.google.com
+    field: .spec.discoveredWorkload
+    reason: possible-reference-by-sibling
+    detail: the name matches AppHubDiscoveredWorkload, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - kind: AppHubWorkload
+    group: apphub.cnrm.cloud.google.com
+    field: .spec.discoveredWorkload
+    reason: possible-reference
+    detail: the proto marks this field as the parent of a apphub.googleapis.com/DiscoveredWorkload (google.api.resource_reference child_type); confirm whether it should be a KCC reference
+    status: open
+  - kind: AppHubWorkload
+    group: apphub.cnrm.cloud.google.com
+    field: .spec.discoveredWorkload
+    reason: possible-reference-by-description-loose
+    status: open
+  - kind: AppHubWorkload
+    group: apphub.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/applications/{application}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: AppHubWorkload
+    group: apphub.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/applications/{application}, and no ApplicationRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - protoMessage: google.cloud.apphub.v1.Service
+    field: discoveredService
+    reason: possible-reference-by-sibling
+    detail: the name matches AppHubDiscoveredService, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - protoMessage: google.cloud.apphub.v1.Workload
+    field: discoveredWorkload
+    reason: possible-reference-by-sibling
+    detail: the name matches AppHubDiscoveredWorkload, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - kind: AppHubService
+    group: apphub.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/applications/{application}/services/{service}" contains ancestor segment(s) applications/{application} with no matching reference or field on AppHubServiceSpec
+    status: open
+  - kind: AppHubWorkload
+    group: apphub.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/applications/{application}/workloads/{workload}" contains ancestor segment(s) applications/{application} with no matching reference or field on AppHubWorkloadSpec
+    status: open

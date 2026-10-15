@@ -29,26 +29,43 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
 
+./generate-proto.sh
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.contactcenterinsights.v1 \
   --api-version contactcenterinsights.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
+  --prune-unused-types=false \
   --resource CCInsightsView:View \
   --resource CCInsightsPhraseMatcher:PhraseMatcher \
   --resource CCInsightsIssueModel:IssueModel \
   --resource CCInsightsConversation:Conversation \
   --resource CCInsightsQAScorecard:QaScorecard \
   --resource CCInsightsAnalysisRule:AnalysisRule \
-  --prune-unused-types=false
+  --resource CCInsightsFeedbackLabel:FeedbackLabel \
+  --prepopulate-spec \
+  --emit-required-from-proto \
+  --emit-plural-acronyms \
+  --emit-message-maps \
+  --place-server-set-fields \
+  --detect-output-only-in-comments \
+  --emit-parent-refs \
+  --emit-sibling-refs \
+  --emit-reference-hints \
+  --emit-source-links
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.contactcenterinsights.v1 \
+  --api-version contactcenterinsights.cnrm.cloud.google.com/v1alpha1 \
+  --resource CCInsightsFeedbackLabel:FeedbackLabel
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.contactcenterinsights.v1 \
-  --api-version contactcenterinsights.cnrm.cloud.google.com/v1alpha1
+  --api-version contactcenterinsights.cnrm.cloud.google.com/v1alpha1 \
+  --emit-plural-acronyms \
+  --emit-message-maps
 
-# Format generated code
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

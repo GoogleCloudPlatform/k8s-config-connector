@@ -26,10 +26,43 @@ package securesourcemanager
 import (
 	pb "cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb"
 	krmkmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+	krmsecuresourcemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func BranchRule_Check_FromProto(mapCtx *direct.MapContext, in *pb.BranchRule_Check) *krmsecuresourcemanagerv1alpha1.BranchRule_Check {
+	if in == nil {
+		return nil
+	}
+	out := &krmsecuresourcemanagerv1alpha1.BranchRule_Check{}
+	out.Context = direct.LazyPtr(in.GetContext())
+	return out
+}
+func BranchRule_Check_ToProto(mapCtx *direct.MapContext, in *krmsecuresourcemanagerv1alpha1.BranchRule_Check) *pb.BranchRule_Check {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BranchRule_Check{}
+	out.Context = direct.ValueOf(in.Context)
+	return out
+}
+func Hook_PushOption_FromProto(mapCtx *direct.MapContext, in *pb.Hook_PushOption) *krmsecuresourcemanagerv1alpha1.Hook_PushOption {
+	if in == nil {
+		return nil
+	}
+	out := &krmsecuresourcemanagerv1alpha1.Hook_PushOption{}
+	out.BranchFilter = direct.LazyPtr(in.GetBranchFilter())
+	return out
+}
+func Hook_PushOption_ToProto(mapCtx *direct.MapContext, in *krmsecuresourcemanagerv1alpha1.Hook_PushOption) *pb.Hook_PushOption {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Hook_PushOption{}
+	out.BranchFilter = direct.ValueOf(in.BranchFilter)
+	return out
+}
 func Instance_HostConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_HostConfig) *krm.Instance_HostConfigObservedState {
 	if in == nil {
 		return nil
@@ -154,6 +187,114 @@ func Repository_UrIsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Rep
 	out.Api = direct.ValueOf(in.API)
 	return out
 }
+func SecureSourceManagerBranchRuleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BranchRule) *krmsecuresourcemanagerv1alpha1.SecureSourceManagerBranchRuleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmsecuresourcemanagerv1alpha1.SecureSourceManagerBranchRuleObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func SecureSourceManagerBranchRuleObservedState_ToProto(mapCtx *direct.MapContext, in *krmsecuresourcemanagerv1alpha1.SecureSourceManagerBranchRuleObservedState) *pb.BranchRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BranchRule{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func SecureSourceManagerBranchRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.BranchRule) *krmsecuresourcemanagerv1alpha1.SecureSourceManagerBranchRuleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmsecuresourcemanagerv1alpha1.SecureSourceManagerBranchRuleSpec{}
+	// MISSING: Name
+	out.Annotations = in.Annotations
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.IncludePattern = direct.LazyPtr(in.GetIncludePattern())
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	out.RequirePullRequest = direct.LazyPtr(in.GetRequirePullRequest())
+	out.MinimumReviewsCount = direct.LazyPtr(in.GetMinimumReviewsCount())
+	out.MinimumApprovalsCount = direct.LazyPtr(in.GetMinimumApprovalsCount())
+	out.RequireCommentsResolved = direct.LazyPtr(in.GetRequireCommentsResolved())
+	out.AllowStaleReviews = direct.LazyPtr(in.GetAllowStaleReviews())
+	out.RequireLinearHistory = direct.LazyPtr(in.GetRequireLinearHistory())
+	out.RequiredStatusChecks = direct.Slice_FromProto(mapCtx, in.RequiredStatusChecks, BranchRule_Check_FromProto)
+	return out
+}
+func SecureSourceManagerBranchRuleSpec_ToProto(mapCtx *direct.MapContext, in *krmsecuresourcemanagerv1alpha1.SecureSourceManagerBranchRuleSpec) *pb.BranchRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BranchRule{}
+	// MISSING: Name
+	out.Annotations = in.Annotations
+	out.Etag = direct.ValueOf(in.Etag)
+	out.IncludePattern = direct.ValueOf(in.IncludePattern)
+	out.Disabled = direct.ValueOf(in.Disabled)
+	out.RequirePullRequest = direct.ValueOf(in.RequirePullRequest)
+	out.MinimumReviewsCount = direct.ValueOf(in.MinimumReviewsCount)
+	out.MinimumApprovalsCount = direct.ValueOf(in.MinimumApprovalsCount)
+	out.RequireCommentsResolved = direct.ValueOf(in.RequireCommentsResolved)
+	out.AllowStaleReviews = direct.ValueOf(in.AllowStaleReviews)
+	out.RequireLinearHistory = direct.ValueOf(in.RequireLinearHistory)
+	out.RequiredStatusChecks = direct.Slice_ToProto(mapCtx, in.RequiredStatusChecks, BranchRule_Check_ToProto)
+	return out
+}
+func SecureSourceManagerHookObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Hook) *krmsecuresourcemanagerv1alpha1.SecureSourceManagerHookObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmsecuresourcemanagerv1alpha1.SecureSourceManagerHookObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	return out
+}
+func SecureSourceManagerHookObservedState_ToProto(mapCtx *direct.MapContext, in *krmsecuresourcemanagerv1alpha1.SecureSourceManagerHookObservedState) *pb.Hook {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Hook{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Uid = direct.ValueOf(in.Uid)
+	return out
+}
+func SecureSourceManagerHookSpec_FromProto(mapCtx *direct.MapContext, in *pb.Hook) *krmsecuresourcemanagerv1alpha1.SecureSourceManagerHookSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmsecuresourcemanagerv1alpha1.SecureSourceManagerHookSpec{}
+	// MISSING: Name
+	out.TargetURI = direct.LazyPtr(in.GetTargetUri())
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	out.Events = direct.EnumSlice_FromProto(mapCtx, in.Events)
+	out.PushOption = Hook_PushOption_FromProto(mapCtx, in.GetPushOption())
+	out.SensitiveQueryString = direct.LazyPtr(in.GetSensitiveQueryString())
+	return out
+}
+func SecureSourceManagerHookSpec_ToProto(mapCtx *direct.MapContext, in *krmsecuresourcemanagerv1alpha1.SecureSourceManagerHookSpec) *pb.Hook {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Hook{}
+	// MISSING: Name
+	out.TargetUri = direct.ValueOf(in.TargetURI)
+	out.Disabled = direct.ValueOf(in.Disabled)
+	out.Events = direct.EnumSlice_ToProto[pb.Hook_HookEventType](mapCtx, in.Events)
+	out.PushOption = Hook_PushOption_ToProto(mapCtx, in.PushOption)
+	out.SensitiveQueryString = direct.ValueOf(in.SensitiveQueryString)
+	return out
+}
 func SecureSourceManagerInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.SecureSourceManagerInstanceObservedState {
 	if in == nil {
 		return nil
@@ -210,6 +351,52 @@ func SecureSourceManagerInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.
 		out.KmsKey = in.KMSKeyRef.External
 	}
 	// MISSING: WorkforceIdentityFederationConfig
+	return out
+}
+func SecureSourceManagerIssueObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Issue) *krmsecuresourcemanagerv1alpha1.SecureSourceManagerIssueObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmsecuresourcemanagerv1alpha1.SecureSourceManagerIssueObservedState{}
+	// MISSING: Name
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.CloseTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCloseTime())
+	return out
+}
+func SecureSourceManagerIssueObservedState_ToProto(mapCtx *direct.MapContext, in *krmsecuresourcemanagerv1alpha1.SecureSourceManagerIssueObservedState) *pb.Issue {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Issue{}
+	// MISSING: Name
+	out.State = direct.Enum_ToProto[pb.Issue_State](mapCtx, in.State)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.CloseTime = direct.StringTimestamp_ToProto(mapCtx, in.CloseTime)
+	return out
+}
+func SecureSourceManagerIssueSpec_FromProto(mapCtx *direct.MapContext, in *pb.Issue) *krmsecuresourcemanagerv1alpha1.SecureSourceManagerIssueSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmsecuresourcemanagerv1alpha1.SecureSourceManagerIssueSpec{}
+	// MISSING: Name
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.Body = direct.LazyPtr(in.GetBody())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+func SecureSourceManagerIssueSpec_ToProto(mapCtx *direct.MapContext, in *krmsecuresourcemanagerv1alpha1.SecureSourceManagerIssueSpec) *pb.Issue {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Issue{}
+	// MISSING: Name
+	out.Title = direct.ValueOf(in.Title)
+	out.Body = direct.ValueOf(in.Body)
+	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
 func SecureSourceManagerRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.SecureSourceManagerRepositorySpec {

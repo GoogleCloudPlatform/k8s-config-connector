@@ -1,1 +1,3 @@
 [shortname_plural] crd=computeprojectmetadatas.compute.cnrm.cloud.google.com version=v1beta1: plural shortName "gcpcomputeprojectmetadatas" appears to have incorrect pluralization of "gcpcomputeprojectmetadata"
+[shortname_plural] crd=discoveryenginesamplequeries.discoveryengine.cnrm.cloud.google.com version=v1alpha1: plural shortName "gcpdiscoveryenginesamplequerys" appears to have incorrect pluralization of "gcpdiscoveryenginesamplequery"
+[shortname_plural] crd=jobscompanies.jobs.cnrm.cloud.google.com version=v1alpha1: plural shortName "gcpjobscompanys" appears to have incorrect pluralization of "gcpjobscompany"

@@ -1,0 +1,85 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: TelcoAutomationBlueprint
+    group: telcoautomation.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.orchestrationClusters.blueprints: https://docs.cloud.google.com/telecom-network-automation/docs/reference/rest/v1/projects.locations.orchestrationClusters.blueprints'
+    status: open
+  - kind: TelcoAutomationBlueprint
+    group: telcoautomation.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: TelcoAutomationBlueprint
+    group: telcoautomation.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/orchestrationClusters/{orchestration_cluster}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: TelcoAutomationBlueprint
+    group: telcoautomation.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/orchestrationClusters/{orchestration_cluster}, and no OrchestrationClusterRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: TelcoAutomationDeployment
+    group: telcoautomation.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.orchestrationClusters.deployments: https://docs.cloud.google.com/telecom-network-automation/docs/reference/rest/v1/projects.locations.orchestrationClusters.deployments'
+    status: open
+  - kind: TelcoAutomationDeployment
+    group: telcoautomation.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: TelcoAutomationDeployment
+    group: telcoautomation.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/orchestrationClusters/{orchestration_cluster}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: TelcoAutomationDeployment
+    group: telcoautomation.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/orchestrationClusters/{orchestration_cluster}, and no OrchestrationClusterRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: TelcoAutomationBlueprint
+    group: telcoautomation.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//telcoautomation.googleapis.com/projects/{project}/locations/{location}/orchestrationClusters/{orchestration_cluster}/blueprints/{blueprint}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: TelcoAutomationBlueprint
+    group: telcoautomation.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/orchestrationClusters/{orchestration_cluster}/blueprints/{blueprint}" contains ancestor segment(s) orchestrationClusters/{orchestration_cluster} with no matching reference or field on TelcoAutomationBlueprintSpec
+    status: open
+  - kind: TelcoAutomationDeployment
+    group: telcoautomation.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//telcoautomation.googleapis.com/projects/{project}/locations/{location}/orchestrationClusters/{orchestration_cluster}/deployments/{deployment}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: TelcoAutomationDeployment
+    group: telcoautomation.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/orchestrationClusters/{orchestration_cluster}/deployments/{deployment}" contains ancestor segment(s) orchestrationClusters/{orchestration_cluster} with no matching reference or field on TelcoAutomationDeploymentSpec
+    status: open

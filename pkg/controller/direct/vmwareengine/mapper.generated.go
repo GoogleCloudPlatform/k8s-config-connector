@@ -31,6 +31,84 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AutoscalingSettings_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingSettings) *krmvmwareenginev1alpha1.AutoscalingSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmvmwareenginev1alpha1.AutoscalingSettings{}
+	if in.AutoscalingPolicies != nil {
+		out.AutoscalingPolicies = make(map[string]krmvmwareenginev1alpha1.AutoscalingSettings_AutoscalingPolicy, len(in.AutoscalingPolicies))
+		for k, v := range in.AutoscalingPolicies {
+			if c := AutoscalingSettings_AutoscalingPolicy_v1alpha1_FromProto(mapCtx, v); c != nil {
+				out.AutoscalingPolicies[k] = *c
+			}
+		}
+	}
+	out.MinClusterNodeCount = direct.LazyPtr(in.GetMinClusterNodeCount())
+	out.MaxClusterNodeCount = direct.LazyPtr(in.GetMaxClusterNodeCount())
+	out.CoolDownPeriod = direct.StringDuration_FromProto(mapCtx, in.GetCoolDownPeriod())
+	return out
+}
+func AutoscalingSettings_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvmwareenginev1alpha1.AutoscalingSettings) *pb.AutoscalingSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoscalingSettings{}
+	if in.AutoscalingPolicies != nil {
+		out.AutoscalingPolicies = make(map[string]*pb.AutoscalingSettings_AutoscalingPolicy, len(in.AutoscalingPolicies))
+		for k, v := range in.AutoscalingPolicies {
+			out.AutoscalingPolicies[k] = AutoscalingSettings_AutoscalingPolicy_v1alpha1_ToProto(mapCtx, &v)
+		}
+	}
+	out.MinClusterNodeCount = direct.ValueOf(in.MinClusterNodeCount)
+	out.MaxClusterNodeCount = direct.ValueOf(in.MaxClusterNodeCount)
+	out.CoolDownPeriod = direct.StringDuration_ToProto(mapCtx, in.CoolDownPeriod)
+	return out
+}
+func AutoscalingSettings_AutoscalingPolicy_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingSettings_AutoscalingPolicy) *krmvmwareenginev1alpha1.AutoscalingSettings_AutoscalingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krmvmwareenginev1alpha1.AutoscalingSettings_AutoscalingPolicy{}
+	out.NodeTypeID = direct.LazyPtr(in.GetNodeTypeId())
+	out.ScaleOutSize = direct.LazyPtr(in.GetScaleOutSize())
+	out.CPUThresholds = AutoscalingSettings_Thresholds_v1alpha1_FromProto(mapCtx, in.GetCpuThresholds())
+	out.GrantedMemoryThresholds = AutoscalingSettings_Thresholds_v1alpha1_FromProto(mapCtx, in.GetGrantedMemoryThresholds())
+	out.ConsumedMemoryThresholds = AutoscalingSettings_Thresholds_v1alpha1_FromProto(mapCtx, in.GetConsumedMemoryThresholds())
+	out.StorageThresholds = AutoscalingSettings_Thresholds_v1alpha1_FromProto(mapCtx, in.GetStorageThresholds())
+	return out
+}
+func AutoscalingSettings_AutoscalingPolicy_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvmwareenginev1alpha1.AutoscalingSettings_AutoscalingPolicy) *pb.AutoscalingSettings_AutoscalingPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoscalingSettings_AutoscalingPolicy{}
+	out.NodeTypeId = direct.ValueOf(in.NodeTypeID)
+	out.ScaleOutSize = direct.ValueOf(in.ScaleOutSize)
+	out.CpuThresholds = AutoscalingSettings_Thresholds_v1alpha1_ToProto(mapCtx, in.CPUThresholds)
+	out.GrantedMemoryThresholds = AutoscalingSettings_Thresholds_v1alpha1_ToProto(mapCtx, in.GrantedMemoryThresholds)
+	out.ConsumedMemoryThresholds = AutoscalingSettings_Thresholds_v1alpha1_ToProto(mapCtx, in.ConsumedMemoryThresholds)
+	out.StorageThresholds = AutoscalingSettings_Thresholds_v1alpha1_ToProto(mapCtx, in.StorageThresholds)
+	return out
+}
+func AutoscalingSettings_Thresholds_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingSettings_Thresholds) *krmvmwareenginev1alpha1.AutoscalingSettings_Thresholds {
+	if in == nil {
+		return nil
+	}
+	out := &krmvmwareenginev1alpha1.AutoscalingSettings_Thresholds{}
+	out.ScaleOut = direct.LazyPtr(in.GetScaleOut())
+	out.ScaleIn = direct.LazyPtr(in.GetScaleIn())
+	return out
+}
+func AutoscalingSettings_Thresholds_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvmwareenginev1alpha1.AutoscalingSettings_Thresholds) *pb.AutoscalingSettings_Thresholds {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AutoscalingSettings_Thresholds{}
+	out.ScaleOut = direct.ValueOf(in.ScaleOut)
+	out.ScaleIn = direct.ValueOf(in.ScaleIn)
+	return out
+}
 func ExternalAccessRule_IPRange_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExternalAccessRule_IpRange) *krmvmwareenginev1alpha1.ExternalAccessRule_IPRange {
 	if in == nil {
 		return nil
@@ -159,6 +237,66 @@ func StretchedClusterConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv
 	out.SecondaryLocation = direct.ValueOf(in.SecondaryLocation)
 	return out
 }
+func VMwareEngineClusterObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krmvmwareenginev1alpha1.VMwareEngineClusterObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmvmwareenginev1alpha1.VMwareEngineClusterObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Management = direct.LazyPtr(in.GetManagement())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	return out
+}
+func VMwareEngineClusterObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvmwareenginev1alpha1.VMwareEngineClusterObservedState) *pb.Cluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Cluster{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.Cluster_State](mapCtx, in.State)
+	out.Management = direct.ValueOf(in.Management)
+	out.Uid = direct.ValueOf(in.Uid)
+	return out
+}
+func VMwareEngineClusterSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krmvmwareenginev1alpha1.VMwareEngineClusterSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmvmwareenginev1alpha1.VMwareEngineClusterSpec{}
+	// MISSING: Name
+	out.AutoscalingSettings = AutoscalingSettings_v1alpha1_FromProto(mapCtx, in.GetAutoscalingSettings())
+	if in.NodeTypeConfigs != nil {
+		out.NodeTypeConfigs = make(map[string]krmvmwareenginev1alpha1.NodeTypeConfig, len(in.NodeTypeConfigs))
+		for k, v := range in.NodeTypeConfigs {
+			if c := NodeTypeConfig_v1alpha1_FromProto(mapCtx, v); c != nil {
+				out.NodeTypeConfigs[k] = *c
+			}
+		}
+	}
+	out.StretchedClusterConfig = StretchedClusterConfig_v1alpha1_FromProto(mapCtx, in.GetStretchedClusterConfig())
+	return out
+}
+func VMwareEngineClusterSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvmwareenginev1alpha1.VMwareEngineClusterSpec) *pb.Cluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Cluster{}
+	// MISSING: Name
+	out.AutoscalingSettings = AutoscalingSettings_v1alpha1_ToProto(mapCtx, in.AutoscalingSettings)
+	if in.NodeTypeConfigs != nil {
+		out.NodeTypeConfigs = make(map[string]*pb.NodeTypeConfig, len(in.NodeTypeConfigs))
+		for k, v := range in.NodeTypeConfigs {
+			out.NodeTypeConfigs[k] = NodeTypeConfig_v1alpha1_ToProto(mapCtx, &v)
+		}
+	}
+	out.StretchedClusterConfig = StretchedClusterConfig_v1alpha1_ToProto(mapCtx, in.StretchedClusterConfig)
+	return out
+}
 func VMwareEngineExternalAccessRuleObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExternalAccessRule) *krmvmwareenginev1alpha1.VMwareEngineExternalAccessRuleObservedState {
 	if in == nil {
 		return nil
@@ -268,6 +406,114 @@ func VMwareEngineExternalAddressSpec_v1beta1_ToProto(mapCtx *direct.MapContext, 
 	// MISSING: Uid
 	out.Description = direct.ValueOf(in.Description)
 	return out
+}
+func VMwareEngineLoggingServerObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.LoggingServer) *krmvmwareenginev1alpha1.VMwareEngineLoggingServerObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmvmwareenginev1alpha1.VMwareEngineLoggingServerObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	return out
+}
+func VMwareEngineLoggingServerObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvmwareenginev1alpha1.VMwareEngineLoggingServerObservedState) *pb.LoggingServer {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LoggingServer{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Uid = direct.ValueOf(in.Uid)
+	return out
+}
+func VMwareEngineLoggingServerSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.LoggingServer) *krmvmwareenginev1alpha1.VMwareEngineLoggingServerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmvmwareenginev1alpha1.VMwareEngineLoggingServerSpec{}
+	// MISSING: Name
+	out.Hostname = direct.LazyPtr(in.GetHostname())
+	out.Port = direct.LazyPtr(in.GetPort())
+	out.Protocol = direct.Enum_FromProto(mapCtx, in.GetProtocol())
+	out.SourceType = direct.Enum_FromProto(mapCtx, in.GetSourceType())
+	return out
+}
+func VMwareEngineLoggingServerSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvmwareenginev1alpha1.VMwareEngineLoggingServerSpec) *pb.LoggingServer {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LoggingServer{}
+	// MISSING: Name
+	out.Hostname = direct.ValueOf(in.Hostname)
+	out.Port = direct.ValueOf(in.Port)
+	out.Protocol = direct.Enum_ToProto[pb.LoggingServer_Protocol](mapCtx, in.Protocol)
+	out.SourceType = direct.Enum_ToProto[pb.LoggingServer_SourceType](mapCtx, in.SourceType)
+	return out
+}
+func VMwareEngineManagementDNSZoneBindingObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ManagementDnsZoneBinding) *krmvmwareenginev1alpha1.VMwareEngineManagementDNSZoneBindingObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmvmwareenginev1alpha1.VMwareEngineManagementDNSZoneBindingObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	return out
+}
+func VMwareEngineManagementDNSZoneBindingObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvmwareenginev1alpha1.VMwareEngineManagementDNSZoneBindingObservedState) *pb.ManagementDnsZoneBinding {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ManagementDnsZoneBinding{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.ManagementDnsZoneBinding_State](mapCtx, in.State)
+	out.Uid = direct.ValueOf(in.Uid)
+	return out
+}
+func VMwareEngineManagementDNSZoneBindingSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ManagementDnsZoneBinding) *krmvmwareenginev1alpha1.VMwareEngineManagementDNSZoneBindingSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmvmwareenginev1alpha1.VMwareEngineManagementDNSZoneBindingSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.VPCNetwork = direct.LazyPtr(in.GetVpcNetwork())
+	out.VmwareEngineNetwork = direct.LazyPtr(in.GetVmwareEngineNetwork())
+	return out
+}
+func VMwareEngineManagementDNSZoneBindingSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvmwareenginev1alpha1.VMwareEngineManagementDNSZoneBindingSpec) *pb.ManagementDnsZoneBinding {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ManagementDnsZoneBinding{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	if oneof := VMwareEngineManagementDNSZoneBindingSpec_VpcNetwork_ToProto(mapCtx, in.VPCNetwork); oneof != nil {
+		out.BindNetwork = oneof
+	}
+	if oneof := VMwareEngineManagementDNSZoneBindingSpec_VmwareEngineNetwork_ToProto(mapCtx, in.VmwareEngineNetwork); oneof != nil {
+		out.BindNetwork = oneof
+	}
+	return out
+}
+func VMwareEngineManagementDNSZoneBindingSpec_VpcNetwork_ToProto(mapCtx *direct.MapContext, in *string) *pb.ManagementDnsZoneBinding_VpcNetwork {
+	if in == nil {
+		return nil
+	}
+	return &pb.ManagementDnsZoneBinding_VpcNetwork{VpcNetwork: *in}
+}
+func VMwareEngineManagementDNSZoneBindingSpec_VmwareEngineNetwork_ToProto(mapCtx *direct.MapContext, in *string) *pb.ManagementDnsZoneBinding_VmwareEngineNetwork {
+	if in == nil {
+		return nil
+	}
+	return &pb.ManagementDnsZoneBinding_VmwareEngineNetwork{VmwareEngineNetwork: *in}
 }
 func VMwareEngineNetworkObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VmwareEngineNetwork) *krmvmwareenginev1alpha1.VMwareEngineNetworkObservedState {
 	if in == nil {

@@ -1,0 +1,99 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: GKEMulticloudAWSNodePool
+    group: gkemulticloud.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.awsClusters.awsNodePools: https://docs.cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.awsClusters.awsNodePools'
+    status: open
+  - kind: GKEMulticloudAWSNodePool
+    group: gkemulticloud.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: GKEMulticloudAWSNodePool
+    group: gkemulticloud.cnrm.cloud.google.com
+    field: .spec.config.proxyConfig.secretArn
+    reason: possible-reference-by-name
+    detail: SecretManagerSecretVersionRef
+    status: open
+  - kind: GKEMulticloudAWSNodePool
+    group: gkemulticloud.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/awsClusters/{aws_cluster}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: GKEMulticloudAWSNodePool
+    group: gkemulticloud.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/awsClusters/{aws_cluster}, and no AwsClusterRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: GKEMulticloudAzureNodePool
+    group: gkemulticloud.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.azureClusters.azureNodePools: https://docs.cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.azureClusters.azureNodePools'
+    status: open
+  - kind: GKEMulticloudAzureNodePool
+    group: gkemulticloud.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: GKEMulticloudAzureNodePool
+    group: gkemulticloud.cnrm.cloud.google.com
+    field: .spec.config.proxyConfig.secretID
+    reason: possible-reference-by-name
+    detail: SecretManagerSecretVersionRef
+    status: open
+  - kind: GKEMulticloudAzureNodePool
+    group: gkemulticloud.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/azureClusters/{azure_cluster}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: GKEMulticloudAzureNodePool
+    group: gkemulticloud.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/azureClusters/{azure_cluster}, and no AzureClusterRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: GKEMulticloudAttachedCluster
+    group: gkemulticloud.cnrm.cloud.google.com
+    field: .spec.authorization.adminUsers[].username
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to GKEMulticloudAttachedClusterSpec and run generate.sh again. GKEMulticloudAttachedCluster is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: GKEMulticloudAttachedCluster
+    group: gkemulticloud.cnrm.cloud.google.com
+    field: .spec.authorization.adminGroups[].group
+    reason: required-not-enforced
+    detail: The proto marks this field REQUIRED, but the CRD leaves it optional. To enforce it, add +kcc:required-from-proto to GKEMulticloudAttachedClusterSpec and run generate.sh again. GKEMulticloudAttachedCluster is alpha, so it may be enforced, but that breaks objects that leave the field out if the Kind has shipped.
+    status: open
+  - kind: GKEMulticloudAWSNodePool
+    group: gkemulticloud.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/awsClusters/{aws_cluster}/awsNodePools/{aws_node_pool}" contains ancestor segment(s) awsClusters/{aws_cluster} with no matching reference or field on GKEMulticloudAWSNodePoolSpec
+    status: open
+  - kind: GKEMulticloudAzureNodePool
+    group: gkemulticloud.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/azureClusters/{azure_cluster}/azureNodePools/{azure_node_pool}" contains ancestor segment(s) azureClusters/{azure_cluster} with no matching reference or field on GKEMulticloudAzureNodePoolSpec
+    status: open
