@@ -26,6 +26,7 @@ package dialogflow
 import (
 	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
+	krmservicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -81,6 +82,94 @@ func DialogflowSecuritySettingsSpec_RetentionStrategy_ToProto(mapCtx *direct.Map
 	}
 	return &pb.SecuritySettings_RetentionStrategy_{RetentionStrategy: direct.Enum_ToProto[pb.SecuritySettings_RetentionStrategy](mapCtx, in)}
 }
+func DialogflowWebhookSpec_FromProto(mapCtx *direct.MapContext, in *pb.Webhook) *krm.DialogflowWebhookSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowWebhookSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.GenericWebService = GenericWebService_FromProto(mapCtx, in.GetGenericWebService())
+	out.ServiceDirectory = ServiceDirectoryConfig_FromProto(mapCtx, in.GetServiceDirectory())
+	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	return out
+}
+func DialogflowWebhookSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowWebhookSpec) *pb.Webhook {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Webhook{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	if oneof := GenericWebService_ToProto(mapCtx, in.GenericWebService); oneof != nil {
+		out.Webhook = &pb.Webhook_GenericWebService_{GenericWebService: oneof}
+	}
+	if oneof := ServiceDirectoryConfig_ToProto(mapCtx, in.ServiceDirectory); oneof != nil {
+		out.Webhook = &pb.Webhook_ServiceDirectory{ServiceDirectory: oneof}
+	}
+	out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
+	out.Disabled = direct.ValueOf(in.Disabled)
+	return out
+}
+func GenericWebService_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_GenericWebService) *krm.GenericWebService {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GenericWebService{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	// MISSING: Username
+	// MISSING: Password
+	out.RequestHeaders = in.RequestHeaders
+	out.AllowedCACerts = in.AllowedCaCerts
+	out.OauthConfig = GenericWebServiceOAuthConfig_FromProto(mapCtx, in.GetOauthConfig())
+	out.ServiceAgentAuth = direct.Enum_FromProto(mapCtx, in.GetServiceAgentAuth())
+	out.WebhookType = direct.Enum_FromProto(mapCtx, in.GetWebhookType())
+	out.HTTPMethod = direct.Enum_FromProto(mapCtx, in.GetHttpMethod())
+	out.RequestBody = direct.LazyPtr(in.GetRequestBody())
+	out.ParameterMapping = in.ParameterMapping
+	return out
+}
+func GenericWebService_ToProto(mapCtx *direct.MapContext, in *krm.GenericWebService) *pb.Webhook_GenericWebService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Webhook_GenericWebService{}
+	out.Uri = direct.ValueOf(in.URI)
+	// MISSING: Username
+	// MISSING: Password
+	out.RequestHeaders = in.RequestHeaders
+	out.AllowedCaCerts = in.AllowedCACerts
+	out.OauthConfig = GenericWebServiceOAuthConfig_ToProto(mapCtx, in.OauthConfig)
+	out.ServiceAgentAuth = direct.Enum_ToProto[pb.Webhook_GenericWebService_ServiceAgentAuth](mapCtx, in.ServiceAgentAuth)
+	out.WebhookType = direct.Enum_ToProto[pb.Webhook_GenericWebService_WebhookType](mapCtx, in.WebhookType)
+	out.HttpMethod = direct.Enum_ToProto[pb.Webhook_GenericWebService_HttpMethod](mapCtx, in.HTTPMethod)
+	out.RequestBody = direct.ValueOf(in.RequestBody)
+	out.ParameterMapping = in.ParameterMapping
+	return out
+}
+func GenericWebServiceOAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_GenericWebService_OAuthConfig) *krm.GenericWebServiceOAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GenericWebServiceOAuthConfig{}
+	out.ClientID = direct.LazyPtr(in.GetClientId())
+	out.ClientSecret = direct.LazyPtr(in.GetClientSecret())
+	out.TokenEndpoint = direct.LazyPtr(in.GetTokenEndpoint())
+	out.Scopes = in.Scopes
+	return out
+}
+func GenericWebServiceOAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.GenericWebServiceOAuthConfig) *pb.Webhook_GenericWebService_OAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Webhook_GenericWebService_OAuthConfig{}
+	out.ClientId = direct.ValueOf(in.ClientID)
+	out.ClientSecret = direct.ValueOf(in.ClientSecret)
+	out.TokenEndpoint = direct.ValueOf(in.TokenEndpoint)
+	out.Scopes = in.Scopes
+	return out
+}
 func SecuritySettings_AudioExportSettings_FromProto(mapCtx *direct.MapContext, in *pb.SecuritySettings_AudioExportSettings) *krm.SecuritySettings_AudioExportSettings {
 	if in == nil {
 		return nil
@@ -119,5 +208,27 @@ func SecuritySettings_InsightsExportSettings_ToProto(mapCtx *direct.MapContext, 
 	}
 	out := &pb.SecuritySettings_InsightsExportSettings{}
 	out.EnableInsightsExport = direct.ValueOf(in.EnableInsightsExport)
+	return out
+}
+func ServiceDirectoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_ServiceDirectoryConfig) *krm.ServiceDirectoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ServiceDirectoryConfig{}
+	if in.GetService() != "" {
+		out.ServiceRef = &krmservicedirectoryv1beta1.ServiceDirectoryServiceRef{External: in.GetService()}
+	}
+	out.GenericWebService = GenericWebService_FromProto(mapCtx, in.GetGenericWebService())
+	return out
+}
+func ServiceDirectoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.ServiceDirectoryConfig) *pb.Webhook_ServiceDirectoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Webhook_ServiceDirectoryConfig{}
+	if in.ServiceRef != nil {
+		out.Service = in.ServiceRef.External
+	}
+	out.GenericWebService = GenericWebService_ToProto(mapCtx, in.GenericWebService)
 	return out
 }
