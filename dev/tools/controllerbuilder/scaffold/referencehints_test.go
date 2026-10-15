@@ -216,6 +216,44 @@ func TestReferenceHintsSkipsGeneratedReferences(t *testing.T) {
 	}
 }
 
+func TestReferenceHintsQueuesFieldsEndingInID(t *testing.T) {
+	str := fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)
+	i32 := fieldType(descriptorpb.FieldDescriptorProto_TYPE_INT32)
+	repeated := descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()
+	fd, err := protodesc.NewFile(&descriptorpb.FileDescriptorProto{
+		Name:    strPtr("ids.proto"),
+		Package: strPtr("google.cloud.test.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{{
+			Name: strPtr("PluginInstance"),
+			Field: []*descriptorpb.FieldDescriptorProto{
+				{Name: strPtr("auth_config_id"), Number: i32Ptr(1), Type: str},
+				{Name: strPtr("target_plugin_ids"), Number: i32Ptr(2), Type: str, Label: repeated},
+				{Name: strPtr("id"), Number: i32Ptr(3), Type: str},
+				{Name: strPtr("numeric_id"), Number: i32Ptr(4), Type: i32},
+			},
+		}},
+	}, nil)
+	if err != nil {
+		t.Fatalf("building file descriptor: %v", err)
+	}
+	got := ReferenceHints(fd.Messages().ByName("PluginInstance"), codegen.WriteOptions{EmitPluralAcronyms: true})
+	want := []JudgementItem{
+		{
+			FieldPath: ".spec.authConfigID",
+			Reason:    "possible-reference-by-name",
+			Detail:    "the field name ends in ID/IDs; confirm whether it references another resource",
+		},
+		{
+			FieldPath: ".spec.targetPluginIDs",
+			Reason:    "possible-reference-by-name",
+			Detail:    "the field name ends in ID/IDs; confirm whether it references another resource",
+		},
+	}
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("ReferenceHints() mismatch (-want +got):\n%s", diff)
+	}
+}
+
 // referenceHintsMessage builds a Widget whose Spec holds a Config three ways:
 // directly, in a list and in a map. Config contains itself, and carries an
 // OUTPUT_ONLY field whose comment the rules would otherwise match. Widget's own

@@ -43,7 +43,7 @@ func ReferenceHints(msg protoreflect.MessageDescriptor, opts codegen.WriteOption
 				out = append(out, item)
 			}
 		}
-		if item, ok := referenceHint(path, desc); ok {
+		if item, ok := referenceHint(path, desc, field); ok {
 			out = append(out, item)
 		}
 		if item, ok := sensitiveField(path); ok {
@@ -137,7 +137,7 @@ func fieldComment(field protoreflect.FieldDescriptor) string {
 // from the strict rule ends the search. For IsReference, the entry says which
 // of Classify's rules matched. For NotRepresentable, the entry says the field
 // cannot be a reference, instead of a looser hint that would contradict that.
-func referenceHint(path, desc string) (JudgementItem, bool) {
+func referenceHint(path, desc string, field protoreflect.FieldDescriptor) (JudgementItem, bool) {
 	if refs.IsReferenceFieldPath(path) {
 		return JudgementItem{}, false
 	}
@@ -161,7 +161,34 @@ func referenceHint(path, desc string) (JudgementItem, bool) {
 	if target, ok := refs.MatchName(path); ok {
 		return JudgementItem{FieldPath: path, Reason: judgement.ReasonPossibleReferenceByName, Detail: target}, true
 	}
+	if field != nil && field.Kind() == protoreflect.StringKind && !field.IsMap() && hasResourceIDSuffix(path) {
+		return JudgementItem{
+			FieldPath: path,
+			Reason:    judgement.ReasonPossibleReferenceByName,
+			Detail:    "the field name ends in ID/IDs; confirm whether it references another resource",
+		}, true
+	}
 	return JudgementItem{}, false
+}
+
+// hasResourceIDSuffix reports whether the leaf segment of path ends in ID, Id,
+// IDs, or Ids with a non-empty prefix (e.g. "sourceProjectID", "customIDs"),
+// excluding "resourceID".
+func hasResourceIDSuffix(path string) bool {
+	leaf := path
+	if i := strings.LastIndex(leaf, "."); i >= 0 {
+		leaf = leaf[i+1:]
+	}
+	leaf = strings.TrimSuffix(leaf, "[]")
+	if strings.EqualFold(leaf, "resourceID") {
+		return false
+	}
+	for _, suffix := range []string{"IDs", "Ids", "ID", "Id"} {
+		if len(leaf) > len(suffix) && strings.HasSuffix(leaf, suffix) {
+			return true
+		}
+	}
+	return false
 }
 
 // sensitiveField returns a queue entry for a field whose name says it holds a

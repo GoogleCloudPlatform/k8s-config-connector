@@ -377,8 +377,9 @@ var NameRules = []NameRule{
 	{Target: "KMSCryptoKeyRef", Match: eq("kmsKey", "cmekKeyName", "encryptionKey", "kmsKeyName")},
 	// Matches fields containing "secret" as a discrete word, excluding "SecretVersion".
 	{Target: "SecretManagerSecretVersionRef", Match: wholeWordNotSuffix("secret", "SecretVersion")},
-	// Matches exact "project" leaf fields (excluding projectNumber or projectID).
-	{Target: "ProjectRef", Match: eq("project")},
+	// Matches exact "project" or "*ProjectID" leaf fields (excluding projectNumber).
+	{Target: "ProjectRef", Match: eq("project", "projectID")},
+	{Target: "ProjectRef", Match: hasSuffix("ProjectID")},
 }
 
 // wholeWordNotSuffix returns a matcher for a leaf that contains word as a
@@ -399,11 +400,12 @@ func wholeWordNotSuffix(word, exclude string) func(string) bool {
 
 // Patterns that identify resource names or URI formats in field descriptions.
 var (
-	looseResourceName = regexp.MustCompile(`(?i)resource name(\s*\(URI\))?\s+(of|for)\b`)
-	looseResourceURL  = regexp.MustCompile(`(?i)resource URL`)
-	looseBracketPath  = regexp.MustCompile(`(projects|locations|organizations|folders)/\[`)
-	// Taxonomy values (zones, machine types, images) that represent catalogue entries rather than managed resources.
-	looseCatalogueEntry = regexp.MustCompile(`(?i)(zone|location|machineType|acceleratorType|image|nodeType|diskType)(URI|Url)?$`)
+	looseResourceName    = regexp.MustCompile(`(?i)resource name(\s*\(URI\))?\s+(of|for)\b`)
+	looseResourceURL     = regexp.MustCompile(`(?i)resource URL`)
+	looseBracketPath     = regexp.MustCompile(`(projects|locations|organizations|folders)/\[`)
+	looseParenResourceID = regexp.MustCompile(`(?i)\((Google Cloud project|BigQuery dataset) ID\)`)
+	// Taxonomy values (zones, machine types, images) and string affixes that do not name managed resources.
+	looseCatalogueEntry = regexp.MustCompile(`(?i)(zone|location|machineType|acceleratorType|image|nodeType|diskType|suffix|prefix)(URI|Url)?$`)
 )
 
 // MatchDescriptionLoose reports whether desc describes a resource name or URI in
@@ -418,7 +420,7 @@ func MatchDescriptionLoose(fieldPath, desc string) bool {
 	if looseCatalogueEntry.MatchString(leaf) {
 		return false
 	}
-	if looseResourceURL.MatchString(desc) || looseBracketPath.MatchString(desc) {
+	if looseResourceURL.MatchString(desc) || looseBracketPath.MatchString(desc) || looseParenResourceID.MatchString(desc) {
 		return true
 	}
 	// A sub-message's own "name" is excluded (e.g. conversionWorkspace.name).
