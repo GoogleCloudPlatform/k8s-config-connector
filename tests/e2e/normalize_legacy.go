@@ -959,6 +959,7 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 	got := events.FormatHTTP()
 	normalizers := []func(string) string{}
 	normalizers = append(normalizers, IgnoreComments)
+	normalizers = append(normalizers, ReplaceTagResourceIDs)
 	normalizers = append(normalizers, ReplaceString(uniqueID, "${uniqueId}"))
 	normalizers = append(normalizers, ReplaceString(project.ProjectID, "${projectId}"))
 	normalizers = append(normalizers, ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))
