@@ -1,0 +1,103 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": false,
+    "resource": "ComputeProjectMetadata/computeprojectmetadata-${uniqueId}",
+    "fields": [
+      {
+        "id": "metadata.%",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "metadata.baz",
+        "old": "",
+        "new": "bat"
+      },
+      {
+        "id": "metadata.foo",
+        "old": "",
+        "new": "bar"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "Project/metadata-${uniqueId}",
+    "fields": [
+      {
+        "id": "auto_create_network",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "billing_account",
+        "old": "",
+        "new": "123456-777777-000001"
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "Dependent Project"
+      },
+      {
+        "id": "number",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "org_id",
+        "old": "",
+        "new": "123450001"
+      },
+      {
+        "id": "project_id",
+        "old": "",
+        "new": "example-project-01"
+      },
+      {
+        "id": "skip_delete",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "Service/compute.googleapis.com",
+    "fields": [
+      {
+        "id": "disable_on_destroy",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "example-project-01"
+      },
+      {
+        "id": "service",
+        "old": "",
+        "new": "compute.googleapis.com"
+      }
+    ]
+  }
+]

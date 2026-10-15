@@ -1,5 +1,4 @@
 GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 403 Forbidden
 Content-Type: application/json; charset=UTF-8
@@ -23,7 +22,6 @@ X-Xss-Protection: 0
 
 POST https://cloudbilling.googleapis.com/v1/billingAccounts/${billingAccountID}:testIamPermissions?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "permissions": [
@@ -51,7 +49,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "labels": {
@@ -84,7 +81,6 @@ X-Xss-Protection: 0
 
 GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -126,7 +122,6 @@ X-Xss-Protection: 0
 
 PUT https://cloudbilling.googleapis.com/v1/projects/${projectId}/billingInfo?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "billingAccountName": "billingAccounts/${billingAccountID}"
@@ -152,7 +147,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/${projectId}/billingInfo?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -174,7 +168,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -205,7 +198,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/${projectId}/billingInfo?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -227,7 +219,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -245,7 +236,6 @@ X-Xss-Protection: 0
 
 POST https://serviceusage.googleapis.com/v1/projects/${projectId}/services/compute.googleapis.com:enable?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {}
 
@@ -267,7 +257,6 @@ X-Xss-Protection: 0
 
 GET https://serviceusage.googleapis.com/v1beta1/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -299,7 +288,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -321,8 +309,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -350,15 +338,12 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/setCommonInstanceMetadata?alt=json&prettyPrint=false
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/setCommonInstanceMetadata
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "fingerprint": "abcdef0123A=",
   "items": [
-    null,
-    null,
     {
       "key": "baz",
       "value": "bat"
@@ -397,8 +382,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -428,8 +413,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -467,15 +452,12 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/setCommonInstanceMetadata?alt=json&prettyPrint=false
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/setCommonInstanceMetadata
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "fingerprint": "abcdef0123A=",
   "items": [
-    null,
-    null,
     {
       "key": "foo",
       "value": "bat"
@@ -514,8 +496,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -545,8 +527,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -584,9 +566,8 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/setCommonInstanceMetadata?alt=json&prettyPrint=false
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/setCommonInstanceMetadata
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "fingerprint": "abcdef0123A="
@@ -619,8 +600,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -646,33 +627,4 @@ X-Xss-Protection: 0
   "targetId": "${projectNumber}",
   "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}",
   "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "commonInstanceMetadata": {
-    "fingerprint": "oFT1D8KVyv4hM4iUi/Pf5w==",
-    "kind": "compute#metadata"
-  },
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "defaultNetworkTier": "PREMIUM",
-  "defaultServiceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
-  "id": "000000000000000000000",
-  "kind": "compute#project",
-  "name": "${projectId}",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}"
 }
