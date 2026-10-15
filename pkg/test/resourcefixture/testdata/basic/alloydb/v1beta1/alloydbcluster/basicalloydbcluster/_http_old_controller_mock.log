@@ -102,6 +102,7 @@ Content-Type: application/json
   },
   "labels": {
     "cnrm-test": "true",
+    "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
   "networkConfig": {
@@ -206,13 +207,17 @@ X-Xss-Protection: 0
       ]
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseVersion": "POSTGRES_16",
+    "databaseVersion": "POSTGRES_18",
+    "dataplexConfig": {
+      "enabled": true
+    },
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
     "geminiConfig": {},
     "labels": {
       "cnrm-test": "true",
+      "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
@@ -221,6 +226,7 @@ X-Xss-Protection: 0
       "network": "projects/${projectNumber}/global/networks/${networkID}"
     },
     "reconciling": false,
+    "serviceAccountEmail": "c-${projectNumber}-12345678@gcp-sa-alloydb.iam.gserviceaccount.com",
     "state": "READY",
     "subscriptionType": "STANDARD",
     "uid": "111111111111111111111",
@@ -289,13 +295,17 @@ X-Xss-Protection: 0
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": 4,
+  "databaseVersion": 6,
+  "dataplexConfig": {
+    "enabled": true
+  },
   "encryptionInfo": {
     "encryptionType": 1
   },
   "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
+    "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
@@ -304,6 +314,7 @@ X-Xss-Protection: 0
     "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
+  "serviceAccountEmail": "c-${projectNumber}-12345678@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": 1,
   "subscriptionType": 1,
   "uid": "111111111111111111111",
@@ -312,7 +323,30 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=initialUser
+GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectNumber}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}",
+  "projectId": "${projectId}",
+  "state": 1
+}
+
+---
+
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
 Content-Type: application/json
 
 {
@@ -345,23 +379,22 @@ Content-Type: application/json
     "enabled": true,
     "recoveryWindowDays": 14
   },
-  "databaseVersion": 4,
-  "geminiConfig": {},
+  "databaseVersion": 6,
   "initialUser": {
     "password": "updated",
     "user": "postgres"
   },
   "labels": {
     "cnrm-test": "true",
+    "label-one": "value-two",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
-  "network": "projects/${projectId}/global/networks/${networkID}",
+  "network": "projects/${projectNumber}/global/networks/${networkID}",
   "networkConfig": {
     "network": "projects/${projectId}/global/networks/${networkID}"
   },
-  "reconciling": false,
-  "subscriptionType": 1
+  "reconciling": false
 }
 
 200 OK
@@ -461,13 +494,17 @@ X-Xss-Protection: 0
       ]
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseVersion": "POSTGRES_16",
+    "databaseVersion": "POSTGRES_18",
+    "dataplexConfig": {
+      "enabled": true
+    },
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
     "geminiConfig": {},
     "labels": {
       "cnrm-test": "true",
+      "label-one": "value-two",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
@@ -476,6 +513,7 @@ X-Xss-Protection: 0
       "network": "projects/${projectNumber}/global/networks/${networkID}"
     },
     "reconciling": false,
+    "serviceAccountEmail": "c-${projectNumber}-12345678@gcp-sa-alloydb.iam.gserviceaccount.com",
     "state": "READY",
     "subscriptionType": "STANDARD",
     "uid": "111111111111111111111",
@@ -544,13 +582,17 @@ X-Xss-Protection: 0
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": 4,
+  "databaseVersion": 6,
+  "dataplexConfig": {
+    "enabled": true
+  },
   "encryptionInfo": {
     "encryptionType": 1
   },
   "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
+    "label-one": "value-two",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
@@ -559,6 +601,7 @@ X-Xss-Protection: 0
     "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
+  "serviceAccountEmail": "c-${projectNumber}-12345678@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": 1,
   "subscriptionType": 1,
   "uid": "111111111111111111111",
