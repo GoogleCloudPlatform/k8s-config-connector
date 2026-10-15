@@ -353,19 +353,14 @@ func (in *SaaSServiceMgmtRolloutSpec) DeepCopyInto(out *SaaSServiceMgmtRolloutSp
 		*out = new(v1beta1.ProjectRef)
 		**out = **in
 	}
-	if in.Location != nil {
-		in, out := &in.Location, &out.Location
-		*out = new(string)
-		**out = **in
-	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
 		**out = **in
 	}
-	if in.ReleaseRef != nil {
-		in, out := &in.ReleaseRef, &out.ReleaseRef
-		*out = new(SaasServiceMgmtReleaseRef)
+	if in.Release != nil {
+		in, out := &in.Release, &out.Release
+		*out = new(string)
 		**out = **in
 	}
 	if in.RolloutOrchestrationStrategy != nil {
@@ -378,15 +373,29 @@ func (in *SaaSServiceMgmtRolloutSpec) DeepCopyInto(out *SaaSServiceMgmtRolloutSp
 		*out = new(string)
 		**out = **in
 	}
-	if in.RolloutKindRef != nil {
-		in, out := &in.RolloutKindRef, &out.RolloutKindRef
-		*out = new(SaaSServiceMgmtRolloutKindRef)
+	if in.RolloutKind != nil {
+		in, out := &in.RolloutKind, &out.RolloutKind
+		*out = new(string)
 		**out = **in
 	}
 	if in.Control != nil {
 		in, out := &in.Control, &out.Control
 		*out = new(RolloutControl)
 		(*in).DeepCopyInto(*out)
+	}
+	if in.Labels != nil {
+		in, out := &in.Labels, &out.Labels
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
+	}
+	if in.Annotations != nil {
+		in, out := &in.Annotations, &out.Annotations
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
 	}
 }
 
@@ -567,11 +576,6 @@ func (in *SaaSServiceMgmtTenantSpec) DeepCopyInto(out *SaaSServiceMgmtTenantSpec
 		*out = new(v1beta1.ProjectRef)
 		**out = **in
 	}
-	if in.Location != nil {
-		in, out := &in.Location, &out.Location
-		*out = new(string)
-		**out = **in
-	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
@@ -582,10 +586,24 @@ func (in *SaaSServiceMgmtTenantSpec) DeepCopyInto(out *SaaSServiceMgmtTenantSpec
 		*out = new(string)
 		**out = **in
 	}
-	if in.SaasRef != nil {
-		in, out := &in.SaasRef, &out.SaasRef
-		*out = new(SaaSServiceMgmtSaaSRef)
+	if in.Saas != nil {
+		in, out := &in.Saas, &out.Saas
+		*out = new(string)
 		**out = **in
+	}
+	if in.Labels != nil {
+		in, out := &in.Labels, &out.Labels
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
+	}
+	if in.Annotations != nil {
+		in, out := &in.Annotations, &out.Annotations
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
 	}
 }
 

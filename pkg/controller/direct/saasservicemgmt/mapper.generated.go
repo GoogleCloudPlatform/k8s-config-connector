@@ -169,8 +169,6 @@ func SaaSServiceMgmtRolloutObservedState_FromProto(mapCtx *direct.MapContext, in
 	out.RootRollout = direct.LazyPtr(in.GetRootRollout())
 	out.ParentRollout = direct.LazyPtr(in.GetParentRollout())
 	out.Stats = RolloutStatsObservedState_FromProto(mapCtx, in.GetStats())
-	// MISSING: Labels
-	// MISSING: Annotations
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -191,8 +189,6 @@ func SaaSServiceMgmtRolloutObservedState_ToProto(mapCtx *direct.MapContext, in *
 	out.RootRollout = direct.ValueOf(in.RootRollout)
 	out.ParentRollout = direct.ValueOf(in.ParentRollout)
 	out.Stats = RolloutStatsObservedState_ToProto(mapCtx, in.Stats)
-	// MISSING: Labels
-	// MISSING: Annotations
 	out.Uid = direct.ValueOf(in.Uid)
 	out.Etag = direct.ValueOf(in.Etag)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
@@ -205,17 +201,13 @@ func SaaSServiceMgmtRolloutSpec_FromProto(mapCtx *direct.MapContext, in *pb.Roll
 	}
 	out := &krm.SaaSServiceMgmtRolloutSpec{}
 	// MISSING: Name
-	if in.GetRelease() != "" {
-		out.ReleaseRef = &krm.SaasServiceMgmtReleaseRef{External: in.GetRelease()}
-	}
+	out.Release = direct.LazyPtr(in.GetRelease())
 	out.RolloutOrchestrationStrategy = direct.LazyPtr(in.GetRolloutOrchestrationStrategy())
 	out.UnitFilter = direct.LazyPtr(in.GetUnitFilter())
-	if in.GetRolloutKind() != "" {
-		out.RolloutKindRef = &krm.SaaSServiceMgmtRolloutKindRef{External: in.GetRolloutKind()}
-	}
+	out.RolloutKind = direct.LazyPtr(in.GetRolloutKind())
 	out.Control = RolloutControl_FromProto(mapCtx, in.GetControl())
-	// MISSING: Labels
-	// MISSING: Annotations
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
 	return out
 }
 func SaaSServiceMgmtRolloutSpec_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtRolloutSpec) *pb.Rollout {
@@ -224,17 +216,13 @@ func SaaSServiceMgmtRolloutSpec_ToProto(mapCtx *direct.MapContext, in *krm.SaaSS
 	}
 	out := &pb.Rollout{}
 	// MISSING: Name
-	if in.ReleaseRef != nil {
-		out.Release = in.ReleaseRef.External
-	}
+	out.Release = direct.ValueOf(in.Release)
 	out.RolloutOrchestrationStrategy = direct.ValueOf(in.RolloutOrchestrationStrategy)
 	out.UnitFilter = direct.ValueOf(in.UnitFilter)
-	if in.RolloutKindRef != nil {
-		out.RolloutKind = in.RolloutKindRef.External
-	}
+	out.RolloutKind = direct.ValueOf(in.RolloutKind)
 	out.Control = RolloutControl_ToProto(mapCtx, in.Control)
-	// MISSING: Labels
-	// MISSING: Annotations
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
 	return out
 }
 func SaaSServiceMgmtTenantObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Tenant) *krm.SaaSServiceMgmtTenantObservedState {
@@ -243,8 +231,6 @@ func SaaSServiceMgmtTenantObservedState_FromProto(mapCtx *direct.MapContext, in 
 	}
 	out := &krm.SaaSServiceMgmtTenantObservedState{}
 	// MISSING: Name
-	// MISSING: Labels
-	// MISSING: Annotations
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -257,8 +243,6 @@ func SaaSServiceMgmtTenantObservedState_ToProto(mapCtx *direct.MapContext, in *k
 	}
 	out := &pb.Tenant{}
 	// MISSING: Name
-	// MISSING: Labels
-	// MISSING: Annotations
 	out.Uid = direct.ValueOf(in.Uid)
 	out.Etag = direct.ValueOf(in.Etag)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
@@ -272,11 +256,9 @@ func SaaSServiceMgmtTenantSpec_FromProto(mapCtx *direct.MapContext, in *pb.Tenan
 	out := &krm.SaaSServiceMgmtTenantSpec{}
 	// MISSING: Name
 	out.ConsumerResource = direct.LazyPtr(in.GetConsumerResource())
-	if in.GetSaas() != "" {
-		out.SaasRef = &krm.SaaSServiceMgmtSaaSRef{External: in.GetSaas()}
-	}
-	// MISSING: Labels
-	// MISSING: Annotations
+	out.Saas = direct.LazyPtr(in.GetSaas())
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
 	return out
 }
 func SaaSServiceMgmtTenantSpec_ToProto(mapCtx *direct.MapContext, in *krm.SaaSServiceMgmtTenantSpec) *pb.Tenant {
@@ -286,11 +268,9 @@ func SaaSServiceMgmtTenantSpec_ToProto(mapCtx *direct.MapContext, in *krm.SaaSSe
 	out := &pb.Tenant{}
 	// MISSING: Name
 	out.ConsumerResource = direct.ValueOf(in.ConsumerResource)
-	if in.SaasRef != nil {
-		out.Saas = in.SaasRef.External
-	}
-	// MISSING: Labels
-	// MISSING: Annotations
+	out.Saas = direct.ValueOf(in.Saas)
+	out.Labels = in.Labels
+	out.Annotations = in.Annotations
 	return out
 }
 func SaaSServiceMgmtUnitObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Unit) *krm.SaaSServiceMgmtUnitObservedState {

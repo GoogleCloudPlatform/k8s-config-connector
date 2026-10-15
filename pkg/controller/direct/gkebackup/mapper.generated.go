@@ -216,6 +216,54 @@ func GKEBackupBackupSpec_ToProto(mapCtx *direct.MapContext, in *krm.GKEBackupBac
 	// MISSING: SatisfiesPzi
 	return out
 }
+func GKEBackupRestoreChannelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RestoreChannel) *krm.GKEBackupRestoreChannelObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GKEBackupRestoreChannelObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.DestinationProjectID = direct.LazyPtr(in.GetDestinationProjectId())
+	return out
+}
+func GKEBackupRestoreChannelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GKEBackupRestoreChannelObservedState) *pb.RestoreChannel {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RestoreChannel{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.DestinationProjectId = direct.ValueOf(in.DestinationProjectID)
+	return out
+}
+func GKEBackupRestoreChannelSpec_FromProto(mapCtx *direct.MapContext, in *pb.RestoreChannel) *krm.GKEBackupRestoreChannelSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GKEBackupRestoreChannelSpec{}
+	// MISSING: Name
+	out.DestinationProject = direct.LazyPtr(in.GetDestinationProject())
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func GKEBackupRestoreChannelSpec_ToProto(mapCtx *direct.MapContext, in *krm.GKEBackupRestoreChannelSpec) *pb.RestoreChannel {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RestoreChannel{}
+	// MISSING: Name
+	out.DestinationProject = direct.ValueOf(in.DestinationProject)
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
 func GKEBackupRestorePlanSpec_ToProto(mapCtx *direct.MapContext, in *krm.GKEBackupRestorePlanSpec) *pb.RestorePlan {
 	if in == nil {
 		return nil

@@ -8,7 +8,6 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
   name: saasservicemgmttenants.saasservicemgmt.cnrm.cloud.google.com
 spec:
@@ -63,19 +62,35 @@ spec:
           spec:
             description: SaaSServiceMgmtTenantSpec defines the desired state of SaaSServiceMgmtTenant
             properties:
+              annotations:
+                additionalProperties:
+                  type: string
+                description: |-
+                  Optional. Annotations is an unstructured key-value map stored with a
+                   resource that may be set by external tools to store and retrieve arbitrary
+                   metadata. They are not queryable and should be preserved when modifying
+                   objects.
+
+                   More info: https://kubernetes.io/docs/user-guide/annotations
+                type: object
               consumerResource:
-                description: Optional. Immutable. A reference to the consumer resource
-                  this SaaS Tenant is representing.
+                description: |-
+                  Optional. Immutable. A reference to the consumer resource this SaaS Tenant
+                   is representing.
+
+                   The relationship with a consumer resource can be used by SaaS Runtime for
+                   retrieving consumer-defined settings and policies such as maintenance
+                   policies (using Unified Maintenance Policy API).
                 type: string
-                x-kubernetes-validations:
-                - message: ConsumerResource field is immutable
-                  rule: self == oldSelf
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. The labels on the resource, which can be used
+                  for categorization. similar to Kubernetes resource labels.
+                type: object
               location:
-                description: Immutable. The location of this resource.
+                description: The location of this resource.
                 type: string
-                x-kubernetes-validations:
-                - message: Location field is immutable
-                  rule: self == oldSelf
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:
@@ -112,23 +127,14 @@ spec:
                 description: The SaaSServiceMgmtTenant name. If not given, the metadata.name
                   will be used.
                 type: string
-              saasRef:
+              saas:
                 description: Required. Immutable. A reference to the Saas that defines
                   the product (managed service) that the producer wants to manage
-                  with SaaS Runtime.
-                properties:
-                  external:
-                    description: A reference to an externally managed SaaSServiceMgmtSaaS
-                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/saas/{{saas}}".
-                    type: string
-                type: object
-                x-kubernetes-validations:
-                - message: SaasRef field is immutable
-                  rule: self == oldSelf
+                  with SaaS Runtime. Part of the SaaS Runtime common data model.
+                type: string
             required:
             - location
             - projectRef
-            - saasRef
             type: object
           status:
             description: SaaSServiceMgmtTenantStatus defines the config connector

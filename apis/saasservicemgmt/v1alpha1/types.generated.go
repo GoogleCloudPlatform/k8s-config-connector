@@ -18,8 +18,8 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.saasplatform.saasservicemgmt.v1beta1
 // resource: SaasServiceMgmtRelease:Release
-// resource: SaaSServiceMgmtRollout:Rollout
 // resource: SaaSServiceMgmtTenant:Tenant
+// resource: SaaSServiceMgmtRollout:Rollout
 // resource: SaaSServiceMgmtUnit:Unit
 
 package v1alpha1
