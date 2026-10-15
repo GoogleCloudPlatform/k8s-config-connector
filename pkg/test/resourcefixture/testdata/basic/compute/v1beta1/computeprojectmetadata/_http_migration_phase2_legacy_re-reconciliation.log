@@ -1,0 +1,36 @@
+GET https://compute.googleapis.com/compute/v1/projects/example-project-01?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "commonInstanceMetadata": {
+    "fingerprint": "XPoBKO4Dib2kMR4P0Q8xrw==",
+    "items": [
+      {
+        "key": "baz",
+        "value": "bat"
+      },
+      {
+        "key": "foo",
+        "value": "bar"
+      }
+    ],
+    "kind": "compute#metadata"
+  },
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "defaultNetworkTier": "PREMIUM",
+  "defaultServiceAccount": "1137903263-compute@developer.gserviceaccount.com",
+  "id": "000000000000000000000",
+  "kind": "compute#project",
+  "name": "example-project-01",
+  "selfLink": "https://compute.googleapis.com/compute/v1/projects/example-project-01"
+}

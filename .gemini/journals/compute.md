@@ -37,3 +37,12 @@
   3. Pre-normalized all URL fields (e.g., `InstanceTemplate`, `HealthCheck`, `TargetPools`, and zone names) to relative paths using `refs.TrimComputeURIPrefix` and `lastComponent` before diff comparison.
   4. Duplicated `regionalcomputeinstancegroupmanager` and `zonalcomputeinstancegroupmanager` to `-direct` variants with direct-reconciler annotations, successfully recorded golden files and HTTP traffic against MockGCP, and passed the full presubmit suites.
 - **Impact**: Clean package-isolated direct controller supporting both zonal and regional instance group managers while completely avoiding any drift loops or false diffs.
+
+### [2026-10-15] Direct Migration of ComputeProjectMetadata
+- **Context**: Implementing direct controller and test fixtures for `ComputeProjectMetadata` (issue #13992).
+- **Implementation**:
+  1. Added `newProjectsClient` to `gcpClient` under `pkg/controller/direct/compute/client.go` using GAPIC REST client `compute.NewProjectsRESTClient`.
+  2. Implemented `ComputeProjectMetadataAdapter` under `pkg/controller/direct/compute/computeprojectmetadata_controller.go`, supporting `Find`, `Create`, `Update`, `Delete`, and `Export`.
+  3. Registered dual controllers in `pkg/controller/resourceconfig/static_config.go` with `SupportedControllers: [Direct, Terraform]` keeping default as `Terraform` for brownfield backward compatibility.
+  4. Executed `hack/compare-mock` and verified E2E test scenarios for direct reconciliation, legacy fallback, and `TestMigrationToDirect`.
+- **Impact**: Successfully enables direct reconciliation for `ComputeProjectMetadata` with 0 diffs during takeover and steady-state re-reconciliation.
