@@ -1,0 +1,31 @@
+apiVersion: run.cnrm.cloud.google.com/v1alpha1
+kind: RunWorkerPool
+metadata:
+  name: runworkerpool-${uniqueId}
+spec:
+  location: "us-central1"
+  projectRef:
+    external: "${projectId}"
+  description: "Updated Maximal WorkerPool description"
+  labels:
+    foo: "bar-updated"
+  annotations:
+    client: "kcc"
+  client: "kcc"
+  clientVersion: "1.0.0"
+  launchStage: "GA"
+  customAudiences:
+  - "https://example.com"
+  scaling:
+    manualInstanceCount: 2
+  template:
+    containers:
+    - name: "worker"
+      image: "us-docker.pkg.dev/cloudrun/container/hello"
+      env:
+      - name: "ENV_VAR"
+        value: "env_val_updated"
+      resources:
+        limits:
+          cpu: "1000m"
+          memory: "512Mi"

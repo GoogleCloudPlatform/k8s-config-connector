@@ -1,0 +1,71 @@
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "annotations": {
+    "client": "kcc"
+  },
+  "client": "kcc",
+  "clientVersion": "1.0.0",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "description": "Updated Maximal WorkerPool description",
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "instanceSplitStatuses": [
+    {
+      "percent": 100,
+      "type": 1
+    }
+  ],
+  "instanceSplits": [
+    {
+      "percent": 100,
+      "type": 1
+    }
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifier": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+  "latestCreatedRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00002-abc",
+  "latestReadyRevision": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}/revisions/runworkerpool--00002-abc",
+  "launchStage": 4,
+  "name": "projects/${projectId}/locations/us-central1/workerPools/runworkerpool-${uniqueId}",
+  "observedGeneration": "2",
+  "scaling": {
+    "manualInstanceCount": 2
+  },
+  "template": {
+    "containers": [
+      {
+        "env": [
+          {
+            "name": "ENV_VAR",
+            "value": "env_val_updated"
+          }
+        ],
+        "image": "us-docker.pkg.dev/cloudrun/container/hello",
+        "name": "worker",
+        "resources": {
+          "limits": {
+            "cpu": "1000m",
+            "memory": "512Mi"
+          }
+        }
+      }
+    ],
+    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+  },
+  "terminalCondition": {
+    "lastTransitionTime": "2025-01-01T00:00:00Z",
+    "state": 4,
+    "type": "Ready"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
