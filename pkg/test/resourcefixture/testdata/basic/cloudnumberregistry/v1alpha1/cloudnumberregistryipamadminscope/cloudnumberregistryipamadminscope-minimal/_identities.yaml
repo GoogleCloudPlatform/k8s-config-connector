@@ -1,0 +1,6 @@
+- caisURL: //cloudnumberregistry.googleapis.com/projects/${projectId}/locations/global/ipamAdminScopes/cnr-ias-min-${uniqueId}
+  group: cloudnumberregistry.cnrm.cloud.google.com
+  kind: CloudNumberRegistryIpamAdminScope
+  name: cnr-ias-min-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
