@@ -153,9 +153,14 @@ func (a *APIScaffolder) locationRef(pattern string) (field string, item *Judgeme
 	}
 }
 
-// locationField is the Spec's location field, exactly as the types template
-// wrote it before, so a resource with a location scaffolds unchanged.
+// locationField is the Spec's location field emitted when prepopulating a
+// resource that has a location segment.
 const locationField = "\t// The location of this resource.\n" +
+	"\tLocation *string `json:\"location\"`"
+
+// legacyLocationField is the Spec's location field emitted in the default
+// three-field stub when --prepopulate-resource is not enabled.
+const legacyLocationField = "\t// The location of this resource.\n" +
 	"\tLocation string `json:\"location\"`"
 
 // referenceTo renders a Spec field pointing at the resource at path, whose

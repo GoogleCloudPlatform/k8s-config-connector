@@ -371,7 +371,7 @@ func TestRootRef(t *testing.T) {
 // whose name has none is a field its API rejects, and a reference may replace
 // any location the generator does write.
 func TestLocationRef(t *testing.T) {
-	const field = "Location string `json:\"location\"`"
+	const field = "Location *string `json:\"location\"`"
 	grid := []struct {
 		name       string
 		pattern    string
