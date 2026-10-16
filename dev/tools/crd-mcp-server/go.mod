@@ -14,9 +14,9 @@
 
 module github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/crd-mcp-server
 
-go 1.26
+go 1.26.0
 
-toolchain go1.26.4
+toolchain go1.26.9
 
 require (
 	github.com/spf13/cobra v1.10.2
@@ -35,8 +35,8 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/spf13/pflag v1.0.9 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
-	golang.org/x/net v0.38.0 // indirect
-	golang.org/x/text v0.23.0 // indirect
+	golang.org/x/net v0.61.0 // indirect
+	golang.org/x/text v0.43.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	k8s.io/apimachinery v0.33.9 // indirect

@@ -2,7 +2,7 @@ module github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp
 
 go 1.26.0
 
-toolchain go1.26.4
+toolchain go1.26.9
 
 replace github.com/GoogleCloudPlatform/k8s-config-connector => ./..
 
@@ -32,6 +32,7 @@ require (
 	cloud.google.com/go/compute v1.63.0
 	cloud.google.com/go/configdelivery v0.1.1
 	cloud.google.com/go/contactcenterinsights v1.22.0
+	cloud.google.com/go/datacatalog v1.32.0
 	cloud.google.com/go/dataform v1.0.0
 	cloud.google.com/go/dataplex v1.36.0
 	cloud.google.com/go/dataproc/v2 v2.22.0
@@ -57,6 +58,7 @@ require (
 	cloud.google.com/go/logging v1.18.0
 	cloud.google.com/go/longrunning v1.2.0
 	cloud.google.com/go/managedkafka v0.8.1
+	cloud.google.com/go/maps v1.39.0
 	cloud.google.com/go/memcache v1.16.0
 	cloud.google.com/go/memorystore v0.9.0
 	cloud.google.com/go/modelarmor v1.0.0
@@ -79,6 +81,7 @@ require (
 	cloud.google.com/go/securitycenter v1.44.0
 	cloud.google.com/go/speech v1.35.0
 	cloud.google.com/go/storage v1.62.0
+	cloud.google.com/go/storageinsights v1.8.0
 	cloud.google.com/go/vectorsearch v1.3.0
 	cloud.google.com/go/video v1.32.0
 	cloud.google.com/go/vision/v2 v2.15.0
@@ -234,15 +237,15 @@ require (
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.2 // indirect
-	golang.org/x/crypto v0.55.0 // indirect
-	golang.org/x/mod v0.38.0 // indirect
-	golang.org/x/net v0.58.0 // indirect
-	golang.org/x/sync v0.22.0 // indirect
-	golang.org/x/sys v0.47.0 // indirect
-	golang.org/x/term v0.45.0 // indirect
-	golang.org/x/text v0.41.0 // indirect
+	golang.org/x/crypto v0.58.0 // indirect
+	golang.org/x/mod v0.41.0 // indirect
+	golang.org/x/net v0.61.0 // indirect
+	golang.org/x/sync v0.24.0 // indirect
+	golang.org/x/sys v0.49.0 // indirect
+	golang.org/x/term v0.47.0 // indirect
+	golang.org/x/text v0.43.0 // indirect
 	golang.org/x/time v0.15.0 // indirect
-	golang.org/x/tools v0.48.0 // indirect
+	golang.org/x/tools v0.51.0 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.4.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	gopkg.in/dnaeon/go-vcr.v3 v3.2.0 // indirect
