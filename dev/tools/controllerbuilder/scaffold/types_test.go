@@ -51,8 +51,9 @@ func TestTypesTemplateRendersValidGo(t *testing.T) {
 		ProtoMessageFullName: "google.cloud.networkservices.v1.LbTrafficExtension",
 	}
 	base.RootRefField = fixedRootField("ProjectRef", "projectRef", "project")
-	base.LocationField = locationField
+	base.LocationField = legacyLocationField
 	prepopulated := base
+	prepopulated.LocationField = locationField
 	prepopulated.SpecFields = "\t// +kcc:proto:field=google.cloud.networkservices.v1.LbTrafficExtension.description\n" +
 		"\tDescription *string `json:\"description,omitempty\"`\n"
 	prepopulated.ObservedStateFields = "\t// +kcc:proto:field=google.cloud.networkservices.v1.LbTrafficExtension.create_time\n" +
@@ -98,7 +99,8 @@ func TestTypesTemplateRendersValidGo(t *testing.T) {
 
 // TestAddTypeFileWritesPrepopulatedBodies verifies that AddTypeFile writes all
 // components of PrepopulateResult (Spec fields, ObservedState fields, and ExtraImports)
-// into the scaffolded file.
+// into the scaffolded file, and emits Location as *string when prepopulating vs
+// string when not prepopulating.
 func TestAddTypeFileWritesPrepopulatedBodies(t *testing.T) {
 	// Arrange
 	dir := t.TempDir()
@@ -127,6 +129,9 @@ func TestAddTypeFileWritesPrepopulatedBodies(t *testing.T) {
 		t.Fatalf("reading scaffolded file: %v", err)
 	}
 	got := string(b)
+	if !strings.Contains(got, "Location *string `json:\"location\"`") {
+		t.Errorf("expected Location *string when prepopulating:\n%s", got)
+	}
 	if !strings.Contains(got, "Description *string `json:\"description,omitempty\"`") {
 		t.Errorf("the Spec body is missing from the scaffolded file:\n%s", got)
 	}
@@ -135,6 +140,18 @@ func TestAddTypeFileWritesPrepopulatedBodies(t *testing.T) {
 	}
 	if !strings.Contains(got, `common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"`) {
 		t.Errorf("the import the ObservedState body needs is missing from the scaffolded file:\n%s", got)
+	}
+
+	stubResource := options.Resource{Kind: "NetworkServicesStub", ProtoName: "Stub"}
+	if err := scaffolder.AddTypeFile(stubResource, nil, ""); err != nil {
+		t.Fatalf("AddTypeFile (stub): %v", err)
+	}
+	stubBytes, err := os.ReadFile(filepath.Join(dir, scaffolder.GoPackage, "networkservicesstub_types.go"))
+	if err != nil {
+		t.Fatalf("reading stub file: %v", err)
+	}
+	if !strings.Contains(string(stubBytes), "Location string `json:\"location\"`") {
+		t.Errorf("expected Location string when not prepopulating:\n%s", string(stubBytes))
 	}
 }
 

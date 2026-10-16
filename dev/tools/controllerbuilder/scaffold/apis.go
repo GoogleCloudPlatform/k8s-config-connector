@@ -173,7 +173,7 @@ func (a *APIScaffolder) buildAPIArgs(resource *options.Resource) *apis.APIArgs {
 	// Without a pattern to read, every resource gets projectRef and a required
 	// location. AddTypeFile replaces both from the pattern when prepopulating.
 	args.RootRefField, _ = a.rootRef("")
-	args.LocationField, _ = a.locationRef("")
+	args.LocationField = legacyLocationField
 
 	if resource != nil {
 		args.Kind = resource.Kind
