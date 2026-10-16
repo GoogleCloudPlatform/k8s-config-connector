@@ -1,0 +1,188 @@
+GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-central1/biReservation?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbiReservation
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectId}/locations/us-central1/biReservation"
+}
+
+---
+
+PATCH https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-central1/biReservation?%24alt=json%3Benum-encoding%3Dint&updateMask=preferredTables%2Csize
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: bi_reservation.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbiReservation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/biReservation",
+  "preferredTables": [
+    {
+      "datasetId": "dataset1",
+      "projectId": "${projectId}",
+      "tableId": "table1"
+    }
+  ],
+  "size": "250000000000"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectId}/locations/us-central1/biReservation",
+  "preferredTables": [
+    {
+      "datasetId": "dataset1",
+      "projectId": "${projectId}",
+      "tableId": "table1"
+    }
+  ],
+  "size": "250000000000",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-central1/biReservation?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbiReservation
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectId}/locations/us-central1/biReservation",
+  "preferredTables": [
+    {
+      "datasetId": "dataset1",
+      "projectId": "${projectId}",
+      "tableId": "table1"
+    }
+  ],
+  "size": "250000000000",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-central1/biReservation?%24alt=json%3Benum-encoding%3Dint&updateMask=preferredTables%2Csize
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: bi_reservation.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbiReservation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/biReservation",
+  "preferredTables": [
+    {
+      "datasetId": "dataset1",
+      "projectId": "${projectId}",
+      "tableId": "table2"
+    }
+  ],
+  "size": "500000000000"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectId}/locations/us-central1/biReservation",
+  "preferredTables": [
+    {
+      "datasetId": "dataset1",
+      "projectId": "${projectId}",
+      "tableId": "table2"
+    }
+  ],
+  "size": "500000000000",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-central1/biReservation?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbiReservation
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectId}/locations/us-central1/biReservation",
+  "preferredTables": [
+    {
+      "datasetId": "dataset1",
+      "projectId": "${projectId}",
+      "tableId": "table2"
+    }
+  ],
+  "size": "500000000000",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-central1/biReservation?%24alt=json%3Benum-encoding%3Dint&updateMask=size%2CpreferredTables
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: bi_reservation.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbiReservation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/biReservation"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectId}/locations/us-central1/biReservation",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
