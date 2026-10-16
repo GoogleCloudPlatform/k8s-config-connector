@@ -406,40 +406,6 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		}
 	}
 
-	// The findings below are in nested messages, which several resources can
-	// share. They are recorded against the proto message rather than a Kind.
-	if o.PrepopulateSpec {
-		// Fields the generator could not produce a Go type for.
-		for _, f := range typeGenerator.UnsupportedFields() {
-			queued = append(queued, judgement.Entry{
-				ProtoMessage: f.Message,
-				Field:        f.Field,
-				Reason:       judgement.ReasonUnsupportedFieldType,
-				Detail:       f.Reason,
-				Status:       judgement.StatusOpen,
-			})
-		}
-		for _, m := range typeGenerator.DerivedMessageMaps() {
-			queued = append(queued, judgement.Entry{
-				ProtoMessage: m.Message,
-				Field:        m.Field,
-				Reason:       judgement.ReasonMessageMapDerived,
-				Detail:       fmt.Sprintf("derived as map[string]%s from proto %s; verify Go type and mapping", m.GoType, m.ProtoType),
-				Status:       judgement.StatusOpen,
-			})
-		}
-	}
-	// Each of these carries a +kcc:guess marker in types.generated.go.
-	for _, f := range typeGenerator.SiblingGuesses() {
-		queued = append(queued, judgement.Entry{
-			ProtoMessage: f.Message,
-			Field:        f.Field,
-			Reason:       judgement.ReasonPossibleReferenceBySibling,
-			Detail:       "the name matches " + f.Target + ", a resource this service declares; confirm whether it should be a reference",
-			Status:       judgement.StatusOpen,
-		})
-	}
-
 	addCopyright := true
 	writeEmptyFiles := true
 	if err := typeGenerator.WriteFiles(addCopyright, writeEmptyFiles); err != nil {

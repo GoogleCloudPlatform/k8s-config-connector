@@ -177,6 +177,7 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 		buf.Write(field_.Bytes())
 		emitted++
 
+		fieldPath := ".spec." + codegen.GetJSONForKRM(field, opts)
 		// A string field named after a resource in this service may be a
 		// reference to it. WriteField has already written a +kcc:guess marker
 		// above the field, and this adds the queue entry. Both use
@@ -184,37 +185,42 @@ func PrepopulateSpec(msg protoreflect.MessageDescriptor, opts codegen.WriteOptio
 		// string. A reviewer decides whether to make it a reference.
 		if target, ok := codegen.SiblingResource(field, opts); ok {
 			out.Judgement = append(out.Judgement, JudgementItem{
-				FieldPath: ".spec." + codegen.GetJSONForKRM(field, opts),
+				FieldPath: fieldPath,
 				Reason:    judgement.ReasonPossibleReferenceBySibling,
 				Detail: "the name matches " + target + ", a resource this service declares; " +
 					"confirm whether it should be a reference",
 			})
 		}
 
+		unsupported := false
 		if _, reason, ok := codegen.UnsupportedFieldMarker(field_.String()); ok {
+			unsupported = true
 			out.Judgement = append(out.Judgement, JudgementItem{
-				FieldPath: ".spec." + codegen.GetJSONForKRM(field, opts),
+				FieldPath: fieldPath,
 				Reason:    judgement.ReasonUnsupportedFieldType,
 				Detail:    reason,
 			})
 		} else if opts.EmitMessageMaps {
 			if protoMsg, goType, ok := codegen.MessageMapValueInfo(field); ok {
 				out.Judgement = append(out.Judgement, JudgementItem{
-					FieldPath: ".spec." + codegen.GetJSONForKRM(field, opts),
+					FieldPath: fieldPath,
 					Reason:    judgement.ReasonMessageMapDerived,
 					Detail:    fmt.Sprintf("derived as map[string]%s from proto %s; verify Go type and mapping", goType, protoMsg),
 				})
 			}
 		}
-		if item, ok := judgementFor(field, ".spec."+codegen.GetJSONForKRM(field, opts)); ok {
+		if item, ok := judgementFor(field, fieldPath); ok {
 			out.Judgement = append(out.Judgement, item)
 		}
 		if string(field.Name()) == "etag" {
 			out.Judgement = append(out.Judgement, JudgementItem{
-				FieldPath: ".spec." + codegen.GetJSONForKRM(field, opts),
+				FieldPath: fieldPath,
 				Reason:    judgement.ReasonEtagInSpec,
 				Detail:    "etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState",
 			})
+		}
+		if !unsupported {
+			walkNestedSpecJudgements(field, fieldPath, opts, map[protoreflect.FullName]bool{msg.FullName(): true}, &out.Judgement)
 		}
 	}
 
@@ -261,7 +267,9 @@ func PrepopulateObservedState(details *codegen.OutputMessageDetails, observedSta
 					Reason:    judgement.ReasonUnsupportedFieldType,
 					Detail:    reason,
 				})
-			} else if opts.EmitMessageMaps && n.Field != nil {
+				continue
+			}
+			if opts.EmitMessageMaps && n.Field != nil {
 				if protoMsg, goType, ok := codegen.MessageMapValueInfo(n.Field); ok {
 					items = append(items, JudgementItem{
 						FieldPath: ".status.observedState." + n.JSONName,
@@ -271,7 +279,11 @@ func PrepopulateObservedState(details *codegen.OutputMessageDetails, observedSta
 				}
 			}
 			isOut := isOutputOrServerSetField(n.Field, details.Message, opts)
-			walkObservedStateWellKnownProtoTypes(n.Field, ".status.observedState."+n.JSONName, opts, observedStateMessages, isOut || details.ForceAll, map[protoreflect.FullName]bool{}, &items)
+			onPath := map[protoreflect.FullName]bool{}
+			if details.Message != nil {
+				onPath[details.Message.FullName()] = true
+			}
+			walkObservedStateWellKnownProtoTypes(n.Field, ".status.observedState."+n.JSONName, opts, observedStateMessages, isOut || details.ForceAll, onPath, &items)
 		}
 	}
 
@@ -472,11 +484,101 @@ func walkObservedStateWellKnownProtoTypes(field protoreflect.FieldDescriptor, pa
 				continue
 			}
 		}
+		childPath := nextPrefix + "." + codegen.GetJSONForKRM(child, opts)
 		if _, err := codegen.GoTypeForField(child, false, opts); err != nil {
+			*out = append(*out, JudgementItem{
+				FieldPath: childPath,
+				Reason:    judgement.ReasonUnsupportedFieldType,
+				Detail:    err.Error(),
+			})
+			continue
+		}
+		if opts.EmitMessageMaps {
+			if protoMsg, goType, ok := codegen.MessageMapValueInfo(child); ok {
+				*out = append(*out, JudgementItem{
+					FieldPath: childPath,
+					Reason:    judgement.ReasonMessageMapDerived,
+					Detail:    fmt.Sprintf("derived as map[string]%s from proto %s; verify Go type and mapping", goType, protoMsg),
+				})
+			}
+		}
+		childObsMessages := observedStateMessages
+		childForceAll := forceAll || childIsOut
+		if !subUsesObservedState {
+			childObsMessages = nil
+			childForceAll = false
+		}
+		walkObservedStateWellKnownProtoTypes(child, childPath, opts, childObsMessages, childForceAll, onPath, out)
+	}
+}
+
+func walkNestedSpecJudgements(field protoreflect.FieldDescriptor, path string, opts codegen.WriteOptions, onPath map[protoreflect.FullName]bool, out *[]JudgementItem) {
+	if field == nil {
+		return
+	}
+	goType, err := codegen.GoTypeForField(field, false, opts)
+	if err != nil || generatesAsReference(field, goType) {
+		return
+	}
+	var subMsg protoreflect.MessageDescriptor
+	nextPrefix := path
+	switch {
+	case field.IsMap():
+		if value := field.MapValue(); value.Kind() == protoreflect.MessageKind && codegen.MapsToGoStruct(value.Message()) {
+			subMsg = value.Message()
+			nextPrefix = path + ".KEY"
+		}
+	case field.Kind() == protoreflect.MessageKind && codegen.MapsToGoStruct(field.Message()):
+		subMsg = field.Message()
+		if field.IsList() {
+			nextPrefix += "[]"
+		}
+	}
+	if subMsg == nil || strings.HasPrefix(string(subMsg.FullName()), "google.protobuf.") || onPath[subMsg.FullName()] {
+		return
+	}
+	onPath[subMsg.FullName()] = true
+	defer delete(onPath, subMsg.FullName())
+
+	for i := 0; i < subMsg.Fields().Len(); i++ {
+		child := subMsg.Fields().Get(i)
+		if codegen.IsFieldBehavior(child, annotations.FieldBehavior_OUTPUT_ONLY) {
+			continue
+		}
+		if codegen.IsFieldAllOutputOnlyMessage(child) {
 			continue
 		}
 		childPath := nextPrefix + "." + codegen.GetJSONForKRM(child, opts)
-		walkObservedStateWellKnownProtoTypes(child, childPath, opts, observedStateMessages, forceAll || childIsOut, onPath, out)
+		childGoType, err := codegen.GoTypeForField(child, false, opts)
+		if err != nil {
+			*out = append(*out, JudgementItem{
+				FieldPath: childPath,
+				Reason:    judgement.ReasonUnsupportedFieldType,
+				Detail:    err.Error(),
+			})
+			continue
+		}
+		if generatesAsReference(child, childGoType) {
+			continue
+		}
+		if target, ok := codegen.SiblingResource(child, opts); ok {
+			*out = append(*out, JudgementItem{
+				FieldPath: childPath,
+				Reason:    judgement.ReasonPossibleReferenceBySibling,
+				Detail: "the name matches " + target + ", a resource this service declares; " +
+					"confirm whether it should be a reference",
+			})
+		}
+		if opts.EmitMessageMaps {
+			if protoMsg, mapGoType, ok := codegen.MessageMapValueInfo(child); ok {
+				*out = append(*out, JudgementItem{
+					FieldPath: childPath,
+					Reason:    judgement.ReasonMessageMapDerived,
+					Detail:    fmt.Sprintf("derived as map[string]%s from proto %s; verify Go type and mapping", mapGoType, protoMsg),
+				})
+			}
+		}
+		walkNestedSpecJudgements(child, childPath, opts, onPath, out)
 	}
 }
 

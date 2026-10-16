@@ -749,3 +749,169 @@ func writeBetaWidgetProto(t *testing.T, dir string) string {
 	writeFile(t, path, string(b))
 	return path
 }
+
+func TestRunGenerateCRDQueuesNestedJudgementsPerKind(t *testing.T) {
+	dir := t.TempDir()
+	apiDir := filepath.Join(dir, "apis")
+	queuePath := filepath.Join(apiDir, "example", judgement.FileName)
+
+	// ExampleGadget is already reviewed; ExampleWidget is newly scaffolded.
+	writeFile(t, filepath.Join(apiDir, "example", "v1alpha1", "examplegadget_types.go"), "package v1alpha1\n\ntype ExampleGadgetSpec struct{}\n")
+	writeFile(t, queuePath, `entries:
+- kind: ExampleGadget
+  group: example.cnrm.cloud.google.com
+  reason: untriaged-bulk-generation
+  status: resolved
+  resolution: accepted
+`)
+
+	str := descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum()
+	i32 := descriptorpb.FieldDescriptorProto_TYPE_INT32.Enum()
+	msgType := descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+	rep := descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()
+	fds := &descriptorpb.FileDescriptorSet{File: []*descriptorpb.FileDescriptorProto{{
+		Name:    proto.String("google/cloud/example/v1/widget.proto"),
+		Package: proto.String("google.cloud.example.v1"),
+		Syntax:  proto.String("proto3"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name: proto.String("SubTask"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: proto.String("label"), Number: proto.Int32(1), Type: str},
+				},
+			},
+			{
+				Name: proto.String("SharedConfig"),
+				NestedType: []*descriptorpb.DescriptorProto{
+					{
+						Name: proto.String("ByIndexEntry"),
+						Field: []*descriptorpb.FieldDescriptorProto{
+							{Name: proto.String("key"), Number: proto.Int32(1), Type: i32},
+							{Name: proto.String("value"), Number: proto.Int32(2), Type: str},
+						},
+						Options: &descriptorpb.MessageOptions{MapEntry: proto.Bool(true)},
+					},
+					{
+						Name: proto.String("TasksEntry"),
+						Field: []*descriptorpb.FieldDescriptorProto{
+							{Name: proto.String("key"), Number: proto.Int32(1), Type: str},
+							{Name: proto.String("value"), Number: proto.Int32(2), Type: msgType, TypeName: proto.String(".google.cloud.example.v1.SubTask")},
+						},
+						Options: &descriptorpb.MessageOptions{MapEntry: proto.Bool(true)},
+					},
+				},
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: proto.String("gadget"), Number: proto.Int32(1), Type: str},
+					{Name: proto.String("by_index"), Number: proto.Int32(2), Type: msgType, TypeName: proto.String(".google.cloud.example.v1.SharedConfig.ByIndexEntry"), Label: rep},
+					{Name: proto.String("tasks"), Number: proto.Int32(3), Type: msgType, TypeName: proto.String(".google.cloud.example.v1.SharedConfig.TasksEntry"), Label: rep},
+				},
+			},
+			{
+				Name: proto.String("Widget"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: proto.String("name"), Number: proto.Int32(1), Type: str},
+					{Name: proto.String("config"), Number: proto.Int32(2), Type: msgType, TypeName: proto.String(".google.cloud.example.v1.SharedConfig")},
+				},
+			},
+			{
+				Name: proto.String("Gadget"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: proto.String("name"), Number: proto.Int32(1), Type: str},
+					{Name: proto.String("config"), Number: proto.Int32(2), Type: msgType, TypeName: proto.String(".google.cloud.example.v1.SharedConfig")},
+				},
+			},
+		},
+	}}}
+	b, err := proto.Marshal(fds)
+	if err != nil {
+		t.Fatalf("marshalling descriptor set: %v", err)
+	}
+	pbPath := filepath.Join(dir, "shared.pb")
+	writeFile(t, pbPath, string(b))
+
+	o := &GenerateCRDOptions{
+		GenerateOptions: &options.GenerateOptions{
+			ProtoSourcePath: pbPath,
+			APIVersion:      "example.cnrm.cloud.google.com/v1alpha1",
+		},
+		ServiceName:        "google.cloud.example.v1",
+		OutputAPIDirectory: apiDir,
+		Resources: options.ResourceList{
+			{Kind: "ExampleWidget", ProtoName: "Widget"},
+			{Kind: "ExampleGadget", ProtoName: "Gadget"},
+		},
+		PrepopulateSpec: true,
+		EmitSiblingRefs: true,
+		EmitMessageMaps: true,
+	}
+
+	if err := RunGenerateCRD(context.Background(), o); err != nil {
+		t.Fatalf("RunGenerateCRD() error: %v", err)
+	}
+
+	got := readQueueEntries(t, queuePath)
+	for _, e := range got {
+		if e.ProtoMessage != "" {
+			t.Errorf("unexpected ProtoMessage entry in queue: %+v", e)
+		}
+	}
+	want := []judgement.Entry{
+		{
+			Kind:       "ExampleGadget",
+			Group:      "example.cnrm.cloud.google.com",
+			Reason:     judgement.ReasonUntriagedBulkGeneration,
+			Status:     judgement.StatusResolved,
+			Resolution: judgement.ResolutionAccepted,
+		},
+		{
+			Kind:   "ExampleWidget",
+			Group:  "example.cnrm.cloud.google.com",
+			Reason: judgement.ReasonUntriagedBulkGeneration,
+			Detail: "spec was generated from proto definition; verify refs, omissions, and KRM conventions",
+			Status: judgement.StatusOpen,
+		},
+		{
+			Kind:   "ExampleWidget",
+			Group:  "example.cnrm.cloud.google.com",
+			Field:  ".spec.config.gadget",
+			Reason: judgement.ReasonPossibleReferenceBySibling,
+			Detail: "the name matches ExampleGadget, a resource this service declares; confirm whether it should be a reference",
+			Status: judgement.StatusOpen,
+		},
+		{
+			Kind:   "ExampleWidget",
+			Group:  "example.cnrm.cloud.google.com",
+			Field:  ".spec.config.byIndex",
+			Reason: judgement.ReasonUnsupportedFieldType,
+			Detail: "unsupported map type with key int32 and value string",
+			Status: judgement.StatusOpen,
+		},
+		{
+			Kind:   "ExampleWidget",
+			Group:  "example.cnrm.cloud.google.com",
+			Field:  ".spec.config.tasks",
+			Reason: judgement.ReasonMessageMapDerived,
+			Detail: "derived as map[string]SubTask from proto google.cloud.example.v1.SubTask; verify Go type and mapping",
+			Status: judgement.StatusOpen,
+		},
+		{
+			Kind:   "ExampleWidget",
+			Group:  "example.cnrm.cloud.google.com",
+			Reason: judgement.ReasonEmptyObservedState,
+			Detail: "nothing was generated into status.observedState; the proto probably marks no field OUTPUT_ONLY, so output fields landed in the Spec. Decide what belongs in status",
+			Status: judgement.StatusOpen,
+		},
+		{
+			Kind:   "ExampleWidget",
+			Group:  "example.cnrm.cloud.google.com",
+			Field:  ".spec.location",
+			Reason: "location-parent-unknown",
+			Detail: "the proto declares no google.api.resource, so the parent shape is unknown; drop location if the resource is not regional",
+			Status: judgement.StatusOpen,
+		},
+	}
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("queue entries mismatch (-want +got):\n%s", diff)
+	}
+}
+

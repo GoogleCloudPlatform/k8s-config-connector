@@ -812,3 +812,139 @@ func TestPrepopulateSpecQueuesEtagInSpec(t *testing.T) {
 		t.Errorf("PrepopulateSpec judgements %+v did not contain %+v", got.Judgement, wantItem)
 	}
 }
+
+func TestPrepopulateSpecAndObservedStateQueueNestedJudgements(t *testing.T) {
+	str := fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)
+	i32 := fieldType(descriptorpb.FieldDescriptorProto_TYPE_INT32)
+	msgType := fieldType(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE)
+	fd, err := protodesc.NewFile(&descriptorpb.FileDescriptorProto{
+		Name:    strPtr("nested_judgements.proto"),
+		Package: strPtr("google.cloud.test.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name: strPtr("TargetMessage"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("data_store"), Number: i32Ptr(1), Type: str},
+				},
+			},
+			{
+				Name: strPtr("Config"),
+				NestedType: []*descriptorpb.DescriptorProto{
+					{
+						Name: strPtr("ByIndexEntry"),
+						Field: []*descriptorpb.FieldDescriptorProto{
+							{Name: strPtr("key"), Number: i32Ptr(1), Type: i32},
+							{Name: strPtr("value"), Number: i32Ptr(2), Type: str},
+						},
+						Options: &descriptorpb.MessageOptions{MapEntry: proto.Bool(true)},
+					},
+					{
+						Name: strPtr("TasksEntry"),
+						Field: []*descriptorpb.FieldDescriptorProto{
+							{Name: strPtr("key"), Number: i32Ptr(1), Type: str},
+							{Name: strPtr("value"), Number: i32Ptr(2), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.TargetMessage")},
+						},
+						Options: &descriptorpb.MessageOptions{MapEntry: proto.Bool(true)},
+					},
+				},
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("data_store"), Number: i32Ptr(1), Type: str},
+					{Name: strPtr("by_index"), Number: i32Ptr(2), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.Config.ByIndexEntry"), Label: descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()},
+					{Name: strPtr("tasks"), Number: i32Ptr(3), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.Config.TasksEntry"), Label: descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()},
+				},
+			},
+			{
+				Name: strPtr("Widget"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("config"), Number: i32Ptr(1), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.Config")},
+					{Name: strPtr("peers"), Number: i32Ptr(2), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.Config"), Label: descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()},
+					{Name: strPtr("observed_config"), Number: i32Ptr(3), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.Config"), Options: behaviorOptions(annotations.FieldBehavior_OUTPUT_ONLY)},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		t.Fatalf("building file descriptor: %v", err)
+	}
+	msg := fd.Messages().ByName("Widget")
+	opts := codegen.WriteOptions{
+		EmitMessageMaps: true,
+		Siblings:        map[string]string{"datastore": "TestDataStore"},
+	}
+
+	gotSpec, err := PrepopulateSpec(msg, opts)
+	if err != nil {
+		t.Fatalf("PrepopulateSpec: %v", err)
+	}
+	wantSpec := []JudgementItem{
+		{
+			Reason: judgement.ReasonUntriagedBulkGeneration,
+			Detail: "spec was generated from proto definition; verify refs, omissions, and KRM conventions",
+		},
+		{
+			FieldPath: ".spec.config.dataStore",
+			Reason:    judgement.ReasonPossibleReferenceBySibling,
+			Detail:    "the name matches TestDataStore, a resource this service declares; confirm whether it should be a reference",
+		},
+		{
+			FieldPath: ".spec.config.byIndex",
+			Reason:    judgement.ReasonUnsupportedFieldType,
+			Detail:    "unsupported map type with key int32 and value string",
+		},
+		{
+			FieldPath: ".spec.config.tasks",
+			Reason:    judgement.ReasonMessageMapDerived,
+			Detail:    "derived as map[string]TargetMessage from proto google.cloud.test.v1.TargetMessage; verify Go type and mapping",
+		},
+		{
+			FieldPath: ".spec.config.tasks.KEY.dataStore",
+			Reason:    judgement.ReasonPossibleReferenceBySibling,
+			Detail:    "the name matches TestDataStore, a resource this service declares; confirm whether it should be a reference",
+		},
+		{
+			FieldPath: ".spec.peers[].dataStore",
+			Reason:    judgement.ReasonPossibleReferenceBySibling,
+			Detail:    "the name matches TestDataStore, a resource this service declares; confirm whether it should be a reference",
+		},
+		{
+			FieldPath: ".spec.peers[].byIndex",
+			Reason:    judgement.ReasonUnsupportedFieldType,
+			Detail:    "unsupported map type with key int32 and value string",
+		},
+		{
+			FieldPath: ".spec.peers[].tasks",
+			Reason:    judgement.ReasonMessageMapDerived,
+			Detail:    "derived as map[string]TargetMessage from proto google.cloud.test.v1.TargetMessage; verify Go type and mapping",
+		},
+		{
+			FieldPath: ".spec.peers[].tasks.KEY.dataStore",
+			Reason:    judgement.ReasonPossibleReferenceBySibling,
+			Detail:    "the name matches TestDataStore, a resource this service declares; confirm whether it should be a reference",
+		},
+	}
+	if diff := cmp.Diff(wantSpec, gotSpec.Judgement); diff != "" {
+		t.Errorf("PrepopulateSpec() nested judgements mismatch (-want +got):\n%s", diff)
+	}
+
+	details := &codegen.OutputMessageDetails{
+		Message:      msg,
+		OutputFields: []protoreflect.FieldDescriptor{msg.Fields().ByName("observed_config")},
+	}
+	_, gotObs := PrepopulateObservedState(details, sets.NewString(), opts)
+	wantObs := []JudgementItem{
+		{
+			FieldPath: ".status.observedState.observedConfig.byIndex",
+			Reason:    judgement.ReasonUnsupportedFieldType,
+			Detail:    "unsupported map type with key int32 and value string",
+		},
+		{
+			FieldPath: ".status.observedState.observedConfig.tasks",
+			Reason:    judgement.ReasonMessageMapDerived,
+			Detail:    "derived as map[string]TargetMessage from proto google.cloud.test.v1.TargetMessage; verify Go type and mapping",
+		},
+	}
+	if diff := cmp.Diff(wantObs, gotObs); diff != "" {
+		t.Errorf("PrepopulateObservedState() nested judgements mismatch (-want +got):\n%s", diff)
+	}
+}
+
