@@ -38,6 +38,9 @@ func BigQueryReservationReservationSpec_v1beta1_ToProto(mapCtx *direct.MapContex
 	// MISSING: ScalingMode
 	// MISSING: ReplicationStatus
 	out.SecondaryLocation = FailoverSpec_ToProto(mapCtx, in.FailOver)
+	if in.ReservationGroupRef != nil {
+		out.ReservationGroup = in.ReservationGroupRef.External
+	}
 	return out
 }
 
@@ -145,6 +148,11 @@ func BigQueryReservationReservationSpec_v1beta1_FromProto(mapCtx *direct.MapCont
 	out.Edition = direct.Enum_FromProto(mapCtx, in.GetEdition())
 
 	out.FailOver = FailoverSpec_FromProto(mapCtx, in)
+	if in.GetReservationGroup() != "" {
+		out.ReservationGroupRef = &krm.ReservationGroupRef{
+			External: in.GetReservationGroup(),
+		}
+	}
 	// MISSING: MaxSlots
 	// MISSING: ScalingMode
 	// MISSING: ReplicationStatus
