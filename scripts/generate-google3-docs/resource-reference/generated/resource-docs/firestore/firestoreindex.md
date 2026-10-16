@@ -70,6 +70,7 @@ title: "FirestoreIndex"
 ### Spec
 #### Schema
 ```yaml
+apiScope: string
 collection: string
 database: string
 fields:
@@ -86,6 +87,16 @@ queryScope: string
     </tr>
 </thead>
 <tbody>
+    <tr>
+        <td>
+            <p><code>apiScope</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Immutable. The API scope at which a query is run. Default value: "ANY_API" Possible values: ["ANY_API", "DATASTORE_MODE_API", "MONGODB_COMPATIBLE_API"].</p>
+        </td>
+    </tr>
     <tr>
         <td>
             <p><code>collection</code></p>
@@ -163,7 +174,7 @@ queryScope: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. The scope at which a query is run. Default value: "COLLECTION" Possible values: ["COLLECTION", "COLLECTION_GROUP"].</p>
+            <p>Immutable. The scope at which a query is run. Default value: "COLLECTION" Possible values: ["COLLECTION", "COLLECTION_GROUP", "COLLECTION_RECURSIVE"].</p>
         </td>
     </tr>
 </tbody>

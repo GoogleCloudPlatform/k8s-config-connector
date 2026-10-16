@@ -27,7 +27,7 @@ Content-Type: application/json
 {
   "locationId": "us-west2",
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}",
-  "type": 1
+  "type": 2
 }
 
 200 OK
@@ -58,7 +58,7 @@ X-Xss-Protection: 0
     "locationId": "us-west2",
     "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}",
     "pointInTimeRecoveryEnablement": 2,
-    "type": 1,
+    "type": 2,
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "versionRetentionPeriod": "3600s"
@@ -99,7 +99,7 @@ X-Xss-Protection: 0
     "locationId": "us-west2",
     "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}",
     "pointInTimeRecoveryEnablement": "POINT_IN_TIME_RECOVERY_DISABLED",
-    "type": "FIRESTORE_NATIVE",
+    "type": "DATASTORE_MODE",
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "versionRetentionPeriod": "3600s"
@@ -133,7 +133,7 @@ X-Xss-Protection: 0
   "locationId": "us-west2",
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}",
   "pointInTimeRecoveryEnablement": 2,
-  "type": 1,
+  "type": 2,
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "versionRetentionPeriod": "3600s"
@@ -145,6 +145,7 @@ POST https://firestore.googleapis.com/v1/projects/${projectId}/databases/firesto
 Content-Type: application/json
 
 {
+  "apiScope": "DATASTORE_MODE_API",
   "fields": [
     {
       "fieldPath": "field1",
@@ -155,7 +156,7 @@ Content-Type: application/json
       "order": "DESCENDING"
     }
   ],
-  "queryScope": "COLLECTION"
+  "queryScope": "COLLECTION_RECURSIVE"
 }
 
 200 OK
@@ -206,6 +207,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.firestore.admin.v1.Index",
+    "apiScope": "DATASTORE_MODE_API",
     "density": "SPARSE_ALL",
     "fields": [
       {
@@ -218,11 +220,11 @@ X-Xss-Protection: 0
       },
       {
         "fieldPath": "__name__",
-        "order": "DESCENDING"
+        "order": "ASCENDING"
       }
     ],
     "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}",
-    "queryScope": "COLLECTION",
+    "queryScope": "COLLECTION_RECURSIVE",
     "state": "CREATING"
   }
 }
@@ -243,6 +245,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "apiScope": "DATASTORE_MODE_API",
   "density": "SPARSE_ALL",
   "fields": [
     {
@@ -255,11 +258,11 @@ X-Xss-Protection: 0
     },
     {
       "fieldPath": "__name__",
-      "order": "DESCENDING"
+      "order": "ASCENDING"
     }
   ],
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}",
-  "queryScope": "COLLECTION",
+  "queryScope": "COLLECTION_RECURSIVE",
   "state": "READY"
 }
 
@@ -307,7 +310,7 @@ X-Xss-Protection: 0
   "locationId": "us-west2",
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}",
   "pointInTimeRecoveryEnablement": 2,
-  "type": 1,
+  "type": 2,
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "versionRetentionPeriod": "3600s"
@@ -348,7 +351,7 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/databases/${randomDatabaseID}",
     "pointInTimeRecoveryEnablement": 2,
     "previousId": "firestoredatabase-${uniqueId}",
-    "type": 1,
+    "type": 2,
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "versionRetentionPeriod": "3600s"

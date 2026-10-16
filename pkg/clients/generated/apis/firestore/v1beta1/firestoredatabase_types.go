@@ -61,6 +61,10 @@ type FirestoreDatabaseSpec struct {
 	/* The FirestoreDatabase name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* The type of the database. See https://cloud.google.com/datastore/docs/firestore-or-datastore for information about how to choose. */
+	// +optional
+	Type *string `json:"type,omitempty"`
 }
 
 type DatabaseObservedStateStatus struct {
