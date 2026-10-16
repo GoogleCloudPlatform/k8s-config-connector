@@ -7,7 +7,35 @@ description: Creates or updates the _identity.go and _reference.go files for a C
 
 ## Overview
 
-This skill guides you through creating or updating the `_identity.go` and `_reference.go` files for a given Config Connector resource (e.g. `MemoryStoreInstance`). The goal is to implement `identity.IdentityV2` and `refs.Ref` using the canonical `gcpurls.Template` pattern, identical to the pattern used in `apis/artifactregistry/v1beta1/artifactregistryrepository_identity.go`.
+This skill guides you through creating or updating the identity and reference files for a given Config Connector resource (e.g. `MemoryStoreInstance`). The goal is to implement `identity.IdentityV2` and `refs.Ref` using the canonical `gcpurls.Template` pattern, identical to the pattern used in `apis/artifactregistry/v1beta1/artifactregistryrepository_identity.go`.
+
+### Preferred: Deterministic Generation via `controllerbuilder generate-identity`
+
+Before writing `<kind>_identity.go` or `<kind>_reference.go` by hand, add `${CONTROLLERBUILDER} generate-identity` to `apis/<service>/generate.sh` right after `generate-types`:
+
+```bash
+${CONTROLLERBUILDER} generate-identity \
+  --service <proto.service> \
+  --api-version <group>.cnrm.cloud.google.com/<version> \
+  --resource <Kind>:<ProtoResource>
+```
+
+Running `apis/<service>/generate.sh` deterministically emits:
+- `apis/<service>/<version>/<kind>_identity.generated.go`
+- `apis/<service>/<version>/<kind>_reference.generated.go`
+- `apis/<service>/<version>/<kind>_identity_generated_test.go` (calling `identity.AssertConformance`)
+
+**Declaration-by-declaration override ("hand-written wins"):** If a resource has a non-standard parent or legacy `NormalizeWithFallback`, keep only the custom function (for example `getIdentityFrom<Kind>Spec` in `<kind>_identity.go` or `Normalize` in `<kind>_reference.go`); `generate-identity` will still emit the `Identity` struct, `gcpurls.Template`, `String()`, `FromExternal()`, `Host()`, `ParentString()`, `GetIdentity()`, and `<Kind>Ref` boilerplate in the `.generated.go` files without colliding.
+
+**Explicit pattern override (`--pattern`):** If a proto message lacks `(google.api.resource)` patterns (producing an `identity-root-unknown` judgement entry) or you want to explicitly lock in a pattern for a multi-pattern proto (suppressing `identity-multi-pattern`), pass `--pattern <Kind>=<pattern>` (or `--pattern <Kind>=//<host>/<pattern>`) to `generate-identity` in `apis/<service>/generate.sh` instead of hand-writing `<kind>_identity.go` from scratch:
+
+```bash
+${CONTROLLERBUILDER} generate-identity \
+  --service <proto.service> \
+  --api-version <group>.cnrm.cloud.google.com/<version> \
+  --resource <Kind>:<ProtoResource> \
+  --pattern <Kind>=projects/{project}/locations/{location}/things/{thing}
+```
 
 ## Hints
 
