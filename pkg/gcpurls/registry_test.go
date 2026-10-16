@@ -161,6 +161,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//modelarmor.googleapis.com/folders/{}/locations/{}/floorSetting":       true,
 		"//modelarmor.googleapis.com/organizations/{}/locations/{}/floorSetting": true,
 
+		// Network Connectivity
+		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/serviceConnectionMaps/{}": true,
+
 		// Network Security
 
 		// Network Services
