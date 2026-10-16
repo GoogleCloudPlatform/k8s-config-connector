@@ -1,0 +1,204 @@
+[
+  {
+    "controller": "direct",
+    "isNewObject": false,
+    "resource": "ComputeAddress/computeaddress-${uniqueId}",
+    "fields": [
+      {
+        "id": "address",
+        "old": "10.128.0.90",
+        "new": ""
+      },
+      {
+        "id": "purpose",
+        "old": "GCE_ENDPOINT",
+        "new": ""
+      },
+      {
+        "id": "subnetwork",
+        "old": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
+        "new": "projects/${projectId}/regions/us-central1/subnetworks/default"
+      }
+    ]
+  },
+  {
+    "controller": "direct",
+    "isNewObject": false,
+    "resource": "ComputeAddress/computeaddress-${uniqueId}",
+    "fields": [
+      {
+        "id": "address",
+        "old": "10.128.0.90",
+        "new": ""
+      },
+      {
+        "id": "purpose",
+        "old": "GCE_ENDPOINT",
+        "new": ""
+      },
+      {
+        "id": "subnetwork",
+        "old": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
+        "new": "projects/${projectId}/regions/us-central1/subnetworks/default"
+      }
+    ]
+  },
+  {
+    "controller": "direct",
+    "isNewObject": false,
+    "resource": "ComputeAddress/computeaddress-${uniqueId}",
+    "fields": [
+      {
+        "id": "address",
+        "old": "10.128.0.90",
+        "new": ""
+      },
+      {
+        "id": "purpose",
+        "old": "GCE_ENDPOINT",
+        "new": ""
+      },
+      {
+        "id": "subnetwork",
+        "old": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
+        "new": "projects/${projectId}/regions/us-central1/subnetworks/default"
+      }
+    ]
+  },
+  {
+    "controller": "direct",
+    "isNewObject": false,
+    "resource": "ComputeAddress/computeaddress-${uniqueId}",
+    "fields": [
+      {
+        "id": "address",
+        "old": "10.128.0.90",
+        "new": ""
+      },
+      {
+        "id": "purpose",
+        "old": "GCE_ENDPOINT",
+        "new": ""
+      },
+      {
+        "id": "subnetwork",
+        "old": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
+        "new": "projects/${projectId}/regions/us-central1/subnetworks/default"
+      }
+    ]
+  },
+  {
+    "controller": "direct",
+    "isNewObject": false,
+    "resource": "ComputeAddress/computeaddress-${uniqueId}",
+    "fields": [
+      {
+        "id": "address",
+        "old": "10.128.0.90",
+        "new": ""
+      },
+      {
+        "id": "purpose",
+        "old": "GCE_ENDPOINT",
+        "new": ""
+      },
+      {
+        "id": "subnetwork",
+        "old": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
+        "new": "projects/${projectId}/regions/us-central1/subnetworks/default"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeAddress/computeaddress-${uniqueId}",
+    "fields": [
+      {
+        "id": "address",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "address_type",
+        "old": "",
+        "new": "INTERNAL"
+      },
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "a test address"
+      },
+      {
+        "id": "label_fingerprint",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computeaddress-${uniqueId}"
+      },
+      {
+        "id": "network_tier",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "prefix_length",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "purpose",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "region",
+        "old": "",
+        "new": "us-central1"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "subnetwork",
+        "old": "",
+        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default"
+      },
+      {
+        "id": "users.#",
+        "old": "",
+        "new": ""
+      }
+    ]
+  }
+]
