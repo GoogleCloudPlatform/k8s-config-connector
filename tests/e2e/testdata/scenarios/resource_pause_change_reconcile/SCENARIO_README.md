@@ -1,0 +1,11 @@
+This scenario tests resource-level pause and actuation mode override:
+- Apply ConfigConnector to configure KCC in "namespaced" mode.
+- Apply ConfigConnectorContext with `spec.actuationMode: Paused` to keep CCC globally paused in the namespace.
+- Apply a LoggingLogMetric resource with annotation `cnrm.cloud.google.com/actuation-mode: "Reconciling"` and initial spec (`description: "description 1"`).
+  - Verify that the resource reconciles and is created on GCP even though CCC is paused.
+- Update the LoggingLogMetric with `cnrm.cloud.google.com/actuation-mode: "Paused"` and `description: "description 2"` (`TEST: APPLY-NO-WAIT`).
+  - Verify that actuation is skipped and zero HTTP calls are sent to GCP.
+- Update the LoggingLogMetric with `cnrm.cloud.google.com/actuation-mode: "Reconciling"` (`TEST: WAIT-FOR-HTTP-REQUEST` with `VALUE_PRESENT: "description 2"`).
+  - Verify that setting actuation-mode to "Reconciling" on the resource immediately actuates the pending change on GCP despite CCC being paused.
+- Delete the LoggingLogMetric resource (`TEST: DELETE`).
+  - Verify that deletion completes cleanly.
