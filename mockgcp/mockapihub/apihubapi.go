@@ -29,6 +29,7 @@ type ApiHubServer struct {
 	*MockService
 	pb.UnimplementedApiHubServer
 	pb.UnimplementedApiHubDependenciesServer
+	pb.UnimplementedApiHubCurateServer
 }
 
 func populateApiAttributes(obj *pb.Api) {
