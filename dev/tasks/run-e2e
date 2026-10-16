@@ -13,9 +13,39 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# dev/tasks/run-e2e runs end-to-end tests for Config Connector.
+#
+# Tests are selected via the RUN_TESTS environment variable (defaults to TestAllInSeries/fixtures).
+#
+# Usage:
+#   RUN_TESTS=<go test -run pattern> [TEST_TIMEOUT=<duration>] [SKIP_TESTS=<pattern>] dev/tasks/run-e2e
+#     e.g. RUN_TESTS='TestAllInSeries/fixtures/sqlsslcert$' dev/tasks/run-e2e
+#     (with no RUN_TESTS it runs all of TestAllInSeries/fixtures, which takes up to 2h)
+
 set -o errexit
 set -o nounset
 set -o pipefail
+
+usage() {
+  cat <<'EOF'
+usage: RUN_TESTS=<go test -run pattern> [TEST_TIMEOUT=<duration>] [SKIP_TESTS=<pattern>] dev/tasks/run-e2e
+  e.g. RUN_TESTS='TestAllInSeries/fixtures/sqlsslcert$' dev/tasks/run-e2e
+  (with no RUN_TESTS it runs all of TestAllInSeries/fixtures, which takes up to 2h)
+EOF
+}
+
+for arg in "$@"; do
+  if [[ "$arg" == "-h" || "$arg" == "--help" ]]; then
+    usage
+    exit 0
+  fi
+done
+
+if [[ $# -gt 0 ]]; then
+  echo "dev/tasks/run-e2e takes no arguments (got: $*); select tests with RUN_TESTS" >&2
+  usage >&2
+  exit 2
+fi
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
