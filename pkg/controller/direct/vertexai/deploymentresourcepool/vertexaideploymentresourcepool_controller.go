@@ -160,22 +160,18 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	if err != nil {
 		return fmt.Errorf("creating VertexAIDeploymentResourcePool %s: %w", a.id, err)
 	}
-	created, err := op.Wait(ctx)
-	if err != nil {
+	if _, err := op.Wait(ctx); err != nil {
 		return fmt.Errorf("waiting VertexAIDeploymentResourcePool %s creation: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created VertexAIDeploymentResourcePool", "name", a.id)
 
-	// Fetch fully-populated resource after creation
+	// The LRO result only contains the name, so fetch the fully-populated resource.
 	latest, err := a.gcpClient.GetDeploymentResourcePool(ctx, &pb.GetDeploymentResourcePoolRequest{Name: a.id.String()})
 	if err != nil {
 		return fmt.Errorf("getting VertexAIDeploymentResourcePool %s after creation: %w", a.id, err)
 	}
 
-	created.SatisfiesPzi = latest.SatisfiesPzi
-	created.SatisfiesPzs = latest.SatisfiesPzs
-
-	return a.updateStatus(ctx, createOp, created)
+	return a.updateStatus(ctx, createOp, latest)
 }
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
@@ -203,20 +199,16 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		if err != nil {
 			return fmt.Errorf("updating VertexAIDeploymentResourcePool %s: %w", a.id, err)
 		}
-		updated, err := op.Wait(ctx)
-		if err != nil {
+		if _, err := op.Wait(ctx); err != nil {
 			return fmt.Errorf("waiting VertexAIDeploymentResourcePool %s update: %w", a.id, err)
 		}
 		log.V(2).Info("successfully updated VertexAIDeploymentResourcePool", "name", a.id)
 
-		// Fetch fully-populated resource after update
+		// The LRO result only contains the name, so fetch the fully-populated resource.
 		latest, err = a.gcpClient.GetDeploymentResourcePool(ctx, &pb.GetDeploymentResourcePoolRequest{Name: a.id.String()})
 		if err != nil {
 			return fmt.Errorf("getting VertexAIDeploymentResourcePool %s after update: %w", a.id, err)
 		}
-		updated.SatisfiesPzi = latest.SatisfiesPzi
-		updated.SatisfiesPzs = latest.SatisfiesPzs
-		latest = updated
 	}
 
 	return a.updateStatus(ctx, updateOp, latest)
@@ -227,11 +219,45 @@ func (a *Adapter) compare(ctx context.Context, actual, desired *pb.DeploymentRes
 	if err != nil {
 		return nil, nil, err
 	}
+	desired = proto.Clone(desired).(*pb.DeploymentResourcePool)
+	// GCP defaults max_replica_count to min_replica_count when it is not set.
+	if dr := desired.GetDedicatedResources(); dr != nil && dr.GetMaxReplicaCount() == 0 {
+		dr.MaxReplicaCount = maskedActual.GetDedicatedResources().GetMaxReplicaCount()
+	}
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
 	}
+	updateMask, err = expandDedicatedResourcesMask(ctx, updateMask, desired, maskedActual)
+	if err != nil {
+		return nil, nil, err
+	}
 	return diffs, updateMask, nil
+}
+
+// expandDedicatedResourcesMask replaces the "dedicated_resources" update mask path with
+// the paths of the dedicated_resources sub-fields that changed.
+// The API does not honor "dedicated_resources" as a whole: it drops the path and then
+// rejects the request with "updated resource request is identical to the original".
+func expandDedicatedResourcesMask(ctx context.Context, mask *fieldmaskpb.FieldMask, desired, actual *pb.DeploymentResourcePool) (*fieldmaskpb.FieldMask, error) {
+	if desired.GetDedicatedResources() == nil || actual.GetDedicatedResources() == nil {
+		return mask, nil
+	}
+	var paths []string
+	for _, path := range mask.GetPaths() {
+		if path != "dedicated_resources" {
+			paths = append(paths, path)
+			continue
+		}
+		_, subMask, err := common.DiffForTopLevelFields(ctx, desired.GetDedicatedResources().ProtoReflect(), actual.GetDedicatedResources().ProtoReflect())
+		if err != nil {
+			return nil, err
+		}
+		for _, subPath := range subMask.GetPaths() {
+			paths = append(paths, "dedicated_resources."+subPath)
+		}
+	}
+	return &fieldmaskpb.FieldMask{Paths: paths}, nil
 }
 
 func (a *Adapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.DeploymentResourcePool) error {

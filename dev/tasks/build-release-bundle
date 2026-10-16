@@ -218,7 +218,6 @@ BLOCKED_KINDS=(
     "VertexAICachedContent"
     "VertexAICustomJob"
     "VertexAIDataset"
-    "VertexAIDeploymentResourcePool"
     "VertexAIEndpoint"
     "VertexAIExampleStore"
     "VertexAIFeatureGroup"
