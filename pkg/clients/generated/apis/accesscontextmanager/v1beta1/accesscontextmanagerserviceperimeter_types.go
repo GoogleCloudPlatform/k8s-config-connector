@@ -49,6 +49,10 @@ type ServiceperimeterEgressFrom struct {
 }
 
 type ServiceperimeterEgressPolicies struct {
+	/* Optional. Human-readable title for the egress rule. The title must be unique within the perimeter and cannot exceed 100 characters. */
+	// +optional
+	Title *string `json:"title,omitempty"`
+
 	/* Defines conditions on the source of a request causing this 'EgressPolicy' to apply. */
 	// +optional
 	EgressFrom *ServiceperimeterEgressFrom `json:"egressFrom,omitempty"`
@@ -97,6 +101,10 @@ type ServiceperimeterIngressFrom struct {
 }
 
 type ServiceperimeterIngressPolicies struct {
+	/* Optional. Human-readable title for the ingress rule. The title must be unique within the perimeter and cannot exceed 100 characters. */
+	// +optional
+	Title *string `json:"title,omitempty"`
+
 	/* Defines the conditions on the source of a request causing this 'IngressPolicy' to apply. */
 	// +optional
 	IngressFrom *ServiceperimeterIngressFrom `json:"ingressFrom,omitempty"`

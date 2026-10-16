@@ -48,6 +48,7 @@
 [missing_field] crd=accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.status.egressPolicies[].egressTo.operations[].methodSelectors[].permission" is not set in unstructured objects
 [missing_field] crd=accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.status.egressPolicies[].egressTo.operations[].serviceName" is not set in unstructured objects
 [missing_field] crd=accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.status.egressPolicies[].egressTo.resources[].projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.status.egressPolicies[].title" is not set in unstructured objects
 [missing_field] crd=accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.status.ingressPolicies[].ingressFrom.identities[].serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.status.ingressPolicies[].ingressFrom.identities[].user" is not set in unstructured objects
 [missing_field] crd=accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.status.ingressPolicies[].ingressFrom.identityType" is not set in unstructured objects
@@ -57,6 +58,7 @@
 [missing_field] crd=accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.status.ingressPolicies[].ingressTo.operations[].methodSelectors[].permission" is not set in unstructured objects
 [missing_field] crd=accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.status.ingressPolicies[].ingressTo.operations[].serviceName" is not set in unstructured objects
 [missing_field] crd=accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.status.ingressPolicies[].ingressTo.resources[].projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.status.ingressPolicies[].title" is not set in unstructured objects
 [missing_field] crd=accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.status.resources[].projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.status.vpcAccessibleServices.allowedServices[]" is not set in unstructured objects
 [missing_field] crd=accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.status.vpcAccessibleServices.enableRestriction" is not set in unstructured objects
