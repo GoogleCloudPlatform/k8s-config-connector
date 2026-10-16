@@ -196,6 +196,31 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	structuredreporting.ReportDiff(ctx, diffs)
 
+	// Since real GCP expects projects/{{projectNumber}} instead of projects/{{projectID}} in claimedScopes,
+	// we normalize desired.ClaimedScopes based on a.actual.ClaimedScopes to avoid validation errors on update.
+	if a.actual != nil {
+		for i, scope := range desired.ClaimedScopes {
+			if scope == "projects/"+a.id.Project {
+				for _, actualScope := range a.actual.ClaimedScopes {
+					if strings.HasPrefix(actualScope, "projects/") {
+						proj := strings.TrimPrefix(actualScope, "projects/")
+						isNumber := true
+						for _, r := range proj {
+							if r < '0' || r > '9' {
+								isNumber = false
+								break
+							}
+						}
+						if isNumber {
+							desired.ClaimedScopes[i] = actualScope
+							break
+						}
+					}
+				}
+			}
+		}
+	}
+
 	req := &pb.UpdateRegistryBookRequest{
 		RegistryBook: desired,
 		UpdateMask:   updateMask,
@@ -224,7 +249,10 @@ func (a *adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log := klog.FromContext(ctx)
 	log.Info("deleting RegistryBook", "name", a.id)
 
-	req := &pb.DeleteRegistryBookRequest{Name: a.id.String()}
+	req := &pb.DeleteRegistryBookRequest{
+		Name:  a.id.String(),
+		Force: true,
+	}
 	op, err := a.gcpClient.DeleteRegistryBook(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {

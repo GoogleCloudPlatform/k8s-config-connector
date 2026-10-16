@@ -99,7 +99,7 @@ GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/UpdateRegistryBook
 {
   "registryBook": {
     "claimedScopes": [
-      "projects/${projectId}"
+      "projects/${projectNumber}"
     ],
     "labels": {
       "foo": "updated"
@@ -203,44 +203,780 @@ OK
 GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
 
 {
+  "force": true,
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = com.google.apps.framework.request.BadRequestException: Violation in DeleteRegistryBookRequest.name: Registry book projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId} has child realms
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
+
+{
   "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
 }
 
 OK
 
 {
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.numberregistry.v1alpha.OperationMetadata",
-    "apiVersion": "v1alpha",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
-    "verb": "delete"
+  "claimedScopes": [
+    "projects/${projectNumber}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "updated"
   },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GRPC /google.longrunning.Operations/GetOperation
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
 
 {
-  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+  "force": true,
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = com.google.apps.framework.request.BadRequestException: Violation in DeleteRegistryBookRequest.name: Registry book projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId} has child realms
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
+
+{
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
 }
 
 OK
 
 {
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.numberregistry.v1alpha.OperationMetadata",
-    "apiVersion": "v1alpha",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
-    "verb": "delete"
+  "claimedScopes": [
+    "projects/${projectNumber}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "updated"
   },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.protobuf.Empty"
-  }
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
+
+{
+  "force": true,
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = com.google.apps.framework.request.BadRequestException: Violation in DeleteRegistryBookRequest.name: Registry book projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId} has child realms
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
+
+{
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+OK
+
+{
+  "claimedScopes": [
+    "projects/${projectNumber}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "updated"
+  },
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
+
+{
+  "force": true,
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = com.google.apps.framework.request.BadRequestException: Violation in DeleteRegistryBookRequest.name: Registry book projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId} has child realms
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
+
+{
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+OK
+
+{
+  "claimedScopes": [
+    "projects/${projectNumber}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "updated"
+  },
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
+
+{
+  "force": true,
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = com.google.apps.framework.request.BadRequestException: Violation in DeleteRegistryBookRequest.name: Registry book projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId} has child realms
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
+
+{
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+OK
+
+{
+  "claimedScopes": [
+    "projects/${projectNumber}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "updated"
+  },
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
+
+{
+  "force": true,
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = com.google.apps.framework.request.BadRequestException: Violation in DeleteRegistryBookRequest.name: Registry book projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId} has child realms
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
+
+{
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+OK
+
+{
+  "claimedScopes": [
+    "projects/${projectNumber}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "updated"
+  },
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
+
+{
+  "force": true,
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = com.google.apps.framework.request.BadRequestException: Violation in DeleteRegistryBookRequest.name: Registry book projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId} has child realms
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
+
+{
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+OK
+
+{
+  "claimedScopes": [
+    "projects/${projectNumber}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "updated"
+  },
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
+
+{
+  "force": true,
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = com.google.apps.framework.request.BadRequestException: Violation in DeleteRegistryBookRequest.name: Registry book projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId} has child realms
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
+
+{
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+OK
+
+{
+  "claimedScopes": [
+    "projects/${projectNumber}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "updated"
+  },
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
+
+{
+  "force": true,
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = com.google.apps.framework.request.BadRequestException: Violation in DeleteRegistryBookRequest.name: Registry book projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId} has child realms
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
+
+{
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+OK
+
+{
+  "claimedScopes": [
+    "projects/${projectNumber}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "updated"
+  },
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
+
+{
+  "force": true,
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = com.google.apps.framework.request.BadRequestException: Violation in DeleteRegistryBookRequest.name: Registry book projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId} has child realms
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
+
+{
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+OK
+
+{
+  "claimedScopes": [
+    "projects/${projectNumber}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "updated"
+  },
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
+
+{
+  "force": true,
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = com.google.apps.framework.request.BadRequestException: Violation in DeleteRegistryBookRequest.name: Registry book projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId} has child realms
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
+
+{
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+OK
+
+{
+  "claimedScopes": [
+    "projects/${projectNumber}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "updated"
+  },
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
+
+{
+  "force": true,
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = com.google.apps.framework.request.BadRequestException: Violation in DeleteRegistryBookRequest.name: Registry book projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId} has child realms
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
+
+{
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+OK
+
+{
+  "claimedScopes": [
+    "projects/${projectNumber}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "updated"
+  },
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
+
+{
+  "force": true,
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = com.google.apps.framework.request.BadRequestException: Violation in DeleteRegistryBookRequest.name: Registry book projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId} has child realms
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
+
+{
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+OK
+
+{
+  "claimedScopes": [
+    "projects/${projectNumber}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "updated"
+  },
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
+
+{
+  "force": true,
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = com.google.apps.framework.request.BadRequestException: Violation in DeleteRegistryBookRequest.name: Registry book projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId} has child realms
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
+
+{
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+OK
+
+{
+  "claimedScopes": [
+    "projects/${projectNumber}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "updated"
+  },
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
+
+{
+  "force": true,
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = com.google.apps.framework.request.BadRequestException: Violation in DeleteRegistryBookRequest.name: Registry book projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId} has child realms
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
+
+{
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+OK
+
+{
+  "claimedScopes": [
+    "projects/${projectNumber}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "updated"
+  },
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
+
+{
+  "force": true,
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = com.google.apps.framework.request.BadRequestException: Violation in DeleteRegistryBookRequest.name: Registry book projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId} has child realms
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
+
+{
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+OK
+
+{
+  "claimedScopes": [
+    "projects/${projectNumber}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "updated"
+  },
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
+
+{
+  "force": true,
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = com.google.apps.framework.request.BadRequestException: Violation in DeleteRegistryBookRequest.name: Registry book projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId} has child realms
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
+
+{
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+OK
+
+{
+  "claimedScopes": [
+    "projects/${projectNumber}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "updated"
+  },
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
+
+{
+  "force": true,
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = com.google.apps.framework.request.BadRequestException: Violation in DeleteRegistryBookRequest.name: Registry book projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId} has child realms
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
+
+{
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+OK
+
+{
+  "claimedScopes": [
+    "projects/${projectNumber}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "updated"
+  },
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
+
+{
+  "force": true,
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = com.google.apps.framework.request.BadRequestException: Violation in DeleteRegistryBookRequest.name: Registry book projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId} has child realms
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
+
+{
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+OK
+
+{
+  "claimedScopes": [
+    "projects/${projectNumber}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "updated"
+  },
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
+
+{
+  "force": true,
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = com.google.apps.framework.request.BadRequestException: Violation in DeleteRegistryBookRequest.name: Registry book projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId} has child realms
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
+
+{
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+OK
+
+{
+  "claimedScopes": [
+    "projects/${projectNumber}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "updated"
+  },
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
+
+{
+  "force": true,
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = com.google.apps.framework.request.BadRequestException: Violation in DeleteRegistryBookRequest.name: Registry book projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId} has child realms
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
+
+{
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+OK
+
+{
+  "claimedScopes": [
+    "projects/${projectNumber}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "updated"
+  },
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
+
+{
+  "force": true,
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = com.google.apps.framework.request.BadRequestException: Violation in DeleteRegistryBookRequest.name: Registry book projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId} has child realms
+
+{}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/GetRegistryBook
+
+{
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+OK
+
+{
+  "claimedScopes": [
+    "projects/${projectNumber}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "foo": "updated"
+  },
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.numberregistry.v1alpha.CloudNumberRegistry/DeleteRegistryBook
+
+{
+  "force": true,
+  "name": "projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = com.google.apps.framework.request.BadRequestException: Violation in DeleteRegistryBookRequest.name: Registry book projects/${projectId}/locations/global/registryBooks/registrybook-max-${uniqueId} has child realms
+
+{}
