@@ -106,6 +106,10 @@ spec:
                   if no revision is active. Possible values: ["INGRESS_TRAFFIC_ALL",
                   "INGRESS_TRAFFIC_INTERNAL_ONLY", "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER"].'
                 type: string
+              invokerIamDisabled:
+                description: Disables IAM permission check for run.routes.invoke for
+                  callers of this service. For more information, visit https://cloud.google.com/run/docs/securing/managing-access#invoker_check.
+                type: boolean
               launchStage:
                 description: |-
                   The launch stage as defined by [Google Cloud Platform Launch Stages](https://cloud.google.com/products#product-launch-stages). Cloud Run supports ALPHA, BETA, and GA.

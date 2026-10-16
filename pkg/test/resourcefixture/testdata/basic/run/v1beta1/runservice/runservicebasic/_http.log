@@ -330,6 +330,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "ingress": "INGRESS_TRAFFIC_ALL",
+  "invokerIamDisabled": true,
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -387,6 +388,7 @@ X-Xss-Protection: 0
     "etag": "abcdef0123A=",
     "generation": "1",
     "ingress": "INGRESS_TRAFFIC_ALL",
+    "invokerIamDisabled": true,
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -461,6 +463,7 @@ X-Xss-Protection: 0
     "etag": "abcdef0123A=",
     "generation": "1",
     "ingress": "INGRESS_TRAFFIC_ALL",
+    "invokerIamDisabled": true,
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -515,6 +518,7 @@ X-Xss-Protection: 0
     "etag": "abcdef0123A=",
     "generation": "1",
     "ingress": "INGRESS_TRAFFIC_ALL",
+    "invokerIamDisabled": true,
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -586,6 +590,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "generation": "12345678901234",
   "ingress": "INGRESS_TRAFFIC_ALL",
+  "invokerIamDisabled": true,
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -658,6 +663,7 @@ X-Xss-Protection: 0
     "etag": "abcdef0123A=",
     "generation": "1",
     "ingress": "INGRESS_TRAFFIC_ALL",
+    "invokerIamDisabled": true,
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -732,6 +738,7 @@ X-Xss-Protection: 0
     "etag": "abcdef0123A=",
     "generation": "1",
     "ingress": "INGRESS_TRAFFIC_ALL",
+    "invokerIamDisabled": true,
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -786,6 +793,7 @@ X-Xss-Protection: 0
     "etag": "abcdef0123A=",
     "generation": "1",
     "ingress": "INGRESS_TRAFFIC_ALL",
+    "invokerIamDisabled": true,
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
