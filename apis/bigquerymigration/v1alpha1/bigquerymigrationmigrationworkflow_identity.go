@@ -60,6 +60,10 @@ func (i *BigQueryMigrationMigrationWorkflowIdentity) Host() string {
 	return BigQueryMigrationMigrationWorkflowIdentityFormat.Host()
 }
 
+func (i *BigQueryMigrationMigrationWorkflowIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
+}
+
 func getIdentityFromBigQueryMigrationMigrationWorkflowSpec(ctx context.Context, reader client.Reader, obj client.Object) (*BigQueryMigrationMigrationWorkflowIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
