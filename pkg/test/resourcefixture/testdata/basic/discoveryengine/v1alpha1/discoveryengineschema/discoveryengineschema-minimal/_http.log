@@ -80,7 +80,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "jsonSchema": "{\"datetime_detection\":true,\"geolocation_detection\":true,\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\"}",
+  "jsonSchema": "{\"type\":\"object\",\"datetime_detection\":true,\"geolocation_detection\":true,\"$schema\":\"https://json-schema.org/draft/2020-12/schema\"}",
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
 }
 
@@ -142,7 +142,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.Schema",
-    "jsonSchema": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"title\":{\"type\":\"string\",\"keyPropertyMapping\":\"title\"}}}",
+    "jsonSchema": "{\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"properties\":{\"title\":{\"type\":\"string\",\"keyPropertyMapping\":\"title\"}}}",
     "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
   }
 }
@@ -166,7 +166,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "jsonSchema": "{\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"properties\":{\"title\":{\"keyPropertyMapping\":\"title\",\"type\":\"string\"}}}",
+  "jsonSchema": "{\"type\":\"object\",\"properties\":{\"title\":{\"type\":\"string\",\"keyPropertyMapping\":\"title\"}},\"$schema\":\"https://json-schema.org/draft/2020-12/schema\"}",
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
 }
 
@@ -189,7 +189,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "jsonSchema": "{\"properties\":{\"title\":{\"type\":\"string\",\"keyPropertyMapping\":\"title\"}},\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft/2020-12/schema\"}",
+  "jsonSchema": "{\"properties\":{\"title\":{\"keyPropertyMapping\":\"title\",\"type\":\"string\"}},\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\"}",
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
 }
 
@@ -251,7 +251,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.Schema",
-    "jsonSchema": "{\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"properties\":{\"title\":{\"keyPropertyMapping\":\"title\",\"type\":\"string\"},\"description\":{\"type\":\"string\"}}}",
+    "jsonSchema": "{\"properties\":{\"description\":{\"type\":\"string\"},\"title\":{\"type\":\"string\",\"keyPropertyMapping\":\"title\"}},\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft/2020-12/schema\"}",
     "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
   }
 }
@@ -275,7 +275,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "jsonSchema": "{\"properties\":{\"title\":{\"keyPropertyMapping\":\"title\",\"type\":\"string\"},\"description\":{\"type\":\"string\"}},\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\"}",
+  "jsonSchema": "{\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"properties\":{\"title\":{\"keyPropertyMapping\":\"title\",\"type\":\"string\"},\"description\":{\"type\":\"string\"}}}",
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
 }
 
@@ -298,7 +298,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "jsonSchema": "{\"type\":\"object\",\"properties\":{\"title\":{\"type\":\"string\",\"keyPropertyMapping\":\"title\"},\"description\":{\"type\":\"string\"}},\"$schema\":\"https://json-schema.org/draft/2020-12/schema\"}",
+  "jsonSchema": "{\"properties\":{\"description\":{\"type\":\"string\"},\"title\":{\"keyPropertyMapping\":\"title\",\"type\":\"string\"}},\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft/2020-12/schema\"}",
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
 }
 
@@ -321,7 +321,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "jsonSchema": "{\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"properties\":{\"title\":{\"type\":\"string\",\"keyPropertyMapping\":\"title\"},\"description\":{\"type\":\"string\"}}}",
+  "jsonSchema": "{\"properties\":{\"description\":{\"type\":\"string\"},\"title\":{\"type\":\"string\",\"keyPropertyMapping\":\"title\"}},\"type\":\"object\",\"$schema\":\"https://json-schema.org/draft/2020-12/schema\"}",
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/schemas/default_schema"
 }
 

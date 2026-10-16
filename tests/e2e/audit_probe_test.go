@@ -77,3 +77,43 @@ func TestIsListOrOperationResponse(t *testing.T) {
 		})
 	}
 }
+
+func TestShouldProbeURL(t *testing.T) {
+	tests := []struct {
+		url  string
+		want bool
+	}{
+		{
+			url:  "https://discoveryengine.googleapis.com/v1/projects/my-project/locations/global/dataStores/my-ds/schemas/default_schema",
+			want: true,
+		},
+		{
+			url:  "https://compute.googleapis.com/compute/v1/projects/my-project/global/networks/my-net",
+			want: true,
+		},
+		{
+			url:  "https://www.googleapis.com/discovery/v1/apis",
+			want: false,
+		},
+		{
+			url:  "https://discovery.googleapis.com/v1/apis",
+			want: false,
+		},
+		{
+			url:  "https://discoveryengine.googleapis.com/v1/projects/123/locations/global/collections/default_collection/dataStores/ds/schemas/s/operations/op-123",
+			want: false,
+		},
+		{
+			url:  "https://oauth2.googleapis.com/token",
+			want: false,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.url, func(t *testing.T) {
+			if got := shouldProbeURL(tc.url); got != tc.want {
+				t.Errorf("shouldProbeURL(%q) = %v, want %v", tc.url, got, tc.want)
+			}
+		})
+	}
+}
