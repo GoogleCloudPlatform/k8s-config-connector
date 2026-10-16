@@ -18,6 +18,7 @@ import (
 	pb "cloud.google.com/go/container/apiv1/containerpb"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -275,8 +276,6 @@ func StandardRolloutPolicy_ToProto(mapCtx *direct.MapContext, in *krm.StandardRo
 }
 
 // ContainerNodePoolSpec_FromProto maps ContainerNodePoolSpec from proto.
-// Handwritten because max_pods_per_node is flattened from a nested MaxPodsConstraint message,
-// and parent-level fields like clusterRef are resolved by the controller.
 func ContainerNodePoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.NodePool) *krm.ContainerNodePoolSpec {
 	if in == nil {
 		return nil
@@ -292,14 +291,13 @@ func ContainerNodePoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.NodePool)
 	out.NodeConfig = NodePoolNodeConfig_FromProto(mapCtx, in.GetConfig())
 	out.NodeLocations = in.GetLocations()
 	out.PlacementPolicy = NodePool_PlacementPolicy_FromProto(mapCtx, in.GetPlacementPolicy())
+	out.QueuedProvisioning = NodePoolQueuedProvisioning_FromProto(mapCtx, in.GetQueuedProvisioning())
 	out.UpgradeSettings = NodePoolUpgradeSettings_FromProto(mapCtx, in.GetUpgradeSettings())
 	out.Version = direct.LazyPtr(in.GetVersion())
 	return out
 }
 
 // ContainerNodePoolSpec_ToProto maps ContainerNodePoolSpec to proto.
-// Handwritten because max_pods_per_node is flattened to a nested MaxPodsConstraint message,
-// and parent-level fields like clusterRef are resolved by the controller.
 func ContainerNodePoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerNodePoolSpec) *pb.NodePool {
 	if in == nil {
 		return nil
@@ -317,7 +315,315 @@ func ContainerNodePoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerN
 	out.Config = NodePoolNodeConfig_ToProto(mapCtx, in.NodeConfig)
 	out.Locations = in.NodeLocations
 	out.PlacementPolicy = NodePool_PlacementPolicy_ToProto(mapCtx, in.PlacementPolicy)
+	out.QueuedProvisioning = NodePoolQueuedProvisioning_ToProto(mapCtx, in.QueuedProvisioning)
 	out.UpgradeSettings = NodePoolUpgradeSettings_ToProto(mapCtx, in.UpgradeSettings)
 	out.Version = direct.ValueOf(in.Version)
+	return out
+}
+
+func NodeNetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeNetworkConfig) *krm.NodeNetworkConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodeNetworkConfig{}
+	out.CreatePodRange = direct.LazyPtr(in.GetCreatePodRange())
+	out.PodRange = direct.LazyPtr(in.GetPodRange())
+	out.PodIpv4CidrBlock = direct.LazyPtr(in.GetPodIpv4CidrBlock())
+	out.EnablePrivateNodes = in.EnablePrivateNodes
+	out.PodCidrOverprovisionConfig = PodCIDROverprovisionConfig_FromProto(mapCtx, in.GetPodCidrOverprovisionConfig())
+	out.AdditionalNodeNetworkConfigs = direct.Slice_FromProto(mapCtx, in.AdditionalNodeNetworkConfigs, AdditionalNodeNetworkConfig_FromProto)
+	out.AdditionalPodNetworkConfigs = direct.Slice_FromProto(mapCtx, in.AdditionalPodNetworkConfigs, AdditionalPodNetworkConfig_FromProto)
+	if in.GetSubnetwork() != "" {
+		out.SubnetworkRef = &computev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+	}
+	return out
+}
+
+func NodeNetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeNetworkConfig) *pb.NodeNetworkConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodeNetworkConfig{}
+	out.CreatePodRange = direct.ValueOf(in.CreatePodRange)
+	out.PodRange = direct.ValueOf(in.PodRange)
+	out.PodIpv4CidrBlock = direct.ValueOf(in.PodIpv4CidrBlock)
+	out.EnablePrivateNodes = in.EnablePrivateNodes
+	out.PodCidrOverprovisionConfig = PodCIDROverprovisionConfig_ToProto(mapCtx, in.PodCidrOverprovisionConfig)
+	out.AdditionalNodeNetworkConfigs = direct.Slice_ToProto(mapCtx, in.AdditionalNodeNetworkConfigs, AdditionalNodeNetworkConfig_ToProto)
+	out.AdditionalPodNetworkConfigs = direct.Slice_ToProto(mapCtx, in.AdditionalPodNetworkConfigs, AdditionalPodNetworkConfig_ToProto)
+	if in.SubnetworkRef != nil {
+		out.Subnetwork = in.SubnetworkRef.External
+	}
+	return out
+}
+
+func CertificateAuthorityDomainConfig_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig) *krm.CertificateAuthorityDomainConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateAuthorityDomainConfig{}
+	out.Fqdns = in.Fqdns
+	out.GCPSecretManagerCertificateConfig = GCPSecretManagerCertificateConfig_FromProto(mapCtx, in.GetGcpSecretManagerCertificateConfig())
+	return out
+}
+
+func CertificateAuthorityDomainConfig_ToProto(mapCtx *direct.MapContext, in *krm.CertificateAuthorityDomainConfig) *pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig{}
+	out.Fqdns = in.Fqdns
+	if in.GCPSecretManagerCertificateConfig != nil {
+		out.CertificateConfig = &pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig_GcpSecretManagerCertificateConfig{
+			GcpSecretManagerCertificateConfig: GCPSecretManagerCertificateConfig_ToProto(mapCtx, in.GCPSecretManagerCertificateConfig),
+		}
+	}
+	return out
+}
+
+func NodeConfig_WorkloadMetadataConfig_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadMetadataConfig) *krm.NodeConfig_WorkloadMetadataConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodeConfig_WorkloadMetadataConfig{}
+	out.Mode = direct.Enum_FromProto[pb.WorkloadMetadataConfig_Mode](mapCtx, in.GetMode())
+	return out
+}
+
+func NodeConfig_WorkloadMetadataConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeConfig_WorkloadMetadataConfig) *pb.WorkloadMetadataConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WorkloadMetadataConfig{}
+	out.Mode = direct.Enum_ToProto[pb.WorkloadMetadataConfig_Mode](mapCtx, in.Mode)
+	return out
+}
+
+func VirtualNic_FromProto(mapCtx *direct.MapContext, in *pb.VirtualNIC) *krm.VirtualNic {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VirtualNic{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	return out
+}
+
+func VirtualNic_ToProto(mapCtx *direct.MapContext, in *krm.VirtualNic) *pb.VirtualNIC {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VirtualNIC{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	return out
+}
+
+func NodeConfig_LocalNvmeSsdBlockConfig_FromProto(mapCtx *direct.MapContext, in *pb.LocalNvmeSsdBlockConfig) *krm.NodeConfig_LocalNvmeSsdBlockConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodeConfig_LocalNvmeSsdBlockConfig{}
+	out.LocalSsdCount = direct.LazyPtr(int(in.GetLocalSsdCount()))
+	return out
+}
+
+func NodeConfig_LocalNvmeSsdBlockConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeConfig_LocalNvmeSsdBlockConfig) *pb.LocalNvmeSsdBlockConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LocalNvmeSsdBlockConfig{}
+	out.LocalSsdCount = int32(direct.ValueOf(in.LocalSsdCount))
+	return out
+}
+
+func NodeAffinity_FromProto(mapCtx *direct.MapContext, in *pb.SoleTenantConfig_NodeAffinity) *krm.NodeAffinity {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodeAffinity{}
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.Operator = direct.Enum_FromProto[pb.SoleTenantConfig_NodeAffinity_Operator](mapCtx, in.GetOperator())
+	out.Values = in.Values
+	return out
+}
+
+func NodeAffinity_ToProto(mapCtx *direct.MapContext, in *krm.NodeAffinity) *pb.SoleTenantConfig_NodeAffinity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SoleTenantConfig_NodeAffinity{}
+	out.Key = direct.ValueOf(in.Key)
+	out.Operator = direct.Enum_ToProto[pb.SoleTenantConfig_NodeAffinity_Operator](mapCtx, in.Operator)
+	out.Values = in.Values
+	return out
+}
+
+func NodeConfig_SoleTenantConfig_FromProto(mapCtx *direct.MapContext, in *pb.SoleTenantConfig) *krm.NodeConfig_SoleTenantConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodeConfig_SoleTenantConfig{}
+	out.NodeAffinity = direct.Slice_FromProto(mapCtx, in.NodeAffinities, NodeAffinity_FromProto)
+	return out
+}
+
+func NodeConfig_SoleTenantConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeConfig_SoleTenantConfig) *pb.SoleTenantConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SoleTenantConfig{}
+	out.NodeAffinities = direct.Slice_ToProto(mapCtx, in.NodeAffinity, NodeAffinity_ToProto)
+	return out
+}
+
+func NodePoolNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.NodePoolNodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodePoolNodeConfig{}
+	out.MachineType = direct.LazyPtr(in.GetMachineType())
+	out.DiskSizeGb = direct.LazyPtr(in.GetDiskSizeGb())
+	out.OauthScopes = in.OauthScopes
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	out.Metadata = in.Metadata
+	out.ImageType = direct.LazyPtr(in.GetImageType())
+	out.Labels = in.Labels
+	out.LocalSsdCount = direct.LazyPtr(in.GetLocalSsdCount())
+	out.Tags = in.Tags
+	out.Preemptible = direct.LazyPtr(in.GetPreemptible())
+	out.AcceleratorConfig = direct.Slice_FromProto(mapCtx, in.Accelerators, AcceleratorConfig_FromProto)
+	out.DiskType = direct.LazyPtr(in.GetDiskType())
+	out.MinCPUPlatform = direct.LazyPtr(in.GetMinCpuPlatform())
+	out.NodeConfig_WorkloadMetadataConfig = NodeConfig_WorkloadMetadataConfig_FromProto(mapCtx, in.GetWorkloadMetadataConfig())
+	out.Taint = direct.Slice_FromProto(mapCtx, in.GetTaints(), NodeTaint_FromProto)
+	out.SandboxConfig = SandboxConfig_FromProto(mapCtx, in.GetSandboxConfig())
+	if in.GetNodeGroup() != "" {
+		out.NodeGroupRef = &computev1beta1.ComputeNodeGroupRef{External: in.GetNodeGroup()}
+	}
+	out.ReservationAffinity = ReservationAffinity_FromProto(mapCtx, in.GetReservationAffinity())
+	out.ShieldedInstanceConfig = ShieldedInstanceConfig_FromProto(mapCtx, in.GetShieldedInstanceConfig())
+	out.LinuxNodeConfig = LinuxNodeConfig_FromProto(mapCtx, in.GetLinuxNodeConfig())
+	out.KubeletConfig = KubeletConfig_FromProto(mapCtx, in.GetKubeletConfig())
+	if in.GetBootDiskKmsKey() != "" {
+		out.BootDiskKMSCryptoKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetBootDiskKmsKey()}
+	}
+	out.GcfsConfig = GcfsConfig_FromProto(mapCtx, in.GetGcfsConfig())
+	out.AdvancedMachineFeatures = NodeConfig_AdvancedMachineFeatures_FromProto(mapCtx, in.GetAdvancedMachineFeatures())
+	out.VirtualNic = VirtualNic_FromProto(mapCtx, in.GetGvnic())
+	out.Spot = direct.LazyPtr(in.GetSpot())
+	out.ConfidentialNodes = ConfidentialNodes_FromProto(mapCtx, in.GetConfidentialNodes())
+	out.FastSocket = FastSocket_FromProto(mapCtx, in.GetFastSocket())
+	out.ResourceLabels = in.ResourceLabels
+	if in.GetLoggingConfig().GetVariantConfig() != nil {
+		variant := in.GetLoggingConfig().GetVariantConfig().GetVariant().String()
+		if variant != "" && variant != "VARIANT_UNSPECIFIED" {
+			out.LoggingVariant = &variant
+		}
+	}
+	out.WindowsNodeConfig = WindowsNodeConfig_FromProto(mapCtx, in.GetWindowsNodeConfig())
+	out.NodeConfig_LocalNvmeSsdBlockConfig = NodeConfig_LocalNvmeSsdBlockConfig_FromProto(mapCtx, in.GetLocalNvmeSsdBlockConfig())
+	out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_FromProto(mapCtx, in.GetEphemeralStorageLocalSsdConfig())
+	out.NodeConfig_SoleTenantConfig = NodeConfig_SoleTenantConfig_FromProto(mapCtx, in.GetSoleTenantConfig())
+	out.ContainerdConfig = ContainerdConfig_FromProto(mapCtx, in.GetContainerdConfig())
+	out.ResourceManagerTags = map_string_string_FromProto(mapCtx, in.GetResourceManagerTags())
+	return out
+}
+
+func NodePoolNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolNodeConfig) *pb.NodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodeConfig{}
+	out.MachineType = direct.ValueOf(in.MachineType)
+	out.DiskSizeGb = direct.ValueOf(in.DiskSizeGb)
+	out.OauthScopes = in.OauthScopes
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
+	out.Metadata = in.Metadata
+	out.ImageType = direct.ValueOf(in.ImageType)
+	out.Labels = in.Labels
+	out.LocalSsdCount = direct.ValueOf(in.LocalSsdCount)
+	out.Tags = in.Tags
+	out.Preemptible = direct.ValueOf(in.Preemptible)
+	out.Accelerators = direct.Slice_ToProto(mapCtx, in.AcceleratorConfig, AcceleratorConfig_ToProto)
+	out.DiskType = direct.ValueOf(in.DiskType)
+	out.MinCpuPlatform = direct.ValueOf(in.MinCPUPlatform)
+	out.WorkloadMetadataConfig = NodeConfig_WorkloadMetadataConfig_ToProto(mapCtx, in.NodeConfig_WorkloadMetadataConfig)
+	out.Taints = direct.Slice_ToProto(mapCtx, in.Taint, NodeTaint_ToProto)
+	out.SandboxConfig = SandboxConfig_ToProto(mapCtx, in.SandboxConfig)
+	if in.NodeGroupRef != nil {
+		out.NodeGroup = in.NodeGroupRef.External
+	}
+	out.ReservationAffinity = ReservationAffinity_ToProto(mapCtx, in.ReservationAffinity)
+	out.ShieldedInstanceConfig = ShieldedInstanceConfig_ToProto(mapCtx, in.ShieldedInstanceConfig)
+	out.LinuxNodeConfig = LinuxNodeConfig_ToProto(mapCtx, in.LinuxNodeConfig)
+	out.KubeletConfig = KubeletConfig_ToProto(mapCtx, in.KubeletConfig)
+	if in.BootDiskKMSCryptoKeyRef != nil {
+		out.BootDiskKmsKey = in.BootDiskKMSCryptoKeyRef.External
+	}
+	out.GcfsConfig = GcfsConfig_ToProto(mapCtx, in.GcfsConfig)
+	out.AdvancedMachineFeatures = NodeConfig_AdvancedMachineFeatures_ToProto(mapCtx, in.AdvancedMachineFeatures)
+	out.Gvnic = VirtualNic_ToProto(mapCtx, in.VirtualNic)
+	out.Spot = direct.ValueOf(in.Spot)
+	out.ConfidentialNodes = ConfidentialNodes_ToProto(mapCtx, in.ConfidentialNodes)
+	out.FastSocket = FastSocket_ToProto(mapCtx, in.FastSocket)
+	out.ResourceLabels = in.ResourceLabels
+	if in.LoggingVariant != nil {
+		out.LoggingConfig = &pb.NodePoolLoggingConfig{
+			VariantConfig: &pb.LoggingVariantConfig{
+				Variant: pb.LoggingVariantConfig_Variant(pb.LoggingVariantConfig_Variant_value[*in.LoggingVariant]),
+			},
+		}
+	}
+	out.WindowsNodeConfig = WindowsNodeConfig_ToProto(mapCtx, in.WindowsNodeConfig)
+	out.LocalNvmeSsdBlockConfig = NodeConfig_LocalNvmeSsdBlockConfig_ToProto(mapCtx, in.NodeConfig_LocalNvmeSsdBlockConfig)
+	out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_ToProto(mapCtx, in.EphemeralStorageLocalSsdConfig)
+	out.SoleTenantConfig = NodeConfig_SoleTenantConfig_ToProto(mapCtx, in.NodeConfig_SoleTenantConfig)
+	out.ContainerdConfig = ContainerdConfig_ToProto(mapCtx, in.ContainerdConfig)
+	out.ResourceManagerTags = map_string_string_ToProto(mapCtx, in.ResourceManagerTags)
+	return out
+}
+
+// WindowsNodeConfig_FromProto maps pb.WindowsNodeConfig to krm.WindowsNodeConfig.
+// Supports both short names (OS_2022, OS_2019) and full proto enum names.
+func WindowsNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.WindowsNodeConfig) *krm.WindowsNodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WindowsNodeConfig{}
+	switch in.GetOsVersion() {
+	case pb.WindowsNodeConfig_OS_VERSION_LTSC2022:
+		out.OSVersion = direct.LazyPtr("OS_2022")
+	case pb.WindowsNodeConfig_OS_VERSION_LTSC2019:
+		out.OSVersion = direct.LazyPtr("OS_2019")
+	case pb.WindowsNodeConfig_OS_VERSION_UNSPECIFIED:
+		out.OSVersion = nil
+	default:
+		out.OSVersion = direct.Enum_FromProto(mapCtx, in.GetOsVersion())
+	}
+	return out
+}
+
+// WindowsNodeConfig_ToProto maps krm.WindowsNodeConfig to pb.WindowsNodeConfig.
+// Supports both short names (OS_2022, OS_2019) and full proto enum names.
+func WindowsNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.WindowsNodeConfig) *pb.WindowsNodeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WindowsNodeConfig{}
+	if in.OSVersion != nil {
+		switch *in.OSVersion {
+		case "OS_2022", "OS_VERSION_LTSC2022":
+			out.OsVersion = pb.WindowsNodeConfig_OS_VERSION_LTSC2022
+		case "OS_2019", "OS_VERSION_LTSC2019":
+			out.OsVersion = pb.WindowsNodeConfig_OS_VERSION_LTSC2019
+		case "OS_VERSION_UNSPECIFIED":
+			out.OsVersion = pb.WindowsNodeConfig_OS_VERSION_UNSPECIFIED
+		default:
+			out.OsVersion = direct.Enum_ToProto[pb.WindowsNodeConfig_OSVersion](mapCtx, in.OSVersion)
+		}
+	}
 	return out
 }
