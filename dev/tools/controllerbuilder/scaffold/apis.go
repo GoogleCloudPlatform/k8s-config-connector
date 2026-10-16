@@ -63,6 +63,36 @@ type APIScaffolder struct {
 
 // resourceMetadata looks up what the proto states about a resource, or nil if we
 // have no proto loaded or the message is not an annotated resource.
+// resolveProtoMessageFullName resolves a short or qualified proto message name
+// against a.PackageProtoTag (which may be a comma-separated list of service
+// packages). When a.Proto is loaded, it checks each service package for a
+// matching MessageDescriptor before falling back to the first service package.
+func (a *APIScaffolder) resolveProtoMessageFullName(protoName string) string {
+	if strings.Contains(protoName, ".") {
+		return protoName
+	}
+	pkgs := strings.Split(a.PackageProtoTag, ",")
+	if a.Proto != nil {
+		for _, rawPkg := range pkgs {
+			pkg := strings.TrimSpace(rawPkg)
+			if pkg == "" {
+				continue
+			}
+			candidate := pkg + "." + protoName
+			if d, err := a.Proto.Files().FindDescriptorByName(protoreflect.FullName(candidate)); err == nil {
+				if _, ok := d.(protoreflect.MessageDescriptor); ok {
+					return candidate
+				}
+			}
+		}
+	}
+	firstPkg := strings.TrimSpace(pkgs[0])
+	if firstPkg == "" {
+		return protoName
+	}
+	return firstPkg + "." + protoName
+}
+
 func (a *APIScaffolder) resourceMetadata(fullName string) *protoapi.ResourceMetadata {
 	if a.Proto == nil || fullName == "" {
 		return nil
@@ -148,19 +178,12 @@ func (a *APIScaffolder) buildAPIArgs(resource *options.Resource) *apis.APIArgs {
 	if resource != nil {
 		args.Kind = resource.Kind
 
-		if strings.Contains(resource.ProtoName, ".") {
-			args.KindProtoTag = resource.ProtoName
-		} else {
-			pkg := a.PackageProtoTag
-			if strings.Contains(pkg, ",") {
-				pkg = strings.Split(pkg, ",")[0]
-			}
-			args.KindProtoTag = pkg + "." + resource.ProtoName
-		}
+		fullName := a.resolveProtoMessageFullName(resource.ProtoName)
+		args.KindProtoTag = fullName
 		args.ProtoResource = resource.ProtoName
 
 		args.ProtoMessageName = resource.ProtoMessageName()
-		args.ProtoMessageFullName = resource.ProtoMessageFullName(a.PackageProtoTag)
+		args.ProtoMessageFullName = fullName
 
 		if md := a.resourceMetadata(args.ProtoMessageFullName); md != nil {
 			args.Collection = md.Collection
@@ -230,6 +253,7 @@ func (a *APIScaffolder) AddTypeFile(resource options.Resource, prepopulated *Pre
 		cArgs.SpecFields = prepopulated.SpecFields
 		cArgs.ObservedStateFields = prepopulated.ObservedStateFields
 		cArgs.ExtraImports = prepopulated.ExtraImports
+		cArgs.PrepopulateSpec = true
 		root, item := a.rootRef(cArgs.ResourcePattern)
 		cArgs.RootRefField = root
 		if item != nil {

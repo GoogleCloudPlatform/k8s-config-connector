@@ -165,8 +165,12 @@ func extractGetRPCPattern(m protoreflect.MethodDescriptor, wantOutput protorefle
 
 func (g *IdentityGenerator) serviceFilesForMessage(msg protoreflect.MessageDescriptor) []protoreflect.FileDescriptor {
 	var files []protoreflect.FileDescriptor
-	if msg.ParentFile() != nil && !strings.HasPrefix(string(msg.ParentFile().Package()), "mockgcp.") {
-		files = append(files, msg.ParentFile())
+	var msgPkg string
+	if msg.ParentFile() != nil {
+		msgPkg = string(msg.ParentFile().Package())
+		if !strings.HasPrefix(msgPkg, "mockgcp.") {
+			files = append(files, msg.ParentFile())
+		}
 	}
 	if g.opts.Proto == nil {
 		return files
@@ -179,14 +183,19 @@ func (g *IdentityGenerator) serviceFilesForMessage(msg protoreflect.MessageDescr
 		}
 	}
 	groupPrefix := strings.Split(g.opts.Group, ".")[0]
-	g.opts.Proto.Files().RangeFiles(func(fd protoreflect.FileDescriptor) bool {
+	var otherFiles []protoreflect.FileDescriptor
+	for _, fd := range g.opts.Proto.SortedFiles() {
 		pkg := string(fd.Package())
-		if wantPkgs[pkg] || matchesGroupServicePackage(pkg, groupPrefix) {
-			files = append(files, fd)
+		if !wantPkgs[pkg] && !matchesGroupServicePackage(pkg, groupPrefix) {
+			continue
 		}
-		return true
-	})
-	return files
+		if msgPkg != "" && pkg == msgPkg {
+			files = append(files, fd)
+		} else {
+			otherFiles = append(otherFiles, fd)
+		}
+	}
+	return append(files, otherFiles...)
 }
 
 func matchesGroupServicePackage(pkg, groupPrefix string) bool {

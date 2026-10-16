@@ -15,7 +15,10 @@
 package scaffold
 
 import (
+	"fmt"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
 
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/descriptorpb"
@@ -33,17 +36,32 @@ import (
 // The items use the same reason as the top-level ones from PrepopulateSpec.
 // Their paths differ, so their queue keys do not collide.
 func NestedDeprecatedFields(msg protoreflect.MessageDescriptor, opts codegen.WriteOptions) []JudgementItem {
+	if msg == nil {
+		return nil
+	}
 	var out []JudgementItem
-	walkSpecFields(msg, ".spec", opts, true, map[protoreflect.FullName]bool{}, func(path, _ string, field protoreflect.FieldDescriptor) {
-		if !isDeprecated(field) {
-			return
-		}
+	if isDeprecatedMessage(msg) {
 		out = append(out, JudgementItem{
-			FieldPath: path,
-			Reason:    "deprecated-field",
-			Detail: "the proto marks this field deprecated. It is kept because generated structs " +
-				"can be shared with other Kinds. Remove it by hand if no existing Kind uses it",
+			Reason: judgement.ReasonDeprecatedResource,
+			Detail: fmt.Sprintf("the proto marks message %s deprecated (option deprecated = true); confirm whether this resource should be generated", msg.FullName()),
 		})
+	}
+	walkSpecFields(msg, ".spec", opts, true, map[protoreflect.FullName]bool{}, func(path, _ string, field protoreflect.FieldDescriptor) {
+		if isDeprecated(field) {
+			out = append(out, JudgementItem{
+				FieldPath: path,
+				Reason:    judgement.ReasonDeprecatedField,
+				Detail: "the proto marks this field deprecated. It is kept because generated structs " +
+					"can be shared with other Kinds. Remove it by hand if no existing Kind uses it",
+			})
+		}
+		if subMsg := fieldMessageDescriptor(field); subMsg != nil && isDeprecatedMessage(subMsg) {
+			out = append(out, JudgementItem{
+				FieldPath: path,
+				Reason:    judgement.ReasonDeprecatedMessage,
+				Detail:    fmt.Sprintf("the proto marks message %s deprecated (option deprecated = true); confirm whether this field should be kept", subMsg.FullName()),
+			})
+		}
 	})
 	return out
 }
@@ -52,4 +70,25 @@ func NestedDeprecatedFields(msg protoreflect.MessageDescriptor, opts codegen.Wri
 func isDeprecated(field protoreflect.FieldDescriptor) bool {
 	opts, ok := field.Options().(*descriptorpb.FieldOptions)
 	return ok && opts.GetDeprecated()
+}
+
+// isDeprecatedMessage reports whether the proto marks msg with option deprecated = true.
+func isDeprecatedMessage(msg protoreflect.MessageDescriptor) bool {
+	if msg == nil {
+		return false
+	}
+	opts, ok := msg.Options().(*descriptorpb.MessageOptions)
+	return ok && opts.GetDeprecated()
+}
+
+func fieldMessageDescriptor(field protoreflect.FieldDescriptor) protoreflect.MessageDescriptor {
+	switch {
+	case field.IsMap():
+		if v := field.MapValue(); v.Kind() == protoreflect.MessageKind {
+			return v.Message()
+		}
+	case field.Kind() == protoreflect.MessageKind:
+		return field.Message()
+	}
+	return nil
 }

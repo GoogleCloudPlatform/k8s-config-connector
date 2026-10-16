@@ -465,7 +465,7 @@ func (p *requiredPlanner) next(n structNode) []structNode {
 // heldBy returns the structs that the fields of msg's struct hold.
 func (p *requiredPlanner) heldBy(msg protoreflect.MessageDescriptor) []structNode {
 	var out []structNode
-	for _, f := range structFields(msg) {
+	for _, f := range structFields(msg, p.g.writeOptions) {
 		if n, ok := p.nodeForSpecField(f); ok {
 			out = append(out, n)
 		}
@@ -603,7 +603,7 @@ func (p *requiredPlanner) needsSplit(fqn string, lenient, named, split map[strin
 
 // holdsSplitMessage reports whether msg's struct holds a split message.
 func (p *requiredPlanner) holdsSplitMessage(msg protoreflect.MessageDescriptor, split map[string]bool) bool {
-	for _, f := range structFields(msg) {
+	for _, f := range structFields(msg, p.g.writeOptions) {
 		if child, ok := specChild(f, p.g.writeOptions); ok && split[string(child.FullName())] {
 			return true
 		}
@@ -634,7 +634,7 @@ func (g *TypeGenerator) messagesToWrite() map[string]protoreflect.MessageDescrip
 		}
 		fqn := string(msg.FullName())
 		goName := GoNameForProtoMessage(msg)
-		if g.declaredByHand(goName) || g.taggedByHand(fqn) || g.reservedTypeNames[goName] {
+		if g.declaredByHand(goName) || (!g.isReferencedAsField(fqn) && g.taggedByHand(fqn)) || g.reservedTypeNames[goName] {
 			continue
 		}
 		out[fqn] = msg
@@ -715,13 +715,18 @@ func plainChildInStatus(f protoreflect.FieldDescriptor, observedStateMessages se
 
 // structFields returns the fields of msg except the output-only ones, which
 // WriteMessage leaves out of the struct.
-func structFields(msg protoreflect.MessageDescriptor) []protoreflect.FieldDescriptor {
+func structFields(msg protoreflect.MessageDescriptor, opts WriteOptions) []protoreflect.FieldDescriptor {
 	var out []protoreflect.FieldDescriptor
 	fields := msg.Fields()
 	for i := range fields.Len() {
-		if f := fields.Get(i); !IsFieldBehavior(f, annotations.FieldBehavior_OUTPUT_ONLY) {
-			out = append(out, f)
+		f := fields.Get(i)
+		if IsFieldBehavior(f, annotations.FieldBehavior_OUTPUT_ONLY) {
+			continue
 		}
+		if opts.Prepopulating && IsFieldAllOutputOnlyMessage(f) {
+			continue
+		}
+		out = append(out, f)
 	}
 	return out
 }
@@ -729,7 +734,7 @@ func structFields(msg protoreflect.MessageDescriptor) []protoreflect.FieldDescri
 // hasEmittedRequired reports whether WriteField would put +required on any
 // field of msg.
 func hasEmittedRequired(msg protoreflect.MessageDescriptor, opts WriteOptions) bool {
-	for _, f := range structFields(msg) {
+	for _, f := range structFields(msg, opts) {
 		if !IsFieldBehavior(f, annotations.FieldBehavior_REQUIRED) {
 			continue
 		}

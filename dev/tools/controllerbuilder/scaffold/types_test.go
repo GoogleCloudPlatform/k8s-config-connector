@@ -29,8 +29,12 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/judgement"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/sourcelinks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/template/apis"
+	"google.golang.org/genproto/googleapis/api/annotations"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/descriptorpb"
 )
 
 // TestTypesTemplateRendersValidGo verifies that the types template renders valid Go
@@ -131,6 +135,36 @@ func TestAddTypeFileWritesPrepopulatedBodies(t *testing.T) {
 	}
 	if !strings.Contains(got, `common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"`) {
 		t.Errorf("the import the ObservedState body needs is missing from the scaffolded file:\n%s", got)
+	}
+}
+
+func TestAddTypeFileCommentsOutEmptyObservedStateWhenPrepopulating(t *testing.T) {
+	dir := t.TempDir()
+	scaffolder := &APIScaffolder{
+		BaseDir:         dir,
+		GoPackage:       "composer/v1alpha1",
+		Group:           "composer.cnrm.cloud.google.com",
+		Version:         "v1alpha1",
+		PackageProtoTag: "google.cloud.orchestration.airflow.service.v1",
+	}
+	resource := options.Resource{Kind: "ComposerUserWorkloadsSecret", ProtoName: "UserWorkloadsSecret"}
+	prepopulated := &PrepopulateResult{
+		SpecFields:          "\tData map[string]string `json:\"data,omitempty\"`\n",
+		ObservedStateFields: "",
+	}
+	if err := scaffolder.AddTypeFile(resource, prepopulated, ""); err != nil {
+		t.Fatalf("AddTypeFile: %v", err)
+	}
+	b, err := os.ReadFile(filepath.Join(dir, scaffolder.GoPackage, "composeruserworkloadssecret_types.go"))
+	if err != nil {
+		t.Fatalf("reading scaffolded file: %v", err)
+	}
+	got := string(b)
+	if !strings.Contains(got, "// ObservedState *ComposerUserWorkloadsSecretObservedState") {
+		t.Errorf("expected ObservedState field to be commented out when empty:\n%s", got)
+	}
+	if !strings.Contains(got, "// type ComposerUserWorkloadsSecretObservedState struct {") {
+		t.Errorf("expected ObservedState struct to be commented out when empty:\n%s", got)
 	}
 }
 
@@ -313,5 +347,65 @@ func TestAddTypeFileWritesRequiredFromProtoMarker(t *testing.T) {
 				t.Errorf("%sSpec has the %s marker = %v, want %v:\n%s", resource.Kind, codegen.RequiredFromProtoMarker, marked, tc.requiredFromProto, b)
 			}
 		})
+	}
+}
+
+func TestBuildAPIArgsMultiServiceProtoTag(t *testing.T) {
+	msgOpts := &descriptorpb.MessageOptions{}
+	proto.SetExtension(msgOpts, annotations.E_Resource, &annotations.ResourceDescriptor{
+		Type:    "spanner.googleapis.com/InstancePartition",
+		Pattern: []string{"projects/{project}/instances/{instance}/instancePartitions/{instance_partition}"},
+	})
+	fds := &descriptorpb.FileDescriptorSet{
+		File: []*descriptorpb.FileDescriptorProto{
+			{
+				Name:    proto.String("spanner_database.proto"),
+				Package: proto.String("google.spanner.admin.database.v1"),
+				MessageType: []*descriptorpb.DescriptorProto{
+					{Name: proto.String("Database")},
+				},
+			},
+			{
+				Name:    proto.String("spanner_instance.proto"),
+				Package: proto.String("google.spanner.admin.instance.v1"),
+				MessageType: []*descriptorpb.DescriptorProto{
+					{Name: proto.String("InstancePartition"), Options: msgOpts},
+				},
+			},
+		},
+	}
+	tmpProto := filepath.Join(t.TempDir(), "test.pb")
+	rawBytes, err := proto.Marshal(fds)
+	if err != nil {
+		t.Fatalf("proto.Marshal: %v", err)
+	}
+	if err := os.WriteFile(tmpProto, rawBytes, 0o644); err != nil {
+		t.Fatalf("os.WriteFile: %v", err)
+	}
+	loadedProto, err := protoapi.LoadProto(tmpProto, "")
+	if err != nil {
+		t.Fatalf("LoadProto: %v", err)
+	}
+
+	scaffolder := &APIScaffolder{
+		BaseDir:         t.TempDir(),
+		GoPackage:       "spanner/v1alpha1",
+		Group:           "spanner.cnrm.cloud.google.com",
+		Version:         "v1alpha1",
+		PackageProtoTag: "google.spanner.admin.database.v1,google.spanner.admin.instance.v1",
+		Proto:           loadedProto,
+	}
+	res := options.Resource{Kind: "SpannerInstancePartition", ProtoName: "InstancePartition"}
+	args := scaffolder.buildAPIArgs(&res)
+	const wantFull = "google.spanner.admin.instance.v1.InstancePartition"
+	if args.KindProtoTag != wantFull {
+		t.Errorf("KindProtoTag = %q, want %q", args.KindProtoTag, wantFull)
+	}
+	if args.ProtoMessageFullName != wantFull {
+		t.Errorf("ProtoMessageFullName = %q, want %q", args.ProtoMessageFullName, wantFull)
+	}
+	const wantPat = "projects/{project}/instances/{instance}/instancePartitions/{instance_partition}"
+	if args.ResourcePattern != wantPat {
+		t.Errorf("ResourcePattern = %q, want %q", args.ResourcePattern, wantPat)
 	}
 }

@@ -257,13 +257,15 @@ func (g *IdentityGenerator) Plan(kind string, msg protoreflect.MessageDescriptor
 	if len(patterns) == 0 {
 		detail := fmt.Sprintf("proto message %s declares no google.api.resource pattern; pass --pattern %s=<pattern> to generate-identity", msg.FullName(), kind)
 		klog.Warningf("skipping identity generation for %s: %s", kind, detail)
-		plan.Judgement = append(plan.Judgement, judgement.Entry{
-			Kind:   kind,
-			Group:  g.opts.Group,
-			Reason: judgement.ReasonIdentityRootUnknown,
-			Detail: detail,
-			Status: judgement.StatusOpen,
-		})
+		if shouldEmitIdentityFile(plan, &plan.Overrides) || shouldEmitReferenceFile(&plan.Overrides) {
+			plan.Judgement = append(plan.Judgement, judgement.Entry{
+				Kind:   kind,
+				Group:  g.opts.Group,
+				Reason: judgement.ReasonIdentityRootUnknown,
+				Detail: detail,
+				Status: judgement.StatusOpen,
+			})
+		}
 		return plan, nil
 	}
 
@@ -282,6 +284,15 @@ func (g *IdentityGenerator) Plan(kind string, msg protoreflect.MessageDescriptor
 	g.recordPatternJudgements(plan, msg, patterns, patOverride, normPath, tied)
 
 	plan.ServerGeneratedID = (serverGenID || typeInfo.ResourceIDServer) && plan.ResourceIDField != nil
+	if plan.ServerGeneratedID && shouldEmitIdentityFile(plan, &plan.Overrides) {
+		plan.Judgement = append(plan.Judgement, judgement.Entry{
+			Kind:   plan.Kind,
+			Group:  g.opts.Group,
+			Reason: judgement.ReasonIdentityServerGeneratedID,
+			Detail: fmt.Sprintf("generated %sIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name", plan.Kind),
+			Status: judgement.StatusOpen,
+		})
+	}
 	g.resolveSpecAncestors(plan, typeInfo)
 	return plan, nil
 }

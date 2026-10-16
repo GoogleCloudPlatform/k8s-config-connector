@@ -476,7 +476,7 @@ func TestOutputOnlyCandidateItem(t *testing.T) {
 			want: JudgementItem{
 				FieldPath: ".status.observedState.createTime",
 				Reason:    "well-known-output-only-pattern-in-comment",
-				Detail:    "proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec. Move the field to status.observedState if it is confirmed output only. Proto comment: Output only. When it was created.",
+				Detail:    "proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.createTime. Move the field to .status.observedState.createTime if it is confirmed output only. Proto comment: Output only. When it was created.",
 			},
 		},
 		{
@@ -485,8 +485,8 @@ func TestOutputOnlyCandidateItem(t *testing.T) {
 			want: JudgementItem{
 				FieldPath: ".status.observedState.config.managedScan",
 				Reason:    "possible-output-only-pattern-in-comment",
-				Detail: "proto comment mentions output only but doesn't start with \"Output only.\" or \"[Output Only]\", and there is no field_behavior annotation, so it was generated into the Spec. " +
-					"The comment may be a typo, apply only some of the time, or mean something else. Move the field to status.observedState if it is confirmed output only. Proto comment: Whether the scan config is managed by Web Security Scanner, output only.",
+				Detail: "proto comment mentions output only but doesn't start with \"Output only.\" or \"[Output Only]\", and there is no field_behavior annotation, so it was generated into the Spec at .spec.config.managedScan. " +
+					"The comment may be a typo, apply only some of the time, or mean something else. Move the field to .status.observedState.config.managedScan if it is confirmed output only. Proto comment: Whether the scan config is managed by Web Security Scanner, output only.",
 			},
 		},
 	} {
@@ -619,6 +619,85 @@ func TestSpecFieldsMatchesPrepopulateSpec(t *testing.T) {
 				t.Errorf("SpecFields() = %v, PrepopulateSpec wrote %v", names, want)
 			}
 		})
+	}
+}
+
+func TestWellKnownProtoTypeQueuedInSpecAndObservedState(t *testing.T) {
+	msgType := fieldType(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE)
+	files, err := protodesc.NewFiles(&descriptorpb.FileDescriptorSet{
+		File: []*descriptorpb.FileDescriptorProto{
+			{
+				Name:    strPtr("google/protobuf/wrappers.proto"),
+				Package: strPtr("google.protobuf"),
+				MessageType: []*descriptorpb.DescriptorProto{
+					{
+						Name: strPtr("DoubleValue"),
+						Field: []*descriptorpb.FieldDescriptorProto{
+							{Name: strPtr("value"), Number: i32Ptr(1), Type: fieldType(descriptorpb.FieldDescriptorProto_TYPE_DOUBLE)},
+						},
+					},
+					{
+						Name: strPtr("Duration"),
+						Field: []*descriptorpb.FieldDescriptorProto{
+							{Name: strPtr("seconds"), Number: i32Ptr(1), Type: fieldType(descriptorpb.FieldDescriptorProto_TYPE_INT64)},
+						},
+					},
+				},
+			},
+			{
+				Name:       strPtr("engine.proto"),
+				Package:    strPtr("google.cloud.test.v1"),
+				Dependency: []string{"google/protobuf/wrappers.proto"},
+				MessageType: []*descriptorpb.DescriptorProto{
+					{
+						Name: strPtr("PerformanceTarget"),
+						Field: []*descriptorpb.FieldDescriptorProto{
+							{Name: strPtr("target_metric"), Number: i32Ptr(1), Type: msgType, TypeName: strPtr(".google.protobuf.DoubleValue")},
+							{Name: strPtr("timeout"), Number: i32Ptr(2), Type: msgType, TypeName: strPtr(".google.protobuf.Duration")},
+						},
+					},
+					{
+						Name: strPtr("EngineConfig"),
+						Field: []*descriptorpb.FieldDescriptorProto{
+							{Name: strPtr("performance_target"), Number: i32Ptr(1), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.PerformanceTarget")},
+							{Name: strPtr("observed_target"), Number: i32Ptr(2), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.PerformanceTarget"), Options: behaviorOptions(annotations.FieldBehavior_OUTPUT_ONLY)},
+						},
+					},
+				},
+			},
+		},
+	})
+	if err != nil {
+		t.Fatalf("protodesc.NewFiles: %v", err)
+	}
+	desc, err := files.FindDescriptorByName("google.cloud.test.v1.EngineConfig")
+	if err != nil {
+		t.Fatalf("FindDescriptorByName: %v", err)
+	}
+	msg := desc.(protoreflect.MessageDescriptor)
+
+	gotSpec := ReferenceHints(msg, codegen.WriteOptions{})
+	wantSpec := []JudgementItem{{
+		FieldPath: ".spec.performanceTarget.targetMetric",
+		Reason:    "well-known-proto-type",
+		Detail:    "field uses well-known protobuf type google.protobuf.DoubleValue, which was generated as struct DoubleValue; confirm KRM representation",
+	}}
+	if diff := cmp.Diff(wantSpec, gotSpec); diff != "" {
+		t.Errorf("ReferenceHints() well-known-proto-type mismatch (-want +got):\n%s", diff)
+	}
+
+	details := &codegen.OutputMessageDetails{
+		Message:      msg,
+		OutputFields: []protoreflect.FieldDescriptor{msg.Fields().ByName("observed_target")},
+	}
+	_, gotObs := PrepopulateObservedState(details, sets.NewString(), codegen.WriteOptions{})
+	wantObs := []JudgementItem{{
+		FieldPath: ".status.observedState.observedTarget.targetMetric",
+		Reason:    "well-known-proto-type",
+		Detail:    "field uses well-known protobuf type google.protobuf.DoubleValue, which was generated as struct DoubleValue; confirm KRM representation",
+	}}
+	if diff := cmp.Diff(wantObs, gotObs); diff != "" {
+		t.Errorf("PrepopulateObservedState() well-known-proto-type mismatch (-want +got):\n%s", diff)
 	}
 }
 
