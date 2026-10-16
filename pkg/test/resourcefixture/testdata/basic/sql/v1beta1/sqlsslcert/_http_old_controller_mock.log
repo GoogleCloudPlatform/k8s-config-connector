@@ -1,0 +1,743 @@
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}?alt=json&prettyPrint=false
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The Cloud SQL instance does not exist.",
+        "reason": "instanceDoesNotExist"
+      }
+    ],
+    "message": "The Cloud SQL instance does not exist."
+  }
+}
+
+---
+
+POST https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances?alt=json&prettyPrint=false
+Content-Type: application/json
+
+{
+  "databaseVersion": "MYSQL_5_7",
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "kind": "sql#instance",
+  "name": "sqlinstance-${uniqueId}",
+  "region": "us-central1",
+  "settings": {
+    "activationPolicy": "ALWAYS",
+    "availabilityType": "ZONAL",
+    "connectorEnforcement": "NOT_REQUIRED",
+    "dataDiskType": "PD_SSD",
+    "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "ipv4Enabled": true,
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
+    "kind": "sql#settings",
+    "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
+    "storageAutoResize": true,
+    "tier": "db-n1-standard-1",
+    "userLabels": {
+      "cnrm-test": "true",
+      "label-one": "value-one",
+      "managed-by-cnrm": "true"
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "CREATE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "status": "PENDING",
+  "targetId": "sqlinstance-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "CREATE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "sqlinstance-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backendType": "SECOND_GEN",
+  "connectionName": "${projectId}:us-central1:sqlinstance-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseInstalledVersion": "MYSQL_5_7_44",
+  "databaseVersion": "MYSQL_5_7",
+  "etag": "abcdef0123A=",
+  "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "flagRecommenderEnabled": true,
+    "indexAdvisorEnabled": false
+  },
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "ipAddresses": [
+    {
+      "ipAddress": "10.10.10.10",
+      "type": "PRIMARY"
+    }
+  ],
+  "kind": "sql#instance",
+  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
+  "name": "sqlinstance-${uniqueId}",
+  "project": "${projectId}",
+  "region": "us-central1",
+  "satisfiesPzi": true,
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
+  "serverCaCert": {
+    "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
+    "certSerialNumber": "0",
+    "commonName": "common-name",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "expirationTime": "2024-04-01T12:34:56.123456Z",
+    "instance": "sqlinstance-${uniqueId}",
+    "kind": "sql#sslCert",
+    "sha1Fingerprint": "12345678"
+  },
+  "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
+  "settings": {
+    "activationPolicy": "ALWAYS",
+    "authorizedGaeApplications": [],
+    "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 7,
+        "retentionUnit": "COUNT"
+      },
+      "enabled": false,
+      "kind": "sql#backupConfiguration",
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 7,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
+    },
+    "connectorEnforcement": "NOT_REQUIRED",
+    "dataDiskSizeGb": "10",
+    "dataDiskType": "PD_SSD",
+    "deletionProtectionEnabled": false,
+    "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "authorizedNetworks": [],
+      "ipv4Enabled": true,
+      "requireSsl": false,
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
+    "kind": "sql#settings",
+    "locationPreference": {
+      "kind": "sql#locationPreference",
+      "zone": "us-central1-a"
+    },
+    "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
+    "settingsVersion": "123",
+    "storageAutoResize": true,
+    "storageAutoResizeLimit": "0",
+    "tier": "db-n1-standard-1",
+    "userLabels": {
+      "cnrm-test": "true",
+      "label-one": "value-one",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
+  "state": "RUNNABLE",
+  "upgradableDatabaseVersions": [
+    {
+      "displayName": "MySQL 8.0",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0"
+    },
+    {
+      "displayName": "MySQL 8.0.18",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_18"
+    },
+    {
+      "displayName": "MySQL 8.0.26",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_26"
+    },
+    {
+      "displayName": "MySQL 8.0.27",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_27"
+    },
+    {
+      "displayName": "MySQL 8.0.28",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_28"
+    },
+    {
+      "displayName": "MySQL 8.0.29",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_29"
+    },
+    {
+      "displayName": "MySQL 8.0.30",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_30"
+    },
+    {
+      "displayName": "MySQL 8.0.31",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_31"
+    },
+    {
+      "displayName": "MySQL 8.0.32",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_32"
+    },
+    {
+      "displayName": "MySQL 8.0.33",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_33"
+    },
+    {
+      "displayName": "MySQL 8.0.34",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_34"
+    },
+    {
+      "displayName": "MySQL 8.0.35",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_35"
+    },
+    {
+      "displayName": "MySQL 8.0.36",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_36"
+    },
+    {
+      "displayName": "MySQL 8.0.37",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_37"
+    }
+  ]
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}/users?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "items": [
+    {
+      "etag": "abcdef0123A=",
+      "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
+      "instance": "sqlinstance-${uniqueId}",
+      "kind": "sql#user",
+      "name": "root",
+      "passwordPolicy": {
+        "status": {}
+      },
+      "project": "${projectId}"
+    }
+  ],
+  "kind": "sql#usersList"
+}
+
+---
+
+DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}/users?alt=json&host=%25&name=root&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "DELETE_USER",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "sqlinstance-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+POST https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}/sslCerts?alt=json&prettyPrint=false
+Content-Type: application/json
+
+{
+  "commonName": "client-name"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "clientCert": {
+    "certInfo": {
+      "cert": "-----BEGIN CERTIFICATE-----\nMIIDhTCCAm2gAwIBAgIEQ5YU2jANBgkqhkiG9w0BAQsFADB8MS0wKwYDVQQuEyQ3\nMjZlMmU5MC01NTAyLTQ5NjctYmJkZi02MTZiMzBhN2ViZTQxKDAmBgNVBAMTH0Ns\nb3VkIFNRTCBDbGllbnQgQ0EgY2xpZW50LW5hbWUxFDASBgNVBAoTC0dvb2dsZSwg\nSW5jMQswCQYDVQQGEwJVUzAeFw0yNjEwMTQwMDQ0MDJaFw0zNjEwMTEwMDQ1MDJa\nMDkxFDASBgNVBAMTC2NsaWVudC1uYW1lMRQwEgYDVQQKEwtHb29nbGUsIEluYzEL\nMAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCYudgZ\nBsmIPVsLP5axLmzou+LsfH9gmlXOFBnl1oU2KiWfI94t+Zzlyfu7E7jVdZWwGt2g\nah9qtIq3LyVso4B8vbjzwnAlhz94wUrhckFk2bCfMjvBlJxl5GW7lu4lbpq6HV7D\nsBQ6fXv8vHCKNNF4XniSUC/8ig6KAieiGD7bkQnCIvAScxptaFDgTobiPTkjKu+/\nTah2cuR/gl0P6d1gO6BKZbq+McbM33Y9eFu0gbQ9Ew3KHff9DFqzyQgREbP6G8QG\nT2aT4kcfdFQXvq2xjzsczJJU6QxtQyrnHSyHIr+JMdsSB3+FMEVwGLVJpdz9Zr0I\n+MyHw7XWBgStFkqdAgMBAAGjUjBQMAkGA1UdEwQCMAAwQwYDVR0RBDwwOoE4b3Zl\ncnNlZXIta2NjLXRlc3RlckBjbnJtLWJhcm5pLTQuaWFtLmdzZXJ2aWNlYWNjb3Vu\ndC5jb20wDQYJKoZIhvcNAQELBQADggEBALOErfUQV5Gn27pFr7T/1lKM9mj72flG\nUDUaKXfyjwVHf/gdZo2F5Z0atA70aLQhfT5KP6kYdVWgs7WnYSpZnEKxq32Lndxp\neQ/VgOE57JnsPDLVo5dFyjbT2Y8TkS/vBLTcLHH35ocxKmKrHduBbh3/T5uu6Jlz\nCWKO6nTFPm/ovGWW4BRAC8NvVNnQsz3csnTfbcurUPFYeDmrBPHzIo/pubpOoj+3\noP3T4EY4n2Ec20gRpv0Kx8J+AFPRR65Fk7TdrMMCczM0/x4MwXRzxB3Un9T+Zo18\n3UwfUAscOjZYnxq5Joencwboh1fzdEC1NTxJzCxfFblXnM5dbACVvWY=\n-----END CERTIFICATE-----",
+      "certSerialNumber": "1133909210",
+      "commonName": "client-name",
+      "createTime": "2026-10-14T00:44:02.750Z",
+      "expirationTime": "2036-10-11T00:45:02.750Z",
+      "instance": "sqlinstance-${uniqueId}",
+      "kind": "sql#sslCert",
+      "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}/sslCerts/760567766a057bb737d50ac1e5798bb9c039dea6",
+      "sha1Fingerprint": "760567766a057bb737d50ac1e5798bb9c039dea6"
+    },
+    "certPrivateKey": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEA1i7zmSGopddoujVyKjrKVXKK5LktTZdGsq5dFbihwr4Xrp/7\nO5Sy4BH4n80bnmJUlLXRoOGrViMBCrGyBPgBfblE85Kv7esx8RQAFoFWev4Vuveo\n6nGV98lPiwrhzy0jdK7qg+mcoJ2A1XIg5mMMXutNcTXzjmEZZunRkcerk8Rg2bX7\nvM7GjSNFMU7oE6dseXCgeukm4HZSCb3Nh2+eGu6jrG/QiH/q6ytsVHSVI+LnlBCD\nMY52Nrvw3O9UoHwVZ/shXzfTBzXXE1j1xFApRBcXfzAd3Rp+4VWr18r8tzU+LVoQ\nYGAaYXxFLnQxXo+TJlaueiThENlLWkPiJrHLnQIDAQABAoIBAQDMo/WZlQBG3Cay\n64fV83AI7jTozkkLvoMNC+3iaBMeN3P3I+HuDmhOEL2lKVq/HKJFp+bPuW50EWPY\nbOlzN+Zs0kygEMJJJxQDjCF9XzxarVPj3OcmgTpRkqWOaupPgYhD3zAws080YuiK\nh84Jcg+KzXWjunGn0vxrSPI0QDueJR2i03tEDBAtMZ0pvAsJ0gmXRdzGOc2uRzDm\nfbS3y/JIufClO28OzjJ5AJkbc9XgRDeCDOFY2D375bCg2boPYmP7Iw0HVU3RQhcr\nt+US27VQBRJF4cQ2CCyr0ZbdaPn41v+/A/qxF6ZPguyy+KoyQjCqK8iFArRQ48hJ\ncR2pFx4hAoGBAP2uXIJAdAemrOunv2CWlUHI2iHj/kJ1AXRMpiT+eF0US9E6tipE\nmL63HkUhiAs2nJnPi3RDxP+kAO2Z3anqjm1KCeGj+IYYZMavnkC8EVybv9lDwORy\ne2O1bfRc/tGa341KmvXLbp8oVMIYIvKz2cZmHGJ4V4DTq8dTvmqoE4/VAoGBANgk\nKWY5MJToZJJ5bV0mc2stmGt/IAZZPlKjVmKOjDyzqHRLAhsmbMyUhhgZtyj0dzSW\nILEeaEJknYRrOB48D6IqkB8VnFJyHUG8l+Za41adqRQNid0S5n50/+eYbjZpYCrA\nSGmC2dhPZvRD6tOyEEJF5PZMvqxDcNRilc627HipAoGBAKzqrSQbyvtsIXKAZXLx\nMcwlnIp9XlLubo9Xr+iHjIPl0chMvN8S4wscxwVYVeNO1nABiI03pJCcugU7XFz2\nBR952EJ2AnFlL0w/aR+3Eh6OC7eM927Amlrc0JZAzXESoE8vC3F/uWfDlgK3cRr+\nfPM/pxl37i1iGzVDYAhTiQIBAoGAPW25nmXumsOZoc+E945wCywAP7z3mxZOEip9\n6LDexnnBDJws0w6OqW4k1kCov6kLIBTy4aPkucniwrm+T0l+n/Y807jOntfz3LT+\n7ucx6XIRlbNrVTuD6rjR6j52RFyaikvvyJz50PJwLkgHO3dGC6/VrPKO1mKsdJA4\nR3HRr1ECgYEAobNQbQSLrSWZ1cozJbmNgRqqvxDNSEDi8LpXukOAw4pz1km7o3ob\nhCy1ksfFzsp5glYqwZd/Bahk64u3mII+rKoYwYLrH2l2aFDmMbdTfQUycpQZyi3+\nVtGS1PFoKx9fSFDNHhR5ZhfasQcuKHYfeFfO2/DoOxQkNCI1y4I2huo=\n-----END RSA PRIVATE KEY-----"
+  },
+  "kind": "sql#sslCertsInsert",
+  "operation": {
+    "insertTime": "2026-10-14T00:45:02.805Z",
+    "kind": "sql#operation",
+    "name": "${operationID}",
+    "operationType": "UPDATE",
+    "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+    "status": "PENDING",
+    "targetId": "sqlinstance-${uniqueId}",
+    "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
+    "targetProject": "${projectId}",
+    "user": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+  },
+  "serverCaCert": {
+    "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
+    "certSerialNumber": "0",
+    "commonName": "common-name",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "expirationTime": "2024-04-01T12:34:56.123456Z",
+    "instance": "sqlinstance-${uniqueId}",
+    "kind": "sql#sslCert",
+    "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}/sslCerts/4465455dc1e21f3addca06cd586e6f7a9c146140",
+    "sha1Fingerprint": "12345678"
+  }
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "UPDATE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "sqlinstance-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}/sslCerts/760567766a057bb737d50ac1e5798bb9c039dea6?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cert": "-----BEGIN CERTIFICATE-----\nMIIDhTCCAm2gAwIBAgIEQ5YU2jANBgkqhkiG9w0BAQsFADB8MS0wKwYDVQQuEyQ3\nMjZlMmU5MC01NTAyLTQ5NjctYmJkZi02MTZiMzBhN2ViZTQxKDAmBgNVBAMTH0Ns\nb3VkIFNRTCBDbGllbnQgQ0EgY2xpZW50LW5hbWUxFDASBgNVBAoTC0dvb2dsZSwg\nSW5jMQswCQYDVQQGEwJVUzAeFw0yNjEwMTQwMDQ0MDJaFw0zNjEwMTEwMDQ1MDJa\nMDkxFDASBgNVBAMTC2NsaWVudC1uYW1lMRQwEgYDVQQKEwtHb29nbGUsIEluYzEL\nMAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCYudgZ\nBsmIPVsLP5axLmzou+LsfH9gmlXOFBnl1oU2KiWfI94t+Zzlyfu7E7jVdZWwGt2g\nah9qtIq3LyVso4B8vbjzwnAlhz94wUrhckFk2bCfMjvBlJxl5GW7lu4lbpq6HV7D\nsBQ6fXv8vHCKNNF4XniSUC/8ig6KAieiGD7bkQnCIvAScxptaFDgTobiPTkjKu+/\nTah2cuR/gl0P6d1gO6BKZbq+McbM33Y9eFu0gbQ9Ew3KHff9DFqzyQgREbP6G8QG\nT2aT4kcfdFQXvq2xjzsczJJU6QxtQyrnHSyHIr+JMdsSB3+FMEVwGLVJpdz9Zr0I\n+MyHw7XWBgStFkqdAgMBAAGjUjBQMAkGA1UdEwQCMAAwQwYDVR0RBDwwOoE4b3Zl\ncnNlZXIta2NjLXRlc3RlckBjbnJtLWJhcm5pLTQuaWFtLmdzZXJ2aWNlYWNjb3Vu\ndC5jb20wDQYJKoZIhvcNAQELBQADggEBALOErfUQV5Gn27pFr7T/1lKM9mj72flG\nUDUaKXfyjwVHf/gdZo2F5Z0atA70aLQhfT5KP6kYdVWgs7WnYSpZnEKxq32Lndxp\neQ/VgOE57JnsPDLVo5dFyjbT2Y8TkS/vBLTcLHH35ocxKmKrHduBbh3/T5uu6Jlz\nCWKO6nTFPm/ovGWW4BRAC8NvVNnQsz3csnTfbcurUPFYeDmrBPHzIo/pubpOoj+3\noP3T4EY4n2Ec20gRpv0Kx8J+AFPRR65Fk7TdrMMCczM0/x4MwXRzxB3Un9T+Zo18\n3UwfUAscOjZYnxq5Joencwboh1fzdEC1NTxJzCxfFblXnM5dbACVvWY=\n-----END CERTIFICATE-----",
+  "certSerialNumber": "1133909210",
+  "commonName": "client-name",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "expirationTime": "2024-09-01T12:34:56.123456Z",
+  "instance": "sqlinstance-${uniqueId}",
+  "kind": "sql#sslCert",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}/sslCerts/760567766a057bb737d50ac1e5798bb9c039dea6",
+  "sha1Fingerprint": "760567766a057bb737d50ac1e5798bb9c039dea6"
+}
+
+---
+
+DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}/sslCerts/760567766a057bb737d50ac1e5798bb9c039dea6?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "UPDATE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "status": "PENDING",
+  "targetId": "sqlinstance-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "UPDATE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "sqlinstance-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backendType": "SECOND_GEN",
+  "connectionName": "${projectId}:us-central1:sqlinstance-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseInstalledVersion": "MYSQL_5_7_44",
+  "databaseVersion": "MYSQL_5_7",
+  "etag": "abcdef0123A=",
+  "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "flagRecommenderEnabled": true,
+    "indexAdvisorEnabled": false
+  },
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "ipAddresses": [
+    {
+      "ipAddress": "10.10.10.10",
+      "type": "PRIMARY"
+    }
+  ],
+  "kind": "sql#instance",
+  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
+  "name": "sqlinstance-${uniqueId}",
+  "project": "${projectId}",
+  "region": "us-central1",
+  "satisfiesPzi": true,
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
+  "serverCaCert": {
+    "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
+    "certSerialNumber": "0",
+    "commonName": "common-name",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "expirationTime": "2024-04-01T12:34:56.123456Z",
+    "instance": "sqlinstance-${uniqueId}",
+    "kind": "sql#sslCert",
+    "sha1Fingerprint": "12345678"
+  },
+  "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
+  "settings": {
+    "activationPolicy": "ALWAYS",
+    "authorizedGaeApplications": [],
+    "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 7,
+        "retentionUnit": "COUNT"
+      },
+      "enabled": false,
+      "kind": "sql#backupConfiguration",
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 7,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
+    },
+    "connectorEnforcement": "NOT_REQUIRED",
+    "dataDiskSizeGb": "10",
+    "dataDiskType": "PD_SSD",
+    "deletionProtectionEnabled": false,
+    "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "authorizedNetworks": [],
+      "ipv4Enabled": true,
+      "requireSsl": false,
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
+    "kind": "sql#settings",
+    "locationPreference": {
+      "kind": "sql#locationPreference",
+      "zone": "us-central1-a"
+    },
+    "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
+    "settingsVersion": "123",
+    "storageAutoResize": true,
+    "storageAutoResizeLimit": "0",
+    "tier": "db-n1-standard-1",
+    "userLabels": {
+      "cnrm-test": "true",
+      "label-one": "value-one",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
+  "state": "RUNNABLE",
+  "upgradableDatabaseVersions": [
+    {
+      "displayName": "MySQL 8.0",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0"
+    },
+    {
+      "displayName": "MySQL 8.0.18",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_18"
+    },
+    {
+      "displayName": "MySQL 8.0.26",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_26"
+    },
+    {
+      "displayName": "MySQL 8.0.27",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_27"
+    },
+    {
+      "displayName": "MySQL 8.0.28",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_28"
+    },
+    {
+      "displayName": "MySQL 8.0.29",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_29"
+    },
+    {
+      "displayName": "MySQL 8.0.30",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_30"
+    },
+    {
+      "displayName": "MySQL 8.0.31",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_31"
+    },
+    {
+      "displayName": "MySQL 8.0.32",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_32"
+    },
+    {
+      "displayName": "MySQL 8.0.33",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_33"
+    },
+    {
+      "displayName": "MySQL 8.0.34",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_34"
+    },
+    {
+      "displayName": "MySQL 8.0.35",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_35"
+    },
+    {
+      "displayName": "MySQL 8.0.36",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_36"
+    },
+    {
+      "displayName": "MySQL 8.0.37",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_37"
+    }
+  ]
+}
+
+---
+
+DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "DELETE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "status": "PENDING",
+  "targetId": "sqlinstance-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "DELETE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "sqlinstance-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
