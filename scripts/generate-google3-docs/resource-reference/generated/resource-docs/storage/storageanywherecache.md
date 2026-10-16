@@ -81,7 +81,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Cache admission policy. Valid values include: `admit-on-first-miss` and `admit-on-second-miss`. Defaults to `admit-on-first-miss`.</p>
+            <p>Cache admission policy. Valid values include: `admit-on-first-miss` and `admit-on-second-miss`. Defaults to `admit-on-first-miss`. Note: `admit-on-second-miss` is deprecated; the Cloud Storage API treats `admit-on-second-miss` as `admit-on-first-miss`.</p>
         </td>
     </tr>
     <tr>
@@ -131,7 +131,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>The desired state of the cache. Possible values include "running", "disabled", and "paused". If not specified, the default value is "running". This field controls the runtime behavior of the cache. Please note that changes to the `desiredState` are prioritized over any other updates. For instance, if both the `desiredState` and `ttl` are updated simultaneously, the state would be updated first, followed by `ttl`.</p>
+            <p>The desired state of the cache. Possible values include "running", "disabled", and "paused". If not specified, the default value is "running". This field controls the runtime behavior of the cache. Note: "paused" is deprecated because cache pause is no longer supported by the Cloud Storage API; setting desiredState to "paused" will result in a Ready condition error. Please note that changes to the `desiredState` are prioritized over any other updates. For instance, if both the `desiredState` and `ttl` are updated simultaneously, the state would be updated first, followed by `ttl`.</p>
         </td>
     </tr>
     <tr>
@@ -307,7 +307,7 @@ spec:
   bucketRef:
     name: ${PROJECT_ID?}-storageanywherecache-dep
   zone: us-central1-a
-  admissionPolicy: admit-on-second-miss
+  admissionPolicy: admit-on-first-miss
   desiredState: running
   ttl: 56400s
 ---

@@ -37,6 +37,8 @@ type StorageAnywhereCacheSpec struct {
 
 	// The desired state of the cache. Possible values include "running", "disabled", and "paused".
 	// If not specified, the default value is "running". This field controls the runtime behavior of the cache.
+	// Note: "paused" is deprecated because cache pause is no longer supported by the Cloud Storage API;
+	// setting desiredState to "paused" will result in a Ready condition error.
 	// Please note that changes to the `desiredState` are prioritized over any other updates.
 	// For instance, if both the `desiredState` and `ttl` are updated simultaneously, the state would be
 	// updated first, followed by `ttl`.
@@ -52,7 +54,8 @@ type StorageAnywhereCacheSpec struct {
 
 	// Cache admission policy. Valid values include:
 	//  `admit-on-first-miss` and `admit-on-second-miss`. Defaults to
-	//  `admit-on-first-miss`.
+	//  `admit-on-first-miss`. Note: `admit-on-second-miss` is deprecated;
+	//  the Cloud Storage API treats `admit-on-second-miss` as `admit-on-first-miss`.
 	// +kubebuilder:default=admit-on-first-miss
 	// +kubebuilder:validation:Enum=admit-on-first-miss;admit-on-second-miss
 	AdmissionPolicy *string `json:"admissionPolicy,omitempty"`
