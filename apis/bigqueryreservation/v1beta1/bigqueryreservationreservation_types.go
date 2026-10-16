@@ -85,6 +85,21 @@ type BigQueryReservationReservationSpec struct {
 	// Optional. This field is only set for reservations using the managed disaster recovery
 	//  feature. Users can set this to create a failover reservation.
 	FailOver *FailoverSpec `json:"failover,omitempty"`
+
+	// Optional. Capping a reservation's idle slot usage is best effort and its
+	//  usage may exceed the max_slots value. However, in terms of
+	//  autoscale.current_slots (which accounts for the additional added slots), it
+	//  will never exceed the max_slots - baseline.
+	// +optional
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.max_slots
+	MaxSlots *int64 `json:"maxSlots,omitempty"`
+
+	// Optional. The scaling mode for the reservation.
+	//  Valid values are AUTOSCALE_ONLY, IDLE_SLOTS_ONLY, ALL_SLOTS.
+	// +optional
+	// +kubebuilder:validation:Enum=AUTOSCALE_ONLY;IDLE_SLOTS_ONLY;ALL_SLOTS
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Reservation.scaling_mode
+	ScalingMode *string `json:"scalingMode,omitempty"`
 }
 
 // BigQueryReservationReservationStatus defines the config connector machine state of BigQueryReservationReservation
