@@ -50,6 +50,10 @@ type DependencyAttributes struct {
 	/* The attribute values associated with a resource in case attribute data type is string. */
 	// +optional
 	StringValues *DependencyStringValues `json:"stringValues,omitempty"`
+
+	/* The attribute values associated with a resource in case attribute data type is URL, URI or IP, like gs://bucket-name/object-name. */
+	// +optional
+	UriValues *DependencyUriValues `json:"uriValues,omitempty"`
 }
 
 type DependencyConsumer struct {
@@ -100,6 +104,12 @@ type DependencySupplier struct {
 	`projects/{project}/locations/{location}/apis/{api}/versions/{version}/operations/{operation}` */
 	// +optional
 	OperationResourceName *string `json:"operationResourceName,omitempty"`
+}
+
+type DependencyUriValues struct {
+	/* Required. The attribute values in case attribute data type is string or JSON. */
+	// +optional
+	Values []DependencyValues `json:"values,omitempty"`
 }
 
 type DependencyValues struct {

@@ -38,54 +38,32 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
-type ClientconnectorserviceConfig struct {
-	/* Required. The settings used to configure basic ClientGateways. */
+type CurationApplicationIntegrationEndpointDetails struct {
+	/* Required. The API trigger ID of the Application Integration workflow. */
 	// +optional
-	DestinationRoutes []ClientconnectorserviceDestinationRoutes `json:"destinationRoutes,omitempty"`
+	TriggerID *string `json:"triggerID,omitempty"`
 
-	/* Required. Immutable. The transport protocol used between the client and the server. */
+	/* Required. The endpoint URI should be a valid REST URI for triggering an Application Integration. Format: `https://integrations.googleapis.com/v1/{name=projects/* /locations/* /integrations/*}:execute` or `https://{location}-integrations.googleapis.com/v1/{name=projects/* /locations/* /integrations/*}:execute` */
 	// +optional
-	TransportProtocol *string `json:"transportProtocol,omitempty"`
+	Uri *string `json:"uri,omitempty"`
 }
 
-type ClientconnectorserviceDestinationRoutes struct {
-	/* Required. The network address of the subnet for which the packet is routed to the ClientGateway. */
+type CurationEndpoint struct {
+	/* Required. The details of the Application Integration endpoint to be triggered for curation. */
 	// +optional
-	Address *string `json:"address,omitempty"`
-
-	/* Required. The network mask of the subnet for which the packet is routed to the ClientGateway. */
-	// +optional
-	Netmask *string `json:"netmask,omitempty"`
+	ApplicationIntegrationEndpointDetails *CurationApplicationIntegrationEndpointDetails `json:"applicationIntegrationEndpointDetails,omitempty"`
 }
 
-type ClientconnectorserviceEgress struct {
-	/* A VPC from the consumer project. */
+type APIHubCurationSpec struct {
+	/* Optional. The description of the curation. */
 	// +optional
-	PeeredVPC *ClientconnectorservicePeeredVPC `json:"peeredVPC,omitempty"`
-}
+	Description *string `json:"description,omitempty"`
 
-type ClientconnectorserviceIngress struct {
-	/* The basic ingress config for ClientGateways. */
-	// +optional
-	Config *ClientconnectorserviceConfig `json:"config,omitempty"`
-}
+	/* Required. The display name of the curation. */
+	DisplayName string `json:"displayName"`
 
-type ClientconnectorservicePeeredVPC struct {
-	/* Required. The name of the peered VPC owned by the consumer project. */
-	// +optional
-	NetworkVPC *string `json:"networkVPC,omitempty"`
-}
-
-type BeyondCorpClientConnectorServiceSpec struct {
-	/* Optional. User-provided name. The display name should follow certain format. * Must be 6 to 30 characters in length. * Can only contain lowercase letters, numbers, and hyphens. * Must start with a letter. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
-
-	/* Required. The details of the egress settings. */
-	Egress ClientconnectorserviceEgress `json:"egress"`
-
-	/* Required. The details of the ingress settings. */
-	Ingress ClientconnectorserviceIngress `json:"ingress"`
+	/* Required. The endpoint to be triggered for curation. */
+	Endpoint CurationEndpoint `json:"endpoint"`
 
 	/* The location of this resource. */
 	Location string `json:"location"`
@@ -93,30 +71,51 @@ type BeyondCorpClientConnectorServiceSpec struct {
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The BeyondCorpClientConnectorService name. If not given, the metadata.name will be used. */
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
+	/* Required. The APIHubCuration name. */
+	ResourceID string `json:"resourceID"`
 }
 
-type ClientconnectorserviceObservedStateStatus struct {
-	/* Output only. [Output only] Create time stamp. */
+type CurationObservedStateStatus struct {
+	/* Output only. The time at which the curation was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. The operational state of the ClientConnectorService. */
+	/* Output only. The error code of the last execution of the curation. */
 	// +optional
-	State *string `json:"state,omitempty"`
+	LastExecutionErrorCode *string `json:"lastExecutionErrorCode,omitempty"`
 
-	/* Output only. [Output only] Update time stamp. */
+	/* Output only. Error message describing the failure, if any, during the last execution of the curation. */
+	// +optional
+	LastExecutionErrorMessage *string `json:"lastExecutionErrorMessage,omitempty"`
+
+	/* Output only. The last execution state of the curation. */
+	// +optional
+	LastExecutionState *string `json:"lastExecutionState,omitempty"`
+
+	/* Output only. The plugin instances and associated actions that are using the curation. */
+	// +optional
+	PluginInstanceActions []CurationPluginInstanceActionsStatus `json:"pluginInstanceActions,omitempty"`
+
+	/* Output only. The time at which the curation was last updated. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-type BeyondCorpClientConnectorServiceStatus struct {
+type CurationPluginInstanceActionsStatus struct {
+	/* Output only. The action ID that is using the curation. This should map to one of the action IDs specified in action configs in the plugin. */
+	// +optional
+	ActionID *string `json:"actionID,omitempty"`
+
+	/* Output only. Plugin instance that is using the curation. Format is `projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}` */
+	// +optional
+	PluginInstance *string `json:"pluginInstance,omitempty"`
+}
+
+type APIHubCurationStatus struct {
 	/* Conditions represent the latest available observations of the
-	   BeyondCorpClientConnectorService's current state. */
+	   APIHubCuration's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the BeyondCorpClientConnectorService resource in GCP. */
+	/* A unique specifier for the APIHubCuration resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -126,39 +125,40 @@ type BeyondCorpClientConnectorServiceStatus struct {
 
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	ObservedState *ClientconnectorserviceObservedStateStatus `json:"observedState,omitempty"`
+	ObservedState *CurationObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpbeyondcorpclientconnectorservice;gcpbeyondcorpclientconnectorservices
+// +kubebuilder:resource:categories=gcp,shortName=gcpapihubcuration;gcpapihubcurations
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// BeyondCorpClientConnectorService is the Schema for the beyondcorp API
+// APIHubCuration is the Schema for the apihub API
 // +k8s:openapi-gen=true
-type BeyondCorpClientConnectorService struct {
+type APIHubCuration struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   BeyondCorpClientConnectorServiceSpec   `json:"spec,omitempty"`
-	Status BeyondCorpClientConnectorServiceStatus `json:"status,omitempty"`
+	Spec   APIHubCurationSpec   `json:"spec,omitempty"`
+	Status APIHubCurationStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// BeyondCorpClientConnectorServiceList contains a list of BeyondCorpClientConnectorService
-type BeyondCorpClientConnectorServiceList struct {
+// APIHubCurationList contains a list of APIHubCuration
+type APIHubCurationList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []BeyondCorpClientConnectorService `json:"items"`
+	Items           []APIHubCuration `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&BeyondCorpClientConnectorService{}, &BeyondCorpClientConnectorServiceList{})
+	SchemeBuilder.Register(&APIHubCuration{}, &APIHubCurationList{})
 }

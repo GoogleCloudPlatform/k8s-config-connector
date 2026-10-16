@@ -65,6 +65,12 @@ var (
 		Kind:    reflect.TypeOf(APIHubAttribute{}).Name(),
 	}
 
+	APIHubCurationGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(APIHubCuration{}).Name(),
+	}
+
 	APIHubDependencyGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

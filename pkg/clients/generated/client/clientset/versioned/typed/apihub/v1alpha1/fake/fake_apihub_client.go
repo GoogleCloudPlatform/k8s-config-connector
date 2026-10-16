@@ -39,6 +39,10 @@ func (c *FakeApihubV1alpha1) APIHubAttributes(namespace string) v1alpha1.APIHubA
 	return newFakeAPIHubAttributes(c, namespace)
 }
 
+func (c *FakeApihubV1alpha1) APIHubCurations(namespace string) v1alpha1.APIHubCurationInterface {
+	return newFakeAPIHubCurations(c, namespace)
+}
+
 func (c *FakeApihubV1alpha1) APIHubDependencies(namespace string) v1alpha1.APIHubDependencyInterface {
 	return newFakeAPIHubDependencies(c, namespace)
 }
