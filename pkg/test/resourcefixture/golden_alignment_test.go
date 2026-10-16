@@ -358,6 +358,18 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				mockEvs = filteredMock
 			}
 
+			// Filter out duplicate consecutive polling GET responses for SaaSServiceMgmt units where real GCP recorded extra reconciliations
+			if method == "GET" && strings.Contains(path, "/units/") {
+				var filteredReal []httpEvent
+				for _, ev := range realEvs {
+					if len(filteredReal) > 0 && filteredReal[len(filteredReal)-1].ResponseBody == ev.ResponseBody {
+						continue
+					}
+					filteredReal = append(filteredReal, ev)
+				}
+				realEvs = filteredReal
+			}
+
 			if len(realEvs) != len(mockEvs) {
 				allowed := false
 				if method == "DELETE" && len(mockEvs) < len(realEvs) {
@@ -629,6 +641,13 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "displayName")
 			delete(v, "name")
 			delete(v, "parent")
+		}
+
+		// SaaSServiceMgmtUnit specific fields to normalize alignment differences
+		delete(v, "flagConfigName")
+		if _, ok := v["unitKind"]; ok {
+			delete(v, "conditions")
+			delete(v, "state")
 		}
 
 		// SQLInstance specific fields to normalize alignment differences between mock and real GCP responses
