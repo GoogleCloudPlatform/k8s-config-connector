@@ -420,7 +420,7 @@ func resolveBaseRevision(t *testing.T, repoRoot string) string {
 			return mergeBaseOrRef(repoRoot, candidate)
 		}
 	}
-	for _, candidate := range []string{"upstream/master", "origin/master", "master"} {
+	for _, candidate := range []string{"upstream/master", "origin/master", "master", "origin/HEAD", "@{upstream}"} {
 		if gitRefExists(repoRoot, candidate) {
 			return mergeBaseOrRef(repoRoot, candidate)
 		}
@@ -438,6 +438,11 @@ func mergeBaseOrRef(repoRoot, ref string) string {
 	if err == nil {
 		if mb := strings.TrimSpace(string(out)); mb != "" {
 			return mb
+		}
+	}
+	if out, err := exec.Command("git", "-C", repoRoot, "rev-parse", "--verify", "--quiet", ref).Output(); err == nil {
+		if sha := strings.TrimSpace(string(out)); sha != "" {
+			return sha
 		}
 	}
 	return ref
