@@ -3614,10 +3614,6 @@
 [missing_field] crd=saasservicemgmtrollouts.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolloutKindRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=saasservicemgmtrollouts.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.rolloutOrchestrationStrategy" is not set in unstructured objects
 [missing_field] crd=saasservicemgmtrollouts.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.unitFilter" is not set in unstructured objects
-[missing_field] crd=saasservicemgmttenants.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.consumerResource" is not set in unstructured objects
-[missing_field] crd=saasservicemgmttenants.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=saasservicemgmttenants.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=saasservicemgmttenants.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.saasRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=saasservicemgmtunits.saasservicemgmt.cnrm.cloud.google.com version=v1alpha1: field ".spec.tenantRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.configId" is not set in unstructured objects
 [missing_field] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
