@@ -82,5 +82,86 @@ Apply the baseline validations from `kcc-direct-base-types-implementer`, plus th
   - Use `// +kubebuilder:validation:Enum=VALUE1;VALUE2` to provide validation in the CRD while keeping the Go type simple.
 - **Exception Files**: Do not add exceptions to any exception files (e.g., in `dev/tools/controllerbuilder/`) other than `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
 
-### 4. Journaling
+### 4. Opt-in generation flags
+
+`generate-types` can derive a lot more from the proto than it does by default. Every
+flag below is **off unless you pass it**, because turning one on for a resource that
+already exists can rename fields, move them between spec and status, or tighten the
+CRD schema — all breaking changes. A greenfield resource has no users yet, so it is
+the right place to turn them on.
+
+Add them to the service's `generate.sh` so the choice is recorded and regeneration
+is reproducible. Opt in **one service at a time**.
+
+| Flag | What it does |
+|---|---|
+| `--prepopulate-spec` | Fills the scaffolded Spec from the proto instead of leaving it empty. This is the main one; most of the others only matter alongside it. |
+| `--emit-required-from-proto` | Emits `// +required` for fields the proto marks `REQUIRED`. |
+| `--emit-parent-refs` | Names the resource's real root, location and parent from the proto's `google.api.resource` pattern, rather than guessing. |
+| `--emit-sibling-refs` | Generates a `<Kind>Ref` for a field that points at another resource in the same service being generated in the same run. |
+| `--emit-reference-hints` | Reports fields that look like references without guessing at one. |
+| `--emit-plural-acronyms` | Cases plural acronyms the way KRM conventions want, so `related_uris` becomes `relatedURIs` rather than `relatedUris`. |
+| `--emit-message-maps` | Generates `map<string, Message>` fields as a map of the value's Go type instead of dropping them. `generate-mapper` needs the same flag. |
+| `--place-server-set-fields` | Moves an allowlist of server-computed names (`createTime`, `uid`, `selfLink`, `etag`, …) into ObservedState when the proto carries no `field_behavior` anywhere. |
+| `--detect-output-only-in-comments` | Reports spec fields whose proto comment says "Output only." but that carry no annotation. Reports only — moving one is a hand edit. |
+
+### 5. Work the judgement queue
+
+Several of the flags above make a call the proto could not make for them. Rather
+than hide those calls, the generator writes each one to
+`apis/<service>/judgement_queue.yaml`. Pass `--prepopulate-spec` and
+`--emit-reference-hints` together, so every field `TestMissingRefs` would flag
+also gets an entry.
+
+Each entry names a resource (`kind` and `group`) or a shared proto message
+(`protoMessage`), a `field`, a `reason` and a `detail`. New entries start as
+`status: open`. This is from `apis/chronicle`, with the second entry already
+resolved:
+
+```yaml
+entries:
+  - kind: ChronicleWatchlist
+    group: chronicle.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ChronicleWatchlist
+    group: chronicle.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/instances/{instance}, and no InstanceRef type exists to point at; add the parent resource first, then model this as a reference
+    status: resolved
+    resolution: deferred
+    note: kept location and projectRef until ChronicleInstance exists
+```
+
+Review each open entry. Then set `status: resolved` and a `resolution`:
+
+| Resolution | Use it when | Note |
+|---|---|---|
+| `accepted` | The generated output is right as it is. | Optional |
+| `edited` | You changed the type by hand. | Required: say what you changed |
+| `deferred` | The finding is right but is handled elsewhere, such as `refs_deferred.txt`. | Required: say where |
+| `not-applicable` | The finding is wrong for this resource. | Required: say why |
+
+**Never delete an entry.** The file is the record of what was decided. An
+`edited` entry and its note are how a hand edit gets reported. Regenerating keeps
+your status, resolution and note, and only refreshes `detail`.
+
+**An open reference entry suppresses one `[refs]` finding.** `TestMissingRefs`
+skips a finding only when an open entry has the same kind, group and field and a
+`possible-reference*` reason. Every other finding on the resource is still checked.
+Once you resolve the entry, the check applies to that field again. So if you
+resolve a reference entry without adding the reference, also add the field to
+`tests/apichecks/testdata/exceptions/refs_deferred.txt` with a `reason=`, or
+`TestMissingRefs` fails.
+
+Other reasons, including `untriaged-bulk-generation`, do not suppress anything.
+They are there so a person looks at them.
+
+Note that a reference guess can be confidently wrong. Shared reference types are
+matched by name suffix, so a proto whose pattern ends in `instances/{instance}` can
+pick up an unrelated `Ref` type from another service. The queue is where you catch
+that.
+
+### 6. Journaling
 Append any quirks about the proto-to-struct mapping (e.g., field name collisions) to `.gemini/journals/<service>.md` using the format described in the `kcc-agentic-journaler` skill.
