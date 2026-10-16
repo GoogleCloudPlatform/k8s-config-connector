@@ -1,0 +1,30 @@
+apiVersion: storageinsights.cnrm.cloud.google.com/v1alpha1
+kind: StorageInsightsReportConfig
+metadata:
+  name: storageinsightsreportconfig-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  frequencyOptions:
+    frequency: WEEKLY
+    startDate:
+      year: 2050
+      month: 1
+      day: 1
+    endDate:
+      year: 2050
+      month: 1
+      day: 10
+  csvOptions: {}
+  objectMetadataReportOptions:
+    metadataFields:
+      - bucket
+      - project
+      - name
+    storageDestinationOptions:
+      bucketRef:
+        name: storageinsights-min-dep-${uniqueId}
+    storageFilters:
+      bucketRef:
+        name: storageinsights-min-dep-${uniqueId}

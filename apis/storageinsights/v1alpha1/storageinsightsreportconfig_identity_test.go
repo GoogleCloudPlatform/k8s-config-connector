@@ -44,7 +44,7 @@ func TestStorageInsightsReportConfigIdentity(t *testing.T) {
 		wantErr  bool
 	}{
 		{
-			name: "basic format",
+			name: "service-generated id without resourceID or externalRef",
 			obj: &v1alpha1.StorageInsightsReportConfig{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-report-config",
@@ -56,7 +56,43 @@ func TestStorageInsightsReportConfigIdentity(t *testing.T) {
 					Location: ptr("us-central1"),
 				},
 			},
-			expected: "projects/test-project/locations/us-central1/reportConfigs/test-report-config",
+			expected: "projects/test-project/locations/us-central1/reportConfigs/",
+		},
+		{
+			name: "service-generated id with status externalRef and no resourceID",
+			obj: &v1alpha1.StorageInsightsReportConfig{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-report-config",
+				},
+				Spec: v1alpha1.StorageInsightsReportConfigSpec{
+					ProjectRef: &refsv1beta1.ProjectRef{
+						External: "test-project",
+					},
+					Location: ptr("us-central1"),
+				},
+				Status: v1alpha1.StorageInsightsReportConfigStatus{
+					ExternalRef: ptr("projects/test-project/locations/us-central1/reportConfigs/server-assigned-uuid"),
+				},
+			},
+			expected: "projects/test-project/locations/us-central1/reportConfigs/server-assigned-uuid",
+		},
+		{
+			name: "service-generated id with status externalRef with different parent",
+			obj: &v1alpha1.StorageInsightsReportConfig{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-report-config",
+				},
+				Spec: v1alpha1.StorageInsightsReportConfigSpec{
+					ProjectRef: &refsv1beta1.ProjectRef{
+						External: "test-project",
+					},
+					Location: ptr("us-central1"),
+				},
+				Status: v1alpha1.StorageInsightsReportConfigStatus{
+					ExternalRef: ptr("projects/different-project/locations/us-central1/reportConfigs/server-assigned-uuid"),
+				},
+			},
+			wantErr: true,
 		},
 		{
 			name: "with resource id",
@@ -84,7 +120,8 @@ func TestStorageInsightsReportConfigIdentity(t *testing.T) {
 					ProjectRef: &refsv1beta1.ProjectRef{
 						External: "test-project",
 					},
-					Location: ptr("us-central1"),
+					Location:   ptr("us-central1"),
+					ResourceID: ptr("test-report-config"),
 				},
 				Status: v1alpha1.StorageInsightsReportConfigStatus{
 					ExternalRef: ptr("projects/test-project/locations/us-central1/reportConfigs/test-report-config"),
@@ -102,7 +139,8 @@ func TestStorageInsightsReportConfigIdentity(t *testing.T) {
 					ProjectRef: &refsv1beta1.ProjectRef{
 						External: "test-project",
 					},
-					Location: ptr("us-central1"),
+					Location:   ptr("us-central1"),
+					ResourceID: ptr("test-report-config"),
 				},
 				Status: v1alpha1.StorageInsightsReportConfigStatus{
 					ExternalRef: ptr("projects/test-project/locations/us-central1/reportConfigs/different-report-config"),

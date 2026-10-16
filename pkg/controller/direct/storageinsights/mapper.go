@@ -58,6 +58,29 @@ func parseBucketName(external string) string {
 	return external
 }
 
+func CloudStorageDestinationOptions_ToProto(mapCtx *direct.MapContext, in *krm.CloudStorageDestinationOptions) *pb.CloudStorageDestinationOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudStorageDestinationOptions{}
+	if in.BucketRef != nil {
+		out.Bucket = parseBucketName(in.BucketRef.External)
+	}
+	out.DestinationPath = direct.ValueOf(in.DestinationPath)
+	return out
+}
+
+func CloudStorageFilters_ToProto(mapCtx *direct.MapContext, in *krm.CloudStorageFilters) *pb.CloudStorageFilters {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudStorageFilters{}
+	if in.BucketRef != nil {
+		out.Bucket = parseBucketName(in.BucketRef.External)
+	}
+	return out
+}
+
 func DatasetConfig_CloudStorageBuckets_CloudStorageBucket_FromProto(mapCtx *direct.MapContext, in *pb.DatasetConfig_CloudStorageBuckets_CloudStorageBucket) *krm.DatasetConfig_CloudStorageBuckets_CloudStorageBucket {
 	if in == nil {
 		return nil
