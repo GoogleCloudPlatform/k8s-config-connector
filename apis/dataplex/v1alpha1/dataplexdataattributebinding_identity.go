@@ -44,6 +44,10 @@ func (i *DataplexDataAttributeBindingIdentity) String() string {
 	return DataplexDataAttributeBindingIdentityFormat.ToString(*i)
 }
 
+func (i *DataplexDataAttributeBindingIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
+}
+
 func (i *DataplexDataAttributeBindingIdentity) FromExternal(ref string) error {
 	parsed, match, err := DataplexDataAttributeBindingIdentityFormat.Parse(ref)
 	if err != nil {

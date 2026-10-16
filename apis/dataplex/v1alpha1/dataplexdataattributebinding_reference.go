@@ -42,7 +42,7 @@ type DataplexDataAttributeBindingRef struct {
 }
 
 func init() {
-	refs.Register(&DataplexDataAttributeBindingRef{})
+	refs.Register(&DataplexDataAttributeBindingRef{}, &DataplexDataAttributeBinding{})
 }
 
 func (r *DataplexDataAttributeBindingRef) GetGVK() schema.GroupVersionKind {
