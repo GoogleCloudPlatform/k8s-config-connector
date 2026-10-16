@@ -1827,7 +1827,8 @@ type LoggingVariantConfig struct {
 }
 */
 
-/* unreachable type LustreCsiDriverConfig
+/* found existing non-generated go type with proto tag "google.container.v1.LustreCsiDriverConfig", skipping
+
 // +kcc:proto=google.container.v1.LustreCsiDriverConfig
 type LustreCsiDriverConfig struct {
 	// Whether the Lustre CSI driver is enabled for this cluster.
