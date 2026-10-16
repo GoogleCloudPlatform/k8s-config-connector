@@ -33,6 +33,28 @@ func computeNetworkFirewallPolicyFuzzer() fuzztesting.KRMFuzzer {
 		ComputeNetworkFirewallPolicyStatus_v1beta1_FromProto, ComputeNetworkFirewallPolicyStatus_v1beta1_ToProto,
 	)
 
+	// Detailed Comparison of KRM Fields with Proto Fields:
+	// +-------------------------+---------------------------+----------------------------------------------+
+	// | KRM Spec Field          | Proto Field               | Fuzzer/Mapping Status                        |
+	// +-------------------------+---------------------------+----------------------------------------------+
+	// | description             | description               | SpecField (".description")                   |
+	// | projectRef              | N/A                       | Part of resource URI/identity                |
+	// | resourceID              | name                      | Identity/name field (Unimplemented_Identity) |
+	// +-------------------------+---------------------------+----------------------------------------------+
+	//
+	// +-------------------------+---------------------------+----------------------------------------------+
+	// | KRM Status Field        | Proto Field               | Fuzzer/Mapping Status                        |
+	// +-------------------------+---------------------------+----------------------------------------------+
+	// | conditions              | N/A                       | KCC status conditions                        |
+	// | creationTimestamp       | creation_timestamp        | StatusField (".creation_timestamp")          |
+	// | fingerprint             | fingerprint               | StatusField (".fingerprint")                 |
+	// | networkFirewallPolicyId | id                        | StatusField (".id")                          |
+	// | observedGeneration      | N/A                       | KCC observed generation                      |
+	// | ruleTupleCount          | rule_tuple_count          | StatusField (".rule_tuple_count")            |
+	// | selfLink                | self_link                 | StatusField (".self_link")                   |
+	// | selfLinkWithId          | self_link_with_id         | StatusField (".self_link_with_id")          |
+	// +-------------------------+---------------------------+----------------------------------------------+
+
 	// Spec fields
 	f.SpecField(".description")
 
@@ -47,12 +69,14 @@ func computeNetworkFirewallPolicyFuzzer() fuzztesting.KRMFuzzer {
 	// Identity / Special fields
 	f.Unimplemented_Identity(".name")
 
+	// Internal fields
+	f.Unimplemented_Internal(".kind")
+	f.Unimplemented_Internal(".parent")
+
 	// Unimplemented / Not Yet Triaged fields
 	f.Unimplemented_NotYetTriaged(".associations")
 	f.Unimplemented_NotYetTriaged(".display_name")
-	f.Unimplemented_NotYetTriaged(".kind")
 	f.Unimplemented_NotYetTriaged(".packet_mirroring_rules")
-	f.Unimplemented_NotYetTriaged(".parent")
 	f.Unimplemented_NotYetTriaged(".policy_type")
 	f.Unimplemented_NotYetTriaged(".region")
 	f.Unimplemented_NotYetTriaged(".rules")
