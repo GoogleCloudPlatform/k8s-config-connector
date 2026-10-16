@@ -30,7 +30,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
 
 {
   "androidDevice": {
-    "androidModelId": "Pixel8",
+    "androidModelId": "shiba",
     "androidVersionId": "34"
   }
 }
@@ -47,12 +47,13 @@ X-Xss-Protection: 0
 
 {
   "androidDevice": {
-    "androidModelId": "Pixel8",
+    "androidModelId": "shiba",
     "androidVersionId": "34"
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "expireTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectId}/deviceSessions/devicestreamingsession-${uniqueId}",
-  "state": 3
+  "state": 1
 }
 
 ---
@@ -74,12 +75,13 @@ X-Xss-Protection: 0
 
 {
   "androidDevice": {
-    "androidModelId": "Pixel8",
+    "androidModelId": "shiba",
     "androidVersionId": "34"
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "expireTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectId}/deviceSessions/devicestreamingsession-${uniqueId}",
-  "state": 3
+  "state": 1
 }
 
 ---

@@ -6,5 +6,5 @@ spec:
   projectRef:
     external: ${projectId}
   androidDevice:
-    androidModelID: "Pixel8"
+    androidModelID: "shiba"
     androidVersionID: "34"
