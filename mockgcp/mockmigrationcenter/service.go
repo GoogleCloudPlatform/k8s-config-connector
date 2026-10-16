@@ -76,7 +76,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 && strings.Contains(error.Message, "/preferenceSets/") {
+		if error.Code == 404 && (strings.Contains(error.Message, "/preferenceSets/") || strings.Contains(error.Message, "/sources/")) {
 			error.Errors = nil
 		}
 	}
