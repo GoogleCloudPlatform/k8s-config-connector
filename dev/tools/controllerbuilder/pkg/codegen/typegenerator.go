@@ -518,7 +518,11 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 		// The Required copy has the same fields as the plain struct, so the
 		// scans above cover it too.
 		if writeRequired {
-			writeMessageNamed(&out.body, msg, RequiredStructName(msg), g.StrictWriteOptions())
+			strictOpts := g.StrictWriteOptions()
+			if !activeForJudgement {
+				strictOpts.Siblings = nil
+			}
+			writeMessageNamed(&out.body, msg, RequiredStructName(msg), strictOpts)
 		}
 	}
 	return errors.Join(g.errors...)
