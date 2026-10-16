@@ -64,6 +64,22 @@ type Cluster_EncryptionConfig struct {
 	KMSKeyNameRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
+// Cluster_MemoryLayerConfig configures the memory layer for a BigtableCluster.
+// The memory layer serves reads from memory without hitting persistent storage.
+// Additional configuration fields will be added here as the Bigtable API grows.
+type Cluster_MemoryLayerConfig struct {
+}
+
+// Cluster_MemoryLayerObservedState is the observed state of a memory layer.
+type Cluster_MemoryLayerObservedState struct {
+	// Output only. The current state of the memory layer
+	// (STATE_NOT_KNOWN, READY, ENABLING, RESIZING, DISABLED).
+	State *string `json:"state,omitempty"`
+
+	// Output only. The current size of the memory layer in GiB.
+	StorageSizeGib *int32 `json:"storageSizeGib,omitempty"`
+}
+
 // BigtableClusterSpec defines the desired state of BigtableCluster
 // +kcc:spec:proto=google.bigtable.admin.v2.Cluster
 type BigtableClusterSpec struct {
@@ -100,6 +116,11 @@ type BigtableClusterSpec struct {
 	// Immutable. The encryption configuration for CMEK-protected clusters.
 	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.encryption_config
 	EncryptionConfig *Cluster_EncryptionConfig `json:"encryptionConfig,omitempty"`
+
+	// Optional. The memory layers configured for this cluster.
+	// An empty list disables the memory layer; a single entry enables it.
+	// At most one entry is currently supported.
+	MemoryLayers []Cluster_MemoryLayerConfig `json:"memoryLayers,omitempty"`
 }
 
 // BigtableClusterStatus defines the config connector machine state of BigtableCluster
@@ -124,6 +145,11 @@ type BigtableClusterObservedState struct {
 	// Output only. The current state of the cluster.
 	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.state
 	State *string `json:"state,omitempty"`
+
+	// Output only. The observed state of each memory layer, parallel to
+	// spec.memoryLayers. Additional output fields will be added here as the
+	// Bigtable MemoryLayer API grows.
+	MemoryLayers []Cluster_MemoryLayerObservedState `json:"memoryLayers,omitempty"`
 }
 
 // +genclient
