@@ -39,6 +39,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ComputeNetworkAttachment:NetworkAttachment \
   --resource ComputeInterconnect:Interconnect \
   --resource ComputeFutureReservation:google.cloud.compute.v1beta.FutureReservation \
+  --resource ComputeGlobalNetworkEndpointGroup:NetworkEndpointGroup \
   --resource ComputeRegionPerInstanceConfig:PerInstanceConfig \
   --resource ComputeAutoscaler:Autoscaler \
   --resource ComputeBackendServiceSignedURLKey:SignedUrlKey \
