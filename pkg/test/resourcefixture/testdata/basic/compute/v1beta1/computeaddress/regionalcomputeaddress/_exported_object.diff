@@ -1,2 +1,4 @@
-9d8
-<     test-label: updated-value
+12c12
+<   address: 10.128.0.103
+---
+>   address: 10.128.0.101

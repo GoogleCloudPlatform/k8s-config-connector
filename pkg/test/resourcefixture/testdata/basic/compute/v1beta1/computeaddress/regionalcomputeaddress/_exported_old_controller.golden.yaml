@@ -9,7 +9,7 @@ metadata:
     test-label: updated-value
   name: ${addressID}
 spec:
-  address: 8.8.8.8
+  address: 10.128.0.103
   addressType: INTERNAL
   description: a test address
   location: us-central1
@@ -17,4 +17,4 @@ spec:
   purpose: GCE_ENDPOINT
   resourceID: ${addressID}
   subnetworkRef:
-    external: projects/${projectId}/regions/us-central1/subnetworks/default
+    external: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default

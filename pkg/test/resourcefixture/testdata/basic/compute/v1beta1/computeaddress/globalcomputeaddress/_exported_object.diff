@@ -1,4 +1,6 @@
-9d8
-<     test-label: updated-value
-14a14
->   ipVersion: IPV4
+12c12
+<   address: 10.25.0.0
+---
+>   address: 10.109.0.0
+17a18
+>   networkTier: PREMIUM

@@ -448,6 +448,36 @@ func compareAddress(ctx context.Context, actual, desired *pb.Address) (*structur
 	populateDefaults(maskedActual)
 	populateDefaults(clonedDesired)
 
+	// Normalize URLs for network, subnetwork, and ipCollection
+	clonedDesired.Network = canonicalizeComputeURL(clonedDesired.Network)
+	maskedActual.Network = canonicalizeComputeURL(maskedActual.Network)
+	clonedDesired.Subnetwork = canonicalizeComputeURL(clonedDesired.Subnetwork)
+	maskedActual.Subnetwork = canonicalizeComputeURL(maskedActual.Subnetwork)
+	clonedDesired.IpCollection = canonicalizeComputeURL(clonedDesired.IpCollection)
+	maskedActual.IpCollection = canonicalizeComputeURL(maskedActual.IpCollection)
+
+	// If optional/computed fields are omitted in desired spec, ignore actual values populated by GCP
+	if clonedDesired.Address == nil || *clonedDesired.Address == "" {
+		maskedActual.Address = nil
+		clonedDesired.Address = nil
+	}
+	if clonedDesired.Purpose == nil || *clonedDesired.Purpose == "" {
+		maskedActual.Purpose = nil
+		clonedDesired.Purpose = nil
+	}
+	if clonedDesired.Network == nil || *clonedDesired.Network == "" {
+		maskedActual.Network = nil
+		clonedDesired.Network = nil
+	}
+	if clonedDesired.Subnetwork == nil || *clonedDesired.Subnetwork == "" {
+		maskedActual.Subnetwork = nil
+		clonedDesired.Subnetwork = nil
+	}
+	if clonedDesired.Description == nil || *clonedDesired.Description == "" {
+		maskedActual.Description = nil
+		clonedDesired.Description = nil
+	}
+
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
