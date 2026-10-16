@@ -819,3 +819,316 @@ spec:
 	}
 }
 
+// TestHandWrittenProtoStructAnnotationsAndNaming verifies two invariants across
+// hand-written Go files in apis/:
+//  1. Every struct with +kcc:proto:field= annotations on its fields must carry
+//     a +kcc:proto=, +kcc:spec:proto=, or +kcc:observedstate:proto= annotation
+//     on the struct declaration so generate-mapper never silently skips it.
+//  2. Every hand-written struct with +kcc:proto=<full.proto.Name> must have a
+//     discoverable Go type name derived from the proto message name or enclosing
+//     resource/parent struct name.
+func TestHandWrittenProtoStructAnnotationsAndNaming(t *testing.T) {
+	t.Parallel()
+	violations, err := scanHandWrittenProtoStructs("../../apis")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, v := range violations {
+		t.Error(v)
+	}
+}
+
+type parsedStructInfo struct {
+	name            string
+	protoAnnotation string
+	annotationKind  string
+	hasProtoField   bool
+	line            int
+}
+
+func scanHandWrittenProtoStructs(apisDir string) ([]string, error) {
+	var violations []string
+	err := filepath.WalkDir(apisDir, func(path string, d os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if d.IsDir() {
+			return nil
+		}
+		name := d.Name()
+		if !strings.HasSuffix(name, ".go") ||
+			strings.HasSuffix(name, "_test.go") ||
+			strings.HasSuffix(name, "generated.go") ||
+			strings.HasPrefix(name, "zz_generated") {
+			return nil
+		}
+		data, err := os.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		relPath, err := filepath.Rel(apisDir, path)
+		if err != nil {
+			relPath = path
+		}
+		service := strings.Split(filepath.ToSlash(relPath), "/")[0]
+		relPath = filepath.ToSlash(filepath.Join("apis", relPath))
+		violations = append(violations, checkFileProtoStructs(relPath, service, string(data))...)
+		return nil
+	})
+	slices.Sort(violations)
+	return violations, err
+}
+
+// legacyMissingProtoStructAnnotations lists pre-existing structs in apis/ that
+// have +kcc:proto:field annotations on their fields without a struct-level
+// +kcc:*proto= annotation. Do not add new entries to this map; add the missing
+// // +kcc:proto=<full.proto.Name> annotation to the struct instead.
+var legacyMissingProtoStructAnnotations = map[string]bool{
+	"apis/bigqueryreservation/v1beta1/bigqueryreservationreservation_types.go:AutoscaleSpec":                  true,
+	"apis/bigqueryreservation/v1beta1/bigqueryreservationreservation_types.go:FailoverSpec":                   true,
+	"apis/bigqueryreservation/v1beta1/bigqueryreservationreservation_types.go:FailoverObservedState":          true,
+	"apis/cloudsecuritycompliance/v1alpha1/cloudsecuritycomplianceframework_types.go:CloudControlGroup":       true,
+	"apis/cloudsecuritycompliance/v1alpha1/cloudsecuritycomplianceframework_types.go:CloudControlGroupObservedState": true,
+	"apis/compute/v1beta1/computereservation_types.go:ComputeReservationObservedState":                        true,
+	"apis/compute/v1beta1/computesecuritypolicy_types.go:SecurityPolicyRecaptchaOptionsConfig":                true,
+	"apis/datacatalog/v1alpha1/datacatalogtagtemplate_types.go:DataCatalogTagTemplateObservedState":           true,
+	"apis/datalabeling/v1alpha1/datalabelinginstruction_types.go:InstructionCsvInstruction":                   true,
+	"apis/datalabeling/v1alpha1/datalabelinginstruction_types.go:InstructionPdfInstruction":                   true,
+	"apis/dataplex/v1alpha1/dataplextask_types.go:DataplexTaskObservedState":                                  true,
+	"apis/memorystore/v1beta1/memorystoreinstance_types.go:AutomatedBackupConfig":                             true,
+	"apis/networksecurity/v1alpha1/networksecurityfirewallendpoint_types.go:FirewallEndpointEndpointSettings": true,
+	"apis/networksecurity/v1alpha1/networksecurityfirewallendpoint_types.go:FirewallEndpointAssociationReference": true,
+	"apis/privateca/v1beta1/privatecacapool_types.go:X509Extension":                                           true,
+	"apis/pubsub/v1beta1/pubsubtopic_types.go:MessageStoragePolicy":                                           true,
+	"apis/speech/v1alpha1/speechrecognizer_types.go:InlineCustomClass":                                        true,
+	"apis/speech/v1alpha1/speechrecognizer_types.go:InlineCustomClassObservedState":                           true,
+	"apis/speech/v1beta1/speechrecognizer_types.go:InlineCustomClass":                                         true,
+	"apis/speech/v1beta1/speechrecognizer_types.go:InlineCustomClassObservedState":                            true,
+	"apis/vertexai/v1beta1/vertexaidataset_types.go:DatasetEncryptionSpec":                                    true,
+	"apis/workloadmanager/v1alpha1/workloadmanagerevaluation_types.go:ResourceFilter":                         true,
+}
+
+func checkFileProtoStructs(relPath, service, content string) []string {
+	structs := parseFileStructs(content)
+	fileKinds := collectFileKindStems(structs, service)
+	fieldTypes := collectFileStructFieldTypes(content)
+
+	var violations []string
+	for _, s := range structs {
+		if s.hasProtoField && s.protoAnnotation == "" && !isKRMStatusEnvelope(s.name) {
+			if legacyMissingProtoStructAnnotations[relPath+":"+s.name] {
+				continue
+			}
+			violations = append(violations, fmt.Sprintf(
+				"%s:%d: struct %s has +kcc:proto:field annotations but is missing a // +kcc:proto= (or +kcc:spec:proto= / +kcc:observedstate:proto=) struct annotation",
+				relPath, s.line, s.name))
+			continue
+		}
+		if s.annotationKind == "proto" && !isDiscoverableProtoStructName(s.name, s.protoAnnotation, service, fileKinds, structs, fieldTypes) {
+			violations = append(violations, fmt.Sprintf(
+				"%s:%d: hand-written struct %s (+kcc:proto=%s) must include the proto message name or start with the resource Kind/field name",
+				relPath, s.line, s.name, s.protoAnnotation))
+		}
+	}
+	return violations
+}
+
+func isKRMStatusEnvelope(structName string) bool {
+	return structName == "Status" || strings.HasSuffix(structName, "Status")
+}
+
+func collectFileKindStems(structs []parsedStructInfo, service string) []string {
+	var stems []string
+	lowerService := strings.ToLower(service)
+	for _, s := range structs {
+		kind, ok := strings.CutSuffix(s.name, "Spec")
+		if !ok || kind == "" {
+			continue
+		}
+		lowerKind := strings.ToLower(kind)
+		stems = append(stems, lowerKind)
+		if trimmed := strings.TrimPrefix(lowerKind, lowerService); trimmed != "" && trimmed != lowerKind {
+			stems = append(stems, trimmed)
+		}
+	}
+	return stems
+}
+
+func collectFileStructFieldTypes(content string) map[string]bool {
+	out := make(map[string]bool)
+	for _, raw := range strings.Split(content, "\n") {
+		trimmed := strings.TrimSpace(raw)
+		if trimmed == "" || strings.HasPrefix(trimmed, "//") || strings.HasPrefix(trimmed, "type ") {
+			continue
+		}
+		fields := strings.Fields(trimmed)
+		if len(fields) >= 2 {
+			out[strings.ToLower(fields[0])] = true
+		}
+	}
+	return out
+}
+
+func parseFileStructs(content string) []parsedStructInfo {
+	lines := strings.Split(content, "\n")
+	var out []parsedStructInfo
+	var pendingProto, pendingKind string
+	inStruct := -1
+	braceDepth := 0
+
+	for i, raw := range lines {
+		lineNum := i + 1
+		trimmed := strings.TrimSpace(raw)
+		if inStruct >= 0 {
+			if strings.HasPrefix(trimmed, "// +kcc:proto:field=") {
+				out[inStruct].hasProtoField = true
+			}
+			if !strings.HasPrefix(trimmed, "//") {
+				braceDepth += strings.Count(trimmed, "{") - strings.Count(trimmed, "}")
+				if braceDepth <= 0 {
+					inStruct = -1
+					braceDepth = 0
+				}
+			}
+			continue
+		}
+
+		if p, k, ok := parseKCCProtoStructComment(trimmed); ok {
+			pendingProto = p
+			pendingKind = k
+			continue
+		}
+		if name, isStruct := parseStructDeclName(trimmed); isStruct {
+			out = append(out, parsedStructInfo{
+				name:            name,
+				protoAnnotation: pendingProto,
+				annotationKind:  pendingKind,
+				line:            lineNum,
+			})
+			pendingProto = ""
+			pendingKind = ""
+			braceDepth = strings.Count(trimmed, "{") - strings.Count(trimmed, "}")
+			if braceDepth > 0 {
+				inStruct = len(out) - 1
+			}
+			continue
+		}
+		if trimmed != "" && !strings.HasPrefix(trimmed, "//") {
+			pendingProto = ""
+			pendingKind = ""
+		}
+	}
+	return out
+}
+
+func parseKCCProtoStructComment(trimmed string) (protoMsg, kind string, ok bool) {
+	for _, prefix := range []struct {
+		tag  string
+		kind string
+	}{
+		{"// +kcc:spec:proto=", "spec"},
+		{"// +kcc:observedstate:proto=", "observedstate"},
+		{"// +kcc:proto=", "proto"},
+	} {
+		if rest, found := strings.CutPrefix(trimmed, prefix.tag); found {
+			msg := strings.TrimSpace(rest)
+			if msg != "" {
+				return msg, prefix.kind, true
+			}
+		}
+	}
+	return "", "", false
+}
+
+func parseStructDeclName(trimmed string) (string, bool) {
+	rest, ok := strings.CutPrefix(trimmed, "type ")
+	if !ok {
+		return "", false
+	}
+	fields := strings.Fields(rest)
+	if len(fields) < 2 || fields[1] != "struct" {
+		return "", false
+	}
+	return fields[0], true
+}
+
+func isDiscoverableProtoStructName(
+	typeName, protoFullName, service string,
+	fileKinds []string,
+	fileStructs []parsedStructInfo,
+	fieldNames map[string]bool,
+) bool {
+	lowerName := strings.ToLower(strings.ReplaceAll(typeName, "_", ""))
+	parts := strings.Split(protoFullName, ".")
+	shortProto := strings.ToLower(parts[len(parts)-1])
+	if shortProto != "" && (strings.Contains(lowerName, shortProto) || strings.Contains(shortProto, lowerName)) {
+		return true
+	}
+	if len(parts) >= 2 {
+		parentProto := strings.ToLower(parts[len(parts)-2])
+		if parentProto != "" && strings.HasPrefix(lowerName, parentProto) {
+			return true
+		}
+	}
+	if len(fileKinds) == 0 {
+		if lowerService := strings.ToLower(service); lowerService != "" && strings.HasPrefix(lowerName, strings.TrimSuffix(lowerService, "s")) {
+			return true
+		}
+	}
+	if fieldNames[lowerName] {
+		return true
+	}
+	for _, kind := range fileKinds {
+		if strings.HasPrefix(lowerName, kind) {
+			return true
+		}
+	}
+	for _, s := range fileStructs {
+		if s.name != typeName && strings.HasPrefix(lowerName, strings.ToLower(strings.ReplaceAll(s.name, "_", ""))) {
+			return true
+		}
+	}
+	return false
+}
+
+func TestCheckFileProtoStructs(t *testing.T) {
+	src := `package v1alpha1
+
+// +kcc:spec:proto=google.cloud.foo.v1.Instance
+type FooInstanceSpec struct {
+	// +kcc:proto:field=google.cloud.foo.v1.Instance.network_config
+	NetworkConfig *NetworkConfigWithRefs ` + "`json:\"networkConfig,omitempty\"`" + `
+}
+
+// +kcc:proto=google.cloud.foo.v1.NetworkConfig
+type NetworkConfigWithRefs struct {
+	// +kcc:proto:field=google.cloud.foo.v1.NetworkConfig.subnetwork
+	SubnetworkRef *SubnetworkRef ` + "`json:\"subnetworkRef,omitempty\"`" + `
+}
+
+// +kcc:proto=google.cloud.foo.v1.DiskConfig
+type DiskConfigSpec struct {
+}
+
+// +kcc:proto=google.cloud.foo.v1.LoggingConfig
+type FooInstanceLogging struct {
+}
+
+type MissingStructAnnotation struct {
+	// +kcc:proto:field=google.cloud.foo.v1.SecretConfig.key
+	Key *string ` + "`json:\"key,omitempty\"`" + `
+}
+
+// +kcc:proto=google.cloud.foo.v1.EncryptionConfig
+type CompletelyUnrelatedName struct {
+}
+`
+	got := checkFileProtoStructs("apis/foo/v1alpha1/fooinstance_types.go", "foo", src)
+	want := []string{
+		"apis/foo/v1alpha1/fooinstance_types.go:23: struct MissingStructAnnotation has +kcc:proto:field annotations but is missing a // +kcc:proto= (or +kcc:spec:proto= / +kcc:observedstate:proto=) struct annotation",
+		"apis/foo/v1alpha1/fooinstance_types.go:29: hand-written struct CompletelyUnrelatedName (+kcc:proto=google.cloud.foo.v1.EncryptionConfig) must include the proto message name or start with the resource Kind/field name",
+	}
+	if !slices.Equal(got, want) {
+		t.Errorf("checkFileProtoStructs() = %v, want %v", got, want)
+	}
+}

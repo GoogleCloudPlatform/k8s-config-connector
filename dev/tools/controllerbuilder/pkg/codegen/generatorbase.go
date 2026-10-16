@@ -118,22 +118,11 @@ type protoTagComment struct {
 
 // scanFileDeclarations records Go type declarations into typeNames (if non-nil) and
 // non-forked +kcc:*proto annotations into protoTagged (mapping protoFullName to the raw line).
-// Hand-authored 4-suffix forked variants (WithRequired, WithRefs, Spec, WithMultipleChanges)
-// co-exist with the generator's base struct and do not claim ownership in protoTagged.
+// Hand-authored variant structs whose Go type name differs from the proto message's base Go name
+// co-exist alongside the generator's base struct and do not claim ownership in protoTagged.
 func scanFileDeclarations(content string, typeNames map[string]bool, protoTagged map[string]string) {
-	lines := strings.Split(content, "\n")
-	fileTypes := make(map[string]bool)
-	for _, raw := range lines {
-		if name, ok := goTypeNameFromDeclaration(strings.TrimSpace(raw)); ok {
-			fileTypes[name] = true
-			if typeNames != nil {
-				typeNames[name] = true
-			}
-		}
-	}
-
 	var pending []protoTagComment
-	for _, raw := range lines {
+	for _, raw := range strings.Split(content, "\n") {
 		trimmed := strings.TrimSpace(raw)
 		if protoMessage, annotationKind, ok := GetProtoMessageAndKindFromAnnotation(trimmed); ok {
 			pending = append(pending, protoTagComment{
@@ -144,8 +133,11 @@ func scanFileDeclarations(content string, typeNames map[string]bool, protoTagged
 			continue
 		}
 		if name, ok := goTypeNameFromDeclaration(trimmed); ok {
+			if typeNames != nil {
+				typeNames[name] = true
+			}
 			for _, p := range pending {
-				if !isForkedVariantStruct(name, p.annotationKind, p.protoMessage, fileTypes) {
+				if p.annotationKind != KCCProtoMessageAnnotationMisc || isBaseProtoStructName(name, p.protoMessage) {
 					protoTagged[p.protoMessage] = p.line
 				}
 			}
@@ -164,29 +156,14 @@ func scanFileDeclarations(content string, typeNames map[string]bool, protoTagged
 	}
 }
 
-// isForkedVariantStruct reports whether a type annotated with +kcc:proto is a 4-suffix
-// forked nested struct (WithRequired, WithRefs, Spec, WithMultipleChanges) that co-exists
-// alongside the generator-owned base struct in types.generated.go.
-func isForkedVariantStruct(typeName, annotationKind, protoFullName string, fileTypes map[string]bool) bool {
-	if annotationKind != KCCProtoMessageAnnotationMisc {
-		return false
-	}
-	shortProto := protoFullName
-	if idx := strings.LastIndex(protoFullName, "."); idx >= 0 {
-		shortProto = protoFullName[idx+1:]
-	}
-	for _, suffix := range []string{"WithRequired", "WithRefs", "WithMultipleChanges"} {
-		if strings.HasSuffix(typeName, suffix) && !strings.HasSuffix(shortProto, suffix) {
-			return true
-		}
-	}
-	if strings.HasSuffix(typeName, "Spec") && !strings.HasSuffix(shortProto, "Spec") {
-		baseName := strings.TrimSuffix(typeName, "Spec")
-		if baseName != "" && !fileTypes[baseName] {
-			return true
-		}
-	}
-	return false
+// isBaseProtoStructName reports whether typeName is the default (non-forked) Go
+// struct name for protoFullName (for example "FunctionDeclaration" for
+// "google.cloud.test.v1.FunctionDeclaration", "PSCConfig" for "...PscConfig",
+// or "Parent_Child" for "...Parent.Child").
+func isBaseProtoStructName(typeName, protoFullName string) bool {
+	normalizedType := strings.ToLower(strings.ReplaceAll(typeName, "_", "."))
+	normalizedProto := "." + strings.ToLower(protoFullName)
+	return strings.HasSuffix(normalizedProto, "."+normalizedType)
 }
 
 // goTypeNameFromDeclaration extracts the type name from a "type <Name> ..." declaration line.
