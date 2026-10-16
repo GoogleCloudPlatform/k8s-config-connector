@@ -53,6 +53,7 @@ Before writing any code or making any changes, you must diagnose the behavior ag
    ```bash
    ./hack/record-gcp TestMigrationToDirect/fixtures/<fixture-name>$
    ```
+   *Note on `TEST_DEPENDENT_ORG_PROJECT_ID`:* If the fixture defines dependencies using `${TEST_DEPENDENT_ORG_PROJECT_ID}` (e.g., singleton resources like `ComputeProjectMetadata`), ensure `TEST_DEPENDENT_ORG_PROJECT_ID` is exported with a valid project ID (e.g. `TEST_DEPENDENT_ORG_PROJECT_ID=$GCP_PROJECT_ID`) if project creation permissions under the organization are not available to the test credentials.
 2. Open the recorded structured diff file:
    `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<resource>/<fixture-name>/_migration_diffs.json`
 3. Look for blocks containing `"isNewObject": false`. Note that diffs may appear from legacy re-reconciliation (Phase 2), Direct takeover (Phase 3), or Direct re-reconciliation (Phase 4). Diffs occurring during **Phase 3** or **Phase 4** indicate mismatches or re-reconciliation bugs where the Direct controller attempts to modify fields on an unchanged resource.

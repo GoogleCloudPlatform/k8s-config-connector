@@ -1,35 +1,5 @@
 GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-
-403 Forbidden
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 403,
-    "message": "The caller does not have permission",
-    "status": "PERMISSION_DENIED"
-  }
-}
-
----
-
-POST https://cloudbilling.googleapis.com/v1/billingAccounts/${billingAccountID}:testIamPermissions?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-
-{
-  "permissions": [
-    "billing.resourceAssociations.create"
-  ]
-}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -42,117 +12,27 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "permissions": [
-    "billing.resourceAssociations.create"
-  ]
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-
-{
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
+    "firebase": "enabled",
+    "firebase-core": "disabled",
     "managed-by-cnrm": "true"
   },
-  "name": "Dependent Project",
+  "lifecycleState": "ACTIVE",
+  "name": "${projectId}",
   "parent": {
-    "id": "${organizationID}",
+    "id": "${folderID}",
     "type": "organization"
   },
-  "projectId": "${projectId}"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "name": "operations/${operationID}"
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.ProjectCreationStatus",
-    "gettable": true,
-    "ready": true
-  },
-  "name": "operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.Project",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
-    "lifecycleState": "ACTIVE",
-    "name": "Dependent Project",
-    "parent": {
-      "id": "${organizationID}",
-      "type": "organization"
-    },
-    "projectId": "${projectId}",
-    "projectNumber": "${projectNumber}"
-  }
-}
-
----
-
-PUT https://cloudbilling.googleapis.com/v1/projects/${projectId}/billingInfo?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-
-{
-  "billingAccountName": "billingAccounts/${billingAccountID}"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "billingAccountName": "billingAccounts/${billingAccountID}",
-  "billingEnabled": true,
-  "name": "projects/${projectId}/billingInfo",
-  "projectId": "${projectId}"
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
 }
 
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/${projectId}/billingInfo?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -165,7 +45,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "billingAccountName": "billingAccounts/${billingAccountID}",
+  "billingAccountName": "billingAccounts/123456-777777-000001",
   "billingEnabled": true,
   "name": "projects/${projectId}/billingInfo",
   "projectId": "${projectId}"
@@ -174,7 +54,109 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "firebase": "enabled",
+    "firebase-core": "disabled",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "${projectId}",
+  "parent": {
+    "id": "${folderID}",
+    "type": "organization"
+  },
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+PUT https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "firebase": "enabled",
+    "firebase-core": "disabled",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "Dependent Project",
+  "parent": {
+    "id": "${folderID}",
+    "type": "organization"
+  },
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "firebase": "enabled",
+    "firebase-core": "disabled",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "Dependent Project",
+  "parent": {
+    "id": "${folderID}",
+    "type": "organization"
+  },
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+PUT https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "Dependent Project",
+  "parent": {
+    "id": "${folderID}",
+    "type": "organization"
+  },
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -195,7 +177,38 @@ X-Xss-Protection: 0
   "lifecycleState": "ACTIVE",
   "name": "Dependent Project",
   "parent": {
-    "id": "${organizationID}",
+    "id": "${folderID}",
+    "type": "organization"
+  },
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "Dependent Project",
+  "parent": {
+    "id": "${folderID}",
     "type": "organization"
   },
   "projectId": "${projectId}",
@@ -205,7 +218,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/${projectId}/billingInfo?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -218,7 +231,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "billingAccountName": "billingAccounts/${billingAccountID}",
+  "billingAccountName": "billingAccounts/123456-777777-000001",
   "billingEnabled": true,
   "name": "projects/${projectId}/billingInfo",
   "projectId": "${projectId}"
@@ -227,27 +240,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
-
----
-
-POST https://serviceusage.googleapis.com/v1/projects/${projectId}/services/compute.googleapis.com:enable?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-
-{}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -260,46 +253,333 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "name": "operations/${operationID}"
-}
-
----
-
-GET https://serviceusage.googleapis.com/v1beta1/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.protobuf.Empty",
-    "value": {}
-  },
-  "name": "operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.api.serviceusage.v1.EnableServiceResponse",
-    "service": {
-      "name": "projects/${projectNumber}/services/compute.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+  "nextPageToken": "ciQKIkIgY29udGFpbmVyc2VjdXJpdHkuZ29vZ2xlYXBpcy5jb20=",
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/accesscontextmanager.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/agentidentity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/agentidentitycredentials.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/agentregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/aiplatform.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/alloydb.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/analyticshub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthos.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthosconfigmanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthospolicycontroller.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/apigee.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/apihub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/appengine.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/apphub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/apptopology.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/artifactregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/assuredworkloads.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/autoscaling.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/backupdr.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquery.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigqueryconnection.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerydatapolicy.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerydatatransfer.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerymigration.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigqueryreservation.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerystorage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigtable.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigtableadmin.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/billingbudgets.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/certificatemanager.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudapis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudbilling.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudbuild.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/clouddeploy.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudkms.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudnumberregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudresourcemanager.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudsecuritycompliance.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudsupport.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudtrace.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/compute.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/config.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/configdelivery.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/connectors.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/contactcenterinsights.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/container.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containeranalysis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containerfilesystem.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containerregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containersecurity.googleapis.com"
     }
-  }
+  ]
 }
 
 ---
 
-GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&pageToken=ciQKIkIgY29udGFpbmVyc2VjdXJpdHkuZ29vZ2xlYXBpcy5jb20%3D&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "nextPageToken": "ch0KG0IZbGl2ZXN0cmVhbS5nb29nbGVhcGlzLmNvbQ==",
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/containerthreatdetection.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/contentwarehouse.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/datacatalog.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataflow.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataform.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/datalabeling.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/datalineage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataplex.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataproc-control.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataproc.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataprocrm.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/datastore.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/deploymentmanager.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/developerconnect.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/devicerun.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/devicestreaming.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dialogflow.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/discoveryengine.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dns.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/documentai.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/edgecache.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/essentialcontacts.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/eventarc.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/fcm.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/fcmregistrations.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/file.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/firebase.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/firebaseappdistribution.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/firebasehosting.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/firebaseinstallations.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/firebaseremoteconfig.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/firebaseremoteconfigrealtime.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/firebaserules.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/firestore.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/generativelanguage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkebackup.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkeconnect.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkemulticloud.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/hypercomputecluster.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iam.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iamcredentials.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iap.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/identitytoolkit.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/jobs.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/krmapihosting.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/kubernetesmetadata.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/licensemanager.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/livestream.googleapis.com"
+    }
+  ]
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&pageToken=ch0KG0IZbGl2ZXN0cmVhbS5nb29nbGVhcGlzLmNvbQ%3D%3D&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -314,15 +594,156 @@ X-Xss-Protection: 0
 {
   "services": [
     {
-      "name": "projects/${projectNumber}/services/compute.googleapis.com"
+      "name": "projects/${projectNumber}/services/logging.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/managedkafka.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/mapmanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/memcache.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/migrationcenter.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/modelarmor.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/monitoring.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/multiclustermetering.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/netapp.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networkconnectivity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networksecurity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networkservices.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/notebooks.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/oracledatabase.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/orgpolicy.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/osconfig.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/oslogin.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/privateca.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/pubsub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/rapidmigrationassessment.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/recaptchaenterprise.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/redis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/run.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/runtimeconfig.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/saasservicemgmt.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/secretmanager.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/securetoken.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/securitycenter.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/securitycentermanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/servicemanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/servicenetworking.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/serviceusage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/spanner.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/sql-component.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/sqladmin.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage-api.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage-component.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storageinsights.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/telemetry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/testing.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/transcoder.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/translate.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/vectorsearch.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/vision.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/visionai.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/vmmigration.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/websecurityscanner.googleapis.com"
     }
   ]
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -335,8 +756,512 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "nextPageToken": "ciQKIkIgY29udGFpbmVyc2VjdXJpdHkuZ29vZ2xlYXBpcy5jb20=",
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/accesscontextmanager.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/agentidentity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/agentidentitycredentials.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/agentregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/aiplatform.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/alloydb.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/analyticshub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthos.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthosconfigmanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthospolicycontroller.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/apigee.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/apihub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/appengine.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/apphub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/apptopology.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/artifactregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/assuredworkloads.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/autoscaling.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/backupdr.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquery.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigqueryconnection.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerydatapolicy.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerydatatransfer.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerymigration.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigqueryreservation.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerystorage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigtable.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigtableadmin.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/billingbudgets.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/certificatemanager.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudapis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudbilling.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudbuild.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/clouddeploy.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudkms.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudnumberregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudresourcemanager.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudsecuritycompliance.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudsupport.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudtrace.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/compute.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/config.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/configdelivery.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/connectors.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/contactcenterinsights.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/container.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containeranalysis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containerfilesystem.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containerregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containersecurity.googleapis.com"
+    }
+  ]
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&pageToken=ciQKIkIgY29udGFpbmVyc2VjdXJpdHkuZ29vZ2xlYXBpcy5jb20%3D&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "nextPageToken": "ch0KG0IZbGl2ZXN0cmVhbS5nb29nbGVhcGlzLmNvbQ==",
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/containerthreatdetection.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/contentwarehouse.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/datacatalog.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataflow.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataform.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/datalabeling.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/datalineage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataplex.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataproc-control.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataproc.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataprocrm.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/datastore.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/deploymentmanager.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/developerconnect.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/devicerun.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/devicestreaming.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dialogflow.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/discoveryengine.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dns.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/documentai.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/edgecache.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/essentialcontacts.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/eventarc.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/fcm.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/fcmregistrations.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/file.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/firebase.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/firebaseappdistribution.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/firebasehosting.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/firebaseinstallations.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/firebaseremoteconfig.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/firebaseremoteconfigrealtime.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/firebaserules.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/firestore.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/generativelanguage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkebackup.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkeconnect.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkemulticloud.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/hypercomputecluster.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iam.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iamcredentials.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iap.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/identitytoolkit.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/jobs.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/krmapihosting.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/kubernetesmetadata.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/licensemanager.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/livestream.googleapis.com"
+    }
+  ]
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&pageToken=ch0KG0IZbGl2ZXN0cmVhbS5nb29nbGVhcGlzLmNvbQ%3D%3D&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/logging.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/managedkafka.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/mapmanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/memcache.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/migrationcenter.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/modelarmor.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/monitoring.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/multiclustermetering.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/netapp.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networkconnectivity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networksecurity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networkservices.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/notebooks.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/oracledatabase.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/orgpolicy.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/osconfig.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/oslogin.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/privateca.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/pubsub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/rapidmigrationassessment.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/recaptchaenterprise.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/redis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/run.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/runtimeconfig.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/saasservicemgmt.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/secretmanager.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/securetoken.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/securitycenter.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/securitycentermanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/servicemanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/servicenetworking.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/serviceusage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/spanner.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/sql-component.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/sqladmin.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage-api.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage-component.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storageinsights.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/telemetry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/testing.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/transcoder.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/translate.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/vectorsearch.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/vision.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/visionai.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/vmmigration.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/websecurityscanner.googleapis.com"
+    }
+  ]
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cloudArmorTier": "CA_STANDARD",
   "commonInstanceMetadata": {
-    "fingerprint": "oFT1D8KVyv4hM4iUi/Pf5w==",
+    "fingerprint": "x4iOk7cA2GY=",
     "kind": "compute#metadata"
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
@@ -344,15 +1269,255 @@ X-Xss-Protection: 0
   "defaultServiceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
   "id": "000000000000000000000",
   "kind": "compute#project",
+  "managedProtectionTier": "CA_STANDARD",
   "name": "${projectId}",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}"
+  "quotas": [
+    {
+      "limit": 10000,
+      "metric": "SNAPSHOTS",
+      "usage": 1
+    },
+    {
+      "limit": 30,
+      "metric": "NETWORKS",
+      "usage": 26
+    },
+    {
+      "limit": 500,
+      "metric": "FIREWALLS",
+      "usage": 25
+    },
+    {
+      "limit": 5000,
+      "metric": "IMAGES",
+      "usage": 0
+    },
+    {
+      "limit": 175,
+      "metric": "STATIC_ADDRESSES",
+      "usage": 0
+    },
+    {
+      "limit": 300,
+      "metric": "ROUTES",
+      "usage": 0
+    },
+    {
+      "limit": 150,
+      "metric": "FORWARDING_RULES",
+      "usage": 0
+    },
+    {
+      "limit": 500,
+      "metric": "TARGET_POOLS",
+      "usage": 0
+    },
+    {
+      "limit": 1000,
+      "metric": "HEALTH_CHECKS",
+      "usage": 8
+    },
+    {
+      "limit": 575,
+      "metric": "IN_USE_ADDRESSES",
+      "usage": 0
+    },
+    {
+      "limit": 500,
+      "metric": "TARGET_INSTANCES",
+      "usage": 0
+    },
+    {
+      "limit": 100,
+      "metric": "TARGET_HTTP_PROXIES",
+      "usage": 0
+    },
+    {
+      "limit": 100,
+      "metric": "URL_MAPS",
+      "usage": 2
+    },
+    {
+      "limit": 150,
+      "metric": "BACKEND_SERVICES",
+      "usage": 0
+    },
+    {
+      "limit": 1000,
+      "metric": "INSTANCE_TEMPLATES",
+      "usage": 0
+    },
+    {
+      "limit": 50,
+      "metric": "TARGET_VPN_GATEWAYS",
+      "usage": 0
+    },
+    {
+      "limit": 100,
+      "metric": "VPN_TUNNELS",
+      "usage": 0
+    },
+    {
+      "limit": 30,
+      "metric": "BACKEND_BUCKETS",
+      "usage": 0
+    },
+    {
+      "limit": 20,
+      "metric": "ROUTERS",
+      "usage": 8
+    },
+    {
+      "limit": 100,
+      "metric": "TARGET_SSL_PROXIES",
+      "usage": 0
+    },
+    {
+      "limit": 100,
+      "metric": "TARGET_HTTPS_PROXIES",
+      "usage": 0
+    },
+    {
+      "limit": 100,
+      "metric": "SSL_CERTIFICATES",
+      "usage": 0
+    },
+    {
+      "limit": 275,
+      "metric": "SUBNETWORKS",
+      "usage": 0
+    },
+    {
+      "limit": 100,
+      "metric": "TARGET_TCP_PROXIES",
+      "usage": 0
+    },
+    {
+      "limit": 10,
+      "metric": "SECURITY_POLICIES",
+      "usage": 0
+    },
+    {
+      "limit": 200,
+      "metric": "SECURITY_POLICY_RULES",
+      "usage": 0
+    },
+    {
+      "limit": 1000,
+      "metric": "XPN_SERVICE_PROJECTS",
+      "usage": 0
+    },
+    {
+      "limit": 150,
+      "metric": "PACKET_MIRRORINGS",
+      "usage": 0
+    },
+    {
+      "limit": 2000,
+      "metric": "NETWORK_ENDPOINT_GROUPS",
+      "usage": 0
+    },
+    {
+      "limit": 6,
+      "metric": "INTERCONNECTS",
+      "usage": 0
+    },
+    {
+      "limit": 100,
+      "metric": "SSL_POLICIES",
+      "usage": 0
+    },
+    {
+      "limit": 5000,
+      "metric": "GLOBAL_INTERNAL_ADDRESSES",
+      "usage": 0
+    },
+    {
+      "limit": 50,
+      "metric": "VPN_GATEWAYS",
+      "usage": 0
+    },
+    {
+      "limit": 275,
+      "metric": "PRIVATE_V6_ACCESS_SUBNETWORKS",
+      "usage": 0
+    },
+    {
+      "limit": 5000,
+      "metric": "MACHINE_IMAGES",
+      "usage": 0
+    },
+    {
+      "limit": 20,
+      "metric": "SECURITY_POLICY_CEVAL_RULES",
+      "usage": 0
+    },
+    {
+      "limit": 50,
+      "metric": "EXTERNAL_VPN_GATEWAYS",
+      "usage": 0
+    },
+    {
+      "limit": 1,
+      "metric": "PUBLIC_ADVERTISED_PREFIXES",
+      "usage": 0
+    },
+    {
+      "limit": 10,
+      "metric": "PUBLIC_DELEGATED_PREFIXES",
+      "usage": 0
+    },
+    {
+      "limit": 1024,
+      "metric": "STATIC_BYOIP_ADDRESSES",
+      "usage": 0
+    },
+    {
+      "limit": 60,
+      "metric": "NETWORK_FIREWALL_POLICIES",
+      "usage": 0
+    },
+    {
+      "limit": 150,
+      "metric": "INTERNAL_TRAFFIC_DIRECTOR_FORWARDING_RULES",
+      "usage": 0
+    },
+    {
+      "limit": 150,
+      "metric": "GLOBAL_EXTERNAL_MANAGED_FORWARDING_RULES",
+      "usage": 0
+    },
+    {
+      "limit": 150,
+      "metric": "GLOBAL_INTERNAL_MANAGED_BACKEND_SERVICES",
+      "usage": 1
+    },
+    {
+      "limit": 150,
+      "metric": "GLOBAL_EXTERNAL_MANAGED_BACKEND_SERVICES",
+      "usage": 0
+    },
+    {
+      "limit": 150,
+      "metric": "GLOBAL_EXTERNAL_PROXY_LB_BACKEND_SERVICES",
+      "usage": 1
+    },
+    {
+      "limit": 750,
+      "metric": "GLOBAL_INTERNAL_TRAFFIC_DIRECTOR_BACKEND_SERVICES",
+      "usage": 0
+    }
+  ],
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}",
+  "vmDnsSetting": "GLOBAL_DEFAULT",
+  "xpnProjectStatus": "UNSPECIFIED_XPN_PROJECT_STATUS"
 }
 
 ---
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/setCommonInstanceMetadata?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "fingerprint": "abcdef0123A=",
@@ -388,17 +1553,20 @@ X-Xss-Protection: 0
   "operationType": "compute.projects.setCommonInstanceMetadata",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "setCommonInstanceMetadataOperationMetadata": {
+    "clientOperationId": "${operationID}"
+  },
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${projectNumber}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}",
   "user": "user@example.com"
 }
 
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -419,17 +1587,73 @@ X-Xss-Protection: 0
   "operationType": "compute.projects.setCommonInstanceMetadata",
   "progress": 100,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "setCommonInstanceMetadataOperationMetadata": {
+    "clientOperationId": "${operationID}",
+    "perLocationOperations": {
+      "us-central1-a": {
+        "state": "DONE"
+      },
+      "us-central1-ai1a": {
+        "state": "DONE"
+      },
+      "us-central1-ai2b": {
+        "state": "DONE"
+      },
+      "us-central1-b": {
+        "state": "DONE"
+      },
+      "us-central1-c": {
+        "state": "DONE"
+      },
+      "us-central1-d": {
+        "state": "DONE"
+      },
+      "us-central1-f": {
+        "state": "DONE"
+      },
+      "us-east1-a": {
+        "state": "DONE"
+      },
+      "us-east1-b": {
+        "state": "DONE"
+      },
+      "us-east1-c": {
+        "state": "DONE"
+      },
+      "us-east1-d": {
+        "state": "DONE"
+      },
+      "us-west1-a": {
+        "state": "DONE"
+      },
+      "us-west1-b": {
+        "state": "DONE"
+      },
+      "us-west1-c": {
+        "state": "DONE"
+      },
+      "us-west2-a": {
+        "state": "DONE"
+      },
+      "us-west2-b": {
+        "state": "DONE"
+      },
+      "us-west2-c": {
+        "state": "DONE"
+      }
+    }
+  },
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${projectNumber}",
-  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}",
   "user": "user@example.com"
 }
 
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -442,8 +1666,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "cloudArmorTier": "CA_STANDARD",
   "commonInstanceMetadata": {
-    "fingerprint": "XPoBKO4Dib2kMR4P0Q8xrw==",
+    "fingerprint": "CcFbaT6TiQQ=",
     "items": [
       {
         "key": "baz",
@@ -461,6 +1686,246 @@ X-Xss-Protection: 0
   "defaultServiceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
   "id": "000000000000000000000",
   "kind": "compute#project",
+  "managedProtectionTier": "CA_STANDARD",
   "name": "${projectId}",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}"
+  "quotas": [
+    {
+      "limit": 10000,
+      "metric": "SNAPSHOTS",
+      "usage": 1
+    },
+    {
+      "limit": 30,
+      "metric": "NETWORKS",
+      "usage": 26
+    },
+    {
+      "limit": 500,
+      "metric": "FIREWALLS",
+      "usage": 25
+    },
+    {
+      "limit": 5000,
+      "metric": "IMAGES",
+      "usage": 0
+    },
+    {
+      "limit": 175,
+      "metric": "STATIC_ADDRESSES",
+      "usage": 0
+    },
+    {
+      "limit": 300,
+      "metric": "ROUTES",
+      "usage": 0
+    },
+    {
+      "limit": 150,
+      "metric": "FORWARDING_RULES",
+      "usage": 0
+    },
+    {
+      "limit": 500,
+      "metric": "TARGET_POOLS",
+      "usage": 0
+    },
+    {
+      "limit": 1000,
+      "metric": "HEALTH_CHECKS",
+      "usage": 8
+    },
+    {
+      "limit": 575,
+      "metric": "IN_USE_ADDRESSES",
+      "usage": 0
+    },
+    {
+      "limit": 500,
+      "metric": "TARGET_INSTANCES",
+      "usage": 0
+    },
+    {
+      "limit": 100,
+      "metric": "TARGET_HTTP_PROXIES",
+      "usage": 0
+    },
+    {
+      "limit": 100,
+      "metric": "URL_MAPS",
+      "usage": 2
+    },
+    {
+      "limit": 150,
+      "metric": "BACKEND_SERVICES",
+      "usage": 0
+    },
+    {
+      "limit": 1000,
+      "metric": "INSTANCE_TEMPLATES",
+      "usage": 0
+    },
+    {
+      "limit": 50,
+      "metric": "TARGET_VPN_GATEWAYS",
+      "usage": 0
+    },
+    {
+      "limit": 100,
+      "metric": "VPN_TUNNELS",
+      "usage": 0
+    },
+    {
+      "limit": 30,
+      "metric": "BACKEND_BUCKETS",
+      "usage": 0
+    },
+    {
+      "limit": 20,
+      "metric": "ROUTERS",
+      "usage": 8
+    },
+    {
+      "limit": 100,
+      "metric": "TARGET_SSL_PROXIES",
+      "usage": 0
+    },
+    {
+      "limit": 100,
+      "metric": "TARGET_HTTPS_PROXIES",
+      "usage": 0
+    },
+    {
+      "limit": 100,
+      "metric": "SSL_CERTIFICATES",
+      "usage": 0
+    },
+    {
+      "limit": 275,
+      "metric": "SUBNETWORKS",
+      "usage": 0
+    },
+    {
+      "limit": 100,
+      "metric": "TARGET_TCP_PROXIES",
+      "usage": 0
+    },
+    {
+      "limit": 10,
+      "metric": "SECURITY_POLICIES",
+      "usage": 0
+    },
+    {
+      "limit": 200,
+      "metric": "SECURITY_POLICY_RULES",
+      "usage": 0
+    },
+    {
+      "limit": 1000,
+      "metric": "XPN_SERVICE_PROJECTS",
+      "usage": 0
+    },
+    {
+      "limit": 150,
+      "metric": "PACKET_MIRRORINGS",
+      "usage": 0
+    },
+    {
+      "limit": 2000,
+      "metric": "NETWORK_ENDPOINT_GROUPS",
+      "usage": 0
+    },
+    {
+      "limit": 6,
+      "metric": "INTERCONNECTS",
+      "usage": 0
+    },
+    {
+      "limit": 100,
+      "metric": "SSL_POLICIES",
+      "usage": 0
+    },
+    {
+      "limit": 5000,
+      "metric": "GLOBAL_INTERNAL_ADDRESSES",
+      "usage": 0
+    },
+    {
+      "limit": 50,
+      "metric": "VPN_GATEWAYS",
+      "usage": 0
+    },
+    {
+      "limit": 275,
+      "metric": "PRIVATE_V6_ACCESS_SUBNETWORKS",
+      "usage": 0
+    },
+    {
+      "limit": 5000,
+      "metric": "MACHINE_IMAGES",
+      "usage": 0
+    },
+    {
+      "limit": 20,
+      "metric": "SECURITY_POLICY_CEVAL_RULES",
+      "usage": 0
+    },
+    {
+      "limit": 50,
+      "metric": "EXTERNAL_VPN_GATEWAYS",
+      "usage": 0
+    },
+    {
+      "limit": 1,
+      "metric": "PUBLIC_ADVERTISED_PREFIXES",
+      "usage": 0
+    },
+    {
+      "limit": 10,
+      "metric": "PUBLIC_DELEGATED_PREFIXES",
+      "usage": 0
+    },
+    {
+      "limit": 1024,
+      "metric": "STATIC_BYOIP_ADDRESSES",
+      "usage": 0
+    },
+    {
+      "limit": 60,
+      "metric": "NETWORK_FIREWALL_POLICIES",
+      "usage": 0
+    },
+    {
+      "limit": 150,
+      "metric": "INTERNAL_TRAFFIC_DIRECTOR_FORWARDING_RULES",
+      "usage": 0
+    },
+    {
+      "limit": 150,
+      "metric": "GLOBAL_EXTERNAL_MANAGED_FORWARDING_RULES",
+      "usage": 0
+    },
+    {
+      "limit": 150,
+      "metric": "GLOBAL_INTERNAL_MANAGED_BACKEND_SERVICES",
+      "usage": 1
+    },
+    {
+      "limit": 150,
+      "metric": "GLOBAL_EXTERNAL_MANAGED_BACKEND_SERVICES",
+      "usage": 0
+    },
+    {
+      "limit": 150,
+      "metric": "GLOBAL_EXTERNAL_PROXY_LB_BACKEND_SERVICES",
+      "usage": 1
+    },
+    {
+      "limit": 750,
+      "metric": "GLOBAL_INTERNAL_TRAFFIC_DIRECTOR_BACKEND_SERVICES",
+      "usage": 0
+    }
+  ],
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}",
+  "vmDnsSetting": "GLOBAL_DEFAULT",
+  "xpnProjectStatus": "UNSPECIFIED_XPN_PROJECT_STATUS"
 }
