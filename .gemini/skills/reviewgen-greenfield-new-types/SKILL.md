@@ -43,6 +43,17 @@ Please respect the following review criteria and invariants when reviewing.
 ## 6. Exception Files
 *   Greenfield PRs must **not** add exceptions to any exception files (e.g., tracking omitted fields, unmapped types) with the sole exception of `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`.
 
+## 7. Kind Naming
+*   The Kind must follow [docs/designs/standardize-resource-kind-names.md](../../../docs/designs/standardize-resource-kind-names.md): `<ServicePortion><ResourcePortion>`, PascalCase, singular.
+*   **Existing group:** If an existing KRM API group already maps to the same GCP REST API host, the new Kind must use that group's service prefix and be added to that group.
+*   **New group:** The Service Portion must match the derivation from the service's Discovery Document. Use `canonicalName` (or `name` if it is absent), strip a leading `Cloud`/`Google` and a trailing `Admin`/`API`, recover casing from `title`, then PascalCase. Verify this yourself with `curl -s "https://<service>.googleapis.com/\$discovery/rest?version=<version>" | jq '{canonicalName, name, title}'`.
+*   Any acronym that is not derivable from the Discovery Document (e.g. `CCInsights`) must have an explicit rationale in the PR description.
+*   **Resource Portion:** Must be the singular, PascalCase name of the GCP resource, typically the proto message name (e.g. proto `ExampleStore` -> `ExampleStore`). Verify:
+    *   It is singular (e.g. `Instance`, not `Instances`), even though the REST collection is plural (e.g. `projects.locations.instances`).
+    *   It matches the proto message mapped in `generate.sh` (`--resource <Kind>:<ProtoMessage>`), with no unexplained renames, extra words, or dropped words.
+    *   It does not repeat the Service Portion (e.g. `SpannerInstance`, not `SpannerSpannerInstance`). If the proto message name already starts with the service name, the PR description must explain whether the duplicate was dropped.
+    *   Acronyms use consistent all-caps casing (e.g. `SSLPolicy`, not `SslPolicy`), consistent with the KCC field-name acronym rules.
+
 # Review Comment Template
 When proposing changes or stating LGTM, format the review description as follows:
 
@@ -55,6 +66,7 @@ When proposing changes or stating LGTM, format the review description as follows
 * **1:1 Kind to Proto Mapping**: [Pass/Fail] - (List any shared Protos or Kinds pointing to multiple Protos)
 * **References/Identity**: [Pass/Fail] - (List any missing resource references)
 * **Exception Files**: [Pass/Fail] - (List any modified exception files other than `tests/apichecks/testdata/exceptions/alpha-missingfields.txt`)
+* **Kind Naming**: [Pass/Fail] - (Show the Discovery `canonicalName`/`name`/`title` used and the expected vs. actual Service Portion; show the proto message name and the expected vs. actual Resource Portion)
 
 #### Detailed Findings / Actions Required:
 1. [Specify file, line number, and exact issue]
