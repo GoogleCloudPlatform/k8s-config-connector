@@ -52,6 +52,8 @@ const (
 	DeleteFailed                         = "DeleteFailed"
 	NoCondition                          = "NoCondition"
 	DeleteFailedMessageTmpl              = "Delete call failed: %v"
+	Paused                               = "Paused"
+	PausedMessage                        = "The resource is paused and will not be actuated onto the cloud provider"
 	Unmanaged                            = "Unmanaged"
 	UnmanagedMessageTmpl                 = "No controller is managing this resource. Check if a ConfigConnectorContext exists for resource's namespace, '%v'"
 	ControllerFinalizerName              = "cnrm.cloud.google.com/finalizer"
