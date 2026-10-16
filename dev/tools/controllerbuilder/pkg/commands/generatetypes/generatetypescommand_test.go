@@ -417,16 +417,16 @@ func TestRunGenerateCRDChecksUntriagedKindAgain(t *testing.T) {
 		{
 			Kind:   "ExampleWidget",
 			Group:  "example.cnrm.cloud.google.com",
-			Field:  ".spec.network",
-			Reason: "possible-reference-by-description",
-			Detail: `the description has the resource-name template "projects/{project}/global/networks/{network}"`,
+			Reason: "empty-observedstate",
+			Detail: "nothing was generated into status.observedState; the proto probably marks no field OUTPUT_ONLY, so output fields landed in the Spec. Decide what belongs in status",
 			Status: judgement.StatusOpen,
 		},
 		{
 			Kind:   "ExampleWidget",
 			Group:  "example.cnrm.cloud.google.com",
-			Reason: "empty-observedstate",
-			Detail: "nothing was generated into status.observedState; the proto probably marks no field OUTPUT_ONLY, so output fields landed in the Spec. Decide what belongs in status",
+			Field:  ".spec.network",
+			Reason: "possible-reference-by-description",
+			Detail: `the description has the resource-name template "projects/{project}/global/networks/{network}"`,
 			Status: judgement.StatusOpen,
 		},
 	}

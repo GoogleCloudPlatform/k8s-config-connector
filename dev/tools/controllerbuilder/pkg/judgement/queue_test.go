@@ -22,10 +22,6 @@ import (
 	"testing"
 )
 
-func resourceEntry(field, reason string) Entry {
-	return Entry{Kind: "Foo", Group: "example.cnrm.cloud.google.com", Field: field, Reason: reason, Status: StatusOpen}
-}
-
 func TestMergeKeepsResolvedEntries(t *testing.T) {
 	// Arrange
 	resolved := resourceEntry(".spec.a", "possible-reference")
@@ -60,13 +56,50 @@ func TestMergeKeepsResolvedEntries(t *testing.T) {
 
 func TestMergeKeepsEntriesNotRegenerated(t *testing.T) {
 	// generate.sh calls generate-types once per proto version. A later call
-	// must not drop what an earlier call wrote.
+	// must not drop what an earlier call wrote, and orders entries canonically
+	// by (Group, Kind, Field, Reason).
 	q := &Queue{Entries: []Entry{resourceEntry(".spec.a", "x")}}
 
 	q.Merge([]Entry{{Kind: "Bar", Group: "example.cnrm.cloud.google.com", Reason: "y"}})
 
-	if len(q.Entries) != 2 || q.Entries[0].Field != ".spec.a" {
-		t.Errorf("entries = %+v, want the earlier entry kept first", q.Entries)
+	if len(q.Entries) != 2 || q.Entries[0].Kind != "Bar" || q.Entries[1].Field != ".spec.a" {
+		t.Errorf("entries = %+v, want Bar then Foo(.spec.a)", q.Entries)
+	}
+}
+
+func TestSortCanonicalGrouping(t *testing.T) {
+	const g = "example.cnrm.cloud.google.com"
+	q := &Queue{Entries: []Entry{
+		{ProtoMessage: "google.cloud.x.v1.Zeta", Field: "b", Reason: "possible-reference-by-sibling", Status: StatusOpen},
+		{Kind: "Foo", Group: g, Field: ".spec.network", Reason: "possible-reference-by-name", Status: StatusOpen},
+		{Kind: "Foo", Group: g, Field: ".spec.cluster", Reason: "possible-reference", Status: StatusOpen},
+		{Kind: "Bar", Group: g, Field: ".spec.topic", Reason: "possible-reference", Status: StatusOpen},
+		{Kind: "Foo", Group: g, Field: ".spec.network", Reason: "possible-reference", Status: StatusOpen},
+		{Kind: "Foo", Group: g, Reason: "empty-observedstate", Status: StatusOpen},
+		{ProtoMessage: "google.cloud.x.v1.Alpha", Field: "a", Reason: "unsupported-field-type", Status: StatusOpen},
+		{Kind: "Foo", Group: g, Reason: ReasonUntriagedBulkGeneration, Status: StatusOpen},
+		{Kind: "Foo", Group: g, Field: ".spec.network", Reason: "possible-reference-by-description", Status: StatusOpen},
+		{Kind: "Foo", Group: g, Reason: "ambiguous-proto-name", Status: StatusOpen},
+		{Kind: "Bar", Group: g, Reason: ReasonUntriagedBulkGeneration, Status: StatusOpen},
+	}}
+
+	q.Sort()
+
+	want := []Entry{
+		{Kind: "Bar", Group: g, Reason: ReasonUntriagedBulkGeneration, Status: StatusOpen},
+		{Kind: "Bar", Group: g, Field: ".spec.topic", Reason: "possible-reference", Status: StatusOpen},
+		{Kind: "Foo", Group: g, Reason: ReasonUntriagedBulkGeneration, Status: StatusOpen},
+		{Kind: "Foo", Group: g, Reason: "ambiguous-proto-name", Status: StatusOpen},
+		{Kind: "Foo", Group: g, Reason: "empty-observedstate", Status: StatusOpen},
+		{Kind: "Foo", Group: g, Field: ".spec.cluster", Reason: "possible-reference", Status: StatusOpen},
+		{Kind: "Foo", Group: g, Field: ".spec.network", Reason: "possible-reference", Status: StatusOpen},
+		{Kind: "Foo", Group: g, Field: ".spec.network", Reason: "possible-reference-by-description", Status: StatusOpen},
+		{Kind: "Foo", Group: g, Field: ".spec.network", Reason: "possible-reference-by-name", Status: StatusOpen},
+		{ProtoMessage: "google.cloud.x.v1.Alpha", Field: "a", Reason: "unsupported-field-type", Status: StatusOpen},
+		{ProtoMessage: "google.cloud.x.v1.Zeta", Field: "b", Reason: "possible-reference-by-sibling", Status: StatusOpen},
+	}
+	if !reflect.DeepEqual(q.Entries, want) {
+		t.Errorf("Sort() order mismatch:\n got %+v\nwant %+v", q.Entries, want)
 	}
 }
 
@@ -115,14 +148,19 @@ func TestQueueValidateRejectsDuplicates(t *testing.T) {
 func TestWriteThenRead(t *testing.T) {
 	// Arrange
 	path := filepath.Join(t.TempDir(), FileName)
-	want := &Queue{Entries: []Entry{
+	input := &Queue{Entries: []Entry{
 		resourceEntry(".spec.a", "possible-reference"),
 		{ProtoMessage: "google.cloud.x.v1.Msg", Field: "f", Reason: "unsupported-field-type", Detail: "d: with a colon", Status: StatusOpen},
-		{Kind: "Foo", Group: "g", Reason: "untriaged-bulk-generation", Status: StatusResolved, Resolution: ResolutionAccepted},
+		{Kind: "Foo", Group: "example.cnrm.cloud.google.com", Reason: "untriaged-bulk-generation", Status: StatusResolved, Resolution: ResolutionAccepted},
+	}}
+	want := &Queue{Entries: []Entry{
+		{Kind: "Foo", Group: "example.cnrm.cloud.google.com", Reason: "untriaged-bulk-generation", Status: StatusResolved, Resolution: ResolutionAccepted},
+		resourceEntry(".spec.a", "possible-reference"),
+		{ProtoMessage: "google.cloud.x.v1.Msg", Field: "f", Reason: "unsupported-field-type", Detail: "d: with a colon", Status: StatusOpen},
 	}}
 
 	// Act
-	if err := Write(path, want); err != nil {
+	if err := Write(path, input); err != nil {
 		t.Fatalf("Write: %v", err)
 	}
 	got, err := Read(path)
@@ -181,4 +219,8 @@ func TestReadRejectsUnknownFieldsAndBadEntries(t *testing.T) {
 			}
 		})
 	}
+}
+
+func resourceEntry(field, reason string) Entry {
+	return Entry{Kind: "Foo", Group: "example.cnrm.cloud.google.com", Field: field, Reason: reason, Status: StatusOpen}
 }

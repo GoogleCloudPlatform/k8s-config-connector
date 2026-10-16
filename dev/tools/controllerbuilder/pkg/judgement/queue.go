@@ -28,6 +28,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"sort"
 
 	"gopkg.in/yaml.v3"
 )
@@ -152,7 +153,8 @@ func (q *Queue) Validate() error {
 // takes the new detail. So regenerating never reopens a resolved entry. A new
 // entry is appended as open. Entries that were not generated this time are
 // kept: generate.sh calls generate-types several times per service, and each
-// call only knows about its own resources.
+// call only knows about its own resources. The resulting queue is sorted into
+// canonical (Kind, Field, Reason) order.
 func (q *Queue) Merge(generated []Entry) {
 	index := map[string]int{}
 	for i, e := range q.Entries {
@@ -169,6 +171,56 @@ func (q *Queue) Merge(generated []Entry) {
 		index[g.Key()] = len(q.Entries)
 		q.Entries = append(q.Entries, g)
 	}
+	q.Sort()
+}
+
+// Sort orders the queue's entries canonically so all findings for the same
+// Kind and Field are grouped contiguously:
+//  1. Resource entries (Kind set) come before shared ProtoMessage entries.
+//  2. Resource entries are grouped by (Group, Kind). Within a Kind:
+//     a. untriaged-bulk-generation comes first.
+//     b. Other Kind-level entries (Field == "") come next, ordered by Reason.
+//     c. Field-level entries (Field != "") are grouped by Field, then Reason.
+//  3. ProtoMessage entries are grouped by (ProtoMessage, Field, Reason).
+func (q *Queue) Sort() {
+	sort.SliceStable(q.Entries, func(i, j int) bool {
+		return entryLess(q.Entries[i], q.Entries[j])
+	})
+}
+
+func entryLess(a, b Entry) bool {
+	aIsProto := a.ProtoMessage != ""
+	bIsProto := b.ProtoMessage != ""
+	if aIsProto != bIsProto {
+		return !aIsProto
+	}
+	if aIsProto {
+		if a.ProtoMessage != b.ProtoMessage {
+			return a.ProtoMessage < b.ProtoMessage
+		}
+		if a.Field != b.Field {
+			return a.Field < b.Field
+		}
+		return a.Reason < b.Reason
+	}
+	if a.Group != b.Group {
+		return a.Group < b.Group
+	}
+	if a.Kind != b.Kind {
+		return a.Kind < b.Kind
+	}
+	aUntriaged := a.Field == "" && a.Reason == ReasonUntriagedBulkGeneration
+	bUntriaged := b.Field == "" && b.Reason == ReasonUntriagedBulkGeneration
+	if aUntriaged != bUntriaged {
+		return aUntriaged
+	}
+	if (a.Field == "") != (b.Field == "") {
+		return a.Field == ""
+	}
+	if a.Field != b.Field {
+		return a.Field < b.Field
+	}
+	return a.Reason < b.Reason
 }
 
 // Read loads a queue file. A missing file is an empty queue.
@@ -216,8 +268,10 @@ const header = `# Judgement queue for this service, written by controllerbuilder
 # file does not have.
 `
 
-// Write saves a queue file with its header.
+// Write sorts a queue into canonical (Kind, Field, Reason) order and saves it
+// with its header.
 func Write(path string, q *Queue) error {
+	q.Sort()
 	var buf bytes.Buffer
 	buf.WriteString(header)
 	buf.WriteString("\n")
