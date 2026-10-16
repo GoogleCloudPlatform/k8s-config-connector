@@ -399,9 +399,9 @@ func ResourceBigQueryTable() *schema.Resource {
 		),
 		Schema: map[string]*schema.Schema{
 			"unmanaged": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Default: "",
+				Type:        schema.TypeString,
+				Optional:    true,
+				Default:     "",
 				Description: `Collection of fields to ignore during update`,
 			},
 			// TableId: [Required] The ID of the table. The ID must contain only
@@ -742,6 +742,12 @@ func ResourceBigQueryTable() *schema.Resource {
 							Optional:      true,
 							Description:   `Object Metadata is used to create Object Tables. Object Tables contain a listing of objects (with their metadata) found at the sourceUris. If ObjectMetadata is set, sourceFormat should be omitted.`,
 							ConflictsWith: []string{"external_data_configuration.0.source_format"},
+						},
+						"decimal_target_types": {
+							Type:        schema.TypeList,
+							Optional:    true,
+							Description: `Defines the list of possible SQL data types to which the source decimal values are converted. This list and the precision and the scale parameters of the decimal field determine the target type. In the order of NUMERIC, BIGNUMERIC, and STRING, a type is picked if it is in the specified list and if it supports the precision and the scale. STRING supports all precision and scale values.`,
+							Elem:        &schema.Schema{Type: schema.TypeString},
 						},
 					},
 				},
@@ -1699,6 +1705,15 @@ func expandExternalDataConfiguration(cfg interface{}) (*bigquery.ExternalDataCon
 	if v, ok := raw["object_metadata"]; ok {
 		edc.ObjectMetadata = v.(string)
 	}
+	if v, ok := raw["decimal_target_types"]; ok {
+		decimalTargetTypes := []string{}
+		for _, rawDTT := range v.([]interface{}) {
+			decimalTargetTypes = append(decimalTargetTypes, rawDTT.(string))
+		}
+		if len(decimalTargetTypes) > 0 {
+			edc.DecimalTargetTypes = decimalTargetTypes
+		}
+	}
 
 	return edc, nil
 
@@ -1766,6 +1781,9 @@ func flattenExternalDataConfiguration(edc *bigquery.ExternalDataConfiguration) (
 
 	if edc.ObjectMetadata != "" {
 		result["object_metadata"] = edc.ObjectMetadata
+	}
+	if len(edc.DecimalTargetTypes) > 0 {
+		result["decimal_target_types"] = edc.DecimalTargetTypes
 	}
 
 	return []map[string]interface{}{result}, nil
