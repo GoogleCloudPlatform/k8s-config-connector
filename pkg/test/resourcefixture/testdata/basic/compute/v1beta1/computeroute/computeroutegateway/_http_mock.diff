@@ -1,0 +1,30 @@
+260c260
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}
+289c289
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes
+327c327,328
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json
+357c358
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}
+377c378
+<   "nextHopGateway": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/gateways/default-internet-gateway",
+---
+>   "nextHopGateway": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/gateways/default-internet-gateway",
+384c385
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}?alt=json
+---
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}
+414c415,416
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json
