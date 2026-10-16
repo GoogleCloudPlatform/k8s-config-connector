@@ -1,0 +1,505 @@
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource not found (resource=pubsubtopic-${uniqueId}).",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-updated-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource not found (resource=pubsubtopic-updated-${uniqueId}).",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-updated-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/pubsubtopic-updated-${uniqueId}"
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-updated-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/pubsubtopic-updated-${uniqueId}"
+}
+
+---
+
+GET https://cloudsupport.googleapis.com/v2/organizations/${folderID}/supportEventSubscriptions/supporteventsubscription-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${folderID}%2FsupportEventSubscriptions%2Fsupporteventsubscription-max-${uniqueId}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Permission 'cloudsupport.supportSubscriptions.get' denied on resource '//cloudsupport.googleapis.com/organizations/${folderID}/supportEventSubscriptions/supporteventsubscription-max-${uniqueId}' (or it may not exist). Remediate access with this Troubleshooter URL or share it with your administrator - https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=CiQwMWEwOWJlNi1jYmY4LTdiMWMtODg2OC1lMzQ3MzA5NDVkOGISYW9yZ2FuaXphdGlvbnMvMTI4NjUzMTM0NjUyL3N1cHBvcnRFdmVudFN1YnNjcmlwdGlvbnMvc3VwcG9ydGV2ZW50c3Vic2NyaXB0aW9uLW1heC1jNnJ4ZGlua2xueHpnYXk%3D .",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+POST https://cloudsupport.googleapis.com/v2/organizations/${folderID}/supportEventSubscriptions?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=organizations%2F${folderID}
+
+{
+  "pubSubTopic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Permission 'cloudsupport.supportSubscriptions.create' denied on resource '//cloudresourcemanager.googleapis.com/organizations/${folderID}' (or it may not exist). Remediate access with this Troubleshooter URL or share it with your administrator - https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=CiQwMWEwOWJlNi1jYzFjLTcyM2EtODRjMy1hZDA5YmRmOGU5Y2YSGm9yZ2FuaXphdGlvbnMvMTI4NjUzMTM0NjUy .",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+GET https://cloudsupport.googleapis.com/v2/organizations/${folderID}/supportEventSubscriptions/supporteventsubscription-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${folderID}%2FsupportEventSubscriptions%2Fsupporteventsubscription-max-${uniqueId}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Permission 'cloudsupport.supportSubscriptions.get' denied on resource '//cloudsupport.googleapis.com/organizations/${folderID}/supportEventSubscriptions/supporteventsubscription-max-${uniqueId}' (or it may not exist). Remediate access with this Troubleshooter URL or share it with your administrator - https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=CiQwMWEwOWJlNi1jZDRlLTc4OGMtOGU3OC02MjA2MDRhM2EwMjASYW9yZ2FuaXphdGlvbnMvMTI4NjUzMTM0NjUyL3N1cHBvcnRFdmVudFN1YnNjcmlwdGlvbnMvc3VwcG9ydGV2ZW50c3Vic2NyaXB0aW9uLW1heC1jNnJ4ZGlua2xueHpnYXk%3D .",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+POST https://cloudsupport.googleapis.com/v2/organizations/${folderID}/supportEventSubscriptions?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=organizations%2F${folderID}
+
+{
+  "pubSubTopic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Permission 'cloudsupport.supportSubscriptions.create' denied on resource '//cloudresourcemanager.googleapis.com/organizations/${folderID}' (or it may not exist). Remediate access with this Troubleshooter URL or share it with your administrator - https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=CiQwMWEwOWJlNi1jYzFjLTcyM2EtODRjMy1hZDA5YmRmOGU5Y2YSGm9yZ2FuaXphdGlvbnMvMTI4NjUzMTM0NjUy .",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+GET https://cloudsupport.googleapis.com/v2/organizations/${folderID}/supportEventSubscriptions/supporteventsubscription-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${folderID}%2FsupportEventSubscriptions%2Fsupporteventsubscription-max-${uniqueId}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Permission 'cloudsupport.supportSubscriptions.get' denied on resource '//cloudsupport.googleapis.com/organizations/${folderID}/supportEventSubscriptions/supporteventsubscription-max-${uniqueId}' (or it may not exist). Remediate access with this Troubleshooter URL or share it with your administrator - https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=CiQwMWEwOWJlNi1jYmY4LTdiMWMtODg2OC1lMzQ3MzA5NDVkOGISYW9yZ2FuaXphdGlvbnMvMTI4NjUzMTM0NjUyL3N1cHBvcnRFdmVudFN1YnNjcmlwdGlvbnMvc3VwcG9ydGV2ZW50c3Vic2NyaXB0aW9uLW1heC1jNnJ4ZGlua2xueHpnYXk%3D .",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+POST https://cloudsupport.googleapis.com/v2/organizations/${folderID}/supportEventSubscriptions?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=organizations%2F${folderID}
+
+{
+  "pubSubTopic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Permission 'cloudsupport.supportSubscriptions.create' denied on resource '//cloudresourcemanager.googleapis.com/organizations/${folderID}' (or it may not exist). Remediate access with this Troubleshooter URL or share it with your administrator - https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=CiQwMWEwOWJlNi1jZjhiLTc5ZTItYTE0Ni04MDMzOGEwM2JmNjESGm9yZ2FuaXphdGlvbnMvMTI4NjUzMTM0NjUy .",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+GET https://cloudsupport.googleapis.com/v2/organizations/${folderID}/supportEventSubscriptions/supporteventsubscription-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${folderID}%2FsupportEventSubscriptions%2Fsupporteventsubscription-max-${uniqueId}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Permission 'cloudsupport.supportSubscriptions.get' denied on resource '//cloudsupport.googleapis.com/organizations/${folderID}/supportEventSubscriptions/supporteventsubscription-max-${uniqueId}' (or it may not exist). Remediate access with this Troubleshooter URL or share it with your administrator - https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=CiQwMWEwOWJlNi1jZmI5LTc5ZmEtYjAxZC1jMWI1YWUyNjBhZGUSYW9yZ2FuaXphdGlvbnMvMTI4NjUzMTM0NjUyL3N1cHBvcnRFdmVudFN1YnNjcmlwdGlvbnMvc3VwcG9ydGV2ZW50c3Vic2NyaXB0aW9uLW1heC1jNnJ4ZGlua2xueHpnYXk%3D .",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+POST https://cloudsupport.googleapis.com/v2/organizations/${folderID}/supportEventSubscriptions?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=organizations%2F${folderID}
+
+{
+  "pubSubTopic": "projects/${projectId}/topics/pubsubtopic-updated-${uniqueId}"
+}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Permission 'cloudsupport.supportSubscriptions.create' denied on resource '//cloudresourcemanager.googleapis.com/organizations/${folderID}' (or it may not exist). Remediate access with this Troubleshooter URL or share it with your administrator - https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=CiQwMWEwOWJlNi1jZmNmLTc5Y2EtYWVmNC1mOGIwZWZmNjUwNjYSGm9yZ2FuaXphdGlvbnMvMTI4NjUzMTM0NjUy .",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+GET https://cloudsupport.googleapis.com/v2/organizations/${folderID}/supportEventSubscriptions/supporteventsubscription-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${folderID}%2FsupportEventSubscriptions%2Fsupporteventsubscription-max-${uniqueId}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Permission 'cloudsupport.supportSubscriptions.get' denied on resource '//cloudsupport.googleapis.com/organizations/${folderID}/supportEventSubscriptions/supporteventsubscription-max-${uniqueId}' (or it may not exist). Remediate access with this Troubleshooter URL or share it with your administrator - https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=CiQwMWEwOWJlNi1jZmI5LTc5ZmEtYjAxZC1jMWI1YWUyNjBhZGUSYW9yZ2FuaXphdGlvbnMvMTI4NjUzMTM0NjUyL3N1cHBvcnRFdmVudFN1YnNjcmlwdGlvbnMvc3VwcG9ydGV2ZW50c3Vic2NyaXB0aW9uLW1heC1jNnJ4ZGlua2xueHpnYXk%3D .",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+GET https://cloudsupport.googleapis.com/v2/organizations/${folderID}/supportEventSubscriptions/supporteventsubscription-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${folderID}%2FsupportEventSubscriptions%2Fsupporteventsubscription-max-${uniqueId}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Permission 'cloudsupport.supportSubscriptions.get' denied on resource '//cloudsupport.googleapis.com/organizations/${folderID}/supportEventSubscriptions/supporteventsubscription-max-${uniqueId}' (or it may not exist). Remediate access with this Troubleshooter URL or share it with your administrator - https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=CiQwMWEwOWJlNi1kZDFmLTcwZWUtODQwNS1hNDUxZjg1NWM2NTYSYW9yZ2FuaXphdGlvbnMvMTI4NjUzMTM0NjUyL3N1cHBvcnRFdmVudFN1YnNjcmlwdGlvbnMvc3VwcG9ydGV2ZW50c3Vic2NyaXB0aW9uLW1heC1jNnJ4ZGlua2xueHpnYXk%3D .",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-updated-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/pubsubtopic-updated-${uniqueId}"
+}
+
+---
+
+DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-updated-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+}
+
+---
+
+DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
