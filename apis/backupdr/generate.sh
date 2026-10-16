@@ -36,7 +36,8 @@ ${CONTROLLERBUILDER} generate-types \
     --service google.cloud.backupdr.v1 \
     --api-version backupdr.cnrm.cloud.google.com/v1alpha1 \
     --include-skipped-output \
-    --resource BackupDRManagementServer:ManagementServer
+    --resource BackupDRManagementServer:ManagementServer \
+    --resource BackupDRBackup:Backup
 
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
