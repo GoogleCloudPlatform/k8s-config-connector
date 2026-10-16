@@ -22,14 +22,13 @@ spec:
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: 'Update call failed: error updating: ComputeAddress is immutable and
-      cannot be updated'
-    reason: UpdateFailed
-    status: "False"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
   labelFingerprint: abcdef0123A=
   observedGeneration: 1
   observedState:
-    address: 8.8.8.8
+    address: 10.128.0.101
   selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}
