@@ -15,8 +15,7 @@
 apiVersion: firebasehosting.cnrm.cloud.google.com/v1alpha1
 kind: FirebaseHostingSite
 metadata:
-  name: firebasehostingsite-${uniqueId}
+  name: site-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
-  resourceID: firebasehostingsite${uniqueId}

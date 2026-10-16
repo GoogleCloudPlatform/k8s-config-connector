@@ -1,6 +1,6 @@
-- caisURL: //firebasehosting.googleapis.com/projects/${projectId}/sites/firebasehostingsite${uniqueId}
+- caisURL: //firebasehosting.googleapis.com/projects/${projectId}/sites/site-${uniqueId}
   group: firebasehosting.cnrm.cloud.google.com
   kind: FirebaseHostingSite
-  name: firebasehostingsite-${uniqueId}
+  name: site-${uniqueId}
   namespace: ${uniqueId}
   version: v1alpha1
