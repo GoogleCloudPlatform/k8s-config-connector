@@ -1,0 +1,30 @@
+apiVersion: netapp.cnrm.cloud.google.com/v1alpha1
+kind: NetAppHostGroup
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: netapphostgroup-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  hosts:
+  - iqn.1994-05.com.redhat:minimal2
+  location: us-central1
+  osType: LINUX
+  projectRef:
+    external: ${projectId}
+  type: ISCSI_INITIATOR
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/hostGroups/netapphostgroup-minimal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    state: READY

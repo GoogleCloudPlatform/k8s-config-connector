@@ -1,0 +1,36 @@
+apiVersion: netapp.cnrm.cloud.google.com/v1alpha1
+kind: NetAppHostGroup
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: netapphostgroup-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: An updated maximal NetApp host group test resource
+  hosts:
+  - iqn.1994-05.com.redhat:host3
+  - iqn.1994-05.com.redhat:host4
+  labels:
+    environment: test-updated
+    managed-by: kcc-updated
+  location: us-central1
+  osType: LINUX
+  projectRef:
+    external: ${projectId}
+  resourceID: netapphostgroup-maximal-${uniqueId}
+  type: ISCSI_INITIATOR
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/hostGroups/netapphostgroup-maximal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    state: READY
