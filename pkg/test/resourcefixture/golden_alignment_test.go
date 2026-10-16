@@ -358,6 +358,36 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				mockEvs = filteredMock
 			}
 
+			// Filter out duplicate consecutive GET responses with identical normalized bodies (e.g. from polling or retries)
+			if method == "GET" {
+				dedup := func(evs []httpEvent) []httpEvent {
+					var result []httpEvent
+					for _, ev := range evs {
+						if len(result) > 0 {
+							prev := result[len(result)-1]
+							if prev.Status == ev.Status {
+								var prevObj, currObj any
+								err1 := json.Unmarshal([]byte(prev.ResponseBody), &prevObj)
+								err2 := json.Unmarshal([]byte(ev.ResponseBody), &currObj)
+								if err1 == nil && err2 == nil {
+									prevNorm := normalizeRepresentation(prevObj)
+									currNorm := normalizeRepresentation(currObj)
+									if diff := cmp.Diff(prevNorm, currNorm); diff == "" {
+										continue
+									}
+								} else if prev.ResponseBody == ev.ResponseBody {
+									continue
+								}
+							}
+						}
+						result = append(result, ev)
+					}
+					return result
+				}
+				realEvs = dedup(realEvs)
+				mockEvs = dedup(mockEvs)
+			}
+
 			if len(realEvs) != len(mockEvs) {
 				allowed := false
 				if method == "DELETE" && len(mockEvs) < len(realEvs) {
@@ -629,6 +659,13 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "displayName")
 			delete(v, "name")
 			delete(v, "parent")
+		}
+
+		// SaaSServiceMgmtUnit specific fields to normalize alignment differences
+		delete(v, "flagConfigName")
+		if _, ok := v["unitKind"]; ok {
+			delete(v, "conditions")
+			delete(v, "state")
 		}
 
 		// SQLInstance specific fields to normalize alignment differences between mock and real GCP responses
