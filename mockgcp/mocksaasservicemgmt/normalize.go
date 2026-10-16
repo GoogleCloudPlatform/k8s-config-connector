@@ -30,10 +30,12 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath("createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath("updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath("etag", "abcdef0123A=")
+	replacements.ReplacePath("conditions[].lastTransitionTime", mockgcpregistry.PlaceholderTimestamp)
 
 	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".etag", "abcdef0123A=")
+	replacements.ReplacePath(".conditions[].lastTransitionTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
