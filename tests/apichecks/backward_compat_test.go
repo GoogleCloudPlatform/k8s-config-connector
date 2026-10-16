@@ -16,6 +16,7 @@ package lint
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"maps"
 	"os"
@@ -468,7 +469,8 @@ func gitShowFile(repoRoot, rev, relPath string) ([]byte, bool, error) {
 	cmd := exec.Command("git", "-C", repoRoot, "show", fmt.Sprintf("%s:%s", rev, relPath))
 	out, err := cmd.Output()
 	if err != nil {
-		if exitErr, ok := err.(*exec.ExitError); ok {
+		var exitErr *exec.ExitError
+		if errors.As(err, &exitErr) {
 			stderr := string(exitErr.Stderr)
 			if strings.Contains(stderr, "exists on disk, but not in") ||
 				strings.Contains(stderr, "does not exist in") {
@@ -889,28 +891,28 @@ func scanHandWrittenProtoStructs(apisDir string) ([]string, error) {
 // +kcc:*proto= annotation. Do not add new entries to this map; add the missing
 // // +kcc:proto=<full.proto.Name> annotation to the struct instead.
 var legacyMissingProtoStructAnnotations = map[string]bool{
-	"apis/bigqueryreservation/v1beta1/bigqueryreservationreservation_types.go:AutoscaleSpec":                  true,
-	"apis/bigqueryreservation/v1beta1/bigqueryreservationreservation_types.go:FailoverSpec":                   true,
-	"apis/bigqueryreservation/v1beta1/bigqueryreservationreservation_types.go:FailoverObservedState":          true,
-	"apis/cloudsecuritycompliance/v1alpha1/cloudsecuritycomplianceframework_types.go:CloudControlGroup":       true,
+	"apis/bigqueryreservation/v1beta1/bigqueryreservationreservation_types.go:AutoscaleSpec":                         true,
+	"apis/bigqueryreservation/v1beta1/bigqueryreservationreservation_types.go:FailoverSpec":                          true,
+	"apis/bigqueryreservation/v1beta1/bigqueryreservationreservation_types.go:FailoverObservedState":                 true,
+	"apis/cloudsecuritycompliance/v1alpha1/cloudsecuritycomplianceframework_types.go:CloudControlGroup":              true,
 	"apis/cloudsecuritycompliance/v1alpha1/cloudsecuritycomplianceframework_types.go:CloudControlGroupObservedState": true,
-	"apis/compute/v1beta1/computereservation_types.go:ComputeReservationObservedState":                        true,
-	"apis/compute/v1beta1/computesecuritypolicy_types.go:SecurityPolicyRecaptchaOptionsConfig":                true,
-	"apis/datacatalog/v1alpha1/datacatalogtagtemplate_types.go:DataCatalogTagTemplateObservedState":           true,
-	"apis/datalabeling/v1alpha1/datalabelinginstruction_types.go:InstructionCsvInstruction":                   true,
-	"apis/datalabeling/v1alpha1/datalabelinginstruction_types.go:InstructionPdfInstruction":                   true,
-	"apis/dataplex/v1alpha1/dataplextask_types.go:DataplexTaskObservedState":                                  true,
-	"apis/memorystore/v1beta1/memorystoreinstance_types.go:AutomatedBackupConfig":                             true,
-	"apis/networksecurity/v1alpha1/networksecurityfirewallendpoint_types.go:FirewallEndpointEndpointSettings": true,
-	"apis/networksecurity/v1alpha1/networksecurityfirewallendpoint_types.go:FirewallEndpointAssociationReference": true,
-	"apis/privateca/v1beta1/privatecacapool_types.go:X509Extension":                                           true,
-	"apis/pubsub/v1beta1/pubsubtopic_types.go:MessageStoragePolicy":                                           true,
-	"apis/speech/v1alpha1/speechrecognizer_types.go:InlineCustomClass":                                        true,
-	"apis/speech/v1alpha1/speechrecognizer_types.go:InlineCustomClassObservedState":                           true,
-	"apis/speech/v1beta1/speechrecognizer_types.go:InlineCustomClass":                                         true,
-	"apis/speech/v1beta1/speechrecognizer_types.go:InlineCustomClassObservedState":                            true,
-	"apis/vertexai/v1beta1/vertexaidataset_types.go:DatasetEncryptionSpec":                                    true,
-	"apis/workloadmanager/v1alpha1/workloadmanagerevaluation_types.go:ResourceFilter":                         true,
+	"apis/compute/v1beta1/computereservation_types.go:ComputeReservationObservedState":                               true,
+	"apis/compute/v1beta1/computesecuritypolicy_types.go:SecurityPolicyRecaptchaOptionsConfig":                       true,
+	"apis/datacatalog/v1alpha1/datacatalogtagtemplate_types.go:DataCatalogTagTemplateObservedState":                  true,
+	"apis/datalabeling/v1alpha1/datalabelinginstruction_types.go:InstructionCsvInstruction":                          true,
+	"apis/datalabeling/v1alpha1/datalabelinginstruction_types.go:InstructionPdfInstruction":                          true,
+	"apis/dataplex/v1alpha1/dataplextask_types.go:DataplexTaskObservedState":                                         true,
+	"apis/memorystore/v1beta1/memorystoreinstance_types.go:AutomatedBackupConfig":                                    true,
+	"apis/networksecurity/v1alpha1/networksecurityfirewallendpoint_types.go:FirewallEndpointEndpointSettings":        true,
+	"apis/networksecurity/v1alpha1/networksecurityfirewallendpoint_types.go:FirewallEndpointAssociationReference":    true,
+	"apis/privateca/v1beta1/privatecacapool_types.go:X509Extension":                                                  true,
+	"apis/pubsub/v1beta1/pubsubtopic_types.go:MessageStoragePolicy":                                                  true,
+	"apis/speech/v1alpha1/speechrecognizer_types.go:InlineCustomClass":                                               true,
+	"apis/speech/v1alpha1/speechrecognizer_types.go:InlineCustomClassObservedState":                                  true,
+	"apis/speech/v1beta1/speechrecognizer_types.go:InlineCustomClass":                                                true,
+	"apis/speech/v1beta1/speechrecognizer_types.go:InlineCustomClassObservedState":                                   true,
+	"apis/vertexai/v1beta1/vertexaidataset_types.go:DatasetEncryptionSpec":                                           true,
+	"apis/workloadmanager/v1alpha1/workloadmanagerevaluation_types.go:ResourceFilter":                                true,
 }
 
 func checkFileProtoStructs(relPath, service, content string) []string {

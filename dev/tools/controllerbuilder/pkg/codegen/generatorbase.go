@@ -417,10 +417,12 @@ func (g *generatorBase) findTypeDeclarationWithProtoTag(protoTag string, srcDir 
 			return nil, fmt.Errorf("reading file %q: %w", p, err)
 		}
 
-		protoLines := make(map[string]string)
-		scanFileDeclarations(string(b), nil, protoLines)
-		if line, ok := protoLines[protoTag]; ok {
-			return &line, nil
+		for _, line := range strings.Split(string(b), "\n") {
+			if proto, ok := GetProtoMessageFromAnnotation(line); ok {
+				if proto == protoTag {
+					return &line, nil
+				}
+			}
 		}
 	}
 
