@@ -9,13 +9,13 @@ metadata:
     test-label: updated-value
   name: ${addressID}
 spec:
-  address: 10.109.0.0
+  address: 8.8.8.8
   addressType: INTERNAL
   description: a test global address
+  ipVersion: IPV4
   location: global
   networkRef:
-    external: https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default
-  networkTier: PREMIUM
+    external: projects/${projectId}/global/networks/default
   prefixLength: 16
   purpose: VPC_PEERING
   resourceID: ${addressID}

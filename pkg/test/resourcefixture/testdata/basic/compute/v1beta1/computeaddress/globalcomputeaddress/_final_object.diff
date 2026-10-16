@@ -10,7 +10,3 @@
 <   observedGeneration: 2
 ---
 >   observedGeneration: 1
-38c36
-<     address: 10.25.0.0
----
->     address: 10.109.0.0

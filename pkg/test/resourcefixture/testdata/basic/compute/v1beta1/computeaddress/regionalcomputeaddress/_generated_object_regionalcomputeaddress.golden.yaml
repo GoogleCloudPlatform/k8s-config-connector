@@ -30,5 +30,5 @@ status:
   labelFingerprint: abcdef0123A=
   observedGeneration: 1
   observedState:
-    address: 10.128.0.101
+    address: 8.8.8.8
   selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/${addressID}
