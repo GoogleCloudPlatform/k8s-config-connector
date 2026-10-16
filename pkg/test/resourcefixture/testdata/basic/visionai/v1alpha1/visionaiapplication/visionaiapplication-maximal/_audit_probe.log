@@ -1,0 +1,38 @@
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/visionai-topic-${uniqueId}?alt=json
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/visionai-topic-${uniqueId}"
+}
+
+---
+
+GET https://visionai.googleapis.com/v1/projects/${projectId}/locations/us-central1/applications/visionaiapplication-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "applicationConfigs": {},
+  "billingMode": 1,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Application Maximal Test Updated",
+  "displayName": "App Maximal Updated ${uniqueId}",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one-updated",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/applications/visionaiapplication-maximal-${uniqueId}",
+  "runtimeInfo": {},
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

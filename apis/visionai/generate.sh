@@ -37,6 +37,10 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version visionai.cnrm.cloud.google.com/v1alpha1 \
   --resource VisionAIApplication:Application
 
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.visionai.v1 \
+  --api-version visionai.cnrm.cloud.google.com/v1alpha1
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

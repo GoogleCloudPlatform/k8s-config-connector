@@ -43,6 +43,10 @@ func (i *VisionAIApplicationIdentity) String() string {
 	return VisionAIApplicationIdentityFormat.ToString(*i)
 }
 
+func (i *VisionAIApplicationIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *VisionAIApplicationIdentity) FromExternal(ref string) error {
 	parsed, match, err := VisionAIApplicationIdentityFormat.Parse(ref)
 	if err != nil {
