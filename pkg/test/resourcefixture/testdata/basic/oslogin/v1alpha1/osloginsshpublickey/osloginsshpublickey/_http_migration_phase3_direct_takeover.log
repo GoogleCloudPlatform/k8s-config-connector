@@ -1,0 +1,20 @@
+GET https://oslogin.googleapis.com/v1/users/test-user-${uniqueId}@example.com/sshPublicKeys/abcdef0123A=?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=users%2Ftest-user-${uniqueId}%40example.com%2FsshPublicKeys%2Fabcdef0123A=
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "fingerprint": "abcdef0123A=",
+  "key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPM4pxpbPpjuBocS6qlW0BHRYgH5xmv/yVrANZR9lc1N test-user@example.com",
+  "name": "users/test-user-${uniqueId}@example.com/sshPublicKeys/abcdef0123A="
+}

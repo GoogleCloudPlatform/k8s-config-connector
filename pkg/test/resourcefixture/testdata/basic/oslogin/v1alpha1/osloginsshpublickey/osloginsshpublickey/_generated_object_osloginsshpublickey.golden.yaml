@@ -3,11 +3,10 @@ kind: OSLoginSSHPublicKey
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
   name: osloginsshpublickey-${uniqueId}
@@ -16,7 +15,6 @@ spec:
   expirationTimeUsec: "1893456000000000"
   key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPM4pxpbPpjuBocS6qlW0BHRYgH5xmv/yVrANZR9lc1N
     test-user@example.com
-  resourceID: abcdef0123A=
   user: test-user-${uniqueId}@example.com
 status:
   conditions:
@@ -26,4 +24,4 @@ status:
     status: "True"
     type: Ready
   fingerprint: abcdef0123A=
-  observedGeneration: 3
+  observedGeneration: 2

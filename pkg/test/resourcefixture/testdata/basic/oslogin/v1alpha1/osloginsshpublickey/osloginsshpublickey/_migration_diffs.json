@@ -1,0 +1,24 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "OSLoginSSHPublicKey/osloginsshpublickey-${uniqueId}",
+    "fields": [
+      {
+        "id": "fingerprint",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "key",
+        "old": "",
+        "new": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPM4pxpbPpjuBocS6qlW0BHRYgH5xmv/yVrANZR9lc1N test-user@example.com"
+      },
+      {
+        "id": "user",
+        "old": "",
+        "new": "test-user-${uniqueId}@example.com"
+      }
+    ]
+  }
+]

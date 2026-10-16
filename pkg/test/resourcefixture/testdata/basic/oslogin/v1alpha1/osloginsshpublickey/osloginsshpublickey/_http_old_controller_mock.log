@@ -1,0 +1,115 @@
+POST https://oslogin.googleapis.com/v1/users/test-user-${uniqueId}@example.com:importSshPublicKey?alt=json
+Content-Type: application/json
+
+{
+  "key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPM4pxpbPpjuBocS6qlW0BHRYgH5xmv/yVrANZR9lc1N test-user@example.com"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "loginProfile": {
+    "name": "users/test-user-${uniqueId}@example.com",
+    "sshPublicKeys": {
+      "abcdef0123A=": {
+        "fingerprint": "abcdef0123A=",
+        "key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPM4pxpbPpjuBocS6qlW0BHRYgH5xmv/yVrANZR9lc1N test-user@example.com",
+        "name": "users/test-user-${uniqueId}@example.com/sshPublicKeys/abcdef0123A="
+      }
+    }
+  }
+}
+
+---
+
+GET https://oslogin.googleapis.com/v1/users/test-user-${uniqueId}@example.com/sshPublicKeys/abcdef0123A=/?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "fingerprint": "abcdef0123A=",
+  "key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPM4pxpbPpjuBocS6qlW0BHRYgH5xmv/yVrANZR9lc1N test-user@example.com",
+  "name": "users/test-user-${uniqueId}@example.com/sshPublicKeys/abcdef0123A="
+}
+
+---
+
+PATCH https://oslogin.googleapis.com/v1/users/test-user-${uniqueId}@example.com/sshPublicKeys/abcdef0123A=/?alt=json&updateMask=expirationTimeUsec
+Content-Type: application/json
+
+{
+  "expirationTimeUsec": "1893456000000000"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "expirationTimeUsec": "1893456000000000",
+  "fingerprint": "abcdef0123A=",
+  "key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPM4pxpbPpjuBocS6qlW0BHRYgH5xmv/yVrANZR9lc1N test-user@example.com",
+  "name": "users/test-user-${uniqueId}@example.com/sshPublicKeys/abcdef0123A="
+}
+
+---
+
+GET https://oslogin.googleapis.com/v1/users/test-user-${uniqueId}@example.com/sshPublicKeys/abcdef0123A=/?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "expirationTimeUsec": "1893456000000000",
+  "fingerprint": "abcdef0123A=",
+  "key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPM4pxpbPpjuBocS6qlW0BHRYgH5xmv/yVrANZR9lc1N test-user@example.com",
+  "name": "users/test-user-${uniqueId}@example.com/sshPublicKeys/abcdef0123A="
+}
+
+---
+
+DELETE https://oslogin.googleapis.com/v1/users/test-user-${uniqueId}@example.com/sshPublicKeys/abcdef0123A=/?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

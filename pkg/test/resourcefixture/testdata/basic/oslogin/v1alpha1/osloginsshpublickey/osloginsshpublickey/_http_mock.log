@@ -1,6 +1,5 @@
-POST https://oslogin.googleapis.com/v1/users/test-user-${uniqueId}@example.com:importSshPublicKey?alt=json
+POST https://oslogin.googleapis.com/v1/users/test-user-${uniqueId}@example.com:importSshPublicKey?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPM4pxpbPpjuBocS6qlW0BHRYgH5xmv/yVrANZR9lc1N test-user@example.com"
@@ -31,9 +30,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://oslogin.googleapis.com/v1/users/test-user-${uniqueId}@example.com/sshPublicKeys/abcdef0123A=/?alt=json
+GET https://oslogin.googleapis.com/v1/users/test-user-${uniqueId}@example.com/sshPublicKeys/abcdef0123A=?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -53,9 +51,8 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://oslogin.googleapis.com/v1/users/test-user-${uniqueId}@example.com/sshPublicKeys/abcdef0123A=/?alt=json&updateMask=expirationTimeUsec
+PATCH https://oslogin.googleapis.com/v1/users/test-user-${uniqueId}@example.com/sshPublicKeys/abcdef0123A=?%24alt=json%3Benum-encoding%3Dint&updateMask=expirationTimeUsec
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "expirationTimeUsec": "1893456000000000"
@@ -80,9 +77,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://oslogin.googleapis.com/v1/users/test-user-${uniqueId}@example.com/sshPublicKeys/abcdef0123A=/?alt=json
+GET https://oslogin.googleapis.com/v1/users/test-user-${uniqueId}@example.com/sshPublicKeys/abcdef0123A=?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -103,9 +99,8 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://oslogin.googleapis.com/v1/users/test-user-${uniqueId}@example.com/sshPublicKeys/abcdef0123A=/?alt=json
+DELETE https://oslogin.googleapis.com/v1/users/test-user-${uniqueId}@example.com/sshPublicKeys/abcdef0123A=?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
