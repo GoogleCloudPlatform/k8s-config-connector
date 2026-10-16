@@ -1,6 +1,2 @@
-12c12
-<   address: 10.25.0.0
----
->   address: 10.109.0.0
-17a18
->   networkTier: PREMIUM
+14a15
+>   ipVersion: IPV4
