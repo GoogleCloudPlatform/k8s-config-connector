@@ -142,215 +142,6 @@ func openEntry(kind, field, reason string) judgement.Entry {
 	return judgement.Entry{Kind: kind, Group: "discoveryengine.cnrm.cloud.google.com", Field: field, Reason: reason, Status: judgement.StatusOpen}
 }
 
-// generate-types only adds a parent reference to a prepopulated Spec, so
-// --emit-parent-refs on its own is rejected rather than ignored.
-func TestValidateEmitParentRefsNeedsPrepopulateSpec(t *testing.T) {
-	for _, tc := range []struct {
-		name            string
-		prepopulateSpec bool
-		emitParentRefs  bool
-		wantErr         string
-	}{
-		{
-			name: "neither flag",
-		},
-		{
-			name:            "only --prepopulate-spec",
-			prepopulateSpec: true,
-		},
-		{
-			name:            "both flags",
-			prepopulateSpec: true,
-			emitParentRefs:  true,
-		},
-		{
-			name:           "only --emit-parent-refs",
-			emitParentRefs: true,
-			wantErr:        "`--emit-parent-refs` requires `--prepopulate-spec`",
-		},
-	} {
-		t.Run(tc.name, func(t *testing.T) {
-			// Arrange
-			o := &GenerateCRDOptions{
-				GenerateOptions: &options.GenerateOptions{ProtoSourcePath: "googleapis.pb"},
-				ServiceName:     "google.cloud.example.v1",
-				Resources:       options.ResourceList{{Kind: "ExampleWidget", ProtoName: "Widget"}},
-				PrepopulateSpec: tc.prepopulateSpec,
-				EmitParentRefs:  tc.emitParentRefs,
-			}
-
-			// Act
-			err := o.validate()
-
-			// Assert
-			gotErr := ""
-			if err != nil {
-				gotErr = err.Error()
-			}
-			if gotErr != tc.wantErr {
-				t.Errorf("validate() error = %q, want %q", gotErr, tc.wantErr)
-			}
-		})
-	}
-}
-
-// generate-types only collects reference hints while prepopulating the Spec,
-// so --emit-reference-hints on its own is rejected rather than ignored.
-func TestValidateEmitReferenceHintsNeedsPrepopulateSpec(t *testing.T) {
-	for _, tc := range []struct {
-		name               string
-		prepopulateSpec    bool
-		emitReferenceHints bool
-		wantErr            string
-	}{
-		{
-			name: "neither flag",
-		},
-		{
-			name:            "only --prepopulate-spec",
-			prepopulateSpec: true,
-		},
-		{
-			name:               "both flags",
-			prepopulateSpec:    true,
-			emitReferenceHints: true,
-		},
-		{
-			name:               "only --emit-reference-hints",
-			emitReferenceHints: true,
-			wantErr:            "`--emit-reference-hints` requires `--prepopulate-spec`",
-		},
-	} {
-		t.Run(tc.name, func(t *testing.T) {
-			// Arrange
-			o := &GenerateCRDOptions{
-				GenerateOptions:    &options.GenerateOptions{ProtoSourcePath: "googleapis.pb"},
-				ServiceName:        "google.cloud.example.v1",
-				Resources:          options.ResourceList{{Kind: "ExampleWidget", ProtoName: "Widget"}},
-				PrepopulateSpec:    tc.prepopulateSpec,
-				EmitReferenceHints: tc.emitReferenceHints,
-			}
-
-			// Act
-			err := o.validate()
-
-			// Assert
-			gotErr := ""
-			if err != nil {
-				gotErr = err.Error()
-			}
-			if gotErr != tc.wantErr {
-				t.Errorf("validate() error = %q, want %q", gotErr, tc.wantErr)
-			}
-		})
-	}
-}
-
-// generate-types only checks output-only comments while prepopulating the
-// Spec, so --detect-output-only-in-comments on its own is rejected rather than
-// ignored.
-func TestValidateDetectOutputOnlyNeedsPrepopulateSpec(t *testing.T) {
-	for _, tc := range []struct {
-		name             string
-		prepopulateSpec  bool
-		detectOutputOnly bool
-		wantErr          string
-	}{
-		{
-			name: "neither flag",
-		},
-		{
-			name:            "only --prepopulate-spec",
-			prepopulateSpec: true,
-		},
-		{
-			name:             "both flags",
-			prepopulateSpec:  true,
-			detectOutputOnly: true,
-		},
-		{
-			name:             "only --detect-output-only-in-comments",
-			detectOutputOnly: true,
-			wantErr:          "`--detect-output-only-in-comments` requires `--prepopulate-spec`",
-		},
-	} {
-		t.Run(tc.name, func(t *testing.T) {
-			// Arrange
-			o := &GenerateCRDOptions{
-				GenerateOptions:  &options.GenerateOptions{ProtoSourcePath: "googleapis.pb"},
-				ServiceName:      "google.cloud.example.v1",
-				Resources:        options.ResourceList{{Kind: "ExampleWidget", ProtoName: "Widget"}},
-				PrepopulateSpec:  tc.prepopulateSpec,
-				DetectOutputOnly: tc.detectOutputOnly,
-			}
-
-			// Act
-			err := o.validate()
-
-			// Assert
-			gotErr := ""
-			if err != nil {
-				gotErr = err.Error()
-			}
-			if gotErr != tc.wantErr {
-				t.Errorf("validate() error = %q, want %q", gotErr, tc.wantErr)
-			}
-		})
-	}
-}
-
-// generate-types only moves server-set fields out of a prepopulated Spec, so
-// --place-server-set-fields on its own is rejected rather than ignored.
-func TestValidatePlaceServerSetFieldsNeedsPrepopulateSpec(t *testing.T) {
-	for _, tc := range []struct {
-		name                 string
-		prepopulateSpec      bool
-		placeServerSetFields bool
-		wantErr              string
-	}{
-		{
-			name: "neither flag",
-		},
-		{
-			name:            "only --prepopulate-spec",
-			prepopulateSpec: true,
-		},
-		{
-			name:                 "both flags",
-			prepopulateSpec:      true,
-			placeServerSetFields: true,
-		},
-		{
-			name:                 "only --place-server-set-fields",
-			placeServerSetFields: true,
-			wantErr:              "`--place-server-set-fields` requires `--prepopulate-spec`",
-		},
-	} {
-		t.Run(tc.name, func(t *testing.T) {
-			// Arrange
-			o := &GenerateCRDOptions{
-				GenerateOptions:      &options.GenerateOptions{ProtoSourcePath: "googleapis.pb"},
-				ServiceName:          "google.cloud.example.v1",
-				Resources:            options.ResourceList{{Kind: "ExampleWidget", ProtoName: "Widget"}},
-				PrepopulateSpec:      tc.prepopulateSpec,
-				PlaceServerSetFields: tc.placeServerSetFields,
-			}
-
-			// Act
-			err := o.validate()
-
-			// Assert
-			gotErr := ""
-			if err != nil {
-				gotErr = err.Error()
-			}
-			if gotErr != tc.wantErr {
-				t.Errorf("validate() error = %q, want %q", gotErr, tc.wantErr)
-			}
-		})
-	}
-}
-
 // A bare --resource name that exists in more than one listed service gets a
 // resource-level queue entry naming every match and the one that was used.
 func TestAmbiguousResourceItem(t *testing.T) {
@@ -536,8 +327,7 @@ func widgetService(t *testing.T, queue string) (o *GenerateCRDOptions, typesPath
 		ServiceName:        "google.cloud.example.v1",
 		OutputAPIDirectory: apiDir,
 		Resources:          options.ResourceList{{Kind: "ExampleWidget", ProtoName: "Widget"}},
-		PrepopulateSpec:    true,
-		EmitReferenceHints: true,
+		PrepopulateResource: true,
 	}
 	return o, typesPath, queuePath
 }
@@ -642,12 +432,11 @@ func TestRunGenerateCRDSkipScaffoldFilesSuppressesJudgements(t *testing.T) {
 			ProtoSourcePath: pbPath,
 			APIVersion:      "example.cnrm.cloud.google.com/v1alpha1",
 		},
-		ServiceName:        "google.cloud.example.v1",
-		OutputAPIDirectory: apiDir,
-		Resources:          options.ResourceList{{Kind: "ExampleWidget", ProtoName: "Widget"}},
-		SkipScaffoldFiles:  true,
-		PrepopulateSpec:    true,
-		EmitSiblingRefs:    true,
+		ServiceName:         "google.cloud.example.v1",
+		OutputAPIDirectory:  apiDir,
+		Resources:           options.ResourceList{{Kind: "ExampleWidget", ProtoName: "Widget"}},
+		SkipScaffoldFiles:   true,
+		PrepopulateResource: true,
 	}
 
 	if err := RunGenerateCRD(context.Background(), o); err != nil {
@@ -692,10 +481,10 @@ func TestRunGenerateCRDRejectsNewNonGAProtoWithoutFlag(t *testing.T) {
 				ProtoSourcePath: pbPath,
 				APIVersion:      "example.cnrm.cloud.google.com/v1alpha1",
 			},
-			ServiceName:        "google.cloud.example.v1beta",
-			OutputAPIDirectory: apiDir,
-			Resources:          options.ResourceList{{Kind: "ExampleWidget", ProtoName: "Widget"}},
-			PrepopulateSpec:    true,
+			ServiceName:         "google.cloud.example.v1beta",
+			OutputAPIDirectory:  apiDir,
+			Resources:           options.ResourceList{{Kind: "ExampleWidget", ProtoName: "Widget"}},
+			PrepopulateResource: true,
 		}
 		return o
 	}
@@ -840,9 +629,7 @@ func TestRunGenerateCRDQueuesNestedJudgementsPerKind(t *testing.T) {
 			{Kind: "ExampleWidget", ProtoName: "Widget"},
 			{Kind: "ExampleGadget", ProtoName: "Gadget"},
 		},
-		PrepopulateSpec: true,
-		EmitSiblingRefs: true,
-		EmitMessageMaps: true,
+		PrepopulateResource: true,
 	}
 
 	if err := RunGenerateCRD(context.Background(), o); err != nil {
@@ -873,9 +660,22 @@ func TestRunGenerateCRDQueuesNestedJudgementsPerKind(t *testing.T) {
 		{
 			Kind:   "ExampleWidget",
 			Group:  "example.cnrm.cloud.google.com",
-			Field:  ".spec.config.gadget",
-			Reason: judgement.ReasonPossibleReferenceBySibling,
-			Detail: "the name matches ExampleGadget, a resource this service declares; confirm whether it should be a reference",
+			Reason: judgement.ReasonEmptyObservedState,
+			Detail: "nothing was generated into status.observedState; the proto probably marks no field OUTPUT_ONLY, so output fields landed in the Spec. Decide what belongs in status",
+			Status: judgement.StatusOpen,
+		},
+		{
+			Kind:   "ExampleWidget",
+			Group:  "example.cnrm.cloud.google.com",
+			Reason: judgement.ReasonVerifyResourceDocsLink,
+			Detail: "found no docs root for this API; find the REST reference page by hand",
+			Status: judgement.StatusOpen,
+		},
+		{
+			Kind:   "ExampleWidget",
+			Group:  "example.cnrm.cloud.google.com",
+			Reason: judgement.ReasonVerifyServiceDocsLink,
+			Detail: "neither the Discovery directory nor the service config names a docs page; add one",
 			Status: judgement.StatusOpen,
 		},
 		{
@@ -889,16 +689,17 @@ func TestRunGenerateCRDQueuesNestedJudgementsPerKind(t *testing.T) {
 		{
 			Kind:   "ExampleWidget",
 			Group:  "example.cnrm.cloud.google.com",
-			Field:  ".spec.config.tasks",
-			Reason: judgement.ReasonMessageMapDerived,
-			Detail: "derived as map[string]SubTask from proto google.cloud.example.v1.SubTask; verify Go type and mapping",
+			Field:  ".spec.config.gadget",
+			Reason: judgement.ReasonPossibleReferenceBySibling,
+			Detail: "the name matches ExampleGadget, a resource this service declares; confirm whether it should be a reference",
 			Status: judgement.StatusOpen,
 		},
 		{
 			Kind:   "ExampleWidget",
 			Group:  "example.cnrm.cloud.google.com",
-			Reason: judgement.ReasonEmptyObservedState,
-			Detail: "nothing was generated into status.observedState; the proto probably marks no field OUTPUT_ONLY, so output fields landed in the Spec. Decide what belongs in status",
+			Field:  ".spec.config.tasks",
+			Reason: judgement.ReasonMessageMapDerived,
+			Detail: "derived as map[string]SubTask from proto google.cloud.example.v1.SubTask; verify Go type and mapping",
 			Status: judgement.StatusOpen,
 		},
 		{
