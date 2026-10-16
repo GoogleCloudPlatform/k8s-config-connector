@@ -31,26 +31,36 @@ fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-./generate-proto.sh
+# Pin a googleapis SHA that contains the ReservationGroup definition
+PROTO_SHA="2193a2bfcecb92b92aad7a4d81baa428cafd7dfd"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+
+if [[ -z "${SKIP_GENERATE_PROTOS:-}" ]]; then
+  ./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
+fi
 
 ${CONTROLLERBUILDER} generate-types \
     --service google.cloud.bigquery.reservation.v1 \
     --api-version "bigqueryreservation.cnrm.cloud.google.com/v1alpha1" \
     --include-skipped-output \
-    --resource BigQueryReservationCapacityCommitment:CapacityCommitment
+    --resource BigQueryReservationCapacityCommitment:CapacityCommitment \
+    --resource BigQueryReservationReservationGroup:ReservationGroup \
+    --proto-source-path ${PROTO_OUT}
 
 ${CONTROLLERBUILDER} generate-types \
     --service google.cloud.bigquery.reservation.v1 \
     --api-version "bigqueryreservation.cnrm.cloud.google.com/v1beta1" \
     --include-skipped-output \
     --resource BigQueryReservationReservation:Reservation \
-    --resource BigQueryReservationAssignment:Assignment
+    --resource BigQueryReservationAssignment:Assignment \
+    --proto-source-path ${PROTO_OUT}
 
 ${CONTROLLERBUILDER} generate-mapper \
     --multiversion \
     --service google.cloud.bigquery.reservation.v1 \
     --api-version "bigqueryreservation.cnrm.cloud.google.com/v1beta1" \
-    --include-skipped-output
+    --include-skipped-output \
+    --proto-source-path ${PROTO_OUT}
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
