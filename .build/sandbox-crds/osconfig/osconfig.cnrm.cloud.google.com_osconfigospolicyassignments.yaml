@@ -1,0 +1,215 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: osconfigospolicyassignments.osconfig.cnrm.cloud.google.com
+spec:
+  group: osconfig.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: OSConfigOSPolicyAssignment
+    listKind: OSConfigOSPolicyAssignmentList
+    plural: osconfigospolicyassignments
+    shortNames:
+    - gcposconfigospolicyassignment
+    - gcposconfigospolicyassignments
+    singular: osconfigospolicyassignment
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: OSConfigOSPolicyAssignment is the Schema for the OSConfigOSPolicyAssignment
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: OSConfigOSPolicyAssignmentSpec defines the desired state
+              of OSConfigOSPolicyAssignment
+            properties:
+              description:
+                description: |-
+                  OS policy assignment description.
+                   Length of the description is limited to 1024 characters.
+                type: string
+              etag:
+                description: |-
+                  The etag for this OS policy assignment.
+                   If this is provided on update, it must match the server's etag.
+                type: string
+              instanceFilter:
+                description: Required. Filter to select VMs.
+              location:
+                description: The location of this resource.
+                type: string
+              osPolicies:
+                description: Required. List of OS policies to be applied to the VMs.
+                items: {}
+                type: array
+              projectRef:
+                description: The project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The OSConfigOSPolicyAssignment name. If not given, the
+                  metadata.name will be used.
+                type: string
+              rollout:
+                description: |-
+                  Required. Rollout to deploy the OS policy assignment.
+                   A rollout is triggered in the following situations:
+                   1) OSPolicyAssignment is created.
+                   2) OSPolicyAssignment is updated and the update contains changes to one of
+                   the following fields:
+                      - instance_filter
+                      - os_policies
+                   3) OSPolicyAssignment is deleted.
+            required:
+            - location
+            type: object
+          status:
+            description: OSConfigOSPolicyAssignmentStatus defines the config connector
+              machine state of OSConfigOSPolicyAssignment
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the OSConfigOSPolicyAssignment
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  baseline:
+                    description: |-
+                      Output only. Indicates that this revision has been successfully rolled out
+                       in this zone and new VMs will be assigned OS policies from this revision.
+
+                       For a given OS policy assignment, there is only one revision with a value
+                       of `true` for this field.
+                    type: boolean
+                  deleted:
+                    description: Output only. Indicates that this revision deletes
+                      the OS policy assignment.
+                    type: boolean
+                  reconciling:
+                    description: |-
+                      Output only. Indicates that reconciliation is in progress for the revision.
+                       This value is `true` when the `rollout_state` is one of:
+                       * IN_PROGRESS
+                       * CANCELLING
+                    type: boolean
+                  revisionCreateTime:
+                    description: Output only. The timestamp that the revision was
+                      created.
+                    type: string
+                  revisionID:
+                    description: |-
+                      Output only. The assignment revision ID
+                       A new revision is committed whenever a rollout is triggered for a OS policy
+                       assignment
+                    type: string
+                  rolloutState:
+                    description: Output only. OS policy assignment rollout state
+                    type: string
+                  uid:
+                    description: |-
+                      Output only. Server generated unique id for the OS policy assignment
+                       resource.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
