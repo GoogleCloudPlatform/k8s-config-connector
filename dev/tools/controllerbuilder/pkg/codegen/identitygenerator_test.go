@@ -627,3 +627,111 @@ func TestSafeAncestorVarNameKeywords(t *testing.T) {
 	}
 }
 
+func TestResolveSpecAncestorsSecondLocationCollection(t *testing.T) {
+	tmp := t.TempDir()
+	pkgDir := filepath.Join(tmp, "apis", "edgenetwork", "v1alpha1")
+	writeFakeTypesFile(t, pkgDir, "v1alpha1", `
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+type EdgenetworkRouterSpec struct {
+	ProjectRef *parent.ProjectRef `+"`"+`json:"projectRef"`+"`"+`
+	Location *string `+"`"+`json:"location"`+"`"+`
+	Zone *string `+"`"+`json:"zone"`+"`"+`
+	ResourceID *string `+"`"+`json:"resourceID,omitempty"`+"`"+`
+}
+
+type EdgenetworkRouterStatus struct {
+	ExternalRef *string `+"`"+`json:"externalRef,omitempty"`+"`"+`
+}
+
+type EdgenetworkRouter struct {
+	metav1.TypeMeta
+	metav1.ObjectMeta
+	Spec EdgenetworkRouterSpec
+	Status EdgenetworkRouterStatus
+}
+`)
+
+	msg := buildTestResourceDescriptor(
+		t,
+		"google.cloud.edgenetwork.v1",
+		"Router",
+		"edgenetwork.googleapis.com/Router",
+		[]string{"projects/{project}/locations/{location}/zones/{zone}/routers/{router}"},
+	)
+
+	gen := NewIdentityGenerator(IdentityGeneratorOptions{
+		Group:        "edgenetwork.cnrm.cloud.google.com",
+		Version:      "v1alpha1",
+		ProtoService: "google.cloud.edgenetwork.v1",
+		APIDirectory: filepath.Join(tmp, "apis"),
+		EmitTests:    true,
+	})
+
+	res, err := gen.Generate("EdgenetworkRouter", msg)
+	if err != nil {
+		t.Fatalf("Generate failed: %v", err)
+	}
+	idBytes, err := os.ReadFile(res.IdentityPath)
+	if err != nil {
+		t.Fatalf("ReadFile identity: %v", err)
+	}
+	assertValidGoSource(t, res.IdentityPath, idBytes)
+	idSrc := string(idBytes)
+	if count := strings.Count(idSrc, "location, err := refs.GetLocation(obj)"); count != 1 {
+		t.Errorf("expected exactly 1 call to refs.GetLocation(obj), got %d:\n%s", count, idSrc)
+	}
+	if !strings.Contains(idSrc, "common.ValueOf(obj.Spec.Zone)") {
+		t.Errorf("expected Zone to resolve from obj.Spec.Zone:\n%s", idSrc)
+	}
+
+	// Also verify repeated {location} placeholders do not re-bind to Spec.Location or collide on "location" variable name.
+	msgRepeatedLoc := buildTestResourceDescriptor(
+		t,
+		"google.cloud.edgenetwork.v1",
+		"SubRouter",
+		"edgenetwork.googleapis.com/SubRouter",
+		[]string{"projects/{project}/locations/{location}/clusters/{cluster}/locations/{location}/subRouters/{sub_router}"},
+	)
+	writeFakeTypesFile(t, pkgDir, "v1alpha1", `
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+type EdgenetworkSubRouterSpec struct {
+	ProjectRef *parent.ProjectRef `+"`"+`json:"projectRef"`+"`"+`
+	Location *string `+"`"+`json:"location"`+"`"+`
+	Cluster *string `+"`"+`json:"cluster"`+"`"+`
+	ResourceID *string `+"`"+`json:"resourceID,omitempty"`+"`"+`
+}
+
+type EdgenetworkSubRouterStatus struct {
+	ExternalRef *string `+"`"+`json:"externalRef,omitempty"`+"`"+`
+}
+
+type EdgenetworkSubRouter struct {
+	metav1.TypeMeta
+	metav1.ObjectMeta
+	Spec EdgenetworkSubRouterSpec
+	Status EdgenetworkSubRouterStatus
+}
+`)
+	resRepeated, err := gen.Generate("EdgenetworkSubRouter", msgRepeatedLoc)
+	if err != nil {
+		t.Fatalf("Generate repeated location failed: %v", err)
+	}
+	repBytes, err := os.ReadFile(resRepeated.IdentityPath)
+	if err != nil {
+		t.Fatalf("ReadFile repeated location identity: %v", err)
+	}
+	assertValidGoSource(t, resRepeated.IdentityPath, repBytes)
+	if !strings.Contains(string(repBytes), "location2 := \"\"") {
+		t.Errorf("expected second {location} placeholder to use disambiguated variable location2:\n%s", string(repBytes))
+	}
+}
+
+
