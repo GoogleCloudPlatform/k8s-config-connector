@@ -1312,3 +1312,235 @@ func WasmPlugin_VersionDetails_PluginConfigUri_ToProto(mapCtx *direct.MapContext
 	return &pb.WasmPlugin_VersionDetails_PluginConfigUri{PluginConfigUri: *in}
 }
 */
+
+func HttprouteAction_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_RouteAction) *krmnetworkservicesv1beta1.HttprouteAction {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworkservicesv1beta1.HttprouteAction{}
+	out.Destinations = direct.Slice_FromProto(mapCtx, in.Destinations, HttprouteDestinations_FromProto)
+	out.Redirect = HttprouteRedirect_FromProto(mapCtx, in.GetRedirect())
+	out.FaultInjectionPolicy = HttprouteFaultInjectionPolicy_FromProto(mapCtx, in.GetFaultInjectionPolicy())
+	out.RequestHeaderModifier = HttprouteRequestHeaderModifier_FromProto(mapCtx, in.GetRequestHeaderModifier())
+	out.ResponseHeaderModifier = HttprouteResponseHeaderModifier_FromProto(mapCtx, in.GetResponseHeaderModifier())
+	out.URLRewrite = HttprouteUrlRewrite_FromProto(mapCtx, in.GetUrlRewrite())
+	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
+	out.RetryPolicy = HttprouteRetryPolicy_FromProto(mapCtx, in.GetRetryPolicy())
+	out.RequestMirrorPolicy = HttprouteRequestMirrorPolicy_FromProto(mapCtx, in.GetRequestMirrorPolicy())
+	out.CorsPolicy = HttprouteCorsPolicy_FromProto(mapCtx, in.GetCorsPolicy())
+	// MISSING: StatefulSessionAffinity
+	// MISSING: DirectResponse
+	// MISSING: IdleTimeout
+	return out
+}
+
+func HttprouteAction_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteAction) *pb.HttpRoute_RouteAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpRoute_RouteAction{}
+	out.Destinations = direct.Slice_ToProto(mapCtx, in.Destinations, HttprouteDestinations_ToProto)
+	out.Redirect = HttprouteRedirect_ToProto(mapCtx, in.Redirect)
+	out.FaultInjectionPolicy = HttprouteFaultInjectionPolicy_ToProto(mapCtx, in.FaultInjectionPolicy)
+	out.RequestHeaderModifier = HttprouteRequestHeaderModifier_ToProto(mapCtx, in.RequestHeaderModifier)
+	out.ResponseHeaderModifier = HttprouteResponseHeaderModifier_ToProto(mapCtx, in.ResponseHeaderModifier)
+	out.UrlRewrite = HttprouteUrlRewrite_ToProto(mapCtx, in.URLRewrite)
+	out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
+	out.RetryPolicy = HttprouteRetryPolicy_ToProto(mapCtx, in.RetryPolicy)
+	out.RequestMirrorPolicy = HttprouteRequestMirrorPolicy_ToProto(mapCtx, in.RequestMirrorPolicy)
+	out.CorsPolicy = HttprouteCorsPolicy_ToProto(mapCtx, in.CorsPolicy)
+	// MISSING: StatefulSessionAffinity
+	// MISSING: DirectResponse
+	// MISSING: IdleTimeout
+	return out
+}
+
+func HttprouteCorsPolicy_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_CorsPolicy) *krmnetworkservicesv1beta1.HttprouteCorsPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworkservicesv1beta1.HttprouteCorsPolicy{}
+	out.AllowOrigins = in.AllowOrigins
+	out.AllowOriginRegexes = in.AllowOriginRegexes
+	out.AllowMethods = in.AllowMethods
+	out.AllowHeaders = in.AllowHeaders
+	out.ExposeHeaders = in.ExposeHeaders
+	out.MaxAge = direct.LazyPtr(in.GetMaxAge())
+	out.AllowCredentials = direct.LazyPtr(in.GetAllowCredentials())
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	return out
+}
+
+func HttprouteCorsPolicy_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteCorsPolicy) *pb.HttpRoute_CorsPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpRoute_CorsPolicy{}
+	out.AllowOrigins = in.AllowOrigins
+	out.AllowOriginRegexes = in.AllowOriginRegexes
+	out.AllowMethods = in.AllowMethods
+	out.AllowHeaders = in.AllowHeaders
+	out.ExposeHeaders = in.ExposeHeaders
+	out.MaxAge = direct.ValueOf(in.MaxAge)
+	out.AllowCredentials = direct.ValueOf(in.AllowCredentials)
+	out.Disabled = direct.ValueOf(in.Disabled)
+	return out
+}
+
+func HttprouteFaultInjectionPolicy_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_FaultInjectionPolicy) *krmnetworkservicesv1beta1.HttprouteFaultInjectionPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworkservicesv1beta1.HttprouteFaultInjectionPolicy{}
+	out.Delay = HttprouteDelay_FromProto(mapCtx, in.GetDelay())
+	out.Abort = HttprouteAbort_FromProto(mapCtx, in.GetAbort())
+	return out
+}
+
+func HttprouteFaultInjectionPolicy_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteFaultInjectionPolicy) *pb.HttpRoute_FaultInjectionPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpRoute_FaultInjectionPolicy{}
+	out.Delay = HttprouteDelay_ToProto(mapCtx, in.Delay)
+	out.Abort = HttprouteAbort_ToProto(mapCtx, in.Abort)
+	return out
+}
+
+func HttprouteMatches_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_RouteMatch) *krmnetworkservicesv1beta1.HttprouteMatches {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworkservicesv1beta1.HttprouteMatches{}
+	out.FullPathMatch = direct.LazyPtr(in.GetFullPathMatch())
+	out.PrefixMatch = direct.LazyPtr(in.GetPrefixMatch())
+	out.RegexMatch = direct.LazyPtr(in.GetRegexMatch())
+	out.IgnoreCase = direct.LazyPtr(in.GetIgnoreCase())
+	out.Headers = direct.Slice_FromProto(mapCtx, in.Headers, HttprouteHeaders_FromProto)
+	out.QueryParameters = direct.Slice_FromProto(mapCtx, in.QueryParameters, HttprouteQueryParameters_FromProto)
+	return out
+}
+
+func HttprouteMatches_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteMatches) *pb.HttpRoute_RouteMatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpRoute_RouteMatch{}
+	if oneof := HttprouteMatches_FullPathMatch_ToProto(mapCtx, in.FullPathMatch); oneof != nil {
+		out.PathMatch = oneof
+	}
+	if oneof := HttprouteMatches_PrefixMatch_ToProto(mapCtx, in.PrefixMatch); oneof != nil {
+		out.PathMatch = oneof
+	}
+	if oneof := HttprouteMatches_RegexMatch_ToProto(mapCtx, in.RegexMatch); oneof != nil {
+		out.PathMatch = oneof
+	}
+	out.IgnoreCase = direct.ValueOf(in.IgnoreCase)
+	out.Headers = direct.Slice_ToProto(mapCtx, in.Headers, HttprouteHeaders_ToProto)
+	out.QueryParameters = direct.Slice_ToProto(mapCtx, in.QueryParameters, HttprouteQueryParameters_ToProto)
+	return out
+}
+
+func HttprouteRequestHeaderModifier_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_HeaderModifier) *krmnetworkservicesv1beta1.HttprouteRequestHeaderModifier {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworkservicesv1beta1.HttprouteRequestHeaderModifier{}
+	out.Set = in.Set
+	out.Add = in.Add
+	out.Remove = in.Remove
+	return out
+}
+
+func HttprouteRequestHeaderModifier_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteRequestHeaderModifier) *pb.HttpRoute_HeaderModifier {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpRoute_HeaderModifier{}
+	out.Set = in.Set
+	out.Add = in.Add
+	out.Remove = in.Remove
+	return out
+}
+
+func HttprouteRequestMirrorPolicy_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_RequestMirrorPolicy) *krmnetworkservicesv1beta1.HttprouteRequestMirrorPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworkservicesv1beta1.HttprouteRequestMirrorPolicy{}
+	out.Destination = HttprouteDestination_FromProto(mapCtx, in.GetDestination())
+	// MISSING: MirrorPercent
+	return out
+}
+
+func HttprouteRequestMirrorPolicy_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteRequestMirrorPolicy) *pb.HttpRoute_RequestMirrorPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpRoute_RequestMirrorPolicy{}
+	out.Destination = HttprouteDestination_ToProto(mapCtx, in.Destination)
+	// MISSING: MirrorPercent
+	return out
+}
+
+func HttprouteResponseHeaderModifier_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_HeaderModifier) *krmnetworkservicesv1beta1.HttprouteResponseHeaderModifier {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworkservicesv1beta1.HttprouteResponseHeaderModifier{}
+	out.Set = in.Set
+	out.Add = in.Add
+	out.Remove = in.Remove
+	return out
+}
+
+func HttprouteResponseHeaderModifier_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteResponseHeaderModifier) *pb.HttpRoute_HeaderModifier {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpRoute_HeaderModifier{}
+	out.Set = in.Set
+	out.Add = in.Add
+	out.Remove = in.Remove
+	return out
+}
+
+func HttprouteRules_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_RouteRule) *krmnetworkservicesv1beta1.HttprouteRules {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworkservicesv1beta1.HttprouteRules{}
+	out.Matches = direct.Slice_FromProto(mapCtx, in.Matches, HttprouteMatches_FromProto)
+	out.Action = HttprouteAction_FromProto(mapCtx, in.GetAction())
+	return out
+}
+
+func HttprouteRules_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteRules) *pb.HttpRoute_RouteRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpRoute_RouteRule{}
+	out.Matches = direct.Slice_ToProto(mapCtx, in.Matches, HttprouteMatches_ToProto)
+	out.Action = HttprouteAction_ToProto(mapCtx, in.Action)
+	return out
+}
+
+func HttprouteUrlRewrite_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_URLRewrite) *krmnetworkservicesv1beta1.HttprouteUrlRewrite {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworkservicesv1beta1.HttprouteUrlRewrite{}
+	out.PathPrefixRewrite = direct.LazyPtr(in.GetPathPrefixRewrite())
+	out.HostRewrite = direct.LazyPtr(in.GetHostRewrite())
+	return out
+}
+
+func HttprouteUrlRewrite_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteUrlRewrite) *pb.HttpRoute_URLRewrite {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HttpRoute_URLRewrite{}
+	out.PathPrefixRewrite = direct.ValueOf(in.PathPrefixRewrite)
+	out.HostRewrite = direct.ValueOf(in.HostRewrite)
+	return out
+}

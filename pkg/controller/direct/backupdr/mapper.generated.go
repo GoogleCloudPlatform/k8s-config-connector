@@ -568,3 +568,45 @@ func WorkforceIdentityBasedOAuth2ClientIDObservedState_v1alpha1_ToProto(mapCtx *
 	return out
 }
 */
+
+func BackupApplianceLockInfo_BackupImage_ToProto(mapCtx *direct.MapContext, in *string) *pb.BackupApplianceLockInfo_BackupImage {
+	if in == nil {
+		return nil
+	}
+	return &pb.BackupApplianceLockInfo_BackupImage{BackupImage: *in}
+}
+
+func BackupApplianceLockInfo_JobName_ToProto(mapCtx *direct.MapContext, in *string) *pb.BackupApplianceLockInfo_JobName {
+	if in == nil {
+		return nil
+	}
+	return &pb.BackupApplianceLockInfo_JobName{JobName: *in}
+}
+
+func BackupApplianceLockInfo_SlaId_ToProto(mapCtx *direct.MapContext, in *int64) *pb.BackupApplianceLockInfo_SlaId {
+	if in == nil {
+		return nil
+	}
+	return &pb.BackupApplianceLockInfo_SlaId{SlaId: *in}
+}
+
+func CustomerEncryptionKey_KmsKeyName_ToProto(mapCtx *direct.MapContext, in *string) *pb.CustomerEncryptionKey_KmsKeyName {
+	if in == nil {
+		return nil
+	}
+	return &pb.CustomerEncryptionKey_KmsKeyName{KmsKeyName: *in}
+}
+
+func CustomerEncryptionKey_RawKey_ToProto(mapCtx *direct.MapContext, in *string) *pb.CustomerEncryptionKey_RawKey {
+	if in == nil {
+		return nil
+	}
+	return &pb.CustomerEncryptionKey_RawKey{RawKey: *in}
+}
+
+func CustomerEncryptionKey_RsaEncryptedKey_ToProto(mapCtx *direct.MapContext, in *string) *pb.CustomerEncryptionKey_RsaEncryptedKey {
+	if in == nil {
+		return nil
+	}
+	return &pb.CustomerEncryptionKey_RsaEncryptedKey{RsaEncryptedKey: *in}
+}

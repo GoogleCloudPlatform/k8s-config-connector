@@ -46,6 +46,23 @@ ${CONTROLLERBUILDER} generate-types \
   --resource NetAppBackupVault:BackupVault \
   --resource NetAppHostGroup:HostGroup
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.netapp.v1 \
+  --api-version netapp.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource NetappKmsConfig:KmsConfig \
+  --resource NetappStoragePool:StoragePool \
+  --resource NetappVolume:Volume
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.netapp.v1 \
+  --api-version netapp.cnrm.cloud.google.com/v1alpha1 \
+  --resource NetappKmsConfig:KmsConfig \
+  --resource NetappStoragePool:StoragePool \
+  --resource NetappVolume:Volume
+
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \
   --service google.cloud.netapp.v1 \

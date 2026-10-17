@@ -173,11 +173,12 @@ type HandWrittenOverrides struct {
 	IdentityMethods            map[string]bool
 	HasGetIdentityFromSpec     bool
 	ResourceMethods            map[string]bool
-	HasGVKVar                  bool
-	HasRefStruct               bool
-	HasRefRegister             bool
-	RefMethods                 map[string]bool
-	HasHandWrittenIdentityTest bool
+	HasGVKVar                     bool
+	HasRefStruct                  bool
+	RefStructMissingNameNamespace bool
+	HasRefRegister                bool
+	RefMethods                    map[string]bool
+	HasHandWrittenIdentityTest    bool
 }
 
 // NewIdentityGenerator creates a new IdentityGenerator.

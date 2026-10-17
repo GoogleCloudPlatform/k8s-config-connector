@@ -20,10 +20,12 @@
 // krm.group: geminidataanalytics.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.geminidataanalytics.v1beta
+// proto.service: google.cloud.geminidataanalytics.v1
 
 package geminidataanalytics
 
 import (
+	geminidataanalyticspb "cloud.google.com/go/geminidataanalytics/apiv1/geminidataanalyticspb"
 	pb "cloud.google.com/go/geminidataanalytics/apiv1beta/geminidataanalyticspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/geminidataanalytics/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -40,6 +42,7 @@ func GeminiDataAnalyticsConversationObservedState_FromProto(mapCtx *direct.MapCo
 	out.LastUsedTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastUsedTime())
 	return out
 }
+
 func GeminiDataAnalyticsConversationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GeminiDataAnalyticsConversationObservedState) *pb.Conversation {
 	if in == nil {
 		return nil
@@ -51,6 +54,7 @@ func GeminiDataAnalyticsConversationObservedState_ToProto(mapCtx *direct.MapCont
 	out.LastUsedTime = direct.StringTimestamp_ToProto(mapCtx, in.LastUsedTime)
 	return out
 }
+
 func GeminiDataAnalyticsConversationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Conversation) *krm.GeminiDataAnalyticsConversationSpec {
 	if in == nil {
 		return nil
@@ -67,6 +71,7 @@ func GeminiDataAnalyticsConversationSpec_FromProto(mapCtx *direct.MapContext, in
 	out.Labels = in.Labels
 	return out
 }
+
 func GeminiDataAnalyticsConversationSpec_ToProto(mapCtx *direct.MapContext, in *krm.GeminiDataAnalyticsConversationSpec) *pb.Conversation {
 	if in == nil {
 		return nil
@@ -81,5 +86,733 @@ func GeminiDataAnalyticsConversationSpec_ToProto(mapCtx *direct.MapContext, in *
 	}
 
 	out.Labels = in.Labels
+	return out
+}
+
+func AnalysisOptions_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.AnalysisOptions) *krm.AnalysisOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnalysisOptions{}
+	out.Python = AnalysisOptions_Python_FromProto(mapCtx, in.GetPython())
+	return out
+}
+
+func AnalysisOptions_ToProto(mapCtx *direct.MapContext, in *krm.AnalysisOptions) *geminidataanalyticspb.AnalysisOptions {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.AnalysisOptions{}
+	out.Python = AnalysisOptions_Python_ToProto(mapCtx, in.Python)
+	return out
+}
+
+func AnalysisOptions_Python_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.AnalysisOptions_Python) *krm.AnalysisOptions_Python {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnalysisOptions_Python{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	return out
+}
+
+func AnalysisOptions_Python_ToProto(mapCtx *direct.MapContext, in *krm.AnalysisOptions_Python) *geminidataanalyticspb.AnalysisOptions_Python {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.AnalysisOptions_Python{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	return out
+}
+
+func BigQueryPropertyGraphReference_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.BigQueryPropertyGraphReference) *krm.BigQueryPropertyGraphReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryPropertyGraphReference{}
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
+	out.DatasetID = direct.LazyPtr(in.GetDatasetId())
+	out.PropertyGraphID = direct.LazyPtr(in.GetPropertyGraphId())
+	return out
+}
+
+func BigQueryPropertyGraphReference_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryPropertyGraphReference) *geminidataanalyticspb.BigQueryPropertyGraphReference {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.BigQueryPropertyGraphReference{}
+	out.ProjectId = direct.ValueOf(in.ProjectID)
+	out.DatasetId = direct.ValueOf(in.DatasetID)
+	out.PropertyGraphId = direct.ValueOf(in.PropertyGraphID)
+	return out
+}
+
+func BigQueryPropertyGraphReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.BigQueryPropertyGraphReference) *krm.BigQueryPropertyGraphReferenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryPropertyGraphReferenceObservedState{}
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
+	out.DatasetID = direct.LazyPtr(in.GetDatasetId())
+	out.PropertyGraphID = direct.LazyPtr(in.GetPropertyGraphId())
+	return out
+}
+
+func BigQueryPropertyGraphReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryPropertyGraphReferenceObservedState) *geminidataanalyticspb.BigQueryPropertyGraphReference {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.BigQueryPropertyGraphReference{}
+	out.ProjectId = direct.ValueOf(in.ProjectID)
+	out.DatasetId = direct.ValueOf(in.DatasetID)
+	out.PropertyGraphId = direct.ValueOf(in.PropertyGraphID)
+	return out
+}
+
+func BigQueryRoutine_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.BigQueryRoutine) *krm.BigQueryRoutine {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryRoutine{}
+	out.RoutineReference = BigQueryRoutineReference_FromProto(mapCtx, in.GetRoutineReference())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+
+func BigQueryRoutine_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryRoutine) *geminidataanalyticspb.BigQueryRoutine {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.BigQueryRoutine{}
+	out.RoutineReference = BigQueryRoutineReference_ToProto(mapCtx, in.RoutineReference)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+
+func BigQueryRoutineReference_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.BigQueryRoutineReference) *krm.BigQueryRoutineReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryRoutineReference{}
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
+	out.DatasetID = direct.LazyPtr(in.GetDatasetId())
+	out.RoutineID = direct.LazyPtr(in.GetRoutineId())
+	return out
+}
+
+func BigQueryRoutineReference_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryRoutineReference) *geminidataanalyticspb.BigQueryRoutineReference {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.BigQueryRoutineReference{}
+	out.ProjectId = direct.ValueOf(in.ProjectID)
+	out.DatasetId = direct.ValueOf(in.DatasetID)
+	out.RoutineId = direct.ValueOf(in.RoutineID)
+	return out
+}
+
+func BigQueryTableReference_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.BigQueryTableReference) *krm.BigQueryTableReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryTableReference{}
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
+	out.DatasetID = direct.LazyPtr(in.GetDatasetId())
+	out.TableID = direct.LazyPtr(in.GetTableId())
+	out.Schema = Schema_FromProto(mapCtx, in.GetSchema())
+	return out
+}
+
+func BigQueryTableReference_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryTableReference) *geminidataanalyticspb.BigQueryTableReference {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.BigQueryTableReference{}
+	out.ProjectId = direct.ValueOf(in.ProjectID)
+	out.DatasetId = direct.ValueOf(in.DatasetID)
+	out.TableId = direct.ValueOf(in.TableID)
+	out.Schema = Schema_ToProto(mapCtx, in.Schema)
+	return out
+}
+
+func BigQueryTableReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.BigQueryTableReference) *krm.BigQueryTableReferenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryTableReferenceObservedState{}
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
+	out.DatasetID = direct.LazyPtr(in.GetDatasetId())
+	out.TableID = direct.LazyPtr(in.GetTableId())
+	out.Schema = Schema_FromProto(mapCtx, in.GetSchema())
+	return out
+}
+
+func BigQueryTableReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryTableReferenceObservedState) *geminidataanalyticspb.BigQueryTableReference {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.BigQueryTableReference{}
+	out.ProjectId = direct.ValueOf(in.ProjectID)
+	out.DatasetId = direct.ValueOf(in.DatasetID)
+	out.TableId = direct.ValueOf(in.TableID)
+	out.Schema = Schema_ToProto(mapCtx, in.Schema)
+	return out
+}
+
+func Context_SchemaRelationship_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.Context_SchemaRelationship) *krm.Context_SchemaRelationship {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Context_SchemaRelationship{}
+	out.LeftSchemaPaths = Context_SchemaRelationship_SchemaPaths_FromProto(mapCtx, in.GetLeftSchemaPaths())
+	out.RightSchemaPaths = Context_SchemaRelationship_SchemaPaths_FromProto(mapCtx, in.GetRightSchemaPaths())
+	out.Sources = direct.EnumSlice_FromProto(mapCtx, in.Sources)
+	out.ConfidenceScore = direct.LazyPtr(in.GetConfidenceScore())
+	return out
+}
+
+func Context_SchemaRelationship_ToProto(mapCtx *direct.MapContext, in *krm.Context_SchemaRelationship) *geminidataanalyticspb.Context_SchemaRelationship {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.Context_SchemaRelationship{}
+	out.LeftSchemaPaths = Context_SchemaRelationship_SchemaPaths_ToProto(mapCtx, in.LeftSchemaPaths)
+	out.RightSchemaPaths = Context_SchemaRelationship_SchemaPaths_ToProto(mapCtx, in.RightSchemaPaths)
+	out.Sources = direct.EnumSlice_ToProto[geminidataanalyticspb.Context_SchemaRelationship_Source](mapCtx, in.Sources)
+	out.ConfidenceScore = direct.ValueOf(in.ConfidenceScore)
+	return out
+}
+
+func Context_SchemaRelationship_SchemaPaths_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.Context_SchemaRelationship_SchemaPaths) *krm.Context_SchemaRelationship_SchemaPaths {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Context_SchemaRelationship_SchemaPaths{}
+	out.TableFqn = direct.LazyPtr(in.GetTableFqn())
+	out.Paths = in.Paths
+	return out
+}
+
+func Context_SchemaRelationship_SchemaPaths_ToProto(mapCtx *direct.MapContext, in *krm.Context_SchemaRelationship_SchemaPaths) *geminidataanalyticspb.Context_SchemaRelationship_SchemaPaths {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.Context_SchemaRelationship_SchemaPaths{}
+	out.TableFqn = direct.ValueOf(in.TableFqn)
+	out.Paths = in.Paths
+	return out
+}
+
+func DataFilter_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.DataFilter) *krm.DataFilter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataFilter{}
+	out.Field = direct.LazyPtr(in.GetField())
+	out.Value = direct.LazyPtr(in.GetValue())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+
+func DataFilter_ToProto(mapCtx *direct.MapContext, in *krm.DataFilter) *geminidataanalyticspb.DataFilter {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.DataFilter{}
+	out.Field = direct.ValueOf(in.Field)
+	out.Value = direct.ValueOf(in.Value)
+	out.Type = direct.Enum_ToProto[geminidataanalyticspb.DataFilterType](mapCtx, in.Type)
+	return out
+}
+
+func DatasourceOptions_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.DatasourceOptions) *krm.DatasourceOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DatasourceOptions{}
+	out.BigQueryMaxBilledBytes = direct.Int64Value_FromProto(mapCtx, in.GetBigQueryMaxBilledBytes())
+	return out
+}
+
+func DatasourceOptions_ToProto(mapCtx *direct.MapContext, in *krm.DatasourceOptions) *geminidataanalyticspb.DatasourceOptions {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.DatasourceOptions{}
+	out.BigQueryMaxBilledBytes = direct.Int64Value_ToProto(mapCtx, in.BigQueryMaxBilledBytes)
+	return out
+}
+
+func ExampleQuery_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.ExampleQuery) *krm.ExampleQuery {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExampleQuery{}
+	out.SQLQuery = direct.LazyPtr(in.GetSqlQuery())
+	out.NaturalLanguageQuestion = direct.LazyPtr(in.GetNaturalLanguageQuestion())
+	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, QueryParameter_FromProto)
+	return out
+}
+
+func ExampleQuery_ToProto(mapCtx *direct.MapContext, in *krm.ExampleQuery) *geminidataanalyticspb.ExampleQuery {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.ExampleQuery{}
+	if oneof := ExampleQuery_SqlQuery_ToProto(mapCtx, in.SQLQuery); oneof != nil {
+		out.Query = oneof
+	}
+	out.NaturalLanguageQuestion = direct.ValueOf(in.NaturalLanguageQuestion)
+	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, QueryParameter_ToProto)
+	return out
+}
+
+func ExampleQuery_SqlQuery_ToProto(mapCtx *direct.MapContext, in *string) *geminidataanalyticspb.ExampleQuery_SqlQuery {
+	if in == nil {
+		return nil
+	}
+	return &geminidataanalyticspb.ExampleQuery_SqlQuery{SqlQuery: *in}
+}
+
+func ExampleQueryObservedState_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.ExampleQuery) *krm.ExampleQueryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExampleQueryObservedState{}
+	out.SQLQuery = direct.LazyPtr(in.GetSqlQuery())
+	out.NaturalLanguageQuestion = direct.LazyPtr(in.GetNaturalLanguageQuestion())
+	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, QueryParameterObservedState_FromProto)
+	return out
+}
+
+func ExampleQueryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ExampleQueryObservedState) *geminidataanalyticspb.ExampleQuery {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.ExampleQuery{}
+	if oneof := ExampleQueryObservedState_SqlQuery_ToProto(mapCtx, in.SQLQuery); oneof != nil {
+		out.Query = oneof
+	}
+	out.NaturalLanguageQuestion = direct.ValueOf(in.NaturalLanguageQuestion)
+	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, QueryParameterObservedState_ToProto)
+	return out
+}
+
+func ExampleQueryObservedState_SqlQuery_ToProto(mapCtx *direct.MapContext, in *string) *geminidataanalyticspb.ExampleQuery_SqlQuery {
+	if in == nil {
+		return nil
+	}
+	return &geminidataanalyticspb.ExampleQuery_SqlQuery{SqlQuery: *in}
+}
+
+func Field_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.Field) *krm.Field {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Field{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Type = direct.LazyPtr(in.GetType())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Mode = direct.LazyPtr(in.GetMode())
+	out.Synonyms = in.Synonyms
+	out.Tags = in.Tags
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Subfields = direct.Slice_FromProto(mapCtx, in.Subfields, Field_FromProto)
+	out.Category = direct.LazyPtr(in.GetCategory())
+	out.ValueFormat = direct.LazyPtr(in.GetValueFormat())
+	return out
+}
+
+func Field_ToProto(mapCtx *direct.MapContext, in *krm.Field) *geminidataanalyticspb.Field {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.Field{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Type = direct.ValueOf(in.Type)
+	out.Description = direct.ValueOf(in.Description)
+	out.Mode = direct.ValueOf(in.Mode)
+	out.Synonyms = in.Synonyms
+	out.Tags = in.Tags
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Subfields = direct.Slice_ToProto(mapCtx, in.Subfields, Field_ToProto)
+	out.Category = direct.ValueOf(in.Category)
+	out.ValueFormat = direct.ValueOf(in.ValueFormat)
+	return out
+}
+
+func GlossaryTerm_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.GlossaryTerm) *krm.GlossaryTerm {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GlossaryTerm{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	return out
+}
+
+func GlossaryTerm_ToProto(mapCtx *direct.MapContext, in *krm.GlossaryTerm) *geminidataanalyticspb.GlossaryTerm {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.GlossaryTerm{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	return out
+}
+
+func GlossaryTermObservedState_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.GlossaryTerm) *krm.GlossaryTermObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GlossaryTermObservedState{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	return out
+}
+
+func GlossaryTermObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GlossaryTermObservedState) *geminidataanalyticspb.GlossaryTerm {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.GlossaryTerm{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	return out
+}
+
+func LookerExploreReference_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.LookerExploreReference) *krm.LookerExploreReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LookerExploreReference{}
+	out.LookerInstanceURI = direct.LazyPtr(in.GetLookerInstanceUri())
+	out.PrivateLookerInstanceInfo = PrivateLookerInstanceInfo_FromProto(mapCtx, in.GetPrivateLookerInstanceInfo())
+	out.LookmlModel = direct.LazyPtr(in.GetLookmlModel())
+	out.Explore = direct.LazyPtr(in.GetExplore())
+	out.Schema = Schema_FromProto(mapCtx, in.GetSchema())
+	return out
+}
+
+func LookerExploreReference_ToProto(mapCtx *direct.MapContext, in *krm.LookerExploreReference) *geminidataanalyticspb.LookerExploreReference {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.LookerExploreReference{}
+	if oneof := LookerExploreReference_LookerInstanceUri_ToProto(mapCtx, in.LookerInstanceURI); oneof != nil {
+		out.Instance = oneof
+	}
+	if oneof := PrivateLookerInstanceInfo_ToProto(mapCtx, in.PrivateLookerInstanceInfo); oneof != nil {
+		out.Instance = &geminidataanalyticspb.LookerExploreReference_PrivateLookerInstanceInfo{PrivateLookerInstanceInfo: oneof}
+	}
+	out.LookmlModel = direct.ValueOf(in.LookmlModel)
+	out.Explore = direct.ValueOf(in.Explore)
+	out.Schema = Schema_ToProto(mapCtx, in.Schema)
+	return out
+}
+
+func LookerExploreReference_LookerInstanceUri_ToProto(mapCtx *direct.MapContext, in *string) *geminidataanalyticspb.LookerExploreReference_LookerInstanceUri {
+	if in == nil {
+		return nil
+	}
+	return &geminidataanalyticspb.LookerExploreReference_LookerInstanceUri{LookerInstanceUri: *in}
+}
+
+func LookerExploreReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.LookerExploreReference) *krm.LookerExploreReferenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LookerExploreReferenceObservedState{}
+	out.LookerInstanceURI = direct.LazyPtr(in.GetLookerInstanceUri())
+	out.PrivateLookerInstanceInfo = PrivateLookerInstanceInfo_FromProto(mapCtx, in.GetPrivateLookerInstanceInfo())
+	out.LookmlModel = direct.LazyPtr(in.GetLookmlModel())
+	out.Explore = direct.LazyPtr(in.GetExplore())
+	out.Schema = Schema_FromProto(mapCtx, in.GetSchema())
+	return out
+}
+
+func LookerExploreReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LookerExploreReferenceObservedState) *geminidataanalyticspb.LookerExploreReference {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.LookerExploreReference{}
+	if oneof := LookerExploreReferenceObservedState_LookerInstanceUri_ToProto(mapCtx, in.LookerInstanceURI); oneof != nil {
+		out.Instance = oneof
+	}
+	if oneof := PrivateLookerInstanceInfo_ToProto(mapCtx, in.PrivateLookerInstanceInfo); oneof != nil {
+		out.Instance = &geminidataanalyticspb.LookerExploreReference_PrivateLookerInstanceInfo{PrivateLookerInstanceInfo: oneof}
+	}
+	out.LookmlModel = direct.ValueOf(in.LookmlModel)
+	out.Explore = direct.ValueOf(in.Explore)
+	out.Schema = Schema_ToProto(mapCtx, in.Schema)
+	return out
+}
+
+func LookerExploreReferenceObservedState_LookerInstanceUri_ToProto(mapCtx *direct.MapContext, in *string) *geminidataanalyticspb.LookerExploreReference_LookerInstanceUri {
+	if in == nil {
+		return nil
+	}
+	return &geminidataanalyticspb.LookerExploreReference_LookerInstanceUri{LookerInstanceUri: *in}
+}
+
+func LookerExploreReferences_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.LookerExploreReferences) *krm.LookerExploreReferences {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LookerExploreReferences{}
+	out.ExploreReferences = direct.Slice_FromProto(mapCtx, in.ExploreReferences, LookerExploreReference_FromProto)
+	return out
+}
+
+func LookerExploreReferences_ToProto(mapCtx *direct.MapContext, in *krm.LookerExploreReferences) *geminidataanalyticspb.LookerExploreReferences {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.LookerExploreReferences{}
+	out.ExploreReferences = direct.Slice_ToProto(mapCtx, in.ExploreReferences, LookerExploreReference_ToProto)
+	return out
+}
+
+func LookerExploreReferencesObservedState_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.LookerExploreReferences) *krm.LookerExploreReferencesObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LookerExploreReferencesObservedState{}
+	out.ExploreReferences = direct.Slice_FromProto(mapCtx, in.ExploreReferences, LookerExploreReferenceObservedState_FromProto)
+	return out
+}
+
+func LookerExploreReferencesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LookerExploreReferencesObservedState) *geminidataanalyticspb.LookerExploreReferences {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.LookerExploreReferences{}
+	out.ExploreReferences = direct.Slice_ToProto(mapCtx, in.ExploreReferences, LookerExploreReferenceObservedState_ToProto)
+	return out
+}
+
+func LookerQuery_Filter_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.LookerQuery_Filter) *krm.LookerQuery_Filter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LookerQuery_Filter{}
+	out.Field = direct.LazyPtr(in.GetField())
+	out.Value = in.Value
+	return out
+}
+
+func LookerQuery_Filter_ToProto(mapCtx *direct.MapContext, in *krm.LookerQuery_Filter) *geminidataanalyticspb.LookerQuery_Filter {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.LookerQuery_Filter{}
+	out.Field = direct.ValueOf(in.Field)
+	out.Value = in.Value
+	return out
+}
+
+func LookerQuery_FilterObservedState_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.LookerQuery_Filter) *krm.LookerQuery_FilterObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LookerQuery_FilterObservedState{}
+	out.Field = direct.LazyPtr(in.GetField())
+	out.Value = in.Value
+	return out
+}
+
+func LookerQuery_FilterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LookerQuery_FilterObservedState) *geminidataanalyticspb.LookerQuery_Filter {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.LookerQuery_Filter{}
+	out.Field = direct.ValueOf(in.Field)
+	out.Value = in.Value
+	return out
+}
+
+func PrivateLookerInstanceInfo_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.PrivateLookerInstanceInfo) *krm.PrivateLookerInstanceInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PrivateLookerInstanceInfo{}
+	out.LookerInstanceID = direct.LazyPtr(in.GetLookerInstanceId())
+	out.ServiceDirectoryName = direct.LazyPtr(in.GetServiceDirectoryName())
+	return out
+}
+
+func PrivateLookerInstanceInfo_ToProto(mapCtx *direct.MapContext, in *krm.PrivateLookerInstanceInfo) *geminidataanalyticspb.PrivateLookerInstanceInfo {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.PrivateLookerInstanceInfo{}
+	out.LookerInstanceId = direct.ValueOf(in.LookerInstanceID)
+	out.ServiceDirectoryName = direct.ValueOf(in.ServiceDirectoryName)
+	return out
+}
+
+func QueryParameter_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.QueryParameter) *krm.QueryParameter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.QueryParameter{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.DataType = direct.LazyPtr(in.GetDataType())
+	return out
+}
+
+func QueryParameter_ToProto(mapCtx *direct.MapContext, in *krm.QueryParameter) *geminidataanalyticspb.QueryParameter {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.QueryParameter{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	out.DataType = direct.ValueOf(in.DataType)
+	return out
+}
+
+func QueryParameterObservedState_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.QueryParameter) *krm.QueryParameterObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.QueryParameterObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.DataType = direct.LazyPtr(in.GetDataType())
+	return out
+}
+
+func QueryParameterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.QueryParameterObservedState) *geminidataanalyticspb.QueryParameter {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.QueryParameter{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	out.DataType = direct.ValueOf(in.DataType)
+	return out
+}
+
+func Schema_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.Schema) *krm.Schema {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Schema{}
+	out.Fields = direct.Slice_FromProto(mapCtx, in.Fields, Field_FromProto)
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Synonyms = in.Synonyms
+	out.Tags = in.Tags
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Filters = direct.Slice_FromProto(mapCtx, in.Filters, DataFilter_FromProto)
+	return out
+}
+
+func Schema_ToProto(mapCtx *direct.MapContext, in *krm.Schema) *geminidataanalyticspb.Schema {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.Schema{}
+	out.Fields = direct.Slice_ToProto(mapCtx, in.Fields, Field_ToProto)
+	out.Description = direct.ValueOf(in.Description)
+	out.Synonyms = in.Synonyms
+	out.Tags = in.Tags
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Filters = direct.Slice_ToProto(mapCtx, in.Filters, DataFilter_ToProto)
+	return out
+}
+
+func StudioDatasourceReference_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.StudioDatasourceReference) *krm.StudioDatasourceReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudioDatasourceReference{}
+	out.DatasourceID = direct.LazyPtr(in.GetDatasourceId())
+	return out
+}
+
+func StudioDatasourceReference_ToProto(mapCtx *direct.MapContext, in *krm.StudioDatasourceReference) *geminidataanalyticspb.StudioDatasourceReference {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.StudioDatasourceReference{}
+	out.DatasourceId = direct.ValueOf(in.DatasourceID)
+	return out
+}
+
+func StudioDatasourceReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.StudioDatasourceReference) *krm.StudioDatasourceReferenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudioDatasourceReferenceObservedState{}
+	out.DatasourceID = direct.LazyPtr(in.GetDatasourceId())
+	return out
+}
+
+func StudioDatasourceReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StudioDatasourceReferenceObservedState) *geminidataanalyticspb.StudioDatasourceReference {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.StudioDatasourceReference{}
+	out.DatasourceId = direct.ValueOf(in.DatasourceID)
+	return out
+}
+
+func StudioDatasourceReferences_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.StudioDatasourceReferences) *krm.StudioDatasourceReferences {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudioDatasourceReferences{}
+	out.StudioReferences = direct.Slice_FromProto(mapCtx, in.StudioReferences, StudioDatasourceReference_FromProto)
+	return out
+}
+
+func StudioDatasourceReferences_ToProto(mapCtx *direct.MapContext, in *krm.StudioDatasourceReferences) *geminidataanalyticspb.StudioDatasourceReferences {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.StudioDatasourceReferences{}
+	out.StudioReferences = direct.Slice_ToProto(mapCtx, in.StudioReferences, StudioDatasourceReference_ToProto)
+	return out
+}
+
+func StudioDatasourceReferencesObservedState_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.StudioDatasourceReferences) *krm.StudioDatasourceReferencesObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudioDatasourceReferencesObservedState{}
+	out.StudioReferences = direct.Slice_FromProto(mapCtx, in.StudioReferences, StudioDatasourceReferenceObservedState_FromProto)
+	return out
+}
+
+func StudioDatasourceReferencesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StudioDatasourceReferencesObservedState) *geminidataanalyticspb.StudioDatasourceReferences {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.StudioDatasourceReferences{}
+	out.StudioReferences = direct.Slice_ToProto(mapCtx, in.StudioReferences, StudioDatasourceReferenceObservedState_ToProto)
+	return out
+}
+
+func UserFunctions_FromProto(mapCtx *direct.MapContext, in *geminidataanalyticspb.UserFunctions) *krm.UserFunctions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UserFunctions{}
+	out.BqRoutines = direct.Slice_FromProto(mapCtx, in.BqRoutines, BigQueryRoutine_FromProto)
+	return out
+}
+
+func UserFunctions_ToProto(mapCtx *direct.MapContext, in *krm.UserFunctions) *geminidataanalyticspb.UserFunctions {
+	if in == nil {
+		return nil
+	}
+	out := &geminidataanalyticspb.UserFunctions{}
+	out.BqRoutines = direct.Slice_ToProto(mapCtx, in.BqRoutines, BigQueryRoutine_ToProto)
 	return out
 }

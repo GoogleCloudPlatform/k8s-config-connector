@@ -39,6 +39,17 @@ ${CONTROLLERBUILDER} generate-types \
     --resource ContentWarehouseDocument:Document \
     --resource ContentWarehouseSynonymSet:SynonymSet
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.contentwarehouse.v1 \
+  --api-version contentwarehouse.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource ContentwarehouseDocumentSchema:DocumentSchema
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.contentwarehouse.v1 \
+  --api-version contentwarehouse.cnrm.cloud.google.com/v1alpha1 \
+  --resource ContentwarehouseDocumentSchema:DocumentSchema
+
 ${CONTROLLERBUILDER} generate-mapper \
     --service google.cloud.contentwarehouse.v1 \
     --api-version "contentwarehouse.cnrm.cloud.google.com/v1alpha1"

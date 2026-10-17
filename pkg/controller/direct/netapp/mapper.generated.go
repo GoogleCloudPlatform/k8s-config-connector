@@ -29,6 +29,54 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func BackupConfig_FromProto(mapCtx *direct.MapContext, in *pb.BackupConfig) *krm.BackupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackupConfig{}
+	out.BackupPolicies = in.BackupPolicies
+	out.BackupVault = direct.LazyPtr(in.GetBackupVault())
+	out.ScheduledBackupEnabled = in.ScheduledBackupEnabled
+	// MISSING: BackupChainBytes
+	return out
+}
+
+func BackupConfig_ToProto(mapCtx *direct.MapContext, in *krm.BackupConfig) *pb.BackupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackupConfig{}
+	out.BackupPolicies = in.BackupPolicies
+	out.BackupVault = direct.ValueOf(in.BackupVault)
+	out.ScheduledBackupEnabled = in.ScheduledBackupEnabled
+	// MISSING: BackupChainBytes
+	return out
+}
+
+func BackupConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupConfig) *krm.BackupConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BackupConfigObservedState{}
+	// MISSING: BackupPolicies
+	// MISSING: BackupVault
+	// MISSING: ScheduledBackupEnabled
+	out.BackupChainBytes = in.BackupChainBytes
+	return out
+}
+
+func BackupConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupConfigObservedState) *pb.BackupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackupConfig{}
+	// MISSING: BackupPolicies
+	// MISSING: BackupVault
+	// MISSING: ScheduledBackupEnabled
+	out.BackupChainBytes = in.BackupChainBytes
+	return out
+}
+
 func BackupVaultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupVaultObservedState {
 	if in == nil {
 		return nil
@@ -44,11 +92,9 @@ func BackupVaultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Backup
 	// MISSING: SourceBackupVault
 	// MISSING: DestinationBackupVault
 	// MISSING: BackupRetentionPolicy
-	// MISSING: KMSConfig
-	// MISSING: EncryptionState
-	// MISSING: BackupsCryptoKeyVersion
 	return out
 }
+
 func BackupVaultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupVaultObservedState) *pb.BackupVault {
 	if in == nil {
 		return nil
@@ -64,11 +110,9 @@ func BackupVaultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupV
 	// MISSING: SourceBackupVault
 	// MISSING: DestinationBackupVault
 	// MISSING: BackupRetentionPolicy
-	// MISSING: KMSConfig
-	// MISSING: EncryptionState
-	// MISSING: BackupsCryptoKeyVersion
 	return out
 }
+
 func BackupVaultSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupVaultSpec {
 	if in == nil {
 		return nil
@@ -83,11 +127,9 @@ func BackupVaultSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *k
 	// MISSING: SourceBackupVault
 	// MISSING: DestinationBackupVault
 	// MISSING: BackupRetentionPolicy
-	// MISSING: KMSConfig
-	// MISSING: EncryptionState
-	// MISSING: BackupsCryptoKeyVersion
 	return out
 }
+
 func BackupVaultSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupVaultSpec) *pb.BackupVault {
 	if in == nil {
 		return nil
@@ -102,11 +144,133 @@ func BackupVaultSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupVaultSpec)
 	// MISSING: SourceBackupVault
 	// MISSING: DestinationBackupVault
 	// MISSING: BackupRetentionPolicy
-	// MISSING: KMSConfig
-	// MISSING: EncryptionState
-	// MISSING: BackupsCryptoKeyVersion
 	return out
 }
+
+func DailySchedule_FromProto(mapCtx *direct.MapContext, in *pb.DailySchedule) *krm.DailySchedule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DailySchedule{}
+	out.SnapshotsToKeep = in.SnapshotsToKeep
+	out.Minute = in.Minute
+	out.Hour = in.Hour
+	return out
+}
+
+func DailySchedule_ToProto(mapCtx *direct.MapContext, in *krm.DailySchedule) *pb.DailySchedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DailySchedule{}
+	out.SnapshotsToKeep = in.SnapshotsToKeep
+	out.Minute = in.Minute
+	out.Hour = in.Hour
+	return out
+}
+
+func HourlySchedule_FromProto(mapCtx *direct.MapContext, in *pb.HourlySchedule) *krm.HourlySchedule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HourlySchedule{}
+	out.SnapshotsToKeep = in.SnapshotsToKeep
+	out.Minute = in.Minute
+	return out
+}
+
+func HourlySchedule_ToProto(mapCtx *direct.MapContext, in *krm.HourlySchedule) *pb.HourlySchedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HourlySchedule{}
+	out.SnapshotsToKeep = in.SnapshotsToKeep
+	out.Minute = in.Minute
+	return out
+}
+
+func HybridReplicationParameters_FromProto(mapCtx *direct.MapContext, in *pb.HybridReplicationParameters) *krm.HybridReplicationParameters {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HybridReplicationParameters{}
+	out.Replication = direct.LazyPtr(in.GetReplication())
+	out.PeerVolumeName = direct.LazyPtr(in.GetPeerVolumeName())
+	out.PeerClusterName = direct.LazyPtr(in.GetPeerClusterName())
+	out.PeerSvmName = direct.LazyPtr(in.GetPeerSvmName())
+	out.PeerIPAddresses = in.PeerIpAddresses
+	out.ClusterLocation = direct.LazyPtr(in.GetClusterLocation())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	return out
+}
+
+func HybridReplicationParameters_ToProto(mapCtx *direct.MapContext, in *krm.HybridReplicationParameters) *pb.HybridReplicationParameters {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HybridReplicationParameters{}
+	out.Replication = direct.ValueOf(in.Replication)
+	out.PeerVolumeName = direct.ValueOf(in.PeerVolumeName)
+	out.PeerClusterName = direct.ValueOf(in.PeerClusterName)
+	out.PeerSvmName = direct.ValueOf(in.PeerSvmName)
+	out.PeerIpAddresses = in.PeerIPAddresses
+	out.ClusterLocation = direct.ValueOf(in.ClusterLocation)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	return out
+}
+
+func MonthlySchedule_FromProto(mapCtx *direct.MapContext, in *pb.MonthlySchedule) *krm.MonthlySchedule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MonthlySchedule{}
+	out.SnapshotsToKeep = in.SnapshotsToKeep
+	out.Minute = in.Minute
+	out.Hour = in.Hour
+	out.DaysOfMonth = in.DaysOfMonth
+	return out
+}
+
+func MonthlySchedule_ToProto(mapCtx *direct.MapContext, in *krm.MonthlySchedule) *pb.MonthlySchedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MonthlySchedule{}
+	out.SnapshotsToKeep = in.SnapshotsToKeep
+	out.Minute = in.Minute
+	out.Hour = in.Hour
+	out.DaysOfMonth = in.DaysOfMonth
+	return out
+}
+
+func MountOptionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MountOption) *krm.MountOptionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MountOptionObservedState{}
+	out.Export = direct.LazyPtr(in.GetExport())
+	out.ExportFull = direct.LazyPtr(in.GetExportFull())
+	out.Protocol = direct.Enum_FromProto(mapCtx, in.GetProtocol())
+	out.Instructions = direct.LazyPtr(in.GetInstructions())
+	out.IPAddress = direct.LazyPtr(in.GetIpAddress())
+	return out
+}
+
+func MountOptionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MountOptionObservedState) *pb.MountOption {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MountOption{}
+	out.Export = direct.ValueOf(in.Export)
+	out.ExportFull = direct.ValueOf(in.ExportFull)
+	out.Protocol = direct.Enum_ToProto[pb.Protocols](mapCtx, in.Protocol)
+	out.Instructions = direct.ValueOf(in.Instructions)
+	out.IpAddress = direct.ValueOf(in.IPAddress)
+	return out
+}
+
 func NetAppActiveDirectoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ActiveDirectory) *krm.NetAppActiveDirectoryObservedState {
 	if in == nil {
 		return nil
@@ -118,6 +282,7 @@ func NetAppActiveDirectoryObservedState_FromProto(mapCtx *direct.MapContext, in 
 	out.StateDetails = direct.LazyPtr(in.GetStateDetails())
 	return out
 }
+
 func NetAppActiveDirectoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetAppActiveDirectoryObservedState) *pb.ActiveDirectory {
 	if in == nil {
 		return nil
@@ -189,6 +354,7 @@ found existing non-generated mapping function "NetAppActiveDirectorySpec_ToProto
 		return out
 	}
 */
+
 func NetAppBackupPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupPolicy) *krm.NetAppBackupPolicyObservedState {
 	if in == nil {
 		return nil
@@ -201,6 +367,7 @@ func NetAppBackupPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
 }
+
 func NetAppBackupPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetAppBackupPolicyObservedState) *pb.BackupPolicy {
 	if in == nil {
 		return nil
@@ -213,6 +380,7 @@ func NetAppBackupPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.State = direct.Enum_ToProto[pb.BackupPolicy_State](mapCtx, in.State)
 	return out
 }
+
 func NetAppBackupPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupPolicy) *krm.NetAppBackupPolicySpec {
 	if in == nil {
 		return nil
@@ -227,6 +395,7 @@ func NetAppBackupPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupPo
 	// MISSING: Labels
 	return out
 }
+
 func NetAppBackupPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetAppBackupPolicySpec) *pb.BackupPolicy {
 	if in == nil {
 		return nil
@@ -241,6 +410,285 @@ func NetAppBackupPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetAppBac
 	// MISSING: Labels
 	return out
 }
+
+func NetappKmsConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.KmsConfig) *krm.NetappKmsConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetappKmsConfigObservedState{}
+	// MISSING: Name
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StateDetails = direct.LazyPtr(in.GetStateDetails())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.Instructions = direct.LazyPtr(in.GetInstructions())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	return out
+}
+
+func NetappKmsConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetappKmsConfigObservedState) *pb.KmsConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KmsConfig{}
+	// MISSING: Name
+	out.State = direct.Enum_ToProto[pb.KmsConfig_State](mapCtx, in.State)
+	out.StateDetails = direct.ValueOf(in.StateDetails)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.Instructions = direct.ValueOf(in.Instructions)
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	return out
+}
+
+func NetappKmsConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.KmsConfig) *krm.NetappKmsConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetappKmsConfigSpec{}
+	// MISSING: Name
+	out.CryptoKeyName = direct.LazyPtr(in.GetCryptoKeyName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	return out
+}
+
+func NetappKmsConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetappKmsConfigSpec) *pb.KmsConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.KmsConfig{}
+	// MISSING: Name
+	out.CryptoKeyName = direct.ValueOf(in.CryptoKeyName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	return out
+}
+
+func NetappStoragePoolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.StoragePool) *krm.NetappStoragePoolObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetappStoragePoolObservedState{}
+	// MISSING: Name
+	out.VolumeCapacityGib = direct.LazyPtr(in.GetVolumeCapacityGib())
+	out.VolumeCount = direct.LazyPtr(in.GetVolumeCount())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StateDetails = direct.LazyPtr(in.GetStateDetails())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.EncryptionType = direct.Enum_FromProto(mapCtx, in.GetEncryptionType())
+	// MISSING: GlobalAccessAllowed
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	return out
+}
+
+func NetappStoragePoolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetappStoragePoolObservedState) *pb.StoragePool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StoragePool{}
+	// MISSING: Name
+	out.VolumeCapacityGib = direct.ValueOf(in.VolumeCapacityGib)
+	out.VolumeCount = direct.ValueOf(in.VolumeCount)
+	out.State = direct.Enum_ToProto[pb.StoragePool_State](mapCtx, in.State)
+	out.StateDetails = direct.ValueOf(in.StateDetails)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.EncryptionType = direct.Enum_ToProto[pb.EncryptionType](mapCtx, in.EncryptionType)
+	// MISSING: GlobalAccessAllowed
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+	return out
+}
+
+func NetappStoragePoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.StoragePool) *krm.NetappStoragePoolSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetappStoragePoolSpec{}
+	// MISSING: Name
+	out.ServiceLevel = direct.Enum_FromProto(mapCtx, in.GetServiceLevel())
+	out.CapacityGib = direct.LazyPtr(in.GetCapacityGib())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	out.ActiveDirectory = direct.LazyPtr(in.GetActiveDirectory())
+	out.KMSConfig = direct.LazyPtr(in.GetKmsConfig())
+	out.LdapEnabled = direct.LazyPtr(in.GetLdapEnabled())
+	out.PsaRange = direct.LazyPtr(in.GetPsaRange())
+	// MISSING: GlobalAccessAllowed
+	out.AllowAutoTiering = direct.LazyPtr(in.GetAllowAutoTiering())
+	out.ReplicaZone = direct.LazyPtr(in.GetReplicaZone())
+	out.Zone = direct.LazyPtr(in.GetZone())
+	out.CustomPerformanceEnabled = direct.LazyPtr(in.GetCustomPerformanceEnabled())
+	out.TotalThroughputMibps = direct.LazyPtr(in.GetTotalThroughputMibps())
+	out.TotalIops = direct.LazyPtr(in.GetTotalIops())
+	return out
+}
+
+func NetappStoragePoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetappStoragePoolSpec) *pb.StoragePool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StoragePool{}
+	// MISSING: Name
+	out.ServiceLevel = direct.Enum_ToProto[pb.ServiceLevel](mapCtx, in.ServiceLevel)
+	out.CapacityGib = direct.ValueOf(in.CapacityGib)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	out.Network = direct.ValueOf(in.Network)
+	out.ActiveDirectory = direct.ValueOf(in.ActiveDirectory)
+	out.KmsConfig = direct.ValueOf(in.KMSConfig)
+	out.LdapEnabled = direct.ValueOf(in.LdapEnabled)
+	out.PsaRange = direct.ValueOf(in.PsaRange)
+	// MISSING: GlobalAccessAllowed
+	out.AllowAutoTiering = direct.ValueOf(in.AllowAutoTiering)
+	out.ReplicaZone = direct.ValueOf(in.ReplicaZone)
+	out.Zone = direct.ValueOf(in.Zone)
+	out.CustomPerformanceEnabled = direct.ValueOf(in.CustomPerformanceEnabled)
+	out.TotalThroughputMibps = direct.ValueOf(in.TotalThroughputMibps)
+	out.TotalIops = direct.ValueOf(in.TotalIops)
+	return out
+}
+
+func NetappVolumeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krm.NetappVolumeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetappVolumeObservedState{}
+	// MISSING: Name
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StateDetails = direct.LazyPtr(in.GetStateDetails())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.PsaRange = direct.LazyPtr(in.GetPsaRange())
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	out.ServiceLevel = direct.Enum_FromProto(mapCtx, in.GetServiceLevel())
+	out.MountOptions = direct.Slice_FromProto(mapCtx, in.MountOptions, MountOptionObservedState_FromProto)
+	out.UsedGib = direct.LazyPtr(in.GetUsedGib())
+	out.LdapEnabled = direct.LazyPtr(in.GetLdapEnabled())
+	out.ActiveDirectory = direct.LazyPtr(in.GetActiveDirectory())
+	out.KMSConfig = direct.LazyPtr(in.GetKmsConfig())
+	out.EncryptionType = direct.Enum_FromProto(mapCtx, in.GetEncryptionType())
+	out.HasReplication = direct.LazyPtr(in.GetHasReplication())
+	out.BackupConfig = BackupConfigObservedState_FromProto(mapCtx, in.GetBackupConfig())
+	out.ReplicaZone = direct.LazyPtr(in.GetReplicaZone())
+	out.Zone = direct.LazyPtr(in.GetZone())
+	out.ColdTierSizeGib = direct.LazyPtr(in.GetColdTierSizeGib())
+	return out
+}
+
+func NetappVolumeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetappVolumeObservedState) *pb.Volume {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Volume{}
+	// MISSING: Name
+	out.State = direct.Enum_ToProto[pb.Volume_State](mapCtx, in.State)
+	out.StateDetails = direct.ValueOf(in.StateDetails)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.PsaRange = direct.ValueOf(in.PsaRange)
+	out.Network = direct.ValueOf(in.Network)
+	out.ServiceLevel = direct.Enum_ToProto[pb.ServiceLevel](mapCtx, in.ServiceLevel)
+	out.MountOptions = direct.Slice_ToProto(mapCtx, in.MountOptions, MountOptionObservedState_ToProto)
+	out.UsedGib = direct.ValueOf(in.UsedGib)
+	out.LdapEnabled = direct.ValueOf(in.LdapEnabled)
+	out.ActiveDirectory = direct.ValueOf(in.ActiveDirectory)
+	out.KmsConfig = direct.ValueOf(in.KMSConfig)
+	out.EncryptionType = direct.Enum_ToProto[pb.EncryptionType](mapCtx, in.EncryptionType)
+	out.HasReplication = direct.ValueOf(in.HasReplication)
+	out.BackupConfig = BackupConfigObservedState_ToProto(mapCtx, in.BackupConfig)
+	out.ReplicaZone = direct.ValueOf(in.ReplicaZone)
+	out.Zone = direct.ValueOf(in.Zone)
+	out.ColdTierSizeGib = direct.ValueOf(in.ColdTierSizeGib)
+	return out
+}
+
+func RestoreParameters_FromProto(mapCtx *direct.MapContext, in *pb.RestoreParameters) *krm.RestoreParameters {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RestoreParameters{}
+	out.SourceSnapshot = direct.LazyPtr(in.GetSourceSnapshot())
+	out.SourceBackup = direct.LazyPtr(in.GetSourceBackup())
+	return out
+}
+
+func RestoreParameters_ToProto(mapCtx *direct.MapContext, in *krm.RestoreParameters) *pb.RestoreParameters {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RestoreParameters{}
+	if oneof := RestoreParameters_SourceSnapshot_ToProto(mapCtx, in.SourceSnapshot); oneof != nil {
+		out.Source = oneof
+	}
+	if oneof := RestoreParameters_SourceBackup_ToProto(mapCtx, in.SourceBackup); oneof != nil {
+		out.Source = oneof
+	}
+	return out
+}
+
+func RestoreParameters_SourceSnapshot_ToProto(mapCtx *direct.MapContext, in *string) *pb.RestoreParameters_SourceSnapshot {
+	if in == nil {
+		return nil
+	}
+	return &pb.RestoreParameters_SourceSnapshot{SourceSnapshot: *in}
+}
+
+func RestoreParameters_SourceBackup_ToProto(mapCtx *direct.MapContext, in *string) *pb.RestoreParameters_SourceBackup {
+	if in == nil {
+		return nil
+	}
+	return &pb.RestoreParameters_SourceBackup{SourceBackup: *in}
+}
+
+func SnapshotPolicy_FromProto(mapCtx *direct.MapContext, in *pb.SnapshotPolicy) *krm.SnapshotPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SnapshotPolicy{}
+	out.Enabled = in.Enabled
+	out.HourlySchedule = HourlySchedule_FromProto(mapCtx, in.GetHourlySchedule())
+	out.DailySchedule = DailySchedule_FromProto(mapCtx, in.GetDailySchedule())
+	out.WeeklySchedule = WeeklySchedule_FromProto(mapCtx, in.GetWeeklySchedule())
+	out.MonthlySchedule = MonthlySchedule_FromProto(mapCtx, in.GetMonthlySchedule())
+	return out
+}
+
+func SnapshotPolicy_ToProto(mapCtx *direct.MapContext, in *krm.SnapshotPolicy) *pb.SnapshotPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SnapshotPolicy{}
+	out.Enabled = in.Enabled
+	out.HourlySchedule = HourlySchedule_ToProto(mapCtx, in.HourlySchedule)
+	out.DailySchedule = DailySchedule_ToProto(mapCtx, in.DailySchedule)
+	out.WeeklySchedule = WeeklySchedule_ToProto(mapCtx, in.WeeklySchedule)
+	out.MonthlySchedule = MonthlySchedule_ToProto(mapCtx, in.MonthlySchedule)
+	return out
+}
+
+func WeeklySchedule_FromProto(mapCtx *direct.MapContext, in *pb.WeeklySchedule) *krm.WeeklySchedule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WeeklySchedule{}
+	out.SnapshotsToKeep = in.SnapshotsToKeep
+	out.Minute = in.Minute
+	out.Hour = in.Hour
+	out.Day = in.Day
+	return out
+}
+
+func WeeklySchedule_ToProto(mapCtx *direct.MapContext, in *krm.WeeklySchedule) *pb.WeeklySchedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WeeklySchedule{}
+	out.SnapshotsToKeep = in.SnapshotsToKeep
+	out.Minute = in.Minute
+	out.Hour = in.Hour
+	out.Day = in.Day
+	return out
+}
+
 func NetAppHostGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.HostGroup) *krm.NetAppHostGroupObservedState {
 	if in == nil {
 		return nil
@@ -251,6 +699,7 @@ func NetAppHostGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Ho
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	return out
 }
+
 func NetAppHostGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetAppHostGroupObservedState) *pb.HostGroup {
 	if in == nil {
 		return nil
@@ -261,6 +710,7 @@ func NetAppHostGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Net
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	return out
 }
+
 func NetAppHostGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.HostGroup) *krm.NetAppHostGroupSpec {
 	if in == nil {
 		return nil
@@ -274,6 +724,7 @@ func NetAppHostGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.HostGroup) 
 	out.Labels = in.Labels
 	return out
 }
+
 func NetAppHostGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetAppHostGroupSpec) *pb.HostGroup {
 	if in == nil {
 		return nil

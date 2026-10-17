@@ -154,7 +154,28 @@ func inspectKRMTypeSpec(s *ast.TypeSpec, kind string, isGenerated bool, info *kr
 		info.Overrides.HasIdentityStruct = true
 	case kind + "Ref":
 		info.Overrides.HasRefStruct = true
+		if st, ok := s.Type.(*ast.StructType); ok && !structHasNameAndNamespace(st) {
+			info.Overrides.RefStructMissingNameNamespace = true
+		}
 	}
+}
+
+func structHasNameAndNamespace(st *ast.StructType) bool {
+	if st == nil || st.Fields == nil {
+		return false
+	}
+	var hasName, hasNamespace bool
+	for _, f := range st.Fields.List {
+		for _, n := range f.Names {
+			switch n.Name {
+			case "Name":
+				hasName = true
+			case "Namespace":
+				hasNamespace = true
+			}
+		}
+	}
+	return hasName && hasNamespace
 }
 
 func inspectKRMValueSpec(s *ast.ValueSpec, kind string, info *krmTypeInfo) {

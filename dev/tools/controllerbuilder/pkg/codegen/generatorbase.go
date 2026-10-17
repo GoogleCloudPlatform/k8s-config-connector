@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"go/ast"
 	"go/parser"
+	"go/scanner"
 	"go/token"
 	"os"
 	"path/filepath"
@@ -333,6 +334,7 @@ type generatedBlock struct {
 // existing generated Go file on disk into f so sequential generate-types or generate-mapper
 // invocations (for example across multiple --service packages) accumulate additively.
 func (f *generatedFile) mergeWithExisting(existingBytes []byte, dir string) {
+	var matchingExistingAnn *annotations.FileAnnotation
 	if f.fileAnnotation != nil {
 		if existingAnns, err := annotations.FindFileAnnotations(existingBytes, []string{"+generated:"}); err == nil && len(existingAnns) > 0 {
 			for i := range existingAnns {
@@ -342,11 +344,16 @@ func (f *generatedFile) mergeWithExisting(existingBytes []byte, dir string) {
 					if len(eg) > 0 && len(cg) > 0 && eg[0] != cg[0] {
 						return
 					}
-					f.fileAnnotation = annotations.MergeFileAnnotations(&existingAnns[i], f.fileAnnotation)
+					annCopy := existingAnns[i]
+					matchingExistingAnn = &annCopy
 					break
 				}
 			}
 		}
+	}
+
+	if f.key.FileName == "types.generated.go" && isTargetOfSeparateGeneratedFile(dir, f.key.FileName, f.fileAnnotation) {
+		return
 	}
 
 	pkgName := f.goPackage
@@ -362,24 +369,10 @@ func (f *generatedFile) mergeWithExisting(existingBytes []byte, dir string) {
 		return
 	}
 
-	// Merge imports from the existing file without clobbering aliases chosen for the current run.
-	usedAliases := make(map[string]string)
-	for pkg, alias := range f.imports {
-		if alias != "" {
-			usedAliases[alias] = pkg
+	if f.key.FileName == "mapper.generated.go" && len(currentBlocks) > 0 {
+		if hasVersionedMapperFuncs(existingBlocks) != hasVersionedMapperFuncs(currentBlocks) {
+			return
 		}
-	}
-	for pkg, alias := range existingImports {
-		if _, already := f.imports[pkg]; already {
-			continue
-		}
-		if alias != "" {
-			if otherPkg, taken := usedAliases[alias]; taken && otherPkg != pkg {
-				continue
-			}
-			usedAliases[alias] = pkg
-		}
-		f.addImport(alias, pkg)
 	}
 
 	currentByName := make(map[string]generatedBlock, len(currentBlocks))
@@ -389,15 +382,20 @@ func (f *generatedFile) mergeWithExisting(existingBytes []byte, dir string) {
 		}
 	}
 
-	handwrittenTypes, handwrittenProtoTags, handwrittenFuncs := scanHandwrittenDirDeclarations(dir)
+	handwrittenTypes, handwrittenProtoTags, handwrittenFuncs := scanHandwrittenDirDeclarations(dir, f.key.FileName)
+
+	validKRMTypes := f.validKRMTypes
+	if validKRMTypes == nil && f.key.FileName == "mapper.generated.go" && f.baseDir != "" {
+		validKRMTypes = discoverValidKRMTypes(f.baseDir, f.imports, existingImports)
+	}
 
 	var filteredExisting []generatedBlock
-	hasExternalBlocks := false
+	hasActiveExternalBlocks := false
 	for _, eb := range existingBlocks {
 		if eb.name == "" {
 			continue
 		}
-		if _, inCurrent := currentByName[eb.name]; inCurrent {
+		if cb, inCurrent := currentByName[eb.name]; inCurrent && shouldCurrentReplaceExisting(eb, cb) {
 			filteredExisting = append(filteredExisting, eb)
 			continue
 		}
@@ -417,16 +415,85 @@ func (f *generatedFile) mergeWithExisting(existingBytes []byte, dir string) {
 			if !eb.isCommented && handwrittenFuncs[eb.name] {
 				continue
 			}
-			if f.validKRMTypes != nil && eb.krmTypeName != "" && !f.validKRMTypes[eb.krmTypeName] {
+			if validKRMTypes != nil && eb.krmTypeName != "" && !validKRMTypes[eb.krmTypeName] {
 				continue
 			}
 		}
-		hasExternalBlocks = true
+		if !eb.isCommented {
+			hasActiveExternalBlocks = true
+		}
 		filteredExisting = append(filteredExisting, eb)
 	}
 
-	if !hasExternalBlocks && len(currentBlocks) > 0 {
+	if !hasActiveExternalBlocks {
 		return
+	}
+
+	if matchingExistingAnn != nil && f.fileAnnotation != nil {
+		f.fileAnnotation = mergeFileAnnotations(matchingExistingAnn, f.fileAnnotation)
+	}
+
+	// Merge imports from the existing file. If an existing import alias collides with
+	// a different package in f.imports (or the same package uses a different alias),
+	// assign a disambiguated alias and rewrite selector prefixes in filteredExisting blocks.
+	usedAliases := make(map[string]string)
+	for pkg, alias := range f.imports {
+		qual := alias
+		if qual == "" {
+			qual = lastGoComponent(pkg)
+		}
+		if qual != "" {
+			usedAliases[qual] = pkg
+		}
+	}
+	aliasRenames := make(map[string]string)
+	existingPkgs := make([]string, 0, len(existingImports))
+	for pkg := range existingImports {
+		existingPkgs = append(existingPkgs, pkg)
+	}
+	sort.Strings(existingPkgs)
+	for _, pkg := range existingPkgs {
+		alias := existingImports[pkg]
+		oldQual := alias
+		if oldQual == "" {
+			oldQual = lastGoComponent(pkg)
+		}
+		if currentAlias, already := f.imports[pkg]; already {
+			newQual := currentAlias
+			if newQual == "" {
+				newQual = lastGoComponent(pkg)
+			}
+			if oldQual != "" && newQual != "" && oldQual != newQual {
+				aliasRenames[oldQual] = newQual
+			}
+			continue
+		}
+		chosenAlias := alias
+		if oldQual != "" {
+			if otherPkg, taken := usedAliases[oldQual]; taken && otherPkg != pkg {
+				for idx := 2; ; idx++ {
+					candidate := fmt.Sprintf("%s_%d", oldQual, idx)
+					if _, candidateTaken := usedAliases[candidate]; !candidateTaken {
+						chosenAlias = candidate
+						aliasRenames[oldQual] = candidate
+						break
+					}
+				}
+			}
+			finalQual := chosenAlias
+			if finalQual == "" {
+				finalQual = oldQual
+			}
+			usedAliases[finalQual] = pkg
+		}
+		f.addImport(chosenAlias, pkg)
+	}
+	if len(aliasRenames) > 0 {
+		for i := range filteredExisting {
+			if !filteredExisting[i].isCommented {
+				filteredExisting[i].rawText = rewritePackageQualifiers(filteredExisting[i].rawText, aliasRenames)
+			}
+		}
 	}
 
 	var merged []generatedBlock
@@ -442,6 +509,232 @@ func (f *generatedFile) mergeWithExisting(existingBytes []byte, dir string) {
 		f.body.WriteString(b.rawText)
 		f.body.WriteString("\n")
 	}
+}
+
+func hasRequiredMarker(s string) bool {
+	return strings.Contains(s, "// +required") || strings.Contains(s, "//+required")
+}
+
+func shouldCurrentReplaceExisting(eb, cb generatedBlock) bool {
+	if !eb.isCommented && cb.isCommented && eb.protoFQN != "" && cb.protoFQN != "" && eb.protoFQN != cb.protoFQN {
+		return false
+	}
+	if eb.kind == "type" && !eb.isCommented && !cb.isCommented {
+		if !hasRequiredMarker(eb.rawText) && hasRequiredMarker(cb.rawText) {
+			return false
+		}
+	}
+	if eb.kind == "func" && !eb.isCommented && !cb.isCommented {
+		return false
+	}
+	return true
+}
+
+func discoverValidKRMTypes(baseDir string, currentImports, existingImports map[string]string) map[string]bool {
+	const krmPrefix = "github.com/GoogleCloudPlatform/k8s-config-connector/apis/"
+	seenDirs := make(map[string]bool)
+	var apiDirs []string
+	for _, impMap := range []map[string]string{currentImports, existingImports} {
+		for pkg := range impMap {
+			_, rel, ok := strings.Cut(pkg, krmPrefix)
+			if !ok || rel == "" || strings.HasPrefix(rel, "refs/") || strings.HasPrefix(rel, "common/") {
+				continue
+			}
+			apiDir := filepath.Join(baseDir, "apis", filepath.FromSlash(rel))
+			if seenDirs[apiDir] {
+				continue
+			}
+			if info, err := os.Stat(apiDir); err == nil && info.IsDir() {
+				seenDirs[apiDir] = true
+				apiDirs = append(apiDirs, apiDir)
+			}
+		}
+	}
+	if len(apiDirs) == 0 {
+		return nil
+	}
+	valid := make(map[string]bool)
+	fset := token.NewFileSet()
+	for _, apiDir := range apiDirs {
+		entries, err := os.ReadDir(apiDir)
+		if err != nil {
+			continue
+		}
+		for _, e := range entries {
+			if e.IsDir() || !strings.HasSuffix(e.Name(), ".go") || strings.HasSuffix(e.Name(), "_test.go") {
+				continue
+			}
+			src, err := os.ReadFile(filepath.Join(apiDir, e.Name()))
+			if err != nil {
+				continue
+			}
+			astFile, err := parser.ParseFile(fset, e.Name(), src, 0)
+			if err != nil {
+				continue
+			}
+			for _, decl := range astFile.Decls {
+				genDecl, ok := decl.(*ast.GenDecl)
+				if !ok || genDecl.Tok != token.TYPE {
+					continue
+				}
+				for _, spec := range genDecl.Specs {
+					if ts, ok := spec.(*ast.TypeSpec); ok && ts.Name != nil {
+						valid[ts.Name.Name] = true
+					}
+				}
+			}
+		}
+	}
+	return valid
+}
+
+func rewritePackageQualifiers(src string, renames map[string]string) string {
+	if len(renames) == 0 {
+		return src
+	}
+	fset := token.NewFileSet()
+	file := fset.AddFile("", fset.Base(), len(src))
+	var s scanner.Scanner
+	s.Init(file, []byte(src), nil, scanner.ScanComments)
+
+	type tokSpan struct {
+		pos int
+		end int
+		tok token.Token
+		lit string
+	}
+	var toks []tokSpan
+	for {
+		pos, tok, lit := s.Scan()
+		if tok == token.EOF {
+			break
+		}
+		off := file.Offset(pos)
+		length := len(lit)
+		if length == 0 {
+			length = len(tok.String())
+		}
+		toks = append(toks, tokSpan{pos: off, end: off + length, tok: tok, lit: lit})
+	}
+
+	var out strings.Builder
+	last := 0
+	for i, t := range toks {
+		if t.tok == token.IDENT {
+			if newAlias, ok := renames[t.lit]; ok {
+				prevIsPeriod := i > 0 && toks[i-1].tok == token.PERIOD
+				nextIsPeriod := i+1 < len(toks) && toks[i+1].tok == token.PERIOD
+				if !prevIsPeriod && nextIsPeriod {
+					out.WriteString(src[last:t.pos])
+					out.WriteString(newAlias)
+					last = t.end
+				}
+			}
+		}
+	}
+	out.WriteString(src[last:])
+	return out.String()
+}
+
+func mergeFileAnnotations(existing, current *annotations.FileAnnotation) *annotations.FileAnnotation {
+	if current == nil {
+		return existing
+	}
+	if existing == nil || existing.Key != current.Key {
+		return current
+	}
+	if eg, cg := existing.Attributes["krm.group"], current.Attributes["krm.group"]; len(eg) > 0 && len(cg) > 0 && eg[0] != cg[0] {
+		return current
+	}
+
+	merged := &annotations.FileAnnotation{
+		Key:        current.Key,
+		Attributes: make(map[string][]string),
+	}
+	keys := make(map[string]bool)
+	for k := range existing.Attributes {
+		keys[k] = true
+	}
+	for k := range current.Attributes {
+		keys[k] = true
+	}
+	for k := range keys {
+		seen := make(map[string]bool)
+		var vals []string
+		for _, v := range existing.Attributes[k] {
+			if !seen[v] {
+				seen[v] = true
+				vals = append(vals, v)
+			}
+		}
+		for _, v := range current.Attributes[k] {
+			if !seen[v] {
+				seen[v] = true
+				vals = append(vals, v)
+			}
+		}
+		merged.Attributes[k] = vals
+	}
+	return merged
+}
+
+func isTargetOfSeparateGeneratedFile(dir, currentFileName string, currentAnn *annotations.FileAnnotation) bool {
+	if currentAnn == nil {
+		return false
+	}
+	currentResources := currentAnn.Attributes["resource"]
+	if len(currentResources) == 0 {
+		return false
+	}
+	resSet := make(map[string]bool, len(currentResources))
+	for _, r := range currentResources {
+		resSet[r] = true
+	}
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		return false
+	}
+	for _, e := range entries {
+		name := e.Name()
+		if name == currentFileName || !strings.HasSuffix(name, "_types.generated.go") {
+			continue
+		}
+		b, err := os.ReadFile(filepath.Join(dir, name))
+		if err != nil {
+			continue
+		}
+		anns, err := annotations.FindFileAnnotations(b, []string{"+generated:"})
+		if err != nil {
+			continue
+		}
+		for _, a := range anns {
+			for _, r := range a.Attributes["resource"] {
+				if resSet[r] {
+					return true
+				}
+			}
+		}
+	}
+	return false
+}
+
+func hasVersionedMapperFuncs(blocks []generatedBlock) bool {
+	for _, b := range blocks {
+		if b.kind != "func" {
+			continue
+		}
+		for _, suffix := range []string{"_FromProto", "_ToProto"} {
+			if base, ok := strings.CutSuffix(b.name, suffix); ok {
+				if idx := strings.LastIndex(base, "_"); idx > 0 {
+					ver := base[idx+1:]
+					if strings.HasPrefix(ver, "v1") || strings.HasPrefix(ver, "v2") {
+						return true
+					}
+				}
+			}
+		}
+	}
+	return false
 }
 
 func allBlocksHaveProtoFQN(a, b []generatedBlock) bool {
@@ -464,6 +757,9 @@ func mergeAndSortTypeBlocks(existing, current []generatedBlock) []generatedBlock
 		byName[b.name] = b
 	}
 	for _, b := range current {
+		if eb, exists := byName[b.name]; exists && !shouldCurrentReplaceExisting(eb, b) {
+			continue
+		}
 		byName[b.name] = b
 	}
 	merged := make([]generatedBlock, 0, len(byName))
@@ -499,7 +795,7 @@ func mergeOrderedBlocks(existing, current []generatedBlock) []generatedBlock {
 	var result []generatedBlock
 	placed := make(map[string]bool, len(existing)+len(dedupCurrent))
 	for _, eb := range existing {
-		if cb, ok := currentByName[eb.name]; ok {
+		if cb, ok := currentByName[eb.name]; ok && shouldCurrentReplaceExisting(eb, cb) {
 			result = append(result, cb)
 		} else {
 			result = append(result, eb)
@@ -804,7 +1100,7 @@ func extractKRMTypeFromFuncSignature(sigLine string) string {
 	return ""
 }
 
-func scanHandwrittenDirDeclarations(srcDir string) (typeNames map[string]bool, protoTagged map[string]bool, funcNames map[string]bool) {
+func scanHandwrittenDirDeclarations(srcDir, currentFileName string) (typeNames map[string]bool, protoTagged map[string]bool, funcNames map[string]bool) {
 	typeNames = make(map[string]bool)
 	protoTagged = make(map[string]bool)
 	funcNames = make(map[string]bool)
@@ -814,12 +1110,33 @@ func scanHandwrittenDirDeclarations(srcDir string) (typeNames map[string]bool, p
 		return typeNames, protoTagged, funcNames
 	}
 	for _, f := range files {
-		p := filepath.Join(srcDir, f.Name())
-		if !strings.HasSuffix(p, ".go") || strings.HasSuffix(p, "generated.go") {
+		name := f.Name()
+		if !strings.HasSuffix(name, ".go") || name == currentFileName || name == "zz_generated.deepcopy.go" || strings.HasSuffix(name, "_test.go") {
 			continue
 		}
+		p := filepath.Join(srcDir, name)
 		b, err := os.ReadFile(p)
 		if err != nil {
+			continue
+		}
+		if strings.HasSuffix(name, "generated.go") {
+			blocks, _, err := parseGeneratedGoBlocks(b, "p", false)
+			if err != nil {
+				continue
+			}
+			for _, blk := range blocks {
+				if blk.isCommented || blk.name == "" {
+					continue
+				}
+				if blk.kind == "type" {
+					typeNames[blk.name] = true
+					if blk.protoFQN != "" {
+						protoTagged[blk.protoFQN] = true
+					}
+				} else if blk.kind == "func" {
+					funcNames[blk.name] = true
+				}
+			}
 			continue
 		}
 		protoLines := make(map[string]string)
@@ -831,8 +1148,8 @@ func scanHandwrittenDirDeclarations(srcDir string) (typeNames map[string]bool, p
 		for _, line := range strings.Split(content, "\n") {
 			trimmed := strings.TrimSpace(line)
 			if rest, ok := strings.CutPrefix(trimmed, "func "); ok {
-				if name, _, found := strings.Cut(rest, "("); found && name != "" && !strings.Contains(name, " ") {
-					funcNames[name] = true
+				if fnName, _, found := strings.Cut(rest, "("); found && fnName != "" && !strings.Contains(fnName, " ") {
+					funcNames[fnName] = true
 				}
 			}
 		}
