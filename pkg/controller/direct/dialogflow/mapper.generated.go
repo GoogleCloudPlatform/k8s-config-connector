@@ -118,8 +118,8 @@ func GenericWebService_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_Gener
 	}
 	out := &krm.GenericWebService{}
 	out.URI = direct.LazyPtr(in.GetUri())
-	// MISSING: Username
-	// MISSING: Password
+	out.Username = direct.LazyPtr(in.GetUsername())
+	out.Password = direct.LazyPtr(in.GetPassword())
 	out.RequestHeaders = in.RequestHeaders
 	out.AllowedCACerts = in.AllowedCaCerts
 	out.OauthConfig = GenericWebServiceOAuthConfig_FromProto(mapCtx, in.GetOauthConfig())
@@ -136,8 +136,8 @@ func GenericWebService_ToProto(mapCtx *direct.MapContext, in *krm.GenericWebServ
 	}
 	out := &pb.Webhook_GenericWebService{}
 	out.Uri = direct.ValueOf(in.URI)
-	// MISSING: Username
-	// MISSING: Password
+	out.Username = direct.ValueOf(in.Username)
+	out.Password = direct.ValueOf(in.Password)
 	out.RequestHeaders = in.RequestHeaders
 	out.AllowedCaCerts = in.AllowedCACerts
 	out.OauthConfig = GenericWebServiceOAuthConfig_ToProto(mapCtx, in.OauthConfig)

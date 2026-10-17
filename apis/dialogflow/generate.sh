@@ -40,13 +40,12 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DialogflowGenerator:Generator \
   --resource DialogflowConversationDataset:ConversationDataset
 
-# Generate types for Dialogflow CX v3 service (SecuritySettings, Webhook)
+# Generate types for Dialogflow CX v3 service (SecuritySettings)
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.cx.v3 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
-  --resource DialogflowSecuritySettings:SecuritySettings \
-  --resource DialogflowWebhook:Webhook
+  --resource DialogflowSecuritySettings:SecuritySettings
 
 mv ${REPO_ROOT}/apis/dialogflow/v1alpha1/types.generated.go ${REPO_ROOT}/apis/dialogflow/v1alpha1/securitysettings_types.generated.go
 

@@ -67,17 +67,17 @@ func (i *DialogflowWebhookIdentity) FromExternal(ref string) error {
 }
 
 func getIdentityFromDialogflowWebhookSpec(ctx context.Context, reader client.Reader, obj *DialogflowWebhook) (*DialogflowWebhookIdentity, error) {
-	if obj.Spec.ParentRef == nil {
-		return nil, fmt.Errorf("spec.parentRef is required")
+	if obj.Spec.AgentRef == nil {
+		return nil, fmt.Errorf("spec.agentRef is required")
 	}
 
-	if err := obj.Spec.ParentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
-		return nil, fmt.Errorf("resolving spec.parentRef: %w", err)
+	if err := obj.Spec.AgentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, fmt.Errorf("resolving spec.agentRef: %w", err)
 	}
 
 	parentIdentity := &DialogflowCXAgentIdentity{}
-	if err := parentIdentity.FromExternal(obj.Spec.ParentRef.GetExternal()); err != nil {
-		return nil, fmt.Errorf("parsing parentRef.external=%q: %w", obj.Spec.ParentRef.GetExternal(), err)
+	if err := parentIdentity.FromExternal(obj.Spec.AgentRef.GetExternal()); err != nil {
+		return nil, fmt.Errorf("parsing agentRef.external=%q: %w", obj.Spec.AgentRef.GetExternal(), err)
 	}
 
 	resourceID, err := refs.GetResourceID(obj)

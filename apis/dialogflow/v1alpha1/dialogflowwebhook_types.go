@@ -27,8 +27,8 @@ var DialogflowWebhookGVK = GroupVersion.WithKind("DialogflowWebhook")
 type DialogflowWebhookSpec struct {
 	// The DialogflowCXAgent that this webhook belongs to.
 	// +required
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="parentRef is immutable"
-	ParentRef *DialogflowCXAgentRef `json:"parentRef"`
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="agentRef is immutable"
+	AgentRef *DialogflowCXAgentRef `json:"agentRef"`
 
 	// Required. The human-readable name of the webhook, unique within the agent.
 	// +required
@@ -63,6 +63,14 @@ type GenericWebService struct {
 	// +required
 	URI *string `json:"uri"`
 
+	// The user name for HTTP Basic authentication.
+	// +optional
+	Username *string `json:"username,omitempty"`
+
+	// The password for HTTP Basic authentication.
+	// +optional
+	Password *string `json:"password,omitempty"`
+
 	// The HTTP request headers to send together with webhook requests.
 	// +optional
 	RequestHeaders map[string]string `json:"requestHeaders,omitempty"`
@@ -77,14 +85,17 @@ type GenericWebService struct {
 	OauthConfig *GenericWebServiceOAuthConfig `json:"oauthConfig,omitempty"`
 
 	// Optional. Indicate the auth token type generated from the Dialogflow service agent.
+	// +kubebuilder:validation:Enum=SERVICE_AGENT_AUTH_UNSPECIFIED;NONE;ID_TOKEN;ACCESS_TOKEN
 	// +optional
 	ServiceAgentAuth *string `json:"serviceAgentAuth,omitempty"`
 
 	// Optional. Type of the webhook.
+	// +kubebuilder:validation:Enum=WEBHOOK_TYPE_UNSPECIFIED;STANDARD;FLEXIBLE
 	// +optional
 	WebhookType *string `json:"webhookType,omitempty"`
 
 	// Optional. HTTP method for the flexible webhook calls. Standard webhook always uses POST.
+	// +kubebuilder:validation:Enum=HTTP_METHOD_UNSPECIFIED;POST;GET;HEAD;PUT;DELETE;PATCH;OPTIONS
 	// +optional
 	HTTPMethod *string `json:"httpMethod,omitempty"`
 

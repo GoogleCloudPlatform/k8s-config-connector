@@ -87,7 +87,7 @@ func TestDialogflowWebhook_GetIdentity(t *testing.T) {
 			Namespace: "default",
 		},
 		Spec: DialogflowWebhookSpec{
-			ParentRef: &DialogflowCXAgentRef{
+			AgentRef: &DialogflowCXAgentRef{
 				External: "projects/my-project/locations/us-central1/agents/my-agent",
 			},
 			ResourceID: &resourceID,
