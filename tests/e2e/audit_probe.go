@@ -185,7 +185,8 @@ func shouldProbeURL(u string) bool {
 		"/operation-",
 		"google.longrunning.Operations",
 		"oauth2.googleapis.com",
-		"discovery",
+		"/discovery/",
+		"discovery.googleapis.com",
 		"watch=true",
 	} {
 		if strings.Contains(u, sub) {
