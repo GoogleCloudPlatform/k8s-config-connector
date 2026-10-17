@@ -259,6 +259,9 @@ func compareComputeNodeTemplate(ctx context.Context, actual, desired *computepb.
 				Type: direct.PtrTo("RESTART_NODE_ON_ANY_SERVER"),
 			}
 		}
+		if obj.CpuOvercommitType != nil && *obj.CpuOvercommitType == "" {
+			obj.CpuOvercommitType = nil
+		}
 		if obj.CpuOvercommitType == nil {
 			obj.CpuOvercommitType = direct.PtrTo("NONE")
 		}
@@ -268,6 +271,12 @@ func compareComputeNodeTemplate(ctx context.Context, actual, desired *computepb.
 	}
 	populateDefaults(maskedActual)
 	populateDefaults(clonedDesired)
+
+	// Ignore CpuOvercommitType if it's not specified in the desired spec
+	if desired.CpuOvercommitType == nil || *desired.CpuOvercommitType == "" {
+		clonedDesired.CpuOvercommitType = nil
+		maskedActual.CpuOvercommitType = nil
+	}
 
 	diffs, _, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
