@@ -581,25 +581,6 @@ func (a *ComputeDiskAdapter) updateStatus(ctx context.Context, op directbase.Ope
 	return op.UpdateStatus(ctx, status, nil)
 }
 
-func canonicalizeComputeURL(t *string) *string {
-	if t == nil {
-		return nil
-	}
-	trimmed := refs.TrimComputeURIPrefix(*t)
-	return &trimmed
-}
-
-func canonicalizeComputeURLs(arr []string) []string {
-	if arr == nil {
-		return nil
-	}
-	out := make([]string, len(arr))
-	for i, val := range arr {
-		out[i] = refs.TrimComputeURIPrefix(val)
-	}
-	return out
-}
-
 func trimDiskTypePrefix(t string) string {
 	normalized := refs.TrimComputeURIPrefix(t)
 	parts := strings.Split(normalized, "/")

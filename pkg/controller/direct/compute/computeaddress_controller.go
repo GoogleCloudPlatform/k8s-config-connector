@@ -457,26 +457,18 @@ func compareAddress(ctx context.Context, actual, desired *pb.Address) (*structur
 	maskedActual.IpCollection = canonicalizeComputeURL(maskedActual.IpCollection)
 
 	// If optional/computed fields are omitted in desired spec, ignore actual values populated by GCP
-	if clonedDesired.Address == nil || *clonedDesired.Address == "" {
-		maskedActual.Address = nil
-		clonedDesired.Address = nil
+	ignoreIfDesiredUnset := func(desired, actual **string) {
+		if *desired == nil || **desired == "" {
+			*actual = nil
+			*desired = nil
+		}
 	}
-	if clonedDesired.Purpose == nil || *clonedDesired.Purpose == "" {
-		maskedActual.Purpose = nil
-		clonedDesired.Purpose = nil
-	}
-	if clonedDesired.Network == nil || *clonedDesired.Network == "" {
-		maskedActual.Network = nil
-		clonedDesired.Network = nil
-	}
-	if clonedDesired.Subnetwork == nil || *clonedDesired.Subnetwork == "" {
-		maskedActual.Subnetwork = nil
-		clonedDesired.Subnetwork = nil
-	}
-	if clonedDesired.Description == nil || *clonedDesired.Description == "" {
-		maskedActual.Description = nil
-		clonedDesired.Description = nil
-	}
+
+	ignoreIfDesiredUnset(&clonedDesired.Address, &maskedActual.Address)
+	ignoreIfDesiredUnset(&clonedDesired.Purpose, &maskedActual.Purpose)
+	ignoreIfDesiredUnset(&clonedDesired.Network, &maskedActual.Network)
+	ignoreIfDesiredUnset(&clonedDesired.Subnetwork, &maskedActual.Subnetwork)
+	ignoreIfDesiredUnset(&clonedDesired.Description, &maskedActual.Description)
 
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
