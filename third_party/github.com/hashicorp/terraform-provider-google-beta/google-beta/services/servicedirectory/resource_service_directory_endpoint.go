@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"log"
 	"reflect"
+	"regexp"
 	"strings"
 	"time"
 
@@ -80,10 +81,11 @@ Metadata that goes beyond any these limits will be rejected.`,
 				Elem: &schema.Schema{Type: schema.TypeString},
 			},
 			"network": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				ForceNew:    true,
-				Description: `The URL to the network, such as projects/PROJECT_NUMBER/locations/global/networks/NETWORK_NAME.`,
+				Type:             schema.TypeString,
+				Optional:         true,
+				ForceNew:         true,
+				DiffSuppressFunc: serviceDirectoryEndpointNetworkDiffSuppress,
+				Description:      `The URL to the network, such as projects/PROJECT_NUMBER/locations/global/networks/NETWORK_NAME.`,
 			},
 			"port": {
 				Type:         schema.TypeInt,
@@ -455,5 +457,77 @@ func expandServiceDirectoryEndpointMetadata(v interface{}, d tpgresource.Terrafo
 }
 
 func expandServiceDirectoryEndpointNetwork(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
-	return v, nil
+	if v == nil {
+		return nil, nil
+	}
+	networkStr, ok := v.(string)
+	if !ok || networkStr == "" {
+		return v, nil
+	}
+
+	project := ""
+	if p, ok := d.GetOk("project"); ok {
+		project = p.(string)
+	} else if s, ok := d.GetOk("service"); ok {
+		parts := strings.Split(s.(string), "/")
+		if len(parts) >= 2 && parts[0] == "projects" {
+			project = parts[1]
+		}
+	}
+
+	return normalizeServiceDirectoryEndpointNetwork(networkStr, project), nil
+}
+
+func normalizeServiceDirectoryEndpointNetwork(networkStr, defaultProject string) string {
+	if networkStr == "" {
+		return ""
+	}
+
+	// Case 1: Already canonical format projects/{project}/locations/global/networks/{network}
+	reCanonical := regexp.MustCompile(`^projects/([^/]+)/locations/global/networks/([^/]+)$`)
+	if matches := reCanonical.FindStringSubmatch(networkStr); len(matches) == 3 {
+		return networkStr
+	}
+
+	// Case 2: Compute selfLink (https://.../projects/{project}/global/networks/{network}) or relative (projects/{project}/global/networks/{network})
+	reCompute := regexp.MustCompile(`projects/([^/]+)/global/networks/([^/]+)$`)
+	if matches := reCompute.FindStringSubmatch(networkStr); len(matches) == 3 {
+		return fmt.Sprintf("projects/%s/locations/global/networks/%s", matches[1], matches[2])
+	}
+
+	// Case 3: URL containing /locations/global/networks/
+	reURLCanonical := regexp.MustCompile(`projects/([^/]+)/locations/global/networks/([^/]+)$`)
+	if matches := reURLCanonical.FindStringSubmatch(networkStr); len(matches) == 3 {
+		return fmt.Sprintf("projects/%s/locations/global/networks/%s", matches[1], matches[2])
+	}
+
+	// Case 4: Simple network name without slashes
+	if !strings.Contains(networkStr, "/") && defaultProject != "" {
+		return fmt.Sprintf("projects/%s/locations/global/networks/%s", defaultProject, networkStr)
+	}
+
+	return networkStr
+}
+
+func serviceDirectoryEndpointNetworkDiffSuppress(k, old, new string, d *schema.ResourceData) bool {
+	if old == new {
+		return true
+	}
+	oldNorm := normalizeServiceDirectoryEndpointNetwork(old, "")
+	newNorm := normalizeServiceDirectoryEndpointNetwork(new, "")
+	if oldNorm != "" && oldNorm == newNorm {
+		return true
+	}
+
+	oldNet := tpgresource.GetResourceNameFromSelfLink(old)
+	newNet := tpgresource.GetResourceNameFromSelfLink(new)
+	if oldNet == "" || newNet == "" || oldNet != newNet {
+		return false
+	}
+
+	// Project number vs project ID difference suppression
+	reProject := regexp.MustCompile(`projects/[^/]+`)
+	oldStripped := reProject.ReplaceAllString(oldNorm, "projects/equal")
+	newStripped := reProject.ReplaceAllString(newNorm, "projects/equal")
+	return oldStripped == newStripped
 }
