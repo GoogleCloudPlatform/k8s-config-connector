@@ -24,9 +24,16 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+// errorClient embeds client.Client so that downstream modules consuming KCC API packages
+// (which transitively import pkg/k8s) alongside controller-runtime >= v0.22 (where methods
+// like Apply were added to client.Client) continue to satisfy the client.Client interface.
+// Any unimplemented/future interface method called on this erroring dummy client will panic,
+// consistent with its erroring/panicking behavior for unexpected calls.
 type errorClient struct {
 	client.Client
 }
+
+var _ client.Client = &errorClient{}
 
 // Some packages, like 'gcpclient' make use of krmtotf which is tightly coupled with the controller-runtime client.
 // However, krmtotf does not actually need the client if all the resources passed in have all references resolved, etc.

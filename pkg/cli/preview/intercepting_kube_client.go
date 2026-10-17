@@ -130,7 +130,6 @@ func (c *interceptingKubeClient) NewCache(restConfig *rest.Config, opts cache.Op
 // It forwards read-only operations "upstream" to real Kubernetes.
 // It returns a BlockedKubeError on any write operations.
 type interceptingControllerRuntimeClient struct {
-	client.Client
 	parent    *interceptingKubeClient
 	typeStore *typeStore
 
@@ -266,7 +265,6 @@ func (c *interceptingControllerRuntimeClient) IsObjectNamespaced(obj runtime.Obj
 }
 
 type interceptingControllerRuntimeClientSubResourceWriter struct {
-	client.SubResourceWriter
 	client *interceptingControllerRuntimeClient
 
 	Subresource string
