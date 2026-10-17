@@ -1,0 +1,37 @@
+# In: .gemini/commands/pr/generate.toml
+# Invoked via: /pr:generate issue_number="123"
+description = "Generate and create a GitHub Pull Request based on local changes."
+
+prompt = """
+Follow these steps to generate and create a GitHub Pull Request:
+
+1. **Pre-checks:** Run `make fmt` and `make lint` to ensure the code is properly formatted and passes linting. If any errors occur, stop and report them to the user.
+2. **Context Gathering:**
+    - Identify the current branch name.
+    - Compare the current branch with the `master` branch to obtain the diff and a list of commit messages. Use `git diff master...` to see the changes introduced in the current branch.
+    - Determine the repository owner and name from `git remote -v`.
+3. **Template Preparation:** Read the content of `.github/PULL_REQUEST_TEMPLATE.md`.
+4. **PR Generation:**
+    - Generate a concise and descriptive PR title.
+    - Populate the PR template (`.github/PULL_REQUEST_TEMPLATE.md`) with high-quality content based on the analyzed changes.
+    - **Crucial:** If an issue number was provided via `{{args.issue_number}}`, ensure the PR description includes "Fixes #{{args.issue_number}}" in the "BRIEF Change description" section.
+    - **Release Note Evaluation:** Evaluate if the changes are significant enough to require a release note (e.g., new features, breaking changes, or major bug fixes). 
+        - If significant, provide a concise release note in the `release-note` block. 
+        - If not significant, write "NONE" in the `release-note` block.
+    - Ensure the final description is in Markdown format and preserves the structure and checkboxes of the template.
+5. **User Review & Confirmation:**
+...
+
+    - Use `ask_user` to ask: "Does this PR description look good?".
+    - If the user provides feedback, refine the description and repeat this step.
+7. **Creation Intent:**
+    - Once the description is approved, use `ask_user` (type='yesno') to ask: "Would you like to create the Pull Request on GitHub?".
+8. **PR Creation:**
+    - If the user confirms, invoke the `create_pull_request` tool (from GitHub MCP) with the following parameters:
+        - `owner` and `repo`: As identified in step 3.
+        - `title`: The approved PR title.
+        - `body`: The approved PR description.
+        - `head`: The current branch name.
+        - `base`: `master`.
+9. **Final Result:** After successful creation, display the PR URL to the user.
+"""
