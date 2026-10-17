@@ -329,6 +329,19 @@ func ConstructTrimmedSpecWithManagedFields(resource *Resource, jsonSchema *apiex
 	if err != nil {
 		return nil, fmt.Errorf("error constructing trimmed state with managed fields: %w", err)
 	}
+	// Ensure that required resource location/identity parameters (region, location, zone)
+	// are always preserved in the trimmed spec if they are present in the original spec.
+	// This prevents diff errors from the DCL client if those fields are omitted from managedFields.
+	for _, field := range []string{"region", "location", "zone"} {
+		if val, ok := resource.Spec[field]; ok {
+			if trimmed == nil {
+				trimmed = make(map[string]interface{})
+			}
+			if _, ok := trimmed[field]; !ok {
+				trimmed[field] = val
+			}
+		}
+	}
 	return trimmed, nil
 }
 
