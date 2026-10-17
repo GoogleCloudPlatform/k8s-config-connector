@@ -343,6 +343,8 @@ cloud.google.com/go/channel v1.17.2/go.mod h1:aT2LhnftnyfQceFql5I/mP8mIbiiJS4lWq
 cloud.google.com/go/channel v1.17.3/go.mod h1:QcEBuZLGGrUMm7kNj9IbU1ZfmJq2apotsV83hbxX7eE=
 cloud.google.com/go/channel v1.17.4/go.mod h1:QcEBuZLGGrUMm7kNj9IbU1ZfmJq2apotsV83hbxX7eE=
 cloud.google.com/go/channel v1.17.5/go.mod h1:FlpaOSINDAXgEext0KMaBq/vwpLMkkPAw9b2mApQeHc=
+cloud.google.com/go/chronicle v1.5.0 h1:JgtODif0kiGjBH72OuDsWQ77tDbC44CpcEwCIM1Uj2Q=
+cloud.google.com/go/chronicle v1.5.0/go.mod h1:gcM9NQrxT5E9kOFPWhmNVgmVXafObkqsclWDo5yb/to=
 cloud.google.com/go/cloudbuild v1.3.0/go.mod h1:WequR4ULxlqvMsjDEEEFnOG5ZSRSgWOywXYDb1vPE6U=
 cloud.google.com/go/cloudbuild v1.4.0/go.mod h1:5Qwa40LHiOXmz3386FrjrYM93rM/hdRr7b53sySrTqA=
 cloud.google.com/go/cloudbuild v1.6.0/go.mod h1:UIbc/w9QCbH12xX+ezUsgblrWv+Cv4Tw83GiSMHOn9M=
