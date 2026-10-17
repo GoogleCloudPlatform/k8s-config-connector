@@ -144,10 +144,6 @@ X-Xss-Protection: 0
     "totalCount": "1"
   },
   "status": {
-    "existingMatchingUsageInfo": {
-      "count": "0",
-      "timestamp": "2024-04-01T12:34:56.123456Z"
-    },
     "procurementStatus": "DRAFTING"
   },
   "timeWindow": {
@@ -238,6 +234,50 @@ X-Xss-Protection: 0
   "targetId": "${futureReservationID}",
   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}",
   "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&future_reservation=${futureReservationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreatedReservationsDeleteTime": "2026-11-11T00:00:00Z",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#futureReservation",
+  "name": "${futureReservationID}",
+  "planningStatus": "DRAFT",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/futureReservations/${futureReservationID}",
+  "specificReservationRequired": false,
+  "specificSkuProperties": {
+    "instanceProperties": {
+      "machineType": "n2-standard-4"
+    },
+    "totalCount": "2"
+  },
+  "status": {
+    "procurementStatus": "DRAFTING"
+  },
+  "timeWindow": {
+    "endTime": "2026-11-11T00:00:00Z",
+    "startTime": "2026-11-10T00:00:00Z"
+  },
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
