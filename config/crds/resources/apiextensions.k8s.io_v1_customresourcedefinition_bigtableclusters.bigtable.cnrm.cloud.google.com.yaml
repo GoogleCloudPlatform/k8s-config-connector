@@ -197,6 +197,13 @@ spec:
                   enable higher throughput and more consistent performance.
                 format: int32
                 type: integer
+              memoryLayers:
+                description: Optional. The memory layers configured for this cluster.
+                  An empty list disables the memory layer; a single entry enables it.
+                  At most one entry is currently supported.
+                items:
+                  type: object
+                type: array
             required:
             - instanceRef
             type: object
@@ -249,6 +256,22 @@ spec:
                   state:
                     description: Output only. The current state of the cluster.
                     type: string
+                  memoryLayers:
+                    description: Output only. The observed state of each memory layer,
+                      parallel to spec.memoryLayers.
+                    items:
+                      properties:
+                        state:
+                          description: Output only. The current state of the memory
+                            layer (STATE_NOT_KNOWN, READY, ENABLING, RESIZING, DISABLED).
+                          type: string
+                        storageSizeGib:
+                          description: Output only. The current size of the memory
+                            layer in GiB.
+                          format: int32
+                          type: integer
+                      type: object
+                    type: array
                 type: object
             type: object
         required:
