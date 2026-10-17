@@ -28,43 +28,43 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func MasterAuthorizedNetworksConfig_FromProto(mapCtx *direct.MapContext, in *pb.MasterAuthorizedNetworksConfig) *krm.MasterAuthorizedNetworksConfig {
+func MasterAuthorizedNetworksConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.MasterAuthorizedNetworksConfig) *krm.MasterAuthorizedNetworksConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krm.MasterAuthorizedNetworksConfig{}
 	out.Enabled = direct.LazyPtr(in.GetEnabled())
-	out.CIDRBlocks = direct.Slice_FromProto(mapCtx, in.CidrBlocks, MasterAuthorizedNetworksConfig_CIDRBlock_FromProto)
+	out.CIDRBlocks = direct.Slice_FromProto(mapCtx, in.CidrBlocks, MasterAuthorizedNetworksConfig_CIDRBlock_v1beta1_FromProto)
 	return out
 }
-func MasterAuthorizedNetworksConfig_ToProto(mapCtx *direct.MapContext, in *krm.MasterAuthorizedNetworksConfig) *pb.MasterAuthorizedNetworksConfig {
+func MasterAuthorizedNetworksConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.MasterAuthorizedNetworksConfig) *pb.MasterAuthorizedNetworksConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.MasterAuthorizedNetworksConfig{}
 	out.Enabled = direct.ValueOf(in.Enabled)
-	out.CidrBlocks = direct.Slice_ToProto(mapCtx, in.CIDRBlocks, MasterAuthorizedNetworksConfig_CIDRBlock_ToProto)
+	out.CidrBlocks = direct.Slice_ToProto(mapCtx, in.CIDRBlocks, MasterAuthorizedNetworksConfig_CIDRBlock_v1beta1_ToProto)
 	return out
 }
 
-func WebServerNetworkAccessControl_FromProto(mapCtx *direct.MapContext, in *pb.WebServerNetworkAccessControl) *krm.WebServerNetworkAccessControl {
+func WebServerNetworkAccessControl_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.WebServerNetworkAccessControl) *krm.WebServerNetworkAccessControl {
 	if in == nil {
 		return nil
 	}
 	out := &krm.WebServerNetworkAccessControl{}
-	out.AllowedIPRanges = direct.Slice_FromProto(mapCtx, in.AllowedIpRanges, WebServerNetworkAccessControl_AllowedIPRange_FromProto)
+	out.AllowedIPRanges = direct.Slice_FromProto(mapCtx, in.AllowedIpRanges, WebServerNetworkAccessControl_AllowedIPRange_v1beta1_FromProto)
 	return out
 }
-func WebServerNetworkAccessControl_ToProto(mapCtx *direct.MapContext, in *krm.WebServerNetworkAccessControl) *pb.WebServerNetworkAccessControl {
+func WebServerNetworkAccessControl_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.WebServerNetworkAccessControl) *pb.WebServerNetworkAccessControl {
 	if in == nil {
 		return nil
 	}
 	out := &pb.WebServerNetworkAccessControl{}
-	out.AllowedIpRanges = direct.Slice_ToProto(mapCtx, in.AllowedIPRanges, WebServerNetworkAccessControl_AllowedIPRange_ToProto)
+	out.AllowedIpRanges = direct.Slice_ToProto(mapCtx, in.AllowedIPRanges, WebServerNetworkAccessControl_AllowedIPRange_v1beta1_ToProto)
 	return out
 }
 
-func IPAllocationPolicy_FromProto(mapCtx *direct.MapContext, in *pb.IPAllocationPolicy) *krm.IPAllocationPolicy {
+func IPAllocationPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.IPAllocationPolicy) *krm.IPAllocationPolicy {
 	if in == nil {
 		return nil
 	}
@@ -76,7 +76,7 @@ func IPAllocationPolicy_FromProto(mapCtx *direct.MapContext, in *pb.IPAllocation
 	out.ServicesIPV4CIDRBlock = direct.LazyPtr(in.GetServicesIpv4CidrBlock())
 	return out
 }
-func IPAllocationPolicy_ToProto(mapCtx *direct.MapContext, in *krm.IPAllocationPolicy) *pb.IPAllocationPolicy {
+func IPAllocationPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.IPAllocationPolicy) *pb.IPAllocationPolicy {
 	if in == nil {
 		return nil
 	}
@@ -105,14 +105,14 @@ func IPAllocationPolicy_ToProto(mapCtx *direct.MapContext, in *krm.IPAllocationP
 	return out
 }
 
-func PrivateEnvironmentConfig_FromProto(mapCtx *direct.MapContext, in *pb.PrivateEnvironmentConfig) *krm.PrivateEnvironmentConfig {
+func PrivateEnvironmentConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PrivateEnvironmentConfig) *krm.PrivateEnvironmentConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krm.PrivateEnvironmentConfig{}
 	out.EnablePrivateEnvironment = direct.LazyPtr(in.GetEnablePrivateEnvironment())
 	out.EnablePrivateBuildsOnly = direct.LazyPtr(in.GetEnablePrivateBuildsOnly())
-	out.PrivateClusterConfig = PrivateClusterConfig_FromProto(mapCtx, in.GetPrivateClusterConfig())
+	out.PrivateClusterConfig = PrivateClusterConfig_v1beta1_FromProto(mapCtx, in.GetPrivateClusterConfig())
 	out.WebServerIPv4CIDRBlock = direct.LazyPtr(in.GetWebServerIpv4CidrBlock())
 	out.CloudSQLIPv4CIDRBlock = direct.LazyPtr(in.GetCloudSqlIpv4CidrBlock())
 	out.CloudComposerNetworkIPv4CIDRBlock = direct.LazyPtr(in.GetCloudComposerNetworkIpv4CidrBlock())
@@ -125,17 +125,17 @@ func PrivateEnvironmentConfig_FromProto(mapCtx *direct.MapContext, in *pb.Privat
 	if in.GetCloudComposerConnectionSubnetwork() != "" {
 		out.CloudComposerConnectionSubnetworkRef = &computev1beta1.ComputeSubnetworkRef{External: in.GetCloudComposerConnectionSubnetwork()}
 	}
-	out.NetworkingConfig = NetworkingConfig_FromProto(mapCtx, in.GetNetworkingConfig())
+	out.NetworkingConfig = NetworkingConfig_v1beta1_FromProto(mapCtx, in.GetNetworkingConfig())
 	return out
 }
-func PrivateEnvironmentConfig_ToProto(mapCtx *direct.MapContext, in *krm.PrivateEnvironmentConfig) *pb.PrivateEnvironmentConfig {
+func PrivateEnvironmentConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PrivateEnvironmentConfig) *pb.PrivateEnvironmentConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.PrivateEnvironmentConfig{}
 	out.EnablePrivateEnvironment = direct.ValueOf(in.EnablePrivateEnvironment)
 	out.EnablePrivateBuildsOnly = direct.ValueOf(in.EnablePrivateBuildsOnly)
-	out.PrivateClusterConfig = PrivateClusterConfig_ToProto(mapCtx, in.PrivateClusterConfig)
+	out.PrivateClusterConfig = PrivateClusterConfig_v1beta1_ToProto(mapCtx, in.PrivateClusterConfig)
 	out.WebServerIpv4CidrBlock = direct.ValueOf(in.WebServerIPv4CIDRBlock)
 	out.CloudSqlIpv4CidrBlock = direct.ValueOf(in.CloudSQLIPv4CIDRBlock)
 	out.CloudComposerNetworkIpv4CidrBlock = direct.ValueOf(in.CloudComposerNetworkIPv4CIDRBlock)
@@ -145,18 +145,18 @@ func PrivateEnvironmentConfig_ToProto(mapCtx *direct.MapContext, in *krm.Private
 	if in.CloudComposerConnectionSubnetworkRef != nil {
 		out.CloudComposerConnectionSubnetwork = in.CloudComposerConnectionSubnetworkRef.External
 	}
-	out.NetworkingConfig = NetworkingConfig_ToProto(mapCtx, in.NetworkingConfig)
+	out.NetworkingConfig = NetworkingConfig_v1beta1_ToProto(mapCtx, in.NetworkingConfig)
 	return out
 }
 
-func PrivateEnvironmentConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PrivateEnvironmentConfig) *krm.PrivateEnvironmentConfigObservedState {
+func PrivateEnvironmentConfigObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PrivateEnvironmentConfig) *krm.PrivateEnvironmentConfigObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.PrivateEnvironmentConfigObservedState{}
 	// MISSING: EnablePrivateEnvironment
 	// MISSING: EnablePrivateBuildsOnly
-	out.PrivateClusterConfig = PrivateClusterConfigObservedState_FromProto(mapCtx, in.GetPrivateClusterConfig())
+	out.PrivateClusterConfig = PrivateClusterConfigObservedState_v1beta1_FromProto(mapCtx, in.GetPrivateClusterConfig())
 	// MISSING: WebServerIPV4CIDRBlock
 	// MISSING: CloudSQLIPV4CIDRBlock
 	out.WebServerIPv4ReservedRange = direct.LazyPtr(in.GetWebServerIpv4ReservedRange())
@@ -167,14 +167,14 @@ func PrivateEnvironmentConfigObservedState_FromProto(mapCtx *direct.MapContext, 
 	// MISSING: NetworkingConfig
 	return out
 }
-func PrivateEnvironmentConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PrivateEnvironmentConfigObservedState) *pb.PrivateEnvironmentConfig {
+func PrivateEnvironmentConfigObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PrivateEnvironmentConfigObservedState) *pb.PrivateEnvironmentConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.PrivateEnvironmentConfig{}
 	// MISSING: EnablePrivateEnvironment
 	// MISSING: EnablePrivateBuildsOnly
-	out.PrivateClusterConfig = PrivateClusterConfigObservedState_ToProto(mapCtx, in.PrivateClusterConfig)
+	out.PrivateClusterConfig = PrivateClusterConfigObservedState_v1beta1_ToProto(mapCtx, in.PrivateClusterConfig)
 	// MISSING: WebServerIPV4CIDRBlock
 	// MISSING: CloudSQLIPV4CIDRBlock
 	out.WebServerIpv4ReservedRange = direct.ValueOf(in.WebServerIPv4ReservedRange)
@@ -185,7 +185,7 @@ func PrivateEnvironmentConfigObservedState_ToProto(mapCtx *direct.MapContext, in
 	// MISSING: NetworkingConfig
 	return out
 }
-func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.NodeConfig {
+func NodeConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.NodeConfig {
 	if in == nil {
 		return nil
 	}
@@ -205,7 +205,7 @@ func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.Nod
 		out.ServiceAccountRef = &refs.IAMServiceAccountRef{External: in.GetServiceAccount()}
 	}
 	out.Tags = in.Tags
-	out.IPAllocationPolicy = IPAllocationPolicy_FromProto(mapCtx, in.GetIpAllocationPolicy())
+	out.IPAllocationPolicy = IPAllocationPolicy_v1beta1_FromProto(mapCtx, in.GetIpAllocationPolicy())
 	out.EnableIPMasqAgent = direct.LazyPtr(in.GetEnableIpMasqAgent())
 	if in.GetComposerNetworkAttachment() != "" {
 		out.ComposerNetworkAttachmentRef = &computev1alpha1.ComputeNetworkAttachmentRef{External: in.GetComposerNetworkAttachment()}
@@ -213,7 +213,7 @@ func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.Nod
 	out.ComposerInternalIPv4CIDRBlock = direct.LazyPtr(in.ComposerInternalIpv4CidrBlock)
 	return out
 }
-func NodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeConfig) *pb.NodeConfig {
+func NodeConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NodeConfig) *pb.NodeConfig {
 	if in == nil {
 		return nil
 	}
@@ -232,7 +232,7 @@ func NodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeConfig) *pb.NodeC
 		out.ServiceAccount = in.ServiceAccountRef.External
 	}
 	out.Tags = in.Tags
-	out.IpAllocationPolicy = IPAllocationPolicy_ToProto(mapCtx, in.IPAllocationPolicy)
+	out.IpAllocationPolicy = IPAllocationPolicy_v1beta1_ToProto(mapCtx, in.IPAllocationPolicy)
 	out.EnableIpMasqAgent = direct.ValueOf(in.EnableIPMasqAgent)
 	if in.ComposerNetworkAttachmentRef != nil {
 		out.ComposerNetworkAttachment = in.ComposerNetworkAttachmentRef.External
@@ -241,7 +241,7 @@ func NodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeConfig) *pb.NodeC
 	return out
 }
 
-func WorkloadsConfig_DagProcessorResource_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadsConfig_DagProcessorResource) *krm.WorkloadsConfig_DagProcessorResource {
+func WorkloadsConfig_DagProcessorResource_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadsConfig_DagProcessorResource) *krm.WorkloadsConfig_DagProcessorResource {
 	if in == nil {
 		return nil
 	}
@@ -252,7 +252,7 @@ func WorkloadsConfig_DagProcessorResource_FromProto(mapCtx *direct.MapContext, i
 	out.Count = direct.LazyPtr(in.GetCount())
 	return out
 }
-func WorkloadsConfig_DagProcessorResource_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadsConfig_DagProcessorResource) *pb.WorkloadsConfig_DagProcessorResource {
+func WorkloadsConfig_DagProcessorResource_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadsConfig_DagProcessorResource) *pb.WorkloadsConfig_DagProcessorResource {
 	if in == nil {
 		return nil
 	}
@@ -263,7 +263,7 @@ func WorkloadsConfig_DagProcessorResource_ToProto(mapCtx *direct.MapContext, in 
 	out.Count = direct.ValueOf(in.Count)
 	return out
 }
-func WorkloadsConfig_SchedulerResource_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadsConfig_SchedulerResource) *krm.WorkloadsConfig_SchedulerResource {
+func WorkloadsConfig_SchedulerResource_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadsConfig_SchedulerResource) *krm.WorkloadsConfig_SchedulerResource {
 	if in == nil {
 		return nil
 	}
@@ -274,7 +274,7 @@ func WorkloadsConfig_SchedulerResource_FromProto(mapCtx *direct.MapContext, in *
 	out.Count = direct.LazyPtr(in.GetCount())
 	return out
 }
-func WorkloadsConfig_SchedulerResource_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadsConfig_SchedulerResource) *pb.WorkloadsConfig_SchedulerResource {
+func WorkloadsConfig_SchedulerResource_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadsConfig_SchedulerResource) *pb.WorkloadsConfig_SchedulerResource {
 	if in == nil {
 		return nil
 	}
@@ -285,7 +285,7 @@ func WorkloadsConfig_SchedulerResource_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Count = direct.ValueOf(in.Count)
 	return out
 }
-func WorkloadsConfig_TriggererResource_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadsConfig_TriggererResource) *krm.WorkloadsConfig_TriggererResource {
+func WorkloadsConfig_TriggererResource_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadsConfig_TriggererResource) *krm.WorkloadsConfig_TriggererResource {
 	if in == nil {
 		return nil
 	}
@@ -295,7 +295,7 @@ func WorkloadsConfig_TriggererResource_FromProto(mapCtx *direct.MapContext, in *
 	out.MemoryGB = direct.PtrTo(direct.Float32ToString(mapCtx, in.GetMemoryGb()))
 	return out
 }
-func WorkloadsConfig_TriggererResource_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadsConfig_TriggererResource) *pb.WorkloadsConfig_TriggererResource {
+func WorkloadsConfig_TriggererResource_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadsConfig_TriggererResource) *pb.WorkloadsConfig_TriggererResource {
 	if in == nil {
 		return nil
 	}
@@ -305,7 +305,7 @@ func WorkloadsConfig_TriggererResource_ToProto(mapCtx *direct.MapContext, in *kr
 	out.MemoryGb = direct.StringToFloat32(mapCtx, direct.ValueOf(in.MemoryGB))
 	return out
 }
-func WorkloadsConfig_WebServerResource_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadsConfig_WebServerResource) *krm.WorkloadsConfig_WebServerResource {
+func WorkloadsConfig_WebServerResource_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadsConfig_WebServerResource) *krm.WorkloadsConfig_WebServerResource {
 	if in == nil {
 		return nil
 	}
@@ -315,7 +315,7 @@ func WorkloadsConfig_WebServerResource_FromProto(mapCtx *direct.MapContext, in *
 	out.StorageGB = direct.PtrTo(direct.Float32ToString(mapCtx, in.GetStorageGb()))
 	return out
 }
-func WorkloadsConfig_WebServerResource_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadsConfig_WebServerResource) *pb.WorkloadsConfig_WebServerResource {
+func WorkloadsConfig_WebServerResource_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadsConfig_WebServerResource) *pb.WorkloadsConfig_WebServerResource {
 	if in == nil {
 		return nil
 	}
@@ -325,7 +325,7 @@ func WorkloadsConfig_WebServerResource_ToProto(mapCtx *direct.MapContext, in *kr
 	out.StorageGb = direct.StringToFloat32(mapCtx, direct.ValueOf(in.StorageGB))
 	return out
 }
-func WorkloadsConfig_WorkerResource_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadsConfig_WorkerResource) *krm.WorkloadsConfig_WorkerResource {
+func WorkloadsConfig_WorkerResource_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadsConfig_WorkerResource) *krm.WorkloadsConfig_WorkerResource {
 	if in == nil {
 		return nil
 	}
@@ -337,7 +337,7 @@ func WorkloadsConfig_WorkerResource_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.MaxCount = direct.LazyPtr(in.GetMaxCount())
 	return out
 }
-func WorkloadsConfig_WorkerResource_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadsConfig_WorkerResource) *pb.WorkloadsConfig_WorkerResource {
+func WorkloadsConfig_WorkerResource_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadsConfig_WorkerResource) *pb.WorkloadsConfig_WorkerResource {
 	if in == nil {
 		return nil
 	}
@@ -350,7 +350,7 @@ func WorkloadsConfig_WorkerResource_ToProto(mapCtx *direct.MapContext, in *krm.W
 	return out
 }
 
-func EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfig) *krm.EncryptionConfig {
+func EncryptionConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfig) *krm.EncryptionConfig {
 	if in == nil {
 		return nil
 	}
@@ -361,7 +361,7 @@ func EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConf
 	return out
 }
 
-func EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfig) *pb.EncryptionConfig {
+func EncryptionConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfig) *pb.EncryptionConfig {
 	if in == nil {
 		return nil
 	}
@@ -372,7 +372,7 @@ func EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfi
 	return out
 }
 
-func StorageConfig_ToProto(mapCtx *direct.MapContext, in *krm.StorageConfig) *pb.StorageConfig {
+func StorageConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.StorageConfig) *pb.StorageConfig {
 	if in == nil {
 		return nil
 	}
@@ -388,7 +388,7 @@ func StorageConfig_ToProto(mapCtx *direct.MapContext, in *krm.StorageConfig) *pb
 	return out
 }
 
-func StorageConfig_FromProto(mapCtx *direct.MapContext, in *pb.StorageConfig) *krm.StorageConfig {
+func StorageConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.StorageConfig) *krm.StorageConfig {
 	if in == nil {
 		return nil
 	}

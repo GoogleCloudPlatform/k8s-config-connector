@@ -29,19 +29,25 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
+
 ./generate-proto.sh
 
-# --- v1alpha1 ---
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.apphub.v1 \
   --api-version apphub.cnrm.cloud.google.com/v1alpha1 \
   --resource AppHubDiscoveredService:DiscoveredService \
   --resource AppHubDiscoveredWorkload:DiscoveredWorkload \
-  --resource AppHubServiceProjectAttachment:ServiceProjectAttachment
+  --resource AppHubServiceProjectAttachment:ServiceProjectAttachment \
+  --resource AppHubService:Service \
+  --resource AppHubWorkload:Workload \
+  --prepopulate-resource
 
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.apphub.v1 \
+  --api-version apphub.cnrm.cloud.google.com/v1alpha1 \
+  --resource AppHubService:Service \
+  --resource AppHubWorkload:Workload
 
-
-# --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.apphub.v1 \
   --api-version apphub.cnrm.cloud.google.com/v1beta1 \
@@ -50,9 +56,11 @@ ${CONTROLLERBUILDER} generate-types \
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.apphub.v1 \
-  --api-version "apphub.cnrm.cloud.google.com/v1beta1" \
+  --api-version apphub.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output \
-  --multiversion
+  --multiversion \
+  --prepopulate-resource
+
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

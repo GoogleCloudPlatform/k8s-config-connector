@@ -29,8 +29,23 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
+
 ./generate-proto.sh
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.securesourcemanager.v1 \
+  --api-version securesourcemanager.cnrm.cloud.google.com/v1alpha1 \
+  --resource SecureSourceManagerBranchRule:BranchRule \
+  --resource SecureSourceManagerHook:Hook \
+  --resource SecureSourceManagerIssue:Issue \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.securesourcemanager.v1 \
+  --api-version securesourcemanager.cnrm.cloud.google.com/v1alpha1 \
+  --resource SecureSourceManagerBranchRule:BranchRule \
+  --resource SecureSourceManagerHook:Hook \
+  --resource SecureSourceManagerIssue:Issue
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.securesourcemanager.v1 \
@@ -42,7 +57,10 @@ ${CONTROLLERBUILDER} generate-types \
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.securesourcemanager.v1 \
   --api-version securesourcemanager.cnrm.cloud.google.com/v1beta1 \
-  --include-skipped-output
+  --include-skipped-output \
+  --multiversion \
+  --prepopulate-resource
+
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

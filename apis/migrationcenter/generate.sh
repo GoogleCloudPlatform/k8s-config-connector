@@ -29,8 +29,8 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
 
+./generate-proto.sh
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.migrationcenter.v1 \
@@ -38,12 +38,21 @@ ${CONTROLLERBUILDER} generate-types \
   --include-skipped-output \
   --resource MigrationCenterGroup:Group \
   --resource MigrationCenterPreferenceSet:PreferenceSet \
-  --resource MigrationCenterSource:Source
+  --resource MigrationCenterSource:Source \
+  --resource MigrationCenterImportJob:ImportJob \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.migrationcenter.v1 \
+  --api-version migrationcenter.cnrm.cloud.google.com/v1alpha1 \
+  --resource MigrationCenterImportJob:ImportJob
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.migrationcenter.v1 \
   --api-version migrationcenter.cnrm.cloud.google.com/v1alpha1 \
-  --include-skipped-output
+  --include-skipped-output \
+  --prepopulate-resource
+
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

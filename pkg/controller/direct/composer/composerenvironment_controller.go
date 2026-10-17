@@ -149,7 +149,7 @@ func (a *EnvironmentAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	if err := ResolveEnvironmentRefs(ctx, a.k8sClient, desired); err != nil {
 		return err
 	}
-	resource := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+	resource := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -170,7 +170,7 @@ func (a *EnvironmentAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	log.V(2).Info("successfully created Environment", "name", a.id)
 
 	status := &krm.ComposerEnvironmentStatus{}
-	status.ObservedState = ComposerEnvironmentObservedState_FromProto(mapCtx, created)
+	status.ObservedState = ComposerEnvironmentObservedState_v1beta1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -186,7 +186,7 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 	if a.actual != nil && a.actual.State != composerpb.Environment_RUNNING {
 		status := &krm.ComposerEnvironmentStatus{}
-		status.ObservedState = ComposerEnvironmentObservedState_FromProto(mapCtx, a.actual)
+		status.ObservedState = ComposerEnvironmentObservedState_v1beta1_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
@@ -217,7 +217,7 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if err := ResolveEnvironmentRefs(ctx, a.k8sClient, desired); err != nil {
 		return err
 	}
-	rawDesiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+	rawDesiredPb := ComposerEnvironmentSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -279,7 +279,7 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	status := &krm.ComposerEnvironmentStatus{}
-	status.ObservedState = ComposerEnvironmentObservedState_FromProto(mapCtx, latest)
+	status.ObservedState = ComposerEnvironmentObservedState_v1beta1_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -305,7 +305,7 @@ func validateUpdatableFields(desiredPb, actualPb *composerpb.Environment) error 
 	if desiredPb == nil || actualPb == nil {
 		return nil
 	}
-	maskedActual, err := mappers.OnlySpecFields(actualPb, ComposerEnvironmentSpec_FromProto, ComposerEnvironmentSpec_ToProto)
+	maskedActual, err := mappers.OnlySpecFields(actualPb, ComposerEnvironmentSpec_v1beta1_FromProto, ComposerEnvironmentSpec_v1beta1_ToProto)
 	if err != nil {
 		return err
 	}
@@ -741,7 +741,7 @@ func (a *EnvironmentAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 
 	obj := &krm.ComposerEnvironment{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(ComposerEnvironmentSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(ComposerEnvironmentSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

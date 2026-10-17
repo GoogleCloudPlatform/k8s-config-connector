@@ -23,8 +23,95 @@
 // resource: VMwareEngineExternalAccessRule:ExternalAccessRule
 // resource: VMwareEnginePrivateCloud:PrivateCloud
 // resource: VMwareEnginePrivateConnection:PrivateConnection
+// resource: VMwareEngineCluster:Cluster
+// resource: VMwareEngineLoggingServer:LoggingServer
+// resource: VMwareEngineManagementDNSZoneBinding:ManagementDnsZoneBinding
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.vmwareengine.v1.AutoscalingSettings
+type AutoscalingSettings struct {
+	// Required. The map with autoscaling policies applied to the cluster.
+	//  The key is the identifier of the policy.
+	//  It must meet the following requirements:
+	//
+	//  * Only contains 1-63 alphanumeric characters and hyphens
+	//  * Begins with an alphabetical character
+	//  * Ends with a non-hyphen character
+	//  * Not formatted as a UUID
+	//  * Complies with [RFC
+	//  1034](https://datatracker.ietf.org/doc/html/rfc1034) (section 3.5)
+	//
+	//  Currently there map must contain only one element
+	//  that describes the autoscaling policy for compute nodes.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.autoscaling_policies
+	// +required
+	AutoscalingPolicies map[string]AutoscalingSettings_AutoscalingPolicy `json:"autoscalingPolicies,omitempty"`
+
+	// Optional. Minimum number of nodes of any type in a cluster.
+	//  If not specified the default limits apply.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.min_cluster_node_count
+	MinClusterNodeCount *int32 `json:"minClusterNodeCount,omitempty"`
+
+	// Optional. Maximum number of nodes of any type in a cluster.
+	//  If not specified the default limits apply.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.max_cluster_node_count
+	MaxClusterNodeCount *int32 `json:"maxClusterNodeCount,omitempty"`
+
+	// Optional. The minimum duration between consecutive autoscale operations.
+	//  It starts once addition or removal of nodes is fully completed.
+	//  Defaults to 30 minutes if not specified. Cool down period must be in whole
+	//  minutes (for example, 30, 31, 50, 180 minutes).
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.cool_down_period
+	CoolDownPeriod *string `json:"coolDownPeriod,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vmwareengine.v1.AutoscalingSettings.AutoscalingPolicy
+type AutoscalingSettings_AutoscalingPolicy struct {
+	// Required. The canonical identifier of the node type to add or remove.
+	//  Corresponds to the `NodeType`.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.AutoscalingPolicy.node_type_id
+	// +required
+	NodeTypeID *string `json:"nodeTypeID,omitempty"`
+
+	// Required. Number of nodes to add to a cluster during a scale-out
+	//  operation. Must be divisible by 2 for stretched clusters. During a
+	//  scale-in operation only one node (or 2 for stretched clusters) are
+	//  removed in a single iteration.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.AutoscalingPolicy.scale_out_size
+	// +required
+	ScaleOutSize *int32 `json:"scaleOutSize,omitempty"`
+
+	// Optional. Utilization thresholds pertaining to CPU utilization.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.AutoscalingPolicy.cpu_thresholds
+	CPUThresholds *AutoscalingSettings_Thresholds `json:"cpuThresholds,omitempty"`
+
+	// Optional. Utilization thresholds pertaining to amount of granted memory.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.AutoscalingPolicy.granted_memory_thresholds
+	GrantedMemoryThresholds *AutoscalingSettings_Thresholds `json:"grantedMemoryThresholds,omitempty"`
+
+	// Optional. Utilization thresholds pertaining to amount of consumed memory.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.AutoscalingPolicy.consumed_memory_thresholds
+	ConsumedMemoryThresholds *AutoscalingSettings_Thresholds `json:"consumedMemoryThresholds,omitempty"`
+
+	// Optional. Utilization thresholds pertaining to amount of consumed
+	//  storage.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.AutoscalingPolicy.storage_thresholds
+	StorageThresholds *AutoscalingSettings_Thresholds `json:"storageThresholds,omitempty"`
+}
+
+// +kcc:proto=google.cloud.vmwareengine.v1.AutoscalingSettings.Thresholds
+type AutoscalingSettings_Thresholds struct {
+	// Required. The utilization triggering the scale-out operation in percent.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.Thresholds.scale_out
+	// +required
+	ScaleOut *int32 `json:"scaleOut,omitempty"`
+
+	// Required. The utilization triggering the scale-in operation in percent.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.AutoscalingSettings.Thresholds.scale_in
+	// +required
+	ScaleIn *int32 `json:"scaleIn,omitempty"`
+}
 
 // +kcc:proto=google.cloud.vmwareengine.v1.NetworkPolicy.NetworkService
 type NetworkPolicy_NetworkService struct {
@@ -39,6 +126,27 @@ type VmwareEngineNetwork_VPCNetwork struct {
 }
 */
 
+/* unreachable type HcxObservedState
+// +kcc:observedstate:proto=google.cloud.vmwareengine.v1.Hcx
+type HcxObservedState struct {
+	// Internal IP address of the appliance.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.Hcx.internal_ip
+	InternalIP *string `json:"internalIP,omitempty"`
+
+	// Version of the appliance.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.Hcx.version
+	Version *string `json:"version,omitempty"`
+
+	// Output only. The state of the appliance.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.Hcx.state
+	State *string `json:"state,omitempty"`
+
+	// Fully qualified domain name of the appliance.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.Hcx.fqdn
+	FQDN *string `json:"fqdn,omitempty"`
+}
+*/
+
 // +kcc:observedstate:proto=google.cloud.vmwareengine.v1.NetworkPolicy.NetworkService
 type NetworkPolicy_NetworkServiceObservedState struct {
 	// Output only. State of the service. New values may be added to this enum
@@ -46,6 +154,48 @@ type NetworkPolicy_NetworkServiceObservedState struct {
 	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkPolicy.NetworkService.state
 	State *string `json:"state,omitempty"`
 }
+
+/* unreachable type NsxObservedState
+// +kcc:observedstate:proto=google.cloud.vmwareengine.v1.Nsx
+type NsxObservedState struct {
+	// Internal IP address of the appliance.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.Nsx.internal_ip
+	InternalIP *string `json:"internalIP,omitempty"`
+
+	// Version of the appliance.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.Nsx.version
+	Version *string `json:"version,omitempty"`
+
+	// Output only. The state of the appliance.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.Nsx.state
+	State *string `json:"state,omitempty"`
+
+	// Fully qualified domain name of the appliance.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.Nsx.fqdn
+	FQDN *string `json:"fqdn,omitempty"`
+}
+*/
+
+/* unreachable type VcenterObservedState
+// +kcc:observedstate:proto=google.cloud.vmwareengine.v1.Vcenter
+type VcenterObservedState struct {
+	// Internal IP address of the appliance.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.Vcenter.internal_ip
+	InternalIP *string `json:"internalIP,omitempty"`
+
+	// Version of the appliance.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.Vcenter.version
+	Version *string `json:"version,omitempty"`
+
+	// Output only. The state of the appliance.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.Vcenter.state
+	State *string `json:"state,omitempty"`
+
+	// Fully qualified domain name of the appliance.
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.Vcenter.fqdn
+	FQDN *string `json:"fqdn,omitempty"`
+}
+*/
 
 // +kcc:observedstate:proto=google.cloud.vmwareengine.v1.VmwareEngineNetwork.VpcNetwork
 type VmwareEngineNetwork_VPCNetworkObservedState struct {
