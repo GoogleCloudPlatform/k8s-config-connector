@@ -30,22 +30,17 @@ fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-# We need a newer googleapis to get BackendAuthenticationConfig, AuthzPolicy, and TLSInspectionPolicy
 PROTO_SHA="cdc919ff596e263f2cc55a9780d2f74633da1ced"
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 
 ./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
 
 # --- v1alpha1 ---
-
-
-# Run for google.cloud.networksecurity.v1 resources
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.networksecurity.v1 \
   --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
   --resource NetworkSecurityBackendAuthenticationConfig:BackendAuthenticationConfig \
   --resource NetworkSecurityInterceptDeployment:InterceptDeployment \
-  --resource NetworkSecurityInterceptDeploymentGroup:InterceptDeploymentGroup \
   --resource NetworkSecurityAddressGroup:AddressGroup \
   --resource NetworkSecurityInterceptEndpointGroup:InterceptEndpointGroup \
   --resource NetworkSecurityMirroringDeployment:MirroringDeployment \
@@ -57,45 +52,45 @@ ${CONTROLLERBUILDER} generate-types \
   --resource NetworkSecuritySecurityProfileGroup:SecurityProfileGroup \
   --resource NetworkSecurityFirewallEndpointAssociation:FirewallEndpointAssociation \
   --resource NetworkSecurityGatewaySecurityPolicy:GatewaySecurityPolicy \
+  --resource NetworkSecurityGatewaySecurityPolicyRule:GatewaySecurityPolicyRule \
   --resource NetworkSecurityTLSInspectionPolicy:TlsInspectionPolicy \
   --resource NetworkSecurityAuthzPolicy:AuthzPolicy \
   --resource NetworkSecurityFirewallEndpoint:FirewallEndpoint \
   --resource NetworkSecurityDNSThreatDetector:DnsThreatDetector \
   --resource NetworkSecurityURLList:UrlList \
-  --proto-source-path ${PROTO_OUT}
+  --proto-source-path ${PROTO_OUT} \
+  --prepopulate-resource
 
-# Run for google.cloud.networksecurity.v1alpha1 resources (PartnerSSERealm)
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.networksecurity.v1alpha1 \
   --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
   --resource NetworkSecurityPartnerSSERealm:PartnerSSERealm \
   --resource NetworkSecurityPartnerSSEGateway:PartnerSSEGateway \
   --resource NetworkSecurityTLSInspectionPolicy:TlsInspectionPolicy \
+  --prune-unused-types=false \
+  --proto-source-path ${PROTO_OUT} \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.networksecurity.v1 \
+  --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
+  --resource NetworkSecurityGatewaySecurityPolicyRule:GatewaySecurityPolicyRule \
   --proto-source-path ${PROTO_OUT}
 
-# Generate mappers for networksecurity v1alpha1
-
-
 # --- v1beta1 ---
-
-
 ${CONTROLLERBUILDER} generate-types \
-    --service google.cloud.networksecurity.v1beta1 \
-    --api-version networksecurity.cnrm.cloud.google.com/v1beta1 \
-    --resource NetworkSecurityAuthorizationPolicy:AuthorizationPolicy \
-    --resource NetworkSecurityClientTLSPolicy:ClientTlsPolicy \
-    --proto-source-path ${PROTO_OUT}
+  --service google.cloud.networksecurity.v1beta1 \
+  --api-version networksecurity.cnrm.cloud.google.com/v1beta1 \
+  --resource NetworkSecurityAuthorizationPolicy:AuthorizationPolicy \
+  --resource NetworkSecurityClientTLSPolicy:ClientTlsPolicy \
+  --proto-source-path ${PROTO_OUT}
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.networksecurity.v1,google.cloud.networksecurity.v1beta1 \
   --api-version "networksecurity.cnrm.cloud.google.com/v1beta1" \
   --proto-source-path ${PROTO_OUT} \
-  --multiversion
-
-
-
-
-${REPO_ROOT}/dev/tasks/fix-gofmt
+  --multiversion \
+  --prepopulate-resource
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

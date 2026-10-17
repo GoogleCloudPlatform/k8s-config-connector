@@ -29,7 +29,7 @@ func init() {
 
 func secureSourceManagerRepositoryFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Repository{},
-		SecureSourceManagerRepositorySpec_FromProto, SecureSourceManagerRepositorySpec_ToProto,
+		SecureSourceManagerRepositorySpec_v1beta1_FromProto, SecureSourceManagerRepositorySpec_v1beta1_ToProto,
 		SecureSourceManagerRepositoryObservedState_FromProto, SecureSourceManagerRepositoryObservedState_ToProto,
 	)
 

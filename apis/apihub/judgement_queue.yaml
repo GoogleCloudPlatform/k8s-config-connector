@@ -1,0 +1,258 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//apihub.googleapis.com/projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}" contains ancestor segment(s) plugins/{plugin} with no matching reference or field on APIHubPluginInstanceSpec
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/plugins/{plugin}, and no PluginRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.actions[].actionID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.actions[].curationConfig.customCuration.curation
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/curations/{curation}"
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.actions[].curationConfig.customCuration.curation
+    reason: possible-reference-by-sibling
+    detail: the name matches APIHubCuration, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.actions[].serviceAccount
+    reason: possible-reference-by-description
+    detail: the field name ends in serviceAccount
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.additionalConfig
+    reason: message-map-derived
+    detail: derived as map[string]ConfigVariable from proto google.cloud.apihub.v1.ConfigVariable; verify Go type and mapping
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.additionalConfig.KEY.secretValue
+    reason: possible-reference-by-name
+    detail: SecretManagerSecretVersionRef
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.additionalConfig.KEY.secretValue.secretVersion
+    reason: possible-reference-by-description-loose
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.authConfig.apiKeyConfig.apiKey
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/secrets/{secrete}/versions/{version}"
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.authConfig.apiKeyConfig.apiKey.secretVersion
+    reason: possible-reference-by-description-loose
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.authConfig.googleServiceAccountConfig.serviceAccount
+    reason: possible-reference
+    detail: the proto marks this field as a reference to iam.googleapis.com/ServiceAccount (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.authConfig.googleServiceAccountConfig.serviceAccount
+    reason: possible-reference-by-description
+    detail: the field name ends in serviceAccount
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.authConfig.oauth2ClientCredentialsConfig.clientID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.authConfig.oauth2ClientCredentialsConfig.clientSecret
+    reason: possible-reference-by-name
+    detail: SecretManagerSecretVersionRef
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.authConfig.oauth2ClientCredentialsConfig.clientSecret.secretVersion
+    reason: possible-reference-by-description-loose
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.authConfig.userPasswordConfig.password
+    reason: sensitive-field
+    detail: the name says this holds a password, and it is generated as a plain value. Leave this open until we settle how new Kinds take secrets
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.authConfig.userPasswordConfig.password.secretVersion
+    reason: possible-reference-by-description-loose
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/plugins/{plugin}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: APIHubPluginInstance
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.sourceProjectID
+    reason: possible-reference-by-name
+    detail: ProjectRef
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//apihub.googleapis.com/projects/{project}/locations/{location}/apis/{api}/versions/{version}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/apis/{api}/versions/{version}" contains ancestor segment(s) apis/{api} with no matching reference or field on APIHubVersionSpec
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.accreditation
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/attributes/system-accreditation"
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.accreditation.uriValues
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.apiRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to APIHubAPIRef, read from the apis segment of projects/{project}/locations/{location}/apis/{api}/versions/{version}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributes
+    reason: message-map-derived
+    detail: derived as map[string]AttributeValues from proto google.cloud.apihub.v1.AttributeValues; verify Go type and mapping
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributes
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/attributes/{attribute}"
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.attributes.KEY.uriValues
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.compliance
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/attributes/system-compliance"
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.compliance.uriValues
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.deployments
+    reason: possible-reference
+    detail: the proto marks this field as a reference to apihub.googleapis.com/Deployment (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.deployments
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/deployments/{deployment}"
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.deployments
+    reason: possible-reference-by-sibling
+    detail: the name matches APIHubDeployment, a resource this service declares; confirm whether it should be a reference
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.lifecycle
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/attributes/system-lifecycle"
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.lifecycle.uriValues
+    reason: reference-not-representable
+    detail: 'gcs-path-decomposable-as-bucketref-plus-path: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/apis/{api}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.selectedDeployment
+    reason: possible-reference
+    detail: the proto marks this field as a reference to apihub.googleapis.com/Deployment (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: APIHubVersion
+    group: apihub.cnrm.cloud.google.com
+    field: .spec.selectedDeployment
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project}/locations/{location}/deployments/{deployment}"
+    status: open

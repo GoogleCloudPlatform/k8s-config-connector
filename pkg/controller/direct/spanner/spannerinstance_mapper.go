@@ -118,3 +118,11 @@ func SpannerInstanceStatus_FromProto(mapCtx *direct.MapContext, in *pb.Instance)
 	}
 	return out
 }
+
+func SpannerInstanceSpec_Config_ToProto(mapCtx *direct.MapContext, in string) string {
+	return in
+}
+
+func SpannerInstanceSpec_DisplayName_ToProto(mapCtx *direct.MapContext, in string) string {
+	return in
+}

@@ -52,7 +52,7 @@ func SecureSourceManagerRepositoryObservedState_FromProto(mapCtx *direct.MapCont
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.Uid = direct.LazyPtr(in.Uid)
 	out.Etag = direct.LazyPtr(in.Etag)
-	out.URIs = Repository_UrIsObservedState_FromProto(mapCtx, in.GetUris())
+	out.URIs = Repository_UrIsObservedState_v1beta1_FromProto(mapCtx, in.GetUris())
 	return out
 }
 func SecureSourceManagerRepositoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecureSourceManagerRepositoryObservedState) *pb.Repository {
@@ -64,7 +64,7 @@ func SecureSourceManagerRepositoryObservedState_ToProto(mapCtx *direct.MapContex
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.Uid = direct.ValueOf(in.Uid)
 	out.Etag = direct.ValueOf(in.Etag)
-	out.Uris = Repository_UrIsObservedState_ToProto(mapCtx, in.URIs)
+	out.Uris = Repository_UrIsObservedState_v1beta1_ToProto(mapCtx, in.URIs)
 	return out
 }
 func SecureSourceManagerRepositorySpec_InstanceRef_FromProto(mapCtx *direct.MapContext, in string) *krm.SecureSourceManagerInstanceRef {
@@ -74,7 +74,7 @@ func SecureSourceManagerRepositorySpec_InstanceRef_FromProto(mapCtx *direct.MapC
 	return &krm.SecureSourceManagerInstanceRef{External: in}
 }
 
-func Instance_PrivateConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_PrivateConfig) *krm.Instance_PrivateConfig {
+func Instance_PrivateConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance_PrivateConfig) *krm.Instance_PrivateConfig {
 	if in == nil {
 		return nil
 	}
@@ -86,7 +86,7 @@ func Instance_PrivateConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance
 	return out
 }
 
-func Instance_PrivateConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PrivateConfig) *pb.Instance_PrivateConfig {
+func Instance_PrivateConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PrivateConfig) *pb.Instance_PrivateConfig {
 	if in == nil {
 		return nil
 	}

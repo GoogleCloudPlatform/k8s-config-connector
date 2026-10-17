@@ -32,22 +32,13 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 PROTO_SHA="cdc919ff596e263f2cc55a9780d2f74633da1ced"
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
-
-# Unset SKIP_GENERATE_PROTOS so this specific script fetches the newer proto
-OLD_SKIP_GENERATE_PROTOS="${SKIP_GENERATE_PROTOS:-}"
-unset SKIP_GENERATE_PROTOS
-
 ./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
-
-# Restore SKIP_GENERATE_PROTOS
-if [[ -n "${OLD_SKIP_GENERATE_PROTOS}" ]]; then
-  export SKIP_GENERATE_PROTOS="${OLD_SKIP_GENERATE_PROTOS}"
-fi
 
 ${CONTROLLERBUILDER} generate-types \
   --proto-source-path ${PROTO_OUT} \
   --service google.cloud.apihub.v1 \
   --api-version apihub.cnrm.cloud.google.com/v1alpha1 \
+  --prune-unused-types=false \
   --resource APIHubDeployment:Deployment \
   --resource APIHubAPI:Api \
   --resource APIHubRuntimeProjectAttachment:RuntimeProjectAttachment \
@@ -57,16 +48,23 @@ ${CONTROLLERBUILDER} generate-types \
   --resource APIHubAttribute:Attribute \
   --resource APIHubDependency:Dependency \
   --resource APIHubCuration:Curation \
-  --prune-unused-types=false
+  --resource APIHubPluginInstance:PluginInstance \
+  --resource APIHubVersion:Version \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.apihub.v1 \
+  --api-version apihub.cnrm.cloud.google.com/v1alpha1 \
+  --resource APIHubPluginInstance:PluginInstance \
+  --resource APIHubVersion:Version
 
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \
   --service google.cloud.apihub.v1 \
-  --api-version apihub.cnrm.cloud.google.com/v1alpha1
+  --api-version apihub.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource
 
-
-
-# Format generated code
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

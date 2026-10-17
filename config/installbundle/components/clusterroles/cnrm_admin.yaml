@@ -416,6 +416,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - chronicle.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - cloudasset.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1256,6 +1268,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - jobs.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - kms.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1640,6 +1664,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - retail.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - run.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1845,6 +1881,18 @@ rules:
   - delete
 - apiGroups:
   - tags.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - telcoautomation.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

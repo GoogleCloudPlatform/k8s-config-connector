@@ -20,8 +20,27 @@
 // resource: LiveStreamAsset:Asset
 // resource: LiveStreamChannel:Channel
 // resource: LiveStreamInput:Input
+// resource: LiveStreamDVRSession:DvrSession
 
 package v1alpha1
+
+/* unreachable type Asset_ImageAsset
+// +kcc:proto=google.cloud.video.livestream.v1.Asset.ImageAsset
+type Asset_ImageAsset struct {
+	// Cloud Storage URI of the image. The format is `gs://my-bucket/my-object`.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.Asset.ImageAsset.uri
+	URI *string `json:"uri,omitempty"`
+}
+*/
+
+/* unreachable type Asset_VideoAsset
+// +kcc:proto=google.cloud.video.livestream.v1.Asset.VideoAsset
+type Asset_VideoAsset struct {
+	// Cloud Storage URI of the video. The format is `gs://my-bucket/my-object`.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.Asset.VideoAsset.uri
+	URI *string `json:"uri,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.video.livestream.v1.AudioFormat
 type AudioFormat struct {
@@ -138,6 +157,23 @@ type Channel_Output struct {
 	URI *string `json:"uri,omitempty"`
 }
 
+// +kcc:proto=google.cloud.video.livestream.v1.DvrSession.DvrManifest
+type DvrSession_DvrManifest struct {
+	// Required. A unique key that identifies a manifest config in the parent
+	//  channel. This key is the same as `channel.manifests.key` for the selected
+	//  manifest.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.DvrSession.DvrManifest.manifest_key
+	// +required
+	ManifestKey *string `json:"manifestKey,omitempty"`
+}
+
+// +kcc:proto=google.cloud.video.livestream.v1.DvrSession.DvrWindow
+type DvrSession_DvrWindow struct {
+	// A time interval in the form of a tuple of Unix epoch time.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.DvrSession.DvrWindow.time_interval
+	TimeInterval *TimeInterval `json:"timeInterval,omitempty"`
+}
+
 // +kcc:proto=google.cloud.video.livestream.v1.ElementaryStream
 type ElementaryStream struct {
 	// A unique key for this elementary stream. The key must be 1-63
@@ -216,6 +252,17 @@ type Encryption_MpegCommonEncryption struct {
 	// +kcc:proto:field=google.cloud.video.livestream.v1.Encryption.MpegCommonEncryption.scheme
 	Scheme *string `json:"scheme,omitempty"`
 }
+
+/* unreachable type Input_SecurityRule
+// +kcc:proto=google.cloud.video.livestream.v1.Input.SecurityRule
+type Input_SecurityRule struct {
+	// At least one ip range must match unless none specified. The IP range is
+	//  defined by CIDR block: for example, `192.0.1.0/24` for a range and
+	//  `192.0.1.0/32` for a single IP address.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.Input.SecurityRule.ip_ranges
+	IPRanges []string `json:"ipRanges,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.video.livestream.v1.InputAttachment.AutomaticFailover
 type InputAttachment_AutomaticFailover struct {
@@ -376,6 +423,67 @@ type NormalizedResolution struct {
 	H *float64 `json:"h,omitempty"`
 }
 
+/* unreachable type PreprocessingConfig_Audio
+// +kcc:proto=google.cloud.video.livestream.v1.PreprocessingConfig.Audio
+type PreprocessingConfig_Audio struct {
+	// Specify audio loudness normalization in loudness units relative to full
+	//  scale (LUFS). Enter a value between -24 and 0 according to the following:
+	//
+	//  - -24 is the Advanced Television Systems Committee (ATSC A/85)
+	//  - -23 is the EU R128 broadcast standard
+	//  - -19 is the prior standard for online mono audio
+	//  - -18 is the ReplayGain standard
+	//  - -16 is the prior standard for stereo audio
+	//  - -14 is the new online audio standard recommended by Spotify, as well as
+	//  Amazon Echo
+	//  - 0 disables normalization. The default is 0.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.PreprocessingConfig.Audio.lufs
+	Lufs *float64 `json:"lufs,omitempty"`
+}
+*/
+
+/* unreachable type PreprocessingConfig_Crop
+// +kcc:proto=google.cloud.video.livestream.v1.PreprocessingConfig.Crop
+type PreprocessingConfig_Crop struct {
+	// The number of pixels to crop from the top. The default is 0.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.PreprocessingConfig.Crop.top_pixels
+	TopPixels *int32 `json:"topPixels,omitempty"`
+
+	// The number of pixels to crop from the bottom. The default is 0.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.PreprocessingConfig.Crop.bottom_pixels
+	BottomPixels *int32 `json:"bottomPixels,omitempty"`
+
+	// The number of pixels to crop from the left. The default is 0.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.PreprocessingConfig.Crop.left_pixels
+	LeftPixels *int32 `json:"leftPixels,omitempty"`
+
+	// The number of pixels to crop from the right. The default is 0.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.PreprocessingConfig.Crop.right_pixels
+	RightPixels *int32 `json:"rightPixels,omitempty"`
+}
+*/
+
+/* unreachable type PreprocessingConfig_Pad
+// +kcc:proto=google.cloud.video.livestream.v1.PreprocessingConfig.Pad
+type PreprocessingConfig_Pad struct {
+	// The number of pixels to add to the top. The default is 0.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.PreprocessingConfig.Pad.top_pixels
+	TopPixels *int32 `json:"topPixels,omitempty"`
+
+	// The number of pixels to add to the bottom. The default is 0.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.PreprocessingConfig.Pad.bottom_pixels
+	BottomPixels *int32 `json:"bottomPixels,omitempty"`
+
+	// The number of pixels to add to the left. The default is 0.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.PreprocessingConfig.Pad.left_pixels
+	LeftPixels *int32 `json:"leftPixels,omitempty"`
+
+	// The number of pixels to add to the right. The default is 0.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.PreprocessingConfig.Pad.right_pixels
+	RightPixels *int32 `json:"rightPixels,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.video.livestream.v1.RetentionConfig
 type RetentionConfig struct {
 	// The minimum duration for which the output files from the channel will
@@ -474,6 +582,17 @@ type TextStream struct {
 	//  - `cea708`
 	// +kcc:proto:field=google.cloud.video.livestream.v1.TextStream.codec
 	Codec *string `json:"codec,omitempty"`
+}
+
+// +kcc:proto=google.cloud.video.livestream.v1.TimeInterval
+type TimeInterval struct {
+	// Optional. The start time of the interval.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.TimeInterval.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Optional. The end time of the interval.
+	// +kcc:proto:field=google.cloud.video.livestream.v1.TimeInterval.end_time
+	EndTime *string `json:"endTime,omitempty"`
 }
 
 // +kcc:proto=google.cloud.video.livestream.v1.TimecodeConfig
@@ -658,4 +777,15 @@ type TimeZone struct {
 	// Optional. IANA Time Zone Database version number, e.g. "2019a".
 	// +kcc:proto:field=google.type.TimeZone.version
 	Version *string `json:"version,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.video.livestream.v1.DvrSession.DvrManifest
+type DvrSession_DvrManifestObservedState struct {
+	// Output only. The output URI of the DVR manifest. The DVR output will be
+	//  placed in a directory named `dvr/dvrSessionId/` under the parent
+	//  channel's output uri. Format:
+	//  {channel.output.uri}/dvr/{dvrSessionId}/{channel.manifests.fileName}
+	//  Example: gs://my-bucket/outputs/dvr/my-dvr-session/main.m3u8
+	// +kcc:proto:field=google.cloud.video.livestream.v1.DvrSession.DvrManifest.output_uri
+	OutputURI *string `json:"outputURI,omitempty"`
 }

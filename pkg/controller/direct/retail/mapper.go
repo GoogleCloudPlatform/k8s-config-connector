@@ -1,0 +1,57 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package retail
+
+import (
+	pb "cloud.google.com/go/retail/apiv2/retailpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/retail/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+)
+
+func SearchRequest_DynamicFacetSpec_FromProto(mapCtx *direct.MapContext, in *pb.SearchRequest_DynamicFacetSpec) *krm.SearchRequest_DynamicFacetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SearchRequest_DynamicFacetSpec{}
+	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	return out
+}
+
+func SearchRequest_DynamicFacetSpec_ToProto(mapCtx *direct.MapContext, in *krm.SearchRequest_DynamicFacetSpec) *pb.SearchRequest_DynamicFacetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SearchRequest_DynamicFacetSpec{}
+	out.Mode = direct.Enum_ToProto[pb.SearchRequest_DynamicFacetSpec_Mode](mapCtx, in.Mode)
+	return out
+}
+
+func SearchRequest_PersonalizationSpec_FromProto(mapCtx *direct.MapContext, in *pb.SearchRequest_PersonalizationSpec) *krm.SearchRequest_PersonalizationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SearchRequest_PersonalizationSpec{}
+	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	return out
+}
+
+func SearchRequest_PersonalizationSpec_ToProto(mapCtx *direct.MapContext, in *krm.SearchRequest_PersonalizationSpec) *pb.SearchRequest_PersonalizationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SearchRequest_PersonalizationSpec{}
+	out.Mode = direct.Enum_ToProto[pb.SearchRequest_PersonalizationSpec_Mode](mapCtx, in.Mode)
+	return out
+}

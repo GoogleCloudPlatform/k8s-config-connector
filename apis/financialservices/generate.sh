@@ -29,16 +29,34 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
+
 ./generate-proto.sh
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.financialservices.v1 \
   --api-version financialservices.cnrm.cloud.google.com/v1alpha1 \
-  --resource FinancialServicesInstance:Instance
+  --resource FinancialServicesInstance:Instance \
+  --resource FinancialServicesBacktestResult:BacktestResult \
+  --resource FinancialServicesDataset:Dataset \
+  --resource FinancialServicesEngineConfig:EngineConfig \
+  --resource FinancialServicesModel:Model \
+  --resource FinancialServicesPredictionResult:PredictionResult \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.financialservices.v1 \
+  --api-version financialservices.cnrm.cloud.google.com/v1alpha1 \
+  --resource FinancialServicesBacktestResult:BacktestResult \
+  --resource FinancialServicesDataset:Dataset \
+  --resource FinancialServicesEngineConfig:EngineConfig \
+  --resource FinancialServicesModel:Model \
+  --resource FinancialServicesPredictionResult:PredictionResult
 
 ${CONTROLLERBUILDER} generate-mapper \
-  --service google.cloud.financialservices.v1 \
-  --api-version financialservices.cnrm.cloud.google.com/v1alpha1
+  --service google.cloud.financialservices.v1,google.type \
+  --api-version financialservices.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource
+
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

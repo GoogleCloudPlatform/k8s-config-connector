@@ -49,6 +49,15 @@ ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dataform.v1 \
   --api-version dataform.cnrm.cloud.google.com/v1alpha1 \
   --resource DataformTeamFolder:TeamFolder \
+  --resource DataformReleaseConfig:ReleaseConfig \
+  --proto-source-path ${PROTO_OUT} \
+  --prune-unused-types=false \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.dataform.v1 \
+  --api-version dataform.cnrm.cloud.google.com/v1alpha1 \
+  --resource DataformReleaseConfig:ReleaseConfig \
   --proto-source-path ${PROTO_OUT}
 
 
@@ -66,7 +75,8 @@ ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dataform.v1,google.cloud.dataform.v1beta1 \
   --api-version "dataform.cnrm.cloud.google.com/v1beta1" \
   --proto-source-path ${PROTO_OUT} \
-  --multiversion
+  --multiversion \
+  --prepopulate-resource
 
 cd "${REPO_ROOT}"
 dev/tasks/generate-crds
