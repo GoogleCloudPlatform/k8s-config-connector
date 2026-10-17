@@ -49,3 +49,14 @@
   3. Updated `mirroringendpointgroup` and new `mirroringdeploymentgroup` to use `NewMirroringRESTClient` with `RESTClientOptions()`.
 - **Impact**: Enables smooth multi-network Packet Mirroring setups and stable golden file recording for Network Security mirroring resources.
 
+### [2026-10-17] Direct Controller & E2E Testing for NetworkSecurityInterceptDeploymentGroup
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `NetworkSecurityInterceptDeploymentGroup` (Issue #14052).
+- **Details**:
+  1. Utilized GAPIC REST client `networksecurity.NewInterceptRESTClient` with `RESTClientOptions()`.
+  2. Registered `NetworkSecurityInterceptDeploymentGroup` in `pkg/controller/resourceconfig/static_config.go` with `ReconcilerTypeDirect`.
+  3. Created minimal and maximal fixtures referencing a `ComputeNetwork` dependency.
+  4. Successfully recorded golden files against live GCP with `RECORD_AUDIT_PROBE=1 ./hack/record-gcp` in project `cnrm-barni-4`.
+  5. Verified audit logs showing `CreateInterceptDeploymentGroup`, `UpdateInterceptDeploymentGroup`, and `DeleteInterceptDeploymentGroup` calls.
+  6. Verified fuzzer with `fuzz-roundtrippers` presubmit.
+- **Impact**: Fully implements direct reconciliation, round-trip fuzz testing, and real GCP E2E validation for `NetworkSecurityInterceptDeploymentGroup`.
+
