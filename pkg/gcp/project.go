@@ -50,3 +50,30 @@ func getGCloudDefaultProjectID() (string, error) {
 	}
 	return strings.TrimSpace(string(bytes)), nil
 }
+
+// FormatServiceAccountEmail formats the service account email address according to Google Cloud IAM conventions.
+// For standard projects (e.g. "my-project"), this produces "<sa-name>@<project-id>.iam.gserviceaccount.com".
+// For partitioned sovereign projects (e.g. "partition:sample-project" or "fr0:project-id"),
+// colons are illegal in email domains (RFC 5322), so IAM reverses the partition prefix into a subdomain:
+// "<sa-name>@<project-name>.<partition>.iam.gserviceaccount.com" (e.g. "kcc-test-sa@sample-project.partition.iam.gserviceaccount.com").
+func FormatServiceAccountEmail(projectID, saName string) string {
+	if strings.Contains(projectID, ":") {
+		parts := strings.SplitN(projectID, ":", 2)
+		partition := parts[0]
+		name := parts[1]
+		return fmt.Sprintf("%s@%s.%s.iam.gserviceaccount.com", saName, name, partition)
+	}
+	return fmt.Sprintf("%s@%s.iam.gserviceaccount.com", saName, projectID)
+}
+
+// FormatWorkloadPool formats the Workload Identity pool name for a given project ID.
+// For standard projects, it produces "<project-id>.svc.id.goog".
+// For partitioned projects (e.g. "partition:sample-project"), it produces "<project-name>.<partition>.svc.id.goog".
+func FormatWorkloadPool(projectID string) string {
+	if strings.Contains(projectID, ":") {
+		parts := strings.SplitN(projectID, ":", 2)
+		return fmt.Sprintf("%s.%s.svc.id.goog", parts[1], parts[0])
+	}
+	return fmt.Sprintf("%s.svc.id.goog", projectID)
+}
+
