@@ -110,3 +110,7 @@ func (obj *LicenseManagerConfiguration) GetIdentity(ctx context.Context, reader 
 
 	return specIdentity, nil
 }
+
+func (obj *LicenseManagerConfiguration) ExternalIdentifier() *string {
+	return obj.Status.ExternalRef
+}
