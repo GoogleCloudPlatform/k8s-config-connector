@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
@@ -63,6 +64,10 @@ type Config struct {
 
 	// EnableMetricsTransport enables automatic wrapping of HTTP clients with metrics transport
 	EnableMetricsTransport bool
+
+	// UniverseDomain is the Google Cloud Universe domain to target (e.g. custom.universe.goog).
+	// If empty, it falls back to the GOOGLE_CLOUD_UNIVERSE_DOMAIN environment variable or googleapis.com.
+	UniverseDomain string
 }
 
 var DefaultConfig = NewConfig()
@@ -87,6 +92,7 @@ func NewConfig() Config {
 			// read Google Drive files.
 			"https://www.googleapis.com/auth/drive.readonly",
 		),
+		UniverseDomain: os.Getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN"),
 	}
 }
 
@@ -113,6 +119,14 @@ func New(ctx context.Context, config Config) (*tfschema.Provider, error) {
 	cfgMap["scopes"] = config.Scopes
 	cfgMap["user_project_override"] = config.UserProjectOverride
 	cfgMap["billing_project"] = config.BillingProject
+
+	universeDomain := config.UniverseDomain
+	if universeDomain == "" {
+		universeDomain = os.Getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
+	}
+	if universeDomain != "" {
+		cfgMap["universe_domain"] = universeDomain
+	}
 
 	schema := tfschema.InternalMap(googleProvider.Schema).CoreConfigSchema()
 	cfg := terraform.NewResourceConfigShimmed(krmtotf.MapToCtyVal(cfgMap, schema.ImpliedType()), schema)
