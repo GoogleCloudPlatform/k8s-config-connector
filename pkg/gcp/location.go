@@ -26,16 +26,39 @@ func LocationToRegion(location string) (string, error) {
 	if !IsLocationZonal(location) {
 		return "", fmt.Errorf("provided location is neither regional nor zonal")
 	}
-	s := strings.Split(location, "-")
-	return s[0] + "-" + s[1], nil
+	lastHyphen := strings.LastIndex(location, "-")
+	return location[:lastHyphen], nil
 }
 
 func IsLocationRegional(location string) bool {
-	return len(strings.Split(location, "-")) == 2
+	if location == "" || location == Global {
+		return false
+	}
+	parts := strings.Split(location, "-")
+	if len(parts) < 2 {
+		return false
+	}
+	lastPart := parts[len(parts)-1]
+	// A zonal location ends in a single lowercase letter suffix (e.g. -a, -b, -c).
+	// A regional location does not end in a single-letter zone suffix.
+	if len(lastPart) == 1 && lastPart[0] >= 'a' && lastPart[0] <= 'z' {
+		return false
+	}
+	return true
 }
 
 func IsLocationZonal(location string) bool {
-	return len(strings.Split(location, "-")) == 3
+	if location == "" || location == Global {
+		return false
+	}
+	parts := strings.Split(location, "-")
+	// A zonal location must have a region prefix plus a single lowercase letter zone suffix.
+	// Minimum format is <prefix>-<region>-<zone> (at least 3 parts for standard, 4 for sovereign with u- prefix).
+	if len(parts) < 3 {
+		return false
+	}
+	lastPart := parts[len(parts)-1]
+	return len(lastPart) == 1 && lastPart[0] >= 'a' && lastPart[0] <= 'z'
 }
 
 const (
