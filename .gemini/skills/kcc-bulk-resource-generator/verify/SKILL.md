@@ -12,8 +12,9 @@ Run this skill inside a **fresh, isolated subagent** to verify a bulk-generated 
 ## 1. Baseline Prepopulate Correctness Checklist
 
 First, read `.gemini/skills/reviewgen-greenfield-new-types/prepopulate/SKILL.md` (`IsSkillFile: true`) and enforce all of its review invariants across every service touched in the branch (`git diff --name-only upstream/master`):
-1. **`apis/<service>/generate.sh` Flags & GA Protos:**
+1. **`apis/<service>/generate.sh` Flags, Command Ordering, & GA Protos:**
    - Every touched `apis/<service>/generate.sh` uses `${CONTROLLERBUILDER}` (not legacy `go run .`) and runs `generate-types --prepopulate-resource`, `generate-identity`, and `generate-mapper --prepopulate-resource` (plus `--multiversion` where `v1beta1` is present).
+   - **Strict Command Ordering:** Verify that **all** `generate-types` and `generate-identity` invocations appear **before** `generate-mapper` in `apis/<service>/generate.sh` (followed by `cd ${REPO_ROOT}`, `dev/tasks/generate-crds`, and `goimports`). Reject any `generate.sh` where a `generate-types` or `generate-identity` block was appended after `generate-mapper`.
    - **Zero** occurrences of `--allow-non-ga-proto`.
    - All new resources are under `v1alpha1` with `2026` copyright headers.
 2. **Judgement Queue Open State (`apis/<service>/judgement_queue.yaml`):**
@@ -22,6 +23,7 @@ First, read `.gemini/skills/reviewgen-greenfield-new-types/prepopulate/SKILL.md`
 3. **Compilation & `tests/apichecks`:**
    - Run `go build` and `go test` across all touched `apis/<service>/...` and `pkg/controller/direct/<service>/...` packages.
    - Run `go test ./tests/apichecks/...` and confirm `tests/apichecks/testdata/exceptions/missingrefs.txt` is untouched.
+   - If `TestDirectResourceFileNaming` fails on a pre-existing unprefixed stub `<resource>_reference.go` file after `<service><resource>_types.go` is added, verify it was renamed to `<service><resource>_reference.go` and that `var <Kind>GVK = GroupVersion.WithKind("<Kind>")` lives in `<service><resource>_types.go`.
 
 ---
 
@@ -49,7 +51,7 @@ Verify that the branch has no untracked files (`git status --porcelain` is empty
 ### If Verifying a **Category 3 (`Major Surgery`)** Branch
 - **Explicit Surgery Inventory:**
   - List every non-mechanical change in the branch (e.g., handwritten mapper helper files in `pkg/controller/direct/<service>/`, `--multiversion` controller caller updates, `TestCRDObjectTypes` empty `oneof` workarounds, or multi-stage `generate.sh` scripts).
-  - Verify that if any workaround was needed for `TestCRDObjectTypes` or mapper compilation, it is minimal and does not alter unrelated services.
+  - Verify that if any workaround was needed for `TestCRDObjectTypes` (`field ... is an object with no properties` on a parameterless proto `oneof` variant), the CRD entry in `knownInvalidCRDs` in `tests/apichecks/crds_test.go` carries the comment `// GCP known pattern: Empty oneof option (<field path>)` and that the underlying proto struct is genuinely an empty `oneof` option (not a broken/truncated struct generation).
 
 ---
 

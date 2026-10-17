@@ -15,8 +15,8 @@ Use this skill to execute bulk `--prepopulate-resource` scaffolding (`<kind>_typ
    - `controllerbuilder generate-types` rejects non-GA proto packages (`v1alpha*`, `v1beta*`, `v1p1beta1`, etc.) by default.
    - **Never** add `--allow-non-ga-proto` to `apis/<service>/generate.sh`.
    - **Fail-Fast Rule:** If `controllerbuilder generate-types` exits with `non-GA proto package ... is not allowed without --allow-non-ga-proto`, immediately run `git checkout -- apis/<service> && git clean -fd apis/<service>` and drop that resource from the batch. Do **not** retry with flags or hunt for alpha/beta workarounds.
-2. **Always Generate Mappers alongside Types and Identities:**
-   - Every service in the batch **must** run all three `controllerbuilder` commands in `apis/<service>/generate.sh`:
+2. **Always Generate Mappers alongside Types and Identities (in Strict Execution Order):**
+   - Every service in the batch **must** run all three `controllerbuilder` commands in `apis/<service>/generate.sh` in the exact order below (because `generate-mapper` inspects the Go AST produced by `generate-types` and `generate-identity`, **all** `generate-types` and `generate-identity` calls across all API versions must precede `generate-mapper`; never append new `generate-types` or `generate-identity` blocks below an existing `generate-mapper` call):
      1. `generate-types --prepopulate-resource`
      2. `generate-identity`
      3. `generate-mapper --prepopulate-resource` (plus `--multiversion` if the service also generates `v1beta1` types).
@@ -96,7 +96,14 @@ fi
 ### Multi-Version Services (`v1alpha1` + `v1beta1`)
 If `apis/<service_short>/generate.sh` already has a `v1beta1` `generate-types` block:
 - Keep the existing `v1beta1` `generate-types` block unchanged.
+- Insert the new `v1alpha1` `generate-types` and `generate-identity` blocks **before** the `generate-mapper` block (never append them at the bottom of the script after `generate-mapper`).
 - Pass `--multiversion` and `--prepopulate-resource` to the single `generate-mapper` invocation (including both proto packages in `--service` if `v1alpha1` and `v1beta1` use different proto packages).
+
+### KCC API Directory Aliases & Pre-Existing Unprefixed `*_reference.go` Stubs
+1. **Service-to-API-Directory Mapping:** Some GCP proto service names map to a different canonical KCC directory under `apis/` (for example: `analyticshub` $\rightarrow$ `apis/bigqueryanalyticshub`, `cloudkms` $\rightarrow$ `apis/kms`, `config` $\rightarrow$ `apis/configdeployment`). Always check existing `apis/` directories and `Kind` prefixes before creating a new `apis/<service>` folder.
+2. **Pre-Existing Unprefixed `<resource>_reference.go` Stubs:** Occasionally an `apis/<service>/v1alpha1/` directory already contains a handwritten stub reference file named `<resource>_reference.go` (without the `<service>` filename prefix, e.g., `connectionprofile_reference.go` or `dataattribute_reference.go`) created so another resource could reference it before `<service><resource>_types.go` existed:
+   - Rename it with `git mv <resource>_reference.go <service><resource>_reference.go` so `TestDirectResourceFileNaming` in `tests/apichecks` passes once `<service><resource>_types.go` is generated.
+   - If the stub `*_reference.go` declared `var <Kind>GVK = GroupVersion.WithKind("<Kind>")`, move that `var <Kind>GVK` declaration into `<service><resource>_types.go`.
 
 ---
 
@@ -131,7 +138,7 @@ For each generated service `<svc>`, run `go build ./apis/<svc>/... ./pkg/control
 1. **Check for Category 3 (`Major Surgery Needed to Get PR Green`) first:**
    - Did `apis/<svc>/generate.sh` require multi-stage `types.generated.go` file renaming across multiple proto packages (e.g., `discoveryengine`, `networksecurity`)? $\rightarrow$ **Category 3**.
    - Did `go build ./pkg/controller/direct/<svc>/...` fail with missing `*Request`/`*Metadata` mapper functions (`undefined: direct.<RequestOrMetadata>_FromProto`) or broken existing `v1beta1` controller callers after enabling `--multiversion` / plural acronym casing (`URIs`)? $\rightarrow$ Fix in `pkg/controller/direct/<svc>/` and classify as **Category 3**.
-   - Did `go test ./tests/apichecks/...` fail on `<svc>`'s CRD with `TestCRDObjectTypes` (`field ... is an object with no properties` from an empty proto `oneof` branch struct)? $\rightarrow$ Classify as **Category 3**.
+   - Did `go test ./tests/apichecks/...` fail on `<svc>`'s CRD with `TestCRDObjectTypes` (`field ... is an object with no properties` from an empty parameterless proto `oneof` branch struct, e.g., `message LlmAgent {}`)? $\rightarrow$ Add the CRD to `knownInvalidCRDs` in `tests/apichecks/crds_test.go` with the comment `// GCP known pattern: Empty oneof option (<field path>)` and classify as **Category 3**.
 2. **Otherwise, check for Category 2 (`Initial Setup — go.mod & Service Scaffolding`):**
    - Did `<svc>` require creating a brand-new `apis/<svc>/v1alpha1/doc.go` or `groupversion_info.go` package? $\rightarrow$ **Category 2**.
    - Did `go build ./pkg/controller/direct/<svc>/...` fail with `no required module provides package cloud.google.com/go/...`? $\rightarrow$ Run `go get <pkg>@latest && go mod tidy` and classify as **Category 2**.
