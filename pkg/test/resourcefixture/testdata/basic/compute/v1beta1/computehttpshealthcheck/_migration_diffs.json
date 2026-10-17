@@ -1,0 +1,69 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeHTTPSHealthCheck/computehttpshealthcheck-${uniqueId}",
+    "fields": [
+      {
+        "id": "check_interval_sec",
+        "old": "",
+        "new": "10"
+      },
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "example HTTPS health check"
+      },
+      {
+        "id": "healthy_threshold",
+        "old": "",
+        "new": "2"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computehttpshealthcheck-${uniqueId}"
+      },
+      {
+        "id": "port",
+        "old": "",
+        "new": "80"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "request_path",
+        "old": "",
+        "new": "/"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "timeout_sec",
+        "old": "",
+        "new": "5"
+      },
+      {
+        "id": "unhealthy_threshold",
+        "old": "",
+        "new": "2"
+      }
+    ]
+  },
+  {
+    "controller": "direct",
+    "isNewObject": true,
+    "resource": "ComputeHTTPSHealthCheck/computehttpshealthcheck-${uniqueId}"
+  }
+]
