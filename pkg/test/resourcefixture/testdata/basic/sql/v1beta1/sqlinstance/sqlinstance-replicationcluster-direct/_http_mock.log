@@ -184,6 +184,9 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "CLOUD_STORAGE"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "dataCacheConfig": {
+      "dataCacheEnabled": true
+    },
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
@@ -568,6 +571,9 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "CLOUD_STORAGE"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "dataCacheConfig": {
+      "dataCacheEnabled": true
+    },
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
@@ -825,6 +831,9 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "CLOUD_STORAGE"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "dataCacheConfig": {
+      "dataCacheEnabled": true
+    },
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
@@ -978,6 +987,9 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "transactionLogRetentionDays": 14
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "dataCacheConfig": {
+      "dataCacheEnabled": true
+    },
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE_PLUS",
@@ -1130,6 +1142,9 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "CLOUD_STORAGE"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "dataCacheConfig": {
+      "dataCacheEnabled": true
+    },
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
@@ -1382,6 +1397,9 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "CLOUD_STORAGE"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "dataCacheConfig": {
+      "dataCacheEnabled": true
+    },
     "dataDiskSizeGb": "20",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
