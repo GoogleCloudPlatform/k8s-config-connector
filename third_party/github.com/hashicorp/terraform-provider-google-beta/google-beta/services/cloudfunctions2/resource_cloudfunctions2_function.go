@@ -1003,6 +1003,28 @@ func flattenCloudfunctions2functionBuildConfigSourceStorageSourceBucket(v interf
 		return bVal
 	}
 
+	if buildConfig, ok := d.GetOk("build_config"); ok {
+		if bcList, ok := buildConfig.([]interface{}); ok && len(bcList) > 0 {
+			if bcMap, ok := bcList[0].(map[string]interface{}); ok {
+				if source, ok := bcMap["source"]; ok {
+					if sourceList, ok := source.([]interface{}); ok && len(sourceList) > 0 {
+						if sourceMap, ok := sourceList[0].(map[string]interface{}); ok {
+							if storageSource, ok := sourceMap["storage_source"]; ok {
+								if ssList, ok := storageSource.([]interface{}); ok && len(ssList) > 0 {
+									if ssMap, ok := ssList[0].(map[string]interface{}); ok {
+										if bucket, ok := ssMap["bucket"]; ok && bucket.(string) != "" {
+											return bucket.(string)
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 	// For the datasource, there is no prior TF Input for this attribute.
 	// Hence, GET Response value is returned.
 
@@ -1018,6 +1040,28 @@ func flattenCloudfunctions2functionBuildConfigSourceStorageSourceObject(v interf
 
 	if ObjVal, ok := d.GetOk("build_config.0.source.0.storage_source.0.object"); ok {
 		return ObjVal
+	}
+
+	if buildConfig, ok := d.GetOk("build_config"); ok {
+		if bcList, ok := buildConfig.([]interface{}); ok && len(bcList) > 0 {
+			if bcMap, ok := bcList[0].(map[string]interface{}); ok {
+				if source, ok := bcMap["source"]; ok {
+					if sourceList, ok := source.([]interface{}); ok && len(sourceList) > 0 {
+						if sourceMap, ok := sourceList[0].(map[string]interface{}); ok {
+							if storageSource, ok := sourceMap["storage_source"]; ok {
+								if ssList, ok := storageSource.([]interface{}); ok && len(ssList) > 0 {
+									if ssMap, ok := ssList[0].(map[string]interface{}); ok {
+										if object, ok := ssMap["object"]; ok && object.(string) != "" {
+											return object.(string)
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	// For the datasource, there is no prior TF Input for this attribute.
