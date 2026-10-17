@@ -218,6 +218,40 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 		})
 	}
 
+	// Bigtable's ListInstances returns every instance in the project, so the recorded
+	// response depends on unrelated state in whichever project the test happens to run
+	// against. That makes the golden non-deterministic, and (when recorded against a
+	// shared project) causes it to capture resource names that have nothing to do with
+	// the test. Keep only the instances this test created.
+	jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
+		if !strings.HasSuffix(requestURL, "BigtableInstanceAdmin/ListInstances") {
+			return
+		}
+		instances, found, err := unstructured.NestedSlice(obj, "instances")
+		if err != nil || !found {
+			return
+		}
+		kept := make([]any, 0, len(instances))
+		for _, instance := range instances {
+			m, ok := instance.(map[string]any)
+			if !ok {
+				continue
+			}
+			name, _, _ := unstructured.NestedString(m, "name")
+			if strings.Contains(name, uniqueID) {
+				kept = append(kept, instance)
+			}
+		}
+		if len(kept) == 0 {
+			// Match the shape of an empty response, rather than emitting "instances": [].
+			unstructured.RemoveNestedField(obj, "instances")
+			return
+		}
+		if err := unstructured.SetNestedSlice(obj, kept, "instances"); err != nil {
+			t.Fatalf("FAIL: setting filtered bigtable instances: %v", err)
+		}
+	})
+
 	addReplacement("id", "000000000000000000000")
 	addReplacement("uniqueId", "111111111111111111111")
 	addReplacement("oauth2ClientId", "888888888888888888888")

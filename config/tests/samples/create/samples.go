@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"io/fs"
+	"os"
 	"path/filepath"
 	"regexp"
 	"sort"
@@ -125,6 +126,10 @@ type CreateDeleteTestOptions struct { //nolint:revive
 	// Note: we should use server-side apply for both create and update.
 	// If we mix-and-match, we get surprising behaviours e.g. we can't clear a field
 	DoNotUseServerSideApplyForCreate bool
+
+	// ForceDelete indicates that resources should be deleted even if the test failed,
+	// disabling deletion protection and abandoning stuck resources if necessary.
+	ForceDelete bool
 }
 
 func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
@@ -362,6 +367,22 @@ func DeleteResources(t *Harness, opts CreateDeleteTestOptions) {
 	logger := log.FromContext(t.Ctx)
 
 	unstructs := opts.Create
+
+	forceDelete := opts.ForceDelete
+	if !forceDelete {
+		if val, err := strconv.ParseBool(os.Getenv("FORCE_DELETE")); err == nil {
+			forceDelete = val
+		}
+	}
+
+	// When force-deleting after a test failure, disable deletion protection on any
+	// Bigtable resources before deleting them so the controller and GCP service can proceed.
+	if forceDelete && t.Failed() {
+		for _, u := range unstructs {
+			disableDeletionProtection(t, u)
+		}
+	}
+
 	for i := len(unstructs) - 1; i >= 0; i-- {
 		u := unstructs[i]
 		logger.Info("Deleting resource", "kind", u.GetKind(), "name", u.GetName())
@@ -372,7 +393,7 @@ func DeleteResources(t *Harness, opts CreateDeleteTestOptions) {
 			t.Errorf("error deleting: %v", err)
 		}
 		if opts.DeleteInOrder && !opts.SkipWaitForDelete {
-			waitForDeleteToComplete(t, u)
+			waitForDeleteToComplete(t, u, forceDelete)
 		}
 	}
 
@@ -392,17 +413,90 @@ func DeleteResources(t *Harness, opts CreateDeleteTestOptions) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			waitForDeleteToComplete(t, u)
+			waitForDeleteToComplete(t, u, forceDelete)
 		}()
 	}
 	wg.Wait()
 }
 
-func waitForDeleteToComplete(t *Harness, u *unstructured.Unstructured) {
+// disableDeletionProtection removes deletion protection from the given Bigtable resource if set,
+// ensuring that the cloud service and controller do not block deletion during test cleanup.
+func disableDeletionProtection(t *Harness, u *unstructured.Unstructured) {
+	if !strings.HasPrefix(u.GetKind(), "Bigtable") {
+		return
+	}
+	live := &unstructured.Unstructured{}
+	live.SetGroupVersionKind(u.GroupVersionKind())
+	if err := t.GetClient().Get(t.Ctx, k8s.GetNamespacedName(u), live); err != nil {
+		return
+	}
+
+	modified := false
+	// spec.deletionProtection (BigtableLogicalView, BigtableAuthorizedView, BigtableMaterializedView)
+	if val, found, _ := unstructured.NestedBool(live.Object, "spec", "deletionProtection"); found && val {
+		if err := unstructured.SetNestedField(live.Object, false, "spec", "deletionProtection"); err == nil {
+			modified = true
+		}
+	}
+
+	if !modified {
+		return
+	}
+
+	log.FromContext(t.Ctx).Info("Disabling deletion protection before deleting resource", "kind", live.GetKind(), "name", live.GetName())
+	if err := t.GetClient().Update(t.Ctx, live); err != nil {
+		t.Logf("error updating resource to disable deletion protection: %v", err)
+		return
+	}
+
+	// Wait briefly for the controller to sync this update to the cloud provider.
+	_ = wait.PollImmediate(1*time.Second, 30*time.Second, func() (bool, error) {
+		if err := t.GetClient().Get(t.Ctx, k8s.GetNamespacedName(live), live); err != nil {
+			return false, err
+		}
+		objectStatus := teststatus.GetObjectStatus(t.T, live)
+		if objectStatus.ObservedGeneration == nil || *objectStatus.ObservedGeneration < objectStatus.Generation {
+			return false, nil
+		}
+		for _, c := range objectStatus.Conditions {
+			if c.Type == "Ready" && c.Status == "True" {
+				return true, nil
+			}
+		}
+		return false, nil
+	})
+}
+
+// abandonStuckResource annotates a Bigtable resource with the abandon deletion policy if it fails or times out
+// during deletion, allowing its finalizers to be released so parent resources can be cleaned up.
+func abandonStuckResource(t *Harness, u *unstructured.Unstructured) {
+	if !strings.HasPrefix(u.GetKind(), "Bigtable") {
+		return
+	}
+	live := &unstructured.Unstructured{}
+	live.SetGroupVersionKind(u.GroupVersionKind())
+	if err := t.GetClient().Get(t.Ctx, k8s.GetNamespacedName(u), live); err != nil {
+		return
+	}
+	annotations := live.GetAnnotations()
+	if annotations == nil {
+		annotations = make(map[string]string)
+	}
+	annotations[k8s.DeletionPolicyAnnotation] = k8s.DeletionPolicyAbandon
+	live.SetAnnotations(annotations)
+	if err := t.GetClient().Update(t.Ctx, live); err != nil {
+		t.Logf("error annotating stuck resource %s/%s with abandon: %v", live.GetKind(), live.GetName(), err)
+	}
+}
+
+func waitForDeleteToComplete(t *Harness, u *unstructured.Unstructured, forceDelete bool) {
 	defer log.FromContext(t.Ctx).Info("Done waiting for resource to delete", "kind", u.GetKind(), "name", u.GetName())
 	// Do a best-faith cleanup of the resources. Gives a 30 minute buffer for cleanup, though
 	// resources that can be cleaned up quicker exit earlier.
 	timeout := 30 * time.Minute
+	if forceDelete && t.Failed() && strings.HasPrefix(u.GetKind(), "Bigtable") {
+		timeout = 2 * time.Minute
+	}
 	if u.GetKind() == "StorageBucket" {
 		timeout = 100 * time.Minute
 	}
@@ -419,6 +513,11 @@ func waitForDeleteToComplete(t *Harness, u *unstructured.Unstructured) {
 	// TODO (b/197783299): think of better way to handle resources that take a longer time to cleanup
 	if err != nil {
 		t.Errorf("error while polling for resource cleanup on %v with name '%v': %v; last seen status: %v", u.GetKind(), u.GetName(), err, u.Object["status"])
+		// If force-delete is enabled and a child resource is stuck in deletion, annotate it with "abandon" policy
+		// so that its finalizer is removed and it doesn't block parent resources (e.g. BigtableInstance) from being deleted.
+		if forceDelete {
+			abandonStuckResource(t, u)
+		}
 	}
 }
 
