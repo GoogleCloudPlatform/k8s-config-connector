@@ -1274,7 +1274,7 @@ func resourceCloudRunV2ServiceRead(d *schema.ResourceData, meta interface{}) err
 	if err := d.Set("binary_authorization", flattenCloudRunV2ServiceBinaryAuthorization(res["binaryAuthorization"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Service: %s", err)
 	}
-	if err := d.Set("custom_audiences", flattenCloudRunV2ServiceCustomAudiences(res["custom_audiences"], d, config)); err != nil {
+	if err := d.Set("custom_audiences", flattenCloudRunV2ServiceCustomAudiences(res["customAudiences"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Service: %s", err)
 	}
 	if err := d.Set("template", flattenCloudRunV2ServiceTemplate(res["template"], d, config)); err != nil {
