@@ -1,0 +1,31 @@
+apiVersion: essentialcontacts.cnrm.cloud.google.com/v1beta1
+kind: EssentialContactsContact
+metadata:
+  creationTimestamp: "2026-03-05T20:36:09Z"
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  name: essentialcontactscontact-mcl-28322
+  namespace: cnrm-system
+  resourceVersion: "559"
+  uid: 30c17c71-ba78-4acd-b6db-5db340076e17
+spec:
+  email: mcl-test@test.com
+  languageTag: en
+  notificationCategorySubscriptions:
+  - BILLING
+  projectRef:
+    external: mock-project
+status:
+  conditions:
+  - lastTransitionTime: "2026-03-05T20:36:07Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/518915279/contacts/7
+  observedGeneration: 1
+  observedState:
+    validateTime: "2026-03-05T20:36:07.566182987Z"
+    validationState: VALID
