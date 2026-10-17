@@ -195,12 +195,12 @@ func TestPrepopulateSpecQueuesTheEmittedName(t *testing.T) {
 			}
 			var paths []string
 			for _, j := range got.Judgement {
-				if j.Reason == "possible-reference" {
+				if j.Reason == "authoritative-proto-reference" {
 					paths = append(paths, j.FieldPath)
 				}
 			}
 			if len(paths) != 1 || paths[0] != tc.wantPath {
-				t.Errorf("possible-reference paths = %v, want [%s]", paths, tc.wantPath)
+				t.Errorf("authoritative-proto-reference paths = %v, want [%s]", paths, tc.wantPath)
 			}
 			tag := `json:"` + strings.TrimPrefix(tc.wantPath, ".spec.") + `,`
 			if !strings.Contains(got.SpecFields, tag) {
@@ -210,10 +210,12 @@ func TestPrepopulateSpecQueuesTheEmittedName(t *testing.T) {
 	}
 }
 
-// TestPrepopulateSpecQueuesResourceReferences checks the possible-reference
-// entry for a top-level field with google.api.resource_reference, once with
-// type and once with child_type. ReferenceHints queues the nested ones; see
-// TestReferenceHintsQueuesNestedResourceReferences.
+// TestPrepopulateSpecQueuesResourceReferences checks the
+// authoritative-proto-reference entry for a top-level field with
+// google.api.resource_reference, once with type and once with child_type, and
+// verifies that heuristic sibling matching is suppressed when
+// google.api.resource_reference is present. ReferenceHints queues the nested
+// ones; see TestReferenceHintsQueuesNestedResourceReferences.
 func TestPrepopulateSpecQueuesResourceReferences(t *testing.T) {
 	// Arrange
 	msg := ragStoreMessage(t)
@@ -224,18 +226,20 @@ func TestPrepopulateSpecQueuesResourceReferences(t *testing.T) {
 		},
 		{
 			FieldPath: ".spec.corpus",
-			Reason:    "possible-reference",
+			Reason:    "authoritative-proto-reference",
 			Detail:    "the proto marks this field as a reference to aiplatform.googleapis.com/RagCorpus (google.api.resource_reference); confirm whether it should be a KCC reference",
 		},
 		{
 			FieldPath: ".spec.parent",
-			Reason:    "possible-reference",
+			Reason:    "authoritative-proto-reference",
 			Detail:    "the proto marks this field as the parent of a aiplatform.googleapis.com/RagFile (google.api.resource_reference child_type); confirm whether it should be a KCC reference",
 		},
 	}
 
 	// Act
-	got, err := PrepopulateSpec(msg, codegen.WriteOptions{})
+	got, err := PrepopulateSpec(msg, codegen.WriteOptions{
+		Siblings: map[string]string{"corpus": "AIPlatformRagCorpus"},
+	})
 
 	// Assert
 	if err != nil {
@@ -243,6 +247,9 @@ func TestPrepopulateSpecQueuesResourceReferences(t *testing.T) {
 	}
 	if diff := cmp.Diff(want, got.Judgement); diff != "" {
 		t.Errorf("PrepopulateSpec() Judgement mismatch (-want +got):\n%s", diff)
+	}
+	if strings.Contains(got.SpecFields, codegen.SiblingGuessMarker) {
+		t.Errorf("expected no %s comment when google.api.resource_reference is present:\n%s", codegen.SiblingGuessMarker, got.SpecFields)
 	}
 }
 
