@@ -117,6 +117,7 @@ func newSingleResourceClient(resource *unstructured.Unstructured) client.Client 
 }
 
 type singleResourceClient struct {
+	client.Client
 	Resource *unstructured.Unstructured
 }
 

@@ -34,6 +34,7 @@ import (
 // streamingInformer is an informer that streams events from the Kubernetes API server.
 // It implements cache.Informer, but allows us to intercept / mutate operations.
 type streamingInformer struct {
+	cache.Informer
 	streamingClient *StreamingClient
 	typeInfo        *typeInfo
 	namespace       string
@@ -326,6 +327,7 @@ func (i *streamingInformer) WaitForCacheSync(ctx context.Context) bool {
 }
 
 type eventHandlerRegistration struct {
+	toolscache.ResourceEventHandlerRegistration
 	informer     *streamingInformer
 	handler      toolscache.ResourceEventHandler
 	resyncPeriod time.Duration

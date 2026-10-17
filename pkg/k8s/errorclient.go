@@ -25,6 +25,7 @@ import (
 )
 
 type errorClient struct {
+	client.Client
 }
 
 // Some packages, like 'gcpclient' make use of krmtotf which is tightly coupled with the controller-runtime client.
