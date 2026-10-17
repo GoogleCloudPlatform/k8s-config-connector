@@ -925,6 +925,11 @@ func (in *StorageBucketSpec) DeepCopyInto(out *StorageBucketSpec) {
 		*out = new(BucketRetentionPolicy)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.Rpo != nil {
+		in, out := &in.Rpo, &out.Rpo
+		*out = new(string)
+		**out = **in
+	}
 	if in.SoftDeletePolicy != nil {
 		in, out := &in.SoftDeletePolicy, &out.SoftDeletePolicy
 		*out = new(BucketSoftDeletePolicy)

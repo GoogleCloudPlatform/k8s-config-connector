@@ -448,6 +448,12 @@ func ResourceStorageBucket() *schema.Resource {
 				Computed:    true,
 				Description: `Prevents public access to a bucket.`,
 			},
+			"rpo": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Computed:    true,
+				Description: `Specifies the RPO setting of bucket. If set 'ASYNC_TURBO', The Turbo Replication will be enabled for the dual-region bucket. Value 'DEFAULT' will set RPO setting to default. See the docs for more details.`,
+			},
 			"soft_delete_policy": {
 				Type:        schema.TypeList,
 				MaxItems:    1,
@@ -691,6 +697,10 @@ func resourceStorageBucketCreate(d *schema.ResourceData, meta interface{}) error
 		sb.IpFilter = expandBucketIpFilter(v.([]interface{}))
 	}
 
+	if v, ok := d.GetOk("rpo"); ok {
+		sb.Rpo = v.(string)
+	}
+
 	var res *storage.Bucket
 
 	err = transport_tpg.Retry(transport_tpg.RetryOptions{
@@ -860,6 +870,10 @@ func resourceStorageBucketUpdate(d *schema.ResourceData, meta interface{}) error
 		if v, ok := d.GetOk("ip_filter"); ok {
 			sb.IpFilter = expandBucketIpFilter(v.([]interface{}))
 		}
+	}
+
+	if d.HasChange("rpo") {
+		sb.Rpo = d.Get("rpo").(string)
 	}
 
 	res, err := config.NewStorageClient(userAgent).Buckets.Patch(d.Get("name").(string), sb).Do()
@@ -1888,6 +1902,10 @@ func setStorageBucket(d *schema.ResourceData, config *transport_tpg.Config, res 
 
 	if err := d.Set("ip_filter", flattenBucketIpFilter(res.IpFilter)); err != nil {
 		return fmt.Errorf("Error setting ip_filter: %s", err)
+	}
+
+	if err := d.Set("rpo", res.Rpo); err != nil {
+		return fmt.Errorf("Error setting rpo: %s", err)
 	}
 
 	if res.IamConfiguration != nil && res.IamConfiguration.UniformBucketLevelAccess != nil {
