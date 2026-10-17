@@ -325,7 +325,7 @@ func judgementFor(field protoreflect.FieldDescriptor, path string) (JudgementIte
 
 	return JudgementItem{
 		FieldPath: path,
-		Reason:    judgement.ReasonPossibleReference,
+		Reason:    judgement.ReasonAuthoritativeProtoReference,
 		Detail:    detail,
 	}, true
 }

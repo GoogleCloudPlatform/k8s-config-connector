@@ -83,3 +83,827 @@ func GeminiDataAnalyticsConversationSpec_ToProto(mapCtx *direct.MapContext, in *
 	out.Labels = in.Labels
 	return out
 }
+
+func AnalysisOptions_FromProto(mapCtx *direct.MapContext, in *pb.AnalysisOptions) *krm.AnalysisOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnalysisOptions{}
+	out.Python = AnalysisOptions_Python_FromProto(mapCtx, in.GetPython())
+	return out
+}
+
+func AnalysisOptions_Python_FromProto(mapCtx *direct.MapContext, in *pb.AnalysisOptions_Python) *krm.AnalysisOptions_Python {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnalysisOptions_Python{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	return out
+}
+
+func AnalysisOptions_Python_ToProto(mapCtx *direct.MapContext, in *krm.AnalysisOptions_Python) *pb.AnalysisOptions_Python {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AnalysisOptions_Python{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	return out
+}
+
+func AnalysisOptions_ToProto(mapCtx *direct.MapContext, in *krm.AnalysisOptions) *pb.AnalysisOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AnalysisOptions{}
+	out.Python = AnalysisOptions_Python_ToProto(mapCtx, in.Python)
+	return out
+}
+
+func BigQueryPropertyGraphReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryPropertyGraphReference) *krm.BigQueryPropertyGraphReferenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryPropertyGraphReferenceObservedState{}
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
+	out.DatasetID = direct.LazyPtr(in.GetDatasetId())
+	out.PropertyGraphID = direct.LazyPtr(in.GetPropertyGraphId())
+	return out
+}
+
+func BigQueryPropertyGraphReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryPropertyGraphReferenceObservedState) *pb.BigQueryPropertyGraphReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BigQueryPropertyGraphReference{}
+	out.ProjectId = direct.ValueOf(in.ProjectID)
+	out.DatasetId = direct.ValueOf(in.DatasetID)
+	out.PropertyGraphId = direct.ValueOf(in.PropertyGraphID)
+	return out
+}
+
+func BigQueryPropertyGraphReference_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryPropertyGraphReference) *krm.BigQueryPropertyGraphReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryPropertyGraphReference{}
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
+	out.DatasetID = direct.LazyPtr(in.GetDatasetId())
+	out.PropertyGraphID = direct.LazyPtr(in.GetPropertyGraphId())
+	return out
+}
+
+func BigQueryPropertyGraphReference_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryPropertyGraphReference) *pb.BigQueryPropertyGraphReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BigQueryPropertyGraphReference{}
+	out.ProjectId = direct.ValueOf(in.ProjectID)
+	out.DatasetId = direct.ValueOf(in.DatasetID)
+	out.PropertyGraphId = direct.ValueOf(in.PropertyGraphID)
+	return out
+}
+
+func BigQueryRoutineReference_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryRoutineReference) *krm.BigQueryRoutineReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryRoutineReference{}
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
+	out.DatasetID = direct.LazyPtr(in.GetDatasetId())
+	out.RoutineID = direct.LazyPtr(in.GetRoutineId())
+	return out
+}
+
+func BigQueryRoutineReference_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryRoutineReference) *pb.BigQueryRoutineReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BigQueryRoutineReference{}
+	out.ProjectId = direct.ValueOf(in.ProjectID)
+	out.DatasetId = direct.ValueOf(in.DatasetID)
+	out.RoutineId = direct.ValueOf(in.RoutineID)
+	return out
+}
+
+func BigQueryRoutine_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryRoutine) *krm.BigQueryRoutine {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryRoutine{}
+	out.RoutineReference = BigQueryRoutineReference_FromProto(mapCtx, in.GetRoutineReference())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+
+func BigQueryRoutine_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryRoutine) *pb.BigQueryRoutine {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BigQueryRoutine{}
+	out.RoutineReference = BigQueryRoutineReference_ToProto(mapCtx, in.RoutineReference)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+
+func BigQueryTableReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryTableReference) *krm.BigQueryTableReferenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryTableReferenceObservedState{}
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
+	out.DatasetID = direct.LazyPtr(in.GetDatasetId())
+	out.TableID = direct.LazyPtr(in.GetTableId())
+	out.Schema = Schema_FromProto(mapCtx, in.GetSchema())
+	return out
+}
+
+func BigQueryTableReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryTableReferenceObservedState) *pb.BigQueryTableReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BigQueryTableReference{}
+	out.ProjectId = direct.ValueOf(in.ProjectID)
+	out.DatasetId = direct.ValueOf(in.DatasetID)
+	out.TableId = direct.ValueOf(in.TableID)
+	out.Schema = Schema_ToProto(mapCtx, in.Schema)
+	return out
+}
+
+func BigQueryTableReference_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryTableReference) *krm.BigQueryTableReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryTableReference{}
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
+	out.DatasetID = direct.LazyPtr(in.GetDatasetId())
+	out.TableID = direct.LazyPtr(in.GetTableId())
+	out.Schema = Schema_FromProto(mapCtx, in.GetSchema())
+	return out
+}
+
+func BigQueryTableReference_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryTableReference) *pb.BigQueryTableReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BigQueryTableReference{}
+	out.ProjectId = direct.ValueOf(in.ProjectID)
+	out.DatasetId = direct.ValueOf(in.DatasetID)
+	out.TableId = direct.ValueOf(in.TableID)
+	out.Schema = Schema_ToProto(mapCtx, in.Schema)
+	return out
+}
+
+func BigQueryTableReferencesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryTableReferences) *krm.BigQueryTableReferencesObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryTableReferencesObservedState{}
+	out.TableReferences = direct.Slice_FromProto(mapCtx, in.TableReferences, BigQueryTableReferenceObservedState_FromProto)
+	out.PropertyGraphReferences = direct.Slice_FromProto(mapCtx, in.PropertyGraphReferences, BigQueryPropertyGraphReferenceObservedState_FromProto)
+	return out
+}
+
+func BigQueryTableReferencesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryTableReferencesObservedState) *pb.BigQueryTableReferences {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BigQueryTableReferences{}
+	out.TableReferences = direct.Slice_ToProto(mapCtx, in.TableReferences, BigQueryTableReferenceObservedState_ToProto)
+	out.PropertyGraphReferences = direct.Slice_ToProto(mapCtx, in.PropertyGraphReferences, BigQueryPropertyGraphReferenceObservedState_ToProto)
+	return out
+}
+
+func BigQueryTableReferences_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryTableReferences) *krm.BigQueryTableReferences {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryTableReferences{}
+	out.TableReferences = direct.Slice_FromProto(mapCtx, in.TableReferences, BigQueryTableReference_FromProto)
+	out.PropertyGraphReferences = direct.Slice_FromProto(mapCtx, in.PropertyGraphReferences, BigQueryPropertyGraphReference_FromProto)
+	return out
+}
+
+func BigQueryTableReferences_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryTableReferences) *pb.BigQueryTableReferences {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BigQueryTableReferences{}
+	out.TableReferences = direct.Slice_ToProto(mapCtx, in.TableReferences, BigQueryTableReference_ToProto)
+	out.PropertyGraphReferences = direct.Slice_ToProto(mapCtx, in.PropertyGraphReferences, BigQueryPropertyGraphReference_ToProto)
+	return out
+}
+
+func Context_SchemaRelationship_FromProto(mapCtx *direct.MapContext, in *pb.Context_SchemaRelationship) *krm.Context_SchemaRelationship {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Context_SchemaRelationship{}
+	out.LeftSchemaPaths = Context_SchemaRelationship_SchemaPaths_FromProto(mapCtx, in.GetLeftSchemaPaths())
+	out.RightSchemaPaths = Context_SchemaRelationship_SchemaPaths_FromProto(mapCtx, in.GetRightSchemaPaths())
+	out.Sources = direct.EnumSlice_FromProto(mapCtx, in.Sources)
+	out.ConfidenceScore = direct.LazyPtr(in.GetConfidenceScore())
+	return out
+}
+
+func Context_SchemaRelationship_SchemaPaths_FromProto(mapCtx *direct.MapContext, in *pb.Context_SchemaRelationship_SchemaPaths) *krm.Context_SchemaRelationship_SchemaPaths {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Context_SchemaRelationship_SchemaPaths{}
+	out.TableFqn = direct.LazyPtr(in.GetTableFqn())
+	out.Paths = in.Paths
+	return out
+}
+
+func Context_SchemaRelationship_SchemaPaths_ToProto(mapCtx *direct.MapContext, in *krm.Context_SchemaRelationship_SchemaPaths) *pb.Context_SchemaRelationship_SchemaPaths {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Context_SchemaRelationship_SchemaPaths{}
+	out.TableFqn = direct.ValueOf(in.TableFqn)
+	out.Paths = in.Paths
+	return out
+}
+
+func Context_SchemaRelationship_ToProto(mapCtx *direct.MapContext, in *krm.Context_SchemaRelationship) *pb.Context_SchemaRelationship {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Context_SchemaRelationship{}
+	out.LeftSchemaPaths = Context_SchemaRelationship_SchemaPaths_ToProto(mapCtx, in.LeftSchemaPaths)
+	out.RightSchemaPaths = Context_SchemaRelationship_SchemaPaths_ToProto(mapCtx, in.RightSchemaPaths)
+	out.Sources = direct.EnumSlice_ToProto[pb.Context_SchemaRelationship_Source](mapCtx, in.Sources)
+	out.ConfidenceScore = direct.ValueOf(in.ConfidenceScore)
+	return out
+}
+
+func DataFilter_FromProto(mapCtx *direct.MapContext, in *pb.DataFilter) *krm.DataFilter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataFilter{}
+	out.Field = direct.LazyPtr(in.GetField())
+	out.Value = direct.LazyPtr(in.GetValue())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+
+func DataFilter_ToProto(mapCtx *direct.MapContext, in *krm.DataFilter) *pb.DataFilter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataFilter{}
+	out.Field = direct.ValueOf(in.Field)
+	out.Value = direct.ValueOf(in.Value)
+	out.Type = direct.Enum_ToProto[pb.DataFilterType](mapCtx, in.Type)
+	return out
+}
+
+func DatasourceOptions_FromProto(mapCtx *direct.MapContext, in *pb.DatasourceOptions) *krm.DatasourceOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DatasourceOptions{}
+	out.BigQueryMaxBilledBytes = direct.Int64Value_FromProto(mapCtx, in.GetBigQueryMaxBilledBytes())
+	return out
+}
+
+func DatasourceOptions_ToProto(mapCtx *direct.MapContext, in *krm.DatasourceOptions) *pb.DatasourceOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DatasourceOptions{}
+	out.BigQueryMaxBilledBytes = direct.Int64Value_ToProto(mapCtx, in.BigQueryMaxBilledBytes)
+	return out
+}
+
+func DatasourceReferencesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DatasourceReferences) *krm.DatasourceReferencesObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DatasourceReferencesObservedState{}
+	out.Bq = BigQueryTableReferencesObservedState_FromProto(mapCtx, in.GetBq())
+	out.Studio = StudioDatasourceReferencesObservedState_FromProto(mapCtx, in.GetStudio())
+	out.Looker = LookerExploreReferencesObservedState_FromProto(mapCtx, in.GetLooker())
+	return out
+}
+
+func DatasourceReferencesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DatasourceReferencesObservedState) *pb.DatasourceReferences {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DatasourceReferences{}
+	if oneof := BigQueryTableReferencesObservedState_ToProto(mapCtx, in.Bq); oneof != nil {
+		out.References = &pb.DatasourceReferences_Bq{Bq: oneof}
+	}
+	if oneof := StudioDatasourceReferencesObservedState_ToProto(mapCtx, in.Studio); oneof != nil {
+		out.References = &pb.DatasourceReferences_Studio{Studio: oneof}
+	}
+	if oneof := LookerExploreReferencesObservedState_ToProto(mapCtx, in.Looker); oneof != nil {
+		out.References = &pb.DatasourceReferences_Looker{Looker: oneof}
+	}
+	return out
+}
+
+func DatasourceReferences_FromProto(mapCtx *direct.MapContext, in *pb.DatasourceReferences) *krm.DatasourceReferences {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DatasourceReferences{}
+	out.Bq = BigQueryTableReferences_FromProto(mapCtx, in.GetBq())
+	out.Studio = StudioDatasourceReferences_FromProto(mapCtx, in.GetStudio())
+	out.Looker = LookerExploreReferences_FromProto(mapCtx, in.GetLooker())
+	return out
+}
+
+func DatasourceReferences_ToProto(mapCtx *direct.MapContext, in *krm.DatasourceReferences) *pb.DatasourceReferences {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DatasourceReferences{}
+	if oneof := BigQueryTableReferences_ToProto(mapCtx, in.Bq); oneof != nil {
+		out.References = &pb.DatasourceReferences_Bq{Bq: oneof}
+	}
+	if oneof := StudioDatasourceReferences_ToProto(mapCtx, in.Studio); oneof != nil {
+		out.References = &pb.DatasourceReferences_Studio{Studio: oneof}
+	}
+	if oneof := LookerExploreReferences_ToProto(mapCtx, in.Looker); oneof != nil {
+		out.References = &pb.DatasourceReferences_Looker{Looker: oneof}
+	}
+	return out
+}
+
+func ExampleQueryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExampleQuery) *krm.ExampleQueryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExampleQueryObservedState{}
+	out.SQLQuery = direct.LazyPtr(in.GetSqlQuery())
+	out.NaturalLanguageQuestion = direct.LazyPtr(in.GetNaturalLanguageQuestion())
+	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, QueryParameterObservedState_FromProto)
+	return out
+}
+
+func ExampleQueryObservedState_SqlQuery_ToProto(mapCtx *direct.MapContext, in *string) *pb.ExampleQuery_SqlQuery {
+	if in == nil {
+		return nil
+	}
+	return &pb.ExampleQuery_SqlQuery{SqlQuery: *in}
+}
+
+func ExampleQueryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ExampleQueryObservedState) *pb.ExampleQuery {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExampleQuery{}
+	if oneof := ExampleQueryObservedState_SqlQuery_ToProto(mapCtx, in.SQLQuery); oneof != nil {
+		out.Query = oneof
+	}
+	out.NaturalLanguageQuestion = direct.ValueOf(in.NaturalLanguageQuestion)
+	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, QueryParameterObservedState_ToProto)
+	return out
+}
+
+func ExampleQuery_FromProto(mapCtx *direct.MapContext, in *pb.ExampleQuery) *krm.ExampleQuery {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExampleQuery{}
+	out.SQLQuery = direct.LazyPtr(in.GetSqlQuery())
+	out.NaturalLanguageQuestion = direct.LazyPtr(in.GetNaturalLanguageQuestion())
+	out.Parameters = direct.Slice_FromProto(mapCtx, in.Parameters, QueryParameter_FromProto)
+	return out
+}
+
+func ExampleQuery_SqlQuery_ToProto(mapCtx *direct.MapContext, in *string) *pb.ExampleQuery_SqlQuery {
+	if in == nil {
+		return nil
+	}
+	return &pb.ExampleQuery_SqlQuery{SqlQuery: *in}
+}
+
+func ExampleQuery_ToProto(mapCtx *direct.MapContext, in *krm.ExampleQuery) *pb.ExampleQuery {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExampleQuery{}
+	if oneof := ExampleQuery_SqlQuery_ToProto(mapCtx, in.SQLQuery); oneof != nil {
+		out.Query = oneof
+	}
+	out.NaturalLanguageQuestion = direct.ValueOf(in.NaturalLanguageQuestion)
+	out.Parameters = direct.Slice_ToProto(mapCtx, in.Parameters, QueryParameter_ToProto)
+	return out
+}
+
+func Field_FromProto(mapCtx *direct.MapContext, in *pb.Field) *krm.Field {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Field{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Type = direct.LazyPtr(in.GetType())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Mode = direct.LazyPtr(in.GetMode())
+	out.Synonyms = in.Synonyms
+	out.Tags = in.Tags
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Subfields = direct.Slice_FromProto(mapCtx, in.Subfields, Field_FromProto)
+	out.Category = direct.LazyPtr(in.GetCategory())
+	out.ValueFormat = direct.LazyPtr(in.GetValueFormat())
+	return out
+}
+
+func Field_ToProto(mapCtx *direct.MapContext, in *krm.Field) *pb.Field {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Field{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Type = direct.ValueOf(in.Type)
+	out.Description = direct.ValueOf(in.Description)
+	out.Mode = direct.ValueOf(in.Mode)
+	out.Synonyms = in.Synonyms
+	out.Tags = in.Tags
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Subfields = direct.Slice_ToProto(mapCtx, in.Subfields, Field_ToProto)
+	out.Category = direct.ValueOf(in.Category)
+	out.ValueFormat = direct.ValueOf(in.ValueFormat)
+	return out
+}
+
+func GlossaryTermObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GlossaryTerm) *krm.GlossaryTermObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GlossaryTermObservedState{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	return out
+}
+
+func GlossaryTermObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GlossaryTermObservedState) *pb.GlossaryTerm {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GlossaryTerm{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	return out
+}
+
+func GlossaryTerm_FromProto(mapCtx *direct.MapContext, in *pb.GlossaryTerm) *krm.GlossaryTerm {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GlossaryTerm{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	return out
+}
+
+func GlossaryTerm_ToProto(mapCtx *direct.MapContext, in *krm.GlossaryTerm) *pb.GlossaryTerm {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GlossaryTerm{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	return out
+}
+
+func LookerExploreReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.LookerExploreReference) *krm.LookerExploreReferenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LookerExploreReferenceObservedState{}
+	out.LookerInstanceURI = direct.LazyPtr(in.GetLookerInstanceUri())
+	out.PrivateLookerInstanceInfo = PrivateLookerInstanceInfo_FromProto(mapCtx, in.GetPrivateLookerInstanceInfo())
+	out.LookmlModel = direct.LazyPtr(in.GetLookmlModel())
+	out.Explore = direct.LazyPtr(in.GetExplore())
+	out.Schema = Schema_FromProto(mapCtx, in.GetSchema())
+	return out
+}
+
+func LookerExploreReferenceObservedState_LookerInstanceUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.LookerExploreReference_LookerInstanceUri {
+	if in == nil {
+		return nil
+	}
+	return &pb.LookerExploreReference_LookerInstanceUri{LookerInstanceUri: *in}
+}
+
+func LookerExploreReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LookerExploreReferenceObservedState) *pb.LookerExploreReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LookerExploreReference{}
+	if oneof := LookerExploreReferenceObservedState_LookerInstanceUri_ToProto(mapCtx, in.LookerInstanceURI); oneof != nil {
+		out.Instance = oneof
+	}
+	if oneof := PrivateLookerInstanceInfo_ToProto(mapCtx, in.PrivateLookerInstanceInfo); oneof != nil {
+		out.Instance = &pb.LookerExploreReference_PrivateLookerInstanceInfo{PrivateLookerInstanceInfo: oneof}
+	}
+	out.LookmlModel = direct.ValueOf(in.LookmlModel)
+	out.Explore = direct.ValueOf(in.Explore)
+	out.Schema = Schema_ToProto(mapCtx, in.Schema)
+	return out
+}
+
+func LookerExploreReference_FromProto(mapCtx *direct.MapContext, in *pb.LookerExploreReference) *krm.LookerExploreReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LookerExploreReference{}
+	out.LookerInstanceURI = direct.LazyPtr(in.GetLookerInstanceUri())
+	out.PrivateLookerInstanceInfo = PrivateLookerInstanceInfo_FromProto(mapCtx, in.GetPrivateLookerInstanceInfo())
+	out.LookmlModel = direct.LazyPtr(in.GetLookmlModel())
+	out.Explore = direct.LazyPtr(in.GetExplore())
+	out.Schema = Schema_FromProto(mapCtx, in.GetSchema())
+	return out
+}
+
+func LookerExploreReference_LookerInstanceUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.LookerExploreReference_LookerInstanceUri {
+	if in == nil {
+		return nil
+	}
+	return &pb.LookerExploreReference_LookerInstanceUri{LookerInstanceUri: *in}
+}
+
+func LookerExploreReference_ToProto(mapCtx *direct.MapContext, in *krm.LookerExploreReference) *pb.LookerExploreReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LookerExploreReference{}
+	if oneof := LookerExploreReference_LookerInstanceUri_ToProto(mapCtx, in.LookerInstanceURI); oneof != nil {
+		out.Instance = oneof
+	}
+	if oneof := PrivateLookerInstanceInfo_ToProto(mapCtx, in.PrivateLookerInstanceInfo); oneof != nil {
+		out.Instance = &pb.LookerExploreReference_PrivateLookerInstanceInfo{PrivateLookerInstanceInfo: oneof}
+	}
+	out.LookmlModel = direct.ValueOf(in.LookmlModel)
+	out.Explore = direct.ValueOf(in.Explore)
+	out.Schema = Schema_ToProto(mapCtx, in.Schema)
+	return out
+}
+
+func LookerExploreReferencesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.LookerExploreReferences) *krm.LookerExploreReferencesObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LookerExploreReferencesObservedState{}
+	out.ExploreReferences = direct.Slice_FromProto(mapCtx, in.ExploreReferences, LookerExploreReferenceObservedState_FromProto)
+	return out
+}
+
+func LookerExploreReferencesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LookerExploreReferencesObservedState) *pb.LookerExploreReferences {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LookerExploreReferences{}
+	out.ExploreReferences = direct.Slice_ToProto(mapCtx, in.ExploreReferences, LookerExploreReferenceObservedState_ToProto)
+	return out
+}
+
+func LookerExploreReferences_FromProto(mapCtx *direct.MapContext, in *pb.LookerExploreReferences) *krm.LookerExploreReferences {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LookerExploreReferences{}
+	out.ExploreReferences = direct.Slice_FromProto(mapCtx, in.ExploreReferences, LookerExploreReference_FromProto)
+	return out
+}
+
+func LookerExploreReferences_ToProto(mapCtx *direct.MapContext, in *krm.LookerExploreReferences) *pb.LookerExploreReferences {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LookerExploreReferences{}
+	out.ExploreReferences = direct.Slice_ToProto(mapCtx, in.ExploreReferences, LookerExploreReference_ToProto)
+	return out
+}
+
+func LookerQuery_FilterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.LookerQuery_Filter) *krm.LookerQuery_FilterObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LookerQuery_FilterObservedState{}
+	out.Field = direct.LazyPtr(in.GetField())
+	out.Value = in.Value
+	return out
+}
+
+func LookerQuery_FilterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LookerQuery_FilterObservedState) *pb.LookerQuery_Filter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LookerQuery_Filter{}
+	out.Field = direct.ValueOf(in.Field)
+	out.Value = in.Value
+	return out
+}
+
+func LookerQuery_Filter_FromProto(mapCtx *direct.MapContext, in *pb.LookerQuery_Filter) *krm.LookerQuery_Filter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LookerQuery_Filter{}
+	out.Field = direct.LazyPtr(in.GetField())
+	out.Value = in.Value
+	return out
+}
+
+func LookerQuery_Filter_ToProto(mapCtx *direct.MapContext, in *krm.LookerQuery_Filter) *pb.LookerQuery_Filter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LookerQuery_Filter{}
+	out.Field = direct.ValueOf(in.Field)
+	out.Value = in.Value
+	return out
+}
+
+func PrivateLookerInstanceInfo_FromProto(mapCtx *direct.MapContext, in *pb.PrivateLookerInstanceInfo) *krm.PrivateLookerInstanceInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PrivateLookerInstanceInfo{}
+	out.LookerInstanceID = direct.LazyPtr(in.GetLookerInstanceId())
+	out.ServiceDirectoryName = direct.LazyPtr(in.GetServiceDirectoryName())
+	return out
+}
+
+func PrivateLookerInstanceInfo_ToProto(mapCtx *direct.MapContext, in *krm.PrivateLookerInstanceInfo) *pb.PrivateLookerInstanceInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PrivateLookerInstanceInfo{}
+	out.LookerInstanceId = direct.ValueOf(in.LookerInstanceID)
+	out.ServiceDirectoryName = direct.ValueOf(in.ServiceDirectoryName)
+	return out
+}
+
+func QueryParameterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QueryParameter) *krm.QueryParameterObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.QueryParameterObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.DataType = direct.LazyPtr(in.GetDataType())
+	return out
+}
+
+func QueryParameterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.QueryParameterObservedState) *pb.QueryParameter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QueryParameter{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	out.DataType = direct.ValueOf(in.DataType)
+	return out
+}
+
+func QueryParameter_FromProto(mapCtx *direct.MapContext, in *pb.QueryParameter) *krm.QueryParameter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.QueryParameter{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.DataType = direct.LazyPtr(in.GetDataType())
+	return out
+}
+
+func QueryParameter_ToProto(mapCtx *direct.MapContext, in *krm.QueryParameter) *pb.QueryParameter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QueryParameter{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	out.DataType = direct.ValueOf(in.DataType)
+	return out
+}
+
+func Schema_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.Schema {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Schema{}
+	out.Fields = direct.Slice_FromProto(mapCtx, in.Fields, Field_FromProto)
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Synonyms = in.Synonyms
+	out.Tags = in.Tags
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Filters = direct.Slice_FromProto(mapCtx, in.Filters, DataFilter_FromProto)
+	return out
+}
+
+func Schema_ToProto(mapCtx *direct.MapContext, in *krm.Schema) *pb.Schema {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Schema{}
+	out.Fields = direct.Slice_ToProto(mapCtx, in.Fields, Field_ToProto)
+	out.Description = direct.ValueOf(in.Description)
+	out.Synonyms = in.Synonyms
+	out.Tags = in.Tags
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Filters = direct.Slice_ToProto(mapCtx, in.Filters, DataFilter_ToProto)
+	return out
+}
+
+func StudioDatasourceReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.StudioDatasourceReference) *krm.StudioDatasourceReferenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudioDatasourceReferenceObservedState{}
+	out.DatasourceID = direct.LazyPtr(in.GetDatasourceId())
+	return out
+}
+
+func StudioDatasourceReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StudioDatasourceReferenceObservedState) *pb.StudioDatasourceReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudioDatasourceReference{}
+	out.DatasourceId = direct.ValueOf(in.DatasourceID)
+	return out
+}
+
+func StudioDatasourceReference_FromProto(mapCtx *direct.MapContext, in *pb.StudioDatasourceReference) *krm.StudioDatasourceReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudioDatasourceReference{}
+	out.DatasourceID = direct.LazyPtr(in.GetDatasourceId())
+	return out
+}
+
+func StudioDatasourceReference_ToProto(mapCtx *direct.MapContext, in *krm.StudioDatasourceReference) *pb.StudioDatasourceReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudioDatasourceReference{}
+	out.DatasourceId = direct.ValueOf(in.DatasourceID)
+	return out
+}
+
+func StudioDatasourceReferencesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.StudioDatasourceReferences) *krm.StudioDatasourceReferencesObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudioDatasourceReferencesObservedState{}
+	out.StudioReferences = direct.Slice_FromProto(mapCtx, in.StudioReferences, StudioDatasourceReferenceObservedState_FromProto)
+	return out
+}
+
+func StudioDatasourceReferencesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StudioDatasourceReferencesObservedState) *pb.StudioDatasourceReferences {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudioDatasourceReferences{}
+	out.StudioReferences = direct.Slice_ToProto(mapCtx, in.StudioReferences, StudioDatasourceReferenceObservedState_ToProto)
+	return out
+}
+
+func StudioDatasourceReferences_FromProto(mapCtx *direct.MapContext, in *pb.StudioDatasourceReferences) *krm.StudioDatasourceReferences {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StudioDatasourceReferences{}
+	out.StudioReferences = direct.Slice_FromProto(mapCtx, in.StudioReferences, StudioDatasourceReference_FromProto)
+	return out
+}
+
+func StudioDatasourceReferences_ToProto(mapCtx *direct.MapContext, in *krm.StudioDatasourceReferences) *pb.StudioDatasourceReferences {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StudioDatasourceReferences{}
+	out.StudioReferences = direct.Slice_ToProto(mapCtx, in.StudioReferences, StudioDatasourceReference_ToProto)
+	return out
+}
+
+func UserFunctions_FromProto(mapCtx *direct.MapContext, in *pb.UserFunctions) *krm.UserFunctions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UserFunctions{}
+	out.BqRoutines = direct.Slice_FromProto(mapCtx, in.BqRoutines, BigQueryRoutine_FromProto)
+	return out
+}
+
+func UserFunctions_ToProto(mapCtx *direct.MapContext, in *krm.UserFunctions) *pb.UserFunctions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UserFunctions{}
+	out.BqRoutines = direct.Slice_ToProto(mapCtx, in.BqRoutines, BigQueryRoutine_ToProto)
+	return out
+}

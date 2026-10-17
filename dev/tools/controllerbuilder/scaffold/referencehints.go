@@ -38,12 +38,14 @@ func ReferenceHints(msg protoreflect.MessageDescriptor, opts codegen.WriteOption
 	walkSpecFields(msg, ".spec", opts, true, map[protoreflect.FullName]bool{}, func(path, desc string, field protoreflect.FieldDescriptor) {
 		// PrepopulateSpec already checks the annotation on top-level fields.
 		// The walk never re-enters msg, so any field of msg is top-level.
-		if field.ContainingMessage().FullName() != msg.FullName() {
-			if item, ok := judgementFor(field, path); ok {
+		// When google.api.resource_reference is present, suppress heuristic
+		// reference hints on that field so authoritative-proto-reference is
+		// the sole reference finding.
+		if item, ok := judgementFor(field, path); ok {
+			if field.ContainingMessage().FullName() != msg.FullName() {
 				out = append(out, item)
 			}
-		}
-		if item, ok := referenceHint(path, desc, field); ok {
+		} else if item, ok := referenceHint(path, desc, field); ok {
 			out = append(out, item)
 		}
 		if item, ok := sensitiveField(path, msg); ok {

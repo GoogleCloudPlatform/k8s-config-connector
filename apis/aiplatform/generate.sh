@@ -53,6 +53,23 @@ ${CONTROLLERBUILDER} generate-mapper \
     --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
     --include-skipped-output
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.aiplatform.v1 \
+  --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource AIPlatformCachedContent:CachedContent \
+  --resource AIPlatformModelDeploymentMonitoringJob:ModelDeploymentMonitoringJob \
+  --resource AIPlatformRagCorpus:RagCorpus \
+  --resource AIPlatformTensorboardRun:TensorboardRun
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.aiplatform.v1 \
+  --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
+  --resource AIPlatformCachedContent:CachedContent \
+  --resource AIPlatformModelDeploymentMonitoringJob:ModelDeploymentMonitoringJob \
+  --resource AIPlatformRagCorpus:RagCorpus \
+  --resource AIPlatformTensorboardRun:TensorboardRun
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

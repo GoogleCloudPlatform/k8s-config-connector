@@ -43,6 +43,17 @@ ${CONTROLLERBUILDER} generate-mapper \
     --service google.cloud.contentwarehouse.v1 \
     --api-version "contentwarehouse.cnrm.cloud.google.com/v1alpha1"
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.contentwarehouse.v1 \
+  --api-version contentwarehouse.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource ContentwarehouseDocumentSchema:DocumentSchema
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.contentwarehouse.v1 \
+  --api-version contentwarehouse.cnrm.cloud.google.com/v1alpha1 \
+  --resource ContentwarehouseDocumentSchema:DocumentSchema
+
 cd "${REPO_ROOT}"
 dev/tasks/generate-crds
 

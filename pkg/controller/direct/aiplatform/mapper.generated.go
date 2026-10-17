@@ -950,7 +950,7 @@ func GCSSource_FromProto(mapCtx *direct.MapContext, in *pb.GcsSource) *krm.GCSSo
 		return nil
 	}
 	out := &krm.GCSSource{}
-	out.Uris = in.Uris
+	out.URIs = in.Uris
 	return out
 }
 func GCSSource_ToProto(mapCtx *direct.MapContext, in *krm.GCSSource) *pb.GcsSource {
@@ -958,7 +958,7 @@ func GCSSource_ToProto(mapCtx *direct.MapContext, in *krm.GCSSource) *pb.GcsSour
 		return nil
 	}
 	out := &pb.GcsSource{}
-	out.Uris = in.Uris
+	out.Uris = in.URIs
 	return out
 }
 func GenieSource_FromProto(mapCtx *direct.MapContext, in *pb.GenieSource) *krm.GenieSource {

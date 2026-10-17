@@ -238,14 +238,8 @@ func PruneTypes(ctx context.Context, o *PruneTypesOptions) error {
 		}
 
 		sort.Slice(toPrune, func(i, j int) bool {
-			posI := toPrune[i].decl.Pos()
-			if toPrune[i].decl.Doc != nil {
-				posI = toPrune[i].decl.Doc.Pos()
-			}
-			posJ := toPrune[j].decl.Pos()
-			if toPrune[j].decl.Doc != nil {
-				posJ = toPrune[j].decl.Doc.Pos()
-			}
+			posI := declStartPos(toPrune[i].decl)
+			posJ := declStartPos(toPrune[j].decl)
 			return fset.Position(posI).Offset > fset.Position(posJ).Offset
 		})
 
@@ -255,10 +249,7 @@ func PruneTypes(ctx context.Context, o *PruneTypesOptions) error {
 		}
 
 		for _, item := range toPrune {
-			startPos := item.decl.Pos()
-			if item.decl.Doc != nil {
-				startPos = item.decl.Doc.Pos()
-			}
+			startPos := declStartPos(item.decl)
 			endPos := item.decl.End()
 
 			startOffset := fset.Position(startPos).Offset
@@ -412,4 +403,23 @@ func importQualifier(imp *ast.ImportSpec) (ref importRef, qualifier string, ok b
 // suffix such as v2, which is never the package name.
 func isMajorVersion(s string) bool {
 	return len(s) > 1 && s[0] == 'v' && strings.TrimLeft(s[1:], "0123456789") == ""
+}
+
+// declStartPos returns the starting position of a type declaration including its
+// line doc comments, while skipping any leading /* ... */ block comments that
+// go/parser may have attached to d.Doc when a preceding block comment is adjacent.
+func declStartPos(d *ast.GenDecl) token.Pos {
+	startPos := d.Pos()
+	if d.Doc != nil && len(d.Doc.List) > 0 {
+		firstLineCommentIdx := 0
+		for idx, c := range d.Doc.List {
+			if strings.HasPrefix(c.Text, "/*") {
+				firstLineCommentIdx = idx + 1
+			}
+		}
+		if firstLineCommentIdx < len(d.Doc.List) {
+			startPos = d.Doc.List[firstLineCommentIdx].Pos()
+		}
+	}
+	return startPos
 }

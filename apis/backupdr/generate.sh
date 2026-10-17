@@ -55,6 +55,17 @@ ${CONTROLLERBUILDER} generate-mapper \
     --api-version backupdr.cnrm.cloud.google.com/v1beta1 \
     --include-skipped-output
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.backupdr.v1 \
+  --api-version backupdr.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource BackupdrBackup:Backup
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.backupdr.v1 \
+  --api-version backupdr.cnrm.cloud.google.com/v1alpha1 \
+  --resource BackupdrBackup:Backup
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

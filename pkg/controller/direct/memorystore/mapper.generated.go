@@ -32,6 +32,29 @@ import (
 	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
 )
 
+/* found existing non-generated mapping function "AutomatedBackupConfig_FixedFrequencySchedule_FromProto", skipping
+func AutomatedBackupConfig_FixedFrequencySchedule_FromProto(mapCtx *direct.MapContext, in *pb.AutomatedBackupConfig_FixedFrequencySchedule) *krm.AutomatedBackupConfig_FixedFrequencySchedule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AutomatedBackupConfig_FixedFrequencySchedule{}
+	out.StartTime = TimeOfDay_FromProto(mapCtx, in.GetStartTime())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "AutomatedBackupConfig_FixedFrequencySchedule_ToProto", skipping
+
+	func AutomatedBackupConfig_FixedFrequencySchedule_ToProto(mapCtx *direct.MapContext, in *krm.AutomatedBackupConfig_FixedFrequencySchedule) *pb.AutomatedBackupConfig_FixedFrequencySchedule {
+		if in == nil {
+			return nil
+		}
+		out := &pb.AutomatedBackupConfig_FixedFrequencySchedule{}
+		out.StartTime = TimeOfDay_ToProto(mapCtx, in.StartTime)
+		return out
+	}
+*/
 func CrossInstanceReplicationConfig_FromProto(mapCtx *direct.MapContext, in *pb.CrossInstanceReplicationConfig) *krm.CrossInstanceReplicationConfig {
 	if in == nil {
 		return nil
