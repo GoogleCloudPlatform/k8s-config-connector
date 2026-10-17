@@ -1,0 +1,1588 @@
+#!/usr/bin/env python3
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import argparse
+import datetime
+import glob
+import json
+import math
+import os
+import re
+import subprocess
+import sys
+
+
+def get_repo_root():
+    return subprocess.check_output(['git', 'rev-parse', '--show-toplevel']).strip().decode('utf-8')
+
+
+def parse_static_config(repo_root, include_greenfield=False):
+    file_path = os.path.join(repo_root, "pkg", "controller", "resourceconfig", "static_config.go")
+    pattern = re.compile(
+        r'\{\s*Group:\s*"([^"]+)",\s*Kind:\s*"([^"]+)"\s*\}:\s*\{\s*DefaultController:\s*k8s\.(\w+),\s*SupportedControllers:\s*\[\]k8s\.ReconcilerType\{([^}]+)\}\s*\}'
+    )
+    resources = []
+    with open(file_path, "r", encoding="utf-8") as f:
+        for line in f:
+            m = pattern.search(line)
+            if not m:
+                continue
+            group, kind, default_ctrl, supported_raw = m.groups()
+            supported = [c.strip().replace("k8s.", "").replace("ReconcilerType", "").lower() for c in supported_raw.split(",")]
+            def_ctrl = default_ctrl.replace("ReconcilerType", "").lower()
+            service = group.split(".")[0]
+
+            is_migration_resource = any(c in ("terraform", "dcl", "iampartialpolicy") for c in supported)
+
+            # Strip greenfield direct controllers and dedicated IAM controllers unless explicitly requested
+            if not include_greenfield and not is_migration_resource:
+                continue
+
+            # Categorize migration status
+            if "direct" in supported:
+                if len(supported) == 1:
+                    status = "Direct Complete"
+                    action = "Legacy Retired (Direct Only)"
+                    category = "direct_only"
+                elif def_ctrl == "direct":
+                    status = "Direct Default (Dual)"
+                    action = "Deprecate Legacy Fallback"
+                    category = "direct_default_dual"
+                else:
+                    status = "Dual (Ready for Flip)"
+                    action = f"Qualify & Flip Default (currently {def_ctrl.upper()})"
+                    category = "dual_pending_flip"
+            elif def_ctrl == "terraform" or "terraform" in supported:
+                status = "Legacy TF Only"
+                action = "Implement Direct Controller"
+                category = "tf_only"
+            elif def_ctrl == "dcl" or "dcl" in supported:
+                status = "Legacy DCL Only"
+                action = "Implement Direct Controller"
+                category = "dcl_only"
+            else:
+                status = "Special IAM"
+                action = "IAM Custom Controller"
+                category = "special_iam"
+
+            resources.append({
+                "group": group,
+                "kind": kind,
+                "service": service,
+                "default_controller": def_ctrl,
+                "supported_controllers": supported,
+                "status": status,
+                "action": action,
+                "category": category,
+            })
+    return resources
+
+
+def load_or_update_history(repo_root, current_direct_ready, current_direct_default):
+    if not repo_root:
+        return []
+    history_file = os.path.join(repo_root, "dev", "migration-tracker", "migration_history.json")
+    today_str = datetime.date.today().strftime("%Y-%m-%d")
+    today_label = datetime.date.today().strftime("%b %d, '%y")
+
+    history = []
+    if os.path.exists(history_file):
+        try:
+            with open(history_file, "r", encoding="utf-8") as f:
+                history = json.load(f)
+        except Exception:
+            history = []
+
+    found = False
+    for item in history:
+        if item.get("date") == today_str:
+            item["implemented"] = current_direct_ready
+            item["flipped"] = current_direct_default
+            item["label"] = today_label
+            found = True
+            break
+    if not found:
+        history.append({
+            "date": today_str,
+            "label": today_label,
+            "implemented": current_direct_ready,
+            "flipped": current_direct_default,
+        })
+
+    history.sort(key=lambda x: x.get("date", ""))
+
+    try:
+        os.makedirs(os.path.dirname(history_file), exist_ok=True)
+        with open(history_file, "w", encoding="utf-8") as f:
+            json.dump(history, f, indent=2)
+    except Exception:
+        pass
+
+    return history
+
+
+def calculate_metrics(resources, start_date, target_date, repo_root=None):
+    total = len(resources)
+    tf_only = sum(1 for r in resources if r["category"] == "tf_only")
+    dcl_only = sum(1 for r in resources if r["category"] == "dcl_only")
+    dual_pending = sum(1 for r in resources if r["category"] == "dual_pending_flip")
+    direct_default_dual = sum(1 for r in resources if r["category"] == "direct_default_dual")
+    direct_only = sum(1 for r in resources if r["category"] == "direct_only")
+    special_iam = sum(1 for r in resources if r["category"] == "special_iam")
+
+    legacy_remaining = tf_only + dcl_only
+    direct_ready = direct_only + direct_default_dual + dual_pending
+    direct_default_count = direct_default_dual + direct_only
+    flips_needed = total - direct_default_count  # 301 total scope - 2 already flipped = 299 flips needed!
+    total_actions_needed = legacy_remaining + flips_needed  # 221 implementations + 299 flips = 520 actions
+
+    days_remaining = max(1, (target_date - start_date).days)
+    weeks_remaining = max(1.0, days_remaining / 7.0)
+
+    # Required velocities
+    direct_impl_velocity = legacy_remaining / weeks_remaining
+    flip_velocity = flips_needed / weeks_remaining
+    total_actions_velocity = total_actions_needed / weeks_remaining
+
+    # Group by service
+    services = {}
+    for r in resources:
+        s = r["service"]
+        if s not in services:
+            services[s] = {
+                "name": s,
+                "total": 0,
+                "direct_ready": 0,
+                "dual_pending": 0,
+                "legacy_tf": 0,
+                "legacy_dcl": 0,
+            }
+        services[s]["total"] += 1
+        cat = r["category"]
+        if "direct" in r["supported_controllers"]:
+            services[s]["direct_ready"] += 1
+            if cat == "dual_pending_flip":
+                services[s]["dual_pending"] += 1
+        elif cat == "tf_only":
+            services[s]["legacy_tf"] += 1
+        elif cat == "dcl_only":
+            services[s]["legacy_dcl"] += 1
+
+    for s in services.values():
+        s["remaining_action"] = s["legacy_tf"] + s["legacy_dcl"] + s["dual_pending"]
+        s["pct_direct"] = round((s["direct_ready"]) / max(1, s["total"]) * 100, 1)
+
+    top_services = sorted(services.values(), key=lambda x: x["remaining_action"], reverse=True)
+
+    # Historical tracking
+    history = load_or_update_history(repo_root, direct_ready, direct_default_count)
+    if not history:
+        history = [{
+            "date": start_date.strftime("%Y-%m-%d"),
+            "label": start_date.strftime("%b %d, '%y"),
+            "implemented": direct_ready,
+            "flipped": direct_default_count,
+        }]
+
+    real_impl_series = [h["implemented"] for h in history]
+    real_flip_series = [h["flipped"] for h in history]
+
+    # Timeline Trajectory (Start date -> Q1 2027)
+    num_weeks = int(math.ceil(weeks_remaining))
+    timeline_labels = []
+    projected_impl_series = []
+    projected_flip_series = []
+    direct_ready_series = []
+    legacy_remaining_series = []
+    dual_pending_series = []
+    completion_pct_series = []
+    cumulative_actions_series = []
+    weekly_velocity_series = []
+
+    curr = start_date
+    for i in range(num_weeks + 1):
+        timeline_labels.append(curr.strftime("%b %d, '%y"))
+        progress_ratio = min(1.0, i / float(num_weeks))
+        rem_ratio = max(0.0, 1.0 - progress_ratio)
+
+        # 1. Projected progress to implement direct controller (linear from 80 to 301)
+        cur_proj_impl = round(80.0 + (301.0 - 80.0) * progress_ratio, 1)
+        projected_impl_series.append(cur_proj_impl)
+
+        # 2. Projected flipping to direct default effort (linear from 2 to 301)
+        cur_proj_flip = round(2.0 + (301.0 - 2.0) * progress_ratio, 1)
+        projected_flip_series.append(cur_proj_flip)
+
+        # Direct count climbing from current direct_ready (80) to total (301)
+        cur_direct = round(direct_ready + (legacy_remaining * progress_ratio))
+        direct_ready_series.append(cur_direct)
+
+        # Legacy count burning down from 221 to 0
+        cur_legacy = round(legacy_remaining * rem_ratio)
+        legacy_remaining_series.append(cur_legacy)
+
+        # Dual pending flip burning down from 78 to 0
+        cur_dual = round(dual_pending * rem_ratio)
+        dual_pending_series.append(cur_dual)
+
+        # Overall completion % climbing from (80/301 = 26.6%) to 100%
+        cur_pct = round((cur_direct / float(total)) * 100.0, 1)
+        completion_pct_series.append(cur_pct)
+
+        # Cumulative flips completed (0 -> 299)
+        cur_actions = round(flips_needed * progress_ratio)
+        cumulative_actions_series.append(cur_actions)
+
+        # Weekly target flip pace (~11.8 / wk)
+        weekly_velocity_series.append(round(flip_velocity, 1))
+
+        curr += datetime.timedelta(days=7)
+
+    # Advisory calculation based on latest recorded actual
+    latest_idx = len(history) - 1
+    latest_real_impl = history[latest_idx]["implemented"]
+    latest_real_flip = history[latest_idx]["flipped"]
+    latest_proj_impl = projected_impl_series[latest_idx]
+    latest_proj_flip = projected_flip_series[latest_idx]
+
+    impl_diff = round(latest_real_impl - latest_proj_impl, 1)
+    if impl_diff > 0.5:
+        impl_status = "ahead"
+        impl_status_text = "Ahead of Schedule (Faster)"
+        impl_class = "advisory-ahead"
+        impl_icon = "&#128640;"
+        impl_msg = f"+{impl_diff} controllers ahead of plan"
+    elif impl_diff < -0.5:
+        impl_status = "behind"
+        impl_status_text = "Behind Schedule"
+        impl_class = "advisory-behind"
+        impl_icon = "&#9888;&#65039;"
+        impl_msg = f"{abs(impl_diff)} controllers behind plan"
+    else:
+        impl_status = "ontime"
+        impl_status_text = "On Track / On Time"
+        impl_class = "advisory-ontime"
+        impl_icon = "&#9989;"
+        impl_msg = "Matching target pace"
+
+    flip_diff = round(latest_real_flip - latest_proj_flip, 1)
+    if flip_diff > 0.5:
+        flip_status = "ahead"
+        flip_status_text = "Ahead of Schedule (Faster)"
+        flip_class = "advisory-ahead"
+        flip_icon = "&#128640;"
+        flip_msg = f"+{flip_diff} flips ahead of plan"
+    elif flip_diff < -0.5:
+        flip_status = "behind"
+        flip_status_text = "Behind Schedule"
+        flip_class = "advisory-behind"
+        flip_icon = "&#9888;&#65039;"
+        flip_msg = f"{abs(flip_diff)} flips behind plan"
+    else:
+        flip_status = "ontime"
+        flip_status_text = "On Track / On Time"
+        flip_class = "advisory-ontime"
+        flip_icon = "&#9989;"
+        flip_msg = "Matching target pace"
+
+    advisory = {
+        "as_of_label": history[latest_idx].get("label", "Current Week"),
+        "impl": {
+            "status": impl_status,
+            "status_text": impl_status_text,
+            "class": impl_class,
+            "icon": impl_icon,
+            "real": latest_real_impl,
+            "projected": latest_proj_impl,
+            "diff": impl_diff,
+            "msg": impl_msg,
+        },
+        "flip": {
+            "status": flip_status,
+            "status_text": flip_status_text,
+            "class": flip_class,
+            "icon": flip_icon,
+            "real": latest_real_flip,
+            "projected": latest_proj_flip,
+            "diff": flip_diff,
+            "msg": flip_msg,
+        },
+    }
+
+    return {
+        "total": total,
+        "advisory": advisory,
+        "tf_only": tf_only,
+        "dcl_only": dcl_only,
+        "dual_pending": dual_pending,
+        "direct_default_dual": direct_default_dual,
+        "direct_only": direct_only,
+        "special_iam": special_iam,
+        "legacy_remaining": legacy_remaining,
+        "direct_ready": direct_ready,
+        "flips_needed": flips_needed,
+        "total_actions_needed": total_actions_needed,
+        "days_remaining": days_remaining,
+        "weeks_remaining": round(weeks_remaining, 1),
+        "direct_impl_velocity": round(direct_impl_velocity, 1),
+        "flip_velocity": round(flip_velocity, 1),
+        "total_actions_velocity": round(total_actions_velocity, 1),
+        "services": top_services,
+        "timeline": {
+            "labels": timeline_labels,
+            "projected_impl": projected_impl_series,
+            "projected_flip": projected_flip_series,
+            "real_impl": real_impl_series,
+            "real_flip": real_flip_series,
+            "direct_ready": direct_ready_series,
+            "legacy_remaining": legacy_remaining_series,
+            "dual_pending": dual_pending_series,
+            "completion_pct": completion_pct_series,
+            "cumulative_actions": cumulative_actions_series,
+            "weekly_velocity": weekly_velocity_series,
+        },
+    }
+
+
+def render_svg_chart1(timeline, total_count=301):
+    labels = timeline["labels"]
+    proj_impl = timeline["projected_impl"]
+    proj_flip = timeline["projected_flip"]
+    real_impl = timeline.get("real_impl", [80])
+    real_flip = timeline.get("real_flip", [2])
+    n = max(1, len(labels) - 1)
+
+    px, py, pw, ph = 40, 30, 890, 245
+    max_count = 301.0
+
+    def pt(i, val):
+        x = px + (i / float(n)) * pw
+        y = py + (1.0 - (val / max_count)) * ph
+        return x, y
+
+    proj_impl_coords = [pt(i, proj_impl[i]) for i in range(len(proj_impl))]
+    proj_flip_coords = [pt(i, proj_flip[i]) for i in range(len(proj_flip))]
+    real_impl_coords = [pt(i, real_impl[i]) for i in range(len(real_impl))]
+    real_flip_coords = [pt(i, real_flip[i]) for i in range(len(real_flip))]
+
+    proj_impl_path = "M " + " L ".join(f"{x:.1f},{y:.1f}" for x, y in proj_impl_coords)
+    proj_flip_path = "M " + " L ".join(f"{x:.1f},{y:.1f}" for x, y in proj_flip_coords)
+
+    # Gridlines and RIGHT axis ticks only (0 to 301)
+    grid_lines = []
+    tick_values = [0, 50, 100, 150, 200, 250, 301]
+    for val in tick_values:
+        y = py + (1.0 - (val / max_count)) * ph
+        grid_lines.append(f'<line x1="{px}" y1="{y:.1f}" x2="{px+pw}" y2="{y:.1f}" stroke="rgba(51, 65, 85, 0.5)" stroke-width="1" />')
+        grid_lines.append(f'<text x="{px+pw+10}" y="{y+4:.1f}" fill="#94a3b8" font-size="10" text-anchor="start">{val}</text>')
+
+    # X-axis date labels (spaced out across full width)
+    x_labels = []
+    step_idx = max(1, n // 8)
+    for i in range(0, n + 1, step_idx):
+        x = px + (i / float(n)) * pw
+        lbl = labels[i]
+        x_labels.append(f'<text x="{x:.1f}" y="{py+ph+22}" fill="#64748b" font-size="10" text-anchor="middle">{lbl}</text>')
+
+    # Solid Real lines & markers
+    real_impl_svg = []
+    if len(real_impl_coords) > 1:
+        path_str = "M " + " L ".join(f"{x:.1f},{y:.1f}" for x, y in real_impl_coords)
+        real_impl_svg.append(f'<path d="{path_str}" fill="none" stroke="#10b981" stroke-width="3.5" />')
+    elif len(real_impl_coords) == 1:
+        x, y = real_impl_coords[0]
+        real_impl_svg.append(f'<line x1="{x-6:.1f}" y1="{y:.1f}" x2="{x+6:.1f}" y2="{y:.1f}" stroke="#10b981" stroke-width="3.5" stroke-linecap="round" />')
+
+    for x, y in real_impl_coords:
+        real_impl_svg.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="6" fill="#10b981" stroke="#0f172a" stroke-width="2" />')
+
+    real_flip_svg = []
+    if len(real_flip_coords) > 1:
+        path_str = "M " + " L ".join(f"{x:.1f},{y:.1f}" for x, y in real_flip_coords)
+        real_flip_svg.append(f'<path d="{path_str}" fill="none" stroke="#06b6d4" stroke-width="3.5" />')
+    elif len(real_flip_coords) == 1:
+        x, y = real_flip_coords[0]
+        real_flip_svg.append(f'<line x1="{x-6:.1f}" y1="{y:.1f}" x2="{x+6:.1f}" y2="{y:.1f}" stroke="#06b6d4" stroke-width="3.5" stroke-linecap="round" />')
+
+    for x, y in real_flip_coords:
+        real_flip_svg.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="6" fill="#06b6d4" stroke="#0f172a" stroke-width="2" />')
+
+    svg = f"""
+    <svg id="svgChart1" viewBox="0 0 1000 320" width="100%" height="100%" style="overflow: visible; font-family: sans-serif;">
+      <!-- Grid -->
+      {"".join(grid_lines)}
+      {"".join(x_labels)}
+
+      <!-- Right Axis Header Only -->
+      <text x="{px+pw}" y="18" fill="#f8fafc" font-size="11" font-weight="600" text-anchor="end">Controllers (0 &ndash; 301)</text>
+
+      <!-- Dotted Projected Lines -->
+      <path d="{proj_impl_path}" fill="none" stroke="#34d399" stroke-width="2.5" stroke-dasharray="5,5" />
+      <path d="{proj_flip_path}" fill="none" stroke="#22d3ee" stroke-width="2.5" stroke-dasharray="5,5" />
+
+      <!-- Solid Real Progress Lines & Markers -->
+      {"".join(real_impl_svg)}
+      {"".join(real_flip_svg)}
+
+      <!-- Interactive Crosshair -->
+      <line id="crosshair1" x1="0" y1="{py}" x2="0" y2="{py+ph}" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3" style="display: none;" />
+
+      <!-- Transparent interaction overlay -->
+      <rect x="{px}" y="{py}" width="{pw}" height="{ph}" fill="transparent" style="cursor: crosshair;" onmousemove="handleChart1Hover(event)" onmouseleave="hideChart1Hover()" />
+    </svg>
+    """
+    return svg
+
+
+def generate_html_dashboard(resources, metrics, start_date, target_date):
+    resources_json = json.dumps(resources)
+    metrics_json = json.dumps(metrics)
+
+    start_str = start_date.strftime("%B %d, %Y")
+    target_str = target_date.strftime("%B %d, %Y")
+
+    svg_chart1 = render_svg_chart1(metrics["timeline"], metrics["total"])
+
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KCC Direct Migration Dashboard (TF/DCL &rarr; Direct) &mdash; Target Q1 2027</title>
+  <style>
+    :root {{
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-blue: #38bdf8;
+      --accent-green: #34d399;
+      --accent-amber: #fbbf24;
+      --accent-red: #f87171;
+      --accent-purple: #c084fc;
+      --accent-cyan: #22d3ee;
+      --border-color: #334155;
+      --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }}
+
+    * {{
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }}
+
+    body {{
+      font-family: var(--font-family);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.5;
+      padding: 24px;
+    }}
+
+    .container {{
+      max-width: 1440px;
+      margin: 0 auto;
+    }}
+
+    header {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+      flex-wrap: wrap;
+      gap: 16px;
+    }}
+
+    .header-title h1 {{
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }}
+
+    .header-title h1 .badge {{
+      font-size: 0.8rem;
+      background: rgba(56, 189, 248, 0.2);
+      color: var(--accent-blue);
+      padding: 3px 8px;
+      border-radius: 9999px;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      font-weight: 600;
+    }}
+
+    .header-title p {{
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      margin-top: 4px;
+    }}
+
+    .header-actions {{
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }}
+
+    .btn {{
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }}
+
+    .btn:hover {{
+      background: var(--bg-tertiary);
+      border-color: var(--accent-blue);
+    }}
+
+    .btn-primary {{
+      background: #0284c7;
+      border-color: #0284c7;
+      color: #fff;
+    }}
+
+    .btn-primary:hover {{
+      background: #0369a1;
+    }}
+
+    .target-banner {{
+      background: linear-gradient(90deg, #1e293b 0%, #172554 100%);
+      border: 1px solid #1e40af;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }}
+
+    .target-info h3 {{
+      font-size: 1.1rem;
+      color: #93c5fd;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }}
+
+    .target-info p {{
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      margin-top: 4px;
+    }}
+
+    .pace-pill {{
+      background: rgba(30, 58, 138, 0.7);
+      border: 1px solid #3b82f6;
+      padding: 8px 14px;
+      border-radius: 8px;
+      text-align: right;
+    }}
+
+    .pace-pill .pace-val {{
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--accent-amber);
+    }}
+
+    .pace-pill .pace-label {{
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }}
+
+    /* Pacing Advisory Banner */
+    .advisory-banner {{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }}
+
+    @media (max-width: 800px) {{
+      .advisory-banner {{
+        grid-template-columns: 1fr;
+      }}
+    }}
+
+    .advisory-card {{
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      border-radius: 10px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--card-shadow);
+    }}
+
+    .advisory-card.advisory-ontime {{
+      border-left: 4px solid var(--accent-green);
+      background: rgba(16, 185, 129, 0.07);
+    }}
+
+    .advisory-card.advisory-ahead {{
+      border-left: 4px solid var(--accent-blue);
+      background: rgba(56, 189, 248, 0.08);
+    }}
+
+    .advisory-card.advisory-behind {{
+      border-left: 4px solid var(--accent-red);
+      background: rgba(248, 113, 113, 0.08);
+    }}
+
+    .advisory-icon {{
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }}
+
+    .advisory-title {{
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }}
+
+    .advisory-ontime .advisory-title span {{
+      color: var(--accent-green);
+      font-weight: 700;
+    }}
+
+    .advisory-ahead .advisory-title span {{
+      color: var(--accent-blue);
+      font-weight: 700;
+    }}
+
+    .advisory-behind .advisory-title span {{
+      color: var(--accent-red);
+      font-weight: 700;
+    }}
+
+    .advisory-desc {{
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-top: 3px;
+    }}
+
+    .metrics-grid {{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }}
+
+    .card {{
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: var(--card-shadow);
+      position: relative;
+      overflow: hidden;
+    }}
+
+    .card::before {{
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+    }}
+
+    .card.blue::before {{ background: var(--accent-blue); }}
+    .card.green::before {{ background: var(--accent-green); }}
+    .card.amber::before {{ background: var(--accent-amber); }}
+    .card.cyan::before {{ background: var(--accent-cyan); }}
+    .card.purple::before {{ background: var(--accent-purple); }}
+
+    .card-title {{
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }}
+
+    .card-value {{
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }}
+
+    .card-subtext {{
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }}
+
+    /* Chart Section */
+    .chart-section {{
+      margin-bottom: 24px;
+    }}
+
+    .chart-container {{
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: var(--card-shadow);
+      position: relative;
+    }}
+
+    .chart-header {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }}
+
+    .chart-header h3 {{
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }}
+
+    .chart-header span {{
+      font-size: 0.8rem;
+      color: var(--accent-blue);
+      background: rgba(56, 189, 248, 0.1);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }}
+
+    .chart-legend {{
+      display: flex;
+      gap: 12px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      font-size: 0.75rem;
+    }}
+
+    .legend-item {{
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--text-secondary);
+    }}
+
+    .legend-indicator {{
+      width: 12px;
+      height: 3px;
+      border-radius: 2px;
+    }}
+
+    .chart-tooltip-box {{
+      position: absolute;
+      background: #0f172a;
+      border: 1px solid var(--accent-blue);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 0.78rem;
+      color: var(--text-primary);
+      pointer-events: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      display: none;
+      z-index: 100;
+      white-space: nowrap;
+    }}
+
+    .services-section {{
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: var(--card-shadow);
+    }}
+
+    .services-header {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }}
+
+    .services-list {{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px;
+    }}
+
+    .service-card {{
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }}
+
+    .service-card:hover {{
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+    }}
+
+    .service-card-top {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }}
+
+    .service-name {{
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--accent-blue);
+    }}
+
+    .service-bar {{
+      width: 100%;
+      height: 6px;
+      background: var(--bg-tertiary);
+      border-radius: 3px;
+      overflow: hidden;
+      display: flex;
+      margin-top: 6px;
+    }}
+
+    .service-bar-seg {{
+      height: 100%;
+    }}
+
+    .seg-green {{ background: var(--accent-green); }}
+    .seg-cyan {{ background: var(--accent-cyan); }}
+    .seg-amber {{ background: var(--accent-amber); }}
+    .seg-red {{ background: var(--accent-red); }}
+
+    .service-stats {{
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-top: 6px;
+    }}
+
+    .table-section {{
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: var(--card-shadow);
+    }}
+
+    .table-controls {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }}
+
+    .filter-pills {{
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }}
+
+    .filter-pill {{
+      background: var(--bg-primary);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-color);
+      padding: 5px 12px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.15s ease;
+    }}
+
+    .filter-pill:hover {{
+      color: var(--text-primary);
+      border-color: var(--accent-blue);
+    }}
+
+    .filter-pill.active {{
+      background: var(--accent-blue);
+      color: #0f172a;
+      border-color: var(--accent-blue);
+      font-weight: 700;
+    }}
+
+    .search-box {{
+      position: relative;
+      min-width: 260px;
+    }}
+
+    .search-box input {{
+      width: 100%;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 7px 12px 7px 32px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      outline: none;
+    }}
+
+    .search-box input:focus {{
+      border-color: var(--accent-blue);
+    }}
+
+    .search-icon {{
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }}
+
+    .table-responsive {{
+      overflow-x: auto;
+    }}
+
+    table {{
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }}
+
+    th {{
+      background: var(--bg-primary);
+      color: var(--text-secondary);
+      font-weight: 600;
+      padding: 10px 14px;
+      border-bottom: 2px solid var(--border-color);
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+    }}
+
+    th:hover {{
+      color: var(--text-primary);
+    }}
+
+    td {{
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-primary);
+    }}
+
+    tr:hover td {{
+      background: rgba(51, 65, 85, 0.4);
+    }}
+
+    .badge-status {{
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }}
+
+    .status-direct {{
+      background: rgba(52, 211, 153, 0.15);
+      color: var(--accent-green);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+    }}
+
+    .status-dual {{
+      background: rgba(34, 211, 238, 0.15);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(34, 211, 238, 0.3);
+    }}
+
+    .status-tf {{
+      background: rgba(251, 191, 36, 0.15);
+      color: var(--accent-amber);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+    }}
+
+    .status-dcl {{
+      background: rgba(248, 113, 113, 0.15);
+      color: var(--accent-red);
+      border: 1px solid rgba(248, 113, 113, 0.3);
+    }}
+
+    .controller-tags {{
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }}
+
+    .tag {{
+      font-size: 0.7rem;
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }}
+
+    .tag.default-tag {{
+      border: 1px solid var(--accent-blue);
+      color: var(--accent-blue);
+    }}
+
+    .pagination {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }}
+
+    .pagination-btns {{
+      display: flex;
+      gap: 6px;
+    }}
+
+    footer {{
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-color);
+      padding-top: 16px;
+    }}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-title">
+        <h1>
+          <span>Direct Controller Migration Tracker</span>
+          <span class="badge">Target: End of Q1 2027</span>
+        </h1>
+        <p>Tracking the migration of legacy Terraform &amp; DCL controllers to Direct controllers (Greenfield excluded).</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn" onclick="exportCSV()">&#8595; Export CSV</button>
+        <button class="btn" onclick="exportJSON()">&#8595; Export JSON</button>
+        <button class="btn btn-primary" onclick="window.print()">&#128424; Print / PDF</button>
+      </div>
+    </header>
+
+    <div class="target-banner">
+      <div class="target-info">
+        <h3>&#9201; Milestone Countdown to Q1 2027 (March 31, 2027)</h3>
+        <p>Baseline Date: <strong>{start_str}</strong> &bull; Target Date: <strong>{target_str}</strong> &bull; Remaining: <strong>{metrics['days_remaining']} days</strong> (~{metrics['weeks_remaining']} weeks)</p>
+      </div>
+      <div style="display: flex; gap: 12px;">
+        <div class="pace-pill">
+          <div class="pace-val">{metrics['direct_impl_velocity']} / wk</div>
+          <div class="pace-label">Direct Implementations ({metrics['legacy_remaining']} Needed)</div>
+        </div>
+        <div class="pace-pill">
+          <div class="pace-val">{metrics['flip_velocity']} / wk</div>
+          <div class="pace-label">Direct Default Flips ({metrics['flips_needed']} Needed)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Migration Schedule Advisory Banner -->
+    <div class="advisory-banner">
+      <div class="advisory-card {metrics['advisory']['impl']['class']}">
+        <div class="advisory-icon">{metrics['advisory']['impl']['icon']}</div>
+        <div class="advisory-body">
+          <div class="advisory-title">Implementation Pace: <span>{metrics['advisory']['impl']['status_text']}</span></div>
+          <div class="advisory-desc">As of {metrics['advisory']['as_of_label']}: Actual <strong>{metrics['advisory']['impl']['real']}</strong> vs Projected <strong>{metrics['advisory']['impl']['projected']}</strong> &bull; {metrics['advisory']['impl']['msg']}</div>
+        </div>
+      </div>
+      <div class="advisory-card {metrics['advisory']['flip']['class']}">
+        <div class="advisory-icon">{metrics['advisory']['flip']['icon']}</div>
+        <div class="advisory-body">
+          <div class="advisory-title">Default Flip Pace: <span>{metrics['advisory']['flip']['status_text']}</span></div>
+          <div class="advisory-desc">As of {metrics['advisory']['as_of_label']}: Actual <strong>{metrics['advisory']['flip']['real']}</strong> vs Projected <strong>{metrics['advisory']['flip']['projected']}</strong> &bull; {metrics['advisory']['flip']['msg']}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI Cards: Migration Specific -->
+    <div class="metrics-grid">
+      <div class="card blue">
+        <div class="card-title">Total Migration Scope</div>
+        <div class="card-value">{metrics['total']}</div>
+        <div class="card-subtext">TF &amp; DCL resources to migrate across {len(metrics['services'])} services</div>
+      </div>
+      <div class="card green">
+        <div class="card-title">Direct Controller Ready</div>
+        <div class="card-value">
+          <span>{metrics['direct_ready']}</span>
+          <span style="font-size: 1rem; color: var(--accent-green);">({round(metrics['direct_ready']/metrics['total']*100, 1)}%)</span>
+        </div>
+        <div class="card-subtext">{metrics['direct_default_dual']} Direct default + {metrics['dual_pending']} Dual pending flip</div>
+      </div>
+      <div class="card amber">
+        <div class="card-title">Legacy Only (To Implement)</div>
+        <div class="card-value">
+          <span>{metrics['legacy_remaining']}</span>
+          <span style="font-size: 1rem; color: var(--accent-amber);">({round(metrics['legacy_remaining']/metrics['total']*100, 1)}%)</span>
+        </div>
+        <div class="card-subtext">{metrics['tf_only']} TF only + {metrics['dcl_only']} DCL only</div>
+      </div>
+      <div class="card cyan">
+        <div class="card-title">Dual (Pending Default Flip)</div>
+        <div class="card-value">{metrics['dual_pending']}</div>
+        <div class="card-subtext">Direct ready &mdash; needs qualification &amp; default flip</div>
+      </div>
+      <div class="card purple">
+        <div class="card-title">Total Default Flips Needed</div>
+        <div class="card-value">{metrics['flips_needed']}</div>
+        <div class="card-subtext">{metrics['dual_pending']} existing dual + {metrics['legacy_remaining']} new implementations</div>
+      </div>
+    </div>
+
+    <!-- Migration Progress Chart (Native Standalone SVG) -->
+    <div class="chart-section">
+      <div class="chart-container" id="chartContainer1">
+        <div class="chart-header">
+          <h3>Migration Progress Over Time</h3>
+          <span>Right Y-Axis: Controllers (0 &ndash; 301)</span>
+        </div>
+        <div class="chart-legend">
+          <div class="legend-item"><svg width="26" height="12" style="vertical-align: middle;"><line x1="1" y1="6" x2="25" y2="6" stroke="#10b981" stroke-width="3" /><circle cx="13" cy="6" r="3.5" fill="#10b981" stroke="#0f172a" stroke-width="1.5" /></svg> Real Implementation (Actual: {metrics['timeline']['real_impl'][-1]})</div>
+          <div class="legend-item"><svg width="26" height="12" style="vertical-align: middle;"><line x1="1" y1="6" x2="25" y2="6" stroke="#34d399" stroke-width="2.5" stroke-dasharray="4,3" /></svg> Projected Implementation (Linear: 80 &rarr; 301)</div>
+          <div class="legend-item"><svg width="26" height="12" style="vertical-align: middle;"><line x1="1" y1="6" x2="25" y2="6" stroke="#06b6d4" stroke-width="3" /><circle cx="13" cy="6" r="3.5" fill="#06b6d4" stroke="#0f172a" stroke-width="1.5" /></svg> Real Flip to Direct (Actual: {metrics['timeline']['real_flip'][-1]})</div>
+          <div class="legend-item"><svg width="26" height="12" style="vertical-align: middle;"><line x1="1" y1="6" x2="25" y2="6" stroke="#22d3ee" stroke-width="2.5" stroke-dasharray="4,3" /></svg> Projected Flip Default (Linear: 2 &rarr; 301)</div>
+        </div>
+        <div style="height: 330px; width: 100%; position: relative;">
+          {svg_chart1}
+          <div class="chart-tooltip-box" id="tooltip1"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- High Impact Migration Services -->
+    <div class="services-section">
+      <div class="services-header">
+        <div>
+          <h3>High Impact Services (Remaining Migration Backlog)</h3>
+          <p style="color: var(--text-secondary); font-size: 0.85rem;">Click any service card to instantly filter the migration list below</p>
+        </div>
+        <span style="font-size: 0.85rem; color: var(--accent-blue); font-weight: 500;">Top Migration Targets</span>
+      </div>
+      <div class="services-list" id="servicesList">
+      </div>
+    </div>
+
+    <!-- Resource Inventory Table -->
+    <div class="table-section">
+      <div class="table-controls">
+        <div class="filter-pills" id="filterPills">
+          <button class="filter-pill active" onclick="setFilter('all')">All Migration Scope ({metrics['total']})</button>
+          <button class="filter-pill" onclick="setFilter('legacy')">Legacy Only ({metrics['legacy_remaining']})</button>
+          <button class="filter-pill" onclick="setFilter('tf_only')">TF Only ({metrics['tf_only']})</button>
+          <button class="filter-pill" onclick="setFilter('dcl_only')">DCL Only ({metrics['dcl_only']})</button>
+          <button class="filter-pill" onclick="setFilter('dual_pending_flip')">Dual Pending Flip ({metrics['dual_pending']})</button>
+          <button class="filter-pill" onclick="setFilter('direct_ready')">Direct Ready ({metrics['direct_ready']})</button>
+        </div>
+        <div class="search-box">
+          <span class="search-icon">&#128269;</span>
+          <input type="text" id="searchInput" placeholder="Search Kind or Service..." oninput="handleSearch()">
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th onclick="sortTable('kind')">Resource Kind &#x21C5;</th>
+              <th onclick="sortTable('service')">GCP Service &#x21C5;</th>
+              <th onclick="sortTable('default_controller')">Default Reconciler &#x21C5;</th>
+              <th>Supported Reconcilers</th>
+              <th onclick="sortTable('status')">Migration Status &#x21C5;</th>
+              <th>Recommended Next Action</th>
+            </tr>
+          </thead>
+          <tbody id="resourcesTbody">
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <div id="paginationInfo">Showing 0 of 0</div>
+        <div class="pagination-btns">
+          <button class="btn" id="prevBtn" onclick="prevPage()">&larr; Previous</button>
+          <button class="btn" id="nextBtn" onclick="nextPage()">Next &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>KCC Direct Migration Dashboard &bull; Tracking Legacy TF/DCL to Direct Migration &bull; Copyright 2026 Google LLC</p>
+    </footer>
+  </div>
+
+  <script>
+    const resourcesData = {resources_json};
+    const metricsData = {metrics_json};
+
+    let currentFilter = 'all';
+    let currentServiceFilter = null;
+    let searchQuery = '';
+    let sortColumn = 'kind';
+    let sortAsc = true;
+    let currentPage = 1;
+    const pageSize = 20;
+
+    // SVG Chart 1 Hover Interaction
+    function handleChart1Hover(e) {{
+      const rect = e.target.getBoundingClientRect();
+      const relX = (e.clientX - rect.left) / rect.width;
+      const n = metricsData.timeline.labels.length - 1;
+      const index = Math.max(0, Math.min(n, Math.round(relX * n)));
+
+      const px = 40;
+      const pw = 890;
+      const x = px + (index / n) * pw;
+
+      const crosshair = document.getElementById('crosshair1');
+      if (crosshair) {{
+        crosshair.setAttribute('x1', x);
+        crosshair.setAttribute('x2', x);
+        crosshair.style.display = 'block';
+      }}
+
+      const tooltip = document.getElementById('tooltip1');
+      if (tooltip) {{
+        const label = metricsData.timeline.labels[index];
+        const projImpl = metricsData.timeline.projected_impl[index];
+        const projFlip = metricsData.timeline.projected_flip[index];
+        const hasReal = metricsData.timeline.real_impl && index < metricsData.timeline.real_impl.length;
+        const realImpl = hasReal ? metricsData.timeline.real_impl[index] : null;
+        const realFlip = hasReal ? metricsData.timeline.real_flip[index] : null;
+
+        let realSection = '';
+        if (hasReal) {{
+          const diffImpl = (realImpl - projImpl).toFixed(1);
+          const diffFlip = (realFlip - projFlip).toFixed(1);
+
+          let implTag = 'On Track';
+          let implColor = '#34d399';
+          if (diffImpl > 0.5) {{
+            implTag = `Faster (+${{diffImpl}})`;
+            implColor = '#38bdf8';
+          }} else if (diffImpl < -0.5) {{
+            implTag = `Behind (${{diffImpl}})`;
+            implColor = '#f87171';
+          }}
+
+          let flipTag = 'On Track';
+          let flipColor = '#22d3ee';
+          if (diffFlip > 0.5) {{
+            flipTag = `Faster (+${{diffFlip}})`;
+            flipColor = '#38bdf8';
+          }} else if (diffFlip < -0.5) {{
+            flipTag = `Behind (${{diffFlip}})`;
+            flipColor = '#f87171';
+          }}
+
+          realSection = `
+            <div style="margin-top: 5px; padding-top: 4px; border-top: 1px dashed #334155;">
+              <div style="color: #10b981; font-weight: 600;">Real Implementation: <strong>${{realImpl}} / ${{metricsData.total}}</strong> <span style="font-size: 0.72rem; color: ${{implColor}};">(${{implTag}})</span></div>
+              <div style="color: #06b6d4; font-weight: 600;">Real Flip to Direct: <strong>${{realFlip}} / ${{metricsData.total}}</strong> <span style="font-size: 0.72rem; color: ${{flipColor}};">(${{flipTag}})</span></div>
+            </div>
+          `;
+        }} else {{
+          realSection = `
+            <div style="margin-top: 5px; padding-top: 4px; border-top: 1px dashed #334155; color: #64748b; font-size: 0.72rem;">
+              <em>Future week (actuals pending)</em>
+            </div>
+          `;
+        }}
+
+        tooltip.innerHTML = `
+          <div style="font-weight: 700; color: #f8fafc; margin-bottom: 4px; border-bottom: 1px solid #334155; padding-bottom: 3px;">${{label}}</div>
+          <div style="color: #34d399;">Projected Impl (Linear): <strong>${{projImpl}} / ${{metricsData.total}}</strong></div>
+          <div style="color: #22d3ee;">Projected Flip (Linear): <strong>${{projFlip}} / ${{metricsData.total}}</strong></div>
+          ${{realSection}}
+        `;
+        const container = document.getElementById('chartContainer1');
+        const cRect = container.getBoundingClientRect();
+        tooltip.style.left = (e.clientX - cRect.left + 15) + 'px';
+        tooltip.style.top = (e.clientY - cRect.top - 20) + 'px';
+        tooltip.style.display = 'block';
+      }}
+    }}
+
+    function hideChart1Hover() {{
+      const crosshair = document.getElementById('crosshair1');
+      if (crosshair) crosshair.style.display = 'none';
+      const tooltip = document.getElementById('tooltip1');
+      if (tooltip) tooltip.style.display = 'none';
+    }}
+
+    function renderServicesList() {{
+      const container = document.getElementById('servicesList');
+      const top = metricsData.services.slice(0, 8);
+      container.innerHTML = top.map(s => {{
+        const directPct = Math.round((s.direct_ready / s.total) * 100);
+        const tfPct = Math.round((s.legacy_tf / s.total) * 100);
+        const dclPct = Math.round((s.legacy_dcl / s.total) * 100);
+
+        return `
+          <div class="service-card" onclick="filterByService('${{s.name}}')">
+            <div class="service-card-top">
+              <span class="service-name">${{s.name}}</span>
+              <span style="font-size: 0.8rem; font-weight: 700; color: ${{s.remaining_action > 0 ? '#fbbf24' : '#34d399'}};">
+                ${{s.remaining_action}} need action
+              </span>
+            </div>
+            <div class="service-bar">
+              <div class="service-bar-seg seg-green" style="width: ${{directPct}}%"></div>
+              <div class="service-bar-seg seg-amber" style="width: ${{tfPct}}%"></div>
+              <div class="service-bar-seg seg-red" style="width: ${{dclPct}}%"></div>
+            </div>
+            <div class="service-stats">
+              <span>Total: ${{s.total}}</span>
+              <span>Direct Ready: ${{s.direct_ready}}</span>
+              <span>TF Only: ${{s.legacy_tf}}</span>
+              <span>DCL Only: ${{s.legacy_dcl}}</span>
+            </div>
+          </div>
+        `;
+      }}).join('');
+    }}
+
+    function filterByService(serviceName) {{
+      if (currentServiceFilter === serviceName) {{
+        currentServiceFilter = null;
+      }} else {{
+        currentServiceFilter = serviceName;
+      }}
+      currentPage = 1;
+      renderTable();
+    }}
+
+    function setFilter(filter) {{
+      currentFilter = filter;
+      currentServiceFilter = null;
+      currentPage = 1;
+      document.querySelectorAll('.filter-pill').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      renderTable();
+    }}
+
+    function handleSearch() {{
+      searchQuery = document.getElementById('searchInput').value.trim().toLowerCase();
+      currentPage = 1;
+      renderTable();
+    }}
+
+    function sortTable(column) {{
+      if (sortColumn === column) {{
+        sortAsc = !sortAsc;
+      }} else {{
+        sortColumn = column;
+        sortAsc = true;
+      }}
+      renderTable();
+    }}
+
+    function getFilteredResources() {{
+      return resourcesData.filter(r => {{
+        if (currentServiceFilter && r.service !== currentServiceFilter) return false;
+
+        if (currentFilter === 'legacy' && !(r.category === 'tf_only' || r.category === 'dcl_only')) return false;
+        if (currentFilter === 'tf_only' && r.category !== 'tf_only') return false;
+        if (currentFilter === 'dcl_only' && r.category !== 'dcl_only') return false;
+        if (currentFilter === 'dual_pending_flip' && r.category !== 'dual_pending_flip') return false;
+        if (currentFilter === 'direct_ready' && !(r.category === 'direct_only' || r.category === 'direct_default_dual' || r.category === 'dual_pending_flip')) return false;
+
+        if (searchQuery) {{
+          const matchKind = r.kind.toLowerCase().includes(searchQuery);
+          const matchService = r.service.toLowerCase().includes(searchQuery);
+          const matchAction = r.action.toLowerCase().includes(searchQuery);
+          if (!matchKind && !matchService && !matchAction) return false;
+        }}
+        return true;
+      }}).sort((a, b) => {{
+        let valA = a[sortColumn] || '';
+        let valB = b[sortColumn] || '';
+        if (valA < valB) return sortAsc ? -1 : 1;
+        if (valA > valB) return sortAsc ? 1 : -1;
+        return 0;
+      }});
+    }}
+
+    function renderTable() {{
+      const filtered = getFilteredResources();
+      const totalCount = filtered.length;
+      const totalPages = Math.ceil(totalCount / pageSize) || 1;
+      if (currentPage > totalPages) currentPage = totalPages;
+
+      const startIndex = (currentPage - 1) * pageSize;
+      const pageItems = filtered.slice(startIndex, startIndex + pageSize);
+
+      const tbody = document.getElementById('resourcesTbody');
+      tbody.innerHTML = pageItems.map(r => {{
+        let statusClass = 'status-direct';
+        if (r.category === 'dual_pending_flip') statusClass = 'status-dual';
+        else if (r.category === 'tf_only') statusClass = 'status-tf';
+        else if (r.category === 'dcl_only') statusClass = 'status-dcl';
+
+        const supportedTags = r.supported_controllers.map(c => `
+          <span class="tag ${{c === r.default_controller ? 'default-tag' : ''}}">${{c}}</span>
+        `).join('');
+
+        return `
+          <tr>
+            <td style="font-weight: 600; color: #f1f5f9;">${{r.kind}}</td>
+            <td><code style="color: var(--accent-blue);">${{r.service}}</code></td>
+            <td><span class="tag default-tag">${{r.default_controller}}</span></td>
+            <td><div class="controller-tags">${{supportedTags}}</div></td>
+            <td><span class="badge-status ${{statusClass}}">${{r.status}}</span></td>
+            <td style="font-size: 0.82rem; color: var(--text-secondary);">${{r.action}}</td>
+          </tr>
+        `;
+      }}).join('');
+
+      const endDisplay = Math.min(startIndex + pageSize, totalCount);
+      const startDisplay = totalCount === 0 ? 0 : startIndex + 1;
+      const serviceNotice = currentServiceFilter ? ` [Filtered by Service: ${{currentServiceFilter}}]` : '';
+      document.getElementById('paginationInfo').innerText = `Showing ${{startDisplay}} - ${{endDisplay}} of ${{totalCount}} resources${{serviceNotice}}`;
+
+      document.getElementById('prevBtn').disabled = currentPage <= 1;
+      document.getElementById('nextBtn').disabled = currentPage >= totalPages;
+    }}
+
+    function prevPage() {{
+      if (currentPage > 1) {{
+        currentPage--;
+        renderTable();
+      }}
+    }}
+
+    function nextPage() {{
+      const filtered = getFilteredResources();
+      const totalPages = Math.ceil(filtered.length / pageSize) || 1;
+      if (currentPage < totalPages) {{
+        currentPage++;
+        renderTable();
+      }}
+    }}
+
+    function exportCSV() {{
+      const filtered = getFilteredResources();
+      const headers = ['Kind', 'Service', 'Group', 'DefaultController', 'SupportedControllers', 'MigrationStatus', 'RecommendedAction'];
+      const rows = filtered.map(r => [
+        r.kind,
+        r.service,
+        r.group,
+        r.default_controller,
+        r.supported_controllers.join(';'),
+        r.status,
+        `"${{r.action.replace(/"/g, '""')}}"`
+      ]);
+      const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+      const blob = new Blob([csvContent], {{ type: 'text/csv' }});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `kcc_migration_progress_${{new Date().toISOString().slice(0, 10)}}.csv`;
+      a.click();
+    }}
+
+    function exportJSON() {{
+      const filtered = getFilteredResources();
+      const blob = new Blob([JSON.stringify(filtered, null, 2)], {{ type: 'application/json' }});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `kcc_migration_progress_${{new Date().toISOString().slice(0, 10)}}.json`;
+      a.click();
+    }}
+
+    renderServicesList();
+    renderTable();
+  </script>
+</body>
+</html>
+"""
+    return html
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Generate KCC Direct Migration Progress Dashboard to End of Q1 2027")
+    parser.add_argument("--output", "-o", default="docs/reports/migration_dashboard.html", help="Output path for the HTML dashboard")
+    parser.add_argument("--target-date", default="2027-03-31", help="Target completion date (YYYY-MM-DD), default: 2027-03-31")
+    parser.add_argument("--start-date", default=None, help="Start date (YYYY-MM-DD), default: today")
+    parser.add_argument("--include-greenfield", action="store_true", help="Include greenfield native Direct controllers")
+    args = parser.parse_args()
+
+    repo_root = get_repo_root()
+
+    if args.start_date:
+        start_date = datetime.datetime.strptime(args.start_date, "%Y-%m-%d").date()
+    else:
+        start_date = datetime.date.today()
+
+    target_date = datetime.datetime.strptime(args.target_date, "%Y-%m-%d").date()
+
+    resources = parse_static_config(repo_root, include_greenfield=args.include_greenfield)
+    metrics = calculate_metrics(resources, start_date, target_date, repo_root=repo_root)
+    html = generate_html_dashboard(resources, metrics, start_date, target_date)
+
+    output_path = os.path.join(repo_root, args.output) if not os.path.isabs(args.output) else args.output
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(html)
+
+    print(f"Successfully generated migration dashboard at: {output_path}")
+    print(f"Total Migration Scope: {metrics['total']} resources")
+    print(f"Direct Ready: {metrics['direct_ready']} ({round(metrics['direct_ready']/metrics['total']*100, 1)}%)")
+    print(f"Legacy TF/DCL Remaining to Implement: {metrics['legacy_remaining']}")
+    print(f"Dual Pending Default Flip: {metrics['dual_pending']}")
+    print(f"Weeks Remaining to {target_date}: {metrics['weeks_remaining']} weeks")
+    print(f"Required Implementation Velocity: {metrics['direct_impl_velocity']} resources/week (221 to build)")
+    print(f"Required Flip Velocity: {metrics['flip_velocity']} flips/week (299 to flip)")
+    print(f"Total Engineering Milestones (Impl + Flips): {metrics['total_actions_needed']} ({metrics['total_actions_velocity']} milestones/week)")
+
+
+if __name__ == "__main__":
+    main()
