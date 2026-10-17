@@ -24,3 +24,12 @@
 - **Solution**: Implemented `apihubexternalapi_controller.go` and `apihubexternalapi_fuzzer.go` under package `apihubexternalapi` and registered it in `register.go` and `static_config.go` maps.
 - **Impact**: Provides full lifecycle reconciliation, validation, round-trip fuzzing, and live GCP golden recording/verification for `APIHubExternalAPI`.
 
+### 2026-10-17 APIHubCuration MockGCP Alignment Verification
+- **Context**: Aligning MockGCP logs with RealGCP output for `APIHubCuration` (`apihub.cnrm.cloud.google.com/v1alpha1`).
+- **Findings & Verification**:
+  1. Verified that `APIHubCuration` is not excluded in `tests/e2e/ratcheting.go`.
+  2. Executed `hack/compare-mock "fixtures/apihubcuration"` and `TestGoldenLogAlignment` for `apihubcuration-minimal` and `apihubcuration-maximal`, confirming exact match with zero discrepancies against real GCP HTTP golden logs.
+  3. Added unit tests in `mockgcp/mockapihub/apihubcuration_test.go` covering resource name parsing and full CRUD lifecycle against the mock service.
+  4. Verified round-trip KRM fuzzer tests for `APIHubCuration` execute cleanly.
+
+
