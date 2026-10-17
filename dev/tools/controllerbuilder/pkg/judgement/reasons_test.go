@@ -24,6 +24,7 @@ func TestIsReferenceReason(t *testing.T) {
 		reason string
 		want   bool
 	}{
+		{ReasonAuthoritativeProtoReference, true},
 		{ReasonPossibleReference, true},
 		{ReasonPossibleReferenceByDescription, true},
 		{ReasonPossibleReferenceByDescriptionLoose, true},

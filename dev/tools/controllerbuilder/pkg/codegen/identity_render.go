@@ -473,7 +473,11 @@ func renderTailSuffixExpr(tail []IdentitySegment, hasID, serverGen bool) string 
 }
 
 func renderSingleAncestorLookup(w *bytes.Buffer, plan *IdentityPlan, anc AncestorResolution) string {
-	varName := safeAncestorVarName(anc.Field.RawPlaceholder)
+	placeholder := anc.Field.TemplateVar
+	if placeholder == "" {
+		placeholder = anc.Field.RawPlaceholder
+	}
+	varName := safeAncestorVarName(placeholder)
 	switch anc.Source {
 	case AncestorProjectRef:
 		varName = "projectID"

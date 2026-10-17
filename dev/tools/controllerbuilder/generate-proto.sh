@@ -20,6 +20,7 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+CALLER_DIR="$(pwd)"
 
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
@@ -41,6 +42,9 @@ GOOGLEAPI_VERSION=${1:-$DEFAULT_GOOGLE_API_VERSION}
 
 # Take output path as parameter, default to .build/googleapis.pb
 OUTPUT_PATH=${2:-"${REPO_ROOT}/.build/googleapis.pb"}
+if [[ "${OUTPUT_PATH}" != /* ]]; then
+    OUTPUT_PATH="$(realpath -m "${CALLER_DIR}/${OUTPUT_PATH}")"
+fi
 
 THIRD_PARTY="${REPO_ROOT}/.build/third_party"
 mkdir -p "${THIRD_PARTY}/"
@@ -185,6 +189,7 @@ PROTO_FILES=(
     ${VERSION_DIR}/google/container/*/*.proto
     ${VERSION_DIR}/google/privacy/dlp/v2/*.proto
     ${VERSION_DIR}/grafeas/v1/*.proto
+    ${VERSION_DIR}/google/iam/v3/*.proto
 )
 # Disable nullglob shell option to restore the default shell globbing behavior
 shopt -u nullglob
