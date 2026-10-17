@@ -591,32 +591,7 @@ func PSCInterfaceConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmverte
 	out.DnsPeeringConfigs = direct.Slice_ToProto(mapCtx, in.DNSPeeringConfigs, DNSPeeringConfig_v1alpha1_ToProto)
 	return out
 }
-func PythonPackageSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PythonPackageSpec) *krmvertexaiv1alpha1.PythonPackageSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmvertexaiv1alpha1.PythonPackageSpec{}
-	out.ExecutorImageURI = direct.LazyPtr(in.GetExecutorImageUri())
-	// MISSING: PackageUris
-	// (near miss): "PackageUris" vs "PackageURIs"
-	out.PythonModule = direct.LazyPtr(in.GetPythonModule())
-	out.Args = in.Args
-	// MISSING: Env
-	return out
-}
-func PythonPackageSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.PythonPackageSpec) *pb.PythonPackageSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PythonPackageSpec{}
-	out.ExecutorImageUri = direct.ValueOf(in.ExecutorImageURI)
-	// MISSING: PackageUris
-	// (near miss): "PackageUris" vs "PackageURIs"
-	out.PythonModule = direct.ValueOf(in.PythonModule)
-	out.Args = in.Args
-	// MISSING: Env
-	return out
-}
+
 func ReservationAffinity_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krmvertexaiv1alpha1.ReservationAffinity {
 	if in == nil {
 		return nil
