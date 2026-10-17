@@ -448,6 +448,28 @@ func compareAddress(ctx context.Context, actual, desired *pb.Address) (*structur
 	populateDefaults(maskedActual)
 	populateDefaults(clonedDesired)
 
+	// Normalize URLs for network, subnetwork, and ipCollection
+	clonedDesired.Network = canonicalizeComputeURL(clonedDesired.Network)
+	maskedActual.Network = canonicalizeComputeURL(maskedActual.Network)
+	clonedDesired.Subnetwork = canonicalizeComputeURL(clonedDesired.Subnetwork)
+	maskedActual.Subnetwork = canonicalizeComputeURL(maskedActual.Subnetwork)
+	clonedDesired.IpCollection = canonicalizeComputeURL(clonedDesired.IpCollection)
+	maskedActual.IpCollection = canonicalizeComputeURL(maskedActual.IpCollection)
+
+	// If optional/computed fields are omitted in desired spec, ignore actual values populated by GCP
+	ignoreIfDesiredUnset := func(desired, actual **string) {
+		if *desired == nil || **desired == "" {
+			*actual = nil
+			*desired = nil
+		}
+	}
+
+	ignoreIfDesiredUnset(&clonedDesired.Address, &maskedActual.Address)
+	ignoreIfDesiredUnset(&clonedDesired.Purpose, &maskedActual.Purpose)
+	ignoreIfDesiredUnset(&clonedDesired.Network, &maskedActual.Network)
+	ignoreIfDesiredUnset(&clonedDesired.Subnetwork, &maskedActual.Subnetwork)
+	ignoreIfDesiredUnset(&clonedDesired.Description, &maskedActual.Description)
+
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
