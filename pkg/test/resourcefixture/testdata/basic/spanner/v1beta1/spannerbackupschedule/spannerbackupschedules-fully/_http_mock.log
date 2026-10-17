@@ -1,6 +1,6 @@
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -23,7 +23,7 @@ X-Xss-Protection: 0
 
 POST https://spanner.googleapis.com/v1/projects/${projectId}/instances?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "instance": {
@@ -82,7 +82,7 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -159,7 +159,7 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -200,7 +200,7 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -223,7 +223,7 @@ X-Xss-Protection: 0
 
 POST https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/databases?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "createStatement": "CREATE DATABASE `spannerdb-${uniqueId}`"
@@ -250,7 +250,7 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -272,6 +272,12 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.database.v1.Database",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "databaseDialect": "GOOGLE_STANDARD_SQL",
+    "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+    "encryptionInfo": [
+      {
+        "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+      }
+    ],
     "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
     "state": "READY",
     "versionRetentionPeriod": "1h"
@@ -282,7 +288,7 @@ X-Xss-Protection: 0
 
 PATCH https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/ddl?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "statements": [
@@ -314,7 +320,7 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -339,6 +345,12 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.database.v1.Database",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "databaseDialect": "GOOGLE_STANDARD_SQL",
+    "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+    "encryptionInfo": [
+      {
+        "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+      }
+    ],
     "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
     "state": "READY",
     "versionRetentionPeriod": "1h"
@@ -349,7 +361,7 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -363,6 +375,12 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseDialect": "GOOGLE_STANDARD_SQL",
+  "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+  "encryptionInfo": [
+    {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    }
+  ],
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
   "state": "READY",
   "versionRetentionPeriod": "1h"
@@ -372,7 +390,7 @@ X-Xss-Protection: 0
 
 POST https://serviceusage.googleapis.com/v1beta1/projects/${projectId}/services/spanner.googleapis.com:generateServiceIdentity?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -398,7 +416,7 @@ X-Xss-Protection: 0
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -422,7 +440,7 @@ X-Xss-Protection: 0
 
 POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings?alt=json&keyRingId=kmskeyring-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -443,7 +461,7 @@ X-Xss-Protection: 0
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -464,7 +482,7 @@ X-Xss-Protection: 0
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -488,7 +506,7 @@ X-Xss-Protection: 0
 
 POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys?alt=json&cryptoKeyId=kmscryptokey-${uniqueId}&skipInitialVersionCreation=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "labels": {
@@ -535,7 +553,7 @@ X-Xss-Protection: 0
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -574,7 +592,7 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules/spannerbackupschedule-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-${uniqueId}%2Fdatabases%2Fspannerdb-${uniqueId}%2FbackupSchedules%2Fspannerbackupschedule-${uniqueId}
 
 404 Not Found
@@ -598,7 +616,7 @@ X-Xss-Protection: 0
 
 POST https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules?%24alt=json%3Benum-encoding%3Dint&backupScheduleId=spannerbackupschedule-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Finstances%2Fspannerinstance-${uniqueId}%2Fdatabases%2Fspannerdb-${uniqueId}
 
 {
@@ -644,7 +662,7 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules/spannerbackupschedule-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-${uniqueId}%2Fdatabases%2Fspannerdb-${uniqueId}%2FbackupSchedules%2Fspannerbackupschedule-${uniqueId}
 
 200 OK
@@ -677,7 +695,7 @@ X-Xss-Protection: 0
 
 PATCH https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules/spannerbackupschedule-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=retentionDuration%2Cspec.cronSpec.text
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: backup_schedule.name=projects%2F${projectId}%2Finstances%2Fspannerinstance-${uniqueId}%2Fdatabases%2Fspannerdb-${uniqueId}%2FbackupSchedules%2Fspannerbackupschedule-${uniqueId}
 
 {
@@ -724,7 +742,7 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules/spannerbackupschedule-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-${uniqueId}%2Fdatabases%2Fspannerdb-${uniqueId}%2FbackupSchedules%2Fspannerbackupschedule-${uniqueId}
 
 200 OK
@@ -757,7 +775,7 @@ X-Xss-Protection: 0
 
 DELETE https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules/spannerbackupschedule-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-${uniqueId}%2Fdatabases%2Fspannerdb-${uniqueId}%2FbackupSchedules%2Fspannerbackupschedule-${uniqueId}
 
 200 OK
@@ -775,7 +793,7 @@ X-Xss-Protection: 0
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -813,7 +831,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -843,7 +861,7 @@ X-Xss-Protection: 0
 
 POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1:destroy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {}
 
@@ -871,7 +889,7 @@ X-Xss-Protection: 0
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -892,7 +910,7 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -906,6 +924,12 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseDialect": "GOOGLE_STANDARD_SQL",
+  "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+  "encryptionInfo": [
+    {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    }
+  ],
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
   "state": "READY",
   "versionRetentionPeriod": "1h"
@@ -915,7 +939,7 @@ X-Xss-Protection: 0
 
 DELETE https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -932,7 +956,7 @@ X-Xss-Protection: 0
 
 GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -973,7 +997,7 @@ X-Xss-Protection: 0
 
 DELETE https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
