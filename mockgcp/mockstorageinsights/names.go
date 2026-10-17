@@ -51,3 +51,33 @@ func (s *MockService) parseDatasetConfigName(name string) (*datasetConfigName, e
 	}
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
+
+type reportConfigName struct {
+	Project      *projects.ProjectData
+	Location     string
+	ReportConfig string
+}
+
+func (n *reportConfigName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/reportConfigs/" + n.ReportConfig
+}
+
+// parseReportConfigName parses a string into a reportConfigName.
+// The expected form is projects/<projectID>/locations/<location>/reportConfigs/<reportConfig>
+func (s *MockService) parseReportConfigName(name string) (*reportConfigName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "reportConfigs" {
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &reportConfigName{
+			Project:      project,
+			Location:     tokens[3],
+			ReportConfig: tokens[5],
+		}, nil
+	}
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
