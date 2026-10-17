@@ -28,6 +28,7 @@
 [not_representable] crd=clouddeploytargets.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionConfigs[].privatePool.artifactStorage" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.dumpPath" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=cloudfunctionsfunctions.cloudfunctions.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceArchiveUrl" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=configdeployments.configdeployment.cnrm.cloud.google.com version=v1alpha1: field ".spec.terraformBlueprint.gcsSource" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=containeranalysisoccurrences.containeranalysis.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceUri" reason=container-image-uri-not-a-storage-object
 [not_representable] crd=databasemigrationmigrationjobs.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.dumpPath" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=dataflowflextemplatejobs.dataflow.cnrm.cloud.google.com version=v1beta1: field ".spec.stagingLocation" reason=gcs-path-decomposable-as-bucketref-plus-path

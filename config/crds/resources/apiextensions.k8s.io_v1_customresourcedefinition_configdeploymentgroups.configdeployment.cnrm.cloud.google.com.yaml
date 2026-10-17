@@ -103,7 +103,7 @@ spec:
                       properties:
                         external:
                           description: A reference to an externally managed ConfigDeployment
-                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/deployments/{{deploymentID}}".
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/deployments/{{deployment}}".
                           type: string
                         name:
                           description: The name of a ConfigDeployment resource.
