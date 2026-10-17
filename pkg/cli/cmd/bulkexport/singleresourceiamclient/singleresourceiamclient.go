@@ -120,6 +120,8 @@ type singleResourceClient struct {
 	Resource *unstructured.Unstructured
 }
 
+var _ client.Client = &singleResourceClient{}
+
 func (c *singleResourceClient) Get(_ context.Context, key client.ObjectKey, obj client.Object, _ ...client.GetOption) error {
 	unstructObj, ok := obj.(*unstructured.Unstructured)
 	if !ok {

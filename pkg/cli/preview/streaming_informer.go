@@ -331,6 +331,8 @@ type eventHandlerRegistration struct {
 	resyncPeriod time.Duration
 }
 
+var _ toolscache.ResourceEventHandlerRegistration = &eventHandlerRegistration{}
+
 // HasSynced reports if both the parent has synced and all pre-sync
 // events have been delivered.
 func (i *eventHandlerRegistration) HasSynced() bool {
