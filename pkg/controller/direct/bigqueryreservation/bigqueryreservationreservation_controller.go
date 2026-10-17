@@ -30,6 +30,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -214,6 +215,11 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	} else if desiredPb.Autoscale != nil && a.actual.Autoscale == nil {
 		report.AddField("autoscale", a.actual.Autoscale, desiredPb.Autoscale)
 		paths = append(paths, "autoscale")
+	}
+
+	if !proto.Equal(desiredPb.GetSchedulingPolicy(), a.actual.GetSchedulingPolicy()) {
+		report.AddField("scheduling_policy", a.actual.GetSchedulingPolicy(), desiredPb.GetSchedulingPolicy())
+		paths = append(paths, "scheduling_policy")
 	}
 
 	if len(paths) == 0 {

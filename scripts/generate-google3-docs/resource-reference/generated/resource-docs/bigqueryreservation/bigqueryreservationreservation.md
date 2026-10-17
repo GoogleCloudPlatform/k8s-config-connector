@@ -70,6 +70,9 @@ projectRef:
   name: string
   namespace: string
 resourceID: string
+schedulingPolicy:
+  concurrency: integer
+  maxSlots: integer
 slotCapacity: integer
 ```
 
@@ -226,6 +229,36 @@ Immutable.</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>Immutable. Optional. The BigQuery Reservation ID used for resource creation or acquisition. It must only contain lower case alphanumeric characters or dashes. It must start with a letter and must not end with a dash. Its maximum length is 64 characters. For creation: If specified, this value is used as the Reservation ID. If not provided, a UUID will be generated and assigned as the Reservation ID. For acquisition: This field must be provided to identify the Reservation resource to acquire.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>schedulingPolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Optional. The scheduling policy to use for jobs and queries running under this reservation.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>schedulingPolicy.concurrency</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Limit concurrency of jobs for any particular project within the reservation.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>schedulingPolicy.maxSlots</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Limit slot consumption of queries for any particular project within the reservation.</p>
         </td>
     </tr>
     <tr>
