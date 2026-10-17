@@ -381,6 +381,11 @@ func (in *CertificateManagerCertificateMapEntrySpec) DeepCopyInto(out *Certifica
 		*out = new(string)
 		**out = **in
 	}
+	if in.Location != nil {
+		in, out := &in.Location, &out.Location
+		*out = new(string)
+		**out = **in
+	}
 	out.MapRef = in.MapRef
 	if in.Matcher != nil {
 		in, out := &in.Matcher, &out.Matcher
@@ -497,6 +502,11 @@ func (in *CertificateManagerCertificateMapSpec) DeepCopyInto(out *CertificateMan
 	*out = *in
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
+		*out = new(string)
+		**out = **in
+	}
+	if in.Location != nil {
+		in, out := &in.Location, &out.Location
 		*out = new(string)
 		**out = **in
 	}

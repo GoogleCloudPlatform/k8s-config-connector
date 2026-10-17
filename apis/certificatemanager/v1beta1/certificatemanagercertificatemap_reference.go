@@ -36,7 +36,7 @@ var CertificateManagerCertificateMapGVK = schema.GroupVersionKind{
 
 // CertificateManagerCertificateMapRef is a reference to a GCP CertificateManagerCertificateMap.
 type CertificateManagerCertificateMapRef struct {
-	// A reference to an externally managed CertificateManagerCertificateMap resource. Should be in the format "projects/{{projectID}}/locations/global/certificateMaps/{{certificateMapID}}".
+	// A reference to an externally managed CertificateManagerCertificateMap resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/certificateMaps/{{certificateMapID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a CertificateManagerCertificateMap resource.
