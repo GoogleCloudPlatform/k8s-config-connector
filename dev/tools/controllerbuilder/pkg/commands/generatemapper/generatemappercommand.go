@@ -156,8 +156,10 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 	mapperGenerator.WithIncludeSkippedOutput(o.GenerateOptions.IncludeSkippedOutput)
 	mapperGenerator.WithEmitPluralAcronyms(o.PrepopulateResource || o.EmitPluralAcronyms)
 	mapperGenerator.WithEmitMessageMaps(o.PrepopulateResource || o.EmitMessageMaps)
+	mapperGenerator.LoadExistingImports(goPackage)
 
-	// Ensure that our first proto package is always imported with the "pb" alias.
+	// Ensure that our first proto package is always imported with the "pb" alias
+	// (unless an existing mapper.generated.go already binds "pb" to another package).
 	firstService, err := api.GetFileDescriptorByPackage(o.ServiceNames[0])
 	if err != nil {
 		return err

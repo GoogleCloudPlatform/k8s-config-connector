@@ -716,3 +716,124 @@ func TestRunGenerateCRDQueuesNestedJudgementsPerKind(t *testing.T) {
 	}
 }
 
+func TestRunGenerateCRDAdditiveAcrossServices(t *testing.T) {
+	dir := t.TempDir()
+	apiDir := filepath.Join(dir, "apis")
+
+	str := descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum()
+	msgType := descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+	fds := &descriptorpb.FileDescriptorSet{File: []*descriptorpb.FileDescriptorProto{
+		{
+			Name:    proto.String("google/cloud/example/v1/widget.proto"),
+			Package: proto.String("google.cloud.example.v1"),
+			Syntax:  proto.String("proto3"),
+			MessageType: []*descriptorpb.DescriptorProto{
+				{
+					Name: proto.String("WidgetSettings"),
+					Field: []*descriptorpb.FieldDescriptorProto{
+						{Name: proto.String("mode"), Number: proto.Int32(1), Type: str},
+					},
+				},
+				{
+					Name: proto.String("Widget"),
+					Field: []*descriptorpb.FieldDescriptorProto{
+						{Name: proto.String("name"), Number: proto.Int32(1), Type: str},
+						{Name: proto.String("settings"), Number: proto.Int32(2), Type: msgType, TypeName: proto.String(".google.cloud.example.v1.WidgetSettings")},
+					},
+				},
+			},
+		},
+		{
+			Name:    proto.String("google/cloud/example/v2/gadget.proto"),
+			Package: proto.String("google.cloud.example.v2"),
+			Syntax:  proto.String("proto3"),
+			MessageType: []*descriptorpb.DescriptorProto{
+				{
+					Name: proto.String("GadgetConfig"),
+					Field: []*descriptorpb.FieldDescriptorProto{
+						{Name: proto.String("flavor"), Number: proto.Int32(1), Type: str},
+					},
+				},
+				{
+					Name: proto.String("Gadget"),
+					Field: []*descriptorpb.FieldDescriptorProto{
+						{Name: proto.String("name"), Number: proto.Int32(1), Type: str},
+						{Name: proto.String("config"), Number: proto.Int32(2), Type: msgType, TypeName: proto.String(".google.cloud.example.v2.GadgetConfig")},
+					},
+				},
+			},
+		},
+	}}
+	b, err := proto.Marshal(fds)
+	if err != nil {
+		t.Fatalf("marshalling descriptor set: %v", err)
+	}
+	pbPath := filepath.Join(dir, "multi_service.pb")
+	writeFile(t, pbPath, string(b))
+
+	runV1 := func() {
+		o1 := &GenerateCRDOptions{
+			GenerateOptions: &options.GenerateOptions{
+				ProtoSourcePath: pbPath,
+				APIVersion:      "example.cnrm.cloud.google.com/v1alpha1",
+			},
+			ServiceName:         "google.cloud.example.v1",
+			OutputAPIDirectory:  apiDir,
+			Resources:           options.ResourceList{{Kind: "ExampleWidget", ProtoName: "Widget"}},
+			PrepopulateResource: true,
+		}
+		if err := RunGenerateCRD(context.Background(), o1); err != nil {
+			t.Fatalf("RunGenerateCRD(v1) error: %v", err)
+		}
+	}
+
+	runV2 := func() {
+		o2 := &GenerateCRDOptions{
+			GenerateOptions: &options.GenerateOptions{
+				ProtoSourcePath: pbPath,
+				APIVersion:      "example.cnrm.cloud.google.com/v1alpha1",
+			},
+			ServiceName:         "google.cloud.example.v2",
+			OutputAPIDirectory:  apiDir,
+			Resources:           options.ResourceList{{Kind: "ExampleGadget", ProtoName: "Gadget"}},
+			PrepopulateResource: true,
+		}
+		if err := RunGenerateCRD(context.Background(), o2); err != nil {
+			t.Fatalf("RunGenerateCRD(v2) error: %v", err)
+		}
+	}
+
+	runV1()
+	runV2()
+
+	genPath := filepath.Join(apiDir, "example", "v1alpha1", "types.generated.go")
+	afterFirstPass := readFile(t, genPath)
+	for _, wantSubstr := range []string{
+		"// proto.service: google.cloud.example.v1",
+		"// proto.service: google.cloud.example.v2",
+		"// resource: ExampleWidget:Widget",
+		"// resource: ExampleGadget:Gadget",
+		"type WidgetSettings struct",
+		"type GadgetConfig struct",
+	} {
+		if !strings.Contains(afterFirstPass, wantSubstr) {
+			t.Errorf("expected types.generated.go to contain %q, got:\n%s", wantSubstr, afterFirstPass)
+		}
+	}
+	for _, unwantedSubstr := range []string{
+		"type Widget struct",
+		"type Gadget struct",
+	} {
+		if strings.Contains(afterFirstPass, unwantedSubstr) {
+			t.Errorf("expected types.generated.go not to contain top-level resource struct %q during fresh scaffolding, got:\n%s", unwantedSubstr, afterFirstPass)
+		}
+	}
+
+	// Re-running v1 then v2 must be idempotent from the very first pass.
+	runV1()
+	runV2()
+	afterSecondPass := readFile(t, genPath)
+	if diff := cmp.Diff(afterFirstPass, afterSecondPass); diff != "" {
+		t.Errorf("re-running RunGenerateCRD across services was not idempotent (-first +second):\n%s", diff)
+	}
+}

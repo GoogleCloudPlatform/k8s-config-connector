@@ -17,8 +17,12 @@ package codegen
 import (
 	"bytes"
 	"fmt"
+	"go/ast"
+	"go/parser"
+	"go/token"
 	"os"
 	"path/filepath"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -201,6 +205,16 @@ type generatedFile struct {
 	fileAnnotation *annotations.FileAnnotation
 
 	imports map[string]string
+
+	// reservedTypeNames holds Go type names that will be declared by the scaffolder
+	// in non-generated files, so they should not be preserved from an existing
+	// types.generated.go file.
+	reservedTypeNames map[string]bool
+
+	// validKRMTypes holds active KRM struct names in the target API packages when
+	// generating mappers; existing mapper functions for deleted or pruned KRM types
+	// are not preserved.
+	validKRMTypes map[string]bool
 }
 
 type generatedFileKey struct {
@@ -225,12 +239,20 @@ func (f *generatedFile) addImport(alias string, pkgName string) {
 }
 
 func (f *generatedFile) Write(addCopyright bool, writeEmptyFiles bool, onlyUsedImports bool) error {
+	dir := f.OutputDir()
+	p := filepath.Join(dir, f.key.FileName)
+
+	existingBytes, err := os.ReadFile(p)
+	if err != nil && !os.IsNotExist(err) {
+		return fmt.Errorf("reading existing file %q: %w", p, err)
+	}
+	if len(existingBytes) > 0 {
+		f.mergeWithExisting(existingBytes, dir)
+	}
+
 	if f.body.Len() == 0 && !writeEmptyFiles {
 		return nil
 	}
-
-	dir := f.OutputDir()
-	p := filepath.Join(dir, f.key.FileName)
 
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		return fmt.Errorf("creating directory %q: %w", dir, err)
@@ -240,15 +262,8 @@ func (f *generatedFile) Write(addCopyright bool, writeEmptyFiles bool, onlyUsedI
 
 	if addCopyright {
 		year := time.Now().Year()
-
-		b, err := os.ReadFile(p)
-		if err != nil && !os.IsNotExist(err) {
-			return fmt.Errorf("reading file %q (checking for existing copyright): %w", p, err)
-		} else {
-			existingCopyrightYear, ok := extractCopyrightYear(b)
-			if ok {
-				year = existingCopyrightYear
-			}
+		if existingCopyrightYear, ok := extractCopyrightYear(existingBytes); ok {
+			year = existingCopyrightYear
 		}
 		writeCopyright(&w, year)
 	}
@@ -302,6 +317,529 @@ func (f *generatedFile) Write(addCopyright bool, writeEmptyFiles bool, onlyUsedI
 
 	return nil
 }
+
+type generatedBlock struct {
+	name            string
+	kind            string // "type" or "func"
+	isCommented     bool
+	protoFQN        string
+	isObservedState bool
+	krmTypeName     string
+	rawText         string
+	offset          int
+}
+
+// mergeWithExisting merges declarations, imports, and FileAnnotation attributes from an
+// existing generated Go file on disk into f so sequential generate-types or generate-mapper
+// invocations (for example across multiple --service packages) accumulate additively.
+func (f *generatedFile) mergeWithExisting(existingBytes []byte, dir string) {
+	if f.fileAnnotation != nil {
+		if existingAnns, err := annotations.FindFileAnnotations(existingBytes, []string{"+generated:"}); err == nil && len(existingAnns) > 0 {
+			for i := range existingAnns {
+				if existingAnns[i].Key == f.fileAnnotation.Key {
+					eg := existingAnns[i].Attributes["krm.group"]
+					cg := f.fileAnnotation.Attributes["krm.group"]
+					if len(eg) > 0 && len(cg) > 0 && eg[0] != cg[0] {
+						return
+					}
+					f.fileAnnotation = annotations.MergeFileAnnotations(&existingAnns[i], f.fileAnnotation)
+					break
+				}
+			}
+		}
+	}
+
+	pkgName := f.goPackage
+	if pkgName == "" {
+		pkgName = "p"
+	}
+	existingBlocks, existingImports, err := parseGeneratedGoBlocks(existingBytes, pkgName, false)
+	if err != nil || len(existingBlocks) == 0 {
+		return
+	}
+	currentBlocks, _, err := parseGeneratedGoBlocks(f.body.Bytes(), pkgName, true)
+	if err != nil {
+		return
+	}
+
+	// Merge imports from the existing file without clobbering aliases chosen for the current run.
+	usedAliases := make(map[string]string)
+	for pkg, alias := range f.imports {
+		if alias != "" {
+			usedAliases[alias] = pkg
+		}
+	}
+	for pkg, alias := range existingImports {
+		if _, already := f.imports[pkg]; already {
+			continue
+		}
+		if alias != "" {
+			if otherPkg, taken := usedAliases[alias]; taken && otherPkg != pkg {
+				continue
+			}
+			usedAliases[alias] = pkg
+		}
+		f.addImport(alias, pkg)
+	}
+
+	currentByName := make(map[string]generatedBlock, len(currentBlocks))
+	for _, b := range currentBlocks {
+		if b.name != "" {
+			currentByName[b.name] = b
+		}
+	}
+
+	handwrittenTypes, handwrittenProtoTags, handwrittenFuncs := scanHandwrittenDirDeclarations(dir)
+
+	var filteredExisting []generatedBlock
+	hasExternalBlocks := false
+	for _, eb := range existingBlocks {
+		if eb.name == "" {
+			continue
+		}
+		if _, inCurrent := currentByName[eb.name]; inCurrent {
+			filteredExisting = append(filteredExisting, eb)
+			continue
+		}
+		if eb.kind == "type" {
+			if !eb.isCommented {
+				if handwrittenTypes[eb.name] || f.reservedTypeNames[eb.name] {
+					continue
+				}
+				if eb.protoFQN != "" && handwrittenProtoTags[eb.protoFQN] {
+					baseName := strings.TrimSuffix(eb.name, "ObservedState")
+					if isBaseProtoStructName(eb.name, eb.protoFQN) || isBaseProtoStructName(baseName, eb.protoFQN) {
+						continue
+					}
+				}
+			}
+		} else if eb.kind == "func" {
+			if !eb.isCommented && handwrittenFuncs[eb.name] {
+				continue
+			}
+			if f.validKRMTypes != nil && eb.krmTypeName != "" && !f.validKRMTypes[eb.krmTypeName] {
+				continue
+			}
+		}
+		hasExternalBlocks = true
+		filteredExisting = append(filteredExisting, eb)
+	}
+
+	if !hasExternalBlocks && len(currentBlocks) > 0 {
+		return
+	}
+
+	var merged []generatedBlock
+	if f.key.FileName == "types.generated.go" && allBlocksHaveProtoFQN(filteredExisting, currentBlocks) {
+		merged = mergeAndSortTypeBlocks(filteredExisting, currentBlocks)
+	} else {
+		merged = mergeOrderedBlocks(filteredExisting, currentBlocks)
+	}
+
+	f.body.Reset()
+	for _, b := range merged {
+		f.body.WriteString("\n")
+		f.body.WriteString(b.rawText)
+		f.body.WriteString("\n")
+	}
+}
+
+func allBlocksHaveProtoFQN(a, b []generatedBlock) bool {
+	for _, blk := range a {
+		if blk.protoFQN == "" {
+			return false
+		}
+	}
+	for _, blk := range b {
+		if blk.protoFQN == "" {
+			return false
+		}
+	}
+	return true
+}
+
+func mergeAndSortTypeBlocks(existing, current []generatedBlock) []generatedBlock {
+	byName := make(map[string]generatedBlock, len(existing)+len(current))
+	for _, b := range existing {
+		byName[b.name] = b
+	}
+	for _, b := range current {
+		byName[b.name] = b
+	}
+	merged := make([]generatedBlock, 0, len(byName))
+	for _, b := range byName {
+		merged = append(merged, b)
+	}
+	sort.Slice(merged, func(i, j int) bool {
+		if merged[i].isObservedState != merged[j].isObservedState {
+			return !merged[i].isObservedState && merged[j].isObservedState
+		}
+		if merged[i].protoFQN != merged[j].protoFQN {
+			return merged[i].protoFQN < merged[j].protoFQN
+		}
+		return merged[i].name < merged[j].name
+	})
+	return merged
+}
+
+func mergeOrderedBlocks(existing, current []generatedBlock) []generatedBlock {
+	currentByName := make(map[string]generatedBlock, len(current))
+	var dedupCurrent []generatedBlock
+	seenCurrent := make(map[string]int, len(current))
+	for _, b := range current {
+		currentByName[b.name] = b
+		if idx, ok := seenCurrent[b.name]; ok {
+			dedupCurrent[idx] = b
+		} else {
+			seenCurrent[b.name] = len(dedupCurrent)
+			dedupCurrent = append(dedupCurrent, b)
+		}
+	}
+
+	var result []generatedBlock
+	placed := make(map[string]bool, len(existing)+len(dedupCurrent))
+	for _, eb := range existing {
+		if cb, ok := currentByName[eb.name]; ok {
+			result = append(result, cb)
+		} else {
+			result = append(result, eb)
+		}
+		placed[eb.name] = true
+	}
+
+	for i, cb := range dedupCurrent {
+		if placed[cb.name] {
+			continue
+		}
+		inserted := false
+		if i > 0 && placed[dedupCurrent[i-1].name] {
+			prevName := dedupCurrent[i-1].name
+			for idx := range result {
+				if result[idx].name == prevName {
+					result = append(result[:idx+1], append([]generatedBlock{cb}, result[idx+1:]...)...)
+					inserted = true
+					break
+				}
+			}
+		}
+		if !inserted {
+			for j := i + 1; j < len(dedupCurrent); j++ {
+				if placed[dedupCurrent[j].name] {
+					nextName := dedupCurrent[j].name
+					for idx := range result {
+						if result[idx].name == nextName {
+							result = append(result[:idx], append([]generatedBlock{cb}, result[idx:]...)...)
+							inserted = true
+							break
+						}
+					}
+					break
+				}
+			}
+		}
+		if !inserted {
+			result = append(result, cb)
+		}
+		placed[cb.name] = true
+	}
+	return result
+}
+
+type byteSpan struct {
+	start int
+	end   int
+}
+
+func parseGeneratedGoBlocks(src []byte, defaultPkg string, isBodyOnly bool) ([]generatedBlock, map[string]string, error) {
+	goSrc := src
+	if isBodyOnly {
+		header := fmt.Sprintf("package %s\n\n", defaultPkg)
+		goSrc = append([]byte(header), src...)
+	}
+
+	fset := token.NewFileSet()
+	astFile, err := parser.ParseFile(fset, "", goSrc, parser.ParseComments)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	imports := make(map[string]string)
+	for _, imp := range astFile.Imports {
+		if imp.Path == nil {
+			continue
+		}
+		pkgPath, err := strconv.Unquote(imp.Path.Value)
+		if err != nil {
+			continue
+		}
+		alias := ""
+		if imp.Name != nil {
+			alias = imp.Name.Name
+		}
+		imports[pkgPath] = alias
+	}
+
+	var blocks []generatedBlock
+	var declSpans []byteSpan
+
+	for _, decl := range astFile.Decls {
+		switch d := decl.(type) {
+		case *ast.GenDecl:
+			if d.Tok != token.TYPE || len(d.Specs) == 0 {
+				continue
+			}
+			typeSpec, ok := d.Specs[0].(*ast.TypeSpec)
+			if !ok || typeSpec.Name == nil {
+				continue
+			}
+			declStart := fset.Position(d.Pos()).Offset
+			docStart := declStart
+			if d.Doc != nil && len(d.Doc.List) > 0 {
+				firstLineCommentIdx := 0
+				for idx, c := range d.Doc.List {
+					if strings.HasPrefix(c.Text, "/*") {
+						firstLineCommentIdx = idx + 1
+					}
+				}
+				if firstLineCommentIdx < len(d.Doc.List) {
+					docStart = fset.Position(d.Doc.List[firstLineCommentIdx].Pos()).Offset
+				}
+			}
+			declEnd := fset.Position(d.End()).Offset
+			declSpans = append(declSpans, byteSpan{start: declStart, end: declEnd})
+
+			rawText := strings.TrimSpace(string(goSrc[docStart:declEnd]))
+			protoFQN, isObservedState := extractProtoInfoFromBlockText(rawText)
+			if strings.HasSuffix(typeSpec.Name.Name, "ObservedState") {
+				isObservedState = true
+			}
+			blocks = append(blocks, generatedBlock{
+				name:            typeSpec.Name.Name,
+				kind:            "type",
+				protoFQN:        protoFQN,
+				isObservedState: isObservedState,
+				rawText:         rawText,
+				offset:          docStart,
+			})
+
+		case *ast.FuncDecl:
+			if d.Name == nil {
+				continue
+			}
+			declStart := fset.Position(d.Pos()).Offset
+			docStart := declStart
+			if d.Doc != nil && len(d.Doc.List) > 0 {
+				firstLineCommentIdx := 0
+				for idx, c := range d.Doc.List {
+					if strings.HasPrefix(c.Text, "/*") {
+						firstLineCommentIdx = idx + 1
+					}
+				}
+				if firstLineCommentIdx < len(d.Doc.List) {
+					docStart = fset.Position(d.Doc.List[firstLineCommentIdx].Pos()).Offset
+				}
+			}
+			declEnd := fset.Position(d.End()).Offset
+			declSpans = append(declSpans, byteSpan{start: declStart, end: declEnd})
+
+			rawText := strings.TrimSpace(string(goSrc[docStart:declEnd]))
+			krmTypeName := extractKRMTypeFromFuncText(rawText)
+			blocks = append(blocks, generatedBlock{
+				name:        d.Name.Name,
+				kind:        "func",
+				krmTypeName: krmTypeName,
+				rawText:     rawText,
+				offset:      docStart,
+			})
+		}
+	}
+
+	pkgEndOffset := fset.Position(astFile.Name.End()).Offset
+	for _, cg := range astFile.Comments {
+		for _, c := range cg.List {
+			if !strings.HasPrefix(c.Text, "/*") {
+				continue
+			}
+			cOffset := fset.Position(c.Pos()).Offset
+			if cOffset <= pkgEndOffset {
+				continue
+			}
+			insideDecl := false
+			for _, sp := range declSpans {
+				if cOffset >= sp.start && cOffset < sp.end {
+					insideDecl = true
+					break
+				}
+			}
+			if insideDecl {
+				continue
+			}
+			rawText := strings.TrimSpace(c.Text)
+			if name, protoFQN, isObs, ok := parseCommentedTypeBlock(rawText); ok {
+				blocks = append(blocks, generatedBlock{
+					name:            name,
+					kind:            "type",
+					isCommented:     true,
+					protoFQN:        protoFQN,
+					isObservedState: isObs,
+					rawText:         rawText,
+					offset:          cOffset,
+				})
+			} else if name, krmTypeName, ok := parseCommentedFuncBlock(rawText); ok {
+				blocks = append(blocks, generatedBlock{
+					name:        name,
+					kind:        "func",
+					isCommented: true,
+					krmTypeName: krmTypeName,
+					rawText:     rawText,
+					offset:      cOffset,
+				})
+			}
+		}
+	}
+
+	sort.Slice(blocks, func(i, j int) bool {
+		return blocks[i].offset < blocks[j].offset
+	})
+	return blocks, imports, nil
+}
+
+func extractProtoInfoFromBlockText(rawText string) (protoFQN string, isObservedState bool) {
+	for _, line := range strings.Split(rawText, "\n") {
+		trimmed := strings.TrimSpace(line)
+		if msg, kind, ok := GetProtoMessageAndKindFromAnnotation(trimmed); ok {
+			protoFQN = msg
+			if kind == KCCProtoMessageAnnotationObservedState {
+				isObservedState = true
+			}
+			return protoFQN, isObservedState
+		}
+	}
+	return "", false
+}
+
+func parseCommentedTypeBlock(rawText string) (typeName, protoFQN string, isObservedState, ok bool) {
+	protoFQN, isObservedState = extractProtoInfoFromBlockText(rawText)
+	for _, line := range strings.Split(rawText, "\n") {
+		trimmed := strings.TrimSpace(line)
+		if rest, found := strings.CutPrefix(trimmed, "/* unreachable type "); found {
+			fields := strings.Fields(rest)
+			if len(fields) > 0 {
+				typeName = fields[0]
+				break
+			}
+		}
+		if name, found := goTypeNameFromDeclaration(trimmed); found {
+			typeName = name
+			break
+		}
+	}
+	if typeName == "" {
+		return "", "", false, false
+	}
+	if strings.HasSuffix(typeName, "ObservedState") {
+		isObservedState = true
+	}
+	return typeName, protoFQN, isObservedState, true
+}
+
+func parseCommentedFuncBlock(rawText string) (funcName, krmTypeName string, ok bool) {
+	for _, line := range strings.Split(rawText, "\n") {
+		trimmed := strings.TrimSpace(line)
+		if strings.HasPrefix(trimmed, "func ") {
+			rest := strings.TrimPrefix(trimmed, "func ")
+			if name, _, found := strings.Cut(rest, "("); found && name != "" {
+				return strings.TrimSpace(name), extractKRMTypeFromFuncSignature(trimmed), true
+			}
+		}
+	}
+	return "", "", false
+}
+
+func extractKRMTypeFromFuncText(rawText string) string {
+	for _, line := range strings.Split(rawText, "\n") {
+		trimmed := strings.TrimSpace(line)
+		if strings.HasPrefix(trimmed, "func ") {
+			return extractKRMTypeFromFuncSignature(trimmed)
+		}
+	}
+	return ""
+}
+
+func extractKRMTypeFromFuncSignature(sigLine string) string {
+	rest, ok := strings.CutPrefix(sigLine, "func ")
+	if !ok {
+		return ""
+	}
+	rest = strings.TrimSpace(strings.TrimSuffix(strings.TrimSpace(rest), "{"))
+	funcName, afterName, ok := strings.Cut(rest, "(")
+	if !ok {
+		return ""
+	}
+	params, retType, ok := strings.Cut(afterName, ")")
+	if !ok {
+		return ""
+	}
+	retType = strings.TrimSpace(retType)
+	if strings.HasSuffix(funcName, "_FromProto") {
+		if _, krmType, found := strings.Cut(retType, "."); found {
+			return strings.TrimSpace(krmType)
+		}
+	}
+	if strings.HasSuffix(funcName, "_ToProto") {
+		if _, secondParam, found := strings.Cut(params, ","); found {
+			fields := strings.Fields(secondParam)
+			if len(fields) > 0 {
+				inType := fields[len(fields)-1]
+				if _, krmType, hasDot := strings.Cut(inType, "."); hasDot {
+					return strings.TrimSpace(krmType)
+				}
+			}
+		}
+		base := strings.TrimSuffix(funcName, "_ToProto")
+		if idx := strings.LastIndex(base, "_"); idx > 0 {
+			return base[:idx]
+		}
+	}
+	return ""
+}
+
+func scanHandwrittenDirDeclarations(srcDir string) (typeNames map[string]bool, protoTagged map[string]bool, funcNames map[string]bool) {
+	typeNames = make(map[string]bool)
+	protoTagged = make(map[string]bool)
+	funcNames = make(map[string]bool)
+
+	files, err := os.ReadDir(srcDir)
+	if err != nil {
+		return typeNames, protoTagged, funcNames
+	}
+	for _, f := range files {
+		p := filepath.Join(srcDir, f.Name())
+		if !strings.HasSuffix(p, ".go") || strings.HasSuffix(p, "generated.go") {
+			continue
+		}
+		b, err := os.ReadFile(p)
+		if err != nil {
+			continue
+		}
+		protoLines := make(map[string]string)
+		content := string(b)
+		scanFileDeclarations(content, typeNames, protoLines)
+		for protoMsg := range protoLines {
+			protoTagged[protoMsg] = true
+		}
+		for _, line := range strings.Split(content, "\n") {
+			trimmed := strings.TrimSpace(line)
+			if rest, ok := strings.CutPrefix(trimmed, "func "); ok {
+				if name, _, found := strings.Cut(rest, "("); found && name != "" && !strings.Contains(name, " ") {
+					funcNames[name] = true
+				}
+			}
+		}
+	}
+	return typeNames, protoTagged, funcNames
+}
+
 
 // usedImports returns the imports referenced by the generated file body, ensuring
 // any qualifiers from QualifierImports present in the body are included.

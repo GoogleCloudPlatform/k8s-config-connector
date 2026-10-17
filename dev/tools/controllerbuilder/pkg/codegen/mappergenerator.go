@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"go/types"
 	"io"
+	"os"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -98,11 +99,74 @@ func (g *MapperGenerator) WithEmitMessageMaps(emitMessageMaps bool) *MapperGener
 }
 
 func (v *MapperGenerator) AddGoImportAlias(goPackage string, alias string) string {
+	if existing, ok := v.importedPackages[goPackage]; ok && existing.alias != "" {
+		return existing.alias
+	}
+	if alias != "" && v.isAliasUsedByOtherPackage(alias, goPackage) {
+		alias = v.defaultProtoImportAlias(goPackage)
+	}
 	v.importedPackages[goPackage] = importedPackage{
 		alias:     alias,
 		goPackage: goPackage,
 	}
 	return alias
+}
+
+func (v *MapperGenerator) isAliasUsedByOtherPackage(alias, goPackage string) bool {
+	if alias == "" {
+		return false
+	}
+	for pkg, imp := range v.importedPackages {
+		if pkg == goPackage {
+			continue
+		}
+		effectiveAlias := imp.alias
+		if effectiveAlias == "" {
+			effectiveAlias = lastComponent(pkg)
+		}
+		if effectiveAlias == alias {
+			return true
+		}
+	}
+	return false
+}
+
+// LoadExistingImports pre-populates importedPackages from an existing mapper.generated.go
+// file on disk so sequential generate-mapper runs preserve existing import aliases (such as "pb")
+// and assign non-colliding aliases to new proto or KRM packages.
+func (v *MapperGenerator) LoadExistingImports(goPackage string) {
+	k := generatedFileKey{
+		GoPackage: goPackage,
+		FileName:  "mapper.generated.go",
+	}
+	out := &generatedFile{key: k, baseDir: v.outputBaseDir}
+	p := filepath.Join(out.OutputDir(), k.FileName)
+	b, err := os.ReadFile(p)
+	if err != nil || len(b) == 0 {
+		return
+	}
+	if v.generatedFileAnnotation != nil {
+		if anns, err := annotations.FindFileAnnotations(b, []string{"+generated:"}); err == nil && len(anns) > 0 {
+			eg := anns[0].Attributes["krm.group"]
+			cg := v.generatedFileAnnotation.Attributes["krm.group"]
+			if len(eg) > 0 && len(cg) > 0 && eg[0] != cg[0] {
+				return
+			}
+		}
+	}
+	_, imports, err := parseGeneratedGoBlocks(b, lastGoComponent(goPackage), false)
+	if err != nil {
+		return
+	}
+	for pkg, alias := range imports {
+		if pkg == "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct" {
+			continue
+		}
+		v.importedPackages[pkg] = importedPackage{
+			alias:     alias,
+			goPackage: pkg,
+		}
+	}
 }
 
 type OutputFunc func(msg protoreflect.MessageDescriptor) (goPath string, shouldWrite bool)
@@ -233,11 +297,19 @@ func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 	})
 
 	for alias, pkgName := range goImports {
+		if existing, ok := v.importedPackages[pkgName]; ok && existing.alias != "" {
+			continue
+		}
+		if alias != "" && v.isAliasUsedByOtherPackage(alias, pkgName) {
+			continue
+		}
 		v.importedPackages[pkgName] = importedPackage{
 			alias:     alias,
 			goPackage: pkgName,
 		}
 	}
+
+	validKRMTypes := v.collectValidKRMTypes()
 
 	for _, pair := range v.typePairs {
 		goPackage, shouldVisit := v.goPathForMessage(pair.Proto)
@@ -253,6 +325,7 @@ func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 		out.goPackage = lastGoComponent(goPackage)
 
 		out.fileAnnotation = v.generatedFileAnnotation
+		out.validKRMTypes = validKRMTypes
 
 		{
 			out.addImport("refsv1beta1", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1")
@@ -269,6 +342,29 @@ func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 
 	return nil
 }
+
+func (v *MapperGenerator) collectValidKRMTypes() map[string]bool {
+	if len(v.goPackages) == 0 {
+		return nil
+	}
+	var expectedPackagePrefix string
+	if v.generatedFileAnnotation != nil {
+		if groups := v.generatedFileAnnotation.Attributes["krm.group"]; len(groups) > 0 && groups[0] != "" {
+			groupName := strings.TrimSuffix(groups[0], ".cnrm.cloud.google.com")
+			expectedPackagePrefix = "github.com/GoogleCloudPlatform/k8s-config-connector/apis/" + groupName
+		}
+	}
+	valid := make(map[string]bool)
+	for _, pkg := range v.goPackages {
+		for _, s := range pkg.Structs {
+			if expectedPackagePrefix == "" || strings.HasPrefix(s.GoPackage, expectedPackagePrefix) {
+				valid[s.Name] = true
+			}
+		}
+	}
+	return valid
+}
+
 func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string, pair *typePair) {
 	klog.V(2).InfoS("writeMapFunctionsForPair", "pair.Proto.FullName", pair.Proto.FullName(), "pair.KRMType.Name", pair.KRMType.Name)
 	msg := pair.Proto
@@ -1454,9 +1550,19 @@ func (o *MapperGenerator) goPackageForProto(parentFile protoreflect.FileDescript
 		return existing.alias
 	}
 
-	importAlias := strings.TrimSuffix(lastComponent(protoGoPackage), "pb") + "pb"
+	importAlias := o.defaultProtoImportAlias(protoGoPackage)
+	return o.AddGoImportAlias(protoGoPackage, importAlias)
+}
 
-	o.AddGoImportAlias(protoGoPackage, importAlias)
+func (o *MapperGenerator) defaultProtoImportAlias(protoGoPackage string) string {
+	leaf := lastComponent(protoGoPackage)
+	importAlias := strings.TrimSuffix(leaf, "pb") + "pb"
+	if o.isAliasUsedByOtherPackage(importAlias, protoGoPackage) {
+		parentPath := strings.TrimSuffix(protoGoPackage, "/"+leaf)
+		if parent := lastComponent(parentPath); parent != "" {
+			importAlias = parent + importAlias
+		}
+	}
 	return importAlias
 }
 

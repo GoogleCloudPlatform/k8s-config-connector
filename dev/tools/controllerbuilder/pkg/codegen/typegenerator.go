@@ -447,6 +447,7 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 		out.goPackage = lastGoComponent(g.goPackage)
 
 		out.fileAnnotation = g.generatedFileAnnotation
+		out.reservedTypeNames = g.reservedTypeNames
 
 		// Options for the plain struct, and whether a Required copy follows it.
 		// A skipped message is written as a comment with the same options.
@@ -557,6 +558,7 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 		out.goPackage = lastGoComponent(g.goPackage)
 
 		out.fileAnnotation = g.generatedFileAnnotation
+		out.reservedTypeNames = g.reservedTypeNames
 
 		goTypeName := goNameForOutputProtoMessage(msg)
 		skipGenerated := true
