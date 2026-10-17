@@ -316,6 +316,12 @@ func compareComputeAutoscaler(ctx context.Context, actual, desired *pb.Autoscale
 
 	populateDefaults := func(obj *pb.Autoscaler) {
 		// Populate GCP/server defaults here if needed
+		if obj.Zone != nil {
+			*obj.Zone = lastComponent(*obj.Zone)
+		}
+		if obj.Target != nil {
+			*obj.Target = refs.TrimComputeURIPrefix(*obj.Target)
+		}
 	}
 	populateDefaults(maskedActual)
 	populateDefaults(clonedDesired)
