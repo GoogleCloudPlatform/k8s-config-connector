@@ -43,7 +43,7 @@ func BigQueryConfig_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryConfig) 
 	out.WriteMetadata = direct.LazyPtr(in.GetWriteMetadata())
 	out.DropUnknownFields = direct.LazyPtr(in.GetDropUnknownFields())
 	// MISSING: State
-	// MISSING: UseTableSchema
+	out.UseTableSchema = direct.LazyPtr(in.GetUseTableSchema())
 	// MISSING: ServiceAccountEmail
 	return out
 }
@@ -59,7 +59,7 @@ func BigQueryConfig_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryConfig) *
 	out.WriteMetadata = direct.ValueOf(in.WriteMetadata)
 	out.DropUnknownFields = direct.ValueOf(in.DropUnknownFields)
 	// MISSING: State
-	// MISSING: UseTableSchema
+	out.UseTableSchema = direct.ValueOf(in.UseTableSchema)
 	// MISSING: ServiceAccountEmail
 	return out
 }
