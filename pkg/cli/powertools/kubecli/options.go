@@ -23,6 +23,9 @@ type ClusterOptions struct {
 	// Path to the kubeconfig file to use for CLI requests.
 	Kubeconfig string
 
+	// Context is the name of the kubeconfig context to use.
+	Context string
+
 	// Impersonate is the configuration that RESTClient will use for impersonation.
 	Impersonate *rest.ImpersonationConfig
 
@@ -39,6 +42,7 @@ func (o *ClusterOptions) PopulateDefaults() {
 
 func (o *ClusterOptions) AddFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.Kubeconfig, "kubeconfig", o.Kubeconfig, "Path to the kubeconfig file to use for CLI requests.")
+	cmd.Flags().StringVar(&o.Context, "context", o.Context, "The name of the kubeconfig context to use.")
 	cmd.Flags().StringVar(&o.ImpersonateUser, "as", o.ImpersonateUser, "Username to impersonate for the operation. User could be a regular user or a service account in a namespace.")
 	cmd.Flags().StringSliceVar(&o.ImpersonateGroups, "as-group", o.ImpersonateGroups, "Group to impersonate for the operation, this flag can be repeated to specify multiple groups.")
 }

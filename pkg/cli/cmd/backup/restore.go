@@ -1,0 +1,972 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package backup
+
+import (
+	"context"
+	"crypto/sha256"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"io"
+	"io/fs"
+	"net/http"
+	"os"
+	"path/filepath"
+	"sort"
+	"strings"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools/kubecli"
+	"github.com/spf13/cobra"
+	"golang.org/x/oauth2"
+	"google.golang.org/api/iterator"
+	"google.golang.org/api/option"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/client-go/tools/clientcmd"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/yaml"
+
+	"cloud.google.com/go/storage"
+)
+
+type restoreOptions struct {
+	kubecli.ClusterOptions
+	cluster                  string
+	sourceCluster            string
+	targetClusterLocation    string
+	sourceBucket             string
+	fallbackBucket           string
+	fromDir                  string
+	backupTimestamp          string
+	project                  string
+	targetProject            string
+	targetNamespace          string
+	targetRegion             string
+	regionMapping            string
+	filterNamespace          string
+	skipMissingCRDs          bool
+	namespace                string
+	autoCreateNamespaces     bool
+	deletionPolicy           string
+	managementConflictPolicy string
+	verifyIntegrity          bool
+	dryRun                   bool
+	includeClusterBackup     bool
+}
+
+func NewRestoreCmd() *cobra.Command {
+	options := &restoreOptions{
+		verifyIntegrity: true,
+	}
+
+	cmd := &cobra.Command{
+		Use:   "restore",
+		Short: "Restore resources from GCS or local directory to a target cluster",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return runRestore(cmd.Context(), options)
+		},
+	}
+
+	options.ClusterOptions.AddFlags(cmd)
+	cmd.Flags().StringVar(&options.cluster, "cluster", "", "Name of the target cluster")
+	cmd.Flags().StringVar(&options.sourceCluster, "source-cluster", "", "Name of the source cluster whose backup is being restored (defaults to --cluster, or auto-detected if backup contains a single cluster)")
+	cmd.Flags().StringVar(&options.targetClusterLocation, "target-cluster-location", "", "Location of the target cluster")
+	cmd.Flags().StringVar(&options.sourceBucket, "source-bucket", "", "Source GCS bucket name")
+	cmd.Flags().StringVar(&options.fallbackBucket, "fallback-bucket", "", "Fallback GCS bucket name if source bucket is unreachable during outage")
+	cmd.Flags().StringVar(&options.fromDir, "from-dir", "", "Local directory containing backup files to restore from")
+	cmd.Flags().StringVar(&options.backupTimestamp, "backup-timestamp", "latest", "Backup timestamp (YYYY_MM_DD_HH_MM_SS or 'latest')")
+	cmd.Flags().StringVar(&options.project, "project", "", "GCP project ID")
+	cmd.Flags().StringVar(&options.targetProject, "target-project", "", "DR target project ID override")
+	cmd.Flags().StringVar(&options.targetNamespace, "target-namespace", "", "DR target namespace override (remaps all restored resources into this namespace)")
+	cmd.Flags().StringVar(&options.targetRegion, "target-region", "", "DR target region for regional resources")
+	cmd.Flags().StringVar(&options.regionMapping, "region-mapping", "", "Source to target region mapping (e.g. us-central1=us-east4)")
+	cmd.Flags().StringVar(&options.filterNamespace, "filter-namespace", "", "Only restore resources belonging to this specific namespace")
+	cmd.Flags().BoolVar(&options.skipMissingCRDs, "skip-missing-crds", false, "Skip resources whose CRDs are not installed in the target cluster")
+	cmd.Flags().StringVar(&options.namespace, "namespace", "cnrm-system", "Namespace where Config Connector is installed")
+	cmd.Flags().BoolVar(&options.autoCreateNamespaces, "auto-create-namespaces", true, "Automatically create target namespaces if they do not exist")
+	cmd.Flags().StringVar(&options.deletionPolicy, "deletion-policy", "abandon", "Deletion policy annotation (abandon or delete)")
+	cmd.Flags().StringVar(&options.managementConflictPolicy, "management-conflict-policy", "none", "Management conflict policy (none, resource, or priority)")
+	cmd.Flags().BoolVar(&options.verifyIntegrity, "verify-integrity", true, "Verify SHA-256 cryptographic checksums from summary.json")
+	cmd.Flags().BoolVar(&options.dryRun, "dry-run", false, "Perform a dry-run validation")
+	cmd.Flags().BoolVar(&options.includeClusterBackup, "include-cluster-backup", false, "Restore in-cluster workloads and volumes via Backup for GKE (if recorded in summary.json)")
+
+	return cmd
+}
+
+func runRestore(ctx context.Context, options *restoreOptions) error {
+	if options.sourceBucket == "" && options.fromDir == "" {
+		return fmt.Errorf("either --source-bucket or --from-dir is required")
+	}
+
+	if options.ClusterOptions.Context == "" && options.cluster != "" {
+		rawConfig, err := clientcmd.NewDefaultClientConfigLoadingRules().Load()
+		if err == nil {
+			for ctxName := range rawConfig.Contexts {
+				if ctxName == options.cluster || strings.Contains(ctxName, "_"+options.cluster) || strings.HasSuffix(ctxName, options.cluster) {
+					options.ClusterOptions.Context = ctxName
+					break
+				}
+			}
+		}
+	}
+
+	kubeClient, err := kubecli.NewClient(ctx, options.ClusterOptions)
+	if err != nil {
+		return fmt.Errorf("creating kubernetes client: %w", err)
+	}
+
+	sourceCluster := options.sourceCluster
+	if sourceCluster == "" {
+		sourceCluster = options.cluster
+	}
+	if sourceCluster == "" {
+		sourceCluster = "default-cluster"
+	}
+
+	var objects []*unstructured.Unstructured
+	if options.fromDir != "" {
+		if strings.Contains(options.fromDir, "..") {
+			return fmt.Errorf("invalid --from-dir %q: relative path traversal sequences ('..') are prohibited", options.fromDir)
+		}
+		cleanDir := filepath.Clean(options.fromDir)
+		objs, err := loadObjectsFromDir(cleanDir, sourceCluster, options.backupTimestamp, options.verifyIntegrity)
+		if err != nil {
+			return fmt.Errorf("loading objects from directory %s: %w", options.fromDir, err)
+		}
+		objects = objs
+	} else {
+		var gcsOptions []option.ClientOption
+		if httpClient := ctx.Value(oauth2.HTTPClient); httpClient != nil {
+			gcsOptions = append(gcsOptions, option.WithHTTPClient(httpClient.(*http.Client)))
+		}
+		gcsClient, err := storage.NewClient(ctx, gcsOptions...)
+		if err != nil {
+			return fmt.Errorf("creating GCS client: %w", err)
+		}
+		defer gcsClient.Close()
+
+		objs, err := loadObjectsFromGCS(ctx, gcsClient, options.sourceBucket, sourceCluster, options.backupTimestamp, options.verifyIntegrity)
+		if err != nil {
+			if options.fallbackBucket != "" {
+				fmt.Printf("Notice: primary bucket gs://%s failed (%v). Failing over to replica fallback bucket gs://%s...\n", options.sourceBucket, err, options.fallbackBucket)
+				fallbackObjs, fallbackErr := loadObjectsFromGCS(ctx, gcsClient, options.fallbackBucket, sourceCluster, options.backupTimestamp, options.verifyIntegrity)
+				if fallbackErr != nil {
+					return fmt.Errorf("primary bucket gs://%s failed (%v) and fallback bucket gs://%s also failed: %w", options.sourceBucket, err, options.fallbackBucket, fallbackErr)
+				}
+				fmt.Printf("Successfully loaded %d resources from replica fallback bucket gs://%s.\n", len(fallbackObjs), options.fallbackBucket)
+				objs = fallbackObjs
+			} else {
+				return fmt.Errorf("loading objects from GCS: %w", err)
+			}
+		}
+		objects = objs
+	}
+
+	if len(objects) == 0 {
+		return fmt.Errorf("no resources found in backup")
+	}
+
+	if options.filterNamespace != "" {
+		var filtered []*unstructured.Unstructured
+		for _, obj := range objects {
+			if obj.GetNamespace() == options.filterNamespace {
+				filtered = append(filtered, obj)
+			}
+		}
+		objects = filtered
+		fmt.Printf("Filtered to %d resources in namespace %q.\n", len(objects), options.filterNamespace)
+		if len(objects) == 0 {
+			return fmt.Errorf("no resources found in backup matching namespace filter %q", options.filterNamespace)
+		}
+	}
+
+	fmt.Printf("Found %d resources in backup. Validating against target cluster...\n", len(objects))
+	validObjects, err := validateResources(ctx, kubeClient, objects, options.skipMissingCRDs)
+	if err != nil {
+		return fmt.Errorf("validation failed: %w", err)
+	}
+	objects = validObjects
+
+	// Remap namespace if targetNamespace is provided
+	if options.targetNamespace != "" {
+		for _, obj := range objects {
+			if obj.GetNamespace() != "" && obj.GetNamespace() != "_cluster_scoped" {
+				oldNs := obj.GetNamespace()
+				obj.SetNamespace(options.targetNamespace)
+				if spec, ok := obj.Object["spec"].(map[string]interface{}); ok {
+					remapNamespaceReferences(spec, oldNs, options.targetNamespace)
+				}
+			}
+		}
+		fmt.Printf("Remapped namespaced resources to target namespace %q.\n", options.targetNamespace)
+	}
+
+	// Auto-create namespaces if enabled
+	if options.autoCreateNamespaces {
+		if err := ensureNamespaces(ctx, kubeClient, objects, options.targetNamespace, options.dryRun); err != nil {
+			fmt.Printf("Warning: failed to ensure all namespaces: %v\n", err)
+		}
+	}
+
+	fmt.Println("Sorting resources for restore DAG dependencies...")
+	sortResources(objects)
+
+	fmt.Println("Initiating restore to target cluster...")
+	successCount := 0
+	failureCount := 0
+	for _, obj := range objects {
+		if err := applyObject(ctx, kubeClient, obj, options); err != nil {
+			fmt.Printf("Warning: failed to restore %s/%s (%s): %v\n", obj.GetNamespace(), obj.GetName(), obj.GetKind(), err)
+			failureCount++
+		} else {
+			successCount++
+		}
+	}
+
+	fmt.Printf("\nRestore complete. %d succeeded, %d failed.\n", successCount, failureCount)
+	if failureCount > 0 {
+		return fmt.Errorf("restore encountered %d errors", failureCount)
+	}
+	return nil
+}
+
+func remapNamespaceReferences(m map[string]interface{}, oldNs, newNs string) {
+	for k, v := range m {
+		if subMap, ok := v.(map[string]interface{}); ok {
+			if strings.HasSuffix(k, "Ref") || strings.HasSuffix(k, "Policy") {
+				if ns, ok := subMap["namespace"].(string); ok && ns == oldNs {
+					subMap["namespace"] = newNs
+				}
+			}
+			remapNamespaceReferences(subMap, oldNs, newNs)
+		} else if slice, ok := v.([]interface{}); ok {
+			for _, item := range slice {
+				if itemMap, ok := item.(map[string]interface{}); ok {
+					remapNamespaceReferences(itemMap, oldNs, newNs)
+				}
+			}
+		}
+	}
+}
+
+func loadObjectsFromDir(rootDir, cluster, timestamp string, verifyIntegrity bool) ([]*unstructured.Unstructured, error) {
+	if strings.Contains(rootDir, "..") {
+		return nil, fmt.Errorf("invalid directory %q: directory traversal sequences prohibited", rootDir)
+	}
+
+	searchDir := filepath.Clean(rootDir)
+	// Check if rootDir contains cluster/timestamp subdirectories
+	clusterDir := filepath.Join(searchDir, cluster)
+	if fi, err := os.Stat(clusterDir); err != nil || !fi.IsDir() {
+		// Attempt auto-detect single cluster directory in searchDir
+		if entries, err := os.ReadDir(searchDir); err == nil {
+			var subDirs []string
+			for _, e := range entries {
+				if e.IsDir() && !strings.HasPrefix(e.Name(), ".") {
+					subDirs = append(subDirs, e.Name())
+				}
+			}
+			if len(subDirs) == 1 {
+				fmt.Printf("Notice: cluster %q not found in directory; auto-detected source cluster %q\n", cluster, subDirs[0])
+				cluster = subDirs[0]
+				clusterDir = filepath.Join(searchDir, cluster)
+			}
+		}
+	}
+	if fi, err := os.Stat(clusterDir); err == nil && fi.IsDir() {
+		if timestamp == "latest" || timestamp == "" {
+			entries, err := os.ReadDir(clusterDir)
+			if err != nil {
+				return nil, err
+			}
+			var timestamps []string
+			for _, e := range entries {
+				if e.IsDir() {
+					timestamps = append(timestamps, e.Name())
+				}
+			}
+			if len(timestamps) > 0 {
+				sort.Strings(timestamps)
+				searchDir = filepath.Join(clusterDir, timestamps[len(timestamps)-1])
+			} else {
+				searchDir = clusterDir
+			}
+		} else {
+			searchDir = filepath.Join(clusterDir, timestamp)
+		}
+	}
+
+	fmt.Printf("Loading backup files from directory: %s\n", searchDir)
+
+	// Attempt reading summary.json for integrity checking
+	var integrityMap map[string]string
+	summaryPath := filepath.Join(searchDir, "summary.json")
+	if summaryBytes, err := os.ReadFile(summaryPath); err == nil {
+		var sm struct {
+			Integrity     map[string]string      `json:"integrity"`
+			ClusterBackup *ClusterBackupMetadata `json:"clusterBackup"`
+		}
+		if err := json.Unmarshal(summaryBytes, &sm); err == nil {
+			if len(sm.Integrity) > 0 {
+				integrityMap = sm.Integrity
+				if verifyIntegrity {
+					fmt.Printf("Loaded cryptographic integrity manifest with %d checksums.\n", len(integrityMap))
+				}
+			}
+			if sm.ClusterBackup != nil && sm.ClusterBackup.BackupName != "" {
+				fmt.Printf("Detected correlated GKE cluster backup: %s [state: %s]\n", sm.ClusterBackup.BackupName, sm.ClusterBackup.State)
+			}
+		}
+	}
+
+	var objects []*unstructured.Unstructured
+
+	err := filepath.WalkDir(searchDir, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if d.IsDir() || (!strings.HasSuffix(d.Name(), ".yaml") && !strings.HasSuffix(d.Name(), ".yml")) {
+			return nil
+		}
+
+		data, err := os.ReadFile(path)
+		if err != nil {
+			fmt.Printf("Warning: failed to read file %s: %v\n", path, err)
+			return nil
+		}
+
+		if verifyIntegrity && len(integrityMap) > 0 {
+			relPath, relErr := filepath.Rel(searchDir, path)
+			if relErr == nil {
+				if expectedHash, exists := integrityMap[relPath]; exists {
+					actualHash := fmt.Sprintf("sha256:%x", sha256.Sum256(data))
+					if actualHash != expectedHash {
+						return fmt.Errorf("cryptographic checksum mismatch on %s: expected %s, got %s (tamper alert)", relPath, expectedHash, actualHash)
+					}
+				}
+			}
+		}
+
+		obj := &unstructured.Unstructured{}
+		if err := yaml.Unmarshal(data, &obj.Object); err != nil {
+			fmt.Printf("Warning: failed to unmarshal YAML in %s: %v\n", path, err)
+			return nil
+		}
+		if obj.GetKind() != "" && obj.GetAPIVersion() != "" {
+			objects = append(objects, obj)
+		}
+		return nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+	return objects, nil
+}
+
+func loadObjectsFromGCS(ctx context.Context, gcsClient *storage.Client, bucket, cluster, timestamp string, verifyIntegrity bool) ([]*unstructured.Unstructured, error) {
+	resolvedCluster := cluster
+	// Check if cluster exists in bucket; if not, attempt auto-detection
+	if _, err := findLatestBackup(ctx, gcsClient, bucket, resolvedCluster); err != nil {
+		if detected, detectErr := autoDetectClusterInGCS(ctx, gcsClient, bucket); detectErr == nil && detected != "" {
+			fmt.Printf("Notice: cluster %q not found in bucket gs://%s; auto-detected source cluster %q\n", resolvedCluster, bucket, detected)
+			resolvedCluster = detected
+		}
+	}
+
+	fmt.Printf("Loading backup from gs://%s/%s/%s/...\n", bucket, resolvedCluster, timestamp)
+
+	backupTimestamp := timestamp
+	if backupTimestamp == "latest" || backupTimestamp == "" {
+		latest, err := findLatestBackup(ctx, gcsClient, bucket, resolvedCluster)
+		if err != nil {
+			return nil, fmt.Errorf("finding latest backup in bucket %s: %w", bucket, err)
+		}
+		backupTimestamp = latest
+		fmt.Printf("Resolved 'latest' to timestamp: %s\n", backupTimestamp)
+	}
+
+	// Read summary.json for integrity checking if available
+	var integrityMap map[string]string
+	summaryName := fmt.Sprintf("%s/%s/summary.json", resolvedCluster, backupTimestamp)
+	summaryRc, err := gcsClient.Bucket(bucket).Object(summaryName).NewReader(ctx)
+	if err == nil {
+		defer summaryRc.Close()
+		summaryData, _ := io.ReadAll(summaryRc)
+		var sm struct {
+			Integrity     map[string]string      `json:"integrity"`
+			ClusterBackup *ClusterBackupMetadata `json:"clusterBackup"`
+		}
+		if err := json.Unmarshal(summaryData, &sm); err == nil {
+			if len(sm.Integrity) > 0 {
+				integrityMap = sm.Integrity
+				if verifyIntegrity {
+					fmt.Printf("Loaded cryptographic integrity manifest with %d checksums from gs://%s.\n", len(integrityMap), bucket)
+				}
+			}
+			if sm.ClusterBackup != nil && sm.ClusterBackup.BackupName != "" {
+				fmt.Printf("Detected correlated GKE cluster backup: %s [state: %s]\n", sm.ClusterBackup.BackupName, sm.ClusterBackup.State)
+			}
+		}
+	}
+
+	prefix := fmt.Sprintf("%s/%s/", resolvedCluster, backupTimestamp)
+	it := gcsClient.Bucket(bucket).Objects(ctx, &storage.Query{Prefix: prefix})
+
+	var objects []*unstructured.Unstructured
+	for {
+		attrs, err := it.Next()
+		if errors.Is(err, iterator.Done) {
+			break
+		}
+		if err != nil {
+			return nil, fmt.Errorf("iterating GCS objects in bucket %s: %w", bucket, err)
+		}
+
+		if !strings.HasSuffix(attrs.Name, ".yaml") {
+			continue
+		}
+
+		obj, rawData, err := loadObject(ctx, gcsClient, bucket, attrs.Name)
+		if err != nil {
+			fmt.Printf("Warning: failed to load %s: %v\n", attrs.Name, err)
+			continue
+		}
+
+		if verifyIntegrity && len(integrityMap) > 0 {
+			relKey := strings.TrimPrefix(attrs.Name, prefix)
+			if expectedHash, exists := integrityMap[relKey]; exists {
+				actualHash := fmt.Sprintf("sha256:%x", sha256.Sum256(rawData))
+				if actualHash != expectedHash {
+					return nil, fmt.Errorf("cryptographic checksum mismatch on %s: expected %s, got %s (tamper alert)", relKey, expectedHash, actualHash)
+				}
+			}
+		}
+
+		objects = append(objects, obj)
+	}
+
+	return objects, nil
+}
+
+func ensureNamespaces(ctx context.Context, kubeClient *kubecli.Client, objects []*unstructured.Unstructured, targetNamespace string, dryRun bool) error {
+	seenNamespaces := make(map[string]bool)
+	if targetNamespace != "" && targetNamespace != "default" && targetNamespace != "kube-system" {
+		seenNamespaces[targetNamespace] = true
+	}
+	for _, obj := range objects {
+		ns := obj.GetNamespace()
+		if ns == "" || ns == "_cluster_scoped" || ns == "default" || ns == "kube-system" || ns == "kube-public" || ns == "kube-node-lease" {
+			continue
+		}
+		seenNamespaces[ns] = true
+	}
+
+	for ns := range seenNamespaces {
+		nsObj := &unstructured.Unstructured{}
+		nsObj.SetGroupVersionKind(schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Namespace"})
+		nsObj.SetName(ns)
+
+		err := kubeClient.Get(ctx, client.ObjectKey{Name: ns}, nsObj)
+		if err == nil {
+			// Namespace already exists
+			continue
+		}
+
+		if dryRun {
+			fmt.Printf("Dry-run: would auto-create target namespace %q\n", ns)
+			continue
+		}
+
+		fmt.Printf("Auto-creating missing target namespace %q...\n", ns)
+		if err := kubeClient.Create(ctx, nsObj); err != nil {
+			if !strings.Contains(err.Error(), "already exists") {
+				fmt.Printf("Warning: failed to create namespace %s: %v\n", ns, err)
+			}
+		}
+	}
+	return nil
+}
+
+func findLatestBackup(ctx context.Context, gcsClient *storage.Client, bucket, cluster string) (string, error) {
+	prefix := cluster + "/"
+	it := gcsClient.Bucket(bucket).Objects(ctx, &storage.Query{Prefix: prefix, Delimiter: "/"})
+
+	var timestamps []string
+	for {
+		attrs, err := it.Next()
+		if errors.Is(err, iterator.Done) {
+			break
+		}
+		if err != nil {
+			return "", err
+		}
+		if attrs.Prefix != "" {
+			timestamp := strings.TrimSuffix(strings.TrimPrefix(attrs.Prefix, prefix), "/")
+			if timestamp != "" {
+				timestamps = append(timestamps, timestamp)
+			}
+		}
+	}
+
+	if len(timestamps) == 0 {
+		return "", fmt.Errorf("no backups found in gs://%s/%s/", bucket, cluster)
+	}
+
+	sort.Strings(timestamps)
+	return timestamps[len(timestamps)-1], nil
+}
+
+func autoDetectClusterInGCS(ctx context.Context, gcsClient *storage.Client, bucket string) (string, error) {
+	it := gcsClient.Bucket(bucket).Objects(ctx, &storage.Query{Delimiter: "/"})
+	var clusters []string
+	for {
+		attrs, err := it.Next()
+		if errors.Is(err, iterator.Done) {
+			break
+		}
+		if err != nil {
+			return "", err
+		}
+		if attrs.Prefix != "" {
+			c := strings.TrimSuffix(attrs.Prefix, "/")
+			if c != "" && c != "lost+found" {
+				clusters = append(clusters, c)
+			}
+		}
+	}
+	if len(clusters) == 1 {
+		return clusters[0], nil
+	}
+	if len(clusters) > 1 {
+		return "", fmt.Errorf("multiple clusters found in gs://%s (%s); please specify --source-cluster", bucket, strings.Join(clusters, ", "))
+	}
+	return "", fmt.Errorf("no cluster backups found in gs://%s", bucket)
+}
+
+func loadObject(ctx context.Context, gcsClient *storage.Client, bucket, objectName string) (*unstructured.Unstructured, []byte, error) {
+	rc, err := gcsClient.Bucket(bucket).Object(objectName).NewReader(ctx)
+	if err != nil {
+		return nil, nil, err
+	}
+	defer rc.Close()
+
+	data, err := io.ReadAll(rc)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	obj := &unstructured.Unstructured{}
+	if err := yaml.Unmarshal(data, &obj.Object); err != nil {
+		return nil, nil, fmt.Errorf("unmarshaling YAML: %w", err)
+	}
+
+	return obj, data, nil
+}
+
+func validateResources(ctx context.Context, kubeClient *kubecli.Client, objects []*unstructured.Unstructured, skipMissingCRDs bool) ([]*unstructured.Unstructured, error) {
+	// Check if GVKs exist in the target cluster
+	_, resourceLists, err := kubeClient.DiscoveryClient.ServerGroupsAndResources()
+	if err != nil {
+		return nil, fmt.Errorf("discovering server resources: %w", err)
+	}
+
+	supportedGVKs := make(map[string]bool)
+	for _, list := range resourceLists {
+		gv, err := schema.ParseGroupVersion(list.GroupVersion)
+		if err != nil {
+			continue
+		}
+		for _, r := range list.APIResources {
+			gvk := gv.WithKind(r.Kind)
+			supportedGVKs[gvk.String()] = true
+		}
+	}
+
+	var validObjects []*unstructured.Unstructured
+	for _, obj := range objects {
+		gvk := obj.GroupVersionKind()
+		if !supportedGVKs[gvk.String()] {
+			if skipMissingCRDs {
+				fmt.Printf("Notice: skipping %s/%s (%v) because CRD is not installed in target cluster\n", obj.GetNamespace(), obj.GetName(), gvk)
+				continue
+			}
+			return nil, fmt.Errorf("resource type %v not supported in target cluster (is the CRD installed?)", gvk)
+		}
+		validObjects = append(validObjects, obj)
+	}
+	return validObjects, nil
+}
+
+func sortResources(objects []*unstructured.Unstructured) {
+	// Priority-based sort to handle dependencies
+	getPriority := func(obj *unstructured.Unstructured) int {
+		kind := obj.GetKind()
+		group := obj.GroupVersionKind().Group
+
+		// Priority 0-2: Containers / Resource Manager hierarchy
+		if group == "resourcemanager.cnrm.cloud.google.com" {
+			switch kind {
+			case "Organization":
+				return 0
+			case "Folder":
+				return 1
+			case "Project":
+				return 2
+			}
+		}
+
+		// Priority 3-4: KMS KeyRings & CryptoKeys
+		if group == "kms.cnrm.cloud.google.com" {
+			if kind == "KMSKeyRing" {
+				return 3
+			}
+			return 4
+		}
+
+		// Priority 5: Identity (Service Accounts, Workload Identity Pools)
+		if group == "iam.cnrm.cloud.google.com" && (kind == "IAMServiceAccount" || kind == "IAMWorkloadIdentityPool") {
+			return 5
+		}
+
+		// Priority 6-7: Networking foundational
+		if group == "compute.cnrm.cloud.google.com" {
+			switch kind {
+			case "ComputeNetwork":
+				return 6
+			case "ComputeSubnetwork", "ComputeRouter", "ComputeRoute", "ComputeFirewall":
+				return 7
+			}
+		}
+
+		// Priority 8: Primary state stores & databases
+		if (group == "storage.cnrm.cloud.google.com" && kind == "StorageBucket") ||
+			(group == "sql.cnrm.cloud.google.com" && kind == "SQLInstance") ||
+			(group == "spanner.cnrm.cloud.google.com" && kind == "SpannerInstance") ||
+			(group == "bigtable.cnrm.cloud.google.com" && kind == "BigtableInstance") ||
+			(group == "redis.cnrm.cloud.google.com" && kind == "RedisInstance") {
+			return 8
+		}
+
+		// Priority 9: Roots for messaging & secret storage
+		if (group == "secretmanager.cnrm.cloud.google.com" && kind == "SecretManagerSecret") ||
+			(group == "pubsub.cnrm.cloud.google.com" && kind == "PubSubTopic") ||
+			(group == "artifactregistry.cnrm.cloud.google.com" && kind == "ArtifactRegistryRepository") {
+			return 9
+		}
+
+		// Priority 10: Dependent child resources
+		if (group == "secretmanager.cnrm.cloud.google.com" && kind == "SecretManagerSecretVersion") ||
+			(group == "pubsub.cnrm.cloud.google.com" && kind == "PubSubSubscription") ||
+			(group == "sql.cnrm.cloud.google.com" && (kind == "SQLDatabase" || kind == "SQLUser" || kind == "SQLSSLCert")) {
+			return 10
+		}
+
+		// Priority 12: IAM policy attachments and member bindings (must be applied last)
+		if group == "iam.cnrm.cloud.google.com" {
+			if strings.HasSuffix(kind, "PolicyMember") || strings.HasSuffix(kind, "Policy") || strings.HasSuffix(kind, "Binding") {
+				return 12
+			}
+		}
+		if strings.HasSuffix(kind, "PolicyMember") || strings.HasSuffix(kind, "Binding") {
+			return 12
+		}
+
+		// Priority 11: General resources
+		return 11
+	}
+
+	sort.SliceStable(objects, func(i, j int) bool {
+		pi := getPriority(objects[i])
+		pj := getPriority(objects[j])
+		if pi != pj {
+			return pi < pj
+		}
+		// Within the same priority, sort by kind then name for consistency
+		if objects[i].GetKind() != objects[j].GetKind() {
+			return objects[i].GetKind() < objects[j].GetKind()
+		}
+		return objects[i].GetName() < objects[j].GetName()
+	})
+}
+
+func applyObject(ctx context.Context, kubeClient *kubecli.Client, obj *unstructured.Unstructured, options *restoreOptions) error {
+	// Sanitization
+	unstructured.RemoveNestedField(obj.Object, "metadata", "uid")
+	unstructured.RemoveNestedField(obj.Object, "metadata", "resourceVersion")
+	unstructured.RemoveNestedField(obj.Object, "metadata", "managedFields")
+	unstructured.RemoveNestedField(obj.Object, "metadata", "ownerReferences")
+	unstructured.RemoveNestedField(obj.Object, "metadata", "finalizers")
+	unstructured.RemoveNestedField(obj.Object, "metadata", "generation")
+	unstructured.RemoveNestedField(obj.Object, "metadata", "creationTimestamp")
+
+	// Remove status as it is derived from GCP and can cause issues during apply (e.g. SSA emulation)
+	unstructured.RemoveNestedField(obj.Object, "status")
+
+	if obj.GetNamespace() == "_cluster_scoped" {
+		obj.SetNamespace("")
+	}
+
+	// Acquisition and Conflict Prevention
+	annotations := obj.GetAnnotations()
+	if annotations == nil {
+		annotations = make(map[string]string)
+	}
+	delete(annotations, "kubectl.kubernetes.io/last-applied-configuration")
+	delete(annotations, "deployment.kubernetes.io/revision")
+
+	deletionPolicy := options.deletionPolicy
+	if deletionPolicy == "" {
+		deletionPolicy = "abandon"
+	}
+	annotations["cnrm.cloud.google.com/deletion-policy"] = deletionPolicy
+
+	managementConflictPolicy := options.managementConflictPolicy
+	if managementConflictPolicy == "" {
+		managementConflictPolicy = "none"
+	}
+	annotations["cnrm.cloud.google.com/management-conflict-prevention-policy"] = managementConflictPolicy
+
+	// DR Transformations: Target Project
+	if options.targetProject != "" {
+		annotations["cnrm.cloud.google.com/project-id"] = options.targetProject
+		if _, ok, _ := unstructured.NestedFieldNoCopy(obj.Object, "spec", "projectRef"); ok {
+			unstructured.RemoveNestedField(obj.Object, "spec", "projectRef", "name")
+			_ = unstructured.SetNestedField(obj.Object, options.targetProject, "spec", "projectRef", "external")
+		}
+	}
+
+	// DR Transformations: Region Remapping
+	remapRegion := func(currentRegion string) string {
+		if currentRegion == "" {
+			return ""
+		}
+		if options.regionMapping != "" {
+			parts := strings.Split(options.regionMapping, "=")
+			if len(parts) == 2 && strings.TrimSpace(parts[0]) == currentRegion {
+				return strings.TrimSpace(parts[1])
+			}
+		}
+		if options.targetRegion != "" {
+			return options.targetRegion
+		}
+		return currentRegion
+	}
+
+	remapZone := func(currentZone string) string {
+		if currentZone == "" {
+			return ""
+		}
+		if options.regionMapping != "" {
+			parts := strings.Split(options.regionMapping, "=")
+			if len(parts) == 2 {
+				srcRegion := strings.TrimSpace(parts[0])
+				dstRegion := strings.TrimSpace(parts[1])
+				if strings.HasPrefix(currentZone, srcRegion) {
+					suffix := strings.TrimPrefix(currentZone, srcRegion)
+					return dstRegion + suffix
+				}
+			}
+		}
+		if options.targetRegion != "" {
+			parts := strings.Split(currentZone, "-")
+			if len(parts) >= 3 {
+				zoneLetter := parts[len(parts)-1]
+				return options.targetRegion + "-" + zoneLetter
+			}
+			return options.targetRegion + "-a"
+		}
+		return currentZone
+	}
+
+	if location, ok, _ := unstructured.NestedString(obj.Object, "spec", "location"); ok {
+		newLoc := remapRegion(location)
+		if newLoc != location {
+			_ = unstructured.SetNestedField(obj.Object, newLoc, "spec", "location")
+		}
+	}
+	if region, ok, _ := unstructured.NestedString(obj.Object, "spec", "region"); ok {
+		newReg := remapRegion(region)
+		if newReg != region {
+			_ = unstructured.SetNestedField(obj.Object, newReg, "spec", "region")
+		}
+	}
+	if zone, ok, _ := unstructured.NestedString(obj.Object, "spec", "zone"); ok {
+		newZone := remapZone(zone)
+		if newZone != zone {
+			_ = unstructured.SetNestedField(obj.Object, newZone, "spec", "zone")
+		}
+	}
+	if zone, ok, _ := unstructured.NestedString(obj.Object, "spec", "settings", "locationPreference", "zone"); ok {
+		newZone := remapZone(zone)
+		if newZone != zone {
+			_ = unstructured.SetNestedField(obj.Object, newZone, "spec", "settings", "locationPreference", "zone")
+		}
+	}
+	if regions, ok, _ := unstructured.NestedStringSlice(obj.Object, "spec", "messageStoragePolicy", "allowedPersistenceRegions"); ok {
+		var newRegions []string
+		for _, r := range regions {
+			newRegions = append(newRegions, remapRegion(r))
+		}
+		_ = unstructured.SetNestedStringSlice(obj.Object, newRegions, "spec", "messageStoragePolicy", "allowedPersistenceRegions")
+	}
+	if replicas, ok, _ := unstructured.NestedSlice(obj.Object, "spec", "replication", "userManaged", "replicas"); ok {
+		for _, rep := range replicas {
+			if repMap, ok := rep.(map[string]interface{}); ok {
+				if loc, ok := repMap["location"].(string); ok {
+					repMap["location"] = remapRegion(loc)
+				}
+			}
+		}
+		_ = unstructured.SetNestedSlice(obj.Object, replicas, "spec", "replication", "userManaged", "replicas")
+	}
+	if dataLocations, ok, _ := unstructured.NestedStringSlice(obj.Object, "spec", "customPlacementConfig", "dataLocations"); ok {
+		var newLocations []string
+		for _, dl := range dataLocations {
+			newLocations = append(newLocations, remapRegion(dl))
+		}
+		_ = unstructured.SetNestedStringSlice(obj.Object, newLocations, "spec", "customPlacementConfig", "dataLocations")
+	}
+
+	if options.targetProject != "" {
+		if kind, ok, _ := unstructured.NestedString(obj.Object, "spec", "resourceRef", "kind"); ok && kind == "Project" {
+			_ = unstructured.SetNestedField(obj.Object, "projects/"+options.targetProject, "spec", "resourceRef", "external")
+		}
+
+		// Remap IAM member project & workload identity references
+		if member, ok, _ := unstructured.NestedString(obj.Object, "spec", "member"); ok {
+			if strings.HasPrefix(member, "serviceAccount:") && strings.Contains(member, ".iam.gserviceaccount.com") {
+				parts := strings.Split(member, "@")
+				if len(parts) == 2 {
+					oldProj := strings.TrimSuffix(parts[1], ".iam.gserviceaccount.com")
+					if oldProj != "" && oldProj != options.targetProject {
+						newMember := fmt.Sprintf("%s@%s.iam.gserviceaccount.com", parts[0], options.targetProject)
+						_ = unstructured.SetNestedField(obj.Object, newMember, "spec", "member")
+					}
+				}
+			}
+			if strings.HasPrefix(member, "serviceAccount:") && strings.Contains(member, ".svc.id.goog") {
+				parts := strings.Split(member, ".svc.id.goog")
+				if len(parts) == 2 {
+					newMember := fmt.Sprintf("serviceAccount:%s.svc.id.goog%s", options.targetProject, parts[1])
+					_ = unstructured.SetNestedField(obj.Object, newMember, "spec", "member")
+				}
+			}
+		}
+	}
+
+	// Remap CMEK KMS Key references
+	remapKMSKey := func(keyPath string) string {
+		if keyPath == "" {
+			return ""
+		}
+		newPath := keyPath
+		if options.targetProject != "" && strings.HasPrefix(newPath, "projects/") {
+			parts := strings.Split(newPath, "/")
+			if len(parts) >= 2 {
+				parts[1] = options.targetProject
+				newPath = strings.Join(parts, "/")
+			}
+		}
+		if (options.regionMapping != "" || options.targetRegion != "") && strings.Contains(newPath, "/locations/") {
+			parts := strings.Split(newPath, "/")
+			for idx, part := range parts {
+				if part == "locations" && idx+1 < len(parts) {
+					parts[idx+1] = remapRegion(parts[idx+1])
+				}
+			}
+			newPath = strings.Join(parts, "/")
+		}
+		return newPath
+	}
+
+	if kmsKey, ok, _ := unstructured.NestedString(obj.Object, "spec", "kmsKeyRef", "external"); ok {
+		newKey := remapKMSKey(kmsKey)
+		if newKey != kmsKey {
+			_ = unstructured.SetNestedField(obj.Object, newKey, "spec", "kmsKeyRef", "external")
+		}
+	}
+	if kmsKey, ok, _ := unstructured.NestedString(obj.Object, "spec", "customerManagedEncryption", "kmsKeyName"); ok {
+		newKey := remapKMSKey(kmsKey)
+		if newKey != kmsKey {
+			_ = unstructured.SetNestedField(obj.Object, newKey, "spec", "customerManagedEncryption", "kmsKeyName")
+		}
+	}
+	if kmsKey, ok, _ := unstructured.NestedString(obj.Object, "spec", "encryption", "defaultKmsKeyName"); ok {
+		newKey := remapKMSKey(kmsKey)
+		if newKey != kmsKey {
+			_ = unstructured.SetNestedField(obj.Object, newKey, "spec", "encryption", "defaultKmsKeyName")
+		}
+	}
+	if kmsKey, ok, _ := unstructured.NestedString(obj.Object, "spec", "encryption", "kmsKeyName"); ok {
+		newKey := remapKMSKey(kmsKey)
+		if newKey != kmsKey {
+			_ = unstructured.SetNestedField(obj.Object, newKey, "spec", "encryption", "kmsKeyName")
+		}
+	}
+
+	// Remap Subnetwork references (projects/.../regions/.../subnetworks/...)
+	if subnet, ok, _ := unstructured.NestedString(obj.Object, "spec", "subnetworkRef", "external"); ok {
+		newSubnet := subnet
+		if options.targetProject != "" && strings.HasPrefix(newSubnet, "projects/") {
+			parts := strings.Split(newSubnet, "/")
+			if len(parts) >= 2 {
+				parts[1] = options.targetProject
+				newSubnet = strings.Join(parts, "/")
+			}
+		}
+		if (options.regionMapping != "" || options.targetRegion != "") && strings.Contains(newSubnet, "/regions/") {
+			parts := strings.Split(newSubnet, "/")
+			for idx, part := range parts {
+				if part == "regions" && idx+1 < len(parts) {
+					parts[idx+1] = remapRegion(parts[idx+1])
+				}
+			}
+			newSubnet = strings.Join(parts, "/")
+		}
+		if newSubnet != subnet {
+			_ = unstructured.SetNestedField(obj.Object, newSubnet, "spec", "subnetworkRef", "external")
+		}
+	}
+
+	obj.SetAnnotations(annotations)
+
+	if options.dryRun {
+		ns := obj.GetNamespace()
+		if ns != "" {
+			nsObj := &unstructured.Unstructured{}
+			nsObj.SetGroupVersionKind(schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Namespace"})
+			if err := kubeClient.Get(ctx, client.ObjectKey{Name: ns}, nsObj); err != nil {
+				fmt.Printf("Dry-run passed (schema verified; namespace %q will be auto-created during live restore): %s/%s (%s)\n", ns, obj.GetNamespace(), obj.GetName(), obj.GetKind())
+				return nil
+			}
+		}
+		fmt.Printf("Dry-run: validating %s/%s (%s) with server-side dry run...\n", obj.GetNamespace(), obj.GetName(), obj.GetKind())
+		if err := kubeClient.Patch(ctx, obj, client.Apply, client.FieldOwner("config-connector-backup"), client.ForceOwnership, client.DryRunAll); err != nil {
+			return fmt.Errorf("server-side dry run validation failed for %s/%s (%s): %w", obj.GetNamespace(), obj.GetName(), obj.GetKind(), err)
+		}
+		fmt.Printf("Dry-run passed: %s/%s (%s)\n", obj.GetNamespace(), obj.GetName(), obj.GetKind())
+		return nil
+	}
+
+	// Apply to cluster using Server-Side Apply
+	if err := kubeClient.Patch(ctx, obj, client.Apply, client.FieldOwner("config-connector-backup"), client.ForceOwnership); err != nil {
+		return fmt.Errorf("applying object: %w", err)
+	}
+
+	fmt.Printf("Restored %s/%s (%s)\n", obj.GetNamespace(), obj.GetName(), obj.GetKind())
+	return nil
+}
