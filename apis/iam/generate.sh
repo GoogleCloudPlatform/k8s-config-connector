@@ -53,6 +53,21 @@ ${CONTROLLERBUILDER} generate-mapper \
   --include-skipped-output \
   --multiversion
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.iam.v3 \
+  --api-version iam.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource IAMAccessPolicy:AccessPolicy \
+  --resource IAMPrincipalAccessBoundaryPolicy:PrincipalAccessBoundaryPolicy
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.iam.v3 \
+  --api-version iam.cnrm.cloud.google.com/v1alpha1 \
+  --resource IAMAccessPolicy:AccessPolicy \
+  --resource IAMPrincipalAccessBoundaryPolicy:PrincipalAccessBoundaryPolicy
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

@@ -1,0 +1,109 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: RetailProduct
+    group: retail.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: RetailProduct
+    group: retail.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}/products/{product}" contains ancestor segment(s) catalogs/{catalog}, branches/{branch} with no matching reference or field on RetailProductSpec
+    status: open
+  - kind: RetailProduct
+    group: retail.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}, and no BranchRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: RetailProduct
+    group: retail.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v2/projects.locations.catalogs.branches.products: https://docs.cloud.google.com/recommendations/docs/reference/rest/v2/projects.locations.catalogs.branches.products'
+    status: open
+  - kind: RetailProduct
+    group: retail.cnrm.cloud.google.com
+    field: .spec.attributes
+    reason: message-map-derived
+    detail: derived as map[string]CustomAttribute from proto google.cloud.retail.v2.CustomAttribute; verify Go type and mapping
+    status: open
+  - kind: RetailProduct
+    group: retail.cnrm.cloud.google.com
+    field: .spec.attributes.KEY.indexable
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: open
+  - kind: RetailProduct
+    group: retail.cnrm.cloud.google.com
+    field: .spec.attributes.KEY.searchable
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: open
+  - kind: RetailProduct
+    group: retail.cnrm.cloud.google.com
+    field: .spec.availableQuantity
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Int32Value, which was generated as struct Int32Value; confirm KRM representation
+    status: open
+  - kind: RetailProduct
+    group: retail.cnrm.cloud.google.com
+    field: .spec.collectionMemberIDs
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: RetailProduct
+    group: retail.cnrm.cloud.google.com
+    field: .spec.fulfillmentInfo[].placeIDs
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: RetailProduct
+    group: retail.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: RetailProduct
+    group: retail.cnrm.cloud.google.com
+    field: .spec.primaryProductID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: RetailProduct
+    group: retail.cnrm.cloud.google.com
+    field: .spec.promotions[].promotionID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: RetailProduct
+    group: retail.cnrm.cloud.google.com
+    field: .spec.retrievableFields
+    reason: deprecated-field
+    detail: the proto marks this field deprecated, so new Kinds leave it out of the Spec. If this Spec still has it, remove it by hand; add it back only if users still need it
+    status: open
+  - kind: RetailProduct
+    group: retail.cnrm.cloud.google.com
+    field: .status.observedState.localInventories[].attributes
+    reason: message-map-derived
+    detail: derived as map[string]CustomAttribute from proto google.cloud.retail.v2.CustomAttribute; verify Go type and mapping
+    status: open

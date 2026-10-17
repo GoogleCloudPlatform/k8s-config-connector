@@ -25,6 +25,7 @@ package iap
 
 import (
 	pb "cloud.google.com/go/iap/apiv1/iappb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iap/v1alpha1"
 	krmiapv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iap/v1alpha1"
 	krmiapv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iap/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -492,6 +493,290 @@ func ReauthSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ReauthSe
 	return out
 }
 func ReauthSettings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmiapv1beta1.ReauthSettings) *pb.ReauthSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReauthSettings{}
+	out.Method = direct.Enum_ToProto[pb.ReauthSettings_Method](mapCtx, in.Method)
+	out.MaxAge = direct.StringDuration_ToProto(mapCtx, in.MaxAge)
+	out.PolicyType = direct.Enum_ToProto[pb.ReauthSettings_PolicyType](mapCtx, in.PolicyType)
+	return out
+}
+
+func AccessDeniedPageSettings_FromProto(mapCtx *direct.MapContext, in *pb.AccessDeniedPageSettings) *krmiapv1beta1.AccessDeniedPageSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmiapv1beta1.AccessDeniedPageSettings{}
+	out.AccessDeniedPageURI = direct.StringValue_FromProto(mapCtx, in.GetAccessDeniedPageUri())
+	out.GenerateTroubleshootingURI = direct.BoolValue_FromProto(mapCtx, in.GetGenerateTroubleshootingUri())
+	out.RemediationTokenGenerationEnabled = direct.BoolValue_FromProto(mapCtx, in.GetRemediationTokenGenerationEnabled())
+	return out
+}
+
+func AccessDeniedPageSettings_ToProto(mapCtx *direct.MapContext, in *krmiapv1beta1.AccessDeniedPageSettings) *pb.AccessDeniedPageSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AccessDeniedPageSettings{}
+	out.AccessDeniedPageUri = direct.StringValue_ToProto(mapCtx, in.AccessDeniedPageURI)
+	out.GenerateTroubleshootingUri = direct.BoolValue_ToProto(mapCtx, in.GenerateTroubleshootingURI)
+	out.RemediationTokenGenerationEnabled = direct.BoolValue_ToProto(mapCtx, in.RemediationTokenGenerationEnabled)
+	return out
+}
+
+func AccessSettings_FromProto(mapCtx *direct.MapContext, in *pb.AccessSettings) *krmiapv1beta1.AccessSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmiapv1beta1.AccessSettings{}
+	out.GcipSettings = GcipSettings_FromProto(mapCtx, in.GetGcipSettings())
+	out.CorsSettings = CorsSettings_FromProto(mapCtx, in.GetCorsSettings())
+	out.OauthSettings = OAuthSettings_FromProto(mapCtx, in.GetOauthSettings())
+	out.ReauthSettings = ReauthSettings_FromProto(mapCtx, in.GetReauthSettings())
+	out.AllowedDomainsSettings = AllowedDomainsSettings_FromProto(mapCtx, in.GetAllowedDomainsSettings())
+	// MISSING: WorkforceIdentitySettings
+	// MISSING: IdentitySources
+	return out
+}
+
+func AccessSettings_ToProto(mapCtx *direct.MapContext, in *krmiapv1beta1.AccessSettings) *pb.AccessSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AccessSettings{}
+	out.GcipSettings = GcipSettings_ToProto(mapCtx, in.GcipSettings)
+	out.CorsSettings = CorsSettings_ToProto(mapCtx, in.CorsSettings)
+	out.OauthSettings = OAuthSettings_ToProto(mapCtx, in.OauthSettings)
+	out.ReauthSettings = ReauthSettings_ToProto(mapCtx, in.ReauthSettings)
+	out.AllowedDomainsSettings = AllowedDomainsSettings_ToProto(mapCtx, in.AllowedDomainsSettings)
+	// MISSING: WorkforceIdentitySettings
+	// MISSING: IdentitySources
+	return out
+}
+
+func AllowedDomainsSettings_FromProto(mapCtx *direct.MapContext, in *pb.AllowedDomainsSettings) *krmiapv1beta1.AllowedDomainsSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmiapv1beta1.AllowedDomainsSettings{}
+	out.Enable = in.Enable
+	out.Domains = in.Domains
+	return out
+}
+
+func AllowedDomainsSettings_ToProto(mapCtx *direct.MapContext, in *krmiapv1beta1.AllowedDomainsSettings) *pb.AllowedDomainsSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllowedDomainsSettings{}
+	out.Enable = in.Enable
+	out.Domains = in.Domains
+	return out
+}
+
+func ApplicationSettings_FromProto(mapCtx *direct.MapContext, in *pb.ApplicationSettings) *krmiapv1beta1.ApplicationSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmiapv1beta1.ApplicationSettings{}
+	out.CsmSettings = CsmSettings_FromProto(mapCtx, in.GetCsmSettings())
+	out.AccessDeniedPageSettings = AccessDeniedPageSettings_FromProto(mapCtx, in.GetAccessDeniedPageSettings())
+	out.CookieDomain = direct.StringValue_FromProto(mapCtx, in.GetCookieDomain())
+	out.AttributePropagationSettings = AttributePropagationSettings_FromProto(mapCtx, in.GetAttributePropagationSettings())
+	return out
+}
+
+func ApplicationSettings_ToProto(mapCtx *direct.MapContext, in *krmiapv1beta1.ApplicationSettings) *pb.ApplicationSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ApplicationSettings{}
+	out.CsmSettings = CsmSettings_ToProto(mapCtx, in.CsmSettings)
+	out.AccessDeniedPageSettings = AccessDeniedPageSettings_ToProto(mapCtx, in.AccessDeniedPageSettings)
+	out.CookieDomain = direct.StringValue_ToProto(mapCtx, in.CookieDomain)
+	out.AttributePropagationSettings = AttributePropagationSettings_ToProto(mapCtx, in.AttributePropagationSettings)
+	return out
+}
+
+func AttributePropagationSettings_FromProto(mapCtx *direct.MapContext, in *pb.AttributePropagationSettings) *krmiapv1beta1.AttributePropagationSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmiapv1beta1.AttributePropagationSettings{}
+	out.Expression = in.Expression
+	out.OutputCredentials = direct.EnumSlice_FromProto(mapCtx, in.OutputCredentials)
+	out.Enable = in.Enable
+	return out
+}
+
+func AttributePropagationSettings_ToProto(mapCtx *direct.MapContext, in *krmiapv1beta1.AttributePropagationSettings) *pb.AttributePropagationSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttributePropagationSettings{}
+	out.Expression = in.Expression
+	out.OutputCredentials = direct.EnumSlice_ToProto[pb.AttributePropagationSettings_OutputCredentials](mapCtx, in.OutputCredentials)
+	out.Enable = in.Enable
+	return out
+}
+
+func CorsSettings_FromProto(mapCtx *direct.MapContext, in *pb.CorsSettings) *krmiapv1beta1.CorsSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmiapv1beta1.CorsSettings{}
+	out.AllowHTTPOptions = direct.BoolValue_FromProto(mapCtx, in.GetAllowHttpOptions())
+	return out
+}
+
+func CorsSettings_ToProto(mapCtx *direct.MapContext, in *krmiapv1beta1.CorsSettings) *pb.CorsSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CorsSettings{}
+	out.AllowHttpOptions = direct.BoolValue_ToProto(mapCtx, in.AllowHTTPOptions)
+	return out
+}
+
+func CsmSettings_FromProto(mapCtx *direct.MapContext, in *pb.CsmSettings) *krmiapv1beta1.CsmSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmiapv1beta1.CsmSettings{}
+	out.RctokenAud = direct.StringValue_FromProto(mapCtx, in.GetRctokenAud())
+	return out
+}
+
+func CsmSettings_ToProto(mapCtx *direct.MapContext, in *krmiapv1beta1.CsmSettings) *pb.CsmSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CsmSettings{}
+	out.RctokenAud = direct.StringValue_ToProto(mapCtx, in.RctokenAud)
+	return out
+}
+
+func GcipSettings_FromProto(mapCtx *direct.MapContext, in *pb.GcipSettings) *krmiapv1beta1.GcipSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmiapv1beta1.GcipSettings{}
+	out.TenantIDs = in.TenantIds
+	out.LoginPageURI = direct.StringValue_FromProto(mapCtx, in.GetLoginPageUri())
+	return out
+}
+
+func GcipSettings_ToProto(mapCtx *direct.MapContext, in *krmiapv1beta1.GcipSettings) *pb.GcipSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GcipSettings{}
+	out.TenantIds = in.TenantIDs
+	out.LoginPageUri = direct.StringValue_ToProto(mapCtx, in.LoginPageURI)
+	return out
+}
+
+func IAPBrandSpec_FromProto(mapCtx *direct.MapContext, in *pb.Brand) *krmiapv1beta1.IAPBrandSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmiapv1beta1.IAPBrandSpec{}
+	// MISSING: Name
+	out.SupportEmail = direct.LazyPtr(in.GetSupportEmail())
+	out.ApplicationTitle = direct.LazyPtr(in.GetApplicationTitle())
+	// MISSING: OrgInternalOnly
+	return out
+}
+
+func IAPBrandSpec_ToProto(mapCtx *direct.MapContext, in *krmiapv1beta1.IAPBrandSpec) *pb.Brand {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Brand{}
+	// MISSING: Name
+	out.SupportEmail = direct.ValueOf(in.SupportEmail)
+	out.ApplicationTitle = direct.ValueOf(in.ApplicationTitle)
+	// MISSING: OrgInternalOnly
+	return out
+}
+
+func IAPSettingsSpec_FromProto(mapCtx *direct.MapContext, in *pb.IapSettings) *krmiapv1beta1.IAPSettingsSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmiapv1beta1.IAPSettingsSpec{}
+	// MISSING: Name
+	out.AccessSettings = AccessSettings_FromProto(mapCtx, in.GetAccessSettings())
+	out.ApplicationSettings = ApplicationSettings_FromProto(mapCtx, in.GetApplicationSettings())
+	return out
+}
+
+func IAPSettingsSpec_ToProto(mapCtx *direct.MapContext, in *krmiapv1beta1.IAPSettingsSpec) *pb.IapSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IapSettings{}
+	// MISSING: Name
+	out.AccessSettings = AccessSettings_ToProto(mapCtx, in.AccessSettings)
+	out.ApplicationSettings = ApplicationSettings_ToProto(mapCtx, in.ApplicationSettings)
+	return out
+}
+
+func IapTunnelDestGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.TunnelDestGroup) *krm.IapTunnelDestGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.IapTunnelDestGroupSpec{}
+	// MISSING: Name
+	out.CIDRs = in.Cidrs
+	out.FQDNs = in.Fqdns
+	return out
+}
+
+func IapTunnelDestGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.IapTunnelDestGroupSpec) *pb.TunnelDestGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TunnelDestGroup{}
+	// MISSING: Name
+	out.Cidrs = in.CIDRs
+	out.Fqdns = in.FQDNs
+	return out
+}
+
+func OAuthSettings_FromProto(mapCtx *direct.MapContext, in *pb.OAuthSettings) *krmiapv1beta1.OAuthSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmiapv1beta1.OAuthSettings{}
+	out.LoginHint = direct.StringValue_FromProto(mapCtx, in.GetLoginHint())
+	out.ProgrammaticClients = in.ProgrammaticClients
+	return out
+}
+
+func OAuthSettings_ToProto(mapCtx *direct.MapContext, in *krmiapv1beta1.OAuthSettings) *pb.OAuthSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OAuthSettings{}
+	out.LoginHint = direct.StringValue_ToProto(mapCtx, in.LoginHint)
+	out.ProgrammaticClients = in.ProgrammaticClients
+	return out
+}
+
+func ReauthSettings_FromProto(mapCtx *direct.MapContext, in *pb.ReauthSettings) *krmiapv1beta1.ReauthSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmiapv1beta1.ReauthSettings{}
+	out.Method = direct.Enum_FromProto(mapCtx, in.GetMethod())
+	out.MaxAge = direct.StringDuration_FromProto(mapCtx, in.GetMaxAge())
+	out.PolicyType = direct.Enum_FromProto(mapCtx, in.GetPolicyType())
+	return out
+}
+
+func ReauthSettings_ToProto(mapCtx *direct.MapContext, in *krmiapv1beta1.ReauthSettings) *pb.ReauthSettings {
 	if in == nil {
 		return nil
 	}

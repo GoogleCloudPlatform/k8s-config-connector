@@ -44,6 +44,21 @@ ${CONTROLLERBUILDER} generate-mapper \
   --api-version securesourcemanager.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.securesourcemanager.v1 \
+  --api-version securesourcemanager.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource SecuresourcemanagerIssueComment:IssueComment \
+  --resource SecuresourcemanagerPullRequestComment:PullRequestComment \
+  --resource SecuresourcemanagerPullRequest:PullRequest
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.securesourcemanager.v1 \
+  --api-version securesourcemanager.cnrm.cloud.google.com/v1alpha1 \
+  --resource SecuresourcemanagerIssueComment:IssueComment \
+  --resource SecuresourcemanagerPullRequestComment:PullRequestComment \
+  --resource SecuresourcemanagerPullRequest:PullRequest
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

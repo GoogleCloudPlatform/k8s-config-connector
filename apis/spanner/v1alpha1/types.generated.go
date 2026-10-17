@@ -20,6 +20,10 @@
 
 package v1alpha1
 
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+)
+
 // +kcc:proto=google.spanner.admin.database.v1.BackupScheduleSpec
 type BackupScheduleSpec struct {
 	// Cron style schedule specification.
@@ -206,4 +210,30 @@ type InstanceConfigObservedState struct {
 	// Output only. The storage limit in bytes per processing unit.
 	// +kcc:proto:field=google.spanner.admin.instance.v1.InstanceConfig.storage_limit_per_processing_unit
 	StorageLimitPerProcessingUnit *int64 `json:"storageLimitPerProcessingUnit,omitempty"`
+}
+
+// +kcc:proto=google.spanner.admin.database.v1.BackupInstancePartition
+type BackupInstancePartition struct {
+	// A unique identifier for the instance partition. Values are of the form
+	//  `projects/<project>/instances/<instance>/instancePartitions/<instance_partition_id>`
+	// +kcc:proto:field=google.spanner.admin.database.v1.BackupInstancePartition.instance_partition
+	InstancePartition *string `json:"instancePartition,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.spanner.admin.database.v1.EncryptionInfo
+type EncryptionInfoObservedState struct {
+	// Output only. The type of encryption.
+	// +kcc:proto:field=google.spanner.admin.database.v1.EncryptionInfo.encryption_type
+	EncryptionType *string `json:"encryptionType,omitempty"`
+
+	// Output only. If present, the status of a recent encrypt/decrypt call on
+	//  underlying data for this database or backup. Regardless of status, data is
+	//  always encrypted at rest.
+	// +kcc:proto:field=google.spanner.admin.database.v1.EncryptionInfo.encryption_status
+	EncryptionStatus *common.Status `json:"encryptionStatus,omitempty"`
+
+	// Output only. A Cloud KMS key version that is being used to protect the
+	//  database or backup.
+	// +kcc:proto:field=google.spanner.admin.database.v1.EncryptionInfo.kms_key_version
+	KMSKeyVersion *string `json:"kmsKeyVersion,omitempty"`
 }

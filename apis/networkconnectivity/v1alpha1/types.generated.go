@@ -763,3 +763,49 @@ type Transport struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
+
+// +kcc:proto=google.cloud.networkconnectivity.v1.Destination.DestinationEndpoint
+type Destination_DestinationEndpoint struct {
+	// Required. The ASN of the remote IP prefix.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.Destination.DestinationEndpoint.asn
+	// +required
+	Asn *int64 `json:"asn,omitempty"`
+
+	// Required. The CSP of the remote IP prefix.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.Destination.DestinationEndpoint.csp
+	// +required
+	Csp *string `json:"csp,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.networkconnectivity.v1.Destination.DestinationEndpoint
+type Destination_DestinationEndpointObservedState struct {
+	// Output only. The state of the `DestinationEndpoint` resource.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.Destination.DestinationEndpoint.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Time when the `DestinationEndpoint` resource was updated.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.Destination.DestinationEndpoint.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.networkconnectivity.v1.StateTimeline
+type StateTimelineObservedState struct {
+	// Output only. The state and activation time details of the resource state.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.StateTimeline.states
+	States []StateTimeline_StateMetadataObservedState `json:"states,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.networkconnectivity.v1.StateTimeline.StateMetadata
+type StateTimeline_StateMetadataObservedState struct {
+	// Output only. The state of the resource.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.StateTimeline.StateMetadata.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Accompanies only the transient states, which include
+	//  `ADDING`, `DELETING`, and `SUSPENDING`, to denote the time until which
+	//  the transient state of the resource will be effective. For instance, if
+	//  the state is `ADDING`, this field shows the time when the resource state
+	//  transitions to `ACTIVE`.
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.StateTimeline.StateMetadata.effective_time
+	EffectiveTime *string `json:"effectiveTime,omitempty"`
+}

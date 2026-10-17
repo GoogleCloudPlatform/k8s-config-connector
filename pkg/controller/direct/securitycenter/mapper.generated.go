@@ -130,3 +130,99 @@ func SecurityCenterMuteConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.Sec
 	out.ExpiryTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpiryTime)
 	return out
 }
+
+func CustomConfig_ResourceSelector_FromProto(mapCtx *direct.MapContext, in *pb.CustomConfig_ResourceSelector) *krm.CustomConfig_ResourceSelector {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomConfig_ResourceSelector{}
+	out.ResourceTypes = in.ResourceTypes
+	return out
+}
+
+func CustomConfig_ResourceSelector_ToProto(mapCtx *direct.MapContext, in *krm.CustomConfig_ResourceSelector) *pb.CustomConfig_ResourceSelector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomConfig_ResourceSelector{}
+	out.ResourceTypes = in.ResourceTypes
+	return out
+}
+
+func SecuritycenterEventThreatDetectionCustomModuleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EventThreatDetectionCustomModule) *krm.SecuritycenterEventThreatDetectionCustomModuleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecuritycenterEventThreatDetectionCustomModuleObservedState{}
+	// MISSING: Name
+	out.AncestorModule = direct.LazyPtr(in.GetAncestorModule())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.LastEditor = direct.LazyPtr(in.GetLastEditor())
+	return out
+}
+
+func SecuritycenterEventThreatDetectionCustomModuleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterEventThreatDetectionCustomModuleObservedState) *pb.EventThreatDetectionCustomModule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EventThreatDetectionCustomModule{}
+	// MISSING: Name
+	out.AncestorModule = direct.ValueOf(in.AncestorModule)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.LastEditor = direct.ValueOf(in.LastEditor)
+	return out
+}
+
+func SecuritycenterEventThreatDetectionCustomModuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.EventThreatDetectionCustomModule) *krm.SecuritycenterEventThreatDetectionCustomModuleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecuritycenterEventThreatDetectionCustomModuleSpec{}
+	// MISSING: Name
+	if v := direct.Struct_FromProto(mapCtx, in.GetConfig()); v != nil {
+		out.Config = *v
+	}
+	out.EnablementState = direct.Enum_FromProto(mapCtx, in.GetEnablementState())
+	out.Type = direct.LazyPtr(in.GetType())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+
+func SecuritycenterEventThreatDetectionCustomModuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterEventThreatDetectionCustomModuleSpec) *pb.EventThreatDetectionCustomModule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EventThreatDetectionCustomModule{}
+	// MISSING: Name
+	out.Config = direct.Struct_ToProto(mapCtx, &in.Config)
+	out.EnablementState = direct.Enum_ToProto[pb.EventThreatDetectionCustomModule_EnablementState](mapCtx, in.EnablementState)
+	out.Type = direct.ValueOf(in.Type)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+
+func SecuritycenterSecurityHealthAnalyticsCustomModuleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SecurityHealthAnalyticsCustomModule) *krm.SecuritycenterSecurityHealthAnalyticsCustomModuleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecuritycenterSecurityHealthAnalyticsCustomModuleObservedState{}
+	// MISSING: Name
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.LastEditor = direct.LazyPtr(in.GetLastEditor())
+	out.AncestorModule = direct.LazyPtr(in.GetAncestorModule())
+	return out
+}
+
+func SecuritycenterSecurityHealthAnalyticsCustomModuleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecuritycenterSecurityHealthAnalyticsCustomModuleObservedState) *pb.SecurityHealthAnalyticsCustomModule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityHealthAnalyticsCustomModule{}
+	// MISSING: Name
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.LastEditor = direct.ValueOf(in.LastEditor)
+	out.AncestorModule = direct.ValueOf(in.AncestorModule)
+	return out
+}

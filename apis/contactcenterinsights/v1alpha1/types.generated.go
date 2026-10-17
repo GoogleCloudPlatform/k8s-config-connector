@@ -1677,3 +1677,59 @@ type ViewObservedState struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
+
+// +kcc:proto=google.cloud.contactcenterinsights.v1.QaQuestion.AnswerChoice
+type QaQuestion_AnswerChoice struct {
+	// String value.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaQuestion.AnswerChoice.str_value
+	StrValue *string `json:"strValue,omitempty"`
+
+	// Numerical value.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaQuestion.AnswerChoice.num_value
+	NumValue *float64 `json:"numValue,omitempty"`
+
+	// Boolean value.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaQuestion.AnswerChoice.bool_value
+	BoolValue *bool `json:"boolValue,omitempty"`
+
+	// A value of "Not Applicable (N/A)". If provided, this field may only
+	//  be set to `true`. If a question receives this answer, it will be
+	//  excluded from any score calculations.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaQuestion.AnswerChoice.na_value
+	NaValue *bool `json:"naValue,omitempty"`
+
+	// A short string used as an identifier.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaQuestion.AnswerChoice.key
+	Key *string `json:"key,omitempty"`
+
+	// Numerical score of the answer, used for generating the overall score of
+	//  a QaScorecardResult. If the answer uses na_value, this field is unused.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaQuestion.AnswerChoice.score
+	Score *float64 `json:"score,omitempty"`
+}
+
+// +kcc:proto=google.cloud.contactcenterinsights.v1.QaQuestion.TuningMetadata
+type QaQuestion_TuningMetadata struct {
+	// Total number of valid labels provided for the question at the time of
+	//  tuining.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaQuestion.TuningMetadata.total_valid_label_count
+	TotalValidLabelCount *int64 `json:"totalValidLabelCount,omitempty"`
+
+	// A list of any applicable data validation warnings about the question's
+	//  feedback labels.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaQuestion.TuningMetadata.dataset_validation_warnings
+	DatasetValidationWarnings []string `json:"datasetValidationWarnings,omitempty"`
+
+	// Error status of the tuning operation for the question. Will only be set
+	//  if the tuning operation failed.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaQuestion.TuningMetadata.tuning_error
+	TuningError *string `json:"tuningError,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.contactcenterinsights.v1.QaQuestion.Metrics
+type QaQuestion_MetricsObservedState struct {
+	// Output only. Accuracy of the model. Measures the percentage of correct
+	//  answers the model gave on the test set.
+	// +kcc:proto:field=google.cloud.contactcenterinsights.v1.QaQuestion.Metrics.accuracy
+	Accuracy *float64 `json:"accuracy,omitempty"`
+}

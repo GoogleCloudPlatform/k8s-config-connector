@@ -68,6 +68,19 @@ ${CONTROLLERBUILDER} generate-mapper \
 
 # Format generated code
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.apihub.v1 \
+  --api-version apihub.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource ApihubSpec:Spec
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.apihub.v1 \
+  --api-version apihub.cnrm.cloud.google.com/v1alpha1 \
+  --resource ApihubSpec:Spec
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

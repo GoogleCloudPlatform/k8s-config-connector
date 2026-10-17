@@ -101,6 +101,50 @@ mv "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/dialogflow
 rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/dialogflow/" || true
 sed -i 's/package dialogflow/package conversationdataset/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/mapper.generated.go"
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.dialogflow.cx.v3 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource DialogflowEnvironment:Environment \
+  --resource DialogflowExample:Example \
+  --resource DialogflowExperiment:Experiment \
+  --resource DialogflowPlaybook:Playbook \
+  --resource DialogflowSessionEntityType:SessionEntityType \
+  --resource DialogflowTransitionRouteGroup:TransitionRouteGroup \
+  --resource DialogflowVersion:Version \
+  --resource DialogflowTestCase:TestCase
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.dialogflow.cx.v3 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --resource DialogflowEnvironment:Environment \
+  --resource DialogflowExample:Example \
+  --resource DialogflowExperiment:Experiment \
+  --resource DialogflowPlaybook:Playbook \
+  --resource DialogflowSessionEntityType:SessionEntityType \
+  --resource DialogflowTransitionRouteGroup:TransitionRouteGroup \
+  --resource DialogflowVersion:Version \
+  --resource DialogflowTestCase:TestCase
+
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.dialogflow.v2 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource DialogflowContext:Context \
+  --resource DialogflowDocument:Document \
+  --resource DialogflowParticipant:Participant
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.dialogflow.v2 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --resource DialogflowContext:Context \
+  --resource DialogflowDocument:Document \
+  --resource DialogflowParticipant:Participant
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

@@ -144,3 +144,53 @@ func MapManagementStyleConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.Map
 	out.JsonStyleSheet = direct.ValueOf(in.JsonStyleSheet)
 	return out
 }
+
+func MapmanagementMapContextConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MapContextConfig) *krm.MapmanagementMapContextConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MapmanagementMapContextConfigObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func MapmanagementMapContextConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MapmanagementMapContextConfigObservedState) *pb.MapContextConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MapContextConfig{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func MapmanagementMapContextConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.MapContextConfig) *krm.MapmanagementMapContextConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MapmanagementMapContextConfigSpec{}
+	// MISSING: Name
+	out.MapConfig = direct.LazyPtr(in.GetMapConfig())
+	out.StyleConfig = direct.LazyPtr(in.GetStyleConfig())
+	out.Dataset = in.Dataset
+	out.Alias = direct.LazyPtr(in.GetAlias())
+	out.MapVariants = direct.EnumSlice_FromProto(mapCtx, in.MapVariants)
+	return out
+}
+
+func MapmanagementMapContextConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.MapmanagementMapContextConfigSpec) *pb.MapContextConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MapContextConfig{}
+	// MISSING: Name
+	out.MapConfig = direct.ValueOf(in.MapConfig)
+	out.StyleConfig = direct.ValueOf(in.StyleConfig)
+	out.Dataset = in.Dataset
+	out.Alias = direct.ValueOf(in.Alias)
+	out.MapVariants = direct.EnumSlice_ToProto[pb.MapContextConfig_MapVariant](mapCtx, in.MapVariants)
+	return out
+}

@@ -203,3 +203,15 @@ type BoolValue struct {
 	// The bool value.
 	Value *bool `json:"value,omitempty"`
 }
+
+// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Routine
+type Routine struct {
+	// Required. The type of routine.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Routine.routine_type
+	// +required
+	RoutineType *string `json:"routineType,omitempty"`
+
+	// Optional. The definition body of the routine.
+	// +kcc:proto:field=google.cloud.bigquery.analyticshub.v1.Routine.definition_body
+	DefinitionBody *string `json:"definitionBody,omitempty"`
+}

@@ -1,0 +1,342 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: AIPlatformArtifact
+    group: aiplatform.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: AIPlatformArtifact
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//aiplatform.googleapis.com/projects/{project}/locations/{location}/metadataStores/{metadata_store}/artifacts/{artifact}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: AIPlatformArtifact
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/metadataStores/{metadata_store}/artifacts/{artifact}" contains ancestor segment(s) metadataStores/{metadata_store} with no matching reference or field on AIPlatformArtifactSpec
+    status: open
+  - kind: AIPlatformArtifact
+    group: aiplatform.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/metadataStores/{metadata_store}, and no MetadataStoreRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: AIPlatformArtifact
+    group: aiplatform.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.metadataStores.artifacts: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.metadataStores.artifacts, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.metadataStores.artifacts'
+    status: open
+  - kind: AIPlatformArtifact
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: etag-in-spec
+    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
+    status: open
+  - kind: AIPlatformArtifact
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/metadataStores/{metadata_store}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: AIPlatformArtifact
+    group: aiplatform.cnrm.cloud.google.com
+    field: .status.observedState.name
+    reason: observedstate-identity-field-omitted
+    detail: proto marks field OUTPUT_ONLY; resource name is represented by status.externalRef. Verify applicability for this resource
+    status: open
+  - kind: AIPlatformContext
+    group: aiplatform.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: AIPlatformContext
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//aiplatform.googleapis.com/projects/{project}/locations/{location}/metadataStores/{metadata_store}/contexts/{context}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: AIPlatformContext
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/metadataStores/{metadata_store}/contexts/{context}" contains ancestor segment(s) metadataStores/{metadata_store} with no matching reference or field on AIPlatformContextSpec
+    status: open
+  - kind: AIPlatformContext
+    group: aiplatform.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/metadataStores/{metadata_store}, and no MetadataStoreRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: AIPlatformContext
+    group: aiplatform.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.metadataStores.contexts: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.metadataStores.contexts, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.metadataStores.contexts'
+    status: open
+  - kind: AIPlatformContext
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: etag-in-spec
+    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
+    status: open
+  - kind: AIPlatformContext
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/metadataStores/{metadata_store}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: AIPlatformDatasetVersion
+    group: aiplatform.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: AIPlatformDatasetVersion
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//aiplatform.googleapis.com/projects/{project}/locations/{location}/datasets/{dataset}/datasetVersions/{dataset_version}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: AIPlatformDatasetVersion
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/datasets/{dataset}/datasetVersions/{dataset_version}" contains ancestor segment(s) datasets/{dataset} with no matching reference or field on AIPlatformDatasetVersionSpec
+    status: open
+  - kind: AIPlatformDatasetVersion
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: generated AIPlatformDatasetVersionIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
+    status: open
+  - kind: AIPlatformDatasetVersion
+    group: aiplatform.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/datasets/{dataset}, and no DatasetRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: AIPlatformDatasetVersion
+    group: aiplatform.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.datasets.datasetVersions: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.datasets.datasetVersions, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.datasets.datasetVersions'
+    status: open
+  - kind: AIPlatformDatasetVersion
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: etag-in-spec
+    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
+    status: open
+  - kind: AIPlatformDatasetVersion
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/datasets/{dataset}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: AIPlatformDatasetVersion
+    group: aiplatform.cnrm.cloud.google.com
+    field: .status.observedState.metadata
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: open
+  - kind: AIPlatformDatasetVersion
+    group: aiplatform.cnrm.cloud.google.com
+    field: .status.observedState.name
+    reason: observedstate-identity-field-omitted
+    detail: proto marks field OUTPUT_ONLY; resource name is represented by status.externalRef. Verify applicability for this resource
+    status: open
+  - kind: AIPlatformExecution
+    group: aiplatform.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: AIPlatformExecution
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//aiplatform.googleapis.com/projects/{project}/locations/{location}/metadataStores/{metadata_store}/executions/{execution}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: AIPlatformExecution
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/metadataStores/{metadata_store}/executions/{execution}" contains ancestor segment(s) metadataStores/{metadata_store} with no matching reference or field on AIPlatformExecutionSpec
+    status: open
+  - kind: AIPlatformExecution
+    group: aiplatform.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/metadataStores/{metadata_store}, and no MetadataStoreRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: AIPlatformExecution
+    group: aiplatform.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.metadataStores.executions: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.metadataStores.executions, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.metadataStores.executions'
+    status: open
+  - kind: AIPlatformExecution
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: etag-in-spec
+    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
+    status: open
+  - kind: AIPlatformExecution
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/metadataStores/{metadata_store}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: AIPlatformExecution
+    group: aiplatform.cnrm.cloud.google.com
+    field: .status.observedState.name
+    reason: observedstate-identity-field-omitted
+    detail: proto marks field OUTPUT_ONLY; resource name is represented by status.externalRef. Verify applicability for this resource
+    status: open
+  - kind: AIPlatformFeatureView
+    group: aiplatform.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: AIPlatformFeatureView
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//aiplatform.googleapis.com/projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}/featureViews/{feature_view}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: AIPlatformFeatureView
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}/featureViews/{feature_view}" contains ancestor segment(s) featureOnlineStores/{feature_online_store} with no matching reference or field on AIPlatformFeatureViewSpec
+    status: open
+  - kind: AIPlatformFeatureView
+    group: aiplatform.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}, and no FeatureOnlineStoreRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: AIPlatformFeatureView
+    group: aiplatform.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.featureOnlineStores.featureViews: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.featureOnlineStores.featureViews, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.featureOnlineStores.featureViews'
+    status: open
+  - kind: AIPlatformFeatureView
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.bigQuerySource.uri
+    reason: reference-not-representable
+    detail: 'bigquery-uri-not-a-gcp-resource-name: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: AIPlatformFeatureView
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: etag-in-spec
+    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
+    status: open
+  - kind: AIPlatformFeatureView
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.featureRegistrySource.featureGroups[].featureGroupID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: AIPlatformFeatureView
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.featureRegistrySource.featureGroups[].featureIDs
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: AIPlatformFeatureView
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: AIPlatformFeatureView
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.vertexRagSource.uri
+    reason: reference-not-representable
+    detail: 'bigquery-uri-not-a-gcp-resource-name: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: AIPlatformSession
+    group: aiplatform.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: AIPlatformSession
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//aiplatform.googleapis.com/projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}/sessions/{session}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: AIPlatformSession
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}/sessions/{session}" contains ancestor segment(s) reasoningEngines/{reasoning_engine} with no matching reference or field on AIPlatformSessionSpec
+    status: open
+  - kind: AIPlatformSession
+    group: aiplatform.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.reasoningEngines.sessions: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.reasoningEngines.sessions, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.reasoningEngines.sessions'
+    status: open
+  - kind: AIPlatformSession
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: AIPlatformSession
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.reasoningEngineRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to AIPlatformReasoningEngineRef, read from the reasoningEngines segment of projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}/sessions/{session}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - kind: AIPlatformSession
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.userID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: AIPlatformTensorboardTimeSeries
+    group: aiplatform.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: AIPlatformTensorboardTimeSeries
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//aiplatform.googleapis.com/projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}/timeSeries/{time_series}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: AIPlatformTensorboardTimeSeries
+    group: aiplatform.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}/timeSeries/{time_series}" contains ancestor segment(s) tensorboards/{tensorboard}, experiments/{experiment}, runs/{run} with no matching reference or field on AIPlatformTensorboardTimeSeriesSpec
+    status: open
+  - kind: AIPlatformTensorboardTimeSeries
+    group: aiplatform.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}, and no RunRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: AIPlatformTensorboardTimeSeries
+    group: aiplatform.cnrm.cloud.google.com
+    reason: verify-resource-docs-link
+    detail: 'none of these loaded as a page ending in /v1/projects.locations.tensorboards.experiments.runs.timeSeries: https://docs.cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.tensorboards.experiments.runs.timeSeries, https://docs.cloud.google.com/ai-platform/docs/reference/rest/v1/projects.locations.tensorboards.experiments.runs.timeSeries'
+    status: open
+  - kind: AIPlatformTensorboardTimeSeries
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.etag
+    reason: etag-in-spec
+    detail: etag was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it belongs in status.observedState
+    status: open
+  - kind: AIPlatformTensorboardTimeSeries
+    group: aiplatform.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: AIPlatformTensorboardTimeSeries
+    group: aiplatform.cnrm.cloud.google.com
+    field: .status.observedState.name
+    reason: observedstate-identity-field-omitted
+    detail: proto marks field OUTPUT_ONLY; resource name is represented by status.externalRef. Verify applicability for this resource
+    status: open

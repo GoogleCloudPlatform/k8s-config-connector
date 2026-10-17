@@ -75,6 +75,19 @@ ${CONTROLLERBUILDER} generate-mapper \
   --api-version "discoveryengine.cnrm.cloud.google.com/v1alpha1" \
   --multiversion
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.discoveryengine.v1 \
+  --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource DiscoveryengineDocument:Document
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.discoveryengine.v1 \
+  --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+  --resource DiscoveryengineDocument:Document
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

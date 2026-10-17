@@ -426,3 +426,27 @@ func TestBuildAPIArgsMultiServiceProtoTag(t *testing.T) {
 		t.Errorf("ResourcePattern = %q, want %q", args.ResourcePattern, wantPat)
 	}
 }
+
+func TestAddTypeFilePluralizesShortName(t *testing.T) {
+	dir := t.TempDir()
+	scaffolder := &APIScaffolder{
+		BaseDir:         dir,
+		GoPackage:       "jobs/v1alpha1",
+		Group:           "jobs.cnrm.cloud.google.com",
+		Version:         "v1alpha1",
+		PackageProtoTag: "google.cloud.talent.v4",
+	}
+	resource := options.Resource{Kind: "JobsCompany", ProtoName: "Company"}
+	if err := scaffolder.AddTypeFile(resource, nil, ""); err != nil {
+		t.Fatalf("AddTypeFile: %v", err)
+	}
+	b, err := os.ReadFile(scaffolder.PathToTypeFile(resource))
+	if err != nil {
+		t.Fatalf("reading scaffolded file: %v", err)
+	}
+	const want = "// +kubebuilder:resource:categories=gcp,shortName=gcpjobscompany;gcpjobscompanies"
+	if !strings.Contains(string(b), want) {
+		t.Errorf("expected %q in scaffolded file:\n%s", want, string(b))
+	}
+}
+

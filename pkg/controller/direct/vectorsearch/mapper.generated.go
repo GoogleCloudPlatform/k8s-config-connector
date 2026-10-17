@@ -149,3 +149,63 @@ func VertexEmbeddingConfig_ToProto(mapCtx *direct.MapContext, in *krm.VertexEmbe
 	out.TaskType = direct.Enum_ToProto[pb.EmbeddingTaskType](mapCtx, in.TaskType)
 	return out
 }
+
+func DedicatedInfrastructure_AutoscalingSpec_FromProto(mapCtx *direct.MapContext, in *pb.DedicatedInfrastructure_AutoscalingSpec) *krm.DedicatedInfrastructure_AutoscalingSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DedicatedInfrastructure_AutoscalingSpec{}
+	out.MinReplicaCount = direct.LazyPtr(in.GetMinReplicaCount())
+	out.MaxReplicaCount = direct.LazyPtr(in.GetMaxReplicaCount())
+	return out
+}
+
+func DedicatedInfrastructure_AutoscalingSpec_ToProto(mapCtx *direct.MapContext, in *krm.DedicatedInfrastructure_AutoscalingSpec) *pb.DedicatedInfrastructure_AutoscalingSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DedicatedInfrastructure_AutoscalingSpec{}
+	out.MinReplicaCount = direct.ValueOf(in.MinReplicaCount)
+	out.MaxReplicaCount = direct.ValueOf(in.MaxReplicaCount)
+	return out
+}
+
+func DenseScannIndex_FromProto(mapCtx *direct.MapContext, in *pb.DenseScannIndex) *krm.DenseScannIndex {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DenseScannIndex{}
+	out.FeatureNormType = direct.Enum_FromProto(mapCtx, in.GetFeatureNormType())
+	return out
+}
+
+func DenseScannIndex_ToProto(mapCtx *direct.MapContext, in *krm.DenseScannIndex) *pb.DenseScannIndex {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DenseScannIndex{}
+	out.FeatureNormType = direct.Enum_ToProto[pb.DenseScannIndex_FeatureNormType](mapCtx, in.FeatureNormType)
+	return out
+}
+
+func VectorsearchIndexObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.VectorsearchIndexObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VectorsearchIndexObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func VectorsearchIndexObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VectorsearchIndexObservedState) *pb.Index {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}

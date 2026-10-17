@@ -861,3 +861,1392 @@ func WindowsUpdate_Identity_ToProto(mapCtx *direct.MapContext, in *krm.WindowsUp
 	out.Revision = direct.ValueOf(in.Revision)
 	return out
 }
+
+func AliasContext_FromProto(mapCtx *direct.MapContext, in *pb.AliasContext) *krm.AliasContext {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AliasContext{}
+	out.Kind = direct.Enum_FromProto(mapCtx, in.GetKind())
+	out.Name = direct.LazyPtr(in.GetName())
+	return out
+}
+
+func AliasContext_ToProto(mapCtx *direct.MapContext, in *krm.AliasContext) *pb.AliasContext {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AliasContext{}
+	out.Kind = direct.Enum_ToProto[pb.AliasContext_Kind](mapCtx, in.Kind)
+	out.Name = direct.ValueOf(in.Name)
+	return out
+}
+
+func Artifact_FromProto(mapCtx *direct.MapContext, in *pb.Artifact) *krm.Artifact {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Artifact{}
+	out.Checksum = direct.LazyPtr(in.GetChecksum())
+	out.ID = direct.LazyPtr(in.GetId())
+	out.Names = in.Names
+	return out
+}
+
+func Artifact_ToProto(mapCtx *direct.MapContext, in *krm.Artifact) *pb.Artifact {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Artifact{}
+	out.Checksum = direct.ValueOf(in.Checksum)
+	out.Id = direct.ValueOf(in.ID)
+	out.Names = in.Names
+	return out
+}
+
+func AttestationOccurrence_FromProto(mapCtx *direct.MapContext, in *pb.AttestationOccurrence) *krm.AttestationOccurrence {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AttestationOccurrence{}
+	out.SerializedPayload = in.GetSerializedPayload()
+	out.Signatures = direct.Slice_FromProto(mapCtx, in.Signatures, Signature_FromProto)
+	out.Jwts = direct.Slice_FromProto(mapCtx, in.Jwts, Jwt_FromProto)
+	return out
+}
+
+func AttestationOccurrence_ToProto(mapCtx *direct.MapContext, in *krm.AttestationOccurrence) *pb.AttestationOccurrence {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttestationOccurrence{}
+	out.SerializedPayload = in.SerializedPayload
+	out.Signatures = direct.Slice_ToProto(mapCtx, in.Signatures, Signature_ToProto)
+	out.Jwts = direct.Slice_ToProto(mapCtx, in.Jwts, Jwt_ToProto)
+	return out
+}
+
+func BaseImage_FromProto(mapCtx *direct.MapContext, in *pb.BaseImage) *krm.BaseImage {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BaseImage{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Repository = direct.LazyPtr(in.GetRepository())
+	out.LayerCount = direct.LazyPtr(in.GetLayerCount())
+	return out
+}
+
+func BaseImage_ToProto(mapCtx *direct.MapContext, in *krm.BaseImage) *pb.BaseImage {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BaseImage{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Repository = direct.ValueOf(in.Repository)
+	out.LayerCount = direct.ValueOf(in.LayerCount)
+	return out
+}
+
+func BuildProvenance_FromProto(mapCtx *direct.MapContext, in *pb.BuildProvenance) *krm.BuildProvenance {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BuildProvenance{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
+	out.Commands = direct.Slice_FromProto(mapCtx, in.Commands, Command_FromProto)
+	out.BuiltArtifacts = direct.Slice_FromProto(mapCtx, in.BuiltArtifacts, Artifact_FromProto)
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.Creator = direct.LazyPtr(in.GetCreator())
+	out.LogsURI = direct.LazyPtr(in.GetLogsUri())
+	out.SourceProvenance = Source_FromProto(mapCtx, in.GetSourceProvenance())
+	out.TriggerID = direct.LazyPtr(in.GetTriggerId())
+	out.BuildOptions = in.BuildOptions
+	out.BuilderVersion = direct.LazyPtr(in.GetBuilderVersion())
+	return out
+}
+
+func BuildProvenance_ToProto(mapCtx *direct.MapContext, in *krm.BuildProvenance) *pb.BuildProvenance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BuildProvenance{}
+	out.Id = direct.ValueOf(in.ID)
+	out.ProjectId = direct.ValueOf(in.ProjectID)
+	out.Commands = direct.Slice_ToProto(mapCtx, in.Commands, Command_ToProto)
+	out.BuiltArtifacts = direct.Slice_ToProto(mapCtx, in.BuiltArtifacts, Artifact_ToProto)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.Creator = direct.ValueOf(in.Creator)
+	out.LogsUri = direct.ValueOf(in.LogsURI)
+	out.SourceProvenance = Source_ToProto(mapCtx, in.SourceProvenance)
+	out.TriggerId = direct.ValueOf(in.TriggerID)
+	out.BuildOptions = in.BuildOptions
+	out.BuilderVersion = direct.ValueOf(in.BuilderVersion)
+	return out
+}
+
+func BuilderConfig_FromProto(mapCtx *direct.MapContext, in *pb.BuilderConfig) *krm.BuilderConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BuilderConfig{}
+	out.ID = direct.LazyPtr(in.GetId())
+	return out
+}
+
+func BuilderConfig_ToProto(mapCtx *direct.MapContext, in *krm.BuilderConfig) *pb.BuilderConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BuilderConfig{}
+	out.Id = direct.ValueOf(in.ID)
+	return out
+}
+
+func CloudRepoSourceContext_FromProto(mapCtx *direct.MapContext, in *pb.CloudRepoSourceContext) *krm.CloudRepoSourceContext {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudRepoSourceContext{}
+	out.RepoID = RepoID_FromProto(mapCtx, in.GetRepoId())
+	out.RevisionID = direct.LazyPtr(in.GetRevisionId())
+	out.AliasContext = AliasContext_FromProto(mapCtx, in.GetAliasContext())
+	return out
+}
+
+func CloudRepoSourceContext_RevisionId_ToProto(mapCtx *direct.MapContext, in *string) *pb.CloudRepoSourceContext_RevisionId {
+	if in == nil {
+		return nil
+	}
+	return &pb.CloudRepoSourceContext_RevisionId{RevisionId: *in}
+}
+
+func CloudRepoSourceContext_ToProto(mapCtx *direct.MapContext, in *krm.CloudRepoSourceContext) *pb.CloudRepoSourceContext {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudRepoSourceContext{}
+	out.RepoId = RepoID_ToProto(mapCtx, in.RepoID)
+	if oneof := CloudRepoSourceContext_RevisionId_ToProto(mapCtx, in.RevisionID); oneof != nil {
+		out.Revision = oneof
+	}
+	if oneof := AliasContext_ToProto(mapCtx, in.AliasContext); oneof != nil {
+		out.Revision = &pb.CloudRepoSourceContext_AliasContext{AliasContext: oneof}
+	}
+	return out
+}
+
+func Command_FromProto(mapCtx *direct.MapContext, in *pb.Command) *krm.Command {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Command{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Env = in.Env
+	out.Args = in.Args
+	out.Dir = direct.LazyPtr(in.GetDir())
+	out.ID = direct.LazyPtr(in.GetId())
+	out.WaitFor = in.WaitFor
+	return out
+}
+
+func Command_ToProto(mapCtx *direct.MapContext, in *krm.Command) *pb.Command {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Command{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Env = in.Env
+	out.Args = in.Args
+	out.Dir = direct.ValueOf(in.Dir)
+	out.Id = direct.ValueOf(in.ID)
+	out.WaitFor = in.WaitFor
+	return out
+}
+
+func Completeness_FromProto(mapCtx *direct.MapContext, in *pb.Completeness) *krm.Completeness {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Completeness{}
+	out.Arguments = direct.LazyPtr(in.GetArguments())
+	out.Environment = direct.LazyPtr(in.GetEnvironment())
+	out.Materials = direct.LazyPtr(in.GetMaterials())
+	return out
+}
+
+func Completeness_ToProto(mapCtx *direct.MapContext, in *krm.Completeness) *pb.Completeness {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Completeness{}
+	out.Arguments = direct.ValueOf(in.Arguments)
+	out.Environment = direct.ValueOf(in.Environment)
+	out.Materials = direct.ValueOf(in.Materials)
+	return out
+}
+
+func ComplianceOccurrence_FromProto(mapCtx *direct.MapContext, in *pb.ComplianceOccurrence) *krm.ComplianceOccurrence {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComplianceOccurrence{}
+	out.NonCompliantFiles = direct.Slice_FromProto(mapCtx, in.NonCompliantFiles, NonCompliantFile_FromProto)
+	out.NonComplianceReason = direct.LazyPtr(in.GetNonComplianceReason())
+	out.Version = ComplianceVersion_FromProto(mapCtx, in.GetVersion())
+	return out
+}
+
+func ComplianceOccurrence_ToProto(mapCtx *direct.MapContext, in *krm.ComplianceOccurrence) *pb.ComplianceOccurrence {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ComplianceOccurrence{}
+	out.NonCompliantFiles = direct.Slice_ToProto(mapCtx, in.NonCompliantFiles, NonCompliantFile_ToProto)
+	out.NonComplianceReason = direct.ValueOf(in.NonComplianceReason)
+	out.Version = ComplianceVersion_ToProto(mapCtx, in.Version)
+	return out
+}
+
+func DeploymentOccurrence_FromProto(mapCtx *direct.MapContext, in *pb.DeploymentOccurrence) *krm.DeploymentOccurrence {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DeploymentOccurrence{}
+	out.UserEmail = direct.LazyPtr(in.GetUserEmail())
+	out.DeployTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeployTime())
+	out.UndeployTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUndeployTime())
+	out.Config = direct.LazyPtr(in.GetConfig())
+	out.Address = direct.LazyPtr(in.GetAddress())
+	out.ResourceURI = in.ResourceUri
+	out.Platform = direct.Enum_FromProto(mapCtx, in.GetPlatform())
+	return out
+}
+
+func DeploymentOccurrence_ToProto(mapCtx *direct.MapContext, in *krm.DeploymentOccurrence) *pb.DeploymentOccurrence {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DeploymentOccurrence{}
+	out.UserEmail = direct.ValueOf(in.UserEmail)
+	out.DeployTime = direct.StringTimestamp_ToProto(mapCtx, in.DeployTime)
+	out.UndeployTime = direct.StringTimestamp_ToProto(mapCtx, in.UndeployTime)
+	out.Config = direct.ValueOf(in.Config)
+	out.Address = direct.ValueOf(in.Address)
+	out.ResourceUri = in.ResourceURI
+	out.Platform = direct.Enum_ToProto[pb.DeploymentOccurrence_Platform](mapCtx, in.Platform)
+	return out
+}
+
+func DiscoveryOccurrenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveryOccurrence) *krm.DiscoveryOccurrenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiscoveryOccurrenceObservedState{}
+	// MISSING: ContinuousAnalysis
+	// MISSING: AnalysisStatus
+	// MISSING: AnalysisCompleted
+	// MISSING: AnalysisError
+	// MISSING: AnalysisStatusError
+	// MISSING: Cpe
+	// MISSING: LastScanTime
+	out.ArchiveTime = direct.StringTimestamp_FromProto(mapCtx, in.GetArchiveTime())
+	// MISSING: SbomStatus
+	// MISSING: VulnerabilityAttestation
+	return out
+}
+
+func DiscoveryOccurrenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryOccurrenceObservedState) *pb.DiscoveryOccurrence {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DiscoveryOccurrence{}
+	// MISSING: ContinuousAnalysis
+	// MISSING: AnalysisStatus
+	// MISSING: AnalysisCompleted
+	// MISSING: AnalysisError
+	// MISSING: AnalysisStatusError
+	// MISSING: Cpe
+	// MISSING: LastScanTime
+	out.ArchiveTime = direct.StringTimestamp_ToProto(mapCtx, in.ArchiveTime)
+	// MISSING: SbomStatus
+	// MISSING: VulnerabilityAttestation
+	return out
+}
+
+func DiscoveryOccurrence_AnalysisCompleted_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveryOccurrence_AnalysisCompleted) *krm.DiscoveryOccurrence_AnalysisCompleted {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiscoveryOccurrence_AnalysisCompleted{}
+	out.AnalysisType = in.AnalysisType
+	return out
+}
+
+func DiscoveryOccurrence_AnalysisCompleted_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryOccurrence_AnalysisCompleted) *pb.DiscoveryOccurrence_AnalysisCompleted {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DiscoveryOccurrence_AnalysisCompleted{}
+	out.AnalysisType = in.AnalysisType
+	return out
+}
+
+func DiscoveryOccurrence_SbomStatus_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveryOccurrence_SBOMStatus) *krm.DiscoveryOccurrence_SbomStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiscoveryOccurrence_SbomStatus{}
+	out.SbomState = direct.Enum_FromProto(mapCtx, in.GetSbomState())
+	out.Error = direct.LazyPtr(in.GetError())
+	return out
+}
+
+func DiscoveryOccurrence_SbomStatus_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryOccurrence_SbomStatus) *pb.DiscoveryOccurrence_SBOMStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DiscoveryOccurrence_SBOMStatus{}
+	out.SbomState = direct.Enum_ToProto[pb.DiscoveryOccurrence_SBOMStatus_SBOMState](mapCtx, in.SbomState)
+	out.Error = direct.ValueOf(in.Error)
+	return out
+}
+
+func DiscoveryOccurrence_VulnerabilityAttestation_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveryOccurrence_VulnerabilityAttestation) *krm.DiscoveryOccurrence_VulnerabilityAttestation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiscoveryOccurrence_VulnerabilityAttestation{}
+	out.LastAttemptTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastAttemptTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Error = direct.LazyPtr(in.GetError())
+	return out
+}
+
+func DiscoveryOccurrence_VulnerabilityAttestation_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryOccurrence_VulnerabilityAttestation) *pb.DiscoveryOccurrence_VulnerabilityAttestation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DiscoveryOccurrence_VulnerabilityAttestation{}
+	out.LastAttemptTime = direct.StringTimestamp_ToProto(mapCtx, in.LastAttemptTime)
+	out.State = direct.Enum_ToProto[pb.DiscoveryOccurrence_VulnerabilityAttestation_VulnerabilityAttestationState](mapCtx, in.State)
+	out.Error = direct.ValueOf(in.Error)
+	return out
+}
+
+func EnvelopeSignature_FromProto(mapCtx *direct.MapContext, in *pb.EnvelopeSignature) *krm.EnvelopeSignature {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EnvelopeSignature{}
+	out.Sig = in.GetSig()
+	out.Keyid = direct.LazyPtr(in.GetKeyid())
+	return out
+}
+
+func EnvelopeSignature_ToProto(mapCtx *direct.MapContext, in *krm.EnvelopeSignature) *pb.EnvelopeSignature {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EnvelopeSignature{}
+	out.Sig = in.Sig
+	out.Keyid = direct.ValueOf(in.Keyid)
+	return out
+}
+
+func Envelope_FromProto(mapCtx *direct.MapContext, in *pb.Envelope) *krm.Envelope {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Envelope{}
+	out.Payload = in.GetPayload()
+	out.PayloadType = direct.LazyPtr(in.GetPayloadType())
+	out.Signatures = direct.Slice_FromProto(mapCtx, in.Signatures, EnvelopeSignature_FromProto)
+	return out
+}
+
+func Envelope_ToProto(mapCtx *direct.MapContext, in *krm.Envelope) *pb.Envelope {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Envelope{}
+	out.Payload = in.Payload
+	out.PayloadType = direct.ValueOf(in.PayloadType)
+	out.Signatures = direct.Slice_ToProto(mapCtx, in.Signatures, EnvelopeSignature_ToProto)
+	return out
+}
+
+func FileHashes_FromProto(mapCtx *direct.MapContext, in *pb.FileHashes) *krm.FileHashes {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FileHashes{}
+	out.FileHash = direct.Slice_FromProto(mapCtx, in.FileHash, Hash_FromProto)
+	return out
+}
+
+func FileHashes_ToProto(mapCtx *direct.MapContext, in *krm.FileHashes) *pb.FileHashes {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FileHashes{}
+	out.FileHash = direct.Slice_ToProto(mapCtx, in.FileHash, Hash_ToProto)
+	return out
+}
+
+func FileLocation_FromProto(mapCtx *direct.MapContext, in *pb.FileLocation) *krm.FileLocation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FileLocation{}
+	out.FilePath = direct.LazyPtr(in.GetFilePath())
+	out.LayerDetails = LayerDetails_FromProto(mapCtx, in.GetLayerDetails())
+	return out
+}
+
+func FileLocation_ToProto(mapCtx *direct.MapContext, in *krm.FileLocation) *pb.FileLocation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FileLocation{}
+	out.FilePath = direct.ValueOf(in.FilePath)
+	out.LayerDetails = LayerDetails_ToProto(mapCtx, in.LayerDetails)
+	return out
+}
+
+func GerritSourceContext_FromProto(mapCtx *direct.MapContext, in *pb.GerritSourceContext) *krm.GerritSourceContext {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GerritSourceContext{}
+	out.HostURI = direct.LazyPtr(in.GetHostUri())
+	out.GerritProject = direct.LazyPtr(in.GetGerritProject())
+	out.RevisionID = direct.LazyPtr(in.GetRevisionId())
+	out.AliasContext = AliasContext_FromProto(mapCtx, in.GetAliasContext())
+	return out
+}
+
+func GerritSourceContext_RevisionId_ToProto(mapCtx *direct.MapContext, in *string) *pb.GerritSourceContext_RevisionId {
+	if in == nil {
+		return nil
+	}
+	return &pb.GerritSourceContext_RevisionId{RevisionId: *in}
+}
+
+func GerritSourceContext_ToProto(mapCtx *direct.MapContext, in *krm.GerritSourceContext) *pb.GerritSourceContext {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GerritSourceContext{}
+	out.HostUri = direct.ValueOf(in.HostURI)
+	out.GerritProject = direct.ValueOf(in.GerritProject)
+	if oneof := GerritSourceContext_RevisionId_ToProto(mapCtx, in.RevisionID); oneof != nil {
+		out.Revision = oneof
+	}
+	if oneof := AliasContext_ToProto(mapCtx, in.AliasContext); oneof != nil {
+		out.Revision = &pb.GerritSourceContext_AliasContext{AliasContext: oneof}
+	}
+	return out
+}
+
+func GitSourceContext_FromProto(mapCtx *direct.MapContext, in *pb.GitSourceContext) *krm.GitSourceContext {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GitSourceContext{}
+	out.URL = direct.LazyPtr(in.GetUrl())
+	out.RevisionID = direct.LazyPtr(in.GetRevisionId())
+	return out
+}
+
+func GitSourceContext_ToProto(mapCtx *direct.MapContext, in *krm.GitSourceContext) *pb.GitSourceContext {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GitSourceContext{}
+	out.Url = direct.ValueOf(in.URL)
+	out.RevisionId = direct.ValueOf(in.RevisionID)
+	return out
+}
+
+func GrafeasOccurrenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Occurrence) *krm.GrafeasOccurrenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GrafeasOccurrenceObservedState{}
+	// MISSING: Name
+	out.Kind = direct.Enum_FromProto(mapCtx, in.GetKind())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Vulnerability = VulnerabilityOccurrenceObservedState_FromProto(mapCtx, in.GetVulnerability())
+	out.Package = PackageOccurrenceObservedState_FromProto(mapCtx, in.GetPackage())
+	out.Discovery = DiscoveryOccurrenceObservedState_FromProto(mapCtx, in.GetDiscovery())
+	return out
+}
+
+func GrafeasOccurrenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GrafeasOccurrenceObservedState) *pb.Occurrence {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Occurrence{}
+	// MISSING: Name
+	out.Kind = direct.Enum_ToProto[pb.NoteKind](mapCtx, in.Kind)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	if oneof := VulnerabilityOccurrenceObservedState_ToProto(mapCtx, in.Vulnerability); oneof != nil {
+		out.Details = &pb.Occurrence_Vulnerability{Vulnerability: oneof}
+	}
+	if oneof := PackageOccurrenceObservedState_ToProto(mapCtx, in.Package); oneof != nil {
+		out.Details = &pb.Occurrence_Package{Package: oneof}
+	}
+	if oneof := DiscoveryOccurrenceObservedState_ToProto(mapCtx, in.Discovery); oneof != nil {
+		out.Details = &pb.Occurrence_Discovery{Discovery: oneof}
+	}
+	return out
+}
+
+func Hash_FromProto(mapCtx *direct.MapContext, in *pb.Hash) *krm.Hash {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Hash{}
+	out.Type = direct.LazyPtr(in.GetType())
+	out.Value = in.GetValue()
+	return out
+}
+
+func Hash_ToProto(mapCtx *direct.MapContext, in *krm.Hash) *pb.Hash {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Hash{}
+	out.Type = direct.ValueOf(in.Type)
+	out.Value = in.Value
+	return out
+}
+
+func ImageOccurrence_FromProto(mapCtx *direct.MapContext, in *pb.ImageOccurrence) *krm.ImageOccurrence {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ImageOccurrence{}
+	out.Fingerprint = Fingerprint_FromProto(mapCtx, in.GetFingerprint())
+	out.Distance = direct.LazyPtr(in.GetDistance())
+	out.LayerInfo = direct.Slice_FromProto(mapCtx, in.LayerInfo, Layer_FromProto)
+	out.BaseResourceURL = direct.LazyPtr(in.GetBaseResourceUrl())
+	return out
+}
+
+func ImageOccurrence_ToProto(mapCtx *direct.MapContext, in *krm.ImageOccurrence) *pb.ImageOccurrence {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ImageOccurrence{}
+	out.Fingerprint = Fingerprint_ToProto(mapCtx, in.Fingerprint)
+	out.Distance = direct.ValueOf(in.Distance)
+	out.LayerInfo = direct.Slice_ToProto(mapCtx, in.LayerInfo, Layer_ToProto)
+	out.BaseResourceUrl = direct.ValueOf(in.BaseResourceURL)
+	return out
+}
+
+func Jwt_FromProto(mapCtx *direct.MapContext, in *pb.Jwt) *krm.Jwt {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Jwt{}
+	out.CompactJwt = direct.LazyPtr(in.GetCompactJwt())
+	return out
+}
+
+func Jwt_ToProto(mapCtx *direct.MapContext, in *krm.Jwt) *pb.Jwt {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Jwt{}
+	out.CompactJwt = direct.ValueOf(in.CompactJwt)
+	return out
+}
+
+func LayerDetails_FromProto(mapCtx *direct.MapContext, in *pb.LayerDetails) *krm.LayerDetails {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LayerDetails{}
+	out.Index = direct.LazyPtr(in.GetIndex())
+	out.DiffID = direct.LazyPtr(in.GetDiffId())
+	out.ChainID = direct.LazyPtr(in.GetChainId())
+	out.Command = direct.LazyPtr(in.GetCommand())
+	out.BaseImages = direct.Slice_FromProto(mapCtx, in.BaseImages, BaseImage_FromProto)
+	return out
+}
+
+func LayerDetails_ToProto(mapCtx *direct.MapContext, in *krm.LayerDetails) *pb.LayerDetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LayerDetails{}
+	out.Index = direct.ValueOf(in.Index)
+	out.DiffId = direct.ValueOf(in.DiffID)
+	out.ChainId = direct.ValueOf(in.ChainID)
+	out.Command = direct.ValueOf(in.Command)
+	out.BaseImages = direct.Slice_ToProto(mapCtx, in.BaseImages, BaseImage_ToProto)
+	return out
+}
+
+func Layer_FromProto(mapCtx *direct.MapContext, in *pb.Layer) *krm.Layer {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Layer{}
+	out.Directive = direct.LazyPtr(in.GetDirective())
+	out.Arguments = direct.LazyPtr(in.GetArguments())
+	return out
+}
+
+func Layer_ToProto(mapCtx *direct.MapContext, in *krm.Layer) *pb.Layer {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Layer{}
+	out.Directive = direct.ValueOf(in.Directive)
+	out.Arguments = direct.ValueOf(in.Arguments)
+	return out
+}
+
+func Location_FromProto(mapCtx *direct.MapContext, in *pb.Location) *krm.Location {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Location{}
+	out.CpeURI = direct.LazyPtr(in.GetCpeUri())
+	out.Version = Version_FromProto(mapCtx, in.GetVersion())
+	out.Path = direct.LazyPtr(in.GetPath())
+	return out
+}
+
+func Location_ToProto(mapCtx *direct.MapContext, in *krm.Location) *pb.Location {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Location{}
+	out.CpeUri = direct.ValueOf(in.CpeURI)
+	out.Version = Version_ToProto(mapCtx, in.Version)
+	out.Path = direct.ValueOf(in.Path)
+	return out
+}
+
+func NonCompliantFile_FromProto(mapCtx *direct.MapContext, in *pb.NonCompliantFile) *krm.NonCompliantFile {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NonCompliantFile{}
+	out.Path = direct.LazyPtr(in.GetPath())
+	out.DisplayCommand = direct.LazyPtr(in.GetDisplayCommand())
+	out.Reason = direct.LazyPtr(in.GetReason())
+	return out
+}
+
+func NonCompliantFile_ToProto(mapCtx *direct.MapContext, in *krm.NonCompliantFile) *pb.NonCompliantFile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NonCompliantFile{}
+	out.Path = direct.ValueOf(in.Path)
+	out.DisplayCommand = direct.ValueOf(in.DisplayCommand)
+	out.Reason = direct.ValueOf(in.Reason)
+	return out
+}
+
+func PackageOccurrenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PackageOccurrence) *krm.PackageOccurrenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PackageOccurrenceObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: Location
+	out.PackageType = direct.LazyPtr(in.GetPackageType())
+	out.CpeURI = direct.LazyPtr(in.GetCpeUri())
+	out.Architecture = direct.Enum_FromProto(mapCtx, in.GetArchitecture())
+	// MISSING: License
+	out.Version = Version_FromProto(mapCtx, in.GetVersion())
+	return out
+}
+
+func PackageOccurrenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PackageOccurrenceObservedState) *pb.PackageOccurrence {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PackageOccurrence{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: Location
+	out.PackageType = direct.ValueOf(in.PackageType)
+	out.CpeUri = direct.ValueOf(in.CpeURI)
+	out.Architecture = direct.Enum_ToProto[pb.Architecture](mapCtx, in.Architecture)
+	// MISSING: License
+	out.Version = Version_ToProto(mapCtx, in.Version)
+	return out
+}
+
+func PackageOccurrence_FromProto(mapCtx *direct.MapContext, in *pb.PackageOccurrence) *krm.PackageOccurrence {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PackageOccurrence{}
+	// MISSING: Name
+	out.Location = direct.Slice_FromProto(mapCtx, in.Location, Location_FromProto)
+	// MISSING: PackageType
+	// MISSING: CpeURI
+	// MISSING: Architecture
+	out.License = License_FromProto(mapCtx, in.GetLicense())
+	// MISSING: Version
+	return out
+}
+
+func PackageOccurrence_ToProto(mapCtx *direct.MapContext, in *krm.PackageOccurrence) *pb.PackageOccurrence {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PackageOccurrence{}
+	// MISSING: Name
+	out.Location = direct.Slice_ToProto(mapCtx, in.Location, Location_ToProto)
+	// MISSING: PackageType
+	// MISSING: CpeURI
+	// MISSING: Architecture
+	out.License = License_ToProto(mapCtx, in.License)
+	// MISSING: Version
+	return out
+}
+
+func ProjectRepoID_FromProto(mapCtx *direct.MapContext, in *pb.ProjectRepoId) *krm.ProjectRepoID {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ProjectRepoID{}
+	out.ProjectID = direct.LazyPtr(in.GetProjectId())
+	out.RepoName = direct.LazyPtr(in.GetRepoName())
+	return out
+}
+
+func ProjectRepoID_ToProto(mapCtx *direct.MapContext, in *krm.ProjectRepoID) *pb.ProjectRepoId {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ProjectRepoId{}
+	out.ProjectId = direct.ValueOf(in.ProjectID)
+	out.RepoName = direct.ValueOf(in.RepoName)
+	return out
+}
+
+func RepoID_FromProto(mapCtx *direct.MapContext, in *pb.RepoId) *krm.RepoID {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RepoID{}
+	out.ProjectRepoID = ProjectRepoID_FromProto(mapCtx, in.GetProjectRepoId())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	return out
+}
+
+func RepoID_ToProto(mapCtx *direct.MapContext, in *krm.RepoID) *pb.RepoId {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RepoId{}
+	if oneof := ProjectRepoID_ToProto(mapCtx, in.ProjectRepoID); oneof != nil {
+		out.Id = &pb.RepoId_ProjectRepoId{ProjectRepoId: oneof}
+	}
+	if oneof := RepoID_Uid_ToProto(mapCtx, in.Uid); oneof != nil {
+		out.Id = oneof
+	}
+	return out
+}
+
+func RepoID_Uid_ToProto(mapCtx *direct.MapContext, in *string) *pb.RepoId_Uid {
+	if in == nil {
+		return nil
+	}
+	return &pb.RepoId_Uid{Uid: *in}
+}
+
+func SbomReferenceIntotoPredicate_FromProto(mapCtx *direct.MapContext, in *pb.SbomReferenceIntotoPredicate) *krm.SbomReferenceIntotoPredicate {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SbomReferenceIntotoPredicate{}
+	out.ReferrerID = direct.LazyPtr(in.GetReferrerId())
+	out.Location = direct.LazyPtr(in.GetLocation())
+	out.MimeType = direct.LazyPtr(in.GetMimeType())
+	out.Digest = in.Digest
+	return out
+}
+
+func SbomReferenceIntotoPredicate_ToProto(mapCtx *direct.MapContext, in *krm.SbomReferenceIntotoPredicate) *pb.SbomReferenceIntotoPredicate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SbomReferenceIntotoPredicate{}
+	out.ReferrerId = direct.ValueOf(in.ReferrerID)
+	out.Location = direct.ValueOf(in.Location)
+	out.MimeType = direct.ValueOf(in.MimeType)
+	out.Digest = in.Digest
+	return out
+}
+
+func SecretLocation_FromProto(mapCtx *direct.MapContext, in *pb.SecretLocation) *krm.SecretLocation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecretLocation{}
+	out.FileLocation = FileLocation_FromProto(mapCtx, in.GetFileLocation())
+	return out
+}
+
+func SecretLocation_ToProto(mapCtx *direct.MapContext, in *krm.SecretLocation) *pb.SecretLocation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecretLocation{}
+	if oneof := FileLocation_ToProto(mapCtx, in.FileLocation); oneof != nil {
+		out.Location = &pb.SecretLocation_FileLocation{FileLocation: oneof}
+	}
+	return out
+}
+
+func SecretOccurrence_FromProto(mapCtx *direct.MapContext, in *pb.SecretOccurrence) *krm.SecretOccurrence {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecretOccurrence{}
+	out.Kind = direct.Enum_FromProto(mapCtx, in.GetKind())
+	out.Locations = direct.Slice_FromProto(mapCtx, in.Locations, SecretLocation_FromProto)
+	out.Statuses = direct.Slice_FromProto(mapCtx, in.Statuses, SecretStatus_FromProto)
+	return out
+}
+
+func SecretOccurrence_ToProto(mapCtx *direct.MapContext, in *krm.SecretOccurrence) *pb.SecretOccurrence {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecretOccurrence{}
+	out.Kind = direct.Enum_ToProto[pb.SecretKind](mapCtx, in.Kind)
+	out.Locations = direct.Slice_ToProto(mapCtx, in.Locations, SecretLocation_ToProto)
+	out.Statuses = direct.Slice_ToProto(mapCtx, in.Statuses, SecretStatus_ToProto)
+	return out
+}
+
+func SecretStatus_FromProto(mapCtx *direct.MapContext, in *pb.SecretStatus) *krm.SecretStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecretStatus{}
+	out.Status = direct.Enum_FromProto(mapCtx, in.GetStatus())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Message = direct.LazyPtr(in.GetMessage())
+	return out
+}
+
+func SecretStatus_ToProto(mapCtx *direct.MapContext, in *krm.SecretStatus) *pb.SecretStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecretStatus{}
+	out.Status = direct.Enum_ToProto[pb.SecretStatus_Status](mapCtx, in.Status)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Message = direct.ValueOf(in.Message)
+	return out
+}
+
+func Signature_FromProto(mapCtx *direct.MapContext, in *pb.Signature) *krm.Signature {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Signature{}
+	out.Signature = in.GetSignature()
+	out.PublicKeyID = direct.LazyPtr(in.GetPublicKeyId())
+	return out
+}
+
+func Signature_ToProto(mapCtx *direct.MapContext, in *krm.Signature) *pb.Signature {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Signature{}
+	out.Signature = in.Signature
+	out.PublicKeyId = direct.ValueOf(in.PublicKeyID)
+	return out
+}
+
+func SlsaProvenanceZeroTwo_SlsaBuilder_FromProto(mapCtx *direct.MapContext, in *pb.SlsaProvenanceZeroTwo_SlsaBuilder) *krm.SlsaProvenanceZeroTwo_SlsaBuilder {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SlsaProvenanceZeroTwo_SlsaBuilder{}
+	out.ID = direct.LazyPtr(in.GetId())
+	return out
+}
+
+func SlsaProvenanceZeroTwo_SlsaBuilder_ToProto(mapCtx *direct.MapContext, in *krm.SlsaProvenanceZeroTwo_SlsaBuilder) *pb.SlsaProvenanceZeroTwo_SlsaBuilder {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SlsaProvenanceZeroTwo_SlsaBuilder{}
+	out.Id = direct.ValueOf(in.ID)
+	return out
+}
+
+func SlsaProvenanceZeroTwo_SlsaCompleteness_FromProto(mapCtx *direct.MapContext, in *pb.SlsaProvenanceZeroTwo_SlsaCompleteness) *krm.SlsaProvenanceZeroTwo_SlsaCompleteness {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SlsaProvenanceZeroTwo_SlsaCompleteness{}
+	out.Parameters = direct.LazyPtr(in.GetParameters())
+	out.Environment = direct.LazyPtr(in.GetEnvironment())
+	out.Materials = direct.LazyPtr(in.GetMaterials())
+	return out
+}
+
+func SlsaProvenanceZeroTwo_SlsaCompleteness_ToProto(mapCtx *direct.MapContext, in *krm.SlsaProvenanceZeroTwo_SlsaCompleteness) *pb.SlsaProvenanceZeroTwo_SlsaCompleteness {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SlsaProvenanceZeroTwo_SlsaCompleteness{}
+	out.Parameters = direct.ValueOf(in.Parameters)
+	out.Environment = direct.ValueOf(in.Environment)
+	out.Materials = direct.ValueOf(in.Materials)
+	return out
+}
+
+func SlsaProvenanceZeroTwo_SlsaConfigSource_FromProto(mapCtx *direct.MapContext, in *pb.SlsaProvenanceZeroTwo_SlsaConfigSource) *krm.SlsaProvenanceZeroTwo_SlsaConfigSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SlsaProvenanceZeroTwo_SlsaConfigSource{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.Digest = in.Digest
+	out.EntryPoint = direct.LazyPtr(in.GetEntryPoint())
+	return out
+}
+
+func SlsaProvenanceZeroTwo_SlsaConfigSource_ToProto(mapCtx *direct.MapContext, in *krm.SlsaProvenanceZeroTwo_SlsaConfigSource) *pb.SlsaProvenanceZeroTwo_SlsaConfigSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SlsaProvenanceZeroTwo_SlsaConfigSource{}
+	out.Uri = direct.ValueOf(in.URI)
+	out.Digest = in.Digest
+	out.EntryPoint = direct.ValueOf(in.EntryPoint)
+	return out
+}
+
+func SlsaProvenanceZeroTwo_SlsaInvocation_FromProto(mapCtx *direct.MapContext, in *pb.SlsaProvenanceZeroTwo_SlsaInvocation) *krm.SlsaProvenanceZeroTwo_SlsaInvocation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SlsaProvenanceZeroTwo_SlsaInvocation{}
+	out.ConfigSource = SlsaProvenanceZeroTwo_SlsaConfigSource_FromProto(mapCtx, in.GetConfigSource())
+	if v := direct.Struct_FromProto(mapCtx, in.GetParameters()); v != nil {
+		out.Parameters = *v
+	}
+	if v := direct.Struct_FromProto(mapCtx, in.GetEnvironment()); v != nil {
+		out.Environment = *v
+	}
+	return out
+}
+
+func SlsaProvenanceZeroTwo_SlsaInvocation_ToProto(mapCtx *direct.MapContext, in *krm.SlsaProvenanceZeroTwo_SlsaInvocation) *pb.SlsaProvenanceZeroTwo_SlsaInvocation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SlsaProvenanceZeroTwo_SlsaInvocation{}
+	out.ConfigSource = SlsaProvenanceZeroTwo_SlsaConfigSource_ToProto(mapCtx, in.ConfigSource)
+	out.Parameters = direct.Struct_ToProto(mapCtx, &in.Parameters)
+	out.Environment = direct.Struct_ToProto(mapCtx, &in.Environment)
+	return out
+}
+
+func SlsaProvenanceZeroTwo_SlsaMaterial_FromProto(mapCtx *direct.MapContext, in *pb.SlsaProvenanceZeroTwo_SlsaMaterial) *krm.SlsaProvenanceZeroTwo_SlsaMaterial {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SlsaProvenanceZeroTwo_SlsaMaterial{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.Digest = in.Digest
+	return out
+}
+
+func SlsaProvenanceZeroTwo_SlsaMaterial_ToProto(mapCtx *direct.MapContext, in *krm.SlsaProvenanceZeroTwo_SlsaMaterial) *pb.SlsaProvenanceZeroTwo_SlsaMaterial {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SlsaProvenanceZeroTwo_SlsaMaterial{}
+	out.Uri = direct.ValueOf(in.URI)
+	out.Digest = in.Digest
+	return out
+}
+
+func SlsaProvenance_Material_FromProto(mapCtx *direct.MapContext, in *pb.SlsaProvenance_Material) *krm.SlsaProvenance_Material {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SlsaProvenance_Material{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.Digest = in.Digest
+	return out
+}
+
+func SlsaProvenance_Material_ToProto(mapCtx *direct.MapContext, in *krm.SlsaProvenance_Material) *pb.SlsaProvenance_Material {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SlsaProvenance_Material{}
+	out.Uri = direct.ValueOf(in.URI)
+	out.Digest = in.Digest
+	return out
+}
+
+func SlsaProvenance_SlsaBuilder_FromProto(mapCtx *direct.MapContext, in *pb.SlsaProvenance_SlsaBuilder) *krm.SlsaProvenance_SlsaBuilder {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SlsaProvenance_SlsaBuilder{}
+	out.ID = direct.LazyPtr(in.GetId())
+	return out
+}
+
+func SlsaProvenance_SlsaBuilder_ToProto(mapCtx *direct.MapContext, in *krm.SlsaProvenance_SlsaBuilder) *pb.SlsaProvenance_SlsaBuilder {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SlsaProvenance_SlsaBuilder{}
+	out.Id = direct.ValueOf(in.ID)
+	return out
+}
+
+func SlsaProvenance_SlsaCompleteness_FromProto(mapCtx *direct.MapContext, in *pb.SlsaProvenance_SlsaCompleteness) *krm.SlsaProvenance_SlsaCompleteness {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SlsaProvenance_SlsaCompleteness{}
+	out.Arguments = direct.LazyPtr(in.GetArguments())
+	out.Environment = direct.LazyPtr(in.GetEnvironment())
+	out.Materials = direct.LazyPtr(in.GetMaterials())
+	return out
+}
+
+func SlsaProvenance_SlsaCompleteness_ToProto(mapCtx *direct.MapContext, in *krm.SlsaProvenance_SlsaCompleteness) *pb.SlsaProvenance_SlsaCompleteness {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SlsaProvenance_SlsaCompleteness{}
+	out.Arguments = direct.ValueOf(in.Arguments)
+	out.Environment = direct.ValueOf(in.Environment)
+	out.Materials = direct.ValueOf(in.Materials)
+	return out
+}
+
+func SourceContext_FromProto(mapCtx *direct.MapContext, in *pb.SourceContext) *krm.SourceContext {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SourceContext{}
+	out.CloudRepo = CloudRepoSourceContext_FromProto(mapCtx, in.GetCloudRepo())
+	out.Gerrit = GerritSourceContext_FromProto(mapCtx, in.GetGerrit())
+	out.Git = GitSourceContext_FromProto(mapCtx, in.GetGit())
+	out.Labels = in.Labels
+	return out
+}
+
+func SourceContext_ToProto(mapCtx *direct.MapContext, in *krm.SourceContext) *pb.SourceContext {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SourceContext{}
+	if oneof := CloudRepoSourceContext_ToProto(mapCtx, in.CloudRepo); oneof != nil {
+		out.Context = &pb.SourceContext_CloudRepo{CloudRepo: oneof}
+	}
+	if oneof := GerritSourceContext_ToProto(mapCtx, in.Gerrit); oneof != nil {
+		out.Context = &pb.SourceContext_Gerrit{Gerrit: oneof}
+	}
+	if oneof := GitSourceContext_ToProto(mapCtx, in.Git); oneof != nil {
+		out.Context = &pb.SourceContext_Git{Git: oneof}
+	}
+	out.Labels = in.Labels
+	return out
+}
+
+func Source_FromProto(mapCtx *direct.MapContext, in *pb.Source) *krm.Source {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Source{}
+	out.ArtifactStorageSourceURI = direct.LazyPtr(in.GetArtifactStorageSourceUri())
+	if in.FileHashes != nil {
+		out.FileHashes = make(map[string]krm.FileHashes, len(in.FileHashes))
+		for k, v := range in.FileHashes {
+			if c := FileHashes_FromProto(mapCtx, v); c != nil {
+				out.FileHashes[k] = *c
+			}
+		}
+	}
+	out.Context = SourceContext_FromProto(mapCtx, in.GetContext())
+	out.AdditionalContexts = direct.Slice_FromProto(mapCtx, in.AdditionalContexts, SourceContext_FromProto)
+	return out
+}
+
+func Source_ToProto(mapCtx *direct.MapContext, in *krm.Source) *pb.Source {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Source{}
+	out.ArtifactStorageSourceUri = direct.ValueOf(in.ArtifactStorageSourceURI)
+	if in.FileHashes != nil {
+		out.FileHashes = make(map[string]*pb.FileHashes, len(in.FileHashes))
+		for k, v := range in.FileHashes {
+			out.FileHashes[k] = FileHashes_ToProto(mapCtx, &v)
+		}
+	}
+	out.Context = SourceContext_ToProto(mapCtx, in.Context)
+	out.AdditionalContexts = direct.Slice_ToProto(mapCtx, in.AdditionalContexts, SourceContext_ToProto)
+	return out
+}
+
+func Subject_FromProto(mapCtx *direct.MapContext, in *pb.Subject) *krm.Subject {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Subject{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Digest = in.Digest
+	return out
+}
+
+func Subject_ToProto(mapCtx *direct.MapContext, in *krm.Subject) *pb.Subject {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Subject{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Digest = in.Digest
+	return out
+}
+
+func UpgradeOccurrence_FromProto(mapCtx *direct.MapContext, in *pb.UpgradeOccurrence) *krm.UpgradeOccurrence {
+	if in == nil {
+		return nil
+	}
+	out := &krm.UpgradeOccurrence{}
+	out.Package = direct.LazyPtr(in.GetPackage())
+	out.ParsedVersion = Version_FromProto(mapCtx, in.GetParsedVersion())
+	out.Distribution = UpgradeDistribution_FromProto(mapCtx, in.GetDistribution())
+	out.WindowsUpdate = WindowsUpdate_FromProto(mapCtx, in.GetWindowsUpdate())
+	return out
+}
+
+func UpgradeOccurrence_ToProto(mapCtx *direct.MapContext, in *krm.UpgradeOccurrence) *pb.UpgradeOccurrence {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UpgradeOccurrence{}
+	out.Package = direct.ValueOf(in.Package)
+	out.ParsedVersion = Version_ToProto(mapCtx, in.ParsedVersion)
+	out.Distribution = UpgradeDistribution_ToProto(mapCtx, in.Distribution)
+	out.WindowsUpdate = WindowsUpdate_ToProto(mapCtx, in.WindowsUpdate)
+	return out
+}
+
+func VulnerabilityOccurrenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VulnerabilityOccurrence) *krm.VulnerabilityOccurrenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VulnerabilityOccurrenceObservedState{}
+	// MISSING: Type
+	// MISSING: Severity
+	// MISSING: CvssScore
+	// MISSING: Cvssv3
+	out.PackageIssue = direct.Slice_FromProto(mapCtx, in.PackageIssue, VulnerabilityOccurrence_PackageIssueObservedState_FromProto)
+	// MISSING: ShortDescription
+	// MISSING: LongDescription
+	// MISSING: RelatedUrls
+	// MISSING: EffectiveSeverity
+	// MISSING: FixAvailable
+	// MISSING: CvssVersion
+	// MISSING: CvssV2
+	// MISSING: VexAssessment
+	// MISSING: ExtraDetails
+	return out
+}
+
+func VulnerabilityOccurrenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VulnerabilityOccurrenceObservedState) *pb.VulnerabilityOccurrence {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VulnerabilityOccurrence{}
+	// MISSING: Type
+	// MISSING: Severity
+	// MISSING: CvssScore
+	// MISSING: Cvssv3
+	out.PackageIssue = direct.Slice_ToProto(mapCtx, in.PackageIssue, VulnerabilityOccurrence_PackageIssueObservedState_ToProto)
+	// MISSING: ShortDescription
+	// MISSING: LongDescription
+	// MISSING: RelatedUrls
+	// MISSING: EffectiveSeverity
+	// MISSING: FixAvailable
+	// MISSING: CvssVersion
+	// MISSING: CvssV2
+	// MISSING: VexAssessment
+	// MISSING: ExtraDetails
+	return out
+}
+
+func VulnerabilityOccurrence_FromProto(mapCtx *direct.MapContext, in *pb.VulnerabilityOccurrence) *krm.VulnerabilityOccurrence {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VulnerabilityOccurrence{}
+	out.Type = direct.LazyPtr(in.GetType())
+	out.Severity = direct.Enum_FromProto(mapCtx, in.GetSeverity())
+	out.CvssScore = direct.LazyPtr(in.GetCvssScore())
+	out.Cvssv3 = Cvss_FromProto(mapCtx, in.GetCvssv3())
+	out.PackageIssue = direct.Slice_FromProto(mapCtx, in.PackageIssue, VulnerabilityOccurrence_PackageIssue_FromProto)
+	out.ShortDescription = direct.LazyPtr(in.GetShortDescription())
+	out.LongDescription = direct.LazyPtr(in.GetLongDescription())
+	out.RelatedURLs = direct.Slice_FromProto(mapCtx, in.RelatedUrls, RelatedURL_FromProto)
+	out.EffectiveSeverity = direct.Enum_FromProto(mapCtx, in.GetEffectiveSeverity())
+	out.FixAvailable = direct.LazyPtr(in.GetFixAvailable())
+	out.CvssVersion = direct.Enum_FromProto(mapCtx, in.GetCvssVersion())
+	out.CvssV2 = Cvss_FromProto(mapCtx, in.GetCvssV2())
+	out.VexAssessment = VulnerabilityOccurrence_VexAssessment_FromProto(mapCtx, in.GetVexAssessment())
+	out.ExtraDetails = direct.LazyPtr(in.GetExtraDetails())
+	return out
+}
+
+func VulnerabilityOccurrence_PackageIssueObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VulnerabilityOccurrence_PackageIssue) *krm.VulnerabilityOccurrence_PackageIssueObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VulnerabilityOccurrence_PackageIssueObservedState{}
+	// MISSING: AffectedCpeURI
+	// MISSING: AffectedPackage
+	// MISSING: AffectedVersion
+	// MISSING: FixedCpeURI
+	// MISSING: FixedPackage
+	// MISSING: FixedVersion
+	// MISSING: FixAvailable
+	// MISSING: PackageType
+	out.EffectiveSeverity = direct.Enum_FromProto(mapCtx, in.GetEffectiveSeverity())
+	// MISSING: FileLocation
+	return out
+}
+
+func VulnerabilityOccurrence_PackageIssueObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VulnerabilityOccurrence_PackageIssueObservedState) *pb.VulnerabilityOccurrence_PackageIssue {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VulnerabilityOccurrence_PackageIssue{}
+	// MISSING: AffectedCpeURI
+	// MISSING: AffectedPackage
+	// MISSING: AffectedVersion
+	// MISSING: FixedCpeURI
+	// MISSING: FixedPackage
+	// MISSING: FixedVersion
+	// MISSING: FixAvailable
+	// MISSING: PackageType
+	out.EffectiveSeverity = direct.Enum_ToProto[pb.Severity](mapCtx, in.EffectiveSeverity)
+	// MISSING: FileLocation
+	return out
+}
+
+func VulnerabilityOccurrence_PackageIssue_FromProto(mapCtx *direct.MapContext, in *pb.VulnerabilityOccurrence_PackageIssue) *krm.VulnerabilityOccurrence_PackageIssue {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VulnerabilityOccurrence_PackageIssue{}
+	out.AffectedCpeURI = direct.LazyPtr(in.GetAffectedCpeUri())
+	out.AffectedPackage = direct.LazyPtr(in.GetAffectedPackage())
+	out.AffectedVersion = Version_FromProto(mapCtx, in.GetAffectedVersion())
+	out.FixedCpeURI = direct.LazyPtr(in.GetFixedCpeUri())
+	out.FixedPackage = direct.LazyPtr(in.GetFixedPackage())
+	out.FixedVersion = Version_FromProto(mapCtx, in.GetFixedVersion())
+	out.FixAvailable = direct.LazyPtr(in.GetFixAvailable())
+	out.PackageType = direct.LazyPtr(in.GetPackageType())
+	// MISSING: EffectiveSeverity
+	out.FileLocation = direct.Slice_FromProto(mapCtx, in.FileLocation, FileLocation_FromProto)
+	return out
+}
+
+func VulnerabilityOccurrence_PackageIssue_ToProto(mapCtx *direct.MapContext, in *krm.VulnerabilityOccurrence_PackageIssue) *pb.VulnerabilityOccurrence_PackageIssue {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VulnerabilityOccurrence_PackageIssue{}
+	out.AffectedCpeUri = direct.ValueOf(in.AffectedCpeURI)
+	out.AffectedPackage = direct.ValueOf(in.AffectedPackage)
+	out.AffectedVersion = Version_ToProto(mapCtx, in.AffectedVersion)
+	out.FixedCpeUri = direct.ValueOf(in.FixedCpeURI)
+	out.FixedPackage = direct.ValueOf(in.FixedPackage)
+	out.FixedVersion = Version_ToProto(mapCtx, in.FixedVersion)
+	out.FixAvailable = direct.ValueOf(in.FixAvailable)
+	out.PackageType = direct.ValueOf(in.PackageType)
+	// MISSING: EffectiveSeverity
+	out.FileLocation = direct.Slice_ToProto(mapCtx, in.FileLocation, FileLocation_ToProto)
+	return out
+}
+
+func VulnerabilityOccurrence_ToProto(mapCtx *direct.MapContext, in *krm.VulnerabilityOccurrence) *pb.VulnerabilityOccurrence {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VulnerabilityOccurrence{}
+	out.Type = direct.ValueOf(in.Type)
+	out.Severity = direct.Enum_ToProto[pb.Severity](mapCtx, in.Severity)
+	out.CvssScore = direct.ValueOf(in.CvssScore)
+	out.Cvssv3 = Cvss_ToProto(mapCtx, in.Cvssv3)
+	out.PackageIssue = direct.Slice_ToProto(mapCtx, in.PackageIssue, VulnerabilityOccurrence_PackageIssue_ToProto)
+	out.ShortDescription = direct.ValueOf(in.ShortDescription)
+	out.LongDescription = direct.ValueOf(in.LongDescription)
+	out.RelatedUrls = direct.Slice_ToProto(mapCtx, in.RelatedURLs, RelatedURL_ToProto)
+	out.EffectiveSeverity = direct.Enum_ToProto[pb.Severity](mapCtx, in.EffectiveSeverity)
+	out.FixAvailable = direct.ValueOf(in.FixAvailable)
+	out.CvssVersion = direct.Enum_ToProto[pb.CVSSVersion](mapCtx, in.CvssVersion)
+	out.CvssV2 = Cvss_ToProto(mapCtx, in.CvssV2)
+	out.VexAssessment = VulnerabilityOccurrence_VexAssessment_ToProto(mapCtx, in.VexAssessment)
+	out.ExtraDetails = direct.ValueOf(in.ExtraDetails)
+	return out
+}
+
+func VulnerabilityOccurrence_VexAssessment_FromProto(mapCtx *direct.MapContext, in *pb.VulnerabilityOccurrence_VexAssessment) *krm.VulnerabilityOccurrence_VexAssessment {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VulnerabilityOccurrence_VexAssessment{}
+	out.Cve = direct.LazyPtr(in.GetCve())
+	out.VulnerabilityID = direct.LazyPtr(in.GetVulnerabilityId())
+	out.RelatedURIs = direct.Slice_FromProto(mapCtx, in.RelatedUris, RelatedURL_FromProto)
+	out.NoteName = direct.LazyPtr(in.GetNoteName())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Impacts = in.Impacts
+	out.Remediations = direct.Slice_FromProto(mapCtx, in.Remediations, VulnerabilityAssessmentNote_Assessment_Remediation_FromProto)
+	out.Justification = VulnerabilityAssessmentNote_Assessment_Justification_FromProto(mapCtx, in.GetJustification())
+	return out
+}
+
+func VulnerabilityOccurrence_VexAssessment_ToProto(mapCtx *direct.MapContext, in *krm.VulnerabilityOccurrence_VexAssessment) *pb.VulnerabilityOccurrence_VexAssessment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VulnerabilityOccurrence_VexAssessment{}
+	out.Cve = direct.ValueOf(in.Cve)
+	out.VulnerabilityId = direct.ValueOf(in.VulnerabilityID)
+	out.RelatedUris = direct.Slice_ToProto(mapCtx, in.RelatedURIs, RelatedURL_ToProto)
+	out.NoteName = direct.ValueOf(in.NoteName)
+	out.State = direct.Enum_ToProto[pb.VulnerabilityAssessmentNote_Assessment_State](mapCtx, in.State)
+	out.Impacts = in.Impacts
+	out.Remediations = direct.Slice_ToProto(mapCtx, in.Remediations, VulnerabilityAssessmentNote_Assessment_Remediation_ToProto)
+	out.Justification = VulnerabilityAssessmentNote_Assessment_Justification_ToProto(mapCtx, in.Justification)
+	return out
+}

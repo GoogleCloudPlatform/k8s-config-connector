@@ -52,6 +52,25 @@ ${CONTROLLERBUILDER} generate-mapper \
   --api-version netapp.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.netapp.v1 \
+  --api-version netapp.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource NetappBackup:Backup \
+  --resource NetappQuotaRule:QuotaRule \
+  --resource NetappReplication:Replication \
+  --resource NetappSnapshot:Snapshot
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.netapp.v1 \
+  --api-version netapp.cnrm.cloud.google.com/v1alpha1 \
+  --resource NetappBackup:Backup \
+  --resource NetappQuotaRule:QuotaRule \
+  --resource NetappReplication:Replication \
+  --resource NetappSnapshot:Snapshot
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

@@ -2880,3 +2880,1222 @@ func Zone_ResourceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Zone_ResourceS
 	out.LocationType = direct.Enum_ToProto[pb.Zone_ResourceSpec_LocationType](mapCtx, in.LocationType)
 	return out
 }
+
+func AspectSource_FromProto(mapCtx *direct.MapContext, in *pb.AspectSource) *krm.AspectSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AspectSource{}
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.DataVersion = direct.LazyPtr(in.GetDataVersion())
+	return out
+}
+
+func AspectSource_ToProto(mapCtx *direct.MapContext, in *krm.AspectSource) *pb.AspectSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AspectSource{}
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.DataVersion = direct.ValueOf(in.DataVersion)
+	return out
+}
+
+func Aspect_FromProto(mapCtx *direct.MapContext, in *pb.Aspect) *krm.Aspect {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Aspect{}
+	// MISSING: AspectType
+	// MISSING: Path
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	if v := direct.Struct_FromProto(mapCtx, in.GetData()); v != nil {
+		out.Data = *v
+	}
+	out.AspectSource = AspectSource_FromProto(mapCtx, in.GetAspectSource())
+	return out
+}
+
+func Aspect_ToProto(mapCtx *direct.MapContext, in *krm.Aspect) *pb.Aspect {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Aspect{}
+	// MISSING: AspectType
+	// MISSING: Path
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Data = direct.Struct_ToProto(mapCtx, &in.Data)
+	out.AspectSource = AspectSource_ToProto(mapCtx, in.AspectSource)
+	return out
+}
+
+func Asset_DiscoverySpec_CsvOptions_FromProto(mapCtx *direct.MapContext, in *pb.Asset_DiscoverySpec_CsvOptions) *krm.Asset_DiscoverySpec_CsvOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Asset_DiscoverySpec_CsvOptions{}
+	out.HeaderRows = direct.LazyPtr(in.GetHeaderRows())
+	out.Delimiter = direct.LazyPtr(in.GetDelimiter())
+	out.Encoding = direct.LazyPtr(in.GetEncoding())
+	out.DisableTypeInference = direct.LazyPtr(in.GetDisableTypeInference())
+	return out
+}
+
+func Asset_DiscoverySpec_CsvOptions_ToProto(mapCtx *direct.MapContext, in *krm.Asset_DiscoverySpec_CsvOptions) *pb.Asset_DiscoverySpec_CsvOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset_DiscoverySpec_CsvOptions{}
+	out.HeaderRows = direct.ValueOf(in.HeaderRows)
+	out.Delimiter = direct.ValueOf(in.Delimiter)
+	out.Encoding = direct.ValueOf(in.Encoding)
+	out.DisableTypeInference = direct.ValueOf(in.DisableTypeInference)
+	return out
+}
+
+func Asset_DiscoverySpec_FromProto(mapCtx *direct.MapContext, in *pb.Asset_DiscoverySpec) *krm.Asset_DiscoverySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Asset_DiscoverySpec{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	out.IncludePatterns = in.IncludePatterns
+	out.ExcludePatterns = in.ExcludePatterns
+	out.CsvOptions = Asset_DiscoverySpec_CsvOptions_FromProto(mapCtx, in.GetCsvOptions())
+	out.JsonOptions = Asset_DiscoverySpec_JsonOptions_FromProto(mapCtx, in.GetJsonOptions())
+	out.Schedule = direct.LazyPtr(in.GetSchedule())
+	return out
+}
+
+func Asset_DiscoverySpec_JsonOptions_FromProto(mapCtx *direct.MapContext, in *pb.Asset_DiscoverySpec_JsonOptions) *krm.Asset_DiscoverySpec_JsonOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Asset_DiscoverySpec_JsonOptions{}
+	out.Encoding = direct.LazyPtr(in.GetEncoding())
+	out.DisableTypeInference = direct.LazyPtr(in.GetDisableTypeInference())
+	return out
+}
+
+func Asset_DiscoverySpec_JsonOptions_ToProto(mapCtx *direct.MapContext, in *krm.Asset_DiscoverySpec_JsonOptions) *pb.Asset_DiscoverySpec_JsonOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset_DiscoverySpec_JsonOptions{}
+	out.Encoding = direct.ValueOf(in.Encoding)
+	out.DisableTypeInference = direct.ValueOf(in.DisableTypeInference)
+	return out
+}
+
+func Asset_DiscoverySpec_Schedule_ToProto(mapCtx *direct.MapContext, in *string) *pb.Asset_DiscoverySpec_Schedule {
+	if in == nil {
+		return nil
+	}
+	return &pb.Asset_DiscoverySpec_Schedule{Schedule: *in}
+}
+
+func Asset_DiscoverySpec_ToProto(mapCtx *direct.MapContext, in *krm.Asset_DiscoverySpec) *pb.Asset_DiscoverySpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset_DiscoverySpec{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	out.IncludePatterns = in.IncludePatterns
+	out.ExcludePatterns = in.ExcludePatterns
+	out.CsvOptions = Asset_DiscoverySpec_CsvOptions_ToProto(mapCtx, in.CsvOptions)
+	out.JsonOptions = Asset_DiscoverySpec_JsonOptions_ToProto(mapCtx, in.JsonOptions)
+	if oneof := Asset_DiscoverySpec_Schedule_ToProto(mapCtx, in.Schedule); oneof != nil {
+		out.Trigger = oneof
+	}
+	return out
+}
+
+func Asset_DiscoveryStatus_FromProto(mapCtx *direct.MapContext, in *pb.Asset_DiscoveryStatus) *krm.Asset_DiscoveryStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Asset_DiscoveryStatus{}
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Message = direct.LazyPtr(in.GetMessage())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.LastRunTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastRunTime())
+	out.Stats = Asset_DiscoveryStatus_Stats_FromProto(mapCtx, in.GetStats())
+	out.LastRunDuration = direct.StringDuration_FromProto(mapCtx, in.GetLastRunDuration())
+	return out
+}
+
+func Asset_DiscoveryStatus_Stats_FromProto(mapCtx *direct.MapContext, in *pb.Asset_DiscoveryStatus_Stats) *krm.Asset_DiscoveryStatus_Stats {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Asset_DiscoveryStatus_Stats{}
+	out.DataItems = direct.LazyPtr(in.GetDataItems())
+	out.DataSize = direct.LazyPtr(in.GetDataSize())
+	out.Tables = direct.LazyPtr(in.GetTables())
+	out.Filesets = direct.LazyPtr(in.GetFilesets())
+	return out
+}
+
+func Asset_DiscoveryStatus_Stats_ToProto(mapCtx *direct.MapContext, in *krm.Asset_DiscoveryStatus_Stats) *pb.Asset_DiscoveryStatus_Stats {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset_DiscoveryStatus_Stats{}
+	out.DataItems = direct.ValueOf(in.DataItems)
+	out.DataSize = direct.ValueOf(in.DataSize)
+	out.Tables = direct.ValueOf(in.Tables)
+	out.Filesets = direct.ValueOf(in.Filesets)
+	return out
+}
+
+func Asset_DiscoveryStatus_ToProto(mapCtx *direct.MapContext, in *krm.Asset_DiscoveryStatus) *pb.Asset_DiscoveryStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset_DiscoveryStatus{}
+	out.State = direct.Enum_ToProto[pb.Asset_DiscoveryStatus_State](mapCtx, in.State)
+	out.Message = direct.ValueOf(in.Message)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.LastRunTime = direct.StringTimestamp_ToProto(mapCtx, in.LastRunTime)
+	out.Stats = Asset_DiscoveryStatus_Stats_ToProto(mapCtx, in.Stats)
+	out.LastRunDuration = direct.StringDuration_ToProto(mapCtx, in.LastRunDuration)
+	return out
+}
+
+func Asset_ResourceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Asset_ResourceSpec) *krm.Asset_ResourceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Asset_ResourceSpec{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.ReadAccessMode = direct.Enum_FromProto(mapCtx, in.GetReadAccessMode())
+	return out
+}
+
+func Asset_ResourceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Asset_ResourceSpec) *pb.Asset_ResourceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset_ResourceSpec{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Type = direct.Enum_ToProto[pb.Asset_ResourceSpec_Type](mapCtx, in.Type)
+	out.ReadAccessMode = direct.Enum_ToProto[pb.Asset_ResourceSpec_AccessMode](mapCtx, in.ReadAccessMode)
+	return out
+}
+
+func Asset_ResourceStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Asset_ResourceStatus) *krm.Asset_ResourceStatusObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Asset_ResourceStatusObservedState{}
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Message = direct.LazyPtr(in.GetMessage())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.ManagedAccessIdentity = direct.LazyPtr(in.GetManagedAccessIdentity())
+	return out
+}
+
+func Asset_ResourceStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Asset_ResourceStatusObservedState) *pb.Asset_ResourceStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset_ResourceStatus{}
+	out.State = direct.Enum_ToProto[pb.Asset_ResourceStatus_State](mapCtx, in.State)
+	out.Message = direct.ValueOf(in.Message)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.ManagedAccessIdentity = direct.ValueOf(in.ManagedAccessIdentity)
+	return out
+}
+
+func Asset_SecurityStatus_FromProto(mapCtx *direct.MapContext, in *pb.Asset_SecurityStatus) *krm.Asset_SecurityStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Asset_SecurityStatus{}
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Message = direct.LazyPtr(in.GetMessage())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func Asset_SecurityStatus_ToProto(mapCtx *direct.MapContext, in *krm.Asset_SecurityStatus) *pb.Asset_SecurityStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset_SecurityStatus{}
+	out.State = direct.Enum_ToProto[pb.Asset_SecurityStatus_State](mapCtx, in.State)
+	out.Message = direct.ValueOf(in.Message)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func DataAccessSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataAccessSpec) *krm.DataAccessSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataAccessSpec{}
+	out.Readers = in.Readers
+	return out
+}
+
+func DataAccessSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataAccessSpec) *pb.DataAccessSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataAccessSpec{}
+	out.Readers = in.Readers
+	return out
+}
+
+func DataAsset_AccessGroupConfig_FromProto(mapCtx *direct.MapContext, in *pb.DataAsset_AccessGroupConfig) *krm.DataAsset_AccessGroupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataAsset_AccessGroupConfig{}
+	out.IAMRoles = in.IamRoles
+	return out
+}
+
+func DataAsset_AccessGroupConfig_ToProto(mapCtx *direct.MapContext, in *krm.DataAsset_AccessGroupConfig) *pb.DataAsset_AccessGroupConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataAsset_AccessGroupConfig{}
+	out.IamRoles = in.IAMRoles
+	return out
+}
+
+func DataplexAssetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Asset) *krm.DataplexAssetObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexAssetObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.ResourceStatus = Asset_ResourceStatusObservedState_FromProto(mapCtx, in.GetResourceStatus())
+	out.SecurityStatus = Asset_SecurityStatus_FromProto(mapCtx, in.GetSecurityStatus())
+	out.DiscoveryStatus = Asset_DiscoveryStatus_FromProto(mapCtx, in.GetDiscoveryStatus())
+	return out
+}
+
+func DataplexAssetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexAssetObservedState) *pb.Asset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.State](mapCtx, in.State)
+	out.ResourceStatus = Asset_ResourceStatusObservedState_ToProto(mapCtx, in.ResourceStatus)
+	out.SecurityStatus = Asset_SecurityStatus_ToProto(mapCtx, in.SecurityStatus)
+	out.DiscoveryStatus = Asset_DiscoveryStatus_ToProto(mapCtx, in.DiscoveryStatus)
+	return out
+}
+
+func DataplexAssetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Asset) *krm.DataplexAssetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexAssetSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.ResourceSpec = Asset_ResourceSpec_FromProto(mapCtx, in.GetResourceSpec())
+	out.DiscoverySpec = Asset_DiscoverySpec_FromProto(mapCtx, in.GetDiscoverySpec())
+	return out
+}
+
+func DataplexAssetSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexAssetSpec) *pb.Asset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Asset{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	out.ResourceSpec = Asset_ResourceSpec_ToProto(mapCtx, in.ResourceSpec)
+	out.DiscoverySpec = Asset_DiscoverySpec_ToProto(mapCtx, in.DiscoverySpec)
+	return out
+}
+
+func DataplexDataAssetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataAsset) *krm.DataplexDataAssetObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexDataAssetObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func DataplexDataAssetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexDataAssetObservedState) *pb.DataAsset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataAsset{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func DataplexDataAssetSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataAsset) *krm.DataplexDataAssetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexDataAssetSpec{}
+	// MISSING: Name
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Labels = in.Labels
+	out.Resource = direct.LazyPtr(in.GetResource())
+	if in.AccessGroupConfigs != nil {
+		out.AccessGroupConfigs = make(map[string]krm.DataAsset_AccessGroupConfig, len(in.AccessGroupConfigs))
+		for k, v := range in.AccessGroupConfigs {
+			if c := DataAsset_AccessGroupConfig_FromProto(mapCtx, v); c != nil {
+				out.AccessGroupConfigs[k] = *c
+			}
+		}
+	}
+	return out
+}
+
+func DataplexDataAssetSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexDataAssetSpec) *pb.DataAsset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataAsset{}
+	// MISSING: Name
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Labels = in.Labels
+	out.Resource = direct.ValueOf(in.Resource)
+	if in.AccessGroupConfigs != nil {
+		out.AccessGroupConfigs = make(map[string]*pb.DataAsset_AccessGroupConfig, len(in.AccessGroupConfigs))
+		for k, v := range in.AccessGroupConfigs {
+			out.AccessGroupConfigs[k] = DataAsset_AccessGroupConfig_ToProto(mapCtx, &v)
+		}
+	}
+	return out
+}
+
+func DataplexDataAttributeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataAttribute) *krm.DataplexDataAttributeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexDataAttributeObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.AttributeCount = direct.LazyPtr(in.GetAttributeCount())
+	return out
+}
+
+func DataplexDataAttributeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexDataAttributeObservedState) *pb.DataAttribute {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataAttribute{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.AttributeCount = direct.ValueOf(in.AttributeCount)
+	return out
+}
+
+func DataplexDataAttributeSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataAttribute) *krm.DataplexDataAttributeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexDataAttributeSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Labels = in.Labels
+	out.ParentID = direct.LazyPtr(in.GetParentId())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.ResourceAccessSpec = ResourceAccessSpec_FromProto(mapCtx, in.GetResourceAccessSpec())
+	out.DataAccessSpec = DataAccessSpec_FromProto(mapCtx, in.GetDataAccessSpec())
+	return out
+}
+
+func DataplexDataAttributeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexDataAttributeSpec) *pb.DataAttribute {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataAttribute{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Labels = in.Labels
+	out.ParentId = direct.ValueOf(in.ParentID)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.ResourceAccessSpec = ResourceAccessSpec_ToProto(mapCtx, in.ResourceAccessSpec)
+	out.DataAccessSpec = DataAccessSpec_ToProto(mapCtx, in.DataAccessSpec)
+	return out
+}
+
+func DataplexEncryptionConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfig) *krm.DataplexEncryptionConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEncryptionConfigObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.EncryptionState = direct.Enum_FromProto(mapCtx, in.GetEncryptionState())
+	out.FailureDetails = EncryptionConfig_FailureDetailsObservedState_FromProto(mapCtx, in.GetFailureDetails())
+	return out
+}
+
+func DataplexEncryptionConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEncryptionConfigObservedState) *pb.EncryptionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionConfig{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.EncryptionState = direct.Enum_ToProto[pb.EncryptionConfig_EncryptionState](mapCtx, in.EncryptionState)
+	out.FailureDetails = EncryptionConfig_FailureDetailsObservedState_ToProto(mapCtx, in.FailureDetails)
+	return out
+}
+
+func DataplexEncryptionConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfig) *krm.DataplexEncryptionConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEncryptionConfigSpec{}
+	// MISSING: Name
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.EnableMetastoreEncryption = direct.LazyPtr(in.GetEnableMetastoreEncryption())
+	return out
+}
+
+func DataplexEncryptionConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEncryptionConfigSpec) *pb.EncryptionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionConfig{}
+	// MISSING: Name
+	out.Key = direct.ValueOf(in.Key)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.EnableMetastoreEncryption = direct.ValueOf(in.EnableMetastoreEncryption)
+	return out
+}
+
+func DataplexEntityObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Entity) *krm.DataplexEntityObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEntityObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.CatalogEntry = direct.LazyPtr(in.GetCatalogEntry())
+	out.Format = StorageFormatObservedState_FromProto(mapCtx, in.GetFormat())
+	out.Compatibility = Entity_CompatibilityStatusObservedState_FromProto(mapCtx, in.GetCompatibility())
+	out.Access = StorageAccessObservedState_FromProto(mapCtx, in.GetAccess())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	return out
+}
+
+func DataplexEntityObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntityObservedState) *pb.Entity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Entity{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.CatalogEntry = direct.ValueOf(in.CatalogEntry)
+	out.Format = StorageFormatObservedState_ToProto(mapCtx, in.Format)
+	out.Compatibility = Entity_CompatibilityStatusObservedState_ToProto(mapCtx, in.Compatibility)
+	out.Access = StorageAccessObservedState_ToProto(mapCtx, in.Access)
+	out.Uid = direct.ValueOf(in.Uid)
+	return out
+}
+
+func DataplexEntitySpec_FromProto(mapCtx *direct.MapContext, in *pb.Entity) *krm.DataplexEntitySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEntitySpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.ID = direct.LazyPtr(in.GetId())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Asset = direct.LazyPtr(in.GetAsset())
+	out.DataPath = direct.LazyPtr(in.GetDataPath())
+	out.DataPathPattern = direct.LazyPtr(in.GetDataPathPattern())
+	out.System = direct.Enum_FromProto(mapCtx, in.GetSystem())
+	out.Format = StorageFormat_FromProto(mapCtx, in.GetFormat())
+	out.Schema = Schema_FromProto(mapCtx, in.GetSchema())
+	return out
+}
+
+func DataplexEntitySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntitySpec) *pb.Entity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Entity{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Id = direct.ValueOf(in.ID)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Type = direct.Enum_ToProto[pb.Entity_Type](mapCtx, in.Type)
+	out.Asset = direct.ValueOf(in.Asset)
+	out.DataPath = direct.ValueOf(in.DataPath)
+	out.DataPathPattern = direct.ValueOf(in.DataPathPattern)
+	out.System = direct.Enum_ToProto[pb.StorageSystem](mapCtx, in.System)
+	out.Format = StorageFormat_ToProto(mapCtx, in.Format)
+	out.Schema = Schema_ToProto(mapCtx, in.Schema)
+	return out
+}
+
+func DataplexEntryLinkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntryLink) *krm.DataplexEntryLinkObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEntryLinkObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func DataplexEntryLinkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntryLinkObservedState) *pb.EntryLink {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntryLink{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func DataplexEntryLinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.EntryLink) *krm.DataplexEntryLinkSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEntryLinkSpec{}
+	// MISSING: Name
+	out.EntryLinkType = direct.LazyPtr(in.GetEntryLinkType())
+	if in.Aspects != nil {
+		out.Aspects = make(map[string]krm.Aspect, len(in.Aspects))
+		for k, v := range in.Aspects {
+			if c := Aspect_FromProto(mapCtx, v); c != nil {
+				out.Aspects[k] = *c
+			}
+		}
+	}
+	out.EntryReferences = direct.Slice_FromProto(mapCtx, in.EntryReferences, EntryLink_EntryReference_FromProto)
+	return out
+}
+
+func DataplexEntryLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntryLinkSpec) *pb.EntryLink {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntryLink{}
+	// MISSING: Name
+	out.EntryLinkType = direct.ValueOf(in.EntryLinkType)
+	if in.Aspects != nil {
+		out.Aspects = make(map[string]*pb.Aspect, len(in.Aspects))
+		for k, v := range in.Aspects {
+			out.Aspects[k] = Aspect_ToProto(mapCtx, &v)
+		}
+	}
+	out.EntryReferences = direct.Slice_ToProto(mapCtx, in.EntryReferences, EntryLink_EntryReference_ToProto)
+	return out
+}
+
+func DataplexEntryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Entry) *krm.DataplexEntryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEntryObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.EntrySource = EntrySourceObservedState_FromProto(mapCtx, in.GetEntrySource())
+	return out
+}
+
+func DataplexEntryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntryObservedState) *pb.Entry {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Entry{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.EntrySource = EntrySourceObservedState_ToProto(mapCtx, in.EntrySource)
+	return out
+}
+
+func DataplexEntrySpec_FromProto(mapCtx *direct.MapContext, in *pb.Entry) *krm.DataplexEntrySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEntrySpec{}
+	// MISSING: Name
+	out.EntryType = direct.LazyPtr(in.GetEntryType())
+	if in.Aspects != nil {
+		out.Aspects = make(map[string]krm.Aspect, len(in.Aspects))
+		for k, v := range in.Aspects {
+			if c := Aspect_FromProto(mapCtx, v); c != nil {
+				out.Aspects[k] = *c
+			}
+		}
+	}
+	out.ParentEntry = direct.LazyPtr(in.GetParentEntry())
+	out.FullyQualifiedName = direct.LazyPtr(in.GetFullyQualifiedName())
+	out.EntrySource = EntrySource_FromProto(mapCtx, in.GetEntrySource())
+	return out
+}
+
+func DataplexEntrySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntrySpec) *pb.Entry {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Entry{}
+	// MISSING: Name
+	out.EntryType = direct.ValueOf(in.EntryType)
+	if in.Aspects != nil {
+		out.Aspects = make(map[string]*pb.Aspect, len(in.Aspects))
+		for k, v := range in.Aspects {
+			out.Aspects[k] = Aspect_ToProto(mapCtx, &v)
+		}
+	}
+	out.ParentEntry = direct.ValueOf(in.ParentEntry)
+	out.FullyQualifiedName = direct.ValueOf(in.FullyQualifiedName)
+	out.EntrySource = EntrySource_ToProto(mapCtx, in.EntrySource)
+	return out
+}
+
+func DataplexGlossaryCategoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GlossaryCategory) *krm.DataplexGlossaryCategoryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexGlossaryCategoryObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func DataplexGlossaryCategoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexGlossaryCategoryObservedState) *pb.GlossaryCategory {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GlossaryCategory{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func DataplexGlossaryCategorySpec_FromProto(mapCtx *direct.MapContext, in *pb.GlossaryCategory) *krm.DataplexGlossaryCategorySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexGlossaryCategorySpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	out.Parent = direct.LazyPtr(in.GetParent())
+	return out
+}
+
+func DataplexGlossaryCategorySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexGlossaryCategorySpec) *pb.GlossaryCategory {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GlossaryCategory{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	out.Parent = direct.ValueOf(in.Parent)
+	return out
+}
+
+func DataplexGlossaryTermObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GlossaryTerm) *krm.DataplexGlossaryTermObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexGlossaryTermObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func DataplexGlossaryTermObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexGlossaryTermObservedState) *pb.GlossaryTerm {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GlossaryTerm{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func DataplexGlossaryTermSpec_FromProto(mapCtx *direct.MapContext, in *pb.GlossaryTerm) *krm.DataplexGlossaryTermSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexGlossaryTermSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	out.Parent = direct.LazyPtr(in.GetParent())
+	return out
+}
+
+func DataplexGlossaryTermSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexGlossaryTermSpec) *pb.GlossaryTerm {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GlossaryTerm{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	out.Parent = direct.ValueOf(in.Parent)
+	return out
+}
+
+func EncryptionConfig_FailureDetailsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfig_FailureDetails) *krm.EncryptionConfig_FailureDetailsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionConfig_FailureDetailsObservedState{}
+	out.ErrorCode = direct.Enum_FromProto(mapCtx, in.GetErrorCode())
+	out.ErrorMessage = direct.LazyPtr(in.GetErrorMessage())
+	return out
+}
+
+func EncryptionConfig_FailureDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfig_FailureDetailsObservedState) *pb.EncryptionConfig_FailureDetails {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionConfig_FailureDetails{}
+	out.ErrorCode = direct.Enum_ToProto[pb.EncryptionConfig_FailureDetails_ErrorCode](mapCtx, in.ErrorCode)
+	out.ErrorMessage = direct.ValueOf(in.ErrorMessage)
+	return out
+}
+
+func Entity_CompatibilityStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Entity_CompatibilityStatus) *krm.Entity_CompatibilityStatusObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Entity_CompatibilityStatusObservedState{}
+	out.HiveMetastore = Entity_CompatibilityStatus_CompatibilityObservedState_FromProto(mapCtx, in.GetHiveMetastore())
+	out.Bigquery = Entity_CompatibilityStatus_CompatibilityObservedState_FromProto(mapCtx, in.GetBigquery())
+	return out
+}
+
+func Entity_CompatibilityStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Entity_CompatibilityStatusObservedState) *pb.Entity_CompatibilityStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Entity_CompatibilityStatus{}
+	out.HiveMetastore = Entity_CompatibilityStatus_CompatibilityObservedState_ToProto(mapCtx, in.HiveMetastore)
+	out.Bigquery = Entity_CompatibilityStatus_CompatibilityObservedState_ToProto(mapCtx, in.Bigquery)
+	return out
+}
+
+func Entity_CompatibilityStatus_CompatibilityObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Entity_CompatibilityStatus_Compatibility) *krm.Entity_CompatibilityStatus_CompatibilityObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Entity_CompatibilityStatus_CompatibilityObservedState{}
+	out.Compatible = direct.LazyPtr(in.GetCompatible())
+	out.Reason = direct.LazyPtr(in.GetReason())
+	return out
+}
+
+func Entity_CompatibilityStatus_CompatibilityObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Entity_CompatibilityStatus_CompatibilityObservedState) *pb.Entity_CompatibilityStatus_Compatibility {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Entity_CompatibilityStatus_Compatibility{}
+	out.Compatible = direct.ValueOf(in.Compatible)
+	out.Reason = direct.ValueOf(in.Reason)
+	return out
+}
+
+func EntryLink_EntryReference_FromProto(mapCtx *direct.MapContext, in *pb.EntryLink_EntryReference) *krm.EntryLink_EntryReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EntryLink_EntryReference{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Path = direct.LazyPtr(in.GetPath())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+
+func EntryLink_EntryReference_ToProto(mapCtx *direct.MapContext, in *krm.EntryLink_EntryReference) *pb.EntryLink_EntryReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntryLink_EntryReference{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Path = direct.ValueOf(in.Path)
+	out.Type = direct.Enum_ToProto[pb.EntryLink_EntryReference_Type](mapCtx, in.Type)
+	return out
+}
+
+func EntrySourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntrySource) *krm.EntrySourceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EntrySourceObservedState{}
+	// MISSING: Resource
+	// MISSING: System
+	// MISSING: Platform
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Labels
+	// MISSING: Ancestors
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Location = direct.LazyPtr(in.GetLocation())
+	return out
+}
+
+func EntrySourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EntrySourceObservedState) *pb.EntrySource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntrySource{}
+	// MISSING: Resource
+	// MISSING: System
+	// MISSING: Platform
+	// MISSING: DisplayName
+	// MISSING: Description
+	// MISSING: Labels
+	// MISSING: Ancestors
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Location = direct.ValueOf(in.Location)
+	return out
+}
+
+func EntrySource_Ancestor_FromProto(mapCtx *direct.MapContext, in *pb.EntrySource_Ancestor) *krm.EntrySource_Ancestor {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EntrySource_Ancestor{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Type = direct.LazyPtr(in.GetType())
+	return out
+}
+
+func EntrySource_Ancestor_ToProto(mapCtx *direct.MapContext, in *krm.EntrySource_Ancestor) *pb.EntrySource_Ancestor {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntrySource_Ancestor{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Type = direct.ValueOf(in.Type)
+	return out
+}
+
+func EntrySource_FromProto(mapCtx *direct.MapContext, in *pb.EntrySource) *krm.EntrySource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EntrySource{}
+	out.Resource = direct.LazyPtr(in.GetResource())
+	out.System = direct.LazyPtr(in.GetSystem())
+	out.Platform = direct.LazyPtr(in.GetPlatform())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	out.Ancestors = direct.Slice_FromProto(mapCtx, in.Ancestors, EntrySource_Ancestor_FromProto)
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Location
+	return out
+}
+
+func EntrySource_ToProto(mapCtx *direct.MapContext, in *krm.EntrySource) *pb.EntrySource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntrySource{}
+	out.Resource = direct.ValueOf(in.Resource)
+	out.System = direct.ValueOf(in.System)
+	out.Platform = direct.ValueOf(in.Platform)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	out.Ancestors = direct.Slice_ToProto(mapCtx, in.Ancestors, EntrySource_Ancestor_ToProto)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Location
+	return out
+}
+
+func ResourceAccessSpec_FromProto(mapCtx *direct.MapContext, in *pb.ResourceAccessSpec) *krm.ResourceAccessSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ResourceAccessSpec{}
+	out.Readers = in.Readers
+	out.Writers = in.Writers
+	out.Owners = in.Owners
+	return out
+}
+
+func ResourceAccessSpec_ToProto(mapCtx *direct.MapContext, in *krm.ResourceAccessSpec) *pb.ResourceAccessSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourceAccessSpec{}
+	out.Readers = in.Readers
+	out.Writers = in.Writers
+	out.Owners = in.Owners
+	return out
+}
+
+func Schema_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.Schema {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Schema{}
+	out.UserManaged = direct.LazyPtr(in.GetUserManaged())
+	out.Fields = direct.Slice_FromProto(mapCtx, in.Fields, Schema_SchemaField_FromProto)
+	out.PartitionFields = direct.Slice_FromProto(mapCtx, in.PartitionFields, Schema_PartitionField_FromProto)
+	out.PartitionStyle = direct.Enum_FromProto(mapCtx, in.GetPartitionStyle())
+	return out
+}
+
+func Schema_PartitionField_FromProto(mapCtx *direct.MapContext, in *pb.Schema_PartitionField) *krm.Schema_PartitionField {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Schema_PartitionField{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+
+func Schema_PartitionField_ToProto(mapCtx *direct.MapContext, in *krm.Schema_PartitionField) *pb.Schema_PartitionField {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Schema_PartitionField{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Type = direct.Enum_ToProto[pb.Schema_Type](mapCtx, in.Type)
+	return out
+}
+
+func Schema_SchemaField_FromProto(mapCtx *direct.MapContext, in *pb.Schema_SchemaField) *krm.Schema_SchemaField {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Schema_SchemaField{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	out.Fields = direct.Slice_FromProto(mapCtx, in.Fields, Schema_SchemaField_FromProto)
+	return out
+}
+
+func Schema_SchemaField_ToProto(mapCtx *direct.MapContext, in *krm.Schema_SchemaField) *pb.Schema_SchemaField {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Schema_SchemaField{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	out.Type = direct.Enum_ToProto[pb.Schema_Type](mapCtx, in.Type)
+	out.Mode = direct.Enum_ToProto[pb.Schema_Mode](mapCtx, in.Mode)
+	out.Fields = direct.Slice_ToProto(mapCtx, in.Fields, Schema_SchemaField_ToProto)
+	return out
+}
+
+func Schema_ToProto(mapCtx *direct.MapContext, in *krm.Schema) *pb.Schema {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Schema{}
+	out.UserManaged = direct.ValueOf(in.UserManaged)
+	out.Fields = direct.Slice_ToProto(mapCtx, in.Fields, Schema_SchemaField_ToProto)
+	out.PartitionFields = direct.Slice_ToProto(mapCtx, in.PartitionFields, Schema_PartitionField_ToProto)
+	out.PartitionStyle = direct.Enum_ToProto[pb.Schema_PartitionStyle](mapCtx, in.PartitionStyle)
+	return out
+}
+
+func StorageAccessObservedState_FromProto(mapCtx *direct.MapContext, in *pb.StorageAccess) *krm.StorageAccessObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageAccessObservedState{}
+	out.Read = direct.Enum_FromProto(mapCtx, in.GetRead())
+	return out
+}
+
+func StorageAccessObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StorageAccessObservedState) *pb.StorageAccess {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StorageAccess{}
+	out.Read = direct.Enum_ToProto[pb.StorageAccess_AccessMode](mapCtx, in.Read)
+	return out
+}
+
+func StorageFormatObservedState_FromProto(mapCtx *direct.MapContext, in *pb.StorageFormat) *krm.StorageFormatObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageFormatObservedState{}
+	out.Format = direct.Enum_FromProto(mapCtx, in.GetFormat())
+	// MISSING: CompressionFormat
+	// MISSING: MimeType
+	// MISSING: Csv
+	// MISSING: Json
+	// MISSING: Iceberg
+	return out
+}
+
+func StorageFormatObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StorageFormatObservedState) *pb.StorageFormat {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StorageFormat{}
+	out.Format = direct.Enum_ToProto[pb.StorageFormat_Format](mapCtx, in.Format)
+	// MISSING: CompressionFormat
+	// MISSING: MimeType
+	// MISSING: Csv
+	// MISSING: Json
+	// MISSING: Iceberg
+	return out
+}
+
+func StorageFormat_CsvOptions_FromProto(mapCtx *direct.MapContext, in *pb.StorageFormat_CsvOptions) *krm.StorageFormat_CsvOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageFormat_CsvOptions{}
+	out.Encoding = direct.LazyPtr(in.GetEncoding())
+	out.HeaderRows = direct.LazyPtr(in.GetHeaderRows())
+	out.Delimiter = direct.LazyPtr(in.GetDelimiter())
+	out.Quote = direct.LazyPtr(in.GetQuote())
+	return out
+}
+
+func StorageFormat_CsvOptions_ToProto(mapCtx *direct.MapContext, in *krm.StorageFormat_CsvOptions) *pb.StorageFormat_CsvOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StorageFormat_CsvOptions{}
+	out.Encoding = direct.ValueOf(in.Encoding)
+	out.HeaderRows = direct.ValueOf(in.HeaderRows)
+	out.Delimiter = direct.ValueOf(in.Delimiter)
+	out.Quote = direct.ValueOf(in.Quote)
+	return out
+}
+
+func StorageFormat_FromProto(mapCtx *direct.MapContext, in *pb.StorageFormat) *krm.StorageFormat {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageFormat{}
+	// MISSING: Format
+	out.CompressionFormat = direct.Enum_FromProto(mapCtx, in.GetCompressionFormat())
+	out.MimeType = direct.LazyPtr(in.GetMimeType())
+	out.Csv = StorageFormat_CsvOptions_FromProto(mapCtx, in.GetCsv())
+	out.Json = StorageFormat_JsonOptions_FromProto(mapCtx, in.GetJson())
+	out.Iceberg = StorageFormat_IcebergOptions_FromProto(mapCtx, in.GetIceberg())
+	return out
+}
+
+func StorageFormat_IcebergOptions_FromProto(mapCtx *direct.MapContext, in *pb.StorageFormat_IcebergOptions) *krm.StorageFormat_IcebergOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageFormat_IcebergOptions{}
+	out.MetadataLocation = direct.LazyPtr(in.GetMetadataLocation())
+	return out
+}
+
+func StorageFormat_IcebergOptions_ToProto(mapCtx *direct.MapContext, in *krm.StorageFormat_IcebergOptions) *pb.StorageFormat_IcebergOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StorageFormat_IcebergOptions{}
+	out.MetadataLocation = direct.ValueOf(in.MetadataLocation)
+	return out
+}
+
+func StorageFormat_JsonOptions_FromProto(mapCtx *direct.MapContext, in *pb.StorageFormat_JsonOptions) *krm.StorageFormat_JsonOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StorageFormat_JsonOptions{}
+	out.Encoding = direct.LazyPtr(in.GetEncoding())
+	return out
+}
+
+func StorageFormat_JsonOptions_ToProto(mapCtx *direct.MapContext, in *krm.StorageFormat_JsonOptions) *pb.StorageFormat_JsonOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StorageFormat_JsonOptions{}
+	out.Encoding = direct.ValueOf(in.Encoding)
+	return out
+}
+
+func StorageFormat_ToProto(mapCtx *direct.MapContext, in *krm.StorageFormat) *pb.StorageFormat {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StorageFormat{}
+	// MISSING: Format
+	out.CompressionFormat = direct.Enum_ToProto[pb.StorageFormat_CompressionFormat](mapCtx, in.CompressionFormat)
+	out.MimeType = direct.ValueOf(in.MimeType)
+	if oneof := StorageFormat_CsvOptions_ToProto(mapCtx, in.Csv); oneof != nil {
+		out.Options = &pb.StorageFormat_Csv{Csv: oneof}
+	}
+	if oneof := StorageFormat_JsonOptions_ToProto(mapCtx, in.Json); oneof != nil {
+		out.Options = &pb.StorageFormat_Json{Json: oneof}
+	}
+	if oneof := StorageFormat_IcebergOptions_ToProto(mapCtx, in.Iceberg); oneof != nil {
+		out.Options = &pb.StorageFormat_Iceberg{Iceberg: oneof}
+	}
+	return out
+}
