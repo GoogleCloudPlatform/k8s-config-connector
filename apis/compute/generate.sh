@@ -42,6 +42,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ComputeRegionPerInstanceConfig:PerInstanceConfig \
   --resource ComputeAutoscaler:Autoscaler \
   --resource ComputeBackendServiceSignedURLKey:SignedUrlKey \
+  --resource ComputeBackendBucketSignedURLKey:SignedUrlKey \
   --resource ComputeRegionAutoscaler:Autoscaler \
   --resource ComputeOrganizationSecurityPolicy:SecurityPolicy \
   --resource ComputeNetworkEndpoint:NetworkEndpoint \
