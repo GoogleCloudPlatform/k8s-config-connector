@@ -53,7 +53,7 @@ func resolveUnmanagedFields(spec map[string]interface{}, r *Resource, liveState 
 	switch r.Kind {
 	// TODO(b/223303389): Roll out ability to switch between conflicting fields
 	// to remaining resources.
-	case "BigtableAppProfile", "CloudBuildTrigger", "ResourceManagerPolicy":
+	case "BigtableAppProfile", "CloudBuildTrigger", "ComputeURLMap", "ResourceManagerPolicy":
 		if err = RemoveFieldsFromStateThatConflictWithSpec(stateAsKRM, spec, r.ResourceConfig, []string{}, r.TFResource.Schema); err != nil {
 			return nil, fmt.Errorf("error stripping fields from state that conflict with fields already in spec: %w", err)
 		}

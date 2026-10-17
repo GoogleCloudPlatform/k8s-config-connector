@@ -16,11 +16,14 @@ package v1beta1
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
@@ -118,4 +121,105 @@ func (r *ComputeURLMapRef) Normalize(ctx context.Context, reader client.Reader, 
 		return identity.String()
 	}
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+}
+
+var _ refs.Ref = &UrlmapResourceRef{}
+
+func (r *UrlmapResourceRef) GetGVK() schema.GroupVersionKind {
+	return ComputeBackendServiceGVK
+}
+
+func (r *UrlmapResourceRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *UrlmapResourceRef) GetExternal() string {
+	return r.External
+}
+
+func (r *UrlmapResourceRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *UrlmapResourceRef) ValidateExternal(ref string) error {
+	return nil
+}
+
+func (r *UrlmapResourceRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r.External != "" {
+		return nil
+	}
+	if r.Name == "" {
+		return nil
+	}
+	ns := r.Namespace
+	if ns == "" {
+		ns = defaultNamespace
+	}
+	key := types.NamespacedName{Name: r.Name, Namespace: ns}
+
+	// Try ComputeBackendService first
+	backendService := &unstructured.Unstructured{}
+	backendService.SetGroupVersionKind(ComputeBackendServiceGVK)
+	if err := reader.Get(ctx, key, backendService); err == nil {
+		selfLink, _, _ := unstructured.NestedString(backendService.Object, "status", "selfLink")
+		if selfLink != "" {
+			r.SetExternal(selfLink)
+			return nil
+		}
+		externalRef, _, _ := unstructured.NestedString(backendService.Object, "status", "externalRef")
+		if externalRef != "" {
+			r.SetExternal(externalRef)
+			return nil
+		}
+		projectID, err := refs.ResolveProjectID(ctx, reader, backendService)
+		if err != nil {
+			return fmt.Errorf("cannot resolve project ID for referenced %s %v: %w", backendService.GetKind(), key, err)
+		}
+		location, _, _ := unstructured.NestedString(backendService.Object, "spec", "location")
+		if location == "" {
+			location = "global"
+		}
+		name := backendService.GetName()
+		if location == "global" {
+			r.SetExternal(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/backendServices/%s", projectID, name))
+		} else {
+			r.SetExternal(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/backendServices/%s", projectID, location, name))
+		}
+		return nil
+	} else if !apierrors.IsNotFound(err) {
+		return fmt.Errorf("reading referenced %s %s: %w", ComputeBackendServiceGVK, key, err)
+	}
+
+	// Try ComputeBackendBucket
+	backendBucket := &unstructured.Unstructured{}
+	backendBucket.SetGroupVersionKind(ComputeBackendBucketGVK)
+	if err := reader.Get(ctx, key, backendBucket); err == nil {
+		selfLink, _, _ := unstructured.NestedString(backendBucket.Object, "status", "selfLink")
+		if selfLink != "" {
+			r.SetExternal(selfLink)
+			return nil
+		}
+		externalRef, _, _ := unstructured.NestedString(backendBucket.Object, "status", "externalRef")
+		if externalRef != "" {
+			r.SetExternal(externalRef)
+			return nil
+		}
+		projectID, err := refs.ResolveProjectID(ctx, reader, backendBucket)
+		if err != nil {
+			return fmt.Errorf("cannot resolve project ID for referenced %s %v: %w", backendBucket.GetKind(), key, err)
+		}
+		name := backendBucket.GetName()
+		r.SetExternal(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/backendBuckets/%s", projectID, name))
+		return nil
+	} else if !apierrors.IsNotFound(err) {
+		return fmt.Errorf("reading referenced %s %s: %w", ComputeBackendBucketGVK, key, err)
+	}
+
+	return k8s.NewReferenceNotFoundError(ComputeBackendServiceGVK, key)
 }

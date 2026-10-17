@@ -1,0 +1,79 @@
+9c9
+< X-Goog-Gcs-Base-Ts: 1a118dd51e6
+---
+> X-Goog-Gcs-Base-Ts: 1a118db761e
+53c53
+< X-Goog-Gcs-Base-Ts: 1a118dd5466
+---
+> X-Goog-Gcs-Base-Ts: 1a118db794c
+100c100
+< X-Goog-Gcs-Base-Ts: 1a118dd5498
+---
+> X-Goog-Gcs-Base-Ts: 1a118db7982
+545c545
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}
+574c574
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps
+610c610,611
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json
+640c641
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}
+655c656
+<   "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
+---
+>   "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+666c667
+< PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
+---
+> PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}
+669a671
+>   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+676,677c678,681
+<   "hostRules": [],
+<   "name": "${urlMapID}"
+---
+>   "id": "000000000000000000000",
+>   "kind": "compute#urlMap",
+>   "name": "${urlMapID}",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}"
+707c711,712
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json
+737c742
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}
+766c771
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
+---
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}
+796c801,802
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json
+1115c1121
+< X-Goog-Gcs-Base-Ts: 1a118dfa844
+---
+> X-Goog-Gcs-Base-Ts: 1a118dd2499
+1162c1168
+< X-Goog-Gcs-Base-Ts: 1a118dfa87c
+---
+> X-Goog-Gcs-Base-Ts: 1a118dd24c7
+1178c1184
+< X-Goog-Gcs-Base-Ts: 1a118dfa9d0
+\ No newline at end of file
+---
+> X-Goog-Gcs-Base-Ts: 1a118dd26c2
+\ No newline at end of file

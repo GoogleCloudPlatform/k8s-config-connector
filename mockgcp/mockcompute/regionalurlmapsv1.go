@@ -68,6 +68,10 @@ func (s *RegionalURLMapsV1) Insert(ctx context.Context, req *pb.InsertRegionUrlM
 
 	s.populateURLMapDefaults(ctx, obj)
 
+	if err := validateURLMap(obj); err != nil {
+		return nil, err
+	}
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -116,6 +120,10 @@ func (s *RegionalURLMapsV1) Patch(ctx context.Context, req *pb.PatchRegionUrlMap
 
 	s.populateURLMapDefaults(ctx, obj)
 
+	if err := validateURLMap(obj); err != nil {
+		return nil, err
+	}
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -150,10 +158,17 @@ func (s *RegionalURLMapsV1) Update(ctx context.Context, req *pb.UpdateRegionUrlM
 	obj.PathMatchers = nil
 	obj.Tests = nil
 	obj.DefaultCustomErrorResponsePolicy = nil
+	obj.DefaultService = nil
+	obj.DefaultUrlRedirect = nil
+	obj.DefaultRouteAction = nil
 	proto.Merge(obj, req.GetUrlMapResource())
 	obj.Region = PtrTo("https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/regions/" + name.Region)
 
 	s.populateURLMapDefaults(ctx, obj)
+
+	if err := validateURLMap(obj); err != nil {
+		return nil, err
+	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
