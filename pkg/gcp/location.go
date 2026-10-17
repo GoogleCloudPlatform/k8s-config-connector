@@ -19,6 +19,9 @@ import (
 	"strings"
 )
 
+// LocationToRegion normalizes a zonal or regional location string into its containing region.
+// For regional locations (e.g. "us-central1" or "u-region-1"), it returns the location unmodified.
+// For zonal locations (e.g. "us-central1-a" or "u-region-1-a"), it returns the region prefix without the zone letter.
 func LocationToRegion(location string) (string, error) {
 	if IsLocationRegional(location) {
 		return location, nil
@@ -26,16 +29,28 @@ func LocationToRegion(location string) (string, error) {
 	if !IsLocationZonal(location) {
 		return "", fmt.Errorf("provided location is neither regional nor zonal")
 	}
-	s := strings.Split(location, "-")
-	return s[0] + "-" + s[1], nil
+	lastHyphen := strings.LastIndex(location, "-")
+	return location[:lastHyphen], nil
 }
 
+// IsLocationRegional returns true if location represents a regional Google Cloud topology.
+// It supports both commercial (e.g. "us-central1") and sovereign/partitioned (e.g. "u-region-1") region formats.
 func IsLocationRegional(location string) bool {
-	return len(strings.Split(location, "-")) == 2
+	if IsLocationZonal(location) {
+		return false
+	}
+	return strings.Contains(location, "-")
 }
 
+// IsLocationZonal returns true if location represents a zonal Google Cloud topology.
+// A zone possesses at least one parent region hyphen and terminates with a single-letter zone identifier (e.g. "-a").
 func IsLocationZonal(location string) bool {
-	return len(strings.Split(location, "-")) == 3
+	s := strings.Split(location, "-")
+	if len(s) < 3 {
+		return false
+	}
+	last := s[len(s)-1]
+	return len(last) == 1 && last[0] >= 'a' && last[0] <= 'z'
 }
 
 const (
