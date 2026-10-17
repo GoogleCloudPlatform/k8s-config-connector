@@ -60,6 +60,32 @@ go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/sql/v1b
 
   optional int32 replication_lag_max_seconds = 100;
 
+
+
+  // Performance capture configuration.
+
+  optional PerformanceCaptureConfig performance_capture_config = 101;
+
+
+
+  // Performance capture configuration.
+
+  message PerformanceCaptureConfig {
+
+    optional bool enabled = 1;
+
+    optional int32 probe_threshold = 2;
+
+    optional int32 probing_interval_seconds = 3;
+
+    optional int32 running_threads_threshold = 4;
+
+    optional int32 seconds_behind_source_threshold = 5;
+
+    optional int32 transaction_duration_threshold = 6;
+
+  }
+
 EOF
 
 go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/sql/v1beta4/cloud_sql_resources.proto --message DatabaseInstance --mode append <<EOF
