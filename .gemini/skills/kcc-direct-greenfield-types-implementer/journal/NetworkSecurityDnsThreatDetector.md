@@ -11,3 +11,10 @@
    - We successfully generated and verified identity and reference formats for `NetworkSecurityDnsThreatDetector` under `apis/networksecurity/v1alpha1/`.
    - The identity format matches `projects/{project}/locations/{location}/dnsThreatDetectors/{dnsthreatdetector}`.
    - All unit tests compiled and passed cleanly.
+
+3. **MockGCP Log Alignment (Issue #12061)**:
+   - We aligned the MockGCP logs with RealGCP logs for `NetworkSecurityDnsThreatDetector`.
+   - Real GCP does not return `labels` in the `Create` response, and does not return `labels` or `excluded_networks` in the `Update` response.
+   - We updated `CreateDnsThreatDetector` and `UpdateDnsThreatDetector` in `mockgcp/mocknetworksecurity/dnsthreatdetector.go` to match this behavior precisely.
+   - This ensures the golden logs between MockGCP and RealGCP are perfectly synchronized.
+
