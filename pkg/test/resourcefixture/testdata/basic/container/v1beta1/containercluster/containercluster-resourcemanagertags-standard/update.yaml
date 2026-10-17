@@ -16,6 +16,8 @@ apiVersion: container.cnrm.cloud.google.com/v1beta1
 kind: ContainerCluster
 metadata:
   name: cluster-sample-${uniqueId}
+  labels:
+    updated-by: robot
 spec:
   location: us-central1-a
   initialNodeCount: 1
