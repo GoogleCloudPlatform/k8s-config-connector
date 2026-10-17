@@ -32,7 +32,7 @@ Content-Type: application/json
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "memorySizeGb": 16,
+  "memorySizeGb": 1,
   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
   "secondaryIpRange": "auto",
   "tier": "STANDARD_HA",
@@ -101,7 +101,7 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "locationId": "us-central1-a",
-    "memorySizeGb": 16,
+    "memorySizeGb": 1,
     "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "nodes": [
       {
@@ -120,8 +120,8 @@ X-Xss-Protection: 0
     "port": 6379,
     "readReplicasMode": "READ_REPLICAS_DISABLED",
     "redisVersion": "REDIS_7_0",
+    "replicaCount": 1,
     "reservedIpRange": "10.1.2.0/24",
-    "secondaryIpRange": "10.20.30.16/28",
     "state": "READY",
     "tier": "STANDARD_HA",
     "transitEncryptionMode": "DISABLED"
@@ -157,7 +157,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "locationId": "us-central1-a",
-  "memorySizeGb": 16,
+  "memorySizeGb": 1,
   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
   "nodes": [
     {
@@ -176,8 +176,8 @@ X-Xss-Protection: 0
   "port": 6379,
   "readReplicasMode": "READ_REPLICAS_DISABLED",
   "redisVersion": "REDIS_7_0",
+  "replicaCount": 1,
   "reservedIpRange": "10.1.2.0/24",
-  "secondaryIpRange": "10.20.30.16/28",
   "state": "READY",
   "tier": "STANDARD_HA",
   "transitEncryptionMode": "DISABLED"
@@ -195,12 +195,13 @@ Content-Type: application/json
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "memorySizeGb": 16,
+  "memorySizeGb": 1,
   "persistenceConfig": {
     "persistenceMode": "DISABLED"
   },
   "readReplicasMode": "READ_REPLICAS_DISABLED",
-  "secondaryIpRange": "10.20.30.16/28"
+  "replicaCount": 1,
+  "secondaryIpRange": "auto"
 }
 
 200 OK
@@ -265,7 +266,7 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "locationId": "us-central1-a",
-    "memorySizeGb": 16,
+    "memorySizeGb": 1,
     "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
     "nodes": [
       {
@@ -284,8 +285,8 @@ X-Xss-Protection: 0
     "port": 6379,
     "readReplicasMode": "READ_REPLICAS_DISABLED",
     "redisVersion": "REDIS_7_0",
+    "replicaCount": 1,
     "reservedIpRange": "10.1.2.0/24",
-    "secondaryIpRange": "10.20.30.16/28",
     "state": "READY",
     "tier": "STANDARD_HA",
     "transitEncryptionMode": "DISABLED"
@@ -321,7 +322,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "locationId": "us-central1-a",
-  "memorySizeGb": 16,
+  "memorySizeGb": 1,
   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
   "nodes": [
     {
@@ -340,8 +341,8 @@ X-Xss-Protection: 0
   "port": 6379,
   "readReplicasMode": "READ_REPLICAS_DISABLED",
   "redisVersion": "REDIS_7_0",
+  "replicaCount": 1,
   "reservedIpRange": "10.1.2.0/24",
-  "secondaryIpRange": "10.20.30.16/28",
   "state": "READY",
   "tier": "STANDARD_HA",
   "transitEncryptionMode": "DISABLED"
