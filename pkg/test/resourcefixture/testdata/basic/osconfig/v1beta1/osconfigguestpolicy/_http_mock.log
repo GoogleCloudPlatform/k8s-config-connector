@@ -1,6 +1,5 @@
-GET https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?alt=json
+GET https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -22,9 +21,8 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies?alt=json&guestPolicyId=osconfigguestpolicy-${uniqueId}
+POST https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies?%24alt=json%3Benum-encoding%3Dint&guestPolicyId=osconfigguestpolicy-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 {
   "assignment": {
@@ -63,11 +61,10 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     ]
   },
   "description": "An OSConfigGuestPolicy for testing.",
-  "name": "osconfigguestpolicy-${uniqueId}",
   "packageRepositories": [
     {
       "apt": {
-        "archiveType": "DEB",
+        "archiveType": 1,
         "components": [
           "main"
         ],
@@ -90,18 +87,18 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   ],
   "packages": [
     {
-      "desiredState": "INSTALLED",
-      "manager": "APT",
+      "desiredState": 1,
+      "manager": 2,
       "name": "add-apt-key"
     },
     {
-      "desiredState": "REMOVED",
-      "manager": "YUM",
+      "desiredState": 3,
+      "manager": 3,
       "name": "ssl"
     },
     {
-      "desiredState": "UPDATED",
-      "manager": "ANY",
+      "desiredState": 2,
+      "manager": 1,
       "name": "ansible-doc"
     }
   ],
@@ -116,7 +113,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
           }
         }
       ],
-      "desiredState": "INSTALLED",
+      "desiredState": 1,
       "installSteps": [
         {
           "fileCopy": {
@@ -130,7 +127,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
           "archiveExtraction": {
             "artifactId": "ansible",
             "destination": "/var/ansible/",
-            "type": "TAR_GZIP"
+            "type": 2
           }
         }
       ],
@@ -140,22 +137,20 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     {
       "artifacts": [
         {
-          "allowInsecure": false,
           "gcs": {
             "bucket": "storagebucket1-${uniqueId}",
-            "generation": 1829485032948520,
+            "generation": "1829485032948520",
             "object": "latest/prod"
           },
           "id": "web-app"
         }
       ],
-      "desiredState": "UPDATED",
+      "desiredState": 2,
       "installSteps": [
         {
           "fileCopy": {
             "artifactId": "web-app",
             "destination": "/installbackups/prod",
-            "overwrite": false,
             "permissions": "777"
           }
         },
@@ -251,7 +246,7 @@ X-Xss-Protection: 0
   "packageRepositories": [
     {
       "apt": {
-        "archiveType": "DEB",
+        "archiveType": 1,
         "components": [
           "main"
         ],
@@ -274,18 +269,18 @@ X-Xss-Protection: 0
   ],
   "packages": [
     {
-      "desiredState": "INSTALLED",
-      "manager": "APT",
+      "desiredState": 1,
+      "manager": 2,
       "name": "add-apt-key"
     },
     {
-      "desiredState": "REMOVED",
-      "manager": "YUM",
+      "desiredState": 3,
+      "manager": 3,
       "name": "ssl"
     },
     {
-      "desiredState": "UPDATED",
-      "manager": "ANY",
+      "desiredState": 2,
+      "manager": 1,
       "name": "ansible-doc"
     }
   ],
@@ -300,7 +295,7 @@ X-Xss-Protection: 0
           }
         }
       ],
-      "desiredState": "INSTALLED",
+      "desiredState": 1,
       "installSteps": [
         {
           "fileCopy": {
@@ -314,7 +309,7 @@ X-Xss-Protection: 0
           "archiveExtraction": {
             "artifactId": "ansible",
             "destination": "/var/ansible/",
-            "type": "TAR_GZIP"
+            "type": 2
           }
         }
       ],
@@ -332,7 +327,7 @@ X-Xss-Protection: 0
           "id": "web-app"
         }
       ],
-      "desiredState": "UPDATED",
+      "desiredState": 2,
       "installSteps": [
         {
           "fileCopy": {
@@ -383,9 +378,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?alt=json
+GET https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -440,7 +434,7 @@ X-Xss-Protection: 0
   "packageRepositories": [
     {
       "apt": {
-        "archiveType": "DEB",
+        "archiveType": 1,
         "components": [
           "main"
         ],
@@ -463,18 +457,18 @@ X-Xss-Protection: 0
   ],
   "packages": [
     {
-      "desiredState": "INSTALLED",
-      "manager": "APT",
+      "desiredState": 1,
+      "manager": 2,
       "name": "add-apt-key"
     },
     {
-      "desiredState": "REMOVED",
-      "manager": "YUM",
+      "desiredState": 3,
+      "manager": 3,
       "name": "ssl"
     },
     {
-      "desiredState": "UPDATED",
-      "manager": "ANY",
+      "desiredState": 2,
+      "manager": 1,
       "name": "ansible-doc"
     }
   ],
@@ -489,7 +483,7 @@ X-Xss-Protection: 0
           }
         }
       ],
-      "desiredState": "INSTALLED",
+      "desiredState": 1,
       "installSteps": [
         {
           "fileCopy": {
@@ -503,7 +497,7 @@ X-Xss-Protection: 0
           "archiveExtraction": {
             "artifactId": "ansible",
             "destination": "/var/ansible/",
-            "type": "TAR_GZIP"
+            "type": 2
           }
         }
       ],
@@ -521,7 +515,7 @@ X-Xss-Protection: 0
           "id": "web-app"
         }
       ],
-      "desiredState": "UPDATED",
+      "desiredState": 2,
       "installSteps": [
         {
           "fileCopy": {
@@ -572,9 +566,8 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?alt=json
+PATCH https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=assignment%2Crecipes
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 {
   "assignment": {
@@ -613,11 +606,11 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   },
   "description": "An OSConfigGuestPolicy for testing.",
   "etag": "abcdef0123A=",
-  "name": "osconfigguestpolicy-${uniqueId}",
+  "name": "projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}",
   "packageRepositories": [
     {
       "apt": {
-        "archiveType": "DEB",
+        "archiveType": 1,
         "components": [
           "main"
         ],
@@ -640,18 +633,18 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   ],
   "packages": [
     {
-      "desiredState": "INSTALLED",
-      "manager": "APT",
+      "desiredState": 1,
+      "manager": 2,
       "name": "add-apt-key"
     },
     {
-      "desiredState": "REMOVED",
-      "manager": "YUM",
+      "desiredState": 3,
+      "manager": 3,
       "name": "ssl"
     },
     {
-      "desiredState": "UPDATED",
-      "manager": "ANY",
+      "desiredState": 2,
+      "manager": 1,
       "name": "ansible-doc"
     }
   ],
@@ -666,7 +659,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
           }
         }
       ],
-      "desiredState": "INSTALLED",
+      "desiredState": 1,
       "installSteps": [
         {
           "fileCopy": {
@@ -680,7 +673,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
           "archiveExtraction": {
             "artifactId": "ansible",
             "destination": "/var/ansible/",
-            "type": "TAR_GZIP"
+            "type": 2
           }
         }
       ],
@@ -690,16 +683,35 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     {
       "artifacts": [
         {
-          "allowInsecure": false,
           "gcs": {
             "bucket": "storagebucket2-${uniqueId}",
-            "generation": 1829485032948555,
+            "generation": "1829485032948555",
             "object": "latest/prod"
           },
           "id": "web-app"
         }
       ],
-      "desiredState": "UPDATED",
+      "desiredState": 2,
+      "installSteps": [
+        {
+          "fileCopy": {
+            "artifactId": "web-app",
+            "destination": "/installbackups/prod",
+            "permissions": "777"
+          }
+        },
+        {
+          "fileExec": {
+            "allowedExitCodes": [
+              0
+            ],
+            "args": [
+              "prodcompile"
+            ],
+            "localPath": "/installbackups/prod"
+          }
+        }
+      ],
       "name": "prod-web-app",
       "updateSteps": [
         {
@@ -779,7 +791,7 @@ X-Xss-Protection: 0
   "packageRepositories": [
     {
       "apt": {
-        "archiveType": "DEB",
+        "archiveType": 1,
         "components": [
           "main"
         ],
@@ -802,18 +814,18 @@ X-Xss-Protection: 0
   ],
   "packages": [
     {
-      "desiredState": "INSTALLED",
-      "manager": "APT",
+      "desiredState": 1,
+      "manager": 2,
       "name": "add-apt-key"
     },
     {
-      "desiredState": "REMOVED",
-      "manager": "YUM",
+      "desiredState": 3,
+      "manager": 3,
       "name": "ssl"
     },
     {
-      "desiredState": "UPDATED",
-      "manager": "ANY",
+      "desiredState": 2,
+      "manager": 1,
       "name": "ansible-doc"
     }
   ],
@@ -828,7 +840,7 @@ X-Xss-Protection: 0
           }
         }
       ],
-      "desiredState": "INSTALLED",
+      "desiredState": 1,
       "installSteps": [
         {
           "fileCopy": {
@@ -842,7 +854,7 @@ X-Xss-Protection: 0
           "archiveExtraction": {
             "artifactId": "ansible",
             "destination": "/var/ansible/",
-            "type": "TAR_GZIP"
+            "type": 2
           }
         }
       ],
@@ -860,7 +872,27 @@ X-Xss-Protection: 0
           "id": "web-app"
         }
       ],
-      "desiredState": "UPDATED",
+      "desiredState": 2,
+      "installSteps": [
+        {
+          "fileCopy": {
+            "artifactId": "web-app",
+            "destination": "/installbackups/prod",
+            "permissions": "777"
+          }
+        },
+        {
+          "fileExec": {
+            "allowedExitCodes": [
+              0
+            ],
+            "args": [
+              "prodcompile"
+            ],
+            "localPath": "/installbackups/prod"
+          }
+        }
+      ],
       "name": "prod-web-app",
       "updateSteps": [
         {
@@ -891,9 +923,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?alt=json
+GET https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -947,7 +978,7 @@ X-Xss-Protection: 0
   "packageRepositories": [
     {
       "apt": {
-        "archiveType": "DEB",
+        "archiveType": 1,
         "components": [
           "main"
         ],
@@ -970,18 +1001,18 @@ X-Xss-Protection: 0
   ],
   "packages": [
     {
-      "desiredState": "INSTALLED",
-      "manager": "APT",
+      "desiredState": 1,
+      "manager": 2,
       "name": "add-apt-key"
     },
     {
-      "desiredState": "REMOVED",
-      "manager": "YUM",
+      "desiredState": 3,
+      "manager": 3,
       "name": "ssl"
     },
     {
-      "desiredState": "UPDATED",
-      "manager": "ANY",
+      "desiredState": 2,
+      "manager": 1,
       "name": "ansible-doc"
     }
   ],
@@ -996,7 +1027,7 @@ X-Xss-Protection: 0
           }
         }
       ],
-      "desiredState": "INSTALLED",
+      "desiredState": 1,
       "installSteps": [
         {
           "fileCopy": {
@@ -1010,7 +1041,7 @@ X-Xss-Protection: 0
           "archiveExtraction": {
             "artifactId": "ansible",
             "destination": "/var/ansible/",
-            "type": "TAR_GZIP"
+            "type": 2
           }
         }
       ],
@@ -1028,7 +1059,27 @@ X-Xss-Protection: 0
           "id": "web-app"
         }
       ],
-      "desiredState": "UPDATED",
+      "desiredState": 2,
+      "installSteps": [
+        {
+          "fileCopy": {
+            "artifactId": "web-app",
+            "destination": "/installbackups/prod",
+            "permissions": "777"
+          }
+        },
+        {
+          "fileExec": {
+            "allowedExitCodes": [
+              0
+            ],
+            "args": [
+              "prodcompile"
+            ],
+            "localPath": "/installbackups/prod"
+          }
+        }
+      ],
       "name": "prod-web-app",
       "updateSteps": [
         {
@@ -1059,9 +1110,8 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?alt=json
+DELETE https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1074,27 +1124,3 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {}
-
----
-
-GET https://osconfig.googleapis.com/v1beta/projects/${projectId}/guestPolicies/osconfigguestpolicy-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Requested entity was not found.",
-    "status": "NOT_FOUND"
-  }
-}
