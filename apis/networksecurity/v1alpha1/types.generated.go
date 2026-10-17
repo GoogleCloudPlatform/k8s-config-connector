@@ -120,3 +120,14 @@ type TLSInspectionPolicyObservedState struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
+
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1.InterceptEndpointGroupAssociation.LocationDetails
+type InterceptEndpointGroupAssociation_LocationDetailsObservedState struct {
+	// Output only. The cloud location, e.g. "us-central1-a" or "asia-south1".
+	// +kcc:proto:field=google.cloud.networksecurity.v1.InterceptEndpointGroupAssociation.LocationDetails.location
+	Location *string `json:"location,omitempty"`
+
+	// Output only. The current state of the association in this location.
+	// +kcc:proto:field=google.cloud.networksecurity.v1.InterceptEndpointGroupAssociation.LocationDetails.state
+	State *string `json:"state,omitempty"`
+}

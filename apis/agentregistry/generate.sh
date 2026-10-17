@@ -55,5 +55,18 @@ ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.agentregistry.v1 \
   --api-version agentregistry.cnrm.cloud.google.com/v1alpha1
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.agentregistry.v1 \
+  --api-version agentregistry.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource AgentregistryService:Service
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.agentregistry.v1 \
+  --api-version agentregistry.cnrm.cloud.google.com/v1alpha1 \
+  --resource AgentregistryService:Service
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

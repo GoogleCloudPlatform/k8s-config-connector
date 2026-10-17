@@ -447,7 +447,6 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 		out.goPackage = lastGoComponent(g.goPackage)
 
 		out.fileAnnotation = g.generatedFileAnnotation
-		out.reservedTypeNames = g.reservedTypeNames
 
 		// Options for the plain struct, and whether a Required copy follows it.
 		// A skipped message is written as a comment with the same options.
@@ -558,7 +557,6 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 		out.goPackage = lastGoComponent(g.goPackage)
 
 		out.fileAnnotation = g.generatedFileAnnotation
-		out.reservedTypeNames = g.reservedTypeNames
 
 		goTypeName := goNameForOutputProtoMessage(msg)
 		skipGenerated := true
@@ -1071,16 +1069,19 @@ func goTypeForProtoKind(kind protoreflect.Kind) string {
 	case protoreflect.StringKind:
 		goType = "string"
 
-	case protoreflect.Int32Kind, protoreflect.Sint32Kind, protoreflect.Sfixed32Kind:
+	case protoreflect.Int32Kind:
 		goType = "int32"
 
-	case protoreflect.Int64Kind, protoreflect.Sint64Kind, protoreflect.Sfixed64Kind:
+	case protoreflect.Int64Kind:
 		goType = "int64"
 
-	case protoreflect.Uint32Kind, protoreflect.Fixed32Kind:
+	case protoreflect.Uint32Kind:
 		goType = "uint32"
 
-	case protoreflect.Uint64Kind, protoreflect.Fixed64Kind:
+	case protoreflect.Uint64Kind:
+		goType = "uint64"
+
+	case protoreflect.Fixed64Kind:
 		goType = "uint64"
 
 	case protoreflect.BoolKind:

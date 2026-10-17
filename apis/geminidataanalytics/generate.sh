@@ -41,6 +41,19 @@ ${CONTROLLERBUILDER} generate-mapper \
     --service google.cloud.geminidataanalytics.v1beta \
     --api-version "geminidataanalytics.cnrm.cloud.google.com/v1alpha1"
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.geminidataanalytics.v1 \
+  --api-version geminidataanalytics.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource GeminidataanalyticsDataAgent:DataAgent
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.geminidataanalytics.v1 \
+  --api-version geminidataanalytics.cnrm.cloud.google.com/v1alpha1 \
+  --resource GeminidataanalyticsDataAgent:DataAgent
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

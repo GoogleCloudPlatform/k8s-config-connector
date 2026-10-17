@@ -26,3 +26,95 @@
 // resource: NetworkServicesServiceLBPolicy:ServiceLbPolicy
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.networkservices.v1.AgentGateway.GoogleManaged
+type AgentGateway_GoogleManaged struct {
+	// Optional. Operating Mode of Agent Gateway.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AgentGateway.GoogleManaged.governed_access_path
+	GovernedAccessPath *string `json:"governedAccessPath,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networkservices.v1.AgentGateway.NetworkConfig
+type AgentGateway_NetworkConfig struct {
+	// Optional. Optional PSC-Interface network attachment for connectivity to
+	//  your private VPCs network.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AgentGateway.NetworkConfig.egress
+	Egress *AgentGateway_NetworkConfig_Egress `json:"egress,omitempty"`
+
+	// Optional. Optional DNS peering configuration for connectivity to your
+	//  private VPC network.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AgentGateway.NetworkConfig.dns_peering_config
+	DNSPeeringConfig *AgentGateway_NetworkConfig_DNSPeeringConfig `json:"dnsPeeringConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networkservices.v1.AgentGateway.NetworkConfig.DnsPeeringConfig
+type AgentGateway_NetworkConfig_DNSPeeringConfig struct {
+	// Required. Domain names for which DNS queries should be forwarded to the
+	//  target network.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AgentGateway.NetworkConfig.DnsPeeringConfig.domains
+	// +required
+	Domains []string `json:"domains,omitempty"`
+
+	// Required. Target project ID to which DNS queries should be forwarded
+	//  to. This can be the same project that contains the AgentGateway or a
+	//  different project.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AgentGateway.NetworkConfig.DnsPeeringConfig.target_project
+	// +required
+	TargetProject *string `json:"targetProject,omitempty"`
+
+	// Required. Target network in 'target project' to which DNS queries
+	//  should be forwarded to. Must be in format of
+	//  `projects/{project}/global/networks/{network}`.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AgentGateway.NetworkConfig.DnsPeeringConfig.target_network
+	// +required
+	TargetNetwork *string `json:"targetNetwork,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networkservices.v1.AgentGateway.NetworkConfig.Egress
+type AgentGateway_NetworkConfig_Egress struct {
+	// Optional. The URI of the Network Attachment resource.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AgentGateway.NetworkConfig.Egress.network_attachment
+	NetworkAttachment *string `json:"networkAttachment,omitempty"`
+
+	// Optional. TrustConfig defines the trust configuration for egress.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AgentGateway.NetworkConfig.Egress.trust_config
+	TrustConfig *AgentGateway_NetworkConfig_Egress_TrustConfig `json:"trustConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networkservices.v1.AgentGateway.NetworkConfig.Egress.TrustConfig
+type AgentGateway_NetworkConfig_Egress_TrustConfig struct {
+	// Required. PEM encoded root certificates used to validate the identity
+	//  of the upstream servers/destinations during egress connections.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AgentGateway.NetworkConfig.Egress.TrustConfig.pem_certificates
+	// +required
+	PemCertificates []string `json:"pemCertificates,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networkservices.v1.AgentGateway.SelfManaged
+type AgentGateway_SelfManaged struct {
+	// Optional. A supported Google Cloud networking proxy in the Project and
+	//  Location
+	// +kcc:proto:field=google.cloud.networkservices.v1.AgentGateway.SelfManaged.resource_uri
+	ResourceURI *string `json:"resourceURI,omitempty"`
+
+	// Optional. List of supported Google Cloud networking proxies in the Project and
+	//  Location.
+	//  resource_uris is mutually exclusive with resource_uri.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AgentGateway.SelfManaged.resource_uris
+	ResourceURIs []string `json:"resourceURIs,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.networkservices.v1.AgentGateway.AgentGatewayOutputCard
+type AgentGateway_AgentGatewayOutputCardObservedState struct {
+	// Output only. mTLS Endpoint associated with this AgentGateway
+	// +kcc:proto:field=google.cloud.networkservices.v1.AgentGateway.AgentGatewayOutputCard.mtls_endpoint
+	MtlsEndpoint *string `json:"mtlsEndpoint,omitempty"`
+
+	// Output only. Root Certificates for Agents to validate this AgentGateway
+	// +kcc:proto:field=google.cloud.networkservices.v1.AgentGateway.AgentGatewayOutputCard.root_certificates
+	RootCertificates []string `json:"rootCertificates,omitempty"`
+
+	// Output only. Service Account used by Service Extensions to operate.
+	// +kcc:proto:field=google.cloud.networkservices.v1.AgentGateway.AgentGatewayOutputCard.service_extensions_service_account
+	ServiceExtensionsServiceAccount *string `json:"serviceExtensionsServiceAccount,omitempty"`
+}

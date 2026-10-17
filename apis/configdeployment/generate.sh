@@ -37,9 +37,20 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version configdeployment.cnrm.cloud.google.com/v1alpha1 \
   --resource ConfigDeploymentGroup:DeploymentGroup
 
-go run . generate-mapper \
+${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.config.v1 \
   --api-version "configdeployment.cnrm.cloud.google.com/v1alpha1"
+
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.config.v1 \
+  --api-version configdeployment.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource ConfigDeployment:Deployment
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.config.v1 \
+  --api-version configdeployment.cnrm.cloud.google.com/v1alpha1 \
+  --resource ConfigDeployment:Deployment
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
