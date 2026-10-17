@@ -15,7 +15,14 @@
 package v1alpha1
 
 import (
+	"context"
 	"testing"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/google/go-cmp/cmp"
+	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
 func TestWebSecurityScannerScanConfigIdentity_FromExternal(t *testing.T) {
@@ -29,8 +36,8 @@ func TestWebSecurityScannerScanConfigIdentity_FromExternal(t *testing.T) {
 			name: "valid reference",
 			ref:  "projects/my-project/scanConfigs/my-scan-config",
 			want: &WebSecurityScannerScanConfigIdentity{
-				Project:     "my-project",
-				Scan_config: "my-scan-config",
+				Project:    "my-project",
+				ScanConfig: "my-scan-config",
 			},
 		},
 		{
@@ -42,8 +49,8 @@ func TestWebSecurityScannerScanConfigIdentity_FromExternal(t *testing.T) {
 			name: "full url",
 			ref:  "https://websecurityscanner.googleapis.com/projects/my-project/scanConfigs/my-scan-config",
 			want: &WebSecurityScannerScanConfigIdentity{
-				Project:     "my-project",
-				Scan_config: "my-scan-config",
+				Project:    "my-project",
+				ScanConfig: "my-scan-config",
 			},
 		},
 	}
@@ -57,17 +64,135 @@ func TestWebSecurityScannerScanConfigIdentity_FromExternal(t *testing.T) {
 				return
 			}
 			if !tt.wantErr {
-				if i.Project != tt.want.Project {
-					t.Errorf("Project = %v, want %v", i.Project, tt.want.Project)
-				}
-				if i.Scan_config != tt.want.Scan_config {
-					t.Errorf("Scan_config = %v, want %v", i.Scan_config, tt.want.Scan_config)
+				if diff := cmp.Diff(tt.want, i); diff != "" {
+					t.Errorf("FromExternal() mismatch (-want +got):\n%s", diff)
 				}
 				if i.String() != "projects/my-project/scanConfigs/my-scan-config" {
 					t.Errorf("String() = %v, want %v", i.String(), "projects/my-project/scanConfigs/my-scan-config")
 				}
 				if i.ParentString() != "projects/my-project" {
 					t.Errorf("ParentString() = %v, want %v", i.ParentString(), "projects/my-project")
+				}
+			}
+		})
+	}
+}
+
+func TestWebSecurityScannerScanConfig_GetIdentity(t *testing.T) {
+	ctx := context.Background()
+	scheme := runtime.NewScheme()
+	_ = AddToScheme(scheme)
+	fakeClient := fake.NewClientBuilder().WithScheme(scheme).Build()
+
+	tests := []struct {
+		name                  string
+		obj                   *WebSecurityScannerScanConfig
+		wantErr               bool
+		want                  *WebSecurityScannerScanConfigIdentity
+		wantIdentitySpecified bool
+	}{
+		{
+			name: "GetIdentity with specified resourceID",
+			obj: &WebSecurityScannerScanConfig{
+				Spec: WebSecurityScannerScanConfigSpec{
+					ProjectRef: &refs.ProjectRef{
+						External: "my-project",
+					},
+					ResourceID: common.LazyPtr("my-scan-config"),
+				},
+			},
+			want: &WebSecurityScannerScanConfigIdentity{
+				Project:    "my-project",
+				ScanConfig: "my-scan-config",
+			},
+			wantIdentitySpecified: true,
+		},
+		{
+			name: "GetIdentity with server-generated identity (empty spec resourceID, defaulted from status)",
+			obj: &WebSecurityScannerScanConfig{
+				Spec: WebSecurityScannerScanConfigSpec{
+					ProjectRef: &refs.ProjectRef{
+						External: "my-project",
+					},
+				},
+				Status: WebSecurityScannerScanConfigStatus{
+					ExternalRef: common.LazyPtr("projects/my-project/scanConfigs/12345"),
+				},
+			},
+			want: &WebSecurityScannerScanConfigIdentity{
+				Project:    "my-project",
+				ScanConfig: "12345",
+			},
+			wantIdentitySpecified: true,
+		},
+		{
+			name: "GetIdentity with no spec resourceID and empty status (not yet created)",
+			obj: &WebSecurityScannerScanConfig{
+				Spec: WebSecurityScannerScanConfigSpec{
+					ProjectRef: &refs.ProjectRef{
+						External: "my-project",
+					},
+				},
+			},
+			want: &WebSecurityScannerScanConfigIdentity{
+				Project:    "my-project",
+				ScanConfig: "",
+			},
+			wantIdentitySpecified: false,
+		},
+		{
+			name: "GetIdentity with matching spec resourceID and status externalRef",
+			obj: &WebSecurityScannerScanConfig{
+				Spec: WebSecurityScannerScanConfigSpec{
+					ProjectRef: &refs.ProjectRef{
+						External: "my-project",
+					},
+					ResourceID: common.LazyPtr("12345"),
+				},
+				Status: WebSecurityScannerScanConfigStatus{
+					ExternalRef: common.LazyPtr("projects/my-project/scanConfigs/12345"),
+				},
+			},
+			want: &WebSecurityScannerScanConfigIdentity{
+				Project:    "my-project",
+				ScanConfig: "12345",
+			},
+			wantIdentitySpecified: true,
+		},
+		{
+			name: "GetIdentity with server-generated identity conflict with spec resourceID",
+			obj: &WebSecurityScannerScanConfig{
+				Spec: WebSecurityScannerScanConfigSpec{
+					ProjectRef: &refs.ProjectRef{
+						External: "my-project",
+					},
+					ResourceID: common.LazyPtr("conflict-id"),
+				},
+				Status: WebSecurityScannerScanConfigStatus{
+					ExternalRef: common.LazyPtr("projects/my-project/scanConfigs/12345"),
+				},
+			},
+			wantErr: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			gotIdentity, err := tt.obj.GetIdentity(ctx, fakeClient)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("GetIdentity() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !tt.wantErr {
+				got, ok := gotIdentity.(*WebSecurityScannerScanConfigIdentity)
+				if !ok {
+					t.Fatalf("returned identity is not *WebSecurityScannerScanConfigIdentity, got %T", gotIdentity)
+				}
+				if diff := cmp.Diff(tt.want, got); diff != "" {
+					t.Errorf("GetIdentity() mismatch (-want +got):\n%s", diff)
+				}
+				if gotSpecified := got.HasIdentitySpecified(); gotSpecified != tt.wantIdentitySpecified {
+					t.Errorf("got.HasIdentitySpecified() = %v, want %v", gotSpecified, tt.wantIdentitySpecified)
 				}
 			}
 		})

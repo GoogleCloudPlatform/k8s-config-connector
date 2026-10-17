@@ -26,17 +26,21 @@ import (
 )
 
 var (
-	_ identity.IdentityV2 = &WebSecurityScannerScanConfigIdentity{}
-	_ identity.Resource   = &WebSecurityScannerScanConfig{}
+	_ identity.ServerGeneratedIdentity = &WebSecurityScannerScanConfigIdentity{}
+	_ identity.Resource                = &WebSecurityScannerScanConfig{}
 )
 
-var WebSecurityScannerScanConfigIdentityFormat = gcpurls.Template[WebSecurityScannerScanConfigIdentity]("websecurityscanner.googleapis.com", "projects/{project}/scanConfigs/{scan_config}")
+var WebSecurityScannerScanConfigIdentityFormat = gcpurls.Template[WebSecurityScannerScanConfigIdentity]("websecurityscanner.googleapis.com", "projects/{project}/scanConfigs/{scanConfig}")
 
 // WebSecurityScannerScanConfigIdentity is the identity of a GCP WebSecurityScannerScanConfig resource.
 // +k8s:deepcopy-gen=false
 type WebSecurityScannerScanConfigIdentity struct {
-	Project     string
-	Scan_config string
+	Project    string
+	ScanConfig string
+}
+
+func (i *WebSecurityScannerScanConfigIdentity) HasIdentitySpecified() bool {
+	return i.ScanConfig != ""
 }
 
 func (i *WebSecurityScannerScanConfigIdentity) String() string {
@@ -44,7 +48,7 @@ func (i *WebSecurityScannerScanConfigIdentity) String() string {
 }
 
 func (i *WebSecurityScannerScanConfigIdentity) ID() string {
-	return i.Scan_config
+	return i.ScanConfig
 }
 
 func (i *WebSecurityScannerScanConfigIdentity) FromExternal(ref string) error {
@@ -68,11 +72,10 @@ func (i *WebSecurityScannerScanConfigIdentity) ParentString() string {
 	return "projects/" + i.Project
 }
 
-func getIdentityFromWebSecurityScannerScanConfigSpec(ctx context.Context, reader client.Reader, obj client.Object) (*WebSecurityScannerScanConfigIdentity, error) {
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
-	}
+func getIdentityFromWebSecurityScannerScanConfigSpec(ctx context.Context, reader client.Reader, obj *WebSecurityScannerScanConfig) (*WebSecurityScannerScanConfigIdentity, error) {
+	// For WebSecurityScannerScanConfig, resourceID is optional / server-generated.
+	// We retrieve it directly from Spec.ResourceID to avoid falling back to GetName().
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
 	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
@@ -80,8 +83,8 @@ func getIdentityFromWebSecurityScannerScanConfigSpec(ctx context.Context, reader
 	}
 
 	identity := &WebSecurityScannerScanConfigIdentity{
-		Project:     projectID,
-		Scan_config: resourceID,
+		Project:    projectID,
+		ScanConfig: resourceID,
 	}
 	return identity, nil
 }
@@ -95,10 +98,13 @@ func (obj *WebSecurityScannerScanConfig) GetIdentity(ctx context.Context, reader
 	// Cross-check the identity against the status value, if present.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		// Validate desired with actual
 		statusIdentity := &WebSecurityScannerScanConfigIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
+		}
+
+		if specIdentity.ScanConfig == "" {
+			specIdentity.ScanConfig = statusIdentity.ScanConfig
 		}
 
 		if statusIdentity.String() != specIdentity.String() {
