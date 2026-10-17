@@ -37,7 +37,8 @@ ${CONTROLLERBUILDER} generate-types \
     --include-skipped-output \
     --resource ContentWarehouseRuleSet:RuleSet \
     --resource ContentWarehouseDocument:Document \
-    --resource ContentWarehouseSynonymSet:SynonymSet
+    --resource ContentWarehouseSynonymSet:SynonymSet \
+    --resource ContentWarehouseDocumentSchema:DocumentSchema
 
 ${CONTROLLERBUILDER} generate-mapper \
     --service google.cloud.contentwarehouse.v1 \
