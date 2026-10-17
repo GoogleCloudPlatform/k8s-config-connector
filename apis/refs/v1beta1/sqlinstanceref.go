@@ -27,7 +27,7 @@ import (
 )
 
 type SQLInstanceRef struct {
-	/* The SQLInstance selfLink, when not managed by Config Connector. */
+	/* The SQLInstance name, when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `SQLInstance` resource. */
 	Name string `json:"name,omitempty"`
