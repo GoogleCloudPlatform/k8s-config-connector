@@ -38,6 +38,20 @@ spec:
         targetField: name
       iamMemberReferenceConfig:
         targetField: writer_identity
+      containers:
+        - type: project
+          tfField: project
+        - type: folder
+          tfField: folder
+        - type: organization
+          tfField: org_id
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+        - type: folder
+          key: folderRef
+        - type: organization
+          key: organizationRef
       resourceReferences:
         - tfField: project
           key: projectRef
