@@ -66,6 +66,32 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DialogflowConversationDataset:ConversationDataset
 
 # Generate mapper for Dialogflow CX v3 service
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.dialogflow.cx.v3 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource DialogflowTool:Tool
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.dialogflow.cx.v3 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --resource DialogflowTool:Tool
+
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.dialogflow.v2 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource DialogflowConversationProfile:ConversationProfile
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.dialogflow.v2 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --resource DialogflowConversationProfile:ConversationProfile
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dialogflow.cx.v3 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \

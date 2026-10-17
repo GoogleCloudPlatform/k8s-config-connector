@@ -15,7 +15,6 @@
 package codegen
 
 import (
-	"fmt"
 	"maps"
 	"os"
 	"path/filepath"
@@ -202,73 +201,62 @@ func TestGeneratedFileWriteAdditiveMappers(t *testing.T) {
 	}
 
 	writeAccounts := func() {
-		mg := NewMapperGenerator(nil, baseDir, &annotations.FileAnnotation{
+		var gb generatorBase
+		gb.init(baseDir)
+		f := gb.getOutputFile(key)
+		f.goPackage = "merchantapi"
+		f.fileAnnotation = &annotations.FileAnnotation{
 			Key: "+generated:mapper",
 			Attributes: map[string][]string{
 				"krm.group":     {"merchantapi.cnrm.cloud.google.com"},
 				"krm.version":   {"v1alpha1"},
 				"proto.service": {"google.shopping.merchant.accounts.v1"},
 			},
-		}, false)
-		mg.LoadExistingImports("merchantapi")
-		pbAlias := mg.AddGoImportAlias("cloud.google.com/go/shopping/merchant/accounts/apiv1/accountspb", "pb")
-
-		f := mg.getOutputFile(key)
-		f.goPackage = "merchantapi"
-		f.fileAnnotation = mg.generatedFileAnnotation
+		}
 		f.validKRMTypes = map[string]bool{"AccountType": true, "DataSourceType": true}
 		f.addImport("", "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct")
 		f.addImport("krm", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/merchantapi/v1alpha1")
-		for _, imp := range mg.importedPackages {
-			f.addImport(imp.alias, imp.goPackage)
-		}
-		fmt.Fprintf(&f.body, `
-func AccountType_FromProto(mapCtx *direct.MapContext, in *%s.AccountType) *krm.AccountType {
+		f.addImport("pb", "cloud.google.com/go/shopping/merchant/accounts/apiv1/accountspb")
+		f.body.WriteString(`
+func AccountType_FromProto(mapCtx *direct.MapContext, in *pb.AccountType) *krm.AccountType {
 	if in == nil {
 		return nil
 	}
 	out := &krm.AccountType{}
 	return out
 }
-`, pbAlias)
+`)
 		if err := f.Write(true, true, false); err != nil {
 			t.Fatalf("writeAccounts failed: %v", err)
 		}
 	}
 
 	writeDataSources := func() {
-		mg := NewMapperGenerator(nil, baseDir, &annotations.FileAnnotation{
+		var gb generatorBase
+		gb.init(baseDir)
+		f := gb.getOutputFile(key)
+		f.goPackage = "merchantapi"
+		f.fileAnnotation = &annotations.FileAnnotation{
 			Key: "+generated:mapper",
 			Attributes: map[string][]string{
 				"krm.group":     {"merchantapi.cnrm.cloud.google.com"},
 				"krm.version":   {"v1alpha1"},
 				"proto.service": {"google.shopping.merchant.datasources.v1"},
 			},
-		}, false)
-		mg.LoadExistingImports("merchantapi")
-		pbAlias := mg.AddGoImportAlias("cloud.google.com/go/shopping/merchant/datasources/apiv1/datasourcespb", "pb")
-		if pbAlias == "pb" {
-			t.Fatalf("expected non-colliding alias for datasourcespb when pb is already bound to accountspb, got %q", pbAlias)
 		}
-
-		f := mg.getOutputFile(key)
-		f.goPackage = "merchantapi"
-		f.fileAnnotation = mg.generatedFileAnnotation
 		f.validKRMTypes = map[string]bool{"AccountType": true, "DataSourceType": true}
 		f.addImport("", "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct")
 		f.addImport("krm", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/merchantapi/v1alpha1")
-		for _, imp := range mg.importedPackages {
-			f.addImport(imp.alias, imp.goPackage)
-		}
-		fmt.Fprintf(&f.body, `
-func DataSourceType_FromProto(mapCtx *direct.MapContext, in *%s.DataSourceType) *krm.DataSourceType {
+		f.addImport("datasourcespb", "cloud.google.com/go/shopping/merchant/datasources/apiv1/datasourcespb")
+		f.body.WriteString(`
+func DataSourceType_FromProto(mapCtx *direct.MapContext, in *datasourcespb.DataSourceType) *krm.DataSourceType {
 	if in == nil {
 		return nil
 	}
 	out := &krm.DataSourceType{}
 	return out
 }
-`, pbAlias)
+`)
 		if err := f.Write(true, true, false); err != nil {
 			t.Fatalf("writeDataSources failed: %v", err)
 		}
@@ -318,3 +306,390 @@ func DataSourceType_FromProto(mapCtx *direct.MapContext, in *%s.DataSourceType) 
 		t.Errorf("re-running additive mapper Write was not idempotent (-first +second):\n%s", diff)
 	}
 }
+
+func TestGeneratedFileWriteSkipsCommentOnlyExternalBlocks(t *testing.T) {
+	baseDir := t.TempDir()
+	key := generatedFileKey{
+		GoPackage: "osconfig/v1beta1",
+		FileName:  "types.generated.go",
+	}
+
+	// First run has only commented-out blocks (all active types already moved to handwritten files).
+	var gb1 generatorBase
+	gb1.init(baseDir)
+	f1 := gb1.getOutputFile(key)
+	f1.goPackage = "v1beta1"
+	f1.fileAnnotation = &annotations.FileAnnotation{
+		Key: "+generated:types",
+		Attributes: map[string][]string{
+			"krm.group":     {"osconfig.cnrm.cloud.google.com"},
+			"krm.version":   {"v1beta1"},
+			"proto.service": {"google.cloud.osconfig.v1"},
+			"resource":      {"OSConfigOSPolicyAssignment:OSPolicyAssignment"},
+		},
+	}
+	f1.body.WriteString(`
+/* found existing non-generated go type "OSPolicyAssignment", skipping
+// +kcc:proto=google.cloud.osconfig.v1.OSPolicyAssignment
+type OSPolicyAssignment struct {
+}
+*/
+`)
+	if err := f1.Write(true, true, true); err != nil {
+		t.Fatalf("f1.Write failed: %v", err)
+	}
+
+	// Second run must replace without merging dead comments or file annotations from the comment-only first run.
+	var gb2 generatorBase
+	gb2.init(baseDir)
+	f2 := gb2.getOutputFile(key)
+	f2.goPackage = "v1beta1"
+	f2.fileAnnotation = &annotations.FileAnnotation{
+		Key: "+generated:types",
+		Attributes: map[string][]string{
+			"krm.group":     {"osconfig.cnrm.cloud.google.com"},
+			"krm.version":   {"v1beta1"},
+			"proto.service": {"google.cloud.osconfig.v1beta"},
+			"resource":      {"OSConfigGuestPolicy:GuestPolicy"},
+		},
+	}
+	f2.body.WriteString(`
+/* found existing non-generated go type "GuestPolicy", skipping
+// +kcc:proto=google.cloud.osconfig.v1beta.GuestPolicy
+type GuestPolicy struct {
+}
+*/
+`)
+	if err := f2.Write(true, true, true); err != nil {
+		t.Fatalf("f2.Write failed: %v", err)
+	}
+
+	gotBytes, err := os.ReadFile(filepath.Join(baseDir, "osconfig", "v1beta1", "types.generated.go"))
+	if err != nil {
+		t.Fatalf("reading types.generated.go: %v", err)
+	}
+	got := string(gotBytes)
+	if strings.Contains(got, "OSPolicyAssignment") || strings.Contains(got, "google.cloud.osconfig.v1\n") {
+		t.Errorf("expected comment-only first run not to be merged into second run, got:\n%s", got)
+	}
+}
+
+func TestGeneratedFileWriteSkipsSeparateGeneratedTypesTarget(t *testing.T) {
+	baseDir := t.TempDir()
+	pkgDir := filepath.Join(baseDir, "dialogflow", "v1alpha1")
+	if err := os.MkdirAll(pkgDir, 0755); err != nil {
+		t.Fatalf("mkdir: %v", err)
+	}
+
+	// Existing securitysettings_types.generated.go claims DialogflowSecuritySettings:SecuritySettings.
+	sepFile := filepath.Join(pkgDir, "securitysettings_types.generated.go")
+	if err := os.WriteFile(sepFile, []byte(`// +generated:types
+// krm.group: dialogflow.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.dialogflow.cx.v3
+// resource: DialogflowSecuritySettings:SecuritySettings
+
+package v1alpha1
+`), 0644); err != nil {
+		t.Fatalf("writing securitysettings_types.generated.go: %v", err)
+	}
+
+	key := generatedFileKey{
+		GoPackage: "dialogflow/v1alpha1",
+		FileName:  "types.generated.go",
+	}
+
+	// Step 1 writes Dialogflow v2 types to types.generated.go.
+	var gb1 generatorBase
+	gb1.init(baseDir)
+	f1 := gb1.getOutputFile(key)
+	f1.goPackage = "v1alpha1"
+	f1.fileAnnotation = &annotations.FileAnnotation{
+		Key: "+generated:types",
+		Attributes: map[string][]string{
+			"krm.group":     {"dialogflow.cnrm.cloud.google.com"},
+			"krm.version":   {"v1alpha1"},
+			"proto.service": {"google.cloud.dialogflow.v2"},
+			"resource":      {"DialogflowGenerator:Generator"},
+		},
+	}
+	f1.body.WriteString(`
+// +kcc:proto=google.cloud.dialogflow.v2.ConversationContext
+type ConversationContext struct {
+}
+`)
+	if err := f1.Write(true, true, true); err != nil {
+		t.Fatalf("f1.Write failed: %v", err)
+	}
+
+	// Step 2 regenerates DialogflowSecuritySettings:SecuritySettings (which generate.sh will mv to securitysettings_types.generated.go).
+	// It must NOT merge ConversationContext from types.generated.go.
+	var gb2 generatorBase
+	gb2.init(baseDir)
+	f2 := gb2.getOutputFile(key)
+	f2.goPackage = "v1alpha1"
+	f2.fileAnnotation = &annotations.FileAnnotation{
+		Key: "+generated:types",
+		Attributes: map[string][]string{
+			"krm.group":     {"dialogflow.cnrm.cloud.google.com"},
+			"krm.version":   {"v1alpha1"},
+			"proto.service": {"google.cloud.dialogflow.cx.v3"},
+			"resource":      {"DialogflowSecuritySettings:SecuritySettings"},
+		},
+	}
+	f2.body.WriteString(`
+// +kcc:proto=google.cloud.dialogflow.cx.v3.SecuritySettings.AudioExportSettings
+type SecuritySettings_AudioExportSettings struct {
+}
+`)
+	if err := f2.Write(true, true, true); err != nil {
+		t.Fatalf("f2.Write failed: %v", err)
+	}
+
+	gotBytes, err := os.ReadFile(filepath.Join(pkgDir, "types.generated.go"))
+	if err != nil {
+		t.Fatalf("reading types.generated.go: %v", err)
+	}
+	got := string(gotBytes)
+	if strings.Contains(got, "ConversationContext") {
+		t.Errorf("expected separate *_types.generated.go target not to merge ConversationContext, got:\n%s", got)
+	}
+}
+
+func TestGeneratedFileWritePreservesActiveTypeOverCommentedDifferentProto(t *testing.T) {
+	baseDir := t.TempDir()
+	key := generatedFileKey{
+		GoPackage: "foo/v1alpha1",
+		FileName:  "types.generated.go",
+	}
+
+	var gb1 generatorBase
+	gb1.init(baseDir)
+	f1 := gb1.getOutputFile(key)
+	f1.goPackage = "v1alpha1"
+	f1.body.WriteString(`
+// +kcc:proto=google.cloud.foo.v1.sub1.EncryptionConfig
+type EncryptionConfig struct {
+	KmsKey *string ` + "`json:\"kmsKey,omitempty\"`" + `
+}
+`)
+	if err := f1.Write(true, true, true); err != nil {
+		t.Fatalf("f1.Write failed: %v", err)
+	}
+
+	// Second service emits a commented-out EncryptionConfig from a DIFFERENT proto message.
+	var gb2 generatorBase
+	gb2.init(baseDir)
+	f2 := gb2.getOutputFile(key)
+	f2.goPackage = "v1alpha1"
+	f2.body.WriteString(`
+/* unreachable type:
+// +kcc:proto=google.cloud.foo.v1.sub2.EncryptionConfig
+type EncryptionConfig struct {
+	OtherField *string ` + "`json:\"otherField,omitempty\"`" + `
+}
+*/
+
+// +kcc:proto=google.cloud.foo.v1.sub2.Sub2Config
+type Sub2Config struct {
+}
+`)
+	if err := f2.Write(true, true, true); err != nil {
+		t.Fatalf("f2.Write failed: %v", err)
+	}
+
+	gotBytes, err := os.ReadFile(filepath.Join(baseDir, "foo", "v1alpha1", "types.generated.go"))
+	if err != nil {
+		t.Fatalf("reading types.generated.go: %v", err)
+	}
+	got := string(gotBytes)
+	if !strings.Contains(got, "// +kcc:proto=google.cloud.foo.v1.sub1.EncryptionConfig\ntype EncryptionConfig struct") {
+		t.Errorf("expected active EncryptionConfig from sub1 to be preserved over commented sub2 block, got:\n%s", got)
+	}
+	if !strings.Contains(got, "type Sub2Config struct") {
+		t.Errorf("expected Sub2Config to be present, got:\n%s", got)
+	}
+}
+
+func TestGeneratedFileWriteAutoDiscoversValidKRMTypesFromAPIDir(t *testing.T) {
+	baseDir := t.TempDir()
+	apiDir := filepath.Join(baseDir, "apis", "foo", "v1alpha1")
+	if err := os.MkdirAll(apiDir, 0755); err != nil {
+		t.Fatalf("mkdir: %v", err)
+	}
+	// Only KeptSpec is an active type; PrunedSpec is commented out.
+	if err := os.WriteFile(filepath.Join(apiDir, "types.generated.go"), []byte(`package v1alpha1
+
+type KeptSpec struct{}
+type CurrentSpec struct{}
+
+/* unreachable type:
+type PrunedSpec struct{}
+*/
+`), 0644); err != nil {
+		t.Fatalf("writing types.generated.go: %v", err)
+	}
+
+	key := generatedFileKey{
+		GoPackage: "pkg/controller/direct/foo",
+		FileName:  "mapper.generated.go",
+	}
+
+	var gb1 generatorBase
+	gb1.init(baseDir)
+	f1 := gb1.getOutputFile(key)
+	f1.goPackage = "foo"
+	f1.addImport("krm", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/foo/v1alpha1")
+	f1.body.WriteString(`
+func KeptSpec_FromProto(mapCtx *direct.MapContext, in * string) *krm.KeptSpec {
+	return nil
+}
+
+func PrunedSpec_FromProto(mapCtx *direct.MapContext, in *string) *krm.PrunedSpec {
+	return nil
+}
+`)
+	if err := f1.Write(true, true, false); err != nil {
+		t.Fatalf("f1.Write failed: %v", err)
+	}
+
+	// Second run leaves f2.validKRMTypes nil so discoverValidKRMTypes scans apis/foo/v1alpha1.
+	var gb2 generatorBase
+	gb2.init(baseDir)
+	f2 := gb2.getOutputFile(key)
+	f2.goPackage = "foo"
+	f2.addImport("krm", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/foo/v1alpha1")
+	f2.body.WriteString(`
+func CurrentSpec_FromProto(mapCtx *direct.MapContext, in *string) *krm.CurrentSpec {
+	return nil
+}
+`)
+	if err := f2.Write(true, true, false); err != nil {
+		t.Fatalf("f2.Write failed: %v", err)
+	}
+
+	gotBytes, err := os.ReadFile(filepath.Join(baseDir, "pkg", "controller", "direct", "foo", "mapper.generated.go"))
+	if err != nil {
+		t.Fatalf("reading mapper.generated.go: %v", err)
+	}
+	got := string(gotBytes)
+	if !strings.Contains(got, "func KeptSpec_FromProto") {
+		t.Errorf("expected KeptSpec_FromProto to be preserved, got:\n%s", got)
+	}
+	if strings.Contains(got, "func PrunedSpec_FromProto") {
+		t.Errorf("expected PrunedSpec_FromProto to be pruned via auto-discovered validKRMTypes, got:\n%s", got)
+	}
+	if !strings.Contains(got, "func CurrentSpec_FromProto") {
+		t.Errorf("expected CurrentSpec_FromProto to be present, got:\n%s", got)
+	}
+}
+
+func TestGeneratedFileWriteDisambiguatesCollidingImportAliases(t *testing.T) {
+	baseDir := t.TempDir()
+	key := generatedFileKey{
+		GoPackage: "pkg/controller/direct/foo",
+		FileName:  "mapper.generated.go",
+	}
+
+	var gb1 generatorBase
+	gb1.init(baseDir)
+	f1 := gb1.getOutputFile(key)
+	f1.goPackage = "foo"
+	f1.addImport("pb", "cloud.google.com/go/foo/apiv1/foopb")
+	f1.body.WriteString(`
+func Alpha_FromProto(in *pb.Alpha) *pb.Alpha {
+	out := &pb.Alpha{}
+	return out
+}
+`)
+	if err := f1.Write(true, true, true); err != nil {
+		t.Fatalf("f1.Write failed: %v", err)
+	}
+
+	// Second run binds "pb" to a different proto package.
+	var gb2 generatorBase
+	gb2.init(baseDir)
+	f2 := gb2.getOutputFile(key)
+	f2.goPackage = "foo"
+	f2.addImport("pb", "cloud.google.com/go/foo/sub/apiv1/subpb")
+	f2.body.WriteString(`
+func Beta_FromProto(in *pb.Beta) *pb.Beta {
+	out := &pb.Beta{}
+	return out
+}
+`)
+	if err := f2.Write(true, true, true); err != nil {
+		t.Fatalf("f2.Write failed: %v", err)
+	}
+
+	gotBytes, err := os.ReadFile(filepath.Join(baseDir, "pkg", "controller", "direct", "foo", "mapper.generated.go"))
+	if err != nil {
+		t.Fatalf("reading mapper.generated.go: %v", err)
+	}
+	got := string(gotBytes)
+	if !strings.Contains(got, `pb_2 "cloud.google.com/go/foo/apiv1/foopb"`) {
+		t.Errorf("expected disambiguated import alias pb_2 for foopb, got:\n%s", got)
+	}
+	if !strings.Contains(got, `pb "cloud.google.com/go/foo/sub/apiv1/subpb"`) {
+		t.Errorf("expected import alias pb for subpb, got:\n%s", got)
+	}
+	if !strings.Contains(got, "func Alpha_FromProto(in *pb_2.Alpha) *pb_2.Alpha") {
+		t.Errorf("expected Alpha_FromProto to have pb rewritten to pb_2, got:\n%s", got)
+	}
+	if !strings.Contains(got, "func Beta_FromProto(in *pb.Beta) *pb.Beta") {
+		t.Errorf("expected Beta_FromProto to keep pb.Beta, got:\n%s", got)
+	}
+}
+
+func TestGeneratedFileWritePreservesNonRequiredSharedType(t *testing.T) {
+	baseDir := t.TempDir()
+	key := generatedFileKey{
+		GoPackage: "aiplatform/v1alpha1",
+		FileName:  "types.generated.go",
+	}
+
+	var gb1 generatorBase
+	gb1.init(baseDir)
+	f1 := gb1.getOutputFile(key)
+	f1.goPackage = "v1alpha1"
+	f1.body.WriteString(`
+// +kcc:proto=google.cloud.aiplatform.v1.GcsSource
+type GCSSource struct {
+	Uris []string ` + "`json:\"uris,omitempty\"`" + `
+}
+`)
+	if err := f1.Write(true, true, true); err != nil {
+		t.Fatalf("f1.Write failed: %v", err)
+	}
+
+	// Second run (--prepopulate-resource) generates GCSSource with // +required;
+	// existing non-required GCSSource must be preserved for CRD backward compatibility.
+	var gb2 generatorBase
+	gb2.init(baseDir)
+	f2 := gb2.getOutputFile(key)
+	f2.goPackage = "v1alpha1"
+	f2.body.WriteString(`
+// +kcc:proto=google.cloud.aiplatform.v1.GcsSource
+type GCSSource struct {
+	// +required
+	URIs []string ` + "`json:\"uris,omitempty\"`" + `
+}
+`)
+	if err := f2.Write(true, true, true); err != nil {
+		t.Fatalf("f2.Write failed: %v", err)
+	}
+
+	gotBytes, err := os.ReadFile(filepath.Join(baseDir, "aiplatform", "v1alpha1", "types.generated.go"))
+	if err != nil {
+		t.Fatalf("reading types.generated.go: %v", err)
+	}
+	got := string(gotBytes)
+	if strings.Contains(got, "+required") {
+		t.Errorf("expected existing non-required GCSSource to be preserved without +required, got:\n%s", got)
+	}
+	if !strings.Contains(got, "Uris []string") {
+		t.Errorf("expected existing GCSSource field Uris to be preserved, got:\n%s", got)
+	}
+}
+
+

@@ -50,6 +50,19 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version agentregistry.cnrm.cloud.google.com/v1alpha1 \
   --resource AgentRegistryBinding:Binding
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.agentregistry.v1 \
+  --api-version agentregistry.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource AgentregistryService:Service
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.agentregistry.v1 \
+  --api-version agentregistry.cnrm.cloud.google.com/v1alpha1 \
+  --resource AgentregistryService:Service
+
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \
   --service google.cloud.agentregistry.v1 \

@@ -710,13 +710,21 @@ func renderReferenceMethods(w *bytes.Buffer, plan *IdentityPlan, ov *HandWritten
 	}
 	if !ov.RefMethods["GetNamespacedName"] {
 		fmt.Fprintf(w, "func (r *%s) GetNamespacedName() types.NamespacedName {\n", refType)
-		w.WriteString("\treturn types.NamespacedName{\n\t\tName:      r.Name,\n\t\tNamespace: r.Namespace,\n\t}\n}\n\n")
+		if ov.RefStructMissingNameNamespace {
+			w.WriteString("\treturn types.NamespacedName{}\n}\n\n")
+		} else {
+			w.WriteString("\treturn types.NamespacedName{\n\t\tName:      r.Name,\n\t\tNamespace: r.Namespace,\n\t}\n}\n\n")
+		}
 	}
 	if !ov.RefMethods["GetExternal"] {
 		fmt.Fprintf(w, "func (r *%s) GetExternal() string {\n\treturn r.External\n}\n\n", refType)
 	}
 	if !ov.RefMethods["SetExternal"] {
-		fmt.Fprintf(w, "func (r *%s) SetExternal(ref string) {\n\tr.External = ref\n\tr.Name = \"\"\n\tr.Namespace = \"\"\n}\n\n", refType)
+		if ov.RefStructMissingNameNamespace {
+			fmt.Fprintf(w, "func (r *%s) SetExternal(ref string) {\n\tr.External = ref\n}\n\n", refType)
+		} else {
+			fmt.Fprintf(w, "func (r *%s) SetExternal(ref string) {\n\tr.External = ref\n\tr.Name = \"\"\n\tr.Namespace = \"\"\n}\n\n", refType)
+		}
 	}
 	if !ov.RefMethods["ValidateExternal"] {
 		fmt.Fprintf(w, "func (r *%s) ValidateExternal(ref string) error {\n\tid := &%s{}\n\tif err := id.FromExternal(ref); err != nil {\n\t\treturn err\n\t}\n\treturn nil\n}\n\n", refType, idType)

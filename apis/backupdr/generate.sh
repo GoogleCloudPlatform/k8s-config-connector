@@ -49,6 +49,17 @@ ${CONTROLLERBUILDER} generate-types \
 
 sed -i 's/\*common.Status/\*common.DeprecatedStatusWithDetails/g' ${REPO_ROOT}/apis/backupdr/v1beta1/types.generated.go
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.backupdr.v1 \
+  --api-version backupdr.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource BackupdrBackup:Backup
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.backupdr.v1 \
+  --api-version backupdr.cnrm.cloud.google.com/v1alpha1 \
+  --resource BackupdrBackup:Backup
+
 ${CONTROLLERBUILDER} generate-mapper \
     --multiversion \
     --service google.cloud.backupdr.v1 \

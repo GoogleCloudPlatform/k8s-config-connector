@@ -1119,7 +1119,10 @@ func TestCRDObjectTypes(t *testing.T) {
 		"vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com":                    true, // status.observedState.modelToUpload.originalModelInfo is an empty object
 		"vertexaischedules.aiplatform.cnrm.cloud.google.com":                            true, // spec.createNotebookExecutionJobRequest.notebookExecutionJob.workbenchRuntime is an empty object
 		"transcoderjobs.transcoder.cnrm.cloud.google.com":                               true, // spec.config.elementaryStreams[].videoStream.vp9.sdr is an empty object
-
+		"aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com":                     true, // GCP known pattern: Empty oneof option (spec.tools[].codeExecution)
+		"aiplatformragcorpora.aiplatform.cnrm.cloud.google.com":                         true, // GCP known pattern: Empty oneof option (spec.vectorDbConfig.ragManagedDb.knn)
+		"contentwarehousedocumentschemas.contentwarehouse.cnrm.cloud.google.com":        true, // GCP known pattern: Empty oneof option (spec.propertyDefinitions[].textTypeOptions)
+		"dialogflowtools.dialogflow.cnrm.cloud.google.com":                              true, // GCP known pattern: Empty oneof option (spec.dataStoreSpec.fallbackPrompt)
 	}
 
 	crds, err := crdloader.LoadAllCRDs()

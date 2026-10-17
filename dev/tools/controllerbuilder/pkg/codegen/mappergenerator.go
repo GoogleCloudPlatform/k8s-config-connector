@@ -16,11 +16,15 @@ package codegen
 
 import (
 	"fmt"
+	"go/ast"
+	"go/parser"
+	"go/token"
 	"go/types"
 	"io"
 	"os"
 	"path/filepath"
 	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/annotations"
@@ -154,13 +158,44 @@ func (v *MapperGenerator) LoadExistingImports(goPackage string) {
 			}
 		}
 	}
-	_, imports, err := parseGeneratedGoBlocks(b, lastGoComponent(goPackage), false)
+	fset := token.NewFileSet()
+	astFile, err := parser.ParseFile(fset, p, b, parser.ParseComments)
 	if err != nil {
 		return
 	}
-	for pkg, alias := range imports {
-		if pkg == "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct" {
+	hasFuncDecls := false
+	hasVersionedFuncs := false
+	for _, decl := range astFile.Decls {
+		fn, ok := decl.(*ast.FuncDecl)
+		if !ok || fn.Name == nil {
 			continue
+		}
+		hasFuncDecls = true
+		for _, suffix := range []string{"_FromProto", "_ToProto"} {
+			if base, ok := strings.CutSuffix(fn.Name.Name, suffix); ok {
+				if idx := strings.LastIndex(base, "_"); idx > 0 {
+					ver := base[idx+1:]
+					if strings.HasPrefix(ver, "v1") || strings.HasPrefix(ver, "v2") {
+						hasVersionedFuncs = true
+					}
+				}
+			}
+		}
+	}
+	if hasFuncDecls && hasVersionedFuncs != v.multiversion {
+		return
+	}
+	for _, imp := range astFile.Imports {
+		if imp.Path == nil {
+			continue
+		}
+		pkg, err := strconv.Unquote(imp.Path.Value)
+		if err != nil || pkg == "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct" {
+			continue
+		}
+		alias := ""
+		if imp.Name != nil {
+			alias = imp.Name.Name
 		}
 		v.importedPackages[pkg] = importedPackage{
 			alias:     alias,
@@ -309,8 +344,6 @@ func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 		}
 	}
 
-	validKRMTypes := v.collectValidKRMTypes()
-
 	for _, pair := range v.typePairs {
 		goPackage, shouldVisit := v.goPathForMessage(pair.Proto)
 		if !shouldVisit {
@@ -325,7 +358,6 @@ func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 		out.goPackage = lastGoComponent(goPackage)
 
 		out.fileAnnotation = v.generatedFileAnnotation
-		out.validKRMTypes = validKRMTypes
 
 		{
 			out.addImport("refsv1beta1", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1")
@@ -341,28 +373,6 @@ func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 	}
 
 	return nil
-}
-
-func (v *MapperGenerator) collectValidKRMTypes() map[string]bool {
-	if len(v.goPackages) == 0 {
-		return nil
-	}
-	var expectedPackagePrefix string
-	if v.generatedFileAnnotation != nil {
-		if groups := v.generatedFileAnnotation.Attributes["krm.group"]; len(groups) > 0 && groups[0] != "" {
-			groupName := strings.TrimSuffix(groups[0], ".cnrm.cloud.google.com")
-			expectedPackagePrefix = "github.com/GoogleCloudPlatform/k8s-config-connector/apis/" + groupName
-		}
-	}
-	valid := make(map[string]bool)
-	for _, pkg := range v.goPackages {
-		for _, s := range pkg.Structs {
-			if expectedPackagePrefix == "" || strings.HasPrefix(s.GoPackage, expectedPackagePrefix) {
-				valid[s.Name] = true
-			}
-		}
-	}
-	return valid
 }
 
 func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string, pair *typePair) {

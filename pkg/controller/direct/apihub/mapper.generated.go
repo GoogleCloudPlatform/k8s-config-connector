@@ -760,39 +760,3 @@ func Plugin_HostingService_ToProto(mapCtx *direct.MapContext, in *krm.Plugin_Hos
 	out.ServiceUri = direct.ValueOf(in.ServiceURI)
 	return out
 }
-func SourceMetadata_PluginInstanceActionSource_FromProto(mapCtx *direct.MapContext, in *pb.SourceMetadata_PluginInstanceActionSource) *krm.SourceMetadata_PluginInstanceActionSource {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SourceMetadata_PluginInstanceActionSource{}
-	// MISSING: PluginInstance
-	// MISSING: ActionID
-	return out
-}
-func SourceMetadata_PluginInstanceActionSource_ToProto(mapCtx *direct.MapContext, in *krm.SourceMetadata_PluginInstanceActionSource) *pb.SourceMetadata_PluginInstanceActionSource {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SourceMetadata_PluginInstanceActionSource{}
-	// MISSING: PluginInstance
-	// MISSING: ActionID
-	return out
-}
-func SourceMetadata_PluginInstanceActionSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SourceMetadata_PluginInstanceActionSource) *krm.SourceMetadata_PluginInstanceActionSourceObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SourceMetadata_PluginInstanceActionSourceObservedState{}
-	out.PluginInstance = direct.LazyPtr(in.GetPluginInstance())
-	out.ActionID = direct.LazyPtr(in.GetActionId())
-	return out
-}
-func SourceMetadata_PluginInstanceActionSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SourceMetadata_PluginInstanceActionSourceObservedState) *pb.SourceMetadata_PluginInstanceActionSource {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SourceMetadata_PluginInstanceActionSource{}
-	out.PluginInstance = direct.ValueOf(in.PluginInstance)
-	out.ActionId = direct.ValueOf(in.ActionID)
-	return out
-}
