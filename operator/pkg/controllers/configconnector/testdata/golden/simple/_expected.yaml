@@ -3260,6 +3260,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - enterpriseknowledgegraph.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - essentialcontacts.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5227,6 +5239,14 @@ rules:
   - watch
 - apiGroups:
   - edgenetwork.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - enterpriseknowledgegraph.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
