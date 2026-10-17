@@ -12,7 +12,12 @@ import (
 //These functions are used by both the `resource_container_node_pool` and `resource_container_cluster` for handling regional clusters
 
 func IsZone(location string) bool {
-	return len(strings.Split(location, "-")) == 3
+	parts := strings.Split(location, "-")
+	if len(parts) < 3 {
+		return false
+	}
+	lastPart := parts[len(parts)-1]
+	return len(lastPart) == 1 && lastPart[0] >= 'a' && lastPart[0] <= 'z'
 }
 
 // GetLocation attempts to get values in this order (if they exist):
