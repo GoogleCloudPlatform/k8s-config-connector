@@ -29,7 +29,8 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
+PROTO_SHA="28ba5d15234eff44241492ca72b135e1171fc537"
+./generate-proto.sh ${PROTO_SHA}
 
 ${CONTROLLERBUILDER} generate-types \
     --service google.cloud.dataplex.v1 \
@@ -43,7 +44,8 @@ ${CONTROLLERBUILDER} generate-types \
     --resource DataplexAspectType:AspectType \
     --resource DataplexDataScan:DataScan \
     --resource DataplexMetadataJob:MetadataJob \
-    --resource DataplexMetadataFeed:MetadataFeed
+    --resource DataplexMetadataFeed:MetadataFeed \
+    --resource DataplexGlossary:Glossary
 
 # Handled recursive self-referential fields by defining AspectType_MetadataTemplate manually in dataplexaspecttype_types.go
 # DataProduct types are defined manually in dataplexdataproduct_types.go to avoid schema drift in other resources

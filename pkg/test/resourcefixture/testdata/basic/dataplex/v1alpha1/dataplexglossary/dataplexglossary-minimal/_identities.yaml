@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: dataplex.cnrm.cloud.google.com
+  kind: DataplexGlossary
+  name: dataplexglossary-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
