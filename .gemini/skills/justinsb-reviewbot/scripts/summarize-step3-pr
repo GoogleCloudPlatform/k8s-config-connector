@@ -1,0 +1,202 @@
+#!/usr/bin/env python3
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import sys
+import json
+import subprocess
+import argparse
+import os
+import re
+
+def run_cmd(cmd, cwd=None, text=True):
+    res = subprocess.run(cmd, capture_output=True, text=text, cwd=cwd)
+    return res
+
+def get_kcc_root():
+    if os.environ.get("KCC_ROOT"):
+        return os.path.abspath(os.environ.get("KCC_ROOT"))
+    possible_paths = [
+        "k8s-config-connector",
+        os.path.expanduser("~/projects/kcc/reviewprs/k8s-config-connector")
+    ]
+    for path in possible_paths:
+        if os.path.exists(path) and os.path.exists(os.path.join(path, ".git")):
+            return os.path.abspath(path)
+    print("Error: Could not locate k8s-config-connector repository root.", file=sys.stderr)
+    sys.exit(1)
+
+def main():
+    parser = argparse.ArgumentParser(description="PR Review Summary Tool for Fuzzer PRs")
+    parser.add_argument("pr", help="PR number or branch name")
+    args = parser.parse_args()
+
+    kcc_root = get_kcc_root()
+
+    # Query PR info using gh
+    print(f"Fetching PR #{args.pr} metadata from GitHub...")
+    gh_cmd = ["gh", "pr", "view", args.pr, "--json", "number,title,state,mergeable,statusCheckRollup,headRefName"]
+    res = run_cmd(gh_cmd, cwd=kcc_root)
+    if res.returncode != 0:
+        print(f"Error fetching PR: {res.stderr}", file=sys.stderr)
+        sys.exit(1)
+
+    pr_data = json.loads(res.stdout)
+    pr_num = pr_data.get("number")
+    title = pr_data.get("title")
+    mergeable = pr_data.get("mergeable")
+    head_branch = pr_data.get("headRefName")
+    
+    # Fetch latest master from remote first
+    remote = "upstream"
+    git_show_upstream = run_cmd(["git", "rev-parse", "--verify", "upstream/master"], cwd=kcc_root)
+    if git_show_upstream.returncode != 0:
+        remote = "origin"
+    print(f"Fetching latest master from remote '{remote}'...")
+    run_cmd(["git", "fetch", remote, "master"], cwd=kcc_root)
+
+    # Check out the PR branch if not already checked out
+    if not os.environ.get("KCC_ROOT"):
+        current_branch = run_cmd(["git", "branch", "--show-current"], cwd=kcc_root).stdout.strip()
+        if current_branch != head_branch:
+            print(f"Checking out PR branch '{head_branch}'...")
+            checkout_res = run_cmd(["gh", "pr", "checkout", str(pr_num)], cwd=kcc_root)
+            if checkout_res.returncode != 0:
+                print(f"Error checking out PR branch: {checkout_res.stderr}", file=sys.stderr)
+                sys.exit(1)
+
+    # 1. Check Mergeability / Conflicts
+    conflict_status = "✅ No merge conflicts"
+    if mergeable == "CONFLICTING":
+        conflict_status = "❌ Merge conflicts detected with master"
+    elif mergeable == "UNKNOWN":
+        conflict_status = "⚠️ Mergeability status unknown (checks still running/processing on GitHub)"
+
+    # 2. Check GitHub Actions status
+    failing_checks = []
+    pending_checks = []
+    status_rollup = pr_data.get("statusCheckRollup") or []
+    for check in status_rollup:
+        conclusion = check.get("conclusion")
+        status = check.get("status")
+        state = check.get("state")
+        name = check.get("name") or check.get("context")
+        if conclusion == "FAILURE" or state == "FAILURE":
+            failing_checks.append(name)
+        elif status in ["IN_PROGRESS", "QUEUED", "REQUESTED", "WAITING"] or state in ["PENDING"]:
+            pending_checks.append(name)
+
+    actions_status = "✅ All GitHub Actions checks passed"
+    if failing_checks:
+        actions_status = f"❌ Failing checks:\n" + "\n".join([f"  - {c}" for c in failing_checks])
+    elif pending_checks:
+        actions_status = f"⏳ Pending checks:\n" + "\n".join([f"  - {c}" for c in pending_checks])
+
+    # Find merge base
+    base_revision = f"{remote}/master"
+    merge_base_res = run_cmd(["git", "merge-base", base_revision, "HEAD"], cwd=kcc_root)
+    if merge_base_res.returncode != 0:
+        print("Error: Could not find merge-base.", file=sys.stderr)
+        sys.exit(1)
+    merge_base = merge_base_res.stdout.strip()
+
+    # Find changed files in this PR (diff with merge base)
+    git_diff_cmd = ["git", "diff", "--name-only", merge_base, "HEAD"]
+    diff_files = run_cmd(git_diff_cmd, cwd=kcc_root).stdout.strip().split("\n")
+
+    fuzzer_files = [f for f in diff_files if f.endswith("_fuzzer.go")]
+    test_files_under_direct = [f for f in diff_files if f.startswith("pkg/controller/direct/") and f.endswith("_test.go")]
+
+    print("\n" + "="*40)
+    print(f"### PR Fuzzer Review Summary: #{pr_num} - {title}")
+    print(f"Branch: `{head_branch}` (compared against merge-base `{merge_base[:8]}`)\n")
+    print(f"**Merge Status**:\n{conflict_status}\n")
+    print(f"**GitHub Actions Status**:\n{actions_status}\n")
+
+    print("**Fuzzer Design & Compliance Analysis**:")
+    if not fuzzer_files:
+        print("  ❌ No fuzzer files (`*_fuzzer.go`) detected in this branch diff.")
+    
+    for fz_file in fuzzer_files:
+        print(f"\n📂 **Fuzzer File**: `{fz_file}`")
+        full_path = os.path.join(kcc_root, fz_file)
+        if not os.path.exists(full_path):
+            print("  ❌ File does not exist locally")
+            continue
+        with open(full_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        # Check registration
+        if "RegisterKRMFuzzer" in content or "RegisterKRMFuzzer_NoProto" in content:
+            print("  ✅ Registered in `init()` using a KRMFuzzer registry helper")
+        else:
+            print("  ❌ Missing fuzzer registration in init()")
+
+        # Check for legacy direct inserts
+        legacy_inserts = re.findall(r"\.\w+Fields\.Insert", content)
+        if legacy_inserts:
+            print(f"  ❌ Legacy direct field insertions found ({len(legacy_inserts)} calls to .Insert()). Must use helper wrapper methods like SpecField() or StatusField()!")
+        else:
+            print("  ✅ Uses only helper wrapper methods (no legacy direct inserts)")
+
+        # Check for comparison comments block
+        if "Field Comparison" in content or "Spec Fields:" in content:
+            print("  ✅ Contains Field Comparison / Mapping Documentation block")
+        else:
+            print("  ⚠️ WARNING: Missing comparison documentation block comparing KRM spec/status to fuzzer/proto mapping status")
+
+        # Remove comments to avoid matching fields inside documentation block
+        clean_lines = []
+        for line in content.split("\n"):
+            stripped = line.strip()
+            if stripped.startswith("//") or stripped.startswith("/*") or stripped.startswith("*"):
+                continue
+            clean_lines.append(line)
+        clean_content = "\n".join(clean_lines)
+
+        # Parse fields from uncommented code content
+        spec_fields = re.findall(r'\.SpecField\("([^"]+)"\)', clean_content)
+        status_fields = re.findall(r'\.StatusField\("([^"]+)"\)', clean_content)
+        identity_fields = re.findall(r'\.Unimplemented_Identity\("([^"]+)"\)', clean_content)
+        untriaged_fields = re.findall(r'\.Unimplemented_NotYetTriaged\("([^"]+)"\)', clean_content)
+
+        # Fallback to single quote or generic matches if double quotes not matching
+        if not spec_fields:
+            spec_fields = re.findall(r'\.SpecField\(`([^`]+)`\)', clean_content)
+        if not status_fields:
+            status_fields = re.findall(r'\.StatusField\(`([^`]+)`\)', clean_content)
+        if not identity_fields:
+            identity_fields = re.findall(r'\.Unimplemented_Identity\(`([^`]+)`\)', clean_content)
+        if not untriaged_fields:
+            untriaged_fields = re.findall(r'\.Unimplemented_NotYetTriaged\(`([^`]+)`\)', clean_content)
+
+        print(f"  📊 **Field Breakdown**:")
+        print(f"    - **Spec fields ({len(spec_fields)})**: {spec_fields if spec_fields else 'None'}")
+        print(f"    - **Status fields ({len(status_fields)})**: {status_fields if status_fields else 'None'}")
+        print(f"    - **Identity fields ({len(identity_fields)})**: {identity_fields if identity_fields else 'None'}")
+        print(f"    - **Untriaged fields ({len(untriaged_fields)})**: {untriaged_fields if untriaged_fields else 'None'}")
+
+    # Verify no test files under direct controller directories
+    if test_files_under_direct:
+        print(f"\n❌ **Compliance Failure**: Found custom unit test files under direct controller directory:")
+        for tf in test_files_under_direct:
+            print(f"  - `{tf}`")
+        print("  *(Fuzzers must be executed centrally via `pkg/fuzztesting/fuzztests/...`. Custom unit test files are strictly disallowed.)*")
+    else:
+        print("\n✅ No custom unit test files found under direct controller directory (conforms to central fuzzer suite model)")
+
+    print("="*40)
+
+if __name__ == "__main__":
+    main()
