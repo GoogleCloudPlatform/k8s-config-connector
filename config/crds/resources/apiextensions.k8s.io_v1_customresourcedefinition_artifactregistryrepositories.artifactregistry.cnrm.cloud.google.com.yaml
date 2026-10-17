@@ -216,6 +216,14 @@ spec:
                   dockerRepository:
                     description: Specific settings for a Docker remote repository.
                     properties:
+                      customRepository:
+                        description: Customer-specified remote repository.
+                        properties:
+                          uri:
+                            description: 'An http/https uri reference to the custom
+                              remote repository, for ex: "https://registry-1.docker.io".'
+                            type: string
+                        type: object
                       publicRepository:
                         description: One of the publicly available Docker repositories
                           supported by Artifact Registry.
@@ -224,6 +232,14 @@ spec:
                   mavenRepository:
                     description: Specific settings for a Maven remote repository.
                     properties:
+                      customRepository:
+                        description: Customer-specified remote repository.
+                        properties:
+                          uri:
+                            description: 'An http/https uri reference to the upstream
+                              remote repository, for ex: "https://my.maven.registry/".'
+                            type: string
+                        type: object
                       publicRepository:
                         description: One of the publicly available Maven repositories
                           supported by Artifact Registry.
@@ -232,6 +248,14 @@ spec:
                   npmRepository:
                     description: Specific settings for an Npm remote repository.
                     properties:
+                      customRepository:
+                        description: Customer-specified remote repository.
+                        properties:
+                          uri:
+                            description: 'An http/https uri reference to the upstream
+                              remote repository, for ex: "https://my.npm.registry/".'
+                            type: string
+                        type: object
                       publicRepository:
                         description: One of the publicly available Npm repositories
                           supported by Artifact Registry.
@@ -240,6 +264,14 @@ spec:
                   pythonRepository:
                     description: Specific settings for a Python remote repository.
                     properties:
+                      customRepository:
+                        description: Customer-specified remote repository.
+                        properties:
+                          uri:
+                            description: 'An http/https uri reference to the upstream
+                              remote repository, for ex: "https://my.python.registry/".'
+                            type: string
+                        type: object
                       publicRepository:
                         description: One of the publicly available Python repositories
                           supported by Artifact Registry.
