@@ -132,6 +132,7 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 		declarative.WithLabels(r.labelMaker),
 		declarative.WithPreserveNamespace(),
 		declarative.WithManifestController(manifestLoader),
+		declarative.WithApplier(controllers.NewApplier()),
 		declarative.WithOwner(declarative.SourceAsOwner),
 		declarative.WithObjectTransform(r.transformForClusterMode()),
 		declarative.WithObjectTransform(r.handleConfigConnectorLifecycle()),
