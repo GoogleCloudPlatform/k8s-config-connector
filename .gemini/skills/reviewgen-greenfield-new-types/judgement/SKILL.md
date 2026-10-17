@@ -1,6 +1,11 @@
-# Review Guide for KCC Greenfield New Types PRs — Judgement Queue Checklist
+---
+name: reviewgen-greenfield-types-judgement
+description: Comprehensive review checklist for Greenfield Step 2 (Judgement Queue Triage & Finalize Types) PRs. Verifies queue resolution accuracy, parent/identity/reference correctness, `+kcc:proto=` annotations, shared struct isolation, and CRD backward compatibility.
+---
 
-Use this review guide when a Greenfield Step 1 PR modifies `apis/<service>/judgement_queue.yaml` or finalizes a resource `<Kind>` that was scaffolded via bulk generation.
+# Review Guide for KCC Greenfield Step 2 PRs — Judgement Queue Checklist
+
+Use this review guide when reviewing a **Greenfield Step 2 (Judgement Queue Triage)** PR that resolves `apis/<service>/judgement_queue.yaml` and finalizes a resource `<Kind>` that was scaffolded via `--prepopulate-resource`.
 
 Please enforce all of the following review criteria and invariants.
 
@@ -91,9 +96,10 @@ Even if all entries in `judgement_queue.yaml` are resolved, audit the KRM struct
 
 ---
 
-## 5. Generated Files Sync & Exception Files
+## 5. Generated Files Sync, Mapper Generation, & Exception Files
 
-*   **Generated Artifacts in Sync**:
+*   **`generate-mapper --prepopulate-resource` & Generated Artifacts in Sync**:
+    *   Verify `apis/<service>/generate.sh` includes `controllerbuilder generate-mapper` with `--prepopulate-resource` (plus `--multiversion` if the service has both `v1alpha1` and `v1beta1`).
     *   Verify that `apis/<service>/v1alpha1/types.generated.go`, `pkg/controller/direct/<service>/mapper.generated.go`, `apis/<service>/v1alpha1/zz_generated.deepcopy.go`, and `config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_<plural>.<group>.cnrm.cloud.google.com.yaml` are updated and consistent with `<kind>_types.go`.
 *   **Exception Files**:
     *   Greenfield PRs must **not** add new exceptions to `tests/apichecks/testdata/exceptions/missingrefs.txt` or any other exception file, except:
@@ -108,7 +114,7 @@ Even if all entries in `judgement_queue.yaml` are resolved, audit the KRM struct
 When proposing changes or stating LGTM, format the review description as follows:
 
 ```markdown
-### KCC Greenfield Judgement Queue Auto-Review Results
+### KCC Greenfield Step 2 (Judgement Queue) Auto-Review Results
 * **Trigger criteria matched**: [Yes/No]
 * **Judgement Queue Completeness**: [Pass/Fail] - (Confirm `untriaged-bulk-generation` and all actionable entries for `<Kind>` are `resolved`, no entries were deleted, and no `+kcc:guess` comments remain in handwritten files)
 * **Queue Resolution Accuracy**: [Pass/Fail] - (List any `not-applicable` or `accepted` entries that are actually resource references or output-only fields, `etag` left in Spec, or doc comments stripped to evade `TestMissingRefs`)

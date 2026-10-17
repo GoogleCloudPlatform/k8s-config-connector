@@ -177,19 +177,61 @@ Only declare the PR as fully passed/verified if no failures are returned across 
 
 ## Steps
 
+### Pre-Check: Determine Starting Step (Step 1 vs. Step 2 vs. Step 3)
 
-### Step 1: Direct API Types and Identity and Reference Types Pattern
+Before creating a GitHub issue for Step 1 or Step 2, inspect the `GoogleCloudPlatform/k8s-config-connector` repository (`origin/master` or GitHub API) for `{kind}`:
 
-Open a GitHub issue to coordinate the implementation of direct KRM types, identity files, and reference files for a specific Kubernetes resource.
+1. **Case A — Not Yet Prepopulated (`apis/<service>/<version>/{kind_lowercase}_types.go` does NOT exist)**:
+   * Start at **Step 1** below and open the Step 1 GitHub issue.
+2. **Case B — Already Prepopulated in Batch (`apis/<service>/<version>/{kind_lowercase}_types.go` exists AND `apis/<service>/judgement_queue.yaml` has `status: open` entries for `kind: {kind}`)**:
+   * Do **NOT** open a GitHub issue for Step 1.
+   * Record Step 1 in `.agents/workflows/greenfield-checklist-for-kind/journal/{kind}.md` with status `Skipped (Already Prepopulated)` and immediately proceed to **Step 2**.
+3. **Case C — Types Already Finalized (`apis/<service>/<version>/{kind_lowercase}_types.go` exists AND `apis/<service>/judgement_queue.yaml` either does not exist or has NO `status: open` entries for `kind: {kind}`)**:
+   * Do **NOT** open GitHub issues for Step 1 or Step 2.
+   * Record Step 1 and Step 2 in `.agents/workflows/greenfield-checklist-for-kind/journal/{kind}.md` with status `Skipped (Already Completed)` and immediately proceed to **Step 3**.
+
+---
+
+### Step 1: Prepopulate Direct KRM Types, Identity, Mapper, and Judgement Queue
+
+Open a GitHub issue to coordinate the mechanical prepopulation (`--prepopulate-resource`) of KRM types, identity, mapper, CRDs, and `apis/<service>/judgement_queue.yaml` for `{kind}` (unless skipped per the Pre-Check above).
 
 **GitHub Issue Details for Greenfield Resource:**
-*   **Title:** `Greenfield: Implement direct KRM types, identity, and generate.sh for {kind}`
+*   **Title:** `Greenfield: Prepopulate direct KRM types and judgement queue for {kind}`
 *   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
-*   **Labels:** `overseer`, `greenfield`,`step/gen-types`, `overseer/review`
+*   **Labels:** `overseer`, `greenfield`, `step/prepopulate-types`, `overseer/review`
 *   **Body:**
     ````
-    Please follow the skill `.gemini/skills/kcc-direct-greenfield-types-implementer/SKILL.md` for generating types for {kind}.
-    Please follow the skill `.gemini/skills/kcc-identity-reference/SKILL.md` for generating identity for {kind}.
+    Please follow the skill `.gemini/skills/kcc-direct-greenfield-types-implementer/prepopulate/SKILL.md` to mechanically prepopulate KRM types, identity, mapper, CRDs, and `judgement_queue.yaml` for {kind}.
+
+    Validate your changes locally by:
+     * Running `./apis/<service>/generate.sh` and verifying `git diff` is clean.
+     * Running `go build ./apis/<service>/... ./pkg/controller/direct/<service>/...`
+     * Running `go test ./tests/apichecks/...`
+
+    If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/kcc-direct-greenfield-types-implementer/journal/, named after the kind or a similarly unique name.
+
+    When creating the PR, include the release note block set to NONE:
+    ```release-note
+    NONE
+    ```
+
+    ## Review Instructions
+    Use .gemini/skills/reviewgen-greenfield-new-types/prepopulate/SKILL.md to conduct the review.
+    ````
+
+### Step 2: Triage Judgement Queue and Finalize Direct KRM Types, Identity, and Reference
+
+Open a GitHub issue to coordinate triaging `apis/<service>/judgement_queue.yaml` and finalizing the direct KRM types, identity files, and reference files for `{kind}`.
+
+**GitHub Issue Details for Greenfield Resource:**
+*   **Title:** `Greenfield: Triage judgement queue and finalize direct KRM types for {kind}`
+*   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
+*   **Labels:** `overseer`, `greenfield`, `step/gen-types`, `overseer/review`
+*   **Body:**
+    ````
+    Please follow the skill `.gemini/skills/kcc-direct-greenfield-types-implementer/judgement/SKILL.md` for triaging `judgement_queue.yaml` and finalizing types for {kind}.
+    Please follow the skill `.gemini/skills/kcc-identity-reference/SKILL.md` for verifying identity and references for {kind}.
 
     Validate your changes locally by:
      * Running scripts/validate-prereqs.sh, if the script fails the output will contain agent hints for fixing the errors.
@@ -203,10 +245,10 @@ Open a GitHub issue to coordinate the implementation of direct KRM types, identi
     ```
 
     ## Review Instructions
-    Use .gemini/skills/reviewgen-greenfield-new-types/SKILL.md to conduct the review.
+    Use .gemini/skills/reviewgen-greenfield-new-types/judgement/SKILL.md to conduct the review.
     ````
 
-### Step 2: Direct Controller, E2E fixtures and Fuzzer
+### Step 3: Direct Controller, E2E fixtures and Fuzzer
 
 Open a GitHub issue to coordinate the implementation of the direct controller and E2E fixtures for a specific Kubernetes resource.
 
@@ -229,14 +271,14 @@ Open a GitHub issue to coordinate the implementation of the direct controller an
     Use .gemini/skills/reviewgen-greenfield-controller/SKILL.md to conduct the review.
     ````
 
-### Step 3: mockGCP generation
+### Step 4: mockGCP generation
 
 Open a GitHub issue to coordinate the implementation of the mockGCP for a specific Kubernetes resource.
 
 **GitHub Issue Details for Greenfield Resource:**
 *   **Title:** `Greenfield: Implement MockGCP and Alignment for {kind}`
 *   **Assignee:** Inherit assignees from the parent workflow issue (`${SESSION_ID#issue-}`)
-*   **Labels:** `overseer`, `greenfield`,`step/mockgcp`
+*   **Labels:** `overseer`, `greenfield`, `step/mockgcp`
 *   **Body:**
     ````
     Please follow the skill `.gemini/skills/kcc-direct-mockgcp-implementer/SKILL.md` to implement Phase 3 (MockGCP and Alignment) for {kind} to verify behavioral correctness against the simulated GCP services.
@@ -247,7 +289,7 @@ Open a GitHub issue to coordinate the implementation of the mockGCP for a specif
     ```
     ````
 
-### Step 4: MockGCP Alignment with RealGCP
+### Step 5: MockGCP Alignment with RealGCP
 
 Open a GitHub issue to coordinate the alignment of MockGCP logs with RealGCP output to ensure high fidelity.
 
@@ -264,4 +306,3 @@ Open a GitHub issue to coordinate the alignment of MockGCP logs with RealGCP out
     NONE
     ```
     ````
-

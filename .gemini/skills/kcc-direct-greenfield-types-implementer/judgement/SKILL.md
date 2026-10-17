@@ -1,6 +1,11 @@
-# KCC Direct Greenfield Types Implementer — Judgement Queue Workflow
+---
+name: kcc-direct-greenfield-types-judgement
+description: Step 2 of the KCC Greenfield pipeline. Triages and resolves all `judgement_queue.yaml` entries for a bulk-prepopulated greenfield resource `<Kind>`, finalizes KRM types/identity/references/mappers/CRDs, and verifies `apichecks`.
+---
 
-Use this workflow when `apis/<service_short>/judgement_queue.yaml` contains entries for `<Kind>` (i.e., `<Kind>` was scaffolded by bulk generation).
+# KCC Direct Greenfield Types Implementer — Step 2: Judgement Queue Triage Workflow
+
+Use this workflow for **Greenfield Step 2** when `apis/<service_short>/<version>/<kind>_types.go` and `apis/<service_short>/judgement_queue.yaml` already exist (either from a Step 1 single-resource prepopulate PR or a multi-resource batch prepopulate PR).
 
 ## Prerequisites
 You **must** also apply the baseline KRM standards in:
@@ -32,16 +37,17 @@ You **must** also apply the baseline KRM standards in:
 
 ## Workflow
 
-### Phase 1: Inventory & Proto Discovery
-1. Read `apis/<service>/judgement_queue.yaml` (locating `<Kind>`'s contiguous block) and `apis/<service>/v1alpha1/<kind>_types.go`.
-2. Locate the proto definition in `.build/third_party/googleapis/google/...` matching `+kcc:spec:proto=<full_proto_name>` (run `./dev/tools/controllerbuilder/generate-proto.sh` if `.build/third_party/googleapis` is missing). Inspect the resource message, `option (google.api.resource)`, and `Create<Resource>Request`.
+### Phase 1: Inventory, `generate-mapper` Check, & Proto Discovery
+1. Read `apis/<service>/judgement_queue.yaml` (locating `<Kind>`'s contiguous block), `apis/<service>/generate.sh`, and `apis/<service>/v1alpha1/<kind>_types.go`.
+2. Verify that `apis/<service>/generate.sh` includes `${CONTROLLERBUILDER} generate-mapper` with `--prepopulate-resource` (and `--multiversion` if the service has both `v1alpha1` and `v1beta1`). If the resource came from an earlier batch PR that omitted `generate-mapper`, add `generate-mapper --prepopulate-resource` to `apis/<service>/generate.sh` and any needed `go.mod` or stub mapper helpers so `pkg/controller/direct/<service>/...` compiles cleanly.
+3. Locate the proto definition in `.build/third_party/googleapis/google/...` matching `+kcc:spec:proto=<full_proto_name>` (run `./dev/tools/controllerbuilder/generate-proto.sh` if `.build/third_party/googleapis` is missing). Inspect the resource message, `option (google.api.resource)`, and `Create<Resource>Request`.
 
 ### Phase 2: Resolve Queue Entries by `reason`
 
 - **If `<Kind>` has Parent, Location, Root, or Identity reasons** (`location-or-parent-ref`, `parent-ref-guessed`, `parent-ref-not-modelled`, `parent-multiple-patterns`, `location-parent-unknown`, `root-*`, `identity-*`):
-  - Read and follow **[`references/PARENT_AND_IDENTITY.md`](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/.gemini/skills/kcc-direct-greenfield-types-implementer/references/PARENT_AND_IDENTITY.md)** using `view_file`.
+  - Read and follow **[`references/PARENT_AND_IDENTITY.md`](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/.gemini/skills/kcc-direct-greenfield-types-implementer/judgement/references/PARENT_AND_IDENTITY.md)** using `view_file`.
 - **If `<Kind>` has Reference, Output-Only Comment, `required-not-enforced`, or Shared Nested Struct reasons** (`possible-reference*`, `reference-not-representable`, `*-output-only-pattern-in-comment`, `required-not-enforced`):
-  - Read and follow **[`references/REFERENCES_AND_NESTED_STRUCTS.md`](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/.gemini/skills/kcc-direct-greenfield-types-implementer/references/REFERENCES_AND_NESTED_STRUCTS.md)** using `view_file`.
+  - Read and follow **[`references/REFERENCES_AND_NESTED_STRUCTS.md`](file:///usr/local/google/home/lmadariaga/github/k8s-config-connector/.gemini/skills/kcc-direct-greenfield-types-implementer/judgement/references/REFERENCES_AND_NESTED_STRUCTS.md)** using `view_file`.
 - **For all other reasons, use this Quick-Resolution Table**:
 
 | `reason` | Resolution Action |
