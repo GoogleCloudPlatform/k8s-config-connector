@@ -18,11 +18,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "Not found: Dataset ${projectId}:bigquerydataset-${uniqueId}",
+        "message": "Not found: Dataset ${projectId}:dataset_${uniqueId}",
         "reason": "notFound"
       }
     ],
-    "message": "Not found: Dataset ${projectId}:bigquerydataset-${uniqueId}",
+    "message": "Not found: Dataset ${projectId}:dataset_${uniqueId}",
     "status": "NOT_FOUND"
   }
 }
@@ -35,7 +35,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "datasetReference": {
-    "datasetId": "bigquerydataset-${uniqueId}"
+    "datasetId": "dataset_${uniqueId}"
   },
   "labels": {
     "cnrm-test": "true",
@@ -75,7 +75,7 @@ X-Xss-Protection: 0
   ],
   "creationTime": "123456789",
   "datasetReference": {
-    "datasetId": "bigquerydataset-${uniqueId}",
+    "datasetId": "dataset_${uniqueId}",
     "projectId": "${projectId}"
   },
   "etag": "abcdef0123A=",
@@ -87,7 +87,7 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "US",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset-${uniqueId}",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/dataset_${uniqueId}",
   "type": "DEFAULT"
 }
 
@@ -128,7 +128,7 @@ X-Xss-Protection: 0
   ],
   "creationTime": "123456789",
   "datasetReference": {
-    "datasetId": "bigquerydataset-${uniqueId}",
+    "datasetId": "dataset_${uniqueId}",
     "projectId": "${projectId}"
   },
   "etag": "abcdef0123A=",
@@ -141,13 +141,13 @@ X-Xss-Protection: 0
   "lastModifiedTime": "123456789",
   "location": "US",
   "maxTimeTravelHours": "168",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset-${uniqueId}",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/dataset_${uniqueId}",
   "type": "DEFAULT"
 }
 
 ---
 
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/test_table?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
@@ -166,11 +166,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "Not found: Table ${projectId}:bigquerydataset-${uniqueId}.bigquerytable-${uniqueId}",
+        "message": "Not found: Table ${projectId}:dataset_${uniqueId}.test_table",
         "reason": "notFound"
       }
     ],
-    "message": "Not found: Table ${projectId}:bigquerydataset-${uniqueId}.bigquerytable-${uniqueId}",
+    "message": "Not found: Table ${projectId}:dataset_${uniqueId}.test_table",
     "status": "NOT_FOUND"
   }
 }
@@ -187,9 +187,9 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "managed-by-cnrm": "true"
   },
   "tableReference": {
-    "datasetId": "bigquerydataset-${uniqueId}",
+    "datasetId": "dataset_${uniqueId}",
     "projectId": "${projectId}",
-    "tableId": "bigquerytable-${uniqueId}"
+    "tableId": "test_table"
   }
 }
 
@@ -213,7 +213,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
-  "location": "us-central1",
+  "location": "US",
   "numActiveLogicalBytes": "0",
   "numBytes": "0",
   "numLongTermBytes": "0",
@@ -221,18 +221,18 @@ X-Xss-Protection: 0
   "numRows": "0",
   "numTotalLogicalBytes": "0",
   "schema": {},
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset-${uniqueId}/tables/bigquerytable-${uniqueId}",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/dataset_${uniqueId}/tables/test_table",
   "tableReference": {
-    "datasetId": "bigquerydataset-${uniqueId}",
+    "datasetId": "dataset_${uniqueId}",
     "projectId": "${projectId}",
-    "tableId": "bigquerytable-${uniqueId}"
+    "tableId": "test_table"
   },
   "type": "TABLE"
 }
 
 ---
 
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/test_table?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -255,25 +255,25 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
-  "location": "us-central1",
+  "location": "US",
   "numActiveLogicalBytes": "0",
   "numBytes": "0",
   "numLongTermBytes": "0",
   "numLongTermLogicalBytes": "0",
   "numRows": "0",
   "numTotalLogicalBytes": "0",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset-${uniqueId}/tables/bigquerytable-${uniqueId}",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/dataset_${uniqueId}/tables/test_table",
   "tableReference": {
-    "datasetId": "bigquerydataset-${uniqueId}",
+    "datasetId": "dataset_${uniqueId}",
     "projectId": "${projectId}",
-    "tableId": "bigquerytable-${uniqueId}"
+    "tableId": "test_table"
   },
   "type": "TABLE"
 }
 
 ---
 
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}:getIamPolicy?alt=json
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/test_table:getIamPolicy?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -299,7 +299,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}:getIamPolicy?alt=json
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/test_table:getIamPolicy?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -325,7 +325,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}:setIamPolicy?alt=json
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/test_table:setIamPolicy?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -350,7 +350,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   }
 }
 
-200 OK
+400 Bad Request
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -361,27 +361,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "condition": {
-        "description": "Only allow at certain times",
-        "expression": "request.time \u003c timestamp(\"2025-01-01T00:00:00Z\")",
-        "title": "test-condition"
-      },
-      "members": [
-        "user:test@example.com",
-        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigquery.dataEditor"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
+  "error": {
+    "code": 400,
+    "message": "IAM setPolicy failed for Table ${projectId}:dataset_${uniqueId}.test_table: Can't set conditional policy on this resource",
+    "status": "INVALID_ARGUMENT"
+  }
 }
 
 ---
 
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}:getIamPolicy?alt=json
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/test_table:getIamPolicy?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -402,27 +391,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "condition": {
-        "description": "Only allow at certain times",
-        "expression": "request.time \u003c timestamp(\"2025-01-01T00:00:00Z\")",
-        "title": "test-condition"
-      },
-      "members": [
-        "user:test@example.com",
-        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigquery.dataEditor"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
+  "etag": "abcdef0123A="
 }
 
 ---
 
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}:getIamPolicy?alt=json
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/test_table:getIamPolicy?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -443,27 +417,57 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "condition": {
-        "description": "Only allow at certain times",
-        "expression": "request.time \u003c timestamp(\"2025-01-01T00:00:00Z\")",
-        "title": "test-condition"
-      },
-      "members": [
-        "user:test@example.com",
-        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigquery.dataEditor"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
+  "etag": "abcdef0123A="
 }
 
 ---
 
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}:getIamPolicy?alt=json
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/test_table:setIamPolicy?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "condition": {
+          "description": "Only allow at certain times",
+          "expression": "request.time \u003c timestamp(\"2025-01-01T00:00:00Z\")",
+          "title": "test-condition"
+        },
+        "members": [
+          "user:test@example.com",
+          "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
+        ],
+        "role": "roles/bigquery.dataEditor"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 1
+  }
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "IAM setPolicy failed for Table ${projectId}:dataset_${uniqueId}.test_table: Can't set conditional policy on this resource",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+---
+
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/test_table:getIamPolicy?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -484,27 +488,38 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "condition": {
-        "description": "Only allow at certain times",
-        "expression": "request.time \u003c timestamp(\"2025-01-01T00:00:00Z\")",
-        "title": "test-condition"
-      },
-      "members": [
-        "user:test@example.com",
-        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
-      ],
-      "role": "roles/bigquery.dataEditor"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
+  "etag": "abcdef0123A="
 }
 
 ---
 
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}:setIamPolicy?alt=json
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/test_table:getIamPolicy?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 1
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/test_table:setIamPolicy?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -529,9 +544,9 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
           "title": "test-condition"
         },
         "members": [
-          "group:test-group@example.com",
+          "user:test@example.com",
           "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
-          "user:test@example.com"
+          "group:test-group@example.com"
         ],
         "role": "roles/bigquery.dataEditor"
       }
@@ -541,7 +556,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   }
 }
 
-200 OK
+400 Bad Request
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -552,39 +567,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "condition": {
-        "description": "Editor condition",
-        "expression": "request.time \u003c timestamp(\"2026-01-01T00:00:00Z\")",
-        "title": "editor-condition"
-      },
-      "members": [
-        "user:editor@example.com"
-      ],
-      "role": "roles/bigquery.dataEditor"
-    },
-    {
-      "condition": {
-        "description": "Only allow at certain times",
-        "expression": "request.time \u003c timestamp(\"2025-01-01T00:00:00Z\")",
-        "title": "test-condition"
-      },
-      "members": [
-        "group:test-group@example.com",
-        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
-        "user:test@example.com"
-      ],
-      "role": "roles/bigquery.dataEditor"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
+  "error": {
+    "code": 400,
+    "message": "IAM setPolicy failed for Table ${projectId}:dataset_${uniqueId}.test_table: Can't set conditional policy on this resource",
+    "status": "INVALID_ARGUMENT"
+  }
 }
 
 ---
 
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}:getIamPolicy?alt=json
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/test_table:getIamPolicy?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -605,39 +597,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "condition": {
-        "description": "Editor condition",
-        "expression": "request.time \u003c timestamp(\"2026-01-01T00:00:00Z\")",
-        "title": "editor-condition"
-      },
-      "members": [
-        "user:editor@example.com"
-      ],
-      "role": "roles/bigquery.dataEditor"
-    },
-    {
-      "condition": {
-        "description": "Only allow at certain times",
-        "expression": "request.time \u003c timestamp(\"2025-01-01T00:00:00Z\")",
-        "title": "test-condition"
-      },
-      "members": [
-        "group:test-group@example.com",
-        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
-        "user:test@example.com"
-      ],
-      "role": "roles/bigquery.dataEditor"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
+  "etag": "abcdef0123A="
 }
 
 ---
 
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}:getIamPolicy?alt=json
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/test_table:getIamPolicy?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -658,103 +623,49 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "condition": {
-        "description": "Editor condition",
-        "expression": "request.time \u003c timestamp(\"2026-01-01T00:00:00Z\")",
-        "title": "editor-condition"
-      },
-      "members": [
-        "user:editor@example.com"
-      ],
-      "role": "roles/bigquery.dataEditor"
-    },
-    {
-      "condition": {
-        "description": "Only allow at certain times",
-        "expression": "request.time \u003c timestamp(\"2025-01-01T00:00:00Z\")",
-        "title": "test-condition"
-      },
-      "members": [
-        "group:test-group@example.com",
-        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
-        "user:test@example.com"
-      ],
-      "role": "roles/bigquery.dataEditor"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
+  "etag": "abcdef0123A="
 }
 
 ---
 
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "options": {
-    "requestedPolicyVersion": 1
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "condition": {
-        "description": "Editor condition",
-        "expression": "request.time \u003c timestamp(\"2026-01-01T00:00:00Z\")",
-        "title": "editor-condition"
-      },
-      "members": [
-        "user:editor@example.com"
-      ],
-      "role": "roles/bigquery.dataEditor"
-    },
-    {
-      "condition": {
-        "description": "Only allow at certain times",
-        "expression": "request.time \u003c timestamp(\"2025-01-01T00:00:00Z\")",
-        "title": "test-condition"
-      },
-      "members": [
-        "group:test-group@example.com",
-        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
-        "user:test@example.com"
-      ],
-      "role": "roles/bigquery.dataEditor"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}:setIamPolicy?alt=json
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/test_table:setIamPolicy?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "policy": {
+    "bindings": [
+      {
+        "condition": {
+          "description": "Editor condition",
+          "expression": "request.time \u003c timestamp(\"2026-01-01T00:00:00Z\")",
+          "title": "editor-condition"
+        },
+        "members": [
+          "user:editor@example.com"
+        ],
+        "role": "roles/bigquery.dataEditor"
+      },
+      {
+        "condition": {
+          "description": "Only allow at certain times",
+          "expression": "request.time \u003c timestamp(\"2025-01-01T00:00:00Z\")",
+          "title": "test-condition"
+        },
+        "members": [
+          "user:test@example.com",
+          "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
+          "group:test-group@example.com"
+        ],
+        "role": "roles/bigquery.dataEditor"
+      }
+    ],
     "etag": "abcdef0123A=",
     "version": 1
   }
 }
 
-200 OK
+400 Bad Request
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -765,40 +676,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "options": {
-    "requestedPolicyVersion": 1
+  "error": {
+    "code": 400,
+    "message": "IAM setPolicy failed for Table ${projectId}:dataset_${uniqueId}.test_table: Can't set conditional policy on this resource",
+    "status": "INVALID_ARGUMENT"
   }
 }
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
 ---
 
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/test_table?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -821,25 +708,25 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
-  "location": "us-central1",
+  "location": "US",
   "numActiveLogicalBytes": "0",
   "numBytes": "0",
   "numLongTermBytes": "0",
   "numLongTermLogicalBytes": "0",
   "numRows": "0",
   "numTotalLogicalBytes": "0",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset-${uniqueId}/tables/bigquerytable-${uniqueId}",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/dataset_${uniqueId}/tables/test_table",
   "tableReference": {
-    "datasetId": "bigquerydataset-${uniqueId}",
+    "datasetId": "dataset_${uniqueId}",
     "projectId": "${projectId}",
-    "tableId": "bigquerytable-${uniqueId}"
+    "tableId": "test_table"
   },
   "type": "TABLE"
 }
 
 ---
 
-DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
+DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/test_table?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
@@ -890,7 +777,7 @@ X-Xss-Protection: 0
   ],
   "creationTime": "123456789",
   "datasetReference": {
-    "datasetId": "bigquerydataset-${uniqueId}",
+    "datasetId": "dataset_${uniqueId}",
     "projectId": "${projectId}"
   },
   "etag": "abcdef0123A=",
@@ -903,7 +790,7 @@ X-Xss-Protection: 0
   "lastModifiedTime": "123456789",
   "location": "US",
   "maxTimeTravelHours": "168",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset-${uniqueId}",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/dataset_${uniqueId}",
   "type": "DEFAULT"
 }
 

@@ -245,7 +245,7 @@ func (s *MockService) populateDefaultsForCluster(obj *pb.Cluster) error {
 	}
 
 	if obj.ServeNodes == 0 {
-		autoscaling := obj.GetClusterConfig().ClusterAutoscalingConfig
+		autoscaling := obj.GetClusterConfig().GetClusterAutoscalingConfig()
 		if autoscaling != nil {
 			obj.ServeNodes = autoscaling.AutoscalingLimits.GetMinServeNodes()
 		}

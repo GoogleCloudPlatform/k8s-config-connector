@@ -10,5 +10,4 @@ spec:
   cluster:
   - clusterId: cluster-${uniqueId}
     zone: us-central1-b
-    numNodes: 1
     storageType: SSD
