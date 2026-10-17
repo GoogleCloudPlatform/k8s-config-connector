@@ -1,0 +1,1777 @@
+{
+  "AccessContextManagerAccessLevel": {
+    "controller_type": "TF",
+    "resource_name": "google_access_context_manager_access_level",
+    "service_hostname": "accesscontextmanager.googleapis.com",
+    "api_endpoint": "accesscontextmanager/v1/accessLevels",
+    "official_rest_api_url": "/access-context-manager/docs/reference/rest/v1/accessPolicies.accessLevels",
+    "kind": "AccessContextManagerAccessLevel",
+    "group": "accesscontextmanager.cnrm.cloud.google.com"
+  },
+  "AccessContextManagerAccessPolicy": {
+    "controller_type": "TF",
+    "resource_name": "google_access_context_manager_access_policy",
+    "service_hostname": "accesscontextmanager.googleapis.com",
+    "api_endpoint": "accesscontextmanager/v1/accessPolicies",
+    "official_rest_api_url": "/access-context-manager/docs/reference/rest/v1/accessPolicies",
+    "kind": "AccessContextManagerAccessPolicy",
+    "group": "accesscontextmanager.cnrm.cloud.google.com"
+  },
+  "AccessContextManagerServicePerimeter": {
+    "controller_type": "TF",
+    "resource_name": "google_access_context_manager_service_perimeter",
+    "service_hostname": "accesscontextmanager.googleapis.com",
+    "api_endpoint": "accesscontextmanager.v1.accessPolicies.servicePerimeters",
+    "official_rest_api_url": "/access-context-manager/docs/reference/rest/v1/accessPolicies.servicePerimeters",
+    "kind": "AccessContextManagerServicePerimeter",
+    "group": "accesscontextmanager.cnrm.cloud.google.com"
+  },
+  "AccessContextManagerServicePerimeterResource": {
+    "controller_type": "TF",
+    "resource_name": "google_access_context_manager_service_perimeter_resource",
+    "service_hostname": "accesscontextmanager.googleapis.com",
+    "api_endpoint": "accesscontextmanager.v1.accessPolicies.servicePerimeters",
+    "official_rest_api_url": "/access-context-manager/docs/reference/rest/v1/accessPolicies.servicePerimeters",
+    "kind": "AccessContextManagerServicePerimeterResource",
+    "group": "accesscontextmanager.cnrm.cloud.google.com"
+  },
+  "AlloyDBBackup": {
+    "controller_type": "TF",
+    "resource_name": "google_alloydb_backup",
+    "service_hostname": "alloydb.googleapis.com",
+    "api_endpoint": "v1.projects.locations.backups",
+    "official_rest_api_url": "/alloydb/docs/reference/rest/v1/projects.locations.backups",
+    "kind": "AlloyDBBackup",
+    "group": "alloydb.cnrm.cloud.google.com"
+  },
+  "AlloyDBCluster": {
+    "controller_type": "TF",
+    "resource_name": "google_alloydb_cluster",
+    "service_hostname": "alloydb.googleapis.com",
+    "api_endpoint": "v1.projects.locations.clusters",
+    "official_rest_api_url": "/alloydb/docs/reference/rest/v1/projects.locations.clusters",
+    "kind": "AlloyDBCluster",
+    "group": "alloydb.cnrm.cloud.google.com"
+  },
+  "AlloyDBUser": {
+    "controller_type": "TF",
+    "resource_name": "google_alloydb_user",
+    "service_hostname": "alloydb.googleapis.com",
+    "api_endpoint": "v1.projects.locations.clusters.users",
+    "official_rest_api_url": "/alloydb/docs/reference/rest/v1/projects.locations.clusters.users",
+    "kind": "AlloyDBUser",
+    "group": "alloydb.cnrm.cloud.google.com"
+  },
+  "ApigeeEnvironment": {
+    "controller_type": "DCL",
+    "resource_name": "Environment",
+    "service_hostname": "apigee",
+    "api_endpoint": "organizations.environments",
+    "official_rest_api_url": "/apigee/docs/reference/apis/apigee/rest/v1/organizations.environments",
+    "kind": "ApigeeEnvironment",
+    "group": "apigee.cnrm.cloud.google.com"
+  },
+  "ApigeeOrganization": {
+    "controller_type": "DCL",
+    "resource_name": "Organization",
+    "service_hostname": "apigee",
+    "api_endpoint": "organizations",
+    "official_rest_api_url": "/apigee/docs/reference/apis/apigee/rest/v1/organizations",
+    "kind": "ApigeeOrganization",
+    "group": "apigee.cnrm.cloud.google.com"
+  },
+  "ArtifactRegistryRepository": {
+    "controller_type": "TF",
+    "resource_name": "google_artifact_registry_repository",
+    "service_hostname": "artifactregistry.googleapis.com",
+    "api_endpoint": "v1beta1.projects.locations.repositories",
+    "official_rest_api_url": "/artifact-registry/docs/reference/rest/v1beta2/projects.locations.repositories",
+    "kind": "ArtifactRegistryRepository",
+    "group": "artifactregistry.cnrm.cloud.google.com"
+  },
+  "BigQueryDataset": {
+    "controller_type": "TF",
+    "resource_name": "google_bigquery_dataset",
+    "service_hostname": "bigquery.googleapis.com",
+    "api_endpoint": "bigquery/v2/datasets",
+    "official_rest_api_url": "/bigquery/docs/reference/rest/v2/datasets",
+    "kind": "BigQueryDataset",
+    "group": "bigquery.cnrm.cloud.google.com"
+  },
+  "BigQueryJob": {
+    "controller_type": "TF",
+    "resource_name": "google_bigquery_job",
+    "service_hostname": "bigquery.googleapis.com",
+    "api_endpoint": "bigquery/v2/jobs",
+    "official_rest_api_url": "/bigquery/docs/reference/rest/v2/jobs",
+    "kind": "BigQueryJob",
+    "group": "bigquery.cnrm.cloud.google.com"
+  },
+  "BigQueryRoutine": {
+    "controller_type": "TF",
+    "resource_name": "google_bigquery_routine",
+    "service_hostname": "bigquery.googleapis.com",
+    "kind": "BigQueryRoutine",
+    "group": "bigquery.cnrm.cloud.google.com"
+  },
+  "BigQueryTable": {
+    "controller_type": "TF",
+    "resource_name": "google_bigquery_table",
+    "service_hostname": "bigquery.googleapis.com",
+    "api_endpoint": "bigquery/v2/tables",
+    "official_rest_api_url": "/bigquery/docs/reference/rest/v2/tables",
+    "kind": "BigQueryTable",
+    "group": "bigquery.cnrm.cloud.google.com"
+  },
+  "BigtableAppProfile": {
+    "controller_type": "TF",
+    "resource_name": "google_bigtable_app_profile",
+    "service_hostname": "bigtableadmin.googleapis.com",
+    "api_endpoint": "bigtableadmin/v2/projects.instances.appProfiles",
+    "official_rest_api_url": "/bigtable/docs/reference/admin/rest/v2/projects.instances.appProfiles",
+    "kind": "BigtableAppProfile",
+    "group": "bigtable.cnrm.cloud.google.com"
+  },
+  "BigtableGCPolicy": {
+    "controller_type": "TF",
+    "resource_name": "google_bigtable_gc_policy",
+    "service_hostname": "bigtableadmin.googleapis.com",
+    "api_endpoint": "bigtableadmin/v2/projects.instances.appProfiles",
+    "official_rest_api_url": "/bigtable/docs/reference/admin/rest/v2/projects.instances.tables/modifyColumnFamilies#gcrule",
+    "kind": "BigtableGCPolicy",
+    "group": "bigtable.cnrm.cloud.google.com"
+  },
+  "BigtableInstance": {
+    "controller_type": "TF",
+    "resource_name": "google_bigtable_instance",
+    "service_hostname": "bigtableadmin.googleapis.com",
+    "api_endpoint": "bigtableadmin/v2/projects.instances",
+    "official_rest_api_url": "/bigtable/docs/reference/admin/rest/v2/projects.instances",
+    "kind": "BigtableInstance",
+    "group": "bigtable.cnrm.cloud.google.com"
+  },
+  "BigtableTable": {
+    "controller_type": "TF",
+    "resource_name": "google_bigtable_table",
+    "service_hostname": "bigtableadmin.googleapis.com",
+    "api_endpoint": "bigtableadmin/v2/projects.instances.tables",
+    "official_rest_api_url": "/bigtable/docs/reference/admin/rest/v2/projects.instances.tables",
+    "kind": "BigtableTable",
+    "group": "bigtable.cnrm.cloud.google.com"
+  },
+  "BillingBudgetsBudget": {
+    "controller_type": "DCL",
+    "resource_name": "Budget",
+    "service_hostname": "billingbudgets",
+    "api_endpoint": "billingAccounts.budgets",
+    "official_rest_api_url": "/billing/docs/reference/budget/rest/v1beta1/billingAccounts.budgets",
+    "kind": "BillingBudgetsBudget",
+    "group": "billingbudgets.cnrm.cloud.google.com"
+  },
+  "BinaryAuthorizationAttestor": {
+    "controller_type": "DCL",
+    "resource_name": "Attestor",
+    "service_hostname": "binaryauthorization",
+    "api_endpoint": "binaryauthorization/v1/projects.attestors",
+    "official_rest_api_url": "/binary-authorization/docs/reference/rest/v1/projects.attestors",
+    "kind": "BinaryAuthorizationAttestor",
+    "group": "binaryauthorization.cnrm.cloud.google.com"
+  },
+  "BinaryAuthorizationPolicy": {
+    "controller_type": "DCL",
+    "resource_name": "Policy",
+    "service_hostname": "binaryauthorization",
+    "api_endpoint": "binaryauthorization/v1beta1/projects.policy",
+    "official_rest_api_url": "/binary-authorization/docs/reference/rest/v1beta1/projects.policy",
+    "kind": "BinaryAuthorizationPolicy",
+    "group": "binaryauthorization.cnrm.cloud.google.com"
+  },
+  "CertificateManagerCertificate": {
+    "controller_type": "TF",
+    "resource_name": "google_certificate_manager_certificate",
+    "service_hostname": "certificatemanager.googleapis.com",
+    "api_endpoint": "v1.projects.locations.certificates",
+    "official_rest_api_url": "/certificate-manager/docs/reference/certificate-manager/rest/v1/projects.locations.certificates",
+    "kind": "CertificateManagerCertificate",
+    "group": "certificatemanager.cnrm.cloud.google.com"
+  },
+  "CertificateManagerCertificateMap": {
+    "controller_type": "TF",
+    "resource_name": "google_certificate_manager_certificate_map",
+    "service_hostname": "certificatemanager.googleapis.com",
+    "api_endpoint": "v1.projects.locations.certificateMaps",
+    "official_rest_api_url": "/certificate-manager/docs/reference/certificate-manager/rest/v1/projects.locations.certificateMaps",
+    "kind": "CertificateManagerCertificateMap",
+    "group": "certificatemanager.cnrm.cloud.google.com"
+  },
+  "CertificateManagerCertificateMapEntry": {
+    "controller_type": "TF",
+    "resource_name": "google_certificate_manager_certificate_map_entry",
+    "service_hostname": "certificatemanager.googleapis.com",
+    "api_endpoint": "v1.projects.locations.certificateMaps.certificateMapEntries",
+    "official_rest_api_url": "/certificate-manager/docs/reference/certificate-manager/rest/v1/projects.locations.certificateMaps.certificateMapEntries",
+    "kind": "CertificateManagerCertificateMapEntry",
+    "group": "certificatemanager.cnrm.cloud.google.com"
+  },
+  "CloudBuildTrigger": {
+    "controller_type": "TF",
+    "resource_name": "google_cloudbuild_trigger",
+    "service_hostname": "cloudbuild.googleapis.com",
+    "api_endpoint": "v1.projects.triggers",
+    "official_rest_api_url": "/cloud-build/docs/api/reference/rest/v1/projects.triggers",
+    "kind": "CloudBuildTrigger",
+    "group": "cloudbuild.cnrm.cloud.google.com"
+  },
+  "CloudFunctionsFunction": {
+    "controller_type": "DCL",
+    "resource_name": "Function",
+    "service_hostname": "cloudfunctions",
+    "api_endpoint": "v1.projects.locations.functions",
+    "official_rest_api_url": "/functions/docs/reference/rest/v1/projects.locations.functions",
+    "kind": "CloudFunctionsFunction",
+    "group": "cloudfunctions.cnrm.cloud.google.com"
+  },
+  "CloudIDSEndpoint": {
+    "controller_type": "TF",
+    "resource_name": "google_cloud_ids_endpoint",
+    "service_hostname": "cloudids.googleapis.com",
+    "api_endpoint": "v1.projects.locations.endpoints",
+    "official_rest_api_url": "/intrusion-detection-system/docs/configuring-ids#api",
+    "kind": "CloudIDSEndpoint",
+    "group": "cloudids.cnrm.cloud.google.com"
+  },
+  "CloudSchedulerJob": {
+    "controller_type": "DCL",
+    "resource_name": "Job",
+    "service_hostname": "cloudscheduler",
+    "api_endpoint": "v1.projects.locations.jobs",
+    "official_rest_api_url": "/scheduler/docs/reference/rest/v1/projects.locations.jobs",
+    "kind": "CloudSchedulerJob",
+    "group": "cloudscheduler.cnrm.cloud.google.com"
+  },
+  "ComputeAddress": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_global_address",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.addresses, v1.globalAddresses",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/globalAddresses",
+    "kind": "ComputeAddress",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeBackendBucket": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_backend_bucket",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.backendBucket",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/backendBuckets",
+    "kind": "ComputeBackendBucket",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeBackendService": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_region_backend_service",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.backendServices, v1.regionBackendServices",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/backendServices",
+    "kind": "ComputeBackendService",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeDisk": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_region_disk",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.disks, v1.regionDisks",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/disks",
+    "kind": "ComputeDisk",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeExternalVPNGateway": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_external_vpn_gateway",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "beta.externalVpnGateways",
+    "official_rest_api_url": "/compute/docs/reference/rest/beta/externalVpnGateways",
+    "kind": "ComputeExternalVPNGateway",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeFirewall": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_firewall",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.firewalls",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/firewalls",
+    "kind": "ComputeFirewall",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeFirewallPolicy": {
+    "controller_type": "DCL",
+    "resource_name": "FirewallPolicy",
+    "service_hostname": "compute",
+    "api_endpoint": "v1.firewallPolicies",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/firewallPolicies",
+    "kind": "ComputeFirewallPolicy",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeFirewallPolicyAssociation": {
+    "controller_type": "DCL",
+    "resource_name": "FirewallPolicyAssociation",
+    "service_hostname": "compute",
+    "api_endpoint": "beta.firewallPolicies",
+    "official_rest_api_url": "/compute/docs/reference/rest/beta/firewallPolicies/addAssociation",
+    "kind": "ComputeFirewallPolicyAssociation",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeForwardingRule": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_global_forwarding_rule",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.forwardingRules, v1.globalForwardingRules",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/forwardingRules",
+    "kind": "ComputeForwardingRule",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeHTTPHealthCheck": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_http_health_check",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.httpHealthChecks",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/httpHealthChecks",
+    "kind": "ComputeHTTPHealthCheck",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeHTTPSHealthCheck": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_https_health_check",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.httpsHealthChecks",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/httpsHealthChecks",
+    "kind": "ComputeHTTPSHealthCheck",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeHealthCheck": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_region_health_check",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.healthChecks, v1.regionHealthChecks",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/healthChecks",
+    "kind": "ComputeHealthCheck",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeImage": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_image",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.images",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/images",
+    "kind": "ComputeImage",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeInstance": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_instance_from_template",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.instances",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/instances",
+    "kind": "ComputeInstance",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeInstanceGroup": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_instance_group",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.instances",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/instanceGroups",
+    "kind": "ComputeInstanceGroup",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeInstanceGroupManager": {
+    "controller_type": "DCL",
+    "resource_name": "InstanceGroupManager",
+    "service_hostname": "compute",
+    "api_endpoint": "beta.instanceGroupManagers",
+    "official_rest_api_url": "/compute/docs/reference/rest/beta/instanceGroupManagers",
+    "kind": "ComputeInstanceGroupManager",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeInstanceTemplate": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_instance_template",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.instancetemplates",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/instanceTemplates",
+    "kind": "ComputeInstanceTemplate",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeInterconnectAttachment": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_interconnect_attachment",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.interconnectAttachments",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/interconnectAttachments",
+    "kind": "ComputeInterconnectAttachment",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeManagedSSLCertificate": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_managed_ssl_certificate",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.sslCertificates",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/sslCertificates",
+    "kind": "ComputeManagedSSLCertificate",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeNetwork": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_network",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.networks",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/networks",
+    "kind": "ComputeNetwork",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeNetworkEndpointGroup": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_network_endpoint_group",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "beta.networkEndpointGroups",
+    "official_rest_api_url": "/compute/docs/reference/rest/beta/networkEndpointGroups",
+    "kind": "ComputeNetworkEndpointGroup",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeNetworkFirewallPolicy": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_network_firewall_policy",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "beta.networkFirewallPolicies",
+    "official_rest_api_url": "/compute/docs/reference/rest/beta/networkFirewallPolicies",
+    "kind": "ComputeNetworkFirewallPolicy",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeNetworkFirewallPolicyAssociation": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_network_firewall_policy_association",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "beta.networkFirewallPolicies",
+    "official_rest_api_url": "/compute/docs/reference/rest/beta/networkFirewallPolicies/addAssociation",
+    "kind": "ComputeNetworkFirewallPolicyAssociation",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeNetworkPeering": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_network_peering",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.networks",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/networks",
+    "kind": "ComputeNetworkPeering",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeNodeGroup": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_node_group",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.nodeGroups",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/nodeGroups",
+    "kind": "ComputeNodeGroup",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeNodeTemplate": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_node_template",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.nodeTemplates",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/nodeTemplates",
+    "kind": "ComputeNodeTemplate",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputePacketMirroring": {
+    "controller_type": "DCL",
+    "resource_name": "PacketMirroring",
+    "service_hostname": "compute",
+    "api_endpoint": "beta.packetMirrorings",
+    "official_rest_api_url": "/compute/docs/reference/rest/beta/packetMirrorings",
+    "kind": "ComputePacketMirroring",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeProjectMetadata": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_project_metadata",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.projects",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/projects",
+    "kind": "ComputeProjectMetadata",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeRegionNetworkEndpointGroup": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_region_network_endpoint_group",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "beta.regionNetworkEndpointGroups",
+    "official_rest_api_url": "/compute/docs/reference/rest/beta/regionNetworkEndpointGroups",
+    "kind": "ComputeRegionNetworkEndpointGroup",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeReservation": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_reservation",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.reservations",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/reservations",
+    "kind": "ComputeReservation",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeResourcePolicy": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_resource_policy",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.resourcePolicies",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/resourcePolicies",
+    "kind": "ComputeResourcePolicy",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeRoute": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_route",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.routes",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/routes",
+    "kind": "ComputeRoute",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeRouter": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_router",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.routers",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/routers",
+    "kind": "ComputeRouter",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeRouterInterface": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_router_interface",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.routers",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/routers",
+    "kind": "ComputeRouterInterface",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeRouterNAT": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_router_nat",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.routers",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/routers",
+    "kind": "ComputeRouterNAT",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeRouterPeer": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_router_peer",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.routers",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/routers",
+    "kind": "ComputeRouterPeer",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeSSLCertificate": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_ssl_certificate",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.sslCertificates",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/sslCertificates",
+    "kind": "ComputeSSLCertificate",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeSSLPolicy": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_ssl_policy",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.sslPolicies",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/sslPolicies",
+    "kind": "ComputeSSLPolicy",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeSecurityPolicy": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_security_policy",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.securityPolicies",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/securityPolicies",
+    "kind": "ComputeSecurityPolicy",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeServiceAttachment": {
+    "controller_type": "DCL",
+    "resource_name": "ServiceAttachment",
+    "service_hostname": "compute",
+    "api_endpoint": "beta.serviceAttachments",
+    "official_rest_api_url": "/compute/docs/reference/rest/beta/serviceAttachments",
+    "kind": "ComputeServiceAttachment",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeSharedVPCHostProject": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_shared_vpc_host_project",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.projects.enableXpnHost",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/projects/enableXpnHost",
+    "kind": "ComputeSharedVPCHostProject",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeSharedVPCServiceProject": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_shared_vpc_service_project",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.projects.enableXpnResource",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/projects/enableXpnResource",
+    "kind": "ComputeSharedVPCServiceProject",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeSnapshot": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_snapshot",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.snapshots",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/snapshots",
+    "kind": "ComputeSnapshot",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeSubnetwork": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_subnetwork",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.subnetworks",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/subnetworks",
+    "kind": "ComputeSubnetwork",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeTargetGRPCProxy": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_target_grpc_proxy",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.targetHttpProxies",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/targetGrpcProxies",
+    "kind": "ComputeTargetGRPCProxy",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeTargetHTTPProxy": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_target_http_proxy",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.targetHttpProxies",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/targetHttpProxies",
+    "kind": "ComputeTargetHTTPProxy",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeTargetHTTPSProxy": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_target_https_proxy",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.targetHttpsProxies",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/targetHttpsProxies",
+    "kind": "ComputeTargetHTTPSProxy",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeTargetInstance": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_target_instance",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.targetInstances",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/targetInstances",
+    "kind": "ComputeTargetInstance",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeTargetPool": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_target_pool",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.targetPools",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/targetPools",
+    "kind": "ComputeTargetPool",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeTargetSSLProxy": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_target_ssl_proxy",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.targetSslProxies",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/targetSslProxies",
+    "kind": "ComputeTargetSSLProxy",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeTargetTCPProxy": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_target_tcp_proxy",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.targetTcpProxies",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/targetTcpProxies",
+    "kind": "ComputeTargetTCPProxy",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeTargetVPNGateway": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_vpn_gateway",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.targetVpnGateways",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/targetVpnGateways",
+    "kind": "ComputeTargetVPNGateway",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeURLMap": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_url_map",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.urlMaps",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/urlMaps",
+    "kind": "ComputeURLMap",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeVPNGateway": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_ha_vpn_gateway",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "beta.vpnGateways",
+    "official_rest_api_url": "/compute/docs/reference/rest/beta/vpnGateways",
+    "kind": "ComputeVPNGateway",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ComputeVPNTunnel": {
+    "controller_type": "TF",
+    "resource_name": "google_compute_vpn_tunnel",
+    "service_hostname": "compute.googleapis.com",
+    "api_endpoint": "v1.vpnTunnels",
+    "official_rest_api_url": "/compute/docs/reference/rest/v1/vpnTunnels",
+    "kind": "ComputeVPNTunnel",
+    "group": "compute.cnrm.cloud.google.com"
+  },
+  "ConfigControllerInstance": {
+    "controller_type": "DCL",
+    "resource_name": "Instance",
+    "service_hostname": "configcontroller",
+    "api_endpoint": "v1alpha1.krmApiHost",
+    "official_rest_api_url": "/anthos-config-management/docs/concepts/config-controller-overview",
+    "kind": "ConfigControllerInstance",
+    "group": "configcontroller.cnrm.cloud.google.com"
+  },
+  "ContainerAnalysisNote": {
+    "controller_type": "DCL",
+    "resource_name": "Note",
+    "service_hostname": "containeranalysis",
+    "api_endpoint": "v1.projects.notes",
+    "official_rest_api_url": "/container-analysis/docs/reference/rest/v1/projects.notes",
+    "kind": "ContainerAnalysisNote",
+    "group": "containeranalysis.cnrm.cloud.google.com"
+  },
+  "ContainerAttachedCluster": {
+    "controller_type": "TF",
+    "resource_name": "google_container_attached_cluster",
+    "service_hostname": "gkemulticloud.googleapis.com",
+    "api_endpoint": "v1.projects.locations.attachedClusters",
+    "official_rest_api_url": "/anthos/clusters/docs/multi-cloud/reference/rest/v1/projects.locations.attachedClusters",
+    "kind": "ContainerAttachedCluster",
+    "group": "containerattached.cnrm.cloud.google.com"
+  },
+  "ContainerCluster": {
+    "controller_type": "TF",
+    "resource_name": "google_container_cluster",
+    "service_hostname": "container.googleapis.com",
+    "api_endpoint": "v1.projects.locations.clusters",
+    "official_rest_api_url": "/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters",
+    "kind": "ContainerCluster",
+    "group": "container.cnrm.cloud.google.com"
+  },
+  "ContainerNodePool": {
+    "controller_type": "TF",
+    "resource_name": "google_container_node_pool",
+    "service_hostname": "container.googleapis.com",
+    "api_endpoint": "v1.projects.locations.clusters.nodePools",
+    "official_rest_api_url": "/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters.nodePools",
+    "kind": "ContainerNodePool",
+    "group": "container.cnrm.cloud.google.com"
+  },
+  "DLPDeidentifyTemplate": {
+    "controller_type": "DCL",
+    "resource_name": "DeidentifyTemplate",
+    "service_hostname": "dlp",
+    "api_endpoint": "projects.deidentifyTemplates",
+    "official_rest_api_url": "/dlp/docs/reference/rest/v2/projects.deidentifyTemplates",
+    "kind": "DLPDeidentifyTemplate",
+    "group": "dlp.cnrm.cloud.google.com"
+  },
+  "DLPInspectTemplate": {
+    "controller_type": "DCL",
+    "resource_name": "InspectTemplate",
+    "service_hostname": "dlp",
+    "api_endpoint": "projects.inspectTemplates",
+    "official_rest_api_url": "/dlp/docs/reference/rest/v2/projects.inspectTemplates",
+    "kind": "DLPInspectTemplate",
+    "group": "dlp.cnrm.cloud.google.com"
+  },
+  "DLPJobTrigger": {
+    "controller_type": "DCL",
+    "resource_name": "JobTrigger",
+    "service_hostname": "dlp",
+    "api_endpoint": "projects.jobTriggers",
+    "official_rest_api_url": "/dlp/docs/reference/rest/v2/projects.jobTriggers",
+    "kind": "DLPJobTrigger",
+    "group": "dlp.cnrm.cloud.google.com"
+  },
+  "DLPStoredInfoType": {
+    "controller_type": "DCL",
+    "resource_name": "StoredInfoType",
+    "service_hostname": "dlp",
+    "api_endpoint": "projects.storedInfoTypes",
+    "official_rest_api_url": "/dlp/docs/reference/rest/v2/projects.storedInfoTypes",
+    "kind": "DLPStoredInfoType",
+    "group": "dlp.cnrm.cloud.google.com"
+  },
+  "DNSManagedZone": {
+    "controller_type": "TF",
+    "resource_name": "google_dns_managed_zone",
+    "service_hostname": "dns.googleapis.com",
+    "api_endpoint": "v1beta2.managedZones",
+    "official_rest_api_url": "/dns/docs/reference/v1beta2/managedZones",
+    "kind": "DNSManagedZone",
+    "group": "dns.cnrm.cloud.google.com"
+  },
+  "DNSPolicy": {
+    "controller_type": "TF",
+    "resource_name": "google_dns_policy",
+    "service_hostname": "dns.googleapis.com",
+    "api_endpoint": "v1beta2.policy",
+    "official_rest_api_url": "/dns/docs/reference/v1beta2/policies",
+    "kind": "DNSPolicy",
+    "group": "dns.cnrm.cloud.google.com"
+  },
+  "DNSRecordSet": {
+    "controller_type": "TF",
+    "resource_name": "google_dns_record_set",
+    "service_hostname": "dns.googleapis.com",
+    "api_endpoint": "v1beta2.resourceRecordSets",
+    "official_rest_api_url": "/dns/docs/reference/v1beta2/resourceRecordSets",
+    "kind": "DNSRecordSet",
+    "group": "dns.cnrm.cloud.google.com"
+  },
+  "DataCatalogPolicyTag": {
+    "controller_type": "TF",
+    "resource_name": "google_data_catalog_policy_tag",
+    "service_hostname": "datacatalog.googleapis.com",
+    "kind": "DataCatalogPolicyTag",
+    "group": "datacatalog.cnrm.cloud.google.com"
+  },
+  "DataCatalogTaxonomy": {
+    "controller_type": "TF",
+    "resource_name": "google_data_catalog_taxonomy",
+    "service_hostname": "datacatalog.googleapis.com",
+    "kind": "DataCatalogTaxonomy",
+    "group": "datacatalog.cnrm.cloud.google.com"
+  },
+  "DataFusionInstance": {
+    "controller_type": "DCL",
+    "resource_name": "Instance",
+    "service_hostname": "datafusion",
+    "api_endpoint": "v1beta1/projects.locations.instances",
+    "official_rest_api_url": "/data-fusion/docs/reference/rest/v1beta1/projects.locations.instances",
+    "kind": "DataFusionInstance",
+    "group": "datafusion.cnrm.cloud.google.com"
+  },
+  "DataflowFlexTemplateJob": {
+    "controller_type": "TF",
+    "resource_name": "google_dataflow_flex_template_job",
+    "service_hostname": "dataflow.googleapis.com",
+    "api_endpoint": "v1b3.projects.jobs",
+    "official_rest_api_url": "/dataflow/docs/reference/rest/v1b3/projects.jobs",
+    "kind": "DataflowFlexTemplateJob",
+    "group": "dataflow.cnrm.cloud.google.com"
+  },
+  "DataflowJob": {
+    "controller_type": "TF",
+    "resource_name": "google_dataflow_job",
+    "service_hostname": "dataflow.googleapis.com",
+    "api_endpoint": "v1b3.projects.jobs",
+    "official_rest_api_url": "/dataflow/docs/reference/rest/v1b3/projects.jobs",
+    "kind": "DataflowJob",
+    "group": "dataflow.cnrm.cloud.google.com"
+  },
+  "DataprocAutoscalingPolicy": {
+    "controller_type": "DCL",
+    "resource_name": "AutoscalingPolicy",
+    "service_hostname": "dataproc",
+    "api_endpoint": "v1.projects.locations.autoscalingPolicies",
+    "official_rest_api_url": "/dataproc/docs/reference/rest/v1/projects.locations.autoscalingPolicies",
+    "kind": "DataprocAutoscalingPolicy",
+    "group": "dataproc.cnrm.cloud.google.com"
+  },
+  "DataprocCluster": {
+    "controller_type": "DCL",
+    "resource_name": "Cluster",
+    "service_hostname": "dataproc",
+    "api_endpoint": "v1.projects.regions.clusters",
+    "official_rest_api_url": "/dataproc/docs/reference/rest/v1/projects.regions.clusters",
+    "kind": "DataprocCluster",
+    "group": "dataproc.cnrm.cloud.google.com"
+  },
+  "DataprocWorkflowTemplate": {
+    "controller_type": "DCL",
+    "resource_name": "WorkflowTemplate",
+    "service_hostname": "dataproc",
+    "api_endpoint": "v1.projects.locations.workflowTemplates",
+    "official_rest_api_url": "/dataproc/docs/reference/rest/v1/projects.locations.workflowTemplates",
+    "kind": "DataprocWorkflowTemplate",
+    "group": "dataproc.cnrm.cloud.google.com"
+  },
+  "EdgeContainerCluster": {
+    "controller_type": "TF",
+    "resource_name": "google_edgecontainer_cluster",
+    "service_hostname": "edgecontainer.googleapis.com",
+    "api_endpoint": "v1beta1.projects.locations.clusters",
+    "official_rest_api_url": "/distributed-cloud/edge/latest/docs/reference/container/rest/v1/projects.locations.clusters",
+    "kind": "EdgeContainerCluster",
+    "group": "edgecontainer.cnrm.cloud.google.com"
+  },
+  "EdgeContainerNodePool": {
+    "controller_type": "TF",
+    "resource_name": "google_edgecontainer_node_pool",
+    "service_hostname": "edgecontainer.googleapis.com",
+    "api_endpoint": "v1beta1.projects.locations.clusters.nodepools",
+    "official_rest_api_url": "/distributed-cloud/edge/latest/docs/reference/container/rest/v1/projects.locations.clusters.nodePools",
+    "kind": "EdgeContainerNodePool",
+    "group": "edgecontainer.cnrm.cloud.google.com"
+  },
+  "EdgeContainerVpnConnection": {
+    "controller_type": "TF",
+    "resource_name": "google_edgecontainer_vpn_connection",
+    "service_hostname": "edgecontainer.googleapis.com",
+    "api_endpoint": "v1beta1.projects.locations.vpnConnections",
+    "official_rest_api_url": "/distributed-cloud/edge/latest/docs/reference/container/rest/v1/projects.locations.vpnConnections",
+    "kind": "EdgeContainerVpnConnection",
+    "group": "edgecontainer.cnrm.cloud.google.com"
+  },
+  "EdgeNetworkNetwork": {
+    "controller_type": "TF",
+    "resource_name": "google_edgenetwork_network",
+    "service_hostname": "edgenetwork.googleapis.com",
+    "api_endpoint": "projects.locations.zones.networks",
+    "official_rest_api_url": "/distributed-cloud/edge/latest/docs/reference/network/rest/v1/projects.locations.zones.networks",
+    "kind": "EdgeNetworkNetwork",
+    "group": "edgenetwork.cnrm.cloud.google.com"
+  },
+  "EdgeNetworkSubnet": {
+    "controller_type": "TF",
+    "resource_name": "google_edgenetwork_subnet",
+    "service_hostname": "edgenetwork.googleapis.com",
+    "api_endpoint": "projects.locations.zones.subnets",
+    "official_rest_api_url": "/distributed-cloud/edge/latest/docs/reference/network/rest/v1/projects.locations.zones.subnets",
+    "kind": "EdgeNetworkSubnet",
+    "group": "edgenetwork.cnrm.cloud.google.com"
+  },
+  "EventarcTrigger": {
+    "controller_type": "DCL",
+    "resource_name": "Trigger",
+    "service_hostname": "eventarc",
+    "api_endpoint": "v1.projects.locations.triggers",
+    "official_rest_api_url": "/eventarc/docs/reference/rest/v1/projects.locations.triggers",
+    "kind": "EventarcTrigger",
+    "group": "eventarc.cnrm.cloud.google.com"
+  },
+  "FilestoreBackup": {
+    "controller_type": "DCL",
+    "resource_name": "Backup",
+    "service_hostname": "filestore",
+    "api_endpoint": "v1beta1.projects.locations.backups",
+    "official_rest_api_url": "/filestore/docs/reference/rest/v1beta1/projects.locations.backups",
+    "kind": "FilestoreBackup",
+    "group": "filestore.cnrm.cloud.google.com"
+  },
+  "FilestoreInstance": {
+    "controller_type": "DCL",
+    "resource_name": "Instance",
+    "service_hostname": "filestore",
+    "api_endpoint": "v1beta1.projects.locations.instances",
+    "official_rest_api_url": "/filestore/docs/reference/rest/v1beta1/projects.locations.instances",
+    "kind": "FilestoreInstance",
+    "group": "filestore.cnrm.cloud.google.com"
+  },
+  "FirestoreIndex": {
+    "controller_type": "TF",
+    "resource_name": "google_firestore_index",
+    "service_hostname": "firestore.googleapis.com",
+    "api_endpoint": "v1.projects.databases.collectionGroups.indexes",
+    "official_rest_api_url": "/firestore/docs/reference/rest/v1/projects.databases.collectionGroups.indexes",
+    "kind": "FirestoreIndex",
+    "group": "firestore.cnrm.cloud.google.com"
+  },
+  "Folder": {
+    "controller_type": "TF",
+    "resource_name": "google_folder",
+    "service_hostname": "cloudresourcemanager.googleapis.com",
+    "api_endpoint": "v2.folders",
+    "official_rest_api_url": "/resource-manager/reference/rest/v1/folders",
+    "kind": "Folder",
+    "group": "resourcemanager.cnrm.cloud.google.com"
+  },
+  "GKEHubFeature": {
+    "controller_type": "DCL",
+    "resource_name": "Feature",
+    "service_hostname": "gkehub",
+    "api_endpoint": "v1beta1.projects.locations.features",
+    "kind": "GKEHubFeature",
+    "group": "gkehub.cnrm.cloud.google.com"
+  },
+  "GKEHubMembership": {
+    "controller_type": "DCL",
+    "resource_name": "Membership",
+    "service_hostname": "gkehub",
+    "api_endpoint": "v1beta1.projects.locations.memberships",
+    "kind": "GKEHubMembership",
+    "group": "gkehub.cnrm.cloud.google.com"
+  },
+  "IAMAccessBoundaryPolicy": {
+    "controller_type": "TF",
+    "resource_name": "google_iam_access_boundary_policy",
+    "service_hostname": "iam.googleapis.com",
+    "kind": "IAMAccessBoundaryPolicy",
+    "group": "iam.cnrm.cloud.google.com"
+  },
+  "IAMCustomRole": {
+    "controller_type": "TF",
+    "resource_name": "google_iam_custom_role",
+    "service_hostname": "iam.googleapis.com",
+    "api_endpoint": "v1.projects.roles",
+    "official_rest_api_url": "/iam/docs/reference/rest/v1/projects.roles",
+    "kind": "IAMCustomRole",
+    "group": "iam.cnrm.cloud.google.com"
+  },
+  "IAMServiceAccount": {
+    "controller_type": "TF",
+    "resource_name": "google_service_account",
+    "service_hostname": "iam.googleapis.com",
+    "api_endpoint": "v1.projects.serviceAccounts",
+    "official_rest_api_url": "/iam/docs/reference/rest/v1/projects.serviceAccounts",
+    "kind": "IAMServiceAccount",
+    "group": "iam.cnrm.cloud.google.com"
+  },
+  "IAMServiceAccountKey": {
+    "controller_type": "TF",
+    "resource_name": "google_service_account_key",
+    "service_hostname": "iam.googleapis.com",
+    "api_endpoint": "v1.projects.serviceAccounts.key",
+    "official_rest_api_url": "/iam/docs/reference/rest/v1/projects.serviceAccounts.keys",
+    "kind": "IAMServiceAccountKey",
+    "group": "iam.cnrm.cloud.google.com"
+  },
+  "IAMWorkforcePool": {
+    "controller_type": "DCL",
+    "resource_name": "WorkforcePool",
+    "service_hostname": "iam",
+    "api_endpoint": "v1.locations.workforcePools",
+    "official_rest_api_url": "/iam/docs/reference/rest/v1/locations.workforcePools",
+    "kind": "IAMWorkforcePool",
+    "group": "iam.cnrm.cloud.google.com"
+  },
+  "IAMWorkforcePoolProvider": {
+    "controller_type": "DCL",
+    "resource_name": "WorkforcePoolProvider",
+    "service_hostname": "iam",
+    "api_endpoint": "v1.locations.workforcePools.providers",
+    "official_rest_api_url": "/iam/docs/reference/rest/v1/locations.workforcePools.providers",
+    "kind": "IAMWorkforcePoolProvider",
+    "group": "iam.cnrm.cloud.google.com"
+  },
+  "IAMWorkloadIdentityPool": {
+    "controller_type": "DCL",
+    "resource_name": "WorkloadIdentityPool",
+    "service_hostname": "iam",
+    "api_endpoint": "v1.projects.locations.workloadIdentityPools",
+    "official_rest_api_url": "/iam/docs/reference/rest/v1/projects.locations.workloadIdentityPools",
+    "kind": "IAMWorkloadIdentityPool",
+    "group": "iam.cnrm.cloud.google.com"
+  },
+  "IAMWorkloadIdentityPoolProvider": {
+    "controller_type": "DCL",
+    "resource_name": "WorkloadIdentityPoolProvider",
+    "service_hostname": "iam",
+    "api_endpoint": "v1.projects.locations.workloadIdentityPools.providers",
+    "official_rest_api_url": "/iam/docs/reference/rest/v1/projects.locations.workloadIdentityPools.providers",
+    "kind": "IAMWorkloadIdentityPoolProvider",
+    "group": "iam.cnrm.cloud.google.com"
+  },
+  "IAPBrand": {
+    "controller_type": "DCL",
+    "resource_name": "Brand",
+    "service_hostname": "iap",
+    "api_endpoint": "v1.projects.brands",
+    "official_rest_api_url": "/iap/docs/reference/rest/v1/projects.brands",
+    "kind": "IAPBrand",
+    "group": "iap.cnrm.cloud.google.com"
+  },
+  "IAPIdentityAwareProxyClient": {
+    "controller_type": "DCL",
+    "resource_name": "IdentityAwareProxyClient",
+    "service_hostname": "iap",
+    "api_endpoint": "v1.projects.brands.identityAwareProxyClients",
+    "official_rest_api_url": "/iap/docs/reference/rest/v1/projects.brands.identityAwareProxyClients",
+    "kind": "IAPIdentityAwareProxyClient",
+    "group": "iap.cnrm.cloud.google.com"
+  },
+  "IdentityPlatformConfig": {
+    "controller_type": "DCL",
+    "resource_name": "Config",
+    "service_hostname": "identitytoolkit",
+    "api_endpoint": "v2.projects",
+    "official_rest_api_url": "/identity-platform/docs/reference/rest/v2/Config",
+    "kind": "IdentityPlatformConfig",
+    "group": "identityplatform.cnrm.cloud.google.com"
+  },
+  "IdentityPlatformOAuthIDPConfig": {
+    "controller_type": "DCL",
+    "resource_name": "OAuthIdpConfig",
+    "service_hostname": "identitytoolkit",
+    "api_endpoint": "v2.projects.oauthIdpConfigs",
+    "official_rest_api_url": "/identity-platform/docs/reference/rest/v2/projects.oauthIdpConfigs",
+    "kind": "IdentityPlatformOAuthIDPConfig",
+    "group": "identityplatform.cnrm.cloud.google.com"
+  },
+  "IdentityPlatformTenant": {
+    "controller_type": "DCL",
+    "resource_name": "Tenant",
+    "service_hostname": "identitytoolkit",
+    "api_endpoint": "v2.projects.tenants",
+    "official_rest_api_url": "/identity-platform/docs/reference/rest/v2/projects.tenants",
+    "kind": "IdentityPlatformTenant",
+    "group": "identityplatform.cnrm.cloud.google.com"
+  },
+  "IdentityPlatformTenantOAuthIDPConfig": {
+    "controller_type": "DCL",
+    "resource_name": "TenantOAuthIdpConfig",
+    "service_hostname": "identitytoolkit",
+    "api_endpoint": "v2.projects.tenants.oauthIdpConfigs",
+    "official_rest_api_url": "/identity-platform/docs/reference/rest/v2/projects.tenants.oauthIdpConfigs",
+    "kind": "IdentityPlatformTenantOAuthIDPConfig",
+    "group": "identityplatform.cnrm.cloud.google.com"
+  },
+  "KMSCryptoKey": {
+    "controller_type": "TF",
+    "resource_name": "google_kms_crypto_key",
+    "service_hostname": "cloudkms.googleapis.com",
+    "api_endpoint": "v1.projects.locations.keyRings.cryptoKeys",
+    "official_rest_api_url": "/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys",
+    "kind": "KMSCryptoKey",
+    "group": "kms.cnrm.cloud.google.com"
+  },
+  "KMSKeyRing": {
+    "controller_type": "TF",
+    "resource_name": "google_kms_key_ring",
+    "service_hostname": "cloudkms.googleapis.com",
+    "api_endpoint": "v1.projects.locations.keyRings",
+    "official_rest_api_url": "/kms/docs/reference/rest/v1/projects.locations.keyRings",
+    "kind": "KMSKeyRing",
+    "group": "kms.cnrm.cloud.google.com"
+  },
+  "LoggingLogBucket": {
+    "controller_type": "DCL",
+    "resource_name": "LogBucket",
+    "service_hostname": "logging",
+    "api_endpoint": "v2.billingAccounts.locations.buckets, v2.folders.locations.buckets, v2.organizations.locations.buckets, v2.projects.locations.buckets",
+    "official_rest_api_url": "/logging/docs/reference/v2/rest/v2/billingAccounts.locations.buckets",
+    "kind": "LoggingLogBucket",
+    "group": "logging.cnrm.cloud.google.com"
+  },
+  "LoggingLogExclusion": {
+    "controller_type": "DCL",
+    "resource_name": "LogExclusion",
+    "service_hostname": "logging",
+    "api_endpoint": "v2.billingAccounts.exclusions, v2.folders.exclusions, v2.organizations.exclusions, v2.projects.exclusions",
+    "official_rest_api_url": "/logging/docs/reference/v2/rest/v2/billingAccounts.exclusions",
+    "kind": "LoggingLogExclusion",
+    "group": "logging.cnrm.cloud.google.com"
+  },
+  "LoggingLogSink": {
+    "controller_type": "TF",
+    "resource_name": "google_logging_log_sink",
+    "service_hostname": "logging.googleapis.com",
+    "api_endpoint": "v2.folders.sinks, v2.organizations.sinks, v2.projects.sinks",
+    "official_rest_api_url": "/logging/docs/reference/v2/rest/v2/folders.sinks",
+    "kind": "LoggingLogSink",
+    "group": "logging.cnrm.cloud.google.com"
+  },
+  "LoggingLogView": {
+    "controller_type": "DCL",
+    "resource_name": "LogView",
+    "service_hostname": "logging",
+    "api_endpoint": "v2.billingAccounts.locations.buckets.views, v2.folders.locations.buckets.views, v2.organizations.locations.buckets.views, v2.projects.locations.buckets.views",
+    "official_rest_api_url": "/logging/docs/reference/v2/rest/v2/billingAccounts.locations.buckets.views",
+    "kind": "LoggingLogView",
+    "group": "logging.cnrm.cloud.google.com"
+  },
+  "MemcacheInstance": {
+    "controller_type": "TF",
+    "resource_name": "google_memcache_instance",
+    "service_hostname": "memcache.googleapis.com",
+    "api_endpoint": "v1beta2.projects.locations.instances",
+    "official_rest_api_url": "/memorystore/docs/memcached/reference/rest/v1beta2/projects.locations.instances",
+    "kind": "MemcacheInstance",
+    "group": "memcache.cnrm.cloud.google.com"
+  },
+  "MonitoringAlertPolicy": {
+    "controller_type": "TF",
+    "resource_name": "google_monitoring_alert_policy",
+    "service_hostname": "monitoring.googleapis.com",
+    "api_endpoint": "v3.projects.alertPolicies",
+    "official_rest_api_url": "/monitoring/api/ref_v3/rest/v3/projects.alertPolicies",
+    "kind": "MonitoringAlertPolicy",
+    "group": "monitoring.cnrm.cloud.google.com"
+  },
+  "MonitoringGroup": {
+    "controller_type": "DCL",
+    "resource_name": "Group",
+    "service_hostname": "monitoring",
+    "api_endpoint": "v3.projects.groups",
+    "official_rest_api_url": "/monitoring/api/ref_v3/rest/v3/projects.groups",
+    "kind": "MonitoringGroup",
+    "group": "monitoring.cnrm.cloud.google.com"
+  },
+  "MonitoringMetricDescriptor": {
+    "controller_type": "DCL",
+    "resource_name": "MetricDescriptor",
+    "service_hostname": "monitoring",
+    "api_endpoint": "v3.projects.metricDescriptors",
+    "official_rest_api_url": "/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors",
+    "kind": "MonitoringMetricDescriptor",
+    "group": "monitoring.cnrm.cloud.google.com"
+  },
+  "MonitoringMonitoredProject": {
+    "controller_type": "DCL",
+    "resource_name": "MonitoredProject",
+    "service_hostname": "monitoring",
+    "api_endpoint": "v3.locations.global.metricsScopes.projects",
+    "official_rest_api_url": "/monitoring/api/ref_v3/rest/v1/locations.global.metricsScopes.projects",
+    "kind": "MonitoringMonitoredProject",
+    "group": "monitoring.cnrm.cloud.google.com"
+  },
+  "MonitoringNotificationChannel": {
+    "controller_type": "TF",
+    "resource_name": "google_monitoring_notification_channel",
+    "service_hostname": "monitoring.googleapis.com",
+    "api_endpoint": "v3.projects.notificationChannels",
+    "official_rest_api_url": "/monitoring/api/ref_v3/rest/v3/projects.notificationChannels",
+    "kind": "MonitoringNotificationChannel",
+    "group": "monitoring.cnrm.cloud.google.com"
+  },
+  "MonitoringService": {
+    "controller_type": "DCL",
+    "resource_name": "Service",
+    "service_hostname": "monitoring",
+    "api_endpoint": "v3.services",
+    "official_rest_api_url": "/monitoring/api/ref_v3/rest/v3/services",
+    "kind": "MonitoringService",
+    "group": "monitoring.cnrm.cloud.google.com"
+  },
+  "MonitoringServiceLevelObjective": {
+    "controller_type": "DCL",
+    "resource_name": "ServiceLevelObjective",
+    "service_hostname": "monitoring",
+    "api_endpoint": "v3.services.serviceLevelObjectives",
+    "official_rest_api_url": "/monitoring/api/ref_v3/rest/v3/services.serviceLevelObjectives",
+    "kind": "MonitoringServiceLevelObjective",
+    "group": "monitoring.cnrm.cloud.google.com"
+  },
+  "MonitoringUptimeCheckConfig": {
+    "controller_type": "DCL",
+    "resource_name": "UptimeCheckConfig",
+    "service_hostname": "monitoring",
+    "api_endpoint": "v3.projects.uptimeCheckConfigs",
+    "official_rest_api_url": "/monitoring/api/ref_v3/rest/v3/projects.uptimeCheckConfigs",
+    "kind": "MonitoringUptimeCheckConfig",
+    "group": "monitoring.cnrm.cloud.google.com"
+  },
+  "NetworkConnectivityHub": {
+    "controller_type": "DCL",
+    "resource_name": "Hub",
+    "service_hostname": "networkconnectivity",
+    "api_endpoint": "v1.projects.locations.global.hubs",
+    "official_rest_api_url": "/network-connectivity/docs/reference/networkconnectivity/rest/v1/projects.locations.global.hubs",
+    "kind": "NetworkConnectivityHub",
+    "group": "networkconnectivity.cnrm.cloud.google.com"
+  },
+  "NetworkConnectivitySpoke": {
+    "controller_type": "DCL",
+    "resource_name": "Spoke",
+    "service_hostname": "networkconnectivity",
+    "api_endpoint": "v1.projects.locations.spokes",
+    "official_rest_api_url": "/network-connectivity/docs/reference/networkconnectivity/rest/v1/projects.locations.spokes",
+    "kind": "NetworkConnectivitySpoke",
+    "group": "networkconnectivity.cnrm.cloud.google.com"
+  },
+  "NetworkSecurityAuthorizationPolicy": {
+    "controller_type": "DCL",
+    "resource_name": "AuthorizationPolicy",
+    "service_hostname": "networksecurity",
+    "api_endpoint": "v1beta1/projects.locations.authorizationPolicies",
+    "official_rest_api_url": "/traffic-director/docs/reference/network-security/rest/v1beta1/projects.locations.authorizationPolicies",
+    "kind": "NetworkSecurityAuthorizationPolicy",
+    "group": "networksecurity.cnrm.cloud.google.com"
+  },
+  "NetworkSecurityClientTLSPolicy": {
+    "controller_type": "DCL",
+    "resource_name": "ClientTlsPolicy",
+    "service_hostname": "networksecurity",
+    "api_endpoint": "v1beta1/projects.locations.clientTlsPolicies",
+    "official_rest_api_url": "/traffic-director/docs/reference/network-security/rest/v1beta1/projects.locations.clientTlsPolicies",
+    "kind": "NetworkSecurityClientTLSPolicy",
+    "group": "networksecurity.cnrm.cloud.google.com"
+  },
+  "NetworkSecurityServerTLSPolicy": {
+    "controller_type": "DCL",
+    "resource_name": "ServerTlsPolicy",
+    "service_hostname": "networksecurity",
+    "api_endpoint": "v1beta1/projects.locations.clientTlsPolicies",
+    "official_rest_api_url": "/traffic-director/docs/reference/network-security/rest/v1beta1/projects.locations.serverTlsPolicies",
+    "kind": "NetworkSecurityServerTLSPolicy",
+    "group": "networksecurity.cnrm.cloud.google.com"
+  },
+  "NetworkServicesEndpointPolicy": {
+    "controller_type": "DCL",
+    "resource_name": "EndpointPolicy",
+    "service_hostname": "networkservices",
+    "api_endpoint": "v1beta1/projects.locations.endpointPolicies",
+    "official_rest_api_url": "/traffic-director/docs/reference/network-services/rest/v1beta1/projects.locations.endpointPolicies",
+    "kind": "NetworkServicesEndpointPolicy",
+    "group": "networkservices.cnrm.cloud.google.com"
+  },
+  "NetworkServicesGRPCRoute": {
+    "controller_type": "DCL",
+    "resource_name": "GrpcRoute",
+    "service_hostname": "networkservices",
+    "api_endpoint": "v1/projects.locations.grpcRoutes",
+    "official_rest_api_url": "/traffic-director/docs/reference/network-services/rest/v1/projects.locations.grpcRoutes",
+    "kind": "NetworkServicesGRPCRoute",
+    "group": "networkservices.cnrm.cloud.google.com"
+  },
+  "NetworkServicesGateway": {
+    "controller_type": "DCL",
+    "resource_name": "Gateway",
+    "service_hostname": "networkservices",
+    "api_endpoint": "v1/projects.locations.gateways",
+    "official_rest_api_url": "/traffic-director/docs/reference/network-services/rest/v1/projects.locations.gateways",
+    "kind": "NetworkServicesGateway",
+    "group": "networkservices.cnrm.cloud.google.com"
+  },
+  "NetworkServicesHTTPRoute": {
+    "controller_type": "DCL",
+    "resource_name": "HttpRoute",
+    "service_hostname": "networkservices",
+    "api_endpoint": "v1/projects.locations.httpRoutes",
+    "official_rest_api_url": "/traffic-director/docs/reference/network-services/rest/v1/projects.locations.httpRoutes",
+    "kind": "NetworkServicesHTTPRoute",
+    "group": "networkservices.cnrm.cloud.google.com"
+  },
+  "NetworkServicesMesh": {
+    "controller_type": "DCL",
+    "resource_name": "Mesh",
+    "service_hostname": "networkservices",
+    "api_endpoint": "v1/projects.locations.meshes",
+    "official_rest_api_url": "/traffic-director/docs/reference/network-services/rest/v1/projects.locations.meshes",
+    "kind": "NetworkServicesMesh",
+    "group": "networkservices.cnrm.cloud.google.com"
+  },
+  "NetworkServicesTCPRoute": {
+    "controller_type": "DCL",
+    "resource_name": "TcpRoute",
+    "service_hostname": "networkservices",
+    "api_endpoint": "v1/projects.locations.tcpRoutes",
+    "official_rest_api_url": "/traffic-director/docs/reference/network-services/rest/v1/projects.locations.tcpRoutes",
+    "kind": "NetworkServicesTCPRoute",
+    "group": "networkservices.cnrm.cloud.google.com"
+  },
+  "NetworkServicesTLSRoute": {
+    "controller_type": "DCL",
+    "resource_name": "TlsRoute",
+    "service_hostname": "networkservices",
+    "api_endpoint": "v1.projects.locations.tlsRoutes",
+    "official_rest_api_url": "/traffic-director/docs/reference/network-services/rest/v1/projects.locations.tlsRoutes",
+    "kind": "NetworkServicesTLSRoute",
+    "group": "networkservices.cnrm.cloud.google.com"
+  },
+  "OSConfigGuestPolicy": {
+    "controller_type": "DCL",
+    "resource_name": "GuestPolicy",
+    "service_hostname": "osconfig",
+    "api_endpoint": "v1beta.projects.guestPolicies",
+    "official_rest_api_url": "/compute/docs/osconfig/rest/v1beta/projects.guestPolicies",
+    "kind": "OSConfigGuestPolicy",
+    "group": "osconfig.cnrm.cloud.google.com"
+  },
+  "OSConfigOSPolicyAssignment": {
+    "controller_type": "DCL",
+    "resource_name": "OSPolicyAssignment",
+    "service_hostname": "osconfig",
+    "api_endpoint": "v1.projects.locations.osPolicyAssignments",
+    "official_rest_api_url": "/compute/docs/osconfig/rest/v1/projects.locations.osPolicyAssignments",
+    "kind": "OSConfigOSPolicyAssignment",
+    "group": "osconfig.cnrm.cloud.google.com"
+  },
+  "PrivateCACAPool": {
+    "controller_type": "DCL",
+    "resource_name": "CaPool",
+    "service_hostname": "privateca",
+    "api_endpoint": "v1.projects.locations.caPools",
+    "official_rest_api_url": "/certificate-authority-service/docs/reference/rest/v1/projects.locations.caPools",
+    "kind": "PrivateCACAPool",
+    "group": "privateca.cnrm.cloud.google.com"
+  },
+  "PrivateCACertificate": {
+    "controller_type": "DCL",
+    "resource_name": "Certificate",
+    "service_hostname": "privateca",
+    "api_endpoint": "v1.projects.locations.caPools.certificates",
+    "official_rest_api_url": "/certificate-authority-service/docs/reference/rest/v1/projects.locations.caPools.certificates",
+    "kind": "PrivateCACertificate",
+    "group": "privateca.cnrm.cloud.google.com"
+  },
+  "PrivateCACertificateAuthority": {
+    "controller_type": "DCL",
+    "resource_name": "CertificateAuthority",
+    "service_hostname": "privateca",
+    "api_endpoint": "v1.projects.locations.caPools.certificateAuthorities",
+    "official_rest_api_url": "/certificate-authority-service/docs/reference/rest/v1/projects.locations.caPools.certificateAuthorities",
+    "kind": "PrivateCACertificateAuthority",
+    "group": "privateca.cnrm.cloud.google.com"
+  },
+  "PrivateCACertificateTemplate": {
+    "controller_type": "DCL",
+    "resource_name": "CertificateTemplate",
+    "service_hostname": "privateca",
+    "api_endpoint": "v1.projects.locations.certificateTemplates",
+    "official_rest_api_url": "/certificate-authority-service/docs/reference/rest/v1/projects.locations.certificateTemplates",
+    "kind": "PrivateCACertificateTemplate",
+    "group": "privateca.cnrm.cloud.google.com"
+  },
+  "Project": {
+    "controller_type": "TF",
+    "resource_name": "google_project",
+    "service_hostname": "cloudresourcemanager.googleapis.com",
+    "api_endpoint": "v1.projects",
+    "official_rest_api_url": "/resource-manager/reference/rest/v1/projects",
+    "kind": "Project",
+    "group": "resourcemanager.cnrm.cloud.google.com"
+  },
+  "PubSubLiteReservation": {
+    "controller_type": "TF",
+    "resource_name": "google_pubsub_lite_reservation",
+    "service_hostname": "pubsublite.googleapis.com",
+    "api_endpoint": "v1.admin.projects.locations.reservations",
+    "official_rest_api_url": "/pubsub/lite/docs/reference/rest/v1/admin.projects.locations.reservations",
+    "kind": "PubSubLiteReservation",
+    "group": "pubsublite.cnrm.cloud.google.com"
+  },
+  "PubSubSchema": {
+    "controller_type": "TF",
+    "resource_name": "google_pubsub_schema",
+    "service_hostname": "pubsub.googleapis.com",
+    "api_endpoint": "v1.projects.schemas",
+    "official_rest_api_url": "/pubsub/docs/reference/rest/v1/projects.schemas",
+    "kind": "PubSubSchema",
+    "group": "pubsub.cnrm.cloud.google.com"
+  },
+  "PubSubSubscription": {
+    "controller_type": "TF",
+    "resource_name": "google_pubsub_subscription",
+    "service_hostname": "pubsub.googleapis.com",
+    "api_endpoint": "v1.projects.subscriptions",
+    "official_rest_api_url": "/pubsub/docs/reference/rest/v1/projects.subscriptions",
+    "kind": "PubSubSubscription",
+    "group": "pubsub.cnrm.cloud.google.com"
+  },
+  "PubSubTopic": {
+    "controller_type": "TF",
+    "resource_name": "google_pubsub_topic",
+    "service_hostname": "pubsub.googleapis.com",
+    "api_endpoint": "v1.projects.topics",
+    "official_rest_api_url": "/pubsub/docs/reference/rest/v1/projects.topics",
+    "kind": "PubSubTopic",
+    "group": "pubsub.cnrm.cloud.google.com"
+  },
+  "RecaptchaEnterpriseKey": {
+    "controller_type": "DCL",
+    "resource_name": "Key",
+    "service_hostname": "recaptchaenterprise",
+    "api_endpoint": "v1.projects.keys",
+    "official_rest_api_url": "/recaptcha-enterprise/docs/reference/rest/v1/projects.keys",
+    "kind": "RecaptchaEnterpriseKey",
+    "group": "recaptchaenterprise.cnrm.cloud.google.com"
+  },
+  "RedisInstance": {
+    "controller_type": "TF",
+    "resource_name": "google_redis_instance",
+    "service_hostname": "redis.googleapis.com",
+    "api_endpoint": "v1.projects.locations.instances",
+    "official_rest_api_url": "/memorystore/docs/redis/reference/rest/v1/projects.locations.instances",
+    "kind": "RedisInstance",
+    "group": "redis.cnrm.cloud.google.com"
+  },
+  "ResourceManagerLien": {
+    "controller_type": "TF",
+    "resource_name": "google_resource_manager_lien",
+    "service_hostname": "cloudresourcemanager.googleapis.com",
+    "api_endpoint": "v1.liens",
+    "official_rest_api_url": "/resource-manager/reference/rest/v1/liens",
+    "kind": "ResourceManagerLien",
+    "group": "resourcemanager.cnrm.cloud.google.com"
+  },
+  "ResourceManagerPolicy": {
+    "controller_type": "TF",
+    "resource_name": "google_org_policy",
+    "service_hostname": "cloudresourcemanager.googleapis.com",
+    "api_endpoint": "v1.policy",
+    "official_rest_api_url": "/resource-manager/reference/rest/v1/Policy",
+    "kind": "ResourceManagerPolicy",
+    "group": "resourcemanager.cnrm.cloud.google.com"
+  },
+  "RunJob": {
+    "controller_type": "TF",
+    "resource_name": "google_cloud_run_v2_job",
+    "service_hostname": "run.googleapis.com",
+    "api_endpoint": "v2.projects.locations.jobs",
+    "official_rest_api_url": "/run/docs/reference/rest/v2/projects.locations.jobs",
+    "kind": "RunJob",
+    "group": "run.cnrm.cloud.google.com"
+  },
+  "RunService": {
+    "controller_type": "TF",
+    "resource_name": "google_cloud_run_v2_service",
+    "service_hostname": "run.googleapis.com",
+    "api_endpoint": "v2.projects.locations.services",
+    "official_rest_api_url": "/run/docs/reference/rest/v2/projects.locations.services",
+    "kind": "RunService",
+    "group": "run.cnrm.cloud.google.com"
+  },
+  "SQLDatabase": {
+    "controller_type": "TF",
+    "resource_name": "google_sql_database",
+    "service_hostname": "sqladmin.googleapis.com",
+    "api_endpoint": "v1beta4.database",
+    "official_rest_api_url": "/sql/docs/postgres/admin-api/v1beta4/databases",
+    "kind": "SQLDatabase",
+    "group": "sql.cnrm.cloud.google.com"
+  },
+  "SQLSSLCert": {
+    "controller_type": "TF",
+    "resource_name": "google_sql_ssl_cert",
+    "service_hostname": "sqladmin.googleapis.com",
+    "api_endpoint": "v1beta4.sslCerts",
+    "official_rest_api_url": "/sql/docs/postgres/admin-api/rest/v1beta4/sslCerts",
+    "kind": "SQLSSLCert",
+    "group": "sql.cnrm.cloud.google.com"
+  },
+  "SQLUser": {
+    "controller_type": "TF",
+    "resource_name": "google_sql_user",
+    "service_hostname": "sqladmin.googleapis.com",
+    "api_endpoint": "v1beta4.users",
+    "official_rest_api_url": "/sql/docs/postgres/admin-api/v1beta4/users",
+    "kind": "SQLUser",
+    "group": "sql.cnrm.cloud.google.com"
+  },
+  "SecretManagerSecret": {
+    "controller_type": "TF",
+    "resource_name": "google_secret_manager_secret",
+    "service_hostname": "secretmanager.googleapis.com",
+    "api_endpoint": "v1.projects.secrets",
+    "official_rest_api_url": "/secret-manager/docs/reference/rest/v1/projects.secrets",
+    "kind": "SecretManagerSecret",
+    "group": "secretmanager.cnrm.cloud.google.com"
+  },
+  "SecretManagerSecretVersion": {
+    "controller_type": "TF",
+    "resource_name": "google_secret_manager_secret_version",
+    "service_hostname": "secretmanager.googleapis.com",
+    "api_endpoint": "v1.projects.secrets.versions",
+    "official_rest_api_url": "/secret-manager/docs/reference/rest/v1/projects.secrets.versions",
+    "kind": "SecretManagerSecretVersion",
+    "group": "secretmanager.cnrm.cloud.google.com"
+  },
+  "Service": {
+    "controller_type": "TF",
+    "resource_name": "google_project_service",
+    "service_hostname": "serviceusage.googleapis.com",
+    "api_endpoint": "v1.services",
+    "official_rest_api_url": "/service-usage/docs/reference/rest/v1/services",
+    "kind": "Service",
+    "group": "serviceusage.cnrm.cloud.google.com"
+  },
+  "ServiceDirectoryEndpoint": {
+    "controller_type": "TF",
+    "resource_name": "google_service_directory_endpoint",
+    "service_hostname": "servicedirectory.googleapis.com",
+    "api_endpoint": "v1beta1.projects.locations.namespaces.services.endpoints",
+    "official_rest_api_url": "/service-directory/docs/reference/rest/v1beta1/projects.locations.namespaces.services.endpoints",
+    "kind": "ServiceDirectoryEndpoint",
+    "group": "servicedirectory.cnrm.cloud.google.com"
+  },
+  "ServiceDirectoryNamespace": {
+    "controller_type": "TF",
+    "resource_name": "google_service_directory_namespace",
+    "service_hostname": "servicedirectory.googleapis.com",
+    "api_endpoint": "v1beta1.projects.locations.namespaces",
+    "official_rest_api_url": "/service-directory/docs/reference/rest/v1beta1/projects.locations.namespaces",
+    "kind": "ServiceDirectoryNamespace",
+    "group": "servicedirectory.cnrm.cloud.google.com"
+  },
+  "ServiceDirectoryService": {
+    "controller_type": "TF",
+    "resource_name": "google_service_directory_service",
+    "service_hostname": "servicedirectory.googleapis.com",
+    "api_endpoint": "v1beta1.projects.locations.namespaces.services",
+    "official_rest_api_url": "/service-directory/docs/reference/rest/v1beta1/projects.locations.namespaces.services",
+    "kind": "ServiceDirectoryService",
+    "group": "servicedirectory.cnrm.cloud.google.com"
+  },
+  "ServiceIdentity": {
+    "controller_type": "TF",
+    "resource_name": "google_project_service_identity",
+    "service_hostname": "serviceusage.googleapis.com",
+    "api_endpoint": "v1beta1.services.generateServiceIdentity",
+    "official_rest_api_url": "/service-usage/docs/reference/rest/v1beta1/services/generateServiceIdentity",
+    "kind": "ServiceIdentity",
+    "group": "serviceusage.cnrm.cloud.google.com"
+  },
+  "ServiceNetworkingConnection": {
+    "controller_type": "TF",
+    "resource_name": "google_service_networking_connection",
+    "service_hostname": "servicenetworking.googleapis.com",
+    "api_endpoint": "v1.services.connections",
+    "official_rest_api_url": "/service-infrastructure/docs/service-networking/reference/rest/v1/services.connections",
+    "kind": "ServiceNetworkingConnection",
+    "group": "servicenetworking.cnrm.cloud.google.com"
+  },
+  "SourceRepoRepository": {
+    "controller_type": "TF",
+    "resource_name": "google_sourcerepo_repository",
+    "service_hostname": "sourcerepo.googleapis.com",
+    "api_endpoint": "v1.projects.repos",
+    "official_rest_api_url": "/source-repositories/docs/reference/rest/v1/projects.repos",
+    "kind": "SourceRepoRepository",
+    "group": "sourcerepo.cnrm.cloud.google.com"
+  },
+  "SpannerDatabase": {
+    "controller_type": "TF",
+    "resource_name": "google_spanner_database",
+    "service_hostname": "spanner.googleapis.com",
+    "api_endpoint": "v1.projects.instances.databases",
+    "official_rest_api_url": "/spanner/docs/reference/rest/v1/projects.instances.databases",
+    "kind": "SpannerDatabase",
+    "group": "spanner.cnrm.cloud.google.com"
+  },
+  "SpannerInstance": {
+    "controller_type": "TF",
+    "resource_name": "google_spanner_instance",
+    "service_hostname": "spanner.googleapis.com",
+    "api_endpoint": "v1.projects.instances",
+    "official_rest_api_url": "/spanner/docs/reference/rest/v1/projects.instances",
+    "kind": "SpannerInstance",
+    "group": "spanner.cnrm.cloud.google.com"
+  },
+  "StorageBucket": {
+    "controller_type": "TF",
+    "resource_name": "google_storage_bucket",
+    "service_hostname": "storage.googleapis.com",
+    "api_endpoint": "v1.buckets",
+    "official_rest_api_url": "/storage/docs/json_api/v1/buckets",
+    "kind": "StorageBucket",
+    "group": "storage.cnrm.cloud.google.com"
+  },
+  "StorageBucketAccessControl": {
+    "controller_type": "TF",
+    "resource_name": "google_storage_bucket_access_control",
+    "service_hostname": "storage.googleapis.com",
+    "api_endpoint": "v1.bucketAccessControls",
+    "official_rest_api_url": "/storage/docs/json_api/v1/bucketAccessControls",
+    "kind": "StorageBucketAccessControl",
+    "group": "storage.cnrm.cloud.google.com"
+  },
+  "StorageDefaultObjectAccessControl": {
+    "controller_type": "TF",
+    "resource_name": "google_storage_default_object_access_control",
+    "service_hostname": "storage.googleapis.com",
+    "api_endpoint": "v1.defaultObjectAccessControls",
+    "official_rest_api_url": "/storage/docs/json_api/v1/defaultObjectAccessControls",
+    "kind": "StorageDefaultObjectAccessControl",
+    "group": "storage.cnrm.cloud.google.com"
+  },
+  "StorageNotification": {
+    "controller_type": "TF",
+    "resource_name": "google_storage_notification",
+    "service_hostname": "storage.googleapis.com",
+    "api_endpoint": "v1.notifications",
+    "official_rest_api_url": "/storage/docs/json_api/v1/notifications",
+    "kind": "StorageNotification",
+    "group": "storage.cnrm.cloud.google.com"
+  },
+  "StorageTransferJob": {
+    "controller_type": "TF",
+    "resource_name": "google_storage_transfer_job",
+    "service_hostname": "storagetransfer.googleapis.com",
+    "api_endpoint": "v1.transferJobs",
+    "official_rest_api_url": "/storage-transfer/docs/reference/rest/v1/transferJobs",
+    "kind": "StorageTransferJob",
+    "group": "storagetransfer.cnrm.cloud.google.com"
+  },
+  "TagsTagBinding": {
+    "controller_type": "TF",
+    "resource_name": "google_tags_tag_binding",
+    "service_hostname": "tags.googleapis.com",
+    "kind": "TagsTagBinding",
+    "group": "tags.cnrm.cloud.google.com"
+  },
+  "TagsTagKey": {
+    "controller_type": "TF",
+    "resource_name": "google_tags_tag_key",
+    "service_hostname": "tags.googleapis.com",
+    "kind": "TagsTagKey",
+    "group": "tags.cnrm.cloud.google.com"
+  },
+  "TagsTagValue": {
+    "controller_type": "TF",
+    "resource_name": "google_tags_tag_value",
+    "service_hostname": "tags.googleapis.com",
+    "kind": "TagsTagValue",
+    "group": "tags.cnrm.cloud.google.com"
+  },
+  "VPCAccessConnector": {
+    "controller_type": "TF",
+    "resource_name": "google_vpc_access_connector",
+    "service_hostname": "vpcaccess.googleapis.com",
+    "api_endpoint": "v1beta1.projects.locations.connectors",
+    "official_rest_api_url": "/vpc/docs/reference/vpcaccess/rest/v1beta1/projects.locations.connectors",
+    "kind": "VPCAccessConnector",
+    "group": "vpcaccess.cnrm.cloud.google.com"
+  },
+  "VertexAIDataset": {
+    "controller_type": "TF",
+    "resource_name": "google_vertex_ai_dataset",
+    "service_hostname": "aiplatform.googleapis.com",
+    "api_endpoint": "v1beta1.projects.locations.datasets",
+    "official_rest_api_url": "/vertex-ai/docs/reference/rest/v1beta1/projects.locations.datasets",
+    "kind": "VertexAIDataset",
+    "group": "vertexai.cnrm.cloud.google.com"
+  },
+  "VertexAIEndpoint": {
+    "controller_type": "TF",
+    "resource_name": "google_vertex_ai_endpoint",
+    "service_hostname": "aiplatform.googleapis.com",
+    "api_endpoint": "v1beta1.projects.locations.endpoints",
+    "official_rest_api_url": "/vertex-ai/docs/reference/rest/v1beta1/projects.locations.endpoints",
+    "kind": "VertexAIEndpoint",
+    "group": "vertexai.cnrm.cloud.google.com"
+  },
+  "VertexAIIndex": {
+    "controller_type": "TF",
+    "resource_name": "google_vertex_ai_index",
+    "service_hostname": "aiplatform.googleapis.com",
+    "api_endpoint": "v1beta1.projects.locations.indexes",
+    "official_rest_api_url": "/vertex-ai/docs/reference/rest/v1beta1/projects.locations.indexes",
+    "kind": "VertexAIIndex",
+    "group": "vertexai.cnrm.cloud.google.com"
+  }
+}
