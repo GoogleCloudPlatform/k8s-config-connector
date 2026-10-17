@@ -29,17 +29,28 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
 
+./generate-proto.sh
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.video.livestream.v1 \
   --api-version livestream.cnrm.cloud.google.com/v1alpha1 \
   --resource LiveStreamAsset:Asset \
   --resource LiveStreamChannel:Channel \
-  --resource LiveStreamInput:Input
+  --resource LiveStreamInput:Input \
+  --resource LiveStreamDVRSession:DvrSession \
+  --prepopulate-resource
 
-${CONTROLLERBUILDER} generate-mapper --service google.cloud.video.livestream.v1 --api-version livestream.cnrm.cloud.google.com/v1alpha1
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.video.livestream.v1 \
+  --api-version livestream.cnrm.cloud.google.com/v1alpha1 \
+  --resource LiveStreamDVRSession:DvrSession
+
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.video.livestream.v1 \
+  --api-version livestream.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource
+
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

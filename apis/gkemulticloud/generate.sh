@@ -29,16 +29,28 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
+
 ./generate-proto.sh
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.gkemulticloud.v1 \
   --api-version gkemulticloud.cnrm.cloud.google.com/v1alpha1 \
-  --resource GKEMulticloudAttachedCluster:AttachedCluster
+  --resource GKEMulticloudAttachedCluster:AttachedCluster \
+  --resource GKEMulticloudAWSNodePool:AwsNodePool \
+  --resource GKEMulticloudAzureNodePool:AzureNodePool \
+  --prepopulate-resource
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.gkemulticloud.v1 \
+  --api-version gkemulticloud.cnrm.cloud.google.com/v1alpha1 \
+  --resource GKEMulticloudAWSNodePool:AwsNodePool \
+  --resource GKEMulticloudAzureNodePool:AzureNodePool
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.gkemulticloud.v1 \
-  --api-version gkemulticloud.cnrm.cloud.google.com/v1alpha1
+  --api-version gkemulticloud.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource
+
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

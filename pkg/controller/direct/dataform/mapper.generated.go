@@ -32,6 +32,40 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func CodeCompilationConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CodeCompilationConfig) *krmdataformv1alpha1.CodeCompilationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataformv1alpha1.CodeCompilationConfig{}
+	out.DefaultDatabase = direct.LazyPtr(in.GetDefaultDatabase())
+	out.DefaultSchema = direct.LazyPtr(in.GetDefaultSchema())
+	out.DefaultLocation = direct.LazyPtr(in.GetDefaultLocation())
+	out.AssertionSchema = direct.LazyPtr(in.GetAssertionSchema())
+	out.Vars = in.Vars
+	out.DatabaseSuffix = direct.LazyPtr(in.GetDatabaseSuffix())
+	out.SchemaSuffix = direct.LazyPtr(in.GetSchemaSuffix())
+	out.TablePrefix = direct.LazyPtr(in.GetTablePrefix())
+	out.BuiltinAssertionNamePrefix = direct.LazyPtr(in.GetBuiltinAssertionNamePrefix())
+	out.DefaultNotebookRuntimeOptions = NotebookRuntimeOptions_v1alpha1_FromProto(mapCtx, in.GetDefaultNotebookRuntimeOptions())
+	return out
+}
+func CodeCompilationConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.CodeCompilationConfig) *pb.CodeCompilationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CodeCompilationConfig{}
+	out.DefaultDatabase = direct.ValueOf(in.DefaultDatabase)
+	out.DefaultSchema = direct.ValueOf(in.DefaultSchema)
+	out.DefaultLocation = direct.ValueOf(in.DefaultLocation)
+	out.AssertionSchema = direct.ValueOf(in.AssertionSchema)
+	out.Vars = in.Vars
+	out.DatabaseSuffix = direct.ValueOf(in.DatabaseSuffix)
+	out.SchemaSuffix = direct.ValueOf(in.SchemaSuffix)
+	out.TablePrefix = direct.ValueOf(in.TablePrefix)
+	out.BuiltinAssertionNamePrefix = direct.ValueOf(in.BuiltinAssertionNamePrefix)
+	out.DefaultNotebookRuntimeOptions = NotebookRuntimeOptions_v1alpha1_ToProto(mapCtx, in.DefaultNotebookRuntimeOptions)
+	return out
+}
 func DataformFolderObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *dataformpb.Folder) *krmdataformv1alpha1.DataformFolderObservedState {
 	if in == nil {
 		return nil
@@ -78,6 +112,54 @@ func DataformFolderSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataf
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	// MISSING: ContainingFolder
+	return out
+}
+func DataformReleaseConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ReleaseConfig) *krmdataformv1alpha1.DataformReleaseConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataformv1alpha1.DataformReleaseConfigObservedState{}
+	// MISSING: Name
+	out.RecentScheduledReleaseRecords = direct.Slice_FromProto(mapCtx, in.RecentScheduledReleaseRecords, ReleaseConfig_ScheduledReleaseRecordObservedState_v1alpha1_FromProto)
+	out.InternalMetadata = in.InternalMetadata
+	return out
+}
+func DataformReleaseConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.DataformReleaseConfigObservedState) *pb.ReleaseConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReleaseConfig{}
+	// MISSING: Name
+	out.RecentScheduledReleaseRecords = direct.Slice_ToProto(mapCtx, in.RecentScheduledReleaseRecords, ReleaseConfig_ScheduledReleaseRecordObservedState_v1alpha1_ToProto)
+	out.InternalMetadata = in.InternalMetadata
+	return out
+}
+func DataformReleaseConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ReleaseConfig) *krmdataformv1alpha1.DataformReleaseConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataformv1alpha1.DataformReleaseConfigSpec{}
+	// MISSING: Name
+	out.GitCommitish = direct.LazyPtr(in.GetGitCommitish())
+	out.CodeCompilationConfig = CodeCompilationConfig_v1alpha1_FromProto(mapCtx, in.GetCodeCompilationConfig())
+	out.CronSchedule = direct.LazyPtr(in.GetCronSchedule())
+	out.TimeZone = direct.LazyPtr(in.GetTimeZone())
+	out.ReleaseCompilationResult = direct.LazyPtr(in.GetReleaseCompilationResult())
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	return out
+}
+func DataformReleaseConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.DataformReleaseConfigSpec) *pb.ReleaseConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReleaseConfig{}
+	// MISSING: Name
+	out.GitCommitish = direct.ValueOf(in.GitCommitish)
+	out.CodeCompilationConfig = CodeCompilationConfig_v1alpha1_ToProto(mapCtx, in.CodeCompilationConfig)
+	out.CronSchedule = direct.ValueOf(in.CronSchedule)
+	out.TimeZone = direct.ValueOf(in.TimeZone)
+	out.ReleaseCompilationResult = direct.ValueOf(in.ReleaseCompilationResult)
+	out.Disabled = direct.ValueOf(in.Disabled)
 	return out
 }
 func DataformRepositoryObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *dataformpb.Repository) *krmdataformv1beta1.DataformRepositoryObservedState {
@@ -151,4 +233,90 @@ func DataformTeamFolderSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmd
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	return out
+}
+func NotebookRuntimeOptions_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntimeOptions) *krmdataformv1alpha1.NotebookRuntimeOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataformv1alpha1.NotebookRuntimeOptions{}
+	out.GCSOutputBucket = direct.LazyPtr(in.GetGcsOutputBucket())
+	out.AiPlatformNotebookRuntimeTemplate = direct.LazyPtr(in.GetAiPlatformNotebookRuntimeTemplate())
+	return out
+}
+func NotebookRuntimeOptions_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.NotebookRuntimeOptions) *pb.NotebookRuntimeOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookRuntimeOptions{}
+	if oneof := NotebookRuntimeOptions_GcsOutputBucket_ToProto(mapCtx, in.GCSOutputBucket); oneof != nil {
+		out.ExecutionSink = oneof
+	}
+	out.AiPlatformNotebookRuntimeTemplate = direct.ValueOf(in.AiPlatformNotebookRuntimeTemplate)
+	return out
+}
+func NotebookRuntimeOptions_GcsOutputBucket_ToProto(mapCtx *direct.MapContext, in *string) *pb.NotebookRuntimeOptions_GcsOutputBucket {
+	if in == nil {
+		return nil
+	}
+	return &pb.NotebookRuntimeOptions_GcsOutputBucket{GcsOutputBucket: *in}
+}
+func ReleaseConfig_ScheduledReleaseRecord_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ReleaseConfig_ScheduledReleaseRecord) *krmdataformv1alpha1.ReleaseConfig_ScheduledReleaseRecord {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataformv1alpha1.ReleaseConfig_ScheduledReleaseRecord{}
+	out.CompilationResult = direct.LazyPtr(in.GetCompilationResult())
+	out.ErrorStatus = direct.Status_FromProto(mapCtx, in.GetErrorStatus())
+	// MISSING: ReleaseTime
+	return out
+}
+func ReleaseConfig_ScheduledReleaseRecord_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.ReleaseConfig_ScheduledReleaseRecord) *pb.ReleaseConfig_ScheduledReleaseRecord {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReleaseConfig_ScheduledReleaseRecord{}
+	if oneof := ReleaseConfig_ScheduledReleaseRecord_CompilationResult_ToProto(mapCtx, in.CompilationResult); oneof != nil {
+		out.Result = oneof
+	}
+	if oneof := direct.Status_ToProto(mapCtx, in.ErrorStatus); oneof != nil {
+		out.Result = &pb.ReleaseConfig_ScheduledReleaseRecord_ErrorStatus{ErrorStatus: oneof}
+	}
+	// MISSING: ReleaseTime
+	return out
+}
+func ReleaseConfig_ScheduledReleaseRecord_CompilationResult_ToProto(mapCtx *direct.MapContext, in *string) *pb.ReleaseConfig_ScheduledReleaseRecord_CompilationResult {
+	if in == nil {
+		return nil
+	}
+	return &pb.ReleaseConfig_ScheduledReleaseRecord_CompilationResult{CompilationResult: *in}
+}
+func ReleaseConfig_ScheduledReleaseRecordObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ReleaseConfig_ScheduledReleaseRecord) *krmdataformv1alpha1.ReleaseConfig_ScheduledReleaseRecordObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataformv1alpha1.ReleaseConfig_ScheduledReleaseRecordObservedState{}
+	out.CompilationResult = direct.LazyPtr(in.GetCompilationResult())
+	out.ErrorStatus = direct.Status_FromProto(mapCtx, in.GetErrorStatus())
+	out.ReleaseTime = direct.StringTimestamp_FromProto(mapCtx, in.GetReleaseTime())
+	return out
+}
+func ReleaseConfig_ScheduledReleaseRecordObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.ReleaseConfig_ScheduledReleaseRecordObservedState) *pb.ReleaseConfig_ScheduledReleaseRecord {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReleaseConfig_ScheduledReleaseRecord{}
+	if oneof := ReleaseConfig_ScheduledReleaseRecordObservedState_CompilationResult_ToProto(mapCtx, in.CompilationResult); oneof != nil {
+		out.Result = oneof
+	}
+	if oneof := direct.Status_ToProto(mapCtx, in.ErrorStatus); oneof != nil {
+		out.Result = &pb.ReleaseConfig_ScheduledReleaseRecord_ErrorStatus{ErrorStatus: oneof}
+	}
+	out.ReleaseTime = direct.StringTimestamp_ToProto(mapCtx, in.ReleaseTime)
+	return out
+}
+func ReleaseConfig_ScheduledReleaseRecordObservedState_CompilationResult_ToProto(mapCtx *direct.MapContext, in *string) *pb.ReleaseConfig_ScheduledReleaseRecord_CompilationResult {
+	if in == nil {
+		return nil
+	}
+	return &pb.ReleaseConfig_ScheduledReleaseRecord_CompilationResult{CompilationResult: *in}
 }

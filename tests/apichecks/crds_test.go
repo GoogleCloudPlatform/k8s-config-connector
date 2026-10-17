@@ -1164,7 +1164,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com":                    true, // status.observedState.modelToUpload.originalModelInfo is an empty object
 		"vertexaischedules.aiplatform.cnrm.cloud.google.com":                            true, // spec.createNotebookExecutionJobRequest.notebookExecutionJob.workbenchRuntime is an empty object
 		"transcoderjobs.transcoder.cnrm.cloud.google.com":                               true, // spec.config.elementaryStreams[].videoStream.vp9.sdr is an empty object
-
+		"retailcontrols.retail.cnrm.cloud.google.com":                                   true, // spec.rule.pinAction is an empty object
 	}
 
 	crds, err := crdloader.LoadAllCRDs()

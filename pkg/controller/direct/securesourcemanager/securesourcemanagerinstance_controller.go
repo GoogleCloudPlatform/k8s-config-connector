@@ -86,7 +86,7 @@ func (m *secureSourceManagerInstanceModel) AdapterForObject(ctx context.Context,
 	}
 
 	mapCtx := &direct.MapContext{}
-	desired := SecureSourceManagerInstanceSpec_ToProto(mapCtx, &obj.Spec)
+	desired := SecureSourceManagerInstanceSpec_v1beta1_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -199,7 +199,7 @@ func (a *secureSourceManagerInstanceAdapter) Update(ctx context.Context, updateO
 func (a *secureSourceManagerInstanceAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.Instance) error {
 	mapCtx := &direct.MapContext{}
 	status := &krm.SecureSourceManagerInstanceStatus{}
-	status.ObservedState = SecureSourceManagerInstanceObservedState_FromProto(mapCtx, latest)
+	status.ObservedState = SecureSourceManagerInstanceObservedState_v1beta1_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -209,7 +209,7 @@ func (a *secureSourceManagerInstanceAdapter) updateStatus(ctx context.Context, o
 }
 
 func compareSecureSourceManagerInstance(ctx context.Context, actual, desired *pb.Instance) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	maskedActual, err := mappers.OnlySpecFields(actual, SecureSourceManagerInstanceSpec_FromProto, SecureSourceManagerInstanceSpec_ToProto)
+	maskedActual, err := mappers.OnlySpecFields(actual, SecureSourceManagerInstanceSpec_v1beta1_FromProto, SecureSourceManagerInstanceSpec_v1beta1_ToProto)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -238,7 +238,7 @@ func (a *secureSourceManagerInstanceAdapter) Export(ctx context.Context) (*unstr
 
 	obj := &krm.SecureSourceManagerInstance{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(SecureSourceManagerInstanceSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(SecureSourceManagerInstanceSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

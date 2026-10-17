@@ -10,6 +10,9 @@
 [not_representable] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.attributeRefs[].values.uriValues" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=apihubexternalapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.attributeRefs[].values.uriValues" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=apihubplugins.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.type.uriValues" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=apihubversions.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.accreditation.uriValues" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=apihubversions.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.compliance.uriValues" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=apihubversions.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.lifecycle.uriValues" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.taskGroups[].taskSpec.runnables[].container.imageURI" reason=container-image-uri-not-a-storage-object
 [not_representable] crd=biglakedatabases.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.hiveOptions.locationURI" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=biglaketables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.hiveOptions.storageDescriptor.locationURI" reason=gcs-path-decomposable-as-bucketref-plus-path
@@ -45,6 +48,9 @@
 [not_representable] crd=dataprocworkflowtemplates.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.jobs[].hadoopJob.mainJarFileUri" reason=gcs-path-decomposable-as-bucketref-plus-path
 [not_representable] crd=devconnectinsightsconfigs.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifactConfigs[].uri" reason=container-image-uri-not-a-storage-object
 [not_representable] crd=discoveryengineconversations.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.messages[].reply.summary.summaryWithMetadata.references[].uri" reason=gcs-path-decomposable-as-bucketref-plus-path
+[not_representable] crd=financialservicesdatasets.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.tableSpecs" reason=bq-scheme-not-a-gcp-resource-name
+[not_representable] crd=financialservicespredictionresults.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputs.explainabilityDestination.tableURI" reason=bq-scheme-not-a-gcp-resource-name
+[not_representable] crd=financialservicespredictionresults.financialservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputs.predictionDestination.tableURI" reason=bq-scheme-not-a-gcp-resource-name
 [not_representable] crd=healthcaredicomstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.streamConfigs[].bigqueryDestination.tableUri" reason=bigquery-uri-not-a-gcp-resource-name
 [not_representable] crd=healthcarefhirstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.streamConfigs[].bigqueryDestination.datasetUri" reason=bq-scheme-not-a-gcp-resource-name
 [not_representable] crd=livestreamassets.livestream.cnrm.cloud.google.com version=v1alpha1: field ".spec.image.uri" reason=gcs-path-decomposable-as-bucketref-plus-path

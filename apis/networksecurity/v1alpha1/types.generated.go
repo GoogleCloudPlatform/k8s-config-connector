@@ -23,7 +23,15 @@
 
 package v1alpha1
 
-/* unreachable type PartnerSseRealm_PartnerSseRealmPanOptions
+// +kcc:proto=google.cloud.networksecurity.v1alpha1.PartnerSSEGateway.PartnerSSEGatewaySymantecOptions
+type PartnerSseGateway_PartnerSseGatewaySymantecOptions struct {
+
+	// Optional. Target for the NCGs to send traffic to on the Symantec side.
+	//  Only supports IP address today.
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSEGateway.PartnerSSEGatewaySymantecOptions.symantec_site_target_host
+	SymantecSiteTargetHost *string `json:"symantecSiteTargetHost,omitempty"`
+}
+
 // +kcc:proto=google.cloud.networksecurity.v1alpha1.PartnerSSERealm.PartnerSSERealmPanOptions
 type PartnerSseRealm_PartnerSseRealmPanOptions struct {
 	// Optional. serial_number is provided by PAN to identify GCP customer on
@@ -36,9 +44,7 @@ type PartnerSseRealm_PartnerSseRealmPanOptions struct {
 	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSERealm.PartnerSSERealmPanOptions.tenant_id
 	TenantID *string `json:"tenantID,omitempty"`
 }
-*/
 
-/* unreachable type TLSInspectionPolicy
 // +kcc:proto=google.cloud.networksecurity.v1alpha1.TlsInspectionPolicy
 type TLSInspectionPolicy struct {
 	// Required. Name of the resource. Name is of the form
@@ -106,9 +112,21 @@ type TLSInspectionPolicy struct {
 	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.TlsInspectionPolicy.custom_tls_features
 	CustomTLSFeatures []string `json:"customTLSFeatures,omitempty"`
 }
-*/
 
-/* unreachable type TLSInspectionPolicyObservedState
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1alpha1.PartnerSSEGateway.PartnerSSEGatewaySymantecOptions
+type PartnerSseGateway_PartnerSseGatewaySymantecOptionsObservedState struct {
+	// Output only. UUID of the Symantec Location created on the customer's
+	//  behalf.
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSEGateway.PartnerSSEGatewaySymantecOptions.symantec_location_uuid
+	SymantecLocationUuid *string `json:"symantecLocationUuid,omitempty"`
+
+	// Output only. Symantec data center identifier that this SSEGW will connect
+	//  to. Filled from the customer SSEGateway, and only for PartnerSSEGateways
+	//  associated with Symantec today.
+	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.PartnerSSEGateway.PartnerSSEGatewaySymantecOptions.symantec_site
+	SymantecSite *string `json:"symantecSite,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.networksecurity.v1alpha1.TlsInspectionPolicy
 type TLSInspectionPolicyObservedState struct {
 	// Output only. The timestamp when the resource was created.
@@ -119,4 +137,3 @@ type TLSInspectionPolicyObservedState struct {
 	// +kcc:proto:field=google.cloud.networksecurity.v1alpha1.TlsInspectionPolicy.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
-*/
