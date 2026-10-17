@@ -290,3 +290,93 @@ type KeyOperationAttestationObservedState struct {
 	CertChains *KeyOperationAttestation_CertificateChains `json:"certChains,omitempty"`
 }
 */
+
+// +kcc:proto=google.cloud.kms.v1.Certificate
+type Certificate struct {
+	// Required. The raw certificate bytes in DER format.
+	// +kcc:proto:field=google.cloud.kms.v1.Certificate.raw_der
+	// +required
+	RawDer []byte `json:"rawDer,omitempty"`
+}
+
+// +kcc:proto=google.cloud.kms.v1.EkmConnection.ServiceResolver
+type EkmConnection_ServiceResolver struct {
+	// Required. The resource name of the Service Directory service pointing to
+	//  an EKM replica, in the format
+	//  `projectsnamespaces/*/services/*`.
+	// +kcc:proto:field=google.cloud.kms.v1.EkmConnection.ServiceResolver.service_directory_service
+	// +required
+	ServiceDirectoryService *string `json:"serviceDirectoryService,omitempty"`
+
+	// Optional. The filter applied to the endpoints of the resolved service. If
+	//  no filter is specified, all endpoints will be considered. An endpoint
+	//  will be chosen arbitrarily from the filtered list for each request.
+	//
+	//  For endpoint filter syntax and examples, see
+	//  https://cloud.google.com/service-directory/docs/reference/rpc/google.cloud.servicedirectory.v1#resolveservicerequest.
+	// +kcc:proto:field=google.cloud.kms.v1.EkmConnection.ServiceResolver.endpoint_filter
+	EndpointFilter *string `json:"endpointFilter,omitempty"`
+
+	// Required. The hostname of the EKM replica used at TLS and HTTP layers.
+	// +kcc:proto:field=google.cloud.kms.v1.EkmConnection.ServiceResolver.hostname
+	// +required
+	Hostname *string `json:"hostname,omitempty"`
+
+	// Required. A list of leaf server certificates used to authenticate HTTPS
+	//  connections to the EKM replica. Currently, a maximum of 10
+	//  [Certificate][google.cloud.kms.v1.Certificate] is supported.
+	// +kcc:proto:field=google.cloud.kms.v1.EkmConnection.ServiceResolver.server_certificates
+	// +required
+	ServerCertificates []Certificate `json:"serverCertificates,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.kms.v1.Certificate
+type CertificateObservedState struct {
+	// Output only. True if the certificate was parsed successfully.
+	// +kcc:proto:field=google.cloud.kms.v1.Certificate.parsed
+	Parsed *bool `json:"parsed,omitempty"`
+
+	// Output only. The issuer distinguished name in RFC 2253 format. Only present
+	//  if [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
+	// +kcc:proto:field=google.cloud.kms.v1.Certificate.issuer
+	Issuer *string `json:"issuer,omitempty"`
+
+	// Output only. The subject distinguished name in RFC 2253 format. Only
+	//  present if [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
+	// +kcc:proto:field=google.cloud.kms.v1.Certificate.subject
+	Subject *string `json:"subject,omitempty"`
+
+	// Output only. The subject Alternative DNS names. Only present if
+	//  [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
+	// +kcc:proto:field=google.cloud.kms.v1.Certificate.subject_alternative_dns_names
+	SubjectAlternativeDNSNames []string `json:"subjectAlternativeDNSNames,omitempty"`
+
+	// Output only. The certificate is not valid before this time. Only present if
+	//  [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
+	// +kcc:proto:field=google.cloud.kms.v1.Certificate.not_before_time
+	NotBeforeTime *string `json:"notBeforeTime,omitempty"`
+
+	// Output only. The certificate is not valid after this time. Only present if
+	//  [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
+	// +kcc:proto:field=google.cloud.kms.v1.Certificate.not_after_time
+	NotAfterTime *string `json:"notAfterTime,omitempty"`
+
+	// Output only. The certificate serial number as a hex string. Only present if
+	//  [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
+	// +kcc:proto:field=google.cloud.kms.v1.Certificate.serial_number
+	SerialNumber *string `json:"serialNumber,omitempty"`
+
+	// Output only. The SHA-256 certificate fingerprint as a hex string. Only
+	//  present if [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
+	// +kcc:proto:field=google.cloud.kms.v1.Certificate.sha256_fingerprint
+	Sha256Fingerprint *string `json:"sha256Fingerprint,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.kms.v1.EkmConnection.ServiceResolver
+type EkmConnection_ServiceResolverObservedState struct {
+	// Required. A list of leaf server certificates used to authenticate HTTPS
+	//  connections to the EKM replica. Currently, a maximum of 10
+	//  [Certificate][google.cloud.kms.v1.Certificate] is supported.
+	// +kcc:proto:field=google.cloud.kms.v1.EkmConnection.ServiceResolver.server_certificates
+	ServerCertificates []CertificateObservedState `json:"serverCertificates,omitempty"`
+}

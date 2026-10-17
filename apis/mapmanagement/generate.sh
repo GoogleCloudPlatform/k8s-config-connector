@@ -47,6 +47,19 @@ ${CONTROLLERBUILDER} generate-mapper \
   --api-version mapmanagement.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.maps.mapmanagement.v2 \
+  --api-version mapmanagement.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource MapmanagementMapContextConfig:MapContextConfig
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.maps.mapmanagement.v2 \
+  --api-version mapmanagement.cnrm.cloud.google.com/v1alpha1 \
+  --resource MapmanagementMapContextConfig:MapContextConfig
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

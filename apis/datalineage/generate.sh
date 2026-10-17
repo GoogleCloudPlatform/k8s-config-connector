@@ -41,6 +41,17 @@ ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.datacatalog.lineage.v1 \
   --api-version datalineage.cnrm.cloud.google.com/v1alpha1
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.datacatalog.lineage.v1 \
+  --api-version datalineage.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource DatalineageRun:Run
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.datacatalog.lineage.v1 \
+  --api-version datalineage.cnrm.cloud.google.com/v1alpha1 \
+  --resource DatalineageRun:Run
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

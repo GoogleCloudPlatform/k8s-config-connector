@@ -58,6 +58,35 @@ ${CONTROLLERBUILDER} generate-mapper \
     --api-version "dataplex.cnrm.cloud.google.com/v1alpha1" \
     --proto-source-path ${PROTO_OUT}
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.dataplex.v1 \
+  --api-version dataplex.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource DataplexAsset:Asset \
+  --resource DataplexDataAsset:DataAsset \
+  --resource DataplexDataAttribute:DataAttribute \
+  --resource DataplexEncryptionConfig:EncryptionConfig \
+  --resource DataplexEntity:Entity \
+  --resource DataplexEntry:Entry \
+  --resource DataplexEntryLink:EntryLink \
+  --resource DataplexGlossaryCategory:GlossaryCategory \
+  --resource DataplexGlossaryTerm:GlossaryTerm
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.dataplex.v1 \
+  --api-version dataplex.cnrm.cloud.google.com/v1alpha1 \
+  --resource DataplexAsset:Asset \
+  --resource DataplexDataAsset:DataAsset \
+  --resource DataplexDataAttribute:DataAttribute \
+  --resource DataplexEncryptionConfig:EncryptionConfig \
+  --resource DataplexEntity:Entity \
+  --resource DataplexEntry:Entry \
+  --resource DataplexEntryLink:EntryLink \
+  --resource DataplexGlossaryCategory:GlossaryCategory \
+  --resource DataplexGlossaryTerm:GlossaryTerm
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

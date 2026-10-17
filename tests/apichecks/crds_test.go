@@ -1119,7 +1119,15 @@ func TestCRDObjectTypes(t *testing.T) {
 		"vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com":                    true, // status.observedState.modelToUpload.originalModelInfo is an empty object
 		"vertexaischedules.aiplatform.cnrm.cloud.google.com":                            true, // spec.createNotebookExecutionJobRequest.notebookExecutionJob.workbenchRuntime is an empty object
 		"transcoderjobs.transcoder.cnrm.cloud.google.com":                               true, // spec.config.elementaryStreams[].videoStream.vp9.sdr is an empty object
-
+		"aiplatformfeatureviews.aiplatform.cnrm.cloud.google.com":                       true, // GCP known pattern: Empty oneof option (spec.indexConfig.bruteForceConfig)
+		"cesagents.ces.cnrm.cloud.google.com":                                           true, // GCP known pattern: Empty oneof option (spec.llmAgent)
+		"cloudchannelchannelpartnerrepricingconfigs.cloudchannel.cnrm.cloud.google.com": true, // GCP known pattern: Empty oneof option (spec.repricingConfig.channelPartnerGranularity)
+		"cloudchannelcustomerrepricingconfigs.cloudchannel.cnrm.cloud.google.com":       true, // GCP known pattern: Empty oneof option (spec.repricingConfig.channelPartnerGranularity)
+		"datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com":           true, // GCP known pattern: Empty oneof option (spec.oracle.staticServiceIPConnectivity)
+		"dialogflowplaybooks.dialogflow.cnrm.cloud.google.com":                          true, // GCP known pattern: Empty oneof option (spec.handlers[].lifecycleHandler.fulfillment.messages[].knowledgeInfoCard)
+		"dialogflowtestcases.dialogflow.cnrm.cloud.google.com":                          true, // GCP known pattern: Empty oneof option (spec.lastTestResult.conversationTurns[].virtualAgentOutput.currentPage.entryFulfillment.messages[].knowledgeInfoCard)
+		"dialogflowtransitionroutegroups.dialogflow.cnrm.cloud.google.com":              true, // GCP known pattern: Empty oneof option (spec.transitionRoutes[].triggerFulfillment.messages[].knowledgeInfoCard)
+		"notebooksruntimes.notebooks.cnrm.cloud.google.com":                             true, // GCP known pattern: Empty oneof option (spec.virtualMachine.virtualMachineConfig.bootImage)
 	}
 
 	crds, err := crdloader.LoadAllCRDs()

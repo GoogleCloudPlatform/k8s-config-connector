@@ -20,3 +20,69 @@
 // resource: DataformTeamFolder:TeamFolder
 
 package v1alpha1
+
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+)
+
+// +kcc:proto=google.cloud.dataform.v1.InvocationConfig
+type InvocationConfig struct {
+	// Optional. The set of action identifiers to include.
+	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.included_targets
+	IncludedTargets []Target `json:"includedTargets,omitempty"`
+
+	// Optional. The set of tags to include.
+	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.included_tags
+	IncludedTags []string `json:"includedTags,omitempty"`
+
+	// Optional. When set to true, transitive dependencies of included actions
+	//  will be executed.
+	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.transitive_dependencies_included
+	TransitiveDependenciesIncluded *bool `json:"transitiveDependenciesIncluded,omitempty"`
+
+	// Optional. When set to true, transitive dependents of included actions will
+	//  be executed.
+	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.transitive_dependents_included
+	TransitiveDependentsIncluded *bool `json:"transitiveDependentsIncluded,omitempty"`
+
+	// Optional. When set to true, any incremental tables will be fully refreshed.
+	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.fully_refresh_incremental_tables_enabled
+	FullyRefreshIncrementalTablesEnabled *bool `json:"fullyRefreshIncrementalTablesEnabled,omitempty"`
+
+	// Optional. The service account to run workflow invocations under.
+	// +kcc:proto:field=google.cloud.dataform.v1.InvocationConfig.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataform.v1.Target
+type Target struct {
+	// Optional. The action's database (Google Cloud project ID) .
+	// +kcc:proto:field=google.cloud.dataform.v1.Target.database
+	Database *string `json:"database,omitempty"`
+
+	// Optional. The action's schema (BigQuery dataset ID), within `database`.
+	// +kcc:proto:field=google.cloud.dataform.v1.Target.schema
+	Schema *string `json:"schema,omitempty"`
+
+	// Optional. The action's name, within `database` and `schema`.
+	// +kcc:proto:field=google.cloud.dataform.v1.Target.name
+	Name *string `json:"name,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataform.v1.WorkflowConfig.ScheduledExecutionRecord
+type WorkflowConfig_ScheduledExecutionRecordObservedState struct {
+	// The name of the created workflow invocation, if one was successfully
+	//  created. Must be in the format
+	//  `projectsrepositories/*/workflowInvocations/*`.
+	// +kcc:proto:field=google.cloud.dataform.v1.WorkflowConfig.ScheduledExecutionRecord.workflow_invocation
+	WorkflowInvocation *string `json:"workflowInvocation,omitempty"`
+
+	// The error status encountered upon this attempt to create the
+	//  workflow invocation, if the attempt was unsuccessful.
+	// +kcc:proto:field=google.cloud.dataform.v1.WorkflowConfig.ScheduledExecutionRecord.error_status
+	ErrorStatus *common.Status `json:"errorStatus,omitempty"`
+
+	// Output only. The timestamp of this execution attempt.
+	// +kcc:proto:field=google.cloud.dataform.v1.WorkflowConfig.ScheduledExecutionRecord.execution_time
+	ExecutionTime *string `json:"executionTime,omitempty"`
+}

@@ -58,6 +58,17 @@ ${CONTROLLERBUILDER} generate-mapper \
   --api-version notebooks.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.notebooks.v1 \
+  --api-version notebooks.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource NotebooksRuntime:Runtime
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.notebooks.v1 \
+  --api-version notebooks.cnrm.cloud.google.com/v1alpha1 \
+  --resource NotebooksRuntime:Runtime
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

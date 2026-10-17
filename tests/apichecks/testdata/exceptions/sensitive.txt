@@ -1,3 +1,9 @@
+crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.alloydb.settings.initialUser.password" is sensitive data, should use secretRef
+crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.cloudsql.settings.rootPassword" is sensitive data, should use secretRef
+crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.mysql.password" is sensitive data, should use secretRef
+crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.forwardSSHConnectivity.password" is sensitive data, should use secretRef
+crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.oracle.password" is sensitive data, should use secretRef
+crd=datamigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.password" is sensitive data, should use secretRef
 crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.securityConfig.kerberosConfig.crossRealmTrustSharedPassword" is sensitive data, should use secretRef
 crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.securityConfig.kerberosConfig.keyPassword" is sensitive data, should use secretRef
 crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.securityConfig.kerberosConfig.keystorePassword" is sensitive data, should use secretRef
@@ -8,4 +14,10 @@ crd=dataprocworkflowtemplates.dataproc.cnrm.cloud.google.com version=v1beta1: fi
 crd=dataprocworkflowtemplates.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.placement.managedCluster.config.securityConfig.kerberosConfig.keystorePassword" is sensitive data, should use secretRef
 crd=dataprocworkflowtemplates.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.placement.managedCluster.config.securityConfig.kerberosConfig.rootPrincipalPassword" is sensitive data, should use secretRef
 crd=dataprocworkflowtemplates.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.placement.managedCluster.config.securityConfig.kerberosConfig.truststorePassword" is sensitive data, should use secretRef
+crd=dialogflowenvironments.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.webhookConfig.webhookOverrides[].genericWebService.password" is sensitive data, should use secretRef
+crd=dialogflowenvironments.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.webhookConfig.webhookOverrides[].genericWebService.secretVersionForUsernamePassword" is sensitive data, should use secretRef
+crd=dialogflowenvironments.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.webhookConfig.webhookOverrides[].serviceDirectory.genericWebService.password" is sensitive data, should use secretRef
+crd=dialogflowenvironments.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.webhookConfig.webhookOverrides[].serviceDirectory.genericWebService.secretVersionForUsernamePassword" is sensitive data, should use secretRef
 crd=dialogflowfulfillments.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.password" is sensitive data, should use secretRef
+crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.authentication.customAccount.password" is sensitive data, should use secretRef
+crd=websecurityscannerscanconfigs.websecurityscanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.authentication.googleAccount.password" is sensitive data, should use secretRef

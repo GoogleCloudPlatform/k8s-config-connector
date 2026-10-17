@@ -26,7 +26,6 @@ import (
 )
 
 var _ refsv1beta1.Ref = &DataAttributeRef{}
-var DataplexDataAttributeGVK = GroupVersion.WithKind("DataplexDataAttribute")
 
 // DataAttributeRef is a reference to a DataplexDataAttribute.
 type DataAttributeRef struct {

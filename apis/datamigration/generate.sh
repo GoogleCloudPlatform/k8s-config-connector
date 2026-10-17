@@ -44,6 +44,17 @@ ${CONTROLLERBUILDER} generate-mapper \
     --service google.cloud.clouddms.v1 \
     --api-version datamigration.cnrm.cloud.google.com/v1alpha1
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.clouddms.v1 \
+  --api-version datamigration.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource DatamigrationConnectionProfile:ConnectionProfile
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.clouddms.v1 \
+  --api-version datamigration.cnrm.cloud.google.com/v1alpha1 \
+  --resource DatamigrationConnectionProfile:ConnectionProfile
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

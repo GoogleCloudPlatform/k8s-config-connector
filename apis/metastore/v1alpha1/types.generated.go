@@ -211,3 +211,24 @@ type RestoreObservedState struct {
 	// +kcc:proto:field=google.cloud.metastore.v1.Restore.details
 	Details *string `json:"details,omitempty"`
 }
+
+// +kcc:proto=google.cloud.metastore.v1.MetadataImport.DatabaseDump
+type MetadataImport_DatabaseDump struct {
+	// The type of the database.
+	// +kcc:proto:field=google.cloud.metastore.v1.MetadataImport.DatabaseDump.database_type
+	DatabaseType *string `json:"databaseType,omitempty"`
+
+	// A Cloud Storage object or folder URI that specifies the source from which
+	//  to import metadata. It must begin with `gs://`.
+	// +kcc:proto:field=google.cloud.metastore.v1.MetadataImport.DatabaseDump.gcs_uri
+	GCSURI *string `json:"gcsURI,omitempty"`
+
+	// The name of the source database.
+	// +kcc:proto:field=google.cloud.metastore.v1.MetadataImport.DatabaseDump.source_database
+	SourceDatabase *string `json:"sourceDatabase,omitempty"`
+
+	// Optional. The type of the database dump. If unspecified, defaults to
+	//  `MYSQL`.
+	// +kcc:proto:field=google.cloud.metastore.v1.MetadataImport.DatabaseDump.type
+	Type *string `json:"type,omitempty"`
+}

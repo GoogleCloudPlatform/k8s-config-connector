@@ -1,0 +1,149 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: NetappBackup
+    group: netapp.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: NetappBackup
+    group: netapp.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/backupVaults/{backup_vault}/backups/{backup}" contains ancestor segment(s) backupVaults/{backup_vault} with no matching reference or field on NetappBackupSpec
+    status: open
+  - kind: NetappBackup
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.backupVaultRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to BackupVaultRef, read from the backupVaults segment of projects/{project}/locations/{location}/backupVaults/{backup_vault}/backups/{backup}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - kind: NetappBackup
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/backupVaults/{backup_vault}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: NetappBackup
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.sourceSnapshot
+    reason: possible-reference
+    detail: the proto marks this field as a reference to netapp.googleapis.com/Snapshot (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: NetappBackup
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.sourceSnapshot
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{project_id}/locations/{location}/volumes/{volume_id}/snapshots/{snapshot_id}"
+    status: open
+  - kind: NetappBackup
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.sourceVolume
+    reason: possible-reference
+    detail: the proto marks this field as a reference to netapp.googleapis.com/Volume (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: NetappBackup
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.sourceVolume
+    reason: possible-reference-by-description
+    detail: the description has the resource-name template "projects/{projects_id}/locations/{location}/volumes/{volume_id}"
+    status: open
+  - kind: NetappQuotaRule
+    group: netapp.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: NetappQuotaRule
+    group: netapp.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//netapp.googleapis.com/projects/{project}/locations/{location}/volumes/{volume}/quotaRules/{quota_rule}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: NetappQuotaRule
+    group: netapp.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/volumes/{volume}/quotaRules/{quota_rule}" contains ancestor segment(s) volumes/{volume} with no matching reference or field on NetappQuotaRuleSpec
+    status: open
+  - kind: NetappQuotaRule
+    group: netapp.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/volumes/{volume}, and no VolumeRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: NetappQuotaRule
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/volumes/{volume}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: NetappReplication
+    group: netapp.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: NetappReplication
+    group: netapp.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/volumes/{volume}/replications/{replication}" contains ancestor segment(s) volumes/{volume} with no matching reference or field on NetappReplicationSpec
+    status: open
+  - kind: NetappReplication
+    group: netapp.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/volumes/{volume}, and no VolumeRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: NetappReplication
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.destinationVolumeParameters.storagePool
+    reason: possible-reference
+    detail: the proto marks this field as a reference to netapp.googleapis.com/StoragePool (google.api.resource_reference); confirm whether it should be a KCC reference
+    status: open
+  - kind: NetappReplication
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.destinationVolumeParameters.volumeID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: NetappReplication
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/volumes/{volume}, which already names the location; a reference to it could replace location and the root reference
+    status: open
+  - kind: NetappSnapshot
+    group: netapp.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: NetappSnapshot
+    group: netapp.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/volumes/{volume}/snapshots/{snapshot}" contains ancestor segment(s) volumes/{volume} with no matching reference or field on NetappSnapshotSpec
+    status: open
+  - kind: NetappSnapshot
+    group: netapp.cnrm.cloud.google.com
+    reason: parent-ref-not-modelled
+    detail: the parent is projects/{project}/locations/{location}/volumes/{volume}, and no VolumeRef type exists to point at; add the parent resource first, then model this as a reference
+    status: open
+  - kind: NetappSnapshot
+    group: netapp.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/volumes/{volume}, which already names the location; a reference to it could replace location and the root reference
+    status: open
