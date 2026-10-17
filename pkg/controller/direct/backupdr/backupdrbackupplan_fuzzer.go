@@ -46,6 +46,7 @@ func backupDRBackupPlanFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".backup_rules")
 	f.SpecField(".resource_type")
 	f.SpecField(".backup_vault")
+	f.SpecField(".log_retention_days")
 
 	// Documented Field Comparison (KRM Status/ObservedState -> Proto):
 	// - createTime -> pb.BackupPlan.create_time (f.StatusField)
@@ -58,7 +59,6 @@ func backupDRBackupPlanFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".backup_vault_service_account")
 
 	f.Unimplemented_Identity(".name")
-	f.Unimplemented_NotYetTriaged(".log_retention_days")
 	f.Unimplemented_NotYetTriaged(".revision_id")
 	f.Unimplemented_NotYetTriaged(".revision_name")
 	f.Unimplemented_NotYetTriaged(".supported_resource_types")

@@ -227,6 +227,11 @@ func (in *BackupDRBackupPlanSpec) DeepCopyInto(out *BackupDRBackupPlanSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.LogRetentionDays != nil {
+		in, out := &in.LogRetentionDays, &out.LogRetentionDays
+		*out = new(int64)
+		**out = **in
+	}
 	out.ProjectRef = in.ProjectRef
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
