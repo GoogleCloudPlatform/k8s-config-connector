@@ -43,5 +43,10 @@ ${CONTROLLERBUILDER} generate-types \
   --resource CommerceProducerPrivateOffer:PrivateOffer \
   --proto-source-path ${PROTO_OUT}
 
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.commerceproducer.v1beta \
+  --api-version commerceproducer.cnrm.cloud.google.com/v1alpha1 \
+  --proto-source-path ${PROTO_OUT}
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
