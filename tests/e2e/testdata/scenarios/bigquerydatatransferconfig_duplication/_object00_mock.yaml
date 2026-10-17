@@ -1,0 +1,30 @@
+apiVersion: bigquerydatatransfer.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataTransferConfig
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  generation: 1
+  name: bqdt-duplication-test
+  namespace: ${projectId}
+spec:
+  dataSourceID: scheduled_query
+  displayName: duplication test
+  location: us
+  params:
+    destination_table_name_template: my_table
+    query: SELECT 1
+    write_disposition: WRITE_APPEND
+  projectRef:
+    external: ${projectId}
+  schedule: every day 05:00
+  serviceAccountRef:
+    name: dependency-sa
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: 'Update call failed: referenced IAMServiceAccount ${projectId}/dependency-sa
+      not found'
+    reason: UpdateFailed
+    status: "False"
+    type: Ready
+  observedGeneration: 1

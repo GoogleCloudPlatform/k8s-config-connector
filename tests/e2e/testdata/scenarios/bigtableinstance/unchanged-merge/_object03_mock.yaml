@@ -1,0 +1,43 @@
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+kind: BigtableInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: merge
+    test.cnrm.cloud.google.com/reconcile-cookie: (removed)
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 4
+  name: btinstance-${uniqueId}
+  namespace: ${projectId}
+spec:
+  cluster:
+  - autoscalingConfig:
+      cpuTarget: 70
+      maxNodes: 20
+      minNodes: 2
+      storageTarget: 2560
+    clusterId: cluster-a-${uniqueId}
+    storageType: SSD
+    zone: us-central1-a
+  - autoscalingConfig:
+      cpuTarget: 70
+      maxNodes: 20
+      minNodes: 2
+      storageTarget: 2560
+    clusterId: cluster-b-${uniqueId}
+    storageType: SSD
+    zone: us-central1-b
+  displayName: BigtableSample
+  instanceType: PRODUCTION
+  resourceID: btinstance-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 4
