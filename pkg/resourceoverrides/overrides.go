@@ -241,4 +241,6 @@ func init() {
 
 	Handler.Register(GetCloudIDSEndpointResourceOverrides())
 	Handler.Register(GetPrivateCACAPoolResourceOverrides())
+	Handler.Register(GetResourceManagerLienResourceOverrides())
 }
+
