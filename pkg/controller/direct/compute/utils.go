@@ -17,6 +17,8 @@ package compute
 import (
 	"reflect"
 	"strings"
+
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 
 /*
@@ -71,4 +73,23 @@ func ConvertIntToInt32(in *int) *int32 {
 	}
 	v := int32(*in)
 	return &v
+}
+
+func canonicalizeComputeURL(t *string) *string {
+	if t == nil {
+		return nil
+	}
+	trimmed := refs.TrimComputeURIPrefix(*t)
+	return &trimmed
+}
+
+func canonicalizeComputeURLs(arr []string) []string {
+	if arr == nil {
+		return nil
+	}
+	out := make([]string, len(arr))
+	for i, val := range arr {
+		out[i] = refs.TrimComputeURIPrefix(val)
+	}
+	return out
 }
