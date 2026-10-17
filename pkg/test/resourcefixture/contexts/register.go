@@ -456,16 +456,19 @@ func directDelete(ctx context.Context, u *unstructured.Unstructured, c client.Cl
 	// in subsequent calls but found it originally, we can consider it deleted.
 	firstFind := false
 
+	var deleteError error
 	for i := 0; i < maxRetries; i++ {
 		found, err := a.Find(ctx)
-		if err == nil && found {
+		deleteError = err
+
+		if deleteError == nil && found {
 			firstFind = true
 			op := directbase.NewDeleteOperation(c, u)
-			_, err = a.Delete(ctx, op)
-			if err == nil {
+			_, deleteError = a.Delete(ctx, op)
+			if deleteError == nil {
 				return nil // success
 			}
-		} else if err == nil && !found {
+		} else if deleteError == nil && !found {
 			if firstFind {
 				return nil // success
 			}
@@ -476,5 +479,9 @@ func directDelete(ctx context.Context, u *unstructured.Unstructured, c client.Cl
 		time.Sleep(baseDelay * (1 << i)) // delays: 100ms * 2^0, 100ms * 2^1, 100ms * 2^2
 	}
 
-	return fmt.Errorf("failed to delete after %d retries: %w", maxRetries, err)
+	if deleteError != nil {
+		return fmt.Errorf("failed to delete resource '%s' of GVK %s after %d retrie with error: %w", k8s.GetNamespacedName(u), u.GroupVersionKind(), maxRetries, deleteError)
+	}
+
+	return fmt.Errorf("failed to delete resource '%s' of GVK %s after %d retries", k8s.GetNamespacedName(u), u.GroupVersionKind(), maxRetries)
 }
