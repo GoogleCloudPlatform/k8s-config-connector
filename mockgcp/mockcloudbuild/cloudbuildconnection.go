@@ -72,6 +72,9 @@ func (s *CloudBuildConnectionServer) CreateConnection(ctx context.Context, req *
 	s.populateDefaultsForConnection(obj, name)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.AlreadyExists {
+			return nil, status.Errorf(codes.AlreadyExists, "Resource '%s' already exists", fqn)
+		}
 		return nil, err
 	}
 
@@ -116,6 +119,9 @@ func (s *CloudBuildConnectionServer) UpdateConnection(ctx context.Context, req *
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -158,12 +164,21 @@ func (s *CloudBuildConnectionServer) DeleteConnection(ctx context.Context, req *
 }
 
 func (s *CloudBuildConnectionServer) ListConnections(ctx context.Context, req *pbv2.ListConnectionsRequest) (*pbv2.ListConnectionsResponse, error) {
-	parent := req.GetParent()
+	tokens := strings.Split(req.GetParent(), "/")
+	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "locations" {
+		return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid", req.GetParent())
+	}
+	project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
+	if err != nil {
+		return nil, err
+	}
+	location := tokens[3]
+	findPrefix := fmt.Sprintf("projects/%s/locations/%s/connections", project.ID, location)
 
 	response := &pbv2.ListConnectionsResponse{}
 	connectionKind := (&pbv2.Connection{}).ProtoReflect().Descriptor()
 	if err := s.storage.List(ctx, connectionKind, storage.ListOptions{
-		Prefix: parent + "/connections",
+		Prefix: findPrefix,
 	}, func(obj proto.Message) error {
 		connection := obj.(*pbv2.Connection)
 		response.Connections = append(response.Connections, connection)
@@ -208,6 +223,9 @@ func (s *MockService) parseConnectionName(name string) (*connectionName, error) 
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "connections" {
+		if tokens[1] == "" || tokens[3] == "" || tokens[5] == "" {
+			return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+		}
 		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
 		if err != nil {
 			return nil, err
