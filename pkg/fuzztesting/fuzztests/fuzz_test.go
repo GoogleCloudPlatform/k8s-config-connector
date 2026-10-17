@@ -51,6 +51,26 @@ func TestSomeMappers(t *testing.T) {
 	}
 }
 
+func TestComputeNodeGroupFuzzer(t *testing.T) {
+	seed := time.Now().UnixNano()
+	fuzzers := fuzztesting.GetRegisteredFuzzers()
+	var nodegroupFuzzer fuzztesting.KRMFuzzer
+	for _, f := range fuzzers {
+		specType := getFuzzerSpecType(f)
+		if specType != nil && strings.HasSuffix(specType.Name(), "ComputeNodeGroupSpec") {
+			nodegroupFuzzer = f.(fuzztesting.KRMFuzzer)
+			break
+		}
+	}
+	if nodegroupFuzzer == nil {
+		t.Fatal("ComputeNodeGroup fuzzer not found")
+	}
+	for i := 0; i < 1000; i++ {
+		nodegroupFuzzer.FuzzSpec(t, seed+int64(i))
+		nodegroupFuzzer.FuzzStatus(t, seed+int64(i))
+	}
+}
+
 func TestListTypesWithoutFuzzers(t *testing.T) {
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
