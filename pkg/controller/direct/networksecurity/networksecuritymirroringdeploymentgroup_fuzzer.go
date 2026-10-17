@@ -44,9 +44,8 @@ func mirroringDeploymentGroupFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".reconciling")
 	f.StatusField(".locations")
 
-	f.Unimplemented_NotYetTriaged(".nested_deployments")
-
 	f.Unimplemented_Identity(".name")
+	f.Unimplemented_NotYetTriaged(".nested_deployments")
 
 	return f
 }
