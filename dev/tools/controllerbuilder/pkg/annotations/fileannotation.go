@@ -54,6 +54,51 @@ func (a *FileAnnotation) FormatGo() string {
 	return sb.String()
 }
 
+// MergeFileAnnotations merges an existing FileAnnotation with a newly generated
+// FileAnnotation of the same key and krm.group, preserving existing attribute
+// values in order and appending any new values without duplicates.
+func MergeFileAnnotations(existing, current *FileAnnotation) *FileAnnotation {
+	if current == nil {
+		return existing
+	}
+	if existing == nil || existing.Key != current.Key {
+		return current
+	}
+	if eg, cg := existing.Attributes["krm.group"], current.Attributes["krm.group"]; len(eg) > 0 && len(cg) > 0 && eg[0] != cg[0] {
+		return current
+	}
+
+	merged := &FileAnnotation{
+		Key:        current.Key,
+		Attributes: make(map[string][]string),
+	}
+	keys := make(map[string]bool)
+	for k := range existing.Attributes {
+		keys[k] = true
+	}
+	for k := range current.Attributes {
+		keys[k] = true
+	}
+	for k := range keys {
+		seen := make(map[string]bool)
+		var vals []string
+		for _, v := range existing.Attributes[k] {
+			if !seen[v] {
+				seen[v] = true
+				vals = append(vals, v)
+			}
+		}
+		for _, v := range current.Attributes[k] {
+			if !seen[v] {
+				seen[v] = true
+				vals = append(vals, v)
+			}
+		}
+		merged.Attributes[k] = vals
+	}
+	return merged
+}
+
 // FindFileAnnotations finds annotation blocks that are file-scoped.
 // prefixes is a list of prefixes we are looking for.
 // For example, if prefixes is "+tool:" we will recognize a block starting with `// +tool:foo`,
