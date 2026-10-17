@@ -29,7 +29,7 @@ spec:
       startTime: "12:00"
       transactionLogRetentionDays: 14
     edition: ENTERPRISE_PLUS
-    tier: db-custom-1-3840
+    tier: db-perf-optimized-N-4
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

@@ -22,5 +22,5 @@ spec:
   databaseVersion: MYSQL_8_0
   region: us-east1
   settings:
-    tier: db-custom-1-3840
+    tier: db-perf-optimized-N-4
     edition: ENTERPRISE_PLUS
