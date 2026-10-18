@@ -285,7 +285,8 @@ func DataSourceType_FromProto(mapCtx *direct.MapContext, in *datasourcespb.DataS
 		}
 	}
 
-	// Re-running only the first service (writeAccounts) must update in-place without flipping function order.
+	// Re-running only the first service (writeAccounts) must update
+	// in-place without flipping function order.
 	writeAccounts()
 	afterAccountsOnlyBytes, err := os.ReadFile(targetPath)
 	if err != nil {
@@ -314,7 +315,8 @@ func TestGeneratedFileWriteSkipsCommentOnlyExternalBlocks(t *testing.T) {
 		FileName:  "types.generated.go",
 	}
 
-	// First run has only commented-out blocks (all active types already moved to handwritten files).
+	// First run has only commented-out blocks (all active types already
+	// moved to handwritten files).
 	var gb1 generatorBase
 	gb1.init(baseDir)
 	f1 := gb1.getOutputFile(key)
@@ -339,7 +341,8 @@ type OSPolicyAssignment struct {
 		t.Fatalf("f1.Write failed: %v", err)
 	}
 
-	// Second run must replace without merging dead comments or file annotations from the comment-only first run.
+	// Second run must replace without merging dead comments or file
+	// annotations from the comment-only first run.
 	var gb2 generatorBase
 	gb2.init(baseDir)
 	f2 := gb2.getOutputFile(key)
@@ -381,7 +384,8 @@ func TestGeneratedFileWriteSkipsSeparateGeneratedTypesTarget(t *testing.T) {
 		t.Fatalf("mkdir: %v", err)
 	}
 
-	// Existing securitysettings_types.generated.go claims DialogflowSecuritySettings:SecuritySettings.
+	// Existing securitysettings_types.generated.go claims
+	// DialogflowSecuritySettings:SecuritySettings.
 	sepFile := filepath.Join(pkgDir, "securitysettings_types.generated.go")
 	if err := os.WriteFile(sepFile, []byte(`// +generated:types
 // krm.group: dialogflow.cnrm.cloud.google.com
@@ -422,8 +426,9 @@ type ConversationContext struct {
 		t.Fatalf("f1.Write failed: %v", err)
 	}
 
-	// Step 2 regenerates DialogflowSecuritySettings:SecuritySettings (which generate.sh will mv to securitysettings_types.generated.go).
-	// It must NOT merge ConversationContext from types.generated.go.
+	// Step 2 regenerates DialogflowSecuritySettings:SecuritySettings (which
+	// generate.sh moves to securitysettings_types.generated.go). It must
+	// NOT merge ConversationContext from types.generated.go.
 	var gb2 generatorBase
 	gb2.init(baseDir)
 	f2 := gb2.getOutputFile(key)
@@ -477,7 +482,8 @@ type EncryptionConfig struct {
 		t.Fatalf("f1.Write failed: %v", err)
 	}
 
-	// Second service emits a commented-out EncryptionConfig from a DIFFERENT proto message.
+	// Second service emits a commented-out EncryptionConfig from a
+	// DIFFERENT proto message.
 	var gb2 generatorBase
 	gb2.init(baseDir)
 	f2 := gb2.getOutputFile(key)
@@ -553,7 +559,8 @@ func PrunedSpec_FromProto(mapCtx *direct.MapContext, in *string) *krm.PrunedSpec
 		t.Fatalf("f1.Write failed: %v", err)
 	}
 
-	// Second run leaves f2.validKRMTypes nil so discoverValidKRMTypes scans apis/foo/v1alpha1.
+	// Second run leaves f2.validKRMTypes nil so discoverValidKRMTypes scans
+	// apis/foo/v1alpha1.
 	var gb2 generatorBase
 	gb2.init(baseDir)
 	f2 := gb2.getOutputFile(key)
