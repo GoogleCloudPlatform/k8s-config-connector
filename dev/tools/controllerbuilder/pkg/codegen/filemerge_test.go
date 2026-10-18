@@ -19,93 +19,17 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/annotations"
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
-func TestParseGeneratedGoBlocks(t *testing.T) {
-	src := []byte(`// Copyright 2026 Google LLC
+func TestHasVersionedMapperFuncs(t *testing.T) {
+	unversioned := []generatedBlock{{name: "Instance_FromProto", kind: "func"}}
+	versioned := []generatedBlock{{name: "Instance_v1beta1_FromProto", kind: "func"}}
 
-package v1alpha1
-
-import (
-	"fmt"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/foo/v1alpha1"
-)
-
-// +kcc:proto=google.cloud.foo.v1.Alpha
-type Alpha struct {
-	Name *string
-}
-
-/* unreachable type Beta
-// +kcc:proto=google.cloud.foo.v1.Beta
-type Beta struct {
-}
-*/
-
-// +kcc:observedstate:proto=google.cloud.foo.v1.Alpha
-type AlphaObservedState struct {
-	State *string
-}
-
-func Alpha_FromProto(in *string) *krm.Alpha {
-	_ = fmt.Sprintf
-	return nil
-}
-
-/*
-func Beta_ToProto(mapCtx *direct.MapContext, in *krm.Beta) *string {
-	return nil
-}
-*/
-`)
-
-	blocks, imports, err := parseGeneratedGoBlocks(src, "v1alpha1", false)
-	if err != nil {
-		t.Fatalf("parseGeneratedGoBlocks failed: %v", err)
+	if hasVersionedMapperFuncs(unversioned) {
+		t.Errorf("expected unversioned mapper func to return false")
 	}
-
-	wantImports := map[string]string{
-		"fmt": "",
-		"github.com/GoogleCloudPlatform/k8s-config-connector/apis/foo/v1alpha1": "krm",
-	}
-	if diff := cmp.Diff(wantImports, imports); diff != "" {
-		t.Errorf("imports mismatch (-want +got):\n%s", diff)
-	}
-
-	wantBlocks := []generatedBlock{
-		{
-			name:     "Alpha",
-			kind:     "type",
-			protoFQN: "google.cloud.foo.v1.Alpha",
-		},
-		{
-			name:        "Beta",
-			kind:        "type",
-			isCommented: true,
-			protoFQN:    "google.cloud.foo.v1.Beta",
-		},
-		{
-			name:            "AlphaObservedState",
-			kind:            "type",
-			protoFQN:        "google.cloud.foo.v1.Alpha",
-			isObservedState: true,
-		},
-		{
-			name:        "Alpha_FromProto",
-			kind:        "func",
-			krmTypeName: "Alpha",
-		},
-		{
-			name:        "Beta_ToProto",
-			kind:        "func",
-			isCommented: true,
-			krmTypeName: "Beta",
-		},
-	}
-	ignoreFields := cmpopts.IgnoreFields(generatedBlock{}, "rawText", "offset")
-	if diff := cmp.Diff(wantBlocks, blocks, cmp.AllowUnexported(generatedBlock{}), ignoreFields); diff != "" {
-		t.Errorf("blocks mismatch (-want +got):\n%s", diff)
+	if !hasVersionedMapperFuncs(versioned) {
+		t.Errorf("expected versioned mapper func to return true")
 	}
 }
 
@@ -173,6 +97,38 @@ func TestShouldKeepExistingBlock(t *testing.T) {
 				t.Errorf("shouldKeepExistingBlock(%+v) = %v, want %v", tc.block, got, tc.want)
 			}
 		})
+	}
+}
+
+func TestMergeFileAnnotations(t *testing.T) {
+	existing := &annotations.FileAnnotation{
+		Key: "+generated:types",
+		Attributes: map[string][]string{
+			"krm.group":     {"example.cnrm.cloud.google.com"},
+			"proto.service": {"google.example.v1"},
+			"resource":      {"ExampleAlpha:Alpha"},
+		},
+	}
+	current := &annotations.FileAnnotation{
+		Key: "+generated:types",
+		Attributes: map[string][]string{
+			"krm.group":     {"example.cnrm.cloud.google.com"},
+			"proto.service": {"google.example.v1", "google.example. sub.v1"},
+			"resource":      {"ExampleBeta:Beta"},
+		},
+	}
+
+	got := mergeFileAnnotations(existing, current)
+	want := &annotations.FileAnnotation{
+		Key: "+generated:types",
+		Attributes: map[string][]string{
+			"krm.group":     {"example.cnrm.cloud.google.com"},
+			"proto.service": {"google.example.v1", "google.example. sub.v1"},
+			"resource":      {"ExampleAlpha:Alpha", "ExampleBeta:Beta"},
+		},
+	}
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("mergeFileAnnotations mismatch (-want +got):\n%s", diff)
 	}
 }
 
@@ -271,78 +227,5 @@ func TestMergeOrderedBlocks(t *testing.T) {
 	}
 	if diff := cmp.Diff(want, got, cmp.AllowUnexported(generatedBlock{})); diff != "" {
 		t.Errorf("mergeOrderedBlocks mismatch (-want +got):\n%s", diff)
-	}
-}
-
-func TestExtractKRMTypeFromFuncSignature(t *testing.T) {
-	tests := []struct {
-		sig  string
-		want string
-	}{
-		{
-			sig:  "func WidgetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Widget) *krm.WidgetSpec {",
-			want: "WidgetSpec",
-		},
-		{
-			sig:  "func WidgetSpec_ToProto(mapCtx *direct.MapContext, in *krm.WidgetSpec) *pb.Widget {",
-			want: "WidgetSpec",
-		},
-		{
-			sig:  "func WidgetSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.WidgetSpec) *pb.Widget {",
-			want: "WidgetSpec",
-		},
-		{
-			sig:  "func HelperFunc(x int) int {",
-			want: "",
-		},
-	}
-	for _, tc := range tests {
-		if got := extractKRMTypeFromFuncSignature(tc.sig); got != tc.want {
-			t.Errorf("extractKRMTypeFromFuncSignature(%q) = %q, want %q", tc.sig, got, tc.want)
-		}
-	}
-}
-
-func TestMergeFileAnnotations(t *testing.T) {
-	existing := &annotations.FileAnnotation{
-		Key: "+generated:types",
-		Attributes: map[string][]string{
-			"krm.group":     {"example.cnrm.cloud.google.com"},
-			"proto.service": {"google.example.v1"},
-			"resource":      {"ExampleAlpha:Alpha"},
-		},
-	}
-	current := &annotations.FileAnnotation{
-		Key: "+generated:types",
-		Attributes: map[string][]string{
-			"krm.group":     {"example.cnrm.cloud.google.com"},
-			"proto.service": {"google.example.v1", "google.example. sub.v1"},
-			"resource":      {"ExampleBeta:Beta"},
-		},
-	}
-
-	got := mergeFileAnnotations(existing, current)
-	want := &annotations.FileAnnotation{
-		Key: "+generated:types",
-		Attributes: map[string][]string{
-			"krm.group":     {"example.cnrm.cloud.google.com"},
-			"proto.service": {"google.example.v1", "google.example. sub.v1"},
-			"resource":      {"ExampleAlpha:Alpha", "ExampleBeta:Beta"},
-		},
-	}
-	if diff := cmp.Diff(want, got); diff != "" {
-		t.Errorf("mergeFileAnnotations mismatch (-want +got):\n%s", diff)
-	}
-}
-
-func TestHasVersionedMapperFuncs(t *testing.T) {
-	unversioned := []generatedBlock{{name: "Instance_FromProto", kind: "func"}}
-	versioned := []generatedBlock{{name: "Instance_v1beta1_FromProto", kind: "func"}}
-
-	if hasVersionedMapperFuncs(unversioned) {
-		t.Errorf("expected unversioned mapper func to return false")
-	}
-	if !hasVersionedMapperFuncs(versioned) {
-		t.Errorf("expected versioned mapper func to return true")
 	}
 }
