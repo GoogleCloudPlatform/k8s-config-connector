@@ -23,7 +23,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 36,
+    "sortOrder": 37,
     "downstreamCount": 2,
     "artifacts": {
       "has_std_identity": true,
@@ -204,7 +204,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 37,
+    "sortOrder": 38,
     "downstreamCount": 2,
     "artifacts": {
       "has_std_identity": true,
@@ -214,6 +214,7 @@
       "non_std_id_ref_files": [],
       "non_std_mapper_fuzzer_files": [
         "alloydbcluster_controller.go",
+        "alloydbcluster_controller_test.go",
         "cluster_mappings.go",
         "mapper.generated.go"
       ]
@@ -317,7 +318,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 38,
+    "sortOrder": 39,
     "downstreamCount": 2,
     "artifacts": {
       "has_std_identity": true,
@@ -352,7 +353,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 18,
+    "sortOrder": 19,
     "downstreamCount": 7,
     "artifacts": {
       "has_std_identity": true,
@@ -640,7 +641,7 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 16,
-    "downstreamCount": 8,
+    "downstreamCount": 9,
     "artifacts": {
       "has_std_identity": true,
       "has_std_reference": true,
@@ -673,8 +674,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 39,
-    "downstreamCount": 2,
+    "sortOrder": 34,
+    "downstreamCount": 3,
     "artifacts": {
       "has_std_identity": true,
       "has_std_reference": true,
@@ -1197,7 +1198,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go or _identity.go",
-    "sortOrder": 19,
+    "sortOrder": 20,
     "downstreamCount": 7,
     "artifacts": {
       "has_std_identity": false,
@@ -1236,7 +1237,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 15,
+    "sortOrder": 17,
     "downstreamCount": 9,
     "artifacts": {
       "has_std_identity": true,
@@ -1773,7 +1774,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 20,
+    "sortOrder": 21,
     "downstreamCount": 7,
     "artifacts": {
       "has_std_identity": false,
@@ -1874,8 +1875,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 5,
-    "downstreamCount": 136,
+    "sortOrder": 4,
+    "downstreamCount": 151,
     "artifacts": {
       "has_std_identity": true,
       "has_std_reference": true,
@@ -1935,19 +1936,19 @@
     "state": "In Progress",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": true,
-      "mocks": false,
+      "mocks": true,
       "controller": false,
       "tests": false
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go or _identity.go",
+    "notes": "",
     "sortOrder": 107,
     "downstreamCount": 0,
     "artifacts": {
-      "has_std_identity": false,
-      "has_std_reference": false,
+      "has_std_identity": true,
+      "has_std_reference": true,
       "has_std_mapper": true,
       "has_std_fuzzer": true,
       "non_std_id_ref_files": [],
@@ -2132,29 +2133,32 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [],
     "state": "In Progress",
     "steps": {
       "gen-types": true,
-      "identity-reference": false,
+      "identity-reference": true,
       "mapper-fuzzer": true,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
-    "notes": "Missing _reference.go or _identity.go",
+    "notes": "",
     "sortOrder": 112,
     "downstreamCount": 0,
     "artifacts": {
-      "has_std_identity": false,
-      "has_std_reference": false,
+      "has_std_identity": true,
+      "has_std_reference": true,
       "has_std_mapper": true,
       "has_std_fuzzer": true,
       "non_std_id_ref_files": [],
-      "non_std_mapper_fuzzer_files": []
+      "non_std_mapper_fuzzer_files": [
+        "computeprojectmetadata_controller.go"
+      ]
     }
   },
   {
@@ -2975,7 +2979,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go or _identity.go",
-    "sortOrder": 24,
+    "sortOrder": 25,
     "downstreamCount": 5,
     "artifacts": {
       "has_std_identity": false,
@@ -3011,7 +3015,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 25,
+    "sortOrder": 26,
     "downstreamCount": 5,
     "artifacts": {
       "has_std_identity": true,
@@ -3046,7 +3050,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 34,
+    "sortOrder": 35,
     "downstreamCount": 3,
     "artifacts": {
       "has_std_identity": true,
@@ -3661,6 +3665,7 @@
       "non_std_id_ref_files": [],
       "non_std_mapper_fuzzer_files": [
         "dataflowflextemplatejob_controller.go",
+        "dataflowflextemplatejob_controller_test.go",
         "mapper.generated.go"
       ]
     }
@@ -3700,6 +3705,7 @@
       "has_std_fuzzer": true,
       "non_std_id_ref_files": [],
       "non_std_mapper_fuzzer_files": [
+        "dataflowjob_controller_test.go",
         "mapper.generated.go",
         "mapper.go"
       ]
@@ -4070,7 +4076,8 @@
     "controllerType": "DCL",
     "defaultController": "DCL",
     "supportedControllers": [
-      "DCL"
+      "DCL",
+      "Direct"
     ],
     "dependencies": [
       "ComputeNetwork",
@@ -4080,10 +4087,10 @@
     "steps": {
       "gen-types": true,
       "identity-reference": true,
-      "mapper-fuzzer": false,
+      "mapper-fuzzer": true,
       "mocks": true,
-      "controller": false,
-      "tests": false
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
@@ -4096,6 +4103,7 @@
       "has_std_fuzzer": true,
       "non_std_id_ref_files": [],
       "non_std_mapper_fuzzer_files": [
+        "filestoreinstance_controller.go",
         "mapper.generated.go",
         "mapper.go"
       ]
@@ -4156,7 +4164,7 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 1,
-    "downstreamCount": 452,
+    "downstreamCount": 489,
     "artifacts": {
       "has_std_identity": true,
       "has_std_reference": true,
@@ -4503,7 +4511,7 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 6,
-    "downstreamCount": 61,
+    "downstreamCount": 63,
     "artifacts": {
       "has_std_identity": true,
       "has_std_reference": true,
@@ -4913,8 +4921,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 4,
-    "downstreamCount": 140,
+    "sortOrder": 5,
+    "downstreamCount": 150,
     "artifacts": {
       "has_std_identity": true,
       "has_std_reference": true,
@@ -4947,7 +4955,7 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 3,
-    "downstreamCount": 142,
+    "downstreamCount": 152,
     "artifacts": {
       "has_std_identity": true,
       "has_std_reference": true,
@@ -4985,7 +4993,7 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 35,
+    "sortOrder": 36,
     "downstreamCount": 3,
     "artifacts": {
       "has_std_identity": true,
@@ -6199,7 +6207,7 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 2,
-    "downstreamCount": 447,
+    "downstreamCount": 484,
     "artifacts": {
       "has_std_identity": true,
       "has_std_reference": true,
@@ -6274,8 +6282,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 17,
-    "downstreamCount": 8,
+    "sortOrder": 15,
+    "downstreamCount": 10,
     "artifacts": {
       "has_std_identity": true,
       "has_std_reference": true,
@@ -6352,8 +6360,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
-    "sortOrder": 21,
-    "downstreamCount": 7,
+    "sortOrder": 18,
+    "downstreamCount": 9,
     "artifacts": {
       "has_std_identity": true,
       "has_std_reference": true,
@@ -6362,7 +6370,8 @@
       "non_std_id_ref_files": [],
       "non_std_mapper_fuzzer_files": [
         "mapper.generated.go",
-        "pubsubtopic_controller.go"
+        "pubsubtopic_controller.go",
+        "pubsubtopic_controller_test.go"
       ]
     }
   },
@@ -6644,8 +6653,8 @@
     },
     "mocksLastRefreshed": "Never",
     "notes": "Missing _reference.go or _identity.go",
-    "sortOrder": 26,
-    "downstreamCount": 5,
+    "sortOrder": 24,
+    "downstreamCount": 6,
     "artifacts": {
       "has_std_identity": false,
       "has_std_reference": false,
@@ -6662,31 +6671,34 @@
     "controllerType": "Terraform",
     "defaultController": "Terraform",
     "supportedControllers": [
+      "Direct",
       "Terraform"
     ],
     "dependencies": [
       "SQLInstance"
     ],
-    "state": "Not Started",
+    "state": "In Progress",
     "steps": {
-      "gen-types": false,
-      "identity-reference": false,
-      "mapper-fuzzer": false,
-      "mocks": false,
-      "controller": false,
-      "tests": false
+      "gen-types": true,
+      "identity-reference": true,
+      "mapper-fuzzer": true,
+      "mocks": true,
+      "controller": true,
+      "tests": true
     },
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 192,
     "downstreamCount": 0,
     "artifacts": {
-      "has_std_identity": false,
-      "has_std_reference": false,
-      "has_std_mapper": false,
-      "has_std_fuzzer": false,
+      "has_std_identity": true,
+      "has_std_reference": true,
+      "has_std_mapper": true,
+      "has_std_fuzzer": true,
       "non_std_id_ref_files": [],
-      "non_std_mapper_fuzzer_files": []
+      "non_std_mapper_fuzzer_files": [
+        "sqlsslcert_controller.go"
+      ]
     }
   },
   {
@@ -7156,7 +7168,7 @@
     "mocksLastRefreshed": "Never",
     "notes": "",
     "sortOrder": 7,
-    "downstreamCount": 42,
+    "downstreamCount": 43,
     "artifacts": {
       "has_std_identity": true,
       "has_std_reference": true,

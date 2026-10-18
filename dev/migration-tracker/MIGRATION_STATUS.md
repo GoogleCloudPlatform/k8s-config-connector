@@ -8,9 +8,9 @@
 | Metric | Count | Percentage | Progress Bar |
 | :--- | :---: | :---: | :--- |
 | **Completed** | **10** | `4.7%` | `--------------------` |
-| **In Progress** | **165** | `77.5%` | `###############-----` |
-| &nbsp;&nbsp;&nbsp;&nbsp;-> *Direct Controller Enabled* | *71* | `33.3%` | `######--------------` |
-| **Not Started** | **38** | `17.8%` | `###-----------------` |
+| **In Progress** | **166** | `77.9%` | `###############-----` |
+| &nbsp;&nbsp;&nbsp;&nbsp;-> *Direct Controller Enabled* | *74* | `34.7%` | `######--------------` |
+| **Not Started** | **37** | `17.4%` | `###-----------------` |
 | **Total Resources** | **213** | `100.0%` | |
 
 ---
@@ -19,12 +19,12 @@
 
 | Step Name | Description | Completed Resources | Progress |
 | :--- | :--- | :---: | :---: |
-| `gen-types` | Direct Go API Types in `apis/` | **145** / 213 | `68.1%` |
-| `identity-reference` | Identity and Ref logic (`*_identity.go` AND `*_reference.go`) | **123** / 213 | `57.7%` |
-| `mapper-fuzzer` | Proto/KRM Mappers AND Fuzzers in `pkg/controller/direct/` | **106** / 213 | `49.8%` |
-| `mocks` | MockGCP alignment and golden logs (`_http_mock.log`) | **148** / 213 | `69.5%` |
-| `controller` | Direct Controller implementation (`*_controller.go`, not all registered in static config) | **82** / 213 | `38.5%` |
-| `tests` | E2E migration test suite (`TestMigrationToDirect`) | **78** / 213 | `36.6%` |
+| `gen-types` | Direct Go API Types in `apis/` | **146** / 213 | `68.5%` |
+| `identity-reference` | Identity and Ref logic (`*_identity.go` AND `*_reference.go`) | **126** / 213 | `59.2%` |
+| `mapper-fuzzer` | Proto/KRM Mappers AND Fuzzers in `pkg/controller/direct/` | **108** / 213 | `50.7%` |
+| `mocks` | MockGCP alignment and golden logs (`_http_mock.log`) | **151** / 213 | `70.9%` |
+| `controller` | Direct Controller implementation (`*_controller.go`, not all registered in static config) | **85** / 213 | `39.9%` |
+| `tests` | E2E migration test suite (`TestMigrationToDirect`) | **81** / 213 | `38.0%` |
 
 ---
 
@@ -34,13 +34,13 @@ This section lists unmigrated brownfield resources ordered by their downstream d
 
 | Topo Order | Group | Kind | Downstream Dependents | State | Next Step |
 | :---: | :--- | :--- | :---: | :---: | :--- |
-| #1 | `resourcemanager` | `Folder` | `452` | **In Progress** | `Mapper/Fuzz` |
-| #2 | `resourcemanager` | `Project` | `447` | **In Progress** | `Mapper/Fuzz` |
-| #3 | `kms` | `KMSKeyRing` | `142` | **In Progress** | `Default to Direct Controller` |
-| #4 | `kms` | `KMSCryptoKey` | `140` | **In Progress** | `Default to Direct Controller` |
-| #5 | `compute` | `ComputeNetwork` | `136` | **In Progress** | `Default to Direct Controller` |
-| #6 | `iam` | `IAMServiceAccount` | `61` | **In Progress** | `Mapper/Fuzz` |
-| #7 | `storage` | `StorageBucket` | `42` | **In Progress** | `Controller` |
+| #1 | `resourcemanager` | `Folder` | `489` | **In Progress** | `Mapper/Fuzz` |
+| #2 | `resourcemanager` | `Project` | `484` | **In Progress** | `Mapper/Fuzz` |
+| #3 | `kms` | `KMSKeyRing` | `152` | **In Progress** | `Default to Direct Controller` |
+| #4 | `compute` | `ComputeNetwork` | `151` | **In Progress** | `Default to Direct Controller` |
+| #5 | `kms` | `KMSCryptoKey` | `150` | **In Progress** | `Default to Direct Controller` |
+| #6 | `iam` | `IAMServiceAccount` | `63` | **In Progress** | `Mapper/Fuzz` |
+| #7 | `storage` | `StorageBucket` | `43` | **In Progress** | `Controller` |
 | #8 | `compute` | `ComputeSubnetwork` | `23` | **In Progress** | `Mapper/Fuzz` |
 | #9 | `serviceusage` | `Service` | `15` | **In Progress** | `Default to Direct Controller` |
 | #10 | `compute` | `ComputeSecurityPolicy` | `13` | **In Progress** | `Default to Direct Controller` |
@@ -48,17 +48,17 @@ This section lists unmigrated brownfield resources ordered by their downstream d
 | #12 | `compute` | `ComputeHTTPHealthCheck` | `11` | **In Progress** | `Default to Direct Controller` |
 | #13 | `compute` | `ComputeNetworkEndpointGroup` | `11` | **In Progress** | `Mocks` |
 | #14 | `compute` | `ComputeInstanceGroup` | `10` | **In Progress** | `Default to Direct Controller` |
-| #15 | `compute` | `ComputeBackendService` | `9` | **In Progress** | `Mapper/Fuzz` |
-| #16 | `bigtable` | `BigtableInstance` | `8` | **In Progress** | `Mapper/Fuzz` |
-| #17 | `pubsub` | `PubSubSchema` | `8` | **In Progress** | `Default to Direct Controller` |
-| #18 | `apigee` | `ApigeeOrganization` | `7` | **In Progress** | `Mapper/Fuzz` |
-| #19 | `compute` | `ComputeBackendBucket` | `7` | **In Progress** | `Identity/Ref` |
-| #20 | `compute` | `ComputeInstanceTemplate` | `7` | **In Progress** | `Types` |
-| #21 | `pubsub` | `PubSubTopic` | `7` | **In Progress** | `Default to Direct Controller` |
+| #15 | `pubsub` | `PubSubSchema` | `10` | **In Progress** | `Default to Direct Controller` |
+| #16 | `bigtable` | `BigtableInstance` | `9` | **In Progress** | `Mapper/Fuzz` |
+| #17 | `compute` | `ComputeBackendService` | `9` | **In Progress** | `Mapper/Fuzz` |
+| #18 | `pubsub` | `PubSubTopic` | `9` | **In Progress** | `Default to Direct Controller` |
+| #19 | `apigee` | `ApigeeOrganization` | `7` | **In Progress** | `Mapper/Fuzz` |
+| #20 | `compute` | `ComputeBackendBucket` | `7` | **In Progress** | `Identity/Ref` |
+| #21 | `compute` | `ComputeInstanceTemplate` | `7` | **In Progress** | `Types` |
 | #22 | `compute` | `ComputeRouter` | `6` | **In Progress** | `Default to Direct Controller` |
 | #23 | `dataproc` | `DataprocCluster` | `6` | **In Progress** | `Default to Direct Controller` |
-| #24 | `compute` | `ComputeTargetVPNGateway` | `5` | **In Progress** | `Identity/Ref` |
-| #25 | `compute` | `ComputeURLMap` | `5` | **In Progress** | `Default to Direct Controller` |
+| #25 | `compute` | `ComputeTargetVPNGateway` | `5` | **In Progress** | `Identity/Ref` |
+| #26 | `compute` | `ComputeURLMap` | `5` | **In Progress** | `Default to Direct Controller` |
 
 ---
 ## Resource Migration Progress by Service / Group
@@ -123,7 +123,7 @@ This section lists unmigrated brownfield resources ordered by their downstream d
 | `serviceusage` | 2 | 0 | 2 | 0 | `0.0%` |
 | `sourcerepo` | 1 | 0 | 0 | 1 | `0.0%` |
 | `spanner` | 2 | 0 | 2 | 0 | `0.0%` |
-| `sql` | 4 | 1 | 2 | 1 | `25.0%` |
+| `sql` | 4 | 1 | 3 | 0 | `25.0%` |
 | `storage` | 4 | 0 | 3 | 1 | `0.0%` |
 | `storagetransfer` | 1 | 0 | 0 | 1 | `0.0%` |
 | `tags` | 4 | 1 | 3 | 0 | `25.0%` |
@@ -195,13 +195,13 @@ This section lists unmigrated brownfield resources ordered by their downstream d
 | `compute` | `ComputeManagedSSLCertificate` | `Terraform` | **In Progress** |  |  |  | Yes |  |  |  |  |
 | `compute` | `ComputeNetwork` | `Terraform` | **In Progress** | Yes | Yes | Yes | Yes | Yes | Yes | Yes |  |
 | `compute` | `ComputeNetworkEndpointGroup` | `Terraform` | **In Progress** | Yes | Yes | Yes |  |  |  |  |  |
-| `compute` | `ComputeNetworkFirewallPolicy` | `Terraform` | **In Progress** | Yes |  | Yes |  |  |  |  |  |
+| `compute` | `ComputeNetworkFirewallPolicy` | `Terraform` | **In Progress** | Yes | Yes | Yes | Yes |  |  |  |  |
 | `compute` | `ComputeNetworkFirewallPolicyAssociation` | `Terraform` | **Not Started** |  |  |  |  |  |  |  |  |
 | `compute` | `ComputeNetworkPeering` | `Terraform` | **In Progress** | Yes |  | Yes |  |  |  |  |  |
 | `compute` | `ComputeNodeGroup` | `Terraform` | **In Progress** | Yes | Yes | Yes | Yes |  |  |  |  |
 | `compute` | `ComputeNodeTemplate` | `Terraform` | **In Progress** | Yes | Yes | Yes | Yes | Yes | Yes | Yes |  |
 | `compute` | `ComputePacketMirroring` | `DCL` | **In Progress** | Yes |  | Yes |  |  |  |  |  |
-| `compute` | `ComputeProjectMetadata` | `Terraform` | **In Progress** | Yes |  | Yes |  |  |  |  |  |
+| `compute` | `ComputeProjectMetadata` | `Terraform` | **In Progress** | Yes | Yes | Yes | Yes | Yes | Yes | Yes |  |
 | `compute` | `ComputeRegionNetworkEndpointGroup` | `Terraform` | **In Progress** |  |  |  | Yes |  |  |  |  |
 | `compute` | `ComputeReservation` | `Terraform` | **In Progress** | Yes | Yes | Yes | Yes | Yes | Yes | Yes |  |
 | `compute` | `ComputeResourcePolicy` | `Terraform` | **In Progress** | Yes | Yes | Yes | Yes |  |  |  |  |
@@ -256,7 +256,7 @@ This section lists unmigrated brownfield resources ordered by their downstream d
 | `edgenetwork` | `EdgeNetworkSubnet` | `Terraform` | **In Progress** |  |  |  | Yes |  |  |  |  |
 | `eventarc` | `EventarcTrigger` | `DCL` | **Not Started** |  |  |  |  |  |  |  |  |
 | `filestore` | `FilestoreBackup` | `DCL` | **Not Started** |  |  |  |  |  |  |  |  |
-| `filestore` | `FilestoreInstance` | `DCL` | **In Progress** | Yes | Yes |  | Yes |  |  |  |  |
+| `filestore` | `FilestoreInstance` | `DCL` | **In Progress** | Yes | Yes | Yes | Yes | Yes | Yes | Yes |  |
 | `firestore` | `FirestoreIndex` | `Terraform` | **In Progress** | Yes | Yes | Yes | Yes | Yes | Yes | Yes |  |
 | `gkehub` | `GKEHubFeature` | `DCL` | **In Progress** |  |  |  | Yes |  |  |  |  |
 | `gkehub` | `GKEHubFeatureMembership` | `Direct` | **Completed** | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
@@ -339,7 +339,7 @@ This section lists unmigrated brownfield resources ordered by their downstream d
 | `spanner` | `SpannerInstance` | `Terraform` | **In Progress** | Yes | Yes | Yes | Yes | Yes | Yes | Yes |  |
 | `sql` | `SQLDatabase` | `Terraform` | **In Progress** |  |  |  | Yes |  |  |  |  |
 | `sql` | `SQLInstance` | `Direct` | **Completed** | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
-| `sql` | `SQLSSLCert` | `Terraform` | **Not Started** |  |  |  |  |  |  |  |  |
+| `sql` | `SQLSSLCert` | `Terraform` | **In Progress** | Yes | Yes | Yes | Yes | Yes | Yes | Yes |  |
 | `sql` | `SQLUser` | `Terraform` | **In Progress** |  |  |  | Yes |  |  |  |  |
 | `storage` | `StorageBucket` | `Terraform` | **In Progress** | Yes | Yes | Yes | Yes |  |  |  |  |
 | `storage` | `StorageBucketAccessControl` | `Terraform` | **In Progress** |  |  |  | Yes |  |  |  |  |
@@ -384,10 +384,10 @@ The following **7** resources lack separate standard `<kind_lower>_identity.go` 
 
 ### 2. Controllers Missing Standalone Mapper or Fuzzer Files
 
-The following **51** resources have direct controllers implemented, but lack separate standalone mapper (`*_mapper.go`) AND fuzzer (`*_fuzzer.go`) files in `pkg/controller/direct/<group>/`:
+The following **52** resources have direct controllers implemented, but lack separate standalone mapper (`*_mapper.go`) AND fuzzer (`*_fuzzer.go`) files in `pkg/controller/direct/<group>/`:
 
 <details>
-<summary>Click to expand all 51 resources lacking strict standalone mapper/fuzzer files</summary>
+<summary>Click to expand all 52 resources lacking strict standalone mapper/fuzzer files</summary>
 
 | Group | Kind |
 | :--- | :--- |
@@ -410,6 +410,7 @@ The following **51** resources have direct controllers implemented, but lack sep
 | `dataproc` | `DataprocCluster` |
 | `dns` | `DNSManagedZone` |
 | `dns` | `DNSPolicy` |
+| `filestore` | `FilestoreInstance` |
 | `firestore` | `FirestoreIndex` |
 | `gkehub` | `GKEHubFeatureMembership` |
 | `iam` | `IAMPartialPolicy` |
@@ -447,19 +448,20 @@ The following **51** resources have direct controllers implemented, but lack sep
 
 ### 3. Misplaced / Non-Standard Artifact Placements
 
-The following **34** resources have mapper/fuzzer symbols implemented, but placed in non-standard or shared filenames rather than standard `<kind_lower>_mapper.go` / `<kind_lower>_fuzzer.go` files:
+The following **35** resources have mapper/fuzzer symbols implemented, but placed in non-standard or shared filenames rather than standard `<kind_lower>_mapper.go` / `<kind_lower>_fuzzer.go` files:
 
 <details>
-<summary>Click to expand all 34 resources with misplaced artifact files</summary>
+<summary>Click to expand all 35 resources with misplaced artifact files</summary>
 
 | Group | Kind | Actual File Locations |
 | :--- | :--- | :--- |
-| `alloydb` | `AlloyDBCluster` | `alloydbcluster_controller.go`, `cluster_mappings.go`, `mapper.generated.go` |
+| `alloydb` | `AlloyDBCluster` | `alloydbcluster_controller.go`, `alloydbcluster_controller_test.go`, `cluster_mappings.go`, `mapper.generated.go` |
 | `alloydb` | `AlloyDBInstance` | `alloydbinstance_controller.go`, `instance_mappings.go`, `mapper.generated.go` |
 | `bigquery` | `BigQueryTable` | `bigquerytable_controller.go` |
 | `billingbudgets` | `BillingBudgetsBudget` | `billingbudgetsbudget_controller.go`, `mapper.go` |
-| `dataflow` | `DataflowFlexTemplateJob` | `dataflowflextemplatejob_controller.go`, `mapper.generated.go` |
-| `dataflow` | `DataflowJob` | `mapper.generated.go`, `mapper.go` |
+| `dataflow` | `DataflowFlexTemplateJob` | `dataflowflextemplatejob_controller.go`, `dataflowflextemplatejob_controller_test.go`, `mapper.generated.go` |
+| `dataflow` | `DataflowJob` | `dataflowjob_controller_test.go`, `mapper.generated.go`, `mapper.go` |
+| `filestore` | `FilestoreInstance` | `filestoreinstance_controller.go`, `mapper.generated.go`, `mapper.go` |
 | `gkehub` | `GKEHubFeatureMembership` | `gkehubfeaturemembership_controller.go`, `mappings.go` |
 | `iam` | `IAMPolicy` | `iampartialpolicy_controller.go`, `mappings.go` |
 | `kms` | `KMSKeyRing` | `kmskeyring_controller.go`, `kmskeyring_mappers.go` |
