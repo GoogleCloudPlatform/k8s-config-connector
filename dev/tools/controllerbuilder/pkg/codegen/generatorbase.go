@@ -202,14 +202,14 @@ type generatedFile struct {
 
 	imports map[string]string
 
-	// reservedTypeNames holds Go type names that will be declared by the scaffolder
-	// in non-generated files, so they should not be preserved from an existing
-	// types.generated.go file.
+	// reservedTypeNames holds Go type names that will be declared by the
+	// scaffolder in non-generated files, so they should not be preserved
+	// from an existing types.generated.go file.
 	reservedTypeNames map[string]bool
 
-	// validKRMTypes holds active KRM struct names in the target API packages when
-	// generating mappers; existing mapper functions for deleted or pruned KRM types
-	// are not preserved.
+	// validKRMTypes holds active KRM struct names in the target API
+	// packages when generating mappers; existing mapper functions for
+	// deleted or pruned KRM types are not preserved.
 	validKRMTypes map[string]bool
 }
 

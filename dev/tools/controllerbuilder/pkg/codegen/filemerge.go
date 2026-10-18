@@ -58,9 +58,10 @@ type packageDeclarations struct {
 	funcs     map[string]bool
 }
 
-// mergeWithExisting merges declarations, imports, and FileAnnotation attributes from an
-// existing generated Go file on disk into f so sequential generate-types or generate-mapper
-// invocations (for example across multiple --service packages) accumulate additively.
+// mergeWithExisting merges declarations, imports, and FileAnnotation attributes
+// from an existing generated Go file on disk into f so sequential
+// generate-types or generate-mapper invocations (for example across multiple
+// --service packages) accumulate additively.
 func (f *generatedFile) mergeWithExisting(existingBytes []byte, dir string) {
 	matchingExistingAnn, compatible := findCompatibleFileAnnotation(existingBytes, f.fileAnnotation)
 	if !compatible || !f.canMergeTargetFile(dir) {
@@ -221,8 +222,8 @@ func shouldCurrentReplaceExisting(eb, cb generatedBlock) bool {
 
 // mergeExistingImports merges imports from the existing file into f.imports.
 // When an existing import alias collides with a different package in f.imports
-// (or the same package uses a different alias), it returns the old->new qualifier
-// map so callers can rewrite selector prefixes in preserved blocks.
+// (or the same package uses a different alias), it returns the old->new
+// qualifier map so callers can rewrite selector prefixes in preserved blocks.
 func (f *generatedFile) mergeExistingImports(existingImports map[string]string) map[string]string {
 	usedAliases := f.currentImportQualifiers()
 	aliasRenames := make(map[string]string)
