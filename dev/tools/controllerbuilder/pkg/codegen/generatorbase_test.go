@@ -640,4 +640,3 @@ func Beta_FromProto(in *pb.Beta) *pb.Beta {
 		t.Errorf("expected Beta_FromProto to keep pb.Beta, got:\n%s", got)
 	}
 }
-
