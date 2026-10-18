@@ -93,6 +93,7 @@ fi
 ```
 
 *Notes on `apis/<service_short>/generate.sh`*:
+- **Strict Command Ordering**: Always place all `generate-types` and `generate-identity` invocations **before** `generate-mapper`, followed by `cd ${REPO_ROOT}`, `dev/tasks/generate-crds`, and `goimports`. When adding a new resource to an existing `generate.sh` that already has `generate-mapper`, insert the new `generate-types` / `generate-identity` blocks **above** `generate-mapper` (never below `generate-mapper`, otherwise `generate-mapper` runs before `types.generated.go` is updated).
 - If the service already has `v1beta1` resources in `apis/<service_short>/generate.sh`, pass `--multiversion` and `--prepopulate-resource` to the single `generate-mapper` invocation targeting `<group>.cnrm.cloud.google.com/v1beta1`.
 - `--prepopulate-resource` automatically enables all bulk-generation features (including `--emit-plural-acronyms` and `--emit-message-maps`) in both `generate-types` and `generate-mapper`.
 

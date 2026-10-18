@@ -37,7 +37,7 @@ Whenever resolving a queue entry requires a **breaking** edit to a nested struct
 
 - **Case A — The field references a GCP resource**:
   1. If the field is inside a nested struct in `types.generated.go`, move or fork the struct into `<kind>_types.go` following Section 1 above (keeping `// +kcc:proto=<full.proto.MessageName>`; use `<Struct>` if exclusive to `<Kind>`, or a distinct `<Struct>`-containing name such as `<Kind>_<Struct>` if shared).
-  2. Replace the `*string` or `[]string` field with `<fieldName>Ref *<TargetKind>Ref` (or `[]<TargetKind>Ref` for slices, named `<singular>Refs` or `<fieldName>Ref` per KCC conventions), keeping `// +kcc:proto:field=...`.
+  2. Replace the `*string` or `[]string` field with `<fieldName>Ref *<TargetKind>Ref` (or `[]<TargetKind>Ref` for slices, singularizing the plural field name and appending `Refs`, e.g., `datasets` -> `DatasetRefs` with `json:"datasetRefs,omitempty"`), keeping `// +kcc:proto:field=...`.
   3. Remove any `// +kcc:guess=possible-reference` or `// +kcc:guess=sibling-ref` comment above the field in `<kind>_types.go`.
   4. **If `<TargetKind>Ref` does not exist yet in the repository**:
      - If `<TargetKind>` is in the same proto service, generate its identity and reference via `controllerbuilder generate-identity` (or create `<targetkind>_identity.go` and an external-only `<targetkind>_reference.go` in `apis/<target_service>/v1alpha1/` following `.gemini/skills/kcc-direct-base-types-implementer/SKILL.md`, updating `testdata/exceptions/naming_violations.txt` if `TestDirectResourceFileNaming` requires it).
@@ -45,7 +45,7 @@ Whenever resolving a queue entry requires a **breaking** edit to a nested struct
      - For greenfield reference types that already have a full KCC CRD with `status.externalRef`, delegate `Normalize` strictly to `refs.Normalize` (never `refs.NormalizeWithFallback`).
   5. Mark the `authoritative-proto-reference` entry (or **all** contiguous `possible-reference*` entries) for that field as `status: resolved`, `resolution: edited`, `note: "converted to <fieldName>Ref (*<TargetKind>Ref)"`.
 
-- **Case B — The field does NOT reference a GCP resource** (e.g., an opaque user-defined ID, a third-party ID, a display string, a CVE ID, a filter expression, or a wildcard `*` annotation):
+- **Case B — The field does NOT reference a control-plane GCP resource** (e.g., an opaque user-defined ID, a third-party ID, a display string, a CVE ID, a filter expression, a wildcard `*` annotation, or a data-plane object not managed by KCC such as a Cloud Storage object / `StorageBucketObject`):
   1. Remove any `// +kcc:guess=possible-reference` or `// +kcc:guess=sibling-ref` comment if the field is in `<kind>_types.go`.
   2. Mark the `authoritative-proto-reference` entry (or **all** contiguous `possible-reference*` entries) for that field as `status: resolved`, `resolution: not-applicable`, `note: "<concise explanation of what the field holds and why it is not a GCP resource reference>"`.
   3. Run `go test ./tests/apichecks/... -run TestMissingRefs` to verify `TestMissingRefs` passes **without** deleting/modifying proto doc comments or editing `missingrefs.txt`.

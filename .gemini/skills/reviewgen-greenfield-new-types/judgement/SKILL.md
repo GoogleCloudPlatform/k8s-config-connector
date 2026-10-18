@@ -34,7 +34,7 @@ Do not blindly trust `resolution: not-applicable` or `resolution: accepted` in `
 
 *   **Reference Resolutions (`authoritative-proto-reference`, `possible-reference*`)**:
     *   For every `authoritative-proto-reference` or `possible-reference*` entry marked `not-applicable` or `accepted`, read the proto field comment and `google.api.resource_reference` annotation.
-    *   **Request changes** if a field that genuinely references a GCP resource (e.g., KMS key, network, subnetwork, service account, project, dataset, bucket, Pub/Sub topic, Secret Manager secret, or a sibling resource in the same service) was left as `*string` / `[]string` instead of being converted to a `*Ref` struct.
+    *   **Request changes** if a field that genuinely references a control-plane GCP resource (e.g., KMS key, network, subnetwork, service account, project, dataset, bucket, Pub/Sub topic, Secret Manager secret, or a sibling resource in the same service) was left as `*string` / `[]string` instead of being converted to a `*Ref` struct. *(Note: data-plane objects not managed by KCC, such as Cloud Storage objects / `StorageBucketObject`, should remain plain strings and are valid `not-applicable` resolutions.)*
 *   **No Reward-Hacking `TestMissingRefs` by Deleting/Altering Doc Comments**:
     *   Inspect the `git diff` on `<kind>_types.go` and `types.generated.go` for any `*string` or `[]string` field.
     *   **Strictly reject** any PR that deletes, truncates, or alters proto field doc comments (e.g., stripping `"Format: projects/{project}/..."` or `"Required. The name of the ..."`) in order to suppress `TestMissingRefs` after resolving an `authoritative-proto-reference` or `possible-reference*` entry.
@@ -60,9 +60,9 @@ Compare `<kind>_types.go`, `<kind>_identity.generated.go` (or `<kind>_identity.g
     *   If the proto resource pattern ends in a literal segment without a `{variable}` placeholder (e.g., `projects/{project}/locations/{location}/config`), verify `<Kind>IdentityFormat` uses the exact literal suffix without inventing a trailing `{config}` variable.
     *   If the resource supports multiple root parents (`projects/{project}/...`, `folders/{folder}/...`, `organizations/{organization}/...`), verify `<Kind>Spec` includes optional `ProjectRef`, `FolderRef`, and/or `OrganizationRef` fields matching the supported patterns and that `<kind>_identity*.go` supports all root formats.
 *   **Server-Generated ID vs. Client-Specified ID (`identity-server-generated-id`)**:
-    *   Inspect `Create<Resource>Request` in the service proto:
+    *   Emitted when `Create<Resource>Request` has no `*_id` parameter or when the resource `.name` field is marked `OUTPUT_ONLY` in the proto. Inspect `Create<Resource>Request` (or equivalent creation RPC request such as `Insert<Resource>Request`) in the service proto:
         *   If `Create<Resource>Request` has **no** `<resource>_id` field and the server assigns the ID on creation, `<Kind>Identity` must implement `identity.ServerGeneratedIdentity`.
-        *   If `Create<Resource>Request` has a `<resource>_id` field (or allows setting the ID via `name`), `<Kind>Identity` must implement `identity.IdentityV2`.
+        *   If `Create<Resource>Request` has a `<resource>_id` field (even if `.name` is marked `OUTPUT_ONLY` in the proto) or allows setting the ID via `name`, `<Kind>Identity` must implement `identity.IdentityV2`.
 *   **Reference File Conventions**:
     *   Every new `<TargetKind>Ref` must be defined in its own `apis/<target_service>/v1alpha1/<targetkind>_reference*.go` file (with a matching `<targetkind>_identity*.go`), **never** inside `_types.go` and **never** under the deprecated `apis/refs/v1beta1/` directory.
     *   Greenfield reference types for resources that have a full KCC CRD must delegate `Normalize` strictly to `refs.Normalize` (never `refs.NormalizeWithFallback`). External-only reference types (for target resources without a KCC CRD yet) must validate `r.External` via `ValidateExternal`.

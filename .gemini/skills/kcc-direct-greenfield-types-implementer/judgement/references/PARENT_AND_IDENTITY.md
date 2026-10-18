@@ -33,9 +33,11 @@ Inspect the `option (google.api.resource)` pattern(s) on the resource proto mess
   3. Re-run `./apis/<service>/generate.sh` so `controllerbuilder generate-identity` wires `<Parent>Ref` into `<kind>_identity.generated.go` and resolves any `identity-root-unknown` entry automatically.
   4. Mark `parent-ref-*` and `location-or-parent-ref` as `status: resolved`, `resolution: edited`, `note: "replaced ProjectRef and Location with <Parent>Ref (*<ParentKind>Ref) and regenerated identity"`.
 
-### Case C: Global / Non-Locational or Multi-Parent Resource (`location-parent-unknown`, `parent-multiple-patterns`, `root-*`)
+### Case C: Global / Non-Locational, Multi-Parent, or Proto `location`/`region`/`zone` Fields (`location-parent-unknown`, `location-or-parent-ref`, `parent-multiple-patterns`, `root-*`)
 - **`location-parent-unknown`**:
   - Check the resource's URL pattern in the proto or REST documentation. If the resource is global or has no `{location}` segment, remove `Location` from `<Kind>Spec`, re-run `./apis/<service>/generate.sh`, and mark `resolution: edited`.
+- **`location-or-parent-ref` on proto-defined `location` / `region` / `zone` fields** (top-level or nested):
+  - Check whether the field names a parent location, a target Compute region/zone or sub-resource reference, or a plain GCP region/zone string parameter (e.g., `StorageRapidCache.spec.zone` or `CloudSqlSettings.zone`). Convert to a reference or parent reference if appropriate (`edited`), or keep as a plain string (`accepted` with a note).
 - **`parent-multiple-patterns` / `parent-root-unknown` / `root-not-in-name` / `root-ref-*`**:
   - If the resource supports multiple root parents (`projects/{project}/...`, `folders/{folder}/...`, `organizations/{organization}/...`), include optional `ProjectRef *refsv1beta1.ProjectRef`, `FolderRef *refsv1beta1.FolderRef`, and/or `OrganizationRef *refsv1beta1.OrganizationRef` (`// +optional`) on `<Kind>Spec` for each supported root scope.
   - Re-run `./apis/<service>/generate.sh` so `controllerbuilder generate-identity` generates the multi-parent `<kind>_identity.generated.go`, and mark `resolution: edited`.
@@ -53,7 +55,7 @@ Inspect the `option (google.api.resource)` pattern(s) on the resource proto mess
 - **`identity-not-in-cai`**:
   - Verify the `gcpurls.Template` host and path against the proto's `option (google.api.resource)` pattern (checking camelCase collection names) and `docs/ai/metadata/cloudassetinventory_names.jsonl`.
   - Note that `pkg/gcpurls/registry_test.go` automatically skips templates that have an `identity-not-in-cai` entry in `judgement_queue.yaml`. If the template matches the proto, mark `status: resolved`, `resolution: accepted`, `note: "verified template against proto google.api.resource pattern"`.
-- **`identity-server-generated-id`**:
-  - Inspect `Create<Resource>Request` in the service proto:
-    - If `Create<Resource>Request` has **no** `<resource>_id` field and the server assigns the ID on creation, ensure the `ResourceID` comment in `<Kind>Spec` notes that it is server-generated so `generate-identity` emits `identity.ServerGeneratedIdentity`, and mark `resolution: accepted`.
-    - If `Create<Resource>Request` has a `<resource>_id` field (or allows client-specified IDs via `name`), ensure `<Kind>Identity` implements `identity.IdentityV2` instead of `identity.ServerGeneratedIdentity`, and mark `resolution: edited`.
+- **`identity-server-generated-id`** (emitted when `Create<Resource>Request` has no `*_id` parameter, or when the resource `.name` field is marked `OUTPUT_ONLY` in the proto):
+  - Inspect `Create<Resource>Request` (or equivalent creation RPC request such as `Insert<Resource>Request`) in the service proto:
+    - If `Create<Resource>Request` has **no** `<resource>_id` field and the server assigns the ID on creation, ensure the `ResourceID` comment in `<Kind>Spec` notes that it is server-generated so `generate-identity` emits `identity.ServerGeneratedIdentity`, and mark `resolution: accepted` (or `resolution: edited` if you updated `<Kind>Spec` and regenerated `<kind>_identity.generated.go`).
+    - If `Create<Resource>Request` **does** have a `<resource>_id` field (even when `.name` is marked `OUTPUT_ONLY` in the proto) or allows client-specified IDs via `name`, ensure `<Kind>Identity` implements `identity.IdentityV2` instead of `identity.ServerGeneratedIdentity`, and mark `resolution: accepted` (with a note confirming `Create<Resource>Request` has `<resource>_id`) or `resolution: edited`.

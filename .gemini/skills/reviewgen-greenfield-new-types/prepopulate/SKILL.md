@@ -13,12 +13,12 @@ Please enforce all of the following review criteria and invariants.
 
 ## 1. `apis/<service>/generate.sh` Flags & GA Proto Requirement
 
-*   **Required Commands & Flags**:
-    *   Verify `apis/<service>/generate.sh` runs:
+*   **Required Commands, Order, & Flags**:
+    *   Verify `apis/<service>/generate.sh` runs in this exact order:
         1. `controllerbuilder generate-types` with `--resource <Kind>:<ProtoMessage>` and `--prepopulate-resource`.
         2. `controllerbuilder generate-identity` with `--resource <Kind>:<ProtoMessage>`.
-        3. `controllerbuilder generate-mapper` with `--prepopulate-resource` (plus `--multiversion` if the service has both `v1alpha1` and `v1beta1`).
-        4. `dev/tasks/generate-crds` and `goimports` on `pkg/controller/direct/<service>/`.
+        3. `controllerbuilder generate-mapper` **after** all `generate-types` and `generate-identity` calls, with `--prepopulate-resource` (plus `--multiversion` if the service has both `v1alpha1` and `v1beta1`).
+        4. `cd ${REPO_ROOT}`, `dev/tasks/generate-crds`, and `goimports` on `pkg/controller/direct/<service>/`.
 *   **No `--allow-non-ga-proto`**:
     *   Reject the PR if `--allow-non-ga-proto` is passed in `apis/<service>/generate.sh` (unless the PR issue explicitly authorized a non-GA proto exception).
 *   **API Version & Copyright**:
