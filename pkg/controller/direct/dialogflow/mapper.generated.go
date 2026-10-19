@@ -20,14 +20,38 @@
 // krm.group: dialogflow.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.dialogflow.cx.v3
+// proto.service: google.cloud.dialogflow.v2
 
 package dialogflow
 
 import (
+	dialogflowpb "cloud.google.com/go/dialogflow/apiv2/dialogflowpb"
 	pb "cloud.google.com/go/dialogflow/cx/apiv3/cxpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dialogflow/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
+func DataStoreConnection_FromProto(mapCtx *direct.MapContext, in *pb.DataStoreConnection) *krm.DataStoreConnection {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataStoreConnection{}
+	out.DataStoreType = direct.Enum_FromProto(mapCtx, in.GetDataStoreType())
+	out.DataStore = direct.LazyPtr(in.GetDataStore())
+	out.DocumentProcessingMode = direct.Enum_FromProto(mapCtx, in.GetDocumentProcessingMode())
+	return out
+}
+
+func DataStoreConnection_ToProto(mapCtx *direct.MapContext, in *krm.DataStoreConnection) *pb.DataStoreConnection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStoreConnection{}
+	out.DataStoreType = direct.Enum_ToProto[pb.DataStoreType](mapCtx, in.DataStoreType)
+	out.DataStore = direct.ValueOf(in.DataStore)
+	out.DocumentProcessingMode = direct.Enum_ToProto[pb.DocumentProcessingMode](mapCtx, in.DocumentProcessingMode)
+	return out
+}
 
 func DialogflowSecuritySettingsSpec_FromProto(mapCtx *direct.MapContext, in *pb.SecuritySettings) *krm.DialogflowSecuritySettingsSpec {
 	if in == nil {
@@ -47,6 +71,7 @@ func DialogflowSecuritySettingsSpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.InsightsExportSettings = SecuritySettings_InsightsExportSettings_FromProto(mapCtx, in.GetInsightsExportSettings())
 	return out
 }
+
 func DialogflowSecuritySettingsSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowSecuritySettingsSpec) *pb.SecuritySettings {
 	if in == nil {
 		return nil
@@ -69,18 +94,75 @@ func DialogflowSecuritySettingsSpec_ToProto(mapCtx *direct.MapContext, in *krm.D
 	out.InsightsExportSettings = SecuritySettings_InsightsExportSettings_ToProto(mapCtx, in.InsightsExportSettings)
 	return out
 }
+
 func DialogflowSecuritySettingsSpec_RetentionWindowDays_ToProto(mapCtx *direct.MapContext, in *int32) *pb.SecuritySettings_RetentionWindowDays {
 	if in == nil {
 		return nil
 	}
 	return &pb.SecuritySettings_RetentionWindowDays{RetentionWindowDays: *in}
 }
+
 func DialogflowSecuritySettingsSpec_RetentionStrategy_ToProto(mapCtx *direct.MapContext, in *string) *pb.SecuritySettings_RetentionStrategy_ {
 	if in == nil {
 		return nil
 	}
 	return &pb.SecuritySettings_RetentionStrategy_{RetentionStrategy: direct.Enum_ToProto[pb.SecuritySettings_RetentionStrategy](mapCtx, in)}
 }
+
+func DialogflowToolObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Tool) *krm.DialogflowToolObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowToolObservedState{}
+	// MISSING: Name
+	out.ToolType = direct.Enum_FromProto(mapCtx, in.GetToolType())
+	return out
+}
+
+func DialogflowToolObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowToolObservedState) *pb.Tool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool{}
+	// MISSING: Name
+	out.ToolType = direct.Enum_ToProto[pb.Tool_ToolType](mapCtx, in.ToolType)
+	return out
+}
+
+func DialogflowToolSpec_FromProto(mapCtx *direct.MapContext, in *pb.Tool) *krm.DialogflowToolSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowToolSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.OpenAPISpec = Tool_OpenAPITool_FromProto(mapCtx, in.GetOpenApiSpec())
+	out.DataStoreSpec = Tool_DataStoreTool_FromProto(mapCtx, in.GetDataStoreSpec())
+	out.FunctionSpec = Tool_FunctionTool_FromProto(mapCtx, in.GetFunctionSpec())
+	return out
+}
+
+func DialogflowToolSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowToolSpec) *pb.Tool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	if oneof := Tool_OpenAPITool_ToProto(mapCtx, in.OpenAPISpec); oneof != nil {
+		out.Specification = &pb.Tool_OpenApiSpec{OpenApiSpec: oneof}
+	}
+	if oneof := Tool_DataStoreTool_ToProto(mapCtx, in.DataStoreSpec); oneof != nil {
+		out.Specification = &pb.Tool_DataStoreSpec{DataStoreSpec: oneof}
+	}
+	if oneof := Tool_FunctionTool_ToProto(mapCtx, in.FunctionSpec); oneof != nil {
+		out.Specification = &pb.Tool_FunctionSpec{FunctionSpec: oneof}
+	}
+	return out
+}
+
 func SecuritySettings_AudioExportSettings_FromProto(mapCtx *direct.MapContext, in *pb.SecuritySettings_AudioExportSettings) *krm.SecuritySettings_AudioExportSettings {
 	if in == nil {
 		return nil
@@ -93,6 +175,7 @@ func SecuritySettings_AudioExportSettings_FromProto(mapCtx *direct.MapContext, i
 	out.StoreTtsAudio = direct.LazyPtr(in.GetStoreTtsAudio())
 	return out
 }
+
 func SecuritySettings_AudioExportSettings_ToProto(mapCtx *direct.MapContext, in *krm.SecuritySettings_AudioExportSettings) *pb.SecuritySettings_AudioExportSettings {
 	if in == nil {
 		return nil
@@ -105,6 +188,7 @@ func SecuritySettings_AudioExportSettings_ToProto(mapCtx *direct.MapContext, in 
 	out.StoreTtsAudio = direct.ValueOf(in.StoreTtsAudio)
 	return out
 }
+
 func SecuritySettings_InsightsExportSettings_FromProto(mapCtx *direct.MapContext, in *pb.SecuritySettings_InsightsExportSettings) *krm.SecuritySettings_InsightsExportSettings {
 	if in == nil {
 		return nil
@@ -113,11 +197,1370 @@ func SecuritySettings_InsightsExportSettings_FromProto(mapCtx *direct.MapContext
 	out.EnableInsightsExport = direct.LazyPtr(in.GetEnableInsightsExport())
 	return out
 }
+
 func SecuritySettings_InsightsExportSettings_ToProto(mapCtx *direct.MapContext, in *krm.SecuritySettings_InsightsExportSettings) *pb.SecuritySettings_InsightsExportSettings {
 	if in == nil {
 		return nil
 	}
 	out := &pb.SecuritySettings_InsightsExportSettings{}
 	out.EnableInsightsExport = direct.ValueOf(in.EnableInsightsExport)
+	return out
+}
+
+func Tool_Authentication_FromProto(mapCtx *direct.MapContext, in *pb.Tool_Authentication) *krm.Tool_Authentication {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_Authentication{}
+	out.APIKeyConfig = Tool_Authentication_APIKeyConfig_FromProto(mapCtx, in.GetApiKeyConfig())
+	out.OauthConfig = Tool_Authentication_OAuthConfig_FromProto(mapCtx, in.GetOauthConfig())
+	out.ServiceAgentAuthConfig = Tool_Authentication_ServiceAgentAuthConfig_FromProto(mapCtx, in.GetServiceAgentAuthConfig())
+	out.BearerTokenConfig = Tool_Authentication_BearerTokenConfig_FromProto(mapCtx, in.GetBearerTokenConfig())
+	out.ServiceAccountAuthConfig = Tool_Authentication_ServiceAccountAuthConfig_FromProto(mapCtx, in.GetServiceAccountAuthConfig())
+	return out
+}
+
+func Tool_Authentication_ToProto(mapCtx *direct.MapContext, in *krm.Tool_Authentication) *pb.Tool_Authentication {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_Authentication{}
+	if oneof := Tool_Authentication_APIKeyConfig_ToProto(mapCtx, in.APIKeyConfig); oneof != nil {
+		out.AuthConfig = &pb.Tool_Authentication_ApiKeyConfig_{ApiKeyConfig: oneof}
+	}
+	if oneof := Tool_Authentication_OAuthConfig_ToProto(mapCtx, in.OauthConfig); oneof != nil {
+		out.AuthConfig = &pb.Tool_Authentication_OauthConfig{OauthConfig: oneof}
+	}
+	if oneof := Tool_Authentication_ServiceAgentAuthConfig_ToProto(mapCtx, in.ServiceAgentAuthConfig); oneof != nil {
+		out.AuthConfig = &pb.Tool_Authentication_ServiceAgentAuthConfig_{ServiceAgentAuthConfig: oneof}
+	}
+	if oneof := Tool_Authentication_BearerTokenConfig_ToProto(mapCtx, in.BearerTokenConfig); oneof != nil {
+		out.AuthConfig = &pb.Tool_Authentication_BearerTokenConfig_{BearerTokenConfig: oneof}
+	}
+	if oneof := Tool_Authentication_ServiceAccountAuthConfig_ToProto(mapCtx, in.ServiceAccountAuthConfig); oneof != nil {
+		out.AuthConfig = &pb.Tool_Authentication_ServiceAccountAuthConfig_{ServiceAccountAuthConfig: oneof}
+	}
+	return out
+}
+
+func Tool_Authentication_APIKeyConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_Authentication_ApiKeyConfig) *krm.Tool_Authentication_APIKeyConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_Authentication_APIKeyConfig{}
+	out.KeyName = direct.LazyPtr(in.GetKeyName())
+	out.APIKey = direct.LazyPtr(in.GetApiKey())
+	out.SecretVersionForAPIKey = direct.LazyPtr(in.GetSecretVersionForApiKey())
+	out.RequestLocation = direct.Enum_FromProto(mapCtx, in.GetRequestLocation())
+	return out
+}
+
+func Tool_Authentication_APIKeyConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_Authentication_APIKeyConfig) *pb.Tool_Authentication_ApiKeyConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_Authentication_ApiKeyConfig{}
+	out.KeyName = direct.ValueOf(in.KeyName)
+	out.ApiKey = direct.ValueOf(in.APIKey)
+	out.SecretVersionForApiKey = direct.ValueOf(in.SecretVersionForAPIKey)
+	out.RequestLocation = direct.Enum_ToProto[pb.Tool_Authentication_RequestLocation](mapCtx, in.RequestLocation)
+	return out
+}
+
+func Tool_Authentication_BearerTokenConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_Authentication_BearerTokenConfig) *krm.Tool_Authentication_BearerTokenConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_Authentication_BearerTokenConfig{}
+	out.Token = direct.LazyPtr(in.GetToken())
+	out.SecretVersionForToken = direct.LazyPtr(in.GetSecretVersionForToken())
+	return out
+}
+
+func Tool_Authentication_BearerTokenConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_Authentication_BearerTokenConfig) *pb.Tool_Authentication_BearerTokenConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_Authentication_BearerTokenConfig{}
+	out.Token = direct.ValueOf(in.Token)
+	out.SecretVersionForToken = direct.ValueOf(in.SecretVersionForToken)
+	return out
+}
+
+func Tool_Authentication_OAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_Authentication_OAuthConfig) *krm.Tool_Authentication_OAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_Authentication_OAuthConfig{}
+	out.OauthGrantType = direct.Enum_FromProto(mapCtx, in.GetOauthGrantType())
+	out.ClientID = direct.LazyPtr(in.GetClientId())
+	out.ClientSecret = direct.LazyPtr(in.GetClientSecret())
+	out.SecretVersionForClientSecret = direct.LazyPtr(in.GetSecretVersionForClientSecret())
+	out.TokenEndpoint = direct.LazyPtr(in.GetTokenEndpoint())
+	out.Scopes = in.Scopes
+	return out
+}
+
+func Tool_Authentication_OAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_Authentication_OAuthConfig) *pb.Tool_Authentication_OAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_Authentication_OAuthConfig{}
+	out.OauthGrantType = direct.Enum_ToProto[pb.Tool_Authentication_OAuthConfig_OauthGrantType](mapCtx, in.OauthGrantType)
+	out.ClientId = direct.ValueOf(in.ClientID)
+	out.ClientSecret = direct.ValueOf(in.ClientSecret)
+	out.SecretVersionForClientSecret = direct.ValueOf(in.SecretVersionForClientSecret)
+	out.TokenEndpoint = direct.ValueOf(in.TokenEndpoint)
+	out.Scopes = in.Scopes
+	return out
+}
+
+func Tool_Authentication_ServiceAccountAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_Authentication_ServiceAccountAuthConfig) *krm.Tool_Authentication_ServiceAccountAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_Authentication_ServiceAccountAuthConfig{}
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	return out
+}
+
+func Tool_Authentication_ServiceAccountAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_Authentication_ServiceAccountAuthConfig) *pb.Tool_Authentication_ServiceAccountAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_Authentication_ServiceAccountAuthConfig{}
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	return out
+}
+
+func Tool_Authentication_ServiceAgentAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_Authentication_ServiceAgentAuthConfig) *krm.Tool_Authentication_ServiceAgentAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_Authentication_ServiceAgentAuthConfig{}
+	out.ServiceAgentAuth = direct.Enum_FromProto(mapCtx, in.GetServiceAgentAuth())
+	return out
+}
+
+func Tool_Authentication_ServiceAgentAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_Authentication_ServiceAgentAuthConfig) *pb.Tool_Authentication_ServiceAgentAuthConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_Authentication_ServiceAgentAuthConfig{}
+	out.ServiceAgentAuth = direct.Enum_ToProto[pb.Tool_Authentication_ServiceAgentAuthConfig_ServiceAgentAuth](mapCtx, in.ServiceAgentAuth)
+	return out
+}
+
+func Tool_DataStoreTool_FromProto(mapCtx *direct.MapContext, in *pb.Tool_DataStoreTool) *krm.Tool_DataStoreTool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_DataStoreTool{}
+	out.DataStoreConnections = direct.Slice_FromProto(mapCtx, in.DataStoreConnections, DataStoreConnection_FromProto)
+	out.FallbackPrompt = Tool_DataStoreTool_FallbackPrompt_FromProto(mapCtx, in.GetFallbackPrompt())
+	return out
+}
+
+func Tool_DataStoreTool_ToProto(mapCtx *direct.MapContext, in *krm.Tool_DataStoreTool) *pb.Tool_DataStoreTool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_DataStoreTool{}
+	out.DataStoreConnections = direct.Slice_ToProto(mapCtx, in.DataStoreConnections, DataStoreConnection_ToProto)
+	out.FallbackPrompt = Tool_DataStoreTool_FallbackPrompt_ToProto(mapCtx, in.FallbackPrompt)
+	return out
+}
+
+func Tool_DataStoreTool_FallbackPrompt_FromProto(mapCtx *direct.MapContext, in *pb.Tool_DataStoreTool_FallbackPrompt) *krm.Tool_DataStoreTool_FallbackPrompt {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_DataStoreTool_FallbackPrompt{}
+	return out
+}
+
+func Tool_DataStoreTool_FallbackPrompt_ToProto(mapCtx *direct.MapContext, in *krm.Tool_DataStoreTool_FallbackPrompt) *pb.Tool_DataStoreTool_FallbackPrompt {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_DataStoreTool_FallbackPrompt{}
+	return out
+}
+
+func Tool_FunctionTool_FromProto(mapCtx *direct.MapContext, in *pb.Tool_FunctionTool) *krm.Tool_FunctionTool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_FunctionTool{}
+	if v := direct.Struct_FromProto(mapCtx, in.GetInputSchema()); v != nil {
+		out.InputSchema = *v
+	}
+	if v := direct.Struct_FromProto(mapCtx, in.GetOutputSchema()); v != nil {
+		out.OutputSchema = *v
+	}
+	return out
+}
+
+func Tool_FunctionTool_ToProto(mapCtx *direct.MapContext, in *krm.Tool_FunctionTool) *pb.Tool_FunctionTool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_FunctionTool{}
+	out.InputSchema = direct.Struct_ToProto(mapCtx, &in.InputSchema)
+	out.OutputSchema = direct.Struct_ToProto(mapCtx, &in.OutputSchema)
+	return out
+}
+
+func Tool_OpenAPITool_FromProto(mapCtx *direct.MapContext, in *pb.Tool_OpenApiTool) *krm.Tool_OpenAPITool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_OpenAPITool{}
+	out.TextSchema = direct.LazyPtr(in.GetTextSchema())
+	out.Authentication = Tool_Authentication_FromProto(mapCtx, in.GetAuthentication())
+	out.TLSConfig = Tool_TLSConfig_FromProto(mapCtx, in.GetTlsConfig())
+	out.ServiceDirectoryConfig = Tool_ServiceDirectoryConfig_FromProto(mapCtx, in.GetServiceDirectoryConfig())
+	return out
+}
+
+func Tool_OpenAPITool_ToProto(mapCtx *direct.MapContext, in *krm.Tool_OpenAPITool) *pb.Tool_OpenApiTool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_OpenApiTool{}
+	if oneof := Tool_OpenAPITool_TextSchema_ToProto(mapCtx, in.TextSchema); oneof != nil {
+		out.Schema = oneof
+	}
+	out.Authentication = Tool_Authentication_ToProto(mapCtx, in.Authentication)
+	out.TlsConfig = Tool_TLSConfig_ToProto(mapCtx, in.TLSConfig)
+	out.ServiceDirectoryConfig = Tool_ServiceDirectoryConfig_ToProto(mapCtx, in.ServiceDirectoryConfig)
+	return out
+}
+
+func Tool_OpenAPITool_TextSchema_ToProto(mapCtx *direct.MapContext, in *string) *pb.Tool_OpenApiTool_TextSchema {
+	if in == nil {
+		return nil
+	}
+	return &pb.Tool_OpenApiTool_TextSchema{TextSchema: *in}
+}
+
+func Tool_ServiceDirectoryConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_ServiceDirectoryConfig) *krm.Tool_ServiceDirectoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_ServiceDirectoryConfig{}
+	out.Service = direct.LazyPtr(in.GetService())
+	return out
+}
+
+func Tool_ServiceDirectoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_ServiceDirectoryConfig) *pb.Tool_ServiceDirectoryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_ServiceDirectoryConfig{}
+	out.Service = direct.ValueOf(in.Service)
+	return out
+}
+
+func Tool_TLSConfig_FromProto(mapCtx *direct.MapContext, in *pb.Tool_TLSConfig) *krm.Tool_TLSConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_TLSConfig{}
+	out.CACerts = direct.Slice_FromProto(mapCtx, in.CaCerts, Tool_TLSConfig_CACert_FromProto)
+	return out
+}
+
+func Tool_TLSConfig_ToProto(mapCtx *direct.MapContext, in *krm.Tool_TLSConfig) *pb.Tool_TLSConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_TLSConfig{}
+	out.CaCerts = direct.Slice_ToProto(mapCtx, in.CACerts, Tool_TLSConfig_CACert_ToProto)
+	return out
+}
+
+func Tool_TLSConfig_CACert_FromProto(mapCtx *direct.MapContext, in *pb.Tool_TLSConfig_CACert) *krm.Tool_TLSConfig_CACert {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Tool_TLSConfig_CACert{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Cert = in.GetCert()
+	return out
+}
+
+func Tool_TLSConfig_CACert_ToProto(mapCtx *direct.MapContext, in *krm.Tool_TLSConfig_CACert) *pb.Tool_TLSConfig_CACert {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_TLSConfig_CACert{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Cert = in.Cert
+	return out
+}
+
+func AutomatedAgentConfig_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.AutomatedAgentConfig) *krm.AutomatedAgentConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AutomatedAgentConfig{}
+	out.Agent = direct.LazyPtr(in.GetAgent())
+	out.SessionTTL = direct.StringDuration_FromProto(mapCtx, in.GetSessionTtl())
+	return out
+}
+
+func AutomatedAgentConfig_ToProto(mapCtx *direct.MapContext, in *krm.AutomatedAgentConfig) *dialogflowpb.AutomatedAgentConfig {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.AutomatedAgentConfig{}
+	out.Agent = direct.ValueOf(in.Agent)
+	out.SessionTtl = direct.StringDuration_ToProto(mapCtx, in.SessionTTL)
+	return out
+}
+
+func ConversationContext_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.ConversationContext) *krm.ConversationContext {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConversationContext{}
+	out.MessageEntries = direct.Slice_FromProto(mapCtx, in.MessageEntries, MessageEntry_FromProto)
+	return out
+}
+
+func ConversationContext_ToProto(mapCtx *direct.MapContext, in *krm.ConversationContext) *dialogflowpb.ConversationContext {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.ConversationContext{}
+	out.MessageEntries = direct.Slice_ToProto(mapCtx, in.MessageEntries, MessageEntry_ToProto)
+	return out
+}
+
+func ConversationInfo_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.ConversationInfo) *krm.ConversationInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConversationInfo{}
+	out.LanguageCode = direct.LazyPtr(in.GetLanguageCode())
+	return out
+}
+
+func ConversationInfo_ToProto(mapCtx *direct.MapContext, in *krm.ConversationInfo) *dialogflowpb.ConversationInfo {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.ConversationInfo{}
+	out.LanguageCode = direct.ValueOf(in.LanguageCode)
+	return out
+}
+
+func DialogflowConversationDatasetObservedState_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.ConversationDataset) *krm.DialogflowConversationDatasetObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowConversationDatasetObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.InputConfig = InputConfig_FromProto(mapCtx, in.GetInputConfig())
+	out.ConversationInfo = ConversationInfo_FromProto(mapCtx, in.GetConversationInfo())
+	out.ConversationCount = direct.LazyPtr(in.GetConversationCount())
+	out.SatisfiesPzi = in.SatisfiesPzi
+	out.SatisfiesPzs = in.SatisfiesPzs
+	return out
+}
+
+func DialogflowConversationDatasetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowConversationDatasetObservedState) *dialogflowpb.ConversationDataset {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.ConversationDataset{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.InputConfig = InputConfig_ToProto(mapCtx, in.InputConfig)
+	out.ConversationInfo = ConversationInfo_ToProto(mapCtx, in.ConversationInfo)
+	out.ConversationCount = direct.ValueOf(in.ConversationCount)
+	out.SatisfiesPzi = in.SatisfiesPzi
+	out.SatisfiesPzs = in.SatisfiesPzs
+	return out
+}
+
+func DialogflowConversationDatasetSpec_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.ConversationDataset) *krm.DialogflowConversationDatasetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowConversationDatasetSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+
+func DialogflowConversationDatasetSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowConversationDatasetSpec) *dialogflowpb.ConversationDataset {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.ConversationDataset{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+
+func DialogflowConversationProfileObservedState_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.ConversationProfile) *krm.DialogflowConversationProfileObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowConversationProfileObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func DialogflowConversationProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowConversationProfileObservedState) *dialogflowpb.ConversationProfile {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.ConversationProfile{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func DialogflowConversationProfileSpec_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.ConversationProfile) *krm.DialogflowConversationProfileSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowConversationProfileSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.AutomatedAgentConfig = AutomatedAgentConfig_FromProto(mapCtx, in.GetAutomatedAgentConfig())
+	out.HumanAgentAssistantConfig = HumanAgentAssistantConfig_FromProto(mapCtx, in.GetHumanAgentAssistantConfig())
+	out.HumanAgentHandoffConfig = HumanAgentHandoffConfig_FromProto(mapCtx, in.GetHumanAgentHandoffConfig())
+	out.NotificationConfig = NotificationConfig_FromProto(mapCtx, in.GetNotificationConfig())
+	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
+	out.NewMessageEventNotificationConfig = NotificationConfig_FromProto(mapCtx, in.GetNewMessageEventNotificationConfig())
+	out.NewRecognitionResultNotificationConfig = NotificationConfig_FromProto(mapCtx, in.GetNewRecognitionResultNotificationConfig())
+	out.SttConfig = SpeechToTextConfig_FromProto(mapCtx, in.GetSttConfig())
+	out.LanguageCode = direct.LazyPtr(in.GetLanguageCode())
+	out.TimeZone = direct.LazyPtr(in.GetTimeZone())
+	out.SecuritySettings = direct.LazyPtr(in.GetSecuritySettings())
+	out.TtsConfig = SynthesizeSpeechConfig_FromProto(mapCtx, in.GetTtsConfig())
+	return out
+}
+
+func DialogflowConversationProfileSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowConversationProfileSpec) *dialogflowpb.ConversationProfile {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.ConversationProfile{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.AutomatedAgentConfig = AutomatedAgentConfig_ToProto(mapCtx, in.AutomatedAgentConfig)
+	out.HumanAgentAssistantConfig = HumanAgentAssistantConfig_ToProto(mapCtx, in.HumanAgentAssistantConfig)
+	out.HumanAgentHandoffConfig = HumanAgentHandoffConfig_ToProto(mapCtx, in.HumanAgentHandoffConfig)
+	out.NotificationConfig = NotificationConfig_ToProto(mapCtx, in.NotificationConfig)
+	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
+	out.NewMessageEventNotificationConfig = NotificationConfig_ToProto(mapCtx, in.NewMessageEventNotificationConfig)
+	out.NewRecognitionResultNotificationConfig = NotificationConfig_ToProto(mapCtx, in.NewRecognitionResultNotificationConfig)
+	out.SttConfig = SpeechToTextConfig_ToProto(mapCtx, in.SttConfig)
+	out.LanguageCode = direct.ValueOf(in.LanguageCode)
+	out.TimeZone = direct.ValueOf(in.TimeZone)
+	out.SecuritySettings = direct.ValueOf(in.SecuritySettings)
+	out.TtsConfig = SynthesizeSpeechConfig_ToProto(mapCtx, in.TtsConfig)
+	return out
+}
+
+func DialogflowGeneratorObservedState_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.Generator) *krm.DialogflowGeneratorObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowGeneratorObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+
+func DialogflowGeneratorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowGeneratorObservedState) *dialogflowpb.Generator {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.Generator{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+
+func DialogflowGeneratorSpec_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.Generator) *krm.DialogflowGeneratorSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowGeneratorSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.FreeFormContext = FreeFormContext_FromProto(mapCtx, in.GetFreeFormContext())
+	out.SummarizationContext = SummarizationContext_FromProto(mapCtx, in.GetSummarizationContext())
+	out.InferenceParameter = InferenceParameter_FromProto(mapCtx, in.GetInferenceParameter())
+	out.TriggerEvent = direct.Enum_FromProto(mapCtx, in.GetTriggerEvent())
+	out.PublishedModel = direct.LazyPtr(in.GetPublishedModel())
+	return out
+}
+
+func DialogflowGeneratorSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowGeneratorSpec) *dialogflowpb.Generator {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.Generator{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	if oneof := FreeFormContext_ToProto(mapCtx, in.FreeFormContext); oneof != nil {
+		out.Context = &dialogflowpb.Generator_FreeFormContext{FreeFormContext: oneof}
+	}
+	if oneof := SummarizationContext_ToProto(mapCtx, in.SummarizationContext); oneof != nil {
+		out.Context = &dialogflowpb.Generator_SummarizationContext{SummarizationContext: oneof}
+	}
+	out.InferenceParameter = InferenceParameter_ToProto(mapCtx, in.InferenceParameter)
+	out.TriggerEvent = direct.Enum_ToProto[dialogflowpb.TriggerEvent](mapCtx, in.TriggerEvent)
+	if oneof := DialogflowGeneratorSpec_PublishedModel_ToProto(mapCtx, in.PublishedModel); oneof != nil {
+		out.FoundationModel = oneof
+	}
+	return out
+}
+
+func DialogflowGeneratorSpec_PublishedModel_ToProto(mapCtx *direct.MapContext, in *string) *dialogflowpb.Generator_PublishedModel {
+	if in == nil {
+		return nil
+	}
+	return &dialogflowpb.Generator_PublishedModel{PublishedModel: *in}
+}
+
+func DialogflowKnowledgeBaseObservedState_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.KnowledgeBase) *krm.DialogflowKnowledgeBaseObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowKnowledgeBaseObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	return out
+}
+
+func DialogflowKnowledgeBaseObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowKnowledgeBaseObservedState) *dialogflowpb.KnowledgeBase {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.KnowledgeBase{}
+	out.Name = direct.ValueOf(in.Name)
+	return out
+}
+
+func DialogflowKnowledgeBaseSpec_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.KnowledgeBase) *krm.DialogflowKnowledgeBaseSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowKnowledgeBaseSpec{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.LanguageCode = direct.LazyPtr(in.GetLanguageCode())
+	return out
+}
+
+func DialogflowKnowledgeBaseSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowKnowledgeBaseSpec) *dialogflowpb.KnowledgeBase {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.KnowledgeBase{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.LanguageCode = direct.ValueOf(in.LanguageCode)
+	return out
+}
+
+func FewShotExample_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.FewShotExample) *krm.FewShotExample {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FewShotExample{}
+	out.ConversationContext = ConversationContext_FromProto(mapCtx, in.GetConversationContext())
+	out.ExtraInfo = in.ExtraInfo
+	out.SummarizationSectionList = SummarizationSectionList_FromProto(mapCtx, in.GetSummarizationSectionList())
+	out.Output = GeneratorSuggestion_FromProto(mapCtx, in.GetOutput())
+	return out
+}
+
+func FewShotExample_ToProto(mapCtx *direct.MapContext, in *krm.FewShotExample) *dialogflowpb.FewShotExample {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.FewShotExample{}
+	out.ConversationContext = ConversationContext_ToProto(mapCtx, in.ConversationContext)
+	out.ExtraInfo = in.ExtraInfo
+	if oneof := SummarizationSectionList_ToProto(mapCtx, in.SummarizationSectionList); oneof != nil {
+		out.InstructionList = &dialogflowpb.FewShotExample_SummarizationSectionList{SummarizationSectionList: oneof}
+	}
+	out.Output = GeneratorSuggestion_ToProto(mapCtx, in.Output)
+	return out
+}
+
+func FreeFormContext_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.FreeFormContext) *krm.FreeFormContext {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FreeFormContext{}
+	out.Text = direct.LazyPtr(in.GetText())
+	return out
+}
+
+func FreeFormContext_ToProto(mapCtx *direct.MapContext, in *krm.FreeFormContext) *dialogflowpb.FreeFormContext {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.FreeFormContext{}
+	out.Text = direct.ValueOf(in.Text)
+	return out
+}
+
+func FreeFormSuggestion_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.FreeFormSuggestion) *krm.FreeFormSuggestion {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FreeFormSuggestion{}
+	out.Response = direct.LazyPtr(in.GetResponse())
+	return out
+}
+
+func FreeFormSuggestion_ToProto(mapCtx *direct.MapContext, in *krm.FreeFormSuggestion) *dialogflowpb.FreeFormSuggestion {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.FreeFormSuggestion{}
+	out.Response = direct.ValueOf(in.Response)
+	return out
+}
+
+func GCSSources_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.GcsSources) *krm.GCSSources {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GCSSources{}
+	out.Uris = in.Uris
+	return out
+}
+
+func GCSSources_ToProto(mapCtx *direct.MapContext, in *krm.GCSSources) *dialogflowpb.GcsSources {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.GcsSources{}
+	out.Uris = in.Uris
+	return out
+}
+
+func GeneratorSuggestion_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.GeneratorSuggestion) *krm.GeneratorSuggestion {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GeneratorSuggestion{}
+	out.FreeFormSuggestion = FreeFormSuggestion_FromProto(mapCtx, in.GetFreeFormSuggestion())
+	out.SummarySuggestion = SummarySuggestion_FromProto(mapCtx, in.GetSummarySuggestion())
+	return out
+}
+
+func GeneratorSuggestion_ToProto(mapCtx *direct.MapContext, in *krm.GeneratorSuggestion) *dialogflowpb.GeneratorSuggestion {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.GeneratorSuggestion{}
+	if oneof := FreeFormSuggestion_ToProto(mapCtx, in.FreeFormSuggestion); oneof != nil {
+		out.Suggestion = &dialogflowpb.GeneratorSuggestion_FreeFormSuggestion{FreeFormSuggestion: oneof}
+	}
+	if oneof := SummarySuggestion_ToProto(mapCtx, in.SummarySuggestion); oneof != nil {
+		out.Suggestion = &dialogflowpb.GeneratorSuggestion_SummarySuggestion{SummarySuggestion: oneof}
+	}
+	return out
+}
+
+func HumanAgentAssistantConfig_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.HumanAgentAssistantConfig) *krm.HumanAgentAssistantConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HumanAgentAssistantConfig{}
+	out.NotificationConfig = NotificationConfig_FromProto(mapCtx, in.GetNotificationConfig())
+	out.HumanAgentSuggestionConfig = HumanAgentAssistantConfig_SuggestionConfig_FromProto(mapCtx, in.GetHumanAgentSuggestionConfig())
+	out.EndUserSuggestionConfig = HumanAgentAssistantConfig_SuggestionConfig_FromProto(mapCtx, in.GetEndUserSuggestionConfig())
+	out.MessageAnalysisConfig = HumanAgentAssistantConfig_MessageAnalysisConfig_FromProto(mapCtx, in.GetMessageAnalysisConfig())
+	return out
+}
+
+func HumanAgentAssistantConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig) *dialogflowpb.HumanAgentAssistantConfig {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.HumanAgentAssistantConfig{}
+	out.NotificationConfig = NotificationConfig_ToProto(mapCtx, in.NotificationConfig)
+	out.HumanAgentSuggestionConfig = HumanAgentAssistantConfig_SuggestionConfig_ToProto(mapCtx, in.HumanAgentSuggestionConfig)
+	out.EndUserSuggestionConfig = HumanAgentAssistantConfig_SuggestionConfig_ToProto(mapCtx, in.EndUserSuggestionConfig)
+	out.MessageAnalysisConfig = HumanAgentAssistantConfig_MessageAnalysisConfig_ToProto(mapCtx, in.MessageAnalysisConfig)
+	return out
+}
+
+func HumanAgentAssistantConfig_ConversationModelConfig_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.HumanAgentAssistantConfig_ConversationModelConfig) *krm.HumanAgentAssistantConfig_ConversationModelConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HumanAgentAssistantConfig_ConversationModelConfig{}
+	out.Model = direct.LazyPtr(in.GetModel())
+	out.BaselineModelVersion = direct.LazyPtr(in.GetBaselineModelVersion())
+	return out
+}
+
+func HumanAgentAssistantConfig_ConversationModelConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_ConversationModelConfig) *dialogflowpb.HumanAgentAssistantConfig_ConversationModelConfig {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.HumanAgentAssistantConfig_ConversationModelConfig{}
+	out.Model = direct.ValueOf(in.Model)
+	out.BaselineModelVersion = direct.ValueOf(in.BaselineModelVersion)
+	return out
+}
+
+func HumanAgentAssistantConfig_ConversationProcessConfig_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.HumanAgentAssistantConfig_ConversationProcessConfig) *krm.HumanAgentAssistantConfig_ConversationProcessConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HumanAgentAssistantConfig_ConversationProcessConfig{}
+	out.RecentSentencesCount = direct.LazyPtr(in.GetRecentSentencesCount())
+	return out
+}
+
+func HumanAgentAssistantConfig_ConversationProcessConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_ConversationProcessConfig) *dialogflowpb.HumanAgentAssistantConfig_ConversationProcessConfig {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.HumanAgentAssistantConfig_ConversationProcessConfig{}
+	out.RecentSentencesCount = direct.ValueOf(in.RecentSentencesCount)
+	return out
+}
+
+func HumanAgentAssistantConfig_MessageAnalysisConfig_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.HumanAgentAssistantConfig_MessageAnalysisConfig) *krm.HumanAgentAssistantConfig_MessageAnalysisConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HumanAgentAssistantConfig_MessageAnalysisConfig{}
+	out.EnableEntityExtraction = direct.LazyPtr(in.GetEnableEntityExtraction())
+	out.EnableSentimentAnalysis = direct.LazyPtr(in.GetEnableSentimentAnalysis())
+	return out
+}
+
+func HumanAgentAssistantConfig_MessageAnalysisConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_MessageAnalysisConfig) *dialogflowpb.HumanAgentAssistantConfig_MessageAnalysisConfig {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.HumanAgentAssistantConfig_MessageAnalysisConfig{}
+	out.EnableEntityExtraction = direct.ValueOf(in.EnableEntityExtraction)
+	out.EnableSentimentAnalysis = direct.ValueOf(in.EnableSentimentAnalysis)
+	return out
+}
+
+func HumanAgentAssistantConfig_SuggestionConfig_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.HumanAgentAssistantConfig_SuggestionConfig) *krm.HumanAgentAssistantConfig_SuggestionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HumanAgentAssistantConfig_SuggestionConfig{}
+	out.FeatureConfigs = direct.Slice_FromProto(mapCtx, in.FeatureConfigs, HumanAgentAssistantConfig_SuggestionFeatureConfig_FromProto)
+	out.GroupSuggestionResponses = direct.LazyPtr(in.GetGroupSuggestionResponses())
+	out.Generators = in.Generators
+	out.DisableHighLatencyFeaturesSyncDelivery = direct.LazyPtr(in.GetDisableHighLatencyFeaturesSyncDelivery())
+	return out
+}
+
+func HumanAgentAssistantConfig_SuggestionConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_SuggestionConfig) *dialogflowpb.HumanAgentAssistantConfig_SuggestionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.HumanAgentAssistantConfig_SuggestionConfig{}
+	out.FeatureConfigs = direct.Slice_ToProto(mapCtx, in.FeatureConfigs, HumanAgentAssistantConfig_SuggestionFeatureConfig_ToProto)
+	out.GroupSuggestionResponses = direct.ValueOf(in.GroupSuggestionResponses)
+	out.Generators = in.Generators
+	out.DisableHighLatencyFeaturesSyncDelivery = direct.ValueOf(in.DisableHighLatencyFeaturesSyncDelivery)
+	return out
+}
+
+func HumanAgentAssistantConfig_SuggestionFeatureConfig_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.HumanAgentAssistantConfig_SuggestionFeatureConfig) *krm.HumanAgentAssistantConfig_SuggestionFeatureConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HumanAgentAssistantConfig_SuggestionFeatureConfig{}
+	out.SuggestionFeature = SuggestionFeature_FromProto(mapCtx, in.GetSuggestionFeature())
+	out.EnableEventBasedSuggestion = direct.LazyPtr(in.GetEnableEventBasedSuggestion())
+	out.DisableAgentQueryLogging = direct.LazyPtr(in.GetDisableAgentQueryLogging())
+	out.EnableQuerySuggestionWhenNoAnswer = direct.LazyPtr(in.GetEnableQuerySuggestionWhenNoAnswer())
+	out.EnableConversationAugmentedQuery = direct.LazyPtr(in.GetEnableConversationAugmentedQuery())
+	out.EnableQuerySuggestionOnly = direct.LazyPtr(in.GetEnableQuerySuggestionOnly())
+	out.SuggestionTriggerSettings = HumanAgentAssistantConfig_SuggestionTriggerSettings_FromProto(mapCtx, in.GetSuggestionTriggerSettings())
+	out.QueryConfig = HumanAgentAssistantConfig_SuggestionQueryConfig_FromProto(mapCtx, in.GetQueryConfig())
+	out.ConversationModelConfig = HumanAgentAssistantConfig_ConversationModelConfig_FromProto(mapCtx, in.GetConversationModelConfig())
+	out.ConversationProcessConfig = HumanAgentAssistantConfig_ConversationProcessConfig_FromProto(mapCtx, in.GetConversationProcessConfig())
+	return out
+}
+
+func HumanAgentAssistantConfig_SuggestionFeatureConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_SuggestionFeatureConfig) *dialogflowpb.HumanAgentAssistantConfig_SuggestionFeatureConfig {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.HumanAgentAssistantConfig_SuggestionFeatureConfig{}
+	out.SuggestionFeature = SuggestionFeature_ToProto(mapCtx, in.SuggestionFeature)
+	out.EnableEventBasedSuggestion = direct.ValueOf(in.EnableEventBasedSuggestion)
+	out.DisableAgentQueryLogging = direct.ValueOf(in.DisableAgentQueryLogging)
+	out.EnableQuerySuggestionWhenNoAnswer = direct.ValueOf(in.EnableQuerySuggestionWhenNoAnswer)
+	out.EnableConversationAugmentedQuery = direct.ValueOf(in.EnableConversationAugmentedQuery)
+	out.EnableQuerySuggestionOnly = direct.ValueOf(in.EnableQuerySuggestionOnly)
+	out.SuggestionTriggerSettings = HumanAgentAssistantConfig_SuggestionTriggerSettings_ToProto(mapCtx, in.SuggestionTriggerSettings)
+	out.QueryConfig = HumanAgentAssistantConfig_SuggestionQueryConfig_ToProto(mapCtx, in.QueryConfig)
+	out.ConversationModelConfig = HumanAgentAssistantConfig_ConversationModelConfig_ToProto(mapCtx, in.ConversationModelConfig)
+	out.ConversationProcessConfig = HumanAgentAssistantConfig_ConversationProcessConfig_ToProto(mapCtx, in.ConversationProcessConfig)
+	return out
+}
+
+func HumanAgentAssistantConfig_SuggestionQueryConfig_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig) *krm.HumanAgentAssistantConfig_SuggestionQueryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HumanAgentAssistantConfig_SuggestionQueryConfig{}
+	out.KnowledgeBaseQuerySource = HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource_FromProto(mapCtx, in.GetKnowledgeBaseQuerySource())
+	out.DocumentQuerySource = HumanAgentAssistantConfig_SuggestionQueryConfig_DocumentQuerySource_FromProto(mapCtx, in.GetDocumentQuerySource())
+	out.DialogflowQuerySource = HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_FromProto(mapCtx, in.GetDialogflowQuerySource())
+	out.MaxResults = direct.LazyPtr(in.GetMaxResults())
+	out.ConfidenceThreshold = direct.LazyPtr(in.GetConfidenceThreshold())
+	out.ContextFilterSettings = HumanAgentAssistantConfig_SuggestionQueryConfig_ContextFilterSettings_FromProto(mapCtx, in.GetContextFilterSettings())
+	out.Sections = HumanAgentAssistantConfig_SuggestionQueryConfig_Sections_FromProto(mapCtx, in.GetSections())
+	out.ContextSize = direct.LazyPtr(in.GetContextSize())
+	return out
+}
+
+func HumanAgentAssistantConfig_SuggestionQueryConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_SuggestionQueryConfig) *dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig{}
+	if oneof := HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource_ToProto(mapCtx, in.KnowledgeBaseQuerySource); oneof != nil {
+		out.QuerySource = &dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource_{KnowledgeBaseQuerySource: oneof}
+	}
+	if oneof := HumanAgentAssistantConfig_SuggestionQueryConfig_DocumentQuerySource_ToProto(mapCtx, in.DocumentQuerySource); oneof != nil {
+		out.QuerySource = &dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig_DocumentQuerySource_{DocumentQuerySource: oneof}
+	}
+	if oneof := HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_ToProto(mapCtx, in.DialogflowQuerySource); oneof != nil {
+		out.QuerySource = &dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_{DialogflowQuerySource: oneof}
+	}
+	out.MaxResults = direct.ValueOf(in.MaxResults)
+	out.ConfidenceThreshold = direct.ValueOf(in.ConfidenceThreshold)
+	out.ContextFilterSettings = HumanAgentAssistantConfig_SuggestionQueryConfig_ContextFilterSettings_ToProto(mapCtx, in.ContextFilterSettings)
+	out.Sections = HumanAgentAssistantConfig_SuggestionQueryConfig_Sections_ToProto(mapCtx, in.Sections)
+	out.ContextSize = direct.ValueOf(in.ContextSize)
+	return out
+}
+
+func HumanAgentAssistantConfig_SuggestionQueryConfig_ContextFilterSettings_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig_ContextFilterSettings) *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_ContextFilterSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HumanAgentAssistantConfig_SuggestionQueryConfig_ContextFilterSettings{}
+	out.DropHandoffMessages = direct.LazyPtr(in.GetDropHandoffMessages())
+	out.DropVirtualAgentMessages = direct.LazyPtr(in.GetDropVirtualAgentMessages())
+	out.DropIvrMessages = direct.LazyPtr(in.GetDropIvrMessages())
+	return out
+}
+
+func HumanAgentAssistantConfig_SuggestionQueryConfig_ContextFilterSettings_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_ContextFilterSettings) *dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig_ContextFilterSettings {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig_ContextFilterSettings{}
+	out.DropHandoffMessages = direct.ValueOf(in.DropHandoffMessages)
+	out.DropVirtualAgentMessages = direct.ValueOf(in.DropVirtualAgentMessages)
+	out.DropIvrMessages = direct.ValueOf(in.DropIvrMessages)
+	return out
+}
+
+func HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource) *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource{}
+	out.Agent = direct.LazyPtr(in.GetAgent())
+	out.HumanAgentSideConfig = HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_HumanAgentSideConfig_FromProto(mapCtx, in.GetHumanAgentSideConfig())
+	return out
+}
+
+func HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource) *dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource{}
+	out.Agent = direct.ValueOf(in.Agent)
+	out.HumanAgentSideConfig = HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_HumanAgentSideConfig_ToProto(mapCtx, in.HumanAgentSideConfig)
+	return out
+}
+
+func HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_HumanAgentSideConfig_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_HumanAgentSideConfig) *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_HumanAgentSideConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_HumanAgentSideConfig{}
+	out.Agent = direct.LazyPtr(in.GetAgent())
+	return out
+}
+
+func HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_HumanAgentSideConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_HumanAgentSideConfig) *dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_HumanAgentSideConfig {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig_DialogflowQuerySource_HumanAgentSideConfig{}
+	out.Agent = direct.ValueOf(in.Agent)
+	return out
+}
+
+func HumanAgentAssistantConfig_SuggestionQueryConfig_DocumentQuerySource_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig_DocumentQuerySource) *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_DocumentQuerySource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HumanAgentAssistantConfig_SuggestionQueryConfig_DocumentQuerySource{}
+	out.Documents = in.Documents
+	return out
+}
+
+func HumanAgentAssistantConfig_SuggestionQueryConfig_DocumentQuerySource_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_DocumentQuerySource) *dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig_DocumentQuerySource {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig_DocumentQuerySource{}
+	out.Documents = in.Documents
+	return out
+}
+
+func HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource) *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource{}
+	out.KnowledgeBases = in.KnowledgeBases
+	return out
+}
+
+func HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource) *dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig_KnowledgeBaseQuerySource{}
+	out.KnowledgeBases = in.KnowledgeBases
+	return out
+}
+
+func HumanAgentAssistantConfig_SuggestionQueryConfig_Sections_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig_Sections) *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_Sections {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HumanAgentAssistantConfig_SuggestionQueryConfig_Sections{}
+	out.SectionTypes = direct.EnumSlice_FromProto(mapCtx, in.SectionTypes)
+	return out
+}
+
+func HumanAgentAssistantConfig_SuggestionQueryConfig_Sections_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_SuggestionQueryConfig_Sections) *dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig_Sections {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig_Sections{}
+	out.SectionTypes = direct.EnumSlice_ToProto[dialogflowpb.HumanAgentAssistantConfig_SuggestionQueryConfig_Sections_SectionType](mapCtx, in.SectionTypes)
+	return out
+}
+
+func HumanAgentAssistantConfig_SuggestionTriggerSettings_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.HumanAgentAssistantConfig_SuggestionTriggerSettings) *krm.HumanAgentAssistantConfig_SuggestionTriggerSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HumanAgentAssistantConfig_SuggestionTriggerSettings{}
+	out.NoSmalltalk = direct.LazyPtr(in.GetNoSmalltalk())
+	out.OnlyEndUser = direct.LazyPtr(in.GetOnlyEndUser())
+	return out
+}
+
+func HumanAgentAssistantConfig_SuggestionTriggerSettings_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentAssistantConfig_SuggestionTriggerSettings) *dialogflowpb.HumanAgentAssistantConfig_SuggestionTriggerSettings {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.HumanAgentAssistantConfig_SuggestionTriggerSettings{}
+	out.NoSmalltalk = direct.ValueOf(in.NoSmalltalk)
+	out.OnlyEndUser = direct.ValueOf(in.OnlyEndUser)
+	return out
+}
+
+func HumanAgentHandoffConfig_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.HumanAgentHandoffConfig) *krm.HumanAgentHandoffConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HumanAgentHandoffConfig{}
+	out.LivePersonConfig = HumanAgentHandoffConfig_LivePersonConfig_FromProto(mapCtx, in.GetLivePersonConfig())
+	out.SalesforceLiveAgentConfig = HumanAgentHandoffConfig_SalesforceLiveAgentConfig_FromProto(mapCtx, in.GetSalesforceLiveAgentConfig())
+	return out
+}
+
+func HumanAgentHandoffConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentHandoffConfig) *dialogflowpb.HumanAgentHandoffConfig {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.HumanAgentHandoffConfig{}
+	if oneof := HumanAgentHandoffConfig_LivePersonConfig_ToProto(mapCtx, in.LivePersonConfig); oneof != nil {
+		out.AgentService = &dialogflowpb.HumanAgentHandoffConfig_LivePersonConfig_{LivePersonConfig: oneof}
+	}
+	if oneof := HumanAgentHandoffConfig_SalesforceLiveAgentConfig_ToProto(mapCtx, in.SalesforceLiveAgentConfig); oneof != nil {
+		out.AgentService = &dialogflowpb.HumanAgentHandoffConfig_SalesforceLiveAgentConfig_{SalesforceLiveAgentConfig: oneof}
+	}
+	return out
+}
+
+func HumanAgentHandoffConfig_LivePersonConfig_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.HumanAgentHandoffConfig_LivePersonConfig) *krm.HumanAgentHandoffConfig_LivePersonConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HumanAgentHandoffConfig_LivePersonConfig{}
+	out.AccountNumber = direct.LazyPtr(in.GetAccountNumber())
+	return out
+}
+
+func HumanAgentHandoffConfig_LivePersonConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentHandoffConfig_LivePersonConfig) *dialogflowpb.HumanAgentHandoffConfig_LivePersonConfig {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.HumanAgentHandoffConfig_LivePersonConfig{}
+	out.AccountNumber = direct.ValueOf(in.AccountNumber)
+	return out
+}
+
+func HumanAgentHandoffConfig_SalesforceLiveAgentConfig_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.HumanAgentHandoffConfig_SalesforceLiveAgentConfig) *krm.HumanAgentHandoffConfig_SalesforceLiveAgentConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HumanAgentHandoffConfig_SalesforceLiveAgentConfig{}
+	out.OrganizationID = direct.LazyPtr(in.GetOrganizationId())
+	out.DeploymentID = direct.LazyPtr(in.GetDeploymentId())
+	out.ButtonID = direct.LazyPtr(in.GetButtonId())
+	out.EndpointDomain = direct.LazyPtr(in.GetEndpointDomain())
+	return out
+}
+
+func HumanAgentHandoffConfig_SalesforceLiveAgentConfig_ToProto(mapCtx *direct.MapContext, in *krm.HumanAgentHandoffConfig_SalesforceLiveAgentConfig) *dialogflowpb.HumanAgentHandoffConfig_SalesforceLiveAgentConfig {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.HumanAgentHandoffConfig_SalesforceLiveAgentConfig{}
+	out.OrganizationId = direct.ValueOf(in.OrganizationID)
+	out.DeploymentId = direct.ValueOf(in.DeploymentID)
+	out.ButtonId = direct.ValueOf(in.ButtonID)
+	out.EndpointDomain = direct.ValueOf(in.EndpointDomain)
+	return out
+}
+
+func InferenceParameter_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.InferenceParameter) *krm.InferenceParameter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InferenceParameter{}
+	out.MaxOutputTokens = in.MaxOutputTokens
+	out.Temperature = in.Temperature
+	out.TopK = in.TopK
+	out.TopP = in.TopP
+	return out
+}
+
+func InferenceParameter_ToProto(mapCtx *direct.MapContext, in *krm.InferenceParameter) *dialogflowpb.InferenceParameter {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.InferenceParameter{}
+	out.MaxOutputTokens = in.MaxOutputTokens
+	out.Temperature = in.Temperature
+	out.TopK = in.TopK
+	out.TopP = in.TopP
+	return out
+}
+
+func InputConfig_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.InputConfig) *krm.InputConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InputConfig{}
+	out.GCSSource = GCSSources_FromProto(mapCtx, in.GetGcsSource())
+	return out
+}
+
+func InputConfig_ToProto(mapCtx *direct.MapContext, in *krm.InputConfig) *dialogflowpb.InputConfig {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.InputConfig{}
+	if oneof := GCSSources_ToProto(mapCtx, in.GCSSource); oneof != nil {
+		out.Source = &dialogflowpb.InputConfig_GcsSource{GcsSource: oneof}
+	}
+	return out
+}
+
+func LoggingConfig_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.LoggingConfig) *krm.LoggingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LoggingConfig{}
+	out.EnableStackdriverLogging = direct.LazyPtr(in.GetEnableStackdriverLogging())
+	return out
+}
+
+func LoggingConfig_ToProto(mapCtx *direct.MapContext, in *krm.LoggingConfig) *dialogflowpb.LoggingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.LoggingConfig{}
+	out.EnableStackdriverLogging = direct.ValueOf(in.EnableStackdriverLogging)
+	return out
+}
+
+func MessageEntry_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.MessageEntry) *krm.MessageEntry {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MessageEntry{}
+	out.Role = direct.Enum_FromProto(mapCtx, in.GetRole())
+	out.Text = direct.LazyPtr(in.GetText())
+	out.LanguageCode = direct.LazyPtr(in.GetLanguageCode())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	return out
+}
+
+func MessageEntry_ToProto(mapCtx *direct.MapContext, in *krm.MessageEntry) *dialogflowpb.MessageEntry {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.MessageEntry{}
+	out.Role = direct.Enum_ToProto[dialogflowpb.MessageEntry_Role](mapCtx, in.Role)
+	out.Text = direct.ValueOf(in.Text)
+	out.LanguageCode = direct.ValueOf(in.LanguageCode)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	return out
+}
+
+func NotificationConfig_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.NotificationConfig) *krm.NotificationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NotificationConfig{}
+	out.Topic = direct.LazyPtr(in.GetTopic())
+	out.MessageFormat = direct.Enum_FromProto(mapCtx, in.GetMessageFormat())
+	return out
+}
+
+func NotificationConfig_ToProto(mapCtx *direct.MapContext, in *krm.NotificationConfig) *dialogflowpb.NotificationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.NotificationConfig{}
+	out.Topic = direct.ValueOf(in.Topic)
+	out.MessageFormat = direct.Enum_ToProto[dialogflowpb.NotificationConfig_MessageFormat](mapCtx, in.MessageFormat)
+	return out
+}
+
+func SpeechToTextConfig_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.SpeechToTextConfig) *krm.SpeechToTextConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SpeechToTextConfig{}
+	out.SpeechModelVariant = direct.Enum_FromProto(mapCtx, in.GetSpeechModelVariant())
+	out.Model = direct.LazyPtr(in.GetModel())
+	out.PhraseSets = in.PhraseSets
+	out.AudioEncoding = direct.Enum_FromProto(mapCtx, in.GetAudioEncoding())
+	out.SampleRateHertz = direct.LazyPtr(in.GetSampleRateHertz())
+	out.LanguageCode = direct.LazyPtr(in.GetLanguageCode())
+	out.EnableWordInfo = direct.LazyPtr(in.GetEnableWordInfo())
+	out.UseTimeoutBasedEndpointing = direct.LazyPtr(in.GetUseTimeoutBasedEndpointing())
+	return out
+}
+
+func SpeechToTextConfig_ToProto(mapCtx *direct.MapContext, in *krm.SpeechToTextConfig) *dialogflowpb.SpeechToTextConfig {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.SpeechToTextConfig{}
+	out.SpeechModelVariant = direct.Enum_ToProto[dialogflowpb.SpeechModelVariant](mapCtx, in.SpeechModelVariant)
+	out.Model = direct.ValueOf(in.Model)
+	out.PhraseSets = in.PhraseSets
+	out.AudioEncoding = direct.Enum_ToProto[dialogflowpb.AudioEncoding](mapCtx, in.AudioEncoding)
+	out.SampleRateHertz = direct.ValueOf(in.SampleRateHertz)
+	out.LanguageCode = direct.ValueOf(in.LanguageCode)
+	out.EnableWordInfo = direct.ValueOf(in.EnableWordInfo)
+	out.UseTimeoutBasedEndpointing = direct.ValueOf(in.UseTimeoutBasedEndpointing)
+	return out
+}
+
+func SuggestionFeature_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.SuggestionFeature) *krm.SuggestionFeature {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SuggestionFeature{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+
+func SuggestionFeature_ToProto(mapCtx *direct.MapContext, in *krm.SuggestionFeature) *dialogflowpb.SuggestionFeature {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.SuggestionFeature{}
+	out.Type = direct.Enum_ToProto[dialogflowpb.SuggestionFeature_Type](mapCtx, in.Type)
+	return out
+}
+
+func SummarizationContext_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.SummarizationContext) *krm.SummarizationContext {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SummarizationContext{}
+	out.SummarizationSections = direct.Slice_FromProto(mapCtx, in.SummarizationSections, SummarizationSection_FromProto)
+	out.FewShotExamples = direct.Slice_FromProto(mapCtx, in.FewShotExamples, FewShotExample_FromProto)
+	out.Version = direct.LazyPtr(in.GetVersion())
+	out.OutputLanguageCode = direct.LazyPtr(in.GetOutputLanguageCode())
+	return out
+}
+
+func SummarizationContext_ToProto(mapCtx *direct.MapContext, in *krm.SummarizationContext) *dialogflowpb.SummarizationContext {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.SummarizationContext{}
+	out.SummarizationSections = direct.Slice_ToProto(mapCtx, in.SummarizationSections, SummarizationSection_ToProto)
+	out.FewShotExamples = direct.Slice_ToProto(mapCtx, in.FewShotExamples, FewShotExample_ToProto)
+	out.Version = direct.ValueOf(in.Version)
+	out.OutputLanguageCode = direct.ValueOf(in.OutputLanguageCode)
+	return out
+}
+
+func SummarizationSection_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.SummarizationSection) *krm.SummarizationSection {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SummarizationSection{}
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.Definition = direct.LazyPtr(in.GetDefinition())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+
+func SummarizationSection_ToProto(mapCtx *direct.MapContext, in *krm.SummarizationSection) *dialogflowpb.SummarizationSection {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.SummarizationSection{}
+	out.Key = direct.ValueOf(in.Key)
+	out.Definition = direct.ValueOf(in.Definition)
+	out.Type = direct.Enum_ToProto[dialogflowpb.SummarizationSection_Type](mapCtx, in.Type)
+	return out
+}
+
+func SummarizationSectionList_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.SummarizationSectionList) *krm.SummarizationSectionList {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SummarizationSectionList{}
+	out.SummarizationSections = direct.Slice_FromProto(mapCtx, in.SummarizationSections, SummarizationSection_FromProto)
+	return out
+}
+
+func SummarizationSectionList_ToProto(mapCtx *direct.MapContext, in *krm.SummarizationSectionList) *dialogflowpb.SummarizationSectionList {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.SummarizationSectionList{}
+	out.SummarizationSections = direct.Slice_ToProto(mapCtx, in.SummarizationSections, SummarizationSection_ToProto)
+	return out
+}
+
+func SummarySuggestion_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.SummarySuggestion) *krm.SummarySuggestion {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SummarySuggestion{}
+	out.SummarySections = direct.Slice_FromProto(mapCtx, in.SummarySections, SummarySuggestion_SummarySection_FromProto)
+	return out
+}
+
+func SummarySuggestion_ToProto(mapCtx *direct.MapContext, in *krm.SummarySuggestion) *dialogflowpb.SummarySuggestion {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.SummarySuggestion{}
+	out.SummarySections = direct.Slice_ToProto(mapCtx, in.SummarySections, SummarySuggestion_SummarySection_ToProto)
+	return out
+}
+
+func SummarySuggestion_SummarySection_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.SummarySuggestion_SummarySection) *krm.SummarySuggestion_SummarySection {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SummarySuggestion_SummarySection{}
+	out.Section = direct.LazyPtr(in.GetSection())
+	out.Summary = direct.LazyPtr(in.GetSummary())
+	return out
+}
+
+func SummarySuggestion_SummarySection_ToProto(mapCtx *direct.MapContext, in *krm.SummarySuggestion_SummarySection) *dialogflowpb.SummarySuggestion_SummarySection {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.SummarySuggestion_SummarySection{}
+	out.Section = direct.ValueOf(in.Section)
+	out.Summary = direct.ValueOf(in.Summary)
+	return out
+}
+
+func SynthesizeSpeechConfig_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.SynthesizeSpeechConfig) *krm.SynthesizeSpeechConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SynthesizeSpeechConfig{}
+	out.SpeakingRate = direct.LazyPtr(in.GetSpeakingRate())
+	out.Pitch = direct.LazyPtr(in.GetPitch())
+	out.VolumeGainDb = direct.LazyPtr(in.GetVolumeGainDb())
+	out.EffectsProfileID = in.EffectsProfileId
+	out.Voice = VoiceSelectionParams_FromProto(mapCtx, in.GetVoice())
+	return out
+}
+
+func SynthesizeSpeechConfig_ToProto(mapCtx *direct.MapContext, in *krm.SynthesizeSpeechConfig) *dialogflowpb.SynthesizeSpeechConfig {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.SynthesizeSpeechConfig{}
+	out.SpeakingRate = direct.ValueOf(in.SpeakingRate)
+	out.Pitch = direct.ValueOf(in.Pitch)
+	out.VolumeGainDb = direct.ValueOf(in.VolumeGainDb)
+	out.EffectsProfileId = in.EffectsProfileID
+	out.Voice = VoiceSelectionParams_ToProto(mapCtx, in.Voice)
+	return out
+}
+
+func VoiceSelectionParams_FromProto(mapCtx *direct.MapContext, in *dialogflowpb.VoiceSelectionParams) *krm.VoiceSelectionParams {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VoiceSelectionParams{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.SsmlGender = direct.Enum_FromProto(mapCtx, in.GetSsmlGender())
+	return out
+}
+
+func VoiceSelectionParams_ToProto(mapCtx *direct.MapContext, in *krm.VoiceSelectionParams) *dialogflowpb.VoiceSelectionParams {
+	if in == nil {
+		return nil
+	}
+	out := &dialogflowpb.VoiceSelectionParams{}
+	out.Name = direct.ValueOf(in.Name)
+	out.SsmlGender = direct.Enum_ToProto[dialogflowpb.SsmlVoiceGender](mapCtx, in.SsmlGender)
 	return out
 }

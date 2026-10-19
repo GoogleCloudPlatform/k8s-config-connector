@@ -16,7 +16,955 @@
 // +generated:types
 // krm.group: geminidataanalytics.cnrm.cloud.google.com
 // krm.version: v1alpha1
-// proto.service: google.cloud.geminidataanalytics.v1beta
-// resource: GeminiDataAnalyticsConversation:Conversation
+// proto.service: google.cloud.geminidataanalytics.v1
+// resource: GeminidataanalyticsDataAgent:DataAgent
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.AnalysisOptions
+type AnalysisOptions struct {
+	// Optional. Options for Python analysis.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.AnalysisOptions.python
+	Python *AnalysisOptions_Python `json:"python,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.AnalysisOptions.Python
+type AnalysisOptions_Python struct {
+	// Optional. Whether to enable Python analysis.
+	//  Defaults to false.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.AnalysisOptions.Python.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.BigQueryPropertyGraphReference
+type BigQueryPropertyGraphReference struct {
+	// Required. The project that the property graph belongs to.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.BigQueryPropertyGraphReference.project_id
+	// +required
+	ProjectID *string `json:"projectID,omitempty"`
+
+	// Required. The dataset that the property graph belongs to.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.BigQueryPropertyGraphReference.dataset_id
+	// +required
+	DatasetID *string `json:"datasetID,omitempty"`
+
+	// Required. The property graph id.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.BigQueryPropertyGraphReference.property_graph_id
+	// +required
+	PropertyGraphID *string `json:"propertyGraphID,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.BigQueryRoutine
+type BigQueryRoutine struct {
+	// The reference to the BigQuery routine.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.BigQueryRoutine.routine_reference
+	RoutineReference *BigQueryRoutineReference `json:"routineReference,omitempty"`
+
+	// User override or addition to description, to tell the agent when to use the
+	//  UDF.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.BigQueryRoutine.description
+	Description *string `json:"description,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.BigQueryRoutineReference
+type BigQueryRoutineReference struct {
+	// The project ID of the routine.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.BigQueryRoutineReference.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+
+	// The dataset ID of the routine.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.BigQueryRoutineReference.dataset_id
+	DatasetID *string `json:"datasetID,omitempty"`
+
+	// The routine ID of the routine.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.BigQueryRoutineReference.routine_id
+	RoutineID *string `json:"routineID,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.BigQueryTableReference
+type BigQueryTableReference struct {
+	// Required. The project that the table belongs to.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.BigQueryTableReference.project_id
+	// +required
+	ProjectID *string `json:"projectID,omitempty"`
+
+	// Required. The dataset that the table belongs to.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.BigQueryTableReference.dataset_id
+	// +required
+	DatasetID *string `json:"datasetID,omitempty"`
+
+	// Required. The table id.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.BigQueryTableReference.table_id
+	// +required
+	TableID *string `json:"tableID,omitempty"`
+
+	// Optional. The schema of the datasource.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.BigQueryTableReference.schema
+	Schema *Schema `json:"schema,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.BigQueryTableReferences
+type BigQueryTableReferences struct {
+	// Optional. References to BigQuery tables.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.BigQueryTableReferences.table_references
+	TableReferences []BigQueryTableReference `json:"tableReferences,omitempty"`
+
+	// Optional. References to BigQuery graphs.
+	//
+	//  Note: "property graph" is the former name for BigQuery Graph. The field and
+	//  message names retain the original term for backward compatibility; both
+	//  refer to the same resource.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.BigQueryTableReferences.property_graph_references
+	PropertyGraphReferences []BigQueryPropertyGraphReference `json:"propertyGraphReferences,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.Context
+type Context struct {
+	// Optional. The basic entry point for data owners creating domain knowledge
+	//  for Agent.
+	//
+	//  Why: Business jargon (e.g., YTD revenue is calculated as…, Retirement Age
+	//  is 65 in the USA, etc) and system instructions (e.g., answer like a Pirate)
+	//  can help the model understand the business context around a user question.
+	//
+	//  Must be at most 250,000 bytes (approx. 250,000 characters for English
+	//  text).
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Context.system_instruction
+	SystemInstruction *string `json:"systemInstruction,omitempty"`
+
+	// Required. Data sources that are available for answering the question.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Context.datasource_references
+	// +required
+	DatasourceReferences *DatasourceReferences `json:"datasourceReferences,omitempty"`
+
+	// Optional. Additional options for the conversation.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Context.options
+	Options *ConversationOptions `json:"options,omitempty"`
+
+	// Optional. A list of example queries, providing examples of relevant and
+	//  commonly used SQL queries and their corresponding natural language queries
+	//  optionally present. Currently only used for BigQuery data sources and
+	//  databases (alloydb, cloudsql, spanner) data sources.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Context.example_queries
+	ExampleQueries []ExampleQuery `json:"exampleQueries,omitempty"`
+
+	// Optional. A list of golden queries, providing examples of relevant and
+	//  commonly used Looker queries and their corresponding natural language
+	//  queries optionally present. Only supported for Looker data sources.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Context.looker_golden_queries
+	LookerGoldenQueries []LookerGoldenQuery `json:"lookerGoldenQueries,omitempty"`
+
+	// Optional. Term definitions (currently, only user authored)
+	//  Not supported for databases (alloydb, cloudsql, spanner) data sources.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Context.glossary_terms
+	GlossaryTerms []GlossaryTerm `json:"glossaryTerms,omitempty"`
+
+	// Optional. Relationships between table schema, including referencing and
+	//  referenced columns.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Context.schema_relationships
+	SchemaRelationships []Context_SchemaRelationship `json:"schemaRelationships,omitempty"`
+
+	// Optional. A collection of user functions to be included in context.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Context.user_functions
+	UserFunctions *UserFunctions `json:"userFunctions,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.Context.SchemaRelationship
+type Context_SchemaRelationship struct {
+	// An ordered list of fields for the join from the first table.
+	//  The size of this list must be the same as `right_schema_paths`.
+	//  Each field at index i in this list must correspond to a field at the same
+	//  index in the `right_schema_paths` list.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Context.SchemaRelationship.left_schema_paths
+	LeftSchemaPaths *Context_SchemaRelationship_SchemaPaths `json:"leftSchemaPaths,omitempty"`
+
+	// An ordered list of fields for the join from the second table.
+	//  The size of this list must be the same as `left_schema_paths`.
+	//  Each field at index i in this list must correspond to a field at the same
+	//  index in the `left_schema_paths` list.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Context.SchemaRelationship.right_schema_paths
+	RightSchemaPaths *Context_SchemaRelationship_SchemaPaths `json:"rightSchemaPaths,omitempty"`
+
+	// Optional. Sources which generated the schema relation edge.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Context.SchemaRelationship.sources
+	Sources []string `json:"sources,omitempty"`
+
+	// Optional. A confidence score for the suggested relationship.
+	//  Manually added edges have the highest confidence score.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Context.SchemaRelationship.confidence_score
+	ConfidenceScore *float32 `json:"confidenceScore,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.Context.SchemaRelationship.SchemaPaths
+type Context_SchemaRelationship_SchemaPaths struct {
+	// The service-qualified full resource name of the table
+	//  Ex:
+	//  bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Context.SchemaRelationship.SchemaPaths.table_fqn
+	TableFqn *string `json:"tableFqn,omitempty"`
+
+	// The ordered list of paths within the table schema.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Context.SchemaRelationship.SchemaPaths.paths
+	Paths []string `json:"paths,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.ConversationOptions
+type ConversationOptions struct {
+	// Optional. Options for analysis.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.ConversationOptions.analysis
+	Analysis *AnalysisOptions `json:"analysis,omitempty"`
+
+	// Optional. Options for datasources.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.ConversationOptions.datasource
+	Datasource *DatasourceOptions `json:"datasource,omitempty"`
+
+	// Optional. The model to use for the agent loop.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.ConversationOptions.model
+	Model *string `json:"model,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.DataAnalyticsAgent
+type DataAnalyticsAgent struct {
+	// Optional. The staging context for the agent.
+	//  This context is used to test and validate changes before publishing.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DataAnalyticsAgent.staging_context
+	StagingContext *Context `json:"stagingContext,omitempty"`
+
+	// Optional. The published context for the agent.
+	//  This context is used by the Chat API in production.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DataAnalyticsAgent.published_context
+	PublishedContext *Context `json:"publishedContext,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.DataFilter
+type DataFilter struct {
+	// Optional. The field to filter on. For example: ["event_date",
+	//  "customer_id", "product_category"]
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DataFilter.field
+	Field *string `json:"field,omitempty"`
+
+	// Optional. The default value used for this filter if the filter is not
+	//  overridden in a query. For example: ["after 2024-01-01", "123", "-fashion"]
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DataFilter.value
+	Value *string `json:"value,omitempty"`
+
+	// Optional. The type of filter present on a datasource, such as
+	//  ALWAYS_FILTER.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DataFilter.type
+	Type *string `json:"type,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.DatasourceOptions
+type DatasourceOptions struct {
+	// Optional. This option applies to datasources that require BigQuery queries
+	//  only. Limits the bytes billed for each BQ query job. Queries that will have
+	//  bytes billed beyond this limit will fail (without incurring a charge).
+	//  If unspecified, no limit will be applied.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DatasourceOptions.big_query_max_billed_bytes
+	BigQueryMaxBilledBytes *int64 `json:"bigQueryMaxBilledBytes,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.DatasourceReferences
+type DatasourceReferences struct {
+	// References to BigQuery tables.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DatasourceReferences.bq
+	Bq *BigQueryTableReferences `json:"bq,omitempty"`
+
+	// References to Looker Studio datasources.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DatasourceReferences.studio
+	Studio *StudioDatasourceReferences `json:"studio,omitempty"`
+
+	// References to Looker Explores.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DatasourceReferences.looker
+	Looker *LookerExploreReferences `json:"looker,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.DynamicField
+type DynamicField struct {
+	// Optional. The type of dynamic field: dimension, measure, table_calculation.
+	//  Looker can use the category type to specify the name of the dynamic field.
+	//  However, Looker Conversational Analytics keeps the category separate from
+	//  the name of the dynamic field. For more details, see
+	//  https://docs.cloud.google.com/looker/docs/reference/param-lookml-dashboard-table-chart#dynamic_fields.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DynamicField.category
+	Category *string `json:"category,omitempty"`
+
+	// Optional. The name of the dynamic field in LookML.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DynamicField.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The label defines the display name of the dynamic field.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DynamicField.label
+	Label *string `json:"label,omitempty"`
+
+	// Optional. For custom measures, this identifies the measure the field is
+	//  based on.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DynamicField.based_on
+	BasedOn *string `json:"basedOn,omitempty"`
+
+	// Optional. For custom measures, this identifies the type of aggregation
+	//  (e.g. sum).
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DynamicField.type
+	Type *string `json:"type,omitempty"`
+
+	// Optional. Description of the dynamic field.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DynamicField.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Looker expression to create a table calculation.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DynamicField.expression
+	Expression *string `json:"expression,omitempty"`
+
+	// Optional. Looker expression to filter a base measure.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DynamicField.filter_expression
+	FilterExpression *string `json:"filterExpression,omitempty"`
+
+	// Optional. Value format for the dynamic field.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DynamicField.value_format
+	ValueFormat *string `json:"valueFormat,omitempty"`
+
+	// Optional. Value format name for the dynamic field if using a default named
+	//  format.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DynamicField.value_format_name
+	ValueFormatName *string `json:"valueFormatName,omitempty"`
+
+	// Optional. Calculation type for table calculations. Refer to
+	//  https://docs.cloud.google.com/looker/docs/reference/param-lookml-dashboard-table-chart#calculation_type
+	//  for all possible values depending on the `category` of dynamic field.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DynamicField.calculation_type
+	CalculationType *string `json:"calculationType,omitempty"`
+
+	// Optional. Arguments for custom groups, custom bins, or shortcut
+	//  calculations. For more details, refer to
+	//  https://docs.cloud.google.com/looker/docs/reference/param-lookml-dashboard-table-chart#args_for_custom_groups
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DynamicField.args
+	Args []string `json:"args,omitempty"`
+
+	// Optional. Identifies whether the dynamic field returns a dimension or
+	//  measure.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DynamicField.kind_hint
+	KindHint *string `json:"kindHint,omitempty"`
+
+	// Optional. Identifies the data type the dynamic field's expression should
+	//  produce.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DynamicField.type_hint
+	TypeHint *string `json:"typeHint,omitempty"`
+
+	// Optional. Whether the dynamic field is disabled.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DynamicField.is_disabled
+	IsDisabled *bool `json:"isDisabled,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.ExampleQuery
+type ExampleQuery struct {
+	// Optional. The SQL query that should be generated to answer the natural
+	//  language question. For example: "SELECT COUNT(*) FROM orders WHERE
+	//  order_date BETWEEN '2024-01-01' AND '2024-01-31'"
+	//
+	//  Must be at most 50,000 bytes (approx. 50,000 characters).
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.ExampleQuery.sql_query
+	SQLQuery *string `json:"sqlQuery,omitempty"`
+
+	// Optional. A natural language question that a user might ask.
+	//  For example: "How many orders were placed last month?"
+	//
+	//  Must be at most 2,000 bytes (approx. 2,000 characters).
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.ExampleQuery.natural_language_question
+	NaturalLanguageQuestion *string `json:"naturalLanguageQuestion,omitempty"`
+
+	// Optional. The list of query parameters.
+	//  Example: The parameterized SQL query
+	//  "SELECT * FROM my_table WHERE id = @id" can be matched with any value of
+	//  id.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.ExampleQuery.parameters
+	Parameters []QueryParameter `json:"parameters,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.Field
+type Field struct {
+	// Optional. The name of the field.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Field.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The type of the field.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Field.type
+	Type *string `json:"type,omitempty"`
+
+	// Optional. A brief description of the field.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Field.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. The mode of the field (e.g., NULLABLE, REPEATED).
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Field.mode
+	Mode *string `json:"mode,omitempty"`
+
+	// Optional. A list of alternative names or synonyms that can be used to refer
+	//  to this field. For example: ["id", "customerid", "cust_id"]. Currently only
+	//  used for BigQuery data sources.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Field.synonyms
+	Synonyms []string `json:"synonyms,omitempty"`
+
+	// Optional. A list of tags or keywords associated with the field, used for
+	//  categorization. For example: ["identifier", "customer", "pii"]. Currently
+	//  only used for BigQuery data sources.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Field.tags
+	Tags []string `json:"tags,omitempty"`
+
+	// Optional. Field display_name (same as label in
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Field.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. Recursive property for nested schema structures.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Field.subfields
+	Subfields []Field `json:"subfields,omitempty"`
+
+	// Optional. Field category, not required, currently only useful for Looker.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Field.category
+	Category *string `json:"category,omitempty"`
+
+	// Optional. Looker only. Value format of the field.
+	//  Ref:
+	//  https://cloud.google.com/looker/docs/reference/param-field-value-format
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Field.value_format
+	ValueFormat *string `json:"valueFormat,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.GlossaryTerm
+type GlossaryTerm struct {
+	// Required. User friendly display name of the glossary term being defined.
+	//  For example: "CTR", "conversion rate", "pending"
+	//
+	//  Must be at most 256 bytes.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.GlossaryTerm.display_name
+	// +required
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Required. The description or meaning of the term.
+	//  For example: "Click-through rate", "The percentage of users who complete a
+	//  desired action", "An order that is waiting to be processed."
+	//
+	//  Must be at most 5,000 bytes (approx. 5,000 characters).
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.GlossaryTerm.description
+	// +required
+	Description *string `json:"description,omitempty"`
+
+	// Optional. A list of general purpose labels associated to this term.
+	//  For example: ["click rate", "clickthrough", "waiting"]
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.GlossaryTerm.labels
+	Labels []string `json:"labels,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.LookerExploreReference
+type LookerExploreReference struct {
+	// Required. The base url of the Looker instance.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerExploreReference.looker_instance_uri
+	LookerInstanceURI *string `json:"lookerInstanceURI,omitempty"`
+
+	// Private Looker instance info.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerExploreReference.private_looker_instance_info
+	PrivateLookerInstanceInfo *PrivateLookerInstanceInfo `json:"privateLookerInstanceInfo,omitempty"`
+
+	// Required. Looker model, as outlined in
+	//  [Major LookML
+	//  structures](https://cloud.google.com/looker/docs/lookml-terms-and-concepts#major_lookml_structures).
+	//  Name of the LookML model.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerExploreReference.lookml_model
+	// +required
+	LookmlModel *string `json:"lookmlModel,omitempty"`
+
+	// Required. Looker Explore, as outlined in
+	//  [Major LookML
+	//  structures](https://cloud.google.com/looker/docs/lookml-terms-and-concepts#major_lookml_structures).
+	//  Name of the LookML Explore.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerExploreReference.explore
+	// +required
+	Explore *string `json:"explore,omitempty"`
+
+	// Optional. The schema of the datasource.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerExploreReference.schema
+	Schema *Schema `json:"schema,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.LookerExploreReferences
+type LookerExploreReferences struct {
+	// Required. References to Looker explores.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerExploreReferences.explore_references
+	// +required
+	ExploreReferences []LookerExploreReference `json:"exploreReferences,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.LookerGoldenQuery
+type LookerGoldenQuery struct {
+	// Optional. Natural language questions that a user might ask.
+	//  For example: "How many orders were placed last month?"
+	//
+	//  Must be at most 2,000 bytes per question (approx. 2,000 characters).
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerGoldenQuery.natural_language_questions
+	NaturalLanguageQuestions []string `json:"naturalLanguageQuestions,omitempty"`
+
+	// Optional. The Looker Query corresponding to the natural language questions.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerGoldenQuery.looker_query
+	LookerQuery *LookerQuery `json:"lookerQuery,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.LookerQuery
+type LookerQuery struct {
+	// Required. The LookML model used to generate the query.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerQuery.model
+	// +required
+	Model *string `json:"model,omitempty"`
+
+	// Required. The LookML explore used to generate the query.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerQuery.explore
+	// +required
+	Explore *string `json:"explore,omitempty"`
+
+	// Optional. The fields to retrieve from the explore.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerQuery.fields
+	Fields []string `json:"fields,omitempty"`
+
+	// Optional. The filters to apply to the explore.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerQuery.filters
+	Filters []LookerQuery_Filter `json:"filters,omitempty"`
+
+	// Optional. The sorts to apply to the explore.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerQuery.sorts
+	Sorts []string `json:"sorts,omitempty"`
+
+	// Optional. Limit in the query.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerQuery.limit
+	Limit *string `json:"limit,omitempty"`
+
+	// Optional. The dynamic fields used in the query.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerQuery.dynamic_fields
+	DynamicFields []DynamicField `json:"dynamicFields,omitempty"`
+
+	// Optional. The primary identifier for the query resource in Looker, used for
+	//  API operations. Maps to `id` (or `slug`) in the Looker API `Query`
+	//  resource.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerQuery.query_id
+	QueryID *string `json:"queryID,omitempty"`
+
+	// Optional. The short alphanumeric identifier for the query, used for share
+	//  links and Explore URLs (e.g., in the `qid` parameter). Maps to `client_id`
+	//  in the Looker API `Query` resource.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerQuery.client_id
+	ClientID *string `json:"clientID,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.LookerQuery.Filter
+type LookerQuery_Filter struct {
+	// Required. The field to filter on.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerQuery.Filter.field
+	// +required
+	Field *string `json:"field,omitempty"`
+
+	// Optional. The value for the field to filter on.
+	//  Optional so we can preserve the default value as an empty
+	//  string, important to get a valid and working Looker Explore url.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerQuery.Filter.value
+	Value *string `json:"value,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.PrivateLookerInstanceInfo
+type PrivateLookerInstanceInfo struct {
+	// The Looker instance id.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.PrivateLookerInstanceInfo.looker_instance_id
+	LookerInstanceID *string `json:"lookerInstanceID,omitempty"`
+
+	// The service directory name of the Looker instance.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.PrivateLookerInstanceInfo.service_directory_name
+	ServiceDirectoryName *string `json:"serviceDirectoryName,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.QueryParameter
+type QueryParameter struct {
+	// Required. The name of the parameter reference in the SQL query.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.QueryParameter.name
+	// +required
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The description of the parameter that can be used by LLM to
+	//  extract the parameter value from the user question.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.QueryParameter.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. The data type of the parameter, e.g. "STRING", "INT64", "DATE",
+	//  etc. For valid values, see the [BigQuery
+	//  documentation](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types).
+	//  This will be used to populate
+	//  google.cloud.bigquery.v2.QueryParameterType.type.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.QueryParameter.data_type
+	// +required
+	DataType *string `json:"dataType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.Schema
+type Schema struct {
+	// Optional. The fields in the schema.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Schema.fields
+	Fields []Field `json:"fields,omitempty"`
+
+	// Optional. A textual description of the table's content and purpose.
+	//  For example: "Contains information about customer orders in our e-commerce
+	//  store." Currently only used for BigQuery data sources.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Schema.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. A list of alternative names or synonyms that can be used to refer
+	//  to the table. For example: ["sales", "orders", "purchases"]. Currently only
+	//  used for BigQuery data sources.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Schema.synonyms
+	Synonyms []string `json:"synonyms,omitempty"`
+
+	// Optional. A list of tags or keywords associated with the table, used for
+	//  categorization. For example: ["transaction", "revenue", "customer_data"].
+	//  Currently only used for BigQuery data sources.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Schema.tags
+	Tags []string `json:"tags,omitempty"`
+
+	// Optional. Table display_name (same as label in
+	//  cloud/data_analytics/anarres/data/looker/proto/model_explore.proto), not
+	//  required, currently only Looker has this field.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Schema.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The filters on the datasource's underlying data. Currently only
+	//  used for Looker data sources.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Schema.filters
+	Filters []DataFilter `json:"filters,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.StudioDatasourceReference
+type StudioDatasourceReference struct {
+	// Required. The id of the datasource.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.StudioDatasourceReference.datasource_id
+	// +required
+	DatasourceID *string `json:"datasourceID,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.StudioDatasourceReferences
+type StudioDatasourceReferences struct {
+	// Optional. The references to the studio datasources.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.StudioDatasourceReferences.studio_references
+	StudioReferences []StudioDatasourceReference `json:"studioReferences,omitempty"`
+}
+
+// +kcc:proto=google.cloud.geminidataanalytics.v1.UserFunctions
+type UserFunctions struct {
+	// A list of BigQuery routines to include in the context.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.UserFunctions.bq_routines
+	BqRoutines []BigQueryRoutine `json:"bqRoutines,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.geminidataanalytics.v1.BigQueryPropertyGraphReference
+type BigQueryPropertyGraphReferenceObservedState struct {
+	// Required. The project that the property graph belongs to.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.BigQueryPropertyGraphReference.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+
+	// Required. The dataset that the property graph belongs to.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.BigQueryPropertyGraphReference.dataset_id
+	DatasetID *string `json:"datasetID,omitempty"`
+
+	// Required. The property graph id.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.BigQueryPropertyGraphReference.property_graph_id
+	PropertyGraphID *string `json:"propertyGraphID,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.geminidataanalytics.v1.BigQueryTableReference
+type BigQueryTableReferenceObservedState struct {
+	// Required. The project that the table belongs to.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.BigQueryTableReference.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+
+	// Required. The dataset that the table belongs to.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.BigQueryTableReference.dataset_id
+	DatasetID *string `json:"datasetID,omitempty"`
+
+	// Required. The table id.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.BigQueryTableReference.table_id
+	TableID *string `json:"tableID,omitempty"`
+
+	// Optional. The schema of the datasource.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.BigQueryTableReference.schema
+	Schema *Schema `json:"schema,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.geminidataanalytics.v1.BigQueryTableReferences
+type BigQueryTableReferencesObservedState struct {
+	// Optional. References to BigQuery tables.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.BigQueryTableReferences.table_references
+	TableReferences []BigQueryTableReferenceObservedState `json:"tableReferences,omitempty"`
+
+	// Optional. References to BigQuery graphs.
+	//
+	//  Note: "property graph" is the former name for BigQuery Graph. The field and
+	//  message names retain the original term for backward compatibility; both
+	//  refer to the same resource.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.BigQueryTableReferences.property_graph_references
+	PropertyGraphReferences []BigQueryPropertyGraphReferenceObservedState `json:"propertyGraphReferences,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.geminidataanalytics.v1.Context
+type ContextObservedState struct {
+	// Optional. The basic entry point for data owners creating domain knowledge
+	//  for Agent.
+	//
+	//  Why: Business jargon (e.g., YTD revenue is calculated as…, Retirement Age
+	//  is 65 in the USA, etc) and system instructions (e.g., answer like a Pirate)
+	//  can help the model understand the business context around a user question.
+	//
+	//  Must be at most 250,000 bytes (approx. 250,000 characters for English
+	//  text).
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Context.system_instruction
+	SystemInstruction *string `json:"systemInstruction,omitempty"`
+
+	// Required. Data sources that are available for answering the question.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Context.datasource_references
+	DatasourceReferences *DatasourceReferencesObservedState `json:"datasourceReferences,omitempty"`
+
+	// Optional. Additional options for the conversation.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Context.options
+	Options *ConversationOptions `json:"options,omitempty"`
+
+	// Optional. A list of example queries, providing examples of relevant and
+	//  commonly used SQL queries and their corresponding natural language queries
+	//  optionally present. Currently only used for BigQuery data sources and
+	//  databases (alloydb, cloudsql, spanner) data sources.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Context.example_queries
+	ExampleQueries []ExampleQueryObservedState `json:"exampleQueries,omitempty"`
+
+	// Optional. A list of golden queries, providing examples of relevant and
+	//  commonly used Looker queries and their corresponding natural language
+	//  queries optionally present. Only supported for Looker data sources.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Context.looker_golden_queries
+	LookerGoldenQueries []LookerGoldenQueryObservedState `json:"lookerGoldenQueries,omitempty"`
+
+	// Optional. Term definitions (currently, only user authored)
+	//  Not supported for databases (alloydb, cloudsql, spanner) data sources.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Context.glossary_terms
+	GlossaryTerms []GlossaryTermObservedState `json:"glossaryTerms,omitempty"`
+
+	// Optional. Relationships between table schema, including referencing and
+	//  referenced columns.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Context.schema_relationships
+	SchemaRelationships []Context_SchemaRelationship `json:"schemaRelationships,omitempty"`
+
+	// Optional. A collection of user functions to be included in context.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.Context.user_functions
+	UserFunctions *UserFunctions `json:"userFunctions,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.geminidataanalytics.v1.DataAnalyticsAgent
+type DataAnalyticsAgentObservedState struct {
+	// Output only. The last published context for the agent.
+	//  This is an output-only field populated by the system when the
+	//  published context is updated. It is used to restore the agent to a
+	//  previous state.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DataAnalyticsAgent.last_published_context
+	LastPublishedContext *ContextObservedState `json:"lastPublishedContext,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.geminidataanalytics.v1.DatasourceReferences
+type DatasourceReferencesObservedState struct {
+	// References to BigQuery tables.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DatasourceReferences.bq
+	Bq *BigQueryTableReferencesObservedState `json:"bq,omitempty"`
+
+	// References to Looker Studio datasources.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DatasourceReferences.studio
+	Studio *StudioDatasourceReferencesObservedState `json:"studio,omitempty"`
+
+	// References to Looker Explores.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.DatasourceReferences.looker
+	Looker *LookerExploreReferencesObservedState `json:"looker,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.geminidataanalytics.v1.ExampleQuery
+type ExampleQueryObservedState struct {
+	// Optional. The SQL query that should be generated to answer the natural
+	//  language question. For example: "SELECT COUNT(*) FROM orders WHERE
+	//  order_date BETWEEN '2024-01-01' AND '2024-01-31'"
+	//
+	//  Must be at most 50,000 bytes (approx. 50,000 characters).
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.ExampleQuery.sql_query
+	SQLQuery *string `json:"sqlQuery,omitempty"`
+
+	// Optional. A natural language question that a user might ask.
+	//  For example: "How many orders were placed last month?"
+	//
+	//  Must be at most 2,000 bytes (approx. 2,000 characters).
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.ExampleQuery.natural_language_question
+	NaturalLanguageQuestion *string `json:"naturalLanguageQuestion,omitempty"`
+
+	// Optional. The list of query parameters.
+	//  Example: The parameterized SQL query
+	//  "SELECT * FROM my_table WHERE id = @id" can be matched with any value of
+	//  id.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.ExampleQuery.parameters
+	Parameters []QueryParameterObservedState `json:"parameters,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.geminidataanalytics.v1.GlossaryTerm
+type GlossaryTermObservedState struct {
+	// Required. User friendly display name of the glossary term being defined.
+	//  For example: "CTR", "conversion rate", "pending"
+	//
+	//  Must be at most 256 bytes.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.GlossaryTerm.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Required. The description or meaning of the term.
+	//  For example: "Click-through rate", "The percentage of users who complete a
+	//  desired action", "An order that is waiting to be processed."
+	//
+	//  Must be at most 5,000 bytes (approx. 5,000 characters).
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.GlossaryTerm.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. A list of general purpose labels associated to this term.
+	//  For example: ["click rate", "clickthrough", "waiting"]
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.GlossaryTerm.labels
+	Labels []string `json:"labels,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.geminidataanalytics.v1.LookerExploreReference
+type LookerExploreReferenceObservedState struct {
+	// Required. The base url of the Looker instance.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerExploreReference.looker_instance_uri
+	LookerInstanceURI *string `json:"lookerInstanceURI,omitempty"`
+
+	// Private Looker instance info.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerExploreReference.private_looker_instance_info
+	PrivateLookerInstanceInfo *PrivateLookerInstanceInfo `json:"privateLookerInstanceInfo,omitempty"`
+
+	// Required. Looker model, as outlined in
+	//  [Major LookML
+	//  structures](https://cloud.google.com/looker/docs/lookml-terms-and-concepts#major_lookml_structures).
+	//  Name of the LookML model.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerExploreReference.lookml_model
+	LookmlModel *string `json:"lookmlModel,omitempty"`
+
+	// Required. Looker Explore, as outlined in
+	//  [Major LookML
+	//  structures](https://cloud.google.com/looker/docs/lookml-terms-and-concepts#major_lookml_structures).
+	//  Name of the LookML Explore.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerExploreReference.explore
+	Explore *string `json:"explore,omitempty"`
+
+	// Optional. The schema of the datasource.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerExploreReference.schema
+	Schema *Schema `json:"schema,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.geminidataanalytics.v1.LookerExploreReferences
+type LookerExploreReferencesObservedState struct {
+	// Required. References to Looker explores.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerExploreReferences.explore_references
+	ExploreReferences []LookerExploreReferenceObservedState `json:"exploreReferences,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.geminidataanalytics.v1.LookerGoldenQuery
+type LookerGoldenQueryObservedState struct {
+	// Optional. Natural language questions that a user might ask.
+	//  For example: "How many orders were placed last month?"
+	//
+	//  Must be at most 2,000 bytes per question (approx. 2,000 characters).
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerGoldenQuery.natural_language_questions
+	NaturalLanguageQuestions []string `json:"naturalLanguageQuestions,omitempty"`
+
+	// Optional. The Looker Query corresponding to the natural language questions.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerGoldenQuery.looker_query
+	LookerQuery *LookerQueryObservedState `json:"lookerQuery,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.geminidataanalytics.v1.LookerQuery
+type LookerQueryObservedState struct {
+	// Required. The LookML model used to generate the query.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerQuery.model
+	Model *string `json:"model,omitempty"`
+
+	// Required. The LookML explore used to generate the query.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerQuery.explore
+	Explore *string `json:"explore,omitempty"`
+
+	// Optional. The fields to retrieve from the explore.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerQuery.fields
+	Fields []string `json:"fields,omitempty"`
+
+	// Optional. The filters to apply to the explore.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerQuery.filters
+	Filters []LookerQuery_FilterObservedState `json:"filters,omitempty"`
+
+	// Optional. The sorts to apply to the explore.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerQuery.sorts
+	Sorts []string `json:"sorts,omitempty"`
+
+	// Optional. Limit in the query.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerQuery.limit
+	Limit *string `json:"limit,omitempty"`
+
+	// Optional. The dynamic fields used in the query.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerQuery.dynamic_fields
+	DynamicFields []DynamicField `json:"dynamicFields,omitempty"`
+
+	// Optional. The primary identifier for the query resource in Looker, used for
+	//  API operations. Maps to `id` (or `slug`) in the Looker API `Query`
+	//  resource.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerQuery.query_id
+	QueryID *string `json:"queryID,omitempty"`
+
+	// Optional. The short alphanumeric identifier for the query, used for share
+	//  links and Explore URLs (e.g., in the `qid` parameter). Maps to `client_id`
+	//  in the Looker API `Query` resource.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerQuery.client_id
+	ClientID *string `json:"clientID,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.geminidataanalytics.v1.LookerQuery.Filter
+type LookerQuery_FilterObservedState struct {
+	// Required. The field to filter on.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerQuery.Filter.field
+	Field *string `json:"field,omitempty"`
+
+	// Optional. The value for the field to filter on.
+	//  Optional so we can preserve the default value as an empty
+	//  string, important to get a valid and working Looker Explore url.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.LookerQuery.Filter.value
+	Value *string `json:"value,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.geminidataanalytics.v1.QueryParameter
+type QueryParameterObservedState struct {
+	// Required. The name of the parameter reference in the SQL query.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.QueryParameter.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. The description of the parameter that can be used by LLM to
+	//  extract the parameter value from the user question.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.QueryParameter.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. The data type of the parameter, e.g. "STRING", "INT64", "DATE",
+	//  etc. For valid values, see the [BigQuery
+	//  documentation](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types).
+	//  This will be used to populate
+	//  google.cloud.bigquery.v2.QueryParameterType.type.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.QueryParameter.data_type
+	DataType *string `json:"dataType,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.geminidataanalytics.v1.StudioDatasourceReference
+type StudioDatasourceReferenceObservedState struct {
+	// Required. The id of the datasource.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.StudioDatasourceReference.datasource_id
+	DatasourceID *string `json:"datasourceID,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.geminidataanalytics.v1.StudioDatasourceReferences
+type StudioDatasourceReferencesObservedState struct {
+	// Optional. The references to the studio datasources.
+	// +kcc:proto:field=google.cloud.geminidataanalytics.v1.StudioDatasourceReferences.studio_references
+	StudioReferences []StudioDatasourceReferenceObservedState `json:"studioReferences,omitempty"`
+}

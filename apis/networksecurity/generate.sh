@@ -86,6 +86,19 @@ ${CONTROLLERBUILDER} generate-types \
     --resource NetworkSecurityClientTLSPolicy:ClientTlsPolicy \
     --proto-source-path ${PROTO_OUT}
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.networksecurity.v1 \
+  --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource NetworkSecurityInterceptEndpointGroupAssociation:InterceptEndpointGroupAssociation
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.networksecurity.v1 \
+  --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
+  --resource NetworkSecurityInterceptEndpointGroupAssociation:InterceptEndpointGroupAssociation
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.networksecurity.v1,google.cloud.networksecurity.v1beta1 \
   --api-version "networksecurity.cnrm.cloud.google.com/v1beta1" \

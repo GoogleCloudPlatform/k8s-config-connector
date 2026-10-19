@@ -17,6 +17,64 @@
 // krm.group: agentregistry.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.agentregistry.v1
-// resource: AgentRegistryBinding:Binding
+// resource: AgentregistryService:Service
 
 package v1alpha1
+
+import (
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+)
+
+// +kcc:proto=google.cloud.agentregistry.v1.Interface
+type Interface struct {
+	// Required. The destination URL.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Interface.url
+	// +required
+	URL *string `json:"url,omitempty"`
+
+	// Required. The protocol binding of the interface.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Interface.protocol_binding
+	// +required
+	ProtocolBinding *string `json:"protocolBinding,omitempty"`
+}
+
+// +kcc:proto=google.cloud.agentregistry.v1.Service.AgentSpec
+type Service_AgentSpec struct {
+	// Required. The type of the agent spec content.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Service.AgentSpec.type
+	// +required
+	Type *string `json:"type,omitempty"`
+
+	// Optional. The content of the Agent spec in the JSON format.
+	//  This payload is validated against the schema for the specified type.
+	//  The content size is limited to `10KB`.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Service.AgentSpec.content
+	Content apiextensionsv1.JSON `json:"content,omitempty"`
+}
+
+// +kcc:proto=google.cloud.agentregistry.v1.Service.EndpointSpec
+type Service_EndpointSpec struct {
+	// Required. The type of the endpoint spec content.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Service.EndpointSpec.type
+	// +required
+	Type *string `json:"type,omitempty"`
+
+	// Optional. The content of the endpoint spec.
+	//  Reserved for future use.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Service.EndpointSpec.content
+	Content apiextensionsv1.JSON `json:"content,omitempty"`
+}
+
+// +kcc:proto=google.cloud.agentregistry.v1.Service.McpServerSpec
+type Service_McpServerSpec struct {
+	// Required. The type of the MCP Server spec content.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Service.McpServerSpec.type
+	// +required
+	Type *string `json:"type,omitempty"`
+
+	// Optional. The content of the MCP Server spec.
+	//  This payload is validated against the schema for the specified type.
+	//  The content size is limited to `10KB`.
+	// +kcc:proto:field=google.cloud.agentregistry.v1.Service.McpServerSpec.content
+	Content apiextensionsv1.JSON `json:"content,omitempty"`
+}

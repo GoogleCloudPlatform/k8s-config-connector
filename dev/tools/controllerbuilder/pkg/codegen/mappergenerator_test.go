@@ -15,10 +15,14 @@
 package codegen
 
 import (
+	"os"
+	"path/filepath"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/annotations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/gocode"
 	"google.golang.org/protobuf/reflect/protodesc"
+	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/descriptorpb"
 )
 
@@ -212,5 +216,97 @@ func TestMapValueConverters(t *testing.T) {
 					tc.krmFieldType, fromProto, toProto, elemType, wantFrom, wantTo, tc.wantName)
 			}
 		})
+	}
+}
+
+func TestVisitMessageRecursesIntoSkippedContainer(t *testing.T) {
+	fdp := &descriptorpb.FileDescriptorProto{
+		Name:    protoPtr("serving_config.proto"),
+		Package: protoPtr("google.cloud.retail.v2"),
+		Options: &descriptorpb.FileOptions{
+			GoPackage: protoPtr("cloud.google.com/go/retail/apiv2/retailpb;retailpb"),
+		},
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name: protoPtr("SearchRequest"),
+				NestedType: []*descriptorpb.DescriptorProto{
+					{Name: protoPtr("DynamicFacetSpec")},
+					{Name: protoPtr("UnusedNested")},
+				},
+			},
+		},
+	}
+	fd, err := protodesc.NewFile(fdp, nil)
+	if err != nil {
+		t.Fatalf("protodesc.NewFile: %v", err)
+	}
+
+	g := NewMapperGenerator(func(msg protoreflect.MessageDescriptor) (string, bool) {
+		if string(msg.FullName()) == "google.cloud.retail.v2.SearchRequest" {
+			return "", false
+		}
+		return "retail", true
+	}, t.TempDir(), nil, false)
+	g.precomputedMappings["google.cloud.retail.v2.SearchRequest.DynamicFacetSpec"] = []*gocode.GoStruct{
+		{Name: "SearchRequest_DynamicFacetSpec", GoPackage: "github.com/GoogleCloudPlatform/k8s-config-connector/apis/retail/v1alpha1"},
+	}
+
+	g.visitFile(fd)
+
+	if len(g.typePairs) != 1 {
+		t.Fatalf("len(typePairs) = %d, want 1", len(g.typePairs))
+	}
+	if got := g.typePairs[0].KRMType.Name; got != "SearchRequest_DynamicFacetSpec" {
+		t.Errorf("typePairs[0].KRMType.Name = %q, want SearchRequest_DynamicFacetSpec", got)
+	}
+}
+
+func TestMapperGeneratorLoadExistingImportsAndDisambiguate(t *testing.T) {
+	baseDir := t.TempDir()
+	pkgDir := filepath.Join(baseDir, "merchantapi")
+	if err := os.MkdirAll(pkgDir, 0755); err != nil {
+		t.Fatalf("mkdir: %v", err)
+	}
+	existingMapper := `// +generated:mapper
+// krm.group: merchantapi.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.shopping.merchant.accounts.v1
+
+package merchantapi
+
+import (
+	pb "cloud.google.com/go/shopping/merchant/accounts/apiv1/accountspb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/merchantapi/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+)
+
+func AccountType_FromProto(mapCtx *direct.MapContext, in *pb.AccountType) *krm.AccountType {
+	return nil
+}
+`
+	if err := os.WriteFile(filepath.Join(pkgDir, "mapper.generated.go"), []byte(existingMapper), 0644); err != nil {
+		t.Fatalf("writing mapper.generated.go: %v", err)
+	}
+
+	mg := NewMapperGenerator(nil, baseDir, &annotations.FileAnnotation{
+		Key: "+generated:mapper",
+		Attributes: map[string][]string{
+			"krm.group":     {"merchantapi.cnrm.cloud.google.com"},
+			"krm.version":   {"v1alpha1"},
+			"proto.service": {"google.shopping.merchant.datasources.v1"},
+		},
+	}, false)
+	mg.LoadExistingImports("merchantapi")
+
+	// A second proto package requesting "pb" must receive a non-colliding alias.
+	gotAlias := mg.AddGoImportAlias("cloud.google.com/go/shopping/merchant/datasources/apiv1/datasourcespb", "pb")
+	if gotAlias != "datasourcespb" {
+		t.Errorf("AddGoImportAlias(datasourcespb, \"pb\") = %q, want \"datasourcespb\"", gotAlias)
+	}
+
+	// Re-registering the original package keeps its existing "pb" alias.
+	origAlias := mg.AddGoImportAlias("cloud.google.com/go/shopping/merchant/accounts/apiv1/accountspb", "pb")
+	if origAlias != "pb" {
+		t.Errorf("AddGoImportAlias(accountspb, \"pb\") = %q, want \"pb\"", origAlias)
 	}
 }

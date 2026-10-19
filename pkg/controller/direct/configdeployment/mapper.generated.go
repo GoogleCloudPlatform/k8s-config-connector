@@ -22,3 +22,94 @@
 // proto.service: google.cloud.config.v1
 
 package configdeployment
+
+import (
+	pb "cloud.google.com/go/config/apiv1/configpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/configdeployment/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+)
+
+func DeploymentSource_FromProto(mapCtx *direct.MapContext, in *pb.DeploymentSource) *krm.DeploymentSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DeploymentSource{}
+	out.Deployment = direct.LazyPtr(in.GetDeployment())
+	out.OutputName = direct.LazyPtr(in.GetOutputName())
+	return out
+}
+func DeploymentSource_ToProto(mapCtx *direct.MapContext, in *krm.DeploymentSource) *pb.DeploymentSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DeploymentSource{}
+	out.Deployment = direct.ValueOf(in.Deployment)
+	out.OutputName = direct.ValueOf(in.OutputName)
+	return out
+}
+func ExternalValueSource_FromProto(mapCtx *direct.MapContext, in *pb.ExternalValueSource) *krm.ExternalValueSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExternalValueSource{}
+	out.DeploymentSource = DeploymentSource_FromProto(mapCtx, in.GetDeploymentSource())
+	return out
+}
+func ExternalValueSource_ToProto(mapCtx *direct.MapContext, in *krm.ExternalValueSource) *pb.ExternalValueSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExternalValueSource{}
+	if oneof := DeploymentSource_ToProto(mapCtx, in.DeploymentSource); oneof != nil {
+		out.Source = &pb.ExternalValueSource_DeploymentSource{DeploymentSource: oneof}
+	}
+	return out
+}
+func GitSource_FromProto(mapCtx *direct.MapContext, in *pb.GitSource) *krm.GitSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GitSource{}
+	out.Repo = in.Repo
+	out.Directory = in.Directory
+	out.Ref = in.Ref
+	return out
+}
+func GitSource_ToProto(mapCtx *direct.MapContext, in *krm.GitSource) *pb.GitSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GitSource{}
+	out.Repo = in.Repo
+	out.Directory = in.Directory
+	out.Ref = in.Ref
+	return out
+}
+func TerraformBlueprint_GcsSource_ToProto(mapCtx *direct.MapContext, in *string) *pb.TerraformBlueprint_GcsSource {
+	if in == nil {
+		return nil
+	}
+	return &pb.TerraformBlueprint_GcsSource{GcsSource: *in}
+}
+func TerraformErrorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TerraformError) *krm.TerraformErrorObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TerraformErrorObservedState{}
+	out.ResourceAddress = direct.LazyPtr(in.GetResourceAddress())
+	out.HTTPResponseCode = direct.LazyPtr(in.GetHttpResponseCode())
+	out.ErrorDescription = direct.LazyPtr(in.GetErrorDescription())
+	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
+	return out
+}
+func TerraformErrorObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TerraformErrorObservedState) *pb.TerraformError {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TerraformError{}
+	out.ResourceAddress = direct.ValueOf(in.ResourceAddress)
+	out.HttpResponseCode = direct.ValueOf(in.HTTPResponseCode)
+	out.ErrorDescription = direct.ValueOf(in.ErrorDescription)
+	out.Error = direct.Status_ToProto(mapCtx, in.Error)
+	return out
+}

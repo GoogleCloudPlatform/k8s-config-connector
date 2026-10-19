@@ -17,341 +17,315 @@
 // krm.group: netapp.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.netapp.v1
-// resource: NetAppActiveDirectory:ActiveDirectory
-// resource: NetAppBackupPolicy:BackupPolicy
-// resource: NetAppBackupVault:BackupVault
-// resource: NetAppHostGroup:HostGroup
+// resource: NetappKmsConfig:KmsConfig
+// resource: NetappStoragePool:StoragePool
+// resource: NetappVolume:Volume
 
 package v1alpha1
 
-/* found existing non-generated go type with proto tag "google.cloud.netapp.v1.ActiveDirectory", skipping
+// +kcc:proto=google.cloud.netapp.v1.BackupConfig
+type BackupConfig struct {
+	// Optional. When specified, schedule backups will be created based on the
+	//  policy configuration.
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupConfig.backup_policies
+	BackupPolicies []string `json:"backupPolicies,omitempty"`
 
-// +kcc:proto=google.cloud.netapp.v1.ActiveDirectory
-type ActiveDirectory struct {
-	// Identifier. The resource name of the active directory.
+	// Optional. Name of backup vault.
 	//  Format:
-	//  `projects/{project_number}/locations/{location_id}/activeDirectories/{active_directory_id}`.
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.name
-	Name *string `json:"name,omitempty"`
+	//  projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupConfig.backup_vault
+	BackupVault *string `json:"backupVault,omitempty"`
 
-	// Required. Name of the Active Directory domain
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.domain
-	Domain *string `json:"domain,omitempty"`
+	// Optional. When set to true, scheduled backup is enabled on the volume.
+	//  This field should be nil when there's no backup policy attached.
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupConfig.scheduled_backup_enabled
+	ScheduledBackupEnabled *bool `json:"scheduledBackupEnabled,omitempty"`
+}
 
-	// The Active Directory site the service will limit Domain Controller
-	//  discovery too.
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.site
-	Site *string `json:"site,omitempty"`
+// +kcc:proto=google.cloud.netapp.v1.DailySchedule
+type DailySchedule struct {
+	// The maximum number of Snapshots to keep for the hourly schedule
+	// +kcc:proto:field=google.cloud.netapp.v1.DailySchedule.snapshots_to_keep
+	SnapshotsToKeep *float64 `json:"snapshotsToKeep,omitempty"`
 
-	// Required. Comma separated list of DNS server IP addresses for the Active
-	//  Directory domain.
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.dns
-	DNS *string `json:"dns,omitempty"`
+	// Set the minute of the hour to start the snapshot (0-59), defaults to the
+	//  top of the hour (0).
+	// +kcc:proto:field=google.cloud.netapp.v1.DailySchedule.minute
+	Minute *float64 `json:"minute,omitempty"`
 
-	// Required. NetBIOSPrefix is used as a prefix for SMB server name.
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.net_bios_prefix
-	NetBiosPrefix *string `json:"netBiosPrefix,omitempty"`
+	// Set the hour to start the snapshot (0-23), defaults to midnight (0).
+	// +kcc:proto:field=google.cloud.netapp.v1.DailySchedule.hour
+	Hour *float64 `json:"hour,omitempty"`
+}
 
-	// The Organizational Unit (OU) within the Windows Active Directory the user
-	//  belongs to.
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.organizational_unit
-	OrganizationalUnit *string `json:"organizationalUnit,omitempty"`
+// +kcc:proto=google.cloud.netapp.v1.ExportPolicy
+type ExportPolicy struct {
+	// Required. List of export policy rules
+	// +kcc:proto:field=google.cloud.netapp.v1.ExportPolicy.rules
+	// +required
+	Rules []SimpleExportPolicyRule `json:"rules,omitempty"`
+}
 
-	// If enabled, AES encryption will be enabled for SMB communication.
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.aes_encryption
-	AesEncryption *bool `json:"aesEncryption,omitempty"`
+// +kcc:proto=google.cloud.netapp.v1.HourlySchedule
+type HourlySchedule struct {
+	// The maximum number of Snapshots to keep for the hourly schedule
+	// +kcc:proto:field=google.cloud.netapp.v1.HourlySchedule.snapshots_to_keep
+	SnapshotsToKeep *float64 `json:"snapshotsToKeep,omitempty"`
 
-	// Required. Username of the Active Directory domain administrator.
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.username
-	Username *string `json:"username,omitempty"`
+	// Set the minute of the hour to start the snapshot (0-59), defaults to the
+	//  top of the hour (0).
+	// +kcc:proto:field=google.cloud.netapp.v1.HourlySchedule.minute
+	Minute *float64 `json:"minute,omitempty"`
+}
 
-	// Required. Password of the Active Directory domain administrator.
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.password
-	Password *string `json:"password,omitempty"`
+// +kcc:proto=google.cloud.netapp.v1.HybridReplicationParameters
+type HybridReplicationParameters struct {
+	// Required. Desired name for the replication of this volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.replication
+	// +required
+	Replication *string `json:"replication,omitempty"`
 
-	// Optional. Users to be added to the Built-in Backup Operator active
-	//  directory group.
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.backup_operators
-	BackupOperators []string `json:"backupOperators,omitempty"`
+	// Required. Name of the user's local source volume to be peered with the
+	//  destination volume.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.peer_volume_name
+	// +required
+	PeerVolumeName *string `json:"peerVolumeName,omitempty"`
 
-	// Optional. Users to be added to the Built-in Admininstrators group.
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.administrators
-	Administrators []string `json:"administrators,omitempty"`
+	// Required. Name of the user's local source cluster to be peered with the
+	//  destination cluster.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.peer_cluster_name
+	// +required
+	PeerClusterName *string `json:"peerClusterName,omitempty"`
 
-	// Optional. Domain users to be given the SeSecurityPrivilege.
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.security_operators
-	SecurityOperators []string `json:"securityOperators,omitempty"`
+	// Required. Name of the user's local source vserver svm to be peered with the
+	//  destination vserver svm.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.peer_svm_name
+	// +required
+	PeerSvmName *string `json:"peerSvmName,omitempty"`
 
-	// Name of the active directory machine. This optional parameter is used only
-	//  while creating kerberos volume
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.kdc_hostname
-	KdcHostname *string `json:"kdcHostname,omitempty"`
+	// Required. List of node ip addresses to be peered with.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.peer_ip_addresses
+	// +required
+	PeerIPAddresses []string `json:"peerIPAddresses,omitempty"`
 
-	// KDC server IP address for the active directory machine.
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.kdc_ip
-	KdcIP *string `json:"kdcIP,omitempty"`
+	// Optional. Name of source cluster location associated with the Hybrid
+	//  replication. This is a free-form field for the display purpose only.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.cluster_location
+	ClusterLocation *string `json:"clusterLocation,omitempty"`
 
-	// If enabled, will allow access to local users and LDAP users. If access is
-	//  needed for only LDAP users, it has to be disabled.
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.nfs_users_with_ldap
-	NfsUsersWithLdap *bool `json:"nfsUsersWithLdap,omitempty"`
-
-	// Description of the active directory.
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.description
+	// Optional. Description of the replication.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.description
 	Description *string `json:"description,omitempty"`
 
-	// Specifies whether or not the LDAP traffic needs to be signed.
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.ldap_signing
-	LdapSigning *bool `json:"ldapSigning,omitempty"`
-
-	// If enabled, traffic between the SMB server to Domain Controller (DC) will
-	//  be encrypted.
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.encrypt_dc_connections
-	EncryptDcConnections *bool `json:"encryptDcConnections,omitempty"`
-
-	// Labels for the active directory.
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.labels
+	// Optional. Labels to be added to the replication as the key value pairs.
+	// +kcc:proto:field=google.cloud.netapp.v1.HybridReplicationParameters.labels
 	Labels map[string]string `json:"labels,omitempty"`
+}
+
+// +kcc:proto=google.cloud.netapp.v1.MonthlySchedule
+type MonthlySchedule struct {
+	// The maximum number of Snapshots to keep for the hourly schedule
+	// +kcc:proto:field=google.cloud.netapp.v1.MonthlySchedule.snapshots_to_keep
+	SnapshotsToKeep *float64 `json:"snapshotsToKeep,omitempty"`
+
+	// Set the minute of the hour to start the snapshot (0-59), defaults to the
+	//  top of the hour (0).
+	// +kcc:proto:field=google.cloud.netapp.v1.MonthlySchedule.minute
+	Minute *float64 `json:"minute,omitempty"`
+
+	// Set the hour to start the snapshot (0-23), defaults to midnight (0).
+	// +kcc:proto:field=google.cloud.netapp.v1.MonthlySchedule.hour
+	Hour *float64 `json:"hour,omitempty"`
+
+	// Set the day or days of the month to make a snapshot (1-31). Accepts a
+	//  comma separated number of days. Defaults to '1'.
+	// +kcc:proto:field=google.cloud.netapp.v1.MonthlySchedule.days_of_month
+	DaysOfMonth *string `json:"daysOfMonth,omitempty"`
+}
+
+/* unreachable type MountOption
+// +kcc:proto=google.cloud.netapp.v1.MountOption
+type MountOption struct {
+	// Export string
+	// +kcc:proto:field=google.cloud.netapp.v1.MountOption.export
+	Export *string `json:"export,omitempty"`
+
+	// Full export string
+	// +kcc:proto:field=google.cloud.netapp.v1.MountOption.export_full
+	ExportFull *string `json:"exportFull,omitempty"`
+
+	// Protocol to mount with.
+	// +kcc:proto:field=google.cloud.netapp.v1.MountOption.protocol
+	Protocol *string `json:"protocol,omitempty"`
+
+	// Instructions for mounting
+	// +kcc:proto:field=google.cloud.netapp.v1.MountOption.instructions
+	Instructions *string `json:"instructions,omitempty"`
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.netapp.v1.BackupPolicy", skipping
-
-// +kcc:proto=google.cloud.netapp.v1.BackupPolicy
-type BackupPolicy struct {
-	// Identifier. The resource name of the backup policy.
+// +kcc:proto=google.cloud.netapp.v1.RestoreParameters
+type RestoreParameters struct {
+	// Full name of the snapshot resource.
 	//  Format:
-	//  `projects/{project_id}/locations/{location}/backupPolicies/{backup_policy_id}`.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.name
-	Name *string `json:"name,omitempty"`
+	//  projects/{project}/locations/{location}/volumes/{volume}/snapshots/{snapshot}
+	// +kcc:proto:field=google.cloud.netapp.v1.RestoreParameters.source_snapshot
+	SourceSnapshot *string `json:"sourceSnapshot,omitempty"`
 
-	// Number of daily backups to keep. Note that the minimum daily backup limit
-	//  is 2.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.daily_backup_limit
-	DailyBackupLimit *int32 `json:"dailyBackupLimit,omitempty"`
+	// Full name of the backup resource.
+	//  Format:
+	//  projects/{project}/locations/{location}/backupVaults/{backup_vault_id}/backups/{backup_id}
+	// +kcc:proto:field=google.cloud.netapp.v1.RestoreParameters.source_backup
+	SourceBackup *string `json:"sourceBackup,omitempty"`
+}
 
-	// Number of weekly backups to keep. Note that the sum of daily, weekly and
-	//  monthly backups should be greater than 1.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.weekly_backup_limit
-	WeeklyBackupLimit *int32 `json:"weeklyBackupLimit,omitempty"`
+// +kcc:proto=google.cloud.netapp.v1.SimpleExportPolicyRule
+type SimpleExportPolicyRule struct {
+	// Comma separated list of allowed clients IP addresses
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.allowed_clients
+	AllowedClients *string `json:"allowedClients,omitempty"`
 
-	// Number of monthly backups to keep. Note that the sum of daily, weekly and
-	//  monthly backups should be greater than 1.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.monthly_backup_limit
-	MonthlyBackupLimit *int32 `json:"monthlyBackupLimit,omitempty"`
+	// Whether Unix root access will be granted.
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.has_root_access
+	HasRootAccess *string `json:"hasRootAccess,omitempty"`
 
-	// Description of the backup policy.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.description
-	Description *string `json:"description,omitempty"`
+	// Access type (ReadWrite, ReadOnly, None)
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.access_type
+	AccessType *string `json:"accessType,omitempty"`
 
-	// If enabled, make backups automatically according to the schedules.
-	//  This will be applied to all volumes that have this policy attached and
-	//  enforced on volume level. If not specified, default is true.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.enabled
+	// NFS V3 protocol.
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.nfsv3
+	Nfsv3 *bool `json:"nfsv3,omitempty"`
+
+	// NFS V4 protocol.
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.nfsv4
+	Nfsv4 *bool `json:"nfsv4,omitempty"`
+
+	// If enabled (true) the rule defines a read only access for clients matching
+	//  the 'allowedClients' specification. It enables nfs clients to mount using
+	//  'authentication' kerberos security mode.
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.kerberos_5_read_only
+	Kerberos5ReadOnly *bool `json:"kerberos5ReadOnly,omitempty"`
+
+	// If enabled (true) the rule defines read and write access for clients
+	//  matching the 'allowedClients' specification. It enables nfs clients to
+	//  mount using 'authentication' kerberos security mode. The
+	//  'kerberos5ReadOnly' value be ignored if this is enabled.
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.kerberos_5_read_write
+	Kerberos5ReadWrite *bool `json:"kerberos5ReadWrite,omitempty"`
+
+	// If enabled (true) the rule defines a read only access for clients matching
+	//  the 'allowedClients' specification. It enables nfs clients to mount using
+	//  'integrity' kerberos security mode.
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.kerberos_5i_read_only
+	Kerberos5iReadOnly *bool `json:"kerberos5iReadOnly,omitempty"`
+
+	// If enabled (true) the rule defines read and write access for clients
+	//  matching the 'allowedClients' specification. It enables nfs clients to
+	//  mount using 'integrity' kerberos security mode. The 'kerberos5iReadOnly'
+	//  value be ignored if this is enabled.
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.kerberos_5i_read_write
+	Kerberos5iReadWrite *bool `json:"kerberos5iReadWrite,omitempty"`
+
+	// If enabled (true) the rule defines a read only access for clients matching
+	//  the 'allowedClients' specification. It enables nfs clients to mount using
+	//  'privacy' kerberos security mode.
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.kerberos_5p_read_only
+	Kerberos5pReadOnly *bool `json:"kerberos5pReadOnly,omitempty"`
+
+	// If enabled (true) the rule defines read and write access for clients
+	//  matching the 'allowedClients' specification. It enables nfs clients to
+	//  mount using 'privacy' kerberos security mode. The 'kerberos5pReadOnly'
+	//  value be ignored if this is enabled.
+	// +kcc:proto:field=google.cloud.netapp.v1.SimpleExportPolicyRule.kerberos_5p_read_write
+	Kerberos5pReadWrite *bool `json:"kerberos5pReadWrite,omitempty"`
+}
+
+// +kcc:proto=google.cloud.netapp.v1.SnapshotPolicy
+type SnapshotPolicy struct {
+	// If enabled, make snapshots automatically according to the schedules.
+	//  Default is false.
+	// +kcc:proto:field=google.cloud.netapp.v1.SnapshotPolicy.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 
-	// Resource labels to represent user provided metadata.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.labels
-	Labels map[string]string `json:"labels,omitempty"`
+	// Hourly schedule policy.
+	// +kcc:proto:field=google.cloud.netapp.v1.SnapshotPolicy.hourly_schedule
+	HourlySchedule *HourlySchedule `json:"hourlySchedule,omitempty"`
+
+	// Daily schedule policy.
+	// +kcc:proto:field=google.cloud.netapp.v1.SnapshotPolicy.daily_schedule
+	DailySchedule *DailySchedule `json:"dailySchedule,omitempty"`
+
+	// Weekly schedule policy.
+	// +kcc:proto:field=google.cloud.netapp.v1.SnapshotPolicy.weekly_schedule
+	WeeklySchedule *WeeklySchedule `json:"weeklySchedule,omitempty"`
+
+	// Monthly schedule policy.
+	// +kcc:proto:field=google.cloud.netapp.v1.SnapshotPolicy.monthly_schedule
+	MonthlySchedule *MonthlySchedule `json:"monthlySchedule,omitempty"`
 }
-*/
 
-/* found existing non-generated go type with proto tag "google.cloud.netapp.v1.BackupVault", skipping
+// +kcc:proto=google.cloud.netapp.v1.TieringPolicy
+type TieringPolicy struct {
+	// Optional. Flag indicating if the volume has tiering policy enable/pause.
+	//  Default is PAUSED.
+	// +kcc:proto:field=google.cloud.netapp.v1.TieringPolicy.tier_action
+	TierAction *string `json:"tierAction,omitempty"`
 
-// +kcc:proto=google.cloud.netapp.v1.BackupVault
-type BackupVault struct {
-	// Identifier. The resource name of the backup vault.
-	//  Format:
-	//  `projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}`.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.name
-	Name *string `json:"name,omitempty"`
-
-	// Description of the backup vault.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.description
-	Description *string `json:"description,omitempty"`
-
-	// Resource labels to represent user provided metadata.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// Optional. Type of backup vault to be created.
-	//  Default is IN_REGION.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.backup_vault_type
-	BackupVaultType *string `json:"backupVaultType,omitempty"`
-
-	// Optional. Region where the backups are stored.
-	//  Format: `projects/{project_id}/locations/{location}`
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.backup_region
-	BackupRegion *string `json:"backupRegion,omitempty"`
-
-	// Optional. Backup retention policy defining the retention of backups.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.backup_retention_policy
-	BackupRetentionPolicy *BackupVault_BackupRetentionPolicy `json:"backupRetentionPolicy,omitempty"`
-
-	// Optional. Specifies the Key Management System (KMS) configuration to be
-	//  used for backup encryption. Format:
-	//  `projects/{project}/locations/{location}/kmsConfigs/{kms_config}`
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.kms_config
-	KMSConfig *string `json:"kmsConfig,omitempty"`
+	// Optional. Time in days to mark the volume's data block as cold and make it
+	//  eligible for tiering, can be range from 2-183. Default is 31.
+	// +kcc:proto:field=google.cloud.netapp.v1.TieringPolicy.cooling_threshold_days
+	CoolingThresholdDays *int32 `json:"coolingThresholdDays,omitempty"`
 }
-*/
 
-/* unreachable type BackupVault_BackupRetentionPolicy
-// +kcc:proto=google.cloud.netapp.v1.BackupVault.BackupRetentionPolicy
-type BackupVault_BackupRetentionPolicy struct {
-	// Required. Minimum retention duration in days for backups in the backup
-	//  vault.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.BackupRetentionPolicy.backup_minimum_enforced_retention_days
-	BackupMinimumEnforcedRetentionDays *int32 `json:"backupMinimumEnforcedRetentionDays,omitempty"`
+// +kcc:proto=google.cloud.netapp.v1.WeeklySchedule
+type WeeklySchedule struct {
+	// The maximum number of Snapshots to keep for the hourly schedule
+	// +kcc:proto:field=google.cloud.netapp.v1.WeeklySchedule.snapshots_to_keep
+	SnapshotsToKeep *float64 `json:"snapshotsToKeep,omitempty"`
 
-	// Optional. Indicates if the daily backups are immutable.
-	//  At least one of daily_backup_immutable, weekly_backup_immutable,
-	//  monthly_backup_immutable and manual_backup_immutable must be true.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.BackupRetentionPolicy.daily_backup_immutable
-	DailyBackupImmutable *bool `json:"dailyBackupImmutable,omitempty"`
+	// Set the minute of the hour to start the snapshot (0-59), defaults to the
+	//  top of the hour (0).
+	// +kcc:proto:field=google.cloud.netapp.v1.WeeklySchedule.minute
+	Minute *float64 `json:"minute,omitempty"`
 
-	// Optional. Indicates if the weekly backups are immutable.
-	//  At least one of daily_backup_immutable, weekly_backup_immutable,
-	//  monthly_backup_immutable and manual_backup_immutable must be true.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.BackupRetentionPolicy.weekly_backup_immutable
-	WeeklyBackupImmutable *bool `json:"weeklyBackupImmutable,omitempty"`
+	// Set the hour to start the snapshot (0-23), defaults to midnight (0).
+	// +kcc:proto:field=google.cloud.netapp.v1.WeeklySchedule.hour
+	Hour *float64 `json:"hour,omitempty"`
 
-	// Optional. Indicates if the monthly backups are immutable.
-	//  At least one of daily_backup_immutable, weekly_backup_immutable,
-	//  monthly_backup_immutable and manual_backup_immutable must be true.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.BackupRetentionPolicy.monthly_backup_immutable
-	MonthlyBackupImmutable *bool `json:"monthlyBackupImmutable,omitempty"`
-
-	// Optional. Indicates if the manual backups are immutable.
-	//  At least one of daily_backup_immutable, weekly_backup_immutable,
-	//  monthly_backup_immutable and manual_backup_immutable must be true.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.BackupRetentionPolicy.manual_backup_immutable
-	ManualBackupImmutable *bool `json:"manualBackupImmutable,omitempty"`
+	// Set the day or days of the week to make a snapshot. Accepts a comma
+	//  separated days of the week. Defaults to 'Sunday'.
+	// +kcc:proto:field=google.cloud.netapp.v1.WeeklySchedule.day
+	Day *string `json:"day,omitempty"`
 }
-*/
 
-/* found existing non-generated go type with proto tag "google.cloud.netapp.v1.HostGroup", skipping
-
-// +kcc:proto=google.cloud.netapp.v1.HostGroup
-type HostGroup struct {
-	// Identifier. The resource name of the host group.
-	//  Format:
-	//  `projects/{project_number}/locations/{location_id}/hostGroups/{host_group_id}`.
-	// +kcc:proto:field=google.cloud.netapp.v1.HostGroup.name
-	Name *string `json:"name,omitempty"`
-
-	// Required. Type of the host group.
-	// +kcc:proto:field=google.cloud.netapp.v1.HostGroup.type
-	Type *string `json:"type,omitempty"`
-
-	// Required. The list of hosts associated with the host group.
-	// +kcc:proto:field=google.cloud.netapp.v1.HostGroup.hosts
-	Hosts []string `json:"hosts,omitempty"`
-
-	// Required. The OS type of the host group. It indicates the type of operating
-	//  system used by all of the hosts in the HostGroup. All hosts in a HostGroup
-	//  must be of the same OS type. This can be set only when creating a
-	//  HostGroup.
-	// +kcc:proto:field=google.cloud.netapp.v1.HostGroup.os_type
-	OSType *string `json:"osType,omitempty"`
-
-	// Optional. Description of the host group.
-	// +kcc:proto:field=google.cloud.netapp.v1.HostGroup.description
-	Description *string `json:"description,omitempty"`
-
-	// Optional. Labels of the host group.
-	// +kcc:proto:field=google.cloud.netapp.v1.HostGroup.labels
-	Labels map[string]string `json:"labels,omitempty"`
+// +kcc:observedstate:proto=google.cloud.netapp.v1.BackupConfig
+type BackupConfigObservedState struct {
+	// Output only. Total size of all backups in a chain in bytes = baseline
+	//  backup size + sum(incremental backup size).
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupConfig.backup_chain_bytes
+	BackupChainBytes *int64 `json:"backupChainBytes,omitempty"`
 }
-*/
 
-/* found existing non-generated go type with proto tag "google.cloud.netapp.v1.ActiveDirectory", skipping
+// +kcc:observedstate:proto=google.cloud.netapp.v1.MountOption
+type MountOptionObservedState struct {
+	// Export string
+	// +kcc:proto:field=google.cloud.netapp.v1.MountOption.export
+	Export *string `json:"export,omitempty"`
 
-// +kcc:observedstate:proto=google.cloud.netapp.v1.ActiveDirectory
-type ActiveDirectoryObservedState struct {
-	// Output only. Create time of the active directory.
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.create_time
-	CreateTime *string `json:"createTime,omitempty"`
+	// Full export string
+	// +kcc:proto:field=google.cloud.netapp.v1.MountOption.export_full
+	ExportFull *string `json:"exportFull,omitempty"`
 
-	// Output only. The state of the AD.
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.state
-	State *string `json:"state,omitempty"`
+	// Protocol to mount with.
+	// +kcc:proto:field=google.cloud.netapp.v1.MountOption.protocol
+	Protocol *string `json:"protocol,omitempty"`
 
-	// Output only. The state details of the Active Directory.
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.state_details
-	StateDetails *string `json:"stateDetails,omitempty"`
+	// Instructions for mounting
+	// +kcc:proto:field=google.cloud.netapp.v1.MountOption.instructions
+	Instructions *string `json:"instructions,omitempty"`
+
+	// Output only. IP Address.
+	// +kcc:proto:field=google.cloud.netapp.v1.MountOption.ip_address
+	IPAddress *string `json:"ipAddress,omitempty"`
 }
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.netapp.v1.BackupPolicy", skipping
-
-// +kcc:observedstate:proto=google.cloud.netapp.v1.BackupPolicy
-type BackupPolicyObservedState struct {
-	// Output only. The total number of volumes assigned by this backup policy.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.assigned_volume_count
-	AssignedVolumeCount *int32 `json:"assignedVolumeCount,omitempty"`
-
-	// Output only. The time when the backup policy was created.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The backup policy state.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.state
-	State *string `json:"state,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "BackupVaultObservedState", skipping
-
-// +kcc:observedstate:proto=google.cloud.netapp.v1.BackupVault
-type BackupVaultObservedState struct {
-	// Output only. The backup vault state.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. Create time of the backup vault.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. Region in which the backup vault is created.
-	//  Format: `projects/{project_id}/locations/{location}`
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.source_region
-	SourceRegion *string `json:"sourceRegion,omitempty"`
-
-	// Output only. Name of the Backup vault created in source region.
-	//  Format:
-	//  `projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}`
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.source_backup_vault
-	SourceBackupVault *string `json:"sourceBackupVault,omitempty"`
-
-	// Output only. Name of the Backup vault created in backup region.
-	//  Format:
-	//  `projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}`
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.destination_backup_vault
-	DestinationBackupVault *string `json:"destinationBackupVault,omitempty"`
-
-	// Output only. Field indicating encryption state of CMEK backups.
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.encryption_state
-	EncryptionState *string `json:"encryptionState,omitempty"`
-
-	// Output only. The crypto key version used to encrypt the backup vault.
-	//  Format:
-	//  `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}`
-	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.backups_crypto_key_version
-	BackupsCryptoKeyVersion *string `json:"backupsCryptoKeyVersion,omitempty"`
-}
-*/
-
-/* found existing non-generated go type with proto tag "google.cloud.netapp.v1.HostGroup", skipping
-
-// +kcc:observedstate:proto=google.cloud.netapp.v1.HostGroup
-type HostGroupObservedState struct {
-	// Output only. State of the host group.
-	// +kcc:proto:field=google.cloud.netapp.v1.HostGroup.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. Create time of the host group.
-	// +kcc:proto:field=google.cloud.netapp.v1.HostGroup.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-}
-*/

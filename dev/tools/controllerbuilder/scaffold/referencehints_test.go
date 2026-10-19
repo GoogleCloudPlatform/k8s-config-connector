@@ -134,28 +134,24 @@ func TestReferenceHintsQueuesSensitiveFields(t *testing.T) {
 
 // TestReferenceHintsQueuesNestedResourceReferences checks the entry for a
 // nested field with google.api.resource_reference. It gets the same
-// possible-reference detail PrepopulateSpec gives a top-level field.
-// ragCorpus's description also matches Classify, and both entries stay
-// because they are separate signals. The top-level corpus and parent fields
-// get no entry here, since PrepopulateSpec queues them; see
-// TestPrepopulateSpecQueuesResourceReferences.
+// authoritative-proto-reference detail PrepopulateSpec gives a top-level field.
+// ragCorpus's description also matches Classify, and heuristic hints are
+// suppressed when google.api.resource_reference is present so that
+// authoritative-proto-reference is the sole reference finding. The top-level
+// corpus and parent fields get no entry here, since PrepopulateSpec queues
+// them; see TestPrepopulateSpecQueuesResourceReferences.
 func TestReferenceHintsQueuesNestedResourceReferences(t *testing.T) {
 	// Arrange
 	msg := ragStoreMessage(t)
 	want := []JudgementItem{
 		{
 			FieldPath: ".spec.ragResources[].ragCorpus",
-			Reason:    "possible-reference",
+			Reason:    "authoritative-proto-reference",
 			Detail:    "the proto marks this field as a reference to aiplatform.googleapis.com/RagCorpus (google.api.resource_reference); confirm whether it should be a KCC reference",
 		},
 		{
-			FieldPath: ".spec.ragResources[].ragCorpus",
-			Reason:    "possible-reference-by-description",
-			Detail:    `the description has the resource-name template "projects/{project}/locations/{location}/ragCorpora/{rag_corpus}"`,
-		},
-		{
 			FieldPath: ".spec.ragResources[].parent",
-			Reason:    "possible-reference",
+			Reason:    "authoritative-proto-reference",
 			Detail:    "the proto marks this field as the parent of a aiplatform.googleapis.com/RagFile (google.api.resource_reference child_type); confirm whether it should be a KCC reference",
 		},
 	}

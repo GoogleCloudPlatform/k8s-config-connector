@@ -567,6 +567,7 @@
 [acronyms] crd=monitoringalertpolicies.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.conditions[].conditionSql" should be ".spec.conditions[].conditionSQL"
 [acronyms] crd=monitoringuptimecheckconfigs.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.httpCheck.useSsl" should be ".spec.httpCheck.useSSL"
 [acronyms] crd=monitoringuptimecheckconfigs.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.httpCheck.validateSsl" should be ".spec.httpCheck.validateSSL"
+[acronyms] crd=netappkmsconfigs.netapp.cnrm.cloud.google.com: kind "NetappKmsConfig" should be "NetappKMSConfig"
 [acronyms] crd=networkconnectivityhubs.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".status.routingVpcs" should be ".status.routingVPCs"
 [acronyms] crd=networkconnectivityhubs.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".status.uniqueId" should be ".status.uniqueID"
 [acronyms] crd=networkconnectivityspokes.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".spec.linkedVpnTunnels" should be ".spec.linkedVPNTunnels"
