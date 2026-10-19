@@ -19,6 +19,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/gocode"
 	"google.golang.org/protobuf/reflect/protodesc"
+	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/descriptorpb"
 )
 
@@ -212,5 +213,47 @@ func TestMapValueConverters(t *testing.T) {
 					tc.krmFieldType, fromProto, toProto, elemType, wantFrom, wantTo, tc.wantName)
 			}
 		})
+	}
+}
+
+func TestVisitMessageRecursesIntoSkippedContainer(t *testing.T) {
+	fdp := &descriptorpb.FileDescriptorProto{
+		Name:    protoPtr("serving_config.proto"),
+		Package: protoPtr("google.cloud.retail.v2"),
+		Options: &descriptorpb.FileOptions{
+			GoPackage: protoPtr("cloud.google.com/go/retail/apiv2/retailpb;retailpb"),
+		},
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name: protoPtr("SearchRequest"),
+				NestedType: []*descriptorpb.DescriptorProto{
+					{Name: protoPtr("DynamicFacetSpec")},
+					{Name: protoPtr("UnusedNested")},
+				},
+			},
+		},
+	}
+	fd, err := protodesc.NewFile(fdp, nil)
+	if err != nil {
+		t.Fatalf("protodesc.NewFile: %v", err)
+	}
+
+	g := NewMapperGenerator(func(msg protoreflect.MessageDescriptor) (string, bool) {
+		if string(msg.FullName()) == "google.cloud.retail.v2.SearchRequest" {
+			return "", false
+		}
+		return "retail", true
+	}, t.TempDir(), nil, false)
+	g.precomputedMappings["google.cloud.retail.v2.SearchRequest.DynamicFacetSpec"] = []*gocode.GoStruct{
+		{Name: "SearchRequest_DynamicFacetSpec", GoPackage: "github.com/GoogleCloudPlatform/k8s-config-connector/apis/retail/v1alpha1"},
+	}
+
+	g.visitFile(fd)
+
+	if len(g.typePairs) != 1 {
+		t.Fatalf("len(typePairs) = %d, want 1", len(g.typePairs))
+	}
+	if got := g.typePairs[0].KRMType.Name; got != "SearchRequest_DynamicFacetSpec" {
+		t.Errorf("typePairs[0].KRMType.Name = %q, want SearchRequest_DynamicFacetSpec", got)
 	}
 }

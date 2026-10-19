@@ -426,3 +426,48 @@ func TestBuildAPIArgsMultiServiceProtoTag(t *testing.T) {
 		t.Errorf("ResourcePattern = %q, want %q", args.ResourcePattern, wantPat)
 	}
 }
+
+func TestAddTypeFilePluralizesShortName(t *testing.T) {
+	for _, tc := range []struct {
+		name     string
+		service  string
+		protoPkg string
+		resource options.Resource
+		want     string
+	}{
+		{
+			name:     "consonant + y",
+			service:  "jobs",
+			protoPkg: "google.cloud.talent.v4",
+			resource: options.Resource{Kind: "JobsCompany", ProtoName: "Company"},
+			want:     "// +kubebuilder:resource:categories=gcp,shortName=gcpjobscompany;gcpjobscompanies",
+		},
+		{
+			name:     "kind already plural",
+			service:  "iap",
+			protoPkg: "google.cloud.iap.v1",
+			resource: options.Resource{Kind: "IAPSettings", ProtoName: "IapSettings"},
+			want:     "// +kubebuilder:resource:categories=gcp,shortName=gcpiapsettings;gcpiapsettings",
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			scaffolder := &APIScaffolder{
+				BaseDir:         t.TempDir(),
+				GoPackage:       tc.service + "/v1alpha1",
+				Group:           tc.service + ".cnrm.cloud.google.com",
+				Version:         "v1alpha1",
+				PackageProtoTag: tc.protoPkg,
+			}
+			if err := scaffolder.AddTypeFile(tc.resource, nil, ""); err != nil {
+				t.Fatalf("AddTypeFile: %v", err)
+			}
+			b, err := os.ReadFile(scaffolder.PathToTypeFile(tc.resource))
+			if err != nil {
+				t.Fatalf("reading scaffolded file: %v", err)
+			}
+			if !strings.Contains(string(b), tc.want) {
+				t.Errorf("expected %q in scaffolded file:\n%s", tc.want, string(b))
+			}
+		})
+	}
+}

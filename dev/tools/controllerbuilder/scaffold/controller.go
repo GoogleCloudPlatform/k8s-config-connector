@@ -26,6 +26,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	ccTemplate "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/template/controller"
 	"github.com/fatih/color"
 	"golang.org/x/tools/go/ast/astutil"
@@ -40,6 +41,7 @@ const (
 
 var funcMap = template.FuncMap{
 	"ToLower": strings.ToLower,
+	"Plural":  codegen.Plural,
 }
 
 func NewControllerBuilder(rootPath, service, proto string) *ControllerBuilder {
