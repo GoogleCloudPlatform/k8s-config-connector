@@ -70,9 +70,10 @@ You **must** also apply the baseline KRM standards in:
 
 ### Phase 4: Regeneration & Verification
 1. Run `./apis/<service>/generate.sh` and confirm `git diff apis/<service>/judgement_queue.yaml` shows no newly opened entries for `<Kind>`.
-2. Run verification tests (including `TestCRDBackwardCompatibility` and `TestHandWrittenProtoStructAnnotationsAndNaming`):
+2. Confirm `<Kind>` is present in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` (sorted alphabetically; if missing, add it—do **not** remove `<Kind>` from `BLOCKED_KINDS` during Step 2, as a separate graduation step removes it at the end of the pipeline).
+3. Run verification tests (including `TestCRDBackwardCompatibility` and `TestHandWrittenProtoStructAnnotationsAndNaming`):
    ```bash
    go test -v ./tests/apichecks/... -run "TestMissingRefs|TestJudgementQueue|TestSourceLinks|TestCRDObjectTypes|TestCRDBackwardCompatibility|TestHandWrittenProtoStructAnnotationsAndNaming"
    go test -v ./apis/<service>/... ./pkg/controller/direct/<service>/...
    ```
-3. Record any service-specific proto or reference quirks in `.gemini/journals/<service>.md`.
+4. Record any service-specific proto or reference quirks in `.gemini/journals/<service>.md`.

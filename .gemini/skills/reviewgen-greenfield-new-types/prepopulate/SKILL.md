@@ -56,8 +56,10 @@ Please enforce all of the following review criteria and invariants.
 
 ---
 
-## 4. Compilation & `apichecks` Verification
+## 4. Release Bundle Blocklist, Compilation, & `apichecks` Verification
 
+*   **`BLOCKED_KINDS` in `dev/tasks/build-release-bundle`**:
+    *   Verify that each newly prepopulated `<Kind>` is added (in alphabetical order) to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` so unverified Greenfield CRDs are excluded from `operator/channels/packages/configconnector/*/crds.yaml` until graduated at the end of the pipeline.
 *   **Build & Test Verification**:
     *   Run:
         ```bash
@@ -81,6 +83,7 @@ When proposing changes or stating LGTM, format the review description as follows
 * **`generate.sh` & Flags Check**: [Pass/Fail] - (Verify `generate-types --prepopulate-resource`, `generate-identity`, `generate-mapper --prepopulate-resource`, and no `--allow-non-ga-proto`)
 * **Judgement Queue Open Check**: [Pass/Fail] - (Confirm `apis/<service>/judgement_queue.yaml` has `untriaged-bulk-generation` with `status: open` and no premature manual resolutions)
 * **Mechanical Output & Idempotency**: [Pass/Fail] - (Confirm `./apis/<service>/generate.sh` produces zero diff and `<kind>_types.go` was not hand-edited)
+* **Release Bundle Blocklist (`BLOCKED_KINDS`)**: [Pass/Fail] - (Confirm `<Kind>` is added in alphabetical order to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`)
 * **Mapper Compilation & `apichecks`**: [Pass/Fail] - (Confirm `apis/<service>/...` and `pkg/controller/direct/<service>/...` build and `tests/apichecks/...` passes without unauthorized exception edits)
 
 #### Detailed Findings / Actions Required:

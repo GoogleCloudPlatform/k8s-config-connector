@@ -97,18 +97,21 @@ fi
 - If the service already has `v1beta1` resources in `apis/<service_short>/generate.sh`, pass `--multiversion` and `--prepopulate-resource` to the single `generate-mapper` invocation targeting `<group>.cnrm.cloud.google.com/v1beta1`.
 - `--prepopulate-resource` automatically enables all bulk-generation features (including `--emit-plural-acronyms` and `--emit-message-maps`) in both `generate-types` and `generate-mapper`.
 
-### Phase 3: Run Generation & Minimal Mapper Compilation Fixes
+### Phase 3: Run Generation, Blocklist Registration, & Minimal Mapper Compilation Fixes
 1. Make `apis/<service_short>/generate.sh` executable and run it:
    ```bash
    chmod +x apis/<service_short>/generate.sh
    ./apis/<service_short>/generate.sh
    ```
-2. Verify that `apis/<service_short>/judgement_queue.yaml` was generated and contains `reason: untriaged-bulk-generation` with `status: open` for `<Kind>`.
-3. Test compilation of both `apis/<service_short>/...` and `pkg/controller/direct/<service_short>/...`:
+2. **Add `<Kind>` to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`**:
+   - Add `<Kind>` (in alphabetical order) to the `BLOCKED_KINDS=( ... )` array in `dev/tasks/build-release-bundle`. This prevents unverified Greenfield CRDs from being packaged into the release bundle (`operator/channels/packages/configconnector/*/crds.yaml`) until a graduation agent removes `<Kind>` at the end of the generation pipeline.
+   - If `dev/tasks/generate-crds` added a brand-new API group to `config/installbundle/components/clusterroles/cnrm_admin.yaml` or `cnrm_viewer.yaml`, run `./dev/tasks/generate-channels` so `operator/channels/packages/configconnector/0.0.0/0-cnrm-system.yaml` and `operator/autopilot-channels/packages/configconnector/0.0.0/0-cnrm-system.yaml` stay in sync.
+3. Verify that `apis/<service_short>/judgement_queue.yaml` was generated and contains `reason: untriaged-bulk-generation` with `status: open` for `<Kind>`.
+4. Test compilation of both `apis/<service_short>/...` and `pkg/controller/direct/<service_short>/...`:
    ```bash
    go build ./apis/<service_short>/... ./pkg/controller/direct/<service_short>/...
    ```
-4. **If `pkg/controller/direct/<service_short>/...` fails to compile**, apply **only** the minimal fixes required for `mapper.generated.go` to build cleanly (without hand-editing `<kind>_types.go` or `judgement_queue.yaml`):
+5. **If `pkg/controller/direct/<service_short>/...` fails to compile**, apply **only** the minimal fixes required for `mapper.generated.go` to build cleanly (without hand-editing `<kind>_types.go` or `judgement_queue.yaml`):
    - **Missing Go client library in `go.mod`**: Run `go get cloud.google.com/go/<service>/apiv1/<service>pb` and `go mod tidy`.
    - **Missing external proto mappers (e.g. `Money_FromProto`, `LatLng_FromProto`, `Expr_FromProto`)**: Append `,google.type` (or the relevant external proto package) to `--service` on `generate-mapper` in `apis/<service_short>/generate.sh` and re-run `./apis/<service_short>/generate.sh`.
    - **Missing mapper helpers for `*Request` / `*Metadata` messages or wrapper types**: Add a minimal hand-written `<kind>_mappings.go` (or `mapper.go`) in `pkg/controller/direct/<service_short>/` implementing only the missing `*_FromProto` / `*_ToProto` helper functions.

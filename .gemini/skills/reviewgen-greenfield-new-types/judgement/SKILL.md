@@ -96,8 +96,10 @@ Even if all entries in `judgement_queue.yaml` are resolved, audit the KRM struct
 
 ---
 
-## 5. Generated Files Sync, Mapper Generation, & Exception Files
+## 5. Generated Files Sync, Release Bundle Blocklist, Mapper Generation, & Exception Files
 
+*   **`BLOCKED_KINDS` in `dev/tasks/build-release-bundle`**:
+    *   Verify `<Kind>` remains in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` (sorted alphabetically; if missing, it must be added—it should only be removed by the graduation step at the end of the pipeline).
 *   **`generate-mapper --prepopulate-resource` & Generated Artifacts in Sync**:
     *   Verify `apis/<service>/generate.sh` includes `controllerbuilder generate-mapper` with `--prepopulate-resource` (plus `--multiversion` if the service has both `v1alpha1` and `v1beta1`).
     *   Verify that `apis/<service>/v1alpha1/types.generated.go`, `pkg/controller/direct/<service>/mapper.generated.go`, `apis/<service>/v1alpha1/zz_generated.deepcopy.go`, and `config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_<plural>.<group>.cnrm.cloud.google.com.yaml` are updated and consistent with `<kind>_types.go`.
@@ -120,7 +122,7 @@ When proposing changes or stating LGTM, format the review description as follows
 * **Queue Resolution Accuracy**: [Pass/Fail] - (List any `not-applicable` or `accepted` entries that are actually resource references or output-only fields, `etag` left in Spec, or doc comments stripped to evade `TestMissingRefs`)
 * **Parent, Identity & References**: [Pass/Fail] - (Verify `*parent.ProjectAndLocationRef` / `<Parent>Ref` per `go/kcc-oneparent`, `generate-identity` usage, singleton/multi-pattern template accuracy, `ServerGeneratedIdentity` vs `IdentityV2`, and `refs.Normalize`)
 * **Unflagged Proto-vs-KRM Audit & Struct Isolation**: [Pass/Fail] - (List any subtle unflagged references, missing `+kcc:proto=` on handwritten nested structs, shared structs mutated in-place instead of forked, non-pointer primitives, or empty `ObservedState`)
-* **Generated Files & Exception Files**: [Pass/Fail] - (Confirm CRD/mapper/deepcopy are in sync and `missingrefs.txt` was not modified)
+* **Generated Files, `BLOCKED_KINDS`, & Exception Files**: [Pass/Fail] - (Confirm CRD/mapper/deepcopy are in sync, `<Kind>` is in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`, and `missingrefs.txt` was not modified)
 
 #### Detailed Findings / Actions Required:
 1. [Specify file, line number, and exact issue]
