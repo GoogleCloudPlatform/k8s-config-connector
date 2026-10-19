@@ -242,6 +242,7 @@ func (f *generatedFile) Write(addCopyright bool, writeEmptyFiles bool, onlyUsedI
 	if err != nil && !os.IsNotExist(err) {
 		return fmt.Errorf("reading existing file %q: %w", p, err)
 	}
+
 	if len(existingBytes) > 0 {
 		f.mergeWithExisting(existingBytes, dir)
 	}
@@ -261,6 +262,7 @@ func (f *generatedFile) Write(addCopyright bool, writeEmptyFiles bool, onlyUsedI
 		if existingCopyrightYear, ok := extractCopyrightYear(existingBytes); ok {
 			year = existingCopyrightYear
 		}
+
 		writeCopyright(&w, year)
 	}
 

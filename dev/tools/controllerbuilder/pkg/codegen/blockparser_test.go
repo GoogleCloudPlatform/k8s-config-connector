@@ -68,6 +68,7 @@ func Beta_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Beta) *strin
 		"fmt": "",
 		"github.com/GoogleCloudPlatform/k8s-config-connector/apis/foo/v1alpha1": "krm",
 	}
+
 	if diff := cmp.Diff(wantImports, imports); diff != "" {
 		t.Errorf("imports mismatch (-want +got):\n%s", diff)
 	}
@@ -102,6 +103,7 @@ func Beta_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Beta) *strin
 			krmTypeName: "Beta",
 		},
 	}
+
 	ignoreFields := cmpopts.IgnoreFields(generatedBlock{}, "rawText", "offset")
 	if diff := cmp.Diff(wantBlocks, blocks, cmp.AllowUnexported(generatedBlock{}), ignoreFields); diff != "" {
 		t.Errorf("blocks mismatch (-want +got):\n%s", diff)

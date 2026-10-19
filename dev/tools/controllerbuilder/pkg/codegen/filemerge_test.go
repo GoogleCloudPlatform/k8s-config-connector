@@ -152,16 +152,18 @@ func Alpha_FromProto(in *string) *string { return nil }
 			if tc.setupDir != nil {
 				tc.setupDir(t, dir)
 			}
+
 			f := &generatedFile{
 				key:            generatedFileKey{FileName: tc.fileName},
 				goPackage:      "v1alpha1",
 				fileAnnotation: tc.currentAnn,
 			}
+
 			for pkg, alias := range tc.currentImps {
 				f.addImport(alias, pkg)
 			}
-			f.body.WriteString(tc.currentBody)
 
+			f.body.WriteString(tc.currentBody)
 			f.mergeWithExisting([]byte(tc.existingFile), dir)
 
 			got := f.body.String()
@@ -170,16 +172,19 @@ func Alpha_FromProto(in *string) *string { return nil }
 					t.Errorf("expected body to contain %q, got:\n%s", w, got)
 				}
 			}
+
 			for _, ex := range tc.wantExcluded {
 				if strings.Contains(got, ex) {
 					t.Errorf("expected body not to contain %q, got:\n%s", ex, got)
 				}
 			}
+
 			if tc.wantImps != nil {
 				if diff := cmp.Diff(tc.wantImps, f.imports); diff != "" {
 					t.Errorf("imports mismatch (-want +got):\n%s", diff)
 				}
 			}
+
 			if tc.wantAnnAttrs != nil {
 				if diff := cmp.Diff(tc.wantAnnAttrs, f.fileAnnotation.Attributes); diff != "" {
 					t.Errorf("annotation attributes mismatch (-want +got):\n%s", diff)
@@ -195,6 +200,7 @@ func TestShouldKeepExistingBlock(t *testing.T) {
 	if err := os.MkdirAll(apiDir, 0755); err != nil {
 		t.Fatalf("mkdir: %v", err)
 	}
+
 	if err := os.WriteFile(filepath.Join(apiDir, "types.generated.go"), []byte(`package v1alpha1
 type KeptSpec struct{}
 /* unreachable:
@@ -212,11 +218,13 @@ type PrunedSpec struct{}
 			"github.com/GoogleCloudPlatform/k8s-config-connector/apis/foo/v1alpha1": "krm",
 		},
 	}
+
 	pkgDecls := packageDeclarations{
 		types:     map[string]bool{"HandwrittenType": true},
 		protoTags: map[string]bool{"google.cloud.foo.v1.ClaimedProto": true},
 		funcs:     map[string]bool{"Handwritten_FromProto": true},
 	}
+
 	validKRM := f.resolveValidKRMTypes(nil)
 
 	tests := []struct {
@@ -281,6 +289,7 @@ func TestMergeAndSortTypeBlocks(t *testing.T) {
 		{name: "AlphaObservedState", kind: "type", protoFQN: "pkg.v1.Alpha", isObservedState: true, rawText: "type AlphaObservedState struct{}"},
 		{name: "Shared", kind: "type", protoFQN: "pkg.v1.sub1.Shared", rawText: "type Shared struct{ A string }"},
 	}
+
 	current := []generatedBlock{
 		{name: "Alpha", kind: "type", protoFQN: "pkg.v1.Alpha", rawText: "type Alpha struct{}"},
 		{name: "Shared", kind: "type", isCommented: true, protoFQN: "pkg.v1.sub2.Shared", rawText: "/* unreachable type Shared */"},
@@ -293,6 +302,7 @@ func TestMergeAndSortTypeBlocks(t *testing.T) {
 		{name: "Shared", kind: "type", protoFQN: "pkg.v1.sub1.Shared", rawText: "type Shared struct{ A string }"},
 		{name: "AlphaObservedState", kind: "type", protoFQN: "pkg.v1.Alpha", isObservedState: true, rawText: "type AlphaObservedState struct{}"},
 	}
+
 	if diff := cmp.Diff(want, got, cmp.AllowUnexported(generatedBlock{})); diff != "" {
 		t.Errorf("mergeAndSortTypeBlocks mismatch (-want +got):\n%s", diff)
 	}
@@ -303,6 +313,7 @@ func TestMergeOrderedBlocks(t *testing.T) {
 		{name: "FuncA", kind: "func", rawText: "func FuncA() { /* v1 */ }"},
 		{name: "FuncC", kind: "func", rawText: "func FuncC() {}"},
 	}
+
 	current := []generatedBlock{
 		{name: "FuncA", kind: "func", rawText: "func FuncA() { /* v2 */ }"},
 		{name: "FuncB", kind: "func", rawText: "func FuncB() {}"},
@@ -314,7 +325,39 @@ func TestMergeOrderedBlocks(t *testing.T) {
 		{name: "FuncB", kind: "func", rawText: "func FuncB() {}"},
 		{name: "FuncC", kind: "func", rawText: "func FuncC() {}"},
 	}
+
 	if diff := cmp.Diff(want, got, cmp.AllowUnexported(generatedBlock{})); diff != "" {
 		t.Errorf("mergeOrderedBlocks mismatch (-want +got):\n%s", diff)
 	}
 }
+
+func TestShouldCurrentReplaceExistingPreservesNonRequiredTypeAndMapHelper(t *testing.T) {
+	nonReqType := generatedBlock{
+		name:    "GCSSource",
+		kind:    "type",
+		rawText: "type GCSSource struct {\n\tUris []string\n}",
+	}
+	reqType := generatedBlock{
+		name:    "GCSSource",
+		kind:    "type",
+		rawText: "type GCSSource struct {\n\t// +required\n\tURIs []string\n}",
+	}
+	if shouldCurrentReplaceExisting(nonReqType, reqType) {
+		t.Errorf("expected non-required type to be preserved over +required type")
+	}
+
+	helperFunc := generatedBlock{
+		name:    "DataplexDataProductSpec_FromProto",
+		kind:    "func",
+		rawText: "func DataplexDataProductSpec_FromProto() {\n\tout.AccessGroups = AccessGroups_FromProto(mapCtx, in.AccessGroups)\n}",
+	}
+	inlineMapFunc := generatedBlock{
+		name:    "DataplexDataProductSpec_FromProto",
+		kind:    "func",
+		rawText: "func DataplexDataProductSpec_FromProto() {\n\tout.AccessGroups = make(map[string]krm.DataProduct_AccessGroup, len(in.AccessGroups))\n}",
+	}
+	if shouldCurrentReplaceExisting(helperFunc, inlineMapFunc) {
+		t.Errorf("expected custom map helper call in existing mapper func to be preserved over inline map loop")
+	}
+}
+
