@@ -142,8 +142,8 @@ func TestPrepopulateSpecAlwaysQueuesTheResource(t *testing.T) {
 	if len(got.Judgement) == 0 {
 		t.Fatal("expected at least a resource-level judgement entry")
 	}
-	if got.Judgement[0].Reason != judgement.ReasonUntriagedBulkGeneration {
-		t.Errorf("first entry reason = %q, want %s", got.Judgement[0].Reason, judgement.ReasonUntriagedBulkGeneration)
+	if got.Judgement[0].Reason != "untriaged-bulk-generation" {
+		t.Errorf("first entry reason = %q, want untriaged-bulk-generation", got.Judgement[0].Reason)
 	}
 	if got.Judgement[0].FieldPath != "" {
 		t.Errorf("resource-level entry should have no field path, got %q", got.Judgement[0].FieldPath)
@@ -195,12 +195,12 @@ func TestPrepopulateSpecQueuesTheEmittedName(t *testing.T) {
 			}
 			var paths []string
 			for _, j := range got.Judgement {
-				if j.Reason == judgement.ReasonAuthoritativeProtoReference {
+				if j.Reason == "authoritative-proto-reference" {
 					paths = append(paths, j.FieldPath)
 				}
 			}
 			if len(paths) != 1 || paths[0] != tc.wantPath {
-				t.Errorf("%s paths = %v, want [%s]", judgement.ReasonAuthoritativeProtoReference, paths, tc.wantPath)
+				t.Errorf("authoritative-proto-reference paths = %v, want [%s]", paths, tc.wantPath)
 			}
 			tag := `json:"` + strings.TrimPrefix(tc.wantPath, ".spec.") + `,`
 			if !strings.Contains(got.SpecFields, tag) {
@@ -221,17 +221,17 @@ func TestPrepopulateSpecQueuesResourceReferences(t *testing.T) {
 	msg := ragStoreMessage(t)
 	want := []JudgementItem{
 		{
-			Reason: judgement.ReasonUntriagedBulkGeneration,
+			Reason: "untriaged-bulk-generation",
 			Detail: "spec was generated from proto definition; verify refs, omissions, and KRM conventions",
 		},
 		{
 			FieldPath: ".spec.corpus",
-			Reason:    judgement.ReasonAuthoritativeProtoReference,
+			Reason:    "authoritative-proto-reference",
 			Detail:    "the proto marks this field as a reference to aiplatform.googleapis.com/RagCorpus (google.api.resource_reference); confirm whether it should be a KCC reference",
 		},
 		{
 			FieldPath: ".spec.parent",
-			Reason:    judgement.ReasonAuthoritativeProtoReference,
+			Reason:    "authoritative-proto-reference",
 			Detail:    "the proto marks this field as the parent of a aiplatform.googleapis.com/RagFile (google.api.resource_reference child_type); confirm whether it should be a KCC reference",
 		},
 	}
@@ -261,15 +261,15 @@ func TestPrepopulateSpecRequiresAMessage(t *testing.T) {
 
 func TestJudgementEntries(t *testing.T) {
 	items := []JudgementItem{
-		{Reason: judgement.ReasonUntriagedBulkGeneration, Detail: "generated mechanically"},
-		{FieldPath: ".spec.network", Reason: judgement.ReasonPossibleReference, Detail: "target=compute.googleapis.com/Network"},
+		{Reason: "untriaged-bulk-generation", Detail: "generated mechanically"},
+		{FieldPath: ".spec.network", Reason: "possible-reference", Detail: "target=compute.googleapis.com/Network"},
 	}
 
 	got := JudgementEntries("ExampleWidget", "example.cnrm.cloud.google.com", items)
 
 	want := []judgement.Entry{
-		{Kind: "ExampleWidget", Group: "example.cnrm.cloud.google.com", Reason: judgement.ReasonUntriagedBulkGeneration, Detail: "generated mechanically", Status: judgement.StatusOpen},
-		{Kind: "ExampleWidget", Group: "example.cnrm.cloud.google.com", Field: ".spec.network", Reason: judgement.ReasonPossibleReference, Detail: "target=compute.googleapis.com/Network", Status: judgement.StatusOpen},
+		{Kind: "ExampleWidget", Group: "example.cnrm.cloud.google.com", Reason: "untriaged-bulk-generation", Detail: "generated mechanically", Status: judgement.StatusOpen},
+		{Kind: "ExampleWidget", Group: "example.cnrm.cloud.google.com", Field: ".spec.network", Reason: "possible-reference", Detail: "target=compute.googleapis.com/Network", Status: judgement.StatusOpen},
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("got %+v\nwant %+v", got, want)
@@ -329,7 +329,7 @@ func TestPrepopulateSpecQueuesDerivedMessageMaps(t *testing.T) {
 	}
 	var derived []JudgementItem
 	for _, j := range got.Judgement {
-		if j.Reason == judgement.ReasonMessageMapDerived {
+		if j.Reason == "message-map-derived" {
 			derived = append(derived, j)
 		}
 	}
@@ -349,7 +349,7 @@ func TestPrepopulateSpecQueuesDerivedMessageMaps(t *testing.T) {
 		t.Fatalf("PrepopulateSpec failed: %v", err)
 	}
 	for _, j := range gotOff.Judgement {
-		if j.Reason == judgement.ReasonMessageMapDerived {
+		if j.Reason == "message-map-derived" {
 			t.Errorf("unexpected message-map-derived item when EmitMessageMaps is false: %+v", j)
 		}
 	}
@@ -366,7 +366,7 @@ func TestPrepopulateObservedStateQueuesDerivedMessageMaps(t *testing.T) {
 	_, jOn := PrepopulateObservedState(details, sets.NewString(), codegen.WriteOptions{EmitMessageMaps: true})
 	var derived []JudgementItem
 	for _, j := range jOn {
-		if j.Reason == judgement.ReasonMessageMapDerived {
+		if j.Reason == "message-map-derived" {
 			derived = append(derived, j)
 		}
 	}
@@ -380,7 +380,7 @@ func TestPrepopulateObservedStateQueuesDerivedMessageMaps(t *testing.T) {
 	// EmitMessageMaps: false -> should not emit message-map-derived
 	_, jOff := PrepopulateObservedState(details, sets.NewString(), codegen.WriteOptions{EmitMessageMaps: false})
 	for _, j := range jOff {
-		if j.Reason == judgement.ReasonMessageMapDerived {
+		if j.Reason == "message-map-derived" {
 			t.Errorf("unexpected message-map-derived item when EmitMessageMaps is false: %+v", j)
 		}
 	}
@@ -395,9 +395,9 @@ func TestDetectOutputOnlyInComments(t *testing.T) {
 		"Set by the user. Output only in some other sense.", // field_3, marker not at the front, so the weaker reason
 	)
 	want := []OutputOnlyCandidate{
-		{FieldPath: ".spec.field0", Reason: judgement.ReasonWellKnownOutputOnlyPattern, Comment: "Output only. Set by the server."},
-		{FieldPath: ".spec.field1", Reason: judgement.ReasonWellKnownOutputOnlyPattern, Comment: "[Output Only] IP address on the Google side."},
-		{FieldPath: ".spec.field3", Reason: judgement.ReasonPossibleOutputOnlyPattern, Comment: "Set by the user. Output only in some other sense."},
+		{FieldPath: ".spec.field0", Reason: "well-known-output-only-pattern-in-comment", Comment: "Output only. Set by the server."},
+		{FieldPath: ".spec.field1", Reason: "well-known-output-only-pattern-in-comment", Comment: "[Output Only] IP address on the Google side."},
+		{FieldPath: ".spec.field3", Reason: "possible-output-only-pattern-in-comment", Comment: "Set by the user. Output only in some other sense."},
 	}
 
 	// Act
@@ -427,13 +427,13 @@ func TestDetectOutputOnlyMentionedInComment(t *testing.T) {
 		"Output only for the create operation. Required for update.",                    // field_7, spanner-style, conditional
 	)
 	want := []OutputOnlyCandidate{
-		{FieldPath: ".spec.field0", Reason: judgement.ReasonPossibleOutputOnlyPattern, Comment: "Whether the scan config is managed by Web Security Scanner, output only."},
-		{FieldPath: ".spec.field1", Reason: judgement.ReasonPossibleOutputOnlyPattern, Comment: "When the version was created. Output-only field, populated by the system."},
-		{FieldPath: ".spec.field2", Reason: judgement.ReasonPossibleOutputOnlyPattern, Comment: "Required. [Output Only] Set by the server."},
-		{FieldPath: ".spec.field4", Reason: judgement.ReasonPossibleOutputOnlyPattern, Comment: "Output only . The translated content."},
-		{FieldPath: ".spec.field5", Reason: judgement.ReasonPossibleOutputOnlyPattern, Comment: "Output only When true, the index configuration is being reverted."},
-		{FieldPath: ".spec.field6", Reason: judgement.ReasonPossibleOutputOnlyPattern, Comment: "[Output only for type PARTNER. Input only for PARTNER_PROVIDER.] Pairing key."},
-		{FieldPath: ".spec.field7", Reason: judgement.ReasonPossibleOutputOnlyPattern, Comment: "Output only for the create operation. Required for update."},
+		{FieldPath: ".spec.field0", Reason: "possible-output-only-pattern-in-comment", Comment: "Whether the scan config is managed by Web Security Scanner, output only."},
+		{FieldPath: ".spec.field1", Reason: "possible-output-only-pattern-in-comment", Comment: "When the version was created. Output-only field, populated by the system."},
+		{FieldPath: ".spec.field2", Reason: "possible-output-only-pattern-in-comment", Comment: "Required. [Output Only] Set by the server."},
+		{FieldPath: ".spec.field4", Reason: "possible-output-only-pattern-in-comment", Comment: "Output only . The translated content."},
+		{FieldPath: ".spec.field5", Reason: "possible-output-only-pattern-in-comment", Comment: "Output only When true, the index configuration is being reverted."},
+		{FieldPath: ".spec.field6", Reason: "possible-output-only-pattern-in-comment", Comment: "[Output only for type PARTNER. Input only for PARTNER_PROVIDER.] Pairing key."},
+		{FieldPath: ".spec.field7", Reason: "possible-output-only-pattern-in-comment", Comment: "Output only for the create operation. Required for update."},
 	}
 
 	// Act
@@ -452,10 +452,10 @@ func TestDetectOutputOnlyWalksNestedFields(t *testing.T) {
 	// Arrange
 	msg := nestedConfigMessage(t)
 	want := []OutputOnlyCandidate{
-		{FieldPath: ".spec.config.state", Reason: judgement.ReasonWellKnownOutputOnlyPattern, Comment: "Output only. The state of the config."},
-		{FieldPath: ".spec.config.managed", Reason: judgement.ReasonPossibleOutputOnlyPattern, Comment: "Whether the config is managed by the service, output only."},
-		{FieldPath: ".spec.peers[].state", Reason: judgement.ReasonWellKnownOutputOnlyPattern, Comment: "Output only. The state of the config."},
-		{FieldPath: ".spec.peers[].managed", Reason: judgement.ReasonPossibleOutputOnlyPattern, Comment: "Whether the config is managed by the service, output only."},
+		{FieldPath: ".spec.config.state", Reason: "well-known-output-only-pattern-in-comment", Comment: "Output only. The state of the config."},
+		{FieldPath: ".spec.config.managed", Reason: "possible-output-only-pattern-in-comment", Comment: "Whether the config is managed by the service, output only."},
+		{FieldPath: ".spec.peers[].state", Reason: "well-known-output-only-pattern-in-comment", Comment: "Output only. The state of the config."},
+		{FieldPath: ".spec.peers[].managed", Reason: "possible-output-only-pattern-in-comment", Comment: "Whether the config is managed by the service, output only."},
 	}
 
 	// Act
@@ -479,19 +479,19 @@ func TestOutputOnlyCandidateItem(t *testing.T) {
 	}{
 		{
 			name: "comment starts with the marker",
-			cand: OutputOnlyCandidate{FieldPath: ".spec.createTime", Reason: judgement.ReasonWellKnownOutputOnlyPattern, Comment: "Output only. When it was created."},
+			cand: OutputOnlyCandidate{FieldPath: ".spec.createTime", Reason: "well-known-output-only-pattern-in-comment", Comment: "Output only. When it was created."},
 			want: JudgementItem{
 				FieldPath: ".status.observedState.createTime",
-				Reason:    judgement.ReasonWellKnownOutputOnlyPattern,
+				Reason:    "well-known-output-only-pattern-in-comment",
 				Detail:    "proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.createTime. Move the field to .status.observedState.createTime if it is confirmed output only. Proto comment: Output only. When it was created.",
 			},
 		},
 		{
 			name: "comment mentions the words in a nested field",
-			cand: OutputOnlyCandidate{FieldPath: ".spec.config.managedScan", Reason: judgement.ReasonPossibleOutputOnlyPattern, Comment: "Whether the scan config is managed by Web Security Scanner, output only."},
+			cand: OutputOnlyCandidate{FieldPath: ".spec.config.managedScan", Reason: "possible-output-only-pattern-in-comment", Comment: "Whether the scan config is managed by Web Security Scanner, output only."},
 			want: JudgementItem{
 				FieldPath: ".status.observedState.config.managedScan",
-				Reason:    judgement.ReasonPossibleOutputOnlyPattern,
+				Reason:    "possible-output-only-pattern-in-comment",
 				Detail: "proto comment mentions output only but doesn't start with \"Output only.\" or \"[Output Only]\", and there is no field_behavior annotation, so it was generated into the Spec at .spec.config.managedScan. " +
 					"The comment may be a typo, apply only some of the time, or mean something else. Move the field to .status.observedState.config.managedScan if it is confirmed output only. Proto comment: Whether the scan config is managed by Web Security Scanner, output only.",
 			},
@@ -518,8 +518,8 @@ func TestDetectOutputOnlyIgnoresCase(t *testing.T) {
 		"Output Only. The overall outcome of the test.",           // field_1, devtools.testing
 	)
 	want := []OutputOnlyCandidate{
-		{FieldPath: ".spec.field0", Reason: judgement.ReasonWellKnownOutputOnlyPattern, Comment: "[Output only] Number of network endpoints in the group."},
-		{FieldPath: ".spec.field1", Reason: judgement.ReasonWellKnownOutputOnlyPattern, Comment: "Output Only. The overall outcome of the test."},
+		{FieldPath: ".spec.field0", Reason: "well-known-output-only-pattern-in-comment", Comment: "[Output only] Number of network endpoints in the group."},
+		{FieldPath: ".spec.field1", Reason: "well-known-output-only-pattern-in-comment", Comment: "Output Only. The overall outcome of the test."},
 	}
 
 	// Act
@@ -686,7 +686,7 @@ func TestWellKnownProtoTypeQueuedInSpecAndObservedState(t *testing.T) {
 	gotSpec := ReferenceHints(msg, codegen.WriteOptions{})
 	wantSpec := []JudgementItem{{
 		FieldPath: ".spec.performanceTarget.targetMetric",
-		Reason:    judgement.ReasonWellKnownProtoType,
+		Reason:    "well-known-proto-type",
 		Detail:    "field uses well-known protobuf type google.protobuf.DoubleValue, which was generated as struct DoubleValue; confirm KRM representation",
 	}}
 	if diff := cmp.Diff(wantSpec, gotSpec); diff != "" {
@@ -700,7 +700,7 @@ func TestWellKnownProtoTypeQueuedInSpecAndObservedState(t *testing.T) {
 	_, gotObs := PrepopulateObservedState(details, sets.NewString(), codegen.WriteOptions{})
 	wantObs := []JudgementItem{{
 		FieldPath: ".status.observedState.observedTarget.targetMetric",
-		Reason:    judgement.ReasonWellKnownProtoType,
+		Reason:    "well-known-proto-type",
 		Detail:    "field uses well-known protobuf type google.protobuf.DoubleValue, which was generated as struct DoubleValue; confirm KRM representation",
 	}}
 	if diff := cmp.Diff(wantObs, gotObs); diff != "" {
@@ -952,6 +952,118 @@ func TestPrepopulateSpecAndObservedStateQueueNestedJudgements(t *testing.T) {
 	}
 	if diff := cmp.Diff(wantObs, gotObs); diff != "" {
 		t.Errorf("PrepopulateObservedState() nested judgements mismatch (-want +got):\n%s", diff)
+	}
+}
+
+func TestPrepopulateObservedStateQueuesOutputOnlyNameAsIdentityServerGeneratedID(t *testing.T) {
+	str := fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)
+	fd, err := protodesc.NewFile(&descriptorpb.FileDescriptorProto{
+		Name:    strPtr("output_only_name.proto"),
+		Package: strPtr("google.cloud.test.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name: strPtr("Artifact"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("name"), Number: i32Ptr(1), Type: str, Options: behaviorOptions(annotations.FieldBehavior_OUTPUT_ONLY)},
+					{Name: strPtr("create_time"), Number: i32Ptr(2), Type: str, Options: behaviorOptions(annotations.FieldBehavior_OUTPUT_ONLY)},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		t.Fatalf("building file descriptor: %v", err)
+	}
+	msg := fd.Messages().ByName("Artifact")
+	details := &codegen.OutputMessageDetails{
+		Message: msg,
+		OutputFields: []protoreflect.FieldDescriptor{
+			msg.Fields().ByName("name"),
+			msg.Fields().ByName("create_time"),
+		},
+	}
+
+	fields, got := PrepopulateObservedState(details, sets.NewString(), codegen.WriteOptions{})
+	if strings.Contains(fields, "Name *string") {
+		t.Errorf("expected name to be omitted from ObservedState, got:\n%s", fields)
+	}
+	want := []JudgementItem{
+		{
+			Reason: judgement.ReasonIdentityServerGeneratedID,
+			Detail: "proto marks the resource .name field OUTPUT_ONLY; confirm whether the resource ID is server-generated or client-specified via a Create request *_id parameter",
+		},
+	}
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("PrepopulateObservedState() judgement mismatch (-want +got):\n%s", diff)
+	}
+}
+
+func TestPrepopulateSpecQueuesPossibleStatusFieldsAndLocations(t *testing.T) {
+	str := fieldType(descriptorpb.FieldDescriptorProto_TYPE_STRING)
+	msgType := fieldType(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE)
+	fd, err := protodesc.NewFile(&descriptorpb.FileDescriptorProto{
+		Name:    strPtr("status_and_location.proto"),
+		Package: strPtr("google.cloud.test.v1"),
+		MessageType: []*descriptorpb.DescriptorProto{
+			{
+				Name: strPtr("Settings"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("region"), Number: i32Ptr(1), Type: str},
+				},
+			},
+			{
+				Name: strPtr("Widget"),
+				Field: []*descriptorpb.FieldDescriptorProto{
+					{Name: strPtr("id"), Number: i32Ptr(1), Type: str},
+					{Name: strPtr("state"), Number: i32Ptr(2), Type: str},
+					{Name: strPtr("start_time"), Number: i32Ptr(3), Type: str, Options: behaviorOptions(annotations.FieldBehavior_REQUIRED)},
+					{Name: strPtr("end_time"), Number: i32Ptr(4), Type: str},
+					{Name: strPtr("zone"), Number: i32Ptr(5), Type: str},
+					{Name: strPtr("settings"), Number: i32Ptr(6), Type: msgType, TypeName: strPtr(".google.cloud.test.v1.Settings")},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		t.Fatalf("building file descriptor: %v", err)
+	}
+	msg := fd.Messages().ByName("Widget")
+	got, err := PrepopulateSpec(msg, codegen.WriteOptions{EmitRequired: true})
+	if err != nil {
+		t.Fatalf("PrepopulateSpec: %v", err)
+	}
+	want := []JudgementItem{
+		{
+			Reason: judgement.ReasonUntriagedBulkGeneration,
+			Detail: "spec was generated from proto definition; verify refs, omissions, and KRM conventions",
+		},
+		{
+			FieldPath: ".spec.id",
+			Reason:    judgement.ReasonPossibleStatusFieldInSpec,
+			Detail:    "id was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState",
+		},
+		{
+			FieldPath: ".spec.state",
+			Reason:    judgement.ReasonPossibleStatusFieldInSpec,
+			Detail:    "state was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState",
+		},
+		{
+			FieldPath: ".spec.endTime",
+			Reason:    judgement.ReasonPossibleStatusFieldInSpec,
+			Detail:    "endTime was generated in the Spec because the proto does not mark it OUTPUT_ONLY; confirm whether it is user-configurable desired state, a duplicate of spec.resourceID, or belongs in status.observedState",
+		},
+		{
+			FieldPath: ".spec.zone",
+			Reason:    judgement.ReasonLocationOrParentRef,
+			Detail:    "proto defines a zone field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string",
+		},
+		{
+			FieldPath: ".spec.settings.region",
+			Reason:    judgement.ReasonLocationOrParentRef,
+			Detail:    "proto defines a region field in Spec; confirm whether it should be a reference, replaced by a parent reference, or kept as a plain string",
+		},
+	}
+	if diff := cmp.Diff(want, got.Judgement); diff != "" {
+		t.Errorf("PrepopulateSpec() judgement mismatch (-want +got):\n%s", diff)
 	}
 }
 

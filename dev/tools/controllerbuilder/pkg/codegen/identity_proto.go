@@ -246,6 +246,17 @@ func getResourceDescriptorProto(msg protoreflect.MessageDescriptor) *annotations
 	return rd
 }
 
+func isNameFieldOutputOnly(msg protoreflect.MessageDescriptor) bool {
+	if msg == nil {
+		return false
+	}
+	f := msg.Fields().ByName("name")
+	if f == nil {
+		return false
+	}
+	return IsFieldBehavior(f, annotations.FieldBehavior_OUTPUT_ONLY)
+}
+
 var (
 	caiVarNormalizeRe = regexp.MustCompile(`\{\{[^}]+\}\}`)
 	caiDoubleBraceRe  = regexp.MustCompile(`\{\{([^}]+)\}\}`)

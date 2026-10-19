@@ -125,6 +125,17 @@ const ReasonRequiredNotEnforced = "required-not-enforced"
 // proto does not mark it OUTPUT_ONLY.
 const ReasonEtagInSpec = "etag-in-spec"
 
+// ReasonPossibleStatusFieldInSpec: an optional top-level field with a
+// well-known status, lifecycle, or identifier name (such as state, status,
+// startTime, endTime, lastUpdateTime, createTime, updateTime, deleteTime, id,
+// uid, selfLink, or reconciling) was generated in Spec because the proto does
+// not mark it OUTPUT_ONLY.
+const ReasonPossibleStatusFieldInSpec = "possible-status-field-in-spec"
+
+// ReasonLocationOrParentRef: a location, region, or zone field in Spec may be
+// replaced by a parent/location reference or kept as a plain string.
+const ReasonLocationOrParentRef = "location-or-parent-ref"
+
 // Reasons for deprecated proto resources, fields, and messages.
 const (
 	// ReasonDeprecatedResource: the proto marks the resource message itself
