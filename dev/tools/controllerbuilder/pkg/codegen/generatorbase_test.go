@@ -110,6 +110,7 @@ func TestGeneratedFileWriteAdditiveMerge(t *testing.T) {
 				},
 			},
 		}
+
 		f.body.WriteString(body)
 		if err := f.Write(true, true, true); err != nil {
 			t.Fatalf("Write(%s) failed: %v", service, err)
@@ -137,6 +138,7 @@ type Intent_Message struct {
 	if err != nil {
 		t.Fatalf("reading generated file: %v", err)
 	}
+
 	firstPass := string(firstPassBytes)
 
 	for _, want := range []string{
@@ -157,6 +159,7 @@ type Intent_Message struct {
 	if err != nil {
 		t.Fatalf("reading generated file after re-run: %v", err)
 	}
+
 	if diff := cmp.Diff(firstPass, string(secondPassBytes)); diff != "" {
 		t.Errorf("re-running additive Write was not idempotent (-first +second):\n%s", diff)
 	}

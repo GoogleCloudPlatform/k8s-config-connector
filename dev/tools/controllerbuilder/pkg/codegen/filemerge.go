@@ -76,19 +76,23 @@ func findCompatibleFileAnnotation(existingBytes []byte, current *annotations.Fil
 	if current == nil {
 		return nil, true
 	}
+
 	existingAnns, err := annotations.FindFileAnnotations(existingBytes, []string{"+generated:"})
 	if err != nil || len(existingAnns) == 0 {
 		return nil, true
 	}
+
 	for i := range existingAnns {
 		if existingAnns[i].Key == current.Key {
 			if !hasCompatibleKRMGroup(&existingAnns[i], current) {
 				return nil, false
 			}
+
 			annCopy := existingAnns[i]
 			return &annCopy, true
 		}
 	}
+
 	return nil, true
 }
 
@@ -96,6 +100,7 @@ func (f *generatedFile) canMergeTargetFile(dir string) bool {
 	if f.key.FileName == "types.generated.go" && isTargetOfSeparateGeneratedFile(dir, f.key.FileName, f.fileAnnotation) {
 		return false
 	}
+
 	return true
 }
 
@@ -103,27 +108,33 @@ func isTargetOfSeparateGeneratedFile(dir, currentFileName string, currentAnn *an
 	if currentAnn == nil {
 		return false
 	}
+
 	currentResources := currentAnn.Attributes["resource"]
 	if len(currentResources) == 0 {
 		return false
 	}
+
 	resSet := make(map[string]bool, len(currentResources))
 	for _, r := range currentResources {
 		resSet[r] = true
 	}
+
 	entries, err := os.ReadDir(dir)
 	if err != nil {
 		return false
 	}
+
 	for _, e := range entries {
 		name := e.Name()
 		if name == currentFileName || !strings.HasSuffix(name, "_types.generated.go") {
 			continue
 		}
+
 		if fileClaimsAnyResource(filepath.Join(dir, name), resSet) {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -132,10 +143,12 @@ func fileClaimsAnyResource(filePath string, targetResources map[string]bool) boo
 	if err != nil {
 		return false
 	}
+
 	anns, err := annotations.FindFileAnnotations(b, []string{"+generated:"})
 	if err != nil {
 		return false
 	}
+
 	for _, a := range anns {
 		for _, r := range a.Attributes["resource"] {
 			if targetResources[r] {
@@ -143,6 +156,7 @@ func fileClaimsAnyResource(filePath string, targetResources map[string]bool) boo
 			}
 		}
 	}
+
 	return false
 }
 
@@ -151,19 +165,23 @@ func (f *generatedFile) parseBlocksForMerge(existingBytes []byte) (existingBlock
 	if pkgName == "" {
 		pkgName = "p"
 	}
+
 	existingBlocks, existingImports, err := parseGeneratedGoBlocks(existingBytes, pkgName, false)
 	if err != nil || len(existingBlocks) == 0 {
 		return nil, nil, nil, false
 	}
+
 	currentBlocks, _, err = parseGeneratedGoBlocks(f.body.Bytes(), pkgName, true)
 	if err != nil {
 		return nil, nil, nil, false
 	}
+
 	if f.key.FileName == "mapper.generated.go" && len(currentBlocks) > 0 {
 		if hasVersionedMapperFuncs(existingBlocks) != hasVersionedMapperFuncs(currentBlocks) {
 			return nil, nil, nil, false
 		}
 	}
+
 	return existingBlocks, existingImports, currentBlocks, true
 }
 
@@ -173,6 +191,7 @@ func hasVersionedMapperFuncs(blocks []generatedBlock) bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -182,6 +201,7 @@ func isVersionedMapperFuncName(name string) bool {
 		if !ok {
 			continue
 		}
+
 		if idx := strings.LastIndex(base, "_"); idx > 0 {
 			ver := base[idx+1:]
 			if strings.HasPrefix(ver, "v1") || strings.HasPrefix(ver, "v2") {
@@ -189,6 +209,7 @@ func isVersionedMapperFuncName(name string) bool {
 			}
 		}
 	}
+
 	return false
 }
 
@@ -201,18 +222,23 @@ func (f *generatedFile) filterExistingBlocks(existingBlocks, currentBlocks []gen
 		if eb.name == "" {
 			continue
 		}
+
 		if cb, inCurrent := currentByName[eb.name]; inCurrent && shouldCurrentReplaceExisting(eb, cb) {
 			filtered = append(filtered, eb)
 			continue
 		}
+
 		if !f.shouldKeepExistingBlock(eb, pkgDecls, validKRMTypes) {
 			continue
 		}
+
 		if !eb.isCommented {
 			hasActiveExternal = true
 		}
+
 		filtered = append(filtered, eb)
 	}
+
 	return filtered, hasActiveExternal
 }
 
@@ -223,6 +249,7 @@ func indexBlocksByName(blocks []generatedBlock) map[string]generatedBlock {
 			byName[b.name] = b
 		}
 	}
+
 	return byName
 }
 
@@ -232,25 +259,30 @@ func scanHandwrittenDirDeclarations(srcDir, currentFileName string) packageDecla
 		protoTags: make(map[string]bool),
 		funcs:     make(map[string]bool),
 	}
+
 	files, err := os.ReadDir(srcDir)
 	if err != nil {
 		return decls
 	}
+
 	for _, f := range files {
 		name := f.Name()
 		if !strings.HasSuffix(name, ".go") || name == currentFileName || name == "zz_generated.deepcopy.go" || strings.HasSuffix(name, "_test.go") {
 			continue
 		}
+
 		b, err := os.ReadFile(filepath.Join(srcDir, name))
 		if err != nil {
 			continue
 		}
+
 		if strings.HasSuffix(name, "generated.go") {
 			recordGeneratedFileDecls(b, &decls)
 		} else {
 			recordHandwrittenFileDecls(string(b), &decls)
 		}
 	}
+
 	return decls
 }
 
@@ -259,10 +291,12 @@ func recordGeneratedFileDecls(content []byte, decls *packageDeclarations) {
 	if err != nil {
 		return
 	}
+
 	for _, blk := range blocks {
 		if blk.isCommented || blk.name == "" {
 			continue
 		}
+
 		switch blk.kind {
 		case "type":
 			decls.types[blk.name] = true
@@ -281,6 +315,7 @@ func recordHandwrittenFileDecls(content string, decls *packageDeclarations) {
 	for protoMsg := range protoLines {
 		decls.protoTags[protoMsg] = true
 	}
+
 	for _, line := range strings.Split(content, "\n") {
 		trimmed := strings.TrimSpace(line)
 		if rest, ok := strings.CutPrefix(trimmed, "func "); ok {
@@ -295,9 +330,11 @@ func (f *generatedFile) resolveValidKRMTypes(existingImports map[string]string) 
 	if f.validKRMTypes != nil {
 		return f.validKRMTypes
 	}
+
 	if f.key.FileName == "mapper.generated.go" && f.baseDir != "" {
 		return discoverValidKRMTypes(f.baseDir, f.imports, existingImports)
 	}
+
 	return nil
 }
 
@@ -306,11 +343,13 @@ func discoverValidKRMTypes(baseDir string, currentImports, existingImports map[s
 	if len(apiDirs) == 0 {
 		return nil
 	}
+
 	valid := make(map[string]bool)
 	fset := token.NewFileSet()
 	for _, apiDir := range apiDirs {
 		collectExportedTypesInDir(apiDir, fset, valid)
 	}
+
 	return valid
 }
 
@@ -324,16 +363,19 @@ func importedAPIDirs(baseDir string, importMaps ...map[string]string) []string {
 			if !ok || rel == "" || strings.HasPrefix(rel, "refs/") || strings.HasPrefix(rel, "common/") {
 				continue
 			}
+
 			apiDir := filepath.Join(baseDir, "apis", filepath.FromSlash(rel))
 			if seenDirs[apiDir] {
 				continue
 			}
+
 			if info, err := os.Stat(apiDir); err == nil && info.IsDir() {
 				seenDirs[apiDir] = true
 				apiDirs = append(apiDirs, apiDir)
 			}
 		}
 	}
+
 	return apiDirs
 }
 
@@ -342,23 +384,28 @@ func collectExportedTypesInDir(apiDir string, fset *token.FileSet, valid map[str
 	if err != nil {
 		return
 	}
+
 	for _, e := range entries {
 		if e.IsDir() || !strings.HasSuffix(e.Name(), ".go") || strings.HasSuffix(e.Name(), "_test.go") {
 			continue
 		}
+
 		src, err := os.ReadFile(filepath.Join(apiDir, e.Name()))
 		if err != nil {
 			continue
 		}
+
 		astFile, err := parser.ParseFile(fset, e.Name(), src, 0)
 		if err != nil {
 			continue
 		}
+
 		for _, decl := range astFile.Decls {
 			genDecl, ok := decl.(*ast.GenDecl)
 			if !ok || genDecl.Tok != token.TYPE {
 				continue
 			}
+
 			for _, spec := range genDecl.Specs {
 				if ts, ok := spec.(*ast.TypeSpec); ok && ts.Name != nil {
 					valid[ts.Name.Name] = true
@@ -374,9 +421,11 @@ func (f *generatedFile) shouldKeepExistingBlock(eb generatedBlock, pkgDecls pack
 		if eb.isCommented {
 			return true
 		}
+
 		if pkgDecls.types[eb.name] || f.reservedTypeNames[eb.name] {
 			return false
 		}
+
 		if eb.protoFQN != "" && pkgDecls.protoTags[eb.protoFQN] {
 			baseName := strings.TrimSuffix(eb.name, "ObservedState")
 			if isBaseProtoStructName(eb.name, eb.protoFQN) || isBaseProtoStructName(baseName, eb.protoFQN) {
@@ -387,10 +436,12 @@ func (f *generatedFile) shouldKeepExistingBlock(eb generatedBlock, pkgDecls pack
 		if !eb.isCommented && pkgDecls.funcs[eb.name] {
 			return false
 		}
+
 		if validKRMTypes != nil && eb.krmTypeName != "" && !validKRMTypes[eb.krmTypeName] {
 			return false
 		}
 	}
+
 	return true
 }
 
@@ -398,6 +449,7 @@ func mergeFileAnnotations(existing, current *annotations.FileAnnotation) *annota
 	if current == nil {
 		return existing
 	}
+
 	if existing == nil || existing.Key != current.Key || !hasCompatibleKRMGroup(existing, current) {
 		return current
 	}
@@ -406,14 +458,17 @@ func mergeFileAnnotations(existing, current *annotations.FileAnnotation) *annota
 		Key:        current.Key,
 		Attributes: make(map[string][]string),
 	}
+
 	for k := range existing.Attributes {
 		merged.Attributes[k] = mergeUniqueStrings(existing.Attributes[k], current.Attributes[k])
 	}
+
 	for k := range current.Attributes {
 		if _, already := merged.Attributes[k]; !already {
 			merged.Attributes[k] = mergeUniqueStrings(nil, current.Attributes[k])
 		}
 	}
+
 	return merged
 }
 
@@ -428,6 +483,7 @@ func mergeUniqueStrings(first, second []string) []string {
 			}
 		}
 	}
+
 	return out
 }
 
@@ -443,6 +499,7 @@ func (f *generatedFile) mergeExistingImports(existingImports map[string]string) 
 	for pkg := range existingImports {
 		existingPkgs = append(existingPkgs, pkg)
 	}
+
 	sort.Strings(existingPkgs)
 
 	for _, pkg := range existingPkgs {
@@ -453,18 +510,23 @@ func (f *generatedFile) mergeExistingImports(existingImports map[string]string) 
 			if oldQual != "" && newQual != "" && oldQual != newQual {
 				aliasRenames[oldQual] = newQual
 			}
+
 			continue
 		}
+
 		chosenAlias := alias
 		if oldQual != "" {
 			if otherPkg, taken := usedAliases[oldQual]; taken && otherPkg != pkg {
 				chosenAlias = nextAvailableAlias(oldQual, usedAliases)
 				aliasRenames[oldQual] = chosenAlias
 			}
+
 			usedAliases[importQualifier(pkg, chosenAlias)] = pkg
 		}
+
 		f.addImport(chosenAlias, pkg)
 	}
+
 	return aliasRenames
 }
 
@@ -475,6 +537,7 @@ func (f *generatedFile) currentImportQualifiers() map[string]string {
 			usedAliases[qual] = pkg
 		}
 	}
+
 	return usedAliases
 }
 
@@ -491,6 +554,7 @@ func importQualifier(pkg, alias string) string {
 	if alias != "" {
 		return alias
 	}
+
 	return lastGoComponent(pkg)
 }
 
@@ -498,6 +562,7 @@ func rewriteBlockQualifiers(blocks []generatedBlock, aliasRenames map[string]str
 	if len(aliasRenames) == 0 {
 		return
 	}
+
 	for i := range blocks {
 		if !blocks[i].isCommented {
 			blocks[i].rawText = rewritePackageQualifiers(blocks[i].rawText, aliasRenames)
@@ -509,6 +574,7 @@ func rewritePackageQualifiers(src string, renames map[string]string) string {
 	if len(renames) == 0 {
 		return src
 	}
+
 	toks := scanTokens(src)
 	var out strings.Builder
 	last := 0
@@ -516,10 +582,12 @@ func rewritePackageQualifiers(src string, renames map[string]string) string {
 		if t.tok != token.IDENT {
 			continue
 		}
+
 		newAlias, ok := renames[t.lit]
 		if !ok {
 			continue
 		}
+
 		prevIsPeriod := i > 0 && toks[i-1].tok == token.PERIOD
 		nextIsPeriod := i+1 < len(toks) && toks[i+1].tok == token.PERIOD
 		if !prevIsPeriod && nextIsPeriod {
@@ -528,6 +596,7 @@ func rewritePackageQualifiers(src string, renames map[string]string) string {
 			last = t.end
 		}
 	}
+
 	out.WriteString(src[last:])
 	return out.String()
 }
@@ -544,13 +613,16 @@ func scanTokens(src string) []tokSpan {
 		if tok == token.EOF {
 			break
 		}
+
 		off := file.Offset(pos)
 		length := len(lit)
 		if length == 0 {
 			length = len(tok.String())
 		}
+
 		toks = append(toks, tokSpan{pos: off, end: off + length, tok: tok, lit: lit})
 	}
+
 	return toks
 }
 
@@ -558,6 +630,7 @@ func mergeBlocksForFile(fileName string, existing, current []generatedBlock) []g
 	if fileName == "types.generated.go" && allBlocksHaveProtoFQN(existing, current) {
 		return mergeAndSortTypeBlocks(existing, current)
 	}
+
 	return mergeOrderedBlocks(existing, current)
 }
 
@@ -569,6 +642,7 @@ func allBlocksHaveProtoFQN(a, b []generatedBlock) bool {
 			}
 		}
 	}
+
 	return true
 }
 
@@ -577,25 +651,32 @@ func mergeAndSortTypeBlocks(existing, current []generatedBlock) []generatedBlock
 	for _, b := range existing {
 		byName[b.name] = b
 	}
+
 	for _, b := range current {
 		if eb, exists := byName[b.name]; exists && !shouldCurrentReplaceExisting(eb, b) {
 			continue
 		}
+
 		byName[b.name] = b
 	}
+
 	merged := make([]generatedBlock, 0, len(byName))
 	for _, b := range byName {
 		merged = append(merged, b)
 	}
+
 	sort.Slice(merged, func(i, j int) bool {
 		if merged[i].isObservedState != merged[j].isObservedState {
 			return !merged[i].isObservedState && merged[j].isObservedState
 		}
+
 		if merged[i].protoFQN != merged[j].protoFQN {
 			return merged[i].protoFQN < merged[j].protoFQN
 		}
+
 		return merged[i].name < merged[j].name
 	})
+
 	return merged
 }
 
@@ -610,6 +691,7 @@ func mergeOrderedBlocks(existing, current []generatedBlock) []generatedBlock {
 		} else {
 			result = append(result, eb)
 		}
+
 		placed[eb.name] = true
 	}
 
@@ -617,9 +699,11 @@ func mergeOrderedBlocks(existing, current []generatedBlock) []generatedBlock {
 		if placed[cb.name] {
 			continue
 		}
+
 		result = insertUnplacedBlock(result, dedupCurrent, i, placed)
 		placed[cb.name] = true
 	}
+
 	return result
 }
 
@@ -636,6 +720,7 @@ func deduplicateBlocks(blocks []generatedBlock) ([]generatedBlock, map[string]ge
 			dedup = append(dedup, b)
 		}
 	}
+
 	return dedup, byName
 }
 
@@ -646,14 +731,17 @@ func insertUnplacedBlock(result, dedupCurrent []generatedBlock, idx int, placed 
 			return updated
 		}
 	}
+
 	for j := idx + 1; j < len(dedupCurrent); j++ {
 		if placed[dedupCurrent[j].name] {
 			if updated, ok := insertBlockAtNeighbor(result, dedupCurrent[j].name, cb, false); ok {
 				return updated
 			}
+
 			break
 		}
 	}
+
 	return append(result, cb)
 }
 
@@ -664,10 +752,12 @@ func insertBlockAtNeighbor(blocks []generatedBlock, neighborName string, cb gene
 			if after {
 				insertPos = idx + 1
 			}
+
 			updated := append(blocks[:insertPos], append([]generatedBlock{cb}, blocks[insertPos:]...)...)
 			return updated, true
 		}
 	}
+
 	return blocks, false
 }
 
@@ -686,9 +776,26 @@ func hasCompatibleKRMGroup(existing, current *annotations.FileAnnotation) bool {
 	return len(eg) == 0 || len(cg) == 0 || eg[0] == cg[0]
 }
 
+func hasRequiredMarker(s string) bool {
+	return strings.Contains(s, "// +required") || strings.Contains(s, "//+required")
+}
+
 func shouldCurrentReplaceExisting(eb, cb generatedBlock) bool {
 	if !eb.isCommented && cb.isCommented && eb.protoFQN != "" && cb.protoFQN != "" && eb.protoFQN != cb.protoFQN {
 		return false
 	}
+
+	if eb.kind == "type" && !eb.isCommented && !cb.isCommented {
+		if !hasRequiredMarker(eb.rawText) && hasRequiredMarker(cb.rawText) {
+			return false
+		}
+	}
+
+	if eb.kind == "func" && !eb.isCommented && !cb.isCommented {
+		if !strings.Contains(eb.rawText, "make(map[") && strings.Contains(cb.rawText, "make(map[") {
+			return false
+		}
+	}
+
 	return true
 }

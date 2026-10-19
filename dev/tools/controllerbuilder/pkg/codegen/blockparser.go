@@ -63,6 +63,7 @@ func parseGeneratedGoBlocks(src []byte, defaultPkg string, isBodyOnly bool) ([]g
 	sort.Slice(blocks, func(i, j int) bool {
 		return blocks[i].offset < blocks[j].offset
 	})
+
 	return blocks, imports, nil
 }
 
@@ -72,16 +73,20 @@ func parseASTImports(astFile *ast.File) map[string]string {
 		if imp.Path == nil {
 			continue
 		}
+
 		pkgPath, err := strconv.Unquote(imp.Path.Value)
 		if err != nil {
 			continue
 		}
+
 		alias := ""
 		if imp.Name != nil {
 			alias = imp.Name.Name
 		}
+
 		imports[pkgPath] = alias
 	}
+
 	return imports
 }
 
@@ -102,6 +107,7 @@ func extractASTDeclBlocks(fset *token.FileSet, astFile *ast.File, goSrc []byte) 
 			}
 		}
 	}
+
 	return blocks, declSpans
 }
 
@@ -109,10 +115,12 @@ func buildTypeDeclBlock(fset *token.FileSet, d *ast.GenDecl, goSrc []byte) (gene
 	if d.Tok != token.TYPE || len(d.Specs) == 0 {
 		return generatedBlock{}, byteSpan{}, false
 	}
+
 	typeSpec, ok := d.Specs[0].(*ast.TypeSpec)
 	if !ok || typeSpec.Name == nil {
 		return generatedBlock{}, byteSpan{}, false
 	}
+
 	declStart := fset.Position(d.Pos()).Offset
 	docStart := declDocStartOffset(fset, d.Pos(), d.Doc)
 	declEnd := fset.Position(d.End()).Offset
@@ -122,6 +130,7 @@ func buildTypeDeclBlock(fset *token.FileSet, d *ast.GenDecl, goSrc []byte) (gene
 	if strings.HasSuffix(typeSpec.Name.Name, "ObservedState") {
 		isObservedState = true
 	}
+
 	blk := generatedBlock{
 		name:            typeSpec.Name.Name,
 		kind:            "type",
@@ -130,6 +139,7 @@ func buildTypeDeclBlock(fset *token.FileSet, d *ast.GenDecl, goSrc []byte) (gene
 		rawText:         rawText,
 		offset:          docStart,
 	}
+
 	return blk, byteSpan{start: declStart, end: declEnd}, true
 }
 
@@ -137,6 +147,7 @@ func buildFuncDeclBlock(fset *token.FileSet, d *ast.FuncDecl, goSrc []byte) (gen
 	if d.Name == nil {
 		return generatedBlock{}, byteSpan{}, false
 	}
+
 	declStart := fset.Position(d.Pos()).Offset
 	docStart := declDocStartOffset(fset, d.Pos(), d.Doc)
 	declEnd := fset.Position(d.End()).Offset
@@ -149,6 +160,7 @@ func buildFuncDeclBlock(fset *token.FileSet, d *ast.FuncDecl, goSrc []byte) (gen
 		rawText:     rawText,
 		offset:      docStart,
 	}
+
 	return blk, byteSpan{start: declStart, end: declEnd}, true
 }
 
@@ -159,6 +171,7 @@ func extractKRMTypeFromFuncText(rawText string) string {
 			return extractKRMTypeFromFuncSignature(trimmed)
 		}
 	}
+
 	return ""
 }
 
@@ -167,15 +180,18 @@ func declDocStartOffset(fset *token.FileSet, declPos token.Pos, doc *ast.Comment
 	if doc == nil || len(doc.List) == 0 {
 		return docStart
 	}
+
 	firstLineCommentIdx := 0
 	for idx, c := range doc.List {
 		if strings.HasPrefix(c.Text, "/*") {
 			firstLineCommentIdx = idx + 1
 		}
 	}
+
 	if firstLineCommentIdx < len(doc.List) {
 		return fset.Position(doc.List[firstLineCommentIdx].Pos()).Offset
 	}
+
 	return docStart
 }
 
@@ -187,15 +203,18 @@ func extractCommentedBlocks(fset *token.FileSet, astFile *ast.File, declSpans []
 			if !strings.HasPrefix(c.Text, "/*") {
 				continue
 			}
+
 			cOffset := fset.Position(c.Pos()).Offset
 			if cOffset <= pkgEndOffset || isOffsetInsideSpans(cOffset, declSpans) {
 				continue
 			}
+
 			if blk, ok := parseCommentedBlock(strings.TrimSpace(c.Text), cOffset); ok {
 				blocks = append(blocks, blk)
 			}
 		}
 	}
+
 	return blocks
 }
 
@@ -205,6 +224,7 @@ func isOffsetInsideSpans(offset int, spans []byteSpan) bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -220,6 +240,7 @@ func parseCommentedBlock(rawText string, offset int) (generatedBlock, bool) {
 			offset:          offset,
 		}, true
 	}
+
 	if name, krmTypeName, ok := parseCommentedFuncBlock(rawText); ok {
 		return generatedBlock{
 			name:        name,
@@ -230,6 +251,7 @@ func parseCommentedBlock(rawText string, offset int) (generatedBlock, bool) {
 			offset:      offset,
 		}, true
 	}
+
 	return generatedBlock{}, false
 }
 
@@ -243,17 +265,21 @@ func parseCommentedTypeBlock(rawText string) (typeName, protoFQN string, isObser
 				break
 			}
 		}
+
 		if name, found := goTypeNameFromDeclaration(trimmed); found {
 			typeName = name
 			break
 		}
 	}
+
 	if typeName == "" {
 		return "", "", false, false
 	}
+
 	if strings.HasSuffix(typeName, "ObservedState") {
 		isObservedState = true
 	}
+
 	return typeName, protoFQN, isObservedState, true
 }
 
@@ -266,6 +292,7 @@ func parseCommentedFuncBlock(rawText string) (funcName, krmTypeName string, ok b
 			}
 		}
 	}
+
 	return "", "", false
 }
 
@@ -276,6 +303,7 @@ func extractProtoInfoFromBlockText(rawText string) (protoFQN string, isObservedS
 			return msg, kind == KCCProtoMessageAnnotationObservedState
 		}
 	}
+
 	return "", false
 }
 
@@ -284,21 +312,26 @@ func extractKRMTypeFromFuncSignature(sigLine string) string {
 	if !ok {
 		return ""
 	}
+
 	rest = strings.TrimSpace(strings.TrimSuffix(strings.TrimSpace(rest), "{"))
 	funcName, afterName, ok := strings.Cut(rest, "(")
 	if !ok {
 		return ""
 	}
+
 	params, retType, ok := strings.Cut(afterName, ")")
 	if !ok {
 		return ""
 	}
+
 	if strings.HasSuffix(funcName, "_FromProto") {
 		return extractKRMTypeFromFromProtoReturn(strings.TrimSpace(retType))
 	}
+
 	if strings.HasSuffix(funcName, "_ToProto") {
 		return extractKRMTypeFromToProtoParams(funcName, params)
 	}
+
 	return ""
 }
 
@@ -306,6 +339,7 @@ func extractKRMTypeFromFromProtoReturn(retType string) string {
 	if _, krmType, found := strings.Cut(retType, "."); found {
 		return strings.TrimSpace(krmType)
 	}
+
 	return ""
 }
 
@@ -317,9 +351,11 @@ func extractKRMTypeFromToProtoParams(funcName, params string) string {
 			}
 		}
 	}
+
 	base := strings.TrimSuffix(funcName, "_ToProto")
 	if idx := strings.LastIndex(base, "_"); idx > 0 {
 		return base[:idx]
 	}
+
 	return ""
 }
