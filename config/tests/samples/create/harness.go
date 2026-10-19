@@ -999,9 +999,6 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			if strings.Contains(testKey, "/livestreamasset/") {
 				t.Skip("skipping livestreamasset as standalone mock alignment is not yet completed")
 			}
-			if strings.HasSuffix(testKey, "basic/accesscontextmanager/v1beta1/accesscontextmanageraccesslevel") {
-				t.Skip("skipping accesscontextmanageraccesslevel as standalone mock alignment is not yet completed")
-			}
 			if strings.Contains(testKey, "networkservicesedgecacheoriginautogen") || strings.Contains(testKey, "networkservicesedgecachekeysetautogen") {
 				t.Skip("fixture does not have golden logs recorded against real GCP")
 			}
@@ -1019,8 +1016,10 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			switch gvk.GroupKind() {
 			case schema.GroupKind{Group: "", Kind: "Secret"}:
 
+			case schema.GroupKind{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerAccessPolicy"}:
 			case schema.GroupKind{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerAccessLevel"}:
 			case schema.GroupKind{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerGCPUserAccessBinding"}:
+			case schema.GroupKind{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerServicePerimeter"}:
 
 			case schema.GroupKind{Group: "alloydb.cnrm.cloud.google.com", Kind: "AlloyDBCluster"}:
 			case schema.GroupKind{Group: "alloydb.cnrm.cloud.google.com", Kind: "AlloyDBInstance"}:

@@ -44,10 +44,7 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	switch gvk.GroupKind() {
 	// Reminder: go cases do not fallthrough
 	case schema.GroupKind{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerAccessLevelCondition"}:
-	case schema.GroupKind{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerAccessLevel"}:
-	case schema.GroupKind{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerAccessPolicy"}:
 	case schema.GroupKind{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerServicePerimeterResource"}:
-	case schema.GroupKind{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerServicePerimeter"}:
 	case schema.GroupKind{Group: "alloydb.cnrm.cloud.google.com", Kind: "AlloyDBBackup"}:
 	case schema.GroupKind{Group: "alloydb.cnrm.cloud.google.com", Kind: "AlloyDBCluster"}:
 	case schema.GroupKind{Group: "alloydb.cnrm.cloud.google.com", Kind: "AlloyDBInstance"}:
