@@ -20,7 +20,9 @@ First, read `.gemini/skills/reviewgen-greenfield-new-types/prepopulate/SKILL.md`
 2. **Judgement Queue Open State (`apis/<service>/judgement_queue.yaml`):**
    - Each newly scaffolded `<Kind>` has `reason: untriaged-bulk-generation` with `status: open`.
    - No `judgement_queue.yaml` entries for newly added resources were prematurely marked `status: resolved` or deleted.
-3. **Compilation & `tests/apichecks`:**
+3. **Release Bundle Blocklist (`BLOCKED_KINDS` in `dev/tasks/build-release-bundle`):**
+   - Verify that every newly generated `<Kind>` in the branch is added (in alphabetical order) to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` so unverified Greenfield CRDs are excluded from `operator/channels/packages/configconnector/*/crds.yaml` until graduated at the end of the pipeline.
+4. **Compilation & `tests/apichecks`:**
    - Run `go build` and `go test` across all touched `apis/<service>/...` and `pkg/controller/direct/<service>/...` packages.
    - Run `go test ./tests/apichecks/...` and confirm `tests/apichecks/testdata/exceptions/missingrefs.txt` is untouched.
    - If `TestDirectResourceFileNaming` fails on a pre-existing unprefixed stub `<resource>_reference.go` file after `<service><resource>_types.go` is added, verify it was renamed to `<service><resource>_reference.go` and that `var <Kind>GVK = GroupVersion.WithKind("<Kind>")` lives in `<service><resource>_types.go`.
@@ -82,6 +84,7 @@ Return a structured summary to the parent orchestrator agent:
 ```markdown
 ### Bulk Resource Generator Verification Report (`<Branch>` — `<Category>`)
 * **Prepopulate Checklist (`reviewgen-greenfield-new-types/prepopulate/SKILL.md`)**: [Pass/Fail]
+* **Release Bundle Blocklist (`BLOCKED_KINDS` in `dev/tasks/build-release-bundle`)**: [Pass/Fail]
 * **Category Boundary Purity (`<Category>`)**: [Pass/Fail]
 * **Batch Idempotency (`generate.sh` + `generate-crds`)**: [Pass/Fail]
 * **Compilation & `tests/apichecks`**: [Pass/Fail]

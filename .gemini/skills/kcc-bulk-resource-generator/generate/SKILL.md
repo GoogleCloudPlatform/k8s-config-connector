@@ -123,7 +123,8 @@ When generating across many services locally, avoid recompiling `controllerbuild
      SKIP_GENERATE_CRDS=1 ./apis/${svc}/generate.sh
    done
    ```
-3. **Generate all CRDs and format once at the end:**
+3. **Add all newly generated `<Kind>`s to `BLOCKED_KINDS` in `dev/tasks/build-release-bundle`, generate CRDs, and format once at the end:**
+   - Add each newly generated `<Kind>` (sorted alphabetically) to the `BLOCKED_KINDS=( ... )` array in `dev/tasks/build-release-bundle` so unverified Greenfield CRDs are excluded from `operator/channels/packages/configconnector/*/crds.yaml` until graduated at the end of the pipeline.
    ```bash
    ./dev/tasks/generate-crds
    make fmt
@@ -170,8 +171,11 @@ To prevent untracked files from one category leaking into another category's bra
    # For Category 2 (or Category 3 if needed), also check out go.mod/go.sum and run go mod tidy:
    # git checkout bulk-scratch -- go.mod go.sum && go mod tidy
 
-   # Regenerate CRDs, supportedgvks, and apichecks goldens for ONLY this category's services:
+   # Add ONLY this category's newly generated Kinds (sorted alphabetically) to BLOCKED_KINDS in dev/tasks/build-release-bundle,
+   # then regenerate CRDs, supportedgvks, and apichecks goldens for ONLY this category's services:
    ./dev/tasks/generate-crds
+   # If generate-crds added a brand-new API group to config/installbundle/components/clusterroles/cnrm_{admin,viewer}.yaml,
+   # also run ./dev/tasks/generate-channels so 0-cnrm-system.yaml stays in sync.
    WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/...
    git add -A && git commit -m "<category commit message>"
    ```
