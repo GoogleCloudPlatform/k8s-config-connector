@@ -17,6 +17,25 @@ You **must** also apply the standards from the base skill: `.gemini/skills/kcc-d
 
 ## Workflow
 
+### 0. Determine the Kind Name
+Before scaffolding, determine (or validate the provided) KCC Kind name by following [docs/designs/standardize-resource-kind-names.md](../../../docs/designs/standardize-resource-kind-names.md).
+
+1. **Check for an existing API group first:** If an existing KRM API group under `apis/` already maps to the same GCP REST API host (e.g. `spanner.googleapis.com`), reuse that group's service prefix (e.g. `Spanner`) and add the new Kind to it. Stop here for the Service Portion.
+2. **Otherwise, derive the Service Portion from the Discovery Document:**
+   ```bash
+   curl -s "https://<service>.googleapis.com/\$discovery/rest?version=<version>" \
+     | jq '{canonicalName, name, title}'
+   ```
+   - Use `canonicalName`. If it is absent, fall back to `name`.
+   - Strip a leading `Cloud`/`Google` token and a trailing `Admin`/`API` token (e.g. `SQL Admin` -> `SQL`, `Cloud AlloyDB Admin` -> `AlloyDB`).
+   - If the result is a single token with no meaningful casing (e.g. `Bigquery`, `Pubsub`, `Iam`, `networkconnectivity`), recover word boundaries and casing from `title`. For example, `BigQuery API` -> `BigQuery`, `Cloud Pub/Sub API` -> `PubSub`, and `Identity and Access Management (IAM) API` -> `IAM`.
+   - PascalCase the remaining tokens and keep all-caps acronyms (`SQL`, `KMS`, `DNS`).
+   - Do **not** invent an acronym on your own (e.g. `ContactCenterInsights` -> `CCInsights`). If the name seems excessively long, propose the acronym to the user and get confirmation.
+3. **Resource Portion:** Use the singular, PascalCase resource name, typically the proto message name (e.g. `Instance`, `ExampleStore`).
+4. **Record the derivation:** Note the `canonicalName`/`name`/`title` you used and the resulting Kind in the PR description so reviewers can verify it.
+
+If the user-provided `resource` Kind conflicts with the derived name, flag the discrepancy to the user before proceeding.
+
 ### 1. Add to generate.sh
 Locate `apis/<service_short>/generate.sh`. If it doesn't exist, create it following the standard KCC template:
 ```bash
