@@ -20,6 +20,7 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	servicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -1321,8 +1322,8 @@ func (in *GenericWebService) DeepCopyInto(out *GenericWebService) {
 	}
 	if in.Password != nil {
 		in, out := &in.Password, &out.Password
-		*out = new(string)
-		**out = **in
+		*out = new(secret.Legacy)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.RequestHeaders != nil {
 		in, out := &in.RequestHeaders, &out.RequestHeaders

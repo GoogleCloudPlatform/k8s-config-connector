@@ -2347,7 +2347,8 @@
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.oauthConfig.scopes[]" is not set in unstructured objects
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.oauthConfig.tokenEndpoint" is not set in unstructured objects
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.parameterMapping" is not set in unstructured objects
-[missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.password" is not set in unstructured objects
+[missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.password.value" is not set in unstructured objects
+[missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.password.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.requestBody" is not set in unstructured objects
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.requestHeaders" is not set in unstructured objects
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.serviceAgentAuth" is not set in unstructured objects
@@ -2361,7 +2362,8 @@
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceDirectory.genericWebService.oauthConfig.scopes[]" is not set in unstructured objects
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceDirectory.genericWebService.oauthConfig.tokenEndpoint" is not set in unstructured objects
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceDirectory.genericWebService.parameterMapping" is not set in unstructured objects
-[missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceDirectory.genericWebService.password" is not set in unstructured objects
+[missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceDirectory.genericWebService.password.value" is not set in unstructured objects
+[missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceDirectory.genericWebService.password.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceDirectory.genericWebService.requestBody" is not set in unstructured objects
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceDirectory.genericWebService.requestHeaders" is not set in unstructured objects
 [missing_field] crd=dialogflowwebhooks.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceDirectory.genericWebService.serviceAgentAuth" is not set in unstructured objects

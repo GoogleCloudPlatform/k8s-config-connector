@@ -112,24 +112,29 @@ func DialogflowWebhookSpec_ToProto(mapCtx *direct.MapContext, in *krm.Dialogflow
 	out.Disabled = direct.ValueOf(in.Disabled)
 	return out
 }
-func GenericWebService_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_GenericWebService) *krm.GenericWebService {
-	if in == nil {
-		return nil
+
+/*
+found existing non-generated mapping function "GenericWebService_FromProto", skipping
+
+	func GenericWebService_FromProto(mapCtx *direct.MapContext, in *pb.Webhook_GenericWebService) *krm.GenericWebService {
+		if in == nil {
+			return nil
+		}
+		out := &krm.GenericWebService{}
+		out.URI = direct.LazyPtr(in.GetUri())
+		out.Username = direct.LazyPtr(in.GetUsername())
+		out.Password = direct.LazyPtr(in.GetPassword())
+		out.RequestHeaders = in.RequestHeaders
+		out.AllowedCACerts = in.AllowedCaCerts
+		out.OauthConfig = GenericWebServiceOAuthConfig_FromProto(mapCtx, in.GetOauthConfig())
+		out.ServiceAgentAuth = direct.Enum_FromProto(mapCtx, in.GetServiceAgentAuth())
+		out.WebhookType = direct.Enum_FromProto(mapCtx, in.GetWebhookType())
+		out.HTTPMethod = direct.Enum_FromProto(mapCtx, in.GetHttpMethod())
+		out.RequestBody = direct.LazyPtr(in.GetRequestBody())
+		out.ParameterMapping = in.ParameterMapping
+		return out
 	}
-	out := &krm.GenericWebService{}
-	out.URI = direct.LazyPtr(in.GetUri())
-	out.Username = direct.LazyPtr(in.GetUsername())
-	out.Password = direct.LazyPtr(in.GetPassword())
-	out.RequestHeaders = in.RequestHeaders
-	out.AllowedCACerts = in.AllowedCaCerts
-	out.OauthConfig = GenericWebServiceOAuthConfig_FromProto(mapCtx, in.GetOauthConfig())
-	out.ServiceAgentAuth = direct.Enum_FromProto(mapCtx, in.GetServiceAgentAuth())
-	out.WebhookType = direct.Enum_FromProto(mapCtx, in.GetWebhookType())
-	out.HTTPMethod = direct.Enum_FromProto(mapCtx, in.GetHttpMethod())
-	out.RequestBody = direct.LazyPtr(in.GetRequestBody())
-	out.ParameterMapping = in.ParameterMapping
-	return out
-}
+*/
 func GenericWebService_ToProto(mapCtx *direct.MapContext, in *krm.GenericWebService) *pb.Webhook_GenericWebService {
 	if in == nil {
 		return nil
@@ -137,7 +142,7 @@ func GenericWebService_ToProto(mapCtx *direct.MapContext, in *krm.GenericWebServ
 	out := &pb.Webhook_GenericWebService{}
 	out.Uri = direct.ValueOf(in.URI)
 	out.Username = direct.ValueOf(in.Username)
-	out.Password = direct.ValueOf(in.Password)
+	out.Password = GenericWebService_Password_ToProto(mapCtx, in.Password)
 	out.RequestHeaders = in.RequestHeaders
 	out.AllowedCaCerts = in.AllowedCACerts
 	out.OauthConfig = GenericWebServiceOAuthConfig_ToProto(mapCtx, in.OauthConfig)

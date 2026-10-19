@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	servicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -69,7 +70,7 @@ type GenericWebService struct {
 
 	// The password for HTTP Basic authentication.
 	// +optional
-	Password *string `json:"password,omitempty"`
+	Password *refsv1beta1secret.Legacy `json:"password,omitempty"`
 
 	// The HTTP request headers to send together with webhook requests.
 	// +optional
