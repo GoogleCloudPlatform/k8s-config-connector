@@ -17,7 +17,10 @@
 // krm.group: iam.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.iam.v2
+// proto.service: google.iam.v3
 // resource: IAMDenyPolicy:Policy
+// resource: IAMAccessPolicy:AccessPolicy
+// resource: IAMPrincipalAccessBoundaryPolicy:PrincipalAccessBoundaryPolicy
 
 package v1alpha1
 
@@ -119,6 +122,183 @@ type PolicyRule struct {
 	//  characters.
 	// +kcc:proto:field=google.iam.v2.PolicyRule.description
 	Description *string `json:"description,omitempty"`
+}
+
+// +kcc:proto=google.iam.v3.AccessPolicyDetails
+type AccessPolicyDetails struct {
+	// Required. A list of access policy rules.
+	// +kcc:proto:field=google.iam.v3.AccessPolicyDetails.rules
+	// +required
+	Rules []AccessPolicyRule `json:"rules,omitempty"`
+}
+
+// +kcc:proto=google.iam.v3.AccessPolicyRule
+type AccessPolicyRule struct {
+	// Optional. Customer specified description of the rule. Must be less than or
+	//  equal to 256 characters.
+	// +kcc:proto:field=google.iam.v3.AccessPolicyRule.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. The effect of the rule.
+	// +kcc:proto:field=google.iam.v3.AccessPolicyRule.effect
+	// +required
+	Effect *string `json:"effect,omitempty"`
+
+	// Required. The identities for which this rule's effect governs using one or
+	//  more permissions on Google Cloud resources. This field can contain the
+	//  following values:
+	//
+	//  * `principal://goog/subject/{email_id}`: A specific Google Account.
+	//  Includes Gmail, Cloud Identity, and Google Workspace user accounts. For
+	//  example, `principal://goog/subject/alice@example.com`.
+	//
+	//  * `principal://iam.googleapis.com/projects/-/serviceAccounts/{service_account_id}`:
+	//  A Google Cloud service account. For example,
+	//  `principal://iam.googleapis.com/projects/-/serviceAccounts/my-service-account@iam.gserviceaccount.com`.
+	//
+	//  * `principalSet://goog/group/{group_id}`: A Google group. For example,
+	//  `principalSet://goog/group/admins@example.com`.
+	//
+	//  * `principalSet://goog/cloudIdentityCustomerId/{customer_id}`: All of the
+	//  principals associated with the specified Google Workspace or Cloud
+	//  Identity customer ID. For example,
+	//  `principalSet://goog/cloudIdentityCustomerId/C01Abc35`.
+	//
+	//
+	//  If an identifier that was previously set on a policy is soft deleted, then
+	//  calls to read that policy will return the identifier with a deleted
+	//  prefix. Users cannot set identifiers with this syntax.
+	//
+	//  * `deleted:principal://goog/subject/{email_id}?uid={uid}`: A specific
+	//  Google Account that was deleted recently. For example,
+	//  `deleted:principal://goog/subject/alice@example.com?uid=1234567890`. If
+	//  the Google Account is recovered, this identifier reverts to the standard
+	//  identifier for a Google Account.
+	//
+	//  * `deleted:principalSet://goog/group/{group_id}?uid={uid}`: A Google group
+	//  that was deleted recently. For example,
+	//  `deleted:principalSet://goog/group/admins@example.com?uid=1234567890`.
+	//  If the Google group is restored, this identifier reverts to the standard
+	//  identifier for a Google group.
+	//
+	//  * `deleted:principal://iam.googleapis.com/projects/-/serviceAccounts/{service_account_id}?uid={uid}`:
+	//  A Google Cloud service account that was deleted recently. For example,
+	//  `deleted:principal://iam.googleapis.com/projects/-/serviceAccounts/my-service-account@iam.gserviceaccount.com?uid=1234567890`.
+	//  If the service account is undeleted, this identifier reverts to the
+	//  standard identifier for a service account.
+	// +kcc:proto:field=google.iam.v3.AccessPolicyRule.principals
+	// +required
+	Principals []string `json:"principals,omitempty"`
+
+	// Optional. The identities that are excluded from the access policy rule,
+	//  even if they are listed in the `principals`. For example, you could add a
+	//  Google group to the `principals`, then exclude specific users who belong to
+	//  that group.
+	// +kcc:proto:field=google.iam.v3.AccessPolicyRule.excluded_principals
+	ExcludedPrincipals []string `json:"excludedPrincipals,omitempty"`
+
+	// Required. Attributes that are used to determine whether this rule applies
+	//  to a request.
+	// +kcc:proto:field=google.iam.v3.AccessPolicyRule.operation
+	// +required
+	Operation *AccessPolicyRule_Operation `json:"operation,omitempty"`
+
+	// Optional. The conditions that determine whether this rule applies to a
+	//  request. Conditions are identified by their key, which is the FQDN of the
+	//  service that they are relevant to. For example:
+	//
+	//  ```
+	//  "conditions": {
+	//   "iam.googleapis.com": {
+	//    "expression": <cel expression>
+	//   }
+	//  }
+	//  ```
+	//
+	//  Each rule is evaluated independently. If this rule does not apply
+	//  to a request, other rules might still apply.
+	//  Currently supported keys are as follows:
+	//
+	//
+	//  * `eventarc.googleapis.com`: Can use `CEL` functions that evaluate
+	//    resource fields.
+	//
+	//  * `iam.googleapis.com`: Can use `CEL` functions that evaluate
+	//    [resource
+	//    tags](https://cloud.google.com/iam/help/conditions/resource-tags) and
+	//    combine them using boolean and logical operators. Other functions and
+	//    operators are not supported.
+	// +kcc:proto:field=google.iam.v3.AccessPolicyRule.conditions
+	Conditions map[string]Expr `json:"conditions,omitempty"`
+}
+
+// +kcc:proto=google.iam.v3.AccessPolicyRule.Operation
+type AccessPolicyRule_Operation struct {
+	// Optional. The permissions that are explicitly affected by this rule. Each
+	//  permission uses the format `{service_fqdn}/{resource}.{verb}`, where
+	//  `{service_fqdn}` is the fully qualified domain name for the service.
+	//  Currently supported permissions are as follows:
+	//
+	//  * `eventarc.googleapis.com/messageBuses.publish`.
+	// +kcc:proto:field=google.iam.v3.AccessPolicyRule.Operation.permissions
+	Permissions []string `json:"permissions,omitempty"`
+
+	// Optional. Specifies the permissions that this rule excludes from the set
+	//  of affected permissions given by `permissions`. If a permission appears
+	//  in `permissions` _and_ in `excluded_permissions` then it will _not_ be
+	//  subject to the policy effect.
+	//
+	//  The excluded permissions can be specified using the same syntax as
+	//  `permissions`.
+	// +kcc:proto:field=google.iam.v3.AccessPolicyRule.Operation.excluded_permissions
+	ExcludedPermissions []string `json:"excludedPermissions,omitempty"`
+}
+
+// +kcc:proto=google.iam.v3.PrincipalAccessBoundaryPolicyDetails
+type PrincipalAccessBoundaryPolicyDetails struct {
+	// Required. A list of principal access boundary policy rules. The number of
+	//  rules in a policy is limited to 500.
+	// +kcc:proto:field=google.iam.v3.PrincipalAccessBoundaryPolicyDetails.rules
+	// +required
+	Rules []PrincipalAccessBoundaryPolicyRule `json:"rules,omitempty"`
+
+	// Optional.
+	//  The version number (for example, `1` or `latest`) that indicates which
+	//  permissions are able to be blocked by the policy. If empty, the PAB policy
+	//  version will be set to the most recent version number at the time of the
+	//  policy's creation.
+	// +kcc:proto:field=google.iam.v3.PrincipalAccessBoundaryPolicyDetails.enforcement_version
+	EnforcementVersion *string `json:"enforcementVersion,omitempty"`
+}
+
+// +kcc:proto=google.iam.v3.PrincipalAccessBoundaryPolicyRule
+type PrincipalAccessBoundaryPolicyRule struct {
+	// Optional. The description of the principal access boundary policy rule.
+	//  Must be less than or equal to 256 characters.
+	// +kcc:proto:field=google.iam.v3.PrincipalAccessBoundaryPolicyRule.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. A list of Resource Manager resources. If a resource is listed in
+	//  the rule, then the rule applies for that resource and its descendants. The
+	//  number of resources in a policy is limited to 500 across all rules in the
+	//  policy.
+	//
+	//  The following resource types are supported:
+	//
+	//  * Organizations, such as
+	//  `//cloudresourcemanager.googleapis.com/organizations/123`.
+	//  * Folders, such as `//cloudresourcemanager.googleapis.com/folders/123`.
+	//  * Projects, such as `//cloudresourcemanager.googleapis.com/projects/123`
+	//    or `//cloudresourcemanager.googleapis.com/projects/my-project-id`.
+	// +kcc:proto:field=google.iam.v3.PrincipalAccessBoundaryPolicyRule.resources
+	// +required
+	Resources []string `json:"resources,omitempty"`
+
+	// Required. The access relationship of principals to the resources in this
+	//  rule.
+	// +kcc:proto:field=google.iam.v3.PrincipalAccessBoundaryPolicyRule.effect
+	// +required
+	Effect *string `json:"effect,omitempty"`
 }
 
 // +kcc:proto=google.type.Expr

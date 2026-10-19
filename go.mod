@@ -31,6 +31,7 @@ require (
 	cloud.google.com/go/bigquery v1.77.0
 	cloud.google.com/go/billing v1.26.0
 	cloud.google.com/go/certificatemanager v1.14.0
+	cloud.google.com/go/channel v1.26.0
 	cloud.google.com/go/chronicle v1.5.0
 	cloud.google.com/go/cloudbuild v1.30.0
 	cloud.google.com/go/clouddms v1.13.0
@@ -56,6 +57,7 @@ require (
 	cloud.google.com/go/discoveryengine v1.32.0
 	cloud.google.com/go/documentai v1.48.0
 	cloud.google.com/go/edgecontainer v1.9.0
+	cloud.google.com/go/edgenetwork v1.8.0
 	cloud.google.com/go/essentialcontacts v1.12.0
 	cloud.google.com/go/eventarc v1.23.0
 	cloud.google.com/go/filestore v1.15.0
@@ -186,7 +188,6 @@ require (
 require go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 
 require (
-	cloud.google.com/go/edgenetwork v1.8.0 // indirect
 	cloud.google.com/go/memcache v1.16.0 // indirect
 	cloud.google.com/go/pubsub v1.50.2 // indirect
 	cloud.google.com/go/pubsublite v1.8.2 // indirect

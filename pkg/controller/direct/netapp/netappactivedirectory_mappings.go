@@ -90,3 +90,11 @@ func NetAppActiveDirectorySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetApp
 	out.Labels = in.Labels
 	return out
 }
+
+func TieringPolicy_TierAction_ToProto(mapCtx *direct.MapContext, in *string) *pb.TieringPolicy_TierAction {
+	if in == nil {
+		return nil
+	}
+	v := direct.Enum_ToProto[pb.TieringPolicy_TierAction](mapCtx, in)
+	return &v
+}

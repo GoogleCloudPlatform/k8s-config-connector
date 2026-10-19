@@ -151,3 +151,25 @@ func AnalysisResult_CallAnalysisMetadataObservedState_ToProto(mapCtx *direct.Map
 	out.Silence = ConversationLevelSilence_ToProto(mapCtx, in.Silence)
 	return out
 }
+
+func QaQuestion_TuningMetadata_FromProto(mapCtx *direct.MapContext, in *pb.QaQuestion_TuningMetadata) *krm.QaQuestion_TuningMetadata {
+	if in == nil {
+		return nil
+	}
+	return &krm.QaQuestion_TuningMetadata{
+		TotalValidLabelCount:      direct.LazyPtr(in.GetTotalValidLabelCount()),
+		DatasetValidationWarnings: direct.EnumSlice_FromProto(mapCtx, in.GetDatasetValidationWarnings()),
+		TuningError:               direct.LazyPtr(in.GetTuningError()),
+	}
+}
+
+func QaQuestion_TuningMetadata_ToProto(mapCtx *direct.MapContext, in *krm.QaQuestion_TuningMetadata) *pb.QaQuestion_TuningMetadata {
+	if in == nil {
+		return nil
+	}
+	return &pb.QaQuestion_TuningMetadata{
+		TotalValidLabelCount:      direct.ValueOf(in.TotalValidLabelCount),
+		DatasetValidationWarnings: direct.EnumSlice_ToProto[pb.DatasetValidationWarning](mapCtx, in.DatasetValidationWarnings),
+		TuningError:               direct.ValueOf(in.TuningError),
+	}
+}

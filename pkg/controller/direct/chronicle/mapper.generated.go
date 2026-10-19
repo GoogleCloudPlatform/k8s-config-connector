@@ -29,6 +29,54 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func ChronicleReferenceListObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ReferenceList) *krm.ChronicleReferenceListObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChronicleReferenceListObservedState{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.RevisionCreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRevisionCreateTime())
+	out.Rules = in.Rules
+	out.RuleAssociationsCount = direct.LazyPtr(in.GetRuleAssociationsCount())
+	return out
+}
+func ChronicleReferenceListObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ChronicleReferenceListObservedState) *pb.ReferenceList {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReferenceList{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.RevisionCreateTime = direct.StringTimestamp_ToProto(mapCtx, in.RevisionCreateTime)
+	out.Rules = in.Rules
+	out.RuleAssociationsCount = direct.ValueOf(in.RuleAssociationsCount)
+	return out
+}
+func ChronicleReferenceListSpec_FromProto(mapCtx *direct.MapContext, in *pb.ReferenceList) *krm.ChronicleReferenceListSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ChronicleReferenceListSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Entries = direct.Slice_FromProto(mapCtx, in.Entries, ReferenceListEntry_FromProto)
+	out.SyntaxType = direct.Enum_FromProto(mapCtx, in.GetSyntaxType())
+	out.ScopeInfo = ScopeInfo_FromProto(mapCtx, in.GetScopeInfo())
+	return out
+}
+func ChronicleReferenceListSpec_ToProto(mapCtx *direct.MapContext, in *krm.ChronicleReferenceListSpec) *pb.ReferenceList {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReferenceList{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.Entries = direct.Slice_ToProto(mapCtx, in.Entries, ReferenceListEntry_ToProto)
+	out.SyntaxType = direct.Enum_ToProto[pb.ReferenceListSyntaxType](mapCtx, in.SyntaxType)
+	out.ScopeInfo = ScopeInfo_ToProto(mapCtx, in.ScopeInfo)
+	return out
+}
 func ChronicleWatchlistObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Watchlist) *krm.ChronicleWatchlistObservedState {
 	if in == nil {
 		return nil
@@ -75,6 +123,54 @@ func ChronicleWatchlistSpec_ToProto(mapCtx *direct.MapContext, in *krm.Chronicle
 	out.MultiplyingFactor = direct.ValueOf(in.MultiplyingFactor)
 	out.EntityPopulationMechanism = Watchlist_EntityPopulationMechanism_ToProto(mapCtx, in.EntityPopulationMechanism)
 	out.WatchlistUserPreferences = WatchlistUserPreferences_ToProto(mapCtx, in.WatchlistUserPreferences)
+	return out
+}
+func ReferenceListEntry_FromProto(mapCtx *direct.MapContext, in *pb.ReferenceListEntry) *krm.ReferenceListEntry {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReferenceListEntry{}
+	out.Value = direct.LazyPtr(in.GetValue())
+	return out
+}
+func ReferenceListEntry_ToProto(mapCtx *direct.MapContext, in *krm.ReferenceListEntry) *pb.ReferenceListEntry {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReferenceListEntry{}
+	out.Value = direct.ValueOf(in.Value)
+	return out
+}
+func ReferenceListScope_FromProto(mapCtx *direct.MapContext, in *pb.ReferenceListScope) *krm.ReferenceListScope {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ReferenceListScope{}
+	out.ScopeNames = in.ScopeNames
+	return out
+}
+func ReferenceListScope_ToProto(mapCtx *direct.MapContext, in *krm.ReferenceListScope) *pb.ReferenceListScope {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ReferenceListScope{}
+	out.ScopeNames = in.ScopeNames
+	return out
+}
+func ScopeInfo_FromProto(mapCtx *direct.MapContext, in *pb.ScopeInfo) *krm.ScopeInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ScopeInfo{}
+	out.ReferenceListScope = ReferenceListScope_FromProto(mapCtx, in.GetReferenceListScope())
+	return out
+}
+func ScopeInfo_ToProto(mapCtx *direct.MapContext, in *krm.ScopeInfo) *pb.ScopeInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ScopeInfo{}
+	out.ReferenceListScope = ReferenceListScope_ToProto(mapCtx, in.ReferenceListScope)
 	return out
 }
 func WatchlistUserPreferences_FromProto(mapCtx *direct.MapContext, in *pb.WatchlistUserPreferences) *krm.WatchlistUserPreferences {

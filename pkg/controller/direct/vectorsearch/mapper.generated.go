@@ -29,6 +29,60 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func DedicatedInfrastructure_FromProto(mapCtx *direct.MapContext, in *pb.DedicatedInfrastructure) *krm.DedicatedInfrastructure {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DedicatedInfrastructure{}
+	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	out.AutoscalingSpec = DedicatedInfrastructure_AutoscalingSpec_FromProto(mapCtx, in.GetAutoscalingSpec())
+	return out
+}
+func DedicatedInfrastructure_ToProto(mapCtx *direct.MapContext, in *krm.DedicatedInfrastructure) *pb.DedicatedInfrastructure {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DedicatedInfrastructure{}
+	if oneof := DedicatedInfrastructure_Mode_ToProto(mapCtx, in.Mode); oneof != nil {
+		out.Mode = oneof
+	}
+	out.AutoscalingSpec = DedicatedInfrastructure_AutoscalingSpec_ToProto(mapCtx, in.AutoscalingSpec)
+	return out
+}
+func DedicatedInfrastructure_AutoscalingSpec_FromProto(mapCtx *direct.MapContext, in *pb.DedicatedInfrastructure_AutoscalingSpec) *krm.DedicatedInfrastructure_AutoscalingSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DedicatedInfrastructure_AutoscalingSpec{}
+	out.MinReplicaCount = direct.LazyPtr(in.GetMinReplicaCount())
+	out.MaxReplicaCount = direct.LazyPtr(in.GetMaxReplicaCount())
+	return out
+}
+func DedicatedInfrastructure_AutoscalingSpec_ToProto(mapCtx *direct.MapContext, in *krm.DedicatedInfrastructure_AutoscalingSpec) *pb.DedicatedInfrastructure_AutoscalingSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DedicatedInfrastructure_AutoscalingSpec{}
+	out.MinReplicaCount = direct.ValueOf(in.MinReplicaCount)
+	out.MaxReplicaCount = direct.ValueOf(in.MaxReplicaCount)
+	return out
+}
+func DenseScannIndex_FromProto(mapCtx *direct.MapContext, in *pb.DenseScannIndex) *krm.DenseScannIndex {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DenseScannIndex{}
+	out.FeatureNormType = direct.Enum_FromProto(mapCtx, in.GetFeatureNormType())
+	return out
+}
+func DenseScannIndex_ToProto(mapCtx *direct.MapContext, in *krm.DenseScannIndex) *pb.DenseScannIndex {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DenseScannIndex{}
+	out.FeatureNormType = direct.Enum_ToProto[pb.DenseScannIndex_FeatureNormType](mapCtx, in.FeatureNormType)
+	return out
+}
 func DenseVectorField_FromProto(mapCtx *direct.MapContext, in *pb.DenseVectorField) *krm.DenseVectorField {
 	if in == nil {
 		return nil
@@ -127,6 +181,64 @@ func VectorSearchCollectionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Vecto
 	out.Labels = in.Labels
 	out.VectorSchema = VectorSchema_ToProto(mapCtx, in.VectorSchema)
 	out.DataSchema = direct.Struct_ToProto(mapCtx, in.DataSchema)
+	return out
+}
+func VectorsearchIndexObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.VectorsearchIndexObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VectorsearchIndexObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func VectorsearchIndexObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VectorsearchIndexObservedState) *pb.Index {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func VectorsearchIndexSpec_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.VectorsearchIndexSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VectorsearchIndexSpec{}
+	out.DedicatedInfrastructure = DedicatedInfrastructure_FromProto(mapCtx, in.GetDedicatedInfrastructure())
+	out.DenseScann = DenseScannIndex_FromProto(mapCtx, in.GetDenseScann())
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	out.DistanceMetric = direct.Enum_FromProto(mapCtx, in.GetDistanceMetric())
+	out.IndexField = direct.LazyPtr(in.GetIndexField())
+	out.FilterFields = in.FilterFields
+	out.StoreFields = in.StoreFields
+	return out
+}
+func VectorsearchIndexSpec_ToProto(mapCtx *direct.MapContext, in *krm.VectorsearchIndexSpec) *pb.Index {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index{}
+	if oneof := DedicatedInfrastructure_ToProto(mapCtx, in.DedicatedInfrastructure); oneof != nil {
+		out.InfraType = &pb.Index_DedicatedInfrastructure{DedicatedInfrastructure: oneof}
+	}
+	if oneof := DenseScannIndex_ToProto(mapCtx, in.DenseScann); oneof != nil {
+		out.IndexType = &pb.Index_DenseScann{DenseScann: oneof}
+	}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	out.DistanceMetric = direct.Enum_ToProto[pb.DistanceMetric](mapCtx, in.DistanceMetric)
+	out.IndexField = direct.ValueOf(in.IndexField)
+	out.FilterFields = in.FilterFields
+	out.StoreFields = in.StoreFields
 	return out
 }
 func VertexEmbeddingConfig_FromProto(mapCtx *direct.MapContext, in *pb.VertexEmbeddingConfig) *krm.VertexEmbeddingConfig {

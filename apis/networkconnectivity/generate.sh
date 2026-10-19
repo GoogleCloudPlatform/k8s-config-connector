@@ -48,6 +48,19 @@ ${CONTROLLERBUILDER} generate-identity \
   --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
   --resource NetworkConnectivityServiceConnectionMap:ServiceConnectionMap
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.networkconnectivity.v1 \
+  --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource NetworkConnectivityDestination:Destination
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.networkconnectivity.v1 \
+  --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
+  --resource NetworkConnectivityDestination:Destination
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service mockgcp.cloud.networkconnectivity.v1 \
   --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \

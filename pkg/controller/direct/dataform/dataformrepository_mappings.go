@@ -15,6 +15,7 @@
 package dataform
 
 import (
+	apiv1pb "cloud.google.com/go/dataform/apiv1/dataformpb"
 	pb "cloud.google.com/go/dataform/apiv1beta1/dataformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -141,4 +142,12 @@ func RepositoryWorkspaceCompilationOverrides_v1beta1_ToProto(mapCtx *direct.MapC
 	out.SchemaSuffix = direct.ValueOf(in.SchemaSuffix)
 	out.TablePrefix = direct.ValueOf(in.TablePrefix)
 	return out
+}
+
+func InvocationConfig_QueryPriority_ToProto(mapCtx *direct.MapContext, in *string) *apiv1pb.InvocationConfig_QueryPriority {
+	if in == nil {
+		return nil
+	}
+	v := direct.Enum_ToProto[apiv1pb.InvocationConfig_QueryPriority](mapCtx, in)
+	return &v
 }

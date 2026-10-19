@@ -2576,6 +2576,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - blockchainnodeengine.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - certificatemanager.cnrm.cloud.google.com
   resources:
   - '*'
@@ -2625,6 +2637,30 @@ rules:
   - delete
 - apiGroups:
   - cloudbuild.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - cloudchannel.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - cloudcontrolspartner.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -3728,6 +3764,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - parallelstore.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - parametermanager.cnrm.cloud.google.com
   resources:
   - '*'
@@ -3897,6 +3945,18 @@ rules:
   - delete
 - apiGroups:
   - securitycentermanagement.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - securityposture.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -4718,6 +4778,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - blockchainnodeengine.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - certificatemanager.cnrm.cloud.google.com
   resources:
   - '*'
@@ -4751,6 +4819,22 @@ rules:
   - watch
 - apiGroups:
   - cloudbuild.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cloudchannel.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cloudcontrolspartner.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -5486,6 +5570,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - parallelstore.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - parametermanager.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5599,6 +5691,14 @@ rules:
   - watch
 - apiGroups:
   - securitycentermanagement.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - securityposture.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

@@ -59,14 +59,24 @@ ${CONTROLLERBUILDER} generate-types \
   --resource APIHubCuration:Curation \
   --prune-unused-types=false
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.apihub.v1 \
+  --api-version apihub.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource ApihubSpec:Spec \
+  --prune-unused-types=false
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${PROTO_OUT} \
+  --service google.cloud.apihub.v1 \
+  --api-version apihub.cnrm.cloud.google.com/v1alpha1 \
+  --resource ApihubSpec:Spec
+
 ${CONTROLLERBUILDER} generate-mapper \
   --proto-source-path ${PROTO_OUT} \
   --service google.cloud.apihub.v1 \
   --api-version apihub.cnrm.cloud.google.com/v1alpha1
-
-
-
-# Format generated code
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

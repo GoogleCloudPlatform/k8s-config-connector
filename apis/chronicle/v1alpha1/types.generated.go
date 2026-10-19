@@ -18,8 +18,322 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.chronicle.v1
 // resource: ChronicleWatchlist:Watchlist
+// resource: ChronicleDataTable:DataTable
+// resource: ChronicleNativeDashboard:NativeDashboard
+// resource: ChronicleFindingsRefinement:FindingsRefinement
+// resource: ChronicleReferenceList:ReferenceList
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.chronicle.v1.AdvancedFilterConfig
+type AdvancedFilterConfig struct {
+	// Required. The token name to look for in the query (e.g., "hostname").
+	//  The system will automatically wrap this in '$' (e.g., "$hostname$").
+	// +kcc:proto:field=google.cloud.chronicle.v1.AdvancedFilterConfig.token
+	// +required
+	Token *string `json:"token,omitempty"`
+
+	// Optional. String to prepend to the final replaced value (e.g., "/", "^(",
+	//  "\"").
+	// +kcc:proto:field=google.cloud.chronicle.v1.AdvancedFilterConfig.prefix
+	Prefix *string `json:"prefix,omitempty"`
+
+	// Optional. String to append to the final replaced value (e.g., "/", ")$",
+	//  "\"").
+	// +kcc:proto:field=google.cloud.chronicle.v1.AdvancedFilterConfig.suffix
+	Suffix *string `json:"suffix,omitempty"`
+
+	// Optional. Delimiter to join multiple selected values (e.g., "|", " OR field
+	//  = ").
+	// +kcc:proto:field=google.cloud.chronicle.v1.AdvancedFilterConfig.separator
+	Separator *string `json:"separator,omitempty"`
+
+	// Optional. Whether to allow selection of multiple values.
+	// +kcc:proto:field=google.cloud.chronicle.v1.AdvancedFilterConfig.multiple_allowed
+	MultipleAllowed *bool `json:"multipleAllowed,omitempty"`
+
+	// Optional. Default values to use if no value is selected/provided.
+	// +kcc:proto:field=google.cloud.chronicle.v1.AdvancedFilterConfig.default_values
+	DefaultValues []string `json:"defaultValues,omitempty"`
+
+	// Optional. Whether to skip the configured prefix and suffix when using
+	//  default values. If true, default values are inserted raw (joined by the
+	//  separator).
+	// +kcc:proto:field=google.cloud.chronicle.v1.AdvancedFilterConfig.skip_default_affixes
+	SkipDefaultAffixes *bool `json:"skipDefaultAffixes,omitempty"`
+
+	// Required. Source of the values for the filter.
+	// +kcc:proto:field=google.cloud.chronicle.v1.AdvancedFilterConfig.value_source
+	// +required
+	ValueSource *AdvancedFilterConfig_ValueSource `json:"valueSource,omitempty"`
+}
+
+// +kcc:proto=google.cloud.chronicle.v1.AdvancedFilterConfig.ManualOptions
+type AdvancedFilterConfig_ManualOptions struct {
+	// Optional. The options provided by the user.
+	//  The max number of options is limited to 10000.
+	// +kcc:proto:field=google.cloud.chronicle.v1.AdvancedFilterConfig.ManualOptions.options
+	Options []string `json:"options,omitempty"`
+}
+
+// +kcc:proto=google.cloud.chronicle.v1.AdvancedFilterConfig.QueryOptions
+type AdvancedFilterConfig_QueryOptions struct {
+	// Required. The query to execute to fetch the values.
+	// +kcc:proto:field=google.cloud.chronicle.v1.AdvancedFilterConfig.QueryOptions.query
+	// +required
+	Query *string `json:"query,omitempty"`
+
+	// Required. The column name to use for the values.
+	// +kcc:proto:field=google.cloud.chronicle.v1.AdvancedFilterConfig.QueryOptions.column
+	// +required
+	Column *string `json:"column,omitempty"`
+
+	// Optional. Enable global time filter
+	// +kcc:proto:field=google.cloud.chronicle.v1.AdvancedFilterConfig.QueryOptions.global_time_filter_enabled
+	GlobalTimeFilterEnabled *bool `json:"globalTimeFilterEnabled,omitempty"`
+
+	// Optional. Time range input specifically for the filter's population
+	//  query.
+	// +kcc:proto:field=google.cloud.chronicle.v1.AdvancedFilterConfig.QueryOptions.input
+	Input *DashboardQuery_Input `json:"input,omitempty"`
+}
+
+// +kcc:proto=google.cloud.chronicle.v1.AdvancedFilterConfig.ValueSource
+type AdvancedFilterConfig_ValueSource struct {
+	// Optional. Manual options provided by the user.
+	// +kcc:proto:field=google.cloud.chronicle.v1.AdvancedFilterConfig.ValueSource.manual_options
+	ManualOptions *AdvancedFilterConfig_ManualOptions `json:"manualOptions,omitempty"`
+
+	// Optional. Query options to fetch the values from the query engine.
+	//  This is used for the filter's population query.
+	// +kcc:proto:field=google.cloud.chronicle.v1.AdvancedFilterConfig.ValueSource.query_options
+	QueryOptions *AdvancedFilterConfig_QueryOptions `json:"queryOptions,omitempty"`
+}
+
+// +kcc:proto=google.cloud.chronicle.v1.DashboardDefinition
+type DashboardDefinition struct {
+	// Filters for the dashboard.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardDefinition.filters
+	Filters []DashboardFilter `json:"filters,omitempty"`
+
+	// Fingerprint of the dashboard definition.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardDefinition.fingerprint
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
+	// Charts in the dashboard.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardDefinition.charts
+	Charts []DashboardDefinition_ChartConfig `json:"charts,omitempty"`
+}
+
+// +kcc:proto=google.cloud.chronicle.v1.DashboardDefinition.ChartConfig
+type DashboardDefinition_ChartConfig struct {
+
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardDefinition.ChartConfig.chart_layout
+	ChartLayout *DashboardDefinition_ChartConfig_ChartLayout `json:"chartLayout,omitempty"`
+
+	// Dashboard filters applied to the chart.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardDefinition.ChartConfig.filters_ids
+	FiltersIDs []string `json:"filtersIDs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.chronicle.v1.DashboardDefinition.ChartConfig.ChartLayout
+type DashboardDefinition_ChartConfig_ChartLayout struct {
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardDefinition.ChartConfig.ChartLayout.start_x
+	StartX *int32 `json:"startX,omitempty"`
+
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardDefinition.ChartConfig.ChartLayout.span_x
+	SpanX *int32 `json:"spanX,omitempty"`
+
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardDefinition.ChartConfig.ChartLayout.start_y
+	StartY *int32 `json:"startY,omitempty"`
+
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardDefinition.ChartConfig.ChartLayout.span_y
+	SpanY *int32 `json:"spanY,omitempty"`
+}
+
+// +kcc:proto=google.cloud.chronicle.v1.DashboardFilter
+type DashboardFilter struct {
+	// ID of the filter.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardFilter.id
+	ID *string `json:"id,omitempty"`
+
+	// Datasource the filter is applicable for.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardFilter.data_source
+	DataSource *string `json:"dataSource,omitempty"`
+
+	// Filter field path.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardFilter.field_path
+	FieldPath *string `json:"fieldPath,omitempty"`
+
+	// Operator and values. Can include multiple modifiers.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardFilter.filter_operator_and_field_values
+	FilterOperatorAndFieldValues []FilterOperatorAndValues `json:"filterOperatorAndFieldValues,omitempty"`
+
+	// Display name of the filter.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardFilter.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Chart IDs the filter is applicable for.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardFilter.chart_ids
+	ChartIDs []string `json:"chartIDs,omitempty"`
+
+	// Optional. Whether the filter is a standard time range filter,
+	//  meaning that it has to be used as the query time range,
+	//  and not as a predicate in the query.
+	//  A chart can have at most one standard time range filter applied.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardFilter.is_standard_time_range_filter
+	IsStandardTimeRangeFilter *bool `json:"isStandardTimeRangeFilter,omitempty"`
+
+	// Optional. Whether this filter is required to be populated by the
+	//  dashboard consumer prior to the dashboard loading.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardFilter.is_mandatory
+	IsMandatory *bool `json:"isMandatory,omitempty"`
+
+	// Optional. Whether this standard time range filter is enabled.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardFilter.is_standard_time_range_filter_enabled
+	IsStandardTimeRangeFilterEnabled *bool `json:"isStandardTimeRangeFilterEnabled,omitempty"`
+
+	// Optional. Advanced filter configuration for the filter widget.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardFilter.advanced_filter_config
+	AdvancedFilterConfig *AdvancedFilterConfig `json:"advancedFilterConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.chronicle.v1.DashboardQuery.Input
+type DashboardQuery_Input struct {
+	// time range to fetch the data for.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardQuery.Input.time_window
+	TimeWindow *Interval `json:"timeWindow,omitempty"`
+
+	// time range for last x units.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardQuery.Input.relative_time
+	RelativeTime *DashboardQuery_Input_RelativeTime `json:"relativeTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.chronicle.v1.DashboardQuery.Input.RelativeTime
+type DashboardQuery_Input_RelativeTime struct {
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardQuery.Input.RelativeTime.time_unit
+	// +required
+	TimeUnit *string `json:"timeUnit,omitempty"`
+
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardQuery.Input.RelativeTime.start_time_val
+	// +required
+	StartTimeVal *int64 `json:"startTimeVal,omitempty"`
+}
+
+// +kcc:proto=google.cloud.chronicle.v1.DashboardUserData
+type DashboardUserData struct {
+	// time when this dashboard is last viewed
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardUserData.last_viewed_time
+	LastViewedTime *string `json:"lastViewedTime,omitempty"`
+
+	// is dashboard pinned by user
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardUserData.is_pinned
+	IsPinned *bool `json:"isPinned,omitempty"`
+}
+
+// +kcc:proto=google.cloud.chronicle.v1.DataTableColumnInfo
+type DataTableColumnInfo struct {
+	// Entity proto field path that the column is mapped to
+	// +kcc:proto:field=google.cloud.chronicle.v1.DataTableColumnInfo.mapped_column_path
+	MappedColumnPath *string `json:"mappedColumnPath,omitempty"`
+
+	// Column type can be STRING, CIDR (Ex- 10.1.1.0/24), REGEX
+	// +kcc:proto:field=google.cloud.chronicle.v1.DataTableColumnInfo.column_type
+	ColumnType *string `json:"columnType,omitempty"`
+
+	// Required. Column Index. 0,1,2...
+	// +kcc:proto:field=google.cloud.chronicle.v1.DataTableColumnInfo.column_index
+	// +required
+	ColumnIndex *int32 `json:"columnIndex,omitempty"`
+
+	// Required. Original column name of the Data Table (present in the CSV header
+	//  in case of creation of data tables using file uploads). It must satisfy the
+	//  following requirements:
+	//  - Starts with letter.
+	//  - Contains only letters, numbers and underscore.
+	//  - Must be unique and has length < 256.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DataTableColumnInfo.original_column
+	// +required
+	OriginalColumn *string `json:"originalColumn,omitempty"`
+
+	// Optional. Whether to include this column in the calculation of the row ID.
+	//  If no columns have key_column = true, all columns will be included in the
+	//  calculation of the row ID.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DataTableColumnInfo.key_column
+	KeyColumn *bool `json:"keyColumn,omitempty"`
+
+	// Optional. Whether the column is a repeated values column.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DataTableColumnInfo.repeated_values
+	RepeatedValues *bool `json:"repeatedValues,omitempty"`
+}
+
+// +kcc:proto=google.cloud.chronicle.v1.DataTableScopeInfo
+type DataTableScopeInfo struct {
+	// Required. Contains the list of scope names of the data table. If the list
+	//  is empty, the data table is treated as unscoped. The scope names should be
+	//  full resource names and should be of the format:
+	//  "projects/{project}/locations/{location}/instances/{instance}/dataAccessScopes/{scope_name}"
+	// +kcc:proto:field=google.cloud.chronicle.v1.DataTableScopeInfo.data_access_scopes
+	// +required
+	DataAccessScopes []string `json:"dataAccessScopes,omitempty"`
+}
+
+// +kcc:proto=google.cloud.chronicle.v1.FilterOperatorAndValues
+type FilterOperatorAndValues struct {
+	// Operator for a single filter modifier.
+	// +kcc:proto:field=google.cloud.chronicle.v1.FilterOperatorAndValues.filter_operator
+	FilterOperator *string `json:"filterOperator,omitempty"`
+
+	// Values for the modifier. All operators should have a single value other
+	//  than 'IN' and 'BETWEEN'. 'PAST' will have negative seconds
+	//  like -86400 is past 1 day.
+	// +kcc:proto:field=google.cloud.chronicle.v1.FilterOperatorAndValues.field_values
+	FieldValues []string `json:"fieldValues,omitempty"`
+}
+
+// +kcc:proto=google.cloud.chronicle.v1.OutcomeFilter
+type OutcomeFilter struct {
+	// Required. The outcome variable name.
+	// +kcc:proto:field=google.cloud.chronicle.v1.OutcomeFilter.outcome_variable
+	// +required
+	OutcomeVariable *string `json:"outcomeVariable,omitempty"`
+
+	// Required. The value of the outcome variable to match.
+	// +kcc:proto:field=google.cloud.chronicle.v1.OutcomeFilter.outcome_value
+	// +required
+	OutcomeValue *string `json:"outcomeValue,omitempty"`
+
+	// Required. The operator to be applied to the outcome variable.
+	// +kcc:proto:field=google.cloud.chronicle.v1.OutcomeFilter.outcome_filter_operator
+	// +required
+	OutcomeFilterOperator *string `json:"outcomeFilterOperator,omitempty"`
+}
+
+// +kcc:proto=google.cloud.chronicle.v1.ReferenceListEntry
+type ReferenceListEntry struct {
+	// Required. The value of the entry. Maximum length is 512 characters.
+	// +kcc:proto:field=google.cloud.chronicle.v1.ReferenceListEntry.value
+	// +required
+	Value *string `json:"value,omitempty"`
+}
+
+// +kcc:proto=google.cloud.chronicle.v1.ReferenceListScope
+type ReferenceListScope struct {
+	// Optional. The list of scope names of the reference list. The scope names
+	//  should be full resource names and should be of the format:
+	//  `projects/{project}/locations/{location}/instances/{instance}/dataAccessScopes/{scope_name}`.
+	// +kcc:proto:field=google.cloud.chronicle.v1.ReferenceListScope.scope_names
+	ScopeNames []string `json:"scopeNames,omitempty"`
+}
+
+// +kcc:proto=google.cloud.chronicle.v1.ScopeInfo
+type ScopeInfo struct {
+	// Required. The list of scope names of the reference list, if the list is
+	//  empty the reference list is treated as unscoped.
+	// +kcc:proto:field=google.cloud.chronicle.v1.ScopeInfo.reference_list_scope
+	// +required
+	ReferenceListScope *ReferenceListScope `json:"referenceListScope,omitempty"`
+}
 
 /* unreachable type Watchlist_EntityCount
 // +kcc:proto=google.cloud.chronicle.v1.Watchlist.EntityCount
@@ -43,6 +357,36 @@ type WatchlistUserPreferences struct {
 	// Optional. Whether the watchlist is pinned on the dashboard.
 	// +kcc:proto:field=google.cloud.chronicle.v1.WatchlistUserPreferences.pinned
 	Pinned *bool `json:"pinned,omitempty"`
+}
+
+// +kcc:proto=google.type.Interval
+type Interval struct {
+	// Optional. Inclusive start of the interval.
+	//
+	//  If specified, a Timestamp matching this interval will have to be the same
+	//  or after the start.
+	// +kcc:proto:field=google.type.Interval.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Optional. Exclusive end of the interval.
+	//
+	//  If specified, a Timestamp matching this interval will have to be before the
+	//  end.
+	// +kcc:proto:field=google.type.Interval.end_time
+	EndTime *string `json:"endTime,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.chronicle.v1.DashboardDefinition
+type DashboardDefinitionObservedState struct {
+	// Charts in the dashboard.
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardDefinition.charts
+	Charts []DashboardDefinition_ChartConfigObservedState `json:"charts,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.chronicle.v1.DashboardDefinition.ChartConfig
+type DashboardDefinition_ChartConfigObservedState struct {
+	// +kcc:proto:field=google.cloud.chronicle.v1.DashboardDefinition.ChartConfig.dashboard_chart
+	DashboardChart *string `json:"dashboardChart,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.chronicle.v1.Watchlist.EntityCount
