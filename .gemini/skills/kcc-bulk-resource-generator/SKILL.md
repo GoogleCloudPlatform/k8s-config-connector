@@ -34,3 +34,5 @@ For each committed category branch produced in Phase 1:
    Check out branch `<category-branch>` and verify it as `<Category 1 | Category 2 | Category 3>` by reading and executing `.gemini/skills/kcc-bulk-resource-generator/verify/SKILL.md`. Return the structured Verification Report.
    ```
 3. Wait for each verifier subagent's report and fix any flagged violations before pushing or opening the draft PRs.
+
+- **Declarative Resource Filtering:** Before bulk-generating types or controllers, check candidate resources against [`docs/ai/declarative-resource-criteria.md`](../../../docs/ai/declarative-resource-criteria.md) (or `../../../../docs/ai/declarative-resource-criteria.md`) to separate read-only/ephemeral/data-plane resources from declarative control-plane resources.

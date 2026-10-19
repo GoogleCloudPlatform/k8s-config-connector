@@ -176,3 +176,5 @@ To prevent untracked files from one category leaking into another category's bra
    git add -A && git commit -m "<category commit message>"
    ```
 3. Proceed to **Phase 2 (Isolated Subagent Verification)** in `.gemini/skills/kcc-bulk-resource-generator/SKILL.md`.
+
+- **Declarative Resource Filtering:** Before bulk-generating types or controllers, check candidate resources against [`docs/ai/declarative-resource-criteria.md`](../../../docs/ai/declarative-resource-criteria.md) (or `../../../../docs/ai/declarative-resource-criteria.md`) to separate read-only/ephemeral/data-plane resources from declarative control-plane resources.
