@@ -61,6 +61,28 @@ func ConversationInfo_ToProto(mapCtx *direct.MapContext, in *krm.ConversationInf
 	out.LanguageCode = direct.ValueOf(in.LanguageCode)
 	return out
 }
+func DialogflowContextSpec_FromProto(mapCtx *direct.MapContext, in *pb.Context) *krm.DialogflowContextSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowContextSpec{}
+	// MISSING: Name
+	out.LifespanCount = direct.LazyPtr(in.GetLifespanCount())
+	if v := direct.Struct_FromProto(mapCtx, in.GetParameters()); v != nil {
+		out.Parameters = *v
+	}
+	return out
+}
+func DialogflowContextSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowContextSpec) *pb.Context {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Context{}
+	// MISSING: Name
+	out.LifespanCount = direct.ValueOf(in.LifespanCount)
+	out.Parameters = direct.Struct_ToProto(mapCtx, &in.Parameters)
+	return out
+}
 func DialogflowConversationDatasetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConversationDataset) *krm.DialogflowConversationDatasetObservedState {
 	if in == nil {
 		return nil
@@ -108,6 +130,72 @@ func DialogflowConversationDatasetSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
 	return out
+}
+func DialogflowDocumentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Document) *krm.DialogflowDocumentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowDocumentObservedState{}
+	// MISSING: Name
+	out.LatestReloadStatus = Document_ReloadStatus_FromProto(mapCtx, in.GetLatestReloadStatus())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+func DialogflowDocumentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowDocumentObservedState) *pb.Document {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Document{}
+	// MISSING: Name
+	out.LatestReloadStatus = Document_ReloadStatus_ToProto(mapCtx, in.LatestReloadStatus)
+	out.State = direct.Enum_ToProto[pb.Document_State](mapCtx, in.State)
+	return out
+}
+func DialogflowDocumentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Document) *krm.DialogflowDocumentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowDocumentSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.MimeType = direct.LazyPtr(in.GetMimeType())
+	out.KnowledgeTypes = direct.EnumSlice_FromProto(mapCtx, in.KnowledgeTypes)
+	out.ContentURI = direct.LazyPtr(in.GetContentUri())
+	out.RawContent = in.GetRawContent()
+	out.EnableAutoReload = direct.LazyPtr(in.GetEnableAutoReload())
+	out.Metadata = in.Metadata
+	return out
+}
+func DialogflowDocumentSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowDocumentSpec) *pb.Document {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Document{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.MimeType = direct.ValueOf(in.MimeType)
+	out.KnowledgeTypes = direct.EnumSlice_ToProto[pb.Document_KnowledgeType](mapCtx, in.KnowledgeTypes)
+	if oneof := DialogflowDocumentSpec_ContentUri_ToProto(mapCtx, in.ContentURI); oneof != nil {
+		out.Source = oneof
+	}
+	if oneof := DialogflowDocumentSpec_RawContent_ToProto(mapCtx, in.RawContent); oneof != nil {
+		out.Source = oneof
+	}
+	out.EnableAutoReload = direct.ValueOf(in.EnableAutoReload)
+	out.Metadata = in.Metadata
+	return out
+}
+func DialogflowDocumentSpec_ContentUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.Document_ContentUri {
+	if in == nil {
+		return nil
+	}
+	return &pb.Document_ContentUri{ContentUri: *in}
+}
+func DialogflowDocumentSpec_RawContent_ToProto(mapCtx *direct.MapContext, in []byte) *pb.Document_RawContent {
+	if in == nil {
+		return nil
+	}
+	return &pb.Document_RawContent{RawContent: in}
 }
 func DialogflowGeneratorObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Generator) *krm.DialogflowGeneratorObservedState {
 	if in == nil {
@@ -201,6 +289,48 @@ func DialogflowKnowledgeBaseSpec_ToProto(mapCtx *direct.MapContext, in *krm.Dial
 	out := &pb.KnowledgeBase{}
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.LanguageCode = direct.ValueOf(in.LanguageCode)
+	return out
+}
+func DialogflowParticipantSpec_FromProto(mapCtx *direct.MapContext, in *pb.Participant) *krm.DialogflowParticipantSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DialogflowParticipantSpec{}
+	// MISSING: Name
+	out.Role = direct.Enum_FromProto(mapCtx, in.GetRole())
+	out.SipRecordingMediaLabel = direct.LazyPtr(in.GetSipRecordingMediaLabel())
+	out.ObfuscatedExternalUserID = direct.LazyPtr(in.GetObfuscatedExternalUserId())
+	out.DocumentsMetadataFilters = in.DocumentsMetadataFilters
+	return out
+}
+func DialogflowParticipantSpec_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowParticipantSpec) *pb.Participant {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Participant{}
+	// MISSING: Name
+	out.Role = direct.Enum_ToProto[pb.Participant_Role](mapCtx, in.Role)
+	out.SipRecordingMediaLabel = direct.ValueOf(in.SipRecordingMediaLabel)
+	out.ObfuscatedExternalUserId = direct.ValueOf(in.ObfuscatedExternalUserID)
+	out.DocumentsMetadataFilters = in.DocumentsMetadataFilters
+	return out
+}
+func Document_ReloadStatus_FromProto(mapCtx *direct.MapContext, in *pb.Document_ReloadStatus) *krm.Document_ReloadStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Document_ReloadStatus{}
+	out.Time = direct.StringTimestamp_FromProto(mapCtx, in.GetTime())
+	out.Status = direct.Status_FromProto(mapCtx, in.GetStatus())
+	return out
+}
+func Document_ReloadStatus_ToProto(mapCtx *direct.MapContext, in *krm.Document_ReloadStatus) *pb.Document_ReloadStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Document_ReloadStatus{}
+	out.Time = direct.StringTimestamp_ToProto(mapCtx, in.Time)
+	out.Status = direct.Status_ToProto(mapCtx, in.Status)
 	return out
 }
 func FewShotExample_FromProto(mapCtx *direct.MapContext, in *pb.FewShotExample) *krm.FewShotExample {

@@ -30,11 +30,61 @@ import (
 	pb "cloud.google.com/go/metastore/apiv1/metastorepb"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	dayofweek "google.golang.org/genproto/googleapis/type/dayofweek"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 )
+
+func MetadataExportObservedState_DestinationGcsUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.MetadataExport_DestinationGcsUri {
+	if in == nil {
+		return nil
+	}
+	return &pb.MetadataExport_DestinationGcsUri{DestinationGcsUri: *in}
+}
+
+func MetastoreBackupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Backup) *krmv1beta1.MetastoreBackupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.MetastoreBackupObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.ServiceRevision = MetastoreServiceSpec_FromProto(mapCtx, in.GetServiceRevision())
+	out.RestoringServices = in.RestoringServices
+	return out
+}
+
+func MetastoreBackupObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MetastoreBackupObservedState) *pb.Backup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Backup{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.State = direct.Enum_ToProto[pb.Backup_State](mapCtx, in.State)
+	out.ServiceRevision = MetastoreServiceSpec_ToProto(mapCtx, in.ServiceRevision)
+	out.RestoringServices = in.RestoringServices
+	return out
+}
+
+func ScalingConfig_InstanceSize_ToProto(mapCtx *direct.MapContext, in *string) *pb.ScalingConfig_InstanceSize_ {
+	if in == nil {
+		return nil
+	}
+	return &pb.ScalingConfig_InstanceSize_{InstanceSize: direct.Enum_ToProto[pb.ScalingConfig_InstanceSize](mapCtx, in)}
+}
+
+func ScalingConfig_ScalingFactor_ToProto(mapCtx *direct.MapContext, in *float32) *pb.ScalingConfig_ScalingFactor {
+	if in == nil {
+		return nil
+	}
+	return &pb.ScalingConfig_ScalingFactor{ScalingFactor: *in}
+}
 
 func AuxiliaryVersionConfig_FromProto(mapCtx *direct.MapContext, in *pb.AuxiliaryVersionConfig) *krmv1alpha1.AuxiliaryVersionConfig {
 	if in == nil {
@@ -223,24 +273,6 @@ func MetadataExportObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alp
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	out.State = direct.Enum_ToProto[pb.MetadataExport_State](mapCtx, in.State)
 	out.DatabaseDumpType = direct.Enum_ToProto[pb.DatabaseDumpSpec_Type](mapCtx, in.DatabaseDumpType)
-	return out
-}
-func MetadataManagementActivity_FromProto(mapCtx *direct.MapContext, in *pb.MetadataManagementActivity) *krmv1alpha1.MetadataManagementActivity {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.MetadataManagementActivity{}
-	// MISSING: MetadataExports
-	// MISSING: Restores
-	return out
-}
-func MetadataManagementActivity_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.MetadataManagementActivity) *pb.MetadataManagementActivity {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MetadataManagementActivity{}
-	// MISSING: MetadataExports
-	// MISSING: Restores
 	return out
 }
 func MetadataManagementActivityObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataManagementActivity) *krmv1alpha1.MetadataManagementActivityObservedState {

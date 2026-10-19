@@ -21,6 +21,38 @@
 # file does not have.
 
 entries:
+  - kind: ChronicleDataTableRow
+    group: chronicle.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: ChronicleDataTableRow
+    group: chronicle.cnrm.cloud.google.com
+    reason: identity-not-in-cai
+    detail: template "//chronicle.googleapis.com/projects/{project}/locations/{location}/instances/{instance}/dataTables/{data_table}/dataTableRows/{data_table_row}" is not listed in docs/ai/metadata/cloudassetinventory_names.jsonl; verify the URL format or add an exception in pkg/gcpurls/registry_test.go
+    status: open
+  - kind: ChronicleDataTableRow
+    group: chronicle.cnrm.cloud.google.com
+    reason: identity-root-unknown
+    detail: pattern "projects/{project}/locations/{location}/instances/{instance}/dataTables/{data_table}/dataTableRows/{data_table_row}" contains ancestor segment(s) instances/{instance}, dataTables/{data_table} with no matching reference or field on ChronicleDataTableRowSpec
+    status: open
+  - kind: ChronicleDataTableRow
+    group: chronicle.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: generated ChronicleDataTableRowIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
+    status: open
+  - kind: ChronicleDataTableRow
+    group: chronicle.cnrm.cloud.google.com
+    field: .spec.dataTableRef
+    reason: parent-ref-guessed
+    detail: emitted as a reference to ChronicleDataTableRef, read from the dataTables segment of projects/{project}/locations/{location}/instances/{instance}/dataTables/{data_table}/dataTableRows/{data_table_row}; the field name comes from the pattern rather than the proto, so confirm both the name and the target
+    status: open
+  - kind: ChronicleDataTableRow
+    group: chronicle.cnrm.cloud.google.com
+    field: .spec.location
+    reason: location-or-parent-ref
+    detail: the parent is projects/{project}/locations/{location}/instances/{instance}/dataTables/{data_table}, which already names the location; a reference to it could replace location and the root reference
+    status: open
   - kind: ChronicleWatchlist
     group: chronicle.cnrm.cloud.google.com
     reason: untriaged-bulk-generation
@@ -47,3 +79,4 @@ entries:
     reason: location-or-parent-ref
     detail: the parent is projects/{project}/locations/{location}/instances/{instance}, which already names the location; a reference to it could replace location and the root reference
     status: open
+

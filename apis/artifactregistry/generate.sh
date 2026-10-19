@@ -47,6 +47,17 @@ ${CONTROLLERBUILDER} generate-types \
   --include-skipped-output \
   --resource ArtifactRegistryRepository:Repository
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.devtools.artifactregistry.v1 \
+  --api-version artifactregistry.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource ArtifactRegistryTag:Tag
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.devtools.artifactregistry.v1 \
+  --api-version artifactregistry.cnrm.cloud.google.com/v1alpha1 \
+  --resource ArtifactRegistryTag:Tag
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.devtools.artifactregistry.v1 \
   --api-version "artifactregistry.cnrm.cloud.google.com/v1beta1" \

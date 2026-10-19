@@ -48,6 +48,29 @@ ${CONTROLLERBUILDER} generate-types \
 
 # Handled recursive self-referential fields by defining ListValue, Value, and ExplanationParameters manually in recursive_types.go
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.aiplatform.v1 \
+  --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource AIPlatformArtifact:Artifact \
+  --resource AIPlatformContext:Context \
+  --resource AIPlatformDatasetVersion:DatasetVersion \
+  --resource AIPlatformExecution:Execution \
+  --resource AIPlatformSession:Session \
+  --resource AIPlatformTensorboardTimeSeries:TensorboardTimeSeries
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.aiplatform.v1 \
+  --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
+  --resource AIPlatformArtifact:Artifact \
+  --resource AIPlatformContext:Context \
+  --resource AIPlatformDatasetVersion:DatasetVersion \
+  --resource AIPlatformExecution:Execution \
+  --resource AIPlatformSession:Session \
+  --resource AIPlatformTensorboardTimeSeries:TensorboardTimeSeries
+
 ${CONTROLLERBUILDER} generate-mapper \
     --service google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1 \
     --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \

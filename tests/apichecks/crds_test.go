@@ -1119,6 +1119,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com":                    true, // status.observedState.modelToUpload.originalModelInfo is an empty object
 		"vertexaischedules.aiplatform.cnrm.cloud.google.com":                            true, // spec.createNotebookExecutionJobRequest.notebookExecutionJob.workbenchRuntime is an empty object
 		"transcoderjobs.transcoder.cnrm.cloud.google.com":                               true, // spec.config.elementaryStreams[].videoStream.vp9.sdr is an empty object
+		"dialogflowtestcases.dialogflow.cnrm.cloud.google.com":                          true, // GCP known pattern: Empty oneof option (spec.lastTestResult.conversationTurns[].virtualAgentOutput.currentPage.entryFulfillment.messages[].knowledgeInfoCard)
 
 	}
 

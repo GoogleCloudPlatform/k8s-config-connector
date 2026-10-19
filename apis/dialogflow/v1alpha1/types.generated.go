@@ -17,11 +17,1635 @@
 // krm.group: dialogflow.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.dialogflow.v2
+// proto.service: google.cloud.dialogflow.cx.v3
 // resource: DialogflowKnowledgeBase:KnowledgeBase
 // resource: DialogflowGenerator:Generator
 // resource: DialogflowConversationDataset:ConversationDataset
+// resource: DialogflowExample:Example
+// resource: DialogflowExperiment:Experiment
+// resource: DialogflowSessionEntityType:SessionEntityType
+// resource: DialogflowVersion:Version
+// resource: DialogflowTestCase:TestCase
+// resource: DialogflowContext:Context
+// resource: DialogflowDocument:Document
+// resource: DialogflowParticipant:Participant
 
 package v1alpha1
+
+import (
+	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+)
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Action
+type Action struct {
+	// Optional. Agent obtained a message from the customer.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Action.user_utterance
+	UserUtterance *UserUtterance `json:"userUtterance,omitempty"`
+
+	// Optional. Action performed by the agent as a message.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Action.agent_utterance
+	AgentUtterance *AgentUtterance `json:"agentUtterance,omitempty"`
+
+	// Optional. Action performed on behalf of the agent by calling a plugin
+	//  tool.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Action.tool_use
+	ToolUse *ToolUse `json:"toolUse,omitempty"`
+
+	// Optional. Action performed on behalf of the agent by invoking a child
+	//  playbook.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Action.playbook_invocation
+	PlaybookInvocation *PlaybookInvocation `json:"playbookInvocation,omitempty"`
+
+	// Optional. Action performed on behalf of the agent by invoking a CX flow.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Action.flow_invocation
+	FlowInvocation *FlowInvocation `json:"flowInvocation,omitempty"`
+
+	// Optional. Action performed on behalf of the agent by transitioning to a
+	//  target playbook.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Action.playbook_transition
+	PlaybookTransition *PlaybookTransition `json:"playbookTransition,omitempty"`
+
+	// Optional. Action performed on behalf of the agent by transitioning to a
+	//  target CX flow.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Action.flow_transition
+	FlowTransition *FlowTransition `json:"flowTransition,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.AdvancedSettings
+type AdvancedSettings struct {
+	// If present, incoming audio is exported by Dialogflow to the configured
+	//  Google Cloud Storage destination.
+	//  Exposed at the following levels:
+	//  - Agent level
+	//  - Flow level
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.AdvancedSettings.audio_export_gcs_destination
+	AudioExportGCSDestination *GCSDestination `json:"audioExportGCSDestination,omitempty"`
+
+	// Settings for speech to text detection.
+	//  Exposed at the following levels:
+	//  - Agent level
+	//  - Flow level
+	//  - Page level
+	//  - Parameter level
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.AdvancedSettings.speech_settings
+	SpeechSettings *AdvancedSettings_SpeechSettings `json:"speechSettings,omitempty"`
+
+	// Settings for DTMF.
+	//  Exposed at the following levels:
+	//  - Agent level
+	//  - Flow level
+	//  - Page level
+	//  - Parameter level.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.AdvancedSettings.dtmf_settings
+	DtmfSettings *AdvancedSettings_DtmfSettings `json:"dtmfSettings,omitempty"`
+
+	// Settings for logging.
+	//  Settings for Dialogflow History, Contact Center messages, StackDriver logs,
+	//  and speech logging.
+	//  Exposed at the following levels:
+	//  - Agent level.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.AdvancedSettings.logging_settings
+	LoggingSettings *AdvancedSettings_LoggingSettings `json:"loggingSettings,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.AdvancedSettings.DtmfSettings
+type AdvancedSettings_DtmfSettings struct {
+	// If true, incoming audio is processed for DTMF (dual tone multi frequency)
+	//  events. For example, if the caller presses a button on their telephone
+	//  keypad and DTMF processing is enabled, Dialogflow will detect the
+	//  event (e.g. a "3" was pressed) in the incoming audio and pass the event
+	//  to the bot to drive business logic (e.g. when 3 is pressed, return the
+	//  account balance).
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.AdvancedSettings.DtmfSettings.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Max length of DTMF digits.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.AdvancedSettings.DtmfSettings.max_digits
+	MaxDigits *int32 `json:"maxDigits,omitempty"`
+
+	// The digit that terminates a DTMF digit sequence.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.AdvancedSettings.DtmfSettings.finish_digit
+	FinishDigit *string `json:"finishDigit,omitempty"`
+
+	// Interdigit timeout setting for matching dtmf input to regex.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.AdvancedSettings.DtmfSettings.interdigit_timeout_duration
+	InterdigitTimeoutDuration *string `json:"interdigitTimeoutDuration,omitempty"`
+
+	// Endpoint timeout setting for matching dtmf input to regex.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.AdvancedSettings.DtmfSettings.endpointing_timeout_duration
+	EndpointingTimeoutDuration *string `json:"endpointingTimeoutDuration,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.AdvancedSettings.LoggingSettings
+type AdvancedSettings_LoggingSettings struct {
+	// Enables Google Cloud Logging.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.AdvancedSettings.LoggingSettings.enable_stackdriver_logging
+	EnableStackdriverLogging *bool `json:"enableStackdriverLogging,omitempty"`
+
+	// Enables DF Interaction logging.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.AdvancedSettings.LoggingSettings.enable_interaction_logging
+	EnableInteractionLogging *bool `json:"enableInteractionLogging,omitempty"`
+
+	// Enables consent-based end-user input redaction, if true, a pre-defined
+	//  session parameter `$session.params.conversation-redaction` will be
+	//  used to determine if the utterance should be redacted.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.AdvancedSettings.LoggingSettings.enable_consent_based_redaction
+	EnableConsentBasedRedaction *bool `json:"enableConsentBasedRedaction,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.AdvancedSettings.SpeechSettings
+type AdvancedSettings_SpeechSettings struct {
+	// Sensitivity of the speech model that detects the end of speech.
+	//  Scale from 0 to 100.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.AdvancedSettings.SpeechSettings.endpointer_sensitivity
+	EndpointerSensitivity *int32 `json:"endpointerSensitivity,omitempty"`
+
+	// Timeout before detecting no speech.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.AdvancedSettings.SpeechSettings.no_speech_timeout
+	NoSpeechTimeout *string `json:"noSpeechTimeout,omitempty"`
+
+	// Use timeout based endpointing, interpreting endpointer sensitivity as
+	//  seconds of timeout value.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.AdvancedSettings.SpeechSettings.use_timeout_based_endpointing
+	UseTimeoutBasedEndpointing *bool `json:"useTimeoutBasedEndpointing,omitempty"`
+
+	// Mapping from language to Speech-to-Text model. The mapped Speech-to-Text
+	//  model will be selected for requests from its corresponding language.
+	//  For more information, see
+	//  [Speech
+	//  models](https://cloud.google.com/dialogflow/cx/docs/concept/speech-models).
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.AdvancedSettings.SpeechSettings.models
+	Models map[string]string `json:"models,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.AgentUtterance
+type AgentUtterance struct {
+	// Required. Message content in text.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.AgentUtterance.text
+	// +required
+	Text *string `json:"text,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.AudioInput
+type AudioInput struct {
+	// Required. Instructs the speech recognizer how to process the speech audio.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.AudioInput.config
+	// +required
+	Config *InputAudioConfig `json:"config,omitempty"`
+
+	// The natural language speech audio to be processed.
+	//  A single request can contain up to 2 minutes of speech audio data.
+	//  The [transcribed
+	//  text][google.cloud.dialogflow.cx.v3.QueryResult.transcript] cannot contain
+	//  more than 256 bytes.
+	//
+	//  For non-streaming audio detect intent, both `config` and `audio` must be
+	//  provided.
+	//  For streaming audio detect intent, `config` must be provided in
+	//  the first request and `audio` must be provided in all following requests.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.AudioInput.audio
+	Audio []byte `json:"audio,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.BargeInConfig
+type BargeInConfig struct {
+	// Duration that is not eligible for barge-in at the beginning of the input
+	//  audio.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.BargeInConfig.no_barge_in_duration
+	NoBargeInDuration *string `json:"noBargeInDuration,omitempty"`
+
+	// Total duration for the playback at the beginning of the input audio.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.BargeInConfig.total_duration
+	TotalDuration *string `json:"totalDuration,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.ConversationTurn
+type ConversationTurn struct {
+	// The user input.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ConversationTurn.user_input
+	UserInput *ConversationTurn_UserInput `json:"userInput,omitempty"`
+
+	// The virtual agent output.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ConversationTurn.virtual_agent_output
+	VirtualAgentOutput *ConversationTurn_VirtualAgentOutput `json:"virtualAgentOutput,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.ConversationTurn.UserInput
+type ConversationTurn_UserInput struct {
+	// Supports [text input][google.cloud.dialogflow.cx.v3.QueryInput.text],
+	//  [event input][google.cloud.dialogflow.cx.v3.QueryInput.event], [dtmf
+	//  input][google.cloud.dialogflow.cx.v3.QueryInput.dtmf] in the test case.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ConversationTurn.UserInput.input
+	Input *QueryInput `json:"input,omitempty"`
+
+	// Parameters that need to be injected into the conversation during intent
+	//  detection.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ConversationTurn.UserInput.injected_parameters
+	InjectedParameters apiextensionsv1.JSON `json:"injectedParameters,omitempty"`
+
+	// If webhooks should be allowed to trigger in response to the user
+	//  utterance. Often if parameters are injected, webhooks should not be
+	//  enabled.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ConversationTurn.UserInput.is_webhook_enabled
+	IsWebhookEnabled *bool `json:"isWebhookEnabled,omitempty"`
+
+	// Whether sentiment analysis is enabled.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ConversationTurn.UserInput.enable_sentiment_analysis
+	EnableSentimentAnalysis *bool `json:"enableSentimentAnalysis,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.ConversationTurn.VirtualAgentOutput
+type ConversationTurn_VirtualAgentOutput struct {
+	// The session parameters available to the bot at this point.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ConversationTurn.VirtualAgentOutput.session_parameters
+	SessionParameters apiextensionsv1.JSON `json:"sessionParameters,omitempty"`
+
+	// Required. Input only. The diagnostic
+	//  [info][Session.DetectIntentResponse.QueryResult.diagnostic_info]
+	//  output for the turn. Required to calculate the testing coverage.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ConversationTurn.VirtualAgentOutput.diagnostic_info
+	// +required
+	DiagnosticInfo apiextensionsv1.JSON `json:"diagnosticInfo,omitempty"`
+
+	// The [Intent][google.cloud.dialogflow.cx.v3.Intent] that triggered the
+	//  response. Only name and displayName will be set.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ConversationTurn.VirtualAgentOutput.triggered_intent
+	TriggeredIntent *Intent `json:"triggeredIntent,omitempty"`
+
+	// The [Page][google.cloud.dialogflow.cx.v3.Page] on which the utterance was
+	//  spoken. Only name and displayName will be set.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ConversationTurn.VirtualAgentOutput.current_page
+	CurrentPage *Page `json:"currentPage,omitempty"`
+
+	// The [text][google.cloud.dialogflow.cx.v3.ResponseMessage.Text] responses
+	//  from the agent for the turn.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ConversationTurn.VirtualAgentOutput.text_responses
+	TextResponses []ResponseMessage_Text `json:"textResponses,omitempty"`
+
+	// Response error from the agent in the test result. If set, other output
+	//  is empty.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ConversationTurn.VirtualAgentOutput.status
+	Status *common.Status `json:"status,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.DataStoreConnection
+type DataStoreConnection struct {
+	// The type of the connected data store.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.DataStoreConnection.data_store_type
+	DataStoreType *string `json:"dataStoreType,omitempty"`
+
+	// The full name of the referenced data store.
+	//  Formats:
+	//  `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}`
+	//  `projects/{project}/locations/{location}/dataStores/{data_store}`
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.DataStoreConnection.data_store
+	DataStore *string `json:"dataStore,omitempty"`
+
+	// The document processing mode for the data store connection. Should only be
+	//  set for PUBLIC_WEB and UNSTRUCTURED data stores. If not set it is
+	//  considered as DOCUMENTS, as this is the legacy mode.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.DataStoreConnection.document_processing_mode
+	DocumentProcessingMode *string `json:"documentProcessingMode,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.DtmfInput
+type DtmfInput struct {
+	// The dtmf digits.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.DtmfInput.digits
+	Digits *string `json:"digits,omitempty"`
+
+	// The finish digit (if any).
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.DtmfInput.finish_digit
+	FinishDigit *string `json:"finishDigit,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.EntityType.Entity
+type EntityType_Entity struct {
+	// Required. The primary value associated with this entity entry.
+	//  For example, if the entity type is *vegetable*, the value could be
+	//  *scallions*.
+	//
+	//  For `KIND_MAP` entity types:
+	//
+	//  *   A canonical value to be used in place of synonyms.
+	//
+	//  For `KIND_LIST` entity types:
+	//
+	//  *   A string that can contain references to other entity types (with or
+	//      without aliases).
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EntityType.Entity.value
+	// +required
+	Value *string `json:"value,omitempty"`
+
+	// Required. A collection of value synonyms. For example, if the entity type
+	//  is *vegetable*, and `value` is *scallions*, a synonym could be *green
+	//  onions*.
+	//
+	//  For `KIND_LIST` entity types:
+	//
+	//  *   This collection must contain exactly one synonym equal to `value`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EntityType.Entity.synonyms
+	// +required
+	Synonyms []string `json:"synonyms,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.EventHandler
+type EventHandler struct {
+
+	// Required. The name of the event to handle.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.event
+	// +required
+	Event *string `json:"event,omitempty"`
+
+	// The fulfillment to call when the event occurs.
+	//  Handling webhook errors with a fulfillment enabled with webhook could
+	//  cause infinite loop. It is invalid to specify such fulfillment for a
+	//  handler handling webhooks.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.trigger_fulfillment
+	TriggerFulfillment *Fulfillment `json:"triggerFulfillment,omitempty"`
+
+	// The target page to transition to.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.target_page
+	TargetPage *string `json:"targetPage,omitempty"`
+
+	// The target flow to transition to.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.target_flow
+	TargetFlow *string `json:"targetFlow,omitempty"`
+
+	// The target playbook to transition to.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.target_playbook
+	TargetPlaybook *string `json:"targetPlaybook,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.EventInput
+type EventInput struct {
+	// Name of the event.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventInput.event
+	Event *string `json:"event,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Experiment.Definition
+type Experiment_Definition struct {
+	// The condition defines which subset of sessions are selected for
+	//  this experiment. If not specified, all sessions are eligible. E.g.
+	//  "query_input.language_code=en" See the [conditions
+	//  reference](https://cloud.google.com/dialogflow/cx/docs/reference/condition).
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Experiment.Definition.condition
+	Condition *string `json:"condition,omitempty"`
+
+	// The flow versions as the variants of this experiment.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Experiment.Definition.version_variants
+	VersionVariants *VersionVariants `json:"versionVariants,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Experiment.Result
+type Experiment_Result struct {
+	// Version variants and metrics.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Experiment.Result.version_metrics
+	VersionMetrics []Experiment_Result_VersionMetrics `json:"versionMetrics,omitempty"`
+
+	// The last time the experiment's stats data was updated. Will have default
+	//  value if stats have never been computed for this experiment.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Experiment.Result.last_update_time
+	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Experiment.Result.ConfidenceInterval
+type Experiment_Result_ConfidenceInterval struct {
+	// The confidence level used to construct the interval, i.e. there is X%
+	//  chance that the true value is within this interval.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Experiment.Result.ConfidenceInterval.confidence_level
+	ConfidenceLevel *float64 `json:"confidenceLevel,omitempty"`
+
+	// The percent change between an experiment metric's value and the value
+	//  for its control.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Experiment.Result.ConfidenceInterval.ratio
+	Ratio *float64 `json:"ratio,omitempty"`
+
+	// Lower bound of the interval.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Experiment.Result.ConfidenceInterval.lower_bound
+	LowerBound *float64 `json:"lowerBound,omitempty"`
+
+	// Upper bound of the interval.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Experiment.Result.ConfidenceInterval.upper_bound
+	UpperBound *float64 `json:"upperBound,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Experiment.Result.Metric
+type Experiment_Result_Metric struct {
+	// Ratio-based metric type. Only one of type or count_type is specified in
+	//  each Metric.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Experiment.Result.Metric.type
+	Type *string `json:"type,omitempty"`
+
+	// Count-based metric type. Only one of type or count_type is specified in
+	//  each Metric.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Experiment.Result.Metric.count_type
+	CountType *string `json:"countType,omitempty"`
+
+	// Ratio value of a metric.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Experiment.Result.Metric.ratio
+	Ratio *float64 `json:"ratio,omitempty"`
+
+	// Count value of a metric.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Experiment.Result.Metric.count
+	Count *float64 `json:"count,omitempty"`
+
+	// The probability that the treatment is better than all other treatments
+	//  in the experiment
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Experiment.Result.Metric.confidence_interval
+	ConfidenceInterval *Experiment_Result_ConfidenceInterval `json:"confidenceInterval,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Experiment.Result.VersionMetrics
+type Experiment_Result_VersionMetrics struct {
+	// The name of the flow [Version][google.cloud.dialogflow.cx.v3.Version].
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Experiment.Result.VersionMetrics.version
+	Version *string `json:"version,omitempty"`
+
+	// The metrics and corresponding confidence intervals in the inference
+	//  result.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Experiment.Result.VersionMetrics.metrics
+	Metrics []Experiment_Result_Metric `json:"metrics,omitempty"`
+
+	// Number of sessions that were allocated to this version.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Experiment.Result.VersionMetrics.session_count
+	SessionCount *int32 `json:"sessionCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.FlowInvocation
+type FlowInvocation struct {
+	// Required. The unique identifier of the flow.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.FlowInvocation.flow
+	// +required
+	Flow *string `json:"flow,omitempty"`
+
+	// Required. Flow invocation's output state.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.FlowInvocation.flow_state
+	// +required
+	FlowState *string `json:"flowState,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.FlowTransition
+type FlowTransition struct {
+	// Required. The unique identifier of the flow.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<Agentflows/<FlowID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.FlowTransition.flow
+	// +required
+	Flow *string `json:"flow,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Form
+type Form struct {
+	// Parameters to collect from the user.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.parameters
+	Parameters []Form_Parameter `json:"parameters,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Form.Parameter
+type Form_Parameter struct {
+	// Required. The human-readable name of the parameter, unique within the
+	//  form.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.display_name
+	// +required
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Indicates whether the parameter is required. Optional parameters will not
+	//  trigger prompts; however, they are filled if the user specifies them.
+	//  Required parameters must be filled before form filling concludes.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.required
+	Required *bool `json:"required,omitempty"`
+
+	// Required. The entity type of the parameter.
+	//  Format:
+	//  `projects/-/locations/-/agents/-/entityTypes/<SystemEntityTypeID>` for
+	//  system entity types (for example,
+	//  `projects/-/locations/-/agents/-/entityTypes/sys.date`), or
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>`
+	//  for developer entity types.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.entity_type
+	// +required
+	EntityType *string `json:"entityType,omitempty"`
+
+	// Indicates whether the parameter represents a list of values.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.is_list
+	IsList *bool `json:"isList,omitempty"`
+
+	// Required. Defines fill behavior for the parameter.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.fill_behavior
+	// +required
+	FillBehavior *Form_Parameter_FillBehavior `json:"fillBehavior,omitempty"`
+
+	// The default value of an optional parameter. If the parameter is required,
+	//  the default value will be ignored.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.default_value
+	DefaultValue *Value `json:"defaultValue,omitempty"`
+
+	// Indicates whether the parameter content should be redacted in log.  If
+	//  redaction is enabled, the parameter content will be replaced by parameter
+	//  name during logging.
+	//  Note: the parameter content is subject to redaction if either parameter
+	//  level redaction or [entity type level
+	//  redaction][google.cloud.dialogflow.cx.v3.EntityType.redact] is enabled.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.redact
+	Redact *bool `json:"redact,omitempty"`
+
+	// Hierarchical advanced settings for this parameter. The settings exposed
+	//  at the lower level overrides the settings exposed at the higher level.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.advanced_settings
+	AdvancedSettings *AdvancedSettings `json:"advancedSettings,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Form.Parameter.FillBehavior
+type Form_Parameter_FillBehavior struct {
+	// Required. The fulfillment to provide the initial prompt that the agent
+	//  can present to the user in order to fill the parameter.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.FillBehavior.initial_prompt_fulfillment
+	// +required
+	InitialPromptFulfillment *Fulfillment `json:"initialPromptFulfillment,omitempty"`
+
+	// The handlers for parameter-level events, used to provide reprompt for
+	//  the parameter or transition to a different page/flow. The supported
+	//  events are:
+	//  *   `sys.no-match-<N>`, where N can be from 1 to 6
+	//  *   `sys.no-match-default`
+	//  *   `sys.no-input-<N>`, where N can be from 1 to 6
+	//  *   `sys.no-input-default`
+	//  *   `sys.invalid-parameter`
+	//
+	//  `initial_prompt_fulfillment` provides the first prompt for the
+	//  parameter.
+	//
+	//  If the user's response does not fill the parameter, a
+	//  no-match/no-input event will be triggered, and the fulfillment
+	//  associated with the `sys.no-match-1`/`sys.no-input-1` handler (if
+	//  defined) will be called to provide a prompt. The
+	//  `sys.no-match-2`/`sys.no-input-2` handler (if defined) will respond to
+	//  the next no-match/no-input event, and so on.
+	//
+	//  A `sys.no-match-default` or `sys.no-input-default` handler will be used
+	//  to handle all following no-match/no-input events after all numbered
+	//  no-match/no-input handlers for the parameter are consumed.
+	//
+	//  A `sys.invalid-parameter` handler can be defined to handle the case
+	//  where the parameter values have been `invalidated` by webhook. For
+	//  example, if the user's response fill the parameter, however the
+	//  parameter was invalidated by webhook, the fulfillment associated with
+	//  the `sys.invalid-parameter` handler (if defined) will be called to
+	//  provide a prompt.
+	//
+	//  If the event handler for the corresponding event can't be found on the
+	//  parameter, `initial_prompt_fulfillment` will be re-prompted.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.FillBehavior.reprompt_event_handlers
+	RepromptEventHandlers []EventHandler `json:"repromptEventHandlers,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Fulfillment
+type Fulfillment struct {
+	// The list of rich message responses to present to the user.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.messages
+	Messages []ResponseMessage `json:"messages,omitempty"`
+
+	// The webhook to call.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/webhooks/<WebhookID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.webhook
+	Webhook *string `json:"webhook,omitempty"`
+
+	// Whether Dialogflow should return currently queued fulfillment response
+	//  messages in streaming APIs. If a webhook is specified, it happens before
+	//  Dialogflow invokes webhook.
+	//  Warning:
+	//  1) This flag only affects streaming API. Responses are still queued
+	//  and returned once in non-streaming API.
+	//  2) The flag can be enabled in any fulfillment but only the first 3 partial
+	//  responses will be returned. You may only want to apply it to fulfillments
+	//  that have slow webhooks.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.return_partial_responses
+	ReturnPartialResponses *bool `json:"returnPartialResponses,omitempty"`
+
+	// The value of this field will be populated in the
+	//  [WebhookRequest][google.cloud.dialogflow.cx.v3.WebhookRequest]
+	//  `fulfillmentInfo.tag` field by Dialogflow when the associated webhook is
+	//  called.
+	//  The tag is typically used by the webhook service to identify which
+	//  fulfillment is being called, but it could be used for other purposes.
+	//  This field is required if `webhook` is specified.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.tag
+	Tag *string `json:"tag,omitempty"`
+
+	// Optional. The name of the code block function to execute, if this is a code
+	//  block fulfillment. The code block itself is implied by the fulfillment's
+	//  parent, e.g. a playbook.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.code_block_function
+	CodeBlockFunction *string `json:"codeBlockFunction,omitempty"`
+
+	// Set parameter values before executing the webhook.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.set_parameter_actions
+	SetParameterActions []Fulfillment_SetParameterAction `json:"setParameterActions,omitempty"`
+
+	// Conditional cases for this fulfillment.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.conditional_cases
+	ConditionalCases []Fulfillment_ConditionalCases `json:"conditionalCases,omitempty"`
+
+	// Hierarchical advanced settings for this fulfillment. The settings exposed
+	//  at the lower level overrides the settings exposed at the higher level.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.advanced_settings
+	AdvancedSettings *AdvancedSettings `json:"advancedSettings,omitempty"`
+
+	// If the flag is true, the agent will utilize LLM to generate a text
+	//  response. If LLM generation fails, the defined
+	//  [responses][google.cloud.dialogflow.cx.v3.Fulfillment.messages] in the
+	//  fulfillment will be respected. This flag is only useful for fulfillments
+	//  associated with no-match event handlers.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.enable_generative_fallback
+	EnableGenerativeFallback *bool `json:"enableGenerativeFallback,omitempty"`
+
+	// A list of Generators to be called during this fulfillment.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.generators
+	Generators []Fulfillment_GeneratorSettings `json:"generators,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Fulfillment.ConditionalCases
+type Fulfillment_ConditionalCases struct {
+	// A list of cascading if-else conditions.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.ConditionalCases.cases
+	Cases []Fulfillment_ConditionalCases_Case `json:"cases,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Fulfillment.ConditionalCases.Case
+type Fulfillment_ConditionalCases_Case struct {
+	// The condition to activate and select this case. Empty means the
+	//  condition is always true. The condition is evaluated against [form
+	//  parameters][Form.parameters] or [session
+	//  parameters][SessionInfo.parameters].
+	//
+	//  See the [conditions
+	//  reference](https://cloud.google.com/dialogflow/cx/docs/reference/condition).
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.ConditionalCases.Case.condition
+	Condition *string `json:"condition,omitempty"`
+
+	// A list of case content.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.ConditionalCases.Case.case_content
+	CaseContent []Fulfillment_ConditionalCases_Case_CaseContent `json:"caseContent,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Fulfillment.GeneratorSettings
+type Fulfillment_GeneratorSettings struct {
+	// Required. The generator to call.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generators/<GeneratorID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.GeneratorSettings.generator
+	// +required
+	Generator *string `json:"generator,omitempty"`
+
+	// Map from [placeholder parameter][Generator.Parameter.id] in the
+	//  [Generator][google.cloud.dialogflow.cx.v3.Generator] to corresponding
+	//  session parameters. By default, Dialogflow uses the session parameter
+	//  with the same name to fill in the generator template. e.g. If there is a
+	//  placeholder parameter `city` in the Generator, Dialogflow default to fill
+	//  in the `$city` with
+	//  `$session.params.city`. However, you may choose to fill `$city` with
+	//  `$session.params.desination-city`.
+	//  - Map key: [parameter ID][Genrator.Parameter.id]
+	//  - Map value: session parameter name
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.GeneratorSettings.input_parameters
+	InputParameters map[string]string `json:"inputParameters,omitempty"`
+
+	// Required. Output parameter which should contain the generator response.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.GeneratorSettings.output_parameter
+	// +required
+	OutputParameter *string `json:"outputParameter,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Fulfillment.SetParameterAction
+type Fulfillment_SetParameterAction struct {
+	// Display name of the parameter.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.SetParameterAction.parameter
+	Parameter *string `json:"parameter,omitempty"`
+
+	// The new value of the parameter. A null value clears the parameter.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.SetParameterAction.value
+	Value *Value `json:"value,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.GcsDestination
+type GCSDestination struct {
+	// Required. The Google Cloud Storage URI for the exported objects. A URI is
+	//  of the form: `gs://bucket/object-name-or-prefix` Whether a full object
+	//  name, or just a prefix, its usage depends on the Dialogflow operation.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.GcsDestination.uri
+	// +required
+	URI *string `json:"uri,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.InputAudioConfig
+type InputAudioConfig struct {
+	// Required. Audio encoding of the audio content to process.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.InputAudioConfig.audio_encoding
+	// +required
+	AudioEncoding *string `json:"audioEncoding,omitempty"`
+
+	// Sample rate (in Hertz) of the audio content sent in the query.
+	//  Refer to
+	//  [Cloud Speech API
+	//  documentation](https://cloud.google.com/speech-to-text/docs/basics) for
+	//  more details.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.InputAudioConfig.sample_rate_hertz
+	SampleRateHertz *int32 `json:"sampleRateHertz,omitempty"`
+
+	// Optional. If `true`, Dialogflow returns
+	//  [SpeechWordInfo][google.cloud.dialogflow.cx.v3.SpeechWordInfo] in
+	//  [StreamingRecognitionResult][google.cloud.dialogflow.cx.v3.StreamingRecognitionResult]
+	//  with information about the recognized speech words, e.g. start and end time
+	//  offsets. If false or unspecified, Speech doesn't return any word-level
+	//  information.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.InputAudioConfig.enable_word_info
+	EnableWordInfo *bool `json:"enableWordInfo,omitempty"`
+
+	// Optional. A list of strings containing words and phrases that the speech
+	//  recognizer should recognize with higher likelihood.
+	//
+	//  See [the Cloud Speech
+	//  documentation](https://cloud.google.com/speech-to-text/docs/basics#phrase-hints)
+	//  for more details.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.InputAudioConfig.phrase_hints
+	PhraseHints []string `json:"phraseHints,omitempty"`
+
+	// Optional. Which Speech model to select for the given request.
+	//  For more information, see
+	//  [Speech
+	//  models](https://cloud.google.com/dialogflow/cx/docs/concept/speech-models).
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.InputAudioConfig.model
+	Model *string `json:"model,omitempty"`
+
+	// Optional. Which variant of the [Speech
+	//  model][google.cloud.dialogflow.cx.v3.InputAudioConfig.model] to use.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.InputAudioConfig.model_variant
+	ModelVariant *string `json:"modelVariant,omitempty"`
+
+	// Optional. If `false` (default), recognition does not cease until the
+	//  client closes the stream.
+	//  If `true`, the recognizer will detect a single spoken utterance in input
+	//  audio. Recognition ceases when it detects the audio's voice has
+	//  stopped or paused. In this case, once a detected intent is received, the
+	//  client should close the stream and start a new request with a new stream as
+	//  needed.
+	//  Note: This setting is relevant only for streaming methods.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.InputAudioConfig.single_utterance
+	SingleUtterance *bool `json:"singleUtterance,omitempty"`
+
+	// Configuration of barge-in behavior during the streaming of input audio.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.InputAudioConfig.barge_in_config
+	BargeInConfig *BargeInConfig `json:"bargeInConfig,omitempty"`
+
+	// If `true`, the request will opt out for STT conformer model migration.
+	//  This field will be deprecated once force migration takes place in June
+	//  2024. Please refer to [Dialogflow CX Speech model
+	//  migration](https://cloud.google.com/dialogflow/cx/docs/concept/speech-model-migration).
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.InputAudioConfig.opt_out_conformer_model_migration
+	OptOutConformerModelMigration *bool `json:"optOutConformerModelMigration,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Intent
+type Intent struct {
+	// The unique identifier of the intent.
+	//  Required for the
+	//  [Intents.UpdateIntent][google.cloud.dialogflow.cx.v3.Intents.UpdateIntent]
+	//  method.
+	//  [Intents.CreateIntent][google.cloud.dialogflow.cx.v3.Intents.CreateIntent]
+	//  populates the name automatically.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The human-readable name of the intent, unique within the agent.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.display_name
+	// +required
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The collection of training phrases the agent is trained on to identify the
+	//  intent.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.training_phrases
+	TrainingPhrases []Intent_TrainingPhrase `json:"trainingPhrases,omitempty"`
+
+	// The collection of parameters associated with the intent.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.parameters
+	Parameters []Intent_Parameter `json:"parameters,omitempty"`
+
+	// The priority of this intent. Higher numbers represent higher
+	//  priorities.
+	//
+	//  - If the supplied value is unspecified or 0, the service
+	//    translates the value to 500,000, which corresponds to the
+	//    `Normal` priority in the console.
+	//  - If the supplied value is negative, the intent is ignored
+	//    in runtime detect intent requests.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.priority
+	Priority *int32 `json:"priority,omitempty"`
+
+	// Indicates whether this is a fallback intent. Currently only default
+	//  fallback intent is allowed in the agent, which is added upon agent
+	//  creation.
+	//  Adding training phrases to fallback intent is useful in the case of
+	//  requests that are mistakenly matched, since training phrases assigned to
+	//  fallback intents act as negative examples that triggers no-match event.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.is_fallback
+	IsFallback *bool `json:"isFallback,omitempty"`
+
+	// The key/value metadata to label an intent. Labels can contain
+	//  lowercase letters, digits and the symbols '-' and '_'. International
+	//  characters are allowed, including letters from unicase alphabets. Keys must
+	//  start with a letter. Keys and values can be no longer than 63 characters
+	//  and no more than 128 bytes.
+	//
+	//  Prefix "sys-" is reserved for Dialogflow defined labels. Currently allowed
+	//  Dialogflow defined labels include:
+	//  * sys-head
+	//  * sys-contextual
+	//  The above labels do not require value. "sys-head" means the intent is a
+	//  head intent. "sys.contextual" means the intent is a contextual intent.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Human readable description for better understanding an intent like its
+	//  scope, content, result etc. Maximum character limit: 1000 characters.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. Matching DTMF pattern for the intent.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.dtmf_pattern
+	DtmfPattern *string `json:"dtmfPattern,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Intent.Parameter
+type Intent_Parameter struct {
+	// Required. The unique identifier of the parameter. This field
+	//  is used by [training
+	//  phrases][google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase] to annotate
+	//  their [parts][google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase.Part].
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.Parameter.id
+	// +required
+	ID *string `json:"id,omitempty"`
+
+	// Required. The entity type of the parameter.
+	//  Format:
+	//  `projects/-/locations/-/agents/-/entityTypes/<SystemEntityTypeID>` for
+	//  system entity types (for example,
+	//  `projects/-/locations/-/agents/-/entityTypes/sys.date`), or
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>`
+	//  for developer entity types.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.Parameter.entity_type
+	// +required
+	EntityType *string `json:"entityType,omitempty"`
+
+	// Indicates whether the parameter represents a list of values.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.Parameter.is_list
+	IsList *bool `json:"isList,omitempty"`
+
+	// Indicates whether the parameter content should be redacted in log. If
+	//  redaction is enabled, the parameter content will be replaced by parameter
+	//  name during logging.
+	//  Note: the parameter content is subject to redaction if either parameter
+	//  level redaction or [entity type level
+	//  redaction][google.cloud.dialogflow.cx.v3.EntityType.redact] is enabled.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.Parameter.redact
+	Redact *bool `json:"redact,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase
+type Intent_TrainingPhrase struct {
+
+	// Required. The ordered list of training phrase parts.
+	//  The parts are concatenated in order to form the training phrase.
+	//
+	//  Note: The API does not automatically annotate training phrases like the
+	//  Dialogflow Console does.
+	//
+	//  Note: Do not forget to include whitespace at part boundaries, so the
+	//  training phrase is well formatted when the parts are concatenated.
+	//
+	//  If the training phrase does not need to be annotated with parameters,
+	//  you just need a single part with only the
+	//  [Part.text][google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase.Part.text]
+	//  field set.
+	//
+	//  If you want to annotate the training phrase, you must create multiple
+	//  parts, where the fields of each part are populated in one of two ways:
+	//
+	//  -   `Part.text` is set to a part of the phrase that has no parameters.
+	//  -   `Part.text` is set to a part of the phrase that you want to annotate,
+	//      and the `parameter_id` field is set.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase.parts
+	// +required
+	Parts []Intent_TrainingPhrase_Part `json:"parts,omitempty"`
+
+	// Indicates how many times this example was added to the intent.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase.repeat_count
+	RepeatCount *int32 `json:"repeatCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase.Part
+type Intent_TrainingPhrase_Part struct {
+	// Required. The text for this part.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase.Part.text
+	// +required
+	Text *string `json:"text,omitempty"`
+
+	// The [parameter][google.cloud.dialogflow.cx.v3.Intent.Parameter] used to
+	//  annotate this part of the training phrase. This field is required for
+	//  annotated parts of the training phrase.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase.Part.parameter_id
+	ParameterID *string `json:"parameterID,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.IntentInput
+type IntentInput struct {
+	// Required. The unique identifier of the intent.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.IntentInput.intent
+	// +required
+	Intent *string `json:"intent,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings
+type KnowledgeConnectorSettings struct {
+	// Whether Knowledge Connector is enabled or not.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// The fulfillment to be triggered.
+	//
+	//  When the answers from the Knowledge Connector are selected by Dialogflow,
+	//  you can utitlize the request scoped parameter `$request.knowledge.answers`
+	//  (contains up to the 5 highest confidence answers) and
+	//  `$request.knowledge.questions` (contains the corresponding questions) to
+	//  construct the fulfillment.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings.trigger_fulfillment
+	TriggerFulfillment *Fulfillment `json:"triggerFulfillment,omitempty"`
+
+	// The target page to transition to.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings.target_page
+	TargetPage *string `json:"targetPage,omitempty"`
+
+	// The target flow to transition to.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings.target_flow
+	TargetFlow *string `json:"targetFlow,omitempty"`
+
+	// Optional. List of related data store connections.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings.data_store_connections
+	DataStoreConnections []DataStoreConnection `json:"dataStoreConnections,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.NluSettings
+type NluSettings struct {
+	// Indicates the type of NLU model.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.NluSettings.model_type
+	ModelType *string `json:"modelType,omitempty"`
+
+	// To filter out false positive results and still get variety in matched
+	//  natural language inputs for your agent, you can tune the machine learning
+	//  classification threshold. If the returned score value is less than the
+	//  threshold value, then a no-match event will be triggered. The score values
+	//  range from 0.0 (completely uncertain) to 1.0 (completely certain). If set
+	//  to 0.0, the default of 0.3 is used. You can set a separate classification
+	//  threshold for the flow in each language enabled for the agent.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.NluSettings.classification_threshold
+	ClassificationThreshold *float32 `json:"classificationThreshold,omitempty"`
+
+	// Indicates NLU model training mode.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.NluSettings.model_training_mode
+	ModelTrainingMode *string `json:"modelTrainingMode,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.Page
+type Page struct {
+	// The unique identifier of the page.
+	//  Required for the
+	//  [Pages.UpdatePage][google.cloud.dialogflow.cx.v3.Pages.UpdatePage] method.
+	//  [Pages.CreatePage][google.cloud.dialogflow.cx.v3.Pages.CreatePage]
+	//  populates the name automatically.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The human-readable name of the page, unique within the flow.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.display_name
+	// +required
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The description of the page. The maximum length is 500 characters.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.description
+	Description *string `json:"description,omitempty"`
+
+	// The fulfillment to call when the session is entering the page.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.entry_fulfillment
+	EntryFulfillment *Fulfillment `json:"entryFulfillment,omitempty"`
+
+	// The form associated with the page, used for collecting parameters
+	//  relevant to the page.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.form
+	Form *Form `json:"form,omitempty"`
+
+	// Ordered list of
+	//  [`TransitionRouteGroups`][google.cloud.dialogflow.cx.v3.TransitionRouteGroup]
+	//  added to the page. Transition route groups must be unique within a page. If
+	//  the page links both flow-level transition route groups and agent-level
+	//  transition route groups, the flow-level ones will have higher priority and
+	//  will be put before the agent-level ones.
+	//
+	//  *   If multiple transition routes within a page scope refer to the same
+	//      intent, then the precedence order is: page's transition route -> page's
+	//      transition route group -> flow's transition routes.
+	//
+	//  *   If multiple transition route groups within a page contain the same
+	//      intent, then the first group in the ordered list takes precedence.
+	//
+	//  Format:`projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>`
+	//  or
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/transitionRouteGroups/<TransitionRouteGroupID>`
+	//  for agent-level groups.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.transition_route_groups
+	TransitionRouteGroups []string `json:"transitionRouteGroups,omitempty"`
+
+	// A list of transitions for the transition rules of this page.
+	//  They route the conversation to another page in the same flow, or another
+	//  flow.
+	//
+	//  When we are in a certain page, the TransitionRoutes are evaluated in the
+	//  following order:
+	//
+	//  *   TransitionRoutes defined in the page with intent specified.
+	//  *   TransitionRoutes defined in the
+	//      [transition route
+	//      groups][google.cloud.dialogflow.cx.v3.Page.transition_route_groups]
+	//      with intent specified.
+	//  *   TransitionRoutes defined in flow with intent specified.
+	//  *   TransitionRoutes defined in the
+	//      [transition route
+	//      groups][google.cloud.dialogflow.cx.v3.Flow.transition_route_groups]
+	//      with intent specified.
+	//  *   TransitionRoutes defined in the page with only condition specified.
+	//  *   TransitionRoutes defined in the
+	//      [transition route
+	//      groups][google.cloud.dialogflow.cx.v3.Page.transition_route_groups]
+	//      with only condition specified.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.transition_routes
+	TransitionRoutes []TransitionRoute `json:"transitionRoutes,omitempty"`
+
+	// Handlers associated with the page to handle events such as webhook errors,
+	//  no match or no input.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.event_handlers
+	EventHandlers []EventHandler `json:"eventHandlers,omitempty"`
+
+	// Hierarchical advanced settings for this page. The settings exposed at the
+	//  lower level overrides the settings exposed at the higher level.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.advanced_settings
+	AdvancedSettings *AdvancedSettings `json:"advancedSettings,omitempty"`
+
+	// Optional. Knowledge connector configuration.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.knowledge_connector_settings
+	KnowledgeConnectorSettings *KnowledgeConnectorSettings `json:"knowledgeConnectorSettings,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.PlaybookInput
+type PlaybookInput struct {
+	// Optional. Summary string of the preceding conversation for the child
+	//  playbook invocation.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.PlaybookInput.preceding_conversation_summary
+	PrecedingConversationSummary *string `json:"precedingConversationSummary,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.PlaybookInvocation
+type PlaybookInvocation struct {
+	// Required. The unique identifier of the playbook.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.PlaybookInvocation.playbook
+	// +required
+	Playbook *string `json:"playbook,omitempty"`
+
+	// Optional. Input of the child playbook invocation.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.PlaybookInvocation.playbook_input
+	PlaybookInput *PlaybookInput `json:"playbookInput,omitempty"`
+
+	// Optional. Output of the child playbook invocation.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.PlaybookInvocation.playbook_output
+	PlaybookOutput *PlaybookOutput `json:"playbookOutput,omitempty"`
+
+	// Required. Playbook invocation's output state.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.PlaybookInvocation.playbook_state
+	// +required
+	PlaybookState *string `json:"playbookState,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.PlaybookOutput
+type PlaybookOutput struct {
+	// Optional. Summary string of the execution result of the child playbook.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.PlaybookOutput.execution_summary
+	ExecutionSummary *string `json:"executionSummary,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.PlaybookTransition
+type PlaybookTransition struct {
+	// Required. The unique identifier of the playbook.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.PlaybookTransition.playbook
+	// +required
+	Playbook *string `json:"playbook,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.QueryInput
+type QueryInput struct {
+	// The natural language text to be processed.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.QueryInput.text
+	Text *TextInput `json:"text,omitempty"`
+
+	// The intent to be triggered.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.QueryInput.intent
+	Intent *IntentInput `json:"intent,omitempty"`
+
+	// The natural language speech audio to be processed.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.QueryInput.audio
+	Audio *AudioInput `json:"audio,omitempty"`
+
+	// The event to be triggered.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.QueryInput.event
+	Event *EventInput `json:"event,omitempty"`
+
+	// The DTMF event to be handled.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.QueryInput.dtmf
+	Dtmf *DtmfInput `json:"dtmf,omitempty"`
+
+	// The results of a tool executed by the client.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.QueryInput.tool_call_result
+	ToolCallResult *ToolCallResult `json:"toolCallResult,omitempty"`
+
+	// Required. The language of the input. See [Language
+	//  Support](https://cloud.google.com/dialogflow/cx/docs/reference/language)
+	//  for a list of the currently supported language codes. Note that queries in
+	//  the same session do not necessarily need to specify the same language.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.QueryInput.language_code
+	// +required
+	LanguageCode *string `json:"languageCode,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.ResponseMessage
+type ResponseMessage struct {
+	// Returns a text response.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.text
+	Text *ResponseMessage_Text `json:"text,omitempty"`
+
+	// Returns a response containing a custom, platform-specific payload.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.payload
+	Payload apiextensionsv1.JSON `json:"payload,omitempty"`
+
+	// Indicates that the conversation succeeded.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.conversation_success
+	ConversationSuccess *ResponseMessage_ConversationSuccess `json:"conversationSuccess,omitempty"`
+
+	// A text or ssml response that is preferentially used for TTS output audio
+	//  synthesis, as described in the comment on the ResponseMessage message.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.output_audio_text
+	OutputAudioText *ResponseMessage_OutputAudioText `json:"outputAudioText,omitempty"`
+
+	// Hands off conversation to a human agent.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.live_agent_handoff
+	LiveAgentHandoff *ResponseMessage_LiveAgentHandoff `json:"liveAgentHandoff,omitempty"`
+
+	// Signal that the client should play an audio clip hosted at a
+	//  client-specific URI. Dialogflow uses this to construct
+	//  [mixed_audio][google.cloud.dialogflow.cx.v3.ResponseMessage.mixed_audio].
+	//  However, Dialogflow itself does not try to read or process the URI in any
+	//  way.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.play_audio
+	PlayAudio *ResponseMessage_PlayAudio `json:"playAudio,omitempty"`
+
+	// A signal that the client should transfer the phone call connected to
+	//  this agent to a third-party endpoint.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.telephony_transfer_call
+	TelephonyTransferCall *ResponseMessage_TelephonyTransferCall `json:"telephonyTransferCall,omitempty"`
+
+	// Represents info card for knowledge answers, to be better rendered in
+	//  Dialogflow Messenger.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.knowledge_info_card
+	KnowledgeInfoCard *ResponseMessage_KnowledgeInfoCard `json:"knowledgeInfoCard,omitempty"`
+
+	// Returns the definition of a tool call that should be executed by the
+	//  client.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.tool_call
+	ToolCall *ToolCall `json:"toolCall,omitempty"`
+
+	// Response type.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.response_type
+	ResponseType *string `json:"responseType,omitempty"`
+
+	// The channel which the response is associated with. Clients can specify the
+	//  channel via
+	//  [QueryParameters.channel][google.cloud.dialogflow.cx.v3.QueryParameters.channel],
+	//  and only associated channel response will be returned.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.channel
+	Channel *string `json:"channel,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.ConversationSuccess
+type ResponseMessage_ConversationSuccess struct {
+	// Custom metadata. Dialogflow doesn't impose any structure on this.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.ConversationSuccess.metadata
+	Metadata apiextensionsv1.JSON `json:"metadata,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.EndInteraction
+type ResponseMessage_EndInteraction struct {
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.KnowledgeInfoCard
+type ResponseMessage_KnowledgeInfoCard struct {
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.LiveAgentHandoff
+type ResponseMessage_LiveAgentHandoff struct {
+	// Custom metadata for your handoff procedure. Dialogflow doesn't impose
+	//  any structure on this.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.LiveAgentHandoff.metadata
+	Metadata apiextensionsv1.JSON `json:"metadata,omitempty"`
+}
+
+/* unreachable type ResponseMessage_MixedAudio
+// +kcc:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.MixedAudio
+type ResponseMessage_MixedAudio struct {
+	// Segments this audio response is composed of.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.MixedAudio.segments
+	Segments []ResponseMessage_MixedAudio_Segment `json:"segments,omitempty"`
+}
+*/
+
+/* unreachable type ResponseMessage_MixedAudio_Segment
+// +kcc:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.MixedAudio.Segment
+type ResponseMessage_MixedAudio_Segment struct {
+	// Raw audio synthesized from the Dialogflow agent's response using
+	//  the output config specified in the request.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.MixedAudio.Segment.audio
+	Audio []byte `json:"audio,omitempty"`
+
+	// Client-specific URI that points to an audio clip accessible to the
+	//  client. Dialogflow does not impose any validation on it.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.MixedAudio.Segment.uri
+	URI *string `json:"uri,omitempty"`
+}
+*/
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.OutputAudioText
+type ResponseMessage_OutputAudioText struct {
+	// The raw text to be synthesized.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.OutputAudioText.text
+	Text *string `json:"text,omitempty"`
+
+	// The SSML text to be synthesized. For more information, see
+	//  [SSML](/speech/text-to-speech/docs/ssml).
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.OutputAudioText.ssml
+	Ssml *string `json:"ssml,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.PlayAudio
+type ResponseMessage_PlayAudio struct {
+	// Required. URI of the audio clip. Dialogflow does not impose any
+	//  validation on this value. It is specific to the client that reads it.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.PlayAudio.audio_uri
+	// +required
+	AudioURI *string `json:"audioURI,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.TelephonyTransferCall
+type ResponseMessage_TelephonyTransferCall struct {
+	// Transfer the call to a phone number
+	//  in [E.164 format](https://en.wikipedia.org/wiki/E.164).
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.TelephonyTransferCall.phone_number
+	PhoneNumber *string `json:"phoneNumber,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.Text
+type ResponseMessage_Text struct {
+	// Required. A collection of text response variants. If multiple variants
+	//  are defined, only one text response variant is returned at runtime.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.Text.text
+	// +required
+	Text []string `json:"text,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.RolloutConfig
+type RolloutConfig struct {
+	// Steps to roll out a flow version. Steps should be sorted by percentage in
+	//  ascending order.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.RolloutConfig.rollout_steps
+	RolloutSteps []RolloutConfig_RolloutStep `json:"rolloutSteps,omitempty"`
+
+	// The conditions that are used to evaluate the success of a rollout
+	//  step. If not specified, all rollout steps will proceed to the next one
+	//  unless failure conditions are met. E.g. "containment_rate > 60% AND
+	//  callback_rate < 20%". See the [conditions
+	//  reference](https://cloud.google.com/dialogflow/cx/docs/reference/condition).
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.RolloutConfig.rollout_condition
+	RolloutCondition *string `json:"rolloutCondition,omitempty"`
+
+	// The conditions that are used to evaluate the failure of a rollout
+	//  step. If not specified, no rollout steps will fail. E.g. "containment_rate
+	//  < 10% OR average_turn_count < 3". See the [conditions
+	//  reference](https://cloud.google.com/dialogflow/cx/docs/reference/condition).
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.RolloutConfig.failure_condition
+	FailureCondition *string `json:"failureCondition,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.RolloutConfig.RolloutStep
+type RolloutConfig_RolloutStep struct {
+	// The name of the rollout step;
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.RolloutConfig.RolloutStep.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The percentage of traffic allocated to the flow version of this rollout
+	//  step. (0%, 100%].
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.RolloutConfig.RolloutStep.traffic_percent
+	TrafficPercent *int32 `json:"trafficPercent,omitempty"`
+
+	// The minimum time that this step should last. Should be longer than 1
+	//  hour. If not set, the default minimum duration for each step will be 1
+	//  hour.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.RolloutConfig.RolloutStep.min_duration
+	MinDuration *string `json:"minDuration,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.RolloutState
+type RolloutState struct {
+	// Display name of the current auto rollout step.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.RolloutState.step
+	Step *string `json:"step,omitempty"`
+
+	// Index of the current step in the auto rollout steps list.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.RolloutState.step_index
+	StepIndex *int32 `json:"stepIndex,omitempty"`
+
+	// Start time of the current step.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.RolloutState.start_time
+	StartTime *string `json:"startTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.TestCaseResult
+type TestCaseResult struct {
+	// The resource name for the test case result. Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>/results/<TestCaseResultID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TestCaseResult.name
+	Name *string `json:"name,omitempty"`
+
+	// Environment where the test was run. If not set, it indicates the draft
+	//  environment.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TestCaseResult.environment
+	Environment *string `json:"environment,omitempty"`
+
+	// The conversation turns uttered during the test case replay in chronological
+	//  order.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TestCaseResult.conversation_turns
+	ConversationTurns []ConversationTurn `json:"conversationTurns,omitempty"`
+
+	// Whether the test case passed in the agent environment.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TestCaseResult.test_result
+	TestResult *string `json:"testResult,omitempty"`
+
+	// The time that the test was run.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TestCaseResult.test_time
+	TestTime *string `json:"testTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.TestConfig
+type TestConfig struct {
+	// Session parameters to be compared when calculating differences.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TestConfig.tracking_parameters
+	TrackingParameters []string `json:"trackingParameters,omitempty"`
+
+	// Flow name to start the test case with.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
+	//
+	//   Only one of `flow` and `page` should be set to indicate the starting point
+	//   of the test case. If neither is set, the test case will start with start
+	//   page on the default start flow.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TestConfig.flow
+	Flow *string `json:"flow,omitempty"`
+
+	// The [page][google.cloud.dialogflow.cx.v3.Page] to start the test case with.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>`.
+	//
+	//   Only one of `flow` and `page` should be set to indicate the starting point
+	//   of the test case. If neither is set, the test case will start with start
+	//   page on the default start flow.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TestConfig.page
+	Page *string `json:"page,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.TestRunDifference
+type TestRunDifference struct {
+	// The type of diff.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TestRunDifference.type
+	Type *string `json:"type,omitempty"`
+
+	// A human readable description of the diff, showing the actual output vs
+	//  expected output.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TestRunDifference.description
+	Description *string `json:"description,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.TextInput
+type TextInput struct {
+	// Required. The UTF-8 encoded natural language text to be processed.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TextInput.text
+	// +required
+	Text *string `json:"text,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.ToolCall
+type ToolCall struct {
+	// Required. The [tool][google.cloud.dialogflow.cx.v3.Tool] associated with
+	//  this call. Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ToolCall.tool
+	// +required
+	Tool *string `json:"tool,omitempty"`
+
+	// Required. The name of the tool's action associated with this call.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ToolCall.action
+	// +required
+	Action *string `json:"action,omitempty"`
+
+	// Optional. The action's input parameters.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ToolCall.input_parameters
+	InputParameters apiextensionsv1.JSON `json:"inputParameters,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.ToolCallResult
+type ToolCallResult struct {
+	// Required. The [tool][google.cloud.dialogflow.cx.v3.Tool] associated with
+	//  this call. Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ToolCallResult.tool
+	// +required
+	Tool *string `json:"tool,omitempty"`
+
+	// Required. The name of the tool's action associated with this call.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ToolCallResult.action
+	// +required
+	Action *string `json:"action,omitempty"`
+
+	// The tool call's error.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ToolCallResult.error
+	Error *ToolCallResult_Error `json:"error,omitempty"`
+
+	// The tool call's output parameters.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ToolCallResult.output_parameters
+	OutputParameters apiextensionsv1.JSON `json:"outputParameters,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.ToolCallResult.Error
+type ToolCallResult_Error struct {
+	// Optional. The error message of the function.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ToolCallResult.Error.message
+	Message *string `json:"message,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.ToolUse
+type ToolUse struct {
+	// Required. The [tool][google.cloud.dialogflow.cx.v3.Tool] that should be
+	//  used. Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ToolUse.tool
+	// +required
+	Tool *string `json:"tool,omitempty"`
+
+	// Optional. Name of the action to be called during the tool use.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ToolUse.action
+	Action *string `json:"action,omitempty"`
+
+	// Optional. A list of input parameters for the action.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ToolUse.input_action_parameters
+	InputActionParameters apiextensionsv1.JSON `json:"inputActionParameters,omitempty"`
+
+	// Optional. A list of output parameters generated by the action.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ToolUse.output_action_parameters
+	OutputActionParameters apiextensionsv1.JSON `json:"outputActionParameters,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.TransitionRoute
+type TransitionRoute struct {
+
+	// Optional. The description of the transition route. The maximum length is
+	//  500 characters.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TransitionRoute.description
+	Description *string `json:"description,omitempty"`
+
+	// The unique identifier of an [Intent][google.cloud.dialogflow.cx.v3.Intent].
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>`.
+	//  Indicates that the transition can only happen when the given intent is
+	//  matched.
+	//  At least one of `intent` or `condition` must be specified. When both
+	//  `intent` and `condition` are specified, the transition can only happen
+	//  when both are fulfilled.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TransitionRoute.intent
+	Intent *string `json:"intent,omitempty"`
+
+	// The condition to evaluate against [form
+	//  parameters][google.cloud.dialogflow.cx.v3.Form.parameters] or [session
+	//  parameters][google.cloud.dialogflow.cx.v3.SessionInfo.parameters].
+	//
+	//  See the [conditions
+	//  reference](https://cloud.google.com/dialogflow/cx/docs/reference/condition).
+	//  At least one of `intent` or `condition` must be specified. When both
+	//  `intent` and `condition` are specified, the transition can only happen
+	//  when both are fulfilled.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TransitionRoute.condition
+	Condition *string `json:"condition,omitempty"`
+
+	// The fulfillment to call when the condition is satisfied. At least one of
+	//  `trigger_fulfillment` and `target` must be specified. When both are
+	//  defined, `trigger_fulfillment` is executed first.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TransitionRoute.trigger_fulfillment
+	TriggerFulfillment *Fulfillment `json:"triggerFulfillment,omitempty"`
+
+	// The target page to transition to.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TransitionRoute.target_page
+	TargetPage *string `json:"targetPage,omitempty"`
+
+	// The target flow to transition to.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TransitionRoute.target_flow
+	TargetFlow *string `json:"targetFlow,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.UserUtterance
+type UserUtterance struct {
+	// Required. Message content in text.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.UserUtterance.text
+	// +required
+	Text *string `json:"text,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.VariantsHistory
+type VariantsHistory struct {
+	// The flow versions as the variants.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.VariantsHistory.version_variants
+	VersionVariants *VersionVariants `json:"versionVariants,omitempty"`
+
+	// Update time of the variants.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.VariantsHistory.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.VersionVariants
+type VersionVariants struct {
+	// A list of flow version variants.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.VersionVariants.variants
+	Variants []VersionVariants_Variant `json:"variants,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3.VersionVariants.Variant
+type VersionVariants_Variant struct {
+	// The name of the flow version.
+	//  Format:
+	//  `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>`.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.VersionVariants.Variant.version
+	Version *string `json:"version,omitempty"`
+
+	// Percentage of the traffic which should be routed to this
+	//  version of flow. Traffic allocation for a single flow must sum up to 1.0.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.VersionVariants.Variant.traffic_allocation
+	TrafficAllocation *float32 `json:"trafficAllocation,omitempty"`
+
+	// Whether the variant is for the control group.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.VersionVariants.Variant.is_control_group
+	IsControlGroup *bool `json:"isControlGroup,omitempty"`
+}
 
 // +kcc:proto=google.cloud.dialogflow.v2.ConversationContext
 type ConversationContext struct {
@@ -37,6 +1661,19 @@ type ConversationInfo struct {
 	//  information. Supports all UTF-8 languages.
 	// +kcc:proto:field=google.cloud.dialogflow.v2.ConversationInfo.language_code
 	LanguageCode *string `json:"languageCode,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.v2.Document.ReloadStatus
+type Document_ReloadStatus struct {
+	// The time of a reload attempt.
+	//  This reload may have been triggered automatically or manually and may
+	//  not have succeeded.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Document.ReloadStatus.time
+	Time *string `json:"time,omitempty"`
+
+	// The status of a reload attempt or the initial load.
+	// +kcc:proto:field=google.cloud.dialogflow.v2.Document.ReloadStatus.status
+	Status *common.Status `json:"status,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dialogflow.v2.FewShotExample
@@ -222,4 +1859,405 @@ type SummarySuggestion_SummarySection struct {
 	// Required. Summary text for the section.
 	// +kcc:proto:field=google.cloud.dialogflow.v2.SummarySuggestion.SummarySection.summary
 	Summary *string `json:"summary,omitempty"`
+}
+
+// +kcc:proto=google.protobuf.Value
+type Value struct {
+	// Represents a null value.
+	// +kcc:proto:field=google.protobuf.Value.null_value
+	NullValue *string `json:"nullValue,omitempty"`
+
+	// Represents a double value.
+	// +kcc:proto:field=google.protobuf.Value.number_value
+	NumberValue *float64 `json:"numberValue,omitempty"`
+
+	// Represents a string value.
+	// +kcc:proto:field=google.protobuf.Value.string_value
+	StringValue *string `json:"stringValue,omitempty"`
+
+	// Represents a boolean value.
+	// +kcc:proto:field=google.protobuf.Value.bool_value
+	BoolValue *bool `json:"boolValue,omitempty"`
+
+	// Represents a structured value.
+	// +kcc:proto:field=google.protobuf.Value.struct_value
+	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
+
+	// Represents a repeated `Value`.
+	// +kcc:proto:field=google.protobuf.Value.list_value
+	ListValue *ListValue `json:"listValue,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Action
+type ActionObservedState struct {
+	// Optional. Action performed on behalf of the agent by calling a plugin
+	//  tool.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Action.tool_use
+	ToolUse *ToolUseObservedState `json:"toolUse,omitempty"`
+
+	// Optional. Action performed on behalf of the agent by invoking a child
+	//  playbook.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Action.playbook_invocation
+	PlaybookInvocation *PlaybookInvocationObservedState `json:"playbookInvocation,omitempty"`
+
+	// Optional. Action performed on behalf of the agent by invoking a CX flow.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Action.flow_invocation
+	FlowInvocation *FlowInvocationObservedState `json:"flowInvocation,omitempty"`
+
+	// Optional. Action performed on behalf of the agent by transitioning to a
+	//  target playbook.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Action.playbook_transition
+	PlaybookTransition *PlaybookTransitionObservedState `json:"playbookTransition,omitempty"`
+
+	// Optional. Action performed on behalf of the agent by transitioning to a
+	//  target CX flow.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Action.flow_transition
+	FlowTransition *FlowTransitionObservedState `json:"flowTransition,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.ConversationTurn
+type ConversationTurnObservedState struct {
+	// The virtual agent output.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ConversationTurn.virtual_agent_output
+	VirtualAgentOutput *ConversationTurn_VirtualAgentOutputObservedState `json:"virtualAgentOutput,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.ConversationTurn.VirtualAgentOutput
+type ConversationTurn_VirtualAgentOutputObservedState struct {
+	// Output only. If this is part of a [result conversation
+	//  turn][TestCaseResult.conversation_turns], the list of differences
+	//  between the original run and the replay for this output, if any.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ConversationTurn.VirtualAgentOutput.differences
+	Differences []TestRunDifference `json:"differences,omitempty"`
+
+	// The [Intent][google.cloud.dialogflow.cx.v3.Intent] that triggered the
+	//  response. Only name and displayName will be set.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ConversationTurn.VirtualAgentOutput.triggered_intent
+	TriggeredIntent *IntentObservedState `json:"triggeredIntent,omitempty"`
+
+	// The [Page][google.cloud.dialogflow.cx.v3.Page] on which the utterance was
+	//  spoken. Only name and displayName will be set.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ConversationTurn.VirtualAgentOutput.current_page
+	CurrentPage *PageObservedState `json:"currentPage,omitempty"`
+
+	// The [text][google.cloud.dialogflow.cx.v3.ResponseMessage.Text] responses
+	//  from the agent for the turn.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ConversationTurn.VirtualAgentOutput.text_responses
+	TextResponses []ResponseMessage_TextObservedState `json:"textResponses,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.EventHandler
+type EventHandlerObservedState struct {
+	// Output only. The unique identifier of this event handler.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.name
+	Name *string `json:"name,omitempty"`
+
+	// The fulfillment to call when the event occurs.
+	//  Handling webhook errors with a fulfillment enabled with webhook could
+	//  cause infinite loop. It is invalid to specify such fulfillment for a
+	//  handler handling webhooks.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.EventHandler.trigger_fulfillment
+	TriggerFulfillment *FulfillmentObservedState `json:"triggerFulfillment,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.FlowInvocation
+type FlowInvocationObservedState struct {
+	// Output only. The display name of the flow.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.FlowInvocation.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.FlowTransition
+type FlowTransitionObservedState struct {
+	// Output only. The display name of the flow.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.FlowTransition.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Form
+type FormObservedState struct {
+	// Parameters to collect from the user.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.parameters
+	Parameters []Form_ParameterObservedState `json:"parameters,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Form.Parameter
+type Form_ParameterObservedState struct {
+	// Required. Defines fill behavior for the parameter.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.fill_behavior
+	FillBehavior *Form_Parameter_FillBehaviorObservedState `json:"fillBehavior,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Form.Parameter.FillBehavior
+type Form_Parameter_FillBehaviorObservedState struct {
+	// Required. The fulfillment to provide the initial prompt that the agent
+	//  can present to the user in order to fill the parameter.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.FillBehavior.initial_prompt_fulfillment
+	InitialPromptFulfillment *FulfillmentObservedState `json:"initialPromptFulfillment,omitempty"`
+
+	// The handlers for parameter-level events, used to provide reprompt for
+	//  the parameter or transition to a different page/flow. The supported
+	//  events are:
+	//  *   `sys.no-match-<N>`, where N can be from 1 to 6
+	//  *   `sys.no-match-default`
+	//  *   `sys.no-input-<N>`, where N can be from 1 to 6
+	//  *   `sys.no-input-default`
+	//  *   `sys.invalid-parameter`
+	//
+	//  `initial_prompt_fulfillment` provides the first prompt for the
+	//  parameter.
+	//
+	//  If the user's response does not fill the parameter, a
+	//  no-match/no-input event will be triggered, and the fulfillment
+	//  associated with the `sys.no-match-1`/`sys.no-input-1` handler (if
+	//  defined) will be called to provide a prompt. The
+	//  `sys.no-match-2`/`sys.no-input-2` handler (if defined) will respond to
+	//  the next no-match/no-input event, and so on.
+	//
+	//  A `sys.no-match-default` or `sys.no-input-default` handler will be used
+	//  to handle all following no-match/no-input events after all numbered
+	//  no-match/no-input handlers for the parameter are consumed.
+	//
+	//  A `sys.invalid-parameter` handler can be defined to handle the case
+	//  where the parameter values have been `invalidated` by webhook. For
+	//  example, if the user's response fill the parameter, however the
+	//  parameter was invalidated by webhook, the fulfillment associated with
+	//  the `sys.invalid-parameter` handler (if defined) will be called to
+	//  provide a prompt.
+	//
+	//  If the event handler for the corresponding event can't be found on the
+	//  parameter, `initial_prompt_fulfillment` will be re-prompted.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Form.Parameter.FillBehavior.reprompt_event_handlers
+	RepromptEventHandlers []EventHandlerObservedState `json:"repromptEventHandlers,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Fulfillment
+type FulfillmentObservedState struct {
+	// The list of rich message responses to present to the user.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.messages
+	Messages []ResponseMessageObservedState `json:"messages,omitempty"`
+
+	// Conditional cases for this fulfillment.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.conditional_cases
+	ConditionalCases []Fulfillment_ConditionalCasesObservedState `json:"conditionalCases,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Fulfillment.ConditionalCases
+type Fulfillment_ConditionalCasesObservedState struct {
+	// A list of cascading if-else conditions.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.ConditionalCases.cases
+	Cases []Fulfillment_ConditionalCases_CaseObservedState `json:"cases,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Fulfillment.ConditionalCases.Case
+type Fulfillment_ConditionalCases_CaseObservedState struct {
+	// A list of case content.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Fulfillment.ConditionalCases.Case.case_content
+	CaseContent []Fulfillment_ConditionalCases_Case_CaseContentObservedState `json:"caseContent,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Intent
+type IntentObservedState struct {
+	// The collection of training phrases the agent is trained on to identify the
+	//  intent.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.training_phrases
+	TrainingPhrases []Intent_TrainingPhraseObservedState `json:"trainingPhrases,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase
+type Intent_TrainingPhraseObservedState struct {
+	// Output only. The unique identifier of the training phrase.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase.id
+	ID *string `json:"id,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings
+type KnowledgeConnectorSettingsObservedState struct {
+	// The fulfillment to be triggered.
+	//
+	//  When the answers from the Knowledge Connector are selected by Dialogflow,
+	//  you can utitlize the request scoped parameter `$request.knowledge.answers`
+	//  (contains up to the 5 highest confidence answers) and
+	//  `$request.knowledge.questions` (contains the corresponding questions) to
+	//  construct the fulfillment.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.KnowledgeConnectorSettings.trigger_fulfillment
+	TriggerFulfillment *FulfillmentObservedState `json:"triggerFulfillment,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.Page
+type PageObservedState struct {
+	// The fulfillment to call when the session is entering the page.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.entry_fulfillment
+	EntryFulfillment *FulfillmentObservedState `json:"entryFulfillment,omitempty"`
+
+	// The form associated with the page, used for collecting parameters
+	//  relevant to the page.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.form
+	Form *FormObservedState `json:"form,omitempty"`
+
+	// A list of transitions for the transition rules of this page.
+	//  They route the conversation to another page in the same flow, or another
+	//  flow.
+	//
+	//  When we are in a certain page, the TransitionRoutes are evaluated in the
+	//  following order:
+	//
+	//  *   TransitionRoutes defined in the page with intent specified.
+	//  *   TransitionRoutes defined in the
+	//      [transition route
+	//      groups][google.cloud.dialogflow.cx.v3.Page.transition_route_groups]
+	//      with intent specified.
+	//  *   TransitionRoutes defined in flow with intent specified.
+	//  *   TransitionRoutes defined in the
+	//      [transition route
+	//      groups][google.cloud.dialogflow.cx.v3.Flow.transition_route_groups]
+	//      with intent specified.
+	//  *   TransitionRoutes defined in the page with only condition specified.
+	//  *   TransitionRoutes defined in the
+	//      [transition route
+	//      groups][google.cloud.dialogflow.cx.v3.Page.transition_route_groups]
+	//      with only condition specified.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.transition_routes
+	TransitionRoutes []TransitionRouteObservedState `json:"transitionRoutes,omitempty"`
+
+	// Handlers associated with the page to handle events such as webhook errors,
+	//  no match or no input.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.event_handlers
+	EventHandlers []EventHandlerObservedState `json:"eventHandlers,omitempty"`
+
+	// Optional. Knowledge connector configuration.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.Page.knowledge_connector_settings
+	KnowledgeConnectorSettings *KnowledgeConnectorSettingsObservedState `json:"knowledgeConnectorSettings,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.PlaybookInvocation
+type PlaybookInvocationObservedState struct {
+	// Output only. The display name of the playbook.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.PlaybookInvocation.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.PlaybookTransition
+type PlaybookTransitionObservedState struct {
+	// Output only. The display name of the playbook.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.PlaybookTransition.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.ResponseMessage
+type ResponseMessageObservedState struct {
+	// Returns a text response.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.text
+	Text *ResponseMessage_TextObservedState `json:"text,omitempty"`
+
+	// A text or ssml response that is preferentially used for TTS output audio
+	//  synthesis, as described in the comment on the ResponseMessage message.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.output_audio_text
+	OutputAudioText *ResponseMessage_OutputAudioTextObservedState `json:"outputAudioText,omitempty"`
+
+	// Output only. A signal that indicates the interaction with the Dialogflow
+	//  agent has ended. This message is generated by Dialogflow only when the
+	//  conversation reaches `END_SESSION` page. It is not supposed to be defined
+	//  by the user.
+	//
+	//  It's guaranteed that there is at most one such message in each response.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.end_interaction
+	EndInteraction *ResponseMessage_EndInteraction `json:"endInteraction,omitempty"`
+
+	// Signal that the client should play an audio clip hosted at a
+	//  client-specific URI. Dialogflow uses this to construct
+	//  [mixed_audio][google.cloud.dialogflow.cx.v3.ResponseMessage.mixed_audio].
+	//  However, Dialogflow itself does not try to read or process the URI in any
+	//  way.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.play_audio
+	PlayAudio *ResponseMessage_PlayAudioObservedState `json:"playAudio,omitempty"`
+
+	// Output only. An audio response message composed of both the synthesized
+	//  Dialogflow agent responses and responses defined via
+	//  [play_audio][google.cloud.dialogflow.cx.v3.ResponseMessage.play_audio].
+	//  This message is generated by Dialogflow only and not supposed to be
+	//  defined by the user.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.mixed_audio
+	MixedAudio *ResponseMessage_MixedAudioObservedState `json:"mixedAudio,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.MixedAudio
+type ResponseMessage_MixedAudioObservedState struct {
+	// Segments this audio response is composed of.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.MixedAudio.segments
+	Segments []ResponseMessage_MixedAudio_SegmentObservedState `json:"segments,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.MixedAudio.Segment
+type ResponseMessage_MixedAudio_SegmentObservedState struct {
+	// Raw audio synthesized from the Dialogflow agent's response using
+	//  the output config specified in the request.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.MixedAudio.Segment.audio
+	Audio []byte `json:"audio,omitempty"`
+
+	// Client-specific URI that points to an audio clip accessible to the
+	//  client. Dialogflow does not impose any validation on it.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.MixedAudio.Segment.uri
+	URI *string `json:"uri,omitempty"`
+
+	// Output only. Whether the playback of this segment can be interrupted by
+	//  the end user's speech and the client should then start the next
+	//  Dialogflow request.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.MixedAudio.Segment.allow_playback_interruption
+	AllowPlaybackInterruption *bool `json:"allowPlaybackInterruption,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.OutputAudioText
+type ResponseMessage_OutputAudioTextObservedState struct {
+	// Output only. Whether the playback of this message can be interrupted by
+	//  the end user's speech and the client can then starts the next Dialogflow
+	//  request.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.OutputAudioText.allow_playback_interruption
+	AllowPlaybackInterruption *bool `json:"allowPlaybackInterruption,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.PlayAudio
+type ResponseMessage_PlayAudioObservedState struct {
+	// Output only. Whether the playback of this message can be interrupted by
+	//  the end user's speech and the client can then starts the next Dialogflow
+	//  request.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.PlayAudio.allow_playback_interruption
+	AllowPlaybackInterruption *bool `json:"allowPlaybackInterruption,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.ResponseMessage.Text
+type ResponseMessage_TextObservedState struct {
+	// Output only. Whether the playback of this message can be interrupted by
+	//  the end user's speech and the client can then starts the next Dialogflow
+	//  request.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ResponseMessage.Text.allow_playback_interruption
+	AllowPlaybackInterruption *bool `json:"allowPlaybackInterruption,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.TestCaseResult
+type TestCaseResultObservedState struct {
+	// The conversation turns uttered during the test case replay in chronological
+	//  order.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TestCaseResult.conversation_turns
+	ConversationTurns []ConversationTurnObservedState `json:"conversationTurns,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.ToolUse
+type ToolUseObservedState struct {
+	// Output only. The display name of the tool.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.ToolUse.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.TransitionRoute
+type TransitionRouteObservedState struct {
+	// Output only. The unique identifier of this transition route.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TransitionRoute.name
+	Name *string `json:"name,omitempty"`
+
+	// The fulfillment to call when the condition is satisfied. At least one of
+	//  `trigger_fulfillment` and `target` must be specified. When both are
+	//  defined, `trigger_fulfillment` is executed first.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.TransitionRoute.trigger_fulfillment
+	TriggerFulfillment *FulfillmentObservedState `json:"triggerFulfillment,omitempty"`
 }

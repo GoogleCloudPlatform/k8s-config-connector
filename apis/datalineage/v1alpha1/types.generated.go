@@ -17,20 +17,14 @@
 // krm.group: datalineage.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.datacatalog.lineage.v1
-// resource: DataLineageProcess:Process
+// resource: DatalineageRun:Run
 
 package v1alpha1
 
-/* unreachable type ListValue
-// +kcc:proto=google.protobuf.ListValue
-type ListValue struct {
-	// Repeated field of dynamically typed values.
-	// +kcc:proto:field=google.protobuf.ListValue.values
-	Values []Value `json:"values,omitempty"`
-}
-*/
+import (
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+)
 
-/* unreachable type Value
 // +kcc:proto=google.protobuf.Value
 type Value struct {
 	// Represents a null value.
@@ -57,4 +51,3 @@ type Value struct {
 	// +kcc:proto:field=google.protobuf.Value.list_value
 	ListValue *ListValue `json:"listValue,omitempty"`
 }
-*/

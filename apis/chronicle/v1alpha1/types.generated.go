@@ -18,6 +18,7 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.chronicle.v1
 // resource: ChronicleWatchlist:Watchlist
+// resource: ChronicleDataTableRow:DataTableRow
 
 package v1alpha1
 

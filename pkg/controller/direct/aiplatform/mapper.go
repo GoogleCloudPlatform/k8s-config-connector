@@ -17,6 +17,7 @@ package aiplatform
 import (
 	"encoding/json"
 
+	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	aiplatformpb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -140,5 +141,27 @@ func Schema_ToProto(mapCtx *direct.MapContext, in *krm.Schema) *aiplatformpb.Sch
 	}
 	out.AdditionalProperties = Value_ToProto(mapCtx, in.AdditionalProperties)
 	out.Ref = direct.ValueOf(in.Ref)
+	return out
+}
+
+func TensorboardTimeSeries_MetadataObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TensorboardTimeSeries_Metadata) *krm.TensorboardTimeSeries_MetadataObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TensorboardTimeSeries_MetadataObservedState{}
+	out.MaxStep = direct.LazyPtr(in.GetMaxStep())
+	out.MaxWallTime = direct.StringTimestamp_FromProto(mapCtx, in.GetMaxWallTime())
+	out.MaxBlobSequenceLength = direct.LazyPtr(in.GetMaxBlobSequenceLength())
+	return out
+}
+
+func TensorboardTimeSeries_MetadataObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TensorboardTimeSeries_MetadataObservedState) *pb.TensorboardTimeSeries_Metadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TensorboardTimeSeries_Metadata{}
+	out.MaxStep = direct.ValueOf(in.MaxStep)
+	out.MaxWallTime = direct.StringTimestamp_ToProto(mapCtx, in.MaxWallTime)
+	out.MaxBlobSequenceLength = direct.ValueOf(in.MaxBlobSequenceLength)
 	return out
 }

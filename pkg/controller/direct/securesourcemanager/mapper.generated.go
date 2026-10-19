@@ -26,6 +26,7 @@ package securesourcemanager
 import (
 	pb "cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb"
 	krmkmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+	krmsecuresourcemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -110,6 +111,168 @@ func Instance_PrivateConfigObservedState_ToProto(mapCtx *direct.MapContext, in *
 	out.HttpServiceAttachment = direct.ValueOf(in.HTTPServiceAttachment)
 	out.SshServiceAttachment = direct.ValueOf(in.SSHServiceAttachment)
 	// MISSING: PSCAllowedProjects
+	return out
+}
+func PullRequestComment_Code_FromProto(mapCtx *direct.MapContext, in *pb.PullRequestComment_Code) *krmsecuresourcemanagerv1alpha1.PullRequestComment_Code {
+	if in == nil {
+		return nil
+	}
+	out := &krmsecuresourcemanagerv1alpha1.PullRequestComment_Code{}
+	out.Body = direct.LazyPtr(in.GetBody())
+	out.Reply = direct.LazyPtr(in.GetReply())
+	out.Position = PullRequestComment_Position_FromProto(mapCtx, in.GetPosition())
+	// MISSING: EffectiveRootComment
+	// MISSING: Resolved
+	// MISSING: EffectiveCommitSha
+	return out
+}
+func PullRequestComment_Code_ToProto(mapCtx *direct.MapContext, in *krmsecuresourcemanagerv1alpha1.PullRequestComment_Code) *pb.PullRequestComment_Code {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PullRequestComment_Code{}
+	out.Body = direct.ValueOf(in.Body)
+	out.Reply = direct.ValueOf(in.Reply)
+	out.Position = PullRequestComment_Position_ToProto(mapCtx, in.Position)
+	// MISSING: EffectiveRootComment
+	// MISSING: Resolved
+	// MISSING: EffectiveCommitSha
+	return out
+}
+func PullRequestComment_CodeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PullRequestComment_Code) *krmsecuresourcemanagerv1alpha1.PullRequestComment_CodeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmsecuresourcemanagerv1alpha1.PullRequestComment_CodeObservedState{}
+	// MISSING: Body
+	// MISSING: Reply
+	// MISSING: Position
+	out.EffectiveRootComment = direct.LazyPtr(in.GetEffectiveRootComment())
+	out.Resolved = direct.LazyPtr(in.GetResolved())
+	out.EffectiveCommitSha = direct.LazyPtr(in.GetEffectiveCommitSha())
+	return out
+}
+func PullRequestComment_CodeObservedState_ToProto(mapCtx *direct.MapContext, in *krmsecuresourcemanagerv1alpha1.PullRequestComment_CodeObservedState) *pb.PullRequestComment_Code {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PullRequestComment_Code{}
+	// MISSING: Body
+	// MISSING: Reply
+	// MISSING: Position
+	out.EffectiveRootComment = direct.ValueOf(in.EffectiveRootComment)
+	out.Resolved = direct.ValueOf(in.Resolved)
+	out.EffectiveCommitSha = direct.ValueOf(in.EffectiveCommitSha)
+	return out
+}
+func PullRequestComment_Comment_FromProto(mapCtx *direct.MapContext, in *pb.PullRequestComment_Comment) *krmsecuresourcemanagerv1alpha1.PullRequestComment_Comment {
+	if in == nil {
+		return nil
+	}
+	out := &krmsecuresourcemanagerv1alpha1.PullRequestComment_Comment{}
+	out.Body = direct.LazyPtr(in.GetBody())
+	return out
+}
+func PullRequestComment_Comment_ToProto(mapCtx *direct.MapContext, in *krmsecuresourcemanagerv1alpha1.PullRequestComment_Comment) *pb.PullRequestComment_Comment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PullRequestComment_Comment{}
+	out.Body = direct.ValueOf(in.Body)
+	return out
+}
+func PullRequestComment_Position_FromProto(mapCtx *direct.MapContext, in *pb.PullRequestComment_Position) *krmsecuresourcemanagerv1alpha1.PullRequestComment_Position {
+	if in == nil {
+		return nil
+	}
+	out := &krmsecuresourcemanagerv1alpha1.PullRequestComment_Position{}
+	out.Path = direct.LazyPtr(in.GetPath())
+	out.Line = direct.LazyPtr(in.GetLine())
+	return out
+}
+func PullRequestComment_Position_ToProto(mapCtx *direct.MapContext, in *krmsecuresourcemanagerv1alpha1.PullRequestComment_Position) *pb.PullRequestComment_Position {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PullRequestComment_Position{}
+	out.Path = direct.ValueOf(in.Path)
+	out.Line = direct.ValueOf(in.Line)
+	return out
+}
+func PullRequestComment_Review_FromProto(mapCtx *direct.MapContext, in *pb.PullRequestComment_Review) *krmsecuresourcemanagerv1alpha1.PullRequestComment_Review {
+	if in == nil {
+		return nil
+	}
+	out := &krmsecuresourcemanagerv1alpha1.PullRequestComment_Review{}
+	out.ActionType = direct.Enum_FromProto(mapCtx, in.GetActionType())
+	out.Body = direct.LazyPtr(in.GetBody())
+	// MISSING: EffectiveCommitSha
+	return out
+}
+func PullRequestComment_Review_ToProto(mapCtx *direct.MapContext, in *krmsecuresourcemanagerv1alpha1.PullRequestComment_Review) *pb.PullRequestComment_Review {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PullRequestComment_Review{}
+	out.ActionType = direct.Enum_ToProto[pb.PullRequestComment_Review_ActionType](mapCtx, in.ActionType)
+	out.Body = direct.ValueOf(in.Body)
+	// MISSING: EffectiveCommitSha
+	return out
+}
+func PullRequestComment_ReviewObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PullRequestComment_Review) *krmsecuresourcemanagerv1alpha1.PullRequestComment_ReviewObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmsecuresourcemanagerv1alpha1.PullRequestComment_ReviewObservedState{}
+	// MISSING: ActionType
+	// MISSING: Body
+	out.EffectiveCommitSha = direct.LazyPtr(in.GetEffectiveCommitSha())
+	return out
+}
+func PullRequestComment_ReviewObservedState_ToProto(mapCtx *direct.MapContext, in *krmsecuresourcemanagerv1alpha1.PullRequestComment_ReviewObservedState) *pb.PullRequestComment_Review {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PullRequestComment_Review{}
+	// MISSING: ActionType
+	// MISSING: Body
+	out.EffectiveCommitSha = direct.ValueOf(in.EffectiveCommitSha)
+	return out
+}
+func PullRequest_Branch_FromProto(mapCtx *direct.MapContext, in *pb.PullRequest_Branch) *krmsecuresourcemanagerv1alpha1.PullRequest_Branch {
+	if in == nil {
+		return nil
+	}
+	out := &krmsecuresourcemanagerv1alpha1.PullRequest_Branch{}
+	out.Ref = direct.LazyPtr(in.GetRef())
+	// MISSING: Sha
+	return out
+}
+func PullRequest_Branch_ToProto(mapCtx *direct.MapContext, in *krmsecuresourcemanagerv1alpha1.PullRequest_Branch) *pb.PullRequest_Branch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PullRequest_Branch{}
+	out.Ref = direct.ValueOf(in.Ref)
+	// MISSING: Sha
+	return out
+}
+func PullRequest_BranchObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PullRequest_Branch) *krmsecuresourcemanagerv1alpha1.PullRequest_BranchObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmsecuresourcemanagerv1alpha1.PullRequest_BranchObservedState{}
+	// MISSING: Ref
+	out.Sha = direct.LazyPtr(in.GetSha())
+	return out
+}
+func PullRequest_BranchObservedState_ToProto(mapCtx *direct.MapContext, in *krmsecuresourcemanagerv1alpha1.PullRequest_BranchObservedState) *pb.PullRequest_Branch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PullRequest_Branch{}
+	// MISSING: Ref
+	out.Sha = direct.ValueOf(in.Sha)
 	return out
 }
 func Repository_InitialConfig_FromProto(mapCtx *direct.MapContext, in *pb.Repository_InitialConfig) *krm.Repository_InitialConfig {
@@ -246,5 +409,99 @@ func SecureSourceManagerRepositorySpec_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: Etag
 	// MISSING: Uris
 	out.InitialConfig = Repository_InitialConfig_ToProto(mapCtx, in.InitialConfig)
+	return out
+}
+func SecuresourcemanagerIssueCommentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.IssueComment) *krmsecuresourcemanagerv1alpha1.SecuresourcemanagerIssueCommentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmsecuresourcemanagerv1alpha1.SecuresourcemanagerIssueCommentObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func SecuresourcemanagerIssueCommentObservedState_ToProto(mapCtx *direct.MapContext, in *krmsecuresourcemanagerv1alpha1.SecuresourcemanagerIssueCommentObservedState) *pb.IssueComment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IssueComment{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func SecuresourcemanagerIssueCommentSpec_FromProto(mapCtx *direct.MapContext, in *pb.IssueComment) *krmsecuresourcemanagerv1alpha1.SecuresourcemanagerIssueCommentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmsecuresourcemanagerv1alpha1.SecuresourcemanagerIssueCommentSpec{}
+	// MISSING: Name
+	out.Body = direct.LazyPtr(in.GetBody())
+	return out
+}
+func SecuresourcemanagerIssueCommentSpec_ToProto(mapCtx *direct.MapContext, in *krmsecuresourcemanagerv1alpha1.SecuresourcemanagerIssueCommentSpec) *pb.IssueComment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IssueComment{}
+	// MISSING: Name
+	out.Body = direct.ValueOf(in.Body)
+	return out
+}
+func SecuresourcemanagerPullRequestCommentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PullRequestComment) *krmsecuresourcemanagerv1alpha1.SecuresourcemanagerPullRequestCommentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmsecuresourcemanagerv1alpha1.SecuresourcemanagerPullRequestCommentObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Review = PullRequestComment_ReviewObservedState_FromProto(mapCtx, in.GetReview())
+	out.Code = PullRequestComment_CodeObservedState_FromProto(mapCtx, in.GetCode())
+	return out
+}
+func SecuresourcemanagerPullRequestCommentObservedState_ToProto(mapCtx *direct.MapContext, in *krmsecuresourcemanagerv1alpha1.SecuresourcemanagerPullRequestCommentObservedState) *pb.PullRequestComment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PullRequestComment{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	if oneof := PullRequestComment_ReviewObservedState_ToProto(mapCtx, in.Review); oneof != nil {
+		out.CommentDetail = &pb.PullRequestComment_Review_{Review: oneof}
+	}
+	if oneof := PullRequestComment_CodeObservedState_ToProto(mapCtx, in.Code); oneof != nil {
+		out.CommentDetail = &pb.PullRequestComment_Code_{Code: oneof}
+	}
+	return out
+}
+func SecuresourcemanagerPullRequestCommentSpec_FromProto(mapCtx *direct.MapContext, in *pb.PullRequestComment) *krmsecuresourcemanagerv1alpha1.SecuresourcemanagerPullRequestCommentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmsecuresourcemanagerv1alpha1.SecuresourcemanagerPullRequestCommentSpec{}
+	// MISSING: Name
+	out.Review = PullRequestComment_Review_FromProto(mapCtx, in.GetReview())
+	out.Comment = PullRequestComment_Comment_FromProto(mapCtx, in.GetComment())
+	out.Code = PullRequestComment_Code_FromProto(mapCtx, in.GetCode())
+	return out
+}
+func SecuresourcemanagerPullRequestCommentSpec_ToProto(mapCtx *direct.MapContext, in *krmsecuresourcemanagerv1alpha1.SecuresourcemanagerPullRequestCommentSpec) *pb.PullRequestComment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PullRequestComment{}
+	// MISSING: Name
+	if oneof := PullRequestComment_Review_ToProto(mapCtx, in.Review); oneof != nil {
+		out.CommentDetail = &pb.PullRequestComment_Review_{Review: oneof}
+	}
+	if oneof := PullRequestComment_Comment_ToProto(mapCtx, in.Comment); oneof != nil {
+		out.CommentDetail = &pb.PullRequestComment_Comment_{Comment: oneof}
+	}
+	if oneof := PullRequestComment_Code_ToProto(mapCtx, in.Code); oneof != nil {
+		out.CommentDetail = &pb.PullRequestComment_Code_{Code: oneof}
+	}
 	return out
 }

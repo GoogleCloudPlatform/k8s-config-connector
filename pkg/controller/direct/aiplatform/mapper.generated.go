@@ -34,6 +34,221 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AIPlatformArtifactObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Artifact) *krm.AIPlatformArtifactObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformArtifactObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func AIPlatformArtifactObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformArtifactObservedState) *pb.Artifact {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Artifact{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func AIPlatformArtifactSpec_FromProto(mapCtx *direct.MapContext, in *pb.Artifact) *krm.AIPlatformArtifactSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformArtifactSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Labels = in.Labels
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.SchemaTitle = direct.LazyPtr(in.GetSchemaTitle())
+	out.SchemaVersion = direct.LazyPtr(in.GetSchemaVersion())
+	if v := direct.Struct_FromProto(mapCtx, in.GetMetadata()); v != nil {
+		out.Metadata = *v
+	}
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func AIPlatformArtifactSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformArtifactSpec) *pb.Artifact {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Artifact{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Uri = direct.ValueOf(in.URI)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Labels = in.Labels
+	out.State = direct.Enum_ToProto[pb.Artifact_State](mapCtx, in.State)
+	out.SchemaTitle = direct.ValueOf(in.SchemaTitle)
+	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
+	out.Metadata = direct.Struct_ToProto(mapCtx, &in.Metadata)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+func AIPlatformContextObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Context) *krm.AIPlatformContextObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformContextObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.ParentContexts = in.ParentContexts
+	return out
+}
+func AIPlatformContextObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformContextObservedState) *pb.Context {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Context{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.ParentContexts = in.ParentContexts
+	return out
+}
+func AIPlatformContextSpec_FromProto(mapCtx *direct.MapContext, in *pb.Context) *krm.AIPlatformContextSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformContextSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Labels = in.Labels
+	out.SchemaTitle = direct.LazyPtr(in.GetSchemaTitle())
+	out.SchemaVersion = direct.LazyPtr(in.GetSchemaVersion())
+	if v := direct.Struct_FromProto(mapCtx, in.GetMetadata()); v != nil {
+		out.Metadata = *v
+	}
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func AIPlatformContextSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformContextSpec) *pb.Context {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Context{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Labels = in.Labels
+	out.SchemaTitle = direct.ValueOf(in.SchemaTitle)
+	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
+	out.Metadata = direct.Struct_ToProto(mapCtx, &in.Metadata)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+func AIPlatformDatasetVersionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DatasetVersion) *krm.AIPlatformDatasetVersionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformDatasetVersionObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.BigQueryDatasetName = direct.LazyPtr(in.GetBigQueryDatasetName())
+	out.Metadata = Value_FromProto(mapCtx, in.GetMetadata())
+	out.ModelReference = direct.LazyPtr(in.GetModelReference())
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	return out
+}
+func AIPlatformDatasetVersionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformDatasetVersionObservedState) *pb.DatasetVersion {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DatasetVersion{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.BigQueryDatasetName = direct.ValueOf(in.BigQueryDatasetName)
+	out.Metadata = Value_ToProto(mapCtx, in.Metadata)
+	out.ModelReference = direct.ValueOf(in.ModelReference)
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+	return out
+}
+func AIPlatformDatasetVersionSpec_FromProto(mapCtx *direct.MapContext, in *pb.DatasetVersion) *krm.AIPlatformDatasetVersionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformDatasetVersionSpec{}
+	// MISSING: Name
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	return out
+}
+func AIPlatformDatasetVersionSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformDatasetVersionSpec) *pb.DatasetVersion {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DatasetVersion{}
+	// MISSING: Name
+	out.Etag = direct.ValueOf(in.Etag)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	return out
+}
+func AIPlatformExecutionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Execution) *krm.AIPlatformExecutionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformExecutionObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func AIPlatformExecutionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformExecutionObservedState) *pb.Execution {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Execution{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func AIPlatformExecutionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Execution) *krm.AIPlatformExecutionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformExecutionSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Labels = in.Labels
+	out.SchemaTitle = direct.LazyPtr(in.GetSchemaTitle())
+	out.SchemaVersion = direct.LazyPtr(in.GetSchemaVersion())
+	if v := direct.Struct_FromProto(mapCtx, in.GetMetadata()); v != nil {
+		out.Metadata = *v
+	}
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func AIPlatformExecutionSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformExecutionSpec) *pb.Execution {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Execution{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.State = direct.Enum_ToProto[pb.Execution_State](mapCtx, in.State)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Labels = in.Labels
+	out.SchemaTitle = direct.ValueOf(in.SchemaTitle)
+	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
+	out.Metadata = direct.Struct_ToProto(mapCtx, &in.Metadata)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+
 /* found existing non-generated mapping function "AIPlatformModelObservedState_FromProto", skipping
 func AIPlatformModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.AIPlatformModelObservedState {
 	if in == nil {
@@ -315,6 +530,56 @@ func AIPlatformSpecialistPoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIP
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.SpecialistManagerEmails = in.SpecialistManagerEmails
 	out.SpecialistWorkerEmails = in.SpecialistWorkerEmails
+	return out
+}
+func AIPlatformTensorboardTimeSeriesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TensorboardTimeSeries) *krm.AIPlatformTensorboardTimeSeriesObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformTensorboardTimeSeriesObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Metadata = TensorboardTimeSeries_MetadataObservedState_FromProto(mapCtx, in.GetMetadata())
+	return out
+}
+func AIPlatformTensorboardTimeSeriesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformTensorboardTimeSeriesObservedState) *pb.TensorboardTimeSeries {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TensorboardTimeSeries{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Metadata = TensorboardTimeSeries_MetadataObservedState_ToProto(mapCtx, in.Metadata)
+	return out
+}
+func AIPlatformTensorboardTimeSeriesSpec_FromProto(mapCtx *direct.MapContext, in *pb.TensorboardTimeSeries) *krm.AIPlatformTensorboardTimeSeriesSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AIPlatformTensorboardTimeSeriesSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.ValueType = direct.Enum_FromProto(mapCtx, in.GetValueType())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.PluginName = direct.LazyPtr(in.GetPluginName())
+	out.PluginData = in.GetPluginData()
+	return out
+}
+func AIPlatformTensorboardTimeSeriesSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformTensorboardTimeSeriesSpec) *pb.TensorboardTimeSeries {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TensorboardTimeSeries{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.ValueType = direct.Enum_ToProto[pb.TensorboardTimeSeries_ValueType](mapCtx, in.ValueType)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.PluginName = direct.ValueOf(in.PluginName)
+	out.PluginData = in.PluginData
 	return out
 }
 func BigQueryDestination_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDestination) *krm.BigQueryDestination {

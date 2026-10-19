@@ -17,6 +17,8 @@ package datalineage
 import (
 	"encoding/json"
 
+	pb "cloud.google.com/go/datacatalog/lineage/apiv1/lineagepb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datalineage/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/structpb"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -59,5 +61,29 @@ func Attributes_ToProto(mapCtx *direct.MapContext, in map[string]apiextensionsv1
 		}
 		out[k] = pbVal
 	}
+	return out
+}
+
+func DatalineageRunSpec_FromProto(mapCtx *direct.MapContext, in *pb.Run) *krm.DatalineageRunSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DatalineageRunSpec{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	return out
+}
+
+func DatalineageRunSpec_ToProto(mapCtx *direct.MapContext, in *krm.DatalineageRunSpec) *pb.Run {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Run{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.State = direct.Enum_ToProto[pb.Run_State](mapCtx, in.State)
 	return out
 }

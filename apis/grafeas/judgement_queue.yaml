@@ -1,0 +1,427 @@
+# Judgement queue for this service, written by controllerbuilder generate-types.
+#
+# Each entry is a call the generator could not make with confidence. Review it,
+# then set status: resolved and a resolution:
+#   accepted        the generated output is right as it is
+#   edited          you changed the type; the note says how
+#   deferred        right, but handled elsewhere; the note says where
+#   not-applicable  wrong for this resource; the note says why
+#
+# Do not delete entries. The file is also the record of what was decided, and
+# regenerating keeps the status of every entry it already has.
+#
+# While a possible-reference entry is open, TestMissingRefs does not fail on
+# that field. Once it is resolved, the field is checked like any other. A field
+# can have several of these entries, one per signal. Give them all the same
+# status, or tests/apichecks fails.
+#
+# Until a Kind's untriaged-bulk-generation entry is resolved, every run checks
+# the Kind again and adds new findings here. The Kind's <kind>_types.go is
+# never rewritten, so after a generator change a finding can name a field that
+# file does not have.
+
+entries:
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    reason: untriaged-bulk-generation
+    detail: spec was generated from proto definition; verify refs, omissions, and KRM conventions
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    reason: identity-server-generated-id
+    detail: generated GrafeasOccurrenceIdentity implements identity.ServerGeneratedIdentity because the Create RPC has no *_id parameter; confirm whether the resource ID is truly server-generated or client-specified in .name
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.attestation.signatures[].publicKeyID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.inTotoSlsaProvenanceV1.predicate.buildDefinition.resolvedDependencies[].annotations
+    reason: message-map-derived
+    detail: derived as map[string]Value from proto google.protobuf.Value; verify Go type and mapping
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.inTotoSlsaProvenanceV1.predicate.buildDefinition.resolvedDependencies[].annotations
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.inTotoSlsaProvenanceV1.predicate.runDetails.builder.builderDependencies[].annotations
+    reason: message-map-derived
+    detail: derived as map[string]Value from proto google.protobuf.Value; verify Go type and mapping
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.inTotoSlsaProvenanceV1.predicate.runDetails.builder.builderDependencies[].annotations
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.inTotoSlsaProvenanceV1.predicate.runDetails.byproducts[].annotations
+    reason: message-map-derived
+    detail: derived as map[string]Value from proto google.protobuf.Value; verify Go type and mapping
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.inTotoSlsaProvenanceV1.predicate.runDetails.byproducts[].annotations
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Value, which was generated as struct Value; confirm KRM representation
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.inTotoSlsaProvenanceV1.predicate.runDetails.metadata.invocationID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.intotoProvenance.metadata.buildInvocationID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.intotoProvenance.recipe.arguments
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Any, which was generated as struct Any; confirm KRM representation
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.intotoProvenance.recipe.environment
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Any, which was generated as struct Any; confirm KRM representation
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.intotoStatement.provenance.metadata.buildInvocationID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.intotoStatement.provenance.recipe.arguments
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Any, which was generated as struct Any; confirm KRM representation
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.intotoStatement.provenance.recipe.environment
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Any, which was generated as struct Any; confirm KRM representation
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.intotoStatement.slsaProvenance.metadata.buildInvocationID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.intotoStatement.slsaProvenance.recipe.arguments
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Any, which was generated as struct Any; confirm KRM representation
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.intotoStatement.slsaProvenance.recipe.environment
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Any, which was generated as struct Any; confirm KRM representation
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.intotoStatement.slsaProvenanceZeroTwo.metadata.buildInvocationID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.provenance.projectID
+    reason: possible-reference-by-name
+    detail: ProjectRef
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.provenance.sourceProvenance.additionalContexts[].cloudRepo.repoID.projectRepoID.projectID
+    reason: possible-reference-by-name
+    detail: ProjectRef
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.provenance.sourceProvenance.additionalContexts[].cloudRepo.revisionID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.provenance.sourceProvenance.additionalContexts[].gerrit.revisionID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.provenance.sourceProvenance.additionalContexts[].git.revisionID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.provenance.sourceProvenance.context.cloudRepo.repoID.projectRepoID.projectID
+    reason: possible-reference-by-name
+    detail: ProjectRef
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.provenance.sourceProvenance.context.cloudRepo.revisionID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.provenance.sourceProvenance.context.gerrit.revisionID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.provenance.sourceProvenance.context.git.revisionID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.provenance.sourceProvenance.fileHashes
+    reason: message-map-derived
+    detail: derived as map[string]FileHashes from proto grafeas.v1.FileHashes; verify Go type and mapping
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.build.provenance.triggerID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.dsseAttestation.statement.provenance.metadata.buildInvocationID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.dsseAttestation.statement.provenance.recipe.arguments
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Any, which was generated as struct Any; confirm KRM representation
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.dsseAttestation.statement.provenance.recipe.environment
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Any, which was generated as struct Any; confirm KRM representation
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.dsseAttestation.statement.slsaProvenance.metadata.buildInvocationID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.dsseAttestation.statement.slsaProvenance.recipe.arguments
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Any, which was generated as struct Any; confirm KRM representation
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.dsseAttestation.statement.slsaProvenance.recipe.environment
+    reason: well-known-proto-type
+    detail: field uses well-known protobuf type google.protobuf.Any, which was generated as struct Any; confirm KRM representation
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.dsseAttestation.statement.slsaProvenanceZeroTwo.metadata.buildInvocationID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.noteName
+    reason: possible-reference-by-description-loose
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.resourceURI
+    reason: reference-not-representable
+    detail: 'container-image-uri-not-a-storage-object: names another resource, but KCC cannot express it as a reference today, so it stays a string'
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.sbomReference.payload.predicate.referrerID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.secret
+    reason: possible-reference-by-name
+    detail: SecretManagerSecretVersionRef
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.secret.locations[].fileLocation.layerDetails.chainID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.secret.locations[].fileLocation.layerDetails.diffID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.upgrade.windowsUpdate.categories[].categoryID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.upgrade.windowsUpdate.identity.updateID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.upgrade.windowsUpdate.kbArticleIDs
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.vulnerability.packageIssue[].fileLocation[].layerDetails.chainID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.vulnerability.packageIssue[].fileLocation[].layerDetails.diffID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.vulnerability.vexAssessment.cve
+    reason: deprecated-field
+    detail: the proto marks this field deprecated. It is kept because generated structs can be shared with other Kinds. Remove it by hand if no existing Kind uses it
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.vulnerability.vexAssessment.noteName
+    reason: possible-reference-by-description-loose
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .spec.vulnerability.vexAssessment.vulnerabilityID
+    reason: possible-reference-by-name
+    detail: the field name ends in ID/IDs; confirm whether it references another resource
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .status.observedState.createTime
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .status.observedState.deployment.resourceURI
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.deployment.resourceURI. Move the field to .status.observedState.deployment.resourceURI if it is confirmed output only. Proto comment: Output only. Resource URI for the artifact being deployed taken from the deployable field with the same name.'
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .status.observedState.discovery.analysisStatusError
+    reason: possible-output-only-pattern-in-comment
+    detail: 'proto comment mentions output only but doesn''t start with "Output only." or "[Output Only]", and there is no field_behavior annotation, so it was generated into the Spec at .spec.discovery.analysisStatusError. The comment may be a typo, apply only some of the time, or mean something else. Move the field to .status.observedState.discovery.analysisStatusError if it is confirmed output only. Proto comment: When an error is encountered this will contain a LocalizedMessage under details to show to the user. The LocalizedMessage is output only and populated by the API.'
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .status.observedState.image.baseResourceURL
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.image.baseResourceURL. Move the field to .status.observedState.image.baseResourceURL if it is confirmed output only. Proto comment: Output only. This contains the base image URL for the derived image occurrence.'
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .status.observedState.image.distance
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.image.distance. Move the field to .status.observedState.image.distance if it is confirmed output only. Proto comment: Output only. The number of layers by which this image differs from the associated image basis.'
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .status.observedState.image.fingerprint.v2Name
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.image.fingerprint.v2Name. Move the field to .status.observedState.image.fingerprint.v2Name if it is confirmed output only. Proto comment: Output only. The name of the image''s v2 blobs computed via: [bottom] := v2_blob[bottom] [N] := sha256(v2_blob[N] + " " + v2_name[N+1]) Only the name of the final blob is kept.'
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .status.observedState.kind
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .status.observedState.updateTime
+    reason: server-set-field-placed
+    detail: 'moved to ObservedState because its name is on the server-set allowlist, not because the proto says so: no field on this message carries field_behavior. Confirm GCP sets this field instead of a user'
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .status.observedState.vulnerability.cvssScore
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.vulnerability.cvssScore. Move the field to .status.observedState.vulnerability.cvssScore if it is confirmed output only. Proto comment: Output only. The CVSS score of this vulnerability. CVSS score is on a scale of 0 - 10 where 0 indicates low severity and 10 indicates high severity.'
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .status.observedState.vulnerability.cvssVersion
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.vulnerability.cvssVersion. Move the field to .status.observedState.vulnerability.cvssVersion if it is confirmed output only. Proto comment: Output only. CVSS version used to populate cvss_score and severity.'
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .status.observedState.vulnerability.fixAvailable
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.vulnerability.fixAvailable. Move the field to .status.observedState.vulnerability.fixAvailable if it is confirmed output only. Proto comment: Output only. Whether at least one of the affected packages has a fix available.'
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .status.observedState.vulnerability.longDescription
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.vulnerability.longDescription. Move the field to .status.observedState.vulnerability.longDescription if it is confirmed output only. Proto comment: Output only. A detailed description of this vulnerability.'
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .status.observedState.vulnerability.packageIssue[].fixAvailable
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.vulnerability.packageIssue[].fixAvailable. Move the field to .status.observedState.vulnerability.packageIssue[].fixAvailable if it is confirmed output only. Proto comment: Output only. Whether a fix is available for this package.'
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .status.observedState.vulnerability.relatedURLs
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.vulnerability.relatedURLs. Move the field to .status.observedState.vulnerability.relatedURLs if it is confirmed output only. Proto comment: Output only. URLs related to this vulnerability.'
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .status.observedState.vulnerability.severity
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.vulnerability.severity. Move the field to .status.observedState.vulnerability.severity if it is confirmed output only. Proto comment: Output only. The note provider assigned severity of this vulnerability.'
+    status: open
+  - kind: GrafeasOccurrence
+    group: grafeas.cnrm.cloud.google.com
+    field: .status.observedState.vulnerability.shortDescription
+    reason: well-known-output-only-pattern-in-comment
+    detail: 'proto comment says output only but there is no field_behavior annotation, so it was generated into the Spec at .spec.vulnerability.shortDescription. Move the field to .status.observedState.vulnerability.shortDescription if it is confirmed output only. Proto comment: Output only. A one sentence description of this vulnerability.'
+    status: open

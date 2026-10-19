@@ -18,6 +18,8 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/grafeas/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	pb "google.golang.org/genproto/googleapis/grafeas/v1"
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/structpb"
 )
 
 func GrafeasNoteSpec_ToProto(mapCtx *direct.MapContext, in *krm.GrafeasNoteSpec) *pb.Note {
@@ -160,5 +162,286 @@ func GrafeasNoteStatus_FromProto(mapCtx *direct.MapContext, in *pb.Note) *krm.Gr
 	}
 	out := &krm.GrafeasNoteStatus{}
 	out.ObservedState = GrafeasNoteObservedState_FromProto(mapCtx, in)
+	return out
+}
+
+func Any_FromProto(mapCtx *direct.MapContext, in *anypb.Any) *krm.Any {
+	if in == nil {
+		return nil
+	}
+	return &krm.Any{
+		TypeURL: direct.LazyPtr(in.GetTypeUrl()),
+		Value:   in.GetValue(),
+	}
+}
+
+func Any_ToProto(mapCtx *direct.MapContext, in *krm.Any) *anypb.Any {
+	if in == nil {
+		return nil
+	}
+	return &anypb.Any{
+		TypeUrl: direct.ValueOf(in.TypeURL),
+		Value:   in.Value,
+	}
+}
+
+func Annotations_FromProto(mapCtx *direct.MapContext, in map[string]*structpb.Value) map[string]krm.Value {
+	return nil
+}
+
+func Annotations_ToProto(mapCtx *direct.MapContext, in map[string]krm.Value) map[string]*structpb.Value {
+	return nil
+}
+
+func Metadata_FromProto(mapCtx *direct.MapContext, in *pb.Metadata) *krm.Metadata {
+	if in == nil {
+		return nil
+	}
+	return &krm.Metadata{
+		BuildInvocationID: direct.LazyPtr(in.GetBuildInvocationId()),
+		BuildStartedOn:    direct.StringTimestamp_FromProto(mapCtx, in.GetBuildStartedOn()),
+		BuildFinishedOn:   direct.StringTimestamp_FromProto(mapCtx, in.GetBuildFinishedOn()),
+		Completeness:      Completeness_FromProto(mapCtx, in.GetCompleteness()),
+		Reproducible:      direct.LazyPtr(in.GetReproducible()),
+	}
+}
+
+func Metadata_ToProto(mapCtx *direct.MapContext, in *krm.Metadata) *pb.Metadata {
+	if in == nil {
+		return nil
+	}
+	return &pb.Metadata{
+		BuildInvocationId: direct.ValueOf(in.BuildInvocationID),
+		BuildStartedOn:    direct.StringTimestamp_ToProto(mapCtx, in.BuildStartedOn),
+		BuildFinishedOn:   direct.StringTimestamp_ToProto(mapCtx, in.BuildFinishedOn),
+		Completeness:      Completeness_ToProto(mapCtx, in.Completeness),
+		Reproducible:      direct.ValueOf(in.Reproducible),
+	}
+}
+
+func InTotoSlsaProvenanceV1_BuildMetadata_FromProto(mapCtx *direct.MapContext, in *pb.InTotoSlsaProvenanceV1_BuildMetadata) *krm.InTotoSlsaProvenanceV1_BuildMetadata {
+	if in == nil {
+		return nil
+	}
+	return &krm.InTotoSlsaProvenanceV1_BuildMetadata{
+		InvocationID: direct.LazyPtr(in.GetInvocationId()),
+		StartedOn:    direct.StringTimestamp_FromProto(mapCtx, in.GetStartedOn()),
+		FinishedOn:   direct.StringTimestamp_FromProto(mapCtx, in.GetFinishedOn()),
+	}
+}
+
+func InTotoSlsaProvenanceV1_BuildMetadata_ToProto(mapCtx *direct.MapContext, in *krm.InTotoSlsaProvenanceV1_BuildMetadata) *pb.InTotoSlsaProvenanceV1_BuildMetadata {
+	if in == nil {
+		return nil
+	}
+	return &pb.InTotoSlsaProvenanceV1_BuildMetadata{
+		InvocationId: direct.ValueOf(in.InvocationID),
+		StartedOn:    direct.StringTimestamp_ToProto(mapCtx, in.StartedOn),
+		FinishedOn:   direct.StringTimestamp_ToProto(mapCtx, in.FinishedOn),
+	}
+}
+
+func SlsaProvenance_SlsaMetadata_FromProto(mapCtx *direct.MapContext, in *pb.SlsaProvenance_SlsaMetadata) *krm.SlsaProvenance_SlsaMetadata {
+	if in == nil {
+		return nil
+	}
+	return &krm.SlsaProvenance_SlsaMetadata{
+		BuildInvocationID: direct.LazyPtr(in.GetBuildInvocationId()),
+		BuildStartedOn:    direct.StringTimestamp_FromProto(mapCtx, in.GetBuildStartedOn()),
+		BuildFinishedOn:   direct.StringTimestamp_FromProto(mapCtx, in.GetBuildFinishedOn()),
+		Completeness:      SlsaProvenance_SlsaCompleteness_FromProto(mapCtx, in.GetCompleteness()),
+		Reproducible:      direct.LazyPtr(in.GetReproducible()),
+	}
+}
+
+func SlsaProvenance_SlsaMetadata_ToProto(mapCtx *direct.MapContext, in *krm.SlsaProvenance_SlsaMetadata) *pb.SlsaProvenance_SlsaMetadata {
+	if in == nil {
+		return nil
+	}
+	return &pb.SlsaProvenance_SlsaMetadata{
+		BuildInvocationId: direct.ValueOf(in.BuildInvocationID),
+		BuildStartedOn:    direct.StringTimestamp_ToProto(mapCtx, in.BuildStartedOn),
+		BuildFinishedOn:   direct.StringTimestamp_ToProto(mapCtx, in.BuildFinishedOn),
+		Completeness:      SlsaProvenance_SlsaCompleteness_ToProto(mapCtx, in.Completeness),
+		Reproducible:      direct.ValueOf(in.Reproducible),
+	}
+}
+
+func SlsaProvenanceZeroTwo_SlsaMetadata_FromProto(mapCtx *direct.MapContext, in *pb.SlsaProvenanceZeroTwo_SlsaMetadata) *krm.SlsaProvenanceZeroTwo_SlsaMetadata {
+	if in == nil {
+		return nil
+	}
+	return &krm.SlsaProvenanceZeroTwo_SlsaMetadata{
+		BuildInvocationID: direct.LazyPtr(in.GetBuildInvocationId()),
+		BuildStartedOn:    direct.StringTimestamp_FromProto(mapCtx, in.GetBuildStartedOn()),
+		BuildFinishedOn:   direct.StringTimestamp_FromProto(mapCtx, in.GetBuildFinishedOn()),
+		Completeness:      SlsaProvenanceZeroTwo_SlsaCompleteness_FromProto(mapCtx, in.GetCompleteness()),
+		Reproducible:      direct.LazyPtr(in.GetReproducible()),
+	}
+}
+
+func SlsaProvenanceZeroTwo_SlsaMetadata_ToProto(mapCtx *direct.MapContext, in *krm.SlsaProvenanceZeroTwo_SlsaMetadata) *pb.SlsaProvenanceZeroTwo_SlsaMetadata {
+	if in == nil {
+		return nil
+	}
+	return &pb.SlsaProvenanceZeroTwo_SlsaMetadata{
+		BuildInvocationId: direct.ValueOf(in.BuildInvocationID),
+		BuildStartedOn:    direct.StringTimestamp_ToProto(mapCtx, in.BuildStartedOn),
+		BuildFinishedOn:   direct.StringTimestamp_ToProto(mapCtx, in.BuildFinishedOn),
+		Completeness:      SlsaProvenanceZeroTwo_SlsaCompleteness_ToProto(mapCtx, in.Completeness),
+		Reproducible:      direct.ValueOf(in.Reproducible),
+	}
+}
+
+func DiscoveryOccurrence_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveryOccurrence) *krm.DiscoveryOccurrence {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiscoveryOccurrence{}
+	out.ContinuousAnalysis = direct.Enum_FromProto(mapCtx, in.GetContinuousAnalysis())
+	out.AnalysisStatus = direct.Enum_FromProto(mapCtx, in.GetAnalysisStatus())
+	out.AnalysisCompleted = DiscoveryOccurrence_AnalysisCompleted_FromProto(mapCtx, in.GetAnalysisCompleted())
+	out.AnalysisError = direct.Slice_FromProto(mapCtx, in.AnalysisError, direct.Status_FromProto)
+	out.AnalysisStatusError = direct.Status_FromProto(mapCtx, in.GetAnalysisStatusError())
+	out.Cpe = direct.LazyPtr(in.GetCpe())
+	out.LastScanTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastScanTime())
+	out.SbomStatus = DiscoveryOccurrence_SbomStatus_FromProto(mapCtx, in.GetSbomStatus())
+	out.VulnerabilityAttestation = DiscoveryOccurrence_VulnerabilityAttestation_FromProto(mapCtx, in.GetVulnerabilityAttestation())
+	return out
+}
+
+func DiscoveryOccurrence_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryOccurrence) *pb.DiscoveryOccurrence {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DiscoveryOccurrence{}
+	out.ContinuousAnalysis = direct.Enum_ToProto[pb.DiscoveryOccurrence_ContinuousAnalysis](mapCtx, in.ContinuousAnalysis)
+	out.AnalysisStatus = direct.Enum_ToProto[pb.DiscoveryOccurrence_AnalysisStatus](mapCtx, in.AnalysisStatus)
+	out.AnalysisCompleted = DiscoveryOccurrence_AnalysisCompleted_ToProto(mapCtx, in.AnalysisCompleted)
+	out.AnalysisError = direct.Slice_ToProto(mapCtx, in.AnalysisError, direct.Status_ToProto)
+	out.AnalysisStatusError = direct.Status_ToProto(mapCtx, in.AnalysisStatusError)
+	out.Cpe = direct.ValueOf(in.Cpe)
+	out.LastScanTime = direct.StringTimestamp_ToProto(mapCtx, in.LastScanTime)
+	out.SbomStatus = DiscoveryOccurrence_SbomStatus_ToProto(mapCtx, in.SbomStatus)
+	out.VulnerabilityAttestation = DiscoveryOccurrence_VulnerabilityAttestation_ToProto(mapCtx, in.VulnerabilityAttestation)
+	return out
+}
+
+func InTotoSlsaProvenanceV1_FromProto(mapCtx *direct.MapContext, in *pb.InTotoSlsaProvenanceV1) *krm.InTotoSlsaProvenanceV1 {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InTotoSlsaProvenanceV1{}
+	out.Type = direct.LazyPtr(in.GetType())
+	out.Subject = direct.Slice_FromProto(mapCtx, in.Subject, Subject_FromProto)
+	out.PredicateType = direct.LazyPtr(in.GetPredicateType())
+	out.Predicate = InTotoSlsaProvenanceV1_SlsaProvenanceV1_FromProto(mapCtx, in.GetPredicate())
+	return out
+}
+
+func InTotoSlsaProvenanceV1_ToProto(mapCtx *direct.MapContext, in *krm.InTotoSlsaProvenanceV1) *pb.InTotoSlsaProvenanceV1 {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InTotoSlsaProvenanceV1{}
+	out.Type = direct.ValueOf(in.Type)
+	out.Subject = direct.Slice_ToProto(mapCtx, in.Subject, Subject_ToProto)
+	out.PredicateType = direct.ValueOf(in.PredicateType)
+	out.Predicate = InTotoSlsaProvenanceV1_SlsaProvenanceV1_ToProto(mapCtx, in.Predicate)
+	return out
+}
+
+func InTotoStatement_FromProto(mapCtx *direct.MapContext, in *pb.InTotoStatement) *krm.InTotoStatement {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InTotoStatement{}
+	out.Type = direct.LazyPtr(in.GetType())
+	out.Subject = direct.Slice_FromProto(mapCtx, in.Subject, Subject_FromProto)
+	out.PredicateType = direct.LazyPtr(in.GetPredicateType())
+	out.Provenance = InTotoProvenance_FromProto(mapCtx, in.GetProvenance())
+	out.SlsaProvenance = SlsaProvenance_FromProto(mapCtx, in.GetSlsaProvenance())
+	out.SlsaProvenanceZeroTwo = SlsaProvenanceZeroTwo_FromProto(mapCtx, in.GetSlsaProvenanceZeroTwo())
+	return out
+}
+
+func InTotoStatement_ToProto(mapCtx *direct.MapContext, in *krm.InTotoStatement) *pb.InTotoStatement {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InTotoStatement{}
+	out.Type = direct.ValueOf(in.Type)
+	out.Subject = direct.Slice_ToProto(mapCtx, in.Subject, Subject_ToProto)
+	out.PredicateType = direct.ValueOf(in.PredicateType)
+	if oneof := InTotoProvenance_ToProto(mapCtx, in.Provenance); oneof != nil {
+		out.Predicate = &pb.InTotoStatement_Provenance{Provenance: oneof}
+	}
+	if oneof := SlsaProvenance_ToProto(mapCtx, in.SlsaProvenance); oneof != nil {
+		out.Predicate = &pb.InTotoStatement_SlsaProvenance{SlsaProvenance: oneof}
+	}
+	if oneof := SlsaProvenanceZeroTwo_ToProto(mapCtx, in.SlsaProvenanceZeroTwo); oneof != nil {
+		out.Predicate = &pb.InTotoStatement_SlsaProvenanceZeroTwo{SlsaProvenanceZeroTwo: oneof}
+	}
+	return out
+}
+
+func SbomReferenceIntotoPayload_FromProto(mapCtx *direct.MapContext, in *pb.SbomReferenceIntotoPayload) *krm.SbomReferenceIntotoPayload {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SbomReferenceIntotoPayload{}
+	out.Type = direct.LazyPtr(in.GetType())
+	out.PredicateType = direct.LazyPtr(in.GetPredicateType())
+	out.Subject = direct.Slice_FromProto(mapCtx, in.Subject, Subject_FromProto)
+	out.Predicate = SbomReferenceIntotoPredicate_FromProto(mapCtx, in.GetPredicate())
+	return out
+}
+
+func SbomReferenceIntotoPayload_ToProto(mapCtx *direct.MapContext, in *krm.SbomReferenceIntotoPayload) *pb.SbomReferenceIntotoPayload {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SbomReferenceIntotoPayload{}
+	out.Type = direct.ValueOf(in.Type)
+	out.PredicateType = direct.ValueOf(in.PredicateType)
+	out.Subject = direct.Slice_ToProto(mapCtx, in.Subject, Subject_ToProto)
+	out.Predicate = SbomReferenceIntotoPredicate_ToProto(mapCtx, in.Predicate)
+	return out
+}
+
+func Source_FromProto(mapCtx *direct.MapContext, in *pb.Source) *krm.Source {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Source{}
+	out.ArtifactStorageSourceURI = direct.LazyPtr(in.GetArtifactStorageSourceUri())
+	if in.FileHashes != nil {
+		out.FileHashes = make(map[string]krm.FileHashes, len(in.FileHashes))
+		for k, v := range in.FileHashes {
+			if mapped := FileHashes_FromProto(mapCtx, v); mapped != nil {
+				out.FileHashes[k] = *mapped
+			}
+		}
+	}
+	out.Context = SourceContext_FromProto(mapCtx, in.GetContext())
+	out.AdditionalContexts = direct.Slice_FromProto(mapCtx, in.AdditionalContexts, SourceContext_FromProto)
+	return out
+}
+
+func Source_ToProto(mapCtx *direct.MapContext, in *krm.Source) *pb.Source {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Source{}
+	out.ArtifactStorageSourceUri = direct.ValueOf(in.ArtifactStorageSourceURI)
+	if in.FileHashes != nil {
+		out.FileHashes = make(map[string]*pb.FileHashes, len(in.FileHashes))
+		for k, v := range in.FileHashes {
+			v := v
+			out.FileHashes[k] = FileHashes_ToProto(mapCtx, &v)
+		}
+	}
+	out.Context = SourceContext_ToProto(mapCtx, in.Context)
+	out.AdditionalContexts = direct.Slice_ToProto(mapCtx, in.AdditionalContexts, SourceContext_ToProto)
 	return out
 }

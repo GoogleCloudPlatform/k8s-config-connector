@@ -18,8 +18,110 @@
 // krm.version: v1alpha1
 // proto.service: grafeas.v1
 // resource: GrafeasNote:Note
+// resource: GrafeasOccurrence:Occurrence
 
 package v1alpha1
+
+import (
+	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+)
+
+// +kcc:proto=google.protobuf.Any
+type Any struct {
+	// A URL/resource name that uniquely identifies the type of the serialized
+	//  protocol buffer message. This string must contain at least
+	//  one "/" character. The last segment of the URL's path must represent
+	//  the fully qualified name of the type (as in
+	//  `path/google.protobuf.Duration`). The name should be in a canonical form
+	//  (e.g., leading "." is not accepted).
+	//
+	//  In practice, teams usually precompile into the binary all types that they
+	//  expect it to use in the context of Any. However, for URLs which use the
+	//  scheme `http`, `https`, or no scheme, one can optionally set up a type
+	//  server that maps type URLs to message definitions as follows:
+	//
+	//  * If no scheme is provided, `https` is assumed.
+	//  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+	//    value in binary format, or produce an error.
+	//  * Applications are allowed to cache lookup results based on the
+	//    URL, or have them precompiled into a binary to avoid any
+	//    lookup. Therefore, binary compatibility needs to be preserved
+	//    on changes to types. (Use versioned type names to manage
+	//    breaking changes.)
+	//
+	//  Note: this functionality is not currently available in the official
+	//  protobuf release, and it is not used for type URLs beginning with
+	//  type.googleapis.com.
+	//
+	//  Schemes other than `http`, `https` (or the empty scheme) might be
+	//  used with implementation specific semantics.
+	// +kcc:proto:field=google.protobuf.Any.type_url
+	TypeURL *string `json:"typeURL,omitempty"`
+
+	// Must be a valid serialized protocol buffer of the above specified type.
+	// +kcc:proto:field=google.protobuf.Any.value
+	Value []byte `json:"value,omitempty"`
+}
+
+// +kcc:proto=google.protobuf.Value
+type Value struct {
+	// Represents a null value.
+	// +kcc:proto:field=google.protobuf.Value.null_value
+	NullValue *string `json:"nullValue,omitempty"`
+
+	// Represents a double value.
+	// +kcc:proto:field=google.protobuf.Value.number_value
+	NumberValue *float64 `json:"numberValue,omitempty"`
+
+	// Represents a string value.
+	// +kcc:proto:field=google.protobuf.Value.string_value
+	StringValue *string `json:"stringValue,omitempty"`
+
+	// Represents a boolean value.
+	// +kcc:proto:field=google.protobuf.Value.bool_value
+	BoolValue *bool `json:"boolValue,omitempty"`
+
+	// Represents a structured value.
+	// +kcc:proto:field=google.protobuf.Value.struct_value
+	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
+
+	// Represents a repeated `Value`.
+	// +kcc:proto:field=google.protobuf.Value.list_value
+	ListValue *ListValue `json:"listValue,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.AliasContext
+type AliasContext struct {
+	// The alias kind.
+	// +kcc:proto:field=grafeas.v1.AliasContext.kind
+	Kind *string `json:"kind,omitempty"`
+
+	// The alias name.
+	// +kcc:proto:field=grafeas.v1.AliasContext.name
+	Name *string `json:"name,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.Artifact
+type Artifact struct {
+	// Hash or checksum value of a binary, or Docker Registry 2.0 digest of a
+	//  container.
+	// +kcc:proto:field=grafeas.v1.Artifact.checksum
+	Checksum *string `json:"checksum,omitempty"`
+
+	// Artifact ID, if any; for container images, this will be a URL by digest
+	//  like `gcr.io/projectID/imagename@sha256:123456`.
+	// +kcc:proto:field=grafeas.v1.Artifact.id
+	ID *string `json:"id,omitempty"`
+
+	// Related artifact names. This may be the path to a binary or jar file, or in
+	//  the case of a container build, the name used to push the container image to
+	//  Google Container Registry, as presented to `docker push`. Note that a
+	//  single Artifact ID can have multiple names, for example if two tags are
+	//  applied to one image.
+	// +kcc:proto:field=grafeas.v1.Artifact.names
+	Names []string `json:"names,omitempty"`
+}
 
 // +kcc:proto=grafeas.v1.AttestationNote
 type AttestationNote struct {
@@ -36,11 +138,157 @@ type AttestationNote_Hint struct {
 	HumanReadableName *string `json:"humanReadableName,omitempty"`
 }
 
+// +kcc:proto=grafeas.v1.AttestationOccurrence
+type AttestationOccurrence struct {
+	// Required. The serialized payload that is verified by one or more
+	//  `signatures`.
+	// +kcc:proto:field=grafeas.v1.AttestationOccurrence.serialized_payload
+	SerializedPayload []byte `json:"serializedPayload,omitempty"`
+
+	// One or more signatures over `serialized_payload`.  Verifier implementations
+	//  should consider this attestation message verified if at least one
+	//  `signature` verifies `serialized_payload`.  See `Signature` in common.proto
+	//  for more details on signature structure and verification.
+	// +kcc:proto:field=grafeas.v1.AttestationOccurrence.signatures
+	Signatures []Signature `json:"signatures,omitempty"`
+
+	// One or more JWTs encoding a self-contained attestation.
+	//  Each JWT encodes the payload that it verifies within the JWT itself.
+	//  Verifier implementation SHOULD ignore the `serialized_payload` field
+	//  when verifying these JWTs.
+	//  If only JWTs are present on this AttestationOccurrence, then the
+	//  `serialized_payload` SHOULD be left empty.
+	//  Each JWT SHOULD encode a claim specific to the `resource_uri` of this
+	//  Occurrence, but this is not validated by Grafeas metadata API
+	//  implementations.  The JWT itself is opaque to Grafeas.
+	// +kcc:proto:field=grafeas.v1.AttestationOccurrence.jwts
+	Jwts []Jwt `json:"jwts,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.BaseImage
+type BaseImage struct {
+	// The name of the base image.
+	// +kcc:proto:field=grafeas.v1.BaseImage.name
+	Name *string `json:"name,omitempty"`
+
+	// The repository name in which the base image is from.
+	// +kcc:proto:field=grafeas.v1.BaseImage.repository
+	Repository *string `json:"repository,omitempty"`
+
+	// The number of layers that the base image is composed of.
+	// +kcc:proto:field=grafeas.v1.BaseImage.layer_count
+	LayerCount *int32 `json:"layerCount,omitempty"`
+}
+
 // +kcc:proto=grafeas.v1.BuildNote
 type BuildNote struct {
 	// Required. Immutable. Version of the builder which produced this build.
 	// +kcc:proto:field=grafeas.v1.BuildNote.builder_version
 	BuilderVersion *string `json:"builderVersion,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.BuildOccurrence
+type BuildOccurrence struct {
+	// The actual provenance for the build.
+	// +kcc:proto:field=grafeas.v1.BuildOccurrence.provenance
+	Provenance *BuildProvenance `json:"provenance,omitempty"`
+
+	// Serialized JSON representation of the provenance, used in generating the
+	//  build signature in the corresponding build note. After verifying the
+	//  signature, `provenance_bytes` can be unmarshalled and compared to the
+	//  provenance to confirm that it is unchanged. A base64-encoded string
+	//  representation of the provenance bytes is used for the signature in order
+	//  to interoperate with openssl which expects this format for signature
+	//  verification.
+	//
+	//  The serialized form is captured both to avoid ambiguity in how the
+	//  provenance is marshalled to json as well to prevent incompatibilities with
+	//  future changes.
+	// +kcc:proto:field=grafeas.v1.BuildOccurrence.provenance_bytes
+	ProvenanceBytes *string `json:"provenanceBytes,omitempty"`
+
+	// Deprecated. See InTotoStatement for the replacement.
+	//  In-toto Provenance representation as defined in spec.
+	// +kcc:proto:field=grafeas.v1.BuildOccurrence.intoto_provenance
+	IntotoProvenance *InTotoProvenance `json:"intotoProvenance,omitempty"`
+
+	// In-toto Statement representation as defined in spec.
+	//  The intoto_statement can contain any type of provenance. The serialized
+	//  payload of the statement can be stored and signed in the Occurrence's
+	//  envelope.
+	// +kcc:proto:field=grafeas.v1.BuildOccurrence.intoto_statement
+	IntotoStatement *InTotoStatement `json:"intotoStatement,omitempty"`
+
+	// In-Toto Slsa Provenance V1 represents a slsa provenance meeting the slsa
+	//  spec, wrapped in an in-toto statement. This allows for direct
+	//  jsonification of a to-spec in-toto slsa statement with a to-spec
+	//  slsa provenance.
+	// +kcc:proto:field=grafeas.v1.BuildOccurrence.in_toto_slsa_provenance_v1
+	InTotoSlsaProvenanceV1 *InTotoSlsaProvenanceV1 `json:"inTotoSlsaProvenanceV1,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.BuildProvenance
+type BuildProvenance struct {
+	// Required. Unique identifier of the build.
+	// +kcc:proto:field=grafeas.v1.BuildProvenance.id
+	ID *string `json:"id,omitempty"`
+
+	// ID of the project.
+	// +kcc:proto:field=grafeas.v1.BuildProvenance.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+
+	// Commands requested by the build.
+	// +kcc:proto:field=grafeas.v1.BuildProvenance.commands
+	Commands []Command `json:"commands,omitempty"`
+
+	// Output of the build.
+	// +kcc:proto:field=grafeas.v1.BuildProvenance.built_artifacts
+	BuiltArtifacts []Artifact `json:"builtArtifacts,omitempty"`
+
+	// Time at which the build was created.
+	// +kcc:proto:field=grafeas.v1.BuildProvenance.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Time at which execution of the build was started.
+	// +kcc:proto:field=grafeas.v1.BuildProvenance.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Time at which execution of the build was finished.
+	// +kcc:proto:field=grafeas.v1.BuildProvenance.end_time
+	EndTime *string `json:"endTime,omitempty"`
+
+	// E-mail address of the user who initiated this build. Note that this was the
+	//  user's e-mail address at the time the build was initiated; this address may
+	//  not represent the same end-user for all time.
+	// +kcc:proto:field=grafeas.v1.BuildProvenance.creator
+	Creator *string `json:"creator,omitempty"`
+
+	// URI where any logs for this provenance were written.
+	// +kcc:proto:field=grafeas.v1.BuildProvenance.logs_uri
+	LogsURI *string `json:"logsURI,omitempty"`
+
+	// Details of the Source input to the build.
+	// +kcc:proto:field=grafeas.v1.BuildProvenance.source_provenance
+	SourceProvenance *Source `json:"sourceProvenance,omitempty"`
+
+	// Trigger identifier if the build was triggered automatically; empty if not.
+	// +kcc:proto:field=grafeas.v1.BuildProvenance.trigger_id
+	TriggerID *string `json:"triggerID,omitempty"`
+
+	// Special options applied to this build. This is a catch-all field where
+	//  build providers can enter any desired additional details.
+	// +kcc:proto:field=grafeas.v1.BuildProvenance.build_options
+	BuildOptions map[string]string `json:"buildOptions,omitempty"`
+
+	// Version string of the builder at the time this build was executed.
+	// +kcc:proto:field=grafeas.v1.BuildProvenance.builder_version
+	BuilderVersion *string `json:"builderVersion,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.BuilderConfig
+type BuilderConfig struct {
+	// +kcc:proto:field=grafeas.v1.BuilderConfig.id
+	ID *string `json:"id,omitempty"`
 }
 
 // +kcc:proto=grafeas.v1.CVSS
@@ -126,6 +374,69 @@ type CvsSv3 struct {
 	AvailabilityImpact *string `json:"availabilityImpact,omitempty"`
 }
 
+// +kcc:proto=grafeas.v1.CloudRepoSourceContext
+type CloudRepoSourceContext struct {
+	// The ID of the repo.
+	// +kcc:proto:field=grafeas.v1.CloudRepoSourceContext.repo_id
+	RepoID *RepoID `json:"repoID,omitempty"`
+
+	// A revision ID.
+	// +kcc:proto:field=grafeas.v1.CloudRepoSourceContext.revision_id
+	RevisionID *string `json:"revisionID,omitempty"`
+
+	// An alias, which may be a branch or tag.
+	// +kcc:proto:field=grafeas.v1.CloudRepoSourceContext.alias_context
+	AliasContext *AliasContext `json:"aliasContext,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.Command
+type Command struct {
+	// Required. Name of the command, as presented on the command line, or if the
+	//  command is packaged as a Docker container, as presented to `docker pull`.
+	// +kcc:proto:field=grafeas.v1.Command.name
+	Name *string `json:"name,omitempty"`
+
+	// Environment variables set before running this command.
+	// +kcc:proto:field=grafeas.v1.Command.env
+	Env []string `json:"env,omitempty"`
+
+	// Command-line arguments used when executing this command.
+	// +kcc:proto:field=grafeas.v1.Command.args
+	Args []string `json:"args,omitempty"`
+
+	// Working directory (relative to project source root) used when running this
+	//  command.
+	// +kcc:proto:field=grafeas.v1.Command.dir
+	Dir *string `json:"dir,omitempty"`
+
+	// Optional unique identifier for this command, used in wait_for to reference
+	//  this command as a dependency.
+	// +kcc:proto:field=grafeas.v1.Command.id
+	ID *string `json:"id,omitempty"`
+
+	// The ID(s) of the command(s) that this command depends on.
+	// +kcc:proto:field=grafeas.v1.Command.wait_for
+	WaitFor []string `json:"waitFor,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.Completeness
+type Completeness struct {
+	// If true, the builder claims that recipe.arguments is complete, meaning that
+	//  all external inputs are properly captured in the recipe.
+	// +kcc:proto:field=grafeas.v1.Completeness.arguments
+	Arguments *bool `json:"arguments,omitempty"`
+
+	// If true, the builder claims that recipe.environment is claimed to be
+	//  complete.
+	// +kcc:proto:field=grafeas.v1.Completeness.environment
+	Environment *bool `json:"environment,omitempty"`
+
+	// If true, the builder claims that materials are complete, usually through
+	//  some controls to prevent network access. Sometimes called "hermetic".
+	// +kcc:proto:field=grafeas.v1.Completeness.materials
+	Materials *bool `json:"materials,omitempty"`
+}
+
 // +kcc:proto=grafeas.v1.ComplianceNote
 type ComplianceNote struct {
 	// The title that identifies this compliance check.
@@ -168,6 +479,19 @@ type ComplianceNote_CisBenchmark struct {
 	Severity *string `json:"severity,omitempty"`
 }
 
+// +kcc:proto=grafeas.v1.ComplianceOccurrence
+type ComplianceOccurrence struct {
+	// +kcc:proto:field=grafeas.v1.ComplianceOccurrence.non_compliant_files
+	NonCompliantFiles []NonCompliantFile `json:"nonCompliantFiles,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.ComplianceOccurrence.non_compliance_reason
+	NonComplianceReason *string `json:"nonComplianceReason,omitempty"`
+
+	// The OS and config version the benchmark was run on.
+	// +kcc:proto:field=grafeas.v1.ComplianceOccurrence.version
+	Version *ComplianceVersion `json:"version,omitempty"`
+}
+
 // +kcc:proto=grafeas.v1.ComplianceVersion
 type ComplianceVersion struct {
 	// The CPE URI (https://cpe.mitre.org/specification/) this benchmark is
@@ -201,11 +525,54 @@ type DsseAttestationNote_DsseHint struct {
 	HumanReadableName *string `json:"humanReadableName,omitempty"`
 }
 
+// +kcc:proto=grafeas.v1.DSSEAttestationOccurrence
+type DsseAttestationOccurrence struct {
+	// If doing something security critical, make sure to verify the signatures in
+	//  this metadata.
+	// +kcc:proto:field=grafeas.v1.DSSEAttestationOccurrence.envelope
+	Envelope *Envelope `json:"envelope,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.DSSEAttestationOccurrence.statement
+	Statement *InTotoStatement `json:"statement,omitempty"`
+}
+
 // +kcc:proto=grafeas.v1.DeploymentNote
 type DeploymentNote struct {
 	// Required. Resource URI for the artifact being deployed.
 	// +kcc:proto:field=grafeas.v1.DeploymentNote.resource_uri
 	ResourceURI []string `json:"resourceURI,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.DeploymentOccurrence
+type DeploymentOccurrence struct {
+	// Identity of the user that triggered this deployment.
+	// +kcc:proto:field=grafeas.v1.DeploymentOccurrence.user_email
+	UserEmail *string `json:"userEmail,omitempty"`
+
+	// Required. Beginning of the lifetime of this deployment.
+	// +kcc:proto:field=grafeas.v1.DeploymentOccurrence.deploy_time
+	DeployTime *string `json:"deployTime,omitempty"`
+
+	// End of the lifetime of this deployment.
+	// +kcc:proto:field=grafeas.v1.DeploymentOccurrence.undeploy_time
+	UndeployTime *string `json:"undeployTime,omitempty"`
+
+	// Configuration used to create this deployment.
+	// +kcc:proto:field=grafeas.v1.DeploymentOccurrence.config
+	Config *string `json:"config,omitempty"`
+
+	// Address of the runtime element hosting this deployment.
+	// +kcc:proto:field=grafeas.v1.DeploymentOccurrence.address
+	Address *string `json:"address,omitempty"`
+
+	// Output only. Resource URI for the artifact being deployed taken from
+	//  the deployable field with the same name.
+	// +kcc:proto:field=grafeas.v1.DeploymentOccurrence.resource_uri
+	ResourceURI []string `json:"resourceURI,omitempty"`
+
+	// Platform hosting this deployment.
+	// +kcc:proto:field=grafeas.v1.DeploymentOccurrence.platform
+	Platform *string `json:"platform,omitempty"`
 }
 
 // +kcc:proto=grafeas.v1.Digest
@@ -225,6 +592,80 @@ type DiscoveryNote struct {
 	//  discovery.
 	// +kcc:proto:field=grafeas.v1.DiscoveryNote.analysis_kind
 	AnalysisKind *string `json:"analysisKind,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.DiscoveryOccurrence
+type DiscoveryOccurrence struct {
+	// Whether the resource is continuously analyzed.
+	// +kcc:proto:field=grafeas.v1.DiscoveryOccurrence.continuous_analysis
+	ContinuousAnalysis *string `json:"continuousAnalysis,omitempty"`
+
+	// The status of discovery for the resource.
+	// +kcc:proto:field=grafeas.v1.DiscoveryOccurrence.analysis_status
+	AnalysisStatus *string `json:"analysisStatus,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.DiscoveryOccurrence.analysis_completed
+	AnalysisCompleted *DiscoveryOccurrence_AnalysisCompleted `json:"analysisCompleted,omitempty"`
+
+	// Indicates any errors encountered during analysis of a resource. There
+	//  could be 0 or more of these errors.
+	// +kcc:proto:field=grafeas.v1.DiscoveryOccurrence.analysis_error
+	AnalysisError []common.Status `json:"analysisError,omitempty"`
+
+	// When an error is encountered this will contain a LocalizedMessage under
+	//  details to show to the user. The LocalizedMessage is output only and
+	//  populated by the API.
+	// +kcc:proto:field=grafeas.v1.DiscoveryOccurrence.analysis_status_error
+	AnalysisStatusError *common.Status `json:"analysisStatusError,omitempty"`
+
+	// The CPE of the resource being scanned.
+	// +kcc:proto:field=grafeas.v1.DiscoveryOccurrence.cpe
+	Cpe *string `json:"cpe,omitempty"`
+
+	// The last time this resource was scanned.
+	// +kcc:proto:field=grafeas.v1.DiscoveryOccurrence.last_scan_time
+	LastScanTime *string `json:"lastScanTime,omitempty"`
+
+	// The status of an SBOM generation.
+	// +kcc:proto:field=grafeas.v1.DiscoveryOccurrence.sbom_status
+	SbomStatus *DiscoveryOccurrence_SbomStatus `json:"sbomStatus,omitempty"`
+
+	// The status of an vulnerability attestation generation.
+	// +kcc:proto:field=grafeas.v1.DiscoveryOccurrence.vulnerability_attestation
+	VulnerabilityAttestation *DiscoveryOccurrence_VulnerabilityAttestation `json:"vulnerabilityAttestation,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.DiscoveryOccurrence.AnalysisCompleted
+type DiscoveryOccurrence_AnalysisCompleted struct {
+	// +kcc:proto:field=grafeas.v1.DiscoveryOccurrence.AnalysisCompleted.analysis_type
+	AnalysisType []string `json:"analysisType,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.DiscoveryOccurrence.SBOMStatus
+type DiscoveryOccurrence_SbomStatus struct {
+	// The progress of the SBOM generation.
+	// +kcc:proto:field=grafeas.v1.DiscoveryOccurrence.SBOMStatus.sbom_state
+	SbomState *string `json:"sbomState,omitempty"`
+
+	// If there was an error generating an SBOM, this will indicate what that
+	//  error was.
+	// +kcc:proto:field=grafeas.v1.DiscoveryOccurrence.SBOMStatus.error
+	Error *string `json:"error,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.DiscoveryOccurrence.VulnerabilityAttestation
+type DiscoveryOccurrence_VulnerabilityAttestation struct {
+	// The last time we attempted to generate an attestation.
+	// +kcc:proto:field=grafeas.v1.DiscoveryOccurrence.VulnerabilityAttestation.last_attempt_time
+	LastAttemptTime *string `json:"lastAttemptTime,omitempty"`
+
+	// The success/failure state of the latest attestation attempt.
+	// +kcc:proto:field=grafeas.v1.DiscoveryOccurrence.VulnerabilityAttestation.state
+	State *string `json:"state,omitempty"`
+
+	// If failure, the error reason for why the attestation generation failed.
+	// +kcc:proto:field=grafeas.v1.DiscoveryOccurrence.VulnerabilityAttestation.error
+	Error *string `json:"error,omitempty"`
 }
 
 // +kcc:proto=grafeas.v1.Distribution
@@ -256,6 +697,47 @@ type Distribution struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// +kcc:proto=grafeas.v1.Envelope
+type Envelope struct {
+	// +kcc:proto:field=grafeas.v1.Envelope.payload
+	Payload []byte `json:"payload,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.Envelope.payload_type
+	PayloadType *string `json:"payloadType,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.Envelope.signatures
+	Signatures []EnvelopeSignature `json:"signatures,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.EnvelopeSignature
+type EnvelopeSignature struct {
+	// +kcc:proto:field=grafeas.v1.EnvelopeSignature.sig
+	Sig []byte `json:"sig,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.EnvelopeSignature.keyid
+	Keyid *string `json:"keyid,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.FileHashes
+type FileHashes struct {
+	// Required. Collection of file hashes.
+	// +kcc:proto:field=grafeas.v1.FileHashes.file_hash
+	FileHash []Hash `json:"fileHash,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.FileLocation
+type FileLocation struct {
+	// For jars that are contained inside .war files, this filepath
+	//  can indicate the path to war file combined with the path to jar file.
+	// +kcc:proto:field=grafeas.v1.FileLocation.file_path
+	FilePath *string `json:"filePath,omitempty"`
+
+	// Each package found in a file should have its own layer metadata (that is,
+	//  information from the origin layer of the package).
+	// +kcc:proto:field=grafeas.v1.FileLocation.layer_details
+	LayerDetails *LayerDetails `json:"layerDetails,omitempty"`
+}
+
 // +kcc:proto=grafeas.v1.Fingerprint
 type Fingerprint struct {
 	// Required. The layer ID of the final layer in the Docker image's v1
@@ -275,6 +757,49 @@ type Fingerprint struct {
 	V2Name *string `json:"v2Name,omitempty"`
 }
 
+// +kcc:proto=grafeas.v1.GerritSourceContext
+type GerritSourceContext struct {
+	// The URI of a running Gerrit instance.
+	// +kcc:proto:field=grafeas.v1.GerritSourceContext.host_uri
+	HostURI *string `json:"hostURI,omitempty"`
+
+	// The full project name within the host. Projects may be nested, so
+	//  "project/subproject" is a valid project name. The "repo name" is the
+	//  hostURI/project.
+	// +kcc:proto:field=grafeas.v1.GerritSourceContext.gerrit_project
+	GerritProject *string `json:"gerritProject,omitempty"`
+
+	// A revision (commit) ID.
+	// +kcc:proto:field=grafeas.v1.GerritSourceContext.revision_id
+	RevisionID *string `json:"revisionID,omitempty"`
+
+	// An alias, which may be a branch or tag.
+	// +kcc:proto:field=grafeas.v1.GerritSourceContext.alias_context
+	AliasContext *AliasContext `json:"aliasContext,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.GitSourceContext
+type GitSourceContext struct {
+	// Git repository URL.
+	// +kcc:proto:field=grafeas.v1.GitSourceContext.url
+	URL *string `json:"url,omitempty"`
+
+	// Git commit hash.
+	// +kcc:proto:field=grafeas.v1.GitSourceContext.revision_id
+	RevisionID *string `json:"revisionID,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.Hash
+type Hash struct {
+	// Required. The type of hash that was performed, e.g. "SHA-256".
+	// +kcc:proto:field=grafeas.v1.Hash.type
+	Type *string `json:"type,omitempty"`
+
+	// Required. The hash value.
+	// +kcc:proto:field=grafeas.v1.Hash.value
+	Value []byte `json:"value,omitempty"`
+}
+
 // +kcc:proto=grafeas.v1.ImageNote
 type ImageNote struct {
 	// Required. Immutable. The resource_url for the resource representing the
@@ -285,6 +810,222 @@ type ImageNote struct {
 	// Required. Immutable. The fingerprint of the base image.
 	// +kcc:proto:field=grafeas.v1.ImageNote.fingerprint
 	Fingerprint *Fingerprint `json:"fingerprint,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.ImageOccurrence
+type ImageOccurrence struct {
+	// Required. The fingerprint of the derived image.
+	// +kcc:proto:field=grafeas.v1.ImageOccurrence.fingerprint
+	Fingerprint *Fingerprint `json:"fingerprint,omitempty"`
+
+	// Output only. The number of layers by which this image differs from the
+	//  associated image basis.
+	// +kcc:proto:field=grafeas.v1.ImageOccurrence.distance
+	Distance *int32 `json:"distance,omitempty"`
+
+	// This contains layer-specific metadata, if populated it has length
+	//  "distance" and is ordered with [distance] being the layer immediately
+	//  following the base image and [1] being the final layer.
+	// +kcc:proto:field=grafeas.v1.ImageOccurrence.layer_info
+	LayerInfo []Layer `json:"layerInfo,omitempty"`
+
+	// Output only. This contains the base image URL for the derived image
+	//  occurrence.
+	// +kcc:proto:field=grafeas.v1.ImageOccurrence.base_resource_url
+	BaseResourceURL *string `json:"baseResourceURL,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.InTotoProvenance
+type InTotoProvenance struct {
+	// +kcc:proto:field=grafeas.v1.InTotoProvenance.builder_config
+	BuilderConfig *BuilderConfig `json:"builderConfig,omitempty"`
+
+	// Identifies the configuration used for the build.
+	//  When combined with materials, this SHOULD fully describe the build,
+	//  such that re-running this recipe results in bit-for-bit identical output
+	//  (if the build is reproducible).
+	// +kcc:proto:field=grafeas.v1.InTotoProvenance.recipe
+	Recipe *Recipe `json:"recipe,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoProvenance.metadata
+	Metadata *Metadata `json:"metadata,omitempty"`
+
+	// The collection of artifacts that influenced the build including sources,
+	//  dependencies, build tools, base images, and so on. This is considered to be
+	//  incomplete unless metadata.completeness.materials is true. Unset or null is
+	//  equivalent to empty.
+	// +kcc:proto:field=grafeas.v1.InTotoProvenance.materials
+	Materials []string `json:"materials,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.InTotoSlsaProvenanceV1
+type InTotoSlsaProvenanceV1 struct {
+	// InToto spec defined at
+	//  https://github.com/in-toto/attestation/tree/main/spec#statement
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.type
+	Type *string `json:"type,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.subject
+	Subject []Subject `json:"subject,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.predicate_type
+	PredicateType *string `json:"predicateType,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.predicate
+	Predicate *InTotoSlsaProvenanceV1_SlsaProvenanceV1 `json:"predicate,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.InTotoSlsaProvenanceV1.BuildDefinition
+type InTotoSlsaProvenanceV1_BuildDefinition struct {
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.BuildDefinition.build_type
+	BuildType *string `json:"buildType,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.BuildDefinition.external_parameters
+	ExternalParameters apiextensionsv1.JSON `json:"externalParameters,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.BuildDefinition.internal_parameters
+	InternalParameters apiextensionsv1.JSON `json:"internalParameters,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.BuildDefinition.resolved_dependencies
+	ResolvedDependencies []InTotoSlsaProvenanceV1_ResourceDescriptor `json:"resolvedDependencies,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.InTotoSlsaProvenanceV1.BuildMetadata
+type InTotoSlsaProvenanceV1_BuildMetadata struct {
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.BuildMetadata.invocation_id
+	InvocationID *string `json:"invocationID,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.BuildMetadata.started_on
+	StartedOn *string `json:"startedOn,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.BuildMetadata.finished_on
+	FinishedOn *string `json:"finishedOn,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.InTotoSlsaProvenanceV1.ProvenanceBuilder
+type InTotoSlsaProvenanceV1_ProvenanceBuilder struct {
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.ProvenanceBuilder.id
+	ID *string `json:"id,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.ProvenanceBuilder.version
+	Version map[string]string `json:"version,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.ProvenanceBuilder.builder_dependencies
+	BuilderDependencies []InTotoSlsaProvenanceV1_ResourceDescriptor `json:"builderDependencies,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.InTotoSlsaProvenanceV1.ResourceDescriptor
+type InTotoSlsaProvenanceV1_ResourceDescriptor struct {
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.ResourceDescriptor.name
+	Name *string `json:"name,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.ResourceDescriptor.uri
+	URI *string `json:"uri,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.ResourceDescriptor.digest
+	Digest map[string]string `json:"digest,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.ResourceDescriptor.content
+	Content []byte `json:"content,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.ResourceDescriptor.download_location
+	DownloadLocation *string `json:"downloadLocation,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.ResourceDescriptor.media_type
+	MediaType *string `json:"mediaType,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.ResourceDescriptor.annotations
+	Annotations map[string]Value `json:"annotations,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.InTotoSlsaProvenanceV1.RunDetails
+type InTotoSlsaProvenanceV1_RunDetails struct {
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.RunDetails.builder
+	Builder *InTotoSlsaProvenanceV1_ProvenanceBuilder `json:"builder,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.RunDetails.metadata
+	Metadata *InTotoSlsaProvenanceV1_BuildMetadata `json:"metadata,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.RunDetails.byproducts
+	Byproducts []InTotoSlsaProvenanceV1_ResourceDescriptor `json:"byproducts,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.InTotoSlsaProvenanceV1.SlsaProvenanceV1
+type InTotoSlsaProvenanceV1_SlsaProvenanceV1 struct {
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.SlsaProvenanceV1.build_definition
+	BuildDefinition *InTotoSlsaProvenanceV1_BuildDefinition `json:"buildDefinition,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoSlsaProvenanceV1.SlsaProvenanceV1.run_details
+	RunDetails *InTotoSlsaProvenanceV1_RunDetails `json:"runDetails,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.InTotoStatement
+type InTotoStatement struct {
+	// Always `https://in-toto.io/Statement/v0.1`.
+	// +kcc:proto:field=grafeas.v1.InTotoStatement.type
+	Type *string `json:"type,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoStatement.subject
+	Subject []Subject `json:"subject,omitempty"`
+
+	// `https://slsa.dev/provenance/v0.1` for SlsaProvenance.
+	// +kcc:proto:field=grafeas.v1.InTotoStatement.predicate_type
+	PredicateType *string `json:"predicateType,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoStatement.provenance
+	Provenance *InTotoProvenance `json:"provenance,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoStatement.slsa_provenance
+	SlsaProvenance *SlsaProvenance `json:"slsaProvenance,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.InTotoStatement.slsa_provenance_zero_two
+	SlsaProvenanceZeroTwo *SlsaProvenanceZeroTwo `json:"slsaProvenanceZeroTwo,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.Jwt
+type Jwt struct {
+	// The compact encoding of a JWS, which is always three base64 encoded strings
+	//  joined by periods. For details, see:
+	//  https://tools.ietf.org/html/rfc7515.html#section-3.1
+	// +kcc:proto:field=grafeas.v1.Jwt.compact_jwt
+	CompactJwt *string `json:"compactJwt,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.Layer
+type Layer struct {
+	// Required. The recovered Dockerfile directive used to construct this layer.
+	//  See https://docs.docker.com/engine/reference/builder/ for more information.
+	// +kcc:proto:field=grafeas.v1.Layer.directive
+	Directive *string `json:"directive,omitempty"`
+
+	// The recovered arguments to the Dockerfile directive.
+	// +kcc:proto:field=grafeas.v1.Layer.arguments
+	Arguments *string `json:"arguments,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.LayerDetails
+type LayerDetails struct {
+	// The index of the layer in the container image.
+	// +kcc:proto:field=grafeas.v1.LayerDetails.index
+	Index *int32 `json:"index,omitempty"`
+
+	// The diff ID (typically a sha256 hash) of the layer in the container image.
+	// +kcc:proto:field=grafeas.v1.LayerDetails.diff_id
+	DiffID *string `json:"diffID,omitempty"`
+
+	// The layer chain ID (sha256 hash) of the layer in the container image.
+	//  https://github.com/opencontainers/image-spec/blob/main/config.md#layer-chainid
+	// +kcc:proto:field=grafeas.v1.LayerDetails.chain_id
+	ChainID *string `json:"chainID,omitempty"`
+
+	// The layer build command that was used to build the layer. This may not be
+	//  found in all layers depending on how the container image is built.
+	// +kcc:proto:field=grafeas.v1.LayerDetails.command
+	Command *string `json:"command,omitempty"`
+
+	// The base images the layer is found within.
+	// +kcc:proto:field=grafeas.v1.LayerDetails.base_images
+	BaseImages []BaseImage `json:"baseImages,omitempty"`
 }
 
 // +kcc:proto=grafeas.v1.License
@@ -300,6 +1041,65 @@ type License struct {
 	// Comments
 	// +kcc:proto:field=grafeas.v1.License.comments
 	Comments *string `json:"comments,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.Location
+type Location struct {
+	// Deprecated.
+	//  The CPE URI in [CPE format](https://cpe.mitre.org/specification/)
+	// +kcc:proto:field=grafeas.v1.Location.cpe_uri
+	CpeURI *string `json:"cpeURI,omitempty"`
+
+	// Deprecated.
+	//  The version installed at this location.
+	// +kcc:proto:field=grafeas.v1.Location.version
+	Version *Version `json:"version,omitempty"`
+
+	// The path from which we gathered that this package/version is installed.
+	// +kcc:proto:field=grafeas.v1.Location.path
+	Path *string `json:"path,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.Metadata
+type Metadata struct {
+	// Identifies the particular build invocation, which can be useful for finding
+	//  associated logs or other ad-hoc analysis. The value SHOULD be globally
+	//  unique, per in-toto Provenance spec.
+	// +kcc:proto:field=grafeas.v1.Metadata.build_invocation_id
+	BuildInvocationID *string `json:"buildInvocationID,omitempty"`
+
+	// The timestamp of when the build started.
+	// +kcc:proto:field=grafeas.v1.Metadata.build_started_on
+	BuildStartedOn *string `json:"buildStartedOn,omitempty"`
+
+	// The timestamp of when the build completed.
+	// +kcc:proto:field=grafeas.v1.Metadata.build_finished_on
+	BuildFinishedOn *string `json:"buildFinishedOn,omitempty"`
+
+	// Indicates that the builder claims certain fields in this message to be
+	//  complete.
+	// +kcc:proto:field=grafeas.v1.Metadata.completeness
+	Completeness *Completeness `json:"completeness,omitempty"`
+
+	// If true, the builder claims that running the recipe on materials will
+	//  produce bit-for-bit identical output.
+	// +kcc:proto:field=grafeas.v1.Metadata.reproducible
+	Reproducible *bool `json:"reproducible,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.NonCompliantFile
+type NonCompliantFile struct {
+	// Empty if `display_command` is set.
+	// +kcc:proto:field=grafeas.v1.NonCompliantFile.path
+	Path *string `json:"path,omitempty"`
+
+	// Command to display the non-compliant files.
+	// +kcc:proto:field=grafeas.v1.NonCompliantFile.display_command
+	DisplayCommand *string `json:"displayCommand,omitempty"`
+
+	// Explains why a file is non compliant for a CIS check.
+	// +kcc:proto:field=grafeas.v1.NonCompliantFile.reason
+	Reason *string `json:"reason,omitempty"`
 }
 
 /* unreachable type Note
@@ -452,6 +1252,70 @@ type PackageNote struct {
 	Digest []Digest `json:"digest,omitempty"`
 }
 
+// +kcc:proto=grafeas.v1.PackageOccurrence
+type PackageOccurrence struct {
+
+	// All of the places within the filesystem versions of this package
+	//  have been found.
+	// +kcc:proto:field=grafeas.v1.PackageOccurrence.location
+	Location []Location `json:"location,omitempty"`
+
+	// Licenses that have been declared by the authors of the package.
+	// +kcc:proto:field=grafeas.v1.PackageOccurrence.license
+	License *License `json:"license,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.ProjectRepoId
+type ProjectRepoID struct {
+	// The ID of the project.
+	// +kcc:proto:field=grafeas.v1.ProjectRepoId.project_id
+	ProjectID *string `json:"projectID,omitempty"`
+
+	// The name of the repo. Leave empty for the default repo.
+	// +kcc:proto:field=grafeas.v1.ProjectRepoId.repo_name
+	RepoName *string `json:"repoName,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.Recipe
+type Recipe struct {
+	// URI indicating what type of recipe was performed. It determines the meaning
+	//  of recipe.entryPoint, recipe.arguments, recipe.environment, and materials.
+	// +kcc:proto:field=grafeas.v1.Recipe.type
+	Type *string `json:"type,omitempty"`
+
+	// Index in materials containing the recipe steps that are not implied by
+	//  recipe.type. For example, if the recipe type were "make", then this would
+	//  point to the source containing the Makefile, not the make program itself.
+	//  Set to -1 if the recipe doesn't come from a material, as zero is default
+	//  unset value for int64.
+	// +kcc:proto:field=grafeas.v1.Recipe.defined_in_material
+	DefinedInMaterial *int64 `json:"definedInMaterial,omitempty"`
+
+	// String identifying the entry point into the build.
+	//  This is often a path to a configuration file and/or a target label within
+	//  that file. The syntax and meaning are defined by recipe.type. For example,
+	//  if the recipe type were "make", then this would reference the directory in
+	//  which to run make as well as which target to use.
+	// +kcc:proto:field=grafeas.v1.Recipe.entry_point
+	EntryPoint *string `json:"entryPoint,omitempty"`
+
+	// Collection of all external inputs that influenced the build on top of
+	//  recipe.definedInMaterial and recipe.entryPoint. For example, if the recipe
+	//  type were "make", then this might be the flags passed to make aside from
+	//  the target, which is captured in recipe.entryPoint. Since the arguments
+	//  field can greatly vary in structure, depending on the builder and recipe
+	//  type, this is of form "Any".
+	// +kcc:proto:field=grafeas.v1.Recipe.arguments
+	Arguments []Any `json:"arguments,omitempty"`
+
+	// Any other builder-controlled inputs necessary for correctly evaluating the
+	//  recipe. Usually only needed for reproducing the build but not evaluated as
+	//  part of policy. Since the environment field can greatly vary in structure,
+	//  depending on the builder and recipe type, this is of form "Any".
+	// +kcc:proto:field=grafeas.v1.Recipe.environment
+	Environment []Any `json:"environment,omitempty"`
+}
+
 // +kcc:proto=grafeas.v1.RelatedUrl
 type RelatedURL struct {
 	// Specific URL associated with the resource.
@@ -461,6 +1325,17 @@ type RelatedURL struct {
 	// Label to describe usage of the URL.
 	// +kcc:proto:field=grafeas.v1.RelatedUrl.label
 	Label *string `json:"label,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.RepoId
+type RepoID struct {
+	// A combination of a project ID and a repo name.
+	// +kcc:proto:field=grafeas.v1.RepoId.project_repo_id
+	ProjectRepoID *ProjectRepoID `json:"projectRepoID,omitempty"`
+
+	// A server-assigned, globally unique identifier.
+	// +kcc:proto:field=grafeas.v1.RepoId.uid
+	Uid *string `json:"uid,omitempty"`
 }
 
 // +kcc:proto=grafeas.v1.SBOMReferenceNote
@@ -475,11 +1350,413 @@ type SbomReferenceNote struct {
 	Version *string `json:"version,omitempty"`
 }
 
+// +kcc:proto=grafeas.v1.SBOMReferenceOccurrence
+type SbomReferenceOccurrence struct {
+	// The actual payload that contains the SBOM reference data.
+	// +kcc:proto:field=grafeas.v1.SBOMReferenceOccurrence.payload
+	Payload *SbomReferenceIntotoPayload `json:"payload,omitempty"`
+
+	// The kind of payload that SbomReferenceIntotoPayload takes. Since it's in
+	//  the intoto format, this value is expected to be
+	//  'application/vnd.in-toto+json'.
+	// +kcc:proto:field=grafeas.v1.SBOMReferenceOccurrence.payload_type
+	PayloadType *string `json:"payloadType,omitempty"`
+
+	// The signatures over the payload.
+	// +kcc:proto:field=grafeas.v1.SBOMReferenceOccurrence.signatures
+	Signatures []EnvelopeSignature `json:"signatures,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.SbomReferenceIntotoPayload
+type SbomReferenceIntotoPayload struct {
+	// Identifier for the schema of the Statement.
+	// +kcc:proto:field=grafeas.v1.SbomReferenceIntotoPayload.type
+	Type *string `json:"type,omitempty"`
+
+	// URI identifying the type of the Predicate.
+	// +kcc:proto:field=grafeas.v1.SbomReferenceIntotoPayload.predicate_type
+	PredicateType *string `json:"predicateType,omitempty"`
+
+	// Set of software artifacts that the attestation applies to. Each element
+	//  represents a single software artifact.
+	// +kcc:proto:field=grafeas.v1.SbomReferenceIntotoPayload.subject
+	Subject []Subject `json:"subject,omitempty"`
+
+	// Additional parameters of the Predicate. Includes the actual data about the
+	//  SBOM.
+	// +kcc:proto:field=grafeas.v1.SbomReferenceIntotoPayload.predicate
+	Predicate *SbomReferenceIntotoPredicate `json:"predicate,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.SbomReferenceIntotoPredicate
+type SbomReferenceIntotoPredicate struct {
+	// The person or system referring this predicate to the consumer.
+	// +kcc:proto:field=grafeas.v1.SbomReferenceIntotoPredicate.referrer_id
+	ReferrerID *string `json:"referrerID,omitempty"`
+
+	// The location of the SBOM.
+	// +kcc:proto:field=grafeas.v1.SbomReferenceIntotoPredicate.location
+	Location *string `json:"location,omitempty"`
+
+	// The mime type of the SBOM.
+	// +kcc:proto:field=grafeas.v1.SbomReferenceIntotoPredicate.mime_type
+	MimeType *string `json:"mimeType,omitempty"`
+
+	// A map of algorithm to digest of the contents of the SBOM.
+	// +kcc:proto:field=grafeas.v1.SbomReferenceIntotoPredicate.digest
+	Digest map[string]string `json:"digest,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.SecretLocation
+type SecretLocation struct {
+	// The secret is found from a file.
+	// +kcc:proto:field=grafeas.v1.SecretLocation.file_location
+	FileLocation *FileLocation `json:"fileLocation,omitempty"`
+}
+
 /* unreachable type SecretNote
 // +kcc:proto=grafeas.v1.SecretNote
 type SecretNote struct {
 }
 */
+
+// +kcc:proto=grafeas.v1.SecretOccurrence
+type SecretOccurrence struct {
+	// Type of secret.
+	// +kcc:proto:field=grafeas.v1.SecretOccurrence.kind
+	// +required
+	Kind *string `json:"kind,omitempty"`
+
+	// Locations where the secret is detected.
+	// +kcc:proto:field=grafeas.v1.SecretOccurrence.locations
+	Locations []SecretLocation `json:"locations,omitempty"`
+
+	// Status of the secret.
+	// +kcc:proto:field=grafeas.v1.SecretOccurrence.statuses
+	Statuses []SecretStatus `json:"statuses,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.SecretStatus
+type SecretStatus struct {
+	// The status of the secret.
+	// +kcc:proto:field=grafeas.v1.SecretStatus.status
+	Status *string `json:"status,omitempty"`
+
+	// The time the secret status was last updated.
+	// +kcc:proto:field=grafeas.v1.SecretStatus.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Optional message about the status code.
+	// +kcc:proto:field=grafeas.v1.SecretStatus.message
+	Message *string `json:"message,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.Signature
+type Signature struct {
+	// The content of the signature, an opaque bytestring.
+	//  The payload that this signature verifies MUST be unambiguously provided
+	//  with the Signature during verification. A wrapper message might provide
+	//  the payload explicitly. Alternatively, a message might have a canonical
+	//  serialization that can always be unambiguously computed to derive the
+	//  payload.
+	// +kcc:proto:field=grafeas.v1.Signature.signature
+	Signature []byte `json:"signature,omitempty"`
+
+	// The identifier for the public key that verifies this signature.
+	//    * The `public_key_id` is required.
+	//    * The `public_key_id` SHOULD be an RFC3986 conformant URI.
+	//    * When possible, the `public_key_id` SHOULD be an immutable reference,
+	//      such as a cryptographic digest.
+	//
+	//  Examples of valid `public_key_id`s:
+	//
+	//  OpenPGP V4 public key fingerprint:
+	//    * "openpgp4fpr:74FAF3B861BDA0870C7B6DEF607E48D2A663AEEA"
+	//  See https://www.iana.org/assignments/uri-schemes/prov/openpgp4fpr for more
+	//  details on this scheme.
+	//
+	//  RFC6920 digest-named SubjectPublicKeyInfo (digest of the DER
+	//  serialization):
+	//    * "ni:///sha-256;cD9o9Cq6LG3jD0iKXqEi_vdjJGecm_iXkbqVoScViaU"
+	//    * "nih:///sha-256;703f68f42aba2c6de30f488a5ea122fef76324679c9bf89791ba95a1271589a5"
+	// +kcc:proto:field=grafeas.v1.Signature.public_key_id
+	PublicKeyID *string `json:"publicKeyID,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.SlsaProvenance
+type SlsaProvenance struct {
+	// +kcc:proto:field=grafeas.v1.SlsaProvenance.builder
+	Builder *SlsaProvenance_SlsaBuilder `json:"builder,omitempty"`
+
+	// Identifies the configuration used for the build.
+	//  When combined with materials, this SHOULD fully describe the build,
+	//  such that re-running this recipe results in bit-for-bit identical output
+	//  (if the build is reproducible).
+	// +kcc:proto:field=grafeas.v1.SlsaProvenance.recipe
+	Recipe *SlsaProvenance_SlsaRecipe `json:"recipe,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.SlsaProvenance.metadata
+	Metadata *SlsaProvenance_SlsaMetadata `json:"metadata,omitempty"`
+
+	// The collection of artifacts that influenced the build including sources,
+	//  dependencies, build tools, base images, and so on. This is considered to be
+	//  incomplete unless metadata.completeness.materials is true. Unset or null is
+	//  equivalent to empty.
+	// +kcc:proto:field=grafeas.v1.SlsaProvenance.materials
+	Materials []SlsaProvenance_Material `json:"materials,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.SlsaProvenance.Material
+type SlsaProvenance_Material struct {
+	// +kcc:proto:field=grafeas.v1.SlsaProvenance.Material.uri
+	URI *string `json:"uri,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.SlsaProvenance.Material.digest
+	Digest map[string]string `json:"digest,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.SlsaProvenance.SlsaBuilder
+type SlsaProvenance_SlsaBuilder struct {
+	// +kcc:proto:field=grafeas.v1.SlsaProvenance.SlsaBuilder.id
+	ID *string `json:"id,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.SlsaProvenance.SlsaCompleteness
+type SlsaProvenance_SlsaCompleteness struct {
+	// If true, the builder claims that recipe.arguments is complete, meaning
+	//  that all external inputs are properly captured in the recipe.
+	// +kcc:proto:field=grafeas.v1.SlsaProvenance.SlsaCompleteness.arguments
+	Arguments *bool `json:"arguments,omitempty"`
+
+	// If true, the builder claims that recipe.environment is claimed to be
+	//  complete.
+	// +kcc:proto:field=grafeas.v1.SlsaProvenance.SlsaCompleteness.environment
+	Environment *bool `json:"environment,omitempty"`
+
+	// If true, the builder claims that materials are complete, usually through
+	//  some controls to prevent network access. Sometimes called "hermetic".
+	// +kcc:proto:field=grafeas.v1.SlsaProvenance.SlsaCompleteness.materials
+	Materials *bool `json:"materials,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.SlsaProvenance.SlsaMetadata
+type SlsaProvenance_SlsaMetadata struct {
+	// Identifies the particular build invocation, which can be useful for
+	//  finding associated logs or other ad-hoc analysis. The value SHOULD be
+	//  globally unique, per in-toto Provenance spec.
+	// +kcc:proto:field=grafeas.v1.SlsaProvenance.SlsaMetadata.build_invocation_id
+	BuildInvocationID *string `json:"buildInvocationID,omitempty"`
+
+	// The timestamp of when the build started.
+	// +kcc:proto:field=grafeas.v1.SlsaProvenance.SlsaMetadata.build_started_on
+	BuildStartedOn *string `json:"buildStartedOn,omitempty"`
+
+	// The timestamp of when the build completed.
+	// +kcc:proto:field=grafeas.v1.SlsaProvenance.SlsaMetadata.build_finished_on
+	BuildFinishedOn *string `json:"buildFinishedOn,omitempty"`
+
+	// Indicates that the builder claims certain fields in this message to be
+	//  complete.
+	// +kcc:proto:field=grafeas.v1.SlsaProvenance.SlsaMetadata.completeness
+	Completeness *SlsaProvenance_SlsaCompleteness `json:"completeness,omitempty"`
+
+	// If true, the builder claims that running the recipe on materials will
+	//  produce bit-for-bit identical output.
+	// +kcc:proto:field=grafeas.v1.SlsaProvenance.SlsaMetadata.reproducible
+	Reproducible *bool `json:"reproducible,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.SlsaProvenance.SlsaRecipe
+type SlsaProvenance_SlsaRecipe struct {
+	// URI indicating what type of recipe was performed. It determines the
+	//  meaning of recipe.entryPoint, recipe.arguments, recipe.environment, and
+	//  materials.
+	// +kcc:proto:field=grafeas.v1.SlsaProvenance.SlsaRecipe.type
+	Type *string `json:"type,omitempty"`
+
+	// Index in materials containing the recipe steps that are not implied by
+	//  recipe.type. For example, if the recipe type were "make", then this would
+	//  point to the source containing the Makefile, not the make program itself.
+	//  Set to -1 if the recipe doesn't come from a material, as zero is default
+	//  unset value for int64.
+	// +kcc:proto:field=grafeas.v1.SlsaProvenance.SlsaRecipe.defined_in_material
+	DefinedInMaterial *int64 `json:"definedInMaterial,omitempty"`
+
+	// String identifying the entry point into the build.
+	//  This is often a path to a configuration file and/or a target label within
+	//  that file. The syntax and meaning are defined by recipe.type. For
+	//  example, if the recipe type were "make", then this would reference the
+	//  directory in which to run make as well as which target to use.
+	// +kcc:proto:field=grafeas.v1.SlsaProvenance.SlsaRecipe.entry_point
+	EntryPoint *string `json:"entryPoint,omitempty"`
+
+	// Collection of all external inputs that influenced the build on top of
+	//  recipe.definedInMaterial and recipe.entryPoint. For example, if the
+	//  recipe type were "make", then this might be the flags passed to make
+	//  aside from the target, which is captured in recipe.entryPoint. Depending
+	//  on the recipe Type, the structure may be different.
+	// +kcc:proto:field=grafeas.v1.SlsaProvenance.SlsaRecipe.arguments
+	Arguments *Any `json:"arguments,omitempty"`
+
+	// Any other builder-controlled inputs necessary for correctly evaluating
+	//  the recipe. Usually only needed for reproducing the build but not
+	//  evaluated as part of policy. Depending on the recipe Type, the structure
+	//  may be different.
+	// +kcc:proto:field=grafeas.v1.SlsaProvenance.SlsaRecipe.environment
+	Environment *Any `json:"environment,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.SlsaProvenanceZeroTwo
+type SlsaProvenanceZeroTwo struct {
+	// +kcc:proto:field=grafeas.v1.SlsaProvenanceZeroTwo.builder
+	Builder *SlsaProvenanceZeroTwo_SlsaBuilder `json:"builder,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.SlsaProvenanceZeroTwo.build_type
+	BuildType *string `json:"buildType,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.SlsaProvenanceZeroTwo.invocation
+	Invocation *SlsaProvenanceZeroTwo_SlsaInvocation `json:"invocation,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.SlsaProvenanceZeroTwo.build_config
+	BuildConfig apiextensionsv1.JSON `json:"buildConfig,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.SlsaProvenanceZeroTwo.metadata
+	Metadata *SlsaProvenanceZeroTwo_SlsaMetadata `json:"metadata,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.SlsaProvenanceZeroTwo.materials
+	Materials []SlsaProvenanceZeroTwo_SlsaMaterial `json:"materials,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.SlsaProvenanceZeroTwo.SlsaBuilder
+type SlsaProvenanceZeroTwo_SlsaBuilder struct {
+	// +kcc:proto:field=grafeas.v1.SlsaProvenanceZeroTwo.SlsaBuilder.id
+	ID *string `json:"id,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.SlsaProvenanceZeroTwo.SlsaCompleteness
+type SlsaProvenanceZeroTwo_SlsaCompleteness struct {
+	// +kcc:proto:field=grafeas.v1.SlsaProvenanceZeroTwo.SlsaCompleteness.parameters
+	Parameters *bool `json:"parameters,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.SlsaProvenanceZeroTwo.SlsaCompleteness.environment
+	Environment *bool `json:"environment,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.SlsaProvenanceZeroTwo.SlsaCompleteness.materials
+	Materials *bool `json:"materials,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.SlsaProvenanceZeroTwo.SlsaConfigSource
+type SlsaProvenanceZeroTwo_SlsaConfigSource struct {
+	// +kcc:proto:field=grafeas.v1.SlsaProvenanceZeroTwo.SlsaConfigSource.uri
+	URI *string `json:"uri,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.SlsaProvenanceZeroTwo.SlsaConfigSource.digest
+	Digest map[string]string `json:"digest,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.SlsaProvenanceZeroTwo.SlsaConfigSource.entry_point
+	EntryPoint *string `json:"entryPoint,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.SlsaProvenanceZeroTwo.SlsaInvocation
+type SlsaProvenanceZeroTwo_SlsaInvocation struct {
+	// +kcc:proto:field=grafeas.v1.SlsaProvenanceZeroTwo.SlsaInvocation.config_source
+	ConfigSource *SlsaProvenanceZeroTwo_SlsaConfigSource `json:"configSource,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.SlsaProvenanceZeroTwo.SlsaInvocation.parameters
+	Parameters apiextensionsv1.JSON `json:"parameters,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.SlsaProvenanceZeroTwo.SlsaInvocation.environment
+	Environment apiextensionsv1.JSON `json:"environment,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.SlsaProvenanceZeroTwo.SlsaMaterial
+type SlsaProvenanceZeroTwo_SlsaMaterial struct {
+	// +kcc:proto:field=grafeas.v1.SlsaProvenanceZeroTwo.SlsaMaterial.uri
+	URI *string `json:"uri,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.SlsaProvenanceZeroTwo.SlsaMaterial.digest
+	Digest map[string]string `json:"digest,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.SlsaProvenanceZeroTwo.SlsaMetadata
+type SlsaProvenanceZeroTwo_SlsaMetadata struct {
+	// +kcc:proto:field=grafeas.v1.SlsaProvenanceZeroTwo.SlsaMetadata.build_invocation_id
+	BuildInvocationID *string `json:"buildInvocationID,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.SlsaProvenanceZeroTwo.SlsaMetadata.build_started_on
+	BuildStartedOn *string `json:"buildStartedOn,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.SlsaProvenanceZeroTwo.SlsaMetadata.build_finished_on
+	BuildFinishedOn *string `json:"buildFinishedOn,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.SlsaProvenanceZeroTwo.SlsaMetadata.completeness
+	Completeness *SlsaProvenanceZeroTwo_SlsaCompleteness `json:"completeness,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.SlsaProvenanceZeroTwo.SlsaMetadata.reproducible
+	Reproducible *bool `json:"reproducible,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.Source
+type Source struct {
+	// If provided, the input binary artifacts for the build came from this
+	//  location.
+	// +kcc:proto:field=grafeas.v1.Source.artifact_storage_source_uri
+	ArtifactStorageSourceURI *string `json:"artifactStorageSourceURI,omitempty"`
+
+	// Hash(es) of the build source, which can be used to verify that the original
+	//  source integrity was maintained in the build.
+	//
+	//  The keys to this map are file paths used as build source and the values
+	//  contain the hash values for those files.
+	//
+	//  If the build source came in a single package such as a gzipped tarfile
+	//  (.tar.gz), the FileHash will be for the single path to that file.
+	// +kcc:proto:field=grafeas.v1.Source.file_hashes
+	FileHashes map[string]FileHashes `json:"fileHashes,omitempty"`
+
+	// If provided, the source code used for the build came from this location.
+	// +kcc:proto:field=grafeas.v1.Source.context
+	Context *SourceContext `json:"context,omitempty"`
+
+	// If provided, some of the source code used for the build may be found in
+	//  these locations, in the case where the source repository had multiple
+	//  remotes or submodules. This list will not include the context specified in
+	//  the context field.
+	// +kcc:proto:field=grafeas.v1.Source.additional_contexts
+	AdditionalContexts []SourceContext `json:"additionalContexts,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.SourceContext
+type SourceContext struct {
+	// A SourceContext referring to a revision in a Google Cloud Source Repo.
+	// +kcc:proto:field=grafeas.v1.SourceContext.cloud_repo
+	CloudRepo *CloudRepoSourceContext `json:"cloudRepo,omitempty"`
+
+	// A SourceContext referring to a Gerrit project.
+	// +kcc:proto:field=grafeas.v1.SourceContext.gerrit
+	Gerrit *GerritSourceContext `json:"gerrit,omitempty"`
+
+	// A SourceContext referring to any third party Git repo (e.g., GitHub).
+	// +kcc:proto:field=grafeas.v1.SourceContext.git
+	Git *GitSourceContext `json:"git,omitempty"`
+
+	// Labels with user defined metadata.
+	// +kcc:proto:field=grafeas.v1.SourceContext.labels
+	Labels map[string]string `json:"labels,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.Subject
+type Subject struct {
+	// +kcc:proto:field=grafeas.v1.Subject.name
+	Name *string `json:"name,omitempty"`
+
+	// `"<ALGORITHM>": "<HEX_VALUE>"`
+	//  Algorithms can be e.g. sha256, sha512
+	//  See
+	//  https://github.com/in-toto/attestation/blob/main/spec/field_types.md#DigestSet
+	// +kcc:proto:field=grafeas.v1.Subject.digest
+	Digest map[string]string `json:"digest,omitempty"`
+}
 
 // +kcc:proto=grafeas.v1.UpgradeDistribution
 type UpgradeDistribution struct {
@@ -521,6 +1798,28 @@ type UpgradeNote struct {
 
 	// Required for Windows OS. Represents the metadata about the Windows update.
 	// +kcc:proto:field=grafeas.v1.UpgradeNote.windows_update
+	WindowsUpdate *WindowsUpdate `json:"windowsUpdate,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.UpgradeOccurrence
+type UpgradeOccurrence struct {
+	// Required for non-Windows OS. The package this Upgrade is for.
+	// +kcc:proto:field=grafeas.v1.UpgradeOccurrence.package
+	Package *string `json:"package,omitempty"`
+
+	// Required for non-Windows OS. The version of the package in a machine +
+	//  human readable form.
+	// +kcc:proto:field=grafeas.v1.UpgradeOccurrence.parsed_version
+	ParsedVersion *Version `json:"parsedVersion,omitempty"`
+
+	// Metadata about the upgrade for available for the specific operating system
+	//  for the resource_url. This allows efficient filtering, as well as
+	//  making it easier to use the occurrence.
+	// +kcc:proto:field=grafeas.v1.UpgradeOccurrence.distribution
+	Distribution *UpgradeDistribution `json:"distribution,omitempty"`
+
+	// Required for Windows OS. Represents the metadata about the Windows update.
+	// +kcc:proto:field=grafeas.v1.UpgradeOccurrence.windows_update
 	WindowsUpdate *WindowsUpdate `json:"windowsUpdate,omitempty"`
 }
 
@@ -864,6 +2163,168 @@ type VulnerabilityNote_WindowsDetail_KnowledgeBase struct {
 	URL *string `json:"url,omitempty"`
 }
 
+// +kcc:proto=grafeas.v1.VulnerabilityOccurrence
+type VulnerabilityOccurrence struct {
+	// The type of package; whether native or non native (e.g., ruby gems, node.js
+	//  packages, etc.).
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.type
+	Type *string `json:"type,omitempty"`
+
+	// Output only. The note provider assigned severity of this vulnerability.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.severity
+	Severity *string `json:"severity,omitempty"`
+
+	// Output only. The CVSS score of this vulnerability. CVSS score is on a
+	//  scale of 0 - 10 where 0 indicates low severity and 10 indicates high
+	//  severity.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.cvss_score
+	CvssScore *float32 `json:"cvssScore,omitempty"`
+
+	// The cvss v3 score for the vulnerability.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.cvssv3
+	Cvssv3 *Cvss `json:"cvssv3,omitempty"`
+
+	// Required. The set of affected locations and their fixes (if available)
+	//  within the associated resource.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.package_issue
+	PackageIssue []VulnerabilityOccurrence_PackageIssue `json:"packageIssue,omitempty"`
+
+	// Output only. A one sentence description of this vulnerability.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.short_description
+	ShortDescription *string `json:"shortDescription,omitempty"`
+
+	// Output only. A detailed description of this vulnerability.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.long_description
+	LongDescription *string `json:"longDescription,omitempty"`
+
+	// Output only. URLs related to this vulnerability.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.related_urls
+	RelatedURLs []RelatedURL `json:"relatedURLs,omitempty"`
+
+	// The distro assigned severity for this vulnerability when it is available,
+	//  otherwise this is the note provider assigned severity.
+	//
+	//  When there are multiple PackageIssues for this vulnerability, they can have
+	//  different effective severities because some might be provided by the distro
+	//  while others are provided by the language ecosystem for a language pack.
+	//  For this reason, it is advised to use the effective severity on the
+	//  PackageIssue level. In the case where multiple PackageIssues have differing
+	//  effective severities, this field should be the highest severity for any of
+	//  the PackageIssues.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.effective_severity
+	EffectiveSeverity *string `json:"effectiveSeverity,omitempty"`
+
+	// Output only. Whether at least one of the affected packages has a fix
+	//  available.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.fix_available
+	FixAvailable *bool `json:"fixAvailable,omitempty"`
+
+	// Output only. CVSS version used to populate cvss_score and severity.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.cvss_version
+	CvssVersion *string `json:"cvssVersion,omitempty"`
+
+	// The cvss v2 score for the vulnerability.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.cvss_v2
+	CvssV2 *Cvss `json:"cvssV2,omitempty"`
+
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.vex_assessment
+	VexAssessment *VulnerabilityOccurrence_VexAssessment `json:"vexAssessment,omitempty"`
+
+	// Occurrence-specific extra details about the vulnerability.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.extra_details
+	ExtraDetails *string `json:"extraDetails,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.VulnerabilityOccurrence.PackageIssue
+type VulnerabilityOccurrence_PackageIssue struct {
+	// Required. The [CPE URI](https://cpe.mitre.org/specification/) this
+	//  vulnerability was found in.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.PackageIssue.affected_cpe_uri
+	AffectedCpeURI *string `json:"affectedCpeURI,omitempty"`
+
+	// Required. The package this vulnerability was found in.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.PackageIssue.affected_package
+	AffectedPackage *string `json:"affectedPackage,omitempty"`
+
+	// Required. The version of the package that is installed on the resource
+	//  affected by this vulnerability.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.PackageIssue.affected_version
+	AffectedVersion *Version `json:"affectedVersion,omitempty"`
+
+	// The [CPE URI](https://cpe.mitre.org/specification/) this vulnerability
+	//  was fixed in. It is possible for this to be different from the
+	//  affected_cpe_uri.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.PackageIssue.fixed_cpe_uri
+	FixedCpeURI *string `json:"fixedCpeURI,omitempty"`
+
+	// The package this vulnerability was fixed in. It is possible for this to
+	//  be different from the affected_package.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.PackageIssue.fixed_package
+	FixedPackage *string `json:"fixedPackage,omitempty"`
+
+	// Required. The version of the package this vulnerability was fixed in.
+	//  Setting this to VersionKind.MAXIMUM means no fix is yet available.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.PackageIssue.fixed_version
+	FixedVersion *Version `json:"fixedVersion,omitempty"`
+
+	// Output only. Whether a fix is available for this package.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.PackageIssue.fix_available
+	FixAvailable *bool `json:"fixAvailable,omitempty"`
+
+	// The type of package (e.g. OS, MAVEN, GO).
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.PackageIssue.package_type
+	PackageType *string `json:"packageType,omitempty"`
+
+	// The location at which this package was found.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.PackageIssue.file_location
+	FileLocation []FileLocation `json:"fileLocation,omitempty"`
+}
+
+// +kcc:proto=grafeas.v1.VulnerabilityOccurrence.VexAssessment
+type VulnerabilityOccurrence_VexAssessment struct {
+	// Holds the MITRE standard Common Vulnerabilities and Exposures (CVE)
+	//  tracking number for the vulnerability.
+	//  Deprecated: Use vulnerability_id instead to denote CVEs.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.VexAssessment.cve
+	Cve *string `json:"cve,omitempty"`
+
+	// The vulnerability identifier for this Assessment. Will hold one of
+	//  common identifiers e.g. CVE, GHSA etc.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.VexAssessment.vulnerability_id
+	VulnerabilityID *string `json:"vulnerabilityID,omitempty"`
+
+	// Holds a list of references associated with this vulnerability item and
+	//  assessment.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.VexAssessment.related_uris
+	RelatedURIs []RelatedURL `json:"relatedURIs,omitempty"`
+
+	// The VulnerabilityAssessment note from which this VexAssessment was
+	//  generated.
+	//  This will be of the form: `projects/[PROJECT_ID]/notes/[NOTE_ID]`.
+	//  (-- api-linter: core::0122::name-suffix=disabled
+	//      aip.dev/not-precedent: The suffix is kept for consistency. --)
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.VexAssessment.note_name
+	NoteName *string `json:"noteName,omitempty"`
+
+	// Provides the state of this Vulnerability assessment.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.VexAssessment.state
+	State *string `json:"state,omitempty"`
+
+	// Contains information about the impact of this vulnerability,
+	//  this will change with time.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.VexAssessment.impacts
+	Impacts []string `json:"impacts,omitempty"`
+
+	// Specifies details on how to handle (and presumably, fix) a vulnerability.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.VexAssessment.remediations
+	Remediations []VulnerabilityAssessmentNote_Assessment_Remediation `json:"remediations,omitempty"`
+
+	// Justification provides the justification when the state of the
+	//  assessment if NOT_AFFECTED.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.VexAssessment.justification
+	Justification *VulnerabilityAssessmentNote_Assessment_Justification `json:"justification,omitempty"`
+}
+
 /* found existing non-generated go type "WindowsUpdate", skipping
 
 // +kcc:proto=grafeas.v1.WindowsUpdate
@@ -919,4 +2380,55 @@ type WindowsUpdate_Identity struct {
 	// The revision number of the update.
 	// +kcc:proto:field=grafeas.v1.WindowsUpdate.Identity.revision
 	Revision *int32 `json:"revision,omitempty"`
+}
+
+// +kcc:observedstate:proto=grafeas.v1.DiscoveryOccurrence
+type DiscoveryOccurrenceObservedState struct {
+	// The time occurrences related to this discovery occurrence were archived.
+	// +kcc:proto:field=grafeas.v1.DiscoveryOccurrence.archive_time
+	ArchiveTime *string `json:"archiveTime,omitempty"`
+}
+
+// +kcc:observedstate:proto=grafeas.v1.PackageOccurrence
+type PackageOccurrenceObservedState struct {
+	// The name of the installed package.
+	// +kcc:proto:field=grafeas.v1.PackageOccurrence.name
+	Name *string `json:"name,omitempty"`
+
+	// The type of package; whether native or non native (e.g., ruby gems,
+	//  node.js packages, etc.).
+	// +kcc:proto:field=grafeas.v1.PackageOccurrence.package_type
+	PackageType *string `json:"packageType,omitempty"`
+
+	// The cpe_uri in [CPE format](https://cpe.mitre.org/specification/)
+	//  denoting the package manager version distributing a package.
+	//  The cpe_uri will be blank for language packages.
+	// +kcc:proto:field=grafeas.v1.PackageOccurrence.cpe_uri
+	CpeURI *string `json:"cpeURI,omitempty"`
+
+	// The CPU architecture for which packages in this distribution channel were
+	//  built. Architecture will be blank for language packages.
+	// +kcc:proto:field=grafeas.v1.PackageOccurrence.architecture
+	Architecture *string `json:"architecture,omitempty"`
+
+	// The version of the package.
+	// +kcc:proto:field=grafeas.v1.PackageOccurrence.version
+	Version *Version `json:"version,omitempty"`
+}
+
+// +kcc:observedstate:proto=grafeas.v1.VulnerabilityOccurrence
+type VulnerabilityOccurrenceObservedState struct {
+	// Required. The set of affected locations and their fixes (if available)
+	//  within the associated resource.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.package_issue
+	PackageIssue []VulnerabilityOccurrence_PackageIssueObservedState `json:"packageIssue,omitempty"`
+}
+
+// +kcc:observedstate:proto=grafeas.v1.VulnerabilityOccurrence.PackageIssue
+type VulnerabilityOccurrence_PackageIssueObservedState struct {
+	// The distro or language system assigned severity for this vulnerability
+	//  when that is available and note provider assigned severity when it is not
+	//  available.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityOccurrence.PackageIssue.effective_severity
+	EffectiveSeverity *string `json:"effectiveSeverity,omitempty"`
 }

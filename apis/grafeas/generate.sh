@@ -37,6 +37,17 @@ ${CONTROLLERBUILDER} generate-types \
   --include-skipped-output \
   --resource GrafeasNote:Note
 
+${CONTROLLERBUILDER} generate-types \
+  --service grafeas.v1 \
+  --api-version grafeas.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource GrafeasOccurrence:Occurrence
+
+${CONTROLLERBUILDER} generate-identity \
+  --service grafeas.v1 \
+  --api-version grafeas.cnrm.cloud.google.com/v1alpha1 \
+  --resource GrafeasOccurrence:Occurrence
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service grafeas.v1 \
   --api-version grafeas.cnrm.cloud.google.com/v1alpha1 \

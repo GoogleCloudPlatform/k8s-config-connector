@@ -17,6 +17,6 @@
 // krm.group: artifactregistry.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.devtools.artifactregistry.v1
-// resource: ArtifactRegistryVPCSCConfig:VPCSCConfig
+// resource: ArtifactRegistryTag:Tag
 
 package v1alpha1

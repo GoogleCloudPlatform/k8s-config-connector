@@ -287,3 +287,107 @@ func NetAppHostGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetAppHostGr
 	out.Labels = in.Labels
 	return out
 }
+func NetappBackupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Backup) *krm.NetappBackupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetappBackupObservedState{}
+	// MISSING: Name
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.VolumeUsageBytes = direct.LazyPtr(in.GetVolumeUsageBytes())
+	out.BackupType = direct.Enum_FromProto(mapCtx, in.GetBackupType())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.ChainStorageBytes = direct.LazyPtr(in.GetChainStorageBytes())
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	out.VolumeRegion = direct.LazyPtr(in.GetVolumeRegion())
+	out.BackupRegion = direct.LazyPtr(in.GetBackupRegion())
+	out.EnforcedRetentionEndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEnforcedRetentionEndTime())
+	return out
+}
+func NetappBackupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetappBackupObservedState) *pb.Backup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Backup{}
+	// MISSING: Name
+	out.State = direct.Enum_ToProto[pb.Backup_State](mapCtx, in.State)
+	out.VolumeUsageBytes = direct.ValueOf(in.VolumeUsageBytes)
+	out.BackupType = direct.Enum_ToProto[pb.Backup_Type](mapCtx, in.BackupType)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.ChainStorageBytes = direct.ValueOf(in.ChainStorageBytes)
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+	out.VolumeRegion = direct.ValueOf(in.VolumeRegion)
+	out.BackupRegion = direct.ValueOf(in.BackupRegion)
+	out.EnforcedRetentionEndTime = direct.StringTimestamp_ToProto(mapCtx, in.EnforcedRetentionEndTime)
+	return out
+}
+func NetappBackupSpec_FromProto(mapCtx *direct.MapContext, in *pb.Backup) *krm.NetappBackupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetappBackupSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.SourceVolume = direct.LazyPtr(in.GetSourceVolume())
+	out.SourceSnapshot = in.SourceSnapshot
+	out.Labels = in.Labels
+	return out
+}
+func NetappBackupSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetappBackupSpec) *pb.Backup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Backup{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.SourceVolume = direct.ValueOf(in.SourceVolume)
+	out.SourceSnapshot = in.SourceSnapshot
+	out.Labels = in.Labels
+	return out
+}
+func NetappSnapshotObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Snapshot) *krm.NetappSnapshotObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetappSnapshotObservedState{}
+	// MISSING: Name
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StateDetails = direct.LazyPtr(in.GetStateDetails())
+	out.UsedBytes = direct.LazyPtr(in.GetUsedBytes())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	return out
+}
+func NetappSnapshotObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetappSnapshotObservedState) *pb.Snapshot {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Snapshot{}
+	// MISSING: Name
+	out.State = direct.Enum_ToProto[pb.Snapshot_State](mapCtx, in.State)
+	out.StateDetails = direct.ValueOf(in.StateDetails)
+	out.UsedBytes = direct.ValueOf(in.UsedBytes)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	return out
+}
+func NetappSnapshotSpec_FromProto(mapCtx *direct.MapContext, in *pb.Snapshot) *krm.NetappSnapshotSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetappSnapshotSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	return out
+}
+func NetappSnapshotSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetappSnapshotSpec) *pb.Snapshot {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Snapshot{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	return out
+}

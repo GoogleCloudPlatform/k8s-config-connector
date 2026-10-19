@@ -1951,3 +1951,38 @@ func WorkspaceConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscover
 	out.SuperAdminEmailAddress = direct.ValueOf(in.SuperAdminEmailAddress)
 	return out
 }
+
+func DiscoveryengineDocumentSpec_JsonData_ToProto(mapCtx *direct.MapContext, in *string) *pb.Document_JsonData {
+	if in == nil {
+		return nil
+	}
+	return &pb.Document_JsonData{JsonData: *in}
+}
+
+func Document_Content_Uri_ToProto(mapCtx *direct.MapContext, in *string) *pb.Document_Content_Uri {
+	if in == nil {
+		return nil
+	}
+	return &pb.Document_Content_Uri{Uri: *in}
+}
+
+func Principal_ExternalEntityId_ToProto(mapCtx *direct.MapContext, in *string) *pb.Principal_ExternalEntityId {
+	if in == nil {
+		return nil
+	}
+	return &pb.Principal_ExternalEntityId{ExternalEntityId: *in}
+}
+
+func Principal_GroupId_ToProto(mapCtx *direct.MapContext, in *string) *pb.Principal_GroupId {
+	if in == nil {
+		return nil
+	}
+	return &pb.Principal_GroupId{GroupId: *in}
+}
+
+func Principal_UserId_ToProto(mapCtx *direct.MapContext, in *string) *pb.Principal_UserId {
+	if in == nil {
+		return nil
+	}
+	return &pb.Principal_UserId{UserId: *in}
+}

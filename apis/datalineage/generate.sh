@@ -37,6 +37,17 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version datalineage.cnrm.cloud.google.com/v1alpha1 \
   --resource DataLineageProcess:Process
 
+${CONTROLLERBUILDER} generate-types \
+  --service google.cloud.datacatalog.lineage.v1 \
+  --api-version datalineage.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource DatalineageRun:Run
+
+${CONTROLLERBUILDER} generate-identity \
+  --service google.cloud.datacatalog.lineage.v1 \
+  --api-version datalineage.cnrm.cloud.google.com/v1alpha1 \
+  --resource DatalineageRun:Run
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.datacatalog.lineage.v1 \
   --api-version datalineage.cnrm.cloud.google.com/v1alpha1

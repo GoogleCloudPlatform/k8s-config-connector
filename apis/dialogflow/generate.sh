@@ -66,6 +66,44 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DialogflowConversationDataset:ConversationDataset
 
 # Generate mapper for Dialogflow CX v3 service
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.dialogflow.cx.v3 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource DialogflowExample:Example \
+  --resource DialogflowExperiment:Experiment \
+  --resource DialogflowSessionEntityType:SessionEntityType \
+  --resource DialogflowVersion:Version \
+  --resource DialogflowTestCase:TestCase
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.dialogflow.cx.v3 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --resource DialogflowExample:Example \
+  --resource DialogflowExperiment:Experiment \
+  --resource DialogflowSessionEntityType:SessionEntityType \
+  --resource DialogflowVersion:Version \
+  --resource DialogflowTestCase:TestCase
+
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.dialogflow.v2 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --prepopulate-resource \
+  --resource DialogflowContext:Context \
+  --resource DialogflowDocument:Document \
+  --resource DialogflowParticipant:Participant
+
+${CONTROLLERBUILDER} generate-identity \
+  --proto-source-path ${REPO_ROOT}/.build/googleapis-e7513c828b8db536fa12fc5493d541f323aedf90.pb \
+  --service google.cloud.dialogflow.v2 \
+  --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
+  --resource DialogflowContext:Context \
+  --resource DialogflowDocument:Document \
+  --resource DialogflowParticipant:Participant
+
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dialogflow.cx.v3 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
@@ -89,7 +127,7 @@ ${CONTROLLERBUILDER} generate-mapper \
 
 mv "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/dialogflow/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/mapper.generated.go" || true
 rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/dialogflow/" || true
-sed -i 's/package dialogflow/package generator/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/mapper.generated.go"
+sed -i 's/package dialogflow/package generator/g; s/RawContent: \*in/RawContent: in/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/generator/mapper.generated.go"
 
 # Generate mapper for Dialogflow v2 service (ConversationDataset)
 ${CONTROLLERBUILDER} generate-mapper \
@@ -99,7 +137,7 @@ ${CONTROLLERBUILDER} generate-mapper \
 
 mv "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/dialogflow/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/mapper.generated.go" || true
 rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/dialogflow/" || true
-sed -i 's/package dialogflow/package conversationdataset/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/mapper.generated.go"
+sed -i 's/package dialogflow/package conversationdataset/g; s/RawContent: \*in/RawContent: in/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/conversationdataset/mapper.generated.go"
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
