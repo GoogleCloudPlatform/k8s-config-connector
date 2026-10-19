@@ -15,34 +15,209 @@
 package codegen
 
 import (
+	"os"
+	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/annotations"
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestHasVersionedMapperFuncs(t *testing.T) {
-	unversioned := []generatedBlock{{name: "Instance_FromProto", kind: "func"}}
-	versioned := []generatedBlock{{name: "Instance_v1beta1_FromProto", kind: "func"}}
+func TestMergeWithExisting(t *testing.T) {
+	tests := []struct {
+		name         string
+		fileName     string
+		existingFile string
+		setupDir     func(t *testing.T, dir string)
+		currentAnn   *annotations.FileAnnotation
+		currentImps  map[string]string
+		currentBody  string
+		wantContains []string
+		wantExcluded []string
+		wantImps     map[string]string
+		wantAnnAttrs map[string][]string
+	}{
+		{
+			name:     "merges blocks, annotations, and disambiguates colliding import aliases",
+			fileName: "mapper.generated.go",
+			existingFile: `// +generated:mapper
+// krm.group: foo.cnrm.cloud.google.com
+// proto.service: google.cloud.foo.v1
 
-	if hasVersionedMapperFuncs(unversioned) {
-		t.Errorf("expected unversioned mapper func to return false")
+package foo
+
+import (
+	pb "cloud.google.com/go/foo/apiv1/foopb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/foo/v1alpha1"
+)
+
+func Alpha_FromProto(in *pb.Alpha) *krm.Alpha {
+	// selector in.pb.Field must not be rewritten
+	_ = in.pb.Field
+	return &krm.Alpha{}
+}
+`,
+			currentAnn: &annotations.FileAnnotation{
+				Key: "+generated:mapper",
+				Attributes: map[string][]string{
+					"krm.group":     {"foo.cnrm.cloud.google.com"},
+					"proto.service": {"google.cloud.foo.sub.v1"},
+				},
+			},
+			currentImps: map[string]string{
+				"cloud.google.com/go/foo/sub/apiv1/subpb":                               "pb",
+				"github.com/GoogleCloudPlatform/k8s-config-connector/apis/foo/v1alpha1": "krmv1alpha1",
+			},
+			currentBody: `
+func Beta_FromProto(in *pb.Beta) *krmv1alpha1.Beta {
+	return &krmv1alpha1.Beta{}
+}
+`,
+			wantContains: []string{
+				"func Alpha_FromProto(in *pb_2.Alpha) *krmv1alpha1.Alpha",
+				"_ = in.pb.Field",
+				"func Beta_FromProto(in *pb.Beta) *krmv1alpha1.Beta",
+			},
+			wantImps: map[string]string{
+				"cloud.google.com/go/foo/apiv1/foopb":                                   "pb_2",
+				"cloud.google.com/go/foo/sub/apiv1/subpb":                               "pb",
+				"github.com/GoogleCloudPlatform/k8s-config-connector/apis/foo/v1alpha1": "krmv1alpha1",
+			},
+			wantAnnAttrs: map[string][]string{
+				"krm.group":     {"foo.cnrm.cloud.google.com"},
+				"proto.service": {"google.cloud.foo.v1", "google.cloud.foo.sub.v1"},
+			},
+		},
+		{
+			name:     "skips merge when existing file only contains commented-out blocks",
+			fileName: "types.generated.go",
+			existingFile: `package v1alpha1
+
+/* unreachable type OldType
+type OldType struct {}
+*/
+`,
+			currentBody: `
+type NewType struct {}
+`,
+			wantContains: []string{"type NewType struct"},
+			wantExcluded: []string{"OldType"},
+		},
+		{
+			name:     "skips merge when resource belongs to a separate *_types.generated.go file",
+			fileName: "types.generated.go",
+			existingFile: `package v1alpha1
+
+type SharedType struct {}
+`,
+			setupDir: func(t *testing.T, dir string) {
+				sep := `// +generated:types
+// resource: FooSeparate:Separate
+
+package v1alpha1
+`
+				if err := os.WriteFile(filepath.Join(dir, "separate_types.generated.go"), []byte(sep), 0644); err != nil {
+					t.Fatalf("writing separate file: %v", err)
+				}
+			},
+			currentAnn: &annotations.FileAnnotation{
+				Key:        "+generated:types",
+				Attributes: map[string][]string{"resource": {"FooSeparate:Separate"}},
+			},
+			currentBody: `
+type SeparateSpec struct {}
+`,
+			wantContains: []string{"type SeparateSpec struct"},
+			wantExcluded: []string{"SharedType"},
+		},
+		{
+			name:     "skips merge when mapper versioning convention changes",
+			fileName: "mapper.generated.go",
+			existingFile: `package foo
+
+func Alpha_v1alpha1_FromProto(in *string) *string { return nil }
+`,
+			currentBody: `
+func Alpha_FromProto(in *string) *string { return nil }
+`,
+			wantContains: []string{"func Alpha_FromProto"},
+			wantExcluded: []string{"Alpha_v1alpha1_FromProto"},
+		},
 	}
-	if !hasVersionedMapperFuncs(versioned) {
-		t.Errorf("expected versioned mapper func to return true")
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			dir := t.TempDir()
+			if tc.setupDir != nil {
+				tc.setupDir(t, dir)
+			}
+			f := &generatedFile{
+				key:            generatedFileKey{FileName: tc.fileName},
+				goPackage:      "v1alpha1",
+				fileAnnotation: tc.currentAnn,
+			}
+			for pkg, alias := range tc.currentImps {
+				f.addImport(alias, pkg)
+			}
+			f.body.WriteString(tc.currentBody)
+
+			f.mergeWithExisting([]byte(tc.existingFile), dir)
+
+			got := f.body.String()
+			for _, w := range tc.wantContains {
+				if !strings.Contains(got, w) {
+					t.Errorf("expected body to contain %q, got:\n%s", w, got)
+				}
+			}
+			for _, ex := range tc.wantExcluded {
+				if strings.Contains(got, ex) {
+					t.Errorf("expected body not to contain %q, got:\n%s", ex, got)
+				}
+			}
+			if tc.wantImps != nil {
+				if diff := cmp.Diff(tc.wantImps, f.imports); diff != "" {
+					t.Errorf("imports mismatch (-want +got):\n%s", diff)
+				}
+			}
+			if tc.wantAnnAttrs != nil {
+				if diff := cmp.Diff(tc.wantAnnAttrs, f.fileAnnotation.Attributes); diff != "" {
+					t.Errorf("annotation attributes mismatch (-want +got):\n%s", diff)
+				}
+			}
+		})
 	}
 }
 
 func TestShouldKeepExistingBlock(t *testing.T) {
+	baseDir := t.TempDir()
+	apiDir := filepath.Join(baseDir, "apis", "foo", "v1alpha1")
+	if err := os.MkdirAll(apiDir, 0755); err != nil {
+		t.Fatalf("mkdir: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(apiDir, "types.generated.go"), []byte(`package v1alpha1
+type KeptSpec struct{}
+/* unreachable:
+type PrunedSpec struct{}
+*/
+`), 0644); err != nil {
+		t.Fatalf("write types.generated.go: %v", err)
+	}
+
 	f := &generatedFile{
+		baseDir:           baseDir,
+		key:               generatedFileKey{FileName: "mapper.generated.go"},
 		reservedTypeNames: map[string]bool{"ReservedType": true},
+		imports: map[string]string{
+			"github.com/GoogleCloudPlatform/k8s-config-connector/apis/foo/v1alpha1": "krm",
+		},
 	}
 	pkgDecls := packageDeclarations{
 		types:     map[string]bool{"HandwrittenType": true},
 		protoTags: map[string]bool{"google.cloud.foo.v1.ClaimedProto": true},
 		funcs:     map[string]bool{"Handwritten_FromProto": true},
 	}
-	validKRM := map[string]bool{"KeptSpec": true}
+	validKRM := f.resolveValidKRMTypes(nil)
 
 	tests := []struct {
 		name  string
@@ -97,92 +272,6 @@ func TestShouldKeepExistingBlock(t *testing.T) {
 				t.Errorf("shouldKeepExistingBlock(%+v) = %v, want %v", tc.block, got, tc.want)
 			}
 		})
-	}
-}
-
-func TestMergeFileAnnotations(t *testing.T) {
-	existing := &annotations.FileAnnotation{
-		Key: "+generated:types",
-		Attributes: map[string][]string{
-			"krm.group":     {"example.cnrm.cloud.google.com"},
-			"proto.service": {"google.example.v1"},
-			"resource":      {"ExampleAlpha:Alpha"},
-		},
-	}
-	current := &annotations.FileAnnotation{
-		Key: "+generated:types",
-		Attributes: map[string][]string{
-			"krm.group":     {"example.cnrm.cloud.google.com"},
-			"proto.service": {"google.example.v1", "google.example. sub.v1"},
-			"resource":      {"ExampleBeta:Beta"},
-		},
-	}
-
-	got := mergeFileAnnotations(existing, current)
-	want := &annotations.FileAnnotation{
-		Key: "+generated:types",
-		Attributes: map[string][]string{
-			"krm.group":     {"example.cnrm.cloud.google.com"},
-			"proto.service": {"google.example.v1", "google.example. sub.v1"},
-			"resource":      {"ExampleAlpha:Alpha", "ExampleBeta:Beta"},
-		},
-	}
-	if diff := cmp.Diff(want, got); diff != "" {
-		t.Errorf("mergeFileAnnotations mismatch (-want +got):\n%s", diff)
-	}
-}
-
-func TestMergeExistingImports(t *testing.T) {
-	f := &generatedFile{}
-	f.addImport("pb", "cloud.google.com/go/foo/sub/apiv1/subpb")
-	f.addImport("krmv1alpha1", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/foo/v1alpha1")
-
-	existingImports := map[string]string{
-		"cloud.google.com/go/foo/apiv1/foopb":                                       "pb",
-		"github.com/GoogleCloudPlatform/k8s-config-connector/apis/foo/v1alpha1":     "krm",
-		"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct": "",
-	}
-
-	renames := f.mergeExistingImports(existingImports)
-
-	wantRenames := map[string]string{
-		"pb":  "pb_2",
-		"krm": "krmv1alpha1",
-	}
-	if diff := cmp.Diff(wantRenames, renames); diff != "" {
-		t.Errorf("mergeExistingImports renames mismatch (-want +got):\n%s", diff)
-	}
-
-	wantImports := map[string]string{
-		"cloud.google.com/go/foo/sub/apiv1/subpb":                                   "pb",
-		"cloud.google.com/go/foo/apiv1/foopb":                                       "pb_2",
-		"github.com/GoogleCloudPlatform/k8s-config-connector/apis/foo/v1alpha1":     "krmv1alpha1",
-		"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct": "",
-	}
-	if diff := cmp.Diff(wantImports, f.imports); diff != "" {
-		t.Errorf("f.imports mismatch (-want +got):\n%s", diff)
-	}
-}
-
-func TestRewritePackageQualifiers(t *testing.T) {
-	src := `func Foo_FromProto(in *pb.Foo) *krm.Foo {
-	// selector obj.pb.Bar must not be rewritten
-	out := &krm.Foo{}
-	out.Bar = pb.Bar_FromProto(in.pb.Bar)
-	return out
-}`
-	got := rewritePackageQualifiers(src, map[string]string{
-		"pb":  "pb_2",
-		"krm": "krmv1alpha1",
-	})
-	want := `func Foo_FromProto(in *pb_2.Foo) *krmv1alpha1.Foo {
-	// selector obj.pb.Bar must not be rewritten
-	out := &krmv1alpha1.Foo{}
-	out.Bar = pb_2.Bar_FromProto(in.pb.Bar)
-	return out
-}`
-	if diff := cmp.Diff(want, got); diff != "" {
-		t.Errorf("rewritePackageQualifiers mismatch (-want +got):\n%s", diff)
 	}
 }
 

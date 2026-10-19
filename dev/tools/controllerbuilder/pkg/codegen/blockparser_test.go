@@ -53,7 +53,7 @@ func Alpha_FromProto(in *string) *krm.Alpha {
 }
 
 /*
-func Beta_ToProto(mapCtx *direct.MapContext, in *krm.Beta) *string {
+func Beta_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Beta) *string {
 	return nil
 }
 */
@@ -96,7 +96,7 @@ func Beta_ToProto(mapCtx *direct.MapContext, in *krm.Beta) *string {
 			krmTypeName: "Alpha",
 		},
 		{
-			name:        "Beta_ToProto",
+			name:        "Beta_v1beta1_ToProto",
 			kind:        "func",
 			isCommented: true,
 			krmTypeName: "Beta",
@@ -105,34 +105,5 @@ func Beta_ToProto(mapCtx *direct.MapContext, in *krm.Beta) *string {
 	ignoreFields := cmpopts.IgnoreFields(generatedBlock{}, "rawText", "offset")
 	if diff := cmp.Diff(wantBlocks, blocks, cmp.AllowUnexported(generatedBlock{}), ignoreFields); diff != "" {
 		t.Errorf("blocks mismatch (-want +got):\n%s", diff)
-	}
-}
-
-func TestExtractKRMTypeFromFuncSignature(t *testing.T) {
-	tests := []struct {
-		sig  string
-		want string
-	}{
-		{
-			sig:  "func WidgetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Widget) *krm.WidgetSpec {",
-			want: "WidgetSpec",
-		},
-		{
-			sig:  "func WidgetSpec_ToProto(mapCtx *direct.MapContext, in *krm.WidgetSpec) *pb.Widget {",
-			want: "WidgetSpec",
-		},
-		{
-			sig:  "func WidgetSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.WidgetSpec) *pb.Widget {",
-			want: "WidgetSpec",
-		},
-		{
-			sig:  "func HelperFunc(x int) int {",
-			want: "",
-		},
-	}
-	for _, tc := range tests {
-		if got := extractKRMTypeFromFuncSignature(tc.sig); got != tc.want {
-			t.Errorf("extractKRMTypeFromFuncSignature(%q) = %q, want %q", tc.sig, got, tc.want)
-		}
 	}
 }
