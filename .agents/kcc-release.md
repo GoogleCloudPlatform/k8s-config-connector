@@ -91,6 +91,7 @@ When compiling and writing the release notes, you MUST strictly adhere to the fo
 8.  **Merged Reconcilers Only**: Only release note resources whose controllers have already been merged.
 9.  **No Reverted Changes**: Do NOT cover reverted changes in the release notes.
 10. **Do NOT Commit Gathered Data**: The gathered release notes data and any temporary files must NOT be committed to git. Only commit `docs/releasenotes/release-{{MAJOR_MINOR}}.md`.
+11. **No Blocked Kinds**: Do NOT cover any resource whose Kind is listed in `BLOCKED_KINDS` in `dev/tasks/build-release-bundle` at the release tag (`v{{VERSION}}`). Those CRDs are excluded from the release bundle, so users cannot install them. The gathered data lists the PRs that mention them under "⛔ PRs Mentioning Blocked Kinds".
 
 # Task
 1.  **Identify Version Range**:
@@ -106,8 +107,12 @@ When compiling and writing the release notes, you MUST strictly adhere to the fo
       ./dev/tasks/gather-release-notes {{PREVIOUS_TAG}} {{CURRENT_TAG}} -o /tmp/gathered-release-notes-{{VERSION}}.md
       ```
     - **Draft Release Notes**: Use the gathered data in `/tmp/gathered-release-notes-{{VERSION}}.md` and `docs/releasenotes/template.md` as a base to draft `docs/releasenotes/release-{{MAJOR_MINOR}}.md`.
-      - Filter and categorize changes following the Drafting Guidelines (rules 1–10).
+      - Filter and categorize changes following the Drafting Guidelines (rules 1–11).
       - Extract contributors from the gathered PRs for the shout-outs section.
+    - **Verify No Blocked Kinds**: Check the draft against `BLOCKED_KINDS` (rule 11). If the command reports any lines, remove those entries and re-run it until it passes:
+      ```bash
+      ./dev/tasks/gather-release-notes {{PREVIOUS_TAG}} {{CURRENT_TAG}} --check-notes docs/releasenotes/release-{{MAJOR_MINOR}}.md
+      ```
     - **Commit & Push**:
       - Ensure only `docs/releasenotes/release-{{MAJOR_MINOR}}.md` is committed (the gathered data file must NOT be included in the commit):
         ```bash
