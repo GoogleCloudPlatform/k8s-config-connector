@@ -257,4 +257,3 @@ func TestVisitMessageRecursesIntoSkippedContainer(t *testing.T) {
 		t.Errorf("typePairs[0].KRMType.Name = %q, want SearchRequest_DynamicFacetSpec", got)
 	}
 }
-

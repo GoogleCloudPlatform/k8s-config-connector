@@ -57,4 +57,3 @@ func TestSingular(t *testing.T) {
 		}
 	}
 }
-

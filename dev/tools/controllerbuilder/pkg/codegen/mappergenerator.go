@@ -186,11 +186,14 @@ func (v *MapperGenerator) findKRMStructsForProto(msg protoreflect.MessageDescrip
 }
 
 func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
-	defer func() {
-		for _, msg := range sortIntoMessageSlice(msg.Messages()) {
-			v.visitMessage(msg)
-		}
-	}()
+	// Always recurse into nested messages, even if this message is skipped below
+	// (e.g. a *Request message, or one with no KRM type). Resources may reuse
+	// nested messages such as SearchRequest.DynamicFacetSpec that do have
+	// +kcc:proto KRM structs and therefore need mappers.
+	// Visiting order does not matter: GenerateMappers sorts typePairs.
+	for _, nested := range sortIntoMessageSlice(msg.Messages()) {
+		v.visitMessage(nested)
+	}
 
 	if _, shouldWrite := v.goPathForMessage(msg); !shouldWrite {
 		return
