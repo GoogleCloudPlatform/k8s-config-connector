@@ -2,7 +2,7 @@
   {
     "controller": "tf",
     "isNewObject": true,
-    "resource": "ComputeNetworkFirewallPolicy/${firewallPolicyID}",
+    "resource": "ComputeNetworkFirewallPolicy/networkfirewallpolicy-${uniqueId}",
     "fields": [
       {
         "id": "creation_timestamp",
@@ -22,7 +22,7 @@
       {
         "id": "name",
         "old": "",
-        "new": "${firewallPolicyID}"
+        "new": "networkfirewallpolicy-${uniqueId}"
       },
       {
         "id": "network_firewall_policy_id",
