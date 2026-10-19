@@ -77,6 +77,10 @@ The Step 1 runbook lists four gaps, and this proposal closes all of them:
 > identity file: 45 canonical and 17 in the old pattern. Its value is as the contract every controller binds to, and for the roughly 550
 > resources Step 1 targets, most of which will be new.
 
+
+> [!IMPORTANT]
+> **Declarative vs. Non-Declarative Resource Criteria:** Having AIP CRUD methods in a proto service is necessary but not sufficient for Config Connector support (e.g., ephemeral job runs, live user sessions, PR comments, and high-cardinality data-plane rows often expose CRUD). Before generating a controller or bulk-onboarding a resource, evaluate it against the 3-tier criteria in [`docs/ai/declarative-resource-criteria.md`](../ai/declarative-resource-criteria.md).
+
 ## 5. Goals and non-goals
 
 Goals:
