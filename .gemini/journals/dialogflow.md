@@ -54,4 +54,19 @@
   4. Recorded `dialogflowconversationdataset-minimal` and `dialogflowconversationdataset-maximal` fixtures against real GCP.
 - **Impact**: Fully enables management and reconciliation of `DialogflowConversationDataset` resources via direct controller.
 
+### [2026-10-19] DialogflowWebhook Direct Controller Implementation (Phase 2)
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `DialogflowWebhook` under `dialogflow.cnrm.cloud.google.com/v1alpha1` (Issue #14087).
+- **Problem**:
+  1. Dialogflow Webhook IDs in Dialogflow CX are exclusively server-generated (format `projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}`). Initial identity scaffolding used `refs.GetResourceID(obj)` which erroneously fell back to `metadata.name`.
+  2. DialogflowCXAgent parent references only supported `external` references (`Name` and `Namespace` were commented out). In dependencies, `DialogflowCXAgent` uses a server-assigned UUID, so referencing it by `name` was necessary.
+  3. `common.VisitFields` threw `visiting slice of type slice is not supported` when traversing `DialogflowWebhookSpec` due to `AllowedCACerts [][]byte` (slice of slice of byte).
+- **Solution**:
+  1. Updated `DialogflowWebhookIdentity` to implement `identity.ServerGeneratedIdentity`, adhering to the 4 service-generated ID rules (leaving `Name` empty in GCP create payload, pre-check in `Find`, and mapping `status.externalRef` on reconciliation).
+  2. Enabled `Name` and `Namespace` on `DialogflowCXAgentRef` and implemented `NormalizeWithFallback` retrieving agent ID from `status.startFlow` or `status.name`.
+  3. Added `case reflect.Slice:` support in `common.VisitFields` for slices of slices.
+  4. Implemented direct controller adapter using GAPIC REST client (`cx.NewWebhooksRESTClient`) and registered model and fuzzer.
+  5. Created minimal and maximal fixtures and recorded golden outputs against real GCP using `RECORD_AUDIT_PROBE=1 ./hack/record-gcp`.
+- **Impact**: Fully enables management and reconciliation of `DialogflowWebhook` resources via direct controller.
+
+
 

@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: dialogflowcx.cnrm.cloud.google.com
+  kind: DialogflowCXAgent
+  name: dialogflowcxagent-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //dialogflow.googleapis.com/projects/${projectId}/locations/global/agents/55e317ec-6752-43b2-bb5c-98b81f5178dc/webhooks/58f53db8-28dd-43bb-b19c-23bc21fcba6a
+  group: dialogflow.cnrm.cloud.google.com
+  kind: DialogflowWebhook
+  name: dialogflowwebhook-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

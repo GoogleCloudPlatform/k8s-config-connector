@@ -98,6 +98,11 @@ func (w *visitorWalker) visitAny(path string, v reflect.Value) {
 			for i := 0; i < v.Len(); i++ {
 				w.visitAny(path+"[]", v.Index(i))
 			}
+		case reflect.Slice:
+			for i := 0; i < v.Len(); i++ {
+				elem := v.Index(i)
+				w.visitAny(path+"[]", elem)
+			}
 		case reflect.Uint8, reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64, reflect.Uint, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Float32, reflect.Float64, reflect.Bool:
 			// Treat primitive slices as leaves
 		default:

@@ -20,14 +20,13 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var (
-	_ identity.IdentityV2 = &DialogflowWebhookIdentity{}
-	_ identity.Resource   = &DialogflowWebhook{}
+	_ identity.ServerGeneratedIdentity = &DialogflowWebhookIdentity{}
+	_ identity.Resource                = &DialogflowWebhook{}
 )
 
 var DialogflowWebhookIdentityFormat = gcpurls.Template[DialogflowWebhookIdentity]("dialogflow.googleapis.com", "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}")
@@ -39,6 +38,10 @@ type DialogflowWebhookIdentity struct {
 	Location string
 	Agent    string
 	Webhook  string
+}
+
+func (i *DialogflowWebhookIdentity) HasIdentitySpecified() bool {
+	return i.Webhook != ""
 }
 
 func (i *DialogflowWebhookIdentity) String() string {
@@ -80,10 +83,7 @@ func getIdentityFromDialogflowWebhookSpec(ctx context.Context, reader client.Rea
 		return nil, fmt.Errorf("parsing agentRef.external=%q: %w", obj.Spec.AgentRef.GetExternal(), err)
 	}
 
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
-	}
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
 	return &DialogflowWebhookIdentity{
 		Project:  parentIdentity.Project,
@@ -105,6 +105,10 @@ func (obj *DialogflowWebhook) GetIdentity(ctx context.Context, reader client.Rea
 		statusIdentity := &DialogflowWebhookIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
+		}
+
+		if specIdentity.Webhook == "" {
+			specIdentity.Webhook = statusIdentity.Webhook
 		}
 
 		if statusIdentity.String() != specIdentity.String() {

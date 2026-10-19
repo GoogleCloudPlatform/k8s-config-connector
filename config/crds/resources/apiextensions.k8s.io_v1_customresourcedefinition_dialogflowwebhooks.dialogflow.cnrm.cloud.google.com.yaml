@@ -64,10 +64,30 @@ spec:
             properties:
               agentRef:
                 description: The DialogflowCXAgent that this webhook belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
                 properties:
                   external:
                     description: A reference to an externally managed DialogflowCXAgent
                       resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/agents/{{agentID}}".
+                    type: string
+                  name:
+                    description: The name of a DialogflowCXAgent resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a DialogflowCXAgent resource.
                     type: string
                 type: object
                 x-kubernetes-validations:
