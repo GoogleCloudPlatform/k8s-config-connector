@@ -595,6 +595,24 @@ observedState:
     poolerCount: integer
   observabilityConfig:
     trackWaitEventTypes: boolean
+  observabilityInstanceInfo:
+    assistiveExperiencesEnabled: boolean
+    enabled: boolean
+    maxQueryStringLength: integer
+    preserveComments: boolean
+    queryPlansPerMinute: integer
+    recordApplicationTags: boolean
+    trackActiveQueries: boolean
+    trackActiveQueryPlan: boolean
+    trackClientAddress: boolean
+    trackWaitEventTypes: boolean
+    trackWaitEvents: boolean
+  queryInsightsInfo:
+    enabled: boolean
+    queryPlansPerMinute: integer
+    queryStringLength: integer
+    recordApplicationTags: boolean
+    recordClientAddress: boolean
 outboundPublicIpAddresses:
 - string
 publicIpAddress: string
@@ -728,6 +746,132 @@ updateTime: string
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>Output only. Track wait event types during query execution for an instance. This flag is turned "on" by default but tracking is enabled only after observability enabled flag is also turned on. This is read-only flag and only modifiable by internal API.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.observabilityInstanceInfo</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Output only. Observability feature status for an instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.observabilityInstanceInfo.assistiveExperiencesEnabled</code></td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Output only. Whether assistive experiences are enabled for this AlloyDB instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.observabilityInstanceInfo.enabled</code></td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Output only. Observability feature status for an instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.observabilityInstanceInfo.maxQueryStringLength</code></td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Output only. Query string length. The default value is 10k.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.observabilityInstanceInfo.preserveComments</code></td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Output only. Preserve comments in query string for an instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.observabilityInstanceInfo.queryPlansPerMinute</code></td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Output only. Number of query execution plans captured by Insights per minute for all queries combined.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.observabilityInstanceInfo.recordApplicationTags</code></td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Output only. Record application tags for an instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.observabilityInstanceInfo.trackActiveQueries</code></td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Output only. Track actively running queries on the instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.observabilityInstanceInfo.trackActiveQueryPlan</code></td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Output only. Indicates whether to track active query plans for an instance. Deprecated: Use track_active_queries instead.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.observabilityInstanceInfo.trackClientAddress</code></td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Output only. Track client address for an instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.observabilityInstanceInfo.trackWaitEventTypes</code></td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Output only. Track wait event types during query execution for an instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.observabilityInstanceInfo.trackWaitEvents</code></td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Output only. Track wait events during query execution for an instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.queryInsightsInfo</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Output only. Query Insights feature status for an instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.queryInsightsInfo.enabled</code></td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Output only. Whether Query Insights is enabled.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.queryInsightsInfo.queryPlansPerMinute</code></td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Output only. Number of query execution plans captured per minute.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.queryInsightsInfo.queryStringLength</code></td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Output only. Maximum query string length.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.queryInsightsInfo.recordApplicationTags</code></td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Output only. Whether to record application tags.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.queryInsightsInfo.recordClientAddress</code></td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Output only. Whether to record client address.</p>
         </td>
     </tr>
     <tr>
