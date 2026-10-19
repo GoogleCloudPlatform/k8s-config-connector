@@ -1,0 +1,62 @@
+apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
+kind: AccessContextManagerServicePerimeter
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/organization-id: ${organizationID}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: kccsvcperimeter${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  accessPolicyRef:
+    external: accessPolicies/578359180191
+  perimeterType: PERIMETER_TYPE_REGULAR
+  resourceID: kccsvcperimeter${uniqueId}
+  spec:
+    accessLevels:
+    - name: acl${uniqueId}
+    egressPolicies:
+    - egressFrom:
+        identities:
+        - serviceAccountRef:
+            name: gsa-${uniqueId}
+    - egressTo:
+        resources:
+        - projectRef:
+            name: project-${uniqueId}
+    ingressPolicies:
+    - ingressFrom:
+        identities:
+        - serviceAccountRef:
+            name: gsa-${uniqueId}
+        sources:
+        - accessLevelRef:
+            name: acl${uniqueId}
+    - ingressTo:
+        resources:
+        - projectRef:
+            name: project-${uniqueId}
+    resources:
+    - projectRef:
+        name: project-${uniqueId}
+    restrictedServices:
+    - notebooks.googleapis.com
+  status:
+    restrictedServices:
+    - bigquery.googleapis.com
+  title: default policy ${uniqueId} 2
+  useExplicitDryRunSpec: true
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 3
