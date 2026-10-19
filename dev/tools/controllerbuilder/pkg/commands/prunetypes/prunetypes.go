@@ -192,6 +192,8 @@ func PruneTypes(ctx context.Context, o *PruneTypesOptions) error {
 		})
 	}
 
+	collectDirectControllerRefs(pkgDir, typeToFile, handwrittenRefs)
+
 	// Compute reachability using BFS
 	reachable := make(map[*types.TypeName]bool)
 	var queue []*types.TypeName
@@ -238,14 +240,8 @@ func PruneTypes(ctx context.Context, o *PruneTypesOptions) error {
 		}
 
 		sort.Slice(toPrune, func(i, j int) bool {
-			posI := toPrune[i].decl.Pos()
-			if toPrune[i].decl.Doc != nil {
-				posI = toPrune[i].decl.Doc.Pos()
-			}
-			posJ := toPrune[j].decl.Pos()
-			if toPrune[j].decl.Doc != nil {
-				posJ = toPrune[j].decl.Doc.Pos()
-			}
+			posI := declStartPos(toPrune[i].decl)
+			posJ := declStartPos(toPrune[j].decl)
 			return fset.Position(posI).Offset > fset.Position(posJ).Offset
 		})
 
@@ -255,10 +251,7 @@ func PruneTypes(ctx context.Context, o *PruneTypesOptions) error {
 		}
 
 		for _, item := range toPrune {
-			startPos := item.decl.Pos()
-			if item.decl.Doc != nil {
-				startPos = item.decl.Doc.Pos()
-			}
+			startPos := declStartPos(item.decl)
 			endPos := item.decl.End()
 
 			startOffset := fset.Position(startPos).Offset
@@ -289,6 +282,68 @@ func PruneTypes(ctx context.Context, o *PruneTypesOptions) error {
 	}
 
 	return nil
+}
+
+// collectDirectControllerRefs scans pkg/controller/direct/<service>/*.go (when
+// pkgDir is under apis/<service>/<version>) and marks any KRM type referenced
+// via a selector expression qualified by the target API package import alias
+// (e.g. krm.Foo or krmv1alpha1.Foo) as reachable.
+func collectDirectControllerRefs(pkgDir string, typeToFile map[*types.TypeName]string, handwrittenRefs map[*types.TypeName]bool) {
+	absPkgDir, err := filepath.Abs(pkgDir)
+	if err != nil {
+		return
+	}
+	version := filepath.Base(absPkgDir)
+	serviceDir := filepath.Dir(absPkgDir)
+	apisDir := filepath.Dir(serviceDir)
+	if filepath.Base(apisDir) != "apis" {
+		return
+	}
+	repoRoot := filepath.Dir(apisDir)
+	service := filepath.Base(serviceDir)
+	wantImportSuffix := "/apis/" + service + "/" + version
+	controllerDir := filepath.Join(repoRoot, "pkg", "controller", "direct", service)
+	entries, err := os.ReadDir(controllerDir)
+	if err != nil {
+		return
+	}
+
+	byName := make(map[string]*types.TypeName, len(typeToFile))
+	for t := range typeToFile {
+		byName[t.Name()] = t
+	}
+
+	fset := token.NewFileSet()
+	for _, entry := range entries {
+		if entry.IsDir() || !strings.HasSuffix(entry.Name(), ".go") {
+			continue
+		}
+		filePath := filepath.Join(controllerDir, entry.Name())
+		fileAST, err := parser.ParseFile(fset, filePath, nil, 0)
+		if err != nil {
+			continue
+		}
+		qualifiers := make(map[string]bool)
+		for _, imp := range fileAST.Imports {
+			ref, qualifier, ok := importQualifier(imp)
+			if ok && strings.HasSuffix(ref.path, wantImportSuffix) {
+				qualifiers[qualifier] = true
+			}
+		}
+		if len(qualifiers) == 0 {
+			continue
+		}
+		ast.Inspect(fileAST, func(n ast.Node) bool {
+			if sel, ok := n.(*ast.SelectorExpr); ok {
+				if ident, ok := sel.X.(*ast.Ident); ok && qualifiers[ident.Name] {
+					if t, found := byName[sel.Sel.Name]; found {
+						handwrittenRefs[t] = true
+					}
+				}
+			}
+			return true
+		})
+	}
 }
 
 func isGeneratedFile(filePath string, file *ast.File) bool {
@@ -412,4 +467,23 @@ func importQualifier(imp *ast.ImportSpec) (ref importRef, qualifier string, ok b
 // suffix such as v2, which is never the package name.
 func isMajorVersion(s string) bool {
 	return len(s) > 1 && s[0] == 'v' && strings.TrimLeft(s[1:], "0123456789") == ""
+}
+
+// declStartPos returns the starting position of a type declaration including its
+// line doc comments, while skipping any leading /* ... */ block comments that
+// go/parser may have attached to d.Doc when a preceding block comment is adjacent.
+func declStartPos(d *ast.GenDecl) token.Pos {
+	startPos := d.Pos()
+	if d.Doc != nil && len(d.Doc.List) > 0 {
+		firstLineCommentIdx := 0
+		for idx, c := range d.Doc.List {
+			if strings.HasPrefix(c.Text, "/*") {
+				firstLineCommentIdx = idx + 1
+			}
+		}
+		if firstLineCommentIdx < len(d.Doc.List) {
+			startPos = d.Doc.List[firstLineCommentIdx].Pos()
+		}
+	}
+	return startPos
 }
