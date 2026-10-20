@@ -184,8 +184,8 @@ spec:
                               description: (Optional) A list of identities that are
                                 allowed access through this EgressPolicy. Should be
                                 in the format of email address. The email address
-                                should represent individual user or service account
-                                only.
+                                should represent an individual user, service account,
+                                or Google group.
                               items:
                                 oneOf:
                                 - required:
@@ -356,8 +356,8 @@ spec:
                               description: (Optional) A list of identities that are
                                 allowed access through this ingress policy. Should
                                 be in the format of email address. The email address
-                                should represent individual user or service account
-                                only.
+                                should represent an individual user, service account,
+                                or Google group.
                               items:
                                 oneOf:
                                 - required:
@@ -708,8 +708,8 @@ spec:
                               description: (Optional) A list of identities that are
                                 allowed access through this EgressPolicy. Should be
                                 in the format of email address. The email address
-                                should represent individual user or service account
-                                only.
+                                should represent an individual user, service account,
+                                or Google group.
                               items:
                                 oneOf:
                                 - required:
@@ -880,8 +880,8 @@ spec:
                               description: (Optional) A list of identities that are
                                 allowed access through this ingress policy. Should
                                 be in the format of email address. The email address
-                                should represent individual user or service account
-                                only.
+                                should represent an individual user, service account,
+                                or Google group.
                               items:
                                 oneOf:
                                 - required:
