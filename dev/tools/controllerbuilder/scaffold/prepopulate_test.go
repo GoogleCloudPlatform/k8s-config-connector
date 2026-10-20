@@ -195,7 +195,7 @@ func TestPrepopulateSpecQueuesTheEmittedName(t *testing.T) {
 			}
 			var paths []string
 			for _, j := range got.Judgement {
-				if j.Reason == "authoritative-proto-reference" {
+				if j.Reason == judgement.ReasonAuthoritativeProtoReference {
 					paths = append(paths, j.FieldPath)
 				}
 			}
@@ -221,17 +221,17 @@ func TestPrepopulateSpecQueuesResourceReferences(t *testing.T) {
 	msg := ragStoreMessage(t)
 	want := []JudgementItem{
 		{
-			Reason: "untriaged-bulk-generation",
+			Reason: judgement.ReasonUntriagedBulkGeneration,
 			Detail: "spec was generated from proto definition; verify refs, omissions, and KRM conventions",
 		},
 		{
 			FieldPath: ".spec.corpus",
-			Reason:    "authoritative-proto-reference",
+			Reason:    judgement.ReasonAuthoritativeProtoReference,
 			Detail:    "the proto marks this field as a reference to aiplatform.googleapis.com/RagCorpus (google.api.resource_reference); confirm whether it should be a KCC reference",
 		},
 		{
 			FieldPath: ".spec.parent",
-			Reason:    "authoritative-proto-reference",
+			Reason:    judgement.ReasonAuthoritativeProtoReference,
 			Detail:    "the proto marks this field as the parent of a aiplatform.googleapis.com/RagFile (google.api.resource_reference child_type); confirm whether it should be a KCC reference",
 		},
 	}
