@@ -291,7 +291,15 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 			return nil, err
 		}
 
-		nodePool.Autoscaling = update.DesiredNodePoolAutoscaling
+		if !update.DesiredNodePoolAutoscaling.GetEnabled() {
+			as := update.DesiredNodePoolAutoscaling
+			if as.GetMinNodeCount() > 0 || as.GetMaxNodeCount() > 0 || as.GetTotalMinNodeCount() > 0 || as.GetTotalMaxNodeCount() > 0 {
+				return nil, status.Errorf(codes.InvalidArgument, "Node_pool_autoscaling.min_node_count cannot be specified when autoscaling is disabled.")
+			}
+			nodePool.Autoscaling = nil
+		} else {
+			nodePool.Autoscaling = update.DesiredNodePoolAutoscaling
+		}
 		update.DesiredNodePoolAutoscaling = nil
 
 		if err := s.storage.Update(ctx, nodePoolName.String(), nodePool); err != nil {

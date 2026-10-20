@@ -130,7 +130,6 @@ func containerNodePoolFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".upgrade_settings.blue_green_settings.autoscaled_rollout_policy")
 	f.Unimplemented_NotYetTriaged(".management.upgrade_options")
 	f.Unimplemented_NotYetTriaged(".autoscaling.autoprovisioned")
-	f.Unimplemented_NotYetTriaged(".autoscaling.enabled")
 
 	// Fuzzer Spec fields
 	f.SpecField(".autoscaling")

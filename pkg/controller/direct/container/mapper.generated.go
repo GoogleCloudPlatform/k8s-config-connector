@@ -2084,7 +2084,7 @@ func NodePoolAutoscaling_FromProto(mapCtx *direct.MapContext, in *pb.NodePoolAut
 		return nil
 	}
 	out := &krm.NodePoolAutoscaling{}
-	// MISSING: Enabled
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
 	out.MinNodeCount = direct.LazyPtr(in.GetMinNodeCount())
 	out.MaxNodeCount = direct.LazyPtr(in.GetMaxNodeCount())
 	// MISSING: Autoprovisioned
@@ -2098,7 +2098,7 @@ func NodePoolAutoscaling_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolAuto
 		return nil
 	}
 	out := &pb.NodePoolAutoscaling{}
-	// MISSING: Enabled
+	out.Enabled = direct.ValueOf(in.Enabled)
 	out.MinNodeCount = direct.ValueOf(in.MinNodeCount)
 	out.MaxNodeCount = direct.ValueOf(in.MaxNodeCount)
 	// MISSING: Autoprovisioned

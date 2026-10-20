@@ -83,6 +83,12 @@ func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNod
 		return nil, err
 	}
 
+	if as := req.GetNodePool().GetAutoscaling(); as != nil && !as.GetEnabled() {
+		if as.GetMinNodeCount() > 0 || as.GetMaxNodeCount() > 0 || as.GetTotalMinNodeCount() > 0 || as.GetTotalMaxNodeCount() > 0 {
+			return nil, status.Errorf(codes.InvalidArgument, "Node_pool_autoscaling.min_node_count cannot be specified when autoscaling is disabled.")
+		}
+	}
+
 	cluster, err := s.GetCluster(ctx, &pb.GetClusterRequest{Name: req.GetParent()})
 	if err != nil {
 		return nil, err
@@ -123,6 +129,9 @@ func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNod
 
 func (s *ClusterManagerV1) populateNodePoolDefaults(project *projects.ProjectData, cluster *pb.Cluster, obj *pb.NodePool) error {
 	obj.Status = pb.NodePool_RUNNING
+	if as := obj.GetAutoscaling(); as != nil && !as.GetEnabled() {
+		obj.Autoscaling = nil
+	}
 	if obj.Version == "" {
 		obj.Version = cluster.CurrentNodeVersion
 	}

@@ -28,6 +28,10 @@ var ContainerNodePoolGVK = GroupVersion.WithKind("ContainerNodePool")
 
 // +kcc:proto=google.container.v1.NodePoolAutoscaling
 type NodePoolAutoscaling struct {
+	/* Is autoscaling enabled for this node pool. */
+	// +kcc:proto:field=google.container.v1.NodePoolAutoscaling.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
 	/* Location policy used when scaling up a nodepool. */
 	// +kcc:proto:field=google.container.v1.NodePoolAutoscaling.location_policy
 	LocationPolicy *string `json:"locationPolicy,omitempty"`
