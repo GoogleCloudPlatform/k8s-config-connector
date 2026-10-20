@@ -24,7 +24,7 @@ MockGCP test is required for the direct resource development.
 
 ## 1.1 Add the test suite
 
-Create a directory for your resource [pkg/test/resourcefixture/testdata/basic](../../../pkg/test/resourcefixture/testdata/basic), following the naming convention as other directories. The bottommost directory name is the test suite name. You can create as many directory as your test needs.
+Create a directory for your resource under [pkg/test/resourcefixture/testdata/basic](../../../pkg/test/resourcefixture/testdata/basic), following the naming convention `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<test_name>`. The bottommost directory name is the test suite name. You can create as many directories as your test needs.
 
 Just to add the `create.yaml`,  `update.yaml` and `dependencies.yaml` (if applicable) to each bottommost directory.
 These three files are all Kubernetes config files, except that `create.yaml` and `update.yaml` only holds the your Config Connector CR object, and the `dependencies.yaml` holds all the dependent objects.
@@ -37,7 +37,7 @@ Note: Do not add your GCP Project (the output of `gcloud config get project`) as
 
 ## 1.2 Write the MockGCP server
 
-Follow [this guide](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/mockgcp/README.md) to write a mock gcp server.
+Follow [this guide](../../../mockgcp/README.md) to write a mock gcp server.
 
 
 ## 1.3 Verify the MockGCP server
@@ -48,11 +48,15 @@ To write a new MockGCP server or to validate an existing one for the Direct reso
 
 #### Record real GCP log
 
-```
-hack/record-gcp fixtures/<your_resource_test>
+Run `hack/record-gcp` pointing to your test fixture path under `pkg/test/resourcefixture/testdata/basic/...` (or specifying your test suite name):
+
+```bash
+hack/record-gcp pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<your_resource_test>
 ```
 
-- `your_resource_test` is the folder directory name where you put the create.yaml and update.yaml files in. You can also use keywords to run multiple test suites. i.e. `hack/record-gcp fixtures/sql` matches all test suites that contains `sql`
+- `<your_resource_test>` is the test suite directory name where you placed `create.yaml` and `update.yaml`. You can also specify the test name directly (e.g. `hack/record-gcp <your_resource_test>`) or a keyword/regex to match test suites.
+
+Commit the recorded real GCP golden files:
 
 ```bash
 git add <golden_file> <log_file> && git commit -m "log: real gcp"
@@ -61,18 +65,22 @@ git add <golden_file> <log_file> && git commit -m "log: real gcp"
 - `golden_file` is the `_generated_object_<your_resource_test>.golden.yaml` file based on *real GCP reconciliation*.
 - `log_file` is the `_http.log` file recording the *real GCP log*.
 
-If the test takes more than 10 minutes to finish, add it to LONG_RUNNING_CRUD_TESTS_REGEX in [./scripts/shared-vars-public.sh](./scripts/shared-vars-public.sh).
+If the test takes more than 10 minutes to finish, add it to LONG_RUNNING_CRUD_TESTS_REGEX in [scripts/shared-vars-public.sh](../../../scripts/shared-vars-public.sh).
 
-#### Record mock GCP log.
+#### Record mock GCP log
 
-```
-hack/compare-mock fixtures/<your_resource_test>
-```
-
-- `your_resource_test` is the folder directory name where you put the create.yaml and update.yaml files in. You can also use keywords to run multiple test suites. i.e. `hack/record-gcp fixtures/sql` matches all test suites that contains `sql`
+Run `hack/compare-mock` pointing to your test fixture path under `pkg/test/resourcefixture/testdata/basic/...` (or specifying your test suite name):
 
 ```bash
-git add <golden_file> <log_file> && git commit -m "log: real gcp"
+hack/compare-mock pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<your_resource_test>
+```
+
+- `<your_resource_test>` is the test suite directory name where you placed `create.yaml` and `update.yaml`. You can also specify the test name directly (e.g. `hack/compare-mock <your_resource_test>`) or a keyword/regex.
+
+Commit the recorded mock GCP golden files:
+
+```bash
+git add <golden_file> <log_file> && git commit -m "test: add mockgcp test"
 ```
 
 - `golden_file` is the `_generated_object_<your_resource_test>.golden.yaml` file based on *mock GCP reconciliation*.

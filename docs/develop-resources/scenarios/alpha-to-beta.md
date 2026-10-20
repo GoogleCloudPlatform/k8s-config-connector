@@ -1,6 +1,6 @@
 # Promote an Alpha Resource to Beta
 
-You want to first figure out if the resource is Terraform-based, DCL-based or direct. Check the labels in the resource' [CRD](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/crds). 
+You want to first figure out if the resource is Terraform-based, DCL-based or direct. Check the labels in the resource' [CRD](../../../config/crds). 
 
 - If the resource has `cnrm.cloud.google.com/tf2crd` label, it is Terraform-based
 - If the resource has `cnrm.cloud.google.com/dcl2crd` label, it is DCL-based

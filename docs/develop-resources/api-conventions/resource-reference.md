@@ -21,9 +21,9 @@ spec:
 
   # A list of dependencies of the same kind 
   projectRefs:
-    name: Config Connector-project1
-    name: Config Connector-project2
-    name: Config Connector-project3 
+    - name: config-connector-project1
+    - name: config-connector-project2
+    - name: config-connector-project3 
 ```
 
 # Naming
@@ -36,17 +36,51 @@ As a naming convention, the resource reference field should be `<Kind>Ref(s)`.
 
 # API Rule
 
-
-```yaml
+```go
 type <KindRef> struct {
   // +optional   
   External string   `json:"external,omitempty"`
   // +optional  
   Name string       `json:"name,omitempty"`
   // +optional
-  Namespace string  `json:"name,omitempty"`
+  Namespace string  `json:"namespace,omitempty"`
 }
 ```
+
+## The 3-Tier Reference Contract (`apis/refs/v1beta1`)
+
+Config Connector uses a standardized 3-tier reference model defined in `apis/refs/v1beta1` for all GCP resource references:
+
+1. **Tier 1 — Same-Namespace KRM Reference (`name`):**
+   - Refers to another Config Connector resource located in the same Kubernetes namespace.
+   - Example:
+     ```yaml
+     computeNetworkRef:
+       name: sample-network
+     ```
+
+2. **Tier 2 — Cross-Namespace KRM Reference (`name` and `namespace`):**
+   - Refers to a Config Connector resource located in a different Kubernetes namespace.
+   - `namespace` is optional and defaults to the referencing object's namespace if omitted.
+   - Example:
+     ```yaml
+     computeNetworkRef:
+       name: sample-network
+       namespace: shared-vpc
+     ```
+
+3. **Tier 3 — External GCP Resource Reference (`external`):**
+   - Refers directly to an existing GCP resource (pre-existing, unmanaged by Config Connector in the cluster) by its canonical GCP identifier (URI or resource path, e.g. `projects/<projectID>/global/networks/<networkID>`).
+   - Example:
+     ```yaml
+     computeNetworkRef:
+       external: projects/my-project/global/networks/my-network
+     ```
+
+### Contract Guarantees & Validation:
+- **Mutual Exclusivity:** `name` and `external` are mutually exclusive (`oneOf`). Specifying both or neither is an error.
+- **Namespace Scope:** `namespace` can only be set when `name` is set. Specifying `namespace` with `external` is invalid.
+- **Standard Interface:** Common reference types live in `apis/refs/v1beta1` and implement `refs.Ref` (and `refs.Normalize`). Controller reconcilers resolve references using `refs.Normalize()` or `Resolve<Kind>Ref()`.
 
 # Validation
 
@@ -96,9 +130,9 @@ If the GCP service expects each reference to be unique, Config Connector should 
 ```yaml
 spec:
   projectRefs:
-    name: Config Connector-project1
-    name: Config Connector-project2
-    name: Config Connector-project3 
+    - name: config-connector-project1
+    - name: config-connector-project2
+    - name: config-connector-project3 
 ```
 
 
@@ -108,9 +142,9 @@ Or
 ```yaml
 spec:
   projectRefs:
-    external: projects/gcp1
-    external: projects/gcp2
-    external: projects/gcp3
+    - external: projects/gcp1
+    - external: projects/gcp2
+    - external: projects/gcp3
 ```
 
 
@@ -174,7 +208,7 @@ For example, the `computeForwardingRule` has the `ComputeAddress` reference whic
 
 ### Rule 1
 
-We will continue supporting the existing bebavior when migrating to the Direct Resource. 
+We will continue supporting the existing behavior when migrating to the Direct Resource. 
 
 
 ### Rule 2
