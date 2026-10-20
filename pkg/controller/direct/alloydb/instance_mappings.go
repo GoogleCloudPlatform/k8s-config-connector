@@ -80,7 +80,9 @@ func AlloyDBInstanceStatus_FromProto(mapCtx *direct.MapContext, in *pb.Instance)
 
 	observabilityConfigEnabled := in.GetObservabilityConfig() != nil && in.GetObservabilityConfig().GetEnabled()
 	connectionPoolConfigEnabled := in.GetConnectionPoolConfig() != nil && in.GetConnectionPoolConfig().GetEnabled()
-	if observabilityConfigEnabled || connectionPoolConfigEnabled {
+	hasObservabilityInstanceInfo := in.GetObservabilityInstanceInfo() != nil
+	hasQueryInsightsInfo := in.GetQueryInsightsInfo() != nil
+	if observabilityConfigEnabled || connectionPoolConfigEnabled || hasObservabilityInstanceInfo || hasQueryInsightsInfo {
 		out.ObservedState = &krm.AlloyDBInstanceObservedState{}
 	}
 	if observabilityConfigEnabled {
@@ -88,6 +90,12 @@ func AlloyDBInstanceStatus_FromProto(mapCtx *direct.MapContext, in *pb.Instance)
 	}
 	if connectionPoolConfigEnabled {
 		out.ObservedState.ConnectionPoolConfig = Instance_ConnectionPoolConfigObservedState_FromProto(mapCtx, in.GetConnectionPoolConfig())
+	}
+	if hasObservabilityInstanceInfo {
+		out.ObservedState.ObservabilityInstanceInfo = Instance_ObservabilityInstanceInfoObservedState_FromProto(mapCtx, in.GetObservabilityInstanceInfo())
+	}
+	if hasQueryInsightsInfo {
+		out.ObservedState.QueryInsightsInfo = Instance_QueryInsightsInstanceInfoObservedState_FromProto(mapCtx, in.GetQueryInsightsInfo())
 	}
 
 	return out
@@ -110,6 +118,8 @@ func AlloyDBInstanceStatus_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBIns
 	if in.ObservedState != nil {
 		out.ObservabilityConfig = Instance_ObservabilityInstanceConfigObservedState_ToProto(mapCtx, in.ObservedState.ObservabilityInstanceConfig)
 		out.ConnectionPoolConfig = Instance_ConnectionPoolConfigObservedState_ToProto(mapCtx, in.ObservedState.ConnectionPoolConfig)
+		out.ObservabilityInstanceInfo = Instance_ObservabilityInstanceInfoObservedState_ToProto(mapCtx, in.ObservedState.ObservabilityInstanceInfo)
+		out.QueryInsightsInfo = Instance_QueryInsightsInstanceInfoObservedState_ToProto(mapCtx, in.ObservedState.QueryInsightsInfo)
 	}
 
 	return out
@@ -151,5 +161,69 @@ func Instance_ConnectionPoolConfigObservedState_ToProto(mapCtx *direct.MapContex
 	// MISSING: Enabled
 	// MISSING: Flags
 	out.PoolerCount = *in.PoolerCount
+	return out
+}
+
+func Instance_ObservabilityInstanceInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ObservabilityInstanceInfo) *krm.Instance_ObservabilityInstanceInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Instance_ObservabilityInstanceInfoObservedState{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	out.PreserveComments = direct.LazyPtr(in.GetPreserveComments())
+	out.TrackWaitEvents = direct.LazyPtr(in.GetTrackWaitEvents())
+	out.TrackWaitEventTypes = direct.LazyPtr(in.GetTrackWaitEventTypes())
+	out.MaxQueryStringLength = direct.LazyPtr(in.GetMaxQueryStringLength())
+	out.RecordApplicationTags = direct.LazyPtr(in.GetRecordApplicationTags())
+	out.QueryPlansPerMinute = direct.LazyPtr(in.GetQueryPlansPerMinute())
+	out.TrackActiveQueries = direct.LazyPtr(in.GetTrackActiveQueries())
+	out.TrackClientAddress = direct.LazyPtr(in.GetTrackClientAddress())
+	out.AssistiveExperiencesEnabled = direct.LazyPtr(in.GetAssistiveExperiencesEnabled())
+	out.TrackActiveQueryPlan = direct.LazyPtr(in.GetTrackActiveQueryPlan())
+	return out
+}
+
+func Instance_ObservabilityInstanceInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_ObservabilityInstanceInfoObservedState) *pb.Instance_ObservabilityInstanceInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance_ObservabilityInstanceInfo{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	out.PreserveComments = direct.ValueOf(in.PreserveComments)
+	out.TrackWaitEvents = direct.ValueOf(in.TrackWaitEvents)
+	out.TrackWaitEventTypes = direct.ValueOf(in.TrackWaitEventTypes)
+	out.MaxQueryStringLength = direct.ValueOf(in.MaxQueryStringLength)
+	out.RecordApplicationTags = direct.ValueOf(in.RecordApplicationTags)
+	out.QueryPlansPerMinute = direct.ValueOf(in.QueryPlansPerMinute)
+	out.TrackActiveQueries = direct.ValueOf(in.TrackActiveQueries)
+	out.TrackClientAddress = direct.ValueOf(in.TrackClientAddress)
+	out.AssistiveExperiencesEnabled = direct.ValueOf(in.AssistiveExperiencesEnabled)
+	out.TrackActiveQueryPlan = direct.ValueOf(in.TrackActiveQueryPlan)
+	return out
+}
+
+func Instance_QueryInsightsInstanceInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_QueryInsightsInstanceInfo) *krm.Instance_QueryInsightsInstanceInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Instance_QueryInsightsInstanceInfoObservedState{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	out.RecordApplicationTags = direct.LazyPtr(in.GetRecordApplicationTags())
+	out.RecordClientAddress = direct.LazyPtr(in.GetRecordClientAddress())
+	out.QueryStringLength = direct.LazyPtr(in.GetQueryStringLength())
+	out.QueryPlansPerMinute = direct.LazyPtr(in.GetQueryPlansPerMinute())
+	return out
+}
+
+func Instance_QueryInsightsInstanceInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_QueryInsightsInstanceInfoObservedState) *pb.Instance_QueryInsightsInstanceInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance_QueryInsightsInstanceInfo{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	out.RecordApplicationTags = direct.ValueOf(in.RecordApplicationTags)
+	out.RecordClientAddress = direct.ValueOf(in.RecordClientAddress)
+	out.QueryStringLength = direct.ValueOf(in.QueryStringLength)
+	out.QueryPlansPerMinute = direct.ValueOf(in.QueryPlansPerMinute)
 	return out
 }

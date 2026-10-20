@@ -103,6 +103,37 @@ func setInstanceFields(name *instanceName, obj *pb.Instance) {
 	if obj.ObservabilityConfig.AssistiveExperiencesEnabled == nil {
 		obj.ObservabilityConfig.AssistiveExperiencesEnabled = PtrTo(false)
 	}
+
+	obj.ObservabilityInstanceInfo = &pb.Instance_ObservabilityInstanceInfo{
+		Enabled:                     obj.ObservabilityConfig.GetEnabled(),
+		PreserveComments:            obj.ObservabilityConfig.GetPreserveComments(),
+		TrackWaitEvents:             obj.ObservabilityConfig.GetTrackWaitEvents(),
+		TrackWaitEventTypes:         obj.ObservabilityConfig.GetTrackWaitEventTypes(),
+		MaxQueryStringLength:        obj.ObservabilityConfig.GetMaxQueryStringLength(),
+		RecordApplicationTags:       obj.ObservabilityConfig.GetRecordApplicationTags(),
+		QueryPlansPerMinute:         obj.ObservabilityConfig.GetQueryPlansPerMinute(),
+		TrackActiveQueries:          obj.ObservabilityConfig.GetTrackActiveQueries(),
+		TrackClientAddress:          obj.ObservabilityConfig.GetTrackClientAddress(),
+		AssistiveExperiencesEnabled: obj.ObservabilityConfig.GetAssistiveExperiencesEnabled(),
+	}
+
+	if !obsEnabled {
+		obj.QueryInsightsInfo = &pb.Instance_QueryInsightsInstanceInfo{
+			Enabled:               true,
+			RecordApplicationTags: obj.QueryInsightsConfig.GetRecordApplicationTags(),
+			RecordClientAddress:   obj.QueryInsightsConfig.GetRecordClientAddress(),
+			QueryStringLength:     obj.QueryInsightsConfig.GetQueryStringLength(),
+			QueryPlansPerMinute:   obj.QueryInsightsConfig.GetQueryPlansPerMinute(),
+		}
+	} else {
+		if obj.QueryInsightsInfo == nil {
+			obj.QueryInsightsInfo = &pb.Instance_QueryInsightsInstanceInfo{
+				QueryPlansPerMinute: 5,
+				QueryStringLength:   1024,
+			}
+		}
+		obj.QueryInsightsInfo.Enabled = false
+	}
 	if obj.InstanceType != pb.Instance_READ_POOL &&
 		obj.AvailabilityType == pb.Instance_AVAILABILITY_TYPE_UNSPECIFIED {
 		obj.AvailabilityType = pb.Instance_REGIONAL

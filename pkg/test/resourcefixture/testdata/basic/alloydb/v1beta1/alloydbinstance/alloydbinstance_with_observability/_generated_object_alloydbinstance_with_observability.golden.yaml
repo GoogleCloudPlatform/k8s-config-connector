@@ -42,6 +42,20 @@ status:
   observedState:
     observabilityConfig:
       trackWaitEventTypes: true
+    observabilityInstanceInfo:
+      assistiveExperiencesEnabled: true
+      enabled: true
+      maxQueryStringLength: 1025
+      preserveComments: true
+      queryPlansPerMinute: 11
+      recordApplicationTags: true
+      trackActiveQueries: true
+      trackClientAddress: true
+      trackWaitEventTypes: true
+      trackWaitEvents: true
+    queryInsightsInfo:
+      queryPlansPerMinute: 5
+      queryStringLength: 1024
   state: READY
   uid: "12345678"
   updateTime: "1970-01-01T00:00:00Z"
